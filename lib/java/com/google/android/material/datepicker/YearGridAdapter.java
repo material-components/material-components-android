@@ -59,13 +59,9 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
   @Override
   public void onBindViewHolder(@NonNull YearGridAdapter.ViewHolder viewHolder, int position) {
     int year = getYearForPosition(position);
-    String navigateYear =
-        viewHolder
-            .textView
-            .getContext()
-            .getString(R.string.mtrl_picker_navigate_to_year_description);
     viewHolder.textView.setText(String.format(Locale.getDefault(), "%d", year));
-    viewHolder.textView.setContentDescription(String.format(navigateYear, year));
+    viewHolder.textView.setContentDescription(
+        DateStrings.getYearContentDescription(viewHolder.textView.getContext(), year));
     CalendarStyle styles = materialCalendar.getCalendarStyle();
     Calendar calendar = UtcDates.getTodayCalendar();
     CalendarItemStyle style = calendar.get(Calendar.YEAR) == year ? styles.todayYear : styles.year;

@@ -138,7 +138,9 @@ class MonthAdapter extends BaseAdapter {
       Locale locale = dayTextView.getResources().getConfiguration().locale;
       dayTextView.setText(String.format(locale, "%d", dayNumber));
       long dayInMillis = month.getDay(dayNumber);
-      dayTextView.setContentDescription(DateStrings.getOptionalYearMonthDayOfWeekDay(dayInMillis));
+      dayTextView.setContentDescription(
+          DateStrings.getDayContentDescription(
+              dayTextView.getContext(), dayInMillis, isToday(dayInMillis)));
       dayTextView.setVisibility(View.VISIBLE);
       dayTextView.setEnabled(true);
     }
@@ -187,13 +189,14 @@ class MonthAdapter extends BaseAdapter {
     final CalendarItemStyle style;
     boolean valid = calendarConstraints.getDateValidator().isValid(date);
     boolean selected = false;
+    boolean isToday = isToday(date);
     if (valid) {
       dayTextView.setEnabled(true);
       selected = isSelected(date);
       dayTextView.setSelected(selected);
       if (selected) {
         style = calendarStyle.selectedDay;
-      } else if (UtcDates.getTodayCalendar().getTimeInMillis() == date) {
+      } else if (isToday) {
         style = calendarStyle.todayDay;
       } else {
         style = calendarStyle.day;
@@ -234,11 +237,15 @@ class MonthAdapter extends BaseAdapter {
               dayNumber,
               valid,
               selected,
-              DateStrings.getOptionalYearMonthDayOfWeekDay(dayInMillis));
+              DateStrings.getDayContentDescription(context, dayInMillis, isToday));
       dayTextView.setContentDescription(decoratorContentDescription);
     } else {
       style.styleItem(dayTextView);
     }
+  }
+
+  private boolean isToday(long date) {
+    return UtcDates.getTodayCalendar().getTimeInMillis() == date;
   }
 
   private boolean isSelected(long date) {

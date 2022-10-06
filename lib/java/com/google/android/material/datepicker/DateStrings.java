@@ -15,6 +15,9 @@
  */
 package com.google.android.material.datepicker;
 
+import com.google.android.material.R;
+
+import android.content.Context;
 import android.icu.text.DateFormat;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -197,5 +200,38 @@ class DateStrings {
     }
     return Pair.create(
         getYearMonthDay(start, Locale.getDefault()), getYearMonthDay(end, Locale.getDefault()));
+  }
+
+  /**
+   * Returns the day content description.
+   *
+   * @param context the {@link Context}
+   * @param dayInMillis UTC milliseconds representing the first moment of the day in local timezone
+   * @param isToday boolean representing if the day is today
+   * @return Day content description string
+   */
+  static String getDayContentDescription(Context context, long dayInMillis, boolean isToday) {
+    String dayContentDescription = getOptionalYearMonthDayOfWeekDay(dayInMillis);
+    if (isToday) {
+      return String.format(
+          context.getString(R.string.mtrl_picker_today_description), dayContentDescription);
+    }
+    return dayContentDescription;
+  }
+
+  /**
+   * Returns the year content description.
+   *
+   * @param context the {@link Context}
+   * @param year the year, example: 2020
+   * @return Year content description string
+   */
+  static String getYearContentDescription(Context context, int year) {
+    if (UtcDates.getTodayCalendar().get(Calendar.YEAR) == year) {
+      return String.format(
+          context.getString(R.string.mtrl_picker_navigate_to_current_year_description), year);
+    }
+    return String.format(
+        context.getString(R.string.mtrl_picker_navigate_to_year_description), year);
   }
 }

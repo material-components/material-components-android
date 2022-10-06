@@ -15,11 +15,12 @@
  */
 package com.google.android.material.datepicker;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
 import android.os.Build.VERSION_CODES;
 import androidx.core.util.Pair;
+import androidx.test.core.app.ApplicationProvider;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -296,5 +297,38 @@ public class DateStringsTest {
             new SimpleDateFormat("MMM dd", Locale.US));
     assertThat(dateRangeString.first, is("May 30"));
     assertThat(dateRangeString.second, is("Dec 05"));
+  }
+
+  @Test
+  public void getDayContentDescription_notToday() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(), startDate.getTimeInMillis(), false);
+    assertThat(contentDescription, is("Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getDayContentDescription_today() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(), startDate.getTimeInMillis(), true);
+    assertThat(contentDescription, is("Today Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getYearContentDescription_notCurrent() {
+    String contentDescription =
+        DateStrings.getYearContentDescription(ApplicationProvider.getApplicationContext(), 2020);
+    assertThat(contentDescription, is("Navigate to year 2020"));
+  }
+
+  @Test
+  public void getYearContentDescription_current() {
+    String contentDescription =
+        DateStrings.getYearContentDescription(
+            ApplicationProvider.getApplicationContext(), CURRENT_YEAR);
+    assertThat(contentDescription, is("Navigate to current year " + CURRENT_YEAR));
   }
 }
