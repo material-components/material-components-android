@@ -398,7 +398,7 @@ Element        | Attribute             | Related method(s)                 | Def
 -------------- | --------------------- | --------------------------------- | -------------
 **Color**      | `app:backgroundTint`  | N/A                               | `?attr/colorSurface`
 **Shape**      | `app:shapeAppearance` | N/A                               | `?attr/shapeAppearanceLargeComponent`
-**Elevation**  | `android:elevation`   | N/A                               | `3dp`
+**Elevation**  | `android:elevation`   | N/A                               | `1dp`
 **Max width**  | `android:maxWidth`    | `setMaxWidth`<br/>`getMaxWidth`   | `640dp`
 **Max height** | `android:maxHeight`   | `setMaxHeight`<br/>`getMaxHeight` | N/A
 
