@@ -39,26 +39,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:singleSelection="true">
+
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_private"/>
+          android:text="@string/cat_button_label_private" />
+
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_team"/>
+          android:text="@string/cat_button_label_team" />
+
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_everyone"/>
+          android:text="@string/cat_button_label_everyone" />
+
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_custom"/>
+          android:text="@string/cat_button_label_custom" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <TextView
@@ -162,6 +166,16 @@
         android:checked="false"
         android:enabled="true"
         android:text="@string/cat_button_vertical_orientation" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_enable"
+        android:paddingTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:checked="true"
+        android:enabled="true"
+        android:text="@string/cat_button_enable" />
 
   </LinearLayout>
 </ScrollView>

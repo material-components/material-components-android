@@ -201,6 +201,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     selectionRequired =
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_selectionRequired, false);
     setChildrenDrawingOrderEnabled(true);
+    setEnabled(attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_android_enabled, true));
     attributes.recycle();
 
     ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
@@ -248,6 +249,9 @@ public class MaterialButtonToggleGroup extends LinearLayout {
             shapeAppearanceModel.getBottomLeftCornerSize(),
             shapeAppearanceModel.getTopRightCornerSize(),
             shapeAppearanceModel.getBottomRightCornerSize()));
+
+    // Enable children based on the MaterialButtonToggleGroup own isEnabled
+    buttonChild.setEnabled(isEnabled());
 
     ViewCompat.setAccessibilityDelegate(
         buttonChild,
@@ -767,6 +771,21 @@ public class MaterialButtonToggleGroup extends LinearLayout {
         return;
       }
       checkInternal(button.getId(), isChecked);
+  }
+
+  /**
+   * Enables this {@link MaterialButtonToggleGroup} and all its {@link MaterialButton} children
+   *
+   * @param enabled boolean to setEnable {@link MaterialButtonToggleGroup}
+   */
+  @Override
+  public void setEnabled(boolean enabled) {
+    super.setEnabled(enabled);
+    // Enable or disable child buttons
+    for (int i = 0; i < getChildCount(); i++) {
+      MaterialButton childButton = getChildButton(i);
+      childButton.setEnabled(enabled);
+    }
   }
 
   private class PressedStateTracker implements OnPressedChangeListener {

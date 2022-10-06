@@ -81,6 +81,15 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
           }
         });
 
+    MaterialSwitch groupEnabledToggle = view.findViewById(R.id.switch_enable);
+    groupEnabledToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
+            // Enable the button group if enable toggle is checked.
+            toggleGroup.setEnabled(isChecked);
+          }
+        });
+
     for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
       toggleGroup.addOnButtonCheckedListener(
           new OnButtonCheckedListener() {

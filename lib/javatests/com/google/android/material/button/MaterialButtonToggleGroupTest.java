@@ -314,4 +314,37 @@ public class MaterialButtonToggleGroupTest {
     child.performClick();
     assertThat(checkedChangeCallCount).isEqualTo(1);
   }
+
+  @Test
+  public void setEnable_false_disablesChildButtons() {
+    MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
+    MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
+    firstChild.setEnabled(true);
+    middleChild.setEnabled(true);
+    lastChild.setEnabled(true);
+
+    toggleGroup.setEnabled(false);
+
+    assertThat(firstChild.isEnabled()).isFalse();
+    assertThat(middleChild.isEnabled()).isFalse();
+    assertThat(lastChild.isEnabled()).isFalse();
+  }
+
+  @Test
+  public void setEnable_true_enablesChildButtons() {
+    MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
+    MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
+
+    firstChild.setEnabled(false);
+    middleChild.setEnabled(false);
+    lastChild.setEnabled(false);
+
+    toggleGroup.setEnabled(true);
+
+    assertThat(firstChild.isEnabled()).isTrue();
+    assertThat(middleChild.isEnabled()).isTrue();
+    assertThat(lastChild.isEnabled()).isTrue();
+  }
 }

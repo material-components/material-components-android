@@ -112,6 +112,8 @@
     <attr name="selectionRequired"/>
     <!-- The id of the child button that should be checked by default within this button group. -->
     <attr name="checkedButton" format="reference"/>
+    <!-- Whether this MaterialButtonToggleGroup and all its children are enabled -->
+    <attr name="android:enabled" />
   </declare-styleable>
 
 </resources>
