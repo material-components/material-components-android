@@ -14,13 +14,21 @@
  * limitations under the License.
  */
 
-package com.google.android.material.color;
+package com.google.android.material.color.utilities;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-/** Utility methods for mathematical operations. */
-final class MathUtils {
+import androidx.annotation.RestrictTo;
+
+/**
+ * Utility methods for mathematical operations.
+ *
+ * @hide
+ */
+@RestrictTo(LIBRARY_GROUP)
+public final class MathUtils {
   private MathUtils() {}
   /** Ensure min <= input <= max */
   static float clamp(float min, float max, float input) {

@@ -24,6 +24,8 @@ import android.content.Context;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntRange;
 import androidx.test.core.app.ApplicationProvider;
+import com.google.android.material.color.utilities.Blend;
+import com.google.android.material.color.utilities.Hct;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

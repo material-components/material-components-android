@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.android.material.color;
+package com.google.android.material.color.utilities;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import androidx.annotation.RestrictTo;
 
 /**
  * A color system built using CAM16 hue and chroma, and L* from L*a*b*.
@@ -34,8 +38,11 @@ package com.google.android.material.color;
  * HCT, hue, chroma, and tone. A color system that provides a perceptually accurate color
  * measurement system that can also accurately render what colors will appear as in different
  * lighting environments.
+ *
+ * @hide
  */
-final class Hct {
+@RestrictTo(LIBRARY_GROUP)
+public final class Hct {
   private float hue;
   private float chroma;
   private float tone;

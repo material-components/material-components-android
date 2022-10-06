@@ -14,14 +14,23 @@
  * limitations under the License.
  */
 
-package com.google.android.material.color;
+package com.google.android.material.color.utilities;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import androidx.annotation.RestrictTo;
 import java.util.Arrays;
 
 /**
- * Utility methods for color science constants and color space conversions that aren't HCT or CAM16.
+ * Color science utilities.
+ *
+ * <p>Utility methods for color science constants and color space conversions that aren't HCT or
+ * CAM16.
+ *
+ * @hide
  */
-final class ColorUtils {
+@RestrictTo(LIBRARY_GROUP)
+public final class ColorUtils {
   private ColorUtils() {}
 
   private static final float[] WHITE_POINT_D65 = {95.047f, 100.0f, 108.883f};

@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-package com.google.android.material.color;
+package com.google.android.material.color.utilities;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.max;
+
+import androidx.annotation.RestrictTo;
 
 /**
  * CAM16, a color appearance model. Colors are not just defined by their hex code, but rather, a hex
@@ -32,8 +35,11 @@ import static java.lang.Math.max;
  *
  * <p>For example, white under the traditional assumption of a midday sun white point is accurately
  * measured as a slightly chromatic blue by CAM16. (roughly, hue 203, chroma 3, lightness 100)
+ *
+ * @hide
  */
-final class Cam16 {
+@RestrictTo(LIBRARY_GROUP)
+public final class Cam16 {
   // Transforms XYZ color space coordinates to 'cone'/'RGB' responses in CAM16.
   static final float[][] XYZ_TO_CAM16RGB = {
     {0.401288f, 0.650173f, -0.051461f},

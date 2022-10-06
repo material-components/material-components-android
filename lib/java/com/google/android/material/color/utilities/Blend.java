@@ -14,12 +14,20 @@
  * limitations under the License.
  */
 
-package com.google.android.material.color;
+package com.google.android.material.color.utilities;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.min;
 
-/** Functions for blending in HCT and CAM16. */
-final class Blend {
+import androidx.annotation.RestrictTo;
+
+/**
+ * Functions for blending in HCT and CAM16.
+ *
+ * @hide
+ */
+@RestrictTo(LIBRARY_GROUP)
+public final class Blend {
   private static final float HARMONIZE_MAX_DEGREES = 15.0f;
   private static final float HARMONIZE_PERCENTAGE = 0.5f;
 

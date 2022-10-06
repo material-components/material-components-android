@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.google.android.material.color;
+package com.google.android.material.color.utilities;
 
 import static org.junit.Assert.assertEquals;
 

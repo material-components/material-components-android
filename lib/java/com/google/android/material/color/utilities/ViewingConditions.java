@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 
-package com.google.android.material.color;
+package com.google.android.material.color.utilities;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import androidx.annotation.RestrictTo;
 
 /**
  * In traditional color spaces, a color can be identified solely by the observer's measurement of
@@ -26,8 +30,11 @@ package com.google.android.material.color;
  *
  * <p>This class caches intermediate values of the CAM16 conversion process that depend only on
  * viewing conditions, enabling speed ups.
+ *
+ * @hide
  */
-final class ViewingConditions {
+@RestrictTo(LIBRARY_GROUP)
+public final class ViewingConditions {
   /** sRGB-like viewing conditions. */
   public static final ViewingConditions DEFAULT =
       ViewingConditions.make(
