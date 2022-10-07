@@ -1948,11 +1948,15 @@ public class TabLayout extends HorizontalScrollView {
       // If the current tab is still attached to the TabLayout.
       if (currentTab != null && currentTab.parent != null) {
         dispatchTabUnselected(currentTab);
-        currentTab.view.update();
+        if (currentTab.view != null) {
+          currentTab.view.update();
+        }
       }
       if (tab != null) {
         dispatchTabSelected(tab);
-        tab.view.update();
+        if (tab.view != null) {
+          tab.view.update();
+        }
       }
     }
   }
