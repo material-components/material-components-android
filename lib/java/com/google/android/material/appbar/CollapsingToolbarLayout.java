@@ -65,6 +65,7 @@ import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.CollapsingTextHelper;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -168,6 +169,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
   private boolean scrimsAreShown;
   private ValueAnimator scrimAnimator;
   private long scrimAnimationDuration;
+  private final TimeInterpolator scrimAnimationFadeInInterpolator;
+  private final TimeInterpolator scrimAnimationFadeOutInterpolator;
   private int scrimVisibleHeightTrigger = -1;
 
   private AppBarLayout.OnOffsetChangedListener onOffsetChangedListener;
@@ -298,6 +301,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
         a.getInt(
             R.styleable.CollapsingToolbarLayout_scrimAnimationDuration,
             DEFAULT_SCRIM_ANIMATION_DURATION);
+    scrimAnimationFadeInInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context,
+            R.attr.motionEasingStandardInterpolator,
+            AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+    scrimAnimationFadeOutInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context,
+            R.attr.motionEasingStandardInterpolator,
+            AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
 
     setContentScrim(a.getDrawable(R.styleable.CollapsingToolbarLayout_contentScrim));
     setStatusBarScrim(a.getDrawable(R.styleable.CollapsingToolbarLayout_statusBarScrim));
@@ -895,8 +908,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
       scrimAnimator = new ValueAnimator();
       scrimAnimator.setInterpolator(
           targetAlpha > scrimAlpha
-              ? AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR
-              : AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+              ? scrimAnimationFadeInInterpolator
+              : scrimAnimationFadeOutInterpolator);
       scrimAnimator.addUpdateListener(
           new ValueAnimator.AnimatorUpdateListener() {
             @Override

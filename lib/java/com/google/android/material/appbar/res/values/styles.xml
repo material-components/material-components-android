@@ -169,7 +169,7 @@
     <!-- Title fade behavior -->
     <item name="titleCollapseMode">fade</item>
     <item name="statusBarScrim">@empty</item>
-    <item name="scrimAnimationDuration">@integer/app_bar_elevation_anim_duration</item>
+    <item name="scrimAnimationDuration">?attr/motionDurationMedium2</item>
     <!-- Allows contentScrim to be drawn in top padding area for edge-to-edge. -->
     <item name="android:clipToPadding">false</item>
   </style>

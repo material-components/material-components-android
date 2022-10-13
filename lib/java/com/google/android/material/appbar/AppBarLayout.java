@@ -25,6 +25,7 @@ import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Acces
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.abs;
 
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
@@ -74,6 +75,7 @@ import androidx.customview.view.AbsSavedState;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.appbar.AppBarLayout.BaseBehavior.SavedState;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
@@ -208,6 +210,9 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   @Nullable private AnimatorUpdateListener liftOnScrollColorUpdateListener;
   private final List<LiftOnScrollListener> liftOnScrollListeners = new ArrayList<>();
 
+  private final long liftOnScrollColorDuration;
+  private final TimeInterpolator liftOnScrollColorInterpolator;
+
   private int[] tmpStatesArray;
 
   @Nullable private Drawable statusBarForeground;
@@ -265,6 +270,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       }
       ViewCompat.setBackground(this, materialShapeDrawable);
     }
+
+    liftOnScrollColorDuration = MotionUtils.resolveThemeDuration(context,
+        R.attr.motionDurationMedium2,
+        getResources().getInteger(R.integer.app_bar_elevation_anim_duration));
+    liftOnScrollColorInterpolator = MotionUtils.resolveThemeInterpolator(context,
+        R.attr.motionEasingStandardInterpolator, AnimationUtils.LINEAR_INTERPOLATOR);
 
     if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
       setExpanded(
@@ -999,9 +1010,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     }
 
     liftOnScrollColorAnimator = ValueAnimator.ofFloat(fromValue, toValue);
-    liftOnScrollColorAnimator.setDuration(
-        getResources().getInteger(R.integer.app_bar_elevation_anim_duration));
-    liftOnScrollColorAnimator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
+    liftOnScrollColorAnimator.setDuration(liftOnScrollColorDuration);
+    liftOnScrollColorAnimator.setInterpolator(liftOnScrollColorInterpolator);
     if (liftOnScrollColorUpdateListener != null) {
       liftOnScrollColorAnimator.addUpdateListener(liftOnScrollColorUpdateListener);
     }
