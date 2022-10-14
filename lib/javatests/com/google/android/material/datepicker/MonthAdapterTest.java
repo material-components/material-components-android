@@ -19,6 +19,7 @@ import com.google.android.material.test.R;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -27,6 +28,7 @@ import android.content.Context;
 import android.os.Parcel;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -348,5 +350,51 @@ public class MonthAdapterTest {
     assertEquals(1, monthFeb2019.getItemId(7));
     assertEquals(3, monthFeb2019.getItemId(26));
     assertEquals(5, monthMarch2019.getItemId(35));
+  }
+
+  @Test
+  public void rangeDateSelector_isStartOfRange() {
+    Month month = Month.create(2016, Calendar.FEBRUARY);
+    MonthAdapter monthAdapter =
+        createRangeMonthAdapter(month, new Pair<>(month.getDay(1), month.getDay(10)));
+
+    assertTrue(monthAdapter.isStartOfRange(month.getDay(1)));
+  }
+
+  @Test
+  public void rangeDateSelector_isNotStartOfRange() {
+    Month month = Month.create(2016, Calendar.FEBRUARY);
+    MonthAdapter monthAdapter =
+        createRangeMonthAdapter(month, new Pair<>(month.getDay(1), month.getDay(10)));
+
+    assertFalse(monthAdapter.isStartOfRange(month.getDay(2)));
+  }
+
+  @Test
+  public void rangeDateSelector_isEndOfRange() {
+    Month month = Month.create(2016, Calendar.FEBRUARY);
+    MonthAdapter monthAdapter =
+        createRangeMonthAdapter(month, new Pair<>(month.getDay(1), month.getDay(10)));
+
+    assertTrue(monthAdapter.isEndOfRange(month.getDay(10)));
+  }
+
+  @Test
+  public void rangeDateSelector_isNotEndOfRange() {
+    Month month = Month.create(2016, Calendar.FEBRUARY);
+    MonthAdapter monthAdapter =
+        createRangeMonthAdapter(month, new Pair<>(month.getDay(1), month.getDay(10)));
+
+    assertFalse(monthAdapter.isEndOfRange(month.getDay(9)));
+  }
+
+  private MonthAdapter createRangeMonthAdapter(Month month, Pair<Long, Long> selection) {
+    DateSelector<Pair<Long, Long>> dateSelector = new RangeDateSelector();
+    dateSelector.setSelection(selection);
+    return new MonthAdapter(
+        month,
+        dateSelector,
+        new CalendarConstraints.Builder().build(),
+        /* dayViewDecorator= */ null);
   }
 }

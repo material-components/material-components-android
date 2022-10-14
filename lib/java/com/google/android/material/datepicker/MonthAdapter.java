@@ -27,6 +27,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.util.Pair;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Locale;
@@ -137,10 +139,6 @@ class MonthAdapter extends BaseAdapter {
       dayTextView.setTag(month);
       Locale locale = dayTextView.getResources().getConfiguration().locale;
       dayTextView.setText(String.format(locale, "%d", dayNumber));
-      long dayInMillis = month.getDay(dayNumber);
-      dayTextView.setContentDescription(
-          DateStrings.getDayContentDescription(
-              dayTextView.getContext(), dayInMillis, isToday(dayInMillis)));
       dayTextView.setVisibility(View.VISIBLE);
       dayTextView.setEnabled(true);
     }
@@ -186,17 +184,21 @@ class MonthAdapter extends BaseAdapter {
     if (dayTextView == null) {
       return;
     }
+
+    Context context = dayTextView.getContext();
+    String contentDescription = getDayContentDescription(context, date);
+    dayTextView.setContentDescription(contentDescription);
+
     final CalendarItemStyle style;
     boolean valid = calendarConstraints.getDateValidator().isValid(date);
     boolean selected = false;
-    boolean isToday = isToday(date);
     if (valid) {
       dayTextView.setEnabled(true);
       selected = isSelected(date);
       dayTextView.setSelected(selected);
       if (selected) {
         style = calendarStyle.selectedDay;
-      } else if (isToday) {
+      } else if (isToday(date)) {
         style = calendarStyle.todayDay;
       } else {
         style = calendarStyle.day;
@@ -207,8 +209,6 @@ class MonthAdapter extends BaseAdapter {
     }
 
     if (dayViewDecorator != null && dayNumber != NO_DAY_NUMBER) {
-      Context context = dayTextView.getContext();
-      long dayInMillis = month.getDay(dayNumber);
       int year = month.year;
       int month = this.month.month;
 
@@ -231,21 +231,40 @@ class MonthAdapter extends BaseAdapter {
 
       CharSequence decoratorContentDescription =
           dayViewDecorator.getContentDescription(
-              context,
-              year,
-              month,
-              dayNumber,
-              valid,
-              selected,
-              DateStrings.getDayContentDescription(context, dayInMillis, isToday));
+              context, year, month, dayNumber, valid, selected, contentDescription);
       dayTextView.setContentDescription(decoratorContentDescription);
     } else {
       style.styleItem(dayTextView);
     }
   }
 
+  private String getDayContentDescription(Context context, long date) {
+    return DateStrings.getDayContentDescription(
+        context, date, isToday(date), isStartOfRange(date), isEndOfRange(date));
+  }
+
   private boolean isToday(long date) {
     return UtcDates.getTodayCalendar().getTimeInMillis() == date;
+  }
+
+  @VisibleForTesting
+  boolean isStartOfRange(long date) {
+    for (Pair<Long, Long> range : dateSelector.getSelectedRanges()) {
+      if (range.first == date) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @VisibleForTesting
+  boolean isEndOfRange(long date) {
+    for (Pair<Long, Long> range : dateSelector.getSelectedRanges()) {
+      if (range.second == date) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private boolean isSelected(long date) {

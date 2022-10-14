@@ -51,5 +51,7 @@
   <string name="mtrl_picker_navigate_to_year_description" description="a11y string that informs the user that tapping this button will switch the year [CHAR_LIMIT=NONE]">Navigate to year %1$d</string>
   <string name="mtrl_picker_navigate_to_current_year_description" description="a11y string that informs the user that tapping this button will switch the current year [CHAR_LIMIT=NONE]">Navigate to current year %1$d</string>
   <string name="mtrl_picker_today_description" description="a11y string that informs the user that the focused day is today [CHAR_LIMIT=NONE]">Today %1$s</string>
+  <string name="mtrl_picker_start_date_description" description="a11y string that informs the user that the focused day is the start of a range [CHAR_LIMIT=NONE]">Start date %1$s</string>
+  <string name="mtrl_picker_end_date_description" description="a11y string that informs the user that the focused day is the end of a range [CHAR_LIMIT=NONE]">End date %1$s</string>
 
 </resources>

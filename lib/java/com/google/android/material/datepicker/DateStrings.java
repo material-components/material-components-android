@@ -208,13 +208,28 @@ class DateStrings {
    * @param context the {@link Context}
    * @param dayInMillis UTC milliseconds representing the first moment of the day in local timezone
    * @param isToday boolean representing if the day is today
+   * @param isStartOfRange boolean representing if the day is the start of a range
+   * @param isEndOfRange boolean representing if the day is the end of a range
    * @return Day content description string
    */
-  static String getDayContentDescription(Context context, long dayInMillis, boolean isToday) {
+  static String getDayContentDescription(
+      Context context,
+      long dayInMillis,
+      boolean isToday,
+      boolean isStartOfRange,
+      boolean isEndOfRange) {
     String dayContentDescription = getOptionalYearMonthDayOfWeekDay(dayInMillis);
     if (isToday) {
+      dayContentDescription =
+          String.format(
+              context.getString(R.string.mtrl_picker_today_description), dayContentDescription);
+    }
+    if (isStartOfRange) {
       return String.format(
-          context.getString(R.string.mtrl_picker_today_description), dayContentDescription);
+          context.getString(R.string.mtrl_picker_start_date_description), dayContentDescription);
+    } else if (isEndOfRange) {
+      return String.format(
+          context.getString(R.string.mtrl_picker_end_date_description), dayContentDescription);
     }
     return dayContentDescription;
   }
