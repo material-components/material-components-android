@@ -68,6 +68,8 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.SeekBar;
+import android.widget.TextView;
+
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
@@ -759,6 +761,7 @@ abstract class BaseSlider<
       // if more thumbs are added.
       TooltipDrawable tooltipDrawable =
           TooltipDrawable.createFromAttributes(getContext(), null, 0, labelStyle);
+      tooltipDrawable.setLayoutMargin(0);
       labels.add(tooltipDrawable);
       if (ViewCompat.isAttachedToWindow(this)) {
         attachLabelToContentView(tooltipDrawable);
@@ -1726,7 +1729,7 @@ abstract class BaseSlider<
 
     // Draw labels if there is an active thumb or the labels are always visible.
     if ((activeThumbIdx != -1 || shouldAlwaysShowLabel()) && isEnabled()) {
-      ensureLabelsAdded();
+      ensureLabelsAdded(canvas);
     } else {
       ensureLabelsRemoved();
     }
@@ -2193,7 +2196,7 @@ abstract class BaseSlider<
     }
   }
 
-  private void ensureLabelsAdded() {
+  private void ensureLabelsAdded(Canvas canvas) {
     if (labelBehavior == LABEL_GONE) {
       // If the label shouldn't be drawn we can skip this.
       return;
@@ -2217,7 +2220,7 @@ abstract class BaseSlider<
         continue;
       }
 
-      setValueForLabel(labelItr.next(), values.get(i));
+      setValueForLabel(labelItr.next(), values.get(i), canvas);
     }
 
     if (!labelItr.hasNext()) {
@@ -2227,7 +2230,7 @@ abstract class BaseSlider<
     }
 
     // Now set the label for the focused thumb so it's on top.
-    setValueForLabel(labelItr.next(), values.get(focusedThumbIdx));
+    setValueForLabel(labelItr.next(), values.get(focusedThumbIdx), canvas);
   }
 
   private String formatValue(float value) {
@@ -2238,7 +2241,7 @@ abstract class BaseSlider<
     return String.format((int) value == value ? "%.0f" : "%.2f", value);
   }
 
-  private void setValueForLabel(TooltipDrawable label, float value) {
+  private void setValueForLabel(TooltipDrawable label, float value, Canvas canvas) {
     label.setText(formatValue(value));
 
     int left =
@@ -2248,13 +2251,19 @@ abstract class BaseSlider<
     int top = calculateTrackCenter() - (labelPadding + thumbRadius);
     label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
 
-    // Calculate the difference between the bounds of this view and the bounds of the root view to
-    // correctly position this view in the overlay layer.
-    Rect rect = new Rect(label.getBounds());
-    DescendantOffsetUtils.offsetDescendantRect(ViewUtils.getContentView(this), this, rect);
-    label.setBounds(rect);
+    if (labelBehavior != LABEL_VISIBLE) {
+      // Calculate the difference between the bounds of this view and the bounds of the root view to
+      // correctly position this view in the overlay layer.
+      Rect rect = new Rect(label.getBounds());
+      DescendantOffsetUtils.offsetDescendantRect(ViewUtils.getContentView(this), this, rect);
+      label.setBounds(rect);
+    }
 
-    ViewUtils.getContentViewOverlay(this).add(label);
+    if (labelBehavior != LABEL_VISIBLE) {
+      ViewUtils.getContentViewOverlay(this).add(label);
+    } else {
+      label.draw(canvas);
+    }
   }
 
   private void invalidateTrack() {
