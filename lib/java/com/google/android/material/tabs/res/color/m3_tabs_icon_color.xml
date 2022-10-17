@@ -20,8 +20,9 @@
       android:state_enabled="false"/>
 
   <!-- Selected -->
-  <item android:color="?attr/colorPrimary" android:state_selected="true"/>
+  <item android:color="@macro/m3_comp_primary_navigation_tab_with_icon_active_icon_color"
+        android:state_selected="true"/>
 
   <!-- Not selected -->
-  <item android:color="?attr/colorOnSurfaceVariant"/>
+  <item android:color="@macro/m3_comp_primary_navigation_tab_with_icon_inactive_icon_color"/>
 </selector>

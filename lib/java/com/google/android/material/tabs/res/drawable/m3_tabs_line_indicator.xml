@@ -17,6 +17,7 @@
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
+  <!-- Color is assigned programmatically with the value of "tabIndicatorColor". -->
   <solid android:color="@android:color/white"/>
-  <size android:height="2dp"/>
+  <size android:height="@dimen/m3_comp_secondary_navigation_tab_active_indicator_height"/>
 </shape>

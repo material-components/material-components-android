@@ -15,17 +15,19 @@
   limitations under the License.
   -->
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Fills the entire area with the divider's color first... -->
   <item>
     <shape
         android:shape="rectangle">
-      <solid android:color="?attr/colorSurfaceVariant"/>
+      <solid android:color="@macro/m3_comp_primary_navigation_tab_divider_color"/>
     </shape>
   </item>
+  <!-- ..., then draws a rectangle with the container color to cover the area not for the divider. -->
   <item
-      android:bottom="1dp">
+      android:bottom="@dimen/m3_comp_primary_navigation_tab_divider_height">
     <shape
         android:shape="rectangle">
-      <solid android:color="?attr/colorSurface"/>
+      <solid android:color="@macro/m3_comp_primary_navigation_tab_container_color"/>
     </shape>
   </item>
 </layer-list>

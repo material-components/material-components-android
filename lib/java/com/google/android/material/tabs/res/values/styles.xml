@@ -70,13 +70,14 @@
 
   <!-- Styles for M3 Tabs -->
   <style name="Base.Widget.Material3.TabLayout" parent="Widget.MaterialComponents.TabLayout">
+    <item name="android:background">@macro/m3_comp_primary_navigation_tab_container_color</item>
     <item name="enforceTextAppearance">false</item>
     <item name="tabIconTint">@color/m3_tabs_icon_color</item>
-    <item name="tabTextAppearance">?attr/textAppearanceLabelLarge</item>
-    <item name="tabTextColor">@color/m3_tabs_icon_color</item>
+    <item name="tabTextAppearance">@macro/m3_comp_primary_navigation_tab_with_label_text_label_text_type</item>
+    <item name="tabTextColor">@color/m3_tabs_text_color</item>
     <item name="tabIndicator">@drawable/m3_tabs_rounded_line_indicator</item>
     <item name="tabIndicatorAnimationMode">elastic</item>
-    <item name="tabIndicatorColor">?attr/colorPrimary</item>
+    <item name="tabIndicatorColor">@macro/m3_comp_primary_navigation_tab_active_indicator_color</item>
     <item name="tabRippleColor">@color/m3_tabs_ripple_color</item>
     <item name="tabIndicatorFullWidth">false</item>
     <item name="tabIndicatorAnimationDuration">?attr/motionDurationLong2</item>
@@ -95,7 +96,13 @@
        present in the UI. This style does not have a bottom divider, which is added in v21 because
        the drawable cannot use theme colors pre-21. -->
   <style name="Base.Widget.Material3.TabLayout.Secondary" parent="Widget.Material3.TabLayout">
+    <item name="android:background">@macro/m3_comp_secondary_navigation_tab_container_color</item>
+    <item name="tabIconTint">@color/m3_tabs_icon_color_secondary</item>
+    <item name="tabTextAppearance">@macro/m3_comp_secondary_navigation_tab_label_text_type</item>
+    <item name="tabTextColor">@color/m3_tabs_text_color_secondary</item>
     <item name="tabIndicator">@drawable/m3_tabs_line_indicator</item>
+    <item name="tabIndicatorColor">@macro/m3_comp_secondary_navigation_tab_active_indicator_color</item>
+    <item name="tabRippleColor">@color/m3_tabs_ripple_color_secondary</item>
     <item name="tabIndicatorFullWidth">true</item>
   </style>
 

@@ -14,21 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:alpha="@dimen/material_emphasis_disabled"
+      android:color="?attr/colorOnSurface"
+      android:state_enabled="false"/>
 
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-  <item
-      android:left="2dp"
-      android:right="2dp">
-    <shape
-        android:shape="rectangle">
-      <!-- Color is assigned programmatically with the value of "tabIndicatorColor". -->
-      <solid android:color="@android:color/white"/>
-      <corners
-          android:bottomLeftRadius="0dp"
-          android:bottomRightRadius="0dp"
-          android:topLeftRadius="3dp"
-          android:topRightRadius="3dp"/>
-      <size android:height="@dimen/m3_comp_primary_navigation_tab_active_indicator_height"/>
-    </shape>
-  </item>
-</layer-list>
+  <!-- Selected -->
+  <item android:color="@macro/m3_comp_primary_navigation_tab_with_label_text_active_label_text_color"
+        android:state_selected="true"/>
+
+  <!-- Not selected -->
+  <item android:color="@macro/m3_comp_primary_navigation_tab_with_label_text_inactive_label_text_color"/>
+</selector>
