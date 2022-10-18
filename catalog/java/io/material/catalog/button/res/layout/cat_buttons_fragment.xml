@@ -83,6 +83,51 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:paddingTop="8dp"
+          android:text="@string/cat_repl_btn_text"
+          android:textSize="16sp"/>
+
+      <Button
+          android:id="@+id/material_replaced_text_button"
+          style="@style/Widget.Material3.Button.Icon"
+          android:layout_width="200dp"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_button_label_to_be_replaced"
+          app:iconGravity="textStart"
+          app:icon="@drawable/ic_dialogs_24px"/>
+
+      <com.google.android.material.button.MaterialButtonToggleGroup
+          android:id="@+id/btnGrp"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="Hello World!"
+          app:checkedButton="@+id/btn"
+          app:layout_constraintBottom_toBottomOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialIconButtonStyle"
+            android:id="@+id/btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:iconGravity="textStart"
+            android:layout_weight="1"
+            android:text="⌧"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn3"
+            style="?attr/materialIconButtonStyle"
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:iconGravity="textStart"
+            android:text="⌧"/>
+      </com.google.android.material.button.MaterialButtonToggleGroup>
+
+      <TextView
+          android:textStyle="bold"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingTop="8dp"
           android:text="@string/cat_text_btn_text"
           android:textSize="16sp"/>
 

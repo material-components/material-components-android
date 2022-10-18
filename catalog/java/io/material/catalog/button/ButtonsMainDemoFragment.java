@@ -16,19 +16,27 @@
 
 package io.material.catalog.button;
 
-import io.material.catalog.R;
-
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.appcompat.widget.SwitchCompat;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ReplacementSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
+import io.material.catalog.R;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -94,7 +102,48 @@ public class ButtonsMainDemoFragment extends DemoFragment {
           });
     }
 
+    SpannableStringBuilder ssb = new SpannableStringBuilder("⌧Hello");
+    ssb.setSpan(new MySpan(), 1, 6, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    TextView spannedButton = view.findViewById(R.id.material_replaced_text_button);
+    spannedButton.setText(ssb);
+
+    Drawable check = requireActivity().getResources().getDrawable(R.drawable.ic_dialogs_24px);
+    MaterialButtonToggleGroup grp = view.findViewById(R.id.btnGrp);
+    for (int i : grp.getCheckedButtonIds()) {
+      MaterialButton btn = grp.findViewById(i);
+      btn.setIcon(check);
+    }
+    int singleId = grp.getCheckedButtonId();
+    if (singleId > 0) {
+      MaterialButton btn = grp.findViewById(singleId);
+      btn.setIcon(check);
+    }
+    grp.addOnButtonCheckedListener((g, checkedId, isChecked) -> {
+      MaterialButton btn = g.findViewById(checkedId);
+      btn.setIcon(isChecked ? check : null);
+    });
+    MaterialButton spanned = grp.findViewById(R.id.btn);
+    spanned.setText(ssb);
+
     return view;
+  }
+
+  class MySpan extends ReplacementSpan {
+    int width = 50;
+
+    @Override
+    public void draw(
+        @NonNull Canvas canvas,
+        CharSequence charSequence,
+        int i, int i1, float v, int i2, int i3, int i4,
+        @NonNull Paint paint) {
+      canvas.drawRect(v, i2, v + width, i4, paint);
+    }
+
+    @Override
+    public int getSize(Paint a, CharSequence b, int c, int d, Paint.FontMetricsInt e) {
+      return width;
+    }
   }
 
   @LayoutRes
