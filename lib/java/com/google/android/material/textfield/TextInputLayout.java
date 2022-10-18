@@ -785,7 +785,7 @@ public class TextInputLayout extends LinearLayout {
         break;
       case BOX_BACKGROUND_OUTLINE:
         if (hintEnabled && !(boxBackground instanceof CutoutDrawable)) {
-          boxBackground = new CutoutDrawable(shapeAppearanceModel);
+          boxBackground = CutoutDrawable.create(shapeAppearanceModel);
         } else {
           boxBackground = new MaterialShapeDrawable(shapeAppearanceModel);
         }
