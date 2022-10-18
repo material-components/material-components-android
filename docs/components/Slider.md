@@ -9,7 +9,7 @@ path: /catalog/sliders/
 
 # Slider
 
-[Sliders](https://material.io/components/sliders/) allow users to make
+[Sliders](https://m3.material.io/components/sliders/) allow users to make
 selections from a range of values.
 
 !["Slider with sound icon buttons on each end."](assets/slider/slider_hero.png)
