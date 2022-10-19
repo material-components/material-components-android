@@ -19,6 +19,7 @@
   package="com.google.android.material.bottomsheet">
 
   <uses-sdk
+    android:targetSdkVersion="33"
     tools:overrideLibrary="androidx.test.core"/>
 
   <application/>
