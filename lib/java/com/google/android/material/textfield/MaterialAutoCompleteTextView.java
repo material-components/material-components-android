@@ -281,6 +281,14 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     return simpleItemSelectedRippleColor;
   }
 
+  @Override
+  public void setDropDownBackgroundDrawable(Drawable d) {
+    super.setDropDownBackgroundDrawable(d);
+    if (modalListPopup != null) {
+      modalListPopup.setBackgroundDrawable(d);
+    }
+  }
+
   /**
    * Returns the elevation of the dropdown popup.
    *
