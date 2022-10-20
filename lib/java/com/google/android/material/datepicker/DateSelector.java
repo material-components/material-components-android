@@ -90,6 +90,15 @@ public interface DateSelector<S> extends Parcelable {
   @NonNull
   String getSelectionDisplayString(Context context);
 
+  /**
+   * Returns the selection content description.
+   *
+   * @param context the {@link Context}
+   * @return The selection content description
+   */
+  @NonNull
+  String getSelectionContentDescription(@NonNull Context context);
+
   @StringRes
   int getDefaultTitleResId();
 

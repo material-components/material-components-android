@@ -412,9 +412,12 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
   @VisibleForTesting
   void updateHeader(String headerText) {
-    headerSelectionText.setContentDescription(
-        String.format(getString(R.string.mtrl_picker_announce_current_selection), headerText));
+    headerSelectionText.setContentDescription(getHeaderContentDescription());
     headerSelectionText.setText(headerText);
+  }
+
+  private String getHeaderContentDescription() {
+    return getDateSelector().getSelectionContentDescription(requireContext());
   }
 
   private void startPickerFragment() {

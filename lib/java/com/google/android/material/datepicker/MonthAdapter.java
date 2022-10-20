@@ -250,7 +250,7 @@ class MonthAdapter extends BaseAdapter {
   @VisibleForTesting
   boolean isStartOfRange(long date) {
     for (Pair<Long, Long> range : dateSelector.getSelectedRanges()) {
-      if (range.first == date) {
+      if (range.first != null && range.first == date) {
         return true;
       }
     }
@@ -260,7 +260,7 @@ class MonthAdapter extends BaseAdapter {
   @VisibleForTesting
   boolean isEndOfRange(long date) {
     for (Pair<Long, Long> range : dateSelector.getSelectedRanges()) {
-      if (range.second == date) {
+      if (range.second != null && range.second == date) {
         return true;
       }
     }

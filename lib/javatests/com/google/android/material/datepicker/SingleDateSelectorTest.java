@@ -17,11 +17,10 @@ package com.google.android.material.datepicker;
 
 import com.google.android.material.test.R;
 
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.junit.Assert.assertThat;
+import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.content.res.Resources;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.GridView;
 import androidx.test.core.app.ApplicationProvider;
@@ -40,12 +39,15 @@ public class SingleDateSelectorTest {
 
   private SingleDateSelector singleDateSelector;
   private MonthAdapter adapter;
+  private Context context;
+  private Resources res;
 
   @Before
   public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
-    Context context = activity.getApplicationContext();
+    context = activity.getApplicationContext();
+    res = context.getResources();
     GridView gridView = new GridView(context);
     singleDateSelector = new SingleDateSelector();
     adapter =
@@ -60,19 +62,19 @@ public class SingleDateSelectorTest {
   @Test
   public void dateSelectorMaintainsSelectionAfterParceling() {
     int position = 8;
-    assertThat(adapter.withinMonth(position), is(true));
+    assertThat(adapter.withinMonth(position)).isTrue();
     singleDateSelector.select(adapter.getItem(position));
     long expected = adapter.getItem(position);
     SingleDateSelector singleDateSelectorFromParcel =
         ParcelableTestUtils.parcelAndCreate(singleDateSelector, SingleDateSelector.CREATOR);
-    assertThat(singleDateSelectorFromParcel.getSelection(), is(expected));
+    assertThat(singleDateSelectorFromParcel.getSelection()).isEqualTo(expected);
   }
 
   @Test
   public void nullDateSelectionFromParcel() {
     SingleDateSelector singleDateSelector =
         ParcelableTestUtils.parcelAndCreate(this.singleDateSelector, SingleDateSelector.CREATOR);
-    assertThat(singleDateSelector.getSelection(), nullValue());
+    assertThat(singleDateSelector.getSelection()).isNull();
   }
 
   @Test
@@ -84,17 +86,49 @@ public class SingleDateSelectorTest {
 
     resultCalendar.setTimeInMillis(singleDateSelector.getSelection());
 
-    assertThat(resultCalendar.get(Calendar.DAY_OF_MONTH), is(5));
+    assertThat(resultCalendar.get(Calendar.DAY_OF_MONTH)).isEqualTo(5);
     assertThat(
-        singleDateSelector
-            .getSelectedDays()
-            .contains(UtcDates.canonicalYearMonthDay(setTo.getTimeInMillis())),
-        is(true));
+            singleDateSelector
+                .getSelectedDays()
+                .contains(UtcDates.canonicalYearMonthDay(setTo.getTimeInMillis())))
+        .isTrue();
     assertThat(
-        singleDateSelector
-            .getSelectedDays()
-            .contains(
-                UtcDates.canonicalYearMonthDay(UtcDates.getTodayCalendar().getTimeInMillis())),
-        is(false));
+            singleDateSelector
+                .getSelectedDays()
+                .contains(
+                    UtcDates.canonicalYearMonthDay(UtcDates.getTodayCalendar().getTimeInMillis())))
+        .isFalse();
+  }
+
+  @Test
+  public void getSelectionContentDescription_empty_returnsNone() {
+    singleDateSelector.setSelection(null);
+    String contentDescription = singleDateSelector.getSelectionContentDescription(context);
+
+    String expected =
+        res.getString(
+            R.string.mtrl_picker_announce_current_selection,
+            res.getString(R.string.mtrl_picker_announce_current_selection_none));
+    assertThat(contentDescription).isEqualTo(expected);
+  }
+
+  @Test
+  public void getSelectionContentDescription_notEmpty_returnsDate() {
+    Calendar calendar = UtcDates.getUtcCalendar();
+    calendar.set(2016, Calendar.FEBRUARY, 1);
+    singleDateSelector.setSelection(calendar.getTimeInMillis());
+    String contentDescription = singleDateSelector.getSelectionContentDescription(context);
+
+    String expected = res.getString(R.string.mtrl_picker_announce_current_selection, "Feb 1, 2016");
+    assertThat(contentDescription).isEqualTo(expected);
+  }
+
+  @Test
+  public void getSelectedRanges_isEmpty() {
+    Calendar calendar = UtcDates.getUtcCalendar();
+    calendar.set(2016, Calendar.FEBRUARY, 1);
+    singleDateSelector.setSelection(calendar.getTimeInMillis());
+
+    assertThat(singleDateSelector.getSelectedRanges().isEmpty()).isTrue();
   }
 }

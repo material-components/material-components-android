@@ -154,6 +154,17 @@ public class SingleDateSelector implements DateSelector<Long> {
     return res.getString(R.string.mtrl_picker_date_header_selected, startString);
   }
 
+  @NonNull
+  @Override
+  public String getSelectionContentDescription(@NonNull Context context) {
+    Resources res = context.getResources();
+    String placeholder =
+        selectedItem == null
+            ? res.getString(R.string.mtrl_picker_announce_current_selection_none)
+            : DateStrings.getYearMonthDay(selectedItem);
+    return res.getString(R.string.mtrl_picker_announce_current_selection, placeholder);
+  }
+
   @Override
   public int getDefaultTitleResId() {
     return R.string.mtrl_picker_date_header_title;

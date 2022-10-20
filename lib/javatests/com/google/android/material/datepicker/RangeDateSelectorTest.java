@@ -20,6 +20,7 @@ import com.google.android.material.test.R;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.content.res.Resources;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,7 @@ public class RangeDateSelectorTest {
   private RangeDateSelector rangeDateSelector;
   private MonthAdapter adapter;
   private Context context;
+  private Resources res;
   private AppCompatActivity activity;
 
   @Before
@@ -54,6 +56,7 @@ public class RangeDateSelectorTest {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     context = activity.getApplicationContext();
+    res = context.getResources();
     GridView gridView = new GridView(context);
     rangeDateSelector = new RangeDateSelector();
     adapter =
@@ -220,6 +223,88 @@ public class RangeDateSelectorTest {
     String expectedDateFormat = slashDateFormat ? "dd/mm/aaaa" : "dd-mm-aaaa";
     assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo(expectedDateFormat);
     assertThat(endTextInput.getPlaceholderText().toString()).isEqualTo(expectedDateFormat);
+  }
+
+  @Test
+  public void getSelectionContentDescription_startEmpty_endEmpty_returnsStartAndEndNone() {
+    rangeDateSelector.setSelection(new Pair<>(null, null));
+    String contentDescription = rangeDateSelector.getSelectionContentDescription(context);
+
+    String expected =
+        res.getString(
+            R.string.mtrl_picker_announce_current_range_selection,
+            res.getString(R.string.mtrl_picker_announce_current_selection_none),
+            res.getString(R.string.mtrl_picker_announce_current_selection_none));
+    assertThat(contentDescription).isEqualTo(expected);
+  }
+
+  @Test
+  public void getSelectionContentDescription_startNotEmpty_endEmpty_returnsEndNone() {
+    Calendar setToStart = UtcDates.getUtcCalendar();
+    setToStart.set(2004, Calendar.MARCH, 5);
+    rangeDateSelector.setSelection(new Pair<>(setToStart.getTimeInMillis(), null));
+    String contentDescription = rangeDateSelector.getSelectionContentDescription(context);
+
+    String expected =
+        res.getString(
+            R.string.mtrl_picker_announce_current_range_selection,
+            "Mar 5, 2004",
+            res.getString(R.string.mtrl_picker_announce_current_selection_none));
+    assertThat(contentDescription).isEqualTo(expected);
+  }
+
+  @Test
+  public void getSelectionContentDescription_startEmpty_endNotEmpty_returnsStartNone() {
+    Calendar setToEnd = UtcDates.getUtcCalendar();
+    setToEnd.set(2005, Calendar.FEBRUARY, 1);
+    rangeDateSelector.setSelection(new Pair<>(null, setToEnd.getTimeInMillis()));
+    String contentDescription = rangeDateSelector.getSelectionContentDescription(context);
+
+    String expected =
+        res.getString(
+            R.string.mtrl_picker_announce_current_range_selection,
+            res.getString(R.string.mtrl_picker_announce_current_selection_none),
+            "Feb 1, 2005");
+    assertThat(contentDescription).isEqualTo(expected);
+  }
+
+  @Test
+  public void getSelectionContentDescription_startNotEmpty_endNotEmpty_returnsStartAndEndDates() {
+    Calendar setToStart = UtcDates.getUtcCalendar();
+    setToStart.set(2004, Calendar.MARCH, 5);
+    Calendar setToEnd = UtcDates.getUtcCalendar();
+    setToEnd.set(2005, Calendar.FEBRUARY, 1);
+    rangeDateSelector.setSelection(
+        new Pair<>(setToStart.getTimeInMillis(), setToEnd.getTimeInMillis()));
+    String contentDescription = rangeDateSelector.getSelectionContentDescription(context);
+
+    String expected =
+        res.getString(
+            R.string.mtrl_picker_announce_current_range_selection, "Mar 5, 2004", "Feb 1, 2005");
+    assertThat(contentDescription).isEqualTo(expected);
+  }
+
+  @Test
+  public void getSelectedRanges_fullRange() {
+    Calendar setToStart = UtcDates.getUtcCalendar();
+    setToStart.set(2004, Calendar.MARCH, 5);
+    Calendar setToEnd = UtcDates.getUtcCalendar();
+    setToEnd.set(2005, Calendar.FEBRUARY, 1);
+    Pair<Long, Long> selection =
+        new Pair<>(setToStart.getTimeInMillis(), setToEnd.getTimeInMillis());
+    rangeDateSelector.setSelection(selection);
+
+    assertThat(rangeDateSelector.getSelectedRanges()).containsExactly(selection);
+  }
+
+  @Test
+  public void getSelectedRanges_partialRange() {
+    Calendar setToStart = UtcDates.getUtcCalendar();
+    setToStart.set(2004, Calendar.MARCH, 5);
+    Pair<Long, Long> selection = new Pair<>(setToStart.getTimeInMillis(), null);
+    rangeDateSelector.setSelection(selection);
+
+    assertThat(rangeDateSelector.getSelectedRanges()).containsExactly(selection);
   }
 
   private View getRootView() {

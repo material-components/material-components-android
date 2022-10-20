@@ -97,9 +97,6 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   @NonNull
   @Override
   public Collection<Pair<Long, Long>> getSelectedRanges() {
-    if (selectedStartItem == null || selectedEndItem == null) {
-      return new ArrayList<>();
-    }
     ArrayList<Pair<Long, Long>> ranges = new ArrayList<>();
     Pair<Long, Long> range = new Pair<>(selectedStartItem, selectedEndItem);
     ranges.add(range);
@@ -157,6 +154,24 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
         R.string.mtrl_picker_range_header_selected,
         dateRangeStrings.first,
         dateRangeStrings.second);
+  }
+
+  @NonNull
+  @Override
+  public String getSelectionContentDescription(@NonNull Context context) {
+    Resources res = context.getResources();
+    Pair<String, String> dateRangeStrings =
+        DateStrings.getDateRangeString(selectedStartItem, selectedEndItem);
+    String startPlaceholder =
+        dateRangeStrings.first == null
+            ? res.getString(R.string.mtrl_picker_announce_current_selection_none)
+            : dateRangeStrings.first;
+    String endPlaceholder =
+        dateRangeStrings.second == null
+            ? res.getString(R.string.mtrl_picker_announce_current_selection_none)
+            : dateRangeStrings.second;
+    return res.getString(
+        R.string.mtrl_picker_announce_current_range_selection, startPlaceholder, endPlaceholder);
   }
 
   @Override
@@ -220,11 +235,14 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
     endEditText.addTextChangedListener(
         new DateFormatTextWatcher(formatHint, format, endTextInput, constraints) {
+
+          @Override
           void onValidDate(@Nullable Long day) {
             proposedTextEnd = day;
             updateIfValidTextProposal(startTextInput, endTextInput, listener);
           }
 
+          @Override
           void onInvalidDate() {
             proposedTextEnd = null;
             updateIfValidTextProposal(startTextInput, endTextInput, listener);
