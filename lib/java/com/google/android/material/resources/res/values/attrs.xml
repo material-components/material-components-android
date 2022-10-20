@@ -33,6 +33,9 @@
   <attr name="itemShapeAppearance" format="reference" />
   <attr name="itemShapeAppearanceOverlay" format="reference" />
 
+  <!-- Sheets -->
+  <attr name="behavior_draggable" format="boolean" />
+
   <declare-styleable name="MaterialTextAppearance" parent="TextAppearance">
     <attr name="android:lineHeight"/>
     <attr name="lineHeight" format="dimension"/>

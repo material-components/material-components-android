@@ -34,4 +34,7 @@
   <public name="itemTextColor" type="attr"/>
   <public name="itemShapeAppearance" type="attr"/>
   <public name="itemShapeAppearanceOverlay" type="attr"/>
+
+  <!-- Sheets -->
+  <public name="behavior_draggable" type="attr" />
 </resources>
