@@ -19,7 +19,6 @@ package com.google.android.material.color.utilities;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import androidx.annotation.RestrictTo;
-import java.util.Arrays;
 
 /**
  * Color science utilities.
@@ -30,241 +29,228 @@ import java.util.Arrays;
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-public final class ColorUtils {
+public class ColorUtils {
   private ColorUtils() {}
 
-  private static final float[] WHITE_POINT_D65 = {95.047f, 100.0f, 108.883f};
+  static final double[][] SRGB_TO_XYZ =
+      new double[][] {
+        new double[] {0.41233895, 0.35762064, 0.18051042},
+        new double[] {0.2126, 0.7152, 0.0722},
+        new double[] {0.01932141, 0.11916382, 0.95034478},
+      };
 
-  /** Standard white point; white on a sunny day. */
-  public static final float[] whitePointD65() {
-    return Arrays.copyOf(WHITE_POINT_D65, 3);
+  static final double[][] XYZ_TO_SRGB =
+      new double[][] {
+        new double[] {
+          3.2413774792388685, -1.5376652402851851, -0.49885366846268053,
+        },
+        new double[] {
+          -0.9691452513005321, 1.8758853451067872, 0.04156585616912061,
+        },
+        new double[] {
+          0.05562093689691305, -0.20395524564742123, 1.0571799111220335,
+        },
+      };
+
+  static final double[] WHITE_POINT_D65 = new double[] {95.047, 100.0, 108.883};
+
+  /** Converts a color from RGB components to ARGB format. */
+  public static int argbFromRgb(int red, int green, int blue) {
+    return (255 << 24) | ((red & 255) << 16) | ((green & 255) << 8) | (blue & 255);
+  }
+
+  /** Converts a color from linear RGB components to ARGB format. */
+  public static int argbFromLinrgb(double[] linrgb) {
+    int r = delinearized(linrgb[0]);
+    int g = delinearized(linrgb[1]);
+    int b = delinearized(linrgb[2]);
+    return argbFromRgb(r, g, b);
+  }
+
+  /** Returns the alpha component of a color in ARGB format. */
+  public static int alphaFromArgb(int argb) {
+    return (argb >> 24) & 255;
+  }
+
+  /** Returns the red component of a color in ARGB format. */
+  public static int redFromArgb(int argb) {
+    return (argb >> 16) & 255;
+  }
+
+  /** Returns the green component of a color in ARGB format. */
+  public static int greenFromArgb(int argb) {
+    return (argb >> 8) & 255;
+  }
+
+  /** Returns the blue component of a color in ARGB format. */
+  public static int blueFromArgb(int argb) {
+    return argb & 255;
+  }
+
+  /** Returns whether a color in ARGB format is opaque. */
+  public static boolean isOpaque(int argb) {
+    return alphaFromArgb(argb) >= 255;
+  }
+
+  /** Converts a color from ARGB to XYZ. */
+  public static int argbFromXyz(double x, double y, double z) {
+    double[][] matrix = XYZ_TO_SRGB;
+    double linearR = matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z;
+    double linearG = matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z;
+    double linearB = matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z;
+    int r = delinearized(linearR);
+    int g = delinearized(linearG);
+    int b = delinearized(linearB);
+    return argbFromRgb(r, g, b);
+  }
+
+  /** Converts a color from XYZ to ARGB. */
+  public static double[] xyzFromArgb(int argb) {
+    double r = linearized(redFromArgb(argb));
+    double g = linearized(greenFromArgb(argb));
+    double b = linearized(blueFromArgb(argb));
+    return MathUtils.matrixMultiply(new double[] {r, g, b}, SRGB_TO_XYZ);
+  }
+
+  /** Converts a color represented in Lab color space into an ARGB integer. */
+  public static int argbFromLab(double l, double a, double b) {
+    double[] whitePoint = WHITE_POINT_D65;
+    double fy = (l + 16.0) / 116.0;
+    double fx = a / 500.0 + fy;
+    double fz = fy - b / 200.0;
+    double xNormalized = labInvf(fx);
+    double yNormalized = labInvf(fy);
+    double zNormalized = labInvf(fz);
+    double x = xNormalized * whitePoint[0];
+    double y = yNormalized * whitePoint[1];
+    double z = zNormalized * whitePoint[2];
+    return argbFromXyz(x, y, z);
   }
 
   /**
-   * The red channel of the color, from 0 to 255.
+   * Converts a color from ARGB representation to L*a*b* representation.
    *
-   * @param argb ARGB representation of a color.
+   * @param argb the ARGB representation of a color
+   * @return a Lab object representing the color
    */
-  public static int redFromInt(int argb) {
-    return (argb & 0x00ff0000) >> 16;
-  }
-
-  /**
-   * The green channel of the color, from 0 to 255.
-   *
-   * @param argb ARGB representation of a color.
-   */
-  public static int greenFromInt(int argb) {
-    return (argb & 0x0000ff00) >> 8;
-  }
-
-  /**
-   * The blue channel of the color, from 0 to 255.
-   *
-   * @param argb ARGB representation of a color.
-   */
-  public static int blueFromInt(int argb) {
-    return (argb & 0x000000ff);
-  }
-
-  /**
-   * L*, from L*a*b*, coordinate of the color.
-   *
-   * @param argb ARGB representation of a color.
-   */
-  public static float lstarFromInt(int argb) {
-    return (float) labFromInt(argb)[0];
-  }
-
-  /**
-   * Hex string representing color, ex. #ff0000 for red.
-   *
-   * @param argb ARGB representation of a color.
-   */
-  public static String hexFromInt(int argb) {
-    int red = redFromInt(argb);
-    int blue = blueFromInt(argb);
-    int green = greenFromInt(argb);
-    return String.format("#%02x%02x%02x", red, green, blue);
-  }
-
-  /**
-   * Color's coordinates in the XYZ color space.
-   *
-   * @param argb ARGB representation of a color.
-   */
-  // The RGB => XYZ conversion matrix elements are derived scientific constants. While the values
-  // may differ at runtime due to floating point imprecision, keeping the values the same, and
-  // accurate, across implementations takes precedence.
-  @SuppressWarnings("FloatingPointLiteralPrecision")
-  public static float[] xyzFromInt(int argb) {
-    final float r = linearized(redFromInt(argb) / 255f) * 100f;
-    final float g = linearized(greenFromInt(argb) / 255f) * 100f;
-    final float b = linearized(blueFromInt(argb) / 255f) * 100f;
-    final float x = 0.41233894f * r + 0.35762064f * g + 0.18051042f * b;
-    final float y = 0.2126f * r + 0.7152f * g + 0.0722f * b;
-    final float z = 0.01932141f * r + 0.11916382f * g + 0.95034478f * b;
-    return new float[] {x, y, z};
-  }
-
-  /**
-   * Create an ARGB color from R, G, and B coordinates. Coordinates are expected to be >= 0 and <=
-   * 255.
-   */
-  public static int intFromRgb(int r, int g, int b) {
-    return (((255 << 24) | ((r & 0x0ff) << 16) | ((g & 0x0ff) << 8) | (b & 0x0ff)) >>> 0);
-  }
-
-  /**
-   * Color's coordinates in the L*a*b* color space.
-   *
-   * @param argb ARGB representation of a color.
-   */
-  public static double[] labFromInt(int argb) {
-    final double e = 216.0 / 24389.0;
-    final double kappa = 24389.0 / 27.0;
-
-    final float[] xyz = xyzFromInt(argb);
-    final double yNormalized = xyz[1] / WHITE_POINT_D65[1];
-    double fy;
-    if (yNormalized > e) {
-      fy = Math.cbrt(yNormalized);
-    } else {
-      fy = (kappa * yNormalized + 16) / 116;
-    }
-
-    final double xNormalized = xyz[0] / WHITE_POINT_D65[0];
-    double fx;
-    if (xNormalized > e) {
-      fx = Math.cbrt(xNormalized);
-    } else {
-      fx = (kappa * xNormalized + 16) / 116;
-    }
-
-    final double zNormalized = xyz[2] / WHITE_POINT_D65[2];
-    double fz;
-    if (zNormalized > e) {
-      fz = Math.cbrt(zNormalized);
-    } else {
-      fz = (kappa * zNormalized + 16) / 116;
-    }
-
-    final double l = 116.0 * fy - 16;
-    final double a = 500.0 * (fx - fy);
-    final double b = 200.0 * (fy - fz);
+  public static double[] labFromArgb(int argb) {
+    double linearR = linearized(redFromArgb(argb));
+    double linearG = linearized(greenFromArgb(argb));
+    double linearB = linearized(blueFromArgb(argb));
+    double[][] matrix = SRGB_TO_XYZ;
+    double x = matrix[0][0] * linearR + matrix[0][1] * linearG + matrix[0][2] * linearB;
+    double y = matrix[1][0] * linearR + matrix[1][1] * linearG + matrix[1][2] * linearB;
+    double z = matrix[2][0] * linearR + matrix[2][1] * linearG + matrix[2][2] * linearB;
+    double[] whitePoint = WHITE_POINT_D65;
+    double xNormalized = x / whitePoint[0];
+    double yNormalized = y / whitePoint[1];
+    double zNormalized = z / whitePoint[2];
+    double fx = labF(xNormalized);
+    double fy = labF(yNormalized);
+    double fz = labF(zNormalized);
+    double l = 116.0 * fy - 16;
+    double a = 500.0 * (fx - fy);
+    double b = 200.0 * (fy - fz);
     return new double[] {l, a, b};
   }
 
-  /** ARGB representation of color in the L*a*b* color space. */
-  public static int intFromLab(double l, double a, double b) {
-    final double e = 216.0 / 24389.0;
-    final double kappa = 24389.0 / 27.0;
-    final double ke = 8.0;
-
-    final double fy = (l + 16.0) / 116.0;
-    final double fx = (a / 500.0) + fy;
-    final double fz = fy - (b / 200.0);
-    final double fx3 = fx * fx * fx;
-    final double xNormalized = (fx3 > e) ? fx3 : (116.0 * fx - 16.0) / kappa;
-    final double yNormalized = (l > ke) ? fy * fy * fy : (l / kappa);
-    final double fz3 = fz * fz * fz;
-    final double zNormalized = (fz3 > e) ? fz3 : (116.0 * fz - 16.0) / kappa;
-    final double x = xNormalized * WHITE_POINT_D65[0];
-    final double y = yNormalized * WHITE_POINT_D65[1];
-    final double z = zNormalized * WHITE_POINT_D65[2];
-    return intFromXyzComponents((float) x, (float) y, (float) z);
-  }
-
-  /** ARGB representation of color in the XYZ color space. */
-  public static int intFromXyzComponents(float x, float y, float z) {
-    x = x / 100f;
-    y = y / 100f;
-    z = z / 100f;
-
-    float rL = x * 3.2406f + y * -1.5372f + z * -0.4986f;
-    float gL = x * -0.9689f + y * 1.8758f + z * 0.0415f;
-    float bL = x * 0.0557f + y * -0.204f + z * 1.057f;
-
-    float r = ColorUtils.delinearized(rL);
-    float g = ColorUtils.delinearized(gL);
-    float b = ColorUtils.delinearized(bL);
-
-    int rInt = (Math.max(Math.min(255, Math.round(r * 255)), 0));
-    int gInt = (Math.max(Math.min(255, Math.round(g * 255)), 0));
-    int bInt = (Math.max(Math.min(255, Math.round(b * 255)), 0));
-    return intFromRgb(rInt, gInt, bInt);
-  }
-
-  /** ARGB representation of color in the XYZ color space. */
-  public static int intFromXyz(float[] xyz) {
-    return intFromXyzComponents(xyz[0], xyz[1], xyz[2]);
-  }
-
   /**
-   * ARGB representation of grayscale (0 chroma) color with lightness matching L*
+   * Converts an L* value to an ARGB representation.
    *
    * @param lstar L* in L*a*b*
+   * @return ARGB representation of grayscale color with lightness matching L*
    */
-  public static int intFromLstar(float lstar) {
-    float fy = (lstar + 16.0f) / 116.0f;
-    float fz = fy;
-    float fx = fy;
-
-    float kappa = 24389f / 27f;
-    float epsilon = 216f / 24389f;
-    boolean cubeExceedEpsilon = (fy * fy * fy) > epsilon;
-    boolean lExceedsEpsilonKappa = (lstar > 8.0f);
-    float y = lExceedsEpsilonKappa ? fy * fy * fy : lstar / kappa;
-    float x = cubeExceedEpsilon ? fx * fx * fx : (116f * fx - 16f) / kappa;
-    float z = cubeExceedEpsilon ? fz * fz * fz : (116f * fx - 16f) / kappa;
-    float[] xyz =
-        new float[] {
-          x * ColorUtils.WHITE_POINT_D65[0],
-          y * ColorUtils.WHITE_POINT_D65[1],
-          z * ColorUtils.WHITE_POINT_D65[2],
-        };
-    return intFromXyz(xyz);
+  public static int argbFromLstar(double lstar) {
+    double y = yFromLstar(lstar);
+    int component = delinearized(y);
+    return argbFromRgb(component, component, component);
   }
 
   /**
-   * L* in L*a*b* and Y in XYZ measure the same quantity, luminance. L* measures perceptual
-   * luminance, a linear scale. Y in XYZ measures relative luminance, a logarithmic scale.
+   * Computes the L* value of a color in ARGB representation.
+   *
+   * @param argb ARGB representation of a color
+   * @return L*, from L*a*b*, coordinate of the color
+   */
+  public static double lstarFromArgb(int argb) {
+    double y = xyzFromArgb(argb)[1];
+    return 116.0 * labF(y / 100.0) - 16.0;
+  }
+
+  /**
+   * Converts an L* value to a Y value.
+   *
+   * <p>L* in L*a*b* and Y in XYZ measure the same quantity, luminance.
+   *
+   * <p>L* measures perceptual luminance, a linear scale. Y in XYZ measures relative luminance, a
+   * logarithmic scale.
    *
    * @param lstar L* in L*a*b*
    * @return Y in XYZ
    */
-  public static float yFromLstar(float lstar) {
-    float ke = 8.0f;
-    if (lstar > ke) {
-      return (float) Math.pow(((lstar + 16.0) / 116.0), 3) * 100f;
+  public static double yFromLstar(double lstar) {
+    return 100.0 * labInvf((lstar + 16.0) / 116.0);
+  }
+
+  /**
+   * Linearizes an RGB component.
+   *
+   * @param rgbComponent 0 <= rgb_component <= 255, represents R/G/B channel
+   * @return 0.0 <= output <= 100.0, color channel converted to linear RGB space
+   */
+  public static double linearized(int rgbComponent) {
+    double normalized = rgbComponent / 255.0;
+    if (normalized <= 0.040449936) {
+      return normalized / 12.92 * 100.0;
     } else {
-      return lstar / (24389f / 27f) * 100f;
+      return Math.pow((normalized + 0.055) / 1.055, 2.4) * 100.0;
     }
   }
 
   /**
-   * Convert a normalized RGB channel to a normalized linear RGB channel.
+   * Delinearizes an RGB component.
    *
-   * @param rgb 0.0 <= rgb <= 1.0, represents R/G/B channel
+   * @param rgbComponent 0.0 <= rgb_component <= 100.0, represents linear R/G/B channel
+   * @return 0 <= output <= 255, color channel converted to regular RGB space
    */
-  public static float linearized(float rgb) {
-    if (rgb <= 0.04045f) {
-      return (rgb / 12.92f);
+  public static int delinearized(double rgbComponent) {
+    double normalized = rgbComponent / 100.0;
+    double delinearized = 0.0;
+    if (normalized <= 0.0031308) {
+      delinearized = normalized * 12.92;
     } else {
-      return (float) Math.pow(((rgb + 0.055f) / 1.055f), 2.4f);
+      delinearized = 1.055 * Math.pow(normalized, 1.0 / 2.4) - 0.055;
     }
+    return MathUtils.clampInt(0, 255, (int) Math.round(delinearized * 255.0));
   }
 
   /**
-   * Convert a normalized linear RGB channel to a normalized RGB channel.
+   * Returns the standard white point; white on a sunny day.
    *
-   * @param rgb 0.0 <= rgb <= 1.0, represents linear R/G/B channel
+   * @return The white point
    */
-  public static float delinearized(float rgb) {
-    if (rgb <= 0.0031308f) {
-      return (rgb * 12.92f);
+  public static double[] whitePointD65() {
+    return WHITE_POINT_D65;
+  }
+
+  static double labF(double t) {
+    double e = 216.0 / 24389.0;
+    double kappa = 24389.0 / 27.0;
+    if (t > e) {
+      return Math.pow(t, 1.0 / 3.0);
     } else {
-      return ((1.055f * (float) Math.pow(rgb, 1.0f / 2.4f)) - 0.055f);
+      return (kappa * t + 16) / 116;
+    }
+  }
+
+  static double labInvf(double ft) {
+    double e = 216.0 / 24389.0;
+    double kappa = 24389.0 / 27.0;
+    double ft3 = ft * ft * ft;
+    if (ft3 > e) {
+      return ft3;
+    } else {
+      return (116 * ft - 16) / kappa;
     }
   }
 }

@@ -93,21 +93,21 @@ public final class HctTest {
   @Test
   public void camToArgbToCam_red() {
     Cam16 cam = Cam16.fromInt(RED);
-    int argb = cam.getInt();
+    int argb = cam.toInt();
     assertEquals(RED, argb);
   }
 
   @Test
   public void camToArgbToCam_green() {
     Cam16 cam = Cam16.fromInt(GREEN);
-    int argb = cam.getInt();
+    int argb = cam.toInt();
     assertEquals(GREEN, argb);
   }
 
   @Test
   public void camToArgbToCam_blue() {
     Cam16 cam = Cam16.fromInt(BLUE);
-    int argb = cam.getInt();
+    int argb = cam.toInt();
     assertEquals(BLUE, argb);
   }
 

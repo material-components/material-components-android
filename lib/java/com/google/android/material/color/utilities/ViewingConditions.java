@@ -38,60 +38,64 @@ public final class ViewingConditions {
   /** sRGB-like viewing conditions. */
   public static final ViewingConditions DEFAULT =
       ViewingConditions.make(
-          ColorUtils.whitePointD65(),
-          (float) (200.0f / Math.PI * ColorUtils.yFromLstar(50.0f) / 100.f),
-          50.0f,
-          2.0f,
+          new double[] {
+            ColorUtils.whitePointD65()[0],
+            ColorUtils.whitePointD65()[1],
+            ColorUtils.whitePointD65()[2]
+          },
+          (200.0 / Math.PI * ColorUtils.yFromLstar(50.0) / 100.f),
+          50.0,
+          2.0,
           false);
 
-  private final float aw;
-  private final float nbb;
-  private final float ncb;
-  private final float c;
-  private final float nc;
-  private final float n;
-  private final float[] rgbD;
-  private final float fl;
-  private final float flRoot;
-  private final float z;
+  private final double aw;
+  private final double nbb;
+  private final double ncb;
+  private final double c;
+  private final double nc;
+  private final double n;
+  private final double[] rgbD;
+  private final double fl;
+  private final double flRoot;
+  private final double z;
 
-  public float getAw() {
+  public double getAw() {
     return aw;
   }
 
-  public float getN() {
+  public double getN() {
     return n;
   }
 
-  public float getNbb() {
+  public double getNbb() {
     return nbb;
   }
 
-  float getNcb() {
+  double getNcb() {
     return ncb;
   }
 
-  float getC() {
+  double getC() {
     return c;
   }
 
-  float getNc() {
+  double getNc() {
     return nc;
   }
 
-  public float[] getRgbD() {
+  public double[] getRgbD() {
     return rgbD;
   }
 
-  float getFl() {
+  double getFl() {
     return fl;
   }
 
-  public float getFlRoot() {
+  public double getFlRoot() {
     return flRoot;
   }
 
-  float getZ() {
+  double getZ() {
     return z;
   }
 
@@ -114,57 +118,56 @@ public final class ViewingConditions {
    *     perform this process on self-luminous objects like displays.
    */
   static ViewingConditions make(
-      float[] whitePoint,
-      float adaptingLuminance,
-      float backgroundLstar,
-      float surround,
+      double[] whitePoint,
+      double adaptingLuminance,
+      double backgroundLstar,
+      double surround,
       boolean discountingIlluminant) {
     // Transform white point XYZ to 'cone'/'rgb' responses
-    float[][] matrix = Cam16.XYZ_TO_CAM16RGB;
-    float[] xyz = whitePoint;
-    float rW = (xyz[0] * matrix[0][0]) + (xyz[1] * matrix[0][1]) + (xyz[2] * matrix[0][2]);
-    float gW = (xyz[0] * matrix[1][0]) + (xyz[1] * matrix[1][1]) + (xyz[2] * matrix[1][2]);
-    float bW = (xyz[0] * matrix[2][0]) + (xyz[1] * matrix[2][1]) + (xyz[2] * matrix[2][2]);
-    float f = 0.8f + (surround / 10.0f);
-    float c =
+    double[][] matrix = Cam16.XYZ_TO_CAM16RGB;
+    double[] xyz = whitePoint;
+    double rW = (xyz[0] * matrix[0][0]) + (xyz[1] * matrix[0][1]) + (xyz[2] * matrix[0][2]);
+    double gW = (xyz[0] * matrix[1][0]) + (xyz[1] * matrix[1][1]) + (xyz[2] * matrix[1][2]);
+    double bW = (xyz[0] * matrix[2][0]) + (xyz[1] * matrix[2][1]) + (xyz[2] * matrix[2][2]);
+    double f = 0.8 + (surround / 10.0);
+    double c =
         (f >= 0.9)
-            ? MathUtils.lerp(0.59f, 0.69f, ((f - 0.9f) * 10.0f))
-            : MathUtils.lerp(0.525f, 0.59f, ((f - 0.8f) * 10.0f));
-    float d =
+            ? MathUtils.lerp(0.59, 0.69, ((f - 0.9) * 10.0))
+            : MathUtils.lerp(0.525, 0.59, ((f - 0.8) * 10.0));
+    double d =
         discountingIlluminant
-            ? 1.0f
-            : f * (1.0f - ((1.0f / 3.6f) * (float) Math.exp((-adaptingLuminance - 42.0f) / 92.0f)));
-    d = (d > 1.0) ? 1.0f : (d < 0.0) ? 0.0f : d;
-    float nc = f;
-    float[] rgbD =
-        new float[] {
-          d * (100.0f / rW) + 1.0f - d, d * (100.0f / gW) + 1.0f - d, d * (100.0f / bW) + 1.0f - d
+            ? 1.0
+            : f * (1.0 - ((1.0 / 3.6) * Math.exp((-adaptingLuminance - 42.0) / 92.0)));
+    d = MathUtils.clampDouble(0.0, 1.0, d);
+    double nc = f;
+    double[] rgbD =
+        new double[] {
+          d * (100.0 / rW) + 1.0 - d, d * (100.0 / gW) + 1.0 - d, d * (100.0 / bW) + 1.0 - d
         };
-    float k = 1.0f / (5.0f * adaptingLuminance + 1.0f);
-    float k4 = k * k * k * k;
-    float k4F = 1.0f - k4;
-    float fl =
-        (k4 * adaptingLuminance) + (0.1f * k4F * k4F * (float) Math.cbrt(5.0 * adaptingLuminance));
-    float n = ColorUtils.yFromLstar(backgroundLstar) / whitePoint[1];
-    float z = 1.48f + (float) Math.sqrt(n);
-    float nbb = 0.725f / (float) Math.pow(n, 0.2);
-    float ncb = nbb;
-    float[] rgbAFactors =
-        new float[] {
-          (float) Math.pow(fl * rgbD[0] * rW / 100.0, 0.42),
-          (float) Math.pow(fl * rgbD[1] * gW / 100.0, 0.42),
-          (float) Math.pow(fl * rgbD[2] * bW / 100.0, 0.42)
-        };
-
-    float[] rgbA =
-        new float[] {
-          (400.0f * rgbAFactors[0]) / (rgbAFactors[0] + 27.13f),
-          (400.0f * rgbAFactors[1]) / (rgbAFactors[1] + 27.13f),
-          (400.0f * rgbAFactors[2]) / (rgbAFactors[2] + 27.13f)
+    double k = 1.0 / (5.0 * adaptingLuminance + 1.0);
+    double k4 = k * k * k * k;
+    double k4F = 1.0 - k4;
+    double fl = (k4 * adaptingLuminance) + (0.1 * k4F * k4F * Math.cbrt(5.0 * adaptingLuminance));
+    double n = (ColorUtils.yFromLstar(backgroundLstar) / whitePoint[1]);
+    double z = 1.48 + Math.sqrt(n);
+    double nbb = 0.725 / Math.pow(n, 0.2);
+    double ncb = nbb;
+    double[] rgbAFactors =
+        new double[] {
+          Math.pow(fl * rgbD[0] * rW / 100.0, 0.42),
+          Math.pow(fl * rgbD[1] * gW / 100.0, 0.42),
+          Math.pow(fl * rgbD[2] * bW / 100.0, 0.42)
         };
 
-    float aw = ((2.0f * rgbA[0]) + rgbA[1] + (0.05f * rgbA[2])) * nbb;
-    return new ViewingConditions(n, aw, nbb, ncb, c, nc, rgbD, fl, (float) Math.pow(fl, 0.25), z);
+    double[] rgbA =
+        new double[] {
+          (400.0 * rgbAFactors[0]) / (rgbAFactors[0] + 27.13),
+          (400.0 * rgbAFactors[1]) / (rgbAFactors[1] + 27.13),
+          (400.0 * rgbAFactors[2]) / (rgbAFactors[2] + 27.13)
+        };
+
+    double aw = ((2.0 * rgbA[0]) + rgbA[1] + (0.05 * rgbA[2])) * nbb;
+    return new ViewingConditions(n, aw, nbb, ncb, c, nc, rgbD, fl, Math.pow(fl, 0.25), z);
   }
 
   /**
@@ -174,16 +177,16 @@ public final class ViewingConditions {
    * requires a color science textbook, such as Fairchild's Color Appearance Models.
    */
   private ViewingConditions(
-      float n,
-      float aw,
-      float nbb,
-      float ncb,
-      float c,
-      float nc,
-      float[] rgbD,
-      float fl,
-      float flRoot,
-      float z) {
+      double n,
+      double aw,
+      double nbb,
+      double ncb,
+      double c,
+      double nc,
+      double[] rgbD,
+      double fl,
+      double flRoot,
+      double z) {
     this.n = n;
     this.aw = aw;
     this.nbb = nbb;

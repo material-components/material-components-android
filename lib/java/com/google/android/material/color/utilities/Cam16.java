@@ -41,58 +41,58 @@ import androidx.annotation.RestrictTo;
 @RestrictTo(LIBRARY_GROUP)
 public final class Cam16 {
   // Transforms XYZ color space coordinates to 'cone'/'RGB' responses in CAM16.
-  static final float[][] XYZ_TO_CAM16RGB = {
-    {0.401288f, 0.650173f, -0.051461f},
-    {-0.250268f, 1.204414f, 0.045854f},
-    {-0.002079f, 0.048952f, 0.953127f}
+  static final double[][] XYZ_TO_CAM16RGB = {
+    {0.401288, 0.650173, -0.051461},
+    {-0.250268, 1.204414, 0.045854},
+    {-0.002079, 0.048952, 0.953127}
   };
 
   // Transforms 'cone'/'RGB' responses in CAM16 to XYZ color space coordinates.
-  static final float[][] CAM16RGB_TO_XYZ = {
-    {1.8620678f, -1.0112547f, 0.14918678f},
-    {0.38752654f, 0.62144744f, -0.00897398f},
-    {-0.01584150f, -0.03412294f, 1.0499644f}
+  static final double[][] CAM16RGB_TO_XYZ = {
+    {1.8620678, -1.0112547, 0.14918678},
+    {0.38752654, 0.62144744, -0.00897398},
+    {-0.01584150, -0.03412294, 1.0499644}
   };
 
   // CAM16 color dimensions, see getters for documentation.
-  private final float hue;
-  private final float chroma;
-  private final float j;
-  private final float q;
-  private final float m;
-  private final float s;
+  private final double hue;
+  private final double chroma;
+  private final double j;
+  private final double q;
+  private final double m;
+  private final double s;
 
   // Coordinates in UCS space. Used to determine color distance, like delta E equations in L*a*b*.
-  private final float jstar;
-  private final float astar;
-  private final float bstar;
+  private final double jstar;
+  private final double astar;
+  private final double bstar;
 
   /**
    * CAM16 instances also have coordinates in the CAM16-UCS space, called J*, a*, b*, or jstar,
    * astar, bstar in code. CAM16-UCS is included in the CAM16 specification, and is used to measure
    * distances between colors.
    */
-  float distance(Cam16 other) {
-    float dJ = getJStar() - other.getJStar();
-    float dA = getAStar() - other.getAStar();
-    float dB = getBStar() - other.getBStar();
+  double distance(Cam16 other) {
+    double dJ = getJstar() - other.getJstar();
+    double dA = getAstar() - other.getAstar();
+    double dB = getBstar() - other.getBstar();
     double dEPrime = Math.sqrt(dJ * dJ + dA * dA + dB * dB);
     double dE = 1.41 * Math.pow(dEPrime, 0.63);
-    return (float) dE;
+    return dE;
   }
 
   /** Hue in CAM16 */
-  public float getHue() {
+  public double getHue() {
     return hue;
   }
 
   /** Chroma in CAM16 */
-  public float getChroma() {
+  public double getChroma() {
     return chroma;
   }
 
   /** Lightness in CAM16 */
-  public float getJ() {
+  public double getJ() {
     return j;
   }
 
@@ -103,7 +103,7 @@ public final class Cam16 {
    * much brighter viewed in sunlight than in indoor light, but it is the lightest object under any
    * lighting.
    */
-  public float getQ() {
+  public double getQ() {
     return q;
   }
 
@@ -113,7 +113,7 @@ public final class Cam16 {
    * <p>Prefer chroma, colorfulness is an absolute quantity. For example, a yellow toy car is much
    * more colorful outside than inside, but it has the same chroma in both environments.
    */
-  public float getM() {
+  public double getM() {
     return m;
   }
 
@@ -123,22 +123,22 @@ public final class Cam16 {
    * <p>Colorfulness in proportion to brightness. Prefer chroma, saturation measures colorfulness
    * relative to the color's own brightness, where chroma is colorfulness relative to white.
    */
-  public float getS() {
+  public double getS() {
     return s;
   }
 
   /** Lightness coordinate in CAM16-UCS */
-  public float getJStar() {
+  public double getJstar() {
     return jstar;
   }
 
   /** a* coordinate in CAM16-UCS */
-  public float getAStar() {
+  public double getAstar() {
     return astar;
   }
 
   /** b* coordinate in CAM16-UCS */
-  public float getBStar() {
+  public double getBstar() {
     return bstar;
   }
 
@@ -160,15 +160,15 @@ public final class Cam16 {
    * @param bstar CAM16-UCS b coordinate
    */
   private Cam16(
-      float hue,
-      float chroma,
-      float j,
-      float q,
-      float m,
-      float s,
-      float jstar,
-      float astar,
-      float bstar) {
+      double hue,
+      double chroma,
+      double j,
+      double q,
+      double m,
+      double s,
+      double jstar,
+      double astar,
+      double bstar) {
     this.hue = hue;
     this.chroma = chroma;
     this.j = j;
@@ -204,88 +204,84 @@ public final class Cam16 {
     int red = (argb & 0x00ff0000) >> 16;
     int green = (argb & 0x0000ff00) >> 8;
     int blue = (argb & 0x000000ff);
-    float redL = ColorUtils.linearized(red / 255f) * 100f;
-    float greenL = ColorUtils.linearized(green / 255f) * 100f;
-    float blueL = ColorUtils.linearized(blue / 255f) * 100f;
-    float x = 0.41233895f * redL + 0.35762064f * greenL + 0.18051042f * blueL;
-    float y = 0.2126f * redL + 0.7152f * greenL + 0.0722f * blueL;
-    float z = 0.01932141f * redL + 0.11916382f * greenL + 0.95034478f * blueL;
+    double redL = ColorUtils.linearized(red);
+    double greenL = ColorUtils.linearized(green);
+    double blueL = ColorUtils.linearized(blue);
+    double x = 0.41233895 * redL + 0.35762064 * greenL + 0.18051042 * blueL;
+    double y = 0.2126 * redL + 0.7152 * greenL + 0.0722 * blueL;
+    double z = 0.01932141 * redL + 0.11916382 * greenL + 0.95034478 * blueL;
 
     // Transform XYZ to 'cone'/'rgb' responses
-    float[][] matrix = XYZ_TO_CAM16RGB;
-    float rT = (x * matrix[0][0]) + (y * matrix[0][1]) + (z * matrix[0][2]);
-    float gT = (x * matrix[1][0]) + (y * matrix[1][1]) + (z * matrix[1][2]);
-    float bT = (x * matrix[2][0]) + (y * matrix[2][1]) + (z * matrix[2][2]);
+    double[][] matrix = XYZ_TO_CAM16RGB;
+    double rT = (x * matrix[0][0]) + (y * matrix[0][1]) + (z * matrix[0][2]);
+    double gT = (x * matrix[1][0]) + (y * matrix[1][1]) + (z * matrix[1][2]);
+    double bT = (x * matrix[2][0]) + (y * matrix[2][1]) + (z * matrix[2][2]);
 
     // Discount illuminant
-    float rD = viewingConditions.getRgbD()[0] * rT;
-    float gD = viewingConditions.getRgbD()[1] * gT;
-    float bD = viewingConditions.getRgbD()[2] * bT;
+    double rD = viewingConditions.getRgbD()[0] * rT;
+    double gD = viewingConditions.getRgbD()[1] * gT;
+    double bD = viewingConditions.getRgbD()[2] * bT;
 
     // Chromatic adaptation
-    float rAF = (float) Math.pow(viewingConditions.getFl() * Math.abs(rD) / 100.0, 0.42);
-    float gAF = (float) Math.pow(viewingConditions.getFl() * Math.abs(gD) / 100.0, 0.42);
-    float bAF = (float) Math.pow(viewingConditions.getFl() * Math.abs(bD) / 100.0, 0.42);
-    float rA = Math.signum(rD) * 400.0f * rAF / (rAF + 27.13f);
-    float gA = Math.signum(gD) * 400.0f * gAF / (gAF + 27.13f);
-    float bA = Math.signum(bD) * 400.0f * bAF / (bAF + 27.13f);
+    double rAF = Math.pow(viewingConditions.getFl() * Math.abs(rD) / 100.0, 0.42);
+    double gAF = Math.pow(viewingConditions.getFl() * Math.abs(gD) / 100.0, 0.42);
+    double bAF = Math.pow(viewingConditions.getFl() * Math.abs(bD) / 100.0, 0.42);
+    double rA = Math.signum(rD) * 400.0 * rAF / (rAF + 27.13);
+    double gA = Math.signum(gD) * 400.0 * gAF / (gAF + 27.13);
+    double bA = Math.signum(bD) * 400.0 * bAF / (bAF + 27.13);
 
     // redness-greenness
-    float a = (float) (11.0 * rA + -12.0 * gA + bA) / 11.0f;
+    double a = (11.0 * rA + -12.0 * gA + bA) / 11.0;
     // yellowness-blueness
-    float b = (float) (rA + gA - 2.0 * bA) / 9.0f;
+    double b = (rA + gA - 2.0 * bA) / 9.0;
 
     // auxiliary components
-    float u = (20.0f * rA + 20.0f * gA + 21.0f * bA) / 20.0f;
-    float p2 = (40.0f * rA + 20.0f * gA + bA) / 20.0f;
+    double u = (20.0 * rA + 20.0 * gA + 21.0 * bA) / 20.0;
+    double p2 = (40.0 * rA + 20.0 * gA + bA) / 20.0;
 
     // hue
-    float atan2 = (float) Math.atan2(b, a);
-    float atanDegrees = atan2 * 180.0f / (float) Math.PI;
-    float hue =
+    double atan2 = Math.atan2(b, a);
+    double atanDegrees = Math.toDegrees(atan2);
+    double hue =
         atanDegrees < 0
-            ? atanDegrees + 360.0f
-            : atanDegrees >= 360 ? atanDegrees - 360.0f : atanDegrees;
-    float hueRadians = hue * (float) Math.PI / 180.0f;
+            ? atanDegrees + 360.0
+            : atanDegrees >= 360 ? atanDegrees - 360.0 : atanDegrees;
+    double hueRadians = Math.toRadians(hue);
 
     // achromatic response to color
-    float ac = p2 * viewingConditions.getNbb();
+    double ac = p2 * viewingConditions.getNbb();
 
     // CAM16 lightness and brightness
-    float j =
-        100.0f
-            * (float)
-                Math.pow(
-                    ac / viewingConditions.getAw(),
-                    viewingConditions.getC() * viewingConditions.getZ());
-    float q =
-        4.0f
+    double j =
+        100.0
+            * Math.pow(
+                ac / viewingConditions.getAw(),
+                viewingConditions.getC() * viewingConditions.getZ());
+    double q =
+        4.0
             / viewingConditions.getC()
-            * (float) Math.sqrt(j / 100.0f)
-            * (viewingConditions.getAw() + 4.0f)
+            * Math.sqrt(j / 100.0)
+            * (viewingConditions.getAw() + 4.0)
             * viewingConditions.getFlRoot();
 
     // CAM16 chroma, colorfulness, and saturation.
-    float huePrime = (hue < 20.14) ? hue + 360 : hue;
-    float eHue = 0.25f * (float) (Math.cos(Math.toRadians(huePrime) + 2.0) + 3.8);
-    float p1 = 50000.0f / 13.0f * eHue * viewingConditions.getNc() * viewingConditions.getNcb();
-    float t = p1 * (float) Math.hypot(a, b) / (u + 0.305f);
-    float alpha =
-        (float) Math.pow(1.64 - Math.pow(0.29, viewingConditions.getN()), 0.73)
-            * (float) Math.pow(t, 0.9);
+    double huePrime = (hue < 20.14) ? hue + 360 : hue;
+    double eHue = 0.25 * (Math.cos(Math.toRadians(huePrime) + 2.0) + 3.8);
+    double p1 = 50000.0 / 13.0 * eHue * viewingConditions.getNc() * viewingConditions.getNcb();
+    double t = p1 * Math.hypot(a, b) / (u + 0.305);
+    double alpha =
+        Math.pow(1.64 - Math.pow(0.29, viewingConditions.getN()), 0.73) * Math.pow(t, 0.9);
     // CAM16 chroma, colorfulness, saturation
-    float c = alpha * (float) Math.sqrt(j / 100.0);
-    float m = c * viewingConditions.getFlRoot();
-    float s =
-        50.0f
-            * (float)
-                Math.sqrt((alpha * viewingConditions.getC()) / (viewingConditions.getAw() + 4.0f));
+    double c = alpha * Math.sqrt(j / 100.0);
+    double m = c * viewingConditions.getFlRoot();
+    double s =
+        50.0 * Math.sqrt((alpha * viewingConditions.getC()) / (viewingConditions.getAw() + 4.0));
 
     // CAM16-UCS components
-    float jstar = (1.0f + 100.0f * 0.007f) * j / (1.0f + 0.007f * j);
-    float mstar = 1.0f / 0.0228f * (float) Math.log1p(0.0228f * m);
-    float astar = mstar * (float) Math.cos(hueRadians);
-    float bstar = mstar * (float) Math.sin(hueRadians);
+    double jstar = (1.0 + 100.0 * 0.007) * j / (1.0 + 0.007 * j);
+    double mstar = 1.0 / 0.0228 * Math.log1p(0.0228 * m);
+    double astar = mstar * Math.cos(hueRadians);
+    double bstar = mstar * Math.sin(hueRadians);
 
     return new Cam16(hue, c, j, q, m, s, jstar, astar, bstar);
   }
@@ -295,7 +291,7 @@ public final class Cam16 {
    * @param c CAM16 chroma
    * @param h CAM16 hue
    */
-  static Cam16 fromJch(float j, float c, float h) {
+  static Cam16 fromJch(double j, double c, double h) {
     return fromJchInViewingConditions(j, c, h, ViewingConditions.DEFAULT);
   }
 
@@ -306,25 +302,23 @@ public final class Cam16 {
    * @param viewingConditions Information about the environment where the color was observed.
    */
   private static Cam16 fromJchInViewingConditions(
-      float j, float c, float h, ViewingConditions viewingConditions) {
-    float q =
-        4.0f
+      double j, double c, double h, ViewingConditions viewingConditions) {
+    double q =
+        4.0
             / viewingConditions.getC()
-            * (float) Math.sqrt(j / 100.0)
-            * (viewingConditions.getAw() + 4.0f)
+            * Math.sqrt(j / 100.0)
+            * (viewingConditions.getAw() + 4.0)
             * viewingConditions.getFlRoot();
-    float m = c * viewingConditions.getFlRoot();
-    float alpha = c / (float) Math.sqrt(j / 100.0);
-    float s =
-        50.0f
-            * (float)
-                Math.sqrt((alpha * viewingConditions.getC()) / (viewingConditions.getAw() + 4.0f));
+    double m = c * viewingConditions.getFlRoot();
+    double alpha = c / Math.sqrt(j / 100.0);
+    double s =
+        50.0 * Math.sqrt((alpha * viewingConditions.getC()) / (viewingConditions.getAw() + 4.0));
 
-    float hueRadians = h * (float) Math.PI / 180.0f;
-    float jstar = (1.0f + 100.0f * 0.007f) * j / (1.0f + 0.007f * j);
-    float mstar = 1.0f / 0.0228f * (float) Math.log1p(0.0228 * m);
-    float astar = mstar * (float) Math.cos(hueRadians);
-    float bstar = mstar * (float) Math.sin(hueRadians);
+    double hueRadians = Math.toRadians(h);
+    double jstar = (1.0 + 100.0 * 0.007) * j / (1.0 + 0.007 * j);
+    double mstar = 1.0 / 0.0228 * Math.log1p(0.0228 * m);
+    double astar = mstar * Math.cos(hueRadians);
+    double bstar = mstar * Math.sin(hueRadians);
     return new Cam16(h, c, j, q, m, s, jstar, astar, bstar);
   }
 
@@ -337,7 +331,7 @@ public final class Cam16 {
    * @param bstar CAM16-UCS b dimension. Like a* in L*a*b*, it is a Cartesian coordinate on the X
    *     axis.
    */
-  public static Cam16 fromUcs(float jstar, float astar, float bstar) {
+  public static Cam16 fromUcs(double jstar, double astar, double bstar) {
 
     return fromUcsInViewingConditions(jstar, astar, bstar, ViewingConditions.DEFAULT);
   }
@@ -353,24 +347,24 @@ public final class Cam16 {
    * @param viewingConditions Information about the environment where the color was observed.
    */
   public static Cam16 fromUcsInViewingConditions(
-      float jstar, float astar, float bstar, ViewingConditions viewingConditions) {
+      double jstar, double astar, double bstar, ViewingConditions viewingConditions) {
 
     double m = Math.hypot(astar, bstar);
-    double m2 = Math.expm1(m * 0.0228f) / 0.0228f;
+    double m2 = Math.expm1(m * 0.0228) / 0.0228;
     double c = m2 / viewingConditions.getFlRoot();
-    double h = Math.atan2(bstar, astar) * (180.0f / Math.PI);
+    double h = Math.atan2(bstar, astar) * (180.0 / Math.PI);
     if (h < 0.0) {
-      h += 360.0f;
+      h += 360.0;
     }
-    float j = jstar / (1f - (jstar - 100f) * 0.007f);
-    return fromJchInViewingConditions(j, (float) c, (float) h, viewingConditions);
+    double j = jstar / (1. - (jstar - 100.) * 0.007);
+    return fromJchInViewingConditions(j, c, h, viewingConditions);
   }
 
   /**
    * ARGB representation of the color. Assumes the color was viewed in default viewing conditions,
    * which are near-identical to the default viewing conditions for sRGB.
    */
-  public int getInt() {
+  public int toInt() {
     return viewed(ViewingConditions.DEFAULT);
   }
 
@@ -381,59 +375,49 @@ public final class Cam16 {
    * @return ARGB representation of color
    */
   int viewed(ViewingConditions viewingConditions) {
-    float alpha =
-        (getChroma() == 0.0 || getJ() == 0.0)
-            ? 0.0f
-            : getChroma() / (float) Math.sqrt(getJ() / 100.0);
+    double alpha =
+        (getChroma() == 0.0 || getJ() == 0.0) ? 0.0 : getChroma() / Math.sqrt(getJ() / 100.0);
 
-    float t =
-        (float)
-            Math.pow(
-                alpha / Math.pow(1.64 - Math.pow(0.29, viewingConditions.getN()), 0.73), 1.0 / 0.9);
-    float hRad = getHue() * (float) Math.PI / 180.0f;
+    double t =
+        Math.pow(
+            alpha / Math.pow(1.64 - Math.pow(0.29, viewingConditions.getN()), 0.73), 1.0 / 0.9);
+    double hRad = Math.toRadians(getHue());
 
-    float eHue = 0.25f * (float) (Math.cos(hRad + 2.0) + 3.8);
-    float ac =
+    double eHue = 0.25 * (Math.cos(hRad + 2.0) + 3.8);
+    double ac =
         viewingConditions.getAw()
-            * (float)
-                Math.pow(getJ() / 100.0, 1.0 / viewingConditions.getC() / viewingConditions.getZ());
-    float p1 = eHue * (50000.0f / 13.0f) * viewingConditions.getNc() * viewingConditions.getNcb();
-    float p2 = (ac / viewingConditions.getNbb());
+            * Math.pow(getJ() / 100.0, 1.0 / viewingConditions.getC() / viewingConditions.getZ());
+    double p1 = eHue * (50000.0 / 13.0) * viewingConditions.getNc() * viewingConditions.getNcb();
+    double p2 = (ac / viewingConditions.getNbb());
 
-    float hSin = (float) Math.sin(hRad);
-    float hCos = (float) Math.cos(hRad);
+    double hSin = Math.sin(hRad);
+    double hCos = Math.cos(hRad);
 
-    float gamma = 23.0f * (p2 + 0.305f) * t / (23.0f * p1 + 11.0f * t * hCos + 108.0f * t * hSin);
-    float a = gamma * hCos;
-    float b = gamma * hSin;
-    float rA = (460.0f * p2 + 451.0f * a + 288.0f * b) / 1403.0f;
-    float gA = (460.0f * p2 - 891.0f * a - 261.0f * b) / 1403.0f;
-    float bA = (460.0f * p2 - 220.0f * a - 6300.0f * b) / 1403.0f;
+    double gamma = 23.0 * (p2 + 0.305) * t / (23.0 * p1 + 11.0 * t * hCos + 108.0 * t * hSin);
+    double a = gamma * hCos;
+    double b = gamma * hSin;
+    double rA = (460.0 * p2 + 451.0 * a + 288.0 * b) / 1403.0;
+    double gA = (460.0 * p2 - 891.0 * a - 261.0 * b) / 1403.0;
+    double bA = (460.0 * p2 - 220.0 * a - 6300.0 * b) / 1403.0;
 
-    float rCBase = (float) max(0, (27.13 * Math.abs(rA)) / (400.0 - Math.abs(rA)));
-    float rC =
-        Math.signum(rA)
-            * (100.0f / viewingConditions.getFl())
-            * (float) Math.pow(rCBase, 1.0 / 0.42);
-    float gCBase = (float) max(0, (27.13 * Math.abs(gA)) / (400.0 - Math.abs(gA)));
-    float gC =
-        Math.signum(gA)
-            * (100.0f / viewingConditions.getFl())
-            * (float) Math.pow(gCBase, 1.0 / 0.42);
-    float bCBase = (float) max(0, (27.13 * Math.abs(bA)) / (400.0 - Math.abs(bA)));
-    float bC =
-        Math.signum(bA)
-            * (100.0f / viewingConditions.getFl())
-            * (float) Math.pow(bCBase, 1.0 / 0.42);
-    float rF = rC / viewingConditions.getRgbD()[0];
-    float gF = gC / viewingConditions.getRgbD()[1];
-    float bF = bC / viewingConditions.getRgbD()[2];
+    double rCBase = max(0, (27.13 * Math.abs(rA)) / (400.0 - Math.abs(rA)));
+    double rC =
+        Math.signum(rA) * (100.0 / viewingConditions.getFl()) * Math.pow(rCBase, 1.0 / 0.42);
+    double gCBase = max(0, (27.13 * Math.abs(gA)) / (400.0 - Math.abs(gA)));
+    double gC =
+        Math.signum(gA) * (100.0 / viewingConditions.getFl()) * Math.pow(gCBase, 1.0 / 0.42);
+    double bCBase = max(0, (27.13 * Math.abs(bA)) / (400.0 - Math.abs(bA)));
+    double bC =
+        Math.signum(bA) * (100.0 / viewingConditions.getFl()) * Math.pow(bCBase, 1.0 / 0.42);
+    double rF = rC / viewingConditions.getRgbD()[0];
+    double gF = gC / viewingConditions.getRgbD()[1];
+    double bF = bC / viewingConditions.getRgbD()[2];
 
-    float[][] matrix = CAM16RGB_TO_XYZ;
-    float x = (rF * matrix[0][0]) + (gF * matrix[0][1]) + (bF * matrix[0][2]);
-    float y = (rF * matrix[1][0]) + (gF * matrix[1][1]) + (bF * matrix[1][2]);
-    float z = (rF * matrix[2][0]) + (gF * matrix[2][1]) + (bF * matrix[2][2]);
+    double[][] matrix = CAM16RGB_TO_XYZ;
+    double x = (rF * matrix[0][0]) + (gF * matrix[0][1]) + (bF * matrix[0][2]);
+    double y = (rF * matrix[1][0]) + (gF * matrix[1][1]) + (bF * matrix[1][2]);
+    double z = (rF * matrix[2][0]) + (gF * matrix[2][1]) + (bF * matrix[2][2]);
 
-    return ColorUtils.intFromXyzComponents(x, y, z);
+    return ColorUtils.argbFromXyz(x, y, z);
   }
 }

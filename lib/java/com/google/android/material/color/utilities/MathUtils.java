@@ -17,8 +17,6 @@
 package com.google.android.material.color.utilities;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 import androidx.annotation.RestrictTo;
 
@@ -28,52 +26,115 @@ import androidx.annotation.RestrictTo;
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-public final class MathUtils {
+public class MathUtils {
   private MathUtils() {}
-  /** Ensure min <= input <= max */
-  static float clamp(float min, float max, float input) {
-    return min(max(input, min), max);
-  }
 
-  /** Linearly interpolate from start to stop, by amount (0.0 <= amount <= 1.0) */
-  public static float lerp(float start, float stop, float amount) {
-    return (1.0f - amount) * start + amount * stop;
-  }
-
-  /** Determine the shortest angle between two angles, measured in degrees. */
-  public static float differenceDegrees(float a, float b) {
-    return 180f - Math.abs(Math.abs(a - b) - 180f);
-  }
-
-  /** Ensure 0 <= degrees < 360 */
-  public static float sanitizeDegrees(float degrees) {
-    if (degrees < 0f) {
-      return (degrees % 360.0f) + 360.f;
-    } else if (degrees >= 360.0f) {
-      return degrees % 360.0f;
+  /**
+   * The signum function.
+   *
+   * @return 1 if num > 0, -1 if num < 0, and 0 if num = 0
+   */
+  public static int signum(double num) {
+    if (num < 0) {
+      return -1;
+    } else if (num == 0) {
+      return 0;
     } else {
-      return degrees;
+      return 1;
     }
   }
 
-  /** Ensure 0 <= degrees < 360 */
-  public static int sanitizeDegrees(int degrees) {
+  /**
+   * The linear interpolation function.
+   *
+   * @return start if amount = 0 and stop if amount = 1
+   */
+  public static double lerp(double start, double stop, double amount) {
+    return (1.0 - amount) * start + amount * stop;
+  }
+
+  /**
+   * Clamps an integer between two integers.
+   *
+   * @return input when min <= input <= max, and either min or max otherwise.
+   */
+  public static int clampInt(int min, int max, int input) {
+    if (input < min) {
+      return min;
+    } else if (input > max) {
+      return max;
+    }
+
+    return input;
+  }
+
+  /**
+   * Clamps an integer between two floating-point numbers.
+   *
+   * @return input when min <= input <= max, and either min or max otherwise.
+   */
+  public static double clampDouble(double min, double max, double input) {
+    if (input < min) {
+      return min;
+    } else if (input > max) {
+      return max;
+    }
+
+    return input;
+  }
+
+  /**
+   * Sanitizes a degree measure as an integer.
+   *
+   * @return a degree measure between 0 (inclusive) and 360 (exclusive).
+   */
+  public static int sanitizeDegreesInt(int degrees) {
+    degrees = degrees % 360;
     if (degrees < 0) {
-      return (degrees % 360) + 360;
-    } else if (degrees >= 360) {
-      return degrees % 360;
-    } else {
-      return degrees;
+      degrees = degrees + 360;
     }
+    return degrees;
   }
 
-  /** Convert radians to degrees. */
-  static float toDegrees(float radians) {
-    return radians * 180.0f / (float) Math.PI;
+  /**
+   * Sanitizes a degree measure as a floating-point number.
+   *
+   * @return a degree measure between 0.0 (inclusive) and 360.0 (exclusive).
+   */
+  public static double sanitizeDegreesDouble(double degrees) {
+    degrees = degrees % 360.0;
+    if (degrees < 0) {
+      degrees = degrees + 360.0;
+    }
+    return degrees;
   }
 
-  /** Convert degrees to radians. */
-  static float toRadians(float degrees) {
-    return degrees / 180.0f * (float) Math.PI;
+  /**
+   * Sign of direction change needed to travel from one angle to another.
+   *
+   * <p>For angles that are 180 degrees apart from each other, both directions have the same travel
+   * distance, so either direction is shortest. The value 1.0 is returned in this case.
+   *
+   * @param from The angle travel starts from, in degrees.
+   * @param to The angle travel ends at, in degrees.
+   * @return -1 if decreasing from leads to the shortest travel distance, 1 if increasing from leads
+   *     to the shortest travel distance.
+   */
+  public static double rotationDirection(double from, double to) {
+    double increasingDifference = sanitizeDegreesDouble(to - from);
+    return increasingDifference <= 180.0 ? 1.0 : -1.0;
+  }
+
+  /** Distance of two points on a circle, represented using degrees. */
+  public static double differenceDegrees(double a, double b) {
+    return 180.0 - Math.abs(Math.abs(a - b) - 180.0);
+  }
+
+  /** Multiplies a 1x3 row vector with a 3x3 matrix. */
+  public static double[] matrixMultiply(double[] row, double[][] matrix) {
+    double a = row[0] * matrix[0][0] + row[1] * matrix[0][1] + row[2] * matrix[0][2];
+    double b = row[0] * matrix[1][0] + row[1] * matrix[1][1] + row[2] * matrix[1][2];
+    double c = row[0] * matrix[2][0] + row[1] * matrix[2][1] + row[2] * matrix[2][2];
+    return new double[] {a, b, c};
   }
 }

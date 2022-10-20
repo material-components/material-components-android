@@ -32,72 +32,72 @@ public final class BlendTest {
   @Test
   public void harmonize_redToBlue() {
     int blended = Blend.harmonize(RED, BLUE);
-    assertThat(blended).isEqualTo(0xffFB0054);
+    assertThat(blended).isEqualTo(0xffFB0057);
   }
 
   @Test
   public void harmonize_redToGreen() {
     int answer = Blend.harmonize(RED, GREEN);
-    assertThat(answer).isEqualTo(0xffDA5400);
+    assertThat(answer).isEqualTo(0xffD85600);
   }
 
   @Test
   public void harmonize_redToYellow() {
     int answer = Blend.harmonize(RED, YELLOW);
-    assertThat(answer).isEqualTo(0xffDA5400);
+    assertThat(answer).isEqualTo(0xffD85600);
   }
 
   @Test
   public void harmonize_blueToGreen() {
     int answer = Blend.harmonize(BLUE, GREEN);
-    assertThat(answer).isEqualTo(0xff0047A7);
+    assertThat(answer).isEqualTo(0xff0047A3);
   }
 
   @Test
   public void harmonize_blueToRed() {
     int answer = Blend.harmonize(BLUE, RED);
-    assertThat(answer).isEqualTo(0xff5600DF);
+    assertThat(answer).isEqualTo(0xff5700DC);
   }
 
   @Test
   public void harmonize_blueToYellow() {
     int answer = Blend.harmonize(BLUE, YELLOW);
-    assertThat(answer).isEqualTo(0xff0047A7);
+    assertThat(answer).isEqualTo(0xff0047A3);
   }
 
   @Test
   public void harmonize_greenToBlue() {
     int answer = Blend.harmonize(GREEN, BLUE);
-    assertThat(answer).isEqualTo(0xff00FC91);
+    assertThat(answer).isEqualTo(0xff00FC94);
   }
 
   @Test
   public void harmonize_greenToRed() {
     int answer = Blend.harmonize(GREEN, RED);
-    assertThat(answer).isEqualTo(0xffADF000);
+    assertThat(answer).isEqualTo(0xffB1F000);
   }
 
   @Test
   public void harmonize_greenToYellow() {
     int answer = Blend.harmonize(GREEN, YELLOW);
-    assertThat(answer).isEqualTo(0xffADF000);
+    assertThat(answer).isEqualTo(0xffB1F000);
   }
 
   @Test
   public void harmonize_yellowToBlue() {
     int answer = Blend.harmonize(YELLOW, BLUE);
-    assertThat(answer).isEqualTo(0xffEBFFB2);
+    assertThat(answer).isEqualTo(0xffEBFFBA);
   }
 
   @Test
   public void harmonize_yellowToGreen() {
     int answer = Blend.harmonize(YELLOW, GREEN);
-    assertThat(answer).isEqualTo(0xffEBFFB2);
+    assertThat(answer).isEqualTo(0xffEBFFBA);
   }
 
   @Test
   public void harmonize_yellowToRed() {
     int answer = Blend.harmonize(YELLOW, RED);
-    assertThat(answer).isEqualTo(0xffFFF6DC);
+    assertThat(answer).isEqualTo(0xffFFF6E3);
   }
 }

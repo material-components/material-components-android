@@ -43,9 +43,10 @@ import androidx.annotation.RestrictTo;
  */
 @RestrictTo(LIBRARY_GROUP)
 public final class Hct {
-  private float hue;
-  private float chroma;
-  private float tone;
+  private double hue;
+  private double chroma;
+  private double tone;
+  private int argb;
 
   /**
    * Create an HCT color from hue, chroma, and tone.
@@ -56,8 +57,9 @@ public final class Hct {
    * @param tone 0 <= tone <= 100; invalid values are corrected.
    * @return HCT representation of a color in default viewing conditions.
    */
-  public static Hct from(float hue, float chroma, float tone) {
-    return new Hct(hue, chroma, tone);
+  public static Hct from(double hue, double chroma, double tone) {
+    int argb = HctSolver.solveToInt(hue, chroma, tone);
+    return new Hct(argb);
   }
 
   /**
@@ -67,28 +69,27 @@ public final class Hct {
    * @return HCT representation of a color in default viewing conditions
    */
   public static Hct fromInt(int argb) {
-    Cam16 cam = Cam16.fromInt(argb);
-    return new Hct(cam.getHue(), cam.getChroma(), ColorUtils.lstarFromInt(argb));
+    return new Hct(argb);
   }
 
-  private Hct(float hue, float chroma, float tone) {
-    setInternalState(gamutMap(hue, chroma, tone));
+  private Hct(int argb) {
+    setInternalState(argb);
   }
 
-  public float getHue() {
+  public double getHue() {
     return hue;
   }
 
-  public float getChroma() {
+  public double getChroma() {
     return chroma;
   }
 
-  public float getTone() {
+  public double getTone() {
     return tone;
   }
 
   public int toInt() {
-    return gamutMap(hue, chroma, tone);
+    return argb;
   }
 
   /**
@@ -97,8 +98,8 @@ public final class Hct {
    *
    * @param newHue 0 <= newHue < 360; invalid values are corrected.
    */
-  public void setHue(float newHue) {
-    setInternalState(gamutMap(MathUtils.sanitizeDegrees(newHue), chroma, tone));
+  public void setHue(double newHue) {
+    setInternalState(HctSolver.solveToInt(newHue, chroma, tone));
   }
 
   /**
@@ -107,8 +108,8 @@ public final class Hct {
    *
    * @param newChroma 0 <= newChroma < ?
    */
-  public void setChroma(float newChroma) {
-    setInternalState(gamutMap(hue, newChroma, tone));
+  public void setChroma(double newChroma) {
+    setInternalState(HctSolver.solveToInt(hue, newChroma, tone));
   }
 
   /**
@@ -117,150 +118,15 @@ public final class Hct {
    *
    * @param newTone 0 <= newTone <= 100; invalid valids are corrected.
    */
-  public void setTone(float newTone) {
-    setInternalState(gamutMap(hue, chroma, newTone));
+  public void setTone(double newTone) {
+    setInternalState(HctSolver.solveToInt(hue, chroma, newTone));
   }
 
   private void setInternalState(int argb) {
+    this.argb = argb;
     Cam16 cam = Cam16.fromInt(argb);
-    float tone = ColorUtils.lstarFromInt(argb);
     hue = cam.getHue();
     chroma = cam.getChroma();
-    this.tone = tone;
-  }
-
-  /**
-   * When the delta between the floor & ceiling of a binary search for maximum chroma at a hue and
-   * tone is less than this, the binary search terminates.
-   */
-  private static final float CHROMA_SEARCH_ENDPOINT = 0.4f;
-
-  /** The maximum color distance, in CAM16-UCS, between a requested color and the color returned. */
-  private static final float DE_MAX = 1.0f;
-
-  /** The maximum difference between the requested L* and the L* returned. */
-  private static final float DL_MAX = 0.2f;
-
-  /**
-   * The minimum color distance, in CAM16-UCS, between a requested color and an 'exact' match. This
-   * allows the binary search during gamut mapping to terminate much earlier when the error is
-   * infinitesimal.
-   */
-  private static final float DE_MAX_ERROR = 0.000000001f;
-
-  /**
-   * When the delta between the floor & ceiling of a binary search for J, lightness in CAM16, is
-   * less than this, the binary search terminates.
-   */
-  private static final float LIGHTNESS_SEARCH_ENDPOINT = 0.01f;
-
-  /**
-   * @param hue a number, in degrees, representing ex. red, orange, yellow, etc. Ranges from 0 <=
-   *     hue < 360.
-   * @param chroma Informally, colorfulness. Ranges from 0 to roughly 150. Like all perceptually
-   *     accurate color systems, chroma has a different maximum for any given hue and tone, so the
-   *     color returned may be lower than the requested chroma.
-   * @param tone Lightness. Ranges from 0 to 100.
-   * @return ARGB representation of a color in default viewing conditions
-   */
-  private static int gamutMap(float hue, float chroma, float tone) {
-    return gamutMapInViewingConditions(hue, chroma, tone, ViewingConditions.DEFAULT);
-  }
-
-  /**
-   * @param hue CAM16 hue.
-   * @param chroma CAM16 chroma.
-   * @param tone L*a*b* lightness.
-   * @param viewingConditions Information about the environment where the color was observed.
-   */
-  static int gamutMapInViewingConditions(
-      float hue, float chroma, float tone, ViewingConditions viewingConditions) {
-
-    if (chroma < 1.0 || Math.round(tone) <= 0.0 || Math.round(tone) >= 100.0) {
-      return ColorUtils.intFromLstar(tone);
-    }
-
-    hue = MathUtils.sanitizeDegrees(hue);
-
-    float high = chroma;
-    float mid = chroma;
-    float low = 0.0f;
-    boolean isFirstLoop = true;
-
-    Cam16 answer = null;
-    while (Math.abs(low - high) >= CHROMA_SEARCH_ENDPOINT) {
-      Cam16 possibleAnswer = findCamByJ(hue, mid, tone);
-
-      if (isFirstLoop) {
-        if (possibleAnswer != null) {
-          return possibleAnswer.viewed(viewingConditions);
-        } else {
-          isFirstLoop = false;
-          mid = low + (high - low) / 2.0f;
-          continue;
-        }
-      }
-
-      if (possibleAnswer == null) {
-        high = mid;
-      } else {
-        answer = possibleAnswer;
-        low = mid;
-      }
-
-      mid = low + (high - low) / 2.0f;
-    }
-
-    if (answer == null) {
-      return ColorUtils.intFromLstar(tone);
-    }
-
-    return answer.viewed(viewingConditions);
-  }
-
-  /**
-   * @param hue CAM16 hue
-   * @param chroma CAM16 chroma
-   * @param tone L*a*b* lightness
-   * @return CAM16 instance within error tolerance of the provided dimensions, or null.
-   */
-  private static Cam16 findCamByJ(float hue, float chroma, float tone) {
-    float low = 0.0f;
-    float high = 100.0f;
-    float mid = 0.0f;
-    float bestdL = 1000.0f;
-    float bestdE = 1000.0f;
-
-    Cam16 bestCam = null;
-    while (Math.abs(low - high) > LIGHTNESS_SEARCH_ENDPOINT) {
-      mid = low + (high - low) / 2;
-      Cam16 camBeforeClip = Cam16.fromJch(mid, chroma, hue);
-      int clipped = camBeforeClip.getInt();
-      float clippedLstar = ColorUtils.lstarFromInt(clipped);
-      float dL = Math.abs(tone - clippedLstar);
-
-      if (dL < DL_MAX) {
-        Cam16 camClipped = Cam16.fromInt(clipped);
-        float dE =
-            camClipped.distance(Cam16.fromJch(camClipped.getJ(), camClipped.getChroma(), hue));
-        if (dE <= DE_MAX && dE <= bestdE) {
-          bestdL = dL;
-          bestdE = dE;
-          bestCam = camClipped;
-        }
-      }
-
-      if (bestdL == 0 && bestdE < DE_MAX_ERROR) {
-        break;
-      }
-
-      if (clippedLstar < tone) {
-        low = mid;
-      } else {
-        high = mid;
-      }
-    }
-
-    return bestCam;
+    this.tone = ColorUtils.lstarFromArgb(argb);
   }
 }

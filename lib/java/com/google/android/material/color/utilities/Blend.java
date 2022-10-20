@@ -17,7 +17,6 @@
 package com.google.android.material.color.utilities;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static java.lang.Math.min;
 
 import androidx.annotation.RestrictTo;
 
@@ -27,10 +26,7 @@ import androidx.annotation.RestrictTo;
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-public final class Blend {
-  private static final float HARMONIZE_MAX_DEGREES = 15.0f;
-  private static final float HARMONIZE_PERCENTAGE = 0.5f;
-
+public class Blend {
   private Blend() {}
 
   /**
@@ -45,12 +41,12 @@ public final class Blend {
   public static int harmonize(int designColor, int sourceColor) {
     Hct fromHct = Hct.fromInt(designColor);
     Hct toHct = Hct.fromInt(sourceColor);
-    float differenceDegrees = MathUtils.differenceDegrees(fromHct.getHue(), toHct.getHue());
-    float rotationDegrees = min(differenceDegrees * HARMONIZE_PERCENTAGE, HARMONIZE_MAX_DEGREES);
-    float outputHue =
-        MathUtils.sanitizeDegrees(
+    double differenceDegrees = MathUtils.differenceDegrees(fromHct.getHue(), toHct.getHue());
+    double rotationDegrees = Math.min(differenceDegrees * 0.5, 15.0);
+    double outputHue =
+        MathUtils.sanitizeDegreesDouble(
             fromHct.getHue()
-                + rotationDegrees * rotationDirection(fromHct.getHue(), toHct.getHue()));
+                + rotationDegrees * MathUtils.rotationDirection(fromHct.getHue(), toHct.getHue()));
     return Hct.from(outputHue, fromHct.getChroma(), fromHct.getTone()).toInt();
   }
 
@@ -63,11 +59,12 @@ public final class Blend {
    * @param amount how much blending to perform; 0.0 >= and <= 1.0
    * @return from, with a hue blended towards to. Chroma and tone are constant.
    */
-  public static int blendHctHue(int from, int to, float amount) {
-    int ucs = blendCam16Ucs(from, to, amount);
+  public static int hctHue(int from, int to, double amount) {
+    int ucs = cam16Ucs(from, to, amount);
     Cam16 ucsCam = Cam16.fromInt(ucs);
     Cam16 fromCam = Cam16.fromInt(from);
-    return Hct.from(ucsCam.getHue(), fromCam.getChroma(), ColorUtils.lstarFromInt(from)).toInt();
+    Hct blended = Hct.from(ucsCam.getHue(), fromCam.getChroma(), ColorUtils.lstarFromArgb(from));
+    return blended.toInt();
   }
 
   /**
@@ -78,49 +75,18 @@ public final class Blend {
    * @param amount how much blending to perform; 0.0 >= and <= 1.0
    * @return from, blended towards to. Hue, chroma, and tone will change.
    */
-  public static int blendCam16Ucs(int from, int to, float amount) {
+  public static int cam16Ucs(int from, int to, double amount) {
     Cam16 fromCam = Cam16.fromInt(from);
     Cam16 toCam = Cam16.fromInt(to);
-
-    float aJ = fromCam.getJStar();
-    float aA = fromCam.getAStar();
-    float aB = fromCam.getBStar();
-
-    float bJ = toCam.getJStar();
-    float bA = toCam.getAStar();
-    float bB = toCam.getBStar();
-
-    float j = aJ + (bJ - aJ) * amount;
-    float a = aA + (bA - aA) * amount;
-    float b = aB + (bB - aB) * amount;
-
-    Cam16 blended = Cam16.fromUcs(j, a, b);
-    return blended.getInt();
-  }
-
-  /**
-   * Sign of direction change needed to travel from one angle to another.
-   *
-   * @param from The angle travel starts from, in degrees.
-   * @param to The angle travel ends at, in degrees.
-   * @return -1 if decreasing from leads to the shortest travel distance, 1 if increasing from leads
-   *     to the shortest travel distance.
-   */
-  private static float rotationDirection(float from, float to) {
-    float a = to - from;
-    float b = to - from + 360.0f;
-    float c = to - from - 360.0f;
-
-    float aAbs = Math.abs(a);
-    float bAbs = Math.abs(b);
-    float cAbs = Math.abs(c);
-
-    if (aAbs <= bAbs && aAbs <= cAbs) {
-      return a >= 0.0 ? 1 : -1;
-    } else if (bAbs <= aAbs && bAbs <= cAbs) {
-      return b >= 0.0 ? 1 : -1;
-    } else {
-      return c >= 0.0 ? 1 : -1;
-    }
+    double fromJ = fromCam.getJstar();
+    double fromA = fromCam.getAstar();
+    double fromB = fromCam.getBstar();
+    double toJ = toCam.getJstar();
+    double toA = toCam.getAstar();
+    double toB = toCam.getBstar();
+    double jstar = fromJ + (toJ - fromJ) * amount;
+    double astar = fromA + (toA - fromA) * amount;
+    double bstar = fromB + (toB - fromB) * amount;
+    return Cam16.fromUcs(jstar, astar, bstar).toInt();
   }
 }
