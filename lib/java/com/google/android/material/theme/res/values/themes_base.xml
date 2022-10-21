@@ -80,6 +80,7 @@
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
     <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Material3.BottomSheetDialog</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+    <item name="sideSheetDialogTheme">@style/ThemeOverlay.Material3.SideSheetDialog</item>
 
     <!-- Picker styles and themes. -->
     <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar</item>
@@ -319,6 +320,7 @@
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
     <item name="bottomSheetDialogTheme">@style/ThemeOverlay.Material3.BottomSheetDialog</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+    <item name="sideSheetDialogTheme">@style/ThemeOverlay.Material3.SideSheetDialog</item>
 
     <!-- Picker styles and themes. -->
     <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar</item>

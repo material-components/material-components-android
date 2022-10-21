@@ -72,6 +72,7 @@ def srcDirs = [
   'com/google/android/material/ripple',
   'com/google/android/material/shape',
   'com/google/android/material/shadow',
+  'com/google/android/material/sidesheet',
   'com/google/android/material/slider',
   'com/google/android/material/snackbar',
   'com/google/android/material/stateful',
