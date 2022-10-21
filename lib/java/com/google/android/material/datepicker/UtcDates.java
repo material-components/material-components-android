@@ -170,6 +170,24 @@ class UtcDates {
       formatHint = formatHint.replace("y", "yyyy");
     }
 
+    // Format year to always be displayed as 4 chars when 2 chars are used in localized pattern.
+    // Example: (fr-FR) dd/MM/y -> dd/MM/yyyy
+    if (formatHint.replaceAll("[^y]", "").length() == 2) {
+      formatHint = formatHint.replace("yy", "yyyy");
+    }
+
+    // Format month to always be displayed as 2 chars when only 1 char is used in localized pattern.
+    // Example: (fr-FR) dd/MM/y -> dd/MM/yyyy
+    if (formatHint.replaceAll("[^M]", "").length() == 1) {
+      formatHint = formatHint.replace("M", "MM");
+    }
+
+    // Format day to always be displayed as 2 chars when only 1 char is used in localized pattern.
+    // Example: (fr-FR) dd/MM/y -> dd/MM/yyyy
+    if (formatHint.replaceAll("[^d]", "").length() == 1) {
+      formatHint = formatHint.replace("d", "dd");
+    }
+
     return formatHint.replace("d", dayChar).replace("M", monthChar).replace("y", yearChar);
   }
 

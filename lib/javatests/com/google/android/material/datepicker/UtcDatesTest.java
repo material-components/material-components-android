@@ -47,7 +47,7 @@ public class UtcDatesTest {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/y");
     String hint = UtcDates.getTextInputHint(context.getResources(), sdf);
 
-    assertEquals("m/d/yyyy", hint);
+    assertEquals("mm/dd/yyyy", hint);
   }
 
   @Test
@@ -55,7 +55,7 @@ public class UtcDatesTest {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/yy");
     String hint = UtcDates.getTextInputHint(context.getResources(), sdf);
 
-    assertEquals("m/d/yy", hint);
+    assertEquals("mm/dd/yyyy", hint);
   }
 
   @Test
@@ -63,7 +63,7 @@ public class UtcDatesTest {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
     String hint = UtcDates.getTextInputHint(context.getResources(), sdf);
 
-    assertEquals("m/d/yyyy", hint);
+    assertEquals("mm/dd/yyyy", hint);
   }
 
   @Test
@@ -72,6 +72,6 @@ public class UtcDatesTest {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/y");
     String hint = UtcDates.getTextInputHint(context.getResources(), sdf);
 
-    assertEquals("m/j/aaaa", hint);
+    assertEquals("mm/jj/aaaa", hint);
   }
 }
