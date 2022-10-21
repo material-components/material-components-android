@@ -152,41 +152,53 @@ class UtcDates {
         ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))
             .toPattern()
             .replaceAll("\\s+", "");
+    pattern = patternToLongerFormat(pattern);
     SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
     format.setTimeZone(UtcDates.getTimeZone());
     format.setLenient(false);
     return format;
   }
 
-  static String getTextInputHint(Resources res, SimpleDateFormat format) {
-    String formatHint = format.toPattern();
-    String yearChar = res.getString(R.string.mtrl_picker_text_input_year_abbr);
-    String monthChar = res.getString(R.string.mtrl_picker_text_input_month_abbr);
-    String dayChar = res.getString(R.string.mtrl_picker_text_input_day_abbr);
-
+  /**
+   * Returns a more readable pattern by returning a longer date format.
+   * Given an input of m/d/yy, this method will return mm/dd/yyyy
+   * Given an input of d/m/y, this method will return dd/mm/yyyy
+   * @param pattern a Java date pattern
+   * @return
+   */
+  private static String patternToLongerFormat(String pattern) {
     // Format year to always be displayed as 4 chars when only 1 char is used in localized pattern.
     // Example: (fr-FR) dd/MM/y -> dd/MM/yyyy
-    if (formatHint.replaceAll("[^y]", "").length() == 1) {
-      formatHint = formatHint.replace("y", "yyyy");
+    if (pattern.replaceAll("[^y]", "").length() == 1) {
+      pattern = pattern.replace("y", "yyyy");
     }
 
     // Format year to always be displayed as 4 chars when 2 chars are used in localized pattern.
     // Example: (fr-FR) dd/MM/y -> dd/MM/yyyy
-    if (formatHint.replaceAll("[^y]", "").length() == 2) {
-      formatHint = formatHint.replace("yy", "yyyy");
+    if (pattern.replaceAll("[^y]", "").length() == 2) {
+      pattern = pattern.replace("yy", "yyyy");
     }
 
     // Format month to always be displayed as 2 chars when only 1 char is used in localized pattern.
     // Example: (fr-FR) dd/MM/y -> dd/MM/yyyy
-    if (formatHint.replaceAll("[^M]", "").length() == 1) {
-      formatHint = formatHint.replace("M", "MM");
+    if (pattern.replaceAll("[^M]", "").length() == 1) {
+      pattern = pattern.replace("M", "MM");
     }
 
     // Format day to always be displayed as 2 chars when only 1 char is used in localized pattern.
     // Example: (fr-FR) dd/MM/y -> dd/MM/yyyy
-    if (formatHint.replaceAll("[^d]", "").length() == 1) {
-      formatHint = formatHint.replace("d", "dd");
+    if (pattern.replaceAll("[^d]", "").length() == 1) {
+      pattern = pattern.replace("d", "dd");
     }
+
+    return pattern;
+  }
+
+  static String getTextInputHint(Resources res, SimpleDateFormat format) {
+    String formatHint = patternToLongerFormat(format.toPattern());
+    String yearChar = res.getString(R.string.mtrl_picker_text_input_year_abbr);
+    String monthChar = res.getString(R.string.mtrl_picker_text_input_month_abbr);
+    String dayChar = res.getString(R.string.mtrl_picker_text_input_day_abbr);
 
     return formatHint.replace("d", dayChar).replace("M", monthChar).replace("y", yearChar);
   }
