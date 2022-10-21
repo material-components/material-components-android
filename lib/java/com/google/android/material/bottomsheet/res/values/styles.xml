@@ -73,9 +73,10 @@
     <item name="paddingTopSystemWindowInsets">true</item>
     <item name="paddingLeftSystemWindowInsets">false</item>
     <item name="paddingRightSystemWindowInsets">false</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
+    <item name="shapeAppearance">@macro/m3_comp_sheet_bottom_docked_container_shape</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Top</item>
     <item name="shouldRemoveExpandedCorners">false</item>
+    <item name="backgroundTint">@macro/m3_comp_sheet_bottom_docked_container_color</item>
   </style>
 
   <style name="Widget.Material3.BottomSheet.Modal">
@@ -90,6 +91,6 @@
     <item name="android:minHeight">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:paddingBottom">@dimen/m3_bottom_sheet_drag_handle_bottom_padding</item>
     <item name="srcCompat">@drawable/mtrl_bottomsheet_drag_handle</item>
-    <item name="tint">?attr/colorOnSurfaceVariant</item>
+    <item name="tint">@macro/m3_comp_sheet_bottom_docked_drag_handle_color</item>
   </style>
 </resources>
