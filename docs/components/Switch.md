@@ -12,8 +12,9 @@ path: /catalog/switches/
 [Selection controls](https://material.io/components/selection-controls#usage)
 allow the user to select options.
 
-Switches toggle the state of a single setting on or off. They are the preferred
-way to adjust settings on mobile devices.
+[Switches](https://m3.material.io/components/switch/overview) toggle the state
+of a single setting on or off. They are the preferred way to adjust settings on
+mobile devices.
 
 ![White "Settings" menu with purple header and switches to turn on options, such
 as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
@@ -67,6 +68,12 @@ customize the new styles.
 [Theming switches (deprecated)](#theming-switches-deprecated).
 
 ### Switches example
+
+API and source code:
+
+*   `MaterialSwitch`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/materialswitch/MaterialSwitch)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/materialswitch/MaterialSwitch.java)
 
 The following example shows a list of five switches.
 
