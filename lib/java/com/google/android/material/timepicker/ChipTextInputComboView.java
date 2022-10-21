@@ -18,6 +18,7 @@ package com.google.android.material.timepicker;
 
 import com.google.android.material.R;
 
+import static android.text.TextUtils.isEmpty;
 import static com.google.android.material.timepicker.TimePickerView.GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME;
 
 import android.content.Context;
@@ -27,7 +28,6 @@ import android.os.Build.VERSION_CODES;
 import android.os.LocaleList;
 import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -37,6 +37,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.chip.Chip;
@@ -117,11 +118,16 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
   public void setText(CharSequence text) {
     String formattedText = formatText(text);
     chip.setText(formattedText);
-    if (!TextUtils.isEmpty(formattedText)) {
+    if (!isEmpty(formattedText)) {
       editText.removeTextChangedListener(watcher);
       editText.setText(formattedText);
       editText.addTextChangedListener(watcher);
     }
+  }
+
+  @VisibleForTesting
+  CharSequence getChipText() {
+    return chip.getText();
   }
 
   private String formatText(CharSequence text) {
@@ -167,12 +173,12 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
 
     @Override
     public void afterTextChanged(Editable editable) {
-      if (TextUtils.isEmpty(editable)) {
+      if (isEmpty(editable)) {
         chip.setText(formatText(DEFAULT_TEXT));
         return;
       }
-
-      chip.setText(formatText(editable));
+      String formattedText = formatText(editable);
+      chip.setText(isEmpty(formattedText) ? formatText(DEFAULT_TEXT) : formattedText);
     }
   }
 

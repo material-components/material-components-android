@@ -121,6 +121,44 @@ public class TimePickerTextInputKeyControllerTest {
     assertThat(editText.getText().length()).isEqualTo(1);
   }
 
+  @Test
+  public void afterTextChanged_validHourInput_formatsText() {
+    EditText editText = hourInput.getTextInput().getEditText();
+    editText.setText("1");
+    shadowOf(getMainLooper()).idle();
+
+    assertThat(hourInput.getChipText().toString()).isEqualTo("01");
+  }
+
+  @Test
+  public void afterTextChanged_invalidHourInput_resetsToDefault() {
+    EditText editText = hourInput.getTextInput().getEditText();
+    editText.setText("1");
+    editText.setText("+");
+    shadowOf(getMainLooper()).idle();
+
+    assertThat(hourInput.getChipText().toString()).isEqualTo("00");
+  }
+
+  @Test
+  public void afterTextChanged_validMinuteInput_formatsText() {
+    EditText editText = minuteInput.getTextInput().getEditText();
+    editText.setText("1");
+    shadowOf(getMainLooper()).idle();
+
+    assertThat(minuteInput.getChipText().toString()).isEqualTo("01");
+  }
+
+  @Test
+  public void afterTextChanged_invalidMinuteInput_resetsToDefault() {
+    EditText editText = minuteInput.getTextInput().getEditText();
+    editText.setText("1");
+    editText.setText("+");
+    shadowOf(getMainLooper()).idle();
+
+    assertThat(minuteInput.getChipText().toString()).isEqualTo("00");
+  }
+
   private static void pressKeys(EditText editText, int... keycodes) {
     for (int key : keycodes) {
       editText.dispatchKeyEvent(new KeyEvent(0, 0, KeyEvent.ACTION_DOWN, key, 0));
