@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -613,24 +614,12 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   private int getTextLayoutWidth() {
-    int maxWidth = 0;
+    float maxWidth = 0;
     int lineCount = getLineCount();
     for (int line = 0; line < lineCount; line++) {
-      maxWidth = max(maxWidth, getTextWidth(getTextInLine(line)));
+      maxWidth = max(maxWidth, getLayout().getLineWidth(line));
     }
-    return maxWidth;
-  }
-
-  private int getTextWidth(CharSequence text) {
-    Paint textPaint = getPaint();
-    String buttonText = text.toString();
-    if (getTransformationMethod() != null) {
-      // if text is transformed, add that transformation to to ensure correct calculation
-      // of icon padding.
-      buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
-    }
-
-    return min((int) textPaint.measureText(buttonText), getLayout().getEllipsizedWidth());
+    return (int) ceil(maxWidth);
   }
 
   private int getTextHeight() {
@@ -650,12 +639,6 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     textPaint.getTextBounds(buttonText, 0, buttonText.length(), bounds);
 
     return min(bounds.height(), getLayout().getHeight());
-  }
-
-  private CharSequence getTextInLine(int line) {
-    int start = getLayout().getLineStart(line);
-    int end = getLayout().getLineEnd(line);
-    return getText().subSequence(start, end);
   }
 
   private boolean isLayoutRTL() {
