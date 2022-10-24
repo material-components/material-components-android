@@ -56,13 +56,13 @@ public class DateStringsTest {
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("30 nov. " + CURRENT_YEAR));
+        is("29 nov. " + CURRENT_YEAR));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("25 juin " + (CURRENT_YEAR + 1)));
+        is("24 juin " + (CURRENT_YEAR + 1)));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("2 mars 2013"));
+    assertThat(DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("1 mars 2013"));
   }
 
   @Test
@@ -71,13 +71,13 @@ public class DateStringsTest {
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("Nov 30, " + CURRENT_YEAR));
+        is("Nov 29, " + CURRENT_YEAR));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("Jun 25, " + (CURRENT_YEAR + 1)));
+        is("Jun 24, " + (CURRENT_YEAR + 1)));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("Mar 2, 2013"));
+    assertThat(DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("Mar 1, 2013"));
   }
 
   @Test
@@ -86,14 +86,14 @@ public class DateStringsTest {
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("30 de nov de " + CURRENT_YEAR));
+        is("29 de nov de " + CURRENT_YEAR));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("25 de jun de " + (CURRENT_YEAR + 1)));
+        is("24 de jun de " + (CURRENT_YEAR + 1)));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
     assertThat(
-        DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("2 de mar de 2013"));
+        DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("1 de mar de 2013"));
   }
 
   @Test
@@ -102,13 +102,13 @@ public class DateStringsTest {
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("30 בנוב׳ " + CURRENT_YEAR));
+        is("29 בנוב׳ " + CURRENT_YEAR));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("25 ביוני " + (CURRENT_YEAR + 1)));
+        is("24 ביוני " + (CURRENT_YEAR + 1)));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("2 במרץ 2013"));
+    assertThat(DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("1 במרץ 2013"));
   }
 
   @Test
@@ -117,14 +117,14 @@ public class DateStringsTest {
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("30 نوفمبر، " + CURRENT_YEAR));
+        is("29 نوفمبر، " + CURRENT_YEAR));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is("25 يونيو، " + (CURRENT_YEAR + 1)));
+        is("24 يونيو، " + (CURRENT_YEAR + 1)));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
     assertThat(
-        DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("2 مارس، 2013"));
+        DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("1 مارس، 2013"));
   }
 
   @Test
@@ -133,86 +133,86 @@ public class DateStringsTest {
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is(CURRENT_YEAR + "年11月30日"));
+        is(CURRENT_YEAR + "年11月29日"));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
     assertThat(
         DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale),
-        is((CURRENT_YEAR + 1) + "年6月25日"));
+        is((CURRENT_YEAR + 1) + "年6月24日"));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("2013年3月2日"));
+    assertThat(DateStrings.getYearMonthDay(startDate.getTimeInMillis(), locale), is("2013年3月1日"));
   }
 
   @Test
   public void frMonthDayString() {
     Locale locale = Locale.FRANCE;
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("30 nov."));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("29 nov."));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("25 juin"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("24 juin"));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("2 mars"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("1 mars"));
   }
 
   @Test
   public void usMonthDayString() {
     Locale locale = Locale.US;
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("Nov 30"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("Nov 29"));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("Jun 25"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("Jun 24"));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("Mar 2"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("Mar 1"));
   }
 
   @Test
   public void ptMonthDayString() {
     Locale locale = new Locale("pt", "BR");
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("30 de nov"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("29 de nov"));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("25 de jun"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("24 de jun"));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("2 de mar"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("1 de mar"));
   }
 
   @Test
   public void iwMonthDayString() {
     Locale locale = new Locale("iw", "IL");
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("30 בנוב׳"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("29 בנוב׳"));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("25 ביוני"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("24 ביוני"));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("2 במרץ"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("1 במרץ"));
   }
 
   @Test
   public void arMonthDayString() {
     Locale locale = new Locale("ar", "LY");
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("30 نوفمبر"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("29 نوفمبر"));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("25 يونيو"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("24 يونيو"));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("2 مارس"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("1 مارس"));
   }
 
   @Test
   public void zhMonthDayString() {
     Locale locale = new Locale("zh", "CN");
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("11月30日"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("11月29日"));
     startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 5, 25);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("6月25日"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("6月24日"));
     startDate = setupLocalizedCalendar(locale, 2013, 2, 2);
-    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("3月2日"));
+    assertThat(DateStrings.getMonthDay(startDate.getTimeInMillis(), locale), is("3月1日"));
   }
 
   @Test
   public void getDateStringCurrentYear() {
     startDate = setupLocalizedCalendar(Locale.US, CURRENT_YEAR, 10, 30);
     String dateString = DateStrings.getDateString(startDate.getTimeInMillis(), null);
-    assertThat(dateString, is("Nov 30"));
+    assertThat(dateString, is("Nov 29"));
   }
 
   @Test
@@ -228,7 +228,7 @@ public class DateStringsTest {
   public void getDateStringNextYear() {
     startDate = setupLocalizedCalendar(Locale.US, CURRENT_YEAR + 1, 10, 30);
     String dateString = DateStrings.getDateString(startDate.getTimeInMillis(), null);
-    assertThat(dateString, is("Nov 30, " + (CURRENT_YEAR + 1)));
+    assertThat(dateString, is("Nov 29, " + (CURRENT_YEAR + 1)));
   }
 
   @Test
@@ -247,8 +247,8 @@ public class DateStringsTest {
     Pair<String, String> dateRangeString =
         DateStrings.getDateRangeString(
             startDate.getTimeInMillis(), endDate.getTimeInMillis(), null);
-    assertThat(dateRangeString.first, is("May 30"));
-    assertThat(dateRangeString.second, is("Dec 5"));
+    assertThat(dateRangeString.first, is("May 29"));
+    assertThat(dateRangeString.second, is("Dec 4"));
   }
 
   @Test
@@ -258,8 +258,8 @@ public class DateStringsTest {
     Pair<String, String> dateRangeString =
         DateStrings.getDateRangeString(
             startDate.getTimeInMillis(), endDate.getTimeInMillis(), null);
-    assertThat(dateRangeString.first, is("May 30"));
-    assertThat(dateRangeString.second, is("Dec 5, " + (CURRENT_YEAR + 1)));
+    assertThat(dateRangeString.first, is("May 29"));
+    assertThat(dateRangeString.second, is("Dec 4, " + (CURRENT_YEAR + 1)));
   }
 
   @Test
@@ -269,8 +269,8 @@ public class DateStringsTest {
     Pair<String, String> dateRangeString =
         DateStrings.getDateRangeString(
             startDate.getTimeInMillis(), endDate.getTimeInMillis(), null);
-    assertThat(dateRangeString.first, is("May 30, " + CURRENT_YEAR));
-    assertThat(dateRangeString.second, is("Dec 5, " + (CURRENT_YEAR + 1)));
+    assertThat(dateRangeString.first, is("May 29, " + CURRENT_YEAR));
+    assertThat(dateRangeString.second, is("Dec 4, " + (CURRENT_YEAR + 1)));
   }
 
   @Test
@@ -310,7 +310,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ false,
             /* isEndOfRange= */ false);
 
-    assertThat(contentDescription, is("Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Sunday, November 29, 2020"));
   }
 
   @Test
@@ -324,7 +324,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ true,
             /* isEndOfRange= */ false);
 
-    assertThat(contentDescription, is("Start date Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Start date Sunday, November 29, 2020"));
   }
 
   @Test
@@ -338,7 +338,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ false,
             /* isEndOfRange= */ true);
 
-    assertThat(contentDescription, is("End date Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("End date Sunday, November 29, 2020"));
   }
 
   @Test
@@ -352,7 +352,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ true,
             /* isEndOfRange= */ true);
 
-    assertThat(contentDescription, is("Start date Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Start date Sunday, November 29, 2020"));
   }
 
   @Test
@@ -366,7 +366,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ false,
             /* isEndOfRange= */ false);
 
-    assertThat(contentDescription, is("Today Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Today Sunday, November 29, 2020"));
   }
 
   @Test
@@ -380,7 +380,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ true,
             /* isEndOfRange= */ false);
 
-    assertThat(contentDescription, is("Start date Today Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Start date Today Sunday, November 29, 2020"));
   }
 
   @Test
@@ -394,7 +394,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ false,
             /* isEndOfRange= */ true);
 
-    assertThat(contentDescription, is("End date Today Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("End date Today Sunday, November 29, 2020"));
   }
 
   @Test
@@ -408,7 +408,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ true,
             /* isEndOfRange= */ true);
 
-    assertThat(contentDescription, is("Start date Today Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Start date Today Sunday, November 29, 2020"));
   }
 
   @Test
