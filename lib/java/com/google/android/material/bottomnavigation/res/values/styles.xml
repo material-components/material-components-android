@@ -17,6 +17,7 @@
 <resources>
 
   <style name="Widget.Design.BottomNavigationView" parent="">
+    <item name="compatShadowEnabled">true</item>
     <item name="elevation">@dimen/design_bottom_navigation_elevation</item>
     <item name="enforceTextAppearance">false</item>
     <item name="enforceMaterialTheme">false</item>
@@ -63,7 +64,7 @@
   <style name="Widget.MaterialComponents.BottomNavigationView.PrimarySurface" parent="Widget.MaterialComponents.BottomNavigationView.Colored"/>
 
   <!-- Style for Material 3 Bottom Navigation View. -->
-  <style name="Widget.Material3.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+  <style name="Base.Widget.Material3.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
     <item name="android:background">?attr/colorSurface</item>
     <item name="backgroundTint">@null</item>
     <item name="elevation">@dimen/m3_sys_elevation_level2</item>
@@ -76,6 +77,10 @@
     <item name="itemPaddingTop">@dimen/m3_bottom_nav_item_padding_top</item>
     <item name="itemPaddingBottom">@dimen/m3_bottom_nav_item_padding_bottom</item>
     <item name="android:minHeight">@dimen/m3_bottom_nav_min_height</item>
+  </style>
+
+  <style name="Widget.Material3.BottomNavigationView" parent="Base.Widget.Material3.BottomNavigationView">
+    <item name="compatShadowEnabled">false</item>
   </style>
 
   <style name="Widget.Material3.BottomNavigationView.ActiveIndicator" parent="">

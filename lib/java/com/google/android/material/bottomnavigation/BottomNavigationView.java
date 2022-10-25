@@ -124,11 +124,12 @@ public class BottomNavigationView extends NavigationBarView {
           attributes.getDimensionPixelSize(R.styleable.BottomNavigationView_android_minHeight, 0));
     }
 
-    attributes.recycle();
-
-    if (shouldDrawCompatibilityTopDivider()) {
+    if (attributes.getBoolean(R.styleable.BottomNavigationView_compatShadowEnabled, true)
+        && shouldDrawCompatibilityTopDivider()) {
       addCompatibilityTopDivider(context);
     }
+
+    attributes.recycle();
 
     applyWindowInsets();
   }
