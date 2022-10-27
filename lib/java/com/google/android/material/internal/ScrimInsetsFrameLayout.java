@@ -45,6 +45,8 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
   private Rect tempRect = new Rect();
   private boolean drawTopInsetForeground = true;
   private boolean drawBottomInsetForeground = true;
+  private boolean drawLeftInsetForeground = true;
+  private boolean drawRightInsetForeground = true;
 
   public ScrimInsetsFrameLayout(@NonNull Context context) {
     this(context, null);
@@ -104,6 +106,14 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
     this.drawBottomInsetForeground = drawBottomInsetForeground;
   }
 
+  public void setDrawLeftInsetForeground(boolean drawLeftInsetForeground) {
+    this.drawLeftInsetForeground = drawLeftInsetForeground;
+  }
+
+  public void setDrawRightInsetForeground(boolean drawRightInsetForeground) {
+    this.drawRightInsetForeground = drawRightInsetForeground;
+  }
+
   @Override
   public void draw(@NonNull Canvas canvas) {
     super.draw(canvas);
@@ -129,14 +139,18 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
       }
 
       // Left
-      tempRect.set(0, insets.top, insets.left, height - insets.bottom);
-      insetForeground.setBounds(tempRect);
-      insetForeground.draw(canvas);
+      if (drawLeftInsetForeground) {
+        tempRect.set(0, insets.top, insets.left, height - insets.bottom);
+        insetForeground.setBounds(tempRect);
+        insetForeground.draw(canvas);
+      }
 
       // Right
-      tempRect.set(width - insets.right, insets.top, width, height - insets.bottom);
-      insetForeground.setBounds(tempRect);
-      insetForeground.draw(canvas);
+      if (drawRightInsetForeground) {
+        tempRect.set(width - insets.right, insets.top, width, height - insets.bottom);
+        insetForeground.setBounds(tempRect);
+        insetForeground.draw(canvas);
+      }
 
       canvas.restoreToCount(sc);
     }

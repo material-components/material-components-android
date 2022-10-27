@@ -44,6 +44,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -967,15 +968,30 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             presenter.setBehindStatusBar(isBehindStatusBar);
             setDrawTopInsetForeground(isBehindStatusBar && isTopInsetScrimEnabled());
 
+            // The navigation view could be left aligned or just hidden out of view in a drawer
+            // layout when the global layout listener is called.
+            boolean isOnLeftSide = (tmpLocation[0] == 0) || (tmpLocation[0] + getWidth() == 0);
+            setDrawLeftInsetForeground(isOnLeftSide);
+
             Activity activity = ContextUtils.getActivity(getContext());
             if (activity != null && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+              DisplayMetrics displayMetrics = new DisplayMetrics();
+              activity.getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+
               boolean isBehindSystemNav =
-                  activity.findViewById(android.R.id.content).getHeight() == getHeight();
+                  displayMetrics.heightPixels - getHeight() == tmpLocation[1];
               boolean hasNonZeroAlpha =
                   Color.alpha(activity.getWindow().getNavigationBarColor()) != 0;
-
               setDrawBottomInsetForeground(
                   isBehindSystemNav && hasNonZeroAlpha && isBottomInsetScrimEnabled());
+
+              // The navigation view could be right aligned or just hidden out of view in a drawer
+              // layout when the global layout listener is called.
+              boolean isOnRightSide =
+                  (displayMetrics.widthPixels == tmpLocation[0])
+                      || (displayMetrics.widthPixels - getWidth() == tmpLocation[0]);
+
+              setDrawRightInsetForeground(isOnRightSide);
             }
           }
         };
