@@ -31,5 +31,5 @@
   <item android:color="@macro/m3_comp_checkbox_selected_container_color" android:state_checked="true"/>
 
   <!-- Unchecked -->
-  <item android:color="?attr/colorOnSurface" android:state_checked="false"/>
+  <item android:color="@macro/m3_comp_checkbox_unselected_outline_color" android:state_checked="false"/>
 </selector>

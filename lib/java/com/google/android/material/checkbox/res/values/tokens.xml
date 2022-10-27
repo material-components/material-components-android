@@ -20,6 +20,7 @@
 <resources>
   <!-- Generated from token set (md.comp.checkbox) in default context. -->
   <!-- Enabled - Container -->
+  <macro name="m3_comp_checkbox_unselected_outline_color">?attr/colorOnSurfaceVariant</macro>
   <macro name="m3_comp_checkbox_selected_container_color">?attr/colorPrimary</macro>
   <macro name="m3_comp_checkbox_selected_error_container_color">?attr/colorError</macro>
   <!-- Enabled - Icon -->
