@@ -174,11 +174,34 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
   @Override
   public void showDropDown() {
-    if (accessibilityManager != null && accessibilityManager.isTouchExplorationEnabled()) {
+    if (isTouchExplorationEnabled()) {
       modalListPopup.show();
     } else {
       super.showDropDown();
     }
+  }
+
+  @Override
+  public void dismissDropDown() {
+    if (isTouchExplorationEnabled()) {
+      modalListPopup.dismiss();
+    } else {
+      super.dismissDropDown();
+    }
+  }
+
+  @Override
+  public void onWindowFocusChanged(boolean hasWindowFocus) {
+    if (isTouchExplorationEnabled()) {
+      // Do not dismissDropDown if touch exploration is enabled, in case the window lost focus
+      // in favor of the modalListPopup.
+      return;
+    }
+    super.onWindowFocusChanged(hasWindowFocus);
+  }
+
+  private boolean isTouchExplorationEnabled() {
+    return accessibilityManager != null && accessibilityManager.isTouchExplorationEnabled();
   }
 
   @Override
@@ -313,6 +336,12 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
         && ManufacturerUtils.isMeizuDevice()) {
       setHint("");
     }
+  }
+
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    modalListPopup.dismiss();
   }
 
   @Nullable
