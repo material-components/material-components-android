@@ -101,6 +101,27 @@ public class RangeDateSelectorTest {
   }
 
   @Test
+  public void textFieldFormatPlaceholder() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+
+    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo("m/d/yy");
+  }
+
+  @Test
+  public void customTextFieldFormatPlaceholder() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("MM/dd/y,ww"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+
+    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo("MM/dd/y,ww");
+  }
+
+  @Test
   public void textInputRangeError() {
     rangeDateSelector = new RangeDateSelector();
     View root = getRootView();

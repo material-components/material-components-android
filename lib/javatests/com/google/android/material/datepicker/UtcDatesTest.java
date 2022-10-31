@@ -45,7 +45,7 @@ public class UtcDatesTest {
   @Test
   public void textInputHintWith1CharYear() {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/y");
-    String hint = UtcDates.getTextInputHint(context.getResources(), sdf);
+    String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
 
     assertEquals("m/d/yyyy", hint);
   }
@@ -53,7 +53,7 @@ public class UtcDatesTest {
   @Test
   public void textInputHintWith2CharYear() {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/yy");
-    String hint = UtcDates.getTextInputHint(context.getResources(), sdf);
+    String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
 
     assertEquals("m/d/yy", hint);
   }
@@ -61,7 +61,7 @@ public class UtcDatesTest {
   @Test
   public void textInputHintWith4CharYear() {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/yyyy");
-    String hint = UtcDates.getTextInputHint(context.getResources(), sdf);
+    String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
 
     assertEquals("m/d/yyyy", hint);
   }
@@ -70,7 +70,7 @@ public class UtcDatesTest {
   @Config(qualifiers = "fr-rFR")
   public void textInputHintWith1CharYearLocalized() {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/y");
-    String hint = UtcDates.getTextInputHint(context.getResources(), sdf);
+    String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
 
     assertEquals("m/j/aaaa", hint);
   }

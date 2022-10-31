@@ -48,6 +48,7 @@ import java.util.Collection;
 public class SingleDateSelector implements DateSelector<Long> {
 
   @Nullable private Long selectedItem;
+  @Nullable private SimpleDateFormat textInputFormat;
 
   @Override
   public void select(long selection) {
@@ -91,6 +92,11 @@ public class SingleDateSelector implements DateSelector<Long> {
   }
 
   @Override
+  public void setTextInputFormat(@Nullable SimpleDateFormat format) {
+    this.textInputFormat = format;
+  }
+
+  @Override
   public View onCreateTextInputView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
@@ -105,8 +111,14 @@ public class SingleDateSelector implements DateSelector<Long> {
       // Using the URI variation places the '/' and '.' in more prominent positions
       dateEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
     }
-    SimpleDateFormat format = UtcDates.getTextInputFormat();
-    String formatHint = UtcDates.getTextInputHint(root.getResources(), format);
+
+    boolean hasCustomFormat = textInputFormat != null;
+    SimpleDateFormat format =
+        hasCustomFormat ? textInputFormat : UtcDates.getDefaultTextInputFormat();
+    String formatHint =
+        hasCustomFormat
+            ? format.toPattern()
+            : UtcDates.getDefaultTextInputHint(root.getResources(), format);
 
     dateTextInput.setPlaceholderText(formatHint);
     if (selectedItem != null) {

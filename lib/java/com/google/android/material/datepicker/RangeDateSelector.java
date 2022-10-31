@@ -58,6 +58,8 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   @Nullable private Long proposedTextStart = null;
   @Nullable private Long proposedTextEnd = null;
 
+  @Nullable private SimpleDateFormat textInputFormat;
+
   @Override
   public void select(long selection) {
     if (selectedStartItem == null) {
@@ -180,6 +182,11 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   }
 
   @Override
+  public void setTextInputFormat(@Nullable SimpleDateFormat format) {
+    this.textInputFormat = format;
+  }
+
+  @Override
   public View onCreateTextInputView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
@@ -202,7 +209,9 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
     invalidRangeStartError = root.getResources().getString(R.string.mtrl_picker_invalid_range);
 
-    SimpleDateFormat format = UtcDates.getTextInputFormat();
+    boolean hasCustomFormat = textInputFormat != null;
+    SimpleDateFormat format =
+        hasCustomFormat ? textInputFormat : UtcDates.getDefaultTextInputFormat();
 
     if (selectedStartItem != null) {
       startEditText.setText(format.format(selectedStartItem));
@@ -213,7 +222,11 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
       proposedTextEnd = selectedEndItem;
     }
 
-    String formatHint = UtcDates.getTextInputHint(root.getResources(), format);
+    String formatHint =
+        hasCustomFormat
+            ? format.toPattern()
+            : UtcDates.getDefaultTextInputHint(root.getResources(), format);
+
     startTextInput.setPlaceholderText(formatHint);
     endTextInput.setPlaceholderText(formatHint);
 

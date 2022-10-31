@@ -22,30 +22,35 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.content.res.Resources;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridView;
+import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.internal.ParcelableTestUtils;
+import com.google.android.material.textfield.TextInputLayout;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.internal.DoNotInstrument;
 
 @RunWith(RobolectricTestRunner.class)
-@DoNotInstrument
 public class SingleDateSelectorTest {
 
   private SingleDateSelector singleDateSelector;
   private MonthAdapter adapter;
   private Context context;
   private Resources res;
+  private AppCompatActivity activity;
 
   @Before
   public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
-    AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
+    activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     context = activity.getApplicationContext();
     res = context.getResources();
     GridView gridView = new GridView(context);
@@ -130,5 +135,38 @@ public class SingleDateSelectorTest {
     singleDateSelector.setSelection(calendar.getTimeInMillis());
 
     assertThat(singleDateSelector.getSelectedRanges().isEmpty()).isTrue();
+  }
+
+  @Test
+  public void textFieldPlaceholder_usesDefaultFormat() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_date);
+
+    assertThat(textInputLayout.getPlaceholderText().toString()).isEqualTo("m/d/yy");
+  }
+
+  @Test
+  public void textFieldPlaceholder_usesCustomFormat() {
+    singleDateSelector.setTextInputFormat(new SimpleDateFormat("kk:mm:ss mm/dd/yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_date);
+
+    assertThat(textInputLayout.getPlaceholderText().toString()).isEqualTo("kk:mm:ss mm/dd/yyyy");
+  }
+
+  private View getRootView() {
+    return singleDateSelector.onCreateTextInputView(
+        LayoutInflater.from(context),
+        null,
+        null,
+        new CalendarConstraints.Builder().build(),
+        new OnSelectionChangedListener<Long>() {
+          @Override
+          public void onSelectionChanged(@NonNull Long selection) {}
+        });
   }
 }

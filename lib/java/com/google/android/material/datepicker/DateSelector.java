@@ -33,6 +33,7 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Pair;
 import com.google.android.material.internal.ViewUtils;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 /**
@@ -104,6 +105,16 @@ public interface DateSelector<S> extends Parcelable {
 
   @StyleRes
   int getDefaultThemeResId(Context context);
+
+  /**
+   * Sets the {@link SimpleDateFormat} used to format the text input field hint and error.
+   *
+   * <p>When this is set to null, a default formatter will be used that properly adjusts for
+   * language and locale.
+   *
+   * @param format The format to be used when formatting the text input field
+   */
+  void setTextInputFormat(@Nullable SimpleDateFormat format);
 
   @NonNull
   View onCreateTextInputView(

@@ -64,6 +64,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.text.SimpleDateFormat;
 import java.util.LinkedHashSet;
 
 /** A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions. */
@@ -676,6 +677,22 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     @NonNull
     public static Builder<Pair<Long, Long>> dateRangePicker() {
       return new Builder<>(new RangeDateSelector());
+    }
+
+    /**
+     * Sets the formatter that will be used to input dates using a keyboard.
+     *
+     * <p>This affects the hint text and error suggestions of the date input field. Using this
+     * setter requires caution to ensure dates are formatted properly in different languages and
+     * locales.
+     *
+     * @param format a {@link SimpleDateFormat} used to format text input dates
+     */
+    @NonNull
+    @CanIgnoreReturnValue
+    public Builder<S> setTextInputFormat(@Nullable SimpleDateFormat format) {
+      dateSelector.setTextInputFormat(format);
+      return this;
     }
 
     @NonNull

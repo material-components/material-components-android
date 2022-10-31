@@ -147,18 +147,18 @@ class UtcDates {
     return format;
   }
 
-  static SimpleDateFormat getTextInputFormat() {
-    String pattern =
+  static SimpleDateFormat getDefaultTextInputFormat() {
+    String defaultFormatPattern =
         ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))
             .toPattern()
             .replaceAll("\\s+", "");
-    SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+    SimpleDateFormat format = new SimpleDateFormat(defaultFormatPattern, Locale.getDefault());
     format.setTimeZone(UtcDates.getTimeZone());
     format.setLenient(false);
     return format;
   }
 
-  static String getTextInputHint(Resources res, SimpleDateFormat format) {
+  static String getDefaultTextInputHint(Resources res, SimpleDateFormat format) {
     String formatHint = format.toPattern();
     String yearChar = res.getString(R.string.mtrl_picker_text_input_year_abbr);
     String monthChar = res.getString(R.string.mtrl_picker_text_input_month_abbr);
