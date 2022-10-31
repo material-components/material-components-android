@@ -53,10 +53,40 @@
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>
 
+  <!--  TODO(b/255278466): Move color resources to versioned sub-folders.-->
   <!-- XML color harmonization palette, values to be replaced at runtime. -->
   <color name="material_harmonized_color_error">#FFFFFF</color>
   <color name="material_harmonized_color_on_error">#FFFFFF</color>
   <color name="material_harmonized_color_error_container">#FFFFFF</color>
   <color name="material_harmonized_color_on_error_container">#FFFFFF</color>
+
+  <!--  TODO(b/255278466): Move color resources to versioned sub-folders.-->
+  <!-- XML personalized color (e.g. content color) palette, values to be replaced at runtime. -->
+  <color name="material_personalized_color_primary">#FFFFFF</color>
+  <color name="material_personalized_color_on_primary">#FFFFFF</color>
+  <color name="material_personalized_color_primary_inverse">#FFFFFF</color>
+  <color name="material_personalized_color_primary_container">#FFFFFF</color>
+  <color name="material_personalized_color_on_primary_container">#FFFFFF</color>
+  <color name="material_personalized_color_secondary">#FFFFFF</color>
+  <color name="material_personalized_color_on_secondary">#FFFFFF</color>
+  <color name="material_personalized_color_secondary_container">#FFFFFF</color>
+  <color name="material_personalized_color_on_secondary_container">#FFFFFF</color>
+  <color name="material_personalized_color_tertiary">#FFFFFF</color>
+  <color name="material_personalized_color_on_tertiary">#FFFFFF</color>
+  <color name="material_personalized_color_tertiary_container">#FFFFFF</color>
+  <color name="material_personalized_color_on_tertiary_container">#FFFFFF</color>
+  <color name="material_personalized_color_background">#FFFFFF</color>
+  <color name="material_personalized_color_on_background">#FFFFFF</color>
+  <color name="material_personalized_color_surface">#FFFFFF</color>
+  <color name="material_personalized_color_on_surface">#FFFFFF</color>
+  <color name="material_personalized_color_surface_variant">#FFFFFF</color>
+  <color name="material_personalized_color_on_surface_variant">#FFFFFF</color>
+  <color name="material_personalized_color_surface_inverse">#FFFFFF</color>
+  <color name="material_personalized_color_on_surface_inverse">#FFFFFF</color>
+  <color name="material_personalized_color_surface_outline">#FFFFFF</color>
+  <color name="material_personalized_color_error">#FFFFFF</color>
+  <color name="material_personalized_color_on_error">#FFFFFF</color>
+  <color name="material_personalized_color_error_container">#FFFFFF</color>
+  <color name="material_personalized_color_on_error_container">#FFFFFF</color>
 
 </resources>

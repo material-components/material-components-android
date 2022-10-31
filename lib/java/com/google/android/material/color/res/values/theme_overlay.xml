@@ -23,7 +23,41 @@
     <item name="colorOnErrorContainer">@color/material_harmonized_color_on_error_container</item>
   </style>
 
-  <!-- Used to provide an empty theme overlay placeholder for harmonization. -->
+  <!-- Used to provide an empty theme overlay placeholder for harmonization. Do not use this theme overlay directly, as the color resources will be replaced at runtime. -->
   <style name="ThemeOverlay.Material3.HarmonizedColors.Empty" parent="" />
+
+  <!-- Used to provide an empty theme overlay placeholder for personalized colors, e.g. content color. Do not use this theme overlay directly, as the color resources will be replaced at runtime. -->
+  <style name="ThemeOverlay.Material3.PersonalizedColors" parent="">
+    <!-- Color palettes -->
+    <item name="colorPrimary">@color/material_personalized_color_primary</item>
+    <item name="colorOnPrimary">@color/material_personalized_color_on_primary</item>
+    <item name="colorPrimaryInverse">@color/material_personalized_color_primary_inverse</item>
+    <item name="colorPrimaryContainer">@color/material_personalized_color_primary_container</item>
+    <item name="colorOnPrimaryContainer">@color/material_personalized_color_on_primary_container</item>
+    <item name="colorSecondary">@color/material_personalized_color_secondary</item>
+    <item name="colorOnSecondary">@color/material_personalized_color_on_secondary</item>
+    <item name="colorSecondaryContainer">@color/material_personalized_color_secondary_container</item>
+    <item name="colorOnSecondaryContainer">@color/material_personalized_color_on_secondary_container</item>
+    <item name="colorTertiary">@color/material_personalized_color_tertiary</item>
+    <item name="colorOnTertiary">@color/material_personalized_color_on_tertiary</item>
+    <item name="colorTertiaryContainer">@color/material_personalized_color_tertiary_container</item>
+    <item name="colorOnTertiaryContainer">@color/material_personalized_color_on_tertiary_container</item>
+    <item name="android:colorBackground">@color/material_personalized_color_background</item>
+    <item name="colorOnBackground">@color/material_personalized_color_on_background</item>
+    <item name="colorSurface">@color/material_personalized_color_surface</item>
+    <item name="colorOnSurface">@color/material_personalized_color_on_surface</item>
+    <item name="colorSurfaceVariant">@color/material_personalized_color_surface_variant</item>
+    <item name="colorOnSurfaceVariant">@color/material_personalized_color_on_surface_variant</item>
+    <item name="colorSurfaceInverse">@color/material_personalized_color_surface_inverse</item>
+    <item name="colorOnSurfaceInverse">@color/material_personalized_color_on_surface_inverse</item>
+    <item name="colorOutline">@color/material_personalized_color_surface_outline</item>
+    <item name="colorError">@color/material_personalized_color_error</item>
+    <item name="colorOnError">@color/material_personalized_color_on_error</item>
+    <item name="colorErrorContainer">@color/material_personalized_color_error_container</item>
+    <item name="colorOnErrorContainer">@color/material_personalized_color_on_error_container</item>
+
+    <!-- Default Framework Text Colors. -->
+    <!-- TODO(b/254612063): Add default framework colors when the material color utilities library provides the color values for non-Material roles.-->
+  </style>
 
 </resources>
