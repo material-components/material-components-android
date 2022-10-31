@@ -21,10 +21,8 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.content.res.loader.ResourcesLoader;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.ColorInt;
@@ -74,7 +72,8 @@ public class HarmonizedColors {
         createHarmonizedColorReplacementMap(context, options);
     int themeOverlay = options.getThemeOverlayResourceId(/* defaultThemeOverlay= */ 0);
 
-    if (addResourcesLoaderToContext(context, colorReplacementMap) && themeOverlay != 0) {
+    if (ResourcesLoaderUtils.addResourcesLoaderToContext(context, colorReplacementMap)
+        && themeOverlay != 0) {
       ThemeUtils.applyThemeOverlay(context, themeOverlay);
     }
   }
@@ -109,7 +108,9 @@ public class HarmonizedColors {
     // retrieve the new set of resources and to keep the original context's resources intact.
     themeWrapper.applyOverrideConfiguration(new Configuration());
 
-    return addResourcesLoaderToContext(themeWrapper, colorReplacementMap) ? themeWrapper : context;
+    return ResourcesLoaderUtils.addResourcesLoaderToContext(themeWrapper, colorReplacementMap)
+        ? themeWrapper
+        : context;
   }
 
   /**
@@ -125,7 +126,7 @@ public class HarmonizedColors {
     return VERSION.SDK_INT >= VERSION_CODES.R;
   }
 
-  @RequiresApi(api = VERSION_CODES.LOLLIPOP)
+  @RequiresApi(api = VERSION_CODES.R)
   private static Map<Integer, Integer> createHarmonizedColorReplacementMap(
       Context originalContext, HarmonizedColorsOptions options) {
     Map<Integer, Integer> colorReplacementMap = new HashMap<>();
@@ -170,19 +171,6 @@ public class HarmonizedColors {
   }
 
   @RequiresApi(api = VERSION_CODES.R)
-  private static boolean addResourcesLoaderToContext(
-      Context context, Map<Integer, Integer> colorReplacementMap) {
-    ResourcesLoader resourcesLoader =
-        ColorResourcesLoaderCreator.create(context, colorReplacementMap);
-    if (resourcesLoader != null) {
-      context.getResources().addLoaders(resourcesLoader);
-      return true;
-    }
-    return false;
-  }
-
-  // TypedArray.getType() requires API >= 21.
-  @RequiresApi(api = VERSION_CODES.LOLLIPOP)
   private static void addHarmonizedColorAttributesToReplacementMap(
       @NonNull Map<Integer, Integer> colorReplacementMap,
       @NonNull TypedArray themeAttributesTypedArray,
@@ -197,16 +185,11 @@ public class HarmonizedColors {
       int resourceId = resourceIdTypedArray.getResourceId(i, 0);
       if (resourceId != 0
           && themeAttributesTypedArray.hasValue(i)
-          && isColorResource(themeAttributesTypedArray.getType(i))) {
+          && ResourcesLoaderUtils.isColorResource(themeAttributesTypedArray.getType(i))) {
         int colorToHarmonize = themeAttributesTypedArray.getColor(i, 0);
         colorReplacementMap.put(
             resourceId, MaterialColors.harmonize(colorToHarmonize, colorToHarmonizeWith));
       }
     }
-  }
-
-  private static boolean isColorResource(int attrType) {
-    return (TypedValue.TYPE_FIRST_COLOR_INT <= attrType)
-        && (attrType <= TypedValue.TYPE_LAST_COLOR_INT);
   }
 }
