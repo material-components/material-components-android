@@ -130,6 +130,7 @@ public class ElevationOverlayProvider {
   @ColorInt
   public int compositeOverlay(@ColorInt int backgroundColor, float elevation) {
     float overlayAlphaFraction = calculateOverlayAlphaFraction(elevation);
+//    float overlayAlphaFraction = Math.round(calculateOverlayAlphaFraction(elevation) * 100) / 100f;
     int backgroundAlpha = Color.alpha(backgroundColor);
     int backgroundColorOpaque = ColorUtils.setAlphaComponent(backgroundColor, 255);
     int overlayColorOpaque =
@@ -160,7 +161,8 @@ public class ElevationOverlayProvider {
     }
     float elevationDp = elevation / displayDensity;
     float alphaFraction =
-        (FORMULA_MULTIPLIER * (float) Math.log1p(elevationDp) + FORMULA_OFFSET) / 100;
+//        (FORMULA_MULTIPLIER * (float) Math.log1p(elevationDp) + FORMULA_OFFSET) / 100;
+        Math.round((FORMULA_MULTIPLIER * (float) Math.log1p(elevationDp) + FORMULA_OFFSET)) / 100f;
     return Math.min(alphaFraction, 1);
   }
 
