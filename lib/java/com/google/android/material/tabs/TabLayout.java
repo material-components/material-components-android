@@ -296,6 +296,9 @@ public class TabLayout extends HorizontalScrollView {
   @Retention(RetentionPolicy.SOURCE)
   public @interface TabGravity {}
 
+  // indicatorPosition keeps track of where the indicator is.
+  int indicatorPosition = -1;
+
   /**
    * Indicator gravity used to align the tab selection indicator to the bottom of the {@link
    * TabLayout}. This will only take effect if the indicator height is set via the custom indicator
@@ -3122,6 +3125,7 @@ public class TabLayout extends HorizontalScrollView {
      * @param positionOffset Value from [0, 1) indicating the offset from the tab at position.
      */
     void setIndicatorPositionFromTabPosition(int position, float positionOffset) {
+      indicatorPosition = position;
       if (indicatorAnimator != null && indicatorAnimator.isRunning()) {
         indicatorAnimator.cancel();
       }
@@ -3227,9 +3231,14 @@ public class TabLayout extends HorizontalScrollView {
 
     /** Immediately update the indicator position to the currently selected position. */
     private void jumpIndicatorToSelectedPosition() {
+      // Don't update the indicator position if the scroll state is not idle.
+      if (pageChangeListener != null && pageChangeListener.scrollState != SCROLL_STATE_IDLE) {
+        return;
+      }
       final View currentView = getChildAt(getSelectedTabPosition());
       tabIndicatorInterpolator.setIndicatorBoundsForTab(
           TabLayout.this, currentView, tabSelectedIndicator);
+      indicatorPosition = getSelectedTabPosition();
     }
 
     /**
@@ -3288,6 +3297,11 @@ public class TabLayout extends HorizontalScrollView {
      */
     private void updateOrRecreateIndicatorAnimation(
         boolean recreateAnimation, final int position, int duration) {
+      // If the indicator position is already the target position, we don't need to update the
+      // indicator animation because nothing has changed.
+      if (indicatorPosition == position) {
+        return;
+      }
       final View currentView = getChildAt(getSelectedTabPosition());
       final View targetView = getChildAt(position);
       if (targetView == null) {
@@ -3295,6 +3309,7 @@ public class TabLayout extends HorizontalScrollView {
         jumpIndicatorToSelectedPosition();
         return;
       }
+      indicatorPosition = position;
 
       // Create the update listener with the new target indicator positions. If we're not recreating
       // then animationStartLeft/Right will be the same as when the previous animator was created.

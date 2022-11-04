@@ -225,16 +225,19 @@ public class TabLayoutTest {
     assertTrue(tab3.isSelected());
     assertFalse(tab1.isSelected());
     assertFalse(tab2.isSelected());
+    assertEquals(2, tabs.indicatorPosition);
 
     tabs.selectTab(tab2);
     assertTrue(tab2.isSelected());
     assertFalse(tab1.isSelected());
     assertFalse(tab3.isSelected());
+    assertEquals(1, tabs.indicatorPosition);
 
     tabs.selectTab(tab1);
     assertTrue(tab1.isSelected());
     assertFalse(tab2.isSelected());
     assertFalse(tab3.isSelected());
+    assertEquals(0, tabs.indicatorPosition);
   }
 
   @Test
@@ -507,7 +510,7 @@ public class TabLayoutTest {
     tab.setCustomView(R.layout.design_tab_item_custom);
     tabLayout.addTab(tab);
     tab.setCustomView(R.layout.design_tab_item_custom_alternate);
-    
+
     assertNull(tabLayout.findViewById(R.id.my_custom_tab));
     assertNotNull(tabLayout.findViewById(R.id.my_custom_alternate_tab));
   }
@@ -547,6 +550,7 @@ public class TabLayoutTest {
 
               assertEquals(tabs1.tabSelectedIndicator.getBounds().left, tabTwoLeft);
               assertEquals(tabs1.tabSelectedIndicator.getBounds().right, tabTwoRight);
+              assertEquals(2, tabs.indicatorPosition);
             });
 
     IdlingRegistry.getInstance().unregister(idler);
