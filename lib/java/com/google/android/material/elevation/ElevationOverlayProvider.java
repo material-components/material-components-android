@@ -162,7 +162,7 @@ public class ElevationOverlayProvider {
     float elevationDp = elevation / displayDensity;
     float alphaFraction =
 //        (FORMULA_MULTIPLIER * (float) Math.log1p(elevationDp) + FORMULA_OFFSET) / 100;
-        Math.round((FORMULA_MULTIPLIER * (float) Math.log1p(elevationDp) + FORMULA_OFFSET)) / 100f;
+        Math.round(FORMULA_MULTIPLIER * (float) Math.log1p(elevationDp) + FORMULA_OFFSET) / 100f;
     return Math.min(alphaFraction, 1);
   }
 
