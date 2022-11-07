@@ -51,9 +51,6 @@ ext {
   // required for the doclava dependency.
   usePrebuilts = "true"
 
-  // Disable pre-dexing when gradle called with -PdisablePreDex;
-  preDexLibs = !project.hasProperty('disablePreDex')
-
   mavenRepoUrl = (project.hasProperty('mavenRepoUrl')
     ? project.property('mavenRepoUrl') : '/tmp/myRepo/')
 
@@ -189,9 +186,6 @@ subprojects {
     }
 
     if (isAndroidLibrary || isAndroidApp || isAndroidTest) {
-      // Disable pre-dexing when gradle called with -PdisablePreDex;
-      project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
-
       project.android {
         compileSdkVersion rootProject.ext.compileSdkVersion
 
@@ -207,8 +201,8 @@ subprojects {
         aaptOptions.additionalParameters "--no-version-vectors"
 
         android {
-          lintOptions {
-            check 'NewApi'
+          lint {
+            checkOnly 'NewApi'
           }
         }
 

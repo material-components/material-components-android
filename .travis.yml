@@ -42,5 +42,5 @@ before_script:
   - adb shell input keyevent 82
 
 script:
-  - ./gradlew test -PdisablePreDex
-  - ./gradlew connectedAndroidTest -PdisablePreDex
+  - ./gradlew test
+  - ./gradlew connectedAndroidTest
