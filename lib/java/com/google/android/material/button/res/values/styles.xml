@@ -134,14 +134,14 @@
     <item name="android:paddingBottom">@dimen/m3_btn_padding_bottom</item>
     <item name="android:insetTop">@dimen/m3_btn_inset</item>
     <item name="android:insetBottom">@dimen/m3_btn_inset</item>
-    <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="android:textAppearance">@macro/m3_comp_filled_button_label_text_type</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.FilledButton.Container.Shape</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button</item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/m3_btn_state_list_anim</item>
-    <item name="elevation">@dimen/m3_btn_elevation</item>
+    <item name="elevation">@dimen/m3_comp_filled_button_container_elevation</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
-    <item name="iconSize">18dp</item>
+    <item name="iconSize">@dimen/m3_comp_filled_button_with_icon_icon_size</item>
     <item name="backgroundTint">@color/m3_button_background_color_selector</item>
     <item name="rippleColor">@color/m3_button_ripple_color_selector</item>
   </style>
@@ -160,13 +160,13 @@
     <item name="elevation">0dp</item>
   </style>
 
-  <!-- M3 tonal button style. -->
+  <!-- M3 filled tonal button style. -->
   <style name="Widget.Material3.Button.TonalButton">
     <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TonalButton</item>
   </style>
 
-  <!-- M3 tonal button with a start-gravity icon style. This adjusts
+  <!-- M3 filled tonal button with a start-gravity icon style. This adjusts
        padding slightly to achieve a better visual balance. This style should only be used with a
        start-gravity icon button. If your icon is end-gravity, mirror the padding such that this
        adjustment happens to the other side. -->
@@ -185,8 +185,8 @@
     <item name="android:paddingBottom">@dimen/m3_btn_padding_bottom</item>
     <item name="android:insetTop">@dimen/m3_btn_inset</item>
     <item name="android:insetBottom">@dimen/m3_btn_inset</item>
-    <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="android:textAppearance">@macro/m3_comp_text_button_label_text_type</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.TextButton.Container.Shape</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TextButton</item>
     <item name="android:textColor">@color/m3_text_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_text_button_foreground_color_selector</item>
@@ -231,7 +231,7 @@
     <item name="android:paddingLeft">@dimen/m3_btn_padding_left</item>
     <item name="android:paddingRight">@dimen/m3_btn_padding_right</item>
     <item name="strokeColor">@color/m3_button_outline_color_selector</item>
-    <item name="strokeWidth">@dimen/m3_btn_stroke_size</item>
+    <item name="strokeWidth">@dimen/m3_comp_outlined_button_outline_width</item>
   </style>
 
   <!-- M3 outlined button with a start-gravity icon style. -->
@@ -300,19 +300,19 @@
 
   <style name="ThemeOverlay.Material3.Button" parent="">
     <!-- The colors used by the color selectors -->
-    <item name="colorOnContainer">?attr/colorOnPrimary</item>
-    <item name="colorContainer">?attr/colorPrimary</item>
+    <item name="colorOnContainer">@macro/m3_comp_filled_button_label_text_color</item>
+    <item name="colorContainer">@macro/m3_comp_filled_button_container_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Button.TonalButton">
     <!-- The colors used by the color selectors -->
-    <item name="colorOnContainer">?attr/colorOnSecondaryContainer</item>
-    <item name="colorContainer">?attr/colorSecondaryContainer</item>
+    <item name="colorOnContainer">@macro/m3_comp_filled_tonal_button_label_text_color</item>
+    <item name="colorContainer">@macro/m3_comp_filled_tonal_button_container_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Button.TextButton" parent="">
     <!-- The colors used by the color selectors -->
-    <item name="colorOnContainer">?attr/colorPrimary</item>
+    <item name="colorOnContainer">@macro/m3_comp_text_button_label_text_color</item>
     <item name="colorContainer">@android:color/transparent</item>
   </style>
 
@@ -323,7 +323,7 @@
 
   <style name="ThemeOverlay.Material3.Button.ElevatedButton" parent="ThemeOverlay.Material3.Button.TextButton">
     <!-- The colors used by the color selectors -->
-    <item name="colorContainer">?attr/colorSurface</item>
+    <item name="colorContainer">@macro/m3_comp_elevated_button_container_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Button.IconButton" parent="ThemeOverlay.Material3.Button.TextButton">

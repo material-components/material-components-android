@@ -68,7 +68,7 @@
   <!-- LINT.ThenChange(../../../dialog/res/values/dimens.xml) -->
 
   <dimen name="m3_btn_elevation">0dp</dimen>
-  <dimen name="m3_btn_elevated_btn_elevation">1dp</dimen>
+  <dimen name="m3_btn_elevated_btn_elevation">@dimen/m3_comp_elevated_button_container_elevation</dimen>
   <dimen name="m3_btn_icon_btn_padding_left">16dp</dimen>
   <dimen name="m3_btn_icon_btn_padding_right">24dp</dimen>
   <dimen name="m3_btn_text_btn_padding_left">12dp</dimen>
