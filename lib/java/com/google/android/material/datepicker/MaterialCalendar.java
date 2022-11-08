@@ -245,7 +245,21 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       new PagerSnapHelper().attachToRecyclerView(recyclerView);
     }
     recyclerView.scrollToPosition(monthsPagerAdapter.getPosition(current));
+    setUpForAccessibility();
     return root;
+  }
+
+  private void setUpForAccessibility() {
+    ViewCompat.setAccessibilityDelegate(
+        recyclerView,
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View view, @NonNull AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+            super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfoCompat);
+            accessibilityNodeInfoCompat.setScrollable(false);
+          }
+        });
   }
 
   @NonNull

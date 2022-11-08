@@ -18,11 +18,15 @@ package com.google.android.material.datepicker;
 import static com.google.android.material.datepicker.MaterialDatePickerTestUtils.findFirstVisibleItem;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
@@ -127,5 +131,14 @@ public class MaterialDatePickerPagesTest {
     MaterialDatePickerTestUtils.clickSelectorToggle();
     MaterialDatePickerTestUtils.clickSelectorToggle();
     assertEquals(findFirstVisibleItem(dialogFragment), OPEN_AT.monthsLater(1));
+  }
+
+  @Test
+  public void accessibility_daySelection_notScrollable() {
+    View view = dialogFragment.getView().findViewById(R.id.mtrl_calendar_months);
+    AccessibilityNodeInfoCompat nodeInfo = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(view, nodeInfo);
+
+    assertFalse(nodeInfo.isScrollable());
   }
 }
