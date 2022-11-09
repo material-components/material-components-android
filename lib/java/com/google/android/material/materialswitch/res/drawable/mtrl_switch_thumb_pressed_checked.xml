@@ -23,8 +23,8 @@
   <target android:name="@string/mtrl_switch_thumb_path_name">
     <aapt:attr name="android:animation">
       <objectAnimator
-        android:duration="@integer/mtrl_switch_thumb_pressed_duration"
-        android:interpolator="@android:interpolator/accelerate_decelerate"
+        android:duration="?attr/motionDurationShort3"
+        android:interpolator="?attr/motionEasingStandardInterpolator"
         android:propertyName="pathData"
         android:valueFrom="@string/mtrl_switch_thumb_path_pressed"
         android:valueTo="@string/mtrl_switch_thumb_path_checked"
