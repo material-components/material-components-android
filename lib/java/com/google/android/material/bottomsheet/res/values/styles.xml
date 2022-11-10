@@ -83,6 +83,11 @@
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_bottom_sheet_modal_elevation</item>
   </style>
 
+  <style name="Animation.Material3.BottomSheetDialog" parent="Animation.AppCompat.Dialog">
+    <item name="android:windowEnterAnimation">@anim/m3_bottom_sheet_slide_in</item>
+    <item name="android:windowExitAnimation">@anim/m3_bottom_sheet_slide_out</item>
+  </style>
+
   <!-- The default M3 style of BottomSheetDragHandleView -->
   <style name="Widget.Material3.BottomSheet.DragHandle" parent="">
     <item name="android:scaleType">center</item>

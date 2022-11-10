@@ -18,21 +18,21 @@
   <style name="Base.V14.Theme.Material3.Light.BottomSheetDialog" parent="Theme.Material3.Light.Dialog">
     <item name="android:windowIsFloating">false</item>
     <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
+    <item name="android:windowAnimationStyle">@style/Animation.Material3.BottomSheetDialog</item>
     <item name="bottomSheetStyle">@style/Widget.Material3.BottomSheet.Modal</item>
   </style>
 
   <style name="Base.V14.Theme.Material3.Dark.BottomSheetDialog" parent="Theme.Material3.Dark.Dialog">
     <item name="android:windowIsFloating">false</item>
     <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
+    <item name="android:windowAnimationStyle">@style/Animation.Material3.BottomSheetDialog</item>
     <item name="bottomSheetStyle">@style/Widget.Material3.BottomSheet.Modal</item>
   </style>
 
   <style name="Base.V14.ThemeOverlay.Material3.BottomSheetDialog" parent="Base.ThemeOverlay.Material3.Dialog">
     <item name="android:windowIsFloating">false</item>
     <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
+    <item name="android:windowAnimationStyle">@style/Animation.Material3.BottomSheetDialog</item>
     <item name="bottomSheetStyle">@style/Widget.Material3.BottomSheet.Modal</item>
     <item name="enableEdgeToEdge">true</item>
   </style>
