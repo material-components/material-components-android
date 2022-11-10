@@ -23,6 +23,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
@@ -208,6 +209,8 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   public void setChecked(boolean checked) {
     refreshDrawableState();
     textView.setChecked(checked);
+    // TODO(b/246765947): Use component tokens to control font weight
+    textView.setTypeface(textView.getTypeface(), checked ? Typeface.BOLD : Typeface.NORMAL);
   }
 
   @Override
