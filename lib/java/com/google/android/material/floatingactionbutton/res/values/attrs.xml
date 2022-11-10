@@ -74,6 +74,15 @@
   <declare-styleable name="ExtendedFloatingActionButton">
     <!-- Elevation for the ExtendedFloatingActionButton. -->
     <attr name="elevation"/>
+    <!-- Which extend strategy to use to extend the FAB. -->
+    <attr name="extendStrategy">
+      <!-- Strategy to extend FAB back to the width it shrunk from. -->
+      <enum name="auto" value="0"/>
+      <!-- Strategy to extend FAB to wrap content. -->
+      <enum name="wrap_content" value="1"/>
+      <!-- Strategy to extend FAB to match parent. -->
+      <enum name="match_parent" value="2"/>
+    </attr>
     <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
     <attr name="showMotionSpec"/>
     <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->

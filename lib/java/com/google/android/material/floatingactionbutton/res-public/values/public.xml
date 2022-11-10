@@ -27,6 +27,7 @@
   <public name="extendMotionSpec" type="attr"/>
   <public name="shrinkMotionSpec" type="attr"/>
   <public name="collapsedSize" type="attr"/>
+  <public name="extendStrategy" type="attr"/>
   <public name="floatingActionButtonStyle" type="attr"/>
   <public name="floatingActionButtonPrimaryStyle" type="attr"/>
   <public name="floatingActionButtonSecondaryStyle" type="attr"/>

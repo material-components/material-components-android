@@ -76,6 +76,7 @@
     <item name="android:textColor">@color/mtrl_fab_icon_text_color_selector</item>
     <item name="backgroundTint">@color/mtrl_fab_bg_color_selector</item>
     <item name="elevation">@dimen/mtrl_extended_fab_elevation</item>
+    <item name="extendStrategy">wrap_content</item>
     <item name="iconPadding">@dimen/mtrl_extended_fab_icon_text_spacing</item>
     <item name="iconSize">@dimen/mtrl_extended_fab_icon_size</item>
     <item name="iconTint">@color/mtrl_fab_icon_text_color_selector</item>
