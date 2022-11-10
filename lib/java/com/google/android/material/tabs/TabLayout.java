@@ -3280,7 +3280,9 @@ public class TabLayout extends HorizontalScrollView {
      * @param duration The duration over which the animation should take place.
      */
     void animateIndicatorToPosition(final int position, int duration) {
-      if (indicatorAnimator != null && indicatorAnimator.isRunning()) {
+      if (indicatorAnimator != null
+          && indicatorAnimator.isRunning()
+          && indicatorPosition != position) {
         indicatorAnimator.cancel();
       }
 
