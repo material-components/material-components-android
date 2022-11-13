@@ -988,7 +988,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   boolean setLiftedState(boolean lifted, boolean force) {
     if (force && this.lifted != lifted) {
       this.lifted = lifted;
-      refreshDrawableState();
       if (liftOnScroll && getBackground() instanceof MaterialShapeDrawable) {
         if (liftOnScrollColor != null) {
           startLiftOnScrollColorAnimation(
