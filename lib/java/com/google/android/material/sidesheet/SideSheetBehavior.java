@@ -646,7 +646,8 @@ public final class SideSheetBehavior<V extends View> extends CoordinatorLayout.B
   /**
    * Gets the current state of the sheet.
    *
-   * @return One of {@link #STATE_EXPANDED}, {@link #STATE_DRAGGING}, or {@link #STATE_SETTLING}.
+   * @return One of {@link #STATE_EXPANDED}, {@link #STATE_DRAGGING}, {@link #STATE_SETTLING}, or
+   *     {@link #STATE_HIDDEN}.
    */
   @SheetState
   @Override
