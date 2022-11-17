@@ -73,6 +73,7 @@
 
   <style name="Base.ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog">
     <item name="materialButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+    <item name="android:windowAnimationStyle">@style/MaterialAlertDialog.Material3.Animation</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.Material3.Dialog"/>
@@ -102,6 +103,7 @@
     <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon</item>
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text</item>
     <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Material3.Body.Text</item>
+    <item name="android:windowAnimationStyle">@style/MaterialAlertDialog.Material3.Animation</item>
   </style>
 
   <!-- A theme overlay for Material3 Alert Dialog panels with a center aligned title text and icon. -->

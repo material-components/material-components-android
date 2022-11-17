@@ -167,4 +167,9 @@
     <item name="android:gravity">center</item>
     <item name="android:textAlignment" tools:ignore="NewApi">gravity</item>
   </style>
+
+  <style name="MaterialAlertDialog.Material3.Animation">
+    <item name="android:windowEnterAnimation">@anim/m3_motion_fade_enter</item>
+    <item name="android:windowExitAnimation">@anim/m3_motion_fade_exit</item>
+  </style>
 </resources>
