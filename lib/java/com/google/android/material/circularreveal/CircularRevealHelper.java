@@ -15,7 +15,7 @@
  */
 package com.google.android.material.circularreveal;
 
-import static com.google.android.material.math.MathUtils.DEFAULT_EPSILON;
+import static com.google.android.material.internal.MathUtils.DEFAULT_EPSILON;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
@@ -37,7 +37,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
-import com.google.android.material.math.MathUtils;
+import com.google.android.material.internal.MathUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 

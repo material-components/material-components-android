@@ -45,7 +45,7 @@ import androidx.annotation.Px;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ViewUtils;
-import com.google.android.material.math.MathUtils;
+import com.google.android.material.internal.MathUtils;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.timepicker.RadialViewGroup.Level;
 import java.util.ArrayList;

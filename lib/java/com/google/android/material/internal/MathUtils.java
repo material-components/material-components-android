@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.material.math;
+package com.google.android.material.internal;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import androidx.annotation.RestrictTo;
 
 /**
  * A class that contains utility methods related to numbers.
  *
- * @deprecated The public MathUtils class is deprecated and is maintained only for binary
- * compatibility. For internal purposes, {@link com.google.android.material.internal.MathUtils}
- * is used instead.
+ * @hide
  */
-@Deprecated
+@RestrictTo(LIBRARY_GROUP)
 public final class MathUtils {
 
   /** Default epsilon value for fuzzy float comparisons. */

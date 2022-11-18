@@ -36,7 +36,7 @@ import android.view.View.MeasureSpec;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
-import com.google.android.material.math.MathUtils;
+import com.google.android.material.internal.MathUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -25,7 +25,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.circularreveal.CircularRevealHelper.Delegate;
-import com.google.android.material.math.MathUtils;
+import com.google.android.material.internal.MathUtils;
 
 /**
  * Interface which denotes that a {@link View} supports a circular clip and scrim color, even for

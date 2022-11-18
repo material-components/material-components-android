@@ -62,7 +62,7 @@ import com.google.android.material.circularreveal.CircularRevealWidget;
 import com.google.android.material.circularreveal.CircularRevealWidget.CircularRevealScrimColorProperty;
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.math.MathUtils;
+import com.google.android.material.internal.MathUtils;
 import java.util.ArrayList;
 import java.util.List;
 
