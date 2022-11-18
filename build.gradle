@@ -17,9 +17,9 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 32
+  compileSdkVersion = 33
   minSdkVersion = 14
-  targetSdkVersion = 32
+  targetSdkVersion = 33
 
   androidXVersions = [
     annotation            : '1.2.0',
@@ -45,7 +45,7 @@ ext {
   espressoVersion = '3.1.0'
   mockitoCoreVersion = '2.25.0'
   truthVersion = '0.45'
-  robolectricVersion = '4.8-alpha-1'
+  robolectricVersion = '4.9'
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.
