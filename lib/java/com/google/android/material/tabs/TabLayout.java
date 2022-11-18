@@ -573,7 +573,7 @@ public class TabLayout extends HorizontalScrollView {
         a.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingBottom, tabPaddingBottom);
 
     if (ThemeEnforcement.isMaterial3Theme(context)) {
-      defaultTabTextAppearance = R.attr.textAppearanceLabelLarge;
+      defaultTabTextAppearance = R.attr.textAppearanceTitleSmall;
     } else {
       defaultTabTextAppearance = R.attr.textAppearanceButton;
     }

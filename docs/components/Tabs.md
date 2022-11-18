@@ -365,11 +365,11 @@ Element                   | Attribute                   | Related method(s)     
 ------------------------- | --------------------------- | --------------------------------------------------------------- | -------------
 **Text**                  | `android:text`              | `setText`<br>`getText`                                          | `null`
 **Color**                 | `tabTextColor`              | `setTabTextColors`<br>`getTabTextColors`                        | `colorOnSurfaceVariant` and `colorPrimary` (activated) (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/res/color/m3_tabs_icon_color.xml))
-**Typography**            | `tabTextAppearance`         | N/A                                                             | `?attr/textAppearanceLabelLarge`
-**Active tab typography** | `selectedTabTextAppearance` | N/A                                                             | None; will use `tabTextAppearance` instead
+**Typography**            | `tabTextAppearance`         | N/A                                                             | `?attr/textAppearanceTitleSmall`
+**Active tab typography** | `tabSelectedTextAppearance` | N/A                                                             | None; will use `tabTextAppearance` instead
 **Inline label**          | `tabInlineLabel`            | `setInlineLabel`<br>`setInlineLabelResource`<br>`isInlineLabel` | `false`
 
-**Note:** When using `selectedTabTextAppearance`, you must have matching text
+**Note:** When using `tabSelectedTextAppearance`, you must have matching text
 attributes in `tabTextAppearance` to avoid unintended behavior.
 
 ### Tab item container attributes
