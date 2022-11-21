@@ -33,6 +33,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.os.BuildCompat;
+import com.google.android.material.color.utilities.Scheme;
+import com.google.android.material.resources.MaterialAttributes;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
@@ -275,27 +277,43 @@ public class DynamicColors {
    */
   public static void applyToActivityIfAvailable(
       @NonNull Activity activity, @NonNull DynamicColorsOptions dynamicColorsOptions) {
-    applyToActivityIfAvailable(
-        activity,
-        dynamicColorsOptions.getThemeOverlay(),
-        dynamicColorsOptions.getPrecondition(),
-        dynamicColorsOptions.getOnAppliedCallback());
-  }
-
-  private static void applyToActivityIfAvailable(
-      @NonNull Activity activity,
-      @StyleRes int theme,
-      @NonNull Precondition precondition,
-      @NonNull OnAppliedCallback onAppliedCallback) {
     if (!isDynamicColorAvailable()) {
       return;
     }
-    if (theme == USE_DEFAULT_THEME_OVERLAY) {
-      theme = getDefaultThemeOverlay(activity);
+    // Set default theme overlay as 0, as it's not used in content-based dynamic colors.
+    int theme = 0;
+    // Only retrieves the theme overlay if we're applying just dynamic colors.
+    if (dynamicColorsOptions.getContentBasedSeedColor() == null) {
+      theme =
+          dynamicColorsOptions.getThemeOverlay() == USE_DEFAULT_THEME_OVERLAY
+              ? getDefaultThemeOverlay(activity)
+              : dynamicColorsOptions.getThemeOverlay();
     }
-    if (theme != 0 && precondition.shouldApplyDynamicColors(activity, theme)) {
-      ThemeUtils.applyThemeOverlay(activity, theme);
-      onAppliedCallback.onApplied(activity);
+
+    if (dynamicColorsOptions.getPrecondition().shouldApplyDynamicColors(activity, theme)) {
+      // Applies content-based dynamic colors if content-based source is provided.
+      if (dynamicColorsOptions.getContentBasedSeedColor() != null) {
+        Scheme colorScheme =
+            MaterialAttributes.resolveBoolean(
+                    activity, R.attr.isLightTheme, /* defaultValue= */ true)
+                ? Scheme.lightContent(dynamicColorsOptions.getContentBasedSeedColor())
+                : Scheme.darkContent(dynamicColorsOptions.getContentBasedSeedColor());
+        ColorResourcesOverride resourcesOverride = ColorResourcesOverride.getInstance();
+        if (resourcesOverride == null) {
+          return;
+        } else {
+          if (!resourcesOverride.applyIfPossible(
+              activity,
+              MaterialColorUtilitiesHelper.createColorResourcesIdsToColorValues(colorScheme))) {
+            return;
+          }
+        }
+      } else {
+        ThemeUtils.applyThemeOverlay(activity, theme);
+      }
+      // Applies client's callback after content-based dynamic colors or just dynamic colors has
+      // been applied.
+      dynamicColorsOptions.getOnAppliedCallback().onApplied(activity);
     }
   }
 
@@ -389,11 +407,7 @@ public class DynamicColors {
     @Override
     public void onActivityPreCreated(
         @NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-      applyToActivityIfAvailable(
-          activity,
-          dynamicColorsOptions.getThemeOverlay(),
-          dynamicColorsOptions.getPrecondition(),
-          dynamicColorsOptions.getOnAppliedCallback());
+      applyToActivityIfAvailable(activity, dynamicColorsOptions);
     }
 
     @Override
