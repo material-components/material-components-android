@@ -22,9 +22,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Rect;
-import androidx.recyclerview.widget.RecyclerView;
-import android.view.View;
 import android.widget.LinearLayout;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
@@ -32,7 +29,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.robolectric.RobolectricTestRunner;
 
 /** Tests for {@link MaterialDividerItemDecoration}. */
@@ -46,16 +42,11 @@ public final class MaterialDividerItemDecorationTest {
 
   private final Context context = ApplicationProvider.getApplicationContext();
 
-  @Mock private RecyclerView.State state;
-  @Mock private View view;
-  @Mock private RecyclerView recyclerView;
-  private Rect rect;
   private MaterialDividerItemDecoration divider;
 
   @Before
   public void themeApplicationContext() {
     context.setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
-    rect = new Rect();
     divider = new MaterialDividerItemDecoration(context, LinearLayout.VERTICAL);
     divider.setDividerThickness(DIVIDER_THICKNESS);
   }
@@ -139,21 +130,5 @@ public final class MaterialDividerItemDecorationTest {
     divider.setLastItemDecorated(false);
 
     assertThat(divider.isLastItemDecorated()).isFalse();
-  }
-
-  @Test
-  public void getItemOffsets_verticalOrientation_returnsCorrectRect() {
-    divider.getItemOffsets(rect, view, recyclerView, state);
-
-    assertThat(rect).isEqualTo(new Rect(0, 0, 0, DIVIDER_THICKNESS));
-  }
-
-  @Test
-  public void getItemOffsets_horizontalOrientation_returnsCorrectRect() {
-    divider.setOrientation(LinearLayout.HORIZONTAL);
-
-    divider.getItemOffsets(rect, view, recyclerView, state);
-
-    assertThat(rect).isEqualTo(new Rect(0, 0, DIVIDER_THICKNESS, 0));
   }
 }

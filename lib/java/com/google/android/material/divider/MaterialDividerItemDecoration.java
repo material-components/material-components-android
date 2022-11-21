@@ -374,7 +374,8 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
       @NonNull RecyclerView parent,
       @NonNull RecyclerView.State state) {
     outRect.set(0, 0, 0, 0);
-    if (shouldAddOffset(parent, view, state)) {
+    // Only add offset if there's a divider displayed.
+    if (shouldDrawDivider(parent, view)) {
       if (orientation == VERTICAL) {
         outRect.bottom = thickness;
       } else {
@@ -384,22 +385,25 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   }
 
   private boolean shouldDrawDivider(@NonNull RecyclerView parent, @NonNull View child) {
-    if (lastItemDecorated) {
-      return true;
-    }
     int position = parent.getChildAdapterPosition(child);
     RecyclerView.Adapter<?> adapter = parent.getAdapter();
+    boolean isLastItem = adapter != null && position == adapter.getItemCount() - 1;
+
     return position != RecyclerView.NO_POSITION
-        && adapter != null
-        && position != adapter.getItemCount() - 1;
+        && (!isLastItem || lastItemDecorated)
+        && shouldDrawDivider(position, adapter);
   }
 
-  private boolean shouldAddOffset(
-      @NonNull RecyclerView parent, @NonNull View child, @NonNull RecyclerView.State state) {
-    if (lastItemDecorated) {
-      return true;
-    }
-    int position = parent.getChildAdapterPosition(child);
-    return position != RecyclerView.NO_POSITION && position != state.getItemCount() - 1;
+  /**
+   * Whether a divider should be drawn below the current item that is being drawn.
+   *
+   * <p>Note: if lasItemDecorated is false, the divider below the last item will never be drawn even
+   * if this method returns true.
+   *
+   * @param position the position of the current item being drawn.
+   * @param adapter the {@link RecyclerView.Adapter} associated with the item being drawn.
+   */
+  protected boolean shouldDrawDivider(int position, @Nullable RecyclerView.Adapter<?> adapter) {
+    return true;
   }
 }
