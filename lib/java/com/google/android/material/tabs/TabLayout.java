@@ -2750,7 +2750,7 @@ public class TabLayout extends HorizontalScrollView {
           defaultMaxLines = TextViewCompat.getMaxLines(this.textView);
         }
         TextViewCompat.setTextAppearance(this.textView, defaultTabTextAppearance);
-        if (isSelected() && selectedTabTextAppearance != -1) {
+        if (tab != null && tab.isSelected() && selectedTabTextAppearance != -1) {
           TextViewCompat.setTextAppearance(this.textView, selectedTabTextAppearance);
         } else {
           TextViewCompat.setTextAppearance(this.textView, tabTextAppearance);
