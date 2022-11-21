@@ -384,6 +384,8 @@ public class ThemeTest {
           R.attr.materialCardViewElevatedStyle,
           R.attr.materialSwitchStyle,
           R.attr.radioButtonStyle,
+          R.attr.searchBarStyle,
+          R.attr.searchViewStyle,
           R.attr.sliderStyle,
           R.attr.snackbarStyle,
           R.attr.snackbarButtonStyle,

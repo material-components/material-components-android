@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+
+  <style name="Widget.Material3.SearchBar" parent="android:Widget">
+    <item name="enforceMaterialTheme">true</item>
+    <item name="android:minHeight">@dimen/m3_searchbar_height</item>
+    <item name="android:paddingStart">@dimen/m3_searchbar_padding_start</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.SearchBar</item>
+    <item name="elevation">@dimen/m3_searchbar_elevation</item>
+    <item name="maxButtonHeight">@dimen/m3_searchbar_height</item>
+    <item name="defaultMarginsEnabled">true</item>
+    <item name="defaultScrollFlagsEnabled">true</item>
+    <item name="hideNavigationIcon">false</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.SearchBar</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Search</item>
+  </style>
+
+  <style name="Widget.Material3.SearchBar.Outlined">
+    <item name="elevation">0dp</item>
+    <item name="strokeWidth">1dp</item>
+    <item name="strokeColor">?attr/colorOutline</item>
+  </style>
+
+  <style name="Widget.Material3.SearchView" parent="android:Widget">
+    <item name="enforceMaterialTheme">true</item>
+    <item name="android:elevation">@dimen/m3_searchview_elevation</item>
+    <item name="android:textAppearance">@style/TextAppearance.Material3.SearchView</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Search</item>
+  </style>
+
+  <style name="Widget.Material3.SearchView.Toolbar" parent="Widget.AppCompat.Toolbar">
+    <!-- Set these padding and inset values to 0dp on all screen sizes because the extra spacing is
+         not needed and it conflicts with the expand/collapse animations. -->
+    <item name="android:paddingLeft">0dp</item>
+    <item name="android:paddingRight">0dp</item>
+    <item name="contentInsetStartWithNavigation">0dp</item>
+    <item name="navigationIconTint">?attr/colorOnSurface</item>
+  </style>
+
+  <style name="Base.TextAppearance.Material3.Search" parent="TextAppearance.MaterialComponents.Headline6">
+    <item name="android:textColor">?attr/colorOnSurface</item>
+    <item name="android:textColorHint">?attr/colorOnSurfaceVariant</item>
+    <item name="android:textSize">@dimen/m3_searchbar_text_size</item>
+  </style>
+
+  <style name="TextAppearance.Material3.SearchBar" parent="Base.TextAppearance.Material3.Search"/>
+
+  <style name="TextAppearance.Material3.SearchView" parent="Base.TextAppearance.Material3.Search"/>
+
+  <style name="Widget.Material3.SearchView.Prefix" parent="android:Widget.TextView">
+    <item name="android:textAppearance">@style/TextAppearance.Material3.SearchView.Prefix</item>
+    <item name="android:paddingTop">8dp</item>
+    <item name="android:paddingBottom">8dp</item>
+    <item name="android:paddingEnd">16dp</item>
+    <item name="android:paddingRight">16dp</item>
+  </style>
+
+  <style name="TextAppearance.Material3.SearchView.Prefix">
+    <item name="android:textColor">?android:attr/textColorTertiary</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.Material3.SearchBar" parent="">
+    <item name="cornerSize">@dimen/m3_searchbar_radius</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Search" parent="">
+    <item name="actionMenuTextColor">?attr/colorOnSurfaceVariant</item>
+    <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
+    <item name="actionOverflowButtonStyle">@style/Widget.Material3.Search.ActionButton.Overflow</item>
+    <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.Search.Toolbar.Button.Navigation</item>
+  </style>
+
+  <style name="Widget.Material3.Search.ActionButton.Overflow" parent="Widget.AppCompat.ActionButton.Overflow">
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+  </style>
+
+  <style name="Widget.Material3.Search.Toolbar.Button.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+  </style>
+
+</resources>
