@@ -18,13 +18,16 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.comp.sheet.bottom) in default context. -->
+
+  <!-- Generated from token set (md.comp.sheet.bottom) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_sheet_bottom_docked_container_color">?attr/colorSurface</macro>
   <dimen name="m3_comp_sheet_bottom_docked_modal_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
   <dimen name="m3_comp_sheet_bottom_docked_standard_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
-  <!-- Please use this with the top shape appearance overlay in styles. -->
+  <!-- Please use the resource below in shapeAppearance
+       and @style/ShapeAppearanceOverlay.Material3.Corner.Top in shapeAppearanceOverlay. -->
   <macro name="m3_comp_sheet_bottom_docked_container_shape">?attr/shapeAppearanceCornerExtraLarge</macro>
   <!-- Enabled - Drag handle -->
   <macro name="m3_comp_sheet_bottom_docked_drag_handle_color">?attr/colorOnSurfaceVariant</macro>
+
 </resources>

@@ -18,15 +18,17 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.comp.linear-progress-indicator) in default context. -->
+
+  <!-- Generated from token set (md.comp.linear-progress-indicator) in context (platform=android, audience=3p). -->
   <!-- Enabled - Track -->
   <macro name="m3_comp_linear_progress_indicator_track_color">?attr/colorSurfaceVariant</macro>
   <!-- Enabled - Active indicator -->
   <dimen name="m3_comp_linear_progress_indicator_active_indicator_height">4dp</dimen>
   <macro name="m3_comp_linear_progress_indicator_active_indicator_color">?attr/colorPrimary</macro>
 
-  <!-- Generated from token set (md.comp.circular-progress-indicator) in default context. -->
+  <!-- Generated from token set (md.comp.circular-progress-indicator) in context (platform=android, audience=3p). -->
   <!-- Enabled - Active indicator -->
   <dimen name="m3_comp_circular_progress_indicator_active_indicator_width">4dp</dimen>
   <macro name="m3_comp_circular_progress_indicator_active_indicator_color">?attr/colorPrimary</macro>
+
 </resources>

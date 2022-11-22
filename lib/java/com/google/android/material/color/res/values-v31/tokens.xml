@@ -18,7 +18,8 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.sys.color) in context (theme=dark). -->
+
+  <!-- Generated from token set (md.sys.color) in context (theme=dark, platform=android, audience=3p, scheme=dynamic). -->
   <!-- Primary colors -->
   <color name="m3_sys_color_dynamic_dark_primary">@color/m3_ref_palette_dynamic_primary80</color>
   <color name="m3_sys_color_dynamic_dark_primary_container">@color/m3_ref_palette_dynamic_primary30</color>
@@ -49,7 +50,7 @@
   <color name="m3_sys_color_dynamic_dark_outline">@color/m3_ref_palette_dynamic_neutral_variant60</color>
   <color name="m3_sys_color_dynamic_dark_outline_variant">@color/m3_ref_palette_dynamic_neutral_variant30</color>
 
-  <!-- Generated from token set (md.sys.color) in context (theme=light). -->
+  <!-- Generated from token set (md.sys.color) in context (theme=light, platform=android, audience=3p, scheme=dynamic). -->
   <!-- Primary colors -->
   <color name="m3_sys_color_dynamic_light_primary">@color/m3_ref_palette_dynamic_primary40</color>
   <color name="m3_sys_color_dynamic_light_primary_container">@color/m3_ref_palette_dynamic_primary90</color>
@@ -80,7 +81,7 @@
   <color name="m3_sys_color_dynamic_light_outline">@color/m3_ref_palette_dynamic_neutral_variant50</color>
   <color name="m3_sys_color_dynamic_light_outline_variant">@color/m3_ref_palette_dynamic_neutral_variant80</color>
 
-  <!-- Generated from token set (md.ref.palette) in default context. -->
+  <!-- Generated from token set (md.ref.palette) in context (platform=android, audience=3p). -->
   <!-- Baseline palette – Primary -->
   <color name="m3_ref_palette_dynamic_primary100">@android:color/system_accent1_0</color>
   <color name="m3_ref_palette_dynamic_primary99">@android:color/system_accent1_10</color>
@@ -151,4 +152,5 @@
   <color name="m3_ref_palette_dynamic_neutral_variant20">@android:color/system_neutral2_800</color>
   <color name="m3_ref_palette_dynamic_neutral_variant10">@android:color/system_neutral2_900</color>
   <color name="m3_ref_palette_dynamic_neutral_variant0">@android:color/system_neutral2_1000</color>
+
 </resources>

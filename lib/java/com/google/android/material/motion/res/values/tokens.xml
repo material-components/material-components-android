@@ -18,76 +18,76 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.sys.motion) in default context. -->
+
+  <!-- Generated from token set (md.sys.motion) in context (platform=android, audience=3p). -->
   <!-- Easing -->
-  <!-- Token md.sys.motion.easing.emphasized is overridden. -->
-  <!-- Easing string used in Material MotionUtils class. -->
+  <!-- Easing string used in Material's MotionUtils class. -->
   <string name="m3_sys_motion_easing_emphasized" translatable="false">path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)</string>
   <!-- Vector path used in <pathInterpolator> resources. -->
   <string name="m3_sys_motion_easing_emphasized_path_data" translatable="false">M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1</string>
   <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_emphasized_accelerate" translatable="false">cubic-bezier(0.3, 0.0, 0.8, 0.2)</string>
+  <string name="m3_sys_motion_easing_emphasized_accelerate" translatable="false">cubic-bezier(0.3, 0, 0.8, 0.2)</string>
   <!-- Control points used in <pathInterpolator> resources. -->
   <item name="m3_sys_motion_easing_emphasized_accelerate_control_x1" format="float" type="dimen">0.3</item>
-  <item name="m3_sys_motion_easing_emphasized_accelerate_control_y1" format="float" type="dimen">0.0</item>
+  <item name="m3_sys_motion_easing_emphasized_accelerate_control_y1" format="float" type="dimen">0</item>
   <item name="m3_sys_motion_easing_emphasized_accelerate_control_x2" format="float" type="dimen">0.8</item>
   <item name="m3_sys_motion_easing_emphasized_accelerate_control_y2" format="float" type="dimen">0.2</item>
   <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_emphasized_decelerate" translatable="false">cubic-bezier(0.1, 0.7, 0.1, 1.0)</string>
+  <string name="m3_sys_motion_easing_emphasized_decelerate" translatable="false">cubic-bezier(0.1, 0.7, 0.1, 1)</string>
   <!-- Control points used in <pathInterpolator> resources. -->
   <item name="m3_sys_motion_easing_emphasized_decelerate_control_x1" format="float" type="dimen">0.1</item>
   <item name="m3_sys_motion_easing_emphasized_decelerate_control_y1" format="float" type="dimen">0.7</item>
   <item name="m3_sys_motion_easing_emphasized_decelerate_control_x2" format="float" type="dimen">0.1</item>
-  <item name="m3_sys_motion_easing_emphasized_decelerate_control_y2" format="float" type="dimen">1.0</item>
+  <item name="m3_sys_motion_easing_emphasized_decelerate_control_y2" format="float" type="dimen">1</item>
   <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_standard" translatable="false">cubic-bezier(0.2, 0.0, 0.0, 1.0)</string>
+  <string name="m3_sys_motion_easing_standard" translatable="false">cubic-bezier(0.2, 0, 0, 1)</string>
   <!-- Control points used in <pathInterpolator> resources. -->
   <item name="m3_sys_motion_easing_standard_control_x1" format="float" type="dimen">0.2</item>
-  <item name="m3_sys_motion_easing_standard_control_y1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_standard_control_x2" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_standard_control_y2" format="float" type="dimen">1.0</item>
+  <item name="m3_sys_motion_easing_standard_control_y1" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_standard_control_x2" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_standard_control_y2" format="float" type="dimen">1</item>
   <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_standard_accelerate" translatable="false">cubic-bezier(0.3, 0.0, 1.0, 1.0)</string>
+  <string name="m3_sys_motion_easing_standard_accelerate" translatable="false">cubic-bezier(0.3, 0, 1, 1)</string>
   <!-- Control points used in <pathInterpolator> resources. -->
   <item name="m3_sys_motion_easing_standard_accelerate_control_x1" format="float" type="dimen">0.3</item>
-  <item name="m3_sys_motion_easing_standard_accelerate_control_y1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_standard_accelerate_control_x2" format="float" type="dimen">1.0</item>
-  <item name="m3_sys_motion_easing_standard_accelerate_control_y2" format="float" type="dimen">1.0</item>
+  <item name="m3_sys_motion_easing_standard_accelerate_control_y1" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_standard_accelerate_control_x2" format="float" type="dimen">1</item>
+  <item name="m3_sys_motion_easing_standard_accelerate_control_y2" format="float" type="dimen">1</item>
   <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_standard_decelerate" translatable="false">cubic-bezier(0.0, 0.0, 0.0, 1.0)</string>
+  <string name="m3_sys_motion_easing_standard_decelerate" translatable="false">cubic-bezier(0, 0, 0, 1)</string>
   <!-- Control points used in <pathInterpolator> resources. -->
-  <item name="m3_sys_motion_easing_standard_decelerate_control_x1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_standard_decelerate_control_y1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_standard_decelerate_control_x2" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_standard_decelerate_control_y2" format="float" type="dimen">1.0</item>
+  <item name="m3_sys_motion_easing_standard_decelerate_control_x1" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_standard_decelerate_control_y1" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_standard_decelerate_control_x2" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_standard_decelerate_control_y2" format="float" type="dimen">1</item>
   <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_legacy" translatable="false">cubic-bezier(0.4, 0.0, 0.2, 1.0)</string>
+  <string name="m3_sys_motion_easing_legacy" translatable="false">cubic-bezier(0.4, 0, 0.2, 1)</string>
   <!-- Control points used in <pathInterpolator> resources. -->
   <item name="m3_sys_motion_easing_legacy_control_x1" format="float" type="dimen">0.4</item>
-  <item name="m3_sys_motion_easing_legacy_control_y1" format="float" type="dimen">0.0</item>
+  <item name="m3_sys_motion_easing_legacy_control_y1" format="float" type="dimen">0</item>
   <item name="m3_sys_motion_easing_legacy_control_x2" format="float" type="dimen">0.2</item>
-  <item name="m3_sys_motion_easing_legacy_control_y2" format="float" type="dimen">1.0</item>
+  <item name="m3_sys_motion_easing_legacy_control_y2" format="float" type="dimen">1</item>
   <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_legacy_accelerate" translatable="false">cubic-bezier(0.4, 0.0, 1.0, 1.0)</string>
+  <string name="m3_sys_motion_easing_legacy_accelerate" translatable="false">cubic-bezier(0.4, 0, 1, 1)</string>
   <!-- Control points used in <pathInterpolator> resources. -->
   <item name="m3_sys_motion_easing_legacy_accelerate_control_x1" format="float" type="dimen">0.4</item>
-  <item name="m3_sys_motion_easing_legacy_accelerate_control_y1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_legacy_accelerate_control_x2" format="float" type="dimen">1.0</item>
-  <item name="m3_sys_motion_easing_legacy_accelerate_control_y2" format="float" type="dimen">1.0</item>
+  <item name="m3_sys_motion_easing_legacy_accelerate_control_y1" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_legacy_accelerate_control_x2" format="float" type="dimen">1</item>
+  <item name="m3_sys_motion_easing_legacy_accelerate_control_y2" format="float" type="dimen">1</item>
   <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_legacy_decelerate" translatable="false">cubic-bezier(0.0, 0.0, 0.2, 1.0)</string>
+  <string name="m3_sys_motion_easing_legacy_decelerate" translatable="false">cubic-bezier(0, 0, 0.2, 1)</string>
   <!-- Control points used in <pathInterpolator> resources. -->
-  <item name="m3_sys_motion_easing_legacy_decelerate_control_x1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_legacy_decelerate_control_y1" format="float" type="dimen">0.0</item>
+  <item name="m3_sys_motion_easing_legacy_decelerate_control_x1" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_legacy_decelerate_control_y1" format="float" type="dimen">0</item>
   <item name="m3_sys_motion_easing_legacy_decelerate_control_x2" format="float" type="dimen">0.2</item>
-  <item name="m3_sys_motion_easing_legacy_decelerate_control_y2" format="float" type="dimen">1.0</item>
+  <item name="m3_sys_motion_easing_legacy_decelerate_control_y2" format="float" type="dimen">1</item>
   <!-- Easing string used in Material's MotionUtils class. -->
-  <string name="m3_sys_motion_easing_linear" translatable="false">cubic-bezier(0.0, 0.0, 1.0, 1.0)</string>
+  <string name="m3_sys_motion_easing_linear" translatable="false">cubic-bezier(0, 0, 1, 1)</string>
   <!-- Control points used in <pathInterpolator> resources. -->
-  <item name="m3_sys_motion_easing_linear_control_x1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_linear_control_y1" format="float" type="dimen">0.0</item>
-  <item name="m3_sys_motion_easing_linear_control_x2" format="float" type="dimen">1.0</item>
-  <item name="m3_sys_motion_easing_linear_control_y2" format="float" type="dimen">1.0</item>
+  <item name="m3_sys_motion_easing_linear_control_x1" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_linear_control_y1" format="float" type="dimen">0</item>
+  <item name="m3_sys_motion_easing_linear_control_x2" format="float" type="dimen">1</item>
+  <item name="m3_sys_motion_easing_linear_control_y2" format="float" type="dimen">1</item>
   <!-- Duration -->
   <integer name="m3_sys_motion_duration_short1">50</integer>
   <integer name="m3_sys_motion_duration_short2">100</integer>
@@ -106,5 +106,7 @@
   <integer name="m3_sys_motion_duration_extra_long3">900</integer>
   <integer name="m3_sys_motion_duration_extra_long4">1000</integer>
   <!-- Style -->
-  <macro name="m3_sys_motion_path">linear</macro>
+  <!-- Linear motion path. -->
+  <integer name="m3_sys_motion_path">0</integer>
+
 </resources>

@@ -18,10 +18,12 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.comp.slider) in default context. -->
+
+  <!-- Generated from token set (md.comp.slider) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_slider_label_container_color">?attr/colorPrimary</macro>
   <!-- Enabled - Label text -->
+  <!-- Token md.comp.slider.label.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_slider_label_label_text_color">?attr/colorOnPrimary</macro>
   <!-- Enabled - Track -->
   <dimen name="m3_comp_slider_inactive_track_height">4dp</dimen>
@@ -37,4 +39,5 @@
   <!-- Disabled - Handle -->
   <macro name="m3_comp_slider_disabled_handle_color">?attr/colorOnSurface</macro>
   <item name="m3_comp_slider_disabled_handle_opacity" format="float" type="dimen">0.38</item>
+
 </resources>

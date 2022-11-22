@@ -18,10 +18,12 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.comp.primary-navigation-tab) in default context. -->
+
+  <!-- Generated from token set (md.comp.primary-navigation-tab) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_primary_navigation_tab_container_color">?attr/colorSurface</macro>
   <!-- Enabled - Label text -->
+  <!-- Token md.comp.primary-navigation-tab.with-label-text.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_primary_navigation_tab_with_label_text_label_text_type">?attr/textAppearanceTitleSmall</macro>
   <macro name="m3_comp_primary_navigation_tab_with_label_text_active_label_text_color">?attr/colorPrimary</macro>
   <macro name="m3_comp_primary_navigation_tab_with_label_text_inactive_label_text_color">?attr/colorOnSurfaceVariant</macro>
@@ -51,10 +53,11 @@
   <macro name="m3_comp_primary_navigation_tab_inactive_pressed_state_layer_color">?attr/colorPrimary</macro>
   <dimen name="m3_comp_primary_navigation_tab_inactive_pressed_state_layer_opacity">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
 
-  <!-- Generated from token set (md.comp.secondary-navigation-tab) in default context. -->
+  <!-- Generated from token set (md.comp.secondary-navigation-tab) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_secondary_navigation_tab_container_color">?attr/colorSurface</macro>
   <!-- Enabled - Label text -->
+  <!-- Token md.comp.secondary-navigation-tab.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_secondary_navigation_tab_label_text_type">?attr/textAppearanceTitleSmall</macro>
   <macro name="m3_comp_secondary_navigation_tab_active_label_text_color">?attr/colorOnSurface</macro>
   <macro name="m3_comp_secondary_navigation_tab_inactive_label_text_color">?attr/colorOnSurfaceVariant</macro>
@@ -73,4 +76,5 @@
   <!-- Pressed (rippple) - State layer -->
   <macro name="m3_comp_secondary_navigation_tab_pressed_state_layer_color">?attr/colorOnSurface</macro>
   <dimen name="m3_comp_secondary_navigation_tab_pressed_state_layer_opacity">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
+
 </resources>

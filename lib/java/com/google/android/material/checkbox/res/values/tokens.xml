@@ -18,7 +18,8 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.comp.checkbox) in default context. -->
+
+  <!-- Generated from token set (md.comp.checkbox) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_checkbox_unselected_outline_color">?attr/colorOnSurfaceVariant</macro>
   <macro name="m3_comp_checkbox_selected_container_color">?attr/colorPrimary</macro>
@@ -31,4 +32,5 @@
   <item name="m3_comp_checkbox_selected_disabled_container_opacity" format="float" type="dimen">0.38</item>
   <!-- Disabled - Icon -->
   <macro name="m3_comp_checkbox_selected_disabled_icon_color">?attr/colorSurface</macro>
+
 </resources>

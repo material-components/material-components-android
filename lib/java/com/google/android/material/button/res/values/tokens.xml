@@ -18,29 +18,31 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.comp.filled-button) in default context. -->
+
+  <!-- Generated from token set (md.comp.filled-button) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <style name="ShapeAppearance.M3.Comp.FilledButton.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
   <dimen name="m3_comp_filled_button_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
-  <!-- Ignore (md.comp.filled-button.container.shadow-color) due to no theme attribute for (md.sys.color.shadow). -->
   <macro name="m3_comp_filled_button_container_color">?attr/colorPrimary</macro>
   <!-- Enabled - Label text -->
+  <!-- Token md.comp.filled-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_filled_button_label_text_type">?attr/textAppearanceLabelLarge</macro>
   <macro name="m3_comp_filled_button_label_text_color">?attr/colorOnPrimary</macro>
   <!-- Enabled - Icon -->
   <dimen name="m3_comp_filled_button_with_icon_icon_size">18dp</dimen>
 
-  <!-- Generated from token set (md.comp.filled-tonal-button) in default context. -->
+  <!-- Generated from token set (md.comp.filled-tonal-button) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_filled_tonal_button_container_color">?attr/colorSecondaryContainer</macro>
-  <!-- Ignore (md.comp.filled-tonal-button.container.shadow-color) due to no theme attribute for (md.sys.color.shadow). -->
   <!-- Enabled - Label text -->
   <macro name="m3_comp_filled_tonal_button_label_text_color">?attr/colorOnSecondaryContainer</macro>
+  <!-- Token md.comp.filled-tonal-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
 
-  <!-- Generated from token set (md.comp.text-button) in default context. -->
+  <!-- Generated from token set (md.comp.text-button) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <style name="ShapeAppearance.M3.Comp.TextButton.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
   <!-- Enabled - Label text -->
+  <!-- Token md.comp.text-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_text_button_label_text_type">?attr/textAppearanceLabelLarge</macro>
   <macro name="m3_comp_text_button_label_text_color">?attr/colorPrimary</macro>
   <!-- Hovered - State layer -->
@@ -53,10 +55,12 @@
   <macro name="m3_comp_text_button_pressed_state_layer_color">?attr/colorPrimary</macro>
   <dimen name="m3_comp_text_button_pressed_state_layer_opacity">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
 
-  <!-- Generated from token set (md.comp.outlined-button) in default context. -->
+  <!-- Generated from token set (md.comp.outlined-button) in context (platform=android, audience=3p). -->
   <!-- Enabled - Outline -->
   <macro name="m3_comp_outlined_button_outline_color">?attr/colorOutline</macro>
   <dimen name="m3_comp_outlined_button_outline_width">1dp</dimen>
+  <!-- Enabled - Label text -->
+  <!-- Token md.comp.outlined-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <!-- Disabled - Outline -->
   <macro name="m3_comp_outlined_button_disabled_outline_color">?attr/colorOnSurface</macro>
   <item name="m3_comp_outlined_button_disabled_outline_opacity" format="float" type="dimen">0.12</item>
@@ -67,11 +71,13 @@
   <!-- Pressed (rippple) - Outline -->
   <macro name="m3_comp_outlined_button_pressed_outline_color">?attr/colorOutline</macro>
 
-  <!-- Generated from token set (md.comp.elevated-button) in default context. -->
+  <!-- Generated from token set (md.comp.elevated-button) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <dimen name="m3_comp_elevated_button_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
-  <!-- Ignore (md.comp.elevated-button.container.shadow-color) due to no theme attribute for (md.sys.color.shadow). -->
   <macro name="m3_comp_elevated_button_container_color">?attr/colorSurface</macro>
+  <!-- Enabled - Label text -->
+  <!-- Token md.comp.elevated-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <!-- Disabled - Container -->
   <dimen name="m3_comp_elevated_button_disabled_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
+
 </resources>

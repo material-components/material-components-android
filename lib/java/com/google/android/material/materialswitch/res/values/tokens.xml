@@ -18,7 +18,8 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.comp.switch) in default context. -->
+
+  <!-- Generated from token set (md.comp.switch) in context (platform=android, audience=3p). -->
   <!-- Enabled - Icon -->
   <macro name="m3_comp_switch_selected_icon_color">?attr/colorOnPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_icon_color">?attr/colorSurfaceVariant</macro>
@@ -92,4 +93,5 @@
   <!-- Pressed (rippple) - Handle -->
   <macro name="m3_comp_switch_selected_pressed_handle_color">?attr/colorPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_pressed_handle_color">?attr/colorOnSurfaceVariant</macro>
+
 </resources>

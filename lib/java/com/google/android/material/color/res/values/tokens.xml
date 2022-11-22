@@ -18,7 +18,8 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.sys.color) in context (theme=dark). -->
+
+  <!-- Generated from token set (md.sys.color) in context (theme=dark, platform=android, audience=3p, scheme=non-dynamic). -->
   <!-- Primary colors -->
   <color name="m3_sys_color_dark_primary">@color/m3_ref_palette_primary80</color>
   <color name="m3_sys_color_dark_primary_container">@color/m3_ref_palette_primary30</color>
@@ -55,7 +56,7 @@
   <color name="m3_sys_color_dark_on_error">@color/m3_ref_palette_error20</color>
   <color name="m3_sys_color_dark_on_error_container">@color/m3_ref_palette_error90</color>
 
-  <!-- Generated from token set (md.sys.color) in context (theme=light). -->
+  <!-- Generated from token set (md.sys.color) in context (theme=light, platform=android, audience=3p, scheme=non-dynamic). -->
   <!-- Primary colors -->
   <color name="m3_sys_color_light_primary">@color/m3_ref_palette_primary40</color>
   <color name="m3_sys_color_light_primary_container">@color/m3_ref_palette_primary90</color>
@@ -92,7 +93,7 @@
   <color name="m3_sys_color_light_on_error">@color/m3_ref_palette_error100</color>
   <color name="m3_sys_color_light_on_error_container">@color/m3_ref_palette_error10</color>
 
-  <!-- Generated from token set (md.ref.palette) in default context. -->
+  <!-- Generated from token set (md.ref.palette) in context (platform=android, audience=3p). -->
   <!-- Baseline palette – Primary -->
   <color name="m3_ref_palette_primary100">#ffffffff</color>
   <color name="m3_ref_palette_primary99">#fffffbfe</color>
@@ -180,4 +181,5 @@
   <!-- Brand palette – Black White -->
   <color name="m3_ref_palette_white">#ffffffff</color>
   <color name="m3_ref_palette_black">#ff000000</color>
+
 </resources>
