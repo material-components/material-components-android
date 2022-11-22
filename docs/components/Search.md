@@ -99,7 +99,7 @@ Element           | Style
 ----------------- | ------------------------------------------------
 **Search Bar Default style** | `Widget.Material3.SearchBar`
 
-Default search bar style theme attribute: `?attr/searchBarStyle`.
+Default search bar style theme attribute: `?attr/materialSearchBarStyle`.
 
 ### Scrolling Behavior
 
@@ -217,7 +217,7 @@ Element           | Style
 ----------------- | ------------------------------------------------
 **Search View Default style** | `Widget.Material3.SearchView`
 
-Default search view style theme attribute: `?attr/searchViewStyle`.
+Default search view style theme attribute: `?attr/materialSearchViewStyle`.
 
 ### Expand and Collapse Animations
 

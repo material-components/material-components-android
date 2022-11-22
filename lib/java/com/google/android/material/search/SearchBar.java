@@ -108,7 +108,7 @@ public class SearchBar extends Toolbar {
   }
 
   public SearchBar(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, R.attr.searchBarStyle);
+    this(context, attrs, R.attr.materialSearchBarStyle);
   }
 
   public SearchBar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {

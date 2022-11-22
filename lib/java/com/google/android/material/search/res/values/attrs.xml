@@ -17,11 +17,11 @@
 <resources>
 
   <!-- Style to use for SearchBars in this theme. -->
-  <attr name="searchBarStyle" format="reference"/>
+  <attr name="materialSearchBarStyle" format="reference"/>
   <!-- Style to use for SearchViews in this theme. -->
-  <attr name="searchViewStyle" format="reference"/>
+  <attr name="materialSearchViewStyle" format="reference"/>
   <!-- Style to use for SearchView prefixes in this theme. -->
-  <attr name="searchViewPrefixStyle" format="reference"/>
+  <attr name="materialSearchViewPrefixStyle" format="reference"/>
   <!-- Attribute to use for hiding the navigation icon in search bar and search view. -->
   <attr name="hideNavigationIcon" format="boolean"/>
 

@@ -81,7 +81,7 @@
 
             <TextView
                 android:id="@+id/search_view_search_prefix"
-                style="?attr/searchViewPrefixStyle"
+                style="?attr/materialSearchViewPrefixStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"/>

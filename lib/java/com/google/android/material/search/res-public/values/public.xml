@@ -17,9 +17,9 @@
 
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
-  <public name="searchBarStyle" type="attr"/>
-  <public name="searchViewStyle" type="attr"/>
-  <public name="searchViewPrefixStyle" type="attr"/>
+  <public name="materialSearchBarStyle" type="attr"/>
+  <public name="materialSearchViewStyle" type="attr"/>
+  <public name="materialSearchViewPrefixStyle" type="attr"/>
   <public name="defaultMarginsEnabled" type="attr"/>
   <public name="defaultScrollFlagsEnabled" type="attr"/>
   <public name="hideNavigationIcon" type="attr"/>

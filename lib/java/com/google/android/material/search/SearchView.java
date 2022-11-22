@@ -116,7 +116,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
   }
 
   public SearchView(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, R.attr.searchViewStyle);
+    this(context, attrs, R.attr.materialSearchViewStyle);
   }
 
   public SearchView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
