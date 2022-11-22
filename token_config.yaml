@@ -1,7 +1,7 @@
 # The token conversion configuration for Material 3
 platform: android
 design_system_id: designSystems/20543ce18892f7d9
-version: v0.126
+version: v0.141
 common_context: [audience::3p, platform::android]
 input_dir: ux/material/dsdb/contrib/generators/tokens/android/templates/
 output_dir: third_party/java_src/android_libs/material_components/lib/java/com/google/android/material/
@@ -465,10 +465,10 @@ conversion_tasks:
       - md.comp.filter-chip.(selected|unselected).label-text.color
       - md.comp.filter-chip.disabled.label-text.(color|opacity)
       - md.comp.filter-chip.with-leading-icon.leading-icon.unselected.color
-      - md.comp.filter-chip.with-leading-icon.selected.leading-icon.color
+      - md.comp.filter-chip.with-leading-icon.(selected|unselected).leading-icon.color
       - md.comp.filter-chip.with-leading-icon.disabled.leading-icon.(color|opacity)
       - md.comp.filter-chip.with-trailing-icon.trailing-icon.unselected.color
-      - md.comp.filter-chip.with-trailing-icon.selected.trailing-icon.color
+      - md.comp.filter-chip.with-trailing-icon.(selected|unselected).trailing-icon.color
       - md.comp.filter-chip.with-trailing-icon.disabled.trailing-icon.(color|opacity)
       - md.comp.filter-chip.flat.unselected.outline.color
       - md.comp.filter-chip.flat.unselected.focus.outline.color
