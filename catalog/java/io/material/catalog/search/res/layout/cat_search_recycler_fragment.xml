@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <!-- Use AppBarLayout scrolling behavior instead of SearchBar
+       scrolling behavior since this demo uses an opaque AppBarLayout
+       and a non-floating SearchBar. -->
+  <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/recycler_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:paddingTop="8dp"
+      android:paddingBottom="8dp"
+      android:clipToPadding="false"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+  <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/app_bar_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fitsSystemWindows="true">
+
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/open_search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/cat_searchbar_hint">
+    </com.google.android.material.search.SearchBar>
+
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent">
+
+      <com.google.android.material.tabs.TabItem
+          android:text="@string/cat_searchbar_tabs_label_explore"
+          tools:ignore="RequiredSize"/>
+      <com.google.android.material.tabs.TabItem
+          android:text="@string/cat_searchbar_tabs_label_flights"
+          tools:ignore="RequiredSize"/>
+      <com.google.android.material.tabs.TabItem
+          android:text="@string/cat_searchbar_tabs_label_trips"
+          tools:ignore="RequiredSize"/>
+    </com.google.android.material.tabs.TabLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <!-- Elevation needs to be greater than AppBarLayout's elevation;
+       otherwise for some reason when the AppBarLayout's background
+       is not transparent, the elevation on this Toolbar doesn't show. -->
+  <FrameLayout
+      android:id="@+id/contextual_toolbar_container"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:elevation="5dp"
+      android:visibility="gone">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/contextual_toolbar"
+        style="?attr/catalogToolbarWithCloseButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.Material3.Catalog.Toolbar.Contextual"
+        app:titleTextAppearance="@style/TextAppearance.Material3.Catalog.Toolbar.Contextual.Title"/>
+  </FrameLayout>
+
+  <ProgressBar
+      android:id="@+id/spinner"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"/>
+
+  <com.google.android.material.search.SearchView
+      android:id="@+id/open_search_view"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:hint="@string/cat_searchbar_hint"
+      app:layout_anchor="@id/open_search_bar">
+
+    <!-- Content goes here (ScrollView, RecyclerView, etc.). -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+      <LinearLayout
+          android:id="@+id/open_search_view_suggestion_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical"/>
+    </ScrollView>
+  </com.google.android.material.search.SearchView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

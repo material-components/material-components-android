@@ -96,6 +96,14 @@
     <activity
       android:name="io.material.catalog.color.ColorHarmonizationDemoActivity"
       android:exported="true" />
+    <activity
+      android:name="io.material.catalog.search.SearchMainDemoActivity"
+      android:windowSoftInputMode="adjustNothing"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.search.SearchRecyclerDemoActivity"
+      android:windowSoftInputMode="adjustNothing"
+      android:exported="true" />
   </application>
 
 </manifest>
