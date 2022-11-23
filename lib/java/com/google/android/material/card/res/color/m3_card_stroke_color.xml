@@ -14,7 +14,28 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="?attr/colorSecondary" android:state_checked="true"/>
-  <item android:color="?attr/colorOutline"/>
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+  <!-- Disabled -->
+  <item android:alpha="@dimen/m3_comp_outlined_card_disabled_outline_opacity"
+        android:color="@macro/m3_comp_outlined_card_disabled_outline_color"
+        android:state_enabled="false"/>
+  <!-- Checked -->
+  <item android:color="?attr/colorSecondary"
+        android:state_checked="true"/>
+  <!-- Hovered -->
+  <item android:color="@macro/m3_comp_outlined_card_hover_outline_color"
+        android:state_hovered="true"/>
+  <!-- Focused -->
+  <item android:color="@macro/m3_comp_outlined_card_focus_outline_color"
+        android:state_focused="true"/>
+  <!-- Pressed -->
+  <item android:color="@macro/m3_comp_outlined_card_pressed_outline_color"
+        android:state_pressed="true"/>
+  <!-- Dragged -->
+  <item android:color="@macro/m3_comp_outlined_card_dragged_outline_color"
+        app:state_dragged="true"/>
+  <!-- Default -->
+  <item android:color="@macro/m3_comp_outlined_card_outline_color"/>
 </selector>

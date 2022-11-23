@@ -13,10 +13,12 @@ token_name_prefix_alias:
 shape_output_type: style
 
 conversion_tasks:
+
   - # Elevation system tokens.
     token_sets: md.sys.elevation
     files:
       - {input: tokens.jinja2, output: elevation/res/values/tokens.xml}
+
   - # Color reference and system tokens.
     token_sets:
       - # Color system tokens.
@@ -28,6 +30,7 @@ conversion_tasks:
     suppressed_tags: [scheme::non-dynamic]
     suppressed_tokens:
       - md.sys.color.(scrim|shadow)
+
   - # Color reference tokens for dynamic colors (v31).
     token_sets:
       - # Color system tokens.
@@ -42,39 +45,47 @@ conversion_tasks:
       - md.sys.color.(scrim|shadow)
       # Cannot generate <macro> in values-v31.
       - md.sys.color.surface-tint
+
   - # State system tokens.
     token_sets: md.sys.state
     files:
       - {input: tokens.jinja2, output: resources/res/values/tokens.xml}
+
   - # State system tokens (v21).
     token_sets: md.sys.state
     files:
       - {input: tokens.jinja2, output: resources/res/values-v28/tokens.xml}
     target_api: 28
+
   - # State system tokens (v28).
     token_sets: md.sys.state
     files:
       - {input: tokens.jinja2, output: resources/res/values-v21/tokens.xml}
     target_api: 21
+
   - # Motion system tokens.
     token_sets: md.sys.motion
     files:
       - {input: tokens.jinja2, output: motion/res/values/tokens.xml}
+
   - # Shape system tokens.
     token_sets: md.sys.shape
     files:
       - {input: tokens.jinja2, output: shape/res/values/tokens.xml}
+
   - # Typography reference tokens.
     token_sets: [md.sys.typescale, md.ref.typeface]
     files:
       - {input: tokens.jinja2, output: typography/res/values/tokens.xml}
     lint_ignore_new_api: true
+
   - # Typography reference tokens (v21).
     token_sets: [md.sys.typescale, md.ref.typeface]
     files:
       - {input: tokens.jinja2, output: typography/res/values-v21/tokens.xml}
     target_api: 21
     lint_ignore_new_api: true
+
   - # Switch component tokens.
     token_sets: md.comp.switch
     files:
@@ -88,6 +99,7 @@ conversion_tasks:
       - md.comp.switch.handle.width
       - md.comp.switch.handle.height
       - md.comp.switch.state-layer.size
+
   - # Bottom sheet commponent tokens.
     token_sets: md.comp.sheet.bottom
     files:
@@ -100,6 +112,7 @@ conversion_tasks:
       - md.comp.sheet.bottom.docked.drag-handle.opacity
       - md.comp.sheet.bottom.docked.drag-handle.width
       - md.comp.sheet.bottom.docked.drag-handle.height
+
   - # Tab component tokens.
     token_sets:
       - md.comp.primary-navigation-tab
@@ -126,6 +139,7 @@ conversion_tasks:
       - md.comp.primary-navigation-tab.with-icon.(active|inactive).(hover|focus|pressed).icon.color
       - md.comp.secondary-navigation-tab.(hover|focus|pressed).label-text.color
       - md.comp.secondary-navigation-tab.with-icon.(hover|focus|pressed).icon.color
+
   - # Button component tokens.
     token_sets:
       - md.comp.filled-button
@@ -216,6 +230,7 @@ conversion_tasks:
       - md.comp.elevated-button.with-icon.(focus|hover|pressed).icon.color
       # Shadow color is not styleable.
       - md.comp.elevated-button.container.shadow-color
+
   - # FAB component tokens.
     token_sets:
       - md.comp.fab.primary
@@ -264,6 +279,7 @@ conversion_tasks:
       - md.comp.fab.(primary|secondary|tertiary|surface).(small|large).icon.color
       - md.comp.fab.(primary|secondary|tertiary|surface).(small|large).(hover|focus|pressed).icon.color
       - md.comp.fab.(primary|secondary|tertiary|surface).(small|large).(hover|focus|pressed).state-layer....
+
   - # Extended FAB component tokens.
     token_sets:
       - md.comp.extended-fab.primary
@@ -292,6 +308,7 @@ conversion_tasks:
       - md.comp.extended-fab.(primary|secondary|tertiary|surface).(hover|focus|pressed).(icon|label-text).color
       # Assuming state-layer color is always same as the icon color.
       - md.comp.extended-fab.(primary|secondary|tertiary|surface).(hover|focus|pressed).state-layer.color
+
   - # Progress indicator component tokens.
     token_sets:
       - md.comp.linear-progress-indicator
@@ -307,6 +324,7 @@ conversion_tasks:
       - md.comp.linear-progress-indicator.track.height
       # Circular type configured size differently.
       - md.comp.circular-progress-indicator.size
+
   - # Navigation rail component tokens.
     token_sets: md.comp.navigation-rail
     files:
@@ -330,6 +348,7 @@ conversion_tasks:
       - md.comp.navigation-rail.no-label.active-indicator.height
       # TODO(b/253086215) Assumed the indicator shape appearance remains same when no label.
       - md.comp.navigation-rail.no-label.active-indicator.shape
+
   - # Bottom app bar component tokens.
     token_sets: md.comp.bottom-app-bar
     files:
@@ -337,6 +356,7 @@ conversion_tasks:
     suppressed_tokens:
       - md.comp.bottom-app-bar.container.surface-tint-layer.color
       - md.comp.bottom-app-bar.with-fab.container.height
+
   - # Slider component tokens.
     token_sets: md.comp.slider
     files:
@@ -374,6 +394,7 @@ conversion_tasks:
       - md.comp.slider.label.label-text.type
       # TODO(b/246836765) Update tooltip height to M3 styles.
       - md.comp.slider.label.container.height
+
   - # Chip component tokens.
     token_sets:
       - md.comp.input-chip
@@ -483,10 +504,12 @@ conversion_tasks:
       - md.comp.filter-chip.flat.selected.outline.width
       # Shadow color is not styleable.
       - md.comp.filter-chip.container.shadow-color
+
   - # Divider component tokens.
     token_sets: md.comp.divider
     files:
       - {input: tokens.jinja2, output: divider/res/values/tokens.xml}
+
   - # Check box component tokens.
     token_sets: md.comp.checkbox
     files:
@@ -519,12 +542,14 @@ conversion_tasks:
       - md.comp.checkbox.state-layer.(size|shape)
       # Assuming this shares token with "selected container" token.
       - md.comp.checkbox.unselected.disabled.container.opacity
+
   - # Search bar/view component tokens.
     token_sets:
       - md.comp.search-bar
       - md.comp.search-view
     files:
       - {input: tokens.jinja2, output: search/res/values/tokens.xml}
+
   - # Tooltip component tokens.
     token_sets:
       # TODO(b/260002910) Rich tooltip is not implemented (md.comp.rich-tooltip)
@@ -537,6 +562,7 @@ conversion_tasks:
       - md.comp.plain-tooltip.supporting-text.color
       # TODO(b/260002910) Current style uses "Full" shape as the shape appearance.
       - md.comp.plain-tooltip.container.shape
+
   - # Badge component tokens.
     token_sets: md.comp.badge
     files:
@@ -552,6 +578,49 @@ conversion_tasks:
       - md.comp.badge.large.color
       # TODO(b/260151426) Text appearance is not styleable. The current text appearance is shared between M2 and M3.
       - md.comp.badge.large.label-text.(color|type|weight|tracking|size|line-height|font)
+
+  - # Card component tokens.
+    token_sets:
+      - md.comp.filled-card
+      - md.comp.outlined-card
+      - md.comp.elevated-card
+    files:
+      - {input: tokens.jinja2, output: card/res/values/tokens.xml}
+    suppressed_tokens:
+      # Shadow color is not configurable.
+      - md.comp.filled-card.container.shadow-color
+      # TODO(b/253671432) Add a CSL for background color to set the disabled state.
+      - md.comp.filled-card.disabled.container.(color|opacity)
+      # TODO(b/253671432) Current ripple is using colorOnSurfaceVariant.
+      - md.comp.filled-card.(hover|focus|pressed|dragged).state-layer.color
+      # TODO(b/253671432) Integrate state tokens.
+      - md.comp.filled-card.(hover|focus|pressed|dragged|disabled).container.elevation
+      # TODO(b/253671432) Integrate after design confirm which icon this token is for.
+      - md.comp.filled-card.icon.color
+
+      # Shadow color is not configurable.
+      - md.comp.outlined-card.container.shadow-color
+      # Elevation overlay color is not configurable.
+      - md.comp.outlined-card.container.surface-tint-layer.color
+      # TODO(b/253671432) Integrate state tokens.
+      - md.comp.outlined-card.(hover|focus|pressed|dragged|disabled).container.elevation
+      # TODO(b/253671432) Assume shared same ripple colors as filled cards.
+      - md.comp.outlined-card.(hover|focus|pressed|dragged).state-layer.(color|opacity)
+      # TODO(b/253671432) Integrate after design confirm which icon this token is for.
+      - md.comp.outlined-card.icon.color
+
+      # Shadow color is not configurable.
+      - md.comp.elevated-card.container.shadow-color
+      # Elevation overlay color is not configurable.
+      - md.comp.elevated-card.container.surface-tint-layer.color
+      # TODO(b/253671432) Add a CSL for background color to set the disabled state.
+      - md.comp.elevated-card.disabled.container.(color|opacity)
+      # TODO(b/253671432) Integrate state tokens.
+      - md.comp.elevated-card.(hover|focus|pressed|dragged|disabled).container.elevation
+      # TODO(b/253671432) Assume shared same ripple colors as filled cards.
+      - md.comp.elevated-card.(hover|focus|pressed|dragged).state-layer.(color|opacity)
+      # TODO(b/253671432) Integrate after design confirm which icon this token is for.
+      - md.comp.elevated-card.icon.color
 
 metadata:
   # md.sys.shape.corner.extra-small
