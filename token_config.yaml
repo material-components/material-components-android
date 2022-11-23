@@ -537,6 +537,21 @@ conversion_tasks:
       - md.comp.plain-tooltip.supporting-text.color
       # TODO(b/260002910) Current style uses "Full" shape as the shape appearance.
       - md.comp.plain-tooltip.container.shape
+  - # Badge component tokens.
+    token_sets: md.comp.badge
+    files:
+      - {input: tokens.jinja2, output: badge/res/values/tokens.xml}
+    suppressed_tokens:
+      # TODO(b/260151426) Token defines shape appearance, implementation defines shape radius.
+      - md.comp.badge.shape
+      - md.comp.badge.large.shape
+      # TODO(b/260151426) Token defines size, implementation defines shape radius by assuming it's always a circle.
+      - md.comp.badge.size
+      - md.comp.badge.large.size
+      # TODO(b/260151426) Assuming color doesn't change for different sizes.
+      - md.comp.badge.large.color
+      # TODO(b/260151426) Text appearance is not styleable. The current text appearance is shared between M2 and M3.
+      - md.comp.badge.large.label-text.(color|type|weight|tracking|size|line-height|font)
 
 metadata:
   # md.sys.shape.corner.extra-small

@@ -40,6 +40,7 @@
 
   <!-- M3 Badge -->
   <style name="Widget.Material3.Badge" parent="Widget.MaterialComponents.Badge">
+    <item name="backgroundColor">@macro/m3_comp_badge_color</item>
     <!-- Badge "dot" without text -->
     <item name="badgeRadius">@dimen/m3_badge_radius</item>
     <item name="horizontalOffset">@dimen/m3_badge_horizontal_offset</item>
