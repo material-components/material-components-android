@@ -16,10 +16,10 @@
   -->
 
 <resources>
-  <integer name="mtrl_switch_thumb_motion_duration">250</integer>
-  <integer name="mtrl_switch_thumb_pre_morphing_duration">100</integer>
-  <integer name="mtrl_switch_thumb_post_morphing_duration">150</integer>
-  <integer name="mtrl_switch_thumb_pressed_duration">100</integer>
+  <integer name="mtrl_switch_thumb_motion_duration">@integer/m3_sys_motion_duration_medium4</integer>
+  <integer name="mtrl_switch_thumb_pre_morphing_duration">@integer/m3_sys_motion_duration_short3</integer>
+  <integer name="mtrl_switch_thumb_post_morphing_duration">@integer/m3_sys_motion_duration_medium1</integer>
+  <integer name="mtrl_switch_thumb_pressed_duration">@integer/m3_sys_motion_duration_short3</integer>
 
   <integer name="mtrl_switch_thumb_viewport_size">32</integer>
   <integer name="mtrl_switch_thumb_viewport_center_coordinate">16</integer>

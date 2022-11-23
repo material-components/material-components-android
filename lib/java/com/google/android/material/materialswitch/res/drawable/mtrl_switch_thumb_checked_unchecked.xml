@@ -20,27 +20,29 @@
   android:drawable="@drawable/mtrl_switch_thumb_checked"
   tools:ignore="NewApi">
 
-  <target android:name="@string/mtrl_switch_thumb_path_name">
-    <aapt:attr name="android:animation">
-      <objectAnimator
-        android:duration="@integer/mtrl_switch_thumb_pre_morphing_duration"
-        android:interpolator="@android:interpolator/accelerate_decelerate"
-        android:propertyName="pathData"
-        android:valueFrom="@string/mtrl_switch_thumb_path_checked"
-        android:valueTo="@string/mtrl_switch_thumb_path_morphing"
-        android:valueType="pathType" />
-    </aapt:attr>
-  </target>
-  <target android:name="@string/mtrl_switch_thumb_path_name">
-    <aapt:attr name="android:animation">
-      <objectAnimator
-        android:startOffset="@integer/mtrl_switch_thumb_pre_morphing_duration"
-        android:duration="@integer/mtrl_switch_thumb_post_morphing_duration"
-        android:interpolator="@android:interpolator/accelerate_decelerate"
-        android:propertyName="pathData"
-        android:valueFrom="@string/mtrl_switch_thumb_path_morphing"
-        android:valueTo="@string/mtrl_switch_thumb_path_unchecked"
-        android:valueType="pathType" />
-    </aapt:attr>
-  </target>
+  <set
+    android:interpolator="@interpolator/m3_sys_motion_easing_emphasized"
+    android:shareInterpolator="true">
+    <target android:name="@string/mtrl_switch_thumb_path_name">
+      <aapt:attr name="android:animation">
+        <objectAnimator
+          android:duration="@integer/mtrl_switch_thumb_pre_morphing_duration"
+          android:propertyName="pathData"
+          android:valueFrom="@string/mtrl_switch_thumb_path_checked"
+          android:valueTo="@string/mtrl_switch_thumb_path_morphing"
+          android:valueType="pathType" />
+      </aapt:attr>
+    </target>
+    <target android:name="@string/mtrl_switch_thumb_path_name">
+      <aapt:attr name="android:animation">
+        <objectAnimator
+          android:startOffset="@integer/mtrl_switch_thumb_pre_morphing_duration"
+          android:duration="@integer/mtrl_switch_thumb_post_morphing_duration"
+          android:propertyName="pathData"
+          android:valueFrom="@string/mtrl_switch_thumb_path_morphing"
+          android:valueTo="@string/mtrl_switch_thumb_path_unchecked"
+          android:valueType="pathType" />
+      </aapt:attr>
+    </target>
+  </set>
 </animated-vector>
