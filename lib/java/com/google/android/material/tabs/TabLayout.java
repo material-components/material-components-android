@@ -503,6 +503,7 @@ public class TabLayout extends HorizontalScrollView {
   private TabLayoutOnPageChangeListener pageChangeListener;
   private AdapterChangeListener adapterChangeListener;
   private boolean setupViewPagerImplicitly;
+  private int viewPagerScrollState;
 
   // Pool we use as a simple RecyclerBin
   private final Pools.Pool<TabView> tabViewPool = new Pools.SimplePool<>(12);
@@ -1564,6 +1565,10 @@ public class TabLayout extends HorizontalScrollView {
   @Deprecated
   public void setTabsFromPagerAdapter(@Nullable final PagerAdapter adapter) {
     setPagerAdapter(adapter, false);
+  }
+
+  void updateViewPagerScrollState(int scrollState) {
+    this.viewPagerScrollState = scrollState;
   }
 
   @Override
@@ -3240,7 +3245,7 @@ public class TabLayout extends HorizontalScrollView {
     /** Immediately update the indicator position to the currently selected position. */
     private void jumpIndicatorToSelectedPosition() {
       // Don't update the indicator position if the scroll state is not idle.
-      if (pageChangeListener != null && pageChangeListener.scrollState != SCROLL_STATE_IDLE) {
+      if (viewPagerScrollState != SCROLL_STATE_IDLE) {
         return;
       }
       final View currentView = getChildAt(getSelectedTabPosition());
@@ -3467,6 +3472,10 @@ public class TabLayout extends HorizontalScrollView {
     public void onPageScrollStateChanged(final int state) {
       previousScrollState = scrollState;
       scrollState = state;
+      TabLayout tabLayout = tabLayoutRef.get();
+      if (tabLayout != null) {
+        tabLayout.updateViewPagerScrollState(scrollState);
+      }
     }
 
     @Override
