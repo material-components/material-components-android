@@ -210,6 +210,10 @@ public final class TabLayoutMediator {
     public void onPageScrollStateChanged(final int state) {
       previousScrollState = scrollState;
       scrollState = state;
+      TabLayout tabLayout = tabLayoutRef.get();
+      if (tabLayout != null) {
+        tabLayout.updateViewPagerScrollState(scrollState);
+      }
     }
 
     @Override
