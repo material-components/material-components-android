@@ -2420,12 +2420,13 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       final AppBarLayout header = findFirstDependency(parent.getDependencies(child));
       if (header != null) {
         // Offset the rect by the child's left/top
-        rectangle.offset(child.getLeft(), child.getTop());
+        Rect offsetRect = new Rect(rectangle);
+        offsetRect.offset(child.getLeft(), child.getTop());
 
         final Rect parentRect = tempRect1;
         parentRect.set(0, 0, parent.getWidth(), parent.getHeight());
 
-        if (!parentRect.contains(rectangle)) {
+        if (!parentRect.contains(offsetRect)) {
           // If the rectangle can not be fully seen the visible bounds, collapse
           // the AppBarLayout
           header.setExpanded(false, !immediate);
