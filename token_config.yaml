@@ -622,6 +622,12 @@ conversion_tasks:
       # TODO(b/253671432) Integrate after design confirm which icon this token is for.
       - md.comp.elevated-card.icon.color
 
+  - # List component tokens.
+    # TODO(b/260625883) No M3 styles for List.
+    # token_sets: md.comp.list
+    # files:
+    #   - {input: tokens.jinja2, output: lists/res/values/tokens.xml}
+
 metadata:
   # md.sys.shape.corner.extra-small
   designSystems/20543ce18892f7d9/tokenSets/21c40db4e4f5af15/tokens/5958f2ff2ee96209:
