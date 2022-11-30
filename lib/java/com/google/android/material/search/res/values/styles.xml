@@ -29,11 +29,15 @@
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.SearchBar</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Search</item>
+
+    <!-- On newer API levels, hide shadows while keeping elevation. -->
+    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
   </style>
 
   <style name="Widget.Material3.SearchBar.Outlined">
     <item name="elevation">0dp</item>
-    <item name="strokeWidth">1dp</item>
+    <item name="strokeWidth">@dimen/m3_searchbar_outlined_stroke_width</item>
     <item name="strokeColor">?attr/colorOutline</item>
   </style>
 
@@ -41,6 +45,7 @@
     <item name="enforceMaterialTheme">true</item>
     <item name="android:elevation">@dimen/m3_searchview_elevation</item>
     <item name="android:textAppearance">@style/TextAppearance.Material3.SearchView</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.SearchView</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Search</item>
   </style>
 
@@ -75,9 +80,10 @@
     <item name="android:textColor">?android:attr/textColorTertiary</item>
   </style>
 
-  <style name="ShapeAppearanceOverlay.Material3.SearchBar" parent="">
-    <item name="cornerSize">@dimen/m3_searchbar_radius</item>
-  </style>
+  <style name="ShapeAppearanceOverlay.Material3.SearchBar"
+         parent="ShapeAppearance.M3.Comp.SearchBar.Container.Shape" />
+  <style name="ShapeAppearanceOverlay.Material3.SearchView"
+         parent="ShapeAppearance.M3.Comp.SearchView.FullScreen.Container.Shape" />
 
   <style name="ThemeOverlay.Material3.Search" parent="">
     <item name="actionMenuTextColor">?attr/colorOnSurfaceVariant</item>

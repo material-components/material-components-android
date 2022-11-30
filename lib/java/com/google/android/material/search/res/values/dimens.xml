@@ -15,17 +15,17 @@
   ~ limitations under the License.
 -->
 <resources>
-
-  <dimen name="m3_searchbar_height">48dp</dimen>
-  <dimen name="m3_searchbar_elevation">3dp</dimen>
-  <dimen name="m3_searchbar_radius">8dp</dimen>
+  <dimen name="m3_searchbar_height">@dimen/m3_comp_search_bar_container_height</dimen>
+  <dimen name="m3_searchbar_elevation">@dimen/m3_comp_search_bar_container_elevation</dimen>
   <dimen name="m3_searchbar_text_size">16sp</dimen>
   <dimen name="m3_searchbar_text_margin_start_no_navigation_icon">16dp</dimen>
   <dimen name="m3_searchbar_margin_horizontal">16dp</dimen>
-  <dimen name="m3_searchbar_margin_vertical">8dp</dimen>
+  <dimen name="m3_searchbar_margin_vertical">16dp</dimen>
   <dimen name="m3_searchbar_padding_start">4dp</dimen>
+  <dimen name="m3_searchbar_outlined_stroke_width">1dp</dimen>
 
-  <dimen name="m3_searchview_elevation">6dp</dimen>
+  <dimen name="m3_searchview_height">@dimen/m3_comp_search_view_docked_header_container_height</dimen>
+  <dimen name="m3_searchview_elevation">@dimen/m3_comp_search_view_container_elevation</dimen>
   <dimen name="m3_searchview_divider_size">1dp</dimen>
 
 </resources>
