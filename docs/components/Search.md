@@ -312,12 +312,12 @@ Putting it all together and using the scroll-away mode, the `SearchBar` and
     android:layout_height="match_parent">
 
   <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
-  <android.support.v4.widget.NestedScrollView
+  <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:layout_behavior="@string/searchbar_scrolling_view_behavior">
     <!-- Screen content goes here. -->
-  </android.support.v4.widget.NestedScrollView>
+  </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
