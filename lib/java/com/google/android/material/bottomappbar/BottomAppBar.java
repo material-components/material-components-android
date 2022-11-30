@@ -1188,6 +1188,12 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       cancelAnimations();
 
       setCutoutStateAndTranslateFab();
+      // If the BAB layout has changed, we should alert the fab so that it can
+      // adjust its margins accordingly.
+      View dependentView = findDependentView();
+      if (dependentView != null && ViewCompat.isLaidOut(dependentView)) {
+        dependentView.post(() -> dependentView.requestLayout());
+      }
     }
 
     // Always ensure the MenuView is in the correct position after a layout.
