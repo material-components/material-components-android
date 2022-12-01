@@ -135,16 +135,12 @@ class SearchBarAnimationHelper {
     this.onLoadAnimationFadeInEnabled = onLoadAnimationFadeInEnabled;
   }
 
-  void registerOnLoadAnimationCallback(OnLoadAnimationCallback onLoadAnimationCallback) {
+  void addOnLoadAnimationCallback(OnLoadAnimationCallback onLoadAnimationCallback) {
     onLoadAnimationCallbacks.add(onLoadAnimationCallback);
   }
 
-  boolean unregisterOnLoadAnimationCallback(OnLoadAnimationCallback onLoadAnimationCallback) {
+  boolean removeOnLoadAnimationCallback(OnLoadAnimationCallback onLoadAnimationCallback) {
     return onLoadAnimationCallbacks.remove(onLoadAnimationCallback);
-  }
-
-  void clearOnLoadAnimationCallbacks() {
-    onLoadAnimationCallbacks.clear();
   }
 
   private void dispatchOnLoadAnimation(OnLoadAnimationInvocation invocation) {
@@ -273,10 +269,6 @@ class SearchBarAnimationHelper {
     return expandAnimationListeners.remove(listener);
   }
 
-  void clearExpandAnimationListeners() {
-    expandAnimationListeners.clear();
-  }
-
   void startCollapseAnimation(
       SearchBar searchBar,
       View expandedView,
@@ -342,10 +334,6 @@ class SearchBarAnimationHelper {
 
   boolean removeCollapseAnimationListener(@NonNull AnimatorListenerAdapter listener) {
     return collapseAnimationListeners.remove(listener);
-  }
-
-  void clearCollapseAnimationListeners() {
-    collapseAnimationListeners.clear();
   }
 
   private ExpandCollapseAnimationHelper getExpandCollapseAnimationHelper(

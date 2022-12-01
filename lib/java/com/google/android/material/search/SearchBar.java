@@ -76,6 +76,41 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  * methods, or their corresponding xml attributes. Instead, use {@link #setHint} or {@link
  * #setText}, or their corresponding xml attributes, to provide a text affordance for your {@link
  * SearchBar}.
+ *
+ * <p>The example below shows how to use the {@link SearchBar} and {@link SearchView} together:
+ *
+ * <pre>
+ * &lt;androidx.coordinatorlayout.widget.CoordinatorLayout
+ *     android:layout_width=&quot;match_parent&quot;
+ *     android:layout_height=&quot;match_parent&quot;&gt;
+ *
+ *   &lt;!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). --&gt;
+ *   &lt;androidx.core.widget.NestedScrollView
+ *       android:layout_width=&quot;match_parent&quot;
+ *       android:layout_height=&quot;match_parent&quot;
+ *       app:layout_behavior=&quot;@string/searchbar_scrolling_view_behavior&quot;&gt;
+ *     &lt;!-- Screen content goes here. --&gt;
+ *   &lt;/androidx.core.widget.NestedScrollView&gt;
+ *
+ *   &lt;com.google.android.material.appbar.AppBarLayout
+ *       android:layout_width=&quot;match_parent&quot;
+ *       android:layout_height=&quot;wrap_content&quot;&gt;
+ *     &lt;com.google.android.material.search.SearchBar
+ *         android:id=&quot;@+id/search_bar&quot;
+ *         android:layout_width=&quot;match_parent&quot;
+ *         android:layout_height=&quot;wrap_content&quot;
+ *         android:hint=&quot;@string/searchbar_hint&quot; /&gt;
+ *   &lt;/com.google.android.material.appbar.AppBarLayout&gt;
+ *
+ *   &lt;com.google.android.material.search.SearchView
+ *       android:layout_width=&quot;match_parent&quot;
+ *       android:layout_height=&quot;match_parent&quot;
+ *       android:hint=&quot;@string/searchbar_hint&quot;
+ *       app:layout_anchor=&quot;@id/search_bar&quot;&gt;
+ *     &lt;!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). --&gt;
+ *   &lt;/com.google.android.material.search.SearchView&gt;
+ * &lt;/androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
+ * </pre>
  */
 public class SearchBar extends Toolbar {
 
@@ -457,10 +492,7 @@ public class SearchBar extends Toolbar {
     return centerView;
   }
 
-  /**
-   * Sets and adds the center view as a child. If you've set a center view and would like to remove
-   * it, pass in null for {@param view}.
-   */
+  /** Sets the center view as a child. Pass in null for {@code view} to remove the center view. */
   public void setCenterView(@Nullable View view) {
     if (centerView != null) {
       removeView(centerView);
@@ -594,26 +626,18 @@ public class SearchBar extends Toolbar {
    * Registers a callback for the On Load Animation, started and stopped via {@link
    * #startOnLoadAnimation()} and {@link #stopOnLoadAnimation()}.
    */
-  public void registerOnLoadAnimationCallback(
+  public void addOnLoadAnimationCallback(
       @NonNull OnLoadAnimationCallback onLoadAnimationCallback) {
-    searchBarAnimationHelper.registerOnLoadAnimationCallback(onLoadAnimationCallback);
+    searchBarAnimationHelper.addOnLoadAnimationCallback(onLoadAnimationCallback);
   }
 
   /**
    * Unregisters a callback for the On Load Animation, started and stopped via {@link
    * #startOnLoadAnimation()} and {@link #stopOnLoadAnimation()}.
    */
-  public boolean unregisterOnLoadAnimationCallback(
+  public boolean removeOnLoadAnimationCallback(
       @NonNull OnLoadAnimationCallback onLoadAnimationCallback) {
-    return searchBarAnimationHelper.unregisterOnLoadAnimationCallback(onLoadAnimationCallback);
-  }
-
-  /**
-   * Clears all registered callbacks for the On Load Animation, started and stopped via {@link
-   * #startOnLoadAnimation()} and {@link #stopOnLoadAnimation()}.
-   */
-  public void clearOnLoadAnimationCallbacks() {
-    searchBarAnimationHelper.clearOnLoadAnimationCallbacks();
+    return searchBarAnimationHelper.removeOnLoadAnimationCallback(onLoadAnimationCallback);
   }
 
   /** Returns whether the expand animation is running. */
@@ -674,14 +698,6 @@ public class SearchBar extends Toolbar {
     return searchBarAnimationHelper.removeExpandAnimationListener(listener);
   }
 
-  /**
-   * Removes all expand animation listeners added via {@link
-   * #addExpandAnimationListener(AnimatorListenerAdapter)}.
-   */
-  public void clearExpandAnimationListeners() {
-    searchBarAnimationHelper.clearExpandAnimationListeners();
-  }
-
   /** Returns whether the collapse animation is running. */
   public boolean isCollapsing() {
     return searchBarAnimationHelper.isCollapsing();
@@ -738,14 +754,6 @@ public class SearchBar extends Toolbar {
    */
   public boolean removeCollapseAnimationListener(@NonNull AnimatorListenerAdapter listener) {
     return searchBarAnimationHelper.removeCollapseAnimationListener(listener);
-  }
-
-  /**
-   * Removes all collapse animation listeners added via {@link
-   * #addCollapseAnimationListener(AnimatorListenerAdapter)}.
-   */
-  public void clearCollapseAnimationListeners() {
-    searchBarAnimationHelper.clearCollapseAnimationListeners();
   }
 
   int getMenuResId() {

@@ -114,7 +114,8 @@
       <View
           android:id="@+id/search_view_divider"
           android:layout_width="match_parent"
-          android:layout_height="@dimen/m3_searchview_divider_size"/>
+          android:layout_height="@dimen/m3_searchview_divider_size"
+          android:background="@macro/m3_comp_search_view_divider_color"/>
 
       <com.google.android.material.internal.TouchObserverFrameLayout
           android:id="@+id/search_view_content_container"

@@ -294,7 +294,7 @@ class SearchViewAnimationHelper {
   }
 
   private void setActionMenuViewAlphaIfNeeded(float alpha) {
-    if (searchView.isAnimatedMenuItems()) {
+    if (searchView.isMenuItemsAnimated()) {
       ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
       if (actionMenuView != null) {
         actionMenuView.setAlpha(alpha);
@@ -468,7 +468,7 @@ class SearchViewAnimationHelper {
     animator.setInterpolator(
         ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
 
-    if (searchView.isAnimatedMenuItems()) {
+    if (searchView.isMenuItemsAnimated()) {
       ActionMenuView dummyActionMenuView = ToolbarUtils.getActionMenuView(dummyToolbar);
       ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
       animator.addUpdateListener(
@@ -573,7 +573,7 @@ class SearchViewAnimationHelper {
     if (menu != null) {
       menu.clear();
     }
-    if (searchBar.getMenuResId() != -1 && searchView.isAnimatedMenuItems()) {
+    if (searchBar.getMenuResId() != -1 && searchView.isMenuItemsAnimated()) {
       dummyToolbar.inflateMenu(searchBar.getMenuResId());
       setMenuItemsNotClickable(dummyToolbar);
       dummyToolbar.setVisibility(View.VISIBLE);
