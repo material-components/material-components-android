@@ -21,13 +21,6 @@
   <string name="searchbar_scrolling_view_behavior" translatable="false">
     com.google.android.material.search.SearchBar$ScrollingViewBehavior
   </string>
-  <!-- The class name for the Behavior that sets up an SearchView with an SearchBar.
-       This is SearchView's default Behavior and it will result in the SearchView
-       being shown when the SearchBar is clicked, as long as the SearchView is also
-       anchored to the SearchBar. -->
-  <string name="searchview_behavior" translatable="false">
-    com.google.android.libraries.material.search.SearchView$Behavior
-  </string>
 
   <!-- Default content description for the navigation button (i.e. the back arrow) for
        SearchView. -->
