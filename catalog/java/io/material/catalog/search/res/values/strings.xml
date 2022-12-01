@@ -16,7 +16,7 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="cat_searchbar_title"
-          description="Title for the search bar [CHAR_LIMIT=40]">Search Bar</string>
+          description="Title for the search bar [CHAR_LIMIT=40]">Search</string>
   <string name="cat_searchbar_description"
           description="Search bar description [CHAR_LIMIT=NONE]">
     This floating search field component allows for product-specific branding,
