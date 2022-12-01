@@ -20,7 +20,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import androidx.annotation.RestrictTo;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -57,7 +57,7 @@ public final class QuantizerWu implements Quantizer {
     createMoments();
     CreateBoxesResult createBoxesResult = createBoxes(colorCount);
     List<Integer> colors = createResult(createBoxesResult.resultCount);
-    HashMap<Integer, Integer> resultMap = new HashMap<>();
+    Map<Integer, Integer> resultMap = new LinkedHashMap<>();
     for (int color : colors) {
       resultMap.put(color, 0);
     }

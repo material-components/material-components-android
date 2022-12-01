@@ -19,7 +19,7 @@ package com.google.android.material.color.utilities;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import androidx.annotation.RestrictTo;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 // TODO(b/254603377): Use copybara to release material color utilities library directly to github.
@@ -34,7 +34,7 @@ public final class QuantizerMap implements Quantizer {
 
   @Override
   public QuantizerResult quantize(int[] pixels, int colorCount) {
-    final HashMap<Integer, Integer> pixelByCount = new HashMap<>();
+    final Map<Integer, Integer> pixelByCount = new LinkedHashMap<>();
     for (int pixel : pixels) {
       final Integer currentPixelCount = pixelByCount.get(pixel);
       final int newPixelCount = currentPixelCount == null ? 1 : currentPixelCount + 1;
