@@ -322,20 +322,20 @@ Putting it all together and using the scroll-away mode, the `SearchBar` and
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
-    <com.google.android.libraries.material.search.SearchBar
+    <com.google.android.material.search.SearchBar
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/searchbar_hint" />
   </com.google.android.material.appbar.AppBarLayout>
 
-  <com.google.android.libraries.material.search.SearchView
+  <com.google.android.material.search.SearchView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:hint="@string/searchbar_hint"
       app:layout_anchor="@id/search_bar">
     <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
-  </com.google.android.libraries.material.search.SearchView>
+  </com.google.android.material.search.SearchView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
