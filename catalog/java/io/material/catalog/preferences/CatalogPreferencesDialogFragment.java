@@ -18,6 +18,7 @@ package io.material.catalog.preferences;
 
 import io.material.catalog.R;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.SparseIntArray;
@@ -37,6 +38,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
 import io.material.catalog.preferences.CatalogPreference.Option;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import javax.inject.Inject;
 
 /**
@@ -50,6 +52,14 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
   @Inject DispatchingAndroidInjector<Object> childFragmentInjector;
 
   private final SparseIntArray buttonIdToOptionId = new SparseIntArray();
+
+  @NonNull
+  @Override
+  public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+    Dialog dialog = super.onCreateDialog(savedInstanceState);
+    new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(dialog.getWindow());
+    return dialog;
+  }
 
   @Override
   public void onAttach(Context context) {
