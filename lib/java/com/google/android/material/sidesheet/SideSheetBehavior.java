@@ -63,7 +63,7 @@ import java.util.Map;
  * An interaction behavior plugin for a child view of {@link CoordinatorLayout} to make it work as a
  * side sheet.
  */
-public final class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V>
+public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V>
     implements Sheet {
 
   private SheetDelegate sheetDelegate;
