@@ -1,7 +1,7 @@
 # The token conversion configuration for Material 3
 platform: android
 design_system_id: designSystems/20543ce18892f7d9
-version: v0.142
+version: v0.145
 common_context: [audience::3p, platform::android]
 input_dir: ux/material/dsdb/contrib/generators/tokens/android/templates/
 output_dir: third_party/java_src/android_libs/material_components/lib/java/com/google/android/material/
