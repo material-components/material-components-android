@@ -23,7 +23,6 @@
   <!-- Enabled - Container -->
   <macro name="m3_comp_slider_label_container_color">?attr/colorPrimary</macro>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.slider.label.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_slider_label_label_text_color">?attr/colorOnPrimary</macro>
   <!-- Enabled - Track -->
   <dimen name="m3_comp_slider_inactive_track_height">4dp</dimen>

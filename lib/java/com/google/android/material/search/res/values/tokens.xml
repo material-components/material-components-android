@@ -35,11 +35,9 @@
   <macro name="m3_comp_search_bar_trailing_icon_color">?attr/colorOnSurfaceVariant</macro>
   <!-- Enabled - Supporting text -->
   <macro name="m3_comp_search_bar_supporting_text_color">?attr/colorOnSurfaceVariant</macro>
-  <!-- Token md.comp.search-bar.supporting-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_search_bar_supporting_text_type">?attr/textAppearanceBodyLarge</macro>
   <!-- Enabled - Input text -->
   <macro name="m3_comp_search_bar_input_text_color">?attr/colorOnSurface</macro>
-  <!-- Token md.comp.search-bar.input-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_search_bar_input_text_type">?attr/textAppearanceBodyLarge</macro>
   <!-- Hovered - State layer -->
   <macro name="m3_comp_search_bar_hover_state_layer_color">?attr/colorOnSurface</macro>
@@ -69,11 +67,9 @@
   <macro name="m3_comp_search_view_divider_color">?attr/colorOutline</macro>
   <!-- Enabled - Supporting text -->
   <macro name="m3_comp_search_view_header_supporting_text_color">?attr/colorOnSurfaceVariant</macro>
-  <!-- Token md.comp.search-view.header.supporting-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_search_view_header_supporting_text_type">?attr/textAppearanceBodyLarge</macro>
   <!-- Enabled - Input text -->
   <macro name="m3_comp_search_view_header_input_text_color">?attr/colorOnSurface</macro>
-  <!-- Token md.comp.search-view.header.input-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_search_view_header_input_text_type">?attr/textAppearanceBodyLarge</macro>
 
 </resources>

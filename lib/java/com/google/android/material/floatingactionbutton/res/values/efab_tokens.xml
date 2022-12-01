@@ -26,7 +26,6 @@
   <dimen name="m3_comp_extended_fab_primary_container_height">56dp</dimen>
   <dimen name="m3_comp_extended_fab_primary_container_elevation">@dimen/m3_sys_elevation_level3</dimen>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.extended-fab.primary.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_extended_fab_primary_label_text_type">?attr/textAppearanceLabelLarge</macro>
   <!-- Enabled - Icon -->
   <dimen name="m3_comp_extended_fab_primary_icon_size">24dp</dimen>
@@ -47,24 +46,18 @@
   <!-- Generated from token set (md.comp.extended-fab.secondary) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_extended_fab_secondary_container_color">?attr/colorSecondaryContainer</macro>
-  <!-- Enabled - Label text -->
-  <!-- Token md.comp.extended-fab.secondary.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <!-- Enabled - Icon -->
   <macro name="m3_comp_extended_fab_secondary_icon_color">?attr/colorOnSecondaryContainer</macro>
 
   <!-- Generated from token set (md.comp.extended-fab.tertiary) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_extended_fab_tertiary_container_color">?attr/colorTertiaryContainer</macro>
-  <!-- Enabled - Label text -->
-  <!-- Token md.comp.extended-fab.tertiary.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <!-- Enabled - Icon -->
   <macro name="m3_comp_extended_fab_tertiary_icon_color">?attr/colorOnTertiaryContainer</macro>
 
   <!-- Generated from token set (md.comp.extended-fab.surface) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_extended_fab_surface_container_color">?attr/colorSurface</macro>
-  <!-- Enabled - Label text -->
-  <!-- Token md.comp.extended-fab.surface.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <!-- Enabled - Icon -->
   <macro name="m3_comp_extended_fab_surface_icon_color">?attr/colorPrimary</macro>
 

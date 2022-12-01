@@ -23,7 +23,6 @@
   <!-- Enabled - Container -->
   <macro name="m3_comp_primary_navigation_tab_container_color">?attr/colorSurface</macro>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.primary-navigation-tab.with-label-text.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_primary_navigation_tab_with_label_text_label_text_type">?attr/textAppearanceTitleSmall</macro>
   <macro name="m3_comp_primary_navigation_tab_with_label_text_active_label_text_color">?attr/colorPrimary</macro>
   <macro name="m3_comp_primary_navigation_tab_with_label_text_inactive_label_text_color">?attr/colorOnSurfaceVariant</macro>
@@ -57,7 +56,6 @@
   <!-- Enabled - Container -->
   <macro name="m3_comp_secondary_navigation_tab_container_color">?attr/colorSurface</macro>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.secondary-navigation-tab.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_secondary_navigation_tab_label_text_type">?attr/textAppearanceTitleSmall</macro>
   <macro name="m3_comp_secondary_navigation_tab_active_label_text_color">?attr/colorOnSurface</macro>
   <macro name="m3_comp_secondary_navigation_tab_inactive_label_text_color">?attr/colorOnSurfaceVariant</macro>

@@ -25,7 +25,6 @@
   <dimen name="m3_comp_filled_button_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
   <macro name="m3_comp_filled_button_container_color">?attr/colorPrimary</macro>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.filled-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_filled_button_label_text_type">?attr/textAppearanceLabelLarge</macro>
   <macro name="m3_comp_filled_button_label_text_color">?attr/colorOnPrimary</macro>
   <!-- Enabled - Icon -->
@@ -36,13 +35,11 @@
   <macro name="m3_comp_filled_tonal_button_container_color">?attr/colorSecondaryContainer</macro>
   <!-- Enabled - Label text -->
   <macro name="m3_comp_filled_tonal_button_label_text_color">?attr/colorOnSecondaryContainer</macro>
-  <!-- Token md.comp.filled-tonal-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
 
   <!-- Generated from token set (md.comp.text-button) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <style name="ShapeAppearance.M3.Comp.TextButton.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.text-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_text_button_label_text_type">?attr/textAppearanceLabelLarge</macro>
   <macro name="m3_comp_text_button_label_text_color">?attr/colorPrimary</macro>
   <!-- Hovered - State layer -->
@@ -59,8 +56,6 @@
   <!-- Enabled - Outline -->
   <macro name="m3_comp_outlined_button_outline_color">?attr/colorOutline</macro>
   <dimen name="m3_comp_outlined_button_outline_width">1dp</dimen>
-  <!-- Enabled - Label text -->
-  <!-- Token md.comp.outlined-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <!-- Disabled - Outline -->
   <macro name="m3_comp_outlined_button_disabled_outline_color">?attr/colorOnSurface</macro>
   <item name="m3_comp_outlined_button_disabled_outline_opacity" format="float" type="dimen">0.12</item>
@@ -75,8 +70,6 @@
   <!-- Enabled - Container -->
   <dimen name="m3_comp_elevated_button_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
   <macro name="m3_comp_elevated_button_container_color">?attr/colorSurface</macro>
-  <!-- Enabled - Label text -->
-  <!-- Token md.comp.elevated-button.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <!-- Disabled - Container -->
   <dimen name="m3_comp_elevated_button_disabled_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
 

@@ -28,7 +28,6 @@
   <dimen name="m3_comp_input_chip_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
   <dimen name="m3_comp_input_chip_unselected_outline_width">1dp</dimen>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.input-chip.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_input_chip_label_text_type">?attr/textAppearanceLabelLarge</macro>
   <!-- Enabled - Leading icon -->
   <dimen name="m3_comp_input_chip_with_leading_icon_leading_icon_size">18dp</dimen>
@@ -42,7 +41,6 @@
   <dimen name="m3_comp_suggestion_chip_flat_outline_width">1dp</dimen>
   <dimen name="m3_comp_suggestion_chip_elevated_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.suggestion-chip.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_suggestion_chip_label_text_type">?attr/textAppearanceLabelLarge</macro>
 
   <!-- Generated from token set (md.comp.assist-chip) in context (platform=android, audience=3p). -->
@@ -53,7 +51,6 @@
   <dimen name="m3_comp_assist_chip_flat_outline_width">1dp</dimen>
   <dimen name="m3_comp_assist_chip_elevated_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.assist-chip.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_assist_chip_label_text_type">?attr/textAppearanceLabelLarge</macro>
   <!-- Enabled - Icon -->
   <dimen name="m3_comp_assist_chip_with_icon_icon_size">18dp</dimen>
@@ -66,7 +63,6 @@
   <dimen name="m3_comp_filter_chip_flat_unselected_outline_width">1dp</dimen>
   <dimen name="m3_comp_filter_chip_elevated_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
   <!-- Enabled - Label text -->
-  <!-- Token md.comp.filter-chip.label-text.font is suppressed: referenced by a sibling composite typography token. -->
   <macro name="m3_comp_filter_chip_label_text_type">?attr/textAppearanceLabelLarge</macro>
   <!-- Enabled - Icon -->
   <dimen name="m3_comp_filter_chip_with_icon_icon_size">18dp</dimen>
