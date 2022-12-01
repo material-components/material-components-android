@@ -623,7 +623,7 @@ conversion_tasks:
       # TODO(b/253671432) Integrate after design confirm which icon this token is for.
       - md.comp.elevated-card.icon.color
 
-  - # List component tokens.
+# - # List component tokens.
     # TODO(b/260625883) No M3 styles for List.
     # token_sets: md.comp.list
     # files:
