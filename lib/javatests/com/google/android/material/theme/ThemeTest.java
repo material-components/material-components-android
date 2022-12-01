@@ -270,6 +270,13 @@ public class ThemeTest {
           R.attr.colorOnSurfaceVariant,
           R.attr.colorSurfaceInverse,
           R.attr.colorOnSurfaceInverse,
+          R.attr.colorSurfaceBright,
+          R.attr.colorSurfaceDim,
+          R.attr.colorSurfaceContainer,
+          R.attr.colorSurfaceContainerHigh,
+          R.attr.colorSurfaceContainerHighest,
+          R.attr.colorSurfaceContainerLow,
+          R.attr.colorSurfaceContainerLowest,
           // Outline color.
           R.attr.colorOutline,
           R.attr.colorOutlineVariant,

@@ -39,6 +39,14 @@
   <public name="colorSurfaceInverse" type="attr"/>
   <public name="colorOnSurfaceInverse" type="attr"/>
 
+  <public name="colorSurfaceBright" type="attr"/>
+  <public name="colorSurfaceDim" type="attr"/>
+  <public name="colorSurfaceContainerHighest" type="attr"/>
+  <public name="colorSurfaceContainerHigh" type="attr"/>
+  <public name="colorSurfaceContainer" type="attr"/>
+  <public name="colorSurfaceContainerLow" type="attr"/>
+  <public name="colorSurfaceContainerLowest" type="attr"/>
+
   <public name="colorOutline" type="attr"/>
   <public name="colorOutlineVariant" type="attr"/>
 

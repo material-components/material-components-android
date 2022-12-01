@@ -70,6 +70,22 @@
   <!-- The "on surface" inverse color, useful for inverted backgrounds. -->
   <attr name="colorOnSurfaceInverse" format="color"/>
 
+  <!-- Tonal surface color roles. -->
+  <!-- The surface color which always stay the brightest in either dark or light theme. -->
+  <attr name="colorSurfaceBright" format="color"/>
+  <!-- The surface color which always stay the dimmest in either dark or light theme. -->
+  <attr name="colorSurfaceDim" format="color"/>
+  <!-- The container color of surface, which replaces the previous surface at elevation level 2. -->
+  <attr name="colorSurfaceContainer" format="color"/>
+  <!-- The container color of surface slightly elevated, which replaces the previous surface at elevation level 3. -->
+  <attr name="colorSurfaceContainerHigh" format="color"/>
+  <!-- The container color of surface the most elevated, which replaces the previous surface variant. -->
+  <attr name="colorSurfaceContainerHighest" format="color"/>
+  <!-- The container color of surface slightly lowered, which replaces the previous surface at elevation level 1. -->
+  <attr name="colorSurfaceContainerLow" format="color"/>
+  <!-- The container color of surface the most lowered. -->
+  <attr name="colorSurfaceContainerLowest" format="color"/>
+
   <!-- A color meant to be used in element outlines. -->
   <attr name="colorOutline" format="color"/>
   <!-- A color meant to be used in element outlines on the surface-variant color. -->

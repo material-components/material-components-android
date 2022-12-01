@@ -33,19 +33,19 @@ brand color:
 
 Color Role             | Android Attribute         | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
 ---------------------- | ------------------------- | ------------------------------------ | -----------------------------------
-Primary                | colorPrimary              | #ff6750a4</br>(system_accent1_600)   | #ffd0bcff</br>(system_accent1_200)
-On Primary             | colorOnPrimary            | white</br>(system_accent1_0)         | #ff381e72</br>(system_accent1_800)
-Primary Container      | colorPrimaryContainer     | #ffeaddff</br>(system_accent1_100)   | #ff4f378b</br>(system_accent1_700)
-On Primary Container   | colorOnPrimaryContainer   | #ff21005d</br>(system_accent1_900)   | #ffeaddff</br>(system_accent1_100)
-Inverse Primary        | colorPrimaryInverse       | #ffd0bcff</br>(system_accent1_200)   | #ff6750a4</br>(system_accent1_600)
-Secondary              | colorSecondary            | #ff625b71</br>(system_accent2_600)   | #ffccc2dc</br>(system_accent2_200)
-On Secondary           | colorOnSecondary          | white</br>(system_accent2_0)         | #ff332d41</br>(system_accent2_800)
-Secondary Container    | colorSecondaryContainer   | #ffe8def8</br>(system_accent2_100)   | #ff4a4458</br>(system_accent2_700)
-On Secondary Container | colorOnSecondaryContainer | #ff1d192b</br>(system_accent2_900)   | #ffe8def8</br>(system_accent2_100)
-Tertiary               | colorTertiary             | #ff7d5260</br>(system_accent3_600)   | #ffefb8c8</br>(system_accent3_200)
-On Tertiary            | colorOnTertiary           | white</br>(system_accent3_0)         | #ff492532</br>(system_accent3_800)
-Tertiary Container     | colorTertiaryContainer    | #ffffd8e4</br>(system_accent3_100)   | #ff633b48</br>(system_accent3_700)
-On Tertiary Container  | colorOnTertiaryContainer  | #ff31111d</br>(system_accent3_900)   | #ffffd8e4</br>(system_accent3_100)
+Primary                | colorPrimary              | primary40</br>(system_accent1_600)   | primary80</br>(system_accent1_200)
+On Primary             | colorOnPrimary            | white</br>(system_accent1_0)         | primary20</br>(system_accent1_800)
+Primary Container      | colorPrimaryContainer     | primary90</br>(system_accent1_100)   | primary30</br>(system_accent1_700)
+On Primary Container   | colorOnPrimaryContainer   | primary10</br>(system_accent1_900)   | primary90</br>(system_accent1_100)
+Inverse Primary        | colorPrimaryInverse       | primary80</br>(system_accent1_200)   | primary40</br>(system_accent1_600)
+Secondary              | colorSecondary            | secondary40</br>(system_accent2_600) | secondary80</br>(system_accent2_200)
+On Secondary           | colorOnSecondary          | white</br>(system_accent2_0)         | secondary20</br>(system_accent2_800)
+Secondary Container    | colorSecondaryContainer   | secondary90</br>(system_accent2_100) | secondary30</br>(system_accent2_700)
+On Secondary Container | colorOnSecondaryContainer | secondary10</br>(system_accent2_900) | secondary90</br>(system_accent2_100)
+Tertiary               | colorTertiary             | tertiary40</br>(system_accent3_600)  | tertiary80</br>(system_accent3_200)
+On Tertiary            | colorOnTertiary           | white</br>(system_accent3_0)         | tertiary20</br>(system_accent3_800)
+Tertiary Container     | colorTertiaryContainer    | tertiary90</br>(system_accent3_100)  | tertiary30</br>(system_accent3_700)
+On Tertiary Container  | colorOnTertiaryContainer  | tertiary10</br>(system_accent3_900)  | tertiary90</br>(system_accent3_100)
 
 <!-- Auto-generated accent color table ends. Do not edit below or remove this comment. -->
 
@@ -58,22 +58,29 @@ combinations. These additional color attributes are as follows:
 
 <!-- Auto-generated additional color table starts. Do not edit below or remove this comment. -->
 
-Color Role         | Android Attribute       | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
------------------- | ----------------------- | ------------------------------------ | -----------------------------------
-Error              | colorError              | #ffb3261e</br>(Same)                 | #fff2b8b5</br>(Same)
-On Error           | colorOnError            | white</br>(Same)                     | #ff601410</br>(Same)
-Error Container    | colorErrorContainer     | #fff9dedc</br>(Same)                 | #ff8c1d18</br>(Same)
-On Error Container | colorOnErrorContainer   | #ff410e0b</br>(Same)                 | #fff9dedc</br>(Same)
-Outline            | colorOutline            | #ff79747e</br>(system_neutral2_500)  | #ff938f99</br>(system_neutral2_400)
-Outline Variant    | colorOutlineVariant     | #ffcac4d0</br>(system_neutral2_200)  | #ff49454f</br>(system_neutral2_700)
-Background         | android:colorBackground | #fffffbfe</br>(system_neutral1_10)   | #ff1c1b1f</br>(system_neutral1_900)
-On Background      | colorOnBackground       | #ff1c1b1f</br>(system_neutral1_900)  | #ffe6e1e5</br>(system_neutral1_100)
-Surface            | colorSurface            | #fffffbfe</br>(system_neutral1_10)   | #ff1c1b1f</br>(system_neutral1_900)
-On Surface         | colorOnSurface          | #ff1c1b1f</br>(system_neutral1_900)  | #ffe6e1e5</br>(system_neutral1_100)
-Surface Variant    | colorSurfaceVariant     | #ffe7e0ec</br>(system_neutral2_100)  | #ff49454f</br>(system_neutral2_700)
-On Surface Variant | colorOnSurfaceVariant   | #ff49454f</br>(system_neutral2_700)  | #ffcac4d0</br>(system_neutral2_200)
-Inverse Surface    | colorSurfaceInverse     | #ff313033</br>(system_neutral1_800)  | #ffe6e1e5</br>(system_neutral1_100)
-Inverse On Surface | colorOnSurfaceInverse   | #fff4eff4</br>(system_neutral1_50)   | #ff313033</br>(system_neutral1_800)
+Color Role                | Android Attribute            | Light Theme Baseline (Dynamic) Color             | Dark Theme Baseline (Dynamic) Color
+------------------------- | ---------------------------- | ------------------------------------------------ | -----------------------------------
+Error                     | colorError                   | error40</br>(Same)                               | error80</br>(Same)
+On Error                  | colorOnError                 | white</br>(Same)                                 | error20</br>(Same)
+Error Container           | colorErrorContainer          | error90</br>(Same)                               | error30</br>(Same)
+On Error Container        | colorOnErrorContainer        | error10</br>(Same)                               | error90</br>(Same)
+Outline                   | colorOutline                 | neutral_variant50</br>(system_neutral2_500)      | neutral_variant60</br>(system_neutral2_400)
+Outline Variant           | colorOutlineVariant          | neutral_variant80</br>(system_neutral2_200)      | neutral_variant30</br>(system_neutral2_700)
+Background                | android:colorBackground      | primary99</br>(system_neutral1_10)               | neutral10</br>(system_neutral1_900)
+On Background             | colorOnBackground            | neutral10</br>(system_neutral1_900)              | neutral90</br>(system_neutral1_100)
+Surface                   | colorSurface                 | primary99</br>(system_neutral1_10)               | neutral10</br>(system_neutral1_900)
+On Surface                | colorOnSurface               | neutral10</br>(system_neutral1_900)              | neutral90</br>(system_neutral1_100)
+Surface Variant           | colorSurfaceVariant          | neutral_variant90</br>(system_neutral2_100)      | neutral_variant30</br>(system_neutral2_700)
+On Surface Variant        | colorOnSurfaceVariant        | neutral_variant30</br>(system_neutral2_700)      | neutral_variant80</br>(system_neutral2_200)
+Inverse Surface           | colorSurfaceInverse          | neutral24</br>(system_neutral1_800)              | neutral90</br>(system_neutral1_100)
+Inverse On Surface        | colorOnSurfaceInverse        | neutral95</br>(system_neutral1_50)               | neutral24</br>(system_neutral1_800)
+Surface Bright            | colorSurfaceBright           | neutral98</br>(m3_ref_palette_dynamic_neutral98) | neutral24</br>(m3_ref_palette_dynamic_neutral24)
+Surface Dim               | colorSurfaceDim              | neutral87</br>(m3_ref_palette_dynamic_neutral87) | neutral6</br>(m3_ref_palette_dynamic_neutral6)
+Surface Container         | colorSurfaceContainer        | neutral94</br>(m3_ref_palette_dynamic_neutral94) | neutral12</br>(m3_ref_palette_dynamic_neutral12)
+Surface Container Low     | colorSurfaceContainerLow     | neutral96</br>(m3_ref_palette_dynamic_neutral96) | neutral10</br>(system_neutral1_900)
+Surface Container Lowest  | colorSurfaceContainerLowest  | white</br>(system_neutral1_0)                    | neutral4</br>(m3_ref_palette_dynamic_neutral4)
+Surface Container High    | colorSurfaceContainerHigh    | neutral92</br>(m3_ref_palette_dynamic_neutral92) | neutral17</br>(m3_ref_palette_dynamic_neutral17)
+Surface Container Highest | colorSurfaceContainerHighest | neutral90</br>(system_neutral1_100)              | neutral24</br>(m3_ref_palette_dynamic_neutral22)
 
 <!-- Auto-generated additional color table ends. Do not edit below or remove this comment. -->
 

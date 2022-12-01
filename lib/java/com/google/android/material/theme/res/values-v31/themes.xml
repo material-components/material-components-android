@@ -40,6 +40,13 @@
     <item name="colorOnSurfaceVariant">@color/m3_sys_color_dynamic_light_on_surface_variant</item>
     <item name="colorSurfaceInverse">@color/m3_sys_color_dynamic_light_inverse_surface</item>
     <item name="colorOnSurfaceInverse">@color/m3_sys_color_dynamic_light_inverse_on_surface</item>
+    <item name="colorSurfaceBright">@color/m3_sys_color_dynamic_light_surface_bright</item>
+    <item name="colorSurfaceDim">@color/m3_sys_color_dynamic_light_surface_dim</item>
+    <item name="colorSurfaceContainer">@color/m3_sys_color_dynamic_light_surface_container</item>
+    <item name="colorSurfaceContainerLow">@color/m3_sys_color_dynamic_light_surface_container_low</item>
+    <item name="colorSurfaceContainerHigh">@color/m3_sys_color_dynamic_light_surface_container_high</item>
+    <item name="colorSurfaceContainerLowest">@color/m3_sys_color_dynamic_light_surface_container_lowest</item>
+    <item name="colorSurfaceContainerHighest">@color/m3_sys_color_dynamic_light_surface_container_highest</item>
     <item name="colorOutline">@color/m3_sys_color_dynamic_light_outline</item>
     <item name="colorError">@color/m3_sys_color_light_error</item>
     <item name="colorOnError">@color/m3_sys_color_light_on_error</item>
@@ -87,6 +94,13 @@
     <item name="colorOnSurfaceVariant">@color/m3_sys_color_dynamic_dark_on_surface_variant</item>
     <item name="colorSurfaceInverse">@color/m3_sys_color_dynamic_dark_inverse_surface</item>
     <item name="colorOnSurfaceInverse">@color/m3_sys_color_dynamic_dark_inverse_on_surface</item>
+    <item name="colorSurfaceBright">@color/m3_sys_color_dynamic_dark_surface_bright</item>
+    <item name="colorSurfaceDim">@color/m3_sys_color_dynamic_dark_surface_dim</item>
+    <item name="colorSurfaceContainer">@color/m3_sys_color_dynamic_dark_surface_container</item>
+    <item name="colorSurfaceContainerLow">@color/m3_sys_color_dynamic_dark_surface_container_low</item>
+    <item name="colorSurfaceContainerHigh">@color/m3_sys_color_dynamic_dark_surface_container_high</item>
+    <item name="colorSurfaceContainerLowest">@color/m3_sys_color_dynamic_dark_surface_container_lowest</item>
+    <item name="colorSurfaceContainerHighest">@color/m3_sys_color_dynamic_dark_surface_container_highest</item>
     <item name="colorOutline">@color/m3_sys_color_dynamic_dark_outline</item>
     <item name="colorError">@color/m3_sys_color_dark_error</item>
     <item name="colorOnError">@color/m3_sys_color_dark_on_error</item>
