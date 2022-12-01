@@ -27,7 +27,6 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -147,6 +146,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
   private boolean animatedMenuItems;
   private boolean autoShowKeyboard;
   private boolean useWindowInsetsController;
+  private boolean statusBarSpacerEnabledOverride;
   @NonNull private TransitionState currentTransitionState = TransitionState.HIDDEN;
   private Map<View, Integer> childImportantForAccessibilityMap;
 
@@ -225,11 +225,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
   protected void onFinishInflate() {
     super.onFinishInflate();
 
-    Window window = getActivityWindow();
-    if (window != null) {
-      this.softInputMode = window.getAttributes().softInputMode;
-      setStatusBarSpacerEnabled(shouldShowStatusBarSpacer(window));
-    }
+    updateSoftInputMode();
   }
 
   @RequiresApi(VERSION_CODES.LOLLIPOP)
@@ -441,7 +437,11 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
     ViewCompat.setOnApplyWindowInsetsListener(
         statusBarSpacer,
         (v, insets) -> {
-          setUpStatusBarSpacer(insets.getSystemWindowInsetTop());
+          int systemWindowInsetTop = insets.getSystemWindowInsetTop();
+          setUpStatusBarSpacer(systemWindowInsetTop);
+          if (!statusBarSpacerEnabledOverride) {
+            setStatusBarSpacerEnabledInternal(systemWindowInsetTop > 0);
+          }
           return insets;
         });
   }
@@ -682,14 +682,18 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
   /**
    * Enables/disables the status bar spacer, which can be used in cases where the status bar is
    * translucent and the {@link SearchView} should not overlap the status bar area. This will be set
-   * automatically by the {@link SearchView} during initial render based on {@link
-   * #shouldShowStatusBarSpacer(Window)}, but make sure to invoke this if you would like to override
-   * the default behavior.
+   * automatically by the {@link SearchView} during initial render, but make sure to invoke this if
+   * you would like to override the default behavior.
    *
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
   public void setStatusBarSpacerEnabled(boolean enabled) {
+    statusBarSpacerEnabledOverride = true;
+    setStatusBarSpacerEnabledInternal(enabled);
+  }
+
+  private void setStatusBarSpacerEnabledInternal(boolean enabled) {
     statusBarSpacer.setVisibility(enabled ? VISIBLE : GONE);
   }
 
@@ -798,25 +802,6 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
   public void clearFocusAndHideKeyboard() {
     editText.clearFocus();
     ViewUtils.hideKeyboard(editText, useWindowInsetsController);
-  }
-
-  private static boolean shouldShowStatusBarSpacer(@Nullable Window window) {
-    if (window == null) {
-      return false;
-    }
-    WindowManager.LayoutParams lp = window.getAttributes();
-    boolean translucentStatus =
-        VERSION.SDK_INT >= VERSION_CODES.KITKAT
-            && (lp.flags & WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                == WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-    boolean layoutNoLimits =
-        (lp.flags & WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
-            == WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
-    boolean edgeToEdge =
-        VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN
-            && (window.getDecorView().getSystemUiVisibility() & ViewUtils.EDGE_TO_EDGE_FLAGS)
-                == ViewUtils.EDGE_TO_EDGE_FLAGS;
-    return translucentStatus || layoutNoLimits || edgeToEdge;
   }
 
   boolean isAdjustNothingSoftInputMode() {
