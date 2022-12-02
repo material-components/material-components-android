@@ -18,7 +18,6 @@ package com.google.android.material.sidesheet;
 
 import com.google.android.material.R;
 
-import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -37,7 +36,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.AccessibilityDelegateCompat;
@@ -48,11 +46,8 @@ import com.google.android.material.sidesheet.Sheet.StableSheetState;
 /**
  * Base class for {@link android.app.Dialog}s styled as a sheet, to be used by sheet dialog
  * implementations such as side sheets and bottom sheets.
- *
- * @hide For internal use only.
  */
-@RestrictTo(LIBRARY_GROUP)
-public abstract class SheetDialog extends AppCompatDialog {
+abstract class SheetDialog extends AppCompatDialog {
 
   private static final int COORDINATOR_LAYOUT_ID = R.id.coordinator;
   private static final int TOUCH_OUTSIDE_ID = R.id.touch_outside;

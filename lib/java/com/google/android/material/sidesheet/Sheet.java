@@ -27,8 +27,7 @@ import java.lang.annotation.RetentionPolicy;
  * Interface for sheet constants and {@code IntDefs} to be shared between the different {@link
  * Sheet} implementations.
  */
-public interface Sheet {
-
+interface Sheet {
   /** The sheet is dragging. */
   int STATE_DRAGGING = 1;
 
