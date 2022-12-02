@@ -1030,9 +1030,17 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     final int newTabCount = tabs.size();
+    int newIndicatorPosition = -1;
     for (int i = position; i < newTabCount; i++) {
+      // If the current tab position is the indicator position, mark its new position as the new
+      // indicator position.
+      if (tabs.get(i).getPosition() == indicatorPosition) {
+        newIndicatorPosition = i;
+      }
       tabs.get(i).setPosition(i);
     }
+    // Update the indicator position to the correct selected tab after refreshing tab positions.
+    indicatorPosition = newIndicatorPosition;
 
     if (selectedTabPosition == position) {
       selectTab(tabs.isEmpty() ? null : tabs.get(Math.max(0, position - 1)));
@@ -1678,9 +1686,16 @@ public class TabLayout extends HorizontalScrollView {
     tabs.add(position, tab);
 
     final int count = tabs.size();
+    int newIndicatorPosition = -1;
     for (int i = position + 1; i < count; i++) {
+      // If the current tab position is the indicator position, mark its new position as the new
+      // indicator position.
+      if (tabs.get(i).getPosition() == indicatorPosition) {
+        newIndicatorPosition = i;
+      }
       tabs.get(i).setPosition(i);
     }
+    indicatorPosition = newIndicatorPosition;
   }
 
   private void addTabView(@NonNull Tab tab) {
@@ -3138,7 +3153,9 @@ public class TabLayout extends HorizontalScrollView {
      * @param positionOffset Value from [0, 1) indicating the offset from the tab at position.
      */
     void setIndicatorPositionFromTabPosition(int position, float positionOffset) {
-      indicatorPosition = position;
+      // Since we are tweening the indicator in between the position and position+positionOffset,
+      // we set the indicator position to whichever is closer.
+      indicatorPosition = Math.round(position + positionOffset);
       if (indicatorAnimator != null && indicatorAnimator.isRunning()) {
         indicatorAnimator.cancel();
       }
@@ -3238,20 +3255,37 @@ public class TabLayout extends HorizontalScrollView {
             /* recreateAnimation= */ false, getSelectedTabPosition(), /* duration= */ -1);
       } else {
         // If we've been laid out, update the indicator position
-        jumpIndicatorToSelectedPosition();
+        jumpIndicatorToIndicatorPosition();
       }
     }
 
-    /** Immediately update the indicator position to the currently selected position. */
-    private void jumpIndicatorToSelectedPosition() {
+    /**
+     * Immediately update the indicator position to the specified position, unless we are mid-scroll
+     * in a viewpager.
+     */
+    private void jumpIndicatorToPosition(int position) {
       // Don't update the indicator position if the scroll state is not idle.
       if (viewPagerScrollState != SCROLL_STATE_IDLE) {
         return;
       }
-      final View currentView = getChildAt(getSelectedTabPosition());
+      final View currentView = getChildAt(position);
       tabIndicatorInterpolator.setIndicatorBoundsForTab(
           TabLayout.this, currentView, tabSelectedIndicator);
-      indicatorPosition = getSelectedTabPosition();
+      indicatorPosition = position;
+    }
+
+    /** Immediately update the indicator position to the currently selected position. */
+    private void jumpIndicatorToSelectedPosition() {
+      jumpIndicatorToPosition(getSelectedTabPosition());
+    }
+
+    /** Immediately update the indicator position to the current indicator position. */
+    private void jumpIndicatorToIndicatorPosition() {
+      // If indicator position has not yet been set, set indicator to the selected tab position.
+      if (indicatorPosition == -1) {
+        indicatorPosition = getSelectedTabPosition();
+      }
+      jumpIndicatorToPosition(indicatorPosition);
     }
 
     /**
