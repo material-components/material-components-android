@@ -1,7 +1,7 @@
 # The token conversion configuration for Material 3
 platform: android
 design_system_id: designSystems/20543ce18892f7d9
-version: v0.145
+version: v0.147
 common_context: [audience::3p, platform::android]
 input_dir: ux/material/dsdb/contrib/generators/tokens/android/templates/
 output_dir: third_party/java_src/android_libs/material_components/lib/java/com/google/android/material/
@@ -505,6 +505,7 @@ conversion_tasks:
       - md.comp.filter-chip.flat.selected.outline.width
       # Shadow color is not styleable.
       - md.comp.filter-chip.container.shadow-color
+      - md.comp.filter-chip.elevated.container.shadow-color
 
   - # Divider component tokens.
     token_sets: md.comp.divider
