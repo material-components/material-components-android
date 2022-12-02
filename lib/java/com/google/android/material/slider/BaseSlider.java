@@ -270,6 +270,8 @@ abstract class BaseSlider<
   private int minTrackSidePadding;
   private int defaultThumbRadius;
   private int defaultTrackHeight;
+  private int defaultTickActiveRadius;
+  private int defaultTickInactiveRadius;
 
   @Dimension(unit = Dimension.PX)
   private int minTouchTargetSize;
@@ -298,6 +300,8 @@ abstract class BaseSlider<
   private float stepSize = 0.0f;
   private float[] ticksCoordinates;
   private boolean tickVisible = true;
+  private int tickActiveRadius;
+  private int tickInactiveRadius;
   private int trackWidth;
   private boolean forceDrawCompatHalo;
   private boolean isLongPress = false;
@@ -403,6 +407,9 @@ abstract class BaseSlider<
     defaultThumbRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_thumb_radius);
     defaultTrackHeight = resources.getDimensionPixelSize(R.dimen.mtrl_slider_track_height);
 
+    defaultTickActiveRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_tick_radius);
+    defaultTickInactiveRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_tick_radius);
+
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
   }
 
@@ -492,6 +499,10 @@ abstract class BaseSlider<
 
     setTrackHeight(a.getDimensionPixelSize(R.styleable.Slider_trackHeight, 0));
 
+    setTickActiveRadius(a.getDimensionPixelSize(R.styleable.Slider_tickRadiusActive, 0));
+
+    setTickInactiveRadius(a.getDimensionPixelSize(R.styleable.Slider_tickRadiusInactive, 0));
+
     setLabelBehavior(a.getInt(R.styleable.Slider_labelBehavior, LABEL_FLOATING));
 
     if (!a.getBoolean(R.styleable.Slider_android_enabled, true)) {
@@ -504,8 +515,12 @@ abstract class BaseSlider<
   private boolean maybeIncreaseTrackSidePadding() {
     int increasedSidePaddingByThumb = max(thumbRadius - defaultThumbRadius, 0);
     int increasedSidePaddingByTrack = max((trackHeight - defaultTrackHeight) / 2, 0);
+    int increasedSidePaddingByActiveTick = max(tickActiveRadius - defaultTickActiveRadius, 0);
+    int increasedSidePaddingByInactiveTick = max(tickInactiveRadius - defaultTickInactiveRadius, 0);
     int newTrackSidePadding =
-        minTrackSidePadding + max(increasedSidePaddingByThumb, increasedSidePaddingByTrack);
+        minTrackSidePadding + max(max(increasedSidePaddingByThumb, increasedSidePaddingByTrack),
+            max(increasedSidePaddingByActiveTick, increasedSidePaddingByInactiveTick));
+
     if (trackSidePadding == newTrackSidePadding) {
       return false;
     }
@@ -1277,6 +1292,56 @@ abstract class BaseSlider<
     if (this.trackHeight != trackHeight) {
       this.trackHeight = trackHeight;
       invalidateTrack();
+      updateWidgetLayout();
+    }
+  }
+
+  /**
+   * Returns the radius of the active tick in pixels.
+   *
+   * @attr ref com.google.android.material.R.styleable#Slider_activeTickRadius
+   * @see #setTickActiveRadius(int)
+   */
+  @Dimension()
+  public int getTickActiveRadius() {
+    return tickActiveRadius;
+  }
+
+  /**
+   * Set the radius of the active tick in pixels.
+   *
+   * @attr ref com.google.android.material.R.styleable#Slider_activeTickRadius
+   * @see #getTickActiveRadius()
+   */
+  public void setTickActiveRadius(@IntRange(from = 0) @Dimension int tickActiveRadius) {
+    if (this.tickActiveRadius != tickActiveRadius) {
+      this.tickActiveRadius = tickActiveRadius;
+      activeTicksPaint.setStrokeWidth(tickActiveRadius * 2);
+      updateWidgetLayout();
+    }
+  }
+
+  /**
+   * Returns the radius of the inactive tick in pixels.
+   *
+   * @attr ref com.google.android.material.R.styleable#Slider_inactiveTickRadius
+   * @see #setTickInactiveRadius(int)
+   */
+  @Dimension()
+  public int getTickInactiveRadius() {
+    return tickInactiveRadius;
+  }
+
+  /**
+   * Set the radius of the inactive tick in pixels.
+   *
+   * @attr ref com.google.android.material.R.styleable#Slider_inactiveTickRadius
+   * @see #getTickInactiveRadius()
+   */
+  public void setTickInactiveRadius(@IntRange(from = 0) @Dimension int tickInactiveRadius) {
+    if (this.tickInactiveRadius != tickInactiveRadius) {
+      this.tickInactiveRadius = tickInactiveRadius;
+      inactiveTicksPaint.setStrokeWidth(tickInactiveRadius * 2);
       updateWidgetLayout();
     }
   }
@@ -2260,8 +2325,6 @@ abstract class BaseSlider<
   private void invalidateTrack() {
     inactiveTrackPaint.setStrokeWidth(trackHeight);
     activeTrackPaint.setStrokeWidth(trackHeight);
-    inactiveTicksPaint.setStrokeWidth(trackHeight / 2.0f);
-    activeTicksPaint.setStrokeWidth(trackHeight / 2.0f);
   }
 
   /**

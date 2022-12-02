@@ -25,6 +25,8 @@
     <item name="thumbRadius">@dimen/mtrl_slider_thumb_radius</item>
     <item name="tickColorActive">@color/material_slider_active_tick_marks_color</item>
     <item name="tickColorInactive">@color/material_slider_inactive_tick_marks_color</item>
+    <item name="tickRadiusActive">@dimen/mtrl_slider_tick_radius</item>
+    <item name="tickRadiusInactive">@dimen/mtrl_slider_tick_radius</item>
     <item name="trackColorActive">@color/material_slider_active_track_color</item>
     <item name="trackColorInactive">@color/material_slider_inactive_track_color</item>
     <item name="trackHeight">@dimen/mtrl_slider_track_height</item>

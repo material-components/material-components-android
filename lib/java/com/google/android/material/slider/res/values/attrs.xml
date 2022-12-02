@@ -59,6 +59,10 @@
     <!-- The color of the slider's tick marks for the inactive portion of the track. Only used when
          the slider is in discrete mode. -->
     <attr name="tickColorInactive" format="color" />
+    <!-- The radius of the active tick. Only used when the slider is in discrete mode.-->
+    <attr name="tickRadiusActive" format="dimension" />
+    <!-- The radius of the inactive tick. Only used when the slider is in discrete mode.-->
+    <attr name="tickRadiusInactive" format="dimension" />
     <!-- Whether to show the tick marks. Only used when the slider is in discrete mode. -->
     <attr name="tickVisible" format="boolean" />
     <!-- The color of the track. -->
