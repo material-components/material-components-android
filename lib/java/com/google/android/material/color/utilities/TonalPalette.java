@@ -78,4 +78,12 @@ public final class TonalPalette {
     }
     return color;
   }
+
+  public double getChroma() {
+    return this.chroma;
+  }
+
+  public double getHue() {
+    return this.hue;
+  }
 }
