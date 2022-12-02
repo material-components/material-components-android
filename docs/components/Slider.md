@@ -150,6 +150,11 @@ The modes of `app:labelBehavior` are:
 *   `gone` - prevents the label from being drawn
 *   `visible` - always draws the label
 
+Note: there's a known issue where the label doesn't scroll along with the screen
+when the slider is in a scrollable container and `app:labelBehavior=visible`. To
+work around that you should either use a different mode or hide the label on
+scroll.
+
 ### Setting a `LabelFormatter`
 
 By using a `LabelFormatter` you can display the selected value using letters to
