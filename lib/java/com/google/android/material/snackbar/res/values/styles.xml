@@ -80,7 +80,8 @@
     <item name="android:background">@null</item>
     <item name="android:layout_margin">@dimen/m3_snackbar_margin</item>
     <item name="animationMode">fade</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraSmall</item>
+    <item name="shapeAppearance">@macro/m3_comp_snackbar_container_shape</item>
+    <item name="elevation">@dimen/m3_comp_snackbar_container_elevation</item>
   </style>
 
   <!-- Style for a full width M3 Snackbar. -->
@@ -90,8 +91,8 @@
 
   <style name="Widget.Material3.Snackbar.TextView" parent="Widget.MaterialComponents.Snackbar.TextView">
     <item name="android:alpha">@dimen/m3_snackbar_action_text_color_alpha</item>
-    <item name="android:textColor">?attr/colorOnSurfaceInverse</item>
-    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textColor">@macro/m3_comp_snackbar_supporting_text_color</item>
+    <item name="android:textAppearance">@macro/m3_comp_snackbar_supporting_text_type</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Snackbar" parent="">

@@ -649,6 +649,27 @@ conversion_tasks:
       - md.comp.menu.list-item.with-leading-icon.(hover|focus|pressed).icon.color
       - md.comp.menu.list-item.with-trailing-icon.(hover|focus|pressed).icon.color
 
+  - # Snackbar component tokens.
+    token_sets: md.comp.snackbar
+    files:
+      - {input: tokens.jinja2, output: snackbar/res/values/tokens.xml}
+    suppressed_tokens:
+      # TODO(b/260628816) Container color is set programmatically.
+      - md.comp.snackbar.container.color
+      # TODO(b/260628816) Shadow color is not styleable.
+      - md.comp.snackbar.container.shadow-color
+      # TODO(b/260628816) Container height adapts to the contents.
+      - md.comp.snackbar.(with-single-line|with-two-lines).container.height
+      # TODO(b/260628816) Action text button style is defined in Button package.
+      - md.comp.snackbar.action.label-text.color
+      - md.comp.snackbar.action.(hover|focus|pressed).label-text.color
+      - md.comp.snackbar.action.(hover|focus|pressed).state-layer.(color|opacity)
+      - md.comp.snackbar.action.label-text.type
+      # TODO(b/260628816) No default close icon is implemented.
+      - md.comp.snackbar.icon.(color|size)
+      - md.comp.snackbar.icon.(hover|focus|pressed).icon.color
+      - md.comp.snackbar.icon.(hover|focus|pressed).state-layer.(color|opacity)
+
 # - # List component tokens.
     # TODO(b/260625883) No M3 styles for List.
     # token_sets: md.comp.list
