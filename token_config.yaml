@@ -624,6 +624,31 @@ conversion_tasks:
       # TODO(b/253671432) Integrate after design confirm which icon this token is for.
       - md.comp.elevated-card.icon.color
 
+  - # Menu component tokens.
+    token_sets: md.comp.menu
+    files:
+      - {input: tokens.jinja2, output: menu/res/values/tokens.xml}
+    suppressed_tokens:
+      # Elevation overlay color is not configurable.
+      - md.comp.menu.container.surface-tint-layer.color
+      # Shadow color is not configurable.
+      - md.comp.menu.container.shadow-color
+      # TODO(b/261064142) We have not done much about styling menus from the framework one.
+      - md.comp.menu.container.shape
+      - md.comp.menu.list-item.container.height
+      - md.comp.menu.list-item.selected.container.color
+      - md.comp.menu.list-item.label-text.(color|type)
+      - md.comp.menu.cascading-menu-indicator.icon.(color|size)
+      - md.comp.menu.list-item.with-leading-icon.leading-icon.(size|color)
+      - md.comp.menu.list-item.with-trailing-icon.trailing-icon.(size|color)
+      - md.comp.menu.list-item.disabled.label-text.(color|opacity)
+      - md.comp.menu.list-item.with-leading-icon.disabled.leading-icon.(color|opacity)
+      - md.comp.menu.list-item.with-trailing-icon.disabled.trailing-icon.(color|opacity)
+      - md.comp.menu.list-item.(hover|focus|pressed).label-text.color
+      - md.comp.menu.list-item.(hover|focus|pressed).state-layer.(color|opacity)
+      - md.comp.menu.list-item.with-leading-icon.(hover|focus|pressed).icon.color
+      - md.comp.menu.list-item.with-trailing-icon.(hover|focus|pressed).icon.color
+
 # - # List component tokens.
     # TODO(b/260625883) No M3 styles for List.
     # token_sets: md.comp.list

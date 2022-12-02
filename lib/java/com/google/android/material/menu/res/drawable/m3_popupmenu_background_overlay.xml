@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-  <solid android:color="?attr/colorSurface"/>
+  <solid android:color="@macro/m3_comp_menu_container_color"/>
 
   <corners
       android:bottomLeftRadius="4dp"

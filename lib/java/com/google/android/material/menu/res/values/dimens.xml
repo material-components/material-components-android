@@ -15,5 +15,5 @@
      limitations under the License.
 -->
 <resources>
-  <dimen name="m3_menu_elevation">@dimen/m3_sys_elevation_level2</dimen>
+  <dimen name="m3_menu_elevation">@dimen/m3_comp_menu_container_elevation</dimen>
 </resources>
