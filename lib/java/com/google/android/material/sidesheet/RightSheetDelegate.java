@@ -44,7 +44,7 @@ final class RightSheetDelegate extends SheetDelegate {
   @SheetEdge
   @Override
   int getSheetEdge() {
-    return SideSheetBehavior.RIGHT;
+    return SideSheetBehavior.EDGE_RIGHT;
   }
 
   /** Returns the sheet's offset in pixels from the origin edge when hidden. */
