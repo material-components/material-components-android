@@ -128,7 +128,8 @@ class MaterialCardViewHelper {
 
   @Nullable private ValueAnimator iconAnimator;
   private final TimeInterpolator iconFadeAnimInterpolator;
-  private final int iconFadeAnimDuration;
+  private final int iconFadeInAnimDuration;
+  private final int iconFadeOutAnimDuration;
   private float checkedAnimationProgress = 0F;
 
   public static final int DEFAULT_FADE_ANIM_DURATION = 300;
@@ -162,9 +163,12 @@ class MaterialCardViewHelper {
             materialCardView.getContext(),
             R.attr.motionEasingLinearInterpolator,
             AnimationUtils.LINEAR_INTERPOLATOR);
-    iconFadeAnimDuration =
+    iconFadeInAnimDuration =
         MotionUtils.resolveThemeDuration(
-            materialCardView.getContext(), R.attr.motionDurationShort4, DEFAULT_FADE_ANIM_DURATION);
+            materialCardView.getContext(), R.attr.motionDurationShort2, DEFAULT_FADE_ANIM_DURATION);
+    iconFadeOutAnimDuration =
+        MotionUtils.resolveThemeDuration(
+            materialCardView.getContext(), R.attr.motionDurationShort1, DEFAULT_FADE_ANIM_DURATION);
 
     cardViewAttributes.recycle();
   }
@@ -320,7 +324,10 @@ class MaterialCardViewHelper {
     iconAnimator.setInterpolator(iconFadeAnimInterpolator);
     // Cut the total duration if this animation is starting after interrupting an in-progress
     // animation.
-    iconAnimator.setDuration((long) (iconFadeAnimDuration * delta));
+    iconAnimator.setDuration(
+        checked
+            ? (long) (iconFadeInAnimDuration * delta)
+            : (long) (iconFadeOutAnimDuration * delta));
     iconAnimator.start();
   }
 
