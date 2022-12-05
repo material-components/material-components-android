@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
   <style name="ThemeOverlay.Material3.HarmonizedColors" parent="">
     <item name="colorError">@color/material_harmonized_color_error</item>
@@ -50,6 +50,13 @@
     <item name="colorOnSurfaceVariant">@color/material_personalized_color_on_surface_variant</item>
     <item name="colorSurfaceInverse">@color/material_personalized_color_surface_inverse</item>
     <item name="colorOnSurfaceInverse">@color/material_personalized_color_on_surface_inverse</item>
+    <item name="colorSurfaceBright">@color/material_personalized_color_surface_bright</item>
+    <item name="colorSurfaceDim">@color/material_personalized_color_surface_dim</item>
+    <item name="colorSurfaceContainer">@color/material_personalized_color_surface_container</item>
+    <item name="colorSurfaceContainerLow">@color/material_personalized_color_surface_container_low</item>
+    <item name="colorSurfaceContainerHigh">@color/material_personalized_color_surface_container_high</item>
+    <item name="colorSurfaceContainerLowest">@color/material_personalized_color_surface_container_lowest</item>
+    <item name="colorSurfaceContainerHighest">@color/material_personalized_color_surface_container_highest</item>
     <item name="colorOutline">@color/material_personalized_color_surface_outline</item>
     <item name="colorError">@color/material_personalized_color_error</item>
     <item name="colorOnError">@color/material_personalized_color_on_error</item>
@@ -57,7 +64,22 @@
     <item name="colorOnErrorContainer">@color/material_personalized_color_on_error_container</item>
 
     <!-- Default Framework Text Colors. -->
-    <!-- TODO(b/254612063): Add default framework colors when the material color utilities library provides the color values for non-Material roles.-->
+    <item name="android:textColorPrimary">@color/material_personalized_color_primary_text</item>
+    <item name="android:textColorPrimaryInverse">@color/material_personalized_color_primary_text_inverse</item>
+    <item name="android:textColorSecondary">@color/material_personalized_color_secondary_text</item>
+    <item name="android:textColorSecondaryInverse">@color/material_personalized_color_secondary_text_inverse</item>
+    <item name="android:textColorTertiary">@color/material_personalized_color_secondary_text</item>
+    <item name="android:textColorTertiaryInverse">@color/material_personalized_color_secondary_text_inverse</item>
+    <item name="android:textColorPrimaryDisableOnly">@color/material_personalized_primary_text_disable_only</item>
+    <item name="android:textColorPrimaryInverseDisableOnly">@color/material_personalized_primary_inverse_text_disable_only</item>
+    <item name="android:textColorHint">@color/material_personalized_hint_foreground</item>
+    <item name="android:textColorHintInverse">@color/material_personalized_hint_foreground_inverse</item>
+    <item name="android:textColorHighlight">@color/material_personalized__highlighted_text</item>
+    <item name="android:textColorHighlightInverse">@color/material_personalized__highlighted_text_inverse</item>
+    <item name="android:textColorAlertDialogListItem">@color/material_personalized_color_primary_text</item>
+    <item name="android:colorControlActivated">@color/material_personalized_color_control_activated</item>
+    <item name="android:colorControlNormal">@color/material_personalized_color_control_normal</item>
+    <item name="android:colorControlHighlight">@color/material_personalized_color_control_highlight</item>
   </style>
 
 </resources>

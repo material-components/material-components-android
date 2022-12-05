@@ -83,10 +83,26 @@
   <color name="material_personalized_color_on_surface_variant">#FFFFFF</color>
   <color name="material_personalized_color_surface_inverse">#FFFFFF</color>
   <color name="material_personalized_color_on_surface_inverse">#FFFFFF</color>
+  <color name="material_personalized_color_surface_bright">#FFFFFF</color>
+  <color name="material_personalized_color_surface_dim">#FFFFFF</color>
+  <color name="material_personalized_color_surface_container">#FFFFFF</color>
+  <color name="material_personalized_color_surface_container_low">#FFFFFF</color>
+  <color name="material_personalized_color_surface_container_high">#FFFFFF</color>
+  <color name="material_personalized_color_surface_container_lowest">#FFFFFF</color>
+  <color name="material_personalized_color_surface_container_highest">#FFFFFF</color>
   <color name="material_personalized_color_surface_outline">#FFFFFF</color>
   <color name="material_personalized_color_error">#FFFFFF</color>
   <color name="material_personalized_color_on_error">#FFFFFF</color>
   <color name="material_personalized_color_error_container">#FFFFFF</color>
   <color name="material_personalized_color_on_error_container">#FFFFFF</color>
+
+  <color name="material_personalized_color_control_activated">#FFFFFF</color>
+  <color name="material_personalized_color_control_normal">#FFFFFF</color>
+  <color name="material_personalized_color_control_highlight">#FFFFFF</color>
+  <color name="material_personalized_color_text_primary_inverse">#FFFFFF</color>
+  <color name="material_personalized_color_text_secondary_and_tertiary_inverse">#FFFFFF</color>
+  <color name="material_personalized_color_text_secondary_and_tertiary_inverse_disabled">#FFFFFF</color>
+  <color name="material_personalized_color_text_primary_inverse_disable_only">#FFFFFF</color>
+  <color name="material_personalized_color_text_hint_foreground_inverse">#FFFFFF</color>
 
 </resources>
