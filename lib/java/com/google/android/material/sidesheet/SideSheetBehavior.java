@@ -158,19 +158,19 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   private void setSheetEdge(@SheetEdge int sheetEdge) {
     if (sheetDelegate == null || sheetDelegate.getSheetEdge() != sheetEdge) {
 
-      if (sheetEdge == RIGHT) {
+      if (sheetEdge == EDGE_RIGHT) {
         this.sheetDelegate = new RightSheetDelegate(this);
         return;
       }
 
       throw new IllegalArgumentException(
-          "Invalid sheet edge position value: " + sheetEdge + ". Must be " + RIGHT);
+          "Invalid sheet edge position value: " + sheetEdge + ". Must be " + EDGE_RIGHT);
     }
   }
 
   @SheetEdge
   private int getDefaultSheetEdge() {
-    return RIGHT;
+    return EDGE_RIGHT;
   }
 
   /**
