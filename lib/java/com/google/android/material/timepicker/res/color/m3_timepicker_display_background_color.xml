@@ -16,8 +16,8 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <!-- Selected. -->
-  <item android:color="?attr/colorPrimaryContainer" android:state_selected="true"/>
+  <item android:color="@macro/m3_comp_time_picker_time_selector_selected_container_color" android:state_selected="true"/>
 
   <!-- Not-selected. -->
-  <item android:color="?attr/colorSurfaceVariant"/>
+  <item android:color="@macro/m3_comp_time_picker_time_selector_unselected_container_color"/>
 </selector>

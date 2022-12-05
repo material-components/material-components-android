@@ -19,8 +19,8 @@
   <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false" />
 
   <!-- Checked. -->
-  <item android:color="?attr/colorOnTertiaryContainer" android:state_checked="true" />
+  <item android:color="@macro/m3_comp_time_picker_period_selector_selected_label_text_color" android:state_checked="true" />
 
   <!-- Not-checked. -->
-  <item android:color="?attr/colorOnSurfaceVariant" />
+  <item android:color="@macro/m3_comp_time_picker_period_selector_unselected_label_text_color" />
 </selector>

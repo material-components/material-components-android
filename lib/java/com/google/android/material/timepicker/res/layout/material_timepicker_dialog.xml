@@ -35,13 +35,13 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-   <androidx.constraintlayout.widget.Barrier
-      android:id="@+id/barrier"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      app:barrierDirection="bottom"
-      app:barrierMargin="@dimen/material_timepicker_dialog_buttons_margin_top"
-      app:constraint_referenced_ids="material_textinput_timepicker, material_timepicker_view" />
+  <androidx.constraintlayout.widget.Barrier
+    android:id="@+id/barrier"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:barrierDirection="bottom"
+    app:barrierMargin="@dimen/material_timepicker_dialog_buttons_margin_top"
+    app:constraint_referenced_ids="material_textinput_timepicker, material_timepicker_view" />
 
   <com.google.android.material.timepicker.TimePickerView
     android:id="@+id/material_timepicker_view"

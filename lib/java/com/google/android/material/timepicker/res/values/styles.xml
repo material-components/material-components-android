@@ -127,20 +127,21 @@
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Button" parent="Widget.MaterialComponents.TimePicker.Button">
-    <item name="android:textAppearance">?attr/textAppearanceTitleMedium</item>
+    <item name="android:textAppearance">@macro/m3_comp_time_picker_period_selector_label_text_type</item>
     <item name="android:textColor">@color/m3_timepicker_button_text_color</item>
     <item name="backgroundTint">@color/m3_timepicker_button_background_color</item>
     <item name="iconTint">@color/m3_timepicker_button_text_color</item>
     <item name="rippleColor">@color/m3_timepicker_button_ripple_color</item>
-    <item name="strokeColor">?attr/colorOutline</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerSmall</item>
+    <item name="strokeColor">@macro/m3_comp_time_picker_period_selector_outline_color</item>
+    <item name="strokeWidth">@dimen/m3_comp_time_picker_period_selector_outline_width</item>
+    <item name="shapeAppearance">@macro/m3_comp_time_picker_period_selector_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
     <!-- Apply theme overlay to disable elevation overlays so we can get a purely colorSurface chip. -->
     <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker" parent="Widget.MaterialComponents.TimePicker">
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
+    <item name="shapeAppearance">@macro/m3_comp_time_picker_container_shape</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">
@@ -150,22 +151,21 @@
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display" parent="Widget.MaterialComponents.TimePicker.Display">
-    <item name="android:textAppearance">?attr/textAppearanceDisplayLarge</item>
+    <item name="android:textAppearance">@macro/m3_comp_time_picker_time_selector_label_text_type</item>
     <item name="android:textColor">@color/m3_timepicker_display_text_color</item>
     <item name="chipBackgroundColor">@color/m3_timepicker_display_background_color</item>
     <item name="rippleColor">@color/m3_timepicker_display_ripple_color</item>
-    <item name="chipStrokeColor">@color/m3_timepicker_display_stroke_color</item>
-    <item name="chipStrokeWidth">@dimen/m3_timepicker_display_stroke_width</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerSmall</item>
+    <item name="shapeAppearance">@macro/m3_comp_time_picker_time_selector_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.Divider" parent="Widget.MaterialComponents.TimePicker.Display.Divider">
-    <item name="android:textAppearance">?attr/textAppearanceDisplayLarge</item>
+    <item name="android:textAppearance">@macro/m3_comp_time_picker_time_selector_separator_type</item>
+    <item name="android:textColor">@macro/m3_comp_time_picker_time_selector_separator_color</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerSmall</item>
+    <item name="shapeAppearance">@macro/m3_comp_time_input_time_input_field_container_shape</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.MaterialTimePicker.Display.TextInputEditText</item>
   </style>
 
@@ -177,6 +177,7 @@
 
   <style name="Widget.Material3.MaterialTimePicker.Display.TextInputEditText" parent="Widget.Material3.TextInputEditText.OutlinedBox">
     <item name="android:textAppearance">?attr/textAppearanceDisplayLarge</item>
+    <item name="android:textColor">@macro/m3_comp_time_input_time_input_field_label_text_color</item>
     <item name="android:textSize" tools:ignore="SpUsage">56dp</item>
     <item name="android:paddingTop">0dp</item>
     <item name="android:paddingBottom">0dp</item>
@@ -188,20 +189,23 @@
     <item name="android:paddingStart">0dp</item>
     <item name="android:paddingEnd">0dp</item>
     <item name="android:includeFontPadding">false</item>
+    <item name="boxStrokeColor">@color/m3_timepicker_time_input_stroke_color</item>
+    <item name="boxStrokeWidthFocused">@dimen/m3_comp_time_input_time_input_field_focus_outline_width</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display.HelperText" parent="Widget.MaterialComponents.TimePicker.Display.HelperText">
-    <item name="android:textAppearance">?attr/textAppearanceBodySmall</item>
-    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    <item name="android:textAppearance">@macro/m3_comp_time_input_time_input_field_supporting_text_type</item>
+    <item name="android:textColor">@macro/m3_comp_time_input_time_input_field_supporting_text_color</item>
   </style>
 
-  <style name="TextAppearance.Material3.MaterialTimePicker.Title" parent="TextAppearance.Material3.LabelMedium">
-    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+  <style name="TextAppearance.Material3.MaterialTimePicker.Title" parent="">
+    <item name="android:textAppearance">@macro/m3_comp_time_picker_headline_type</item>
+    <item name="android:textColor">@macro/m3_comp_time_picker_headline_color</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Clock" parent="Widget.MaterialComponents.TimePicker.Clock">
-    <item name="clockFaceBackgroundColor">?attr/colorSurfaceVariant</item>
-    <item name="clockHandColor">?attr/colorPrimary</item>
+    <item name="clockFaceBackgroundColor">@macro/m3_comp_time_picker_clock_dial_color</item>
+    <item name="clockHandColor">@macro/m3_comp_time_picker_clock_dial_selector_handle_container_color</item>
     <item name="clockNumberTextColor">@color/m3_timepicker_clock_text_color</item>
   </style>
 </resources>

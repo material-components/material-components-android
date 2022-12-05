@@ -18,8 +18,8 @@
   <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false" />
 
   <!-- Selected. -->
-  <item android:color="?attr/colorOnPrimaryContainer" android:state_selected="true"/>
+  <item android:color="@macro/m3_comp_time_picker_time_selector_selected_label_text_color" android:state_selected="true"/>
 
   <!-- Not-selected. -->
-  <item android:color="?attr/colorOnSurface"/>
+  <item android:color="@macro/m3_comp_time_picker_time_selector_unselected_label_text_color"/>
 </selector>

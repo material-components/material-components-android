@@ -16,7 +16,7 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <!-- Selected. -->
-  <item android:color="?attr/colorPrimary" android:state_selected="true"/>
+  <item android:color="@macro/m3_comp_time_input_time_input_field_focus_outline_color" android:state_selected="true"/>
 
   <!-- Not-selected. -->
   <item android:color="@android:color/transparent"/>

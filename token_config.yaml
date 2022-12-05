@@ -623,6 +623,68 @@ conversion_tasks:
       - md.comp.elevated-card.(hover|focus|pressed|dragged).state-layer.(color|opacity)
       # TODO(b/253671432) Integrate after design confirm which icon this token is for.
       - md.comp.elevated-card.icon.color
+  
+  - # Time picker component tokens.
+    token_sets:
+      - md.comp.time-input
+      - md.comp.time-picker
+    files:
+      - {input: tokens.jinja2, output: timepicker/res/values/tokens.xml}
+    suppressed_tokens:
+      # TODO(b/247609386) Container color is programmatically hardcoded to ?attr/colorSurface.
+      - md.comp.(time-picker|time-input).container.color
+      # Container's elevation overlay color is not configurable.
+      - md.comp.(time-picker|time-input).surface-tint-layer.color
+      # TODO(b/247609386) Clockface is not customizable.
+      - md.comp.time-picker.clock-dial.shape
+      # TODO(b/247609386) Clock's shape is not configurable.
+      - md.comp.time-picker.clock-dial.selector.(handle|center).container.shape
+      # TODO(b/247609386) Clock's center and track share the same color as handle's container
+      - md.comp.time-picker.clock-dial.selector.(center|track).container.color
+      # Controlled by androidx.constraintlayout.helper.widget.Flow
+      - md.comp.time-picker.time-selector.24h-vertical.container.width
+      - md.comp.time-picker.time-selector.container.(width|height)
+      - md.comp.time-picker.period-selector.(vertical|horizontal).container.(width|height)
+      # TODO(b/247609386) The size of the clock face is not configurable.
+      - md.comp.time-picker.clock-dial.container.size
+      # TODO(b/247609386) The size of the clock hand is configured via materialCircleRadius, as half of the token value.
+      - md.comp.time-picker.clock-dial.selector.handle.container.size
+      # TODO(b/247609386) The size of the clock center dot is not configurable.
+      - md.comp.time-picker.clock-dial.selector.center.container.size
+      # TODO(b/247609386) The size of the clock arm is not configurable.
+      - md.comp.time-picker.clock-dial.selector.track.container.width
+      # TODO(b/247609386) The text appearance is hardcoded in layout material_clockface_textview.
+      - md.comp.time-picker.clock-dial.label-text.type
+      # No state content colors anymore.
+      - md.comp.time-picker.(time-selector|period-selector).(selected|unselected).(pressed|hover|focus).label-text.color
+      - md.comp.time-input.time-input-field.(hover|focus|pressed).label-text.color
+      - md.comp.time-input.period-selector.(selected|unselected).(hover|focus|pressed).label-text.color
+      # TODO(b/247609386) Remove when token value updated to colorOnPrimaryContainer or confirm with design.
+      - md.comp.time-picker.time-selector.unselected.pressed.state-layer.color
+      # Assuming input mode shares container attributes with clock mode.
+      - md.comp.time-input.container.(shape|elevation)
+      # Assuming the edit text in input mode shares container attributes with the display in clock mode.
+      - md.comp.time-input.time-input-field.container.color
+      - md.comp.time-input.time-input-field.focus.container.color
+      # TODO(b/247609386) Coupled with the chip in display. But no chip style for input mode.
+      - md.comp.time-input.time-input-field.container.(width|height)
+      - md.comp.time-input.period-selector.container.(width|height)
+      - md.comp.time-input.time-input-field.label-text.type
+      - md.comp.time-input.period-selector.label-text.type
+      # Assuming the period toggle in input mode shares attributes with the clock mode.
+      - md.comp.time-input.period-selector.selected.container.color
+      - md.comp.time-input.period-selector.container.shape
+      - md.comp.time-input.period-selector.outline.(color|width)
+      - md.comp.time-input.period-selector.(selected|unselected).label-text.color
+      - md.comp.time-input.headline.(type|color)
+      - md.comp.time-input.time-input-field.separator.(type|color)
+      - md.comp.time-input.time-input-field.(pressed|hover|focus).state-layer.(color|opacity)
+      - md.comp.time-input.period-selector.(selected|unselected).(pressed|hover|focus).state-layer.color
+      - md.comp.time-input.period-selector.(pressed|hover|focus).state-layer.opacity
+      # TODO(b/247609386) This should be different for selected and unselected. Update when tokens are added.
+      #- m3_comp_time_input_time_input_field_label_text_color
+      # TODO(b/247609386) Integrate these tokens when the values are fixed in b/254075579.
+      - md.comp.time-picker.clock-dial.(selected|unselected).label-text.color
 
   - # Menu component tokens.
     token_sets: md.comp.menu

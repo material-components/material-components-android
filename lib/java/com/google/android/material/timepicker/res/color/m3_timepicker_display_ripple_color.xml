@@ -19,16 +19,29 @@
   <!-- Selected. -->
 
   <!-- Pressing on a selected display will remain selected. -->
-  <item android:alpha="@dimen/m3_ripple_pressed_alpha" android:color="?attr/colorOnPrimaryContainer" android:state_pressed="true" android:state_selected="true"/>
-  <item android:alpha="@dimen/m3_ripple_focused_alpha" android:color="?attr/colorOnPrimaryContainer" android:state_focused="true" android:state_selected="true"/>
-  <item android:alpha="@dimen/m3_ripple_hovered_alpha" android:color="?attr/colorOnPrimaryContainer" android:state_hovered="true" android:state_selected="true"/>
-  <item android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnPrimaryContainer" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_comp_time_picker_time_selector_pressed_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_time_selector_selected_pressed_state_layer_color"
+        android:state_pressed="true" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_comp_time_picker_time_selector_focus_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_time_selector_selected_focus_state_layer_color"
+        android:state_focused="true" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_comp_time_picker_time_selector_hover_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_time_selector_selected_hover_state_layer_color"
+        android:state_hovered="true" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnPrimaryContainer"
+        android:state_selected="true"/>
 
   <!-- Unselected. -->
 
-  <!-- Pressing on an unselected display will select it. -->
-  <item android:alpha="@dimen/m3_ripple_selectable_pressed_alpha" android:color="?attr/colorOnPrimaryContainer" android:state_pressed="true"/>
-  <item android:alpha="@dimen/m3_ripple_focused_alpha" android:color="?attr/colorOnSurface" android:state_focused="true"/>
-  <item android:alpha="@dimen/m3_ripple_hovered_alpha" android:color="?attr/colorOnSurface" android:state_hovered="true"/>
+  <!-- Pressing on an unselected display will select it. So we use values for selected (checked) container color here. -->
+  <item android:alpha="@dimen/m3_comp_time_picker_time_selector_pressed_state_layer_opacity"
+        android:color="?attr/colorOnPrimaryContainer"
+        android:state_pressed="true"/>  <!-- TODO(b/247609386) Use token when value is updated as is. -->
+  <item android:alpha="@dimen/m3_comp_time_picker_time_selector_focus_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_time_selector_unselected_focus_state_layer_color"
+        android:state_focused="true"/>
+  <item android:alpha="@dimen/m3_comp_time_picker_time_selector_hover_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_time_selector_unselected_hover_state_layer_color"
+        android:state_hovered="true"/>
   <item android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnSurface"/>
 </selector>
