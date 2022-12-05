@@ -19,26 +19,26 @@
   <objectAnimator
       android:propertyName="width"
       android:startOffset="0"
-      android:duration="?attr/motionDurationLong2"
+      android:duration="?attr/motionDurationMedium4"
       android:interpolator="?attr/motionEasingEmphasizedInterpolator"/>
   <objectAnimator
       android:propertyName="height"
       android:startOffset="0"
-      android:duration="?attr/motionDurationLong2"
+      android:duration="?attr/motionDurationMedium4"
       android:interpolator="?attr/motionEasingEmphasizedInterpolator"/>
   <objectAnimator
     android:propertyName="paddingStart"
     android:startOffset="0"
-    android:duration="?attr/motionDurationLong2"
+    android:duration="?attr/motionDurationMedium4"
     android:interpolator="?attr/motionEasingEmphasizedInterpolator"/>
   <objectAnimator
     android:propertyName="paddingEnd"
     android:startOffset="0"
-    android:duration="?attr/motionDurationLong2"
+    android:duration="?attr/motionDurationMedium4"
     android:interpolator="?attr/motionEasingEmphasizedInterpolator"/>
   <objectAnimator
     android:propertyName="labelOpacity"
     android:startOffset="?attr/motionDurationShort2"
     android:duration="?attr/motionDurationShort4"
-    android:interpolator="?attr/motionEasingEmphasizedDecelerateInterpolator"/>
+    android:interpolator="?attr/motionEasingEmphasizedInterpolator"/>
 </set>

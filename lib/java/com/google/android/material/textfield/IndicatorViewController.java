@@ -287,6 +287,7 @@ final class IndicatorViewController {
             public void onAnimationStart(Animator animator) {
               if (captionViewToShow != null) {
                 captionViewToShow.setVisibility(VISIBLE);
+                captionViewToShow.setAlpha(0f);
               }
             }
           });
@@ -337,12 +338,20 @@ final class IndicatorViewController {
     if (captionView == null || !captionEnabled) {
       return;
     }
-    // If the caption view should be shown, set alpha to 1f.
-    if ((captionState == captionToShow) || (captionState == captionToHide)) {
-      captionAnimatorList.add(
-          createCaptionOpacityAnimator(captionView, captionToShow == captionState));
-      if (captionToShow == captionState) {
-        captionAnimatorList.add(createCaptionTranslationYAnimator(captionView));
+    boolean shouldShowOrHide = (captionState == captionToShow) || (captionState == captionToHide);
+    if (shouldShowOrHide) {
+      // If the caption view should be shown, set alpha accordingly.
+      Animator animator = createCaptionOpacityAnimator(captionView, captionToShow == captionState);
+      boolean enableShowAnimation =
+          captionState == captionToShow && captionToHide != CAPTION_STATE_NONE;
+      if (enableShowAnimation) {
+        animator.setStartDelay(captionFadeOutAnimationDuration);
+      }
+      captionAnimatorList.add(animator);
+      if (captionToShow == captionState && captionToHide != CAPTION_STATE_NONE) {
+        Animator translationYAnimator = createCaptionTranslationYAnimator(captionView);
+        translationYAnimator.setStartDelay(captionFadeOutAnimationDuration);
+        captionAnimatorList.add(translationYAnimator);
       }
     }
   }

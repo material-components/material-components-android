@@ -236,8 +236,8 @@ abstract class BaseSlider<
 
   private static final int DEFAULT_LABEL_ANIMATION_ENTER_DURATION = 83;
   private static final int DEFAULT_LABEL_ANIMATION_EXIT_DURATION = 117;
-  private static final int LABEL_ANIMATION_ENTER_DURATION_ATTR = R.attr.motionDurationLong2;
-  private static final int LABEL_ANIMATION_EXIT_DURATION_ATTR = R.attr.motionDurationMedium1;
+  private static final int LABEL_ANIMATION_ENTER_DURATION_ATTR = R.attr.motionDurationMedium4;
+  private static final int LABEL_ANIMATION_EXIT_DURATION_ATTR = R.attr.motionDurationShort3;
   private static final int LABEL_ANIMATION_ENTER_EASING_ATTR =
       R.attr.motionEasingEmphasizedInterpolator;
   private static final int LABEL_ANIMATION_EXIT_EASING_ATTR =

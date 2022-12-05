@@ -120,7 +120,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       set.setDuration(
           MotionUtils.resolveThemeDuration(
               getContext(),
-              R.attr.motionDurationLong1,
+              R.attr.motionDurationMedium4,
               getResources().getInteger(R.integer.material_motion_duration_long_1)));
       set.setInterpolator(
           MotionUtils.resolveThemeInterpolator(
