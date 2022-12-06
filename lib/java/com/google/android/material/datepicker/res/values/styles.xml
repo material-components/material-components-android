@@ -234,7 +234,7 @@
 
   <style name="Widget.Material3.MaterialCalendar.HeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
     <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
-    <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
+    <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
@@ -258,11 +258,12 @@
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.DayOfWeekLabel" parent="Widget.MaterialComponents.MaterialCalendar.DayOfWeekLabel">
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
     <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.DayTextView" parent="Widget.MaterialComponents.MaterialCalendar.DayTextView">
-    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.MonthTextView" parent="Widget.MaterialComponents.MaterialCalendar.MonthTextView">
