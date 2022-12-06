@@ -51,12 +51,12 @@ The `@menu/bottom_navigation_menu` resource should point to a file named
 ```xml
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
   <item
-      android:id="@+id/page_1"
+      android:id="@+id/item_1"
       android:enabled="true"
       android:icon="@drawable/icon_1"
       android:title="@string/text_label_1"/>
   <item
-      android:id="@+id/page_2"
+      android:id="@+id/item_2"
       android:enabled="true"
       android:icon="@drawable/icon_2"
       android:title="@string/text_label_2"/>
@@ -70,11 +70,11 @@ In code:
 ```kt
 NavigationBarView.OnItemSelectedListener { item ->
     when(item.itemId) {
-        R.id.item1 -> {
+        R.id.item_1 -> {
             // Respond to navigation item 1 click
             true
         }
-        R.id.item2 -> {
+        R.id.item_2 -> {
             // Respond to navigation item 2 click
             true
         }
@@ -88,10 +88,10 @@ There's also a method for detecting when navigation items have been reselected:
 ```kt
 bottomNavigation.setOnItemReselectedListener { item ->
     when(item.itemId) {
-        R.id.item1 -> {
+        R.id.item_1 -> {
             // Respond to navigation item 1 reselection
         }
-        R.id.item2 -> {
+        R.id.item_2 -> {
             // Respond to navigation item 2 reselection
         }
     }
@@ -331,8 +331,8 @@ all bottom navigation bars and affects other components:
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="colorSurface">@color/shrine_blue_100</item>
-    <item name="colorOnSurfaceVariant">@color/shrine_blue_900</item>
+    <item name="colorSurface">@color/shrine_theme_light_surface</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_theme_light_onSurfaceVariant</item>
 </style>
 ```
 
@@ -350,8 +350,8 @@ all bottom navigation bars but do not affect other components:
 </style>
 
 <style name="ThemeOverlay.App.BottomNavigationView" parent="">
-    <item name="colorSurface">@color/shrine_blue_100</item>
-    <item name="colorOnSurfaceVariant">@color/shrine_blue_900</item>
+    <item name="colorSurface">@color/shrine_theme_light_surface</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_theme_light_onSurfaceVariant</item>
 </style>
 ```
 
