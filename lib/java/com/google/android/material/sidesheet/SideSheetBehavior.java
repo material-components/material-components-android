@@ -52,12 +52,15 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import androidx.customview.widget.ViewDragHelper;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * An interaction behavior plugin for a child view of {@link CoordinatorLayout} to make it work as a
@@ -122,6 +125,8 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
   private int initialX;
   private int initialY;
+
+  @NonNull private final Set<SideSheetCallback> callbacks = new LinkedHashSet<>();
 
   private boolean touchingScrollingChild;
 
@@ -319,6 +324,11 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     ViewCompat.offsetLeftAndRight(child, currentOffset);
 
     nestedScrollingChildRef = new WeakReference<>(findScrollingChild(child));
+
+    for (SideSheetCallback callback : callbacks) {
+      callback.onLayout(child);
+    }
+
     return true;
   }
 
@@ -335,7 +345,11 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
     switch (state) {
       case STATE_EXPANDED:
-        currentOffset = savedOutwardEdge;
+        // TODO (b/261619910): This is a workaround for a bug where the expanded offset was getting
+        // recalculated if onLayoutChild() was called while the sheet was in the process of
+        // expanding/offsetting. Revisit this and refactor if necessary when adding left based
+        // sheets.
+        currentOffset = ViewUtils.isLayoutRtl(child) ? getExpandedOffset() : 0;
         break;
       case STATE_DRAGGING:
       case STATE_SETTLING:
@@ -494,6 +508,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     }
     sheetDelegate.setTargetStateOnNestedPreScroll(
         coordinatorLayout, child, target, dx, dy, consumed, type);
+    dispatchOnSlide(child, sheetDelegate.getOutwardEdge(child));
     lastNestedScrollDx = dx;
     nestedScrolled = true;
   }
@@ -602,6 +617,24 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   }
 
   /**
+   * Adds a callback to be notified of side sheet events.
+   *
+   * @param callback The callback to notify when side sheet events occur.
+   */
+  public void addCallback(@NonNull SideSheetCallback callback) {
+    callbacks.add(callback);
+  }
+
+  /**
+   * Removes a previously added callback.
+   *
+   * @param callback The callback to remove.
+   */
+  public void removeCallback(@NonNull SideSheetCallback callback) {
+    callbacks.remove(callback);
+  }
+
+  /**
    * Sets the state of the sheet. The sheet will transition to that state with animation.
    *
    * @param state One of {@link #STATE_EXPANDED} or {@link #STATE_HIDDEN}.
@@ -677,6 +710,10 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       updateImportantForAccessibility(true);
     } else if (state == STATE_HIDDEN) {
       updateImportantForAccessibility(false);
+    }
+
+    for (SideSheetCallback callback : callbacks) {
+      callback.onStateChanged(sheet, state);
     }
 
     updateAccessibilityActions();
@@ -795,6 +832,12 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
         }
 
         @Override
+        public void onViewPositionChanged(
+            @NonNull View changedView, int left, int top, int dx, int dy) {
+          dispatchOnSlide(changedView, left);
+        }
+
+        @Override
         public void onViewDragStateChanged(@SheetState int state) {
           if (state == ViewDragHelper.STATE_DRAGGING && draggable) {
             setStateInternal(STATE_DRAGGING);
@@ -824,6 +867,15 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
           return parentWidth;
         }
       };
+
+  private void dispatchOnSlide(@NonNull View child, int outwardEdge) {
+    if (!callbacks.isEmpty()) {
+      float slideOffset = sheetDelegate.calculateSlideOffsetBasedOnOutwardEdge(outwardEdge);
+      for (SideSheetCallback callback : callbacks) {
+        callback.onSlide(child, slideOffset);
+      }
+    }
+  }
 
   /**
    * Checks whether a nested scroll should be enabled. If {@code false} all nested scrolls will be
