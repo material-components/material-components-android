@@ -93,4 +93,13 @@ abstract class SheetDelegate {
    * this would return {@code child.getLeft()}.
    */
   abstract <V extends View> int getOutwardEdge(@NonNull V child);
+
+  /**
+   * Returns the calculated slide offset based on which edge of the screen the sheet is based on.
+   * The offset value increases as the sheet moves towards the outward edge.
+   *
+   * @return slide offset represented as a float value between 0 and 1. A value of 0 means that the
+   *     sheet is hidden and a value of 1 means that the sheet is fully expanded.
+   */
+  abstract float calculateSlideOffsetBasedOnOutwardEdge(int outwardEdge);
 }

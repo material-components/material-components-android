@@ -198,4 +198,12 @@ final class RightSheetDelegate extends SheetDelegate {
   <V extends View> int getOutwardEdge(@NonNull V child) {
     return child.getLeft();
   }
+
+  @Override
+  float calculateSlideOffsetBasedOnOutwardEdge(int left) {
+    float hiddenOffset = getHiddenOffset();
+    float sheetWidth = hiddenOffset - getExpandedOffset();
+
+    return (hiddenOffset - left) / sheetWidth;
+  }
 }
