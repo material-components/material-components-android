@@ -339,8 +339,8 @@ public class TabLayout extends HorizontalScrollView {
   public static final int INDICATOR_GRAVITY_TOP = 2;
 
   /**
-   * Indicator gravity used to stretch the tab selection indicator across the entire height
-   * of the {@link TabLayout}. This will disregard {@code tabIndicatorHeight} and the
+   * Indicator gravity used to stretch the tab selection indicator across the entire height and
+   * width of the {@link TabLayout}. This will disregard {@code tabIndicatorHeight} and the
    * indicator drawable's intrinsic height, if set.
    *
    * @see #setSelectedTabIndicatorGravity(int)
@@ -717,45 +717,36 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   /**
-   * Set the scroll position of the {@link TabLayout}.
+   * Set the scroll position of the tabs. This is useful for when the tabs are being displayed as
+   * part of a scrolling container such as {@link androidx.viewpager.widget.ViewPager}.
    *
-   * @param position Position of the tab to scroll.
+   * <p>Calling this method does not update the selected tab, it is only used for drawing purposes.
+   *
+   * @param position current scroll position
    * @param positionOffset Value from [0, 1) indicating the offset from {@code position}.
-   * @param updateSelectedTabView Whether to draw the tab at the specified position + positionOffset
-   *     as selected.
-   *     <p>Note that calling the method with {@code updateSelectedTabView = true}
-   *     <em>does not</em> select a tab at the specified position, but only <em>draws it
-   *     as selected</em>. This can be useful for when the TabLayout behavior needs to be linked to
-   *     another view, such as {@link androidx.viewpager.widget.ViewPager}.
+   * @param updateSelectedText Whether to update the text's selected state.
    * @see #setScrollPosition(int, float, boolean, boolean)
    */
-  public void setScrollPosition(int position, float positionOffset, boolean updateSelectedTabView) {
-    setScrollPosition(position, positionOffset, updateSelectedTabView, true);
+  public void setScrollPosition(int position, float positionOffset, boolean updateSelectedText) {
+    setScrollPosition(position, positionOffset, updateSelectedText, true);
   }
 
   /**
-   * Set the scroll position of the {@link TabLayout}.
+   * Set the scroll position of the tabs. This is useful for when the tabs are being displayed as
+   * part of a scrolling container such as {@link androidx.viewpager.widget.ViewPager}.
    *
-   * @param position Position of the tab to scroll.
+   * <p>Calling this method does not update the selected tab, it is only used for drawing purposes.
+   *
+   * @param position current scroll position
    * @param positionOffset Value from [0, 1) indicating the offset from {@code position}.
-   * @param updateSelectedTabView Whether to draw the tab at the specified position + positionOffset
-   *     as selected.
-   *     <p>Note that calling the method with {@code updateSelectedTabView = true}
-   *     <em>does not</em> select a tab at the specified position, but only <em>draws it
-   *     as selected</em>. This can be useful for when the TabLayout behavior needs to be linked to
-   *     another view, such as {@link androidx.viewpager.widget.ViewPager}.
-   * @param updateIndicatorPosition Whether to set the indicator to the specified position and
-   *     offset.
-   *     <p>Note that calling the method with {@code updateIndicatorPosition = true}
-   *     <em>does not</em> select a tab at the specified position, but only updates the indicator
-   *     position. This can be useful for when the TabLayout behavior needs to be linked to
-   *     another view, such as {@link androidx.viewpager.widget.ViewPager}.
+   * @param updateSelectedText Whether to update the text's selected state.
+   * @param updateIndicatorPosition Whether to set the indicator to the given position and offset.
    * @see #setScrollPosition(int, float, boolean)
    */
   public void setScrollPosition(
       int position,
       float positionOffset,
-      boolean updateSelectedTabView,
+      boolean updateSelectedText,
       boolean updateIndicatorPosition) {
     final int roundedPosition = Math.round(position + positionOffset);
     if (roundedPosition < 0 || roundedPosition >= slidingTabIndicator.getChildCount()) {
@@ -774,7 +765,7 @@ public class TabLayout extends HorizontalScrollView {
     scrollTo(position < 0 ? 0 : calculateScrollXForTab(position, positionOffset), 0);
 
     // Update the 'selected state' view as we scroll, if enabled
-    if (updateSelectedTabView) {
+    if (updateSelectedText) {
       setSelectedTabView(roundedPosition);
     }
   }
@@ -985,7 +976,7 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   /**
-   * Returns the number of tabs currently registered with the tab layout.
+   * Returns the number of tabs currently registered with the action bar.
    *
    * @return Tab count
    */
@@ -1056,7 +1047,7 @@ public class TabLayout extends HorizontalScrollView {
     }
   }
 
-  /** Remove all tabs from the tab layout and deselect the current tab. */
+  /** Remove all tabs from the action bar and deselect the current tab. */
   public void removeAllTabs() {
     // Remove all the views
     for (int i = slidingTabIndicator.getChildCount() - 1; i >= 0; i--) {
@@ -1134,7 +1125,7 @@ public class TabLayout extends HorizontalScrollView {
    * (preferred), via the {@code tabIndicatorHeight} attribute (deprecated), or via {@link
    * #setSelectedTabIndicatorHeight(int)} (deprecated). Otherwise, the indicator will not be shown
    * unless gravity is set to {@link #INDICATOR_GRAVITY_STRETCH}, in which case it will ignore
-   * indicator height and stretch across the entire height of the {@link TabLayout}. This
+   * indicator height and stretch across the entire height and width of the {@link TabLayout}. This
    * defaults to {@link #INDICATOR_GRAVITY_BOTTOM} if not set.
    *
    * @param indicatorGravity one of {@link #INDICATOR_GRAVITY_BOTTOM}, {@link
@@ -1959,7 +1950,7 @@ public class TabLayout extends HorizontalScrollView {
    * reselected, regardless of the value of {@code updateIndicator}.
    *
    * @param tab The tab to select, or {@code null} to select none.
-   * @param updateIndicator Whether to update the indicator.
+   * @param updateIndicator Whether to animate to the selected tab.
    * @see #selectTab(Tab)
    */
   public void selectTab(@Nullable final Tab tab, boolean updateIndicator) {
@@ -2231,10 +2222,10 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
-     * Return the current position of this tab in the tab layout.
+     * Return the current position of this tab in the action bar.
      *
      * @return Current position, or {@link #INVALID_POSITION} if this tab is not currently in the
-     *     tab layout.
+     *     action bar.
      */
     public int getPosition() {
       return position;
@@ -2399,7 +2390,7 @@ public class TabLayout extends HorizontalScrollView {
       return this.labelVisibilityMode;
     }
 
-    /** Select this tab. Only valid if the tab has been added to the tab layout. */
+    /** Select this tab. Only valid if the tab has been added to the action bar. */
     public void select() {
       if (parent == null) {
         throw new IllegalArgumentException("Tab not attached to a TabLayout");
@@ -3526,17 +3517,16 @@ public class TabLayout extends HorizontalScrollView {
         final int position, final float positionOffset, final int positionOffsetPixels) {
       final TabLayout tabLayout = tabLayoutRef.get();
       if (tabLayout != null) {
-        // Only update the tab view selection if we're not settling, or we are settling after
+        // Only update the text selection if we're not settling, or we are settling after
         // being dragged
-        final boolean updateSelectedTabView =
+        final boolean updateText =
             scrollState != SCROLL_STATE_SETTLING || previousScrollState == SCROLL_STATE_DRAGGING;
         // Update the indicator if we're not settling after being idle. This is caused
         // from a setCurrentItem() call and will be handled by an animation from
         // onPageSelected() instead.
         final boolean updateIndicator =
             !(scrollState == SCROLL_STATE_SETTLING && previousScrollState == SCROLL_STATE_IDLE);
-        tabLayout.setScrollPosition(
-            position, positionOffset, updateSelectedTabView, updateIndicator);
+        tabLayout.setScrollPosition(position, positionOffset, updateText, updateIndicator);
       }
     }
 

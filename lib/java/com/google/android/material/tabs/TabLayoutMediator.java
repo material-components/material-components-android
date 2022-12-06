@@ -220,17 +220,16 @@ public final class TabLayoutMediator {
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
       TabLayout tabLayout = tabLayoutRef.get();
       if (tabLayout != null) {
-        // Only update the tab view selection if we're not settling, or we are settling after
+        // Only update the text selection if we're not settling, or we are settling after
         // being dragged
-        boolean updateSelectedTabView =
+        boolean updateText =
             scrollState != SCROLL_STATE_SETTLING || previousScrollState == SCROLL_STATE_DRAGGING;
         // Update the indicator if we're not settling after being idle. This is caused
         // from a setCurrentItem() call and will be handled by an animation from
         // onPageSelected() instead.
         boolean updateIndicator =
             !(scrollState == SCROLL_STATE_SETTLING && previousScrollState == SCROLL_STATE_IDLE);
-        tabLayout.setScrollPosition(
-            position, positionOffset, updateSelectedTabView, updateIndicator);
+        tabLayout.setScrollPosition(position, positionOffset, updateText, updateIndicator);
       }
     }
 
