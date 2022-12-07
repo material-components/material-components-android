@@ -26,6 +26,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
+import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import org.junit.Before;
@@ -104,6 +105,22 @@ public class SideSheetDialogTest {
         .isEqualTo(expandedOffsetOnInitialization);
   }
 
+  @Test
+  public void click_onScrim_cancelsSheet() {
+    View scrim = sideSheetDialog.findViewById(R.id.touch_outside);
+    assertThat(scrim).isNotNull();
+
+    showSideSheetDialog();
+    assertThat(sideSheetDialog.isShowing()).isTrue();
+    assertThat(scrim.getVisibility()).isEqualTo(View.VISIBLE);
+
+    // Click outside the side sheet.
+    scrim.performClick();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(sideSheetDialog.isShowing()).isFalse();
+  }
+
   @UiThread
   private void showSideSheetDialog() {
     activity.runOnUiThread(
@@ -117,7 +134,7 @@ public class SideSheetDialogTest {
   private void hideSideSheetDialog() {
     activity.runOnUiThread(
         () -> {
-          sideSheetDialog.hide();
+          sideSheetDialog.dismiss();
           shadowOf(Looper.getMainLooper()).idle();
         });
   }
