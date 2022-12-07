@@ -35,6 +35,7 @@
   </style>
 
   <style name="Widget.Material3.Tooltip" parent="Widget.MaterialComponents.Tooltip">
+    <item name="android:layout_margin">2dp</item>
     <item name="android:textAppearance">@macro/m3_comp_plain_tooltip_supporting_text_type</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="backgroundTint">?attr/colorPrimary</item>
