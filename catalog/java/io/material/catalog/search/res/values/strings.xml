@@ -30,7 +30,7 @@
   <string name="cat_searchbar_product_title"
           description="Product lookup view title [CHAR_LIMIT=40]">Google Product</string>
   <string name="cat_searchbar_hint" tools:ignore="TypographyQuotes"
-          description="Search bar hint [CHAR_LIMIT=40]">Search \"Backpacking\"</string>
+          description="Search bar hint [CHAR_LIMIT=40]">Enter text to search"</string>
   <string name="cat_searchbar_lorem_ipsum" translatable="false">
     \t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.
     \n\n\t\tSuspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae, molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor bibendum, vel congue leo egestas.
