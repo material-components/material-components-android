@@ -27,7 +27,7 @@ import java.lang.annotation.RetentionPolicy;
  * Interface for sheet constants and {@code IntDefs} to be shared between the different {@link
  * Sheet} implementations.
  */
-interface Sheet {
+interface Sheet<C extends SheetCallback> {
   /** The sheet is dragging. */
   int STATE_DRAGGING = 1;
 
@@ -92,4 +92,18 @@ interface Sheet {
 
   /** Sets the current state of the sheet. Must be one of {@link StableSheetState}. */
   void setState(@StableSheetState int state);
+
+  /**
+   * Adds a callback to be notified of sheet events.
+   *
+   * @param callback The callback to notify when sheet events occur.
+   */
+  void addCallback(C callback);
+
+  /**
+   * Removes a callback to be notified of sheet events.
+   *
+   * @param callback The callback to remove
+   */
+  void removeCallback(C callback);
 }

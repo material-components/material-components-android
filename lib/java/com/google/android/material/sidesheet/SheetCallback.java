@@ -20,30 +20,21 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import com.google.android.material.sidesheet.Sheet.SheetState;
 
-/** Callback that monitors side sheet events. */
-public abstract class SideSheetCallback implements SheetCallback {
+interface SheetCallback {
 
   /**
    * Called when the sheet changes its state.
    *
    * @param sheet The sheet view.
-   * @param newState The new state. This should be one of {@link SideSheetBehavior#STATE_DRAGGING},
-   *     {@link SideSheetBehavior#STATE_SETTLING}, {@link SideSheetBehavior#STATE_EXPANDED} or
-   *     {@link SideSheetBehavior#STATE_HIDDEN}.
+   * @param newState The new state.
    */
-  @Override
-  public abstract void onStateChanged(@NonNull View sheet, @SheetState int newState);
+  void onStateChanged(@NonNull View sheet, @SheetState int newState);
 
   /**
    * Called when the sheet is being dragged.
    *
    * @param sheet The sheet view.
-   * @param slideOffset The new offset of this sheet within [0,1] range. Offset increases as this
-   *     sheet is moving towards the outward edge. A value of 0 means that the sheet is hidden, and
-   *     a value of 1 means that the sheet is fully expanded.
+   * @param slideOffset The new offset of this sheet.
    */
-  @Override
-  public abstract void onSlide(@NonNull View sheet, float slideOffset);
-
-  void onLayout(@NonNull View sheet) {}
+  void onSlide(@NonNull View sheet, float slideOffset);
 }

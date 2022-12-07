@@ -46,12 +46,12 @@ import com.google.android.material.sidesheet.Sheet.StableSheetState;
  * Base class for {@link android.app.Dialog}s styled as a sheet, to be used by sheet dialog
  * implementations such as side sheets and bottom sheets.
  */
-abstract class SheetDialog extends AppCompatDialog {
+abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
 
   private static final int COORDINATOR_LAYOUT_ID = R.id.coordinator;
   private static final int TOUCH_OUTSIDE_ID = R.id.touch_outside;
 
-  @Nullable private Sheet behavior;
+  @Nullable private Sheet<C> behavior;
   @Nullable private FrameLayout container;
   @Nullable private FrameLayout sheet;
 
@@ -141,7 +141,7 @@ abstract class SheetDialog extends AppCompatDialog {
    */
   @Override
   public void cancel() {
-    Sheet behavior = getBehavior();
+    Sheet<C> behavior = getBehavior();
 
     if (!dismissWithAnimation || behavior.getState() == Sheet.STATE_HIDDEN) {
       super.cancel();
@@ -184,8 +184,11 @@ abstract class SheetDialog extends AppCompatDialog {
       container = (FrameLayout) View.inflate(getContext(), getLayoutResId(), null);
       sheet = container.findViewById(getDialogId());
       behavior = getBehaviorFromSheet(sheet);
+      addSheetCancelOnHideCallback(behavior);
     }
   }
+
+  abstract void addSheetCancelOnHideCallback(Sheet<C> behavior);
 
   @NonNull
   private FrameLayout getContainer() {
@@ -204,7 +207,7 @@ abstract class SheetDialog extends AppCompatDialog {
   }
 
   @NonNull
-  Sheet getBehavior() {
+  Sheet<C> getBehavior() {
     if (this.behavior == null) {
       // The content hasn't been set, so the behavior doesn't exist yet. Let's create it.
       ensureContainerAndBehavior();
@@ -302,7 +305,7 @@ abstract class SheetDialog extends AppCompatDialog {
   abstract int getDialogId();
 
   @NonNull
-  abstract Sheet getBehaviorFromSheet(@NonNull FrameLayout sheet);
+  abstract Sheet<C> getBehaviorFromSheet(@NonNull FrameLayout sheet);
 
   @StableSheetState
   abstract int getStateOnStart();

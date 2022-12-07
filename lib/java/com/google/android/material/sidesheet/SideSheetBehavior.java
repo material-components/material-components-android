@@ -67,7 +67,7 @@ import java.util.Set;
  * side sheet.
  */
 public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V>
-    implements Sheet {
+    implements Sheet<SideSheetCallback> {
 
   private SheetDelegate sheetDelegate;
 
@@ -325,10 +325,12 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
     nestedScrollingChildRef = new WeakReference<>(findScrollingChild(child));
 
-    for (SideSheetCallback callback : callbacks) {
-      callback.onLayout(child);
+    for (SheetCallback callback : callbacks) {
+      if (callback instanceof SideSheetCallback) {
+        SideSheetCallback sideSheetCallback = (SideSheetCallback) callback;
+        sideSheetCallback.onLayout(child);
+      }
     }
-
     return true;
   }
 
@@ -621,6 +623,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
    *
    * @param callback The callback to notify when side sheet events occur.
    */
+  @Override
   public void addCallback(@NonNull SideSheetCallback callback) {
     callbacks.add(callback);
   }
@@ -630,6 +633,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
    *
    * @param callback The callback to remove.
    */
+  @Override
   public void removeCallback(@NonNull SideSheetCallback callback) {
     callbacks.remove(callback);
   }
@@ -712,7 +716,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       updateImportantForAccessibility(false);
     }
 
-    for (SideSheetCallback callback : callbacks) {
+    for (SheetCallback callback : callbacks) {
       callback.onStateChanged(sheet, state);
     }
 
@@ -871,7 +875,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   private void dispatchOnSlide(@NonNull View child, int outwardEdge) {
     if (!callbacks.isEmpty()) {
       float slideOffset = sheetDelegate.calculateSlideOffsetBasedOnOutwardEdge(outwardEdge);
-      for (SideSheetCallback callback : callbacks) {
+      for (SheetCallback callback : callbacks) {
         callback.onSlide(child, slideOffset);
       }
     }
