@@ -41,6 +41,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -57,6 +58,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityManagerCompat;
+import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.appbar.AppBarLayout;
@@ -130,13 +133,16 @@ public class SearchBar extends Toolbar {
   private final Drawable defaultNavigationIcon;
   private final boolean tintNavigationIcon;
   private final boolean forceDefaultNavigationOnClickListener;
-
   @Nullable private View centerView;
   @Nullable private Integer navigationIconTint;
   @Nullable private Drawable originalNavigationIconBackground;
   private int menuResId = -1;
   private boolean defaultScrollFlagsEnabled;
   private MaterialShapeDrawable backgroundShape;
+
+  @Nullable private final AccessibilityManager accessibilityManager;
+  private final TouchExplorationStateChangeListener touchExplorationStateChangeListener =
+      (boolean enabled) -> setFocusableInTouchMode(enabled);
 
   public SearchBar(@NonNull Context context) {
     this(context, null);
@@ -194,6 +200,35 @@ public class SearchBar extends Toolbar {
     ViewCompat.setElevation(this, elevation);
     initTextView(textAppearanceResId, text, hint);
     initBackground(shapeAppearanceModel, elevation, strokeWidth, strokeColor);
+
+    accessibilityManager =
+        (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+    setupTouchExplorationStateChangeListener();
+  }
+
+  private void setupTouchExplorationStateChangeListener() {
+    if (accessibilityManager != null) {
+      // Handle the case where touch exploration is already enabled.
+      if (accessibilityManager.isEnabled() && accessibilityManager.isTouchExplorationEnabled()) {
+        setFocusableInTouchMode(true);
+      }
+
+      // Handle the case where touch exploration state can change while the view is active.
+      addOnAttachStateChangeListener(
+          new OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View ignored) {
+              AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
+                  accessibilityManager, touchExplorationStateChangeListener);
+            }
+
+            @Override
+            public void onViewDetachedFromWindow(View ignored) {
+              AccessibilityManagerCompat.removeTouchExplorationStateChangeListener(
+                  accessibilityManager, touchExplorationStateChangeListener);
+            }
+          });
+    }
   }
 
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
