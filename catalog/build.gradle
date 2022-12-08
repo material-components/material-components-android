@@ -80,6 +80,7 @@ def srcDirs = [
   'radiobutton',
   'search',
   'shapetheming',
+  'sidesheet',
   'slider',
   'tableofcontents',
   'tabs',
