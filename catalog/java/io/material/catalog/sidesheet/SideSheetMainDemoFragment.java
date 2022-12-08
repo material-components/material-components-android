@@ -38,6 +38,7 @@ import com.google.android.material.sidesheet.SideSheetCallback;
 import com.google.android.material.sidesheet.SideSheetDialog;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.preferences.CatalogPreferencesHelper;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /** A fragment that displays the main Side Sheet demo for the Catalog app. */
 public final class SideSheetMainDemoFragment extends DemoFragment {
@@ -95,6 +96,7 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
         R.string.cat_sidesheet_modal_title);
 
     sideSheetDialog.setDismissWithSheetAnimationEnabled(true);
+    new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(sideSheetDialog.getWindow());
     View showModalSideSheetButton = view.findViewById(R.id.show_modal_side_sheet_button);
     showModalSideSheetButton.setOnClickListener(v -> sideSheetDialog.show());
 
