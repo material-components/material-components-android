@@ -43,6 +43,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -119,6 +120,7 @@ import java.util.Set;
 @SuppressWarnings("RestrictTo")
 public class SearchView extends FrameLayout implements CoordinatorLayout.AttachedBehavior {
 
+  private static final long TALKBACK_FOCUS_CHANGE_DELAY_MS = 100;
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_SearchView;
 
   final View scrim;
@@ -791,17 +793,28 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
 
   /** Requests focus on the main {@link EditText} and shows the soft keyboard. */
   public void requestFocusAndShowKeyboard() {
-    editText.post(
+    // Without a delay requesting focus on edit text fails when talkback is active.
+    editText.postDelayed(
         () -> {
-          editText.requestFocus();
+          if (editText.requestFocus()) {
+            // Workaround for talkback issue when clear button is clicked
+            editText.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+          }
           ViewUtils.showKeyboard(editText, useWindowInsetsController);
-        });
+        },
+        TALKBACK_FOCUS_CHANGE_DELAY_MS);
   }
 
   /** Clears focus on the main {@link EditText} and hides the soft keyboard. */
   public void clearFocusAndHideKeyboard() {
-    editText.clearFocus();
-    ViewUtils.hideKeyboard(editText, useWindowInsetsController);
+    editText.post(
+        () -> {
+          editText.clearFocus();
+          if (searchBar != null) {
+            searchBar.requestFocus();
+          }
+          ViewUtils.hideKeyboard(editText, useWindowInsetsController);
+        });
   }
 
   boolean isAdjustNothingSoftInputMode() {
