@@ -21,6 +21,7 @@ import static com.google.android.material.sidesheet.Sheet.STATE_HIDDEN;
 import static java.lang.Math.max;
 
 import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
 import androidx.annotation.NonNull;
 import androidx.customview.widget.ViewDragHelper;
 import com.google.android.material.sidesheet.Sheet.SheetEdge;
@@ -129,5 +130,17 @@ final class RightSheetDelegate extends SheetDelegate {
     float sheetWidth = hiddenOffset - getExpandedOffset();
 
     return (hiddenOffset - left) / sheetWidth;
+  }
+
+  @Override
+  void updateCoplanarSiblingLayoutParams(
+      @NonNull MarginLayoutParams coplanarSiblingLayoutParams, int sheetLeft, int sheetRight) {
+    int parentWidth = sheetBehavior.getParentWidth();
+
+    // Wait until the sheet partially enters the screen to avoid an initial content jump to the
+    // right edge of the screen.
+    if (sheetLeft <= parentWidth) {
+      coplanarSiblingLayoutParams.rightMargin = parentWidth - sheetLeft;
+    }
   }
 }

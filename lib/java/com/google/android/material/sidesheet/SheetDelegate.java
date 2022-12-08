@@ -17,6 +17,7 @@
 package com.google.android.material.sidesheet;
 
 import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
 import androidx.annotation.NonNull;
 import com.google.android.material.sidesheet.Sheet.SheetEdge;
 import com.google.android.material.sidesheet.Sheet.StableSheetState;
@@ -77,4 +78,8 @@ abstract class SheetDelegate {
    *     sheet is hidden and a value of 1 means that the sheet is fully expanded.
    */
   abstract float calculateSlideOffsetBasedOnOutwardEdge(int outwardEdge);
+
+  /** Set the coplanar sheet layout params depending on the screen size. */
+  abstract void updateCoplanarSiblingLayoutParams(
+      @NonNull MarginLayoutParams coplanarSiblingLayoutParams, int sheetLeft, int sheetRight);
 }
