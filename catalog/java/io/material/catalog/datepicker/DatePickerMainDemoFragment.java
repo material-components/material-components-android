@@ -68,7 +68,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     today = MaterialDatePicker.todayInUtcMilliseconds();
     Calendar calendar = getClearedUtc();
     calendar.setTimeInMillis(today);
-    calendar.roll(Calendar.MONTH, 1);
+    calendar.add(Calendar.MONTH, 1);
     nextMonth = calendar.getTimeInMillis();
 
     calendar.setTimeInMillis(today);
@@ -79,7 +79,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     decThisYear = calendar.getTimeInMillis();
 
     calendar.setTimeInMillis(today);
-    calendar.roll(Calendar.YEAR, 1);
+    calendar.add(Calendar.YEAR, 1);
     oneYearForward = calendar.getTimeInMillis();
 
     todayPair = new Pair<>(today, today);
