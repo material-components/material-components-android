@@ -18,7 +18,6 @@ package com.google.android.material.sidesheet;
 
 import android.view.View;
 import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.sidesheet.Sheet.SheetEdge;
 import com.google.android.material.sidesheet.Sheet.StableSheetState;
 import com.google.android.material.sidesheet.SideSheetBehavior.StateSettlingTracker;
@@ -56,30 +55,6 @@ abstract class SheetDelegate {
   @StableSheetState
   abstract int calculateTargetStateOnViewReleased(
       @NonNull View releasedChild, float xVelocity, float yVelocity);
-
-  /**
-   * Sets the target sheet state from the {@link
-   * SideSheetBehavior#onNestedPreScroll(CoordinatorLayout, View, View, int, int, int[], int)}
-   * callback, based on scroll and position information provided by the method parameters.
-   */
-  abstract <V extends View> void setTargetStateOnNestedPreScroll(
-      @NonNull CoordinatorLayout coordinatorLayout,
-      @NonNull V child,
-      @NonNull View target,
-      int dx,
-      int dy,
-      @NonNull int[] consumed,
-      int type);
-
-  @StableSheetState
-  abstract <V extends View> int calculateTargetStateOnStopNestedScroll(@NonNull V child);
-
-  /**
-   * Whether the sheet has reached the expanded offset at the end of a nested scroll, used to
-   * determine when to set the {@link SideSheetBehavior.SheetState} to {@link
-   * SideSheetBehavior.SheetState#STATE_EXPANDED}.
-   */
-  abstract <V extends View> boolean hasReachedExpandedOffset(@NonNull V child);
 
   /**
    * Whether the sheet should hide, based on the position of child, velocity of the drag event, and

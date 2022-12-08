@@ -16,15 +16,12 @@
 
 package com.google.android.material.sidesheet;
 
-import static com.google.android.material.sidesheet.Sheet.STATE_DRAGGING;
 import static com.google.android.material.sidesheet.Sheet.STATE_EXPANDED;
 import static com.google.android.material.sidesheet.Sheet.STATE_HIDDEN;
 import static java.lang.Math.max;
 
 import android.view.View;
 import androidx.annotation.NonNull;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import androidx.customview.widget.ViewDragHelper;
 import com.google.android.material.sidesheet.Sheet.SheetEdge;
 import com.google.android.material.sidesheet.Sheet.StableSheetState;
@@ -103,79 +100,6 @@ final class RightSheetDelegate extends SheetDelegate {
   private boolean isSwipeSignificant(float xVelocity, float yVelocity) {
     return SheetUtils.isSwipeMostlyHorizontal(xVelocity, yVelocity)
         && yVelocity > sheetBehavior.getSignificantVelocityThreshold();
-  }
-
-  @Override
-  <V extends View> void setTargetStateOnNestedPreScroll(
-      @NonNull CoordinatorLayout coordinatorLayout,
-      @NonNull V child,
-      @NonNull View target,
-      int dx,
-      int dy,
-      @NonNull int[] consumed,
-      int type) {
-    int currentLeft = child.getLeft();
-    int newLeft = currentLeft - dx;
-    if (dx < 0) { // Moving towards the left.
-      if (newLeft > getExpandedOffset()) {
-        consumed[1] = currentLeft - getExpandedOffset();
-        ViewCompat.offsetLeftAndRight(child, -consumed[1]);
-        sheetBehavior.setStateInternal(STATE_EXPANDED);
-      } else {
-        if (!sheetBehavior.isDraggable()) {
-          // Prevent dragging
-          return;
-        }
-
-        consumed[1] = dx;
-        ViewCompat.offsetLeftAndRight(child, -dx);
-        sheetBehavior.setStateInternal(STATE_DRAGGING);
-      }
-    } else if (dx > 0) { // Moving towards the right.
-      if (!target.canScrollHorizontally(-1)) {
-        if (newLeft <= getHiddenOffset()) {
-          if (!sheetBehavior.isDraggable()) {
-            // Prevent dragging
-            return;
-          }
-
-          consumed[1] = dx;
-          ViewCompat.offsetLeftAndRight(child, dx);
-          sheetBehavior.setStateInternal(STATE_DRAGGING);
-        } else {
-          consumed[1] = currentLeft - getHiddenOffset();
-          ViewCompat.offsetLeftAndRight(child, consumed[1]);
-          sheetBehavior.setStateInternal(STATE_HIDDEN);
-        }
-      }
-    }
-  }
-
-  @Override
-  @StableSheetState
-  <V extends View> int calculateTargetStateOnStopNestedScroll(@NonNull V child) {
-    @StableSheetState int targetState;
-    if (sheetBehavior.getLastNestedScrollDx() > 0) {
-      targetState = STATE_EXPANDED;
-    } else if (sheetBehavior.shouldHide(child, sheetBehavior.getXVelocity())) {
-      targetState = STATE_HIDDEN;
-    } else if (sheetBehavior.getLastNestedScrollDx() == 0) {
-      int currentLeft = child.getLeft();
-
-      if (Math.abs(currentLeft - getExpandedOffset()) < Math.abs(currentLeft - getHiddenOffset())) {
-        targetState = STATE_EXPANDED;
-      } else {
-        targetState = STATE_HIDDEN;
-      }
-    } else {
-      targetState = STATE_HIDDEN;
-    }
-    return targetState;
-  }
-
-  @Override
-  <V extends View> boolean hasReachedExpandedOffset(@NonNull V child) {
-    return child.getLeft() == getExpandedOffset();
   }
 
   @Override
