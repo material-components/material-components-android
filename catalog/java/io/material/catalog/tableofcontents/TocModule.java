@@ -44,6 +44,7 @@ import io.material.catalog.progressindicator.ProgressIndicatorFragment;
 import io.material.catalog.radiobutton.RadioButtonFragment;
 import io.material.catalog.search.SearchFragment;
 import io.material.catalog.shapetheming.ShapeThemingFragment;
+import io.material.catalog.sidesheet.SideSheetFragment;
 import io.material.catalog.slider.SliderFragment;
 import io.material.catalog.tabs.TabsFragment;
 import io.material.catalog.textfield.TextFieldFragment;
@@ -77,6 +78,7 @@ import io.material.catalog.transition.TransitionFragment;
       SearchFragment.Module.class,
       ShapeableImageViewFragment.Module.class,
       ShapeThemingFragment.Module.class,
+      SideSheetFragment.Module.class,
       SliderFragment.Module.class,
       SwitchFragment.Module.class,
       TabsFragment.Module.class,
