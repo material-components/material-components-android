@@ -37,6 +37,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
+import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -105,6 +106,8 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   private int parentWidth;
 
   @Nullable private WeakReference<V> viewRef;
+  @Nullable private WeakReference<View> coplanarSiblingViewRef;
+  @IdRes private int coplanarSiblingViewId = View.NO_ID;
 
   @Nullable private VelocityTracker velocityTracker;
 
@@ -126,6 +129,10 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     if (a.hasValue(R.styleable.SideSheetBehavior_Layout_shapeAppearance)) {
       this.shapeAppearanceModel =
           ShapeAppearanceModel.builder(context, attrs, 0, DEF_STYLE_RES).build();
+    }
+    if (a.hasValue(R.styleable.SideSheetBehavior_Layout_coplanarSiblingViewId)) {
+      setCoplanarSiblingViewId(
+          a.getResourceId(R.styleable.SideSheetBehavior_Layout_coplanarSiblingViewId, View.NO_ID));
     }
     createMaterialShapeDrawableIfNeeded(context);
 
@@ -303,6 +310,8 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
     ViewCompat.offsetLeftAndRight(child, currentOffset);
 
+    maybeAssignCoplanarSiblingViewBasedId(parent);
+
     for (SheetCallback callback : callbacks) {
       if (callback instanceof SideSheetCallback) {
         SideSheetCallback sideSheetCallback = (SideSheetCallback) callback;
@@ -310,6 +319,15 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       }
     }
     return true;
+  }
+
+  private void maybeAssignCoplanarSiblingViewBasedId(@NonNull CoordinatorLayout parent) {
+    if (coplanarSiblingViewRef == null && coplanarSiblingViewId != View.NO_ID) {
+      View coplanarSiblingView = parent.findViewById(coplanarSiblingViewId);
+      if (coplanarSiblingView != null) {
+        this.coplanarSiblingViewRef = new WeakReference<>(coplanarSiblingView);
+      }
+    }
   }
 
   int getChildWidth() {
@@ -659,6 +677,17 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
         @Override
         public void onViewPositionChanged(
             @NonNull View changedView, int left, int top, int dx, int dy) {
+          View coplanarSiblingView = getCoplanarSiblingView();
+          if (coplanarSiblingView != null) {
+            MarginLayoutParams layoutParams =
+                (MarginLayoutParams) coplanarSiblingView.getLayoutParams();
+            if (layoutParams != null) {
+              sheetDelegate.updateCoplanarSiblingLayoutParams(
+                  layoutParams, changedView.getLeft(), changedView.getRight());
+              coplanarSiblingView.setLayoutParams(layoutParams);
+            }
+          }
+
           dispatchOnSlide(changedView, left);
         }
 
@@ -700,6 +729,63 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
         callback.onSlide(child, slideOffset);
       }
     }
+  }
+
+  /**
+   * Set the sibling id to use for coplanar sheet expansion. If a coplanar sibling has previously
+   * been set either by this method or via {@link #setCoplanarSiblingView(View)}, that View
+   * reference will be cleared in favor of this new coplanar sibling reference.
+   *
+   * @param coplanarSiblingViewId the id of the coplanar sibling
+   */
+  public void setCoplanarSiblingViewId(@IdRes int coplanarSiblingViewId) {
+    this.coplanarSiblingViewId = coplanarSiblingViewId;
+    // Clear any potential coplanar sibling view to make sure that we use this view id rather than
+    // an existing coplanar sibling view.
+    clearCoplanarSiblingView();
+    // Request layout to find the view and trigger a layout pass.
+    if (viewRef != null) {
+      View view = viewRef.get();
+      if (coplanarSiblingViewId != View.NO_ID && ViewCompat.isLaidOut(view)) {
+        view.requestLayout();
+      }
+    }
+  }
+
+  /**
+   * Set the sibling view to use for coplanar sheet expansion. If a coplanar sibling has previously
+   * been set either by this method or via {@link #setCoplanarSiblingViewId(int)}, that reference
+   * will be cleared in favor of this new coplanar sibling reference.
+   *
+   * @param coplanarSiblingView the sibling view to squash during coplanar expansion
+   */
+  public void setCoplanarSiblingView(@Nullable View coplanarSiblingView) {
+    this.coplanarSiblingViewId = View.NO_ID;
+    if (coplanarSiblingView == null) {
+      clearCoplanarSiblingView();
+    } else {
+      this.coplanarSiblingViewRef = new WeakReference<>(coplanarSiblingView);
+      // Request layout to make the new view take effect.
+      if (viewRef != null) {
+        View view = viewRef.get();
+        if (ViewCompat.isLaidOut(view)) {
+          view.requestLayout();
+        }
+      }
+    }
+  }
+
+  /** Returns the sibling view that is used for coplanar sheet expansion. */
+  @Nullable
+  public View getCoplanarSiblingView() {
+    return coplanarSiblingViewRef != null ? coplanarSiblingViewRef.get() : null;
+  }
+
+  private void clearCoplanarSiblingView() {
+    if (this.coplanarSiblingViewRef != null) {
+      this.coplanarSiblingViewRef.clear();
+    }
+    this.coplanarSiblingViewRef = null;
   }
 
   /**

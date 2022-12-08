@@ -65,6 +65,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/cat_sidesheet_modal_button_show_text" />
+      <Button
+        android:id="@+id/show_coplanar_side_sheet_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/cat_sidesheet_coplanar_button_show_text" />
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -94,6 +100,18 @@
     app:layout_behavior="@string/side_sheet_behavior"
     tools:targetApi="lollipop">
     <include layout="@layout/cat_sidesheet_content_vertically_scrolling" />
+  </LinearLayout>
+
+  <LinearLayout
+    android:id="@+id/coplanar_side_sheet_container"
+    android:layout_width="256dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:orientation="vertical"
+    app:coplanarSiblingViewId="@id/nested_scroll_view"
+    app:layout_behavior="@string/side_sheet_behavior"
+    tools:targetApi="lollipop">
+    <include layout="@layout/cat_sidesheet_content_coplanar" />
   </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

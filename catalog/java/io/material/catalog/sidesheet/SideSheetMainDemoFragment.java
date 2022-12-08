@@ -110,6 +110,19 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
       modalSideSheetCloseIconButton.setOnClickListener(v -> sideSheetDialog.hide());
     }
 
+    // Set up coplanar side sheet.
+    View coplanarSideSheet =
+        setUpSideSheet(
+            view,
+            R.id.coplanar_side_sheet_container,
+            R.id.show_coplanar_side_sheet_button,
+            R.id.coplanar_side_sheet_close_icon_button);
+
+    setSideSheetCallback(
+        coplanarSideSheet,
+        R.id.coplanar_side_sheet_state_text,
+        R.id.coplanar_side_sheet_slide_offset_text);
+
     return view;
   }
 

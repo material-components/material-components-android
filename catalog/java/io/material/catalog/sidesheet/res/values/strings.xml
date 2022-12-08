@@ -61,6 +61,13 @@
     Show Modal Side Sheet
   </string>
 
+  <string name="cat_sidesheet_coplanar_title" description="Title of the coplanar side sheet. [CHAR_LIMIT=NONE]">
+    Coplanar Side Sheet
+  </string>
+  <string name="cat_sidesheet_coplanar_button_show_text" description="Label of button which shows the modal side sheet. [CHAR_LIMIT=NONE]">
+    Show Coplanar Side Sheet
+  </string>
+
   <string name="cat_sidesheet_close_button_content_desc" description="Content description for the button to hide the side sheet. [CHAR_LIMIT=NONE]">
     Close sheet button
   </string>
