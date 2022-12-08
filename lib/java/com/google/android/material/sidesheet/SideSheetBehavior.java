@@ -24,8 +24,6 @@ import static java.lang.Math.min;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -56,9 +54,7 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.lang.ref.WeakReference;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 
 /**
@@ -77,8 +73,6 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   private static final float HIDE_FRICTION = 0.1f;
 
   private static final int NO_MAX_SIZE = -1;
-
-  private static final boolean UPDATE_IMPORTANT_FOR_ACCESSIBILITY_ON_SIBLINGS = false;
 
   private float maximumVelocity;
 
@@ -117,8 +111,6 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   private int initialX;
 
   @NonNull private final Set<SideSheetCallback> callbacks = new LinkedHashSet<>();
-
-  @Nullable private Map<View, Integer> importantForAccessibilityMap;
 
   public SideSheetBehavior() {}
 
@@ -574,9 +566,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     }
 
     if (state == STATE_EXPANDED) {
-      updateImportantForAccessibility(true);
-    } else if (state == STATE_HIDDEN) {
-      updateImportantForAccessibility(false);
+      updateAccessibilityFocusOnExpansion();
     }
 
     for (SheetCallback callback : callbacks) {
@@ -828,53 +818,19 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     return (SideSheetBehavior<V>) behavior;
   }
 
-  private void updateImportantForAccessibility(boolean expanded) {
+  private void updateAccessibilityFocusOnExpansion() {
     if (viewRef == null) {
       return;
     }
-
-    ViewParent viewParent = viewRef.get().getParent();
-    if (!(viewParent instanceof CoordinatorLayout)) {
-      return;
-    }
-
-    CoordinatorLayout parent = (CoordinatorLayout) viewParent;
-    final int childCount = parent.getChildCount();
-    if ((VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) && expanded) {
-      if (importantForAccessibilityMap == null) {
-        importantForAccessibilityMap = new HashMap<>(childCount);
-      } else {
-        // The important for accessibility values of the child views have been saved already.
-        return;
+    View view = viewRef.get();
+    if (view instanceof ViewGroup && ((ViewGroup) view).getChildCount() > 0) {
+      ViewGroup viewContainer = (ViewGroup) view;
+      View firstNestedChild = viewContainer.getChildAt(0);
+      if (firstNestedChild != null) {
+        firstNestedChild.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
       }
-    }
-
-    for (int i = 0; i < childCount; i++) {
-      final View child = parent.getChildAt(i);
-      if (child == viewRef.get()) {
-        continue;
-      }
-      if (expanded) {
-        // Saves the important for accessibility value of the child view.
-        if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-          importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
-        }
-        if (UPDATE_IMPORTANT_FOR_ACCESSIBILITY_ON_SIBLINGS) {
-          ViewCompat.setImportantForAccessibility(
-              child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
-          // If the siblings of the sheet have been set to not important for a11y, move the focus
-          // to the sheet when expanded.
-          viewRef.get().sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
-        }
-      } else {
-        if (UPDATE_IMPORTANT_FOR_ACCESSIBILITY_ON_SIBLINGS
-            && importantForAccessibilityMap != null
-            && importantForAccessibilityMap.containsKey(child)) {
-          // Restores the original important for accessibility value of the child view.
-          ViewCompat.setImportantForAccessibility(child, importantForAccessibilityMap.get(child));
-        }
-        importantForAccessibilityMap = null;
-      }
+    } else {
+      view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
     }
   }
 
