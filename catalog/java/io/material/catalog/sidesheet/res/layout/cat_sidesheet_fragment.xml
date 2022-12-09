@@ -104,6 +104,7 @@
 
   <LinearLayout
     android:id="@+id/coplanar_side_sheet_container"
+    style="@style/Widget.Material3.SideSheet"
     android:layout_width="256dp"
     android:layout_height="match_parent"
     android:layout_gravity="end"
