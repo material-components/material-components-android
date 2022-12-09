@@ -69,7 +69,7 @@
   </string>
 
   <string name="cat_sidesheet_close_button_content_desc" description="Content description for the button to hide the side sheet. [CHAR_LIMIT=NONE]">
-    Close sheet button
+    Close sheet
   </string>
 
   <string name="cat_sidesheet_filler_text" translatable="false">
