@@ -20,6 +20,7 @@ See [Bottom Sheet documentation](BottomSheet.md) for documentation about
 *   [Using side sheets](#using-side-sheets)
 *   [Standard side sheet](#standard-side-sheet)
 *   [Modal side sheet](#modal-side-sheet)
+*   [Coplanar side sheet](#coplanar-side-sheet)
 *   [Anatomy and key properties](#anatomy-and-key-properties)
 *   [Theming](#theming-side-sheets)
 
@@ -211,6 +212,37 @@ You can then show the side sheet with `sideSheetDialog.show()` and dismiss it
 with `sideSheetDialog.hide()`. `SideSheetDialog` has built in functionality to
 automatically cancel the dialog after it is swiped off the screen.
 
+## Coplanar side sheet
+
+Coplanar side sheets are standard side sheets that "squash" a sibling view's
+content as the side sheet expands. Coplanar side sheets are on the same plane as
+their sibling, as opposed to standard side sheets, which are displayed above the
+screen content.
+
+Note: Coplanar side sheets are not recommended for narrow screens.
+
+### Coplanar side sheet example
+
+To add a coplanar side sheet to your app, follow the steps to [add a standard
+side sheet to your layout](#standard-side-sheet-example), above, and simply set
+`app:coplanarSiblingViewId` on the `View` that has the side sheet
+`layout_behavior` set on it. You can point the coplanar sibling view id to any
+child of the `CoordinatorLayout`. Make sure to set
+`style="@style/Widget.Material3.SideSheet"` on your side sheet view, as well.
+
+Alternatively, you can set the coplanar sibling view programmatically:
+
+```kt
+coplanarSideSheet.setCoplanarSiblingView(coplanarSiblingView)
+```
+
+To remove coplanar functionality from a side sheet, simply set the coplanar
+sibling view to `null`:
+
+```kt
+coplanarSideSheet.setCoplanarSiblingView(null)
+```
+
 ## Anatomy and key properties
 
 Side sheets have a sheet, content, and, if modal, a scrim.
@@ -221,13 +253,14 @@ Side sheets have a sheet, content, and, if modal, a scrim.
 
 ### Sheet attributes
 
-Element        | Attribute             | Related method(s)                 | Default value
--------------- | --------------------- | --------------------------------- | -------------
-**Color**      | `app:backgroundTint`  | N/A                               | `?attr/colorSurface`
-**Shape**      | `app:shapeAppearance` | N/A                               | `?attr/shapeAppearanceLargeComponent`
-**Elevation**  | `android:elevation`   | N/A                               | 0dp
-**Max width**  | `android:maxWidth`    | `setMaxWidth`<br/>`getMaxWidth`   | N/A
-**Max height** | `android:maxHeight`   | `setMaxHeight`<br/>`getMaxHeight` | N/A
+Element        | Attribute                   | Related method(s)                                       | Default value
+-------------- |-----------------------------|---------------------------------------------------------| -------------
+**Color**      | `app:backgroundTint`        | N/A                                                     | `?attr/colorSurface`
+**Coplanar sibling view id** | `app:coplanarSiblingViewId` | `setCoplanarSiblingViewId`<br/>`setCoplanarSiblingView` | N/A
+**Shape**      | `app:shapeAppearance`       | N/A                                                     | `?attr/shapeAppearanceLargeComponent`
+**Elevation**  | `android:elevation`         | N/A                                                     | 0dp
+**Max width**  | `android:maxWidth`          | `setMaxWidth`<br/>`getMaxWidth`                         | N/A
+**Max height** | `android:maxHeight`         | `setMaxHeight`<br/>`getMaxHeight`                       | N/A
 
 ### Behavior attributes
 
