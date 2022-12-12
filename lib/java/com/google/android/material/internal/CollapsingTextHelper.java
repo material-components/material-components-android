@@ -75,7 +75,7 @@ public final class CollapsingTextHelper {
   // by using our own texture
   private static final boolean USE_SCALING_TEXTURE = Build.VERSION.SDK_INT < 18;
   private static final String TAG = "CollapsingTextHelper";
-  private static final String ELLIPSIS_NORMAL = "\u2026"; // HORIZONTAL ELLIPSIS (…)
+  private static final String ELLIPSIS_NORMAL = "\u2026"; // HORIZONTAL ELLIPSIS (...)
 
   private static final float FADE_MODE_THRESHOLD_FRACTION_RELATIVE = 0.5f;
 
