@@ -57,7 +57,8 @@
     <item name="colorSurfaceContainerHigh">@color/material_personalized_color_surface_container_high</item>
     <item name="colorSurfaceContainerLowest">@color/material_personalized_color_surface_container_lowest</item>
     <item name="colorSurfaceContainerHighest">@color/material_personalized_color_surface_container_highest</item>
-    <item name="colorOutline">@color/material_personalized_color_surface_outline</item>
+    <item name="colorOutline">@color/material_personalized_color_outline</item>
+    <item name="colorOutlineVariant">@color/material_personalized_color_outline_variant</item>
     <item name="colorError">@color/material_personalized_color_error</item>
     <item name="colorOnError">@color/material_personalized_color_on_error</item>
     <item name="colorErrorContainer">@color/material_personalized_color_error_container</item>

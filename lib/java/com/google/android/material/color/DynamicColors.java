@@ -33,7 +33,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.os.BuildCompat;
-import com.google.android.material.color.utilities.Scheme;
+import com.google.android.material.color.utilities.Hct;
+import com.google.android.material.color.utilities.SchemeTonalSpot;
 import com.google.android.material.resources.MaterialAttributes;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -293,18 +294,19 @@ public class DynamicColors {
     if (dynamicColorsOptions.getPrecondition().shouldApplyDynamicColors(activity, theme)) {
       // Applies content-based dynamic colors if content-based source is provided.
       if (dynamicColorsOptions.getContentBasedSeedColor() != null) {
-        Scheme colorScheme =
-            MaterialAttributes.resolveBoolean(
-                    activity, R.attr.isLightTheme, /* defaultValue= */ true)
-                ? Scheme.lightContent(dynamicColorsOptions.getContentBasedSeedColor())
-                : Scheme.darkContent(dynamicColorsOptions.getContentBasedSeedColor());
+        SchemeTonalSpot scheme =
+            new SchemeTonalSpot(
+                Hct.fromInt(dynamicColorsOptions.getContentBasedSeedColor()),
+                !MaterialAttributes.resolveBoolean(
+                    activity, R.attr.isLightTheme, /* defaultValue= */ true),
+                /* contrastLevel= */ 0);
         ColorResourcesOverride resourcesOverride = ColorResourcesOverride.getInstance();
         if (resourcesOverride == null) {
           return;
         } else {
           if (!resourcesOverride.applyIfPossible(
               activity,
-              MaterialColorUtilitiesHelper.createColorResourcesIdsToColorValues(colorScheme))) {
+              MaterialColorUtilitiesHelper.createColorResourcesIdsToColorValues(scheme))) {
             return;
           }
         }

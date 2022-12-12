@@ -90,7 +90,8 @@
   <color name="material_personalized_color_surface_container_high">#FFFFFF</color>
   <color name="material_personalized_color_surface_container_lowest">#FFFFFF</color>
   <color name="material_personalized_color_surface_container_highest">#FFFFFF</color>
-  <color name="material_personalized_color_surface_outline">#FFFFFF</color>
+  <color name="material_personalized_color_outline">#FFFFFF</color>
+  <color name="material_personalized_color_outline_variant">#FFFFFF</color>
   <color name="material_personalized_color_error">#FFFFFF</color>
   <color name="material_personalized_color_on_error">#FFFFFF</color>
   <color name="material_personalized_color_error_container">#FFFFFF</color>
