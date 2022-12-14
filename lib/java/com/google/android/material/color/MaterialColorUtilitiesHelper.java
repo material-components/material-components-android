@@ -33,13 +33,11 @@ final class MaterialColorUtilitiesHelper {
 
   private static final Map<Integer, DynamicColor> colorResourceIdToColorValue;
   static {
-    // TODO(b/261178654): Add the missing primaryInverse, surfaceInverse, onSurfaceInverse and
-    // outlineVariant in MCU.
     Map<Integer, DynamicColor> map = new HashMap<>();
     map.put(R.color.material_personalized_color_primary, MaterialDynamicColors.primary);
     map.put(R.color.material_personalized_color_on_primary, MaterialDynamicColors.onPrimary);
-    // map.put(R.color.material_personalized_color_primary_inverse,
-    // MaterialDynamicColors.primaryInverse);
+    map.put(
+        R.color.material_personalized_color_primary_inverse, MaterialDynamicColors.primaryInverse);
     map.put(
         R.color.material_personalized_color_primary_container,
         MaterialDynamicColors.primaryContainer);
@@ -71,10 +69,11 @@ final class MaterialColorUtilitiesHelper {
     map.put(
         R.color.material_personalized_color_on_surface_variant,
         MaterialDynamicColors.onSurfaceVariant);
-    // map.put(R.color.material_personalized_color_surface_inverse,
-    // MaterialDynamicColors.surfaceInverse);
-    // map.put(R.color.material_personalized_color_on_surface_inverse,
-    // MaterialDynamicColors.onSurfaceInverse);
+    map.put(
+        R.color.material_personalized_color_surface_inverse, MaterialDynamicColors.surfaceInverse);
+    map.put(
+        R.color.material_personalized_color_on_surface_inverse,
+        MaterialDynamicColors.onSurfaceInverse);
     map.put(
         R.color.material_personalized_color_surface_bright, MaterialDynamicColors.surfaceBright);
     map.put(R.color.material_personalized_color_surface_dim, MaterialDynamicColors.surfaceDim);
@@ -94,8 +93,8 @@ final class MaterialColorUtilitiesHelper {
         R.color.material_personalized_color_surface_container_highest,
         MaterialDynamicColors.surfaceAdd2);
     map.put(R.color.material_personalized_color_outline, MaterialDynamicColors.outline);
-    // map.put(R.color.material_personalized_color_outline_variant,
-    // MaterialDynamicColors.outlineVariant);
+    map.put(
+        R.color.material_personalized_color_outline_variant, MaterialDynamicColors.outlineVariant);
     map.put(R.color.material_personalized_color_error, MaterialDynamicColors.error);
     map.put(R.color.material_personalized_color_on_error, MaterialDynamicColors.onError);
     map.put(

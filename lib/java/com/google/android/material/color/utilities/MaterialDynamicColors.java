@@ -45,6 +45,9 @@ public final class MaterialDynamicColors {
   public static final DynamicColor surface =
       DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 6.0 : 98.0);
 
+  public static final DynamicColor surfaceInverse =
+      DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 90.0 : 20.0);
+
   public static final DynamicColor surfaceBright =
       DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 24.0 : 98.0);
 
@@ -70,6 +73,10 @@ public final class MaterialDynamicColors {
       DynamicColor.fromPalette(
           (s) -> s.neutralPalette, (s) -> s.isDark ? 90.0 : 10.0, (s) -> highestSurface(s));
 
+  public static final DynamicColor onSurfaceInverse =
+      DynamicColor.fromPalette(
+          (s) -> s.neutralPalette, (s) -> s.isDark ? 20.0 : 95.0, (s) -> surfaceInverse);
+
   public static final DynamicColor surfaceVariant =
       DynamicColor.fromPalette((s) -> s.neutralVariantPalette, (s) -> s.isDark ? 30.0 : 90.0);
 
@@ -80,6 +87,10 @@ public final class MaterialDynamicColors {
   public static final DynamicColor outline =
       DynamicColor.fromPalette(
           (s) -> s.neutralVariantPalette, (s) -> 50.0, (s) -> highestSurface(s));
+
+  public static final DynamicColor outlineVariant =
+      DynamicColor.fromPalette(
+          (s) -> s.neutralVariantPalette, (s) -> 80.0, (s) -> highestSurface(s));
 
   public static final DynamicColor primaryContainer =
       DynamicColor.fromPalette(
@@ -99,6 +110,10 @@ public final class MaterialDynamicColors {
                   CONTAINER_ACCENT_TONE_DELTA,
                   primaryContainer,
                   s.isDark ? TonePolarity.DARKER : TonePolarity.LIGHTER));
+
+  public static final DynamicColor primaryInverse =
+      DynamicColor.fromPalette(
+          (s) -> s.primaryPalette, (s) -> s.isDark ? 40.0 : 80.0, (s) -> surfaceInverse);
 
   public static final DynamicColor onPrimary =
       DynamicColor.fromPalette(
