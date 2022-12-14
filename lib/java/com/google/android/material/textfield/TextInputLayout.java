@@ -187,6 +187,8 @@ import java.util.LinkedHashSet;
  */
 public class TextInputLayout extends LinearLayout {
 
+  static final int NO_HELPER_TEXT_HORIZONTAL_PADDING = -1;
+
   private static final int DEF_STYLE_RES = R.style.Widget_Design_TextInputLayout;
 
   /** Duration for the label's scale up and down animations. */
@@ -661,7 +663,10 @@ public class TextInputLayout extends LinearLayout {
     final boolean helperTextEnabled =
         a.getBoolean(R.styleable.TextInputLayout_helperTextEnabled, false);
     final CharSequence helperText = a.getText(R.styleable.TextInputLayout_helperText);
-
+    final int helperTextHorizontalPadding = a.getDimensionPixelOffset(
+        R.styleable.TextInputLayout_helperTextHorizontalPadding,
+        NO_HELPER_TEXT_HORIZONTAL_PADDING
+    );
     final int placeholderTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_placeholderTextAppearance, 0);
     final CharSequence placeholderText = a.getText(R.styleable.TextInputLayout_placeholderText);
@@ -755,6 +760,7 @@ public class TextInputLayout extends LinearLayout {
 
     setCounterOverflowTextAppearance(counterOverflowTextAppearance);
     setHelperTextTextAppearance(helperTextTextAppearance);
+    setHelperTextHorizontalPadding(helperTextHorizontalPadding);
     setErrorTextAppearance(errorTextAppearance);
     setCounterTextAppearance(counterTextAppearance);
     setPlaceholderText(placeholderText);
@@ -1915,6 +1921,15 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setHelperTextTextAppearance(@StyleRes int helperTextTextAppearance) {
     indicatorViewController.setHelperTextAppearance(helperTextTextAppearance);
+  }
+
+  /**
+  * Sets the horizontal padding for the helper text.
+  *
+  * @attr ref com.google.android.material.R.styleable#TextInputLayout_helperTextHorizontalPadding
+  */
+  public void setHelperTextHorizontalPadding(int paddingPx) {
+    indicatorViewController.setHelperTextHorizontalPadding(paddingPx);
   }
 
   /** Sets the text color used by the helper text in all states. */

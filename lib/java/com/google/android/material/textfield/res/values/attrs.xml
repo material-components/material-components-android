@@ -80,6 +80,9 @@
     <!-- Text color of the helper text displayed underneath the text input area.
          If set, this takes precedence over helperTextTextAppearance. -->
     <attr name="helperTextTextColor" format="color"/>
+    <!-- Horizontal padding of the helper text displayed underneath the text input area.
+          If not set, padding of edit text will be used. -->
+    <attr name="helperTextHorizontalPadding" format="dimension"/>
 
     <!-- Whether the layout is laid out as if an error will be displayed. -->
     <attr name="errorEnabled" format="boolean"/>

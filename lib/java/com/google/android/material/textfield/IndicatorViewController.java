@@ -21,6 +21,8 @@ import com.google.android.material.R;
 import static android.view.View.TRANSLATION_Y;
 import static android.view.View.VISIBLE;
 
+import static com.google.android.material.textfield.TextInputLayout.NO_HELPER_TEXT_HORIZONTAL_PADDING;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -118,6 +120,7 @@ final class IndicatorViewController {
   @Nullable private TextView helperTextView;
   private int helperTextTextAppearance;
   @Nullable private ColorStateList helperTextViewTextColor;
+  private int helperTextHorizontalPaddingPx = NO_HELPER_TEXT_HORIZONTAL_PADDING;
 
   private Typeface typeface;
 
@@ -361,20 +364,20 @@ final class IndicatorViewController {
       boolean isFontScaleLarge = MaterialResources.isFontScaleAtLeast1_3(context);
       ViewCompat.setPaddingRelative(
           indicatorArea,
+          getIndicatorHorizontalPadding(
+            isFontScaleLarge,
+            R.dimen.material_helper_text_font_1_3_padding_horizontal,
+            ViewCompat.getPaddingStart(editText)),
           getIndicatorPadding(
-              isFontScaleLarge,
-              R.dimen.material_helper_text_font_1_3_padding_horizontal,
-              ViewCompat.getPaddingStart(editText)),
-          getIndicatorPadding(
-              isFontScaleLarge,
-              R.dimen.material_helper_text_font_1_3_padding_top,
-              context
-                  .getResources()
-                  .getDimensionPixelSize(R.dimen.material_helper_text_default_padding_top)),
-          getIndicatorPadding(
-              isFontScaleLarge,
-              R.dimen.material_helper_text_font_1_3_padding_horizontal,
-              ViewCompat.getPaddingEnd(editText)),
+            isFontScaleLarge,
+            R.dimen.material_helper_text_font_1_3_padding_top,
+            context
+              .getResources()
+              .getDimensionPixelSize(R.dimen.material_helper_text_default_padding_top)),
+          getIndicatorHorizontalPadding(
+            isFontScaleLarge,
+            R.dimen.material_helper_text_font_1_3_padding_horizontal,
+            ViewCompat.getPaddingEnd(editText)),
           0);
     }
   }
@@ -388,6 +391,14 @@ final class IndicatorViewController {
     return isFontScaleLarge
         ? context.getResources().getDimensionPixelSize(largeFontPaddingRes)
         : defaultPadding;
+  }
+
+  private int getIndicatorHorizontalPadding(
+        boolean isFontScaleLarge, @DimenRes int largeFontPaddingRes, int defaultPadding) {
+    if (helperTextHorizontalPaddingPx != NO_HELPER_TEXT_HORIZONTAL_PADDING)
+      return helperTextHorizontalPaddingPx;
+    else
+      return getIndicatorPadding(isFontScaleLarge, largeFontPaddingRes, defaultPadding);
   }
 
   void addIndicator(TextView indicator, @IndicatorIndex int index) {
@@ -478,6 +489,10 @@ final class IndicatorViewController {
 
   boolean isHelperTextEnabled() {
     return helperTextEnabled;
+  }
+
+  void setHelperTextHorizontalPadding(int paddingPx) {
+    this.helperTextHorizontalPaddingPx = paddingPx;
   }
 
   void setHelperTextEnabled(boolean enabled) {
