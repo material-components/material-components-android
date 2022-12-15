@@ -35,6 +35,9 @@ class DateStrings {
   private DateStrings() {}
 
   static String getYearMonth(long timeInMillis) {
+    if (VERSION.SDK_INT >= VERSION_CODES.N) {
+      return UtcDates.getYearMonthFormat(Locale.getDefault()).format(new Date(timeInMillis));
+    }
     int flags = DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_NO_MONTH_DAY | DateUtils.FORMAT_UTC;
     return DateUtils.formatDateTime(null, timeInMillis, flags);
   }

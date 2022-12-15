@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import android.annotation.TargetApi;
 import android.content.res.Resources;
+import android.icu.text.DisplayContext;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -138,6 +139,7 @@ class UtcDates {
     android.icu.text.DateFormat format =
         android.icu.text.DateFormat.getInstanceForSkeleton(pattern, locale);
     format.setTimeZone(getUtcAndroidTimeZone());
+    format.setContext(DisplayContext.CAPITALIZATION_FOR_STANDALONE);
     return format;
   }
 
@@ -181,6 +183,11 @@ class UtcDates {
     SimpleDateFormat format = new SimpleDateFormat(pattern, locale);
     format.setTimeZone(getTimeZone());
     return format;
+  }
+
+  @TargetApi(VERSION_CODES.N)
+  static android.icu.text.DateFormat getYearMonthFormat(Locale locale) {
+    return getAndroidFormat(android.icu.text.DateFormat.YEAR_MONTH, locale);
   }
 
   @TargetApi(VERSION_CODES.N)
