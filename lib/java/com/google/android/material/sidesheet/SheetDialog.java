@@ -61,10 +61,6 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
   private boolean canceledOnTouchOutside = true;
   private boolean canceledOnTouchOutsideSet;
 
-  SheetDialog(@NonNull Context context) {
-    this(context, 0, 0, 0);
-  }
-
   SheetDialog(
       @NonNull Context context,
       @StyleRes int theme,

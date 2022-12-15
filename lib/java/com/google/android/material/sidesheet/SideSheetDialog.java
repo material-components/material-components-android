@@ -21,7 +21,6 @@ import static com.google.android.material.sidesheet.Sheet.STATE_HIDDEN;
 
 import android.content.Context;
 import android.view.View;
-import android.view.Window;
 import android.widget.FrameLayout;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
@@ -40,6 +39,10 @@ public class SideSheetDialog extends SheetDialog<SideSheetCallback> {
     this(context, 0);
   }
 
+  public SideSheetDialog(@NonNull Context context, @StyleRes int theme) {
+    super(context, theme, SIDE_SHEET_DIALOG_THEME_ATTR, SIDE_SHEET_DIALOG_DEFAULT_THEME_RES);
+  }
+
   @Override
   void addSheetCancelOnHideCallback(
       Sheet<SideSheetCallback> behavior) {
@@ -55,13 +58,6 @@ public class SideSheetDialog extends SheetDialog<SideSheetCallback> {
           @Override
           public void onSlide(@NonNull View sheet, float slideOffset) {}
         });
-  }
-
-  public SideSheetDialog(@NonNull Context context, @StyleRes int theme) {
-    super(context, theme, SIDE_SHEET_DIALOG_THEME_ATTR, SIDE_SHEET_DIALOG_DEFAULT_THEME_RES);
-    // We hide the title bar for any style configuration. Otherwise, there will be a gap
-    // above the side sheet when it is expanded.
-    supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
   }
 
   @LayoutRes
