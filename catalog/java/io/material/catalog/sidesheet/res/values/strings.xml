@@ -68,6 +68,13 @@
     Show Modal Side Sheet
   </string>
 
+  <string name="cat_sidesheet_modal_detached_title" description="Title of the detached modal side sheet. [CHAR_LIMIT=NONE]">
+    Detached Modal Side Sheet
+  </string>
+  <string name="cat_sidesheet_modal_detached_button_show_text" description="Label of button which shows the detached modal side sheet. [CHAR_LIMIT=NONE]">
+    Show Detached Modal Side Sheet
+  </string>
+
   <string name="cat_sidesheet_coplanar_title" description="Title of the coplanar side sheet. [CHAR_LIMIT=NONE]">
     Coplanar Side Sheet
   </string>

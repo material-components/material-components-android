@@ -44,6 +44,12 @@
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Left</item>
   </style>
 
+  <!-- Style for the M3 Detached Modal Side Sheet. -->
+  <style name="Widget.Material3.SideSheet.Modal.Detached">
+    <item name="android:layout_margin">@dimen/m3_side_sheet_margin_detached</item>
+    <item name="shapeAppearanceOverlay">@null</item>
+  </style>
+
   <!-- Animation used for the M3 Modal Side Sheet. -->
   <style name="Animation.Material3.SideSheetDialog" parent="Animation.AppCompat.Dialog">
     <item name="android:windowEnterAnimation">@anim/m3_side_sheet_slide_in</item>

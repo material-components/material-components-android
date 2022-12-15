@@ -73,6 +73,12 @@
         android:layout_marginTop="16dp"
         android:text="@string/cat_sidesheet_modal_button_show_text" />
       <Button
+        android:id="@+id/show_modal_detached_side_sheet_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/cat_sidesheet_modal_detached_button_show_text" />
+      <Button
         android:id="@+id/show_coplanar_side_sheet_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

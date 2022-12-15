@@ -32,6 +32,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.sidesheet.SideSheetBehavior;
 import com.google.android.material.sidesheet.SideSheetCallback;
@@ -107,7 +108,6 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
         R.id.side_sheet_title_text,
         R.string.cat_sidesheet_modal_title);
 
-    sideSheetDialog.setDismissWithSheetAnimationEnabled(true);
     View showModalSideSheetButton = view.findViewById(R.id.show_modal_side_sheet_button);
     showModalSideSheetButton.setOnClickListener(v -> sideSheetDialog.show());
 
@@ -121,6 +121,34 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
     View modalSideSheetCloseIconButton = sideSheetDialog.findViewById(R.id.close_icon_button);
     if (modalSideSheetCloseIconButton != null) {
       modalSideSheetCloseIconButton.setOnClickListener(v -> sideSheetDialog.hide());
+    }
+
+    // Set up detached modal side sheet.
+    SideSheetDialog detachedSideSheetDialog =
+        new SideSheetDialog(requireContext(), getDetachedModalThemeOverlayResId());
+
+    setUpModalSheet(
+        detachedSideSheetDialog,
+        R.layout.cat_sidesheet_content,
+        R.id.m3_side_sheet,
+        R.id.side_sheet_title_text,
+        R.string.cat_sidesheet_modal_detached_title);
+
+    View showDetachedModalSideSheetButton =
+        view.findViewById(R.id.show_modal_detached_side_sheet_button);
+    showDetachedModalSideSheetButton.setOnClickListener(v -> detachedSideSheetDialog.show());
+
+    detachedSideSheetDialog
+        .getBehavior()
+        .addCallback(
+            createSideSheetCallback(
+                detachedSideSheetDialog.findViewById(R.id.side_sheet_state_text),
+                detachedSideSheetDialog.findViewById(R.id.side_sheet_slide_offset_text)));
+
+    View detachedModalSideSheetCloseIconButton =
+        detachedSideSheetDialog.findViewById(R.id.close_icon_button);
+    if (detachedModalSideSheetCloseIconButton != null) {
+      detachedModalSideSheetCloseIconButton.setOnClickListener(v -> detachedSideSheetDialog.hide());
     }
 
     // Set up coplanar side sheet.
@@ -214,6 +242,11 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
   @LayoutRes
   int getDemoContent() {
     return R.layout.cat_sidesheet_fragment;
+  }
+
+  @StyleRes
+  private int getDetachedModalThemeOverlayResId() {
+    return R.style.ThemeOverlay_Catalog_SideSheet_Modal_Detached;
   }
 
   @Override
