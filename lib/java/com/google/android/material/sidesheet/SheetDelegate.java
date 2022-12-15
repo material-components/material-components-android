@@ -82,4 +82,10 @@ abstract class SheetDelegate {
   /** Set the coplanar sheet layout params depending on the screen size. */
   abstract void updateCoplanarSiblingLayoutParams(
       @NonNull MarginLayoutParams coplanarSiblingLayoutParams, int sheetLeft, int sheetRight);
+
+  /**
+   * Calculates the margin on the inner side of the sheet based on the {@link MarginLayoutParams}.
+   * For right based sheets, the inner margin would be the right margin.
+   */
+  abstract int calculateInnerMargin(@NonNull MarginLayoutParams marginLayoutParams);
 }

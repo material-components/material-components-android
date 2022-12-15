@@ -103,6 +103,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
   private int childWidth;
   private int parentWidth;
+  private int innerMargin;
 
   @Nullable private WeakReference<V> viewRef;
   @Nullable private WeakReference<View> coplanarSiblingViewRef;
@@ -305,6 +306,9 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     parentWidth = parent.getWidth();
     childWidth = child.getWidth();
 
+    MarginLayoutParams margins = (MarginLayoutParams) child.getLayoutParams();
+    innerMargin = margins != null ? sheetDelegate.calculateInnerMargin(margins) : 0;
+
     int currentOffset = calculateCurrentOffset(savedOutwardEdge, child);
 
     ViewCompat.offsetLeftAndRight(child, currentOffset);
@@ -335,6 +339,10 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
   int getParentWidth() {
     return parentWidth;
+  }
+
+  int getInnerMargin() {
+    return innerMargin;
   }
 
   private int calculateCurrentOffset(int savedOutwardEdge, V child) {

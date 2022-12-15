@@ -28,6 +28,15 @@
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_side_sheet_standard_elevation</item>
   </style>
 
+  <style name="Widget.Material3.SideSheet.Detached">
+    <!-- Layout_* attributes break when set via a default style, but it's ok to
+         set layout_* attributes from this style, because this style always
+         needs to be explicitly set on the behavior's associated View in the
+         layout. -->
+    <item name="android:layout_margin">@dimen/m3_side_sheet_margin_detached</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
+  </style>
+
   <!-- Style for the M3 Modal Side Sheet. -->
   <style name="Widget.Material3.SideSheet.Modal">
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_side_sheet_modal_elevation</item>

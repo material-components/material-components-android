@@ -72,6 +72,19 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
     setSideSheetCallback(
         standardRightSideSheet, R.id.side_sheet_state_text, R.id.side_sheet_slide_offset_text);
 
+    // Set up detached standard side sheet.
+    View detachedStandardSideSheet =
+        setUpSideSheet(
+            view,
+            R.id.standard_detached_side_sheet_container,
+            R.id.show_standard_detached_side_sheet_button,
+            R.id.detached_close_icon_button);
+
+    setSideSheetCallback(
+        detachedStandardSideSheet,
+        R.id.detached_side_sheet_state_text,
+        R.id.detached_side_sheet_slide_offset_text);
+
     // Set up vertically scrolling side sheet.
     View verticallyScrollingSideSheet =
         setUpSideSheet(
@@ -122,6 +135,19 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
         coplanarSideSheet,
         R.id.coplanar_side_sheet_state_text,
         R.id.coplanar_side_sheet_slide_offset_text);
+
+    // Set up detached coplanar side sheet.
+    View detachedCoplanarSideSheet =
+        setUpSideSheet(
+            view,
+            R.id.coplanar_detached_side_sheet_container,
+            R.id.show_coplanar_detached_side_sheet_button,
+            R.id.coplanar_detached_side_sheet_close_icon_button);
+
+    setSideSheetCallback(
+        detachedCoplanarSideSheet,
+        R.id.coplanar_detached_side_sheet_state_text,
+        R.id.coplanar_detached_side_sheet_slide_offset_text);
 
     return view;
   }
