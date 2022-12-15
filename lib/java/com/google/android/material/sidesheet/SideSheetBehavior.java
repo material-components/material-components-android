@@ -50,7 +50,6 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import androidx.customview.widget.ViewDragHelper;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -343,11 +342,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
     switch (state) {
       case STATE_EXPANDED:
-        // TODO (b/261619910): This is a workaround for a bug where the expanded offset was getting
-        // recalculated if onLayoutChild() was called while the sheet was in the process of
-        // expanding/offsetting. Revisit this and refactor if necessary when adding left based
-        // sheets.
-        currentOffset = ViewUtils.isLayoutRtl(child) ? getExpandedOffset() : 0;
+        currentOffset = 0;
         break;
       case STATE_DRAGGING:
       case STATE_SETTLING:

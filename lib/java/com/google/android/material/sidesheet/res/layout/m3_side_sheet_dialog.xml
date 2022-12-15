@@ -43,7 +43,6 @@
         style="?attr/sideSheetModalStyle"
         android:layout_width="@dimen/m3_side_sheet_width"
         android:layout_height="match_parent"
-        android:layout_gravity="end"
         app:layout_behavior="@string/side_sheet_behavior"/>
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -83,7 +83,6 @@
     style="@style/Widget.Material3.SideSheet"
     android:layout_width="256dp"
     android:layout_height="match_parent"
-    android:layout_gravity="end"
     android:orientation="vertical"
     app:layout_behavior="@string/side_sheet_behavior"
     tools:targetApi="lollipop">
@@ -95,7 +94,6 @@
     style="@style/Widget.Material3.SideSheet"
     android:layout_width="256dp"
     android:layout_height="match_parent"
-    android:layout_gravity="end"
     android:orientation="vertical"
     app:layout_behavior="@string/side_sheet_behavior"
     tools:targetApi="lollipop">
@@ -107,7 +105,6 @@
     style="@style/Widget.Material3.SideSheet"
     android:layout_width="256dp"
     android:layout_height="match_parent"
-    android:layout_gravity="end"
     android:orientation="vertical"
     app:coplanarSiblingViewId="@id/nested_scroll_view"
     app:layout_behavior="@string/side_sheet_behavior"
