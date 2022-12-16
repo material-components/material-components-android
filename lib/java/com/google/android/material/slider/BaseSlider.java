@@ -1943,7 +1943,7 @@ abstract class BaseSlider<
 
         // If we're inside a vertical scrolling container,
         // we should start dragging in ACTION_MOVE
-        if (isInVerticalScrollingContainer()) {
+        if (isPotentialVerticalScroll(event)) {
           break;
         }
 
@@ -1964,7 +1964,7 @@ abstract class BaseSlider<
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
           // Check if we're trying to scroll vertically instead of dragging this Slider
-          if (isInVerticalScrollingContainer() && abs(x - touchDownX) < scaledTouchSlop) {
+          if (isPotentialVerticalScroll(event) && abs(x - touchDownX) < scaledTouchSlop) {
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
@@ -1996,6 +1996,7 @@ abstract class BaseSlider<
 
         if (activeThumbIdx != -1) {
           snapTouchPosition();
+          updateHaloHotspot();
           activeThumbIdx = -1;
           onStopTrackingTouch();
         }
@@ -2345,6 +2346,14 @@ abstract class BaseSlider<
       p = p.getParent();
     }
     return false;
+  }
+
+  private static boolean isMouseEvent(MotionEvent event) {
+    return event.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE;
+  }
+
+  private boolean isPotentialVerticalScroll(MotionEvent event) {
+    return !isMouseEvent(event) && isInVerticalScrollingContainer();
   }
 
   @SuppressWarnings("unchecked")
