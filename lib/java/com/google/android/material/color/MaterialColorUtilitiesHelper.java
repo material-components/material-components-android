@@ -18,7 +18,10 @@ package com.google.android.material.color;
 
 import com.google.android.material.R;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 import com.google.android.material.color.utilities.DynamicColor;
 import com.google.android.material.color.utilities.DynamicScheme;
 import com.google.android.material.color.utilities.MaterialDynamicColors;
@@ -26,8 +29,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Helper methods for communication with the Material Color Utilities library. */
-final class MaterialColorUtilitiesHelper {
+/**
+ * Helper methods for communication with the Material Color Utilities library.
+ *
+ * @hide
+ */
+@RestrictTo(LIBRARY_GROUP)
+public final class MaterialColorUtilitiesHelper {
 
   private MaterialColorUtilitiesHelper() {}
 
@@ -129,7 +137,7 @@ final class MaterialColorUtilitiesHelper {
   }
 
   @NonNull
-  static Map<Integer, Integer> createColorResourcesIdsToColorValues(
+  public static Map<Integer, Integer> createColorResourcesIdsToColorValues(
       @NonNull DynamicScheme colorScheme) {
     HashMap<Integer, Integer> map = new HashMap<>();
     for (Map.Entry<Integer, DynamicColor> entry : colorResourceIdToColorValue.entrySet()) {

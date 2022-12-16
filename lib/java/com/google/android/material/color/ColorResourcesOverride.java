@@ -16,18 +16,25 @@
 
 package com.google.android.material.color;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.core.os.BuildCompat;
 import java.util.Map;
 
 /**
  * The interface class that hides the detailed implementation of color resources override at
  * runtime. (e.g. with Resources Loader implementation pre-U.)
+ *
+ * @hide
  */
-interface ColorResourcesOverride {
+@RestrictTo(LIBRARY_GROUP)
+public interface ColorResourcesOverride {
   /**
    * Overrides the color resources to the given context, returns {@code true} if new color values
    * have been applied.
@@ -37,7 +44,8 @@ interface ColorResourcesOverride {
    *     color value.
    */
   // TODO(b/255834202): Using SparseIntArray here to store the mapping to save memory.
-  boolean applyIfPossible(Context context, Map<Integer, Integer> colorResourceIdsToColorValues);
+  boolean applyIfPossible(
+      @NonNull Context context, @NonNull Map<Integer, Integer> colorResourceIdsToColorValues);
 
   @Nullable
   static ColorResourcesOverride getInstance() {
