@@ -163,6 +163,14 @@ val constraintsBuilder =
        .setOpenAt(february)
 ```
 
+To set the first day of the week:
+
+```kt
+val constraintsBuilder =
+   CalendarConstraints.Builder()
+       .setFirstDayOfWeek(Calendar.MONDAY)
+```
+
 To set a validator:
 
 ```kt
