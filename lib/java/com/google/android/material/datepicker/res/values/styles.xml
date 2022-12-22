@@ -235,6 +235,7 @@
   <style name="Widget.Material3.MaterialCalendar.HeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
     <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
     <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    <item name="autoSizeMaxTextSize">14sp</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
