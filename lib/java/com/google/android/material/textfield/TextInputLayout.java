@@ -614,6 +614,10 @@ public class TextInputLayout extends LinearLayout {
         a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
     final CharSequence errorContentDescription =
         a.getText(R.styleable.TextInputLayout_errorContentDescription);
+    final int errorAccessibilityLiveRegion =
+        a.getInt(
+            R.styleable.TextInputLayout_errorAccessibilityLiveRegion,
+            ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
     final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
 
     final int helperTextTextAppearance =
@@ -636,6 +640,7 @@ public class TextInputLayout extends LinearLayout {
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE));
 
     setErrorContentDescription(errorContentDescription);
+    setErrorAccessibilityLiveRegion(errorAccessibilityLiveRegion);
 
     setCounterOverflowTextAppearance(counterOverflowTextAppearance);
     setHelperTextTextAppearance(helperTextTextAppearance);
@@ -2069,6 +2074,25 @@ public class TextInputLayout extends LinearLayout {
   @Nullable
   public CharSequence getErrorContentDescription() {
     return indicatorViewController.getErrorContentDescription();
+  }
+
+  /**
+   * Sets an accessibility live region for the error message.
+   *
+   * @param errorAccessibilityLiveRegion Accessibility live region to set
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorAccessibilityLiveRegion
+   */
+  public void setErrorAccessibilityLiveRegion(final int errorAccessibilityLiveRegion) {
+    indicatorViewController.setErrorAccessibilityLiveRegion(errorAccessibilityLiveRegion);
+  }
+
+  /**
+   * Returns the accessibility live region of the error message.
+   *
+   * @see #setErrorAccessibilityLiveRegion(int)
+   */
+  public int getErrorAccessibilityLiveRegion() {
+    return indicatorViewController.getErrorAccessibilityLiveRegion();
   }
 
   /**

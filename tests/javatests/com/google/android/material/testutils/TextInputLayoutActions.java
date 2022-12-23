@@ -124,6 +124,26 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setErrorAccessibilityLiveRegion(final int accessibilityLiveRegion) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the error message's accessibility live region";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setErrorAccessibilityLiveRegion(accessibilityLiveRegion);
+      }
+    };
+  }
+
   public static ViewAction setHelperTextEnabled(final boolean enabled) {
     return new ViewAction() {
       @Override
