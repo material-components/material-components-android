@@ -306,6 +306,55 @@ public class RangeDateSelectorTest {
   }
 
   @Test
+  public void getError_emptyDates_isNull() {
+    assertThat(rangeDateSelector.getError()).isNull();
+  }
+
+  @Test
+  public void getError_validStartDate_isNull() {
+    View root = getRootView();
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    activity.setContentView(root);
+    startTextInput.getEditText().setText("1/1/11");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNull();
+  }
+
+  @Test
+  public void getError_validEndDate_isNull() {
+    View root = getRootView();
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    activity.setContentView(root);
+    endTextInput.getEditText().setText("1/1/11");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNull();
+  }
+
+  @Test
+  public void getError_invalidStartDate_isNotEmpty() {
+    View root = getRootView();
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    activity.setContentView(root);
+    startTextInput.getEditText().setText("1/1/");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNotEmpty();
+  }
+
+  @Test
+  public void getError_invalidEndDate_isNotEmpty() {
+    View root = getRootView();
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    activity.setContentView(root);
+    endTextInput.getEditText().setText("1/1/");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNotEmpty();
+  }
+
+  @Test
   public void getSelectedRanges_fullRange() {
     Calendar setToStart = UtcDates.getUtcCalendar();
     setToStart.set(2004, Calendar.MARCH, 5);

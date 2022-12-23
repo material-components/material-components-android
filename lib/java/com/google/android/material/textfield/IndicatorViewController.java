@@ -119,6 +119,7 @@ final class IndicatorViewController {
   private boolean errorEnabled;
   @Nullable private TextView errorView;
   @Nullable private CharSequence errorViewContentDescription;
+  private int errorViewAccessibilityLiveRegion;
   private int errorTextAppearance;
   @Nullable private ColorStateList errorViewTextColor;
 
@@ -501,8 +502,8 @@ final class IndicatorViewController {
       setErrorTextAppearance(errorTextAppearance);
       setErrorViewTextColor(errorViewTextColor);
       setErrorContentDescription(errorViewContentDescription);
+      setErrorAccessibilityLiveRegion(errorViewAccessibilityLiveRegion);
       errorView.setVisibility(View.INVISIBLE);
-      ViewCompat.setAccessibilityLiveRegion(errorView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
       addIndicator(errorView, ERROR_INDEX);
     } else {
       hideError();
@@ -658,9 +659,20 @@ final class IndicatorViewController {
     }
   }
 
+  void setErrorAccessibilityLiveRegion(final int accessibilityLiveRegion) {
+    this.errorViewAccessibilityLiveRegion = accessibilityLiveRegion;
+    if (errorView != null) {
+      ViewCompat.setAccessibilityLiveRegion(errorView, accessibilityLiveRegion);
+    }
+  }
+
   @Nullable
   CharSequence getErrorContentDescription() {
     return errorViewContentDescription;
+  }
+
+  int getErrorAccessibilityLiveRegion() {
+    return errorViewAccessibilityLiveRegion;
   }
 
   @ColorInt

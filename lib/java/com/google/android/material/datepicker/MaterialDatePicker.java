@@ -52,9 +52,11 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.util.Pair;
+import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.internal.EdgeToEdgeUtils;
@@ -294,6 +296,16 @@ public final class MaterialDatePicker<S> extends DialogFragment {
               listener.onPositiveButtonClick(getSelection());
             }
             dismiss();
+          }
+        });
+    ViewCompat.setAccessibilityDelegate(
+        confirmButton,
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setContentDescription(getDateSelector().getError());
           }
         });
 

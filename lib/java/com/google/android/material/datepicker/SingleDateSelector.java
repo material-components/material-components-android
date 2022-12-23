@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,6 +49,7 @@ import java.util.Collection;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class SingleDateSelector implements DateSelector<Long> {
 
+  @Nullable private CharSequence error;
   @Nullable private Long selectedItem;
   @Nullable private SimpleDateFormat textInputFormat;
 
@@ -106,6 +109,7 @@ public class SingleDateSelector implements DateSelector<Long> {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_text_input_date, viewGroup, false);
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
+    dateTextInput.setErrorAccessibilityLiveRegion(ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
     EditText dateEditText = dateTextInput.getEditText();
     if (ManufacturerUtils.isDateInputKeyboardMissingSeparatorCharacters()) {
       // Using the URI variation places the '/' and '.' in more prominent positions
@@ -135,11 +139,13 @@ public class SingleDateSelector implements DateSelector<Long> {
             } else {
               select(day);
             }
+            error = null;
             listener.onSelectionChanged(getSelection());
           }
 
           @Override
           void onInvalidDate() {
+            error = dateTextInput.getError();
             listener.onIncompleteSelectionChanged();
           }
         });
@@ -175,6 +181,12 @@ public class SingleDateSelector implements DateSelector<Long> {
             ? res.getString(R.string.mtrl_picker_announce_current_selection_none)
             : DateStrings.getYearMonthDay(selectedItem);
     return res.getString(R.string.mtrl_picker_announce_current_selection, placeholder);
+  }
+
+  @Nullable
+  @Override
+  public String getError() {
+    return TextUtils.isEmpty(error) ? null : error.toString();
   }
 
   @Override

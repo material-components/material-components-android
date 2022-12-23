@@ -40,6 +40,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setBo
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterMaxLength;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
+import static com.google.android.material.testutils.TextInputLayoutActions.setErrorAccessibilityLiveRegion;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorContentDescription;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorTextAppearance;
@@ -68,7 +69,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcelable;
 import android.text.TextPaint;
-import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -118,14 +118,6 @@ public class TextInputLayoutTest {
 
     public TestTextInputLayout(Context context) {
       super(context);
-    }
-
-    public TestTextInputLayout(Context context, AttributeSet attrs) {
-      super(context, attrs);
-    }
-
-    public TestTextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-      super(context, attrs, defStyleAttr);
     }
 
     @Override
@@ -497,6 +489,38 @@ public class TextInputLayoutTest {
 
     // Assert the error content description is as expected.
     assertEquals(errorContentDesc, textInputLayout.getErrorContentDescription().toString());
+  }
+
+  @Test
+  public void testSetErrorAccessibilityLiveRegion() {
+    int errorAccessibilityLiveRegion = ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE;
+    // Set error and error accessibility live region.
+    onView(withId(R.id.textinput))
+        .perform(setErrorEnabled(true))
+        .perform(setError(ERROR_MESSAGE_1))
+        .perform(setErrorAccessibilityLiveRegion(errorAccessibilityLiveRegion));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput);
+
+    // Assert the error accessibility live region is as expected.
+    assertEquals(errorAccessibilityLiveRegion, textInputLayout.getErrorAccessibilityLiveRegion());
+  }
+
+  @Test
+  public void testDefaultErrorAccessibilityLiveRegionIsPolite() {
+    // Set error.
+    onView(withId(R.id.textinput))
+        .perform(setErrorEnabled(true))
+        .perform(setError(ERROR_MESSAGE_1));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput);
+
+    // Assert the error accessibility live region is as expected.
+    assertEquals(
+        ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE,
+        textInputLayout.getErrorAccessibilityLiveRegion());
   }
 
   @Test

@@ -37,6 +37,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
 public class SingleDateSelectorTest {
@@ -126,6 +127,33 @@ public class SingleDateSelectorTest {
 
     String expected = res.getString(R.string.mtrl_picker_announce_current_selection, "Feb 1, 2016");
     assertThat(contentDescription).isEqualTo(expected);
+  }
+
+  @Test
+  public void getError_emptyDate_isNull() {
+    assertThat(singleDateSelector.getError()).isNull();
+  }
+
+  @Test
+  public void getError_validDate_isNull() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_date);
+    textInputLayout.getEditText().setText("1/1/11");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(singleDateSelector.getError()).isNull();
+  }
+
+  @Test
+  public void getError_invalidDate_isNotEmpty() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_date);
+    textInputLayout.getEditText().setText("1/1/");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(singleDateSelector.getError()).isNotEmpty();
   }
 
   @Test
