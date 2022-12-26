@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
-      <androidx.appcompat.widget.SwitchCompat
+      <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switch_button_1"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" />
@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
-      <androidx.appcompat.widget.SwitchCompat
+      <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switch_button_2"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" />
@@ -96,7 +96,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
-      <androidx.appcompat.widget.SwitchCompat
+      <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switch_button_3"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" />
@@ -125,7 +125,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
 
-      <androidx.appcompat.widget.SwitchCompat
+      <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switch_button_4"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content" />
