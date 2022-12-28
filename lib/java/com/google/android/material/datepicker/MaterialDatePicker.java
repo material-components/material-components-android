@@ -305,7 +305,8 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           public void onInitializeAccessibilityNodeInfo(
               @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
-            info.setContentDescription(getDateSelector().getError());
+            String contentDescription = getDateSelector().getError() + ", " + info.getText();
+            info.setContentDescription(contentDescription);
           }
         });
 
