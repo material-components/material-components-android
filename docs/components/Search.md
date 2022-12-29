@@ -28,12 +28,17 @@ Before you can use the Material Search components, you need to add a dependency 
 the Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
+
+Note: Material Search is available starting from `1.8.0-alpha03`. To use Material
+Search, make sure you're depending on [library version `1.8.0-alpha03`](https://github.com/material-components/material-components-android/releases/tag/1.8.0-alpha03)
+or later.
+
 ### Making Search Components accessible
 
 You should set a content description on a search bar and search view components
 via the `android:contentDescription` attribute or `setContentDescription` method
-so that screen readers such as TalkBack are able to announce their purpose or 
-action. Text rendered in these components are automatically provided to 
+so that screen readers such as TalkBack are able to announce their purpose or
+action. Text rendered in these components are automatically provided to
 accessibility services, so additional content labels are usually unnecessary.
 
 ## Search Bar
@@ -348,5 +353,4 @@ method to achieve the same result.
 
 ## API and source code
 
-*   [Class definition](https://developer.android.com/reference/com/google/android/material/search/SearchView)
-*   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/search/SearchView.java)
+* [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/search/SearchView.java)

@@ -31,6 +31,10 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
+Note: Side sheets are available starting from `1.8.0-alpha02`. To use side sheets,
+make sure you're depending on [library version `1.8.0-alpha02`](https://github.com/material-components/material-components-android/releases/tag/1.8.0-alpha02)
+or later.
+
 Standard side sheet basic usage:
 
 ```xml
