@@ -29,6 +29,7 @@ import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -40,19 +41,20 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
-import android.view.View;
-import android.view.ViewTreeObserver;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.ImageMatrixProperty;
 import com.google.android.material.animation.MatrixEvaluator;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.internal.StateListAnimator;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.ripple.RippleDrawableCompat;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
@@ -76,11 +78,20 @@ class FloatingActionButtonImpl {
   static final float SHADOW_MULTIPLIER = 1.5f;
 
   private static final float HIDE_OPACITY = 0f;
-  private static final float HIDE_SCALE = 0f;
-  private static final float HIDE_ICON_SCALE = 0f;
+  private static final float HIDE_SCALE = 0.4f;
+  private static final float HIDE_ICON_SCALE = 0.4f;
   private static final float SHOW_OPACITY = 1f;
   private static final float SHOW_SCALE = 1f;
   private static final float SHOW_ICON_SCALE = 1f;
+
+  private static final float SPEC_HIDE_SCALE = 0f;
+  private static final float SPEC_HIDE_ICON_SCALE = 0f;
+
+  private static final int SHOW_ANIM_DURATION_ATTR = R.attr.motionDurationLong2;
+  private static final int SHOW_ANIM_EASING_ATTR = R.attr.motionEasingEmphasizedInterpolator;
+  private static final int HIDE_ANIM_DURATION_ATTR = R.attr.motionDurationMedium1;
+  private static final int HIDE_ANIM_EASING_ATTR =
+      R.attr.motionEasingEmphasizedAccelerateInterpolator;
 
   @Nullable ShapeAppearanceModel shapeAppearance;
   @Nullable MaterialShapeDrawable shapeDrawable;
@@ -97,8 +108,6 @@ class FloatingActionButtonImpl {
 
   @NonNull private final StateListAnimator stateListAnimator;
 
-  @Nullable private MotionSpec defaultShowMotionSpec;
-  @Nullable private MotionSpec defaultHideMotionSpec;
   @Nullable private Animator currentAnimator;
   @Nullable private MotionSpec showMotionSpec;
   @Nullable private MotionSpec hideMotionSpec;
@@ -424,12 +433,24 @@ class FloatingActionButtonImpl {
     }
 
     if (shouldAnimateVisibilityChange()) {
-      AnimatorSet set =
-          createAnimator(
-              hideMotionSpec != null ? hideMotionSpec : getDefaultHideMotionSpec(),
-              HIDE_OPACITY,
-              HIDE_SCALE,
-              HIDE_ICON_SCALE);
+      AnimatorSet set;
+      if (hideMotionSpec != null) {
+        set =
+            createAnimator(
+                hideMotionSpec,
+                HIDE_OPACITY,
+                SPEC_HIDE_SCALE,
+                SPEC_HIDE_ICON_SCALE);
+      } else {
+        set =
+            createDefaultAnimator(
+                HIDE_OPACITY,
+                HIDE_SCALE,
+                HIDE_ICON_SCALE,
+                HIDE_ANIM_DURATION_ATTR,
+                HIDE_ANIM_EASING_ATTR);
+      }
+
       set.addListener(
           new AnimatorListenerAdapter() {
             private boolean cancelled;
@@ -486,21 +507,36 @@ class FloatingActionButtonImpl {
       currentAnimator.cancel();
     }
 
+    boolean useDefaultAnimation = showMotionSpec == null;
+
     if (shouldAnimateVisibilityChange()) {
       if (view.getVisibility() != View.VISIBLE) {
-        // If the view isn't visible currently, we'll animate it from a single pixel
-        view.setAlpha(0f);
-        view.setScaleY(0f);
-        view.setScaleX(0f);
-        setImageMatrixScale(0f);
+        // If the view isn't visible currently, we'll animate it in.
+        view.setAlpha(HIDE_OPACITY);
+        view.setScaleY(useDefaultAnimation ? HIDE_SCALE : SPEC_HIDE_SCALE);
+        view.setScaleX(useDefaultAnimation ? HIDE_SCALE : SPEC_HIDE_SCALE);
+        setImageMatrixScale(useDefaultAnimation ? HIDE_ICON_SCALE : SPEC_HIDE_ICON_SCALE);
       }
 
-      AnimatorSet set =
-          createAnimator(
-              showMotionSpec != null ? showMotionSpec : getDefaultShowMotionSpec(),
-              SHOW_OPACITY,
-              SHOW_SCALE,
-              SHOW_ICON_SCALE);
+
+      AnimatorSet set;
+      if (showMotionSpec != null) {
+        set =
+            createAnimator(
+                showMotionSpec,
+                SHOW_OPACITY,
+                SHOW_SCALE,
+                SHOW_ICON_SCALE);
+      } else {
+        set =
+            createDefaultAnimator(
+                SHOW_OPACITY,
+                SHOW_SCALE,
+                SHOW_ICON_SCALE,
+                SHOW_ANIM_DURATION_ATTR,
+                SHOW_ANIM_EASING_ATTR);
+      }
+
       set.addListener(
           new AnimatorListenerAdapter() {
             @Override
@@ -529,32 +565,14 @@ class FloatingActionButtonImpl {
       set.start();
     } else {
       view.internalSetVisibility(View.VISIBLE, fromUser);
-      view.setAlpha(1f);
-      view.setScaleY(1f);
-      view.setScaleX(1f);
-      setImageMatrixScale(1f);
+      view.setAlpha(SHOW_OPACITY);
+      view.setScaleY(SHOW_SCALE);
+      view.setScaleX(SHOW_SCALE);
+      setImageMatrixScale(SHOW_ICON_SCALE);
       if (listener != null) {
         listener.onShown();
       }
     }
-  }
-
-  private MotionSpec getDefaultShowMotionSpec() {
-    if (defaultShowMotionSpec == null) {
-      defaultShowMotionSpec =
-          MotionSpec.createFromResource(view.getContext(), R.animator.design_fab_show_motion_spec);
-    }
-
-    return checkNotNull(defaultShowMotionSpec);
-  }
-
-  private MotionSpec getDefaultHideMotionSpec() {
-    if (defaultHideMotionSpec == null) {
-      defaultHideMotionSpec =
-          MotionSpec.createFromResource(view.getContext(), R.animator.design_fab_hide_motion_spec);
-    }
-
-    return checkNotNull(defaultHideMotionSpec);
   }
 
   @NonNull
@@ -597,6 +615,59 @@ class FloatingActionButtonImpl {
 
     AnimatorSet set = new AnimatorSet();
     AnimatorSetCompat.playTogether(set, animators);
+    return set;
+  }
+
+  /**
+   * Create an AnimatorSet when there is no motion spec specified for a show or hide animation.
+   *
+   * The created animation uses theme-based values for duration and easing. The benefits of this
+   * default animator is that it is able to use a single, value-driven animator to make property
+   * updates to the FAB. These property updates share a duration and follow the same easing curve
+   * and are able to interpolate values on their own to change the progress range over which they
+   * are changed.
+   */
+  private AnimatorSet createDefaultAnimator(
+      final float targetOpacity, final float targetScale, final float targetIconScale,
+      final int duration, final int interpolator) {
+    AnimatorSet set = new AnimatorSet();
+    List<Animator> animators = new ArrayList<>();
+    ValueAnimator animator = ValueAnimator.ofFloat(0F, 1F);
+    final float startAlpha = view.getAlpha();
+    final float startScaleX = view.getScaleX();
+    final float startScaleY = view.getScaleY();
+    final float startImageMatrixScale = imageMatrixScale;
+    final Matrix matrix = new Matrix(tmpMatrix);
+    animator.addUpdateListener(
+        new AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animation) {
+            float progress = (float) animation.getAnimatedValue();
+            // Animate the opacity over the first 20% of the animation
+            view.setAlpha(AnimationUtils.lerp(startAlpha, targetOpacity, 0F, 0.2F, progress));
+            view.setScaleX(AnimationUtils.lerp(startScaleX, targetScale, progress));
+            view.setScaleY(AnimationUtils.lerp(startScaleY, targetScale, progress));
+            imageMatrixScale =
+                AnimationUtils.lerp(startImageMatrixScale, targetIconScale, progress);
+            calculateImageMatrixFromScale(
+                AnimationUtils.lerp(startImageMatrixScale, targetIconScale, progress), matrix);
+            view.setImageMatrix(matrix);
+          }
+        });
+    animators.add(animator);
+    AnimatorSetCompat.playTogether(set, animators);
+    set.setDuration(
+        MotionUtils.resolveThemeDuration(
+            view.getContext(),
+            duration,
+            view.getContext()
+                .getResources()
+                .getInteger(R.integer.material_motion_duration_long_1)));
+    set.setInterpolator(
+        MotionUtils.resolveThemeInterpolator(
+            view.getContext(),
+            interpolator,
+            AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
     return set;
   }
 

@@ -19,17 +19,19 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.util.Property;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import android.util.Property;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat;
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.color.MaterialColors;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,57 +45,64 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   private static final boolean DEFAULT_DRAWABLE_RESTART = false;
 
   // Animation duration for both show and hide animators.
-  private static final long GROW_DURATION = (long) (500 * ProgressIndicator.ANIMATION_SPEED_FACTOR);
+  private static final int GROW_DURATION = 500;
 
-  // The component this drawable is serving.
-  final ProgressIndicator progressIndicator;
+  // The current context this drawable is running in.
+  final Context context;
+  // The animation behavior.
+  final BaseProgressIndicatorSpec baseSpec;
+  // Utils class.
+  AnimatorDurationScaleProvider animatorDurationScaleProvider;
 
   // ValueAnimator used for show animation.
   private ValueAnimator showAnimator;
   // ValueAnimator used for hide animation.
   private ValueAnimator hideAnimator;
 
+  // Fields for test use only.
+  private boolean mockShowAnimationRunning;
+  private boolean mockHideAnimationRunning;
+  private float mockGrowFraction;
+
   // List of AnimationCallback to be called at the end of show/hide animation.
   private List<AnimationCallback> animationCallbacks;
+  // An internal AnimationCallback which is executed before the user's animation callbacks.
+  private AnimationCallback internalAnimationCallback;
+  // Flag to ignore all external callbacks.
+  private boolean ignoreCallbacks;
 
   // A fraction from 0 to 1 indicating the ratio used in drawing, controlled by show/hide animator.
   private float growFraction;
 
-  // Colors multiplied with the totalAlpha.
-  int combinedTrackColor;
-  int[] combinedIndicatorColorArray;
-
   final Paint paint = new Paint();
   private int totalAlpha;
 
-  // Whether to disable all animators for screenshot tests.
-  boolean animatorsDisabledForTesting;
-
   // ******************* Constructor *******************
 
-  DrawableWithAnimatedVisibilityChange(@NonNull ProgressIndicator progressIndicator) {
-    this.progressIndicator = progressIndicator;
+  DrawableWithAnimatedVisibilityChange(
+      @NonNull Context context, @NonNull BaseProgressIndicatorSpec baseSpec) {
+    this.context = context;
+    this.baseSpec = baseSpec;
+    animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
 
     setAlpha(255);
-
-    initializeShowAnimator();
-    initializeHideAnimator();
   }
 
   // ******************* Animator initialization *******************
 
-  private void initializeShowAnimator() {
-    showAnimator = ObjectAnimator.ofFloat(this, GROW_FRACTION, 0f, 1f);
-    showAnimator.setDuration(GROW_DURATION);
-    showAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    setShowAnimator(showAnimator);
-  }
-
-  private void initializeHideAnimator() {
-    hideAnimator = ObjectAnimator.ofFloat(this, GROW_FRACTION, 1f, 0f);
-    hideAnimator.setDuration(GROW_DURATION);
-    hideAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    setHideAnimator(hideAnimator);
+  private void maybeInitializeAnimators() {
+    if (showAnimator == null) {
+      showAnimator = ObjectAnimator.ofFloat(this, GROW_FRACTION, 0f, 1f);
+      showAnimator.setDuration(GROW_DURATION);
+      showAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+      setShowAnimator(showAnimator);
+    }
+    if (hideAnimator == null) {
+      hideAnimator = ObjectAnimator.ofFloat(this, GROW_FRACTION, 1f, 0f);
+      hideAnimator.setDuration(GROW_DURATION);
+      hideAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+      setHideAnimator(hideAnimator);
+    }
   }
 
   // ******************* Callbacks *******************
@@ -143,121 +152,173 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     animationCallbacks = null;
   }
 
+  /**
+   * Sets the internal {@code AnimationCallback}, which will be executed before other callbacks.
+   *
+   * @param callback New internal animation callback.
+   */
+  void setInternalAnimationCallback(@NonNull AnimationCallback callback) {
+    internalAnimationCallback = callback;
+  }
+
   /** Invokes all {@code onAnimationStart()} functions in the animation callbacks. */
   private void dispatchAnimationStart() {
-    for (AnimationCallback callback : animationCallbacks) {
-      callback.onAnimationStart(this);
+    if (internalAnimationCallback != null) {
+      internalAnimationCallback.onAnimationStart(this);
+    }
+    if (animationCallbacks != null && !ignoreCallbacks) {
+      for (AnimationCallback callback : animationCallbacks) {
+        callback.onAnimationStart(this);
+      }
     }
   }
 
   /** Invokes all {@code onAnimationEnd()} functions in the animation callbacks. */
   private void dispatchAnimationEnd() {
-    for (AnimationCallback callback : animationCallbacks) {
-      callback.onAnimationEnd(this);
+    if (internalAnimationCallback != null) {
+      internalAnimationCallback.onAnimationEnd(this);
+    }
+    if (animationCallbacks != null && !ignoreCallbacks) {
+      for (AnimationCallback callback : animationCallbacks) {
+        callback.onAnimationEnd(this);
+      }
     }
   }
 
   // ******************* Visibility control *******************
 
-  @VisibleForTesting
-  void disableAnimatorsForTesting() {
-    animatorsDisabledForTesting = true;
-  }
-
-  /** The drawable will start with show animator as default. */
+  /** The drawable will start the main animation without show animator. */
   @Override
   public void start() {
-    setVisible(true, true);
+    setVisibleInternal(true, true, false);
   }
 
-  /** The drawable will stop with hide animator as default. */
+  /** The drawable will stop the main animation without hide animator. */
   @Override
   public void stop() {
-    setVisible(false, true);
+    setVisibleInternal(false, true, false);
   }
 
   @Override
   public boolean isRunning() {
-    return (showAnimator != null && showAnimator.isRunning())
-        || (hideAnimator != null && hideAnimator.isRunning());
+    return isShowing() || isHiding();
+  }
+
+  public boolean isShowing() {
+    return (showAnimator != null && showAnimator.isRunning()) || mockShowAnimationRunning;
+  }
+
+  public boolean isHiding() {
+    return (hideAnimator != null && hideAnimator.isRunning()) || mockHideAnimationRunning;
+  }
+
+  /** Hides the drawable immediately without triggering animation callbacks. */
+  public boolean hideNow() {
+    return setVisible(/*visible=*/ false, /*restart=*/ false, /*animate=*/ false);
+  }
+
+  @Override
+  public boolean setVisible(boolean visible, boolean restart) {
+    return setVisible(visible, restart, /*animate=*/ true);
   }
 
   /**
-   * Show or hide the drawable with/without animation effects.
+   * Changes the visibility with/without triggering the animation callbacks.
    *
    * @param visible Whether to make the drawable visible.
-   * @param animationDesired Whether to change the visibility with animation.
+   * @param restart Whether to force starting the animation from the beginning.
+   * @param animate Whether to change the visibility with animation.
+   * @return {@code true}, if the visibility changes or will change after the animation; {@code
+   *     false}, otherwise.
+   * @see #setVisible(boolean, boolean, boolean)
+   */
+  public boolean setVisible(boolean visible, boolean restart, boolean animate) {
+    float systemAnimatorDurationScale =
+        animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
+    // Only show/hide the drawable with animations if system animator duration scale is not off and
+    // some grow mode is used.
+    return setVisibleInternal(visible, restart, animate && systemAnimatorDurationScale > 0);
+  }
+
+  /**
+   * Show or hide the drawable with/without animation effects and/or animation callbacks.
+   *
+   * @param visible Whether to make the drawable visible.
+   * @param restart Whether to force starting the animation from the beginning.
+   * @param animate Whether to change the visibility with animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
    */
-  @Override
-  public boolean setVisible(boolean visible, boolean animationDesired) {
-    // If the drawable is visible and not being hidden, prevents to start the show animation.
-    if (visible && animationDesired && isVisible() && !hideAnimator.isRunning()) {
-      return false;
-    }
-    // If the drawable is invisible, prevents to start the hide animation.
-    if (!visible && animationDesired && !isVisible()) {
+  boolean setVisibleInternal(boolean visible, boolean restart, boolean animate) {
+    maybeInitializeAnimators();
+    if (!isVisible() && !visible) {
+      // Early returns if trying to hide a hidden drawable.
       return false;
     }
 
-    boolean changed =
-        (!visible && animationDesired) || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
-    boolean shouldAnimate =
-        animationDesired && progressIndicator.getGrowMode() != ProgressIndicator.GROW_MODE_NONE;
+    ValueAnimator animatorInAction = visible ? showAnimator : hideAnimator;
+    ValueAnimator animatorNotInAction = visible ? hideAnimator : showAnimator;
 
-    // We don't want to change visibility while show/hide animation is running.
-    if (showAnimator.isRunning() || hideAnimator.isRunning()) {
-      return false;
-    }
-
-    // Cancels any running animations.
-    showAnimator.cancel();
-    hideAnimator.cancel();
-
-    if (visible) {
-      if (shouldAnimate) {
-        // Resets properties as it's fully hidden at the beginning of show animation.
-        resetToShow();
-        showAnimator.start();
-        return true;
-      } else {
-        // Resets properties as it's fully shown at the beginning of hide animation.
-        resetToHide();
+    if (!animate) {
+      // Stops the irrelevant animation.
+      if (animatorNotInAction.isRunning()) {
+        // Don't trigger animation callbacks to maintain behavioral compatibility with
+        // earlier versions of the library.
+        cancelAnimatorsWithoutCallbacks(animatorNotInAction);
       }
+
+      // Fast-forwards the relevant animation to the end state.
+      if (animatorInAction.isRunning()) {
+        animatorInAction.end();
+      } else {
+        endAnimatorsWithoutCallbacks(animatorInAction);
+      }
+
+      // Immediately updates the drawable's visibility without animation if not desired.
+      return super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
+    }
+
+    if (animate && animatorInAction.isRunning()) {
+      // Show/hide animation should not be replayed while playing.
+      return false;
+    }
+
+    // If requests to show, sets the drawable visible. If requests to hide, the visibility is
+    // controlled by the animation listener attached to hide animation.
+    boolean changed = !visible || super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
+    boolean specAnimationEnabled =
+        visible ? baseSpec.isShowAnimationEnabled() : baseSpec.isHideAnimationEnabled();
+    if (!specAnimationEnabled) {
+      // If no animation enabled in spec, end the animator without callbacks.
+      endAnimatorsWithoutCallbacks(animatorInAction);
+      return changed;
+    }
+
+    if (restart || VERSION.SDK_INT < 19 || !animatorInAction.isPaused()) {
+      // Starts/restarts the animator if requested or not eligible to resume.
+      animatorInAction.start();
     } else {
-      if (shouldAnimate) {
-        // Resets properties as it's fully shown at the beginning of hide animation.
-        resetToHide();
-        hideAnimator.start();
-        return true;
-      } else {
-        // Resets properties as it's fully hidden at the beginning of show animation.
-        resetToShow();
-      }
+      animatorInAction.resume();
     }
-
     return changed;
   }
 
-  private void resetToShow() {
-    growFraction = 0f;
-  }
-
-  private void resetToHide() {
-    growFraction = 1f;
-  }
-
-  // ******************* Helper methods *******************
-
-  void recalculateColors() {
-    combinedTrackColor =
-        MaterialColors.compositeARGBWithAlpha(progressIndicator.getTrackColor(), getAlpha());
-    combinedIndicatorColorArray = progressIndicator.getIndicatorColors().clone();
-    for (int i = 0; i < combinedIndicatorColorArray.length; i++) {
-      combinedIndicatorColorArray[i] =
-          MaterialColors.compositeARGBWithAlpha(combinedIndicatorColorArray[i], getAlpha());
+  private void cancelAnimatorsWithoutCallbacks(@NonNull ValueAnimator... animators) {
+    boolean ignoreCallbacksOrig = ignoreCallbacks;
+    ignoreCallbacks = true;
+    for (ValueAnimator animator : animators) {
+      animator.cancel();
     }
+    ignoreCallbacks = ignoreCallbacksOrig;
+  }
+
+  private void endAnimatorsWithoutCallbacks(@NonNull ValueAnimator... animators) {
+    boolean ignoreCallbacksOrig = ignoreCallbacks;
+    ignoreCallbacks = true;
+    for (ValueAnimator animator : animators) {
+      animator.end();
+    }
+    ignoreCallbacks = ignoreCallbacksOrig;
   }
 
   // ******************* Getters and setters *******************
@@ -265,7 +326,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   @Override
   public void setAlpha(int alpha) {
     totalAlpha = alpha;
-    recalculateColors();
     invalidateSelf();
   }
 
@@ -336,8 +396,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
           public void onAnimationEnd(Animator animation) {
             super.onAnimationEnd(animation);
             // Sets visibility to false.
-            DrawableWithAnimatedVisibilityChange.super.setVisible(
-                false, DEFAULT_DRAWABLE_RESTART);
+            DrawableWithAnimatedVisibilityChange.super.setVisible(false, DEFAULT_DRAWABLE_RESTART);
 
             dispatchAnimationEnd();
           }
@@ -345,18 +404,36 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   }
 
   float getGrowFraction() {
+    // If no show/hide animation is needed, the growFraction is always 1.
+    if (!baseSpec.isShowAnimationEnabled() && !baseSpec.isHideAnimationEnabled()) {
+      return 1f;
+    }
+    // If show/hide animation is mocked, return mocked value.
+    if (mockHideAnimationRunning || mockShowAnimationRunning) {
+      return mockGrowFraction;
+    }
     return growFraction;
   }
 
-  void setGrowFraction(float growFraction) {
-    // If no show/hide animation is needed, the growFraction is always 1.
-    if (progressIndicator.getGrowMode() == ProgressIndicator.GROW_MODE_NONE) {
-      growFraction = 1f;
-    }
+  void setGrowFraction(@FloatRange(from = 0.0, to = 1.0) float growFraction) {
     if (this.growFraction != growFraction) {
       this.growFraction = growFraction;
       invalidateSelf();
     }
+  }
+
+  @VisibleForTesting
+  void setMockShowAnimationRunning(
+      boolean running, @FloatRange(from = 0.0, to = 1.0) float fraction) {
+    mockShowAnimationRunning = running;
+    mockGrowFraction = fraction;
+  }
+
+  @VisibleForTesting
+  void setMockHideAnimationRunning(
+      boolean running, @FloatRange(from = 0.0, to = 1.0) float fraction) {
+    mockHideAnimationRunning = running;
+    mockGrowFraction = fraction;
   }
 
   // ******************* Properties *******************

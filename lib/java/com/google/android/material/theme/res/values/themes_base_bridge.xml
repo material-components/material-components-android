@@ -46,31 +46,25 @@
     <item name="colorOnPrimarySurface">?attr/colorOnSurface</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
-    <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background_dark</item>
+    <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background_overlay</item>
 
     <item name="minTouchTargetSize">@dimen/mtrl_min_touch_target_size</item>
 
-    <!-- Widget styles -->
-    <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
+    <!-- MaterialComponents Widget styles -->
     <item name="badgeStyle">@style/Widget.MaterialComponents.Badge</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
-    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
+    <item name="circularProgressIndicatorStyle">@style/Widget.MaterialComponents.CircularProgressIndicator</item>
     <item name="extendedFloatingActionButtonStyle">@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon</item>
-    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
+    <item name="linearProgressIndicatorStyle">@style/Widget.MaterialComponents.LinearProgressIndicator</item>
     <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.Button.OutlinedButton</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.MaterialComponents.MaterialButtonToggleGroup</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
-    <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
+    <item name="navigationRailStyle">@style/Widget.MaterialComponents.NavigationRailView</item>
     <item name="sliderStyle">@style/Widget.MaterialComponents.Slider</item>
-    <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
-    <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
-    <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
-    <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
-    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -97,6 +91,22 @@
     <item name="shapeAppearanceLargeComponent">
       @style/ShapeAppearance.MaterialComponents.LargeComponent
     </item>
+
+    <!-- Motion -->
+    <item name="motionEasingStandard">@string/material_motion_easing_standard</item>
+    <item name="motionEasingEmphasized">@string/material_motion_easing_emphasized</item>
+    <item name="motionEasingDecelerated">@string/material_motion_easing_decelerated</item>
+    <item name="motionEasingAccelerated">@string/material_motion_easing_accelerated</item>
+    <item name="motionEasingLinear">@string/material_motion_easing_linear</item>
+
+    <item name="motionDurationShort1">@integer/material_motion_duration_short_1</item>
+    <item name="motionDurationShort2">@integer/material_motion_duration_short_2</item>
+    <item name="motionDurationMedium1">@integer/material_motion_duration_medium_1</item>
+    <item name="motionDurationMedium2">@integer/material_motion_duration_medium_2</item>
+    <item name="motionDurationLong1">@integer/material_motion_duration_long_1</item>
+    <item name="motionDurationLong2">@integer/material_motion_duration_long_2</item>
+
+    <item name="motionPath">@integer/material_motion_path</item>
 
     <!-- Elevation Overlays -->
     <item name="elevationOverlayEnabled">true</item>
@@ -123,27 +133,21 @@
 
     <item name="minTouchTargetSize">@dimen/mtrl_min_touch_target_size</item>
 
-    <!-- Widget styles -->
-    <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Primary</item>
+    <!-- MaterialComponents Widget styles -->
     <item name="badgeStyle">@style/Widget.MaterialComponents.Badge</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
-    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
+    <item name="circularProgressIndicatorStyle">@style/Widget.MaterialComponents.CircularProgressIndicator</item>
     <item name="extendedFloatingActionButtonStyle">@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon</item>
-    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
+    <item name="linearProgressIndicatorStyle">@style/Widget.MaterialComponents.LinearProgressIndicator</item>
     <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.MaterialComponents.Button.OutlinedButton</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.MaterialComponents.MaterialButtonToggleGroup</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
-    <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
+    <item name="navigationRailStyle">@style/Widget.MaterialComponents.NavigationRailView</item>
     <item name="sliderStyle">@style/Widget.MaterialComponents.Slider</item>
-    <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
-    <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
-    <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
-    <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
-    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -170,6 +174,22 @@
     <item name="shapeAppearanceLargeComponent">
       @style/ShapeAppearance.MaterialComponents.LargeComponent
     </item>
+
+    <!-- Motion -->
+    <item name="motionEasingStandard">@string/material_motion_easing_standard</item>
+    <item name="motionEasingEmphasized">@string/material_motion_easing_emphasized</item>
+    <item name="motionEasingDecelerated">@string/material_motion_easing_decelerated</item>
+    <item name="motionEasingAccelerated">@string/material_motion_easing_accelerated</item>
+    <item name="motionEasingLinear">@string/material_motion_easing_linear</item>
+
+    <item name="motionDurationShort1">@integer/material_motion_duration_short_1</item>
+    <item name="motionDurationShort2">@integer/material_motion_duration_short_2</item>
+    <item name="motionDurationMedium1">@integer/material_motion_duration_medium_1</item>
+    <item name="motionDurationMedium2">@integer/material_motion_duration_medium_2</item>
+    <item name="motionDurationLong1">@integer/material_motion_duration_long_1</item>
+    <item name="motionDurationLong2">@integer/material_motion_duration_long_2</item>
+
+    <item name="motionPath">@integer/material_motion_path</item>
 
     <!-- Elevation Overlays -->
     <item name="elevationOverlayEnabled">false</item>
@@ -219,6 +239,22 @@
     <item name="shapeAppearanceLargeComponent">
       @style/ShapeAppearance.MaterialComponents.LargeComponent
     </item>
+
+    <!-- Motion -->
+    <item name="motionEasingStandard">@string/material_motion_easing_standard</item>
+    <item name="motionEasingEmphasized">@string/material_motion_easing_emphasized</item>
+    <item name="motionEasingDecelerated">@string/material_motion_easing_decelerated</item>
+    <item name="motionEasingAccelerated">@string/material_motion_easing_accelerated</item>
+    <item name="motionEasingLinear">@string/material_motion_easing_linear</item>
+
+    <item name="motionDurationShort1">@integer/material_motion_duration_short_1</item>
+    <item name="motionDurationShort2">@integer/material_motion_duration_short_2</item>
+    <item name="motionDurationMedium1">@integer/material_motion_duration_medium_1</item>
+    <item name="motionDurationMedium2">@integer/material_motion_duration_medium_2</item>
+    <item name="motionDurationLong1">@integer/material_motion_duration_long_1</item>
+    <item name="motionDurationLong2">@integer/material_motion_duration_long_2</item>
+
+    <item name="motionPath">@integer/material_motion_path</item>
 
     <!-- Elevation Overlays -->
     <item name="elevationOverlayEnabled">false</item>

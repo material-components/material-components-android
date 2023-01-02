@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import android.annotation.TargetApi;
 import android.content.res.Resources;
+import android.icu.text.DisplayContext;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.TimeZone;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Utility class for common operations on timezones, calendars, dateformats, and longs representing
@@ -35,6 +37,17 @@ import java.util.TimeZone;
 class UtcDates {
 
   static final String UTC = "UTC";
+
+  static AtomicReference<TimeSource> timeSourceRef = new AtomicReference<>();
+
+  static void setTimeSource(@Nullable TimeSource timeSource) {
+    timeSourceRef.set(timeSource);
+  }
+
+  static TimeSource getTimeSource() {
+    TimeSource timeSource = timeSourceRef.get();
+    return timeSource == null ? TimeSource.system() : timeSource;
+  }
 
   private UtcDates() {}
 
@@ -47,8 +60,17 @@ class UtcDates {
     return android.icu.util.TimeZone.getTimeZone(UTC);
   }
 
+  /**
+   * Returns a Calendar object in UTC time zone representing the first moment of current date.
+   */
   static Calendar getTodayCalendar() {
-    return getDayCopy(Calendar.getInstance());
+    Calendar today = getTimeSource().now();
+    today.set(Calendar.HOUR_OF_DAY, 0);
+    today.set(Calendar.MINUTE, 0);
+    today.set(Calendar.SECOND, 0);
+    today.set(Calendar.MILLISECOND, 0);
+    today.setTimeZone(getTimeZone());
+    return today;
   }
 
   /**
@@ -117,6 +139,7 @@ class UtcDates {
     android.icu.text.DateFormat format =
         android.icu.text.DateFormat.getInstanceForSkeleton(pattern, locale);
     format.setTimeZone(getUtcAndroidTimeZone());
+    format.setContext(DisplayContext.CAPITALIZATION_FOR_STANDALONE);
     return format;
   }
 
@@ -126,24 +149,30 @@ class UtcDates {
     return format;
   }
 
-  static SimpleDateFormat getTextInputFormat() {
-    String pattern =
+  static SimpleDateFormat getDefaultTextInputFormat() {
+    String defaultFormatPattern =
         ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))
-            .toLocalizedPattern()
+            .toPattern()
             .replaceAll("\\s+", "");
-    SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+    SimpleDateFormat format = new SimpleDateFormat(defaultFormatPattern, Locale.getDefault());
     format.setTimeZone(UtcDates.getTimeZone());
     format.setLenient(false);
     return format;
   }
 
-  static String getTextInputHint(Resources res, SimpleDateFormat format) {
-    String formatHint = format.toLocalizedPattern();
+  static String getDefaultTextInputHint(Resources res, SimpleDateFormat format) {
+    String formatHint = format.toPattern();
     String yearChar = res.getString(R.string.mtrl_picker_text_input_year_abbr);
     String monthChar = res.getString(R.string.mtrl_picker_text_input_month_abbr);
     String dayChar = res.getString(R.string.mtrl_picker_text_input_day_abbr);
 
-    return formatHint.replaceAll("d", dayChar).replaceAll("M", monthChar).replaceAll("y", yearChar);
+    // Format year to always be displayed as 4 chars when only 1 char is used in localized pattern.
+    // Example: (fr-FR) dd/MM/y -> dd/MM/yyyy
+    if (formatHint.replaceAll("[^y]", "").length() == 1) {
+      formatHint = formatHint.replace("y", "yyyy");
+    }
+
+    return formatHint.replace("d", dayChar).replace("M", monthChar).replace("y", yearChar);
   }
 
   static SimpleDateFormat getSimpleFormat(String pattern) {
@@ -154,6 +183,11 @@ class UtcDates {
     SimpleDateFormat format = new SimpleDateFormat(pattern, locale);
     format.setTimeZone(getTimeZone());
     return format;
+  }
+
+  @TargetApi(VERSION_CODES.N)
+  static android.icu.text.DateFormat getYearMonthFormat(Locale locale) {
+    return getAndroidFormat(android.icu.text.DateFormat.YEAR_MONTH, locale);
   }
 
   @TargetApi(VERSION_CODES.N)
@@ -200,14 +234,6 @@ class UtcDates {
 
   static DateFormat getFullFormat(Locale locale) {
     return getFormat(DateFormat.FULL, locale);
-  }
-
-  static SimpleDateFormat getYearMonthFormat() {
-    return getYearMonthFormat(Locale.getDefault());
-  }
-
-  private static SimpleDateFormat getYearMonthFormat(Locale locale) {
-    return getSimpleFormat("LLLL, yyyy", locale);
   }
 
   @NonNull

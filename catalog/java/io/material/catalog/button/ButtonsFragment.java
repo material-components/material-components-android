@@ -18,8 +18,8 @@ package io.material.catalog.button;
 
 import io.material.catalog.R;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.annotation.Nullable;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;

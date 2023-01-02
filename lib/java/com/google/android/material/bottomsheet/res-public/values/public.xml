@@ -18,9 +18,11 @@
   <public name="bottom_sheet_behavior" type="string"/>
   <public name="Theme.MaterialComponents.BottomSheetDialog" type="style"/>
   <public name="Theme.MaterialComponents.Light.BottomSheetDialog" type="style"/>
+  <public name="ThemeOverlay.MaterialComponents.BottomSheetDialog" type="style"/>
   <public name="Theme.Design.BottomSheetDialog" type="style"/>
   <public name="bottomSheetDialogTheme" type="attr"/>
   <public name="bottomSheetStyle" type="attr"/>
+  <public name="bottomSheetDragHandleStyle" type="attr"/>
   <public name="behavior_peekHeight" type="attr"/>
   <public name="backgroundTint" type="attr"/>
   <public name="behavior_fitToContents" type="attr"/>
@@ -28,12 +30,21 @@
   <public name="Widget.Design.BottomSheet.Modal" type="style"/>
   <public name="Widget.MaterialComponents.BottomSheet" type="style"/>
   <public name="Widget.MaterialComponents.BottomSheet.Modal" type="style"/>
-  <public name="behavior_draggable" type="attr"/>
   <public name="behavior_expandedOffset" type="attr"/>
   <public name="behavior_halfExpandedRatio" type="attr"/>
   <public name="behavior_hideable" type="attr"/>
   <public name="behavior_saveFlags" type="attr"/>
+  <public name="behavior_significantVelocityThreshold" type="attr"/>
   <public name="behavior_skipCollapsed" type="attr"/>
+  <public name="enableEdgeToEdge" type="attr"/>
   <public name="gestureInsetBottomIgnored" type="attr"/>
+  <public name="ThemeOverlay.Material3.BottomSheetDialog" type="style"/>
+  <public name="ThemeOverlay.Material3.DayNight.BottomSheetDialog" type="style"/>
+  <public name="Widget.Material3.BottomSheet" type="style"/>
+  <public name="Widget.Material3.BottomSheet.Modal" type="style"/>
+  <public name="Widget.Material3.BottomSheet.DragHandle" type="style"/>
+  <public name="Theme.Material3.Light.BottomSheetDialog" type="style"/>
+  <public name="Theme.Material3.Dark.BottomSheetDialog" type="style"/>
+  <public name="Theme.Material3.DayNight.BottomSheetDialog" type="style"/>
 </resources>
 

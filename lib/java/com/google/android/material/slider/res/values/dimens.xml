@@ -19,8 +19,9 @@
   <dimen name="mtrl_slider_widget_height">48dp</dimen>
 
   <dimen name="mtrl_slider_track_side_padding">16dp</dimen>
-  <dimen name="mtrl_slider_track_top">24dp</dimen>
   <dimen name="mtrl_slider_track_height">4dp</dimen>
+
+  <dimen name="mtrl_slider_tick_radius">1dp</dimen>
 
   <dimen name="mtrl_slider_thumb_radius">10dp</dimen>
   <dimen name="mtrl_slider_thumb_elevation">1dp</dimen>
@@ -30,4 +31,8 @@
   <dimen name="mtrl_slider_label_square_side">26dp</dimen>
   <dimen name="mtrl_slider_label_radius">13dp</dimen>
   <dimen name="mtrl_slider_label_padding">4dp</dimen>
+
+  <dimen name="m3_slider_thumb_elevation">2dp</dimen>  <!-- TODO(b/246836765): Update to the new style -->
+  <dimen name="m3_slider_inactive_track_height">@dimen/m3_comp_slider_inactive_track_height</dimen>
+
 </resources>

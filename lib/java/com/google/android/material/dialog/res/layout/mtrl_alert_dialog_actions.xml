@@ -47,7 +47,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:visibility="invisible"/>
+        android:visibility="?attr/materialAlertDialogButtonSpacerVisibility"/>
 
     <Button
         android:id="@android:id/button2"

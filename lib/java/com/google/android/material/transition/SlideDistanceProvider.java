@@ -21,19 +21,19 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.transition.TransitionValues;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -102,22 +102,14 @@ public final class SlideDistanceProvider implements VisibilityAnimatorProvider {
 
   @Nullable
   @Override
-  public Animator createAppear(
-      @NonNull ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
+  public Animator createAppear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
     return createTranslationAppearAnimator(
         sceneRoot, view, slideEdge, getSlideDistanceOrDefault(view.getContext()));
   }
 
   @Nullable
   @Override
-  public Animator createDisappear(
-      @NonNull ViewGroup sceneRoot,
-      @NonNull View view,
-      @Nullable TransitionValues startValues,
-      @Nullable TransitionValues endValues) {
+  public Animator createDisappear(@NonNull ViewGroup sceneRoot, @NonNull View view) {
     return createTranslationDisappearAnimator(
         sceneRoot, view, slideEdge, getSlideDistanceOrDefault(view.getContext()));
   }
@@ -134,21 +126,29 @@ public final class SlideDistanceProvider implements VisibilityAnimatorProvider {
 
   private static Animator createTranslationAppearAnimator(
       View sceneRoot, View view, @GravityFlag int slideEdge, @Px int slideDistance) {
+    final float originalX = view.getTranslationX();
+    final float originalY = view.getTranslationY();
     switch (slideEdge) {
       case Gravity.LEFT:
-        return createTranslationXAnimator(view, slideDistance, 0);
+        return createTranslationXAnimator(view, originalX + slideDistance, originalX, originalX);
       case Gravity.TOP:
-        return createTranslationYAnimator(view, -slideDistance, 0);
+        return createTranslationYAnimator(view, originalY - slideDistance, originalY, originalY);
       case Gravity.RIGHT:
-        return createTranslationXAnimator(view, -slideDistance, 0);
+        return createTranslationXAnimator(view, originalX - slideDistance, originalX, originalX);
       case Gravity.BOTTOM:
-        return createTranslationYAnimator(view, slideDistance, 0);
+        return createTranslationYAnimator(view, originalY + slideDistance, originalY, originalY);
       case Gravity.START:
         return createTranslationXAnimator(
-            view, isRtl(sceneRoot) ? slideDistance : -slideDistance, 0);
+            view,
+            isRtl(sceneRoot) ? originalX + slideDistance : originalX - slideDistance,
+            originalX,
+            originalX);
       case Gravity.END:
         return createTranslationXAnimator(
-            view, isRtl(sceneRoot) ? -slideDistance : slideDistance, 0);
+            view,
+            isRtl(sceneRoot) ? originalX - slideDistance : originalX + slideDistance,
+            originalX,
+            originalX);
       default:
         throw new IllegalArgumentException("Invalid slide direction: " + slideEdge);
     }
@@ -156,36 +156,70 @@ public final class SlideDistanceProvider implements VisibilityAnimatorProvider {
 
   private static Animator createTranslationDisappearAnimator(
       View sceneRoot, View view, @GravityFlag int slideEdge, @Px int slideDistance) {
+    final float originalX = view.getTranslationX();
+    final float originalY = view.getTranslationY();
     switch (slideEdge) {
       case Gravity.LEFT:
-        return createTranslationXAnimator(view, 0, -slideDistance);
+        return createTranslationXAnimator(view, originalX, originalX - slideDistance, originalX);
       case Gravity.TOP:
-        return createTranslationYAnimator(view, 0, slideDistance);
+        return createTranslationYAnimator(view, originalY, originalY + slideDistance, originalY);
       case Gravity.RIGHT:
-        return createTranslationXAnimator(view, 0, slideDistance);
+        return createTranslationXAnimator(view, originalX, originalX + slideDistance, originalX);
       case Gravity.BOTTOM:
-        return createTranslationYAnimator(view, 0, -slideDistance);
+        return createTranslationYAnimator(view, originalY, originalY - slideDistance, originalY);
       case Gravity.START:
         return createTranslationXAnimator(
-            view, 0, isRtl(sceneRoot) ? -slideDistance : slideDistance);
+            view,
+            originalX,
+            isRtl(sceneRoot) ? originalX - slideDistance : originalX + slideDistance,
+            originalX);
       case Gravity.END:
         return createTranslationXAnimator(
-            view, 0, isRtl(sceneRoot) ? slideDistance : -slideDistance);
+            view,
+            originalX,
+            isRtl(sceneRoot) ? originalX + slideDistance : originalX - slideDistance,
+            originalX);
       default:
         throw new IllegalArgumentException("Invalid slide direction: " + slideEdge);
     }
   }
 
   private static Animator createTranslationXAnimator(
-      View view, float startTranslation, float endTranslation) {
-    return ObjectAnimator.ofPropertyValuesHolder(
-        view, PropertyValuesHolder.ofFloat(View.TRANSLATION_X, startTranslation, endTranslation));
+      final View view,
+      float startTranslation,
+      float endTranslation,
+      final float originalTranslation) {
+    ObjectAnimator animator =
+        ObjectAnimator.ofPropertyValuesHolder(
+            view,
+            PropertyValuesHolder.ofFloat(View.TRANSLATION_X, startTranslation, endTranslation));
+    animator.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            view.setTranslationX(originalTranslation);
+          }
+        });
+    return animator;
   }
 
   private static Animator createTranslationYAnimator(
-      View view, float startTranslation, float endTranslation) {
-    return ObjectAnimator.ofPropertyValuesHolder(
-        view, PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, startTranslation, endTranslation));
+      final View view,
+      float startTranslation,
+      float endTranslation,
+      final float originalTranslation) {
+    ObjectAnimator animator =
+        ObjectAnimator.ofPropertyValuesHolder(
+            view,
+            PropertyValuesHolder.ofFloat(View.TRANSLATION_Y, startTranslation, endTranslation));
+    animator.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            view.setTranslationY(originalTranslation);
+          }
+        });
+    return animator;
   }
 
   private static boolean isRtl(View view) {

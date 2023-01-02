@@ -19,12 +19,15 @@ package io.material.catalog.checkbox;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.checkbox.MaterialCheckBox.OnCheckedStateChangedListener;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -32,16 +35,16 @@ import java.util.List;
 /** A fragment that displays the main Checkbox demos for the Catalog app. */
 public class CheckBoxMainDemoFragment extends DemoFragment {
 
+  private boolean isUpdatingChildren = false;
+
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.cat_checkbox, viewGroup, false /* attachToRoot */);
-    ViewGroup checkBoxDemoViewGroup = view.findViewById(R.id.main_viewGroup);
-    View toggledView =
-        layoutInflater.inflate(R.layout.cat_checkbox_toggled, checkBoxDemoViewGroup, false);
-    checkBoxDemoViewGroup.addView(toggledView);
-    List<CheckBox> toggledCheckBoxes =
-        DemoUtils.<CheckBox>findViewsWithType(toggledView, CheckBox.class);
+    ViewGroup toggleContainer = view.findViewById(R.id.checkbox_toggle_container);
+    List<CheckBox> toggledCheckBoxes = DemoUtils.findViewsWithType(toggleContainer, CheckBox.class);
+    List<MaterialCheckBox> allCheckBoxes =
+        DemoUtils.findViewsWithType(view, MaterialCheckBox.class);
 
     CheckBox checkBoxToggle = view.findViewById(R.id.checkbox_toggle);
     checkBoxToggle.setOnCheckedChangeListener(
@@ -51,6 +54,75 @@ public class CheckBoxMainDemoFragment extends DemoFragment {
           }
         });
 
+    CheckBox checkBoxToggleError = view.findViewById(R.id.checkbox_toggle_error);
+    checkBoxToggleError.setOnCheckedChangeListener(
+        (CompoundButton buttonView, boolean isChecked) -> {
+          for (MaterialCheckBox cb : allCheckBoxes) {
+            cb.setErrorShown(isChecked);
+          }
+        });
+
+    CheckBox firstChild = view.findViewById(R.id.checkbox_child_1);
+    firstChild.setChecked(true);
+    ViewGroup indeterminateContainer = view.findViewById(R.id.checkbox_indeterminate_container);
+    List<CheckBox> childrenCheckBoxes =
+        DemoUtils.findViewsWithType(indeterminateContainer, CheckBox.class);
+    MaterialCheckBox checkBoxParent = view.findViewById(R.id.checkbox_parent);
+    OnCheckedStateChangedListener parentOnCheckedStateChangedListener =
+            (checkBox, state) -> {
+              boolean isChecked = checkBox.isChecked();
+              if (state != MaterialCheckBox.STATE_INDETERMINATE) {
+                isUpdatingChildren = true;
+                for (CheckBox child : childrenCheckBoxes) {
+                  child.setChecked(isChecked);
+                }
+                isUpdatingChildren = false;
+              }
+            };
+    checkBoxParent.addOnCheckedStateChangedListener(parentOnCheckedStateChangedListener);
+
+    OnCheckedStateChangedListener childOnCheckedStateChangedListener =
+        (checkBox, state) -> {
+          if (isUpdatingChildren) {
+            return;
+          }
+          setParentState(checkBoxParent, childrenCheckBoxes, parentOnCheckedStateChangedListener);
+        };
+
+    for (CheckBox child : childrenCheckBoxes) {
+      ((MaterialCheckBox) child)
+          .addOnCheckedStateChangedListener(childOnCheckedStateChangedListener);
+    }
+
+    setParentState(checkBoxParent, childrenCheckBoxes, parentOnCheckedStateChangedListener);
+
     return view;
+  }
+
+  private void setParentState(
+      @NonNull MaterialCheckBox checkBoxParent,
+      @NonNull List<CheckBox> childrenCheckBoxes,
+      @NonNull OnCheckedStateChangedListener parentOnCheckedStateChangedListener) {
+    boolean allChecked = true;
+    boolean noneChecked = true;
+    for (CheckBox child : childrenCheckBoxes) {
+      if (!child.isChecked()) {
+        allChecked = false;
+      } else {
+        noneChecked = false;
+      }
+      if (!allChecked && !noneChecked) {
+        break;
+      }
+    }
+    checkBoxParent.removeOnCheckedStateChangedListener(parentOnCheckedStateChangedListener);
+    if (allChecked) {
+      checkBoxParent.setChecked(true);
+    } else if (noneChecked) {
+      checkBoxParent.setChecked(false);
+    } else {
+      checkBoxParent.setCheckedState(MaterialCheckBox.STATE_INDETERMINATE);
+    }
+    checkBoxParent.addOnCheckedStateChangedListener(parentOnCheckedStateChangedListener);
   }
 }

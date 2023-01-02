@@ -17,8 +17,8 @@ package io.material.catalog.progressindicator;
 
 import io.material.catalog.R;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -69,6 +69,13 @@ public class ProgressIndicatorFragment extends DemoLandingFragment {
           @Override
           public Fragment createFragment() {
             return new ProgressIndicatorDeterminateDemoFragment();
+          }
+        });
+    additionalDemos.add(
+        new Demo(R.string.cat_progress_indicator_demo_standalone_title) {
+          @Override
+          public Fragment createFragment() {
+            return new ProgressIndicatorStandaloneDemoFragment();
           }
         });
     return additionalDemos;

@@ -12,14 +12,12 @@ path: /catalog/dialogs/
 [Dialogs](https://material.io/components/dialogs/) inform users about a task and
 can contain critical information, require decisions, or involve multiple tasks.
 
-!["Dialog on a screen"](assets/dialogs/dialogs_hero.png)
+!["Dialog to confirm settings centered in a screen"](assets/dialogs/dialogs_hero.png)
 
-## Contents
+**Contents**
 
 *   [Using dialogs](#using-dialogs)
-*   [Alert dialog](#alert-dialog)
-*   [Simple dialog](#simple-dialog)
-*   [Confirmation dialog](#confirmation-dialog)
+*   [Basic dialog](#basic-dialog)
 *   [Full-screen dialog](#full-screen-dialog)
 *   [Theming](#theming-dialogs)
 
@@ -27,7 +25,7 @@ can contain critical information, require decisions, or involve multiple tasks.
 
 Before you can use Material dialogs, you need to add a dependency to the
 Material Components for Android library. For more information, go to the
-[Getting started](/material-components/material-components-android/blob/master/docs/getting-started.md)
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
 ```kt
@@ -41,15 +39,14 @@ MaterialAlertDialogBuilder(context)
 The contents within a dialog should follow their own accessibility guidelines,
 such as an icon on a title having a content description via the
 `android:contentDescription` attribute set in the
-`MaterialAlertDialog.MaterialComponents.Title.Icon` style or descendant.
+`MaterialAlertDialog.Material3.Title.Icon` style or descendant.
 
-## Types
+### Types
 
-There are four types of dialogs: 1\. [Alert dialog](#alert-dialog), 2\.
-[Simple dialog](#simple-dialog), 3\. [Confirmation dialog](#confirmation-dialog),
-4\. [Full-screen dialog](#full-screen-dialog)
+There are two types of dialogs: 1\. [Basic dialog](#basic-dialog), 2\.
+[Full-screen dialog](#full-screen-dialog)
 
-![Examples of the four types of dialogs.](assets/dialogs/dialogs_types.png)
+![Examples of the two types of dialogs.](assets/dialogs/dialogs_types.png)
 
 ## Dialogs
 
@@ -68,14 +65,11 @@ API and source code:
     *   [Class description](https://developer.android.com/reference/com/google/android/material/dialog/MaterialAlertDialogBuilder)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dialog/MaterialAlertDialogBuilder.java)
 
-#### Alert dialog
+## Basic dialog
 
-Alert dialogs interrupt users with urgent information, details, or actions.
+The following example shows a basic dialog.
 
-The following example shows an alert dialog.
-
-!["Alert dialog with a title, text, and cancel, decline and accept buttons in
-purple"](assets/dialogs/dialogs_alert.png)
+!["Dialog with title, and text and purple buttons to cancel, decline or accept"](assets/dialogs/dialogs_basic.png)
 
 In code:
 
@@ -95,82 +89,7 @@ MaterialAlertDialogBuilder(context)
         .show()
 ```
 
-#### Simple dialog
-
-Simple dialogs can display items that are immediately actionable when selected.
-They don’t have text buttons.
-
-As simple dialogs are interruptive, they should be used sparingly.
-Alternatively, dropdown menus provide options in a non-modal, less disruptive
-way.
-
-The following example shows a simple dialog.
-
-!["Simple dialog with a title, a list of accounts, and a add account button"](assets/dialogs/dialogs_simple.png)
-
-In code:
-
-```kt
-val items = arrayOf("Item 1", "Item 2", "Item 3")
-
-MaterialAlertDialogBuilder(context)
-        .setTitle(resources.getString(R.string.title))
-        .setItems(items) { dialog, which ->
-             // Respond to item chosen
-         }
-        .show()
-```
-
-#### Confirmation dialog
-
-Confirmation dialogs give users the ability to provide final confirmation of a
-choice before committing to it, so they have a chance to change their minds if
-necessary.
-
-If the user confirms a choice, it’s carried out. Otherwise, the user can dismiss
-the dialog. For example, users can listen to multiple ringtones but only make a
-final selection upon tapping “OK.”
-
-The following example shows a confirmation dialog.
-
-!["Confirmation dialog with a title, a list of options, and a cancel and OK
-buttons"](assets/dialogs/dialogs_confirmation.png)
-
-```kt
-val singleItems = arrayOf("Item 1", "Item 2", "Item 3")
-val checkedItem = 1
-
-MaterialAlertDialogBuilder(context)
-        .setTitle(resources.getString(R.string.title))
-        .setNeutralButton(resources.getString(R.string.cancel)) { dialog, which ->
-            // Respond to neutral button press
-        }
-        .setPositiveButton(resources.getString(R.string.ok)) { dialog, which ->
-            // Respond to positive button press
-        }
-        // Single-choice items (initialized with checked item)
-        .setSingleChoiceItems(singleItems, checkedItem) { dialog, which ->
-             // Respond to item chosen
-         }
-        .show()
-```
-
-For multiple choice items you can do as follows:
-
-```kt
-val multiItems = arrayOf("Item 1", "Item 2", "Item 3")
-val checkedItems = booleanArrayOf(true, false, false, false)
-
-MaterialAlertDialogBuilder(context)
-        ...
-        //Multi-choice items (initialized with checked items)
-        .setMultiChoiceItems(multiItems, checkedItems) { dialog, which, checked ->
-            // Respond to item chosen
-        }
-        .show()
-```
-
-#### Full-screen dialog
+## Full-screen dialog
 
 Full-screen dialogs group a series of tasks, such as creating a calendar entry
 with the event title, date, location, and time. Because they take up the entire
@@ -191,89 +110,92 @@ particular type), a background scrim, and, optionally, title and buttons.
 ![anatomy](assets/dialogs/dialogs_anatomy.png)
 
 1.  Container
-2.  Title (optional)
-3.  Content
-4.  Buttons (optional)
-5.  Scrim
+2.  Icon (optional)
+3.  Title (optional)
+4.  Content
+5.  Buttons (optional)
+6.  Scrim
 
 #### Container attributes
 
-&nbsp;                              | **Attribute**                                            | **Related methods**                                    | **Default value**
+Element                             | **Attribute**                                            | **Related methods**                                    | **Default value**
 ----------------------------------- | -------------------------------------------------------- | ------------------------------------------------------ | -----------------
 **Color**                           | N/A                                                      | N/A                                                    | `?attr/colorSurface`
-**Shape**                           | `app:shapeAppearance`<br/>`app:shapeAppearanceOverlay`   | N/A                                                    | `?attr/shapeAppearanceMediumComponent`
+**Shape**                           | `app:shapeAppearance`<br/>`app:shapeAppearanceOverlay`   | N/A                                                    | `?attr/shapeAppearanceMediumComponent` with a corner size of `28dp`
 **Background inset start and end**  | `app:backgroundInsetStart`<br/>`app:backgroundInsetEnd`  | `setBackgroundInsetStart`<br/>`setBackgroundInsetEnd`  | `24dp`
 **Background inset top and bottom** | `app:backgroundInsetTop`<br/>`app:backgroundInsetBottom` | `setBackgroundInsetTop`<br/>`setBackgroundInsetBottom` | `80dp`
 
 #### Title attributes
 
-&nbsp;         | **Attribute**            | **Related methods**              | **Default value**
+Element        | **Attribute**            | **Related methods**              | **Default value**
 -------------- | ------------------------ | -------------------------------- | -----------------
 **Text label** | N/A                      | `setTitle`<br/>`setCustomTitle`  | `null`
-**Text color** | `android:textColor`      | N/A                              | `?attr/colorOnSurface` at 87%
-**Typography** | `android:textAppearance` | N/A                              | `?attr/textAppearanceSubtitle1`
+**Text color** | `android:textColor`      | N/A                              | `?attr/colorOnSurface`
+**Typography** | `android:textAppearance` | N/A                              | `?attr/textAppearanceHeadlineSmall`
 **Icon**       | N/A                      | `setIcon`<br/>`setIconAttribute` | `null`
+**Icon tint**  | `app:tint`               | N/A                              | `?attr/colorSecondary`
 
 #### Content attributes
 
 **Supporting text**
 
-&nbsp;         | **Attribute**            | **Related methods** | **Default value**
+Element        | **Attribute**            | **Related methods** | **Default value**
 -------------- | ------------------------ | ------------------- | -----------------
 **Text**       | N/A                      | `setMessage`        | `null`
-**Color**      | `android:textColor`      | N/A                 | `?attr/colorOnSurface` at 60%
-**Typography** | `android:textAppearance` | N/A                 | `?attr/textAppearanceBody2`
+**Color**      | `android:textColor`      | N/A                 | `?attr/colorOnSurfaceVariant`
+**Typography** | `android:textAppearance` | N/A                 | `?attr/textAppearanceBodyMedium`
 
 **List item**
 
-&nbsp;                                  | **Attribute**                  | **Related methods**    | **Default value**
+Element                                 | **Attribute**                  | **Related methods**    | **Default value**
 --------------------------------------- | ------------------------------ | ---------------------- | -----------------
 **List item layout**                    | `app:listItemLayout`           | `setItems`             | [`@layout/mtrl_alert_select_dialog_item`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dialog/res/layout/mtrl_alert_select_dialog_item.xml)
 **List item layout style**              | N/A                            | N/A                    | `?attr/materialAlertDialogBodyTextStyle`
-**List item text color**                | `android:textColor`            | N/A                    | `?attr/colorOnSurface` at 60%
-**List item typography**                | `android:textAppearance`       | N/A                    | `?attr/textAppearanceBody2`
+**List item text color**                | `android:textColor`            | N/A                    | `?attr/colorOnSurfaceVariant`
+**List item typography**                | `android:textAppearance`       | N/A                    | `?attr/textAppearanceBodyMedium`
 **Multi choice item layout**            | `app:multiChoiceItemLayout`    | `setMultiChoiceItems`  | [`@layout/mtrl_alert_select_dialog_multichoice`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dialog/res/layout/mtrl_alert_select_dialog_multichoice.xml)
 **Single choice item layout**           | `app:singleChoiceItemLayout`   | `setSingleChoiceItems` | [`@layout/mtrl_alert_select_dialog_singlechoice`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dialog/res/layout/mtrl_alert_select_dialog_singlechoice.xml)
-**Multi/single choice item style**      | `android:checkedTextViewStyle` | N/A                    | `@style/Widget.MaterialComponents.CheckedTextView`
-**Multi/single choice item text color** | `android:textColor`            | N/A                    | `?attr/colorOnSurface` at 60%
-**Multi/single choice item typography** | `android:textAppearance`       | N/A                    | `?attr/textAppearanceBody1`
+**Multi/single choice item style**      | `android:checkedTextViewStyle` | N/A                    | `@style/Widget.Material3.CheckedTextView`
+**Multi/single choice item text color** | `android:textColor`            | N/A                    | `?attr/colorOnSurfaceVariant`
+**Multi/single choice item typography** | `android:textAppearance`       | N/A                    | `?attr/textAppearanceBodyLarge`
 
-_**Note:** You can set any view to be the content of your dialog via the
-`setView` method._
+**Note:** You can set any custom view to be the content of your dialog via the
+`setView` method.
 
 #### Buttons attributes
 
-&nbsp;                                  | **Attribute**               | **Related methods** | **Default value**
---------------------------------------- | --------------------------- | ------------------- | -----------------
-**Buttons theme attributes**            | `app:buttonBar*ButtonStyle` | N/A                 | `@style/Widget.MaterialComponents.Button.TextButton.Dialog`
-**Buttons (neutral/negative/positive)** | N/A                         | `set*Button`        | `null`
-**Icons**                               | N/A                         | `set*ButtonIcon`    | `null`
+Element                                          | **Attribute**                     | **Related methods** | **Default value**
+------------------------------------------------ | --------------------------------- | ------------------- | -----------------
+**Buttons theme attributes (negative/positive)** | `app:buttonBar*ButtonStyle`       | N/A                 | `@style/Widget.Material3.Button.TextButton.Dialog`
+**Buttons theme attributes (neutral)**           | `app:buttonBarNeutralButtonStyle` | N/A                 | `@style/Widget.Material3.Button.TextButton.Dialog.Flush`
+**Buttons (neutral/negative/positive)**          | N/A                               | `set*Button`        | `null`
+**Icons**                                        | N/A                               | `set*ButtonIcon`    | `null`
 
 For specific button attributes, see the
 [Buttons documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/Button.md).
 
 #### Scrim attributes
 
-&nbsp;          | **Attribute**                 | **Related methods** | **Default value**
---------------- | ----------------------------- | ------------------- | -----------------
-**Dim ammount** | `android:backgroundDimAmount` | N/A                 | 32%
+Element        | **Attribute**                 | **Related methods** | **Default value**
+-------------- | ----------------------------- | ------------------- | -----------------
+**Dim amount** | `android:backgroundDimAmount` | N/A                 | 32%
 
 #### Theme overlays
 
-&nbsp;                     | **Theme overlay**
+Element                    | **Theme overlay**
 -------------------------- | -----------------
-**Default theme overlay**  | `ThemeOverlay.MaterialComponents.MaterialAlertDialog`
-**Centered theme overlay** | `ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered`
+**Default theme overlay**  | `ThemeOverlay.Material3.MaterialAlertDialog`
+**Centered theme overlay** | `ThemeOverlay.Material3.MaterialAlertDialog.Centered`
 
 Default theme overlay attribute: `?attr/materialAlertDialogTheme`
 
 #### Theme attributes
 
-&nbsp;                    | **Theme attribute**                       | **Default value**
+Element                   | **Theme attribute**                       | **Default value**
 ------------------------- | ----------------------------------------- | -----------------
-**Default style**         | `?attr/alertDialogStyle`                  | `@style/MaterialAlertDialog.MaterialComponents`
-**Title text style**      | `?attr/materialAlertDialogTitleTextStyle` | `@style/MaterialAlertDialog.MaterialComponents.Title.Icon`
-**Supporting text style** | `?attr/materialAlertDialogBodyTextStyle`  | `@style/MaterialAlertDialog.MaterialComponents.Body.Text`
+**Default style**         | `?attr/alertDialogStyle`                  | `@style/MaterialAlertDialog.Material3`
+**Title text style**      | `?attr/materialAlertDialogTitleTextStyle` | `@style/MaterialAlertDialog.Material3.Title.Text`
+**Supporting text style** | `?attr/materialAlertDialogBodyTextStyle`  | `@style/MaterialAlertDialog.Material3.Body.Text`
 
 See full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dialog/res/values/styles.xml),
@@ -284,8 +206,8 @@ and
 ## Theming dialogs
 
 A dialog supports
-[Material Theming](https://material.io/components/dialogs/#theming) and can be
-customized in terms of color, typography and shape.
+[Material Theming](https://material.io/components/dialogs/#theming) which can
+customize color, typography and shape.
 
 ### Dialog theming example
 
@@ -297,7 +219,7 @@ API and source code:
 
 The following example shows a dialog with Material Theming.
 
-![Dialog theming example in Shrine theme](assets/dialogs/dialogs_theming.png)
+![Dialog with title and text buttons in brown and selected radio button in pink](assets/dialogs/dialogs_theming.png)
 
 #### Implementing dialog theming
 
@@ -307,12 +229,12 @@ Setting the theme attribute `materialAlertDialogTheme` to your custom
 In `res/values/themes.xml`:
 
 ```xml
-<style name="Theme.App" parent="Theme.MaterialComponents.*">
+<style name="Theme.App" parent="Theme.Material3.*">
   ...
   <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 </style>
 
-<style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+<style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorSecondary">@color/shrine_pink_100</item>
     <item name="colorSurface">@color/shrine_pink_light</item>
@@ -320,42 +242,33 @@ In `res/values/themes.xml`:
     <item name="alertDialogStyle">@style/MaterialAlertDialog.App</item>
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.App.Title.Text</item>
     <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
-    <item name="buttonBarNeutralButtonStyle">@style/Widget.App.Button</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
 </style>
 ```
 
 In `res/values/styles.xml`:
 
 ```xml
-<style name="MaterialAlertDialog.App" parent="MaterialAlertDialog.MaterialComponents">
+<style name="MaterialAlertDialog.App" parent="MaterialAlertDialog.Material3">
     <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
+    <item name="shapeAppearanceOverlay">@null</item>
 </style>
 
-<style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+<style name="MaterialAlertDialog.App.Title.Text" parent="MaterialAlertDialog.Material3.Title.Text">
      <item name="android:textColor">@color/shrine_pink_900</item>
 </style>
 
-<style name="Widget.App.Button" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.TextButton</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
-</style>
+  <style name="Widget.App.Button" parent="Widget.Material3.Button.TextButton.Dialog">
+    <item name="android:textColor">@color/shrine_pink_900</item>
+  </style>
 
-<style name="ThemeOverlay.App.Button" parent="">
-    <item name="colorPrimary">@color/shrine_pink_900</item>
-</style>
-
-<style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+<style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">8dp</item>
 </style>
-
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
-    <item name="cornerFamily">cut</item>
-    <item name="cornerSize">4dp</item>
-</style>
 ```
 
-Or if you want to only change one specific dialog, pass the `themeResId` to the
+Or if you want to change only one specific dialog, pass the `themeResId` to the
 constructor:
 
 ```kt

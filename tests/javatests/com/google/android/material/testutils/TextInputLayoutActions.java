@@ -20,19 +20,24 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.ColorInt;
-import androidx.annotation.DimenRes;
 import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
+import android.widget.AutoCompleteTextView;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
+import androidx.annotation.NonNull;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
 import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.testapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 import org.hamcrest.Matcher;
@@ -115,6 +120,26 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setErrorContentDescription(errorContentDesc);
+      }
+    };
+  }
+
+  public static ViewAction setErrorAccessibilityLiveRegion(final int accessibilityLiveRegion) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the error message's accessibility live region";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setErrorAccessibilityLiveRegion(accessibilityLiveRegion);
       }
     };
   }
@@ -424,6 +449,26 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setStartIconTintMode(final PorterDuff.Mode tintMode) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set tint mode for the start icon";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconTintMode(tintMode);
+      }
+    };
+  }
+
   public static ViewAction setStartIconOnClickListener(final OnClickListener onClickListener) {
     return new ViewAction() {
       @Override
@@ -617,11 +662,54 @@ public class TextInputLayoutActions {
     };
   }
 
+  /** Sets the {@link ShapeAppearanceModel} of the text field's box background. */
+  public static ViewAction setShapeAppearanceModel(
+      @NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's shape appearance";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setShapeAppearanceModel(shapeAppearanceModel);
+      }
+    };
+  }
+
+  /** Sets the corner family for all corners of the text field. */
+  public static ViewAction setBoxCornerFamily(@CornerFamily final int cornerFamily) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's corner family";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxCornerFamily(cornerFamily);
+      }
+    };
+  }
+
   public static ViewAction setBoxCornerRadii(
       final float topLeftCornerRadius,
       final float topRightCornerRadius,
-      final float bottomRightCornerRadius,
-      final float bottomLeftCornerRadius) {
+      final float bottomLeftCornerRadius,
+      final float bottomRightCornerRadius) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -639,8 +727,8 @@ public class TextInputLayoutActions {
         layout.setBoxCornerRadii(
             topLeftCornerRadius,
             topRightCornerRadius,
-            bottomRightCornerRadius,
-            bottomLeftCornerRadius);
+            bottomLeftCornerRadius,
+            bottomRightCornerRadius);
       }
     };
   }
@@ -648,8 +736,8 @@ public class TextInputLayoutActions {
   public static ViewAction setBoxCornerRadii(
       @DimenRes final int topLeftCornerRadiusId,
       @DimenRes final int topRightCornerRadiusId,
-      @DimenRes final int bottomRightCornerRadiusId,
-      @DimenRes final int bottomLeftCornerRadiusId) {
+      @DimenRes final int bottomLeftCornerRadiusId,
+      @DimenRes final int bottomRightCornerRadiusId) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -667,8 +755,8 @@ public class TextInputLayoutActions {
         layout.setBoxCornerRadiiResources(
             topLeftCornerRadiusId,
             topRightCornerRadiusId,
-            bottomRightCornerRadiusId,
-            bottomLeftCornerRadiusId);
+            bottomLeftCornerRadiusId,
+            bottomRightCornerRadiusId);
       }
     };
   }
@@ -824,6 +912,116 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setSuffixText(suffixText);
+      }
+    };
+  }
+
+  /** Sets whether the hint expands. */
+  public static ViewAction setExpandedHintEnabled(final boolean expandedHintEnabled) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets whether the hint expands.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setExpandedHintEnabled(expandedHintEnabled);
+      }
+    };
+  }
+
+  /** Sets the input type on an AutoCompleteTextView. */
+  public static ViewAction setInputType(final int inputType) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(AutoCompleteTextView.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets input type.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) view;
+        autoCompleteTextView.setInputType(inputType);
+      }
+    };
+  }
+
+  /** Sets the raw input type on an AutoCompleteTextView. */
+  public static ViewAction setRawInputType(final int inputType) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(AutoCompleteTextView.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets raw input type.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) view;
+        autoCompleteTextView.setRawInputType(inputType);
+      }
+    };
+  }
+
+  /** Sets start icon minimum size. */
+  public static ViewAction setStartIconMinSize(int iconSize) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets start icon min size.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setStartIconMinSize(iconSize);
+      }
+    };
+  }
+
+  /** Sets end icon minimum size. */
+  public static ViewAction setEndIconMinSize(int iconSize) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets end icon min size.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setEndIconMinSize(iconSize);
       }
     };
   }

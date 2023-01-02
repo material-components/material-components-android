@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <string name="cat_searchbar_title"
+          description="Title for the search bar [CHAR_LIMIT=40]">Search</string>
+  <string name="cat_searchbar_description"
+          description="Search bar description [CHAR_LIMIT=NONE]">
+    This floating search field component allows for product-specific branding,
+    while also providing a surface for additional navigation and menu icons.
+  </string>
+
+  <string name="cat_searchbar_menu_cast_title"
+          description="Cast screen title [CHAR_LIMIT=40]">Cast Screen</string>
+  <string name="cat_searchbar_menu_settings_title"
+          description="Settings title [CHAR_LIMIT=40]">Settings</string>
+  <string name="cat_searchbar_product_title"
+          description="Product lookup view title [CHAR_LIMIT=40]">Google Product</string>
+  <string name="cat_searchbar_hint" tools:ignore="TypographyQuotes"
+          description="Search bar hint [CHAR_LIMIT=40]">Enter text to search"</string>
+  <string name="cat_searchbar_lorem_ipsum" translatable="false">
+    \t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.
+    \n\n\t\tSuspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae, molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor bibendum, vel congue leo egestas.
+    \n\n\t\tSed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel, molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula, in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque est.
+    \n\n\t\tAenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh. Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc, quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus convallis.
+    \n\n\t\tPhasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper, libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
+  </string>
+  <string name="cat_searchbar_lorem_ipsum_1" translatable="false">
+    \t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.
+  </string>
+  <string name="cat_searchbar_lorem_ipsum_2" translatable="false">
+    \t\tSuspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae, molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor bibendum, vel congue leo egestas.
+  </string>
+  <string name="cat_searchbar_lorem_ipsum_3" translatable="false">
+    \t\tSed interdum tortor nibh, in sagittis risus mollis quis. Curabitur mi odio, condimentum sit amet auctor at, mollis non turpis. Nullam pretium libero vestibulum, finibus orci vel, molestie quam. Fusce blandit tincidunt nulla, quis sollicitudin libero facilisis et. Integer interdum nunc ligula, et fermentum metus hendrerit id. Vestibulum lectus felis, dictum at lacinia sit amet, tristique id quam. Cras eu consequat dui. Suspendisse sodales nunc ligula, in lobortis sem porta sed. Integer id ultrices magna, in luctus elit. Sed a pellentesque est.
+  </string>
+  <string name="cat_searchbar_lorem_ipsum_4" translatable="false">
+    \t\tAenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venenatis nibh. Morbi laoreet, tortor sed facilisis varius, nibh orci rhoncus nulla, id elementum leo dui non lorem. Nam mollis ipsum quis auctor varius. Quisque elementum eu libero sed commodo. In eros nisl, imperdiet vel imperdiet et, scelerisque a mauris. Pellentesque varius ex nunc, quis imperdiet eros placerat ac. Duis finibus orci et est auctor tincidunt. Sed non viverra ipsum. Nunc quis augue egestas, cursus lorem at, molestie sem. Morbi a consectetur ipsum, a placerat diam. Etiam vulputate dignissim convallis. Integer faucibus mauris sit amet finibus convallis.
+  </string>
+  <string name="cat_searchbar_lorem_ipsum_5" translatable="false">
+    \t\tPhasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper, libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
+  </string>
+  <string name="cat_searchview_menu_mic_title"
+          description="Title for searching using spoken words.[CHAR_LIMIT=40]">Voice Search</string>
+
+  <string name="cat_searchview_suggestion_section_title_yesterday"
+          description="Title for yesterday suggestion section [CHAR_LIMIT=40]">YESTERDAY</string>
+  <string name="cat_searchview_suggestion_section_title_this_week"
+          description="Title for this week suggestion section [CHAR_LIMIT=40]">THIS WEEK</string>
+
+  <string name="cat_searchbar_tabs_label_explore"
+          description="Title for explore tab.[CHAR_LIMIT=40]">Explore</string>
+  <string name="cat_searchbar_tabs_label_flights"
+          description="Title for flights tab.[CHAR_LIMIT=40]">Flights</string>
+  <string name="cat_searchbar_tabs_label_trips"
+          description="Title for trips tab.[CHAR_LIMIT=40]">Trips</string>
+  <string name="cat_searchbar_recycler_title"
+          description="Title for recycler view demo.[CHAR_LIMIT=100]">RecyclerView Demo</string>
+  <string name="cat_searchbar_recycler_item_title_prefix"
+          description="Title for recycler item.[CHAR_LIMIT=40]">Message</string>
+
+  <string name="cat_searchbar_contextual_toolbar_menu_select_all_title"
+          description="Title for select all menu option.[CHAR_LIMIT=40]">Select All</string>
+
+  <string name="cat_searchbar_nav_drawer_header_image_description"
+          description="Description about navigation drawer header.[CHAR_LIMIT=NONE]">Navigation Drawer Header Image</string>
+  <string name="cat_searchbar_nav_drawer_avatar_image_description"
+          description="Description about avatar image.[CHAR_LIMIT=NONE]">Avatar Image</string>
+  <string name="cat_searchbar_show_nav_drawer_content_description"
+          description="Description about show navigation drawer option.[CHAR_LIMIT=NONE]">Show navigation drawer</string>
+  <string name="cat_searchbar_hide_nav_drawer_content_description"
+          description="Description about hide navigation drawer option.[CHAR_LIMIT=NONE]">Hide navigation drawer</string>
+  <string name="cat_searchbar_nav_drawer_user"
+          description="Label for username display text.[CHAR_LIMIT=NONE]">User</string>
+  <string name="cat_searchbar_nav_drawer_email" translatable="false">jdoe@no.where</string>
+
+</resources>

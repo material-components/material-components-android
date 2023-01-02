@@ -18,30 +18,31 @@ package io.material.catalog.progressindicator;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import com.google.android.material.progressindicator.ProgressIndicator;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
 
 /**
- * This is the fragment to demo in details of different indeterminate types of {@link
- * ProgressIndicator}.
+ * This is the fragment to demo in details of different indeterminate progress indicators.
  *
- * <p>This demo includes multiple examples of indeterminate ProgressIndicators and the ability to:
+ * <p>This demo includes multiple examples of indeterminate {@link LinearProgressIndicator} and
+ * {@link CircularProgressIndicator} and the ability to:
  *
  * <ul>
- *   <li>Update the ProgressIndicator with a specified progress (which will change the mode to be
+ *   <li>Update the indicator with a specified progress (which will change the mode to be
  *       determinate).
- *   <li>Hide the ProgressIndicator
- *   <li>Show the ProgressIndicator (this will reset the ProgressIndicator to indeterminate mode)
+ *   <li>Hide the indicator
+ *   <li>Show the indicator (this will reset the indicator to indeterminate mode)
  * </ul>
  */
 public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
@@ -66,38 +67,35 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
     return view;
   }
 
-  /** Layout resource containing {@link ProgressIndicator} examples. */
+  /** Layout resource containing the progress indicator examples. */
   @LayoutRes
   protected int getIndicatorsContent() {
     return R.layout.cat_progress_indicator_indeterminate_indicators;
   }
 
   /**
-   * Updates the progress indicator to show the specified progress. This is called every time the
-   * "update" button is pressed.
+   * Updates the linear progress indicator to show the specified progress. This is called every time
+   * the "update" button is pressed.
    */
-  protected void updateProgressIndicator(
-      @NonNull ProgressIndicator progressIndicator, int progress) {
-    progressIndicator.setProgressCompat(progress, /*animated=*/ true);
+  protected void updateLinearProgressIndicator(
+      @NonNull LinearProgressIndicator linearProgressIndicator, int progress) {
+    linearProgressIndicator.setProgressCompat(progress, /*animated=*/ true);
   }
 
   /**
-   * Resets the progress indicator to its initial state (indeterminate). This is called every time
-   * the "show" button is pressed.
+   * Updates the circular progress indicator to show the specified progress. This is called every
+   * time the "update" button is pressed.
    */
-  protected void resetProgressIndicator(@NonNull ProgressIndicator progressIndicator) {
-    // Reset to indeterminate if it was changed to determinate.
-    if (!progressIndicator.isIndeterminate()) {
-      // Cannot set to indeterminate if the indicator is visible. Immediately set to
-      // INVISIBLE instead of waiting for animation from calling hide().
-      progressIndicator.setVisibility(View.INVISIBLE);
-      progressIndicator.setIndeterminate(true);
-    }
+  protected void updateCircularProgressIndicator(
+      @NonNull CircularProgressIndicator circularProgressIndicator, int progress) {
+    circularProgressIndicator.setProgressCompat(progress, /*animated=*/ true);
   }
 
   private void initialize(View view) {
-    List<ProgressIndicator> indicatorList =
-        DemoUtils.findViewsWithType(view, ProgressIndicator.class);
+    List<LinearProgressIndicator> linearProgressIndicatorList =
+        DemoUtils.findViewsWithType(view, LinearProgressIndicator.class);
+    List<CircularProgressIndicator> circularProgressIndicatorList =
+        DemoUtils.findViewsWithType(view, CircularProgressIndicator.class);
 
     EditText progressInput = view.findViewById(R.id.progress_input);
     Button updateButton = view.findViewById(R.id.update_button);
@@ -112,21 +110,31 @@ public class ProgressIndicatorIndeterminateDemoFragment extends DemoFragment {
           } catch (NumberFormatException e) {
             progress = 0;
           }
-          for (ProgressIndicator progressIndicator : indicatorList) {
-            updateProgressIndicator(progressIndicator, progress);
+          for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
+            updateLinearProgressIndicator(indicator, progress);
+          }
+          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
+            updateCircularProgressIndicator(indicator, progress);
           }
         });
     showButton.setOnClickListener(
         v -> {
-          for (ProgressIndicator progressIndicator : indicatorList) {
-            resetProgressIndicator(progressIndicator);
-            progressIndicator.show();
+          for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
+            indicator.setIndeterminate(true);
+            indicator.show();
+          }
+          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
+            indicator.setIndeterminate(true);
+            indicator.show();
           }
         });
     hideButton.setOnClickListener(
         v -> {
-          for (ProgressIndicator progressIndicator : indicatorList) {
-            progressIndicator.hide();
+          for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
+            indicator.hide();
+          }
+          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
+            indicator.hide();
           }
         });
   }

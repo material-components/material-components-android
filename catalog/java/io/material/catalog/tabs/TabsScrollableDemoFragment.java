@@ -18,15 +18,17 @@ package io.material.catalog.tabs;
 
 import io.material.catalog.R;
 
+import static java.lang.Math.max;
+
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioButton;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.Tab;
 import io.material.catalog.feature.DemoFragment;
@@ -87,14 +89,23 @@ public class TabsScrollableDemoFragment extends DemoFragment {
           numTabs++;
         });
 
-    Button removeButton = view.findViewById(R.id.remove_tab_button);
-    removeButton.setOnClickListener(
+    Button removeFirstButton = view.findViewById(R.id.remove_first_tab_button);
+    removeFirstButton.setOnClickListener(
+        v -> {
+          if (scrollableTabLayout.getTabCount() > 0) {
+            scrollableTabLayout.removeTabAt(0);
+          }
+          numTabs = max(0, numTabs - 1);
+        });
+
+    Button removeLastButton = view.findViewById(R.id.remove_last_tab_button);
+    removeLastButton.setOnClickListener(
         v -> {
           Tab tab = scrollableTabLayout.getTabAt(scrollableTabLayout.getTabCount() - 1);
           if (tab != null) {
             scrollableTabLayout.removeTab(tab);
           }
-          numTabs = Math.max(0, numTabs - 1);
+          numTabs = max(0, numTabs - 1);
         });
     return view;
   }

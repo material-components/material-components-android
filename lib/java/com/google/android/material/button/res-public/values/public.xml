@@ -15,8 +15,6 @@
   ~ limitations under the License.
 -->
 <resources>
-  <public name="additionalPaddingStartForIcon" type="attr"/>
-  <public name="additionalPaddingEndForIcon" type="attr"/>
   <public name="checkedButton" type="attr"/>
   <public name="cornerRadius" type="attr"/>
   <public name="icon" type="attr"/>
@@ -25,7 +23,12 @@
   <public name="iconSize" type="attr"/>
   <public name="iconTint" type="attr"/>
   <public name="iconTintMode" type="attr"/>
+  <public name="toggleCheckedStateOnClick" type="attr"/>
   <public name="materialButtonStyle" type="attr"/>
+  <public name="materialIconButtonStyle" type="attr"/>
+  <public name="materialIconButtonFilledStyle" type="attr"/>
+  <public name="materialIconButtonFilledTonalStyle" type="attr"/>
+  <public name="materialIconButtonOutlinedStyle" type="attr"/>
   <public name="materialButtonOutlinedStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
   <public name="Widget.MaterialComponents.Button" type="style"/>
@@ -34,5 +37,29 @@
   <public name="Widget.MaterialComponents.Button.OutlinedButton" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton.Dialog" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton.Dialog.Flush" type="style"/>
+  <public name="Widget.Material3.Button" type="style"/>
+  <public name="Widget.Material3.Button.Icon" type="style"/>
+  <public name="Widget.Material3.Button.UnelevatedButton" type="style"/>
+  <public name="Widget.Material3.Button.TonalButton" type="style"/>
+  <public name="Widget.Material3.Button.TonalButton.Icon" type="style"/>
+  <public name="Widget.Material3.Button.TextButton" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Icon" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Dialog" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Dialog.Flush" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Dialog.Icon" type="style"/>
+  <public name="Widget.Material3.Button.TextButton.Snackbar" type="style"/>
+  <public name="Widget.Material3.Button.OutlinedButton" type="style"/>
+  <public name="Widget.Material3.Button.OutlinedButton.Icon" type="style"/>
+  <public name="Widget.Material3.Button.ElevatedButton" type="style"/>
+  <public name="Widget.Material3.Button.ElevatedButton.Icon" type="style"/>
+  <public name="Widget.Material3.Button.IconButton" type="style"/>
+  <public name="Widget.Material3.Button.IconButton.Filled" type="style"/>
+  <public name="Widget.Material3.Button.IconButton.Filled.Tonal" type="style"/>
+  <public name="Widget.Material3.Button.IconButton.Outlined" type="style"/>
+  <public name="ShapeAppearanceOverlay.Material3.Button" type="style"/>
+  <public name="ThemeOverlay.Material3.Button" type="style"/>
+  <public name="ThemeOverlay.Material3.Button.ElevatedButton" type="style"/>
+  <public name="ThemeOverlay.Material3.Button.TextButton" type="style"/>
+  <public name="ThemeOverlay.Material3.Button.TextButton.Snackbar" type="style"/>
+  <public name="ThemeOverlay.Material3.Button.TonalButton" type="style"/>
 </resources>
-

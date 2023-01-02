@@ -102,4 +102,30 @@
         android:layout_height="wrap_content"
         android:imeOptions="flagNoExtractUi"/>
   </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/textinput_layout_with_hint"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="@string/textinput_outer_hint">
+    <EditText
+      android:id="@+id/textinput_edittext_without_hint"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:autofillHints="someHint"
+      android:inputType="text" />
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/textinput_layout_without_hint"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <EditText
+      android:id="@+id/textinput_edittext_with_hint"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/textinput_nested_hint"
+      android:autofillHints="someHint"
+      android:inputType="text"/>
+  </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

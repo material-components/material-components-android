@@ -18,11 +18,18 @@
   <public name="bottomAppBarStyle" type="attr"/>
   <public name="fabAlignmentMode" type="attr"/>
   <public name="fabAnimationMode" type="attr"/>
+  <public name="fabAnchorMode" type="attr"/>
   <public name="fabCradleMargin" type="attr"/>
   <public name="fabCradleRoundedCornerRadius" type="attr"/>
   <public name="fabCradleVerticalOffset" type="attr"/>
+  <public name="fabAlignmentModeEndMargin" type="attr"/>
+  <public name="menuAlignmentMode" type="attr"/>
   <public name="hideOnScroll" type="attr"/>
+  <public name="removeEmbeddedFabElevation" type="attr"/>
+  <public name="addElevationShadow" type="attr"/>
   <public name="Widget.MaterialComponents.BottomAppBar" type="style"/>
   <public name="Widget.MaterialComponents.BottomAppBar.Colored" type="style"/>
   <public name="Widget.MaterialComponents.BottomAppBar.PrimarySurface" type="style"/>
+  <public name="Widget.Material3.BottomAppBar" type="style"/>
+  <public name="ThemeOverlay.Material3.BottomAppBar" type="style"/>
 </resources>

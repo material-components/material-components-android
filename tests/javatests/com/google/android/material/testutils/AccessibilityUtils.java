@@ -16,9 +16,9 @@
 
 package com.google.android.material.testutils;
 
+import android.view.View;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
-import android.view.View;
 import com.google.android.material.testapp.R;
 import java.util.ArrayList;
 import java.util.List;

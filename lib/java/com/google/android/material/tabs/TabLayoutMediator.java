@@ -20,9 +20,9 @@ import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING;
 import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE;
 import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_SETTLING;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 import java.lang.ref.WeakReference;
 
@@ -159,6 +159,13 @@ public final class TabLayoutMediator {
     attached = false;
   }
 
+  /**
+   * Returns whether the {@link TabLayout} and the {@link ViewPager2} are linked together.
+   */
+  public boolean isAttached() {
+    return attached;
+  }
+
   @SuppressWarnings("WeakerAccess")
   void populateTabsFromPagerAdapter() {
     tabLayout.removeAllTabs();
@@ -203,22 +210,27 @@ public final class TabLayoutMediator {
     public void onPageScrollStateChanged(final int state) {
       previousScrollState = scrollState;
       scrollState = state;
+      TabLayout tabLayout = tabLayoutRef.get();
+      if (tabLayout != null) {
+        tabLayout.updateViewPagerScrollState(scrollState);
+      }
     }
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
       TabLayout tabLayout = tabLayoutRef.get();
       if (tabLayout != null) {
-        // Only update the text selection if we're not settling, or we are settling after
+        // Only update the tab view selection if we're not settling, or we are settling after
         // being dragged
-        boolean updateText =
+        boolean updateSelectedTabView =
             scrollState != SCROLL_STATE_SETTLING || previousScrollState == SCROLL_STATE_DRAGGING;
         // Update the indicator if we're not settling after being idle. This is caused
         // from a setCurrentItem() call and will be handled by an animation from
         // onPageSelected() instead.
         boolean updateIndicator =
             !(scrollState == SCROLL_STATE_SETTLING && previousScrollState == SCROLL_STATE_IDLE);
-        tabLayout.setScrollPosition(position, positionOffset, updateText, updateIndicator);
+        tabLayout.setScrollPosition(
+            position, positionOffset, updateSelectedTabView, updateIndicator);
       }
     }
 

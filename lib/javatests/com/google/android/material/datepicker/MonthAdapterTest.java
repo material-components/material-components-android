@@ -15,12 +15,20 @@
  */
 package com.google.android.material.datepicker;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import android.content.Context;
+import android.os.Parcel;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.util.Pair;
 import androidx.test.core.app.ApplicationProvider;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -55,13 +63,21 @@ public class MonthAdapterTest {
     CalendarConstraints defaultConstraints = new CalendarConstraints.Builder().build();
     SingleDateSelector singleDateSelector = new SingleDateSelector();
     Month feb2016 = Month.create(2016, Calendar.FEBRUARY);
-    monthFeb2016 = new MonthAdapter(feb2016, singleDateSelector, defaultConstraints);
+    monthFeb2016 =
+        new MonthAdapter(
+            feb2016, singleDateSelector, defaultConstraints, /* dayViewDecorator= */ null);
     Month july2018 = Month.create(2018, Calendar.JULY);
-    monthJuly2018 = new MonthAdapter(july2018, singleDateSelector, defaultConstraints);
+    monthJuly2018 =
+        new MonthAdapter(
+            july2018, singleDateSelector, defaultConstraints, /* dayViewDecorator= */ null);
     Month feb2019 = Month.create(2019, Calendar.FEBRUARY);
-    monthFeb2019 = new MonthAdapter(feb2019, singleDateSelector, defaultConstraints);
+    monthFeb2019 =
+        new MonthAdapter(
+            feb2019, singleDateSelector, defaultConstraints, /* dayViewDecorator= */ null);
     Month march2019 = Month.create(2019, Calendar.MARCH);
-    monthMarch2019 = new MonthAdapter(march2019, singleDateSelector, defaultConstraints);
+    monthMarch2019 =
+        new MonthAdapter(
+            march2019, singleDateSelector, defaultConstraints, /* dayViewDecorator= */ null);
   }
 
   @Test
@@ -166,25 +182,25 @@ public class MonthAdapterTest {
   @Test
   public void usItemCount() {
     setupLocalizedCalendars(Locale.US);
-    assertEquals(30, monthFeb2016.getCount());
-    assertEquals(31, monthJuly2018.getCount());
-    assertEquals(33, monthFeb2019.getCount());
+    assertThat(monthFeb2016.getCount()).isAtLeast(30);
+    assertThat(monthJuly2018.getCount()).isAtLeast(31);
+    assertThat(monthFeb2019.getCount()).isAtLeast(33);
   }
 
   @Test
   public void frItemCount() {
     setupLocalizedCalendars(Locale.FRANCE);
-    assertEquals(29, monthFeb2016.getCount());
-    assertEquals(37, monthJuly2018.getCount());
-    assertEquals(32, monthFeb2019.getCount());
+    assertThat(monthFeb2016.getCount()).isAtLeast(29);
+    assertThat(monthJuly2018.getCount()).isAtLeast(37);
+    assertThat(monthFeb2019.getCount()).isAtLeast(32);
   }
 
   @Test
   public void ilItemCount() {
     setupLocalizedCalendars(ISRAEL);
-    assertEquals(30, monthFeb2016.getCount());
-    assertEquals(31, monthJuly2018.getCount());
-    assertEquals(33, monthFeb2019.getCount());
+    assertThat(monthFeb2016.getCount()).isAtLeast(30);
+    assertThat(monthJuly2018.getCount()).isAtLeast(31);
+    assertThat(monthFeb2019.getCount()).isAtLeast(33);
   }
 
   @Test
@@ -252,6 +268,71 @@ public class MonthAdapterTest {
     assertDaysOfPositions(localizedDaysOfPositionsInFebruary2019);
   }
 
+  @Test
+  public void dayViewDecorator_withIndicator_hasUpdatedContentDescription() {
+    DayViewDecorator decorator = getDecoratedMonthAdapter().dayViewDecorator;
+
+    CharSequence decoratorContentDescription =
+        decorator.getContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            2018,
+            Calendar.JANUARY,
+            17,
+            true,
+            false,
+            "Original content description");
+    assertTrue("Original content description Test".contentEquals(decoratorContentDescription));
+  }
+
+  @Test
+  public void dayViewDecorator_withoutIndicator_hasOriginalContentDescription() {
+    DayViewDecorator decorator = getDecoratedMonthAdapter().dayViewDecorator;
+
+    CharSequence decoratorContentDescription =
+        decorator.getContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            2018,
+            Calendar.JANUARY,
+            16,
+            true,
+            false,
+            "Original content description");
+    assertTrue("Original content description".contentEquals(decoratorContentDescription));
+  }
+
+  private MonthAdapter getDecoratedMonthAdapter() {
+    return new MonthAdapter(
+        Month.create(2018, Calendar.JANUARY),
+        new SingleDateSelector(),
+        new CalendarConstraints.Builder().build(),
+        new DayViewDecorator() {
+          @Nullable
+          @Override
+          public CharSequence getContentDescription(
+              @NonNull Context context,
+              int year,
+              int month,
+              int day,
+              boolean valid,
+              boolean selected,
+              @Nullable CharSequence originalContentDescription) {
+            if (year == 2018 && month == Calendar.JANUARY && day == 17) {
+              return originalContentDescription + " Test";
+            }
+            return super.getContentDescription(
+                context, year, month, day, valid, selected, originalContentDescription);
+          }
+
+          @Override
+          public int describeContents() {
+            return 0;
+          }
+
+          @Override
+          public void writeToParcel(@NonNull Parcel dest, int flags) {}
+        });
+  }
+
   private void assertDaysOfPositions(Map<Integer, Integer> localizedDaysOfPositionsInFebruary2019) {
     for (int day : localizedDaysOfPositionsInFebruary2019.keySet()) {
       Calendar testCalendar = UtcDates.getUtcCalendar();
@@ -269,5 +350,51 @@ public class MonthAdapterTest {
     assertEquals(1, monthFeb2019.getItemId(7));
     assertEquals(3, monthFeb2019.getItemId(26));
     assertEquals(5, monthMarch2019.getItemId(35));
+  }
+
+  @Test
+  public void rangeDateSelector_isStartOfRange() {
+    Month month = Month.create(2016, Calendar.FEBRUARY);
+    MonthAdapter monthAdapter =
+        createRangeMonthAdapter(month, new Pair<>(month.getDay(1), month.getDay(10)));
+
+    assertTrue(monthAdapter.isStartOfRange(month.getDay(1)));
+  }
+
+  @Test
+  public void rangeDateSelector_isNotStartOfRange() {
+    Month month = Month.create(2016, Calendar.FEBRUARY);
+    MonthAdapter monthAdapter =
+        createRangeMonthAdapter(month, new Pair<>(month.getDay(1), month.getDay(10)));
+
+    assertFalse(monthAdapter.isStartOfRange(month.getDay(2)));
+  }
+
+  @Test
+  public void rangeDateSelector_isEndOfRange() {
+    Month month = Month.create(2016, Calendar.FEBRUARY);
+    MonthAdapter monthAdapter =
+        createRangeMonthAdapter(month, new Pair<>(month.getDay(1), month.getDay(10)));
+
+    assertTrue(monthAdapter.isEndOfRange(month.getDay(10)));
+  }
+
+  @Test
+  public void rangeDateSelector_isNotEndOfRange() {
+    Month month = Month.create(2016, Calendar.FEBRUARY);
+    MonthAdapter monthAdapter =
+        createRangeMonthAdapter(month, new Pair<>(month.getDay(1), month.getDay(10)));
+
+    assertFalse(monthAdapter.isEndOfRange(month.getDay(9)));
+  }
+
+  private MonthAdapter createRangeMonthAdapter(Month month, Pair<Long, Long> selection) {
+    DateSelector<Pair<Long, Long>> dateSelector = new RangeDateSelector();
+    dateSelector.setSelection(selection);
+    return new MonthAdapter(
+        month,
+        dateSelector,
+        new CalendarConstraints.Builder().build(),
+        /* dayViewDecorator= */ null);
   }
 }

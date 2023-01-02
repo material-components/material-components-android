@@ -16,6 +16,8 @@
   -->
 <resources>
 
+  <!-- Deprecated. -->
+
   <style name="TextAppearance.MaterialComponents.Headline6" parent="Base.TextAppearance.MaterialComponents.Headline6">
     <!-- Roboto Medium was added in this api level -->
     <item name="fontFamily">sans-serif-medium</item>

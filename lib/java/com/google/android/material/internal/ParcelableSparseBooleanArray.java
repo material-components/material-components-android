@@ -20,9 +20,9 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.SparseBooleanArray;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
-import android.util.SparseBooleanArray;
 
 /**
  * Child of SparseBooleanArray that is parcelable.

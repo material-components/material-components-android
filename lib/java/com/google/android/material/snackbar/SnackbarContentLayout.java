@@ -19,26 +19,29 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.animation.TimeInterpolator;
 import android.content.Context;
-import android.content.res.TypedArray;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.core.view.ViewCompat;
+import android.text.Layout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.core.view.ViewCompat;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.motion.MotionUtils;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
 public class SnackbarContentLayout extends LinearLayout implements ContentViewCallback {
   private TextView messageView;
   private Button actionView;
+  private final TimeInterpolator contentInterpolator;
 
-  private int maxWidth;
   private int maxInlineActionWidth;
 
   public SnackbarContentLayout(@NonNull Context context) {
@@ -47,11 +50,11 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
 
   public SnackbarContentLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
-    TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
-    maxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
-    maxInlineActionWidth =
-        a.getDimensionPixelSize(R.styleable.SnackbarLayout_maxActionInlineWidth, -1);
-    a.recycle();
+    contentInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context,
+            R.attr.motionEasingEmphasizedInterpolator,
+            AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
   }
 
   @Override
@@ -82,17 +85,19 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-    if (maxWidth > 0 && getMeasuredWidth() > maxWidth) {
-      widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
-      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    if (getOrientation() == VERTICAL) {
+      // The layout is by default HORIZONTAL. We only change it to VERTICAL when the action view
+      // is too wide and ellipsizes the message text. When the condition is met, we should keep the
+      // layout as VERTICAL.
+      return;
     }
 
     final int multiLineVPadding =
         getResources().getDimensionPixelSize(R.dimen.design_snackbar_padding_vertical_2lines);
     final int singleLineVPadding =
         getResources().getDimensionPixelSize(R.dimen.design_snackbar_padding_vertical);
-    final boolean isMultiLine = messageView.getLayout().getLineCount() > 1;
+    final Layout messageLayout = messageView.getLayout();
+    final boolean isMultiLine = messageLayout != null && messageLayout.getLineCount() > 1;
 
     boolean remeasure = false;
     if (isMultiLine
@@ -146,22 +151,26 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
   @Override
   public void animateContentIn(int delay, int duration) {
     messageView.setAlpha(0f);
-    messageView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
+    messageView.animate().alpha(1f).setDuration(duration).
+        setInterpolator(contentInterpolator).setStartDelay(delay).start();
 
     if (actionView.getVisibility() == VISIBLE) {
       actionView.setAlpha(0f);
-      actionView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
+      actionView.animate().alpha(1f).setDuration(duration).
+          setInterpolator(contentInterpolator).setStartDelay(delay).start();
     }
   }
 
   @Override
   public void animateContentOut(int delay, int duration) {
     messageView.setAlpha(1f);
-    messageView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
+    messageView.animate().alpha(0f).setDuration(duration).
+        setInterpolator(contentInterpolator).setStartDelay(delay).start();
 
     if (actionView.getVisibility() == VISIBLE) {
       actionView.setAlpha(1f);
-      actionView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
+      actionView.animate().alpha(0f).setDuration(duration).
+          setInterpolator(contentInterpolator).setStartDelay(delay).start();
     }
   }
 

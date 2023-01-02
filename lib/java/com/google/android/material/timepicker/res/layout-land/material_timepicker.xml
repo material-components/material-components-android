@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2020 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:id="@+id/material_timepicker_container"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
+
+  <androidx.constraintlayout.helper.widget.Flow
+    android:id="@+id/material_clock_display_and_toggle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="20dp"
+    android:orientation="vertical"
+    app:constraint_referenced_ids="material_clock_display,material_clock_period_toggle"
+    app:flow_verticalGap="@dimen/material_clock_period_toggle_vertical_gap"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+  <include
+    android:id="@+id/material_clock_display"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    layout="@layout/material_clock_display" />
+
+  <include
+    android:id="@+id/material_clock_period_toggle"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    layout="@layout/material_clock_period_toggle_land" />
+
+  <com.google.android.material.timepicker.ClockFaceView
+    android:id="@+id/material_clock_face"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/clock_face_margin_start"
+    app:layout_constraintStart_toEndOf="@+id/material_clock_display_and_toggle"
+    app:layout_constraintTop_toTopOf="parent" />
+
+</merge>

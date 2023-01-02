@@ -16,7 +16,7 @@
 
 package com.google.android.material.radiobutton;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -24,10 +24,10 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import androidx.core.widget.CompoundButtonCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioButton;
+import androidx.core.widget.CompoundButtonCompat;
 import com.google.android.material.color.MaterialColors;
 import org.junit.Before;
 import org.junit.Test;

@@ -17,35 +17,39 @@
 <resources>
 
   <string-array name="cat_font_styles_array">
-    <item>?attr/textAppearanceHeadline1</item>
-    <item>?attr/textAppearanceHeadline2</item>
-    <item>?attr/textAppearanceHeadline3</item>
-    <item>?attr/textAppearanceHeadline4</item>
-    <item>?attr/textAppearanceHeadline5</item>
-    <item>?attr/textAppearanceHeadline6</item>
-    <item>?attr/textAppearanceSubtitle1</item>
-    <item>?attr/textAppearanceSubtitle2</item>
-    <item>?attr/textAppearanceBody1</item>
-    <item>?attr/textAppearanceBody2</item>
-    <item>?attr/textAppearanceCaption</item>
-    <item>?attr/textAppearanceButton</item>
-    <item>?attr/textAppearanceOverline</item>
+    <item>?attr/textAppearanceDisplayLarge</item>
+    <item>?attr/textAppearanceDisplayMedium</item>
+    <item>?attr/textAppearanceDisplaySmall</item>
+    <item>?attr/textAppearanceHeadlineLarge</item>
+    <item>?attr/textAppearanceHeadlineMedium</item>
+    <item>?attr/textAppearanceHeadlineSmall</item>
+    <item>?attr/textAppearanceTitleLarge</item>
+    <item>?attr/textAppearanceTitleMedium</item>
+    <item>?attr/textAppearanceTitleSmall</item>
+    <item>?attr/textAppearanceBodyLarge</item>
+    <item>?attr/textAppearanceBodyMedium</item>
+    <item>?attr/textAppearanceBodySmall</item>
+    <item>?attr/textAppearanceLabelLarge</item>
+    <item>?attr/textAppearanceLabelMedium</item>
+    <item>?attr/textAppearanceLabelSmall</item>
   </string-array>
 
   <string-array name="cat_font_style_names_array">
-    <item>Headline 1</item>
-    <item>Headline 2</item>
-    <item>Headline 3</item>
-    <item>Headline 4</item>
-    <item>Headline 5</item>
-    <item>Headline 6</item>
-    <item>Subtitle 1</item>
-    <item>Subtitle 2</item>
-    <item>Body 1</item>
-    <item>Body 2</item>
-    <item>Caption</item>
-    <item>Button</item>
-    <item>Overline</item>
+    <item>Display Large</item>
+    <item>Display Medium</item>
+    <item>Display Small</item>
+    <item>Headline Large</item>
+    <item>Headline Medium</item>
+    <item>Headline Small</item>
+    <item>Title Large</item>
+    <item>Title Medium</item>
+    <item>Title Small</item>
+    <item>Body Large</item>
+    <item>Body Medium</item>
+    <item>Body Small</item>
+    <item>Label Large</item>
+    <item>Label Medium</item>
+    <item>Label Small</item>
   </string-array>
 
 </resources>

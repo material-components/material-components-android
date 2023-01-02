@@ -19,6 +19,24 @@
   <!-- Style to use for AppBarLayouts in this theme. -->
   <attr name="appBarLayoutStyle" format="reference"/>
 
+  <!-- Style to use for CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutStyle" format="reference"/>
+
+  <!-- Style to use for Medium CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutMediumStyle" format="reference"/>
+
+  <!-- Style to use for Large CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutLargeStyle" format="reference"/>
+
+  <!-- Size to use for Medium CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutMediumSize" format="reference"/>
+
+  <!-- Size to use for Large CollapsingToolbarLayouts in this theme. -->
+  <attr name="collapsingToolbarLayoutLargeSize" format="reference"/>
+
+  <!-- Style to use for Surface Toolbars in this theme. -->
+  <attr name="toolbarSurfaceStyle" format="reference"/>
+
   <declare-styleable name="AppBarLayout">
     <!-- Deprecated. Elevation is now controlled via a state list animator. -->
     <attr name="elevation"/>
@@ -36,19 +54,22 @@
          `RecyclerView`, etc.). Default is false. -->
     <attr name="liftOnScroll" format="boolean"/>
     <!-- The id of the view that the {@link AppBarLayout} should use to determine whether
-         it should be lifted (i.e., only if {@link R.attr#liftOnScroll} is set to true).
+         it should be lifted (i.e., only if {@code liftOnScroll} is set to true).
          If this id is not set, the {@link AppBarLayout} will use the target view provided
          by nested scrolling to determine whether it should be lifted. -->
     <attr name="liftOnScrollTargetViewId" format="reference"/>
+    <!-- The color of the app bar when lifted, if lift on scroll is enabled. If null, the color is
+         determined by the elevation overlay. -->
+    <attr name="liftOnScrollColor" format="color"/>
     <!-- The drawable to display in front of the layout's content, but behind the status bar.
          Only works on Lollipop when used together with android:fitSystemWindows="true". -->
     <attr name="statusBarForeground" format="color"/>
   </declare-styleable>
 
   <declare-styleable name="AppBarLayoutStates">
-    <!-- @deprecated in favor of {@link R.attr#state_lifted}. -->
+    <!-- @deprecated in favor of {@code state_lifted}. -->
     <attr name="state_collapsed" format="boolean"/>
-    <!-- @deprecated in favor of {@link R.attr#state_liftable}. -->
+    <!-- @deprecated in favor of {@code state_liftable}. -->
     <attr name="state_collapsible" format="boolean"/>
     <!-- State value for {@link com.google.android.material.appbar.AppBarLayout} set when the view
          is lifted (elevated). -->
@@ -93,6 +114,15 @@
       <flag name="snapMargins" value="0x20"/>
     </attr>
 
+    <attr name="layout_scrollEffect" format="enum">
+      <!-- No effect will be applied to this child when its parent
+           AppBarLayout's offset changes.-->
+      <enum name="none" value="0"/>
+      <!-- This view will be compressed (masked and parallaxed) when it reaches
+           the top of the screen and continues to scroll out of view.-->
+      <enum name="compress" value="1"/>
+    </attr>
+
     <!-- An interpolator to use when scrolling this View. Only takes effect when View
          is scrollable. -->
     <attr name="layout_scrollInterpolator" format="reference"/>
@@ -125,6 +155,19 @@
     <!-- The text appearance of the CollapsingToolbarLayouts title when it is fully
          'collapsed' -->
     <attr name="collapsedTitleTextAppearance" format="reference"/>
+    <!-- The text ellipsize of the collapsedToolbarLayout title -->
+    <attr name="titleTextEllipsize" format="enum">
+      <enum name="start" value="0" />
+      <enum name="middle" value="1" />
+      <enum name="end" value="2" />
+      <enum name="marquee" value="3" />
+    </attr>
+    <!-- The text color of the CollapsingToolbarLayout's title when it is fully
+         'expanded' -->
+    <attr name="expandedTitleTextColor" format="color|reference"/>
+    <!-- The text color of the CollapsingToolbarLayouts title when it is fully
+         'collapsed' -->
+    <attr name="collapsedTitleTextColor" format="color|reference"/>
     <!-- The drawable to use as a scrim on top of the CollapsingToolbarLayouts content when
          it has been scrolled sufficiently off screen. -->
     <attr name="contentScrim" format="color"/>
@@ -190,12 +233,29 @@
       <flag name="end" value="0x00800005"/>
     </attr>
 
-    <!-- Whether the CollapsingToolbarLayout should draw its own shrinking/growing title. -->
+    <!-- Whether the CollapsingToolbarLayout should draw its own collapsing title. -->
     <attr name="titleEnabled" format="boolean"/>
     <!-- The title to show when titleEnabled is set to true. -->
     <attr name="title"/>
+    <!-- Mode to specify the effect used to collapse and expand the title text. -->
+    <attr name="titleCollapseMode">
+      <!-- The expanded title will continuously scale and translate to its final collapsed position. -->
+      <enum name="scale" value="0"/>
+      <!-- The expanded title will fade out and translate, and the collapsed title will fade in. -->
+      <enum name="fade" value="1"/>
+    </attr>
     <!-- The maximum number of lines to display in the expanded state. Experimental Feature. -->
     <attr name="maxLines" format="integer" />
+    <!-- Whether the system window inset top should be applied regardless of
+         what the layout_height is set to. Experimental Feature. -->
+    <attr name="forceApplySystemWindowInsetTop" format="boolean" />
+    <!-- Whether extra height should be added when the title text spans across
+         multiple lines. Experimental Feature. -->
+    <attr name="extraMultilineHeightEnabled" format="boolean" />
+
+    <!-- The interpolator to use when animating the title position from collapsed to expanded and
+         vice versa. -->
+    <attr name="titlePositionInterpolator" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">
@@ -212,6 +272,47 @@
     <!-- The multiplier used when layout_collapseMode is set to 'parallax'. The value should
          be between 0.0 and 1.0. -->
     <attr name="layout_collapseParallaxMultiplier" format="float"/>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialToolbar">
+    <!-- The tint color for the navigation button icon drawable corresponding to
+         the "app:navigationIcon" attribute. -->
+    <attr name="navigationIconTint" />
+    <!-- Whether the title text corresponding to the "app:title" attribute
+         should be centered horizontally within the toolbar. Default is false.
+    -->
+    <attr name="titleCentered" format="boolean" />
+    <!-- Whether the subtitle text corresponding to the "app:subtitle" attribute
+         should be centered horizontally within the toolbar. Default is false.
+    -->
+    <attr name="subtitleCentered" format="boolean" />
+    <!-- adjust view bounds for logo's imageView. -->
+    <attr name="logoAdjustViewBounds" format="boolean" />
+    <!-- scale type for logo's imageView. -->
+    <attr name="logoScaleType">
+      <!-- Scale using the image matrix when drawing. See
+           {@link android.widget.ImageView#setImageMatrix(Matrix)}. -->
+      <enum name="matrix" value="0" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#FILL}. -->
+      <enum name="fitXY" value="1" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#START}. -->
+      <enum name="fitStart" value="2" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#CENTER}. -->
+      <enum name="fitCenter" value="3" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#END}. -->
+      <enum name="fitEnd" value="4" />
+      <!-- Center the image in the view, but perform no scaling. -->
+      <enum name="center" value="5" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so both dimensions
+           (width and height) of the image will be equal to or larger than the corresponding
+           dimension of the view (minus padding). The image is then centered in the view. -->
+      <enum name="centerCrop" value="6" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so that both
+           dimensions (width and height) of the image will be equal to or less than the
+           corresponding dimension of the view (minus padding). The image is then centered in
+           the view. -->
+      <enum name="centerInside" value="7" />
+    </attr>
   </declare-styleable>
 
 </resources>

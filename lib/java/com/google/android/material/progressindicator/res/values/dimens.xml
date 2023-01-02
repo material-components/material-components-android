@@ -15,7 +15,21 @@
   ~ limitations under the License.
 -->
 <resources>
-  <dimen name="mtrl_progress_indicator_width">4dp</dimen>
+  <dimen name="mtrl_progress_track_thickness">4dp</dimen>
+  <dimen name="mtrl_progress_indicator_full_rounded_corner_radius">2dp</dimen>
   <dimen name="mtrl_progress_circular_radius">18dp</dimen>
+
+  <dimen name="mtrl_progress_circular_size">40dp</dimen>
   <dimen name="mtrl_progress_circular_inset">4dp</dimen>
+
+  <dimen name="mtrl_progress_circular_size_medium">40dp</dimen>
+  <dimen name="mtrl_progress_circular_inset_medium">4dp</dimen>
+  <dimen name="mtrl_progress_circular_track_thickness_medium">4dp</dimen>
+  <dimen name="mtrl_progress_circular_size_small">28dp</dimen>
+  <dimen name="mtrl_progress_circular_inset_small">4dp</dimen>
+  <dimen name="mtrl_progress_circular_track_thickness_small">3dp</dimen>
+  <dimen name="mtrl_progress_circular_size_extra_small">20dp</dimen>
+  <dimen name="mtrl_progress_circular_inset_extra_small">2dp</dimen>
+  <dimen name="mtrl_progress_circular_track_thickness_extra_small">2.5dp</dimen>
+
 </resources>

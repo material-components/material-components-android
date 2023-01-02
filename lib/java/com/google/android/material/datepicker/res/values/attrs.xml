@@ -24,11 +24,18 @@
   <attr name="materialCalendarHeaderDivider" format="reference"/>
   <attr name="materialCalendarHeaderTitle" format="reference"/>
   <attr name="materialCalendarHeaderSelection" format="reference"/>
+  <attr name="materialCalendarHeaderCancelButton" format="reference"/>
   <attr name="materialCalendarHeaderConfirmButton" format="reference"/>
   <attr name="materialCalendarHeaderToggleButton" format="reference"/>
 
+  <!-- Navigation Styles -->
+  <attr name="materialCalendarYearNavigationButton" format="reference"/>
+  <attr name="materialCalendarMonthNavigationButton" format="reference"/>
+
   <!-- Grid Styles -->
+  <attr name="materialCalendarDayOfWeekLabel" format="reference"/>
   <attr name="materialCalendarDay" format="reference"/>
+  <attr name="materialCalendarMonth" format="reference"/>
 
   <declare-styleable name="MaterialCalendar">
     <attr name="android:windowFullscreen"/>
@@ -40,6 +47,7 @@
     <attr name="yearSelectedStyle" format="reference"/>
     <attr name="yearTodayStyle" format="reference"/>
     <attr name="rangeFillColor" format="color"/>
+    <attr name="nestedScrollable" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="MaterialCalendarItem">

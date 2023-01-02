@@ -56,18 +56,18 @@ whitespace, Material Components for Android uses code conventions and styles to
 encourage consistency. Code with a consistent style is easier (and less
 error-prone!) to review, maintain, and understand.
 
-#### Be consistent
+### Be consistent
 
 If the style guide is not explicit about a particular situation, the cardinal
 rule is to **be consistent**. For example, take a look at the surrounding code
 and follow its lead, or look for similar cases elsewhere in the codebase.
 
-#### Java
+### Java
 
 We follow the
 [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
 
-#### XML
+### XML
 
 -   2 space indentation
 -   Resource naming (including IDs) is `lowercase_with_underscores`
@@ -85,6 +85,7 @@ We follow the
 ## Useful Links
 
 -   [Getting Started](getting-started.md)
+-   [Using Snapshot Version](using-snapshot-version.md)
 -   [Building From Source](building-from-source.md)
 -   [Catalog App](catalog-app.md)
 -   [Class documentation](https://developer.android.com/reference/com/google/android/material/classes)

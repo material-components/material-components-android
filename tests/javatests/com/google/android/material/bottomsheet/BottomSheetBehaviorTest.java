@@ -22,22 +22,24 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 
 import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.SystemClock;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.widget.NestedScrollView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.UiController;
@@ -603,6 +605,37 @@ public class BottomSheetBehaviorTest {
 
   @Test
   @MediumTest
+  public void testDraggableChange() {
+    getBehavior().setDraggable(false);
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        // Drag (and not release)
+        .perform(
+            new DragAction(
+                GeneralLocation.VISIBLE_CENTER, GeneralLocation.TOP_CENTER, Press.FINGER))
+        // Check that the bottom sheet is NOT in STATE_DRAGGING
+        .check(
+            (view, e) -> {
+              assertThat(view, is(ViewMatchers.isDisplayed()));
+              BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
+              assertThat(behavior.getState(), not(is(BottomSheetBehavior.STATE_DRAGGING)));
+            });
+    getBehavior().setDraggable(true);
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        // Drag (and not release)
+        .perform(
+            new DragAction(
+                GeneralLocation.VISIBLE_CENTER, GeneralLocation.TOP_CENTER, Press.FINGER))
+        // Check that the bottom sheet is in STATE_DRAGGING
+        .check(
+            (view, e) -> {
+              assertThat(view, is(ViewMatchers.isDisplayed()));
+              BottomSheetBehavior<?> behavior = BottomSheetBehavior.from(view);
+              assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_DRAGGING));
+            });
+  }
+
+  @Test
+  @MediumTest
   public void testHalfExpandedToExpanded() throws Throwable {
     getBehavior().setFitToContents(false);
     checkSetState(BottomSheetBehavior.STATE_HALF_EXPANDED, ViewMatchers.isDisplayed());
@@ -917,6 +950,14 @@ public class BottomSheetBehaviorTest {
   }
 
   @Test
+  @MediumTest
+  public void testCalculateSlideOffset() throws Throwable {
+    checkSlideOffset(BottomSheetBehavior.STATE_EXPANDED, 1f);
+    checkSlideOffset(BottomSheetBehavior.STATE_COLLAPSED, 0f);
+    checkSlideOffset(BottomSheetBehavior.STATE_HIDDEN, -1f);
+  }
+
+  @Test
   @SmallTest
   public void testFindScrollingChildEnabled() {
     Context context = activityTestRule.getActivity();
@@ -930,6 +971,20 @@ public class BottomSheetBehaviorTest {
     assertThat(scrollingChild, is((View) enabledChild));
   }
 
+  @Test
+  @SmallTest
+  public void testWontFindScrollingChildInvisible() {
+    Context context = activityTestRule.getActivity();
+    FrameLayout parent = new FrameLayout(context);
+    NestedScrollView invisibleChild = new NestedScrollView(context);
+    invisibleChild.setNestedScrollingEnabled(true);
+    invisibleChild.setVisibility(View.INVISIBLE);
+    parent.addView(invisibleChild);
+
+    View scrollingChild = getBehavior().findScrollingChild(parent);
+    assertThat(scrollingChild, nullValue());
+  }
+
   private void checkSetState(final int state, Matcher<View> matcher) throws Throwable {
     registerIdlingResourceCallback();
     try {
@@ -938,6 +993,20 @@ public class BottomSheetBehaviorTest {
           .check(ViewAssertions.matches(matcher));
       assertThat(getBehavior().getState(), is(state));
       assertAccessibilityActions(getBehavior(), getBottomSheet());
+    } finally {
+      unregisterIdlingResourceCallback();
+    }
+  }
+
+  private void checkSlideOffset(final int state, float slideOffset)
+      throws Throwable {
+    registerIdlingResourceCallback();
+    try {
+      activityTestRule.runOnUiThread(() -> getBehavior().setState(state));
+      // An "always-passing" check to wait until UI thread is idle.
+      Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+          .check(ViewAssertions.matches(ViewMatchers.withId(R.id.bottom_sheet)));
+      assertThat(getBehavior().calculateSlideOffset(), is(slideOffset));
     } finally {
       unregisterIdlingResourceCallback();
     }

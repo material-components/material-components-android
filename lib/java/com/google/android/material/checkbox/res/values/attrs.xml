@@ -16,12 +16,69 @@
 -->
 <resources>
   <declare-styleable name="MaterialCheckBox">
+    <attr name="android:button"/>
+    <attr name="buttonCompat"/>
     <!-- When set to true, MaterialCheckBox will tint itself according to
       Material Theme colors. When set to false, Material Theme colors will
       be ignored. This value should be set to false when using custom drawables
       that should not be tinted. This value is ignored if a buttonTint is set. -->
     <attr name="useMaterialThemeColors"/>
-    <!-- Tint for the checkbox. -->
+    <!-- Tint for the checkbox button. Set to null if using custom drawables
+         that should not be tinted. -->
     <attr name="buttonTint"/>
+    <!-- Icon of the checkbox button. -->
+    <attr name="buttonIcon" format="reference"/>
+    <!-- Tint for the icon of the checkbox button, if present. Set to null if
+         using custom drawables that should not be tinted. -->
+    <attr name="buttonIconTint" format="reference|color"/>
+    <!-- The blending mode used to apply the tint specified by buttonIconTint
+         to buttonIcon. The default mode is SRC_IN if not specified. -->
+    <attr name="buttonIconTintMode">
+      <!-- The tint is drawn on top of the drawable.
+           [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
+      <enum name="src_over" value="3" />
+      <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
+           color channels are thrown out. [Sa * Da, Sc * Da] -->
+      <enum name="src_in" value="5" />
+      <!-- The tint is drawn above the drawable, but with the drawable’s alpha
+           channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
+      <enum name="src_atop" value="9" />
+      <!-- Multiplies the color and alpha channels of the drawable with those of
+           the tint. [Sa * Da, Sc * Dc] -->
+      <enum name="multiply" value="14" />
+      <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
+      <enum name="screen" value="15" />
+      <!-- Combines the tint and drawable color and alpha channels, clamping the
+           result to valid color values. Saturate(S + D) -->
+      <enum name="add" value="16" />
+    </attr>
+    <!-- Whether the MaterialCheckBox button drawable (checkbox icon) will be
+         centered when there is no text set for the checkbox. Default is true. -->
+    <attr name="centerIfNoTextEnabled" format="boolean"/>
+    <!-- Whether the checkbox should be in the error state. If true, it'll be
+         tinted with the error color. -->
+    <attr name="errorShown" format="boolean"/>
+    <!-- The error accessibility label that is announced by screen readers when
+         the checkbox is in the error state. -->
+    <attr name="errorAccessibilityLabel" format="string"/>
+    <!-- The state of the checkbox. Can be unchecked, checked, or indeterminate. -->
+    <attr name="checkedState">
+      <!-- The unchecked state of the checkbox. -->
+      <enum name="unchecked" value="0"/>
+      <!-- The checked state of the checkbox. -->
+      <enum name="checked" value="1"/>
+      <!-- The indeterminate state of the checkbox. -->
+      <enum name="indeterminate" value="2"/>
+    </attr>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialCheckBoxStates">
+    <!-- Error state of the checkbox. Behaves as part of existing states; a
+         checkbox is always one of checked/unchecked/indeterminate and can also
+         be on error or not. -->
+    <attr name="state_error" format="boolean"/>
+    <!-- Indeterminate state of the checkbox. Behaves as a third state; a
+         checkbox can be checked, unchecked, or indeterminate. -->
+    <attr name="state_indeterminate" format="boolean"/>
   </declare-styleable>
 </resources>

@@ -21,14 +21,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.view.LayoutInflater;
+import android.view.View;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import android.view.LayoutInflater;
-import android.view.View;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import com.google.android.material.navigation.NavigationView;

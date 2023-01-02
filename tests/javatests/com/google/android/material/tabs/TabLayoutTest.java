@@ -17,11 +17,15 @@
 package com.google.android.material.tabs;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.google.android.material.testutils.TabLayoutActions.selectTab;
 import static com.google.android.material.testutils.TabLayoutActions.setScrollPosition;
 import static com.google.android.material.testutils.TabLayoutActions.setTabMode;
 import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -38,17 +42,17 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.os.Build;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.PointerIcon;
 import android.view.View;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
@@ -157,6 +161,26 @@ public class TabLayoutTest {
   }
 
   @Test
+  public void testTabWithIdIsFound() throws Throwable {
+    AppCompatActivity activity = activityTestRule.getActivity();
+    int id = ViewCompat.generateViewId();
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            activity.setContentView(R.layout.design_tabs);
+            TabLayout tabs = activity.findViewById(R.id.tabs);
+            TabLayout.Tab tab = tabs.newTab().setId(id).setText("test text");
+            tabs.addTab(tab);
+          }
+        });
+
+    Espresso.onIdle();
+
+    onView(withId(id)).check(matches(hasDescendant(withText(containsString("test text")))));
+  }
+
+  @Test
   @UiThreadTest
   public void testMultipleTabsWithCustomLayoutSelection1() {
     final TabLayout.OnTabSelectedListener mockListener =
@@ -179,6 +203,102 @@ public class TabLayoutTest {
 
     assertEquals("Second tab is selected", 1, tabs.getSelectedTabPosition());
     assertTabCustomViewSelected(tabs);
+  }
+
+  @Test
+  @UiThreadTest
+  public void testTabSelectionSelectTab() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+    final TabLayout.Tab tab1 = tabs.newTab();
+    tabs.addTab(tab1);
+    assertTrue(tab1.isSelected());
+    final TabLayout.Tab tab2 = tabs.newTab();
+    tabs.addTab(tab2);
+    assertFalse(tab2.isSelected());
+    final TabLayout.Tab tab3 = tabs.newTab();
+    tabs.addTab(tab3);
+    assertFalse(tab3.isSelected());
+
+    tabs.selectTab(tab3);
+    assertTrue(tab3.isSelected());
+    assertFalse(tab1.isSelected());
+    assertFalse(tab2.isSelected());
+    assertEquals(2, tabs.indicatorPosition);
+
+    tabs.selectTab(tab2);
+    assertTrue(tab2.isSelected());
+    assertFalse(tab1.isSelected());
+    assertFalse(tab3.isSelected());
+    assertEquals(1, tabs.indicatorPosition);
+
+    tabs.selectTab(tab1);
+    assertTrue(tab1.isSelected());
+    assertFalse(tab2.isSelected());
+    assertFalse(tab3.isSelected());
+    assertEquals(0, tabs.indicatorPosition);
+  }
+
+  @Test
+  @UiThreadTest
+  public void testTabSelectionAddTab() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+    final TabLayout.Tab tab1 = tabs.newTab();
+    tabs.addTab(tab1);
+    assertTrue(tab1.isSelected());
+    final TabLayout.Tab tab2 = tabs.newTab();
+    tabs.addTab(tab2, false);
+    assertFalse(tab2.isSelected());
+    final TabLayout.Tab tab3 = tabs.newTab();
+    tabs.addTab(tab3, true);
+    assertTrue(tab3.isSelected());
+    final TabLayout.Tab tab4 = tabs.newTab();
+    tabs.addTab(tab4);
+    assertFalse(tab4.isSelected());
+  }
+
+  @Test
+  @UiThreadTest
+  public void testTabSelectionRemoveTab() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+    final TabLayout.Tab tab1 = tabs.newTab();
+    tabs.addTab(tab1);
+    assertTrue(tab1.isSelected());
+    final TabLayout.Tab tab2 = tabs.newTab();
+    tabs.addTab(tab2);
+    assertFalse(tab2.isSelected());
+    final TabLayout.Tab tab3 = tabs.newTab();
+    tabs.addTab(tab3, true);
+    assertTrue(tab3.isSelected());
+
+    tabs.removeTab(tab3);
+    assertTrue(tab2.isSelected());
+
+    tabs.removeTab(tab1);
+    assertTrue(tab2.isSelected());
+  }
+
+  @Test
+  @UiThreadTest
+  public void testTabSelectionNewTab() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+    final TabLayout.Tab tab1 = tabs.newTab();
+    assertFalse(tab1.isSelected());
+    tabs.addTab(tab1);
+    assertTrue(tab1.isSelected());
+
+    tabs.addTab(tabs.newTab());
+    tabs.addTab(tabs.newTab());
+
+    tabs.removeAllTabs();
+    assertFalse(tabs.newTab().isSelected());
   }
 
   @Test
@@ -381,6 +501,20 @@ public class TabLayoutTest {
     Espresso.unregisterIdlingResources(idler);
   }
 
+  @Test
+  @UiThreadTest
+  public void testSetCustomTabReplacesCustomView() {
+    final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
+    final TabLayout tabLayout = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+    final TabLayout.Tab tab = tabLayout.newTab();
+    tab.setCustomView(R.layout.design_tab_item_custom);
+    tabLayout.addTab(tab);
+    tab.setCustomView(R.layout.design_tab_item_custom_alternate);
+
+    assertNull(tabLayout.findViewById(R.id.my_custom_tab));
+    assertNotNull(tabLayout.findViewById(R.id.my_custom_alternate_tab));
+  }
+
   /**
    * Tests that the indicator animation still functions as intended when modifying the animator's
    * update listener, instead of removing/recreating the animator itself.
@@ -414,8 +548,9 @@ public class TabLayoutTest {
               int tabTwoLeft = tabs1.getTabAt(/* index= */ 2).view.getLeft();
               int tabTwoRight = tabs1.getTabAt(/* index= */ 2).view.getRight();
 
-              assertEquals(tabs1.slidingTabIndicator.indicatorLeft, tabTwoLeft);
-              assertEquals(tabs1.slidingTabIndicator.indicatorRight, tabTwoRight);
+              assertEquals(tabs1.tabSelectedIndicator.getBounds().left, tabTwoLeft);
+              assertEquals(tabs1.tabSelectedIndicator.getBounds().right, tabTwoRight);
+              assertEquals(2, tabs.indicatorPosition);
             });
 
     IdlingRegistry.getInstance().unregister(idler);

@@ -23,9 +23,20 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.view.menu.MenuView;
+import androidx.appcompat.widget.TooltipCompat;
+import android.util.AttributeSet;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewStub;
+import android.widget.CheckedTextView;
+import android.widget.FrameLayout;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,16 +48,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityEventCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.widget.TextViewCompat;
-import androidx.appcompat.view.menu.MenuItemImpl;
-import androidx.appcompat.view.menu.MenuView;
-import androidx.appcompat.widget.TooltipCompat;
-import android.util.AttributeSet;
-import android.util.TypedValue;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewStub;
-import android.widget.CheckedTextView;
-import android.widget.FrameLayout;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -208,6 +209,8 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   public void setChecked(boolean checked) {
     refreshDrawableState();
     textView.setChecked(checked);
+    // TODO(b/246765947): Use component tokens to control font weight
+    textView.setTypeface(textView.getTypeface(), checked ? Typeface.BOLD : Typeface.NORMAL);
   }
 
   @Override
@@ -281,7 +284,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   }
 
   public void setHorizontalPadding(int padding) {
-    setPadding(padding, 0, padding, 0);
+    setPadding(padding, getPaddingTop(), padding, getPaddingBottom());
   }
 
   public void setIconPadding(int padding) {

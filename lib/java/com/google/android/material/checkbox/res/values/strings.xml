@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <!-- Following the "Error: <error message>" pattern of the edit text. -->
+  <string name="error_a11y_label" description="Screen reader announcement for when a checkbox is on error. [CHAR LIMIT=NONE]">
+    Error: invalid
+  </string>
+  <string name="mtrl_checkbox_state_description_checked" description="Description for when checkbox is checked. [CHAR LIMIT=32]">
+    Checked
+  </string>
+  <string name="mtrl_checkbox_state_description_unchecked" description="Description for when checkbox is unchecked. [CHAR LIMIT=32]">
+    Not checked
+  </string>
+  <string name="mtrl_checkbox_state_description_indeterminate" description="Description for when checkbox is indeterminate. [CHAR LIMIT=32]">
+    Partially checked
+  </string>
+
+  <!-- Drawables strings. -->
+  <string name="mtrl_checkbox_button_path_group_name" translatable="false">button</string>
+  <string name="mtrl_checkbox_button_path_name" translatable="false">button path</string>
+  <string name="mtrl_checkbox_button_icon_path_group_name" translatable="false">icon</string>
+  <string name="mtrl_checkbox_button_icon_path_name" translatable="false">icon path</string>
+  <!-- Path data to draw a square when the checkbox is checked. -->
+  <string name="mtrl_checkbox_button_path_checked" translatable="false">M23,7H9C7.9,7,7,7.9,7,9v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V9C25,7.9,24.1,7,23,7z</string>
+  <!-- Path data to draw an outlined square when the checkbox is unchecked. -->
+  <string name="mtrl_checkbox_button_path_unchecked" translatable="false">M23,7H9C7.9,7,7,7.9,7,9v14c0,1.1,0.9,2,2,2h14c1.1,0,2-0.9,2-2V9C25,7.9,24.1,7,23,7z M23,23H9V9h14V23z</string>
+  <!-- Path data to draw a checkmark icon when the checkbox is checked. -->
+  <string name="mtrl_checkbox_button_icon_path_checked" translatable="false">M14,18.2 11.4,15.6 10,17 14,21 22,13 20.6,11.6z</string>
+  <!-- Path data to draw the indeterminate icon. -->
+  <string name="mtrl_checkbox_button_icon_path_indeterminate" translatable="false">M13.4,15 11,15 11,17 13.4,17 21,17 21,15z</string>
+</resources>

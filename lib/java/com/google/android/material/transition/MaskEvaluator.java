@@ -39,7 +39,10 @@ class MaskEvaluator {
   private final Path path = new Path();
   private final Path startPath = new Path();
   private final Path endPath = new Path();
-  private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
+  private final ShapeAppearancePathProvider pathProvider =
+      ShapeAppearancePathProvider.getInstance();
+
+  private ShapeAppearanceModel currentShapeAppearanceModel;
 
   /** Update the mask used by this evaluator based on a given progress. */
   void evaluate(
@@ -55,7 +58,7 @@ class MaskEvaluator {
     // drawing the container background & images
     float shapeStartFraction = shapeMaskThresholds.getStart();
     float shapeEndFraction = shapeMaskThresholds.getEnd();
-    ShapeAppearanceModel currentShapeAppearanceModel =
+    currentShapeAppearanceModel =
         lerp(
             startShapeAppearanceModel,
             endShapeAppearanceModel,
@@ -83,5 +86,13 @@ class MaskEvaluator {
       canvas.clipPath(startPath);
       canvas.clipPath(endPath, Region.Op.UNION);
     }
+  }
+
+  Path getPath() {
+    return path;
+  }
+
+  ShapeAppearanceModel getCurrentShapeAppearanceModel() {
+    return currentShapeAppearanceModel;
   }
 }

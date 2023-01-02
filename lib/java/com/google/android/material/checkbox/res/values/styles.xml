@@ -22,4 +22,19 @@
     <item name="android:minWidth">?attr/minTouchTargetSize</item>
     <item name="android:minHeight">?attr/minTouchTargetSize</item>
   </style>
+
+  <style name="Base.Widget.Material3.CompoundButton.CheckBox" parent="Widget.MaterialComponents.CompoundButton.CheckBox">
+    <!-- Inherit default text color since the component doesn't draw a surface. -->
+    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+    <item name="errorAccessibilityLabel">@string/error_a11y_label</item>
+    <item name="buttonTint">@color/m3_checkbox_button_tint</item>
+    <item name="buttonIconTint">@color/m3_checkbox_button_icon_tint</item>
+    <!-- We null the icon here to preserve pre-existing behaviors of when the
+         didn't have the concept of an icon drawable separate from the button
+         drawable. The default icon drawable will be set in MaterialCheckBox. -->
+    <item name="buttonIcon">@null</item>
+  </style>
+
+  <style name="Widget.Material3.CompoundButton.CheckBox" parent="Base.Widget.Material3.CompoundButton.CheckBox" />
+
 </resources>

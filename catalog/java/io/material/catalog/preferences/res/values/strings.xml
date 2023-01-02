@@ -1,0 +1,42 @@
+<!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+  <string name="preferences_menu_title" translatable="false">Preferences</string>
+  <string name="preferences_screen_title" translatable="false">Preferences</string>
+  <string name="theme_preference_description" translatable="false">Theme</string>
+  <string name="theme_preference_option_light" translatable="false">Light</string>
+  <string name="theme_preference_option_dark" translatable="false">Dark</string>
+  <string name="theme_preference_option_system_default" translatable="false">System default</string>
+  <string name="shape_corner_family_preference_description" translatable="false">Shape Corner Family</string>
+  <string name="shape_corner_family_preference_option_rounded" translatable="false">Rounded</string>
+  <string name="shape_corner_family_preference_option_cut" translatable="false">Cut</string>
+  <string name="shape_corner_family_preference_option_default" translatable="false">Default</string>
+  <string name="shape_corner_size_preference_description" translatable="false">Shape Corner Size</string>
+  <string name="shape_corner_size_preference_option_none" translatable="false">None</string>
+  <string name="shape_corner_size_preference_option_extra_small" translatable="false">XS</string>
+  <string name="shape_corner_size_preference_option_small" translatable="false">S</string>
+  <string name="shape_corner_size_preference_option_medium" translatable="false">M</string>
+  <string name="shape_corner_size_preference_option_large" translatable="false">L</string>
+  <string name="shape_corner_size_preference_option_extra_large" translatable="false">XL</string>
+  <string name="shape_corner_size_preference_option_full" translatable="false">Full</string>
+  <string name="shape_corner_size_preference_option_default" translatable="false">Default</string>
+  <string name="dynamic_color_preference_description" translatable="false">Dynamic Colors</string>
+  <string name="dynamic_color_preference_option_on" translatable="false">On</string>
+  <string name="dynamic_color_preference_option_off" translatable="false">Off</string>
+  <string name="edge_to_edge_preference_description" description="Title of edge to edge mode toggle [CHAR LIMIT=NONE]">Edge To Edge</string>
+  <string name="edge_to_edge_preference_option_on" description="Option to enable edge to edge mode [CHAR LIMIT=NONE]">On</string>
+  <string name="edge_to_edge_preference_option_off" description="Option to disable edge to edge mode [CHAR LIMIT=NONE]">Off</string>
+</resources>

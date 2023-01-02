@@ -36,6 +36,15 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcelable;
+import androidx.appcompat.widget.AppCompatDrawableManager;
+import androidx.appcompat.widget.AppCompatImageHelper;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
@@ -48,20 +57,11 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.TintableBackgroundView;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TintableImageSourceView;
-import androidx.appcompat.widget.AppCompatDrawableManager;
-import androidx.appcompat.widget.AppCompatImageHelper;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.animation.TransformationCallback;
 import com.google.android.material.appbar.AppBarLayout;
@@ -233,7 +233,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     compatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
     int minTouchTargetSize =
         getResources().getDimensionPixelSize(R.dimen.mtrl_fab_min_touch_target);
-    maxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
+
+    setMaxImageSize(a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0));
 
     MotionSpec showMotionSpec =
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_showMotionSpec);
@@ -263,7 +264,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
     getImpl().setPressedTranslationZ(pressedTranslationZ);
-    getImpl().setMaxImageSize(maxImageSize);
     getImpl().setShowMotionSpec(showMotionSpec);
     getImpl().setHideMotionSpec(hideMotionSpec);
     getImpl().setEnsureMinTouchTargetSize(ensureMinTouchTargetSize);
@@ -278,8 +278,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     imagePadding = (preferredSize - maxImageSize) / 2;
     getImpl().updatePadding();
 
-    final int w = resolveAdjustedSize(preferredSize, widthMeasureSpec);
-    final int h = resolveAdjustedSize(preferredSize, heightMeasureSpec);
+    final int w = View.resolveSize(preferredSize, widthMeasureSpec);
+    final int h = View.resolveSize(preferredSize, heightMeasureSpec);
 
     // As we want to stay circular, we set both dimensions to be the
     // smallest resolved dimension
@@ -287,7 +287,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     // We add the shadow's padding to the measured dimension
     setMeasuredDimension(
-        d + shadowPadding.left + shadowPadding.right, d + shadowPadding.top + shadowPadding.bottom);
+        d + shadowPadding.left + shadowPadding.right,
+        d + shadowPadding.top + shadowPadding.bottom);
   }
 
   /**
@@ -568,6 +569,17 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   /**
+   * Sets the max image size for this button.
+   *
+   * @param imageSize maximum icon image size
+   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_maxImageSize
+   */
+  public void setMaxImageSize(int imageSize) {
+    maxImageSize = imageSize;
+    getImpl().setMaxImageSize(imageSize);
+  }
+
+  /**
    * Shows the button.
    *
    * <p>This method will animate the button show if the view has already been laid out.
@@ -845,7 +857,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   @Override
-  @SuppressWarnings("argument.type.incompatible")
+  @SuppressWarnings("nullness:argument")
   // onRestoreInstanceState should accept nullable
   protected void onRestoreInstanceState(Parcelable state) {
     if (!(state instanceof ExtendableSavedState)) {
@@ -899,32 +911,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Nullable
   public Drawable getContentBackground() {
     return getImpl().getContentBackground();
-  }
-
-  private static int resolveAdjustedSize(int desiredSize, int measureSpec) {
-    int result = desiredSize;
-    int specMode = MeasureSpec.getMode(measureSpec);
-    int specSize = MeasureSpec.getSize(measureSpec);
-    switch (specMode) {
-      case MeasureSpec.UNSPECIFIED:
-        // Parent says we can be as big as we want. Just don't be larger
-        // than max size imposed on ourselves.
-        result = desiredSize;
-        break;
-      case MeasureSpec.AT_MOST:
-        // Parent says we can be as big as we want, up to specSize.
-        // Don't be larger than specSize, and don't be larger than
-        // the max size imposed on ourselves.
-        result = Math.min(desiredSize, specSize);
-        break;
-      case MeasureSpec.EXACTLY:
-        // No choice. Do what we are told.
-        result = specSize;
-        break;
-      default:
-        throw new IllegalArgumentException();
-    }
-    return result;
   }
 
   @Override
@@ -1044,6 +1030,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       internalAutoHideListener = listener;
     }
 
+    // dereference of possibly-null reference lp
+    @SuppressWarnings("nullness:dereference.of.nullable")
     private boolean shouldUpdateVisibility(
         @NonNull View dependency, @NonNull FloatingActionButton child) {
       final CoordinatorLayout.LayoutParams lp =
@@ -1093,6 +1081,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       return true;
     }
 
+    // dereference of possibly-null reference lp
+    @SuppressWarnings("nullness:dereference.of.nullable")
     private boolean updateFabVisibilityForBottomSheet(
         @NonNull View bottomSheet, @NonNull FloatingActionButton child) {
       if (!shouldUpdateVisibility(bottomSheet, child)) {
@@ -1154,6 +1144,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
      * offsets our layout position so that we're positioned correctly if we're on one of our
      * parent's edges.
      */
+    // dereference of possibly-null reference lp
+    @SuppressWarnings("nullness:dereference.of.nullable")
     private void offsetIfNeeded(
         @NonNull CoordinatorLayout parent, @NonNull FloatingActionButton fab) {
       final Rect padding = fab.shadowPadding;

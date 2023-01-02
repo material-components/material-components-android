@@ -19,6 +19,14 @@
 
   <!-- Style to use for MaterialButtons in this theme. -->
   <attr name="materialButtonStyle" format="reference"/>
+  <!-- Style to use for Material Icon Only Buttons in this theme. -->
+  <attr name="materialIconButtonStyle" format="reference"/>
+  <!-- Style to use for Filled Material Icon Only Buttons in this theme. -->
+  <attr name="materialIconButtonFilledStyle" format="reference"/>
+  <!-- Style to use for Filled Tonal Material Icon Only Buttons in this theme. -->
+  <attr name="materialIconButtonFilledTonalStyle" format="reference"/>
+  <!-- Style to use for Outlined Material Icon Only Buttons in this theme. -->
+  <attr name="materialIconButtonOutlinedStyle" format="reference"/>
   <!-- Style to use for Material Outlined Buttons in this theme. -->
   <attr name="materialButtonOutlinedStyle" format="reference"/>
   <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
@@ -52,13 +60,18 @@
       <!-- Push icon to the start of the button. -->
       <flag name="start" value="0x1"/>
       <!-- Push the icon to the start of the text keeping a distance equal to
-           {@link R.attr#iconPadding} from the text. -->
+           {@code iconPadding} from the text. -->
       <flag name="textStart" value="0x2"/>
       <!-- Push icon to the end of the button. -->
       <flag name="end" value="0x3"/>
       <!-- Push the icon to the end of the text keeping a distance equal to
-           {@link R.attr#iconPadding} from the text. -->
+           {@code iconPadding} from the text. -->
       <flag name="textEnd" value="0x4"/>
+      <!-- Push the icon to the top of the button. -->
+      <flag name="top" value="0x10"/>
+      <!-- Push the icon to the top of the text keeping a distance equal to
+           {@code iconPadding} from the text. -->
+      <flag name="textTop" value="0x20"/>
     </attr>
     <!-- Tint for icon drawable to display. -->
     <attr name="iconTint" format="color"/>
@@ -84,6 +97,8 @@
     <!-- Ripple color for the button. This may be a color state list, if the desired ripple color
          should be stateful. Attribute type definition is in resources package. -->
     <attr name="rippleColor"/>
+    <!-- Whether the button toggles the checked state when clicked. -->
+    <attr name="toggleCheckedStateOnClick" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="MaterialButtonToggleGroup">
@@ -97,6 +112,8 @@
     <attr name="selectionRequired"/>
     <!-- The id of the child button that should be checked by default within this button group. -->
     <attr name="checkedButton" format="reference"/>
+    <!-- Whether this MaterialButtonToggleGroup and all its children are enabled -->
+    <attr name="android:enabled" />
   </declare-styleable>
 
 </resources>

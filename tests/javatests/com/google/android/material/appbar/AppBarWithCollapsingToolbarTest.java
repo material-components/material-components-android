@@ -58,6 +58,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         });
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
 
     final int[] appbarOnScreenXY = new int[2];
     final int[] coordinatorLayoutOnScreenXY = new int[2];
@@ -88,6 +89,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     // for SCROLL_FLAG_SCROLL and SCROLL_EXIT_UNTIL_COLLAPSED, so it can't scroll backward.
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(false);
     mAppBar.getLocationOnScreen(appbarOnScreenXY);
     // At this point the app bar should be visually snapped below the system status bar.
     // Allow for off-by-a-pixel margin of error.
@@ -155,6 +157,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     assertScrimAlpha(0);
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
   }
 
   @Test
@@ -199,6 +202,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         });
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
 
     // Perform a swipe-up gesture across the horizontal center of the screen, starting from
     // just below the AppBarLayout
@@ -209,6 +213,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     // has a scroll backward action.
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(true);
+    assertAccessibilityScrollable(true);
 
     mAppBar.getLocationOnScreen(appbarOnScreenXY);
     // At this point the app bar should not be visually "present" on the screen, with its bottom
@@ -258,6 +263,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     assertScrimAlpha(0);
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
 
     // Perform yet another swipe-down gesture across the horizontal center of the screen.
     performVerticalSwipeDownGesture(

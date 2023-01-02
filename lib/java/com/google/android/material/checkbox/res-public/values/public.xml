@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2021 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<!-- Definitions of attributes to be exposed as public -->
+<resources>
+  <public name="Widget.Material3.CompoundButton.CheckBox" type="style"/>
+
+  <public name="buttonIcon" type="attr"/>
+  <public name="buttonIconTint" type="attr"/>
+  <public name="buttonIconTintMode" type="attr"/>
+  <public name="centerIfNoTextEnabled" type="attr"/>
+  <public name="checkedState" type="attr"/>
+  <public name="errorShown" type="attr"/>
+  <public name="errorAccessibilityLabel" type="attr"/>
+  <public name="state_error" type="attr"/>
+  <public name="state_indeterminate" type="attr"/>
+</resources>

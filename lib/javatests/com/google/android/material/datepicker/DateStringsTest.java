@@ -15,11 +15,12 @@
  */
 package com.google.android.material.datepicker;
 
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 import android.os.Build.VERSION_CODES;
 import androidx.core.util.Pair;
+import androidx.test.core.app.ApplicationProvider;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -296,5 +297,134 @@ public class DateStringsTest {
             new SimpleDateFormat("MMM dd", Locale.US));
     assertThat(dateRangeString.first, is("May 30"));
     assertThat(dateRangeString.second, is("Dec 05"));
+  }
+
+  @Test
+  public void getDayContentDescription_notToday() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            startDate.getTimeInMillis(),
+            /* isToday= */ false,
+            /* isStartOfRange= */ false,
+            /* isEndOfRange= */ false);
+
+    assertThat(contentDescription, is("Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getDayContentDescription_notToday_startOfRange() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            startDate.getTimeInMillis(),
+            /* isToday= */ false,
+            /* isStartOfRange= */ true,
+            /* isEndOfRange= */ false);
+
+    assertThat(contentDescription, is("Start date Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getDayContentDescription_notToday_endOfRange() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            startDate.getTimeInMillis(),
+            /* isToday= */ false,
+            /* isStartOfRange= */ false,
+            /* isEndOfRange= */ true);
+
+    assertThat(contentDescription, is("End date Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getDayContentDescription_notToday_startAndEndOfRange() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            startDate.getTimeInMillis(),
+            /* isToday= */ false,
+            /* isStartOfRange= */ true,
+            /* isEndOfRange= */ true);
+
+    assertThat(contentDescription, is("Start date Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getDayContentDescription_today() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            startDate.getTimeInMillis(),
+            /* isToday= */ true,
+            /* isStartOfRange= */ false,
+            /* isEndOfRange= */ false);
+
+    assertThat(contentDescription, is("Today Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getDayContentDescription_today_startOfRange() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            startDate.getTimeInMillis(),
+            /* isToday= */ true,
+            /* isStartOfRange= */ true,
+            /* isEndOfRange= */ false);
+
+    assertThat(contentDescription, is("Start date Today Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getDayContentDescription_today_endOfRange() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            startDate.getTimeInMillis(),
+            /* isToday= */ true,
+            /* isStartOfRange= */ false,
+            /* isEndOfRange= */ true);
+
+    assertThat(contentDescription, is("End date Today Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getDayContentDescription_today_startAndEndOfRange() {
+    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            startDate.getTimeInMillis(),
+            /* isToday= */ true,
+            /* isStartOfRange= */ true,
+            /* isEndOfRange= */ true);
+
+    assertThat(contentDescription, is("Start date Today Mon, Nov 30, 2020"));
+  }
+
+  @Test
+  public void getYearContentDescription_notCurrent() {
+    String contentDescription =
+        DateStrings.getYearContentDescription(ApplicationProvider.getApplicationContext(), 2020);
+
+    assertThat(contentDescription, is("Navigate to year 2020"));
+  }
+
+  @Test
+  public void getYearContentDescription_current() {
+    String contentDescription =
+        DateStrings.getYearContentDescription(
+            ApplicationProvider.getApplicationContext(), CURRENT_YEAR);
+
+    assertThat(contentDescription, is("Navigate to current year " + CURRENT_YEAR));
   }
 }

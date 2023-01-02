@@ -15,21 +15,22 @@
  */
 package com.google.android.material.chip;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 import android.graphics.RectF;
-import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Rule;
@@ -195,8 +196,8 @@ public class ChipTest {
     return dpToPx(ApplicationProvider.getApplicationContext(), MIN_SIZE_FOR_ALLY_DP);
   }
 
-  private void setupAndMeasureChip(boolean shouldEnsureMinTouchTargeSize) {
-    chip.setEnsureMinTouchTargetSize(shouldEnsureMinTouchTargeSize);
+  private void setupAndMeasureChip(boolean shouldEnsureMinTouchTargetSize) {
+    chip.setEnsureMinTouchTargetSize(shouldEnsureMinTouchTargetSize);
     int measureSpec =
         MeasureSpec.makeMeasureSpec((int) (getMinTouchTargetSize() * 2), MeasureSpec.AT_MOST);
     chip.measure(measureSpec, measureSpec);
@@ -224,5 +225,16 @@ public class ChipTest {
     assertThat(chip.getShapeAppearanceModel().getBottomRightCornerSize().getCornerSize(bounds))
         .isWithin(DELTA)
         .of(0);
+  }
+
+  @Test
+  public void getChipAccessibilityClassName_clickable_buttonName() {
+    assertEquals("android.widget.Button", chip.getAccessibilityClassName().toString());
+  }
+
+  @Test
+  public void getChipAccessibilityClassName_nonClickable_viewName() {
+    chip.setClickable(false);
+    assertEquals("android.view.View", chip.getAccessibilityClassName().toString());
   }
 }

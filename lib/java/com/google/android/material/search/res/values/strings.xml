@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <!-- The class name for the ScrollingChildBehavior for SearchBar. Similar to
+       @string/appbar_scrolling_view_behavior, results in the SearchBar scrolling
+       away/back on scroll up/down. -->
+  <string name="searchbar_scrolling_view_behavior" translatable="false">
+    com.google.android.material.search.SearchBar$ScrollingViewBehavior
+  </string>
+
+  <!-- Default content description for the navigation button (i.e. the back arrow) for
+       SearchView. -->
+  <string name="searchview_navigation_content_description"
+          description="Content description for the navigation button to return to the previous screen [CHAR_LIMIT=NONE]">Back</string>
+  <!-- Content description for the clear text button (i.e. the X button) for SearchView. -->
+  <string name="searchview_clear_text_content_description"
+          description="Content description for the X button to clear text [CHAR_LIMIT=NONE]">Clear text</string>
+</resources>

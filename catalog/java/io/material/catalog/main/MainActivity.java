@@ -26,15 +26,14 @@ import android.view.MenuItem;
 import com.google.common.base.Optional;
 import dagger.BindsOptionalOf;
 import dagger.android.ContributesAndroidInjector;
-import dagger.android.support.DaggerAppCompatActivity;
 import io.material.catalog.application.scope.ActivityScope;
 import io.material.catalog.feature.FeatureDemoUtils;
 import io.material.catalog.feature.OnBackPressedHandler;
 import io.material.catalog.internal.InternalOptionsMenuPresenter;
+import io.material.catalog.preferences.BaseCatalogActivity;
+import io.material.catalog.preferences.ThemeOverlayUtils;
 import io.material.catalog.tableofcontents.TocFragment;
 import io.material.catalog.tableofcontents.TocModule;
-import io.material.catalog.themeswitcher.ThemeOverlayUtils;
-import io.material.catalog.themeswitcher.ThemeSwitcherHelper.ThemeSwitcherActivity;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import javax.inject.Inject;
 
@@ -42,7 +41,7 @@ import javax.inject.Inject;
  * The main launcher activity for the Catalog, capable of displaying a number of different screens
  * via Fragments.
  */
-public class MainActivity extends DaggerAppCompatActivity implements ThemeSwitcherActivity {
+public class MainActivity extends BaseCatalogActivity {
 
   @Inject Optional<InternalOptionsMenuPresenter> internalOptionsMenu;
   TocFragment tocFragment;
@@ -98,6 +97,11 @@ public class MainActivity extends DaggerAppCompatActivity implements ThemeSwitch
       return;
     }
     super.onBackPressed();
+  }
+
+  @Override
+  public boolean isPreferencesEnabled() {
+    return true;
   }
 
   private boolean handleFragmentOnBackPressed() {

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <dimen name="m3_searchbar_height">@dimen/m3_comp_search_bar_container_height</dimen>
+  <dimen name="m3_searchbar_elevation">@dimen/m3_comp_search_bar_container_elevation</dimen>
+  <dimen name="m3_searchbar_text_size">16sp</dimen>
+  <dimen name="m3_searchbar_text_margin_start_no_navigation_icon">16dp</dimen>
+  <dimen name="m3_searchbar_margin_horizontal">16dp</dimen>
+  <dimen name="m3_searchbar_margin_vertical">16dp</dimen>
+  <dimen name="m3_searchbar_padding_start">4dp</dimen>
+  <dimen name="m3_searchbar_outlined_stroke_width">1dp</dimen>
+
+  <dimen name="m3_searchview_height">@dimen/m3_comp_search_view_full_screen_header_container_height</dimen>
+  <dimen name="m3_searchview_elevation">@dimen/m3_comp_search_view_container_elevation</dimen>
+  <dimen name="m3_searchview_divider_size">1dp</dimen>
+
+</resources>

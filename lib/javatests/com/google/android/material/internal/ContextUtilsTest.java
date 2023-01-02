@@ -16,7 +16,7 @@
 
 package com.google.android.material.internal;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import android.app.Activity;
 import android.content.ContextWrapper;

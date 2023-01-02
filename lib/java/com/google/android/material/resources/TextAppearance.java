@@ -24,6 +24,10 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import android.text.TextPaint;
+import android.util.Log;
 import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,8 +38,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.content.res.ResourcesCompat.FontCallback;
 import androidx.core.provider.FontsContractCompat.FontRequestCallback;
-import android.text.TextPaint;
-import android.util.Log;
 
 /**
  * Utility class that contains the data from parsing a TextAppearance style resource.
@@ -52,18 +54,23 @@ public class TextAppearance {
   private static final int TYPEFACE_SERIF = 2;
   private static final int TYPEFACE_MONOSPACE = 3;
 
-  public final float textSize;
-  @Nullable public final ColorStateList textColor;
   @Nullable public final ColorStateList textColorHint;
   @Nullable public final ColorStateList textColorLink;
+  @Nullable public final ColorStateList shadowColor;
+  @Nullable public final String fontFamily;
+
   public final int textStyle;
   public final int typeface;
-  @Nullable public final String fontFamily;
   public final boolean textAllCaps;
-  @Nullable public final ColorStateList shadowColor;
   public final float shadowDx;
   public final float shadowDy;
   public final float shadowRadius;
+  public final boolean hasLetterSpacing;
+  public final float letterSpacing;
+
+  @Nullable
+  private ColorStateList textColor;
+  private float textSize;
 
   @FontRes private final int fontFamilyResourceId;
 
@@ -74,10 +81,10 @@ public class TextAppearance {
   public TextAppearance(@NonNull Context context, @StyleRes int id) {
     TypedArray a = context.obtainStyledAttributes(id, R.styleable.TextAppearance);
 
-    textSize = a.getDimension(R.styleable.TextAppearance_android_textSize, 0f);
-    textColor =
+    setTextSize(a.getDimension(R.styleable.TextAppearance_android_textSize, 0f));
+    setTextColor(
         MaterialResources.getColorStateList(
-            context, a, R.styleable.TextAppearance_android_textColor);
+            context, a, R.styleable.TextAppearance_android_textColor));
     textColorHint =
         MaterialResources.getColorStateList(
             context, a, R.styleable.TextAppearance_android_textColorHint);
@@ -102,6 +109,16 @@ public class TextAppearance {
     shadowRadius = a.getFloat(R.styleable.TextAppearance_android_shadowRadius, 0);
 
     a.recycle();
+
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      a = context.obtainStyledAttributes(id, R.styleable.MaterialTextAppearance);
+      hasLetterSpacing = a.hasValue(R.styleable.MaterialTextAppearance_android_letterSpacing);
+      letterSpacing = a.getFloat(R.styleable.MaterialTextAppearance_android_letterSpacing, 0);
+      a.recycle();
+    } else {
+      hasLetterSpacing = false;
+      letterSpacing = 0;
+    }
   }
 
   /**
@@ -152,7 +169,7 @@ public class TextAppearance {
    */
   public void getFontAsync(
       @NonNull Context context, @NonNull final TextAppearanceFontCallback callback) {
-    if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
+    if (shouldLoadFontSynchronously(context)) {
       getFont(context);
     } else {
       // No-op if font already resolved.
@@ -211,11 +228,11 @@ public class TextAppearance {
    * @see #getFontAsync(Context, TextAppearanceFontCallback)
    */
   public void getFontAsync(
-      @NonNull Context context,
+      @NonNull final Context context,
       @NonNull final TextPaint textPaint,
       @NonNull final TextAppearanceFontCallback callback) {
     // Updates text paint using fallback font while waiting for font to be requested.
-    updateTextPaintMeasureState(textPaint, getFallbackFont());
+    updateTextPaintMeasureState(context, textPaint, getFallbackFont());
 
     getFontAsync(
         context,
@@ -223,7 +240,7 @@ public class TextAppearance {
           @Override
           public void onFontRetrieved(
               @NonNull Typeface typeface, boolean fontResolvedSynchronously) {
-            updateTextPaintMeasureState(textPaint, typeface);
+            updateTextPaintMeasureState(context, textPaint, typeface);
             callback.onFontRetrieved(typeface, fontResolvedSynchronously);
           }
 
@@ -308,8 +325,8 @@ public class TextAppearance {
       @NonNull Context context,
       @NonNull TextPaint textPaint,
       @NonNull TextAppearanceFontCallback callback) {
-    if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
-      updateTextPaintMeasureState(textPaint, getFont(context));
+    if (shouldLoadFontSynchronously(context)) {
+      updateTextPaintMeasureState(context, textPaint, getFont(context));
     } else {
       getFontAsync(context, textPaint, callback);
     }
@@ -321,7 +338,11 @@ public class TextAppearance {
    * @see android.text.style.TextAppearanceSpan#updateMeasureState(TextPaint)
    */
   public void updateTextPaintMeasureState(
-      @NonNull TextPaint textPaint, @NonNull Typeface typeface) {
+      @NonNull Context context, @NonNull TextPaint textPaint, @NonNull Typeface typeface) {
+    Typeface boldTypeface = TypefaceUtils.maybeCopyWithFontWeightAdjustment(context, typeface);
+    if (boldTypeface != null) {
+      typeface = boldTypeface;
+    }
     textPaint.setTypeface(typeface);
 
     int fake = textStyle & ~typeface.getStyle();
@@ -329,5 +350,39 @@ public class TextAppearance {
     textPaint.setTextSkewX((fake & Typeface.ITALIC) != 0 ? -0.25f : 0f);
 
     textPaint.setTextSize(textSize);
+
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      if (hasLetterSpacing) {
+        textPaint.setLetterSpacing(letterSpacing);
+      }
+    }
+  }
+
+  @Nullable
+  public ColorStateList getTextColor() {
+    return textColor;
+  }
+
+  public void setTextColor(@Nullable ColorStateList textColor) {
+    this.textColor = textColor;
+  }
+
+  public float getTextSize() {
+    return textSize;
+  }
+
+  public void setTextSize(float textSize) {
+    this.textSize = textSize;
+  }
+
+  private boolean shouldLoadFontSynchronously(Context context) {
+    if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
+      return true;
+    }
+    Typeface typeface =
+        (fontFamilyResourceId != 0)
+            ? ResourcesCompat.getCachedFont(context, fontFamilyResourceId)
+            : null;
+    return (typeface != null);
   }
 }

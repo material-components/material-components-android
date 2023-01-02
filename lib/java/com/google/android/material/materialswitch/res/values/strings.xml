@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+  <!-- Below path data are used to morph the thumb shape between different
+       states. All of them start from the orientation of 270 degrees, draw 90
+       degrees clockwise, draw a horizontal line (may have zero length if it's a
+       circle), draw 180 degrees clockwise, draw another horizontal line (may
+       have zero length if it's a circle), and then draw the final 90 degrees to
+       finish a circle or a capsule. -->
+  <!-- Path data to draw a larger thumb circle when the thumb is pressed. -->
+  <string name="mtrl_switch_thumb_path_pressed" translatable="false">M2,16 A14,14 0 0,1 16,2 H16 A14,14 0 0,1 16,30 H16 A14,14 0 0,1 2,16</string>
+  <!-- Path data to draw a thumb circle when the switch is checked. -->
+  <string name="mtrl_switch_thumb_path_checked" translatable="false">M4,16 A12,12 0 0,1 16,4 H16 A12,12 0 0,1 16,28 H16 A12,12 0 0,1 4,16</string>
+  <!-- Path data to draw a smaller thumb circle when the switch is unchecked. -->
+  <string name="mtrl_switch_thumb_path_unchecked" translatable="false">M8,16 A8,8 0 0,1 16,8 H16 A8,8 0 0,1 16,24 H16 A8,8 0 0,1 8,16</string>
+  <!-- Path data to draw a morphed thumb circle when the switch's checked state is changing. -->
+  <string name="mtrl_switch_thumb_path_morphing" translatable="false">M0,16 A11,11 0 0,1 11,5 H21 A11,11 0 0,1 21,27 H11 A11,11 0 0,1 0,16</string>
+
+  <string name="mtrl_switch_thumb_group_name" translatable="false">circle_group</string>
+  <string name="mtrl_switch_thumb_path_name" translatable="false">circle</string>
+
+  <!-- Path data to draw the switch track. -->
+  <string name="mtrl_switch_track_path" translatable="false">M0,16 A16,16 0 0,1 16,0 H36 A16,16 0 0,1 36,32 H16 A16,16 0 0,1 0,16</string>
+  <!-- Path data to draw the switch track decor. -->
+  <string name="mtrl_switch_track_decoration_path" translatable="false">M1,16 A15,15 0 0,1 16,1 H36 A15,15 0 0,1 36,31 H16 A15,15 0 0,1 1,16</string>
+</resources>

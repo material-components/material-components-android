@@ -31,7 +31,7 @@ public final class MathUtils {
   }
 
   /**
-   * Returns the linear interpolation of {@param amount} between {@param start} and {@param stop}.
+   * Returns the linear interpolation of {@code amount} between {@code start} and {@code stop}.
    */
   public static float lerp(float start, float stop, float amount) {
     return (1 - amount) * start + amount * stop;

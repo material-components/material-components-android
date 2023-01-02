@@ -12,7 +12,7 @@
   limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
@@ -24,53 +24,33 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_linear_indeterminate" />
-  <com.google.android.material.progressindicator.ProgressIndicator
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
+      android:text="@string/cat_progress_indicator_linear" />
+  <com.google.android.material.progressindicator.LinearProgressIndicator
+      android:id="@+id/linear_indicator"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      app:indicatorColor="?attr/colorPrimary" />
+      android:indeterminate="true"/>
 
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_circular_indeterminate" />
-  <com.google.android.material.progressindicator.ProgressIndicator
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
+      android:text="@string/cat_progress_indicator_circular" />
+  <com.google.android.material.progressindicator.CircularProgressIndicator
+      android:id="@+id/circular_indicator"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
-      app:indicatorColor="?attr/colorPrimary" />
+      android:indeterminate="true"/>
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_linear_determinate"/>
-  <com.google.android.material.progressindicator.ProgressIndicator
-      android:id="@+id/linear_determinate"
+  <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/determinate_mode_switch"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
-      app:indicatorColor="?attr/colorPrimary"/>
-
+      android:text="@string/cat_progress_indicator_set_to_determinate_mode"/>
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_circular_determinate"/>
-  <com.google.android.material.progressindicator.ProgressIndicator
-      android:id="@+id/circular_determinate"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      style="@style/Widget.MaterialComponents.ProgressIndicator.Circular.Determinate"
-      app:indicatorColor="?attr/colorPrimary"/>
-
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_deteriminate_progress_prompt"/>
+      android:text="@string/cat_progress_indicator_determinate_progress_prompt"/>
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
@@ -80,12 +60,13 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:hint="@string/cat_progress_indicator_deteriminate_progress_hint"
-        android:importantForAutofill="no"
-        android:inputType="number"/>
+        android:inputType="number"
+        tools:ignore="Autofill"/>
     <Button
         android:id="@+id/update_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="1dp"
         android:text="@string/cat_progress_indicator_update"/>
   </LinearLayout>
 </LinearLayout>

@@ -19,11 +19,11 @@ package io.material.catalog.imageview;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.shape.CornerFamily;
@@ -45,6 +45,7 @@ public class ShapeableImageViewMainDemoFragment extends DemoFragment {
         layoutInflater.inflate(R.layout.catalog_imageview, viewGroup, false /* attachToRoot */);
     MaterialButtonToggleGroup toggleGroup = view.findViewById(R.id.togglegroup);
     ShapeableImageView imageView = view.findViewById(R.id.image_view);
+    ShapeableImageView iconView = view.findViewById(R.id.icon_view);
 
     SparseArray<ShapeAppearanceModel> shapes = new SparseArray<>();
     shapes.put(
@@ -66,10 +67,14 @@ public class ShapeableImageViewMainDemoFragment extends DemoFragment {
             return;
           }
 
+          ShapeAppearanceModel shape = shapes.get(checkedId);
+
           // Randomly makes dog wink.
           imageView.setImageResource(
               random.nextBoolean() ? R.drawable.dog_image : R.drawable.dog_image_wink);
-          imageView.setShapeAppearanceModel(shapes.get(checkedId));
+          imageView.setShapeAppearanceModel(shape);
+
+          iconView.setShapeAppearanceModel(shape);
         });
 
     return view;

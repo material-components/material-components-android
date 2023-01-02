@@ -27,7 +27,6 @@
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/cat_app_name"
-    android:roundIcon="@mipmap/ic_launcher_round"
     android:supportsRtl="true"
     android:theme="@style/Theme.${application_theme}">
     <meta-data
@@ -35,7 +34,8 @@
       android:value="${catalog_application_component}"/>
 
     <activity
-      android:name=".main.MainActivity">
+      android:name=".main.MainActivity"
+      android:exported="true">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
@@ -43,37 +43,67 @@
     </activity>
     <activity
       android:name=".elevation.ElevationOverlayDemoActivity"
-      android:exported="false"
-      android:label="@string/cat_elevation_overlay_title"
-      android:theme="@style/Theme.Catalog.Dark"/>
+      android:exported="true"
+      android:label="@string/cat_elevation_overlay_title" />
+    <activity
+      android:name=".navigationdrawer.NavigationDrawerDemoActivity"
+      android:exported="true"
+      android:label="@string/cat_navigationdrawer_title" />
     <activity
       android:name=".topappbar.TopAppBarActionBarDemoActivity"
-      android:exported="false"
+      android:exported="true"
       android:label="@string/cat_topappbar_action_bar_title"
-      android:theme="@style/Theme.MaterialComponents.DayNight"/>
-    <activity
-      android:name=".topappbar.TopAppBarDarkActionBarDemoActivity"
-      android:exported="false"
-      android:label="@string/cat_topappbar_dark_action_bar_title"
-      android:theme="@style/Theme.MaterialComponents.DayNight.DarkActionBar"/>
+      android:theme="@style/Theme.Material3.DayNight"/>
     <activity
       android:name=".topappbar.TopAppBarScrollingTransparentStatusDemoActivity"
-      android:exported="false"
+      android:exported="true"
       android:label="@string/cat_topappbar_scrolling_transparent_title"
       android:theme="@style/Theme.Catalog.TransparentStatus"/>
     <activity
       android:name=".card.CardSelectionModeActivity"
       android:exported="true"/>
     <activity
-      android:name=".transition.hero.TransitionMusicDemoActivity"
-      android:exported="false"
-      android:theme="@style/Theme.Catalog.Music"/>
+      android:name=".musicplayer.MusicPlayerDemoActivity"
+      android:exported="true"
+      android:theme="@style/Theme.Catalog.MusicPlayer"/>
     <activity
       android:name=".transition.TransitionContainerTransformStartDemoActivity"
-      android:exported="false"/>
+      android:exported="true"/>
     <activity
       android:name=".transition.TransitionContainerTransformEndDemoActivity"
-      android:exported="false"/>
+      android:exported="true"/>
+    <activity
+      android:name="io.material.catalog.transition.TransitionSharedAxisStartDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.transition.TransitionSharedAxisEndDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveMusicPlayerDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveListViewDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveFeedDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveHeroDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.adaptive.AdaptiveSupportingPanelDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.color.ColorHarmonizationDemoActivity"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.search.SearchMainDemoActivity"
+      android:windowSoftInputMode="adjustNothing"
+      android:exported="true" />
+    <activity
+      android:name="io.material.catalog.search.SearchRecyclerDemoActivity"
+      android:windowSoftInputMode="adjustNothing"
+      android:exported="true" />
   </application>
 
 </manifest>

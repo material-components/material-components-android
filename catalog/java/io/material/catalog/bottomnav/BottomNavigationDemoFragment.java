@@ -19,23 +19,22 @@ package io.material.catalog.bottomnav;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
-import androidx.core.math.MathUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.core.math.MathUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeDrawable.BadgeGravity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
+import com.google.android.material.navigation.NavigationBarView.OnItemSelectedListener;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -66,7 +65,7 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
     initBottomNavs(layoutInflater, view);
     initBottomNavDemoControls(view);
 
-    OnNavigationItemSelectedListener navigationItemListener =
+    OnItemSelectedListener navigationItemListener =
         item -> {
           handleAllBottomNavSelections(item.getItemId());
 
@@ -184,7 +183,7 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
     badgeGravitySpinner.setAdapter(adapter);
 
     badgeGravitySpinner.setOnItemSelectedListener(
-        new OnItemSelectedListener() {
+        new AdapterView.OnItemSelectedListener() {
           @Override
           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             updateBadgeGravity(
@@ -220,9 +219,9 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
         });
   }
 
-  private void setBottomNavListeners(OnNavigationItemSelectedListener listener) {
+  private void setBottomNavListeners(OnItemSelectedListener listener) {
     for (BottomNavigationView bn : bottomNavigationViews) {
-      bn.setOnNavigationItemSelectedListener(listener);
+      bn.setOnItemSelectedListener(listener);
     }
   }
 

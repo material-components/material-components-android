@@ -19,9 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/end_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
-    tools:ignore="Overdraw">
+    android:layout_height="match_parent">
 
   <include layout="@layout/cat_transition_list_detail_fragment" />
 </FrameLayout>

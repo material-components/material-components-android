@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+  <string name="cat_navigation_rail_title"
+          description="The title for the navigation rail demo. [CHAR_LIMIT=100]">Navigation Rail</string>
+  <string name="cat_navigation_rail_description"
+          description="Brief summary about navigation rail componentdemo. [CHAR_LIMIT=500]">
+    Navigation Rails make it easy to explore and switch between top-level views in a single
+    tap. This navigational element resides at the bottom of the screen, and provides direct access
+    for three to five destinations within an app.
+  </string>
+
+  <string name="cat_navigation_rail_additional_controls_demo_title"
+          description="Label for the demo that shows how the look and behavior navigation rail may be configured. [CHAR_LIMIT=100]">Additional Controls Demo</string>
+  <string name="cat_navigation_rail_animated_demo_title"
+          description="Label the navigation rail demo that shows animated icons [CHAR_LIMIT=100]">Animated Demo</string>
+  <string name="cat_navigation_rail_compact_demo_title"
+          description="Label for the demo that shows navigation rail in compact style. [CHAR_LIMIT=100]">Compact Style Demo</string>
+
+  <string name="cat_navigation_rail_page_1_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 1</string>
+  <string name="cat_navigation_rail_page_2_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 2</string>
+  <string name="cat_navigation_rail_page_3_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 3</string>
+  <string name="cat_navigation_rail_page_4_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 4</string>
+  <string name="cat_navigation_rail_page_5_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 5</string>
+  <string name="cat_navigation_rail_page_6_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 6</string>
+  <string name="cat_navigation_rail_page_7_name"
+          description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 7</string>
+
+  <string name="cat_navigation_rail_add_nav_item"
+          description="Label for the button that will add a destination to the navigation rail. [CHAR_LIMIT=50]">Add destination</string>
+  <string name="cat_navigation_rail_remove_nav_item"
+          description="Label for the button that will the last destination from the navigation rail. [CHAR_LIMIT=50]">Remove destination</string>
+  <string name="cat_navigation_rail_increment_badge_number"
+          description="The title of a button to increment the notification number. [CHAR_LIMIT=20]">+Badge number</string>
+
+  <string name="cat_navigation_rail_add_header_view"
+          description="Label for the button that will add a header view to the navigation rail. [CHAR_LIMIT=50]">Add Header View</string>
+  <string name="cat_navigation_rail_remove_header_view"
+          description="Label for the button that will remove the header view from the navigation rail. [CHAR_LIMIT=50]">Remove Header View</string>
+
+  <string name="cat_navigation_rail_icon_size_slider_title"
+          description="Label for the current icon size display. [CHAR_LIMIT=50]">Icon size: </string>
+  <string name="cat_navigation_rail_slider_max" translatable="false">48dp</string>
+  <string name="cat_navigation_rail_slider_min" translatable="false">0dp</string>
+
+  <string name="cat_navigation_rail_menu_gravity_control_title"
+          description="Label for the group of choices that controls how destinations will be grouped in the navigation rail. [CHAR_LIMIT=100]">Menu Gravity:</string>
+  <string name="cat_navigation_rail_menu_gravity_top"
+          description="Label for the choice that will cause the destinations to be grouped at the top of the navigation rail. [CHAR_LIMIT=50]">Top</string>
+  <string name="cat_navigation_rail_menu_gravity_center"
+          description="Label for the choice that will cause the destinations to be grouped at the center of the navigation rail. [CHAR_LIMIT=50]">Center</string>
+  <string name="cat_navigation_rail_menu_gravity_bottom"
+          description="Label for the choice that will cause the destinations to be grouped at the bottom of the navigation rail. [CHAR_LIMIT=50]">Bottom</string>
+
+  <string name="cat_navigation_rail_label_visibility_mode_title"
+          description="Label for the group of choices that controls if and when the destination labels will be displayed in the navigation rail. [CHAR_LIMIT=100]">Label visibility mode:</string>
+  <string name="cat_navigation_rail_label_visibility_mode_auto"
+          description="Label for the choice that will cause the destination lables to be displayed automatically based on the total number of destinations in the navigation rail. [CHAR_LIMIT=50]">Auto</string>
+  <string name="cat_navigation_rail_label_visibility_mode_selected"
+          description="Label for the choice that will cause the destination lables to be displayed only for the currently selected destination in the navigation rail. [CHAR_LIMIT=50]">Selected</string>
+  <string name="cat_navigation_rail_label_visibility_mode_labeled"
+          description="Label for the choice that will cause the destination lables to be displayed always in the navigation rail. [CHAR_LIMIT=50]">Labeled</string>
+  <string name="cat_navigation_rail_label_visibility_mode_unlabeled"
+          description="Label for the choice that will cause the destination lables to be hidden always in the navigation rail. [CHAR_LIMIT=50]">Unlabeled</string>
+
+  <string name="cat_navigation_rail_badge_gravity_spinner_label"
+          description="Label for the dropdown that controls where badges will be positioned relative to the icon. [CHAR_LIMIT=50]">Badge gravity</string>
+  <string name="cat_navigation_rail_badge_gravity_top_end"
+          description="Label for the option that will cause badges to be positioned at the end, above the icon. [CHAR_LIMIT=50]">Top end</string>
+  <string name="cat_navigation_rail_badge_gravity_top_start"
+          description="Label for the option that will cause badges to be positioned at the start, above the icon. [CHAR_LIMIT=50]">Top start</string>
+  <string name="cat_navigation_rail_badge_gravity_bottom_end"
+          description="Label for the option that will cause badges to be positioned at the end, below the icon. [CHAR_LIMIT=50]">Bottom end</string>
+  <string name="cat_navigation_rail_badge_gravity_bottom_start"
+          description="Label for the option that will cause badges to be positioned at starting, below the icon. [CHAR_LIMIT=50]">Bottom start</string>
+
+  <string name="cat_navigation_rail_alarm"
+          description="Label for an alarm icon. [CHAR_LIMIT=50]">Alarm</string>
+  <string name="cat_navigation_rail_clock"
+          description="Label for a clock icon. [CHAR_LIMIT=50]">Clock</string>
+  <string name="cat_navigation_rail_timer"
+          description="Label for a timer icon. [CHAR_LIMIT=50]">Timer</string>
+  <string name="cat_navigation_rail_stopwatch"
+          description="Label for a stopwatch icon. [CHAR_LIMIT=50]">Stopwatch</string>
+
+  <string name="cat_navigation_rail_fab_content_desc"
+          description="Content description for a floating action button in the navigation rail.[CHAR_LIMIT=50]">Navigation Rail FAB</string>
+</resources>

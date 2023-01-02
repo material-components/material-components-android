@@ -1,22 +1,31 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api 'com.google.dagger:dagger:2.23.1'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.23.1'
+  api 'com.google.dagger:dagger:2.28.1'
+  annotationProcessor 'com.google.dagger:dagger-compiler:2.28.1'
 
-  api 'com.google.dagger:dagger-android:2.23.1'
-  api 'com.google.dagger:dagger-android-support:2.23.1'
-  annotationProcessor 'com.google.dagger:dagger-android-processor:2.23.1'
+  api 'com.google.dagger:dagger-android:2.28.1'
+  api 'com.google.dagger:dagger-android-support:2.28.1'
+  annotationProcessor 'com.google.dagger:dagger-android-processor:2.28.1'
 
-  api 'androidx.multidex:multidex:2.0.0'
-  api 'androidx.constraintlayout:constraintlayout:1.1.3'
+  api 'androidx.multidex:multidex:2.0.1'
+  api 'androidx.constraintlayout:constraintlayout:2.1.0'
   api 'androidx.gridlayout:gridlayout:1.0.0'
+  api "androidx.multidex:multidex:2.0.1"
+  api "androidx.recyclerview:recyclerview:1.2.1"
+  api 'androidx.window:window:1.0.0-beta04'
+  api "androidx.window:window-java:1.0.0-beta04"
+  api "androidx.preference:preference:1.1.1"
 
   api 'com.google.guava:guava:27.0.1-android'
+
+  api 'com.github.bumptech.glide:glide:4.13.2'
 
   api project(':lib')
 
   api compatibility("recyclerViewSelection")
+
+  implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
 
   androidTestImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   androidTestImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
@@ -26,15 +35,16 @@ dependencies {
 
   testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
-  testImplementation "junit:junit:4.12"
+  testImplementation "junit:junit:4.13.2"
   testImplementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
   testImplementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
-  testImplementation "org.robolectric:robolectric:4.3"
+  testImplementation "org.robolectric:robolectric:${project.rootProject.ext.robolectricVersion}"
 
   testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
 
 def srcDirs = [
+  'adaptive',
   'application',
   'application/attrs',
   'application/legacymultidex',
@@ -48,8 +58,10 @@ def srcDirs = [
   'card',
   'checkbox',
   'chip',
+  'color',
   'datepicker',
   'dialog',
+  'divider',
   'draggable',
   'elevation',
   'imageview',
@@ -58,18 +70,25 @@ def srcDirs = [
   'font',
   'internal',
   'main',
+  'materialswitch',
   'menu',
+  'musicplayer',
+  'navigationrail',
+  'navigationdrawer',
+  'preferences',
+  'progressindicator',
   'radiobutton',
+  'search',
   'shapetheming',
+  'sidesheet',
   'slider',
-  'switchmaterial',
   'tableofcontents',
   'tabs',
   'textfield',
   'themeswitcher',
+  'timepicker',
   'topappbar',
   'transition',
-  'transition/hero',
   'windowpreferences'
 ]
 
@@ -83,8 +102,9 @@ android {
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
+    multiDexEnabled true
     minSdkVersion 14
-    targetSdkVersion 28
+    targetSdkVersion 33
   }
 
   testOptions {

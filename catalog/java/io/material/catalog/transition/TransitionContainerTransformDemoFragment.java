@@ -18,20 +18,22 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
+import android.content.Context;
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks;
-import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialContainerTransform;
 import io.material.catalog.feature.DemoFragment;
@@ -43,10 +45,16 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
 
   private static final String END_FRAGMENT_TAG = "END_FRAGMENT_TAG";
 
-  private final ContainerTransformConfigurationHelper configurationHelper =
-      getContainerTransformConfigurationHelper();
+  private ContainerTransformConfigurationHelper configurationHelper;
 
   private final Hold holdTransition = new Hold();
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+
+    configurationHelper = new ContainerTransformConfigurationHelper();
+  }
 
   @Override
   public View onCreateDemoView(
@@ -115,7 +123,12 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
             R.layout.cat_transition_container_transform_start_fragment,
             "shared_element_fab",
             R.id.start_fab);
+
+    // Add root view as target for the Hold so that the entire view hierarchy is held in place as
+    // one instead of each child view individually. Helps keep shadows during the transition.
+    holdTransition.addTarget(R.id.start_root);
     fragment.setExitTransition(holdTransition);
+
     getChildFragmentManager()
         .beginTransaction()
         .replace(R.id.fragment_container, fragment)
@@ -140,16 +153,24 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
   }
 
   private void configureTransitions(Fragment fragment) {
+    // For all 3 container layer colors, use colorSurface since this transform can be configured
+    // using any fade mode and some of the start views don't have a background and the end view
+    // doesn't have a background.
+    int colorSurface = MaterialColors.getColor(requireView(), R.attr.colorSurface);
+
     MaterialContainerTransform enterContainerTransform = buildContainerTransform(true);
+    enterContainerTransform.setAllContainerColors(colorSurface);
     fragment.setSharedElementEnterTransition(enterContainerTransform);
     holdTransition.setDuration(enterContainerTransform.getDuration());
 
     MaterialContainerTransform returnContainerTransform = buildContainerTransform(false);
+    returnContainerTransform.setAllContainerColors(colorSurface);
     fragment.setSharedElementReturnTransition(returnContainerTransform);
   }
 
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
-    MaterialContainerTransform transform = new MaterialContainerTransform();
+    Context context = requireContext();
+    MaterialContainerTransform transform = new MaterialContainerTransform(context, entering);
     transform.setDrawingViewId(entering ? R.id.end_root : R.id.start_root);
     configurationHelper.configure(transform, entering);
     return transform;
@@ -162,9 +183,5 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
       return true;
     }
     return false;
-  }
-
-  protected ContainerTransformConfigurationHelper getContainerTransformConfigurationHelper() {
-    return new ContainerTransformConfigurationHelper();
   }
 }

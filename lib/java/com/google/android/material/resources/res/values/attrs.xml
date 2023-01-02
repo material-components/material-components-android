@@ -25,10 +25,21 @@
   <attr name="strokeWidth" format="dimension" />
   <attr name="ensureMinTouchTargetSize" format="boolean" />
   <attr name="trackColor" format="color" />
+  <attr name="navigationIconTint" format="color"/>
 
   <!-- Navigation and Pickers -->
+  <attr name="headerLayout" format="reference"/>
   <attr name="itemTextColor" format="color" />
   <attr name="itemShapeAppearance" format="reference" />
   <attr name="itemShapeAppearanceOverlay" format="reference" />
+
+  <!-- Sheets -->
+  <attr name="behavior_draggable" format="boolean" />
+
+  <declare-styleable name="MaterialTextAppearance" parent="TextAppearance">
+    <attr name="android:lineHeight"/>
+    <attr name="lineHeight" format="dimension"/>
+    <attr name="android:letterSpacing"/>
+  </declare-styleable>
 
 </resources>

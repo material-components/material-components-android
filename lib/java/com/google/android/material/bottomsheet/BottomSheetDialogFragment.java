@@ -16,17 +16,18 @@
 
 package com.google.android.material.bottomsheet;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import android.view.View;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
- * Modal bottom sheet. This is a version of {@link DialogFragment} that shows a bottom sheet using
- * {@link BottomSheetDialog} instead of a floating dialog.
+ * Modal bottom sheet. This is a version of {@link androidx.fragment.app.DialogFragment} that shows
+ * a bottom sheet using {@link BottomSheetDialog} instead of a floating dialog.
  */
 public class BottomSheetDialogFragment extends AppCompatDialogFragment {
 
@@ -35,6 +36,13 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
    * BottomSheet is hidden and onStateChanged() is called.
    */
   private boolean waitingForDismissAllowingStateLoss;
+
+  public BottomSheetDialogFragment() {}
+
+  @SuppressLint("ValidFragment")
+  public BottomSheetDialogFragment(@LayoutRes int contentLayoutId) {
+    super(contentLayoutId);
+  }
 
   @NonNull
   @Override

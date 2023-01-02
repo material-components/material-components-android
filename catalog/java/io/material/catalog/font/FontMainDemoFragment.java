@@ -21,12 +21,6 @@ import io.material.catalog.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import androidx.annotation.ArrayRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StyleRes;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +32,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.annotation.ArrayRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
@@ -115,11 +115,11 @@ public class FontMainDemoFragment extends DemoFragment {
 
       TypedValue value = new TypedValue();
       for (int i = 0; i < stylesArray.length(); i++) {
-        // 1. Get the attribute from the array: ?attr/textAppearanceHeadline1
+        // 1. Get the attribute from the array: ?attr/textAppearanceBodyLarge
         stylesArray.getValue(i, value);
         int attribute = value.data;
 
-        // 2. Get the style from the attribute: @style/TextAppearance.MaterialComponents.Headline1
+        // 2. Get the style from the attribute: @style/TextAppearance.Material3.BodyLarge
         TypedArray a = context.obtainStyledAttributes(new int[] {attribute});
         int style = a.getResourceId(0, 0);
         a.recycle();
@@ -190,7 +190,7 @@ public class FontMainDemoFragment extends DemoFragment {
           + " - "
           + convertFontFamilyToDescription(textAppearance.fontFamily)
           + " "
-          + pxToSp(textAppearance.textSize)
+          + pxToSp(textAppearance.getTextSize())
           + "sp";
     }
 

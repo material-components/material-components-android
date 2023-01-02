@@ -19,8 +19,12 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.util.ObjectsCompat;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Objects;
 
 /**
  * Used to limit the display range of the calendar and set an openAt month.
@@ -32,8 +36,10 @@ public final class CalendarConstraints implements Parcelable {
 
   @NonNull private final Month start;
   @NonNull private final Month end;
-  @NonNull private final Month openAt;
-  private final DateValidator validator;
+  @NonNull private final DateValidator validator;
+
+  @Nullable private Month openAt;
+  private final int firstDayOfWeek;
 
   private final int yearSpan;
   private final int monthSpan;
@@ -51,16 +57,28 @@ public final class CalendarConstraints implements Parcelable {
   }
 
   private CalendarConstraints(
-      @NonNull Month start, @NonNull Month end, @NonNull Month openAt, DateValidator validator) {
+      @NonNull Month start,
+      @NonNull Month end,
+      @NonNull DateValidator validator,
+      @Nullable Month openAt,
+      int firstDayOfWeek) {
+    Objects.requireNonNull(start, "start cannot be null");
+    Objects.requireNonNull(end, "end cannot be null");
+    Objects.requireNonNull(validator, "validator cannot be null");
     this.start = start;
     this.end = end;
     this.openAt = openAt;
+    this.firstDayOfWeek = firstDayOfWeek;
     this.validator = validator;
-    if (start.compareTo(openAt) > 0) {
+    if (openAt != null && start.compareTo(openAt) > 0) {
       throw new IllegalArgumentException("start Month cannot be after current Month");
     }
-    if (openAt.compareTo(end) > 0) {
+    if (openAt != null && openAt.compareTo(end) > 0) {
       throw new IllegalArgumentException("current Month cannot be after end Month");
+    }
+    if (firstDayOfWeek < 0
+        || firstDayOfWeek > UtcDates.getUtcCalendar().getMaximum(Calendar.DAY_OF_WEEK)) {
+      throw new IllegalArgumentException("firstDayOfWeek is not valid");
     }
     monthSpan = start.monthsUntil(end) + 1;
     yearSpan = end.year - start.year + 1;
@@ -90,9 +108,19 @@ public final class CalendarConstraints implements Parcelable {
   }
 
   /** Returns the openAt month within this set of bounds. */
-  @NonNull
+  @Nullable
   Month getOpenAt() {
     return openAt;
+  }
+
+  /** Sets the openAt month. */
+  void setOpenAt(@Nullable Month openAt) {
+    this.openAt = openAt;
+  }
+
+  /** Returns the firstDayOfWeek. */
+  int getFirstDayOfWeek() {
+    return firstDayOfWeek;
   }
 
   /**
@@ -111,6 +139,25 @@ public final class CalendarConstraints implements Parcelable {
     return yearSpan;
   }
 
+  /** Returns the earliest time in milliseconds allowed by this set of bounds. */
+  public long getStartMs() {
+    return start.timeInMillis;
+  }
+
+  /** Returns the latest time in milliseconds allowed by this set of bounds. */
+  public long getEndMs() {
+    return end.timeInMillis;
+  }
+
+  /**
+   * Returns the openAt time in milliseconds within this set of bounds. Returns null if not
+   * available.
+   */
+  @Nullable
+  public Long getOpenAtMs() {
+    return openAt == null ? null : openAt.timeInMillis;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -122,13 +169,14 @@ public final class CalendarConstraints implements Parcelable {
     CalendarConstraints that = (CalendarConstraints) o;
     return start.equals(that.start)
         && end.equals(that.end)
-        && openAt.equals(that.openAt)
+        && ObjectsCompat.equals(openAt, that.openAt)
+        && firstDayOfWeek == that.firstDayOfWeek
         && validator.equals(that.validator);
   }
 
   @Override
   public int hashCode() {
-    Object[] hashedFields = {start, end, openAt, validator};
+    Object[] hashedFields = {start, end, openAt, firstDayOfWeek, validator};
     return Arrays.hashCode(hashedFields);
   }
 
@@ -144,7 +192,8 @@ public final class CalendarConstraints implements Parcelable {
           Month end = source.readParcelable(Month.class.getClassLoader());
           Month openAt = source.readParcelable(Month.class.getClassLoader());
           DateValidator validator = source.readParcelable(DateValidator.class.getClassLoader());
-          return new CalendarConstraints(start, end, openAt, validator);
+          int firstDayOfWeek = source.readInt();
+          return new CalendarConstraints(start, end, validator, openAt, firstDayOfWeek);
         }
 
         @NonNull
@@ -165,6 +214,7 @@ public final class CalendarConstraints implements Parcelable {
     dest.writeParcelable(end, /* parcelableFlags= */ 0);
     dest.writeParcelable(openAt, /* parcelableFlags= */ 0);
     dest.writeParcelable(validator, /* parcelableFlags = */ 0);
+    dest.writeInt(firstDayOfWeek);
   }
 
   /**
@@ -203,6 +253,7 @@ public final class CalendarConstraints implements Parcelable {
     private long start = DEFAULT_START;
     private long end = DEFAULT_END;
     private Long openAt;
+    private int firstDayOfWeek;
     private DateValidator validator = DateValidatorPointForward.from(Long.MIN_VALUE);
 
     public Builder() {}
@@ -211,6 +262,7 @@ public final class CalendarConstraints implements Parcelable {
       start = clone.start.timeInMillis;
       end = clone.end.timeInMillis;
       openAt = clone.openAt.timeInMillis;
+      firstDayOfWeek = clone.firstDayOfWeek;
       validator = clone.validator;
     }
 
@@ -236,6 +288,7 @@ public final class CalendarConstraints implements Parcelable {
      * }</pre>
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setStart(long month) {
       start = month;
       return this;
@@ -263,6 +316,7 @@ public final class CalendarConstraints implements Parcelable {
      * }</pre>
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setEnd(long month) {
       end = month;
       return this;
@@ -290,8 +344,20 @@ public final class CalendarConstraints implements Parcelable {
      * }</pre>
      */
     @NonNull
+    @CanIgnoreReturnValue
     public Builder setOpenAt(long month) {
       openAt = month;
+      return this;
+    }
+
+    /**
+     * Sets what the first day of the week is; e.g., <code>Calendar.SUNDAY</code> in the U.S.,
+     * <code>Calendar.MONDAY</code> in France.
+     */
+    @NonNull
+    @CanIgnoreReturnValue
+    public Builder setFirstDayOfWeek(int firstDayOfWeek) {
+      this.firstDayOfWeek = firstDayOfWeek;
       return this;
     }
 
@@ -300,7 +366,9 @@ public final class CalendarConstraints implements Parcelable {
      * to all dates as valid.
      */
     @NonNull
-    public Builder setValidator(DateValidator validator) {
+    @CanIgnoreReturnValue
+    public Builder setValidator(@NonNull DateValidator validator) {
+      Objects.requireNonNull(validator, "validator cannot be null");
       this.validator = validator;
       return this;
     }
@@ -308,17 +376,14 @@ public final class CalendarConstraints implements Parcelable {
     /** Builds the {@link CalendarConstraints} object using the set parameters or defaults. */
     @NonNull
     public CalendarConstraints build() {
-      if (openAt == null) {
-        long today = MaterialDatePicker.thisMonthInUtcMilliseconds();
-        openAt = start <= today && today <= end ? today : start;
-      }
       Bundle deepCopyBundle = new Bundle();
       deepCopyBundle.putParcelable(DEEP_COPY_VALIDATOR_KEY, validator);
       return new CalendarConstraints(
           Month.create(start),
           Month.create(end),
-          Month.create(openAt),
-          (DateValidator) deepCopyBundle.getParcelable(DEEP_COPY_VALIDATOR_KEY));
+          (DateValidator) deepCopyBundle.getParcelable(DEEP_COPY_VALIDATOR_KEY),
+          openAt == null ? null : Month.create(openAt),
+          firstDayOfWeek);
     }
   }
 }

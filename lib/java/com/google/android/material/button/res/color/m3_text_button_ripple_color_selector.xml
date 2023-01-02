@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2021 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Uncheckable -->
+  <item android:alpha="@dimen/m3_comp_text_button_pressed_state_layer_opacity"
+        android:color="?attr/colorOnContainer"
+        android:state_checkable="false"
+        android:state_pressed="true" />
+  <item android:alpha="@dimen/m3_comp_text_button_focus_state_layer_opacity"
+        android:color="?attr/colorOnContainer"
+        android:state_checkable="false"
+        android:state_focused="true" />
+  <item android:alpha="@dimen/m3_comp_text_button_hover_state_layer_opacity"
+        android:color="?attr/colorOnContainer"
+        android:state_checkable="false"
+        android:state_hovered="true" />
+  <item android:alpha="@dimen/m3_ripple_default_alpha"
+        android:color="?attr/colorOnContainer"
+        android:state_checkable="false" />
+
+  <!-- Checked -->
+  <!-- The ripple color matches the color of the text / iconography on the element it's applied to.
+       If the text / iconography changes color during a state change, the ripple color matches the end state's color.
+       Pressing on a checked button will return it to the unchecked state at which point the text -->
+  <item android:alpha="@dimen/m3_comp_text_button_pressed_state_layer_opacity"
+        android:color="?attr/colorOnSurface"
+        android:state_checked="true"
+        android:state_pressed="true" />
+  <item android:alpha="@dimen/m3_comp_text_button_focus_state_layer_opacity"
+        android:color="?attr/colorOnSecondaryContainer"
+        android:state_checked="true"
+        android:state_focused="true" />
+  <item android:alpha="@dimen/m3_comp_text_button_hover_state_layer_opacity"
+        android:color="?attr/colorOnSecondaryContainer"
+        android:state_checked="true"
+        android:state_hovered="true" />
+  <item android:alpha="@dimen/m3_ripple_default_alpha"
+        android:color="?attr/colorOnSecondaryContainer"
+        android:state_checked="true" />
+
+  <!-- Unchecked -->
+  <!-- Pressing on an unchecked, checkable chip will check it at which point the text / iconography
+       will use "colorOnSecondaryContainer". Therefore, the ripple color for the pressed, checkable state is
+       based on "colorOnSecondaryContainer". -->
+  <item android:alpha="@dimen/m3_comp_text_button_pressed_state_layer_opacity"
+        android:color="?attr/colorOnSecondaryContainer"
+        android:state_pressed="true" />
+  <item android:alpha="@dimen/m3_comp_text_button_focus_state_layer_opacity"
+        android:color="?attr/colorOnSurface"
+        android:state_focused="true" />
+  <item android:alpha="@dimen/m3_comp_text_button_hover_state_layer_opacity"
+        android:color="?attr/colorOnSurface"
+        android:state_hovered="true" />
+  <item android:alpha="@dimen/m3_ripple_default_alpha"
+        android:color="?attr/colorOnSurface" />
+
+</selector>

@@ -33,17 +33,4 @@
       android:layout_height="wrap_content"
       android:layout_marginBottom="16dp"/>
 
-  <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/cat_tabs_standard_spacing"
-      android:text="@string/cat_tabs_colored_tabs_label"
-      android:textSize="16sp"/>
-
-  <com.google.android.material.tabs.TabLayout
-      style="@style/Widget.MaterialComponents.TabLayout.Colored"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
-
 </LinearLayout>

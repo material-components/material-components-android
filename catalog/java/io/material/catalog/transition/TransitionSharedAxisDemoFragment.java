@@ -19,16 +19,13 @@ package io.material.catalog.transition;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.RadioGroup;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.transition.MaterialSharedAxis;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
@@ -36,37 +33,28 @@ import io.material.catalog.feature.OnBackPressedHandler;
 /** A fragment that displays the Shared Axis Transition demo for the Catalog app. */
 public class TransitionSharedAxisDemoFragment extends DemoFragment implements OnBackPressedHandler {
 
-  private static final int LAYOUT_RES_ID_START = R.layout.cat_transition_shared_axis_start_fragment;
-  private static final int LAYOUT_RES_ID_END = R.layout.cat_transition_shared_axis_end_fragment;
-  private static final SparseIntArray BUTTON_AXIS_MAP = new SparseIntArray();
+  private static final int LAYOUT_RES_ID_START = R.layout.cat_transition_shared_axis_start;
+  private static final int LAYOUT_RES_ID_END = R.layout.cat_transition_shared_axis_end;
 
-  static {
-    BUTTON_AXIS_MAP.append(R.id.radio_button_axis_x, MaterialSharedAxis.X);
-    BUTTON_AXIS_MAP.append(R.id.radio_button_axis_y, MaterialSharedAxis.Y);
-    BUTTON_AXIS_MAP.append(R.id.radio_button_axis_z, MaterialSharedAxis.Z);
-  }
-
-  private Button backButton;
-  private Button nextButton;
-  private RadioGroup directionRadioGroup;
+  private SharedAxisHelper sharedAxisHelper;
 
   @Override
   public View onCreateDemoView(
-      LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
+      @NonNull LayoutInflater layoutInflater,
+      @Nullable ViewGroup viewGroup,
+      @Nullable Bundle bundle) {
     return layoutInflater.inflate(
         R.layout.cat_transition_shared_axis_fragment, viewGroup, false /* attachToRoot */);
   }
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
-    backButton = view.findViewById(R.id.back_button);
-    nextButton = view.findViewById(R.id.next_button);
-    directionRadioGroup = view.findViewById(R.id.radio_button_group_direction);
+    sharedAxisHelper = new SharedAxisHelper(view.findViewById(R.id.controls_layout));
 
     replaceFragment(LAYOUT_RES_ID_START);
 
-    backButton.setOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_START));
-    nextButton.setOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_END));
+    sharedAxisHelper.setBackButtonOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_START));
+    sharedAxisHelper.setNextButtonOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_END));
   }
 
   @Override
@@ -91,14 +79,12 @@ public class TransitionSharedAxisDemoFragment extends DemoFragment implements On
         .replace(R.id.fragment_container, fragment)
         .commit();
 
-    backButton.setEnabled(entering);
-    nextButton.setEnabled(!entering);
+    sharedAxisHelper.updateButtonsEnabled(!entering);
   }
 
   private MaterialSharedAxis createTransition(boolean entering) {
-    int axis = BUTTON_AXIS_MAP.get(directionRadioGroup.getCheckedRadioButtonId());
-
-    MaterialSharedAxis transition = new MaterialSharedAxis(axis, entering);
+    MaterialSharedAxis transition =
+        new MaterialSharedAxis(sharedAxisHelper.getSelectedAxis(), entering);
 
     // Add targets for this transition to explicitly run transitions only on these views. Without
     // targeting, a MaterialSharedAxis transition would be run for every view in the

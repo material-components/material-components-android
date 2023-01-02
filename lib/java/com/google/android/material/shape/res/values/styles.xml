@@ -33,4 +33,42 @@
     <item name="cornerSize">@dimen/mtrl_shape_corner_size_large_component</item>
   </style>
 
+  <style name="ShapeAppearance.Material3.Corner.None" parent="ShapeAppearance.M3.Sys.Shape.Corner.None"/>
+  <style name="ShapeAppearance.Material3.Corner.ExtraSmall" parent="ShapeAppearance.M3.Sys.Shape.Corner.ExtraSmall"/>
+  <style name="ShapeAppearance.Material3.Corner.Small" parent="ShapeAppearance.M3.Sys.Shape.Corner.Small"/>
+  <style name="ShapeAppearance.Material3.Corner.Medium" parent="ShapeAppearance.M3.Sys.Shape.Corner.Medium"/>
+  <style name="ShapeAppearance.Material3.Corner.Large" parent="ShapeAppearance.M3.Sys.Shape.Corner.Large"/>
+  <style name="ShapeAppearance.Material3.Corner.ExtraLarge" parent="ShapeAppearance.M3.Sys.Shape.Corner.ExtraLarge"/>
+  <style name="ShapeAppearance.Material3.Corner.Full" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
+
+  <style name="ShapeAppearanceOverlay.Material3.Corner.Top" parent="">
+    <item name="cornerSizeBottomLeft">0dp</item>
+    <item name="cornerSizeBottomRight">0dp</item>
+  </style>
+  <style name="ShapeAppearanceOverlay.Material3.Corner.Bottom" parent="">
+    <item name="cornerSizeTopLeft">0dp</item>
+    <item name="cornerSizeTopRight">0dp</item>
+  </style>
+    <style name="ShapeAppearanceOverlay.Material3.Corner.Left" parent="">
+    <item name="cornerSizeTopRight">0dp</item>
+    <item name="cornerSizeBottomRight">0dp</item>
+  </style>
+    <style name="ShapeAppearanceOverlay.Material3.Corner.Right" parent="">
+    <item name="cornerSizeTopLeft">0dp</item>
+    <item name="cornerSizeBottomLeft">0dp</item>
+  </style>
+
+  <!-- Deprecated: Consider using the ShapeAppearance styles above. -->
+  <style name="ShapeAppearance.Material3.SmallComponent" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">4dp</item>
+  </style>
+  <style name="ShapeAppearance.Material3.MediumComponent" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">8dp</item>
+  </style>
+  <style name="ShapeAppearance.Material3.LargeComponent" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">8dp</item>
+  </style>
 </resources>

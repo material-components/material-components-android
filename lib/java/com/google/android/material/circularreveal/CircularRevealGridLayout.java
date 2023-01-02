@@ -18,11 +18,11 @@ package com.google.android.material.circularreveal;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+import android.widget.GridLayout;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.AttributeSet;
-import android.widget.GridLayout;
 
 /** A CircularRevealWidget wrapper for {@link GridLayout}. */
 public class CircularRevealGridLayout extends GridLayout implements CircularRevealWidget {

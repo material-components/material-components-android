@@ -24,4 +24,5 @@
   <public name="horizontalOffset" type="attr"/>
   <public name="verticalOffset" type="attr"/>
   <public name="Widget.MaterialComponents.Badge" type="style"/>
+  <public name="Widget.Material3.Badge" type="style"/>
 </resources>

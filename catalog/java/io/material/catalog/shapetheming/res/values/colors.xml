@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <!-- Shrine -->
+
+  <color name="shrine_theme_light_primary">#9A4525</color>
+  <color name="shrine_theme_light_onPrimary">#FFFFFF</color>
+  <color name="shrine_theme_light_primaryContainer">#FFDBCF</color>
+  <color name="shrine_theme_light_onPrimaryContainer">#390C00</color>
+  <color name="shrine_theme_light_secondary">#9C4331</color>
+  <color name="shrine_theme_light_onSecondary">#FFFFFF</color>
+  <color name="shrine_theme_light_secondaryContainer">#FFDAD3</color>
+  <color name="shrine_theme_light_onSecondaryContainer">#3E0500</color>
+  <color name="shrine_theme_light_tertiary">#6A5E2F</color>
+  <color name="shrine_theme_light_onTertiary">#FFFFFF</color>
+  <color name="shrine_theme_light_tertiaryContainer">#F3E2A7</color>
+  <color name="shrine_theme_light_onTertiaryContainer">#221B00</color>
+  <color name="shrine_theme_light_error">#BA1A1A</color>
+  <color name="shrine_theme_light_errorContainer">#FFDAD6</color>
+  <color name="shrine_theme_light_onError">#FFFFFF</color>
+  <color name="shrine_theme_light_onErrorContainer">#410002</color>
+  <color name="shrine_theme_light_background">#FFFBFF</color>
+  <color name="shrine_theme_light_onBackground">#201A18</color>
+  <color name="shrine_theme_light_surface">#FFFBFF</color>
+  <color name="shrine_theme_light_onSurface">#201A18</color>
+  <color name="shrine_theme_light_surfaceVariant">#F5DED7</color>
+  <color name="shrine_theme_light_onSurfaceVariant">#53433E</color>
+  <color name="shrine_theme_light_outline">#85736D</color>
+  <color name="shrine_theme_light_inverseOnSurface">#FBEEEA</color>
+  <color name="shrine_theme_light_inverseSurface">#362F2D</color>
+  <color name="shrine_theme_light_inversePrimary">#FFB59C</color>
+  <color name="shrine_theme_light_shadow">#000000</color>
+  <color name="shrine_theme_light_surfaceTint">#9A4525</color>
+  <color name="shrine_theme_light_surfaceTintColor">#9A4525</color>
+  <color name="shrine_theme_dark_primary">#FFB59C</color>
+  <color name="shrine_theme_dark_onPrimary">#5C1900</color>
+  <color name="shrine_theme_dark_primaryContainer">#7C2E0F</color>
+  <color name="shrine_theme_dark_onPrimaryContainer">#FFDBCF</color>
+  <color name="shrine_theme_dark_secondary">#FFB4A5</color>
+  <color name="shrine_theme_dark_onSecondary">#5E1608</color>
+  <color name="shrine_theme_dark_secondaryContainer">#7D2C1C</color>
+  <color name="shrine_theme_dark_onSecondaryContainer">#FFDAD3</color>
+  <color name="shrine_theme_dark_tertiary">#D6C68D</color>
+  <color name="shrine_theme_dark_onTertiary">#393005</color>
+  <color name="shrine_theme_dark_tertiaryContainer">#51461A</color>
+  <color name="shrine_theme_dark_onTertiaryContainer">#F3E2A7</color>
+  <color name="shrine_theme_dark_error">#FFB4AB</color>
+  <color name="shrine_theme_dark_errorContainer">#93000A</color>
+  <color name="shrine_theme_dark_onError">#690005</color>
+  <color name="shrine_theme_dark_onErrorContainer">#FFDAD6</color>
+  <color name="shrine_theme_dark_background">#201A18</color>
+  <color name="shrine_theme_dark_onBackground">#EDE0DC</color>
+  <color name="shrine_theme_dark_surface">#201A18</color>
+  <color name="shrine_theme_dark_onSurface">#EDE0DC</color>
+  <color name="shrine_theme_dark_surfaceVariant">#53433E</color>
+  <color name="shrine_theme_dark_onSurfaceVariant">#D8C2BB</color>
+  <color name="shrine_theme_dark_outline">#A08D87</color>
+  <color name="shrine_theme_dark_inverseOnSurface">#201A18</color>
+  <color name="shrine_theme_dark_inverseSurface">#EDE0DC</color>
+  <color name="shrine_theme_dark_inversePrimary">#9A4525</color>
+  <color name="shrine_theme_dark_shadow">#000000</color>
+  <color name="shrine_theme_dark_surfaceTint">#FFB59C</color>
+  <color name="shrine_theme_dark_surfaceTintColor">#FFB59C</color>
+
+  <!-- Fortnightly -->
+
+  <color name="fortnightly_theme_light_primary">#006874</color>
+  <color name="fortnightly_theme_light_onPrimary">#FFFFFF</color>
+  <color name="fortnightly_theme_light_primaryContainer">#97F0FF</color>
+  <color name="fortnightly_theme_light_onPrimaryContainer">#001F24</color>
+  <color name="fortnightly_theme_light_secondary">#642EF4</color>
+  <color name="fortnightly_theme_light_onSecondary">#FFFFFF</color>
+  <color name="fortnightly_theme_light_secondaryContainer">#E7DEFF</color>
+  <color name="fortnightly_theme_light_onSecondaryContainer">#1E0060</color>
+  <color name="fortnightly_theme_light_tertiary">#525E7D</color>
+  <color name="fortnightly_theme_light_onTertiary">#FFFFFF</color>
+  <color name="fortnightly_theme_light_tertiaryContainer">#DAE2FF</color>
+  <color name="fortnightly_theme_light_onTertiaryContainer">#0E1B37</color>
+  <color name="fortnightly_theme_light_error">#BA1A1A</color>
+  <color name="fortnightly_theme_light_errorContainer">#FFDAD6</color>
+  <color name="fortnightly_theme_light_onError">#FFFFFF</color>
+  <color name="fortnightly_theme_light_onErrorContainer">#410002</color>
+  <color name="fortnightly_theme_light_background">#FAFDFD</color>
+  <color name="fortnightly_theme_light_onBackground">#191C1D</color>
+  <color name="fortnightly_theme_light_surface">#FAFDFD</color>
+  <color name="fortnightly_theme_light_onSurface">#191C1D</color>
+  <color name="fortnightly_theme_light_surfaceVariant">#DBE4E6</color>
+  <color name="fortnightly_theme_light_onSurfaceVariant">#3F484A</color>
+  <color name="fortnightly_theme_light_outline">#6F797A</color>
+  <color name="fortnightly_theme_light_inverseOnSurface">#EFF1F1</color>
+  <color name="fortnightly_theme_light_inverseSurface">#2E3132</color>
+  <color name="fortnightly_theme_light_inversePrimary">#4FD8EB</color>
+  <color name="fortnightly_theme_light_shadow">#000000</color>
+  <color name="fortnightly_theme_light_surfaceTint">#006874</color>
+  <color name="fortnightly_theme_light_surfaceTintColor">#006874</color>
+  <color name="fortnightly_theme_dark_primary">#4FD8EB</color>
+  <color name="fortnightly_theme_dark_onPrimary">#00363D</color>
+  <color name="fortnightly_theme_dark_primaryContainer">#004F58</color>
+  <color name="fortnightly_theme_dark_onPrimaryContainer">#97F0FF</color>
+  <color name="fortnightly_theme_dark_secondary">#CCBEFF</color>
+  <color name="fortnightly_theme_dark_onSecondary">#340098</color>
+  <color name="fortnightly_theme_dark_secondaryContainer">#4C00D3</color>
+  <color name="fortnightly_theme_dark_onSecondaryContainer">#E7DEFF</color>
+  <color name="fortnightly_theme_dark_tertiary">#BAC6EA</color>
+  <color name="fortnightly_theme_dark_onTertiary">#24304D</color>
+  <color name="fortnightly_theme_dark_tertiaryContainer">#3B4664</color>
+  <color name="fortnightly_theme_dark_onTertiaryContainer">#DAE2FF</color>
+  <color name="fortnightly_theme_dark_error">#FFB4AB</color>
+  <color name="fortnightly_theme_dark_errorContainer">#93000A</color>
+  <color name="fortnightly_theme_dark_onError">#690005</color>
+  <color name="fortnightly_theme_dark_onErrorContainer">#FFDAD6</color>
+  <color name="fortnightly_theme_dark_background">#191C1D</color>
+  <color name="fortnightly_theme_dark_onBackground">#E1E3E3</color>
+  <color name="fortnightly_theme_dark_surface">#191C1D</color>
+  <color name="fortnightly_theme_dark_onSurface">#E1E3E3</color>
+  <color name="fortnightly_theme_dark_surfaceVariant">#3F484A</color>
+  <color name="fortnightly_theme_dark_onSurfaceVariant">#BFC8CA</color>
+  <color name="fortnightly_theme_dark_outline">#899294</color>
+  <color name="fortnightly_theme_dark_inverseOnSurface">#191C1D</color>
+  <color name="fortnightly_theme_dark_inverseSurface">#E1E3E3</color>
+  <color name="fortnightly_theme_dark_inversePrimary">#006874</color>
+  <color name="fortnightly_theme_dark_shadow">#000000</color>
+  <color name="fortnightly_theme_dark_surfaceTint">#4FD8EB</color>
+  <color name="fortnightly_theme_dark_surfaceTintColor">#4FD8EB</color>
+
+  <!-- Crane -->
+
+  <color name="crane_theme_light_primary">#934078</color>
+  <color name="crane_theme_light_onPrimary">#FFFFFF</color>
+  <color name="crane_theme_light_primaryContainer">#FFD8EC</color>
+  <color name="crane_theme_light_onPrimaryContainer">#3B002D</color>
+  <color name="crane_theme_light_secondary">#C0001D</color>
+  <color name="crane_theme_light_onSecondary">#FFFFFF</color>
+  <color name="crane_theme_light_secondaryContainer">#FFDAD7</color>
+  <color name="crane_theme_light_onSecondaryContainer">#410004</color>
+  <color name="crane_theme_light_tertiary">#80543E</color>
+  <color name="crane_theme_light_onTertiary">#FFFFFF</color>
+  <color name="crane_theme_light_tertiaryContainer">#FFDBCB</color>
+  <color name="crane_theme_light_onTertiaryContainer">#311303</color>
+  <color name="crane_theme_light_error">#BA1A1A</color>
+  <color name="crane_theme_light_errorContainer">#FFDAD6</color>
+  <color name="crane_theme_light_onError">#FFFFFF</color>
+  <color name="crane_theme_light_onErrorContainer">#410002</color>
+  <color name="crane_theme_light_background">#FFFBFF</color>
+  <color name="crane_theme_light_onBackground">#1F1A1D</color>
+  <color name="crane_theme_light_surface">#FFFBFF</color>
+  <color name="crane_theme_light_onSurface">#1F1A1D</color>
+  <color name="crane_theme_light_surfaceVariant">#F0DEE5</color>
+  <color name="crane_theme_light_onSurfaceVariant">#4F4449</color>
+  <color name="crane_theme_light_outline">#81737A</color>
+  <color name="crane_theme_light_inverseOnSurface">#F9EEF1</color>
+  <color name="crane_theme_light_inverseSurface">#342F31</color>
+  <color name="crane_theme_light_inversePrimary">#FFAEDE</color>
+  <color name="crane_theme_light_shadow">#000000</color>
+  <color name="crane_theme_light_surfaceTint">#934078</color>
+  <color name="crane_theme_light_surfaceTintColor">#934078</color>
+  <color name="crane_theme_dark_primary">#FFAEDE</color>
+  <color name="crane_theme_dark_onPrimary">#5B0E47</color>
+  <color name="crane_theme_dark_primaryContainer">#77285F</color>
+  <color name="crane_theme_dark_onPrimaryContainer">#FFD8EC</color>
+  <color name="crane_theme_dark_secondary">#FFB3AE</color>
+  <color name="crane_theme_dark_onSecondary">#68000A</color>
+  <color name="crane_theme_dark_secondaryContainer">#930013</color>
+  <color name="crane_theme_dark_onSecondaryContainer">#FFDAD7</color>
+  <color name="crane_theme_dark_tertiary">#F4BA9E</color>
+  <color name="crane_theme_dark_onTertiary">#4B2714</color>
+  <color name="crane_theme_dark_tertiaryContainer">#653D28</color>
+  <color name="crane_theme_dark_onTertiaryContainer">#FFDBCB</color>
+  <color name="crane_theme_dark_error">#FFB4AB</color>
+  <color name="crane_theme_dark_errorContainer">#93000A</color>
+  <color name="crane_theme_dark_onError">#690005</color>
+  <color name="crane_theme_dark_onErrorContainer">#FFDAD6</color>
+  <color name="crane_theme_dark_background">#1F1A1D</color>
+  <color name="crane_theme_dark_onBackground">#EAE0E3</color>
+  <color name="crane_theme_dark_surface">#1F1A1D</color>
+  <color name="crane_theme_dark_onSurface">#EAE0E3</color>
+  <color name="crane_theme_dark_surfaceVariant">#4F4449</color>
+  <color name="crane_theme_dark_onSurfaceVariant">#D3C2C9</color>
+  <color name="crane_theme_dark_outline">#9C8D93</color>
+  <color name="crane_theme_dark_inverseOnSurface">#1F1A1D</color>
+  <color name="crane_theme_dark_inverseSurface">#EAE0E3</color>
+  <color name="crane_theme_dark_inversePrimary">#934078</color>
+  <color name="crane_theme_dark_shadow">#000000</color>
+  <color name="crane_theme_dark_surfaceTint">#FFAEDE</color>
+  <color name="crane_theme_dark_surfaceTintColor">#FFAEDE</color>
+</resources>

@@ -16,13 +16,15 @@
 package com.google.android.material.datepicker;
 
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.annotation.StyleRes;
 
 /**
  * Fragment for picking date(s) with text fields.
@@ -32,17 +34,22 @@ import android.view.ViewGroup;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
 
+  private static final String THEME_RES_ID_KEY = "THEME_RES_ID_KEY";
   private static final String DATE_SELECTOR_KEY = "DATE_SELECTOR_KEY";
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
 
+  @StyleRes private int themeResId;
   @Nullable private DateSelector<S> dateSelector;
   @Nullable private CalendarConstraints calendarConstraints;
 
   @NonNull
   static <T> MaterialTextInputPicker<T> newInstance(
-      @NonNull DateSelector<T> dateSelector, @NonNull CalendarConstraints calendarConstraints) {
+      DateSelector<T> dateSelector,
+      @StyleRes int themeResId,
+      @NonNull CalendarConstraints calendarConstraints) {
     MaterialTextInputPicker<T> materialCalendar = new MaterialTextInputPicker<>();
     Bundle args = new Bundle();
+    args.putInt(THEME_RES_ID_KEY, themeResId);
     args.putParcelable(DATE_SELECTOR_KEY, dateSelector);
     args.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
     materialCalendar.setArguments(args);
@@ -52,6 +59,7 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
   @Override
   public void onSaveInstanceState(@NonNull Bundle bundle) {
     super.onSaveInstanceState(bundle);
+    bundle.putInt(THEME_RES_ID_KEY, themeResId);
     bundle.putParcelable(DATE_SELECTOR_KEY, dateSelector);
     bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
   }
@@ -60,6 +68,7 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
     Bundle activeBundle = bundle == null ? getArguments() : bundle;
+    themeResId = activeBundle.getInt(THEME_RES_ID_KEY);
     dateSelector = activeBundle.getParcelable(DATE_SELECTOR_KEY);
     calendarConstraints = activeBundle.getParcelable(CALENDAR_CONSTRAINTS_KEY);
   }
@@ -70,8 +79,10 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
+    ContextThemeWrapper themedContext = new ContextThemeWrapper(getContext(), themeResId);
+    LayoutInflater themedInflater = layoutInflater.cloneInContext(themedContext);
     return dateSelector.onCreateTextInputView(
-        layoutInflater,
+        themedInflater,
         viewGroup,
         bundle,
         calendarConstraints,
@@ -80,6 +91,13 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
           public void onSelectionChanged(S selection) {
             for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
               listener.onSelectionChanged(selection);
+            }
+          }
+
+          @Override
+          public void onIncompleteSelectionChanged() {
+            for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
+              listener.onIncompleteSelectionChanged();
             }
           }
         });

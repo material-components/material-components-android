@@ -20,10 +20,10 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
-import android.view.View;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
@@ -33,19 +33,34 @@ public class ElevationOverlayProvider {
 
   private static final float FORMULA_MULTIPLIER = 4.5f;
   private static final float FORMULA_OFFSET = 2f;
+  private static final int OVERLAY_ACCENT_COLOR_ALPHA = (int) Math.round(0.02 * 255);
 
   private final boolean elevationOverlayEnabled;
   private final int elevationOverlayColor;
+  private final int elevationOverlayAccentColor;
   private final int colorSurface;
   private final float displayDensity;
 
   public ElevationOverlayProvider(@NonNull Context context) {
-    this.elevationOverlayEnabled =
-        MaterialAttributes.resolveBoolean(context, R.attr.elevationOverlayEnabled, false);
-    this.elevationOverlayColor =
-        MaterialColors.getColor(context, R.attr.elevationOverlayColor, Color.TRANSPARENT);
-    this.colorSurface = MaterialColors.getColor(context, R.attr.colorSurface, Color.TRANSPARENT);
-    this.displayDensity = context.getResources().getDisplayMetrics().density;
+    this(
+        MaterialAttributes.resolveBoolean(context, R.attr.elevationOverlayEnabled, false),
+        MaterialColors.getColor(context, R.attr.elevationOverlayColor, Color.TRANSPARENT),
+        MaterialColors.getColor(context, R.attr.elevationOverlayAccentColor, Color.TRANSPARENT),
+        MaterialColors.getColor(context, R.attr.colorSurface, Color.TRANSPARENT),
+        context.getResources().getDisplayMetrics().density);
+  }
+
+  public ElevationOverlayProvider(
+      boolean elevationOverlayEnabled,
+      @ColorInt int elevationOverlayColor,
+      @ColorInt int elevationOverlayAccentColor,
+      @ColorInt int colorSurface,
+      float displayDensity) {
+    this.elevationOverlayEnabled = elevationOverlayEnabled;
+    this.elevationOverlayColor = elevationOverlayColor;
+    this.elevationOverlayAccentColor = elevationOverlayAccentColor;
+    this.colorSurface = colorSurface;
+    this.displayDensity = displayDensity;
   }
 
   /**
@@ -119,6 +134,11 @@ public class ElevationOverlayProvider {
     int backgroundColorOpaque = ColorUtils.setAlphaComponent(backgroundColor, 255);
     int overlayColorOpaque =
         MaterialColors.layer(backgroundColorOpaque, elevationOverlayColor, overlayAlphaFraction);
+    if (overlayAlphaFraction > 0 && elevationOverlayAccentColor != Color.TRANSPARENT) {
+      int overlayAccentColor =
+          ColorUtils.setAlphaComponent(elevationOverlayAccentColor, OVERLAY_ACCENT_COLOR_ALPHA);
+      overlayColorOpaque = MaterialColors.layer(overlayColorOpaque, overlayAccentColor);
+    }
     return ColorUtils.setAlphaComponent(overlayColorOpaque, backgroundAlpha);
   }
 

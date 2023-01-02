@@ -22,14 +22,7 @@ import androidx.annotation.NonNull;
  * Removes anything related to any {@link TextInputLayout.EndIconMode}.
  */
 class NoEndIconDelegate extends EndIconDelegate {
-  NoEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
-    super(textInputLayout);
-  }
-
-  @Override
-  void initialize() {
-    textInputLayout.setEndIconOnClickListener(null);
-    textInputLayout.setEndIconDrawable(null);
-    textInputLayout.setEndIconContentDescription(null);
+  NoEndIconDelegate(@NonNull EndCompoundLayout endLayout) {
+    super(endLayout);
   }
 }

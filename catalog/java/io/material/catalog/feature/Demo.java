@@ -19,9 +19,10 @@ package io.material.catalog.feature;
 import io.material.catalog.R;
 
 import android.content.Intent;
+import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
 
 /** Represents a single demo. */
 public abstract class Demo {
@@ -49,5 +50,19 @@ public abstract class Demo {
   @Nullable
   public Intent createActivityIntent() {
     return null;
+  }
+
+  @NonNull
+  public String getDemoClassName() {
+    Fragment fragment = createFragment();
+    if (fragment != null) {
+      return fragment.getClass().getSimpleName();
+    }
+    Intent activityIntent = createActivityIntent();
+    if (activityIntent != null) {
+      String className = activityIntent.getComponent().getClassName();
+      return className.substring(className.lastIndexOf('.') + 1);
+    }
+    throw new IllegalStateException("Demo must implement createFragment or createActivityIntent");
   }
 }

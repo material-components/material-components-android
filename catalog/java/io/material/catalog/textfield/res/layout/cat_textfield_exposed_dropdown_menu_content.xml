@@ -24,10 +24,11 @@
 
 
   <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-      android:layout_width="match_parent"
+      style="?attr/textInputFilledExposedDropdownMenuStyle"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_exposed_dropdown_helper_text"
@@ -36,15 +37,17 @@
         android:id="@+id/filled_exposed_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="none"/>
+        android:inputType="none"
+        app:simpleItems="@array/cat_textfield_exposed_dropdown_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
 
   <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
-      android:layout_width="match_parent"
+    style="?attr/textInputFilledExposedDropdownMenuStyle"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_editable_exposed_dropdown_helper_text"
@@ -52,14 +55,16 @@
     <AutoCompleteTextView
         android:id="@+id/filled_exposed_dropdown_editable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:simpleItems="@array/cat_textfield_exposed_dropdown_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-      android:layout_width="match_parent"
+      style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_exposed_dropdown_helper_text"
@@ -68,15 +73,17 @@
         android:id="@+id/outlined_exposed_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="none"/>
+        android:inputType="none"
+        app:simpleItems="@array/cat_textfield_exposed_dropdown_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
 
   <com.google.android.material.textfield.TextInputLayout
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-      android:layout_width="match_parent"
+      style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+      android:layout_width="@dimen/material_textinput_default_width"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
+      android:layout_gravity="center_horizontal"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_editable_exposed_dropdown_helper_text"
@@ -84,7 +91,8 @@
     <AutoCompleteTextView
         android:id="@+id/outlined_exposed_dropdown_editable"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:simpleItems="@array/cat_textfield_exposed_dropdown_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

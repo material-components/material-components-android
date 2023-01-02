@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+  <!-- Title of the demo displaying pop-up pickers. [CHAR LIMIT=40] -->
+  <string name="cat_time_picker_demo_title">Time Picker</string>
+  <!-- Description of the catalog demo containing time picker. [CHAR LIMIT=128] -->
+  <string name="cat_time_picker_description">Time pickers allow users to choose times.</string>
+  <!-- Label for a time format toggle group [CHAR LIMIT=NONE] -->
+  <string name="time_format_label">Time format</string>
+  <!-- Label for an option to choose the 12-hour time format [CHAR LIMIT=16] -->
+  <string name="time_format_24">24H</string>
+  <!-- Label for an option to choose the 24-hour time format [CHAR LIMIT=16] -->
+  <string name="time_format_12">12H</string>
+  <!-- Label for an option to choose the same time format as the system [CHAR LIMIT=16] -->
+  <string name="time_format_system">System</string>
+  <!-- Label for a time input mode toggle group [CHAR LIMIT=NONE] -->
+  <string name="time_input_mode_label">Time input mode</string>
+  <!-- Label for an option to choose the default time picker's input mode [CHAR LIMIT=16] -->
+  <string name="time_input_mode_default">Default</string>
+  <!-- Label for an option to choose the clock mode as the time picker's input mode [CHAR LIMIT=16] -->
+  <string name="time_input_mode_clock">Clock</string>
+  <!-- Label for an option to choose the text input mode as the time picker's input mode [CHAR LIMIT=16] -->
+  <string name="time_input_mode_keyboard">Keyboard</string>
+  <!-- Text informing that a time input mode selection is not available for Framework Time Picker [CHAR LIMIT=NONE] -->
+  <string name="time_input_mode_note">(not available for Framework Time Picker)</string>
+  <!-- Label for a switch that allows the user to use the framework version of the time picker [CHAR LIMIT=128] -->
+  <string name="use_framework_dialog">Use Framework Time Picker</string>
+  <!-- Label for a button to choose the time [CHAR LIMIT=64] -->
+  <string name="select_time">Select Time</string>
+  <!-- The default time when entering the fragment [CHAR LIMIT=64] -->
+  <string name="default_time">12:00 AM</string>
+</resources>

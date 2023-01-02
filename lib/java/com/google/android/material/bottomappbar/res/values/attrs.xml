@@ -18,6 +18,9 @@
   <declare-styleable name="BottomAppBar">
     <!-- Background for the BottomAppBar. -->
     <attr name="backgroundTint"/>
+    <!-- The tint color for the navigation button icon drawable corresponding to
+         the "app:navigationIcon" attribute. -->
+    <attr name="navigationIconTint"/>
     <!-- Elevation for the BottomAppBar. -->
     <attr name="elevation"/>
     <!-- The alignment of the fab relative to the BottomAppBar. -->
@@ -26,6 +29,13 @@
       <enum name="center" value="0"/>
       <!-- Mode that aligns the fab to the end. -->
       <enum name="end" value="1"/>
+    </attr>
+    <!-- The anchor mode of the fab relative to the BottomAppBar. -->
+    <attr name="fabAnchorMode">
+      <!-- Mode that anchors the fab embedded inside the BottomAppBar. -->
+      <enum name="embed" value="0"/>
+      <!-- Mode that anchors the fab to be cradled within the top edge of the BottomAppBar. -->
+      <enum name="cradle" value="1"/>
     </attr>
     <!-- The animation mode that should be used when the fab animates between alignment modes. -->
     <attr name="fabAnimationMode">
@@ -40,6 +50,12 @@
     <attr name="fabCradleRoundedCornerRadius" format="dimension"/>
     <!-- The vertical offset between the fab from the cradle. -->
     <attr name="fabCradleVerticalOffset" format="dimension"/>
+    <!-- The end margin of the fab when the fab is end-aligned. -->
+    <attr name="fabAlignmentModeEndMargin" format="dimension"/>
+    <!-- Whether or not to remove elevation for embedded fabs in the bottom app bar. -->
+    <attr name="removeEmbeddedFabElevation" format="boolean"/>
+    <!-- Whether or not to add shadows for the bottom app bar. -->
+    <attr name="addElevationShadow" format="boolean"/>
     <!-- Whether the BottomAppBar should hide when a NestedScrollView is scrolled. -->
     <attr name="hideOnScroll" format="boolean"/>
     <!-- Whether the BottomAppBar should apply padding to be above the bottom window insets. -->
@@ -48,6 +64,14 @@
     <attr name="paddingLeftSystemWindowInsets"/>
     <!-- Whether the BottomAppBar should apply padding to be to the left of the right window insets. -->
     <attr name="paddingRightSystemWindowInsets"/>
+    <!-- The alignment of the BottomAppBar menu items. -->
+    <attr name="menuAlignmentMode">
+      <!-- Mode that aligns the menu automatically to avoid the FAB. Menu will be aligned at the end
+           when the FAB is center aligned, and start when the FAB is end aligned. -->
+      <enum name="auto" value="0"/>
+      <!-- Mode that aligns the menu to the start. -->
+      <enum name="start" value="1"/>
+    </attr>
   </declare-styleable>
 
   <!-- Style to use for BottomAppBar in this theme. -->

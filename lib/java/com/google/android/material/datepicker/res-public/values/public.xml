@@ -51,4 +51,18 @@
   <public name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Year" type="style"/>
   <public name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Window.Fullscreen" type="style"/>
 
+  <public name="ThemeOverlay.Material3.MaterialCalendar" type="style"/>
+  <public name="ThemeOverlay.Material3.MaterialCalendar.Fullscreen" type="style"/>
+
+  <public name="Widget.Material3.MaterialCalendar" type="style"/>
+  <public name="Widget.Material3.MaterialCalendar.Fullscreen" type="style"/>
+
+  <public name="Widget.Material3.MaterialCalendar.Item" type="style"/>
+  <public name="Widget.Material3.MaterialCalendar.Day" type="style"/>
+  <public name="Widget.Material3.MaterialCalendar.Day.Invalid" type="style"/>
+  <public name="Widget.Material3.MaterialCalendar.Day.Selected" type="style"/>
+  <public name="Widget.Material3.MaterialCalendar.Day.Today" type="style"/>
+  <public name="Widget.Material3.MaterialCalendar.Year" type="style"/>
+  <public name="Widget.Material3.MaterialCalendar.Year.Selected" type="style"/>
+  <public name="Widget.Material3.MaterialCalendar.Year.Today" type="style"/>
 </resources>

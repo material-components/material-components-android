@@ -15,21 +15,33 @@
   ~ limitations under the License.
 -->
 <resources>
-  <public name="progressIndicatorStyle" type="attr" />
+  <public name="linearProgressIndicatorStyle" type="attr"/>
+  <public name="circularProgressIndicatorStyle" type="attr"/>
 
-  <public name="indicatorType" type="attr" />
-  <public name="progressMode" type="attr" />
-  <public name="indicatorWidth" type="attr" />
+  <!-- Base attributes -->
+  <public name="trackThickness" type="attr" />
+  <public name="trackCornerRadius" type="attr" />
   <public name="indicatorColor" type="attr" />
-  <public name="indicatorColors" type="attr" />
-  <public name="inverse" type="attr" />
-  <public name="growMode" type="attr" />
-  <public name="circularRadius" type="attr" />
-  <public name="circularInset" type="attr" />
-  <public name="linearSeamless" type="attr" />
+  <public name="showAnimationBehavior" type="attr"/>
+  <public name="hideAnimationBehavior" type="attr"/>
+  <public name="showDelay" type="attr"/>
+  <public name="minHideDelay" type="attr"/>
+  <!-- LinearProgressIndicator attributes -->
+  <public name="indeterminateAnimationType" type="attr"/>
+  <public name="indicatorDirectionLinear" type="attr"/>
+  <!-- CircularProgressIndicator attributes -->
+  <public name="indicatorSize" type="attr"/>
+  <public name="indicatorInset" type="attr"/>
+  <public name="indicatorDirectionCircular" type="attr"/>
 
-  <public name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate" type="style" />
-  <public name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate" type="style" />
-  <public name="Widget.MaterialComponents.ProgressIndicator.Circular.Determinate" type="style" />
-  <public name="Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate" type="style" />
+  <public name="Widget.MaterialComponents.LinearProgressIndicator" type="style"/>
+  <public name="Widget.MaterialComponents.CircularProgressIndicator" type="style"/>
+
+  <public name="Widget.Material3.LinearProgressIndicator" type="style"/>
+
+  <public name="Widget.Material3.CircularProgressIndicator" type="style"/>
+  <public name="Widget.Material3.CircularProgressIndicator.Medium" type="style"/>
+  <public name="Widget.Material3.CircularProgressIndicator.Small" type="style"/>
+  <public name="Widget.Material3.CircularProgressIndicator.ExtraSmall" type="style"/>
+
 </resources>

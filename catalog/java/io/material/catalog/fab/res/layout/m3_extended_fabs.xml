@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_gravity="center_horizontal"
+  android:padding="8dp"
+  android:clipToPadding="false"
+  android:columnCount="2"
+  android:rowCount="3">
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="24dp"
+    android:layout_gravity="start|center"
+    android:text="@string/m3_surface_extended_fab_label" />
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    style="?attr/extendedFloatingActionButtonSurfaceStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/cat_extended_fab_content_desc"
+    android:text="@string/extended_fab_label"
+    app:icon="@drawable/ic_add_24px" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="24dp"
+    android:layout_gravity="start|center"
+    android:text="@string/m3_primary_extended_fab_label" />
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    style="?attr/extendedFloatingActionButtonPrimaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/cat_extended_fab_content_desc"
+    android:text="@string/extended_fab_label"
+    app:icon="@drawable/ic_add_24px" />
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="24dp"
+    android:layout_gravity="start|center"
+    android:text="@string/m3_secondary_extended_fab_label" />
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    style="?extendedFloatingActionButtonSecondaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/cat_extended_fab_content_desc"
+    android:text="@string/extended_fab_label"
+    app:icon="@drawable/ic_add_24px"/>
+
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="24dp"
+    android:layout_gravity="start|center"
+    android:text="@string/m3_tertiary_extended_fab_label" />
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    style="?attr/extendedFloatingActionButtonTertiaryStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:layout_gravity="center"
+    android:contentDescription="@string/cat_extended_fab_content_desc"
+    android:text="@string/extended_fab_label"
+    app:icon="@drawable/ic_add_24px" />
+
+</GridLayout>

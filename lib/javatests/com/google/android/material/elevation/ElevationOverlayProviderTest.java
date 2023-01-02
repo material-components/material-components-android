@@ -16,19 +16,21 @@
 
 package com.google.android.material.elevation;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Build.VERSION_CODES;
-import androidx.core.graphics.ColorUtils;
-import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import androidx.core.graphics.ColorUtils;
+import androidx.core.view.ViewCompat;
 import androidx.test.core.app.ApplicationProvider;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.resources.MaterialAttributes;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -225,5 +227,18 @@ public class ElevationOverlayProviderTest {
     provider = new ElevationOverlayProvider(context);
 
     assertThat(provider.calculateOverlayAlpha(Float.MAX_VALUE)).isEqualTo(255);
+  }
+
+  @Test
+  public void givenManuallyConstructedObject_whenGetThemeSurfaceColor_returnsExplicitValue() {
+    provider =
+        new ElevationOverlayProvider(
+            MaterialAttributes.resolveBoolean(context, R.attr.elevationOverlayEnabled, false),
+            MaterialColors.getColor(context, R.attr.elevationOverlayColor, Color.TRANSPARENT),
+            MaterialColors.getColor(context, R.attr.elevationOverlayAccentColor, Color.TRANSPARENT),
+            /* colorSurface= */ Color.RED,
+            context.getResources().getDisplayMetrics().density);
+
+    assertThat(provider.getThemeSurfaceColor()).isEqualTo(Color.RED);
   }
 }

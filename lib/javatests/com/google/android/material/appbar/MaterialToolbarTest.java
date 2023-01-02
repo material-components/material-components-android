@@ -15,16 +15,16 @@
  */
 package com.google.android.material.appbar;
 
-import com.google.android.material.R;
+import com.google.android.material.test.R;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import android.graphics.Color;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.LayoutRes;
 import androidx.core.view.ViewCompat;
-import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import org.junit.Before;

@@ -15,6 +15,10 @@
   ~ limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+  <style name="Theme.Material3.Light.BottomSheetDialog" parent="Base.Theme.Material3.Light.BottomSheetDialog"/>
+  <style name="Theme.Material3.Dark.BottomSheetDialog" parent="Base.Theme.Material3.Dark.BottomSheetDialog"/>
+  <style name="ThemeOverlay.Material3.BottomSheetDialog" parent="Base.ThemeOverlay.Material3.BottomSheetDialog"/>
+
   <style name="Theme.MaterialComponents.BottomSheetDialog" parent="Theme.MaterialComponents.Dialog">
     <item name="android:windowBackground">@android:color/transparent</item>
     <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
@@ -41,23 +45,19 @@
     <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
+  <style name="Base.V14.ThemeOverlay.MaterialComponents.BottomSheetDialog"
+    parent="Base.ThemeOverlay.MaterialComponents.Dialog">
+    <item name="android:windowIsFloating">false</item>
     <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:statusBarColor" tools:targetApi="21">@android:color/transparent</item>
-    <item name="android:windowAnimationStyle">
-      @style/Animation.MaterialComponents.BottomSheetDialog
-    </item>
+    <item name="android:windowAnimationStyle">@style/Animation.MaterialComponents.BottomSheetDialog</item>
     <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
-    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
+    <item name="enableEdgeToEdge">true</item>
+    <item name="paddingBottomSystemWindowInsets">true</item>
+    <item name="paddingLeftSystemWindowInsets">true</item>
+    <item name="paddingRightSystemWindowInsets">true</item>
+    <item name="paddingTopSystemWindowInsets">true</item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.Light.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
-    <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:statusBarColor" tools:targetApi="21">@android:color/transparent</item>
-    <item name="android:windowAnimationStyle">
-      @style/Animation.MaterialComponents.BottomSheetDialog
-    </item>
-    <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
-    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
-  </style>
+  <style name="ThemeOverlay.MaterialComponents.BottomSheetDialog"
+    parent="Base.V14.ThemeOverlay.MaterialComponents.BottomSheetDialog"/>
 </resources>

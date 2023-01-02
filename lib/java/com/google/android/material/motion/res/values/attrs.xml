@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+  <!-- Standard easing begins and ends at rest. It speeds up quickly and slows
+       down gradually. This easing is used on elements that remain persistent
+       during a transition. -->
+  <attr name="motionEasingStandardInterpolator" format="reference" />
+  <!-- Standard decelerate easing begins at peak velocity and ends at rest.
+       This easing is used when a new element enters the screen. -->
+  <attr name="motionEasingStandardDecelerateInterpolator" format="reference" />
+  <!-- Standard accelerate starts at rest and ends at peak velocity. This
+       easing is used when an element permanently leaves the screen. -->
+  <attr name="motionEasingStandardAccelerateInterpolator" format="reference" />
+  <!-- Emphasized easing begins and ends at rest. It speeds up quickly and
+       slows down very gradually. This easing is used on elements that remain
+       persistent during a transition. -->
+  <attr name="motionEasingEmphasizedInterpolator" format="reference" />
+  <!-- Emphasized decelerate easing begins at peak velocity and ends at rest.
+       This easing is used when a new element enters the screen. -->
+  <attr name="motionEasingEmphasizedDecelerateInterpolator" format="reference" />
+  <!-- Emphasized accelerate starts at rest and ends at peak velocity. This
+       easing is used when an element permanently leaves the screen. -->
+  <attr name="motionEasingEmphasizedAccelerateInterpolator" format="reference" />
+  <!-- Linear is a constant rate of change for simple animations, such as fades. -->
+  <attr name="motionEasingLinearInterpolator" format="reference" />
+
+  <!-- Short durations are used for animations with small transition areas,
+       such as selection controls. -->
+  <attr name="motionDurationShort1" format="integer"/>
+  <attr name="motionDurationShort2" format="integer"/>
+  <attr name="motionDurationShort3" format="integer"/>
+  <attr name="motionDurationShort4" format="integer"/>
+  <!--  Medium durations are used for animations that cover medium transition
+        areas such as an expanding FAB.-->
+  <attr name="motionDurationMedium1" format="integer"/>
+  <attr name="motionDurationMedium2" format="integer"/>
+  <attr name="motionDurationMedium3" format="integer"/>
+  <attr name="motionDurationMedium4" format="integer"/>
+  <!--  Long durations are used for animations that traverse a large portion
+        of the screen. -->
+  <attr name="motionDurationLong1" format="integer"/>
+  <attr name="motionDurationLong2" format="integer"/>
+  <attr name="motionDurationLong3" format="integer"/>
+  <attr name="motionDurationLong4" format="integer"/>
+  <!--  Extra long durations are usually used for ambient transitions that
+        don't involve user input. For example, an auto-advancing carousel. -->
+  <attr name="motionDurationExtraLong1" format="integer"/>
+  <attr name="motionDurationExtraLong2" format="integer"/>
+  <attr name="motionDurationExtraLong3" format="integer"/>
+  <attr name="motionDurationExtraLong4" format="integer"/>
+
+</resources>

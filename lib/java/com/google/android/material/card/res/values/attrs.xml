@@ -23,6 +23,15 @@
       attribute name may change in the future if that usage restriction changes. -->
   <attr name="materialCardViewStyle" format="reference"/>
 
+  <!-- Style to use for outlined MaterialCardView. -->
+  <attr name="materialCardViewOutlinedStyle" format="reference"/>
+
+  <!-- Style to use for filled MaterialCardView. -->
+  <attr name="materialCardViewFilledStyle" format="reference"/>
+
+  <!-- Style to use for elevated MaterialCardView. -->
+  <attr name="materialCardViewElevatedStyle" format="reference"/>
+
   <declare-styleable name="MaterialCardView">
     <!-- Whether the card can be checked. -->
     <attr name="android:checkable"/>
@@ -32,6 +41,21 @@
     <attr name="checkedIcon"/>
     <!-- Tint color for the checked icon. -->
     <attr name="checkedIconTint"/>
+    <!-- Check icon size for Checkable Cards-->
+    <attr name="checkedIconSize" format="dimension"/>
+    <!-- Check icon margin for Checkable Cards-->
+    <attr name="checkedIconMargin" format="dimension"/>
+    <!-- Specifies how the checked icon should be positioned. -->
+    <attr name="checkedIconGravity">
+      <!-- Gravity.TOP | Gravity.END -->
+      <enum name="TOP_END" value ="8388661"/>
+      <!-- Gravity.TOP | Gravity.START -->
+      <enum name="TOP_START" value ="8388659"/>
+      <!-- Gravity.BOTTOM | Gravity.END -->
+      <enum name="BOTTOM_END" value ="8388693"/>
+      <!-- Gravity.BOTTOM | Gravity.START -->
+      <enum name="BOTTOM_START" value ="8388691"/>
+    </attr>
     <!-- Ripple color for the Card. -->
     <attr name="rippleColor"/>
     <!-- State when a Card is being dragged. -->

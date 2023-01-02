@@ -18,19 +18,20 @@ package io.material.catalog.card;
 
 import io.material.catalog.R;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.selection.ItemKeyProvider;
 import androidx.recyclerview.selection.SelectionTracker;
 import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /** An Adapter that works with a collection of selectable card items */
@@ -98,6 +99,13 @@ class SelectableCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       if (selectionTracker != null) {
         bindSelectedState();
       }
+      // Set an OnLongClickListener for accessibility
+      materialCardView.setOnLongClickListener(
+          v -> {
+            selectionTracker.setItemsSelected(
+                Arrays.asList(details.getSelectionKey()), !materialCardView.isChecked());
+            return true;
+          });
     }
 
     private void bindSelectedState() {

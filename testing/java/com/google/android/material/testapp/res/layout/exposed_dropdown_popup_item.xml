@@ -18,7 +18,10 @@
     android:id="@+id/dropdown_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:paddingBottom="13dp"
+    android:paddingTop="13dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
     android:ellipsize="end"
     android:singleLine="true"
     android:textAppearance="?attr/textAppearanceSubtitle1"/>

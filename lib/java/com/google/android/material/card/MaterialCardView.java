@@ -23,29 +23,35 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
-import androidx.annotation.Dimension;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.FloatRange;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Provides a Material card.
@@ -58,8 +64,8 @@ import com.google.android.material.shape.Shapeable;
  * stroked border, regardless of the {@code strokeWidth} value.
  *
  * <p>Cards implement {@link Checkable}, a default way to switch to {@code android:checked_state} is
- * not provided. Clients have to call {@link #setChecked(boolean)}. This shows the {@link
- * R.attr#checkedIcon app:checkedIcon} and changes the overlay color.
+ * not provided. Clients have to call {@link #setChecked(boolean)}. This shows the {@code
+ * app:checkedIcon} and changes the overlay color.
  *
  * <p>Cards also have a custom state meant to be used when a card is draggable {@code
  * app:dragged_state}. It's used by calling {@link #setDragged(boolean)}. This changes the overlay
@@ -91,6 +97,48 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CardView;
   private static final String LOG_TAG = "MaterialCardView";
   private static final String ACCESSIBILITY_CLASS_NAME = "androidx.cardview.widget.CardView";
+
+  /**
+   * Gravity used to position the checked icon at the top|start of the Card.
+   *
+   * @see #setCheckedIconGravity(int)
+   * @see #getCheckedIconGravity()
+   */
+  public static final int CHECKED_ICON_GRAVITY_TOP_START = Gravity.TOP | Gravity.START;
+
+  /**
+   * Gravity used to position the checked icon at the bottom|start of the Card.
+   *
+   * @see #setCheckedIconGravity(int)
+   * @see #getCheckedIconGravity()
+   */
+  public static final int CHECKED_ICON_GRAVITY_BOTTOM_START = Gravity.BOTTOM | Gravity.START;
+
+  /**
+   * Gravity used to position the checked icon at the top|end of the Card.
+   *
+   * @see #setCheckedIconGravity(int)
+   * @see #getCheckedIconGravity()
+   */
+  public static final int CHECKED_ICON_GRAVITY_TOP_END = Gravity.TOP | Gravity.END;
+
+  /**
+   * Gravity used to position the checked icon at the bottom|end of the Card.
+   *
+   * @see #setCheckedIconGravity(int)
+   * @see #getCheckedIconGravity()
+   */
+  public static final int CHECKED_ICON_GRAVITY_BOTTOM_END = Gravity.BOTTOM | Gravity.END;
+
+  /** Positions the icon can be set to. */
+  @IntDef({
+      CHECKED_ICON_GRAVITY_TOP_START,
+      CHECKED_ICON_GRAVITY_BOTTOM_START,
+      CHECKED_ICON_GRAVITY_TOP_END,
+      CHECKED_ICON_GRAVITY_BOTTOM_END
+  })
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface CheckedIconGravity{}
 
   @NonNull private final MaterialCardViewHelper cardViewHelper;
 
@@ -156,7 +204,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    cardViewHelper.onMeasure(getMeasuredWidth(), getMeasuredHeight());
+    cardViewHelper.recalculateCheckedIconPosition(getMeasuredWidth(), getMeasuredHeight());
   }
 
   /**
@@ -165,7 +213,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    * @param strokeColor The color of the stroke.
    */
   public void setStrokeColor(@ColorInt int strokeColor) {
-    cardViewHelper.setStrokeColor(ColorStateList.valueOf(strokeColor));
+    setStrokeColor(ColorStateList.valueOf(strokeColor));
   }
 
   /**
@@ -175,6 +223,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    */
   public void setStrokeColor(ColorStateList strokeColor) {
     cardViewHelper.setStrokeColor(strokeColor);
+    invalidate();
   }
 
   /** @deprecated use {@link #getStrokeColorStateList()} */
@@ -197,6 +246,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
    */
   public void setStrokeWidth(@Dimension int strokeWidth) {
     cardViewHelper.setStrokeWidth(strokeWidth);
+    invalidate();
   }
 
   /** Returns the stroke width of this card view. */
@@ -311,7 +361,9 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   public void setClickable(boolean clickable) {
     super.setClickable(clickable);
-    cardViewHelper.updateClickable();
+    if (cardViewHelper != null){
+      cardViewHelper.updateClickable();
+    }
   }
 
   @Override
@@ -425,6 +477,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
       checked = !checked;
       refreshDrawableState();
       forceRippleRedrawIfNeeded();
+      cardViewHelper.setChecked(checked, /* animate= */ true);
       if (onCheckedChangeListener != null) {
         onCheckedChangeListener.onCheckedChanged(this, checked);
       }
@@ -548,8 +601,67 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
     cardViewHelper.setCheckedIconTint(checkedIconTint);
   }
 
+  @Dimension
+  public int getCheckedIconSize() {
+    return cardViewHelper.getCheckedIconSize();
+  }
+
+  /**
+   * Sets the size of the checked icon
+   *
+   * @param checkedIconSize checked icon size
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconSize
+   */
+  public void setCheckedIconSize(@Dimension int checkedIconSize) {
+    cardViewHelper.setCheckedIconSize(checkedIconSize);
+  }
+
+  /**
+   * Sets the size of the checked icon using a resource id.
+   *
+   * @param checkedIconSizeResId The resource id of this Card's checked icon size
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconSize
+   */
+  public void setCheckedIconSizeResource(@DimenRes int checkedIconSizeResId) {
+    if (checkedIconSizeResId != 0) {
+      cardViewHelper.setCheckedIconSize(getResources().getDimensionPixelSize(checkedIconSizeResId));
+    }
+  }
+
+  @Dimension
+  public int getCheckedIconMargin() {
+    return cardViewHelper.getCheckedIconMargin();
+  }
+
+  public void setCheckedIconMargin(@Dimension int checkedIconMargin) {
+    cardViewHelper.setCheckedIconMargin(checkedIconMargin);
+  }
+
+  /**
+   * Sets the margin of the checked icon using a resource id.
+   *
+   * @param checkedIconMarginResId The resource id of this Card's checked icon margin
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconMargin
+   */
+  public void setCheckedIconMarginResource(@DimenRes int checkedIconMarginResId) {
+    if (checkedIconMarginResId != NO_ID) {
+      cardViewHelper.setCheckedIconMargin(
+          getResources().getDimensionPixelSize(checkedIconMarginResId));
+    }
+  }
+
+  @NonNull
+  private RectF getBoundsAsRectF() {
+    RectF boundsRectF = new RectF();
+    boundsRectF.set(cardViewHelper.getBackground().getBounds());
+    return boundsRectF;
+  }
+
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      setClipToOutline(shapeAppearanceModel.isRoundRect(getBoundsAsRectF()));
+    }
     cardViewHelper.setShapeAppearanceModel(shapeAppearanceModel);
   }
 
@@ -567,6 +679,31 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   private void forceRippleRedrawIfNeeded() {
     if (VERSION.SDK_INT > VERSION_CODES.O) {
       cardViewHelper.forceRippleRedraw();
+    }
+  }
+
+  /**
+   * Gets the checked icon gravity for this card
+   *
+   * @return Checked Icon gravity of the card.
+   * @attr ref com.google.android.material.R.styleable#MaterialCard_checkedIconGravity
+   * @see #setCheckedIconGravity(int)
+   */
+  @CheckedIconGravity
+  public int getCheckedIconGravity() {
+    return cardViewHelper.getCheckedIconGravity();
+  }
+
+  /**
+   * Sets the checked icon gravity for this card
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialCard_checkedIconGravity
+   * @param checkedIconGravity checked icon gravity for this card
+   * @see #getCheckedIconGravity()
+   */
+  public void setCheckedIconGravity(@CheckedIconGravity int checkedIconGravity) {
+    if (cardViewHelper.getCheckedIconGravity() != checkedIconGravity) {
+      cardViewHelper.setCheckedIconGravity(checkedIconGravity);
     }
   }
 }

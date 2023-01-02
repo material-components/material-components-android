@@ -27,12 +27,19 @@ import static com.google.android.material.testutils.TestUtilsActions.setText;
 import static com.google.android.material.testutils.TestUtilsActions.setTitle;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.SystemClock;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.TextView;
 import androidx.annotation.CallSuper;
 import androidx.annotation.IdRes;
 import androidx.annotation.IntRange;
@@ -40,13 +47,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.TextView;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
-import com.google.android.material.resources.TextAppearanceConfig;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.AccessibilityUtils;
 import com.google.android.material.testutils.Shakespeare;
@@ -79,7 +80,6 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
   @CallSuper
   protected void configureContent(@LayoutRes final int layoutResId, @StringRes final int titleResId)
       throws Throwable {
-    TextAppearanceConfig.setShouldLoadFontSynchronously(true);
     onView(withId(R.id.coordinator_stub)).perform(inflateViewStub(layoutResId));
 
     mAppBar = mCoordinatorLayout.findViewById(R.id.app_bar);
@@ -148,6 +148,16 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
           AccessibilityUtils.hasAction(
               mCoordinatorLayout, AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD),
           equalTo(hasScrollBackward));
+    }
+  }
+
+  protected void assertAccessibilityScrollable(boolean isScrollable) {
+    AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(mCoordinatorLayout, info);
+    if (isScrollable) {
+      assertTrue(info.isScrollable());
+    } else {
+      assertFalse(info.isScrollable());
     }
   }
 }

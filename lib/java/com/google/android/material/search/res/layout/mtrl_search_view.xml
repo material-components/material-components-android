@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+  <View
+      android:id="@+id/search_view_scrim"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:alpha="0"
+      android:background="?attr/scrimBackground"/>
+
+  <com.google.android.material.internal.ClippableRoundedCornerLayout
+      android:id="@+id/search_view_root"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:focusable="true"
+      android:focusableInTouchMode="true"
+      android:visibility="gone">
+
+    <LinearLayout
+        android:id="@+id/search_view_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+      <View
+          android:id="@+id/search_view_status_bar_spacer"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:visibility="gone"/>
+
+      <FrameLayout
+          android:id="@+id/search_view_header_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:visibility="gone"/>
+
+      <FrameLayout
+          android:id="@+id/search_view_toolbar_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/search_view_dummy_toolbar"
+            style="@style/Widget.Material3.SearchView.Toolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:visibility="gone"/>
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/search_view_toolbar"
+            style="@style/Widget.Material3.SearchView.Toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipChildren="false"
+            app:navigationContentDescription="@string/searchview_navigation_content_description"
+            app:navigationIcon="@drawable/ic_arrow_back_black_24">
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/m3_searchview_height"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/search_view_search_prefix"
+                style="?attr/materialSearchViewPrefixStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
+            <EditText
+                android:id="@+id/search_view_edit_text"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:imeOptions="flagNoExtractUi|actionSearch"
+                android:importantForAutofill="no"
+                android:inputType="textNoSuggestions"
+                android:textDirection="firstStrong"
+                tools:ignore="LabelFor"/>
+
+            <ImageButton
+                android:id="@+id/search_view_clear_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:background="?attr/actionBarItemBackground"
+                android:contentDescription="@string/searchview_clear_text_content_description"
+                android:visibility="gone"
+                app:srcCompat="@drawable/ic_clear_black_24"/>
+          </LinearLayout>
+        </com.google.android.material.appbar.MaterialToolbar>
+      </FrameLayout>
+
+      <View
+          android:id="@+id/search_view_divider"
+          android:layout_width="match_parent"
+          android:layout_height="@dimen/m3_searchview_divider_size"
+          android:background="@macro/m3_comp_search_view_divider_color"/>
+
+      <com.google.android.material.internal.TouchObserverFrameLayout
+          android:id="@+id/search_view_content_container"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"/>
+    </LinearLayout>
+  </com.google.android.material.internal.ClippableRoundedCornerLayout>
+</merge>

@@ -22,18 +22,19 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
-import android.text.InputType;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
+import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.ManufacturerUtils;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
 import java.text.SimpleDateFormat;
@@ -48,7 +49,9 @@ import java.util.Collection;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class SingleDateSelector implements DateSelector<Long> {
 
+  @Nullable private CharSequence error;
   @Nullable private Long selectedItem;
+  @Nullable private SimpleDateFormat textInputFormat;
 
   @Override
   public void select(long selection) {
@@ -92,6 +95,11 @@ public class SingleDateSelector implements DateSelector<Long> {
   }
 
   @Override
+  public void setTextInputFormat(@Nullable SimpleDateFormat format) {
+    this.textInputFormat = format;
+  }
+
+  @Override
   public View onCreateTextInputView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
@@ -101,15 +109,22 @@ public class SingleDateSelector implements DateSelector<Long> {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_text_input_date, viewGroup, false);
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
+    dateTextInput.setErrorAccessibilityLiveRegion(ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
     EditText dateEditText = dateTextInput.getEditText();
-    // The date inputType for Samsung and LG does not include any separator characters
-    if (ManufacturerUtils.isLGEDevice() && ManufacturerUtils.isSamsungDevice()) {
+    if (ManufacturerUtils.isDateInputKeyboardMissingSeparatorCharacters()) {
       // Using the URI variation places the '/' and '.' in more prominent positions
       dateEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
     }
-    SimpleDateFormat format = UtcDates.getTextInputFormat();
-    String formatHint = UtcDates.getTextInputHint(root.getResources(), format);
 
+    boolean hasCustomFormat = textInputFormat != null;
+    SimpleDateFormat format =
+        hasCustomFormat ? textInputFormat : UtcDates.getDefaultTextInputFormat();
+    String formatHint =
+        hasCustomFormat
+            ? format.toPattern()
+            : UtcDates.getDefaultTextInputHint(root.getResources(), format);
+
+    dateTextInput.setPlaceholderText(formatHint);
     if (selectedItem != null) {
       dateEditText.setText(format.format(selectedItem));
     }
@@ -124,11 +139,18 @@ public class SingleDateSelector implements DateSelector<Long> {
             } else {
               select(day);
             }
+            error = null;
             listener.onSelectionChanged(getSelection());
+          }
+
+          @Override
+          void onInvalidDate() {
+            error = dateTextInput.getError();
+            listener.onIncompleteSelectionChanged();
           }
         });
 
-    ViewUtils.requestFocusAndShowKeyboard(dateEditText);
+    DateSelector.showKeyboardWithAutoHideBehavior(dateEditText);
 
     return root;
   }
@@ -148,6 +170,23 @@ public class SingleDateSelector implements DateSelector<Long> {
     }
     String startString = DateStrings.getYearMonthDay(selectedItem);
     return res.getString(R.string.mtrl_picker_date_header_selected, startString);
+  }
+
+  @NonNull
+  @Override
+  public String getSelectionContentDescription(@NonNull Context context) {
+    Resources res = context.getResources();
+    String placeholder =
+        selectedItem == null
+            ? res.getString(R.string.mtrl_picker_announce_current_selection_none)
+            : DateStrings.getYearMonthDay(selectedItem);
+    return res.getString(R.string.mtrl_picker_announce_current_selection, placeholder);
+  }
+
+  @Nullable
+  @Override
+  public String getError() {
+    return TextUtils.isEmpty(error) ? null : error.toString();
   }
 
   @Override

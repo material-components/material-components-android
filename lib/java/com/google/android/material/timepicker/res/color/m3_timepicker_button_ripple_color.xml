@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2021 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Checked. -->
+  <item android:alpha="@dimen/m3_comp_time_picker_period_selector_pressed_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_period_selector_selected_pressed_state_layer_color"
+        android:state_pressed="true" android:state_checked="true" />
+  <item android:alpha="@dimen/m3_comp_time_picker_period_selector_focus_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_period_selector_selected_focus_state_layer_color"
+        android:state_focused="true" android:state_checked="true" />
+  <item android:alpha="@dimen/m3_comp_time_picker_period_selector_hover_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_period_selector_selected_hover_state_layer_color"
+        android:state_hovered="true" android:state_checked="true" />
+  <item android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnTertiaryContainer"
+        android:state_checked="true" />
+
+  <!-- Unchecked. -->
+  <!-- Pressing a checkable one will make it checked. So we use values for selected (checked) container color here. -->
+  <item android:alpha="@dimen/m3_comp_time_picker_period_selector_pressed_state_layer_opacity"
+        android:color="?attr/colorOnTertiaryContainer"
+        android:state_checkable="true" android:state_pressed="true" />  <!-- TODO(b/247609386) Use token when value is updated as is. -->
+  <item android:alpha="@dimen/m3_comp_time_picker_period_selector_pressed_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_period_selector_unselected_pressed_state_layer_color"
+        android:state_pressed="true" />
+  <item android:alpha="@dimen/m3_comp_time_picker_period_selector_focus_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_period_selector_unselected_focus_state_layer_color"
+        android:state_focused="true" />
+  <item android:alpha="@dimen/m3_comp_time_picker_period_selector_hover_state_layer_opacity"
+        android:color="@macro/m3_comp_time_picker_period_selector_unselected_hover_state_layer_color"
+        android:state_hovered="true" />
+  <item android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnSurfaceVariant" />
+</selector>

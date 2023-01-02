@@ -45,4 +45,11 @@ public class ManufacturerUtils {
   public static boolean isSamsungDevice() {
     return Build.MANUFACTURER.toLowerCase(Locale.ENGLISH).equals(SAMSUNG);
   }
+
+  /**
+   * Returns true if the date input keyboard is potentially missing separator characters such as /.
+   */
+  public static boolean isDateInputKeyboardMissingSeparatorCharacters() {
+    return isLGEDevice() || isSamsungDevice();
+  }
 }

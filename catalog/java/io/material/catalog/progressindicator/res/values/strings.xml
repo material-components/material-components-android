@@ -24,6 +24,10 @@
       description="Title of demo for the progress indicators in determinate mode [CHAR LIMIT=NONE]">
     Determinate Progress Indicator Demo
   </string>
+  <string name="cat_progress_indicator_demo_standalone_title"
+    description="Title of demo for other components using progress indicator standalone drawables [CHAR LIMIT=NONE]">
+    Standalone Drawable Progress Indicator Demo
+  </string>
   <string name="cat_progress_indicator_description"
       description="Body text describing the MaterialProgressIndicator widget within the design system [CHAR LIMIT=NONE]">
     ProgressIndicator shows the progress of an undergoing process.
@@ -50,7 +54,7 @@
       description="Button label to update progress value on the progress indicators [CHAR LIMIT=NONE]">
     Update
   </string>
-  <string name="cat_progress_indicator_deteriminate_progress_prompt"
+  <string name="cat_progress_indicator_determinate_progress_prompt"
       description="Prompt for a text field that will take a number between 0 and 100 and apply that as the progress for progress indicators [CHAR LIMIT=NONE]">
     Enter an integer value from 0 to 100 to change progress in determinate mode:
   </string>
@@ -58,61 +62,70 @@
       description="Hint for a text field that will take a number between 0 and 100 and apply that as the progress for progress indicators [CHAR LIMIT=NONE]">
     Progress (0-100)
   </string>
+  <string name="cat_progress_indicator_set_to_determinate_mode"
+    description="Set the displayed progress indicators to the determinate mode. [CHAR LIMIT=NONE]">
+    Determinate Mode
+  </string>
 
   <!-- Descriptions of various examples of progress indicators -->
 
-  <string name="cat_progress_indicator_linear_indeterminate"
-      description="A linear progress indeterminate progress indicator [CHAR LIMIT=NONE]">
-    Linear indeterminate type
+  <string name="cat_progress_indicator_linear"
+      description="A linear progress progress indicator [CHAR LIMIT=NONE]">
+    Linear type
   </string>
-  <string name="cat_progress_indicator_circular_indeterminate"
-      description="A circular progress indeterminate progress indicator [CHAR LIMIT=NONE]">
-    Circular indeterminate type
-  </string>
-  <string name="cat_progress_indicator_linear_determinate"
-      description="A linear progress determinate progress indicator [CHAR LIMIT=NONE]">
-    Linear determinate type
-  </string>
-  <string name="cat_progress_indicator_circular_determinate"
-      description="A circular progress determinate progress indicator [CHAR LIMIT=NONE]">
-    Circular determinate type
+  <string name="cat_progress_indicator_circular"
+      description="A circular progress progress indicator [CHAR LIMIT=NONE]">
+    Circular type
   </string>
 
-  <string name="cat_progress_indicator_linear_no_grow_single_color"
-      description="A linear progress indicator with no grow and a single color [CHAR LIMIT=NONE]">
-    Single color linear with no grow
+  <string name="cat_progress_indicator_start_to_end_linear_single_color"
+      description="A start-to-end linear progress indicator with a single color [CHAR LIMIT=NONE]">
+    Single color start-to-end linear
   </string>
-  <string name="cat_progress_indicator_inverse_linear_bidirectional_grow_single_color"
-      description="An inverse linear progress indicator with bidirectional grow and a single color [CHAR LIMIT=NONE]">
-    Single color inverse linear with bidirectional grow
+  <string name="cat_progress_indicator_rounded_end_to_start_linear_single_color"
+      description="An end-to-start linear progress indicator with rounded corners and a single color [CHAR LIMIT=NONE]">
+    Single color end-to-start linear with rounded corners
   </string>
-  <string name="cat_progress_indicator_linear_incoming_grow_multiple_colors"
-      description="A linear progress indicator with incoming grow and multiple colors [CHAR LIMIT=NONE]">
-    Multiple color linear with incoming grow
+  <string name="cat_progress_indicator_left_to_right_linear_multiple_colors_anchored_top"
+      description="A left-to-right linear progress indicator anchoring at the top edge with multiple colors [CHAR LIMIT=NONE]">
+    Multiple color left-to-right linear, anchoring at the top edge
   </string>
-  <string name="cat_progress_indicator_linear_outgoing_grow_multiple_colors"
-      description="A linear progress indicator with outgoing grow and multiple colors [CHAR LIMIT=NONE]">
-    Linear with outgoing grow, when multiple colors are defined.
+  <string name="cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom"
+      description="A right-to-left linear progress indicator anchoring at the bottom edge with multiple colors [CHAR LIMIT=NONE]">
+    Multiple color right-to-left linear, anchoring at the bottom edge
   </string>
-  <string name="cat_progress_indicator_linear_outgoing_grow_multiple_seamless_colors"
-      description="A linear progress indicator with outgoing grow and multiple seeamless colors [CHAR LIMIT=NONE]">
-    Multiple seamless color linear with outgoing grow
+  <string name="cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom_contiguous_animation"
+      description="A right-to-left linear progress indicator anchoring at the bottom edge with multiple colors and contiguous animation [CHAR LIMIT=NONE]">
+    Multiple color right-to-left linear with contiguous animation, anchoring at the bottom edge
   </string>
 
-  <string name="cat_progress_indicator_circular_no_grow_single_color"
-      description="A circular progress indicator with no grow and a single color [CHAR LIMIT=NONE]">
-    Single color circular with no grow
+  <string name="cat_progress_indicator_clockwise_circular_single_color"
+    description="A clockwise circular progress indicator with a single color [CHAR LIMIT=NONE]">
+    Single color clockwise circular
   </string>
-  <string name="cat_progress_indicator_inverse_circular_bidirectional_grow_single_color"
-      description="An inverse circular progress indicator with bidirectional grow and a single color [CHAR LIMIT=NONE]">
-    Single color inverse circular with bidirectional grow
+  <string name="cat_progress_indicator_rounded_counterclockwise_circular_single_color"
+    description="A counterclockwise circular progress indicator with rounded corners and a single color [CHAR LIMIT=NONE]">
+    Single color counter-clockwise circular with rounded corners
   </string>
-  <string name="cat_progress_indicator_circular_incoming_grow_multiple_colors"
-      description="A circular progress indicator with incoming grow and multiple colors [CHAR LIMIT=NONE]">
-    Multiple color circular with incoming grow
+  <string name="cat_progress_indicator_clockwise_circular_multiple_colors_anchored_outer"
+    description="A clockwise circular progress indicator with multiple colors anchoring at the outer edge [CHAR LIMIT=NONE]">
+    Multiple color clockwise circular, anchoring at the outer edge
   </string>
-  <string name="cat_progress_indicator_circular_outgoing_grow_multiple_colors"
-      description="A circular progress indicator with outgoing grow and multiple colors [CHAR LIMIT=NONE]">
-    Multiple color circular with outgoing
+  <string name="cat_progress_indicator_clockwise_circular_multiple_colors_anchored_inner"
+    description="A clockwise circular progress indicator with multiple colors anchoring at the inner edge [CHAR LIMIT=NONE]">
+    Multiple color clockwise circular, anchoring at the inner edge
+  </string>
+
+  <string name="cat_progress_indicator_standalone_indeterminate_chip"
+    description="An example of using progress indicator drawable as chip icon [CHAR LIMIT=NONE]">
+    Indeterminate Chip
+  </string>
+  <string name="cat_progress_indicator_standalone_indeterminate_button"
+    description="An example of using progress indicator drawable as button icon [CHAR LIMIT=NONE]">
+    Indeterminate Button
+  </string>
+  <string name="cat_progress_indicator_standalone_switch_label"
+    description="A material switch to toggle progress indicator drawable on chip [CHAR LIMIT=NONE]">
+    Show Icon
   </string>
 </resources>

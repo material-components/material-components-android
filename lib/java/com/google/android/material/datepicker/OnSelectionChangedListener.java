@@ -15,7 +15,16 @@
  */
 package com.google.android.material.datepicker;
 
-interface OnSelectionChangedListener<S> {
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 
-  void onSelectionChanged(S selection);
+/** Listener that provides selection. */
+@RestrictTo(Scope.LIBRARY_GROUP)
+public abstract class OnSelectionChangedListener<S> {
+
+  /** Called with the current selection. */
+  public abstract void onSelectionChanged(@NonNull S selection);
+
+  public void onIncompleteSelectionChanged() {}
 }

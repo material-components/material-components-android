@@ -16,13 +16,13 @@
 package io.material.catalog.draggable;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.customview.widget.ViewDragHelper;
-import androidx.customview.widget.ViewDragHelper.Callback;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.customview.widget.ViewDragHelper;
+import androidx.customview.widget.ViewDragHelper.Callback;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2021 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<com.google.android.material.card.MaterialCardView
+  android:id="@+id/list_view_item_container"
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_marginBottom="12dp"
+  android:layout_marginEnd="12dp"
+  android:layout_marginStart="12dp"
+  android:checkable="true"
+  app:checkedIcon="@null"
+  app:strokeWidth="0dp">
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:minHeight="?attr/listPreferredItemHeight">
+
+    <com.google.android.material.imageview.ShapeableImageView
+      android:id="@+id/sender_icon"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:scaleType="centerCrop"
+      android:src="@drawable/ic_account_circle_48dp"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:shapeAppearanceOverlay="?attr/shapeAppearanceMediumComponent" />
+
+    <TextView
+      android:id="@+id/sender_title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      android:textAppearance="?attr/textAppearanceBodyLarge"
+      app:layout_constraintBottom_toTopOf="@+id/email_title"
+      app:layout_constraintEnd_toStartOf="@id/email_timestamp"
+      app:layout_constraintStart_toEndOf="@id/sender_icon"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+      android:id="@+id/email_title"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:maxLines="1"
+      android:ellipsize="end"
+      android:textAppearance="?attr/textAppearanceBodyMedium"
+      app:layout_constraintBottom_toBottomOf="@id/email_preview"
+      app:layout_constraintEnd_toStartOf="@id/email_timestamp"
+      app:layout_constraintStart_toEndOf="@id/sender_icon"
+      app:layout_constraintTop_toBottomOf="@+id/sender_title" />
+
+    <TextView
+      android:id="@+id/email_preview"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginLeft="16dp"
+      android:maxLines="2"
+      android:ellipsize="end"
+      android:textAppearance="?attr/textAppearanceBodySmall"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/email_timestamp"
+      app:layout_constraintStart_toEndOf="@id/sender_icon"
+      app:layout_constraintTop_toBottomOf="@+id/email_title" />
+
+    <TextView
+      android:id="@+id/email_timestamp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_list_view_email_timestamp"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBaseline_toBaselineOf="@id/sender_title"/>
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

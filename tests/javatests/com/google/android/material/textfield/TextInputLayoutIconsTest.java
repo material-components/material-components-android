@@ -34,6 +34,7 @@ import static com.google.android.material.testutils.TestUtilsMatchers.withCompou
 import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.longClickIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCustomEndIconContent;
+import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMinSize;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnLongClickListener;
@@ -42,9 +43,11 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setEr
 import static com.google.android.material.testutils.TextInputLayoutActions.setPrefixText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconContentDescription;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconMinSize;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnLongClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintList;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setSuffixText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTransformationMethod;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowEndIcon;
@@ -53,22 +56,29 @@ import static com.google.android.material.testutils.TextInputLayoutMatchers.endI
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsChecked;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsNotChecked;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.showsEndIcon;
+import static com.google.common.truth.Truth.assertThat;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.view.KeyEvent;
 import android.widget.EditText;
+import androidx.annotation.Nullable;
+import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import androidx.test.filters.LargeTest;
@@ -213,7 +223,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_no_icon))
         .perform(setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE));
 
-    // Assert password toggle is not checked.
+    // Assert password toggle is checked.
     onView(withId(R.id.textinput_no_icon)).check(matches(endIconIsChecked()));
   }
 
@@ -376,6 +386,7 @@ public class TextInputLayoutIconsTest {
     assertEquals(TextInputLayout.END_ICON_CLEAR_TEXT, textInputLayoutPassword.getEndIconMode());
     assertEquals(
         clearTextContentDesc, textInputLayoutPassword.getEndIconContentDescription().toString());
+    assertFalse(textInputLayoutPassword.isEndIconCheckable());
     // Assert the clear button is not displayed as there was no text
     onView(withId(R.id.textinput_password))
         .check(matches(doesNotShowEndIcon()));
@@ -388,6 +399,36 @@ public class TextInputLayoutIconsTest {
     // Assert icon works as expected
     onView(withId(R.id.textinput_password)).perform(clickIcon(true));
     assertEquals(0, textInputLayoutPassword.getEditText().getText().length());
+  }
+
+  @Test
+  public void testSwitchEndIcon_clearTextToPasswordToggle_succeeds() {
+    final Activity activity = activityTestRule.getActivity();
+    final EditText editTextClearIcon = activity.findViewById(R.id.textinput_edittext_clear);
+    final TextInputLayout textFieldClearIcon = activity.findViewById(R.id.textinput_clear);
+    final TextInputLayout textFieldPasswordIcon = activity.findViewById(R.id.textinput_password);
+    String passwordToggleContentDesc =
+        textFieldPasswordIcon.getEndIconContentDescription().toString();
+
+    // Set end icon as the password toggle on text field that has the clear text icon set
+    onView(withId(R.id.textinput_clear))
+        .perform(setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE));
+
+    // Assert the end icon mode is the password toggle icon
+    assertEquals(TextInputLayout.END_ICON_PASSWORD_TOGGLE, textFieldClearIcon.getEndIconMode());
+    assertEquals(
+        passwordToggleContentDesc, textFieldClearIcon.getEndIconContentDescription().toString());
+    assertTrue(textFieldClearIcon.isEndIconCheckable());
+    // Assert icon is displayed
+    onView(withId(R.id.textinput_clear)).check(matches(showsEndIcon()));
+    // Assert icon is checked since edit text's transformation method isn't password
+    onView(withId(R.id.textinput_clear)).check(matches(endIconIsChecked()));
+    // Set some text on the edit text
+    onView(withId(R.id.textinput_edittext_clear)).perform(typeText(INPUT_TEXT));
+    // Assert icon disguises text once clicked
+    onView(withId(R.id.textinput_clear)).perform(clickIcon(true));
+    onView(withId(R.id.textinput_clear)).check(matches(not(endIconIsChecked())));
+    assertNotEquals(INPUT_TEXT, editTextClearIcon.getLayout().getText().toString());
   }
 
   @Test
@@ -468,7 +509,7 @@ public class TextInputLayoutIconsTest {
     // Click error icon
     onView(
             allOf(
-                withId(R.id.text_input_end_icon),
+                withId(R.id.text_input_error_icon),
                 withContentDescription(R.string.error_icon_content_description),
                 isDescendantOfA(withId(R.id.textinput_no_icon))))
         .perform(click());
@@ -523,6 +564,30 @@ public class TextInputLayoutIconsTest {
     // Assert the start icon is set
     assertNotNull(textInputLayout.getStartIconDrawable());
     assertEquals(contentDesc, textInputLayout.getStartIconContentDescription().toString());
+  }
+
+  @Test
+  public void testSetStartIconTint() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_no_icon);
+    Drawable drawable = new TintCapturedDrawable();
+
+    // Set start icon
+    onView(withId(R.id.textinput_no_icon)).perform(
+        setStartIconTintList(ColorStateList.valueOf(Color.RED)));
+    onView(withId(R.id.textinput_no_icon)).perform(setStartIconTintMode(PorterDuff.Mode.MULTIPLY));
+    onView(withId(R.id.textinput_no_icon)).perform(setStartIcon(drawable));
+
+    // Assert the start icon's tint is set
+    assertNotNull(textInputLayout.getStartIconDrawable());
+    assertThat(textInputLayout.getStartIconDrawable()).isInstanceOf(TintCapturedDrawable.class);
+    assertEquals(
+        Color.RED,
+        ((TintCapturedDrawable) textInputLayout.getStartIconDrawable())
+            .capturedTint.getDefaultColor());
+    assertEquals(
+        PorterDuff.Mode.MULTIPLY,
+        ((TintCapturedDrawable) textInputLayout.getStartIconDrawable()).capturedTintMode);
   }
 
   @Test
@@ -591,7 +656,7 @@ public class TextInputLayoutIconsTest {
     // Check the icon is visible
     onView(
         allOf(
-            withId(R.id.text_input_end_icon),
+            withId(R.id.text_input_error_icon),
             withContentDescription(R.string.error_icon_content_description),
             isDescendantOfA(withId(R.id.textinput_no_icon))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
@@ -643,7 +708,7 @@ public class TextInputLayoutIconsTest {
     // Check icon showing is error icon only
     onView(
         allOf(
-            withId(R.id.text_input_end_icon),
+            withId(R.id.text_input_error_icon),
             withContentDescription(R.string.error_icon_content_description),
             isDescendantOfA(withId(R.id.textinput_password))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
@@ -660,7 +725,7 @@ public class TextInputLayoutIconsTest {
     // Check end icon is back
     onView(
         allOf(
-            withId(R.id.text_input_end_icon),
+            withId(R.id.text_input_error_icon),
             withContentDescription(R.string.error_icon_content_description),
             isDescendantOfA(withId(R.id.textinput_password))))
         .check(matches(withEffectiveVisibility(Visibility.GONE)));
@@ -864,6 +929,40 @@ public class TextInputLayoutIconsTest {
         .check(matches(withCompoundDrawable(3, bottom)));
   }
 
+  @Test
+  public void testStartIconIconSize() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput_starticon);
+
+    onView(
+        withId(R.id.textinput_starticon)).perform(setStartIconMinSize(50));
+    assertEquals(50, textInputLayout.getStartIconMinSize());
+  }
+
+  @Test
+  public void testStartIconInvalidIconSize() {
+    assertThrows(IllegalArgumentException.class, () -> onView(
+        withId(R.id.textinput_starticon)).perform(setStartIconMinSize(-1)));
+  }
+
+  @Test
+  public void testEndIconIconSize() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout =
+        activity.findViewById(R.id.textinput_suffix);
+
+    onView(
+        withId(R.id.textinput_suffix)).perform(setEndIconMinSize(50));
+    assertEquals(50, textInputLayout.getEndIconMinSize());
+  }
+
+  @Test
+  public void testEndIconInvalidIconSize() {
+    assertThrows(IllegalArgumentException.class, () -> onView(
+        withId(R.id.textinput_suffix)).perform(setEndIconMinSize(-1)));
+  }
+
   private static ViewAssertion isPasswordToggledVisible(final boolean isToggledVisible) {
     return (view, noViewFoundException) -> {
       assertTrue(view instanceof TextInputLayout);
@@ -875,5 +974,24 @@ public class TextInputLayoutIconsTest {
         assertEquals(PasswordTransformationMethod.getInstance(), transformationMethod);
       }
     };
+  }
+
+  private static class TintCapturedDrawable extends ColorDrawable implements TintAwareDrawable {
+    ColorStateList capturedTint;
+    PorterDuff.Mode capturedTintMode;
+
+    TintCapturedDrawable() {
+      super(Color.WHITE);
+    }
+
+    @Override
+    public void setTintList(@Nullable ColorStateList tint) {
+      capturedTint = tint;
+    }
+
+    @Override
+    public void setTintMode(@Nullable PorterDuff.Mode tintMode) {
+      capturedTintMode = tintMode;
+    }
   }
 }

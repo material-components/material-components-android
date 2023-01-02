@@ -20,6 +20,8 @@ import io.material.catalog.R;
 
 import android.content.Intent;
 import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
+import com.google.common.collect.ImmutableList;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -59,6 +61,13 @@ public class TopAppBarFragment extends DemoLandingFragment {
   public List<Demo> getAdditionalDemos() {
     List<Demo> additionalDemos = new ArrayList<>();
     additionalDemos.add(
+        new Demo(R.string.cat_topappbar_compress_effect_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCompressEffectFragment();
+          }
+        });
+    additionalDemos.add(
         new Demo(R.string.cat_topappbar_scrolling_title) {
           @Override
           public Fragment createFragment() {
@@ -73,22 +82,39 @@ public class TopAppBarFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
-        new Demo(R.string.cat_topappbar_collapsing_title) {
+        new Demo(R.string.cat_topappbar_preferences_demo_title) {
           @Override
           public Fragment createFragment() {
-            return new TopAppBarCollapsingDemoFragment();
+            return new TopAppBarPreferencesFragment();
           }
         });
-    additionalDemos.add(
+    additionalDemos.addAll(getCollapsingToolbarDemos());
+    additionalDemos.add(getToolbarDemo());
+    additionalDemos.addAll(getActionBarDemos());
+    return additionalDemos;
+  }
+
+  @NonNull
+  protected List<Demo> getCollapsingToolbarDemos() {
+    return Arrays.asList(
+        new Demo(R.string.cat_topappbar_collapsing_medium_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingMediumDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_topappbar_collapsing_large_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingLargeDemoFragment();
+          }
+        },
         new Demo(R.string.cat_topappbar_collapsing_multiline_title) {
           @Override
           public Fragment createFragment() {
             return new TopAppBarCollapsingMultilineDemoFragment();
           }
         });
-    additionalDemos.add(getToolbarDemo());
-    additionalDemos.addAll(getActionBarDemos());
-    return additionalDemos;
   }
 
   protected Demo getToolbarDemo() {
@@ -101,17 +127,11 @@ public class TopAppBarFragment extends DemoLandingFragment {
   }
 
   protected List<Demo> getActionBarDemos() {
-    return Arrays.asList(
+    return ImmutableList.of(
         new Demo(R.string.cat_topappbar_action_bar_title) {
           @Override
           public Intent createActivityIntent() {
             return new Intent(getContext(), TopAppBarActionBarDemoActivity.class);
-          }
-        },
-        new Demo(R.string.cat_topappbar_dark_action_bar_title) {
-          @Override
-          public Intent createActivityIntent() {
-            return new Intent(getContext(), TopAppBarDarkActionBarDemoActivity.class);
           }
         });
   }

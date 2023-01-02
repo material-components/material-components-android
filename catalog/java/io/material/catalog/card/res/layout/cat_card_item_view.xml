@@ -17,6 +17,7 @@
 
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -26,15 +27,13 @@
     android:layout_marginRight="16dp"
     android:checkable="true"
     android:clickable="true"
-    android:focusable="true">
+    android:focusable="true"
+    app:contentPadding="@dimen/cat_card_content_padding">
 
   <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingTop="8dp"
-      android:paddingBottom="64dp"
-      android:paddingLeft="12dp"
-      android:paddingRight="12dp"
+      android:paddingBottom="48dp"
       android:orientation="vertical">
 
     <TextView

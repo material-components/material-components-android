@@ -19,26 +19,37 @@ package com.google.android.material.internal;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import androidx.annotation.Dimension;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
+import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.RestrictTo;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utils class for custom views.
@@ -49,6 +60,78 @@ import android.view.inputmethod.InputMethodManager;
 public class ViewUtils {
 
   private ViewUtils() {}
+
+  @RequiresApi(VERSION_CODES.JELLY_BEAN)
+  public static final int EDGE_TO_EDGE_FLAGS =
+      View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
+  public static void showKeyboard(@NonNull View view) {
+    showKeyboard(view, /* useWindowInsetsController= */ true);
+  }
+
+  public static void showKeyboard(@NonNull View view, boolean useWindowInsetsController) {
+    if (useWindowInsetsController) {
+      WindowInsetsControllerCompat windowController = ViewCompat.getWindowInsetsController(view);
+      if (windowController != null) {
+        windowController.show(WindowInsetsCompat.Type.ime());
+        return;
+      }
+    }
+    getInputMethodManager(view).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+  }
+
+  public static void hideKeyboard(@NonNull View view) {
+    hideKeyboard(view, /* useWindowInsetsController= */ true);
+  }
+
+  public static void hideKeyboard(@NonNull View view, boolean useWindowInsetsController) {
+    if (useWindowInsetsController) {
+      WindowInsetsControllerCompat windowController = ViewCompat.getWindowInsetsController(view);
+      if (windowController != null) {
+        windowController.hide(WindowInsetsCompat.Type.ime());
+        return;
+      }
+    }
+    InputMethodManager imm = getInputMethodManager(view);
+    if (imm != null) {
+      imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+  }
+
+  @Nullable
+  private static InputMethodManager getInputMethodManager(@NonNull View view) {
+    return getSystemService(view.getContext(), InputMethodManager.class);
+  }
+
+  public static void setBoundsFromRect(@NonNull View view, @NonNull Rect rect) {
+    view.setLeft(rect.left);
+    view.setTop(rect.top);
+    view.setRight(rect.right);
+    view.setBottom(rect.bottom);
+  }
+
+  @NonNull
+  public static Rect calculateRectFromBounds(@NonNull View view) {
+    return calculateRectFromBounds(view, 0);
+  }
+
+  @NonNull
+  public static Rect calculateRectFromBounds(@NonNull View view, int offsetY) {
+    return new Rect(
+        view.getLeft(), view.getTop() + offsetY, view.getRight(), view.getBottom() + offsetY);
+  }
+
+  @NonNull
+  public static List<View> getChildren(@Nullable View view) {
+    List<View> children = new ArrayList<>();
+    if (view instanceof ViewGroup) {
+      ViewGroup viewGroup = (ViewGroup) view;
+      for (int i = 0; i < viewGroup.getChildCount(); i++) {
+        children.add(viewGroup.getChildAt(i));
+      }
+    }
+    return children;
+  }
 
   public static PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
     switch (value) {
@@ -93,8 +176,8 @@ public class ViewUtils {
   }
 
   /**
-   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} which also passes
-   * the initial padding set on the view. Used with {@link #doOnApplyWindowInsets(View,
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} which also passes the
+   * initial padding set on the view. Used with {@link #doOnApplyWindowInsets(View,
    * OnApplyWindowInsetsListener)}.
    */
   public interface OnApplyWindowInsetsListener {
@@ -138,8 +221,8 @@ public class ViewUtils {
   }
 
   /**
-   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can
-   * automatically apply inset padding based on view attributes.
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can automatically
+   * apply inset padding based on view attributes.
    */
   public static void doOnApplyWindowInsets(
       @NonNull View view, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
@@ -147,8 +230,8 @@ public class ViewUtils {
   }
 
   /**
-   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can
-   * automatically apply inset padding based on view attributes.
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that can automatically
+   * apply inset padding based on view attributes.
    */
   public static void doOnApplyWindowInsets(
       @NonNull View view,
@@ -205,8 +288,8 @@ public class ViewUtils {
   }
 
   /**
-   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that records the
-   * initial padding of the view and requests that insets are applied when attached.
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that records the initial
+   * padding of the view and requests that insets are applied when attached.
    */
   public static void doOnApplyWindowInsets(
       @NonNull View view, @NonNull final OnApplyWindowInsetsListener listener) {
@@ -284,19 +367,24 @@ public class ViewUtils {
   /** Returns the content view that is the parent of the provided view. */
   @Nullable
   public static ViewGroup getContentView(@Nullable View view) {
-    View parent = view;
-    while (parent != null) {
-      if (parent.getId() == android.R.id.content && parent instanceof ViewGroup) {
-        return (ViewGroup) parent;
-      }
-      if (parent.getParent() instanceof ViewGroup) {
-        parent = (ViewGroup) parent.getParent();
-      } else if (parent.getParent() == null) {
-        // If android.R.id.content has not been found and parent has no more parents to search,
-        // exit.
-        return null;
-      }
+    if (view == null) {
+      return null;
     }
+
+    View rootView = view.getRootView();
+    ViewGroup contentView = rootView.findViewById(android.R.id.content);
+    if (contentView != null) {
+      return contentView;
+    }
+
+    // Account for edge cases: Parent's parent can be null without ever having found
+    // android.R.id.content (e.g. if view is in an overlay during a transition).
+    // Additionally, sometimes parent's parent is neither a ViewGroup nor a View (e.g. if view
+    // is in a PopupWindow).
+    if (rootView != view && rootView instanceof ViewGroup) {
+      return (ViewGroup) rootView;
+    }
+
     return null;
   }
 
@@ -306,5 +394,39 @@ public class ViewUtils {
   @Nullable
   public static ViewOverlayImpl getContentViewOverlay(@NonNull View view) {
     return getOverlay(getContentView(view));
+  }
+
+  public static void addOnGlobalLayoutListener(
+      @Nullable View view, @NonNull OnGlobalLayoutListener victim) {
+    if (view != null) {
+      view.getViewTreeObserver().addOnGlobalLayoutListener(victim);
+    }
+  }
+
+  public static void removeOnGlobalLayoutListener(
+      @Nullable View view, @NonNull OnGlobalLayoutListener victim) {
+    if (view != null) {
+      removeOnGlobalLayoutListener(view.getViewTreeObserver(), victim);
+    }
+  }
+
+  public static void removeOnGlobalLayoutListener(
+      @NonNull ViewTreeObserver viewTreeObserver, @NonNull OnGlobalLayoutListener victim) {
+    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+      viewTreeObserver.removeOnGlobalLayoutListener(victim);
+    } else {
+      viewTreeObserver.removeGlobalOnLayoutListener(victim);
+    }
+  }
+
+  /**
+   * Returns the provided view's background color, if it has ColorDrawable as its background, or
+   * {@code null} if the background has a different drawable type.
+   */
+  @Nullable
+  public static Integer getBackgroundColor(@NonNull View view) {
+    return view.getBackground() instanceof ColorDrawable
+        ? ((ColorDrawable) view.getBackground()).getColor()
+        : null;
   }
 }

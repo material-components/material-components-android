@@ -20,6 +20,9 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.ceil;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -27,14 +30,27 @@ import android.content.res.TypedArray;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatButton;
+import android.text.Layout.Alignment;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
+import android.widget.Checkable;
+import android.widget.CompoundButton;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -43,18 +59,9 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.customview.view.AbsSavedState;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatButton;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.Button;
-import android.widget.Checkable;
-import android.widget.CompoundButton;
+import androidx.customview.view.AbsSavedState;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
@@ -71,7 +78,7 @@ import java.util.LinkedHashSet;
  * <p>This class supplies updated Material styles for the button in the constructor. The widget will
  * display the correct default Material styles without the use of the style flag.
  *
- * <p>All attributes from {@link com.google.android.material.R.styleable#MaterialButton} are
+ * <p>All attributes from {@code com.google.android.material.R.styleable#MaterialButton} are
  * supported. Do not use the {@code android:background} attribute. MaterialButton manages its own
  * background drawable, and setting a new background means {@link MaterialButton} can no longer
  * guarantee that the new attributes it introduces will function properly. If the default background
@@ -81,9 +88,9 @@ import java.util.LinkedHashSet;
  * tint color and {@code ?attr/colorOnPrimary} for the text color. For unfilled buttons, this class
  * uses {@code ?attr/colorPrimary} for the text color and transparent for the background tint.
  *
- * <p>Add icons to the start, center, or end of this button using the {@link R.attr#icon app:icon},
- * {@link R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint}, {@link
- * R.attr#iconTintMode app:iconTintMode} and {@link R.attr#iconGravity app:iconGravity} attributes.
+ * <p>Add icons to the start, center, or end of this button using the {@code app:icon}, {@code
+ * app:iconPadding}, {@code app:iconTint}, {@code app:iconTintMode} and {@code app:iconGravity}
+ * attributes.
  *
  * <p>If a start-aligned icon is added to this button, please use a style like one of the ".Icon"
  * styles specified in the default MaterialButton styles. The ".Icon" styles adjust padding slightly
@@ -91,21 +98,18 @@ import java.util.LinkedHashSet;
  * button. If your icon is end-aligned, you cannot use a ".Icon" style and must instead manually
  * adjust your padding such that the visual adjustment is mirrored.
  *
- * <p>Specify background tint using the {@link R.attr#backgroundTint app:backgroundTint} and {@link
- * R.attr#backgroundTintMode app:backgroundTintMode} attributes, which accepts either a color or a
- * color state list.
+ * <p>Specify background tint using the {@code app:backgroundTint} and {@code
+ * app:backgroundTintMode} attributes, which accepts either a color or a color state list.
  *
- * <p>Ripple color / press state color can be specified using the {@link R.attr#rippleColor
- * app:rippleColor} attribute. Ripple opacity will be determined by the Android framework when
- * available. Otherwise, this color will be overlaid on the button at a 50% opacity when button is
- * pressed.
+ * <p>Ripple color / press state color can be specified using the {@code app:rippleColor} attribute.
+ * Ripple opacity will be determined by the Android framework when available. Otherwise, this color
+ * will be overlaid on the button at a 50% opacity when button is pressed.
  *
- * <p>Set the stroke color using the {@link R.attr#strokeColor app:strokeColor} attribute, which
- * accepts either a color or a color state list. Stroke width can be set using the {@link
- * R.attr#strokeWidth app:strokeWidth} attribute.
+ * <p>Set the stroke color using the {@code app:strokeColor} attribute, which accepts either a color
+ * or a color state list. Stroke width can be set using the {@code app:strokeWidth} attribute.
  *
- * <p>Specify the radius of all four corners of the button using the {@link R.attr#cornerRadius
- * app:cornerRadius} attribute.
+ * <p>Specify the radius of all four corners of the button using the {@code app:cornerRadius}
+ * attribute.
  */
 public class MaterialButton extends AppCompatButton implements Checkable, Shapeable {
 
@@ -160,8 +164,31 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    */
   public static final int ICON_GRAVITY_TEXT_END = 0x4;
 
+  /**
+   * Gravity used to position the icon at the top of the view.
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_TOP = 0x10;
+
+  /**
+   * Gravity used to position the icon in the center of the view at the top of the text
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_TEXT_TOP = 0x20;
+
   /** Positions the icon can be set to. */
-  @IntDef({ICON_GRAVITY_START, ICON_GRAVITY_TEXT_START, ICON_GRAVITY_END, ICON_GRAVITY_TEXT_END})
+  @IntDef({
+      ICON_GRAVITY_START,
+      ICON_GRAVITY_TEXT_START,
+      ICON_GRAVITY_END,
+      ICON_GRAVITY_TEXT_END,
+      ICON_GRAVITY_TOP,
+      ICON_GRAVITY_TEXT_TOP
+  })
   @Retention(RetentionPolicy.SOURCE)
   public @interface IconGravity {}
 
@@ -180,6 +207,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Px private int iconSize;
   @Px private int iconLeft;
+  @Px private int iconTop;
   @Px private int iconPadding;
 
   private boolean checked = false;
@@ -225,7 +253,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     attributes.recycle();
 
     setCompoundDrawablePadding(iconPadding);
-    updateIcon(/*needsIconUpdate=*/icon != null);
+    updateIcon(/*needsIconReset=*/icon != null);
   }
 
   @NonNull
@@ -398,7 +426,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       if (background != this.getBackground()) {
         Log.w(
             LOG_TAG,
-            "Do not set the background; MaterialButton manages its own background drawable.");
+            "MaterialButton manages its own background to control elevation, shape, color and"
+                + " states. Consider using backgroundTint, shapeAppearance and other attributes"
+                + " where available. A custom background will ignore these attributes and you"
+                + " should consider handling interaction states such as pressed, focused and"
+                + " disabled");
         materialButtonHelper.setBackgroundOverwritten();
         super.setBackgroundDrawable(background);
       } else {
@@ -419,18 +451,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP && materialButtonHelper != null) {
       materialButtonHelper.updateMaskBounds(bottom - top, right - left);
     }
-  }
-
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    updateIconPosition();
+    updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
   }
 
   @Override
   protected void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
     super.onTextChanged(charSequence, i, i1, i2);
-    updateIconPosition();
+    updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
   }
 
   @Override
@@ -452,17 +479,154 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
   }
 
-  private void updateIconPosition() {
+  @Override
+  public void refreshDrawableState() {
+    super.refreshDrawableState();
+    if (this.icon != null) {
+      final int[] state = getDrawableState();
+      boolean changed = icon.setState(state);
+
+      // Force the view to draw if icon state has changed.
+      if (changed) {
+        invalidate();
+      }
+    }
+  }
+
+  @RequiresApi(VERSION_CODES.JELLY_BEAN_MR1)
+  @Override
+  public void setTextAlignment(int textAlignment) {
+    super.setTextAlignment(textAlignment);
+    updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
+  }
+
+  /**
+   * This method and {@link #getActualTextAlignment()} is modified from Android framework TextView's
+   * private method getLayoutAlignment(). Please note that the logic here assumes the actual text
+   * direction is the same as the layout direction, which is not always the case, especially when
+   * the text mixes different languages. However, this is probably the best we can do for now,
+   * unless we have a good way to detect the final text direction being used by TextView.
+   */
+  private Alignment getGravityTextAlignment() {
+    switch (getGravity() & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK) {
+      case Gravity.CENTER_HORIZONTAL:
+        return Alignment.ALIGN_CENTER;
+      case Gravity.END:
+      case Gravity.RIGHT:
+        return Alignment.ALIGN_OPPOSITE;
+      case Gravity.START:
+      case Gravity.LEFT:
+      default:
+        return Alignment.ALIGN_NORMAL;
+    }
+  }
+
+  /**
+   * This method and {@link #getGravityTextAlignment()} is modified from Android framework
+   * TextView's private method getLayoutAlignment(). Please note that the logic here assumes
+   * the actual text direction is the same as the layout direction, which is not always the case,
+   * especially when the text mixes different languages. However, this is probably the best we can
+   * do for now, unless we have a good way to detect the final text direction being used by
+   * TextView.
+   */
+  private Alignment getActualTextAlignment() {
+    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR1) {
+      return getGravityTextAlignment();
+    }
+    switch (getTextAlignment()) {
+      case TEXT_ALIGNMENT_GRAVITY:
+        return getGravityTextAlignment();
+      case TEXT_ALIGNMENT_CENTER:
+        return Alignment.ALIGN_CENTER;
+      case TEXT_ALIGNMENT_TEXT_END:
+      case TEXT_ALIGNMENT_VIEW_END:
+        return Alignment.ALIGN_OPPOSITE;
+      case TEXT_ALIGNMENT_TEXT_START:
+      case TEXT_ALIGNMENT_VIEW_START:
+      case TEXT_ALIGNMENT_INHERIT:
+      default:
+        return Alignment.ALIGN_NORMAL;
+    }
+  }
+
+  private void updateIconPosition(int buttonWidth, int buttonHeight) {
     if (icon == null || getLayout() == null) {
       return;
     }
 
-    if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_END) {
-      iconLeft = 0;
-      updateIcon(/* needsIconUpdate = */ false);
-      return;
-    }
+    if (isIconStart() || isIconEnd()) {
+      iconTop = 0;
 
+      Alignment textAlignment = getActualTextAlignment();
+      if (iconGravity == ICON_GRAVITY_START
+          || iconGravity == ICON_GRAVITY_END
+          || (iconGravity == ICON_GRAVITY_TEXT_START && textAlignment == Alignment.ALIGN_NORMAL)
+          || (iconGravity == ICON_GRAVITY_TEXT_END && textAlignment == Alignment.ALIGN_OPPOSITE)) {
+        iconLeft = 0;
+        updateIcon(/* needsIconReset = */ false);
+        return;
+      }
+
+      int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
+      int availableWidth = buttonWidth
+          - getTextLayoutWidth()
+          - ViewCompat.getPaddingEnd(this)
+          - localIconSize
+          - iconPadding
+          - ViewCompat.getPaddingStart(this);
+      int newIconLeft =
+          textAlignment == Alignment.ALIGN_CENTER ? availableWidth / 2 : availableWidth;
+
+      // Only flip the bound value if either isLayoutRTL() or iconGravity is textEnd, but not both
+      if (isLayoutRTL() != (iconGravity == ICON_GRAVITY_TEXT_END)) {
+        newIconLeft = -newIconLeft;
+      }
+
+      if (iconLeft != newIconLeft) {
+        iconLeft = newIconLeft;
+        updateIcon(/* needsIconReset = */ false);
+      }
+    } else if (isIconTop()) {
+      iconLeft = 0;
+      if (iconGravity == ICON_GRAVITY_TOP) {
+        iconTop = 0;
+        updateIcon(/* needsIconReset = */ false);
+        return;
+      }
+
+      int localIconSize = iconSize == 0 ? icon.getIntrinsicHeight() : iconSize;
+      int newIconTop =
+          max(
+              0, // Always put the icon on top if the content height is taller than the button.
+              (buttonHeight
+                      - getTextHeight()
+                      - getPaddingTop()
+                      - localIconSize
+                      - iconPadding
+                      - getPaddingBottom())
+                  / 2);
+
+      if (iconTop != newIconTop) {
+        iconTop = newIconTop;
+        updateIcon(/* needsIconReset = */ false);
+      }
+    }
+  }
+
+  private int getTextLayoutWidth() {
+    float maxWidth = 0;
+    int lineCount = getLineCount();
+    for (int line = 0; line < lineCount; line++) {
+      maxWidth = max(maxWidth, getLayout().getLineWidth(line));
+    }
+    return (int) ceil(maxWidth);
+  }
+
+  private int getTextHeight() {
+    if (getLineCount() > 1) {
+      // If it's multi-line, return the internal text layout's height.
+      return getLayout().getHeight();
+    }
     Paint textPaint = getPaint();
     String buttonText = getText().toString();
     if (getTransformationMethod() != null) {
@@ -471,28 +635,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
     }
 
-    int textWidth =
-        Math.min((int) textPaint.measureText(buttonText), getLayout().getEllipsizedWidth());
+    Rect bounds = new Rect();
+    textPaint.getTextBounds(buttonText, 0, buttonText.length(), bounds);
 
-    int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
-    int newIconLeft =
-        (getMeasuredWidth()
-                - textWidth
-                - ViewCompat.getPaddingEnd(this)
-                - localIconSize
-                - iconPadding
-                - ViewCompat.getPaddingStart(this))
-            / 2;
-
-    // Only flip the bound value if either isLayoutRTL() or iconGravity is textEnd, but not both
-    if (isLayoutRTL() != (iconGravity == ICON_GRAVITY_TEXT_END)) {
-      newIconLeft = -newIconLeft;
-    }
-
-    if (iconLeft != newIconLeft) {
-      iconLeft = newIconLeft;
-      updateIcon(/* needsIconUpdate = */ false);
-    }
+    return min(bounds.height(), getLayout().getHeight());
   }
 
   private boolean isLayoutRTL() {
@@ -550,7 +696,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     if (this.iconSize != iconSize) {
       this.iconSize = iconSize;
-      updateIcon(/* needsIconUpdate = */ true);
+      updateIcon(/* needsIconReset = */ true);
     }
   }
 
@@ -578,7 +724,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIcon(@Nullable Drawable icon) {
     if (this.icon != icon) {
       this.icon = icon;
-      updateIcon(/* needsIconUpdate = */ true);
+      updateIcon(/* needsIconReset = */ true);
+      updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
     }
   }
   /**
@@ -621,7 +768,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIconTint(@Nullable ColorStateList iconTint) {
     if (this.iconTint != iconTint) {
       this.iconTint = iconTint;
-      updateIcon(/* needsIconUpdate = */ false);
+      updateIcon(/* needsIconReset = */ false);
     }
   }
 
@@ -659,7 +806,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIconTintMode(Mode iconTintMode) {
     if (this.iconTintMode != iconTintMode) {
       this.iconTintMode = iconTintMode;
-      updateIcon(/* needsIconUpdate = */ false);
+      updateIcon(/* needsIconReset = */ false);
     }
   }
 
@@ -676,9 +823,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   /**
    * Updates the icon, icon tint, and icon tint mode for this button.
-   * @param needsIconUpdate Whether to force the drawable to be set
+   * @param needsIconReset Whether to force the drawable to be set
    */
-  private void updateIcon(boolean needsIconUpdate) {
+  private void updateIcon(boolean needsIconReset) {
     if (icon != null) {
       icon = DrawableCompat.wrap(icon).mutate();
       DrawableCompat.setTintList(icon, iconTint);
@@ -688,36 +835,51 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
       int width = iconSize != 0 ? iconSize : icon.getIntrinsicWidth();
       int height = iconSize != 0 ? iconSize : icon.getIntrinsicHeight();
-      icon.setBounds(iconLeft, 0, iconLeft + width, height);
+      icon.setBounds(iconLeft, iconTop, iconLeft + width, iconTop + height);
+      icon.setVisible(true, needsIconReset);
     }
 
-    // Reset icon drawable if needed
-    boolean isIconStart =
-        iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START;
     // Forced icon update
-    if (needsIconUpdate) {
-      resetIconDrawable(isIconStart);
+    if (needsIconReset) {
+      resetIconDrawable();
       return;
     }
 
     // Otherwise only update if the icon or the position has changed
-    Drawable[] existingDrawables  = TextViewCompat.getCompoundDrawablesRelative(this);
+    Drawable[] existingDrawables = TextViewCompat.getCompoundDrawablesRelative(this);
     Drawable drawableStart = existingDrawables[0];
+    Drawable drawableTop = existingDrawables[1];
     Drawable drawableEnd = existingDrawables[2];
     boolean hasIconChanged =
-        (isIconStart && drawableStart != icon) || (!isIconStart && drawableEnd != icon);
+        (isIconStart() && drawableStart != icon)
+            || (isIconEnd() && drawableEnd != icon)
+            || (isIconTop() && drawableTop != icon);
 
     if (hasIconChanged) {
-      resetIconDrawable(isIconStart);
+      resetIconDrawable();
     }
   }
 
-  private void resetIconDrawable(boolean isIconStart) {
-    if (isIconStart) {
+  private void resetIconDrawable() {
+    if (isIconStart()) {
       TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
-    } else {
+    } else if (isIconEnd()) {
       TextViewCompat.setCompoundDrawablesRelative(this, null, null, icon, null);
+    } else if (isIconTop()) {
+      TextViewCompat.setCompoundDrawablesRelative(this, null, icon, null, null);
     }
+  }
+
+  private boolean isIconStart() {
+    return iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START;
+  }
+
+  private boolean isIconEnd() {
+    return iconGravity == ICON_GRAVITY_END || iconGravity == ICON_GRAVITY_TEXT_END;
+  }
+
+  private boolean isIconTop() {
+    return iconGravity == ICON_GRAVITY_TOP || iconGravity == ICON_GRAVITY_TEXT_TOP;
   }
 
   /**
@@ -909,8 +1071,49 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIconGravity(@IconGravity int iconGravity) {
     if (this.iconGravity != iconGravity) {
       this.iconGravity = iconGravity;
-      updateIconPosition();
+      updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
     }
+  }
+
+  /**
+   * Sets the button bottom inset
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetBottom
+   * @see #getInsetBottom()
+   */
+  public void setInsetBottom(@Dimension int insetBottom) {
+    materialButtonHelper.setInsetBottom(insetBottom);
+  }
+
+  /**
+   * Gets the bottom inset for this button
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetBottom
+   * @see #setInsetTop(int)
+   */
+  @Dimension
+  public int getInsetBottom() {
+    return materialButtonHelper.getInsetBottom();
+  }
+  /**
+   * Sets the button top inset
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetTop
+   * @see #getInsetBottom()
+   */
+  public void setInsetTop(@Dimension int insetTop) {
+    materialButtonHelper.setInsetTop(insetTop);
+  }
+
+  /**
+   * Gets the top inset for this button
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetTop
+   * @see #setInsetTop(int)
+   */
+  @Dimension
+  public int getInsetTop() {
+    return materialButtonHelper.getInsetTop();
   }
 
   @Override
@@ -962,6 +1165,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       this.checked = checked;
       refreshDrawableState();
 
+      // Report checked state change to the parent toggle group, if there is one
+      if (getParent() instanceof MaterialButtonToggleGroup) {
+        ((MaterialButtonToggleGroup) getParent()).onButtonCheckedStateChanged(this, this.checked);
+      }
+
       // Avoid infinite recursions if setChecked() is called from a listener
       if (broadcasting) {
         return;
@@ -987,9 +1195,31 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public boolean performClick() {
-    toggle();
+    if (materialButtonHelper.isToggleCheckedStateOnClick()) {
+      toggle();
+    }
 
     return super.performClick();
+  }
+
+  /**
+   * Returns whether or not clicking the button will toggle the checked state.
+   *
+   * @see #setToggleCheckedStateOnClick(boolean)
+   * @attr ref R.styleable#toggleCheckedStateOnClick
+   */
+  public boolean isToggleCheckedStateOnClick() {
+    return materialButtonHelper.isToggleCheckedStateOnClick();
+  }
+
+  /**
+   * Sets whether or not to toggle the button checked state on click.
+   *
+   * @param toggleCheckedStateOnClick whether or not to toggle the checked state on click.
+   * @attr ref R.styleable#toggleCheckedStateOnClick
+   */
+  public void setToggleCheckedStateOnClick(boolean toggleCheckedStateOnClick) {
+    materialButtonHelper.setToggleCheckedStateOnClick(toggleCheckedStateOnClick);
   }
 
   /**
@@ -1085,6 +1315,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     public SavedState(@NonNull Parcel source, ClassLoader loader) {
       super(source, loader);
+      if (loader == null) {
+        loader = getClass().getClassLoader();
+      }
       readFromParcel(source);
     }
 

@@ -27,9 +27,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.google.android.material.testutils.TestUtilsActions.setEnabled;
+import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
 import static com.google.android.material.testutils.TestUtilsMatchers.withTextColor;
 import static com.google.android.material.testutils.TestUtilsMatchers.withTypeface;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxBackgroundColor;
+import static com.google.android.material.testutils.TextInputLayoutActions.setBoxCornerFamily;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxCornerRadii;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeColor;
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeErrorColor;
@@ -38,15 +40,19 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setBo
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterMaxLength;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
+import static com.google.android.material.testutils.TextInputLayoutActions.setErrorAccessibilityLiveRegion;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorContentDescription;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorTextAppearance;
+import static com.google.android.material.testutils.TextInputLayoutActions.setExpandedHintEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHelperText;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHelperTextEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHint;
 import static com.google.android.material.testutils.TextInputLayoutActions.setHintTextAppearance;
 import static com.google.android.material.testutils.TextInputLayoutActions.setPlaceholderText;
+import static com.google.android.material.testutils.TextInputLayoutActions.setShapeAppearanceModel;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTypeface;
+import static com.google.common.truth.Truth.assertThat;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -62,20 +68,26 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcelable;
-import androidx.annotation.ColorInt;
-import androidx.core.widget.TextViewCompat;
 import android.text.TextPaint;
-import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.filters.MediumTest;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.CornerTreatment;
+import com.google.android.material.shape.CutCornerTreatment;
+import com.google.android.material.shape.RoundedCornerTreatment;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testapp.TextInputLayoutActivity;
 import com.google.android.material.testutils.TestUtils;
@@ -106,14 +118,6 @@ public class TextInputLayoutTest {
 
     public TestTextInputLayout(Context context) {
       super(context);
-    }
-
-    public TestTextInputLayout(Context context, AttributeSet attrs) {
-      super(context, attrs);
-    }
-
-    public TestTextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-      super(context, attrs, defStyleAttr);
     }
 
     @Override
@@ -174,6 +178,15 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_edittext_filled)).perform(typeText(INPUT_TEXT));
     // Check that the cutout is closed.
     onView(withId(R.id.textinput_box_outline)).check(isCutoutOpen(false));
+  }
+
+  @Test
+  public void testHintIsCollapsedIfExpandedHintNotEnabled() {
+    // Set expandedHintEnabled to false.
+    onView(withId(R.id.textinput_box_filled)).perform(setExpandedHintEnabled(false));
+
+    // Check the hint is collapsed.
+    onView(withId(R.id.textinput_box_filled)).check(isHintExpanded(false));
   }
 
   @Test
@@ -346,21 +359,22 @@ public class TextInputLayoutTest {
   public void testDispatchProvideAutofillStructure() {
     final Activity activity = activityTestRule.getActivity();
 
-    final TextInputLayout layout = activity.findViewById(R.id.textinput);
+    final TextInputLayout layout = activity.findViewById(R.id.textinput_layout_without_hint);
 
     final ViewStructureImpl structure = new ViewStructureImpl();
     layout.dispatchProvideAutofillStructure(structure, 0);
 
-    assertEquals(2, structure.getChildCount()); // EditText and TextView
+    // 1 x EditText, 2 x TextView (prefix/suffix).
+    assertEquals(3, structure.getChildCount());
 
     // Asserts the structure.
-    final ViewStructureImpl childStructure = structure.getChildAt(0);
+    ViewStructureImpl childStructure = structure.getChildAt(0);
     assertEquals(EditText.class.getName(), childStructure.getClassName());
-    assertEquals("Hint to the user", childStructure.getHint().toString());
+    assertEquals("Nested hint", childStructure.getHint().toString());
 
     // Make sure the widget's hint was restored.
-    assertEquals("Hint to the user", layout.getHint().toString());
-    final EditText editText = activity.findViewById(R.id.textinput_edittext);
+    assertEquals("Nested hint", layout.getHint().toString());
+    final EditText editText = activity.findViewById(R.id.textinput_edittext_with_hint);
     assertNull(editText.getHint());
   }
 
@@ -471,11 +485,42 @@ public class TextInputLayoutTest {
         .perform(setErrorContentDescription(errorContentDesc));
 
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput);
 
     // Assert the error content description is as expected.
     assertEquals(errorContentDesc, textInputLayout.getErrorContentDescription().toString());
+  }
+
+  @Test
+  public void testSetErrorAccessibilityLiveRegion() {
+    int errorAccessibilityLiveRegion = ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE;
+    // Set error and error accessibility live region.
+    onView(withId(R.id.textinput))
+        .perform(setErrorEnabled(true))
+        .perform(setError(ERROR_MESSAGE_1))
+        .perform(setErrorAccessibilityLiveRegion(errorAccessibilityLiveRegion));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput);
+
+    // Assert the error accessibility live region is as expected.
+    assertEquals(errorAccessibilityLiveRegion, textInputLayout.getErrorAccessibilityLiveRegion());
+  }
+
+  @Test
+  public void testDefaultErrorAccessibilityLiveRegionIsPolite() {
+    // Set error.
+    onView(withId(R.id.textinput))
+        .perform(setErrorEnabled(true))
+        .perform(setError(ERROR_MESSAGE_1));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput);
+
+    // Assert the error accessibility live region is as expected.
+    assertEquals(
+        ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE,
+        textInputLayout.getErrorAccessibilityLiveRegion());
   }
 
   @Test
@@ -523,7 +568,7 @@ public class TextInputLayoutTest {
         .perform(setError(ERROR_MESSAGE_1));
 
     @ColorInt int hintColor = layout.getHintCurrentCollapsedTextColor();
-    @ColorInt int errorColor = layout.getErrorTextCurrentColor();
+    @ColorInt int errorColor = layout.getErrorCurrentTextColors();
 
     assertEquals(hintColor, errorColor);
   }
@@ -647,6 +692,261 @@ public class TextInputLayoutTest {
   }
 
   @Test
+  public void testSetBoxCornerFamily() {
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxCornerFamily(CornerFamily.CUT));
+
+    onView(withId(R.id.textinput_box_outline)).check(isCornerFamily(CutCornerTreatment.class));
+  }
+
+  @Test
+  public void testSetShapeAppearanceModel() {
+    float cornerRadius = 30;
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setTopLeftCorner(CornerFamily.CUT, cornerRadius)
+            .setBottomRightCorner(CornerFamily.CUT, cornerRadius)
+            .build();
+
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setShapeAppearanceModel(shapeAppearanceModel));
+
+    // Assert the new shape appearance model set.
+    onView(withId(R.id.textinput_box_outline)).check(isShapeAppearanceModel(shapeAppearanceModel));
+    // Assert corner radii values.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopStart(cornerRadius));
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopEnd(0));
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusBottomStart(0));
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusBottomEnd(cornerRadius));
+    // Assert corner family values.
+    onView(withId(R.id.textinput_box_outline))
+        .check(isCornerFamilyTopLeft(CutCornerTreatment.class));
+    onView(withId(R.id.textinput_box_outline))
+        .check(isCornerFamilyTopRight(RoundedCornerTreatment.class));
+    onView(withId(R.id.textinput_box_outline))
+        .check(isCornerFamilyBottomLeft(RoundedCornerTreatment.class));
+    onView(withId(R.id.textinput_box_outline))
+        .check(isCornerFamilyBottomRight(CutCornerTreatment.class));
+  }
+
+  @Test
+  public void testSetShapeAppearanceModelSwitchFromLtrToRtl() {
+    float cornerRadius = 30;
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_box_outline);
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setTopLeftCorner(CornerFamily.CUT, cornerRadius)
+            .setBottomRightCorner(CornerFamily.CUT, cornerRadius)
+            .build();
+
+    // Set the shape appearance model.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setShapeAppearanceModel(shapeAppearanceModel));
+    // Set to RTL.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
+
+    if (ViewCompat.getLayoutDirection(textInputLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      // Asserts corner radii values are RTL.
+      onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopLeft(0));
+      onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopRight(cornerRadius));
+      onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusBottomLeft(cornerRadius));
+      onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusBottomRight(0));
+      // Assert corner family values are RTL.
+      onView(withId(R.id.textinput_box_outline))
+          .check(isCornerFamilyTopLeft(RoundedCornerTreatment.class));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isCornerFamilyTopRight(CutCornerTreatment.class));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isCornerFamilyBottomLeft(CutCornerTreatment.class));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isCornerFamilyBottomRight(RoundedCornerTreatment.class));
+    }
+  }
+
+  @Test
+  public void testSetShapeAppearanceModelSwitchFromRtlToLtr() {
+    float cornerRadius = 30;
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_box_outline);
+    ShapeAppearanceModel shapeAppearanceModel =
+        ShapeAppearanceModel.builder()
+            .setTopLeftCorner(CornerFamily.CUT, cornerRadius)
+            .setBottomRightCorner(CornerFamily.CUT, cornerRadius)
+            .build();
+
+    // Set the shape appearance model.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setShapeAppearanceModel(shapeAppearanceModel));
+    // Set to RTL.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
+
+    if (ViewCompat.getLayoutDirection(textInputLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      // Set back to LTR.
+      onView(withId(R.id.textinput_box_outline))
+          .perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_LTR));
+
+      // Asserts corner radii values are LTR.
+      onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopLeft(cornerRadius));
+      onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopRight(0));
+      onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusBottomLeft(0));
+      onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusBottomRight(cornerRadius));
+      // Assert corner family values are LTR.
+      onView(withId(R.id.textinput_box_outline))
+          .check(isCornerFamilyTopLeft(CutCornerTreatment.class));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isCornerFamilyTopRight(RoundedCornerTreatment.class));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isCornerFamilyBottomLeft(RoundedCornerTreatment.class));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isCornerFamilyBottomRight(CutCornerTreatment.class));
+    }
+  }
+
+  @Test
+  public void testSetBoxCornerRadii() {
+    float boxCornerRadiusTopStart = 0.5f;
+    float boxCornerRadiusTopEnd = 1f;
+    float boxCornerRadiusBottomStart = 1.5f;
+    float boxCornerRadiusBottomEnd = 2f;
+
+    // Set the outline box's corner radii.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(
+            setBoxCornerRadii(
+                boxCornerRadiusTopStart,
+                boxCornerRadiusTopEnd,
+                boxCornerRadiusBottomStart,
+                boxCornerRadiusBottomEnd));
+
+    // Assert values match each respective corner.
+    onView(withId(R.id.textinput_box_outline))
+        .check(isBoxCornerRadiusTopStart(boxCornerRadiusTopStart));
+    onView(withId(R.id.textinput_box_outline))
+        .check(isBoxCornerRadiusTopEnd(boxCornerRadiusTopEnd));
+    onView(withId(R.id.textinput_box_outline))
+        .check(isBoxCornerRadiusBottomStart(boxCornerRadiusBottomStart));
+    onView(withId(R.id.textinput_box_outline))
+        .check(isBoxCornerRadiusBottomEnd(boxCornerRadiusBottomEnd));
+  }
+
+  @Test
+  public void testSetBoxCornerRadiiInRtl() {
+    float boxCornerRadiusTopStart = 0.5f;
+    float boxCornerRadiusTopEnd = 1f;
+    float boxCornerRadiusBottomStart = 1.5f;
+    float boxCornerRadiusBottomEnd = 2f;
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_box_outline);
+
+    // Set to RTL.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
+
+    if (ViewCompat.getLayoutDirection(textInputLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      // Set the outline box's corner radii.
+      onView(withId(R.id.textinput_box_outline))
+          .perform(
+              setBoxCornerRadii(
+                  boxCornerRadiusTopStart,
+                  boxCornerRadiusTopEnd,
+                  boxCornerRadiusBottomStart,
+                  boxCornerRadiusBottomEnd));
+
+      // Assert values match each respective corner in RTL.
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusTopLeft(boxCornerRadiusTopEnd));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusTopRight(boxCornerRadiusTopStart));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusBottomLeft(boxCornerRadiusBottomEnd));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusBottomRight(boxCornerRadiusBottomStart));
+      // Assert getCornerRadius methods return correct values.
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusTopStart(boxCornerRadiusTopStart));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusTopEnd(boxCornerRadiusTopEnd));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusBottomStart(boxCornerRadiusBottomStart));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusBottomEnd(boxCornerRadiusBottomEnd));
+    }
+  }
+
+  @Test
+  public void testSetBoxCornerRadiiSwitchFromLtrToRtl() {
+    float boxCornerRadiusTopStart = 0.5f;
+    float boxCornerRadiusTopEnd = 1f;
+    float boxCornerRadiusBottomStart = 1.5f;
+    float boxCornerRadiusBottomEnd = 2f;
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_box_outline);
+
+    // Set the outline box's corner radii.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(
+            setBoxCornerRadii(
+                boxCornerRadiusTopStart,
+                boxCornerRadiusTopEnd,
+                boxCornerRadiusBottomStart,
+                boxCornerRadiusBottomEnd));
+    // Set to RTL.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
+
+    if (ViewCompat.getLayoutDirection(textInputLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      // Assert values match what they should be in RTL.
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusTopLeft(boxCornerRadiusTopEnd));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusTopRight(boxCornerRadiusTopStart));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusBottomLeft(boxCornerRadiusBottomEnd));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusBottomRight(boxCornerRadiusBottomStart));
+    }
+  }
+
+  @Test
+  public void testSetBoxCornerRadiiSwitchFromRtlToLtr() {
+    float boxCornerRadiusTopStart = 0.5f;
+    float boxCornerRadiusTopEnd = 1f;
+    float boxCornerRadiusBottomStart = 1.5f;
+    float boxCornerRadiusBottomEnd = 2f;
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_box_outline);
+    // Set to RTL.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
+
+    // Set the outline box's corner radii.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(
+            setBoxCornerRadii(
+                boxCornerRadiusTopStart,
+                boxCornerRadiusTopEnd,
+                boxCornerRadiusBottomStart,
+                boxCornerRadiusBottomEnd));
+
+    if (ViewCompat.getLayoutDirection(textInputLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      // Set back to LTR.
+      onView(withId(R.id.textinput_box_outline))
+          .perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_LTR));
+      // Assert values are correct.
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusTopLeft(boxCornerRadiusTopStart));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusTopRight(boxCornerRadiusTopEnd));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusBottomLeft(boxCornerRadiusBottomStart));
+      onView(withId(R.id.textinput_box_outline))
+          .check(isBoxCornerRadiusBottomRight(boxCornerRadiusBottomEnd));
+    }
+  }
+
+  @Test
   public void testBoxTopEndCornerRadiusChangesWithFloatValue() {
     float cornerRadiusSmall =
         activityTestRule.getActivity().getResources().getDimension(R.dimen.corner_radius_small);
@@ -700,6 +1000,38 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopEnd(cornerRadiusMedium));
   }
 
+  @UiThreadTest
+  @Test
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.O)
+  public void hintSetOnNestedEditText_propagateInnerHintToAutofillProvider() {
+    final Activity activity = activityTestRule.getActivity();
+    TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_layout_without_hint);
+    ViewStructureImpl structure = new ViewStructureImpl();
+
+    textInputLayout.dispatchProvideAutofillStructure(structure, /* flags= */ 0);
+
+    final ViewStructureImpl editText = structure.getChildAt(0);
+    assertEquals(EditText.class.getName(), editText.getClassName());
+    assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
+    assertEquals("Nested hint", editText.getHint().toString());
+  }
+
+  @UiThreadTest
+  @Test
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.O)
+  public void hintSetOnOuterLayout_propagateOuterHintToAutofillProvider() {
+    final Activity activity = activityTestRule.getActivity();
+    TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_layout_with_hint);
+    ViewStructureImpl structure = new ViewStructureImpl();
+
+    textInputLayout.dispatchProvideAutofillStructure(structure, /* flags= */ 0);
+
+    final ViewStructureImpl editText = structure.getChildAt(0);
+    assertEquals(EditText.class.getName(), editText.getClassName());
+    assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
+    assertEquals("Outer hint", editText.getHint().toString());
+  }
+
   private static ViewAssertion isHintExpanded(final boolean expanded) {
     return (view, noViewFoundException) -> {
       assertTrue(view instanceof TextInputLayout);
@@ -728,11 +1060,138 @@ public class TextInputLayoutTest {
     };
   }
 
+  private static ViewAssertion isShapeAppearanceModel(
+      @NonNull ShapeAppearanceModel shapeAppearanceModelt) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(shapeAppearanceModelt, ((TextInputLayout) view).getShapeAppearanceModel());
+    };
+  }
+
+  private static ViewAssertion isCornerFamily(Class<? extends CornerTreatment> cornerFamily) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      ShapeAppearanceModel shapeAppearanceModel =
+          ((TextInputLayout) view).getShapeAppearanceModel();
+      assertThat(shapeAppearanceModel.getTopLeftCorner()).isInstanceOf(cornerFamily);
+      assertThat(shapeAppearanceModel.getTopRightCorner()).isInstanceOf(cornerFamily);
+      assertThat(shapeAppearanceModel.getBottomRightCorner()).isInstanceOf(cornerFamily);
+      assertThat(shapeAppearanceModel.getBottomLeftCorner()).isInstanceOf(cornerFamily);
+    };
+  }
+
+  private static ViewAssertion isCornerFamilyTopLeft(
+      Class<? extends CornerTreatment> cornerFamily) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      ShapeAppearanceModel shapeAppearanceModel =
+          ((TextInputLayout) view).getShapeAppearanceModel();
+      assertThat(shapeAppearanceModel.getTopLeftCorner()).isInstanceOf(cornerFamily);
+    };
+  }
+
+  private static ViewAssertion isCornerFamilyTopRight(
+      Class<? extends CornerTreatment> cornerFamily) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      ShapeAppearanceModel shapeAppearanceModel =
+          ((TextInputLayout) view).getShapeAppearanceModel();
+      assertThat(shapeAppearanceModel.getTopRightCorner()).isInstanceOf(cornerFamily);
+    };
+  }
+
+  private static ViewAssertion isCornerFamilyBottomLeft(
+      Class<? extends CornerTreatment> cornerFamily) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      ShapeAppearanceModel shapeAppearanceModel =
+          ((TextInputLayout) view).getShapeAppearanceModel();
+      assertThat(shapeAppearanceModel.getBottomLeftCorner()).isInstanceOf(cornerFamily);
+    };
+  }
+
+  private static ViewAssertion isCornerFamilyBottomRight(
+      Class<? extends CornerTreatment> cornerFamily) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      ShapeAppearanceModel shapeAppearanceModel =
+          ((TextInputLayout) view).getShapeAppearanceModel();
+      assertThat(shapeAppearanceModel.getBottomRightCorner()).isInstanceOf(cornerFamily);
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusTopStart(final float boxCornerRadiusTopStart) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadiusTopStart, ((TextInputLayout) view).getBoxCornerRadiusTopStart(), 0.01);
+    };
+  }
+
   private static ViewAssertion isBoxCornerRadiusTopEnd(final float boxCornerRadiusTopEnd) {
     return (view, noViewFoundException) -> {
-      assertTrue(view instanceof TextInputLayout);
+      assertThat(view).isInstanceOf(TextInputLayout.class);
       assertEquals(
           boxCornerRadiusTopEnd, ((TextInputLayout) view).getBoxCornerRadiusTopEnd(), 0.01);
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusBottomEnd(final float boxCornerRadiusBottomEnd) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadiusBottomEnd, ((TextInputLayout) view).getBoxCornerRadiusBottomEnd(), 0.01);
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusBottomStart(
+      final float boxCornerRadiusBottomStart) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadiusBottomStart,
+          ((TextInputLayout) view).getBoxCornerRadiusBottomStart(),
+          0.01);
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusTopLeft(final float boxCornerRadius) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadius,
+          ((TextInputLayout) view).getBoxBackground().getTopLeftCornerResolvedSize(),
+          0.01);
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusTopRight(final float boxCornerRadius) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadius,
+          ((TextInputLayout) view).getBoxBackground().getTopRightCornerResolvedSize(),
+          0.01);
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusBottomLeft(final float boxCornerRadius) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadius,
+          ((TextInputLayout) view).getBoxBackground().getBottomLeftCornerResolvedSize(),
+          0.01);
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusBottomRight(final float boxCornerRadius) {
+    return (view, noViewFoundException) -> {
+      assertThat(view).isInstanceOf(TextInputLayout.class);
+      assertEquals(
+          boxCornerRadius,
+          ((TextInputLayout) view).getBoxBackground().getBottomRightCornerResolvedSize(),
+          0.01);
     };
   }
 

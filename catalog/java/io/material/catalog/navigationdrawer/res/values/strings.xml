@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+  <string name="cat_navigationdrawer_title"
+          description="The title for the navigation drawer demo. [CHAR_LIMIT=100]">Navigation Drawer</string>
+  <string name="cat_navigationdrawer_description"
+          description="Brief summary about navigation drawer component demo. [CHAR_LIMIT=500]">
+    Navigation drawers provide access to destinations and app functionality,
+    such as switching accounts. They can either be permanently on-screen or
+    controlled by a navigation menu icon.
+  </string>
+
+  <string name="cat_navigationdrawer_instructions">Press the menu icon above to open the navigation drawer.</string>
+  <string name="cat_navigationdrawer_header_mail">Mail</string>
+  <string name="cat_navigationdrawer_header_labels">Labels</string>
+  <string name="cat_navigationdrawer_label">Label</string>
+  <string name="cat_navigationdrawer_3d">3D</string>
+  <string name="cat_navigationdrawer_accelerator">Accelerator</string>
+  <string name="cat_navigationdrawer_search">Search</string>
+  <string name="cat_navigationdrawer_dashboard">Dashboard</string>
+  <string name="cat_navigationdrawer_button_show_content_description">Show navigation drawer</string>
+  <string name="cat_navigationdrawer_button_hide_content_description">Hide navigation drawer</string>
+  <string name="cat_navigationdrawer_header_image_content_description">Account icon</string>
+  <string name="cat_navigationdrawer_header_title">Material 3 Components</string>
+  <string name="cat_navigationdrawer_header_subtitle">example@material.io</string>
+</resources>

@@ -18,19 +18,31 @@ package io.material.catalog.progressindicator;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import com.google.android.material.progressindicator.ProgressIndicator;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.slider.Slider;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
 
-/** The fragment demos determinate types of progress indicator. */
+/**
+ * This is the fragment to dome in details of different determinate progress indicators.
+ *
+ * <p>This demo includes multiple examples of determinate {@link LinearProgressIndicator} and {@link
+ * CircularProgressIndicator} and the ability to:
+ *
+ * <ul>
+ *   <li>Update the indicator with a specified progress.
+ *   <li>Hide the indicator
+ *   <li>Show the indicator
+ * </ul>
+ */
 public class ProgressIndicatorDeterminateDemoFragment extends DemoFragment {
 
   @Override
@@ -51,29 +63,40 @@ public class ProgressIndicatorDeterminateDemoFragment extends DemoFragment {
   }
 
   public void initialize(@NonNull View view) {
-    List<ProgressIndicator> indicatorList =
-        DemoUtils.findViewsWithType(view, ProgressIndicator.class);
+    List<LinearProgressIndicator> linearProgressIndicatorList =
+        DemoUtils.findViewsWithType(view, LinearProgressIndicator.class);
+    List<CircularProgressIndicator> circularProgressIndicatorList =
+        DemoUtils.findViewsWithType(view, CircularProgressIndicator.class);
 
-    Slider slider = view.findViewById(io.material.catalog.progressindicator.R.id.slider);
+    Slider slider = view.findViewById(R.id.slider);
     Button showButton = view.findViewById(R.id.show_button);
     Button hideButton = view.findViewById(R.id.hide_button);
 
     slider.addOnChangeListener(
         (sliderObj, value, fromUser) -> {
-          for (ProgressIndicator progressIndicator : indicatorList) {
-            progressIndicator.setProgressCompat((int) value, true);
+          for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
+            indicator.setProgressCompat((int) value, true);
+          }
+          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
+            indicator.setProgressCompat((int) value, true);
           }
         });
     showButton.setOnClickListener(
         v -> {
-          for (ProgressIndicator progressIndicator : indicatorList) {
-            progressIndicator.show();
+          for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
+            indicator.show();
+          }
+          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
+            indicator.show();
           }
         });
     hideButton.setOnClickListener(
         v -> {
-          for (ProgressIndicator progressIndicator : indicatorList) {
-            progressIndicator.hide();
+          for (LinearProgressIndicator indicator : linearProgressIndicatorList) {
+            indicator.hide();
+          }
+          for (CircularProgressIndicator indicator : circularProgressIndicatorList) {
+            indicator.hide();
           }
         });
   }

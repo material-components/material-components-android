@@ -16,6 +16,12 @@
 -->
 <resources>
   <public name="appBarLayoutStyle" type="attr"/>
+  <public name="collapsingToolbarLayoutStyle" type="attr"/>
+  <public name="collapsingToolbarLayoutMediumStyle" type="attr"/>
+  <public name="collapsingToolbarLayoutLargeStyle" type="attr"/>
+  <public name="collapsingToolbarLayoutMediumSize" type="attr"/>
+  <public name="collapsingToolbarLayoutLargeSize" type="attr"/>
+  <public name="toolbarSurfaceStyle" type="attr"/>
   <public name="layout_scrollInterpolator" type="attr"/>
   <public name="behavior_overlapTop" type="attr"/>
   <public name="expandedTitleMargin" type="attr"/>
@@ -24,7 +30,9 @@
   <public name="expandedTitleMarginEnd" type="attr"/>
   <public name="expandedTitleMarginBottom" type="attr"/>
   <public name="expandedTitleTextAppearance" type="attr"/>
+  <public name="expandedTitleTextColor" type="attr"/>
   <public name="collapsedTitleTextAppearance" type="attr"/>
+  <public name="collapsedTitleTextColor" type="attr"/>
   <public name="contentScrim" type="attr"/>
   <public name="statusBarForeground" type="attr"/>
   <public name="statusBarScrim" type="attr"/>
@@ -43,12 +51,26 @@
   <public name="Widget.MaterialComponents.ActionBar.Primary" type="style"/>
   <public name="Widget.MaterialComponents.ActionBar.Surface" type="style"/>
   <public name="Widget.MaterialComponents.ActionBar.PrimarySurface" type="style"/>
+  <public name="Widget.Material3.AppBarLayout" type="style"/>
+  <public name="Widget.Material3.CollapsingToolbar" type="style"/>
+  <public name="Widget.Material3.CollapsingToolbar.Medium" type="style"/>
+  <public name="Widget.Material3.CollapsingToolbar.Large" type="style"/>
+  <public name="Widget.Material3.Toolbar" type="style"/>
+  <public name="Widget.Material3.Toolbar.Surface" type="style"/>
+  <public name="Widget.Material3.Toolbar.OnSurface" type="style"/>
+  <public name="Widget.Material3.ActionBar.Solid" type="style"/>
+  <public name="Widget.Material3.Light.ActionBar.Solid" type="style"/>
+  <public name="Widget.Material3.ActionMode" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Toolbar.Primary" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Toolbar.Surface" type="style"/>
+  <public name="ThemeOverlay.Material3.Toolbar.Surface" type="style"/>
   <public name="TextAppearance.Design.CollapsingToolbar.Expanded" type="style"/>
+  <public name="TextAppearance.Material3.ActionBar.Subtitle" type="style"/>
+  <public name="TextAppearance.Material3.ActionBar.Title" type="style"/>
   <public name="appbar_scrolling_view_behavior" type="string"/>
   <public name="expanded" type="attr"/>
   <public name="liftOnScroll" type="attr"/>
+  <public name="liftOnScrollColor" type="attr"/>
   <public name="liftOnScrollTargetViewId" type="attr"/>
   <public name="collapsedTitleGravity" type="attr"/>
   <public name="expandedTitleGravity" type="attr"/>
@@ -61,5 +83,11 @@
   <public name="scrimVisibleHeightTrigger" type="attr"/>
   <public name="titleEnabled" type="attr"/>
   <public name="maxLines" type="attr"/>
+  <public name="titleCentered" type="attr"/>
+  <public name="subtitleCentered" type="attr"/>
+  <public name="titlePositionInterpolator" type="attr"/>
+  <public name="logoAdjustViewBounds" type="attr"/>
+  <public name="logoScaleType" type="attr"/>
+  <public name="titleTextEllipsize" type="attr"/>
 </resources>
 

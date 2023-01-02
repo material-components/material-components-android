@@ -23,4 +23,5 @@
   <dimen name="cat_card_single_spacing">8dp</dimen>
   <dimen name="cat_card_double_spacing">16dp</dimen>
   <dimen name="cat_card_triple_spacing">24dp</dimen>
+  <dimen name="cat_card_content_padding">16dp</dimen>
 </resources>

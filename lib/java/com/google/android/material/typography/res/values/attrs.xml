@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2018 The Android Open Source Project
+  ~ Copyright (C) 2021 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,6 +15,41 @@
   ~ limitations under the License.
 -->
 <resources>
+
+  <!-- Text appearance for the Display Large style. -->
+  <attr name="textAppearanceDisplayLarge" format="reference"/>
+  <!-- Text appearance for the Display Medium style. -->
+  <attr name="textAppearanceDisplayMedium" format="reference"/>
+  <!-- Text appearance for the Display Small style. -->
+  <attr name="textAppearanceDisplaySmall" format="reference"/>
+  <!-- Text appearance for the Headline Large style. -->
+  <attr name="textAppearanceHeadlineLarge" format="reference"/>
+  <!-- Text appearance for the Headline Medium style. -->
+  <attr name="textAppearanceHeadlineMedium" format="reference"/>
+  <!-- Text appearance for the Headline Small style. -->
+  <attr name="textAppearanceHeadlineSmall" format="reference"/>
+  <!-- Text appearance for the Title Large style. -->
+  <attr name="textAppearanceTitleLarge" format="reference"/>
+  <!-- Text appearance for the Title Medium style. -->
+  <attr name="textAppearanceTitleMedium" format="reference"/>
+  <!-- Text appearance for the Title Small style. -->
+  <attr name="textAppearanceTitleSmall" format="reference"/>
+  <!-- Text appearance for the Body Large style. -->
+  <attr name="textAppearanceBodyLarge" format="reference"/>
+  <!-- Text appearance for the Body Medium style. -->
+  <attr name="textAppearanceBodyMedium" format="reference"/>
+  <!-- Text appearance for the Body Small style. -->
+  <attr name="textAppearanceBodySmall" format="reference"/>
+  <!-- Text appearance for the Label Large style. -->
+  <attr name="textAppearanceLabelLarge" format="reference"/>
+  <!-- Text appearance for the Label Medium style. -->
+  <attr name="textAppearanceLabelMedium" format="reference"/>
+  <!-- Text appearance for the Label Small style. -->
+  <attr name="textAppearanceLabelSmall" format="reference"/>
+
+
+  <!-- Deprecated. -->
+
   <!-- Text appearance for the Headline 1 style. -->
   <attr name="textAppearanceHeadline1" format="reference"/>
   <!-- Text appearance for the Headline 2 style. -->

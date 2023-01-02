@@ -16,6 +16,24 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
+  <style name="TextAppearance.Material3.DisplayLarge" parent="TextAppearance.M3.Sys.Typescale.DisplayLarge"/>
+  <style name="TextAppearance.Material3.DisplayMedium" parent="TextAppearance.M3.Sys.Typescale.DisplayMedium"/>
+  <style name="TextAppearance.Material3.DisplaySmall" parent="TextAppearance.M3.Sys.Typescale.DisplaySmall"/>
+  <style name="TextAppearance.Material3.HeadlineLarge" parent="TextAppearance.M3.Sys.Typescale.HeadlineLarge"/>
+  <style name="TextAppearance.Material3.HeadlineMedium" parent="TextAppearance.M3.Sys.Typescale.HeadlineMedium"/>
+  <style name="TextAppearance.Material3.HeadlineSmall" parent="TextAppearance.M3.Sys.Typescale.HeadlineSmall"/>
+  <style name="TextAppearance.Material3.TitleLarge" parent="TextAppearance.M3.Sys.Typescale.TitleLarge"/>
+  <style name="TextAppearance.Material3.TitleMedium" parent="TextAppearance.M3.Sys.Typescale.TitleMedium"/>
+  <style name="TextAppearance.Material3.TitleSmall" parent="TextAppearance.M3.Sys.Typescale.TitleSmall"/>
+  <style name="TextAppearance.Material3.BodyLarge" parent="TextAppearance.M3.Sys.Typescale.BodyLarge"/>
+  <style name="TextAppearance.Material3.BodyMedium" parent="TextAppearance.M3.Sys.Typescale.BodyMedium"/>
+  <style name="TextAppearance.Material3.BodySmall" parent="TextAppearance.M3.Sys.Typescale.BodySmall"/>
+  <style name="TextAppearance.Material3.LabelLarge" parent="TextAppearance.M3.Sys.Typescale.LabelLarge"/>
+  <style name="TextAppearance.Material3.LabelMedium" parent="TextAppearance.M3.Sys.Typescale.LabelMedium"/>
+  <style name="TextAppearance.Material3.LabelSmall" parent="TextAppearance.M3.Sys.Typescale.LabelSmall"/>
+
+  <!-- Deprecated -->
+
   <style name="TextAppearance.MaterialComponents.Headline1" parent="TextAppearance.AppCompat.Display4">
     <item name="fontFamily">sans-serif-light</item>
     <item name="android:fontFamily">sans-serif-light</item>

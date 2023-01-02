@@ -63,6 +63,23 @@
     </attr>
   </declare-styleable>
 
+  <!-- The corner family for all shape appearance styles. -->
+  <attr name="shapeCornerFamily" format="enum">
+    <enum name="rounded" value="0"/>
+    <enum name="cut" value="1"/>
+  </attr>
+  <!-- Shape appearance style reference with extra small corners. -->
+  <attr name="shapeAppearanceCornerExtraSmall" format="reference"/>
+  <!-- Shape appearance style reference with small corners. -->
+  <attr name="shapeAppearanceCornerSmall" format="reference"/>
+  <!-- Shape appearance style reference with medium corners. -->
+  <attr name="shapeAppearanceCornerMedium" format="reference"/>
+  <!-- Shape appearance style reference with large corners. -->
+  <attr name="shapeAppearanceCornerLarge" format="reference"/>
+  <!-- Shape appearance style reference with extra large corners. -->
+  <attr name="shapeAppearanceCornerExtraLarge" format="reference"/>
+
+  <!-- Deprecated: Use shapeAppearanceCorner* attributes. -->
   <!-- Shape appearance style reference for small components. -->
   <attr name="shapeAppearanceSmallComponent" format="reference"/>
   <!-- Shape appearance style reference for medium components. -->

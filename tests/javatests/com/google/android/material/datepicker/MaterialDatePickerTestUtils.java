@@ -17,10 +17,6 @@ package com.google.android.material.datepicker;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.swipeDown;
-import static androidx.test.espresso.action.ViewActions.swipeLeft;
-import static androidx.test.espresso.action.ViewActions.swipeRight;
-import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
@@ -29,18 +25,23 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import android.app.Activity;
-import androidx.annotation.VisibleForTesting;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.core.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.util.Pair;
 import androidx.test.espresso.ViewInteraction;
+import androidx.test.espresso.action.CoordinatesProvider;
+import androidx.test.espresso.action.GeneralLocation;
+import androidx.test.espresso.action.GeneralSwipeAction;
+import androidx.test.espresso.action.Press;
+import androidx.test.espresso.action.Swipe;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import java.util.Calendar;
@@ -213,23 +214,54 @@ public final class MaterialDatePickerTestUtils {
 
   @VisibleForTesting
   public static void swipeEarlier(DialogFragment dialogFragment) {
-    int orientation = getPagingOrientation(dialogFragment);
-    if (orientation == LinearLayoutManager.HORIZONTAL) {
-      onMonthsGroup.perform(swipeRight());
+    if (isHorizontal(dialogFragment)) {
+      swipeRight(dialogFragment);
     } else {
-      onMonthsGroup.perform(swipeDown());
+      swipeDown(dialogFragment);
     }
+  }
+
+  @VisibleForTesting
+  public static void swipeLater(DialogFragment dialogFragment) {
+    if (isHorizontal(dialogFragment)) {
+      swipeLeft(dialogFragment);
+    } else {
+      swipeUp(dialogFragment);
+    }
+  }
+
+  @VisibleForTesting
+  public static void swipeLeft(DialogFragment dialogFragment) {
+    onMonthsGroup.perform(swipeAction(GeneralLocation.CENTER_RIGHT, GeneralLocation.CENTER_LEFT));
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
-  static void swipeLater(DialogFragment dialogFragment) {
-    int orientation = getPagingOrientation(dialogFragment);
-    if (orientation == LinearLayoutManager.HORIZONTAL) {
-      onMonthsGroup.perform(swipeLeft());
-    } else {
-      onMonthsGroup.perform(swipeUp());
-    }
+  @VisibleForTesting
+  public static void swipeRight(DialogFragment dialogFragment) {
+    onMonthsGroup.perform(swipeAction(GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT));
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+
+  @VisibleForTesting
+  public static void swipeUp(DialogFragment dialogFragment) {
+    onMonthsGroup.perform(swipeAction(GeneralLocation.BOTTOM_CENTER, GeneralLocation.TOP_CENTER));
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+
+  @VisibleForTesting
+  public static void swipeDown(DialogFragment dialogFragment) {
+    onMonthsGroup.perform(swipeAction(GeneralLocation.TOP_CENTER, GeneralLocation.BOTTOM_CENTER));
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+
+  private static boolean isHorizontal(DialogFragment dialogFragment) {
+    return getPagingOrientation(dialogFragment) == LinearLayoutManager.HORIZONTAL;
+  }
+
+  private static GeneralSwipeAction swipeAction(
+      CoordinatesProvider startCoordinatesProvider, CoordinatesProvider endCoordinatesProvider) {
+    return new GeneralSwipeAction(
+        Swipe.SLOW, startCoordinatesProvider, endCoordinatesProvider, Press.FINGER);
   }
 
   static void clickHeaderToggle(Fragment fragment) {

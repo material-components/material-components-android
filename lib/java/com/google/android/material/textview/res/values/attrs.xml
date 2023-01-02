@@ -22,15 +22,6 @@
   -->
   <attr name="textAppearanceLineHeightEnabled" format="boolean" />
 
-  <declare-styleable name="MaterialTextAppearance" parent="TextAppearance">
-    <!--
-        Specifies explicit line height for this TextView. This is equivalent to the vertical
-        distance between subsequent baselines in the TextView.
-    -->
-    <attr name="android:lineHeight"/>
-    <attr name="lineHeight"/>
-  </declare-styleable>
-
   <declare-styleable name="MaterialTextView" parent="AppCompatTextView">
     <attr name="android:textAppearance"/>
     <attr name="android:lineHeight"/>

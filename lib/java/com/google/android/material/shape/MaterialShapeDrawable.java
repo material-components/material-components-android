@@ -45,6 +45,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Looper;
+import android.util.AttributeSet;
+import android.util.Log;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
@@ -55,9 +58,8 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.core.util.ObjectsCompat;
-import android.util.AttributeSet;
-import android.util.Log;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.shadow.ShadowRenderer;
 import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOperator;
@@ -106,6 +108,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public @interface CompatibilityShadowMode {}
 
   private static final Paint clearPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  static {
+    clearPaint.setColor(Color.WHITE);
+    clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
+  }
 
   private MaterialShapeDrawableState drawableState;
 
@@ -130,10 +136,17 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private final ShadowRenderer shadowRenderer = new ShadowRenderer();
   @NonNull private final PathListener pathShadowListener;
-  private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
+  // Most drawables in the lib will be used by Views in the UI thread. Since the
+  // ShapeAppearancePathProvider instance is not ThreadSafe, due to internal state,
+  // account for the case when using a MaterialShapeDrawable outside the main thread.
+  private final ShapeAppearancePathProvider pathProvider =
+      Looper.getMainLooper().getThread() == Thread.currentThread()
+          ? ShapeAppearancePathProvider.getInstance()
+          : new ShapeAppearancePathProvider();
 
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
+  private int resolvedTintColor;
 
   @NonNull private final RectF pathBounds = new RectF();
 
@@ -199,8 +212,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     this.drawableState = drawableState;
     strokePaint.setStyle(Style.STROKE);
     fillPaint.setStyle(Style.FILL);
-    clearPaint.setColor(Color.WHITE);
-    clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
     updateTintFilter();
     updateColorsForState(getState());
     // Listens to additions of corners and edges, to create the shadow operations.
@@ -430,11 +441,24 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     invalidateSelf();
   }
 
+  /**
+   * Get the tint color factoring in any other runtime modifications such as elevation overlays.
+   */
+  @ColorInt
+  public int getResolvedTintColor() {
+    return resolvedTintColor;
+  }
+
   @Override
   public int getOpacity() {
     // OPAQUE or TRANSPARENT are possible, but the complexity of determining this based on the
     // shape model outweighs the optimizations gained.
     return PixelFormat.TRANSLUCENT;
+  }
+
+  @Override
+  public int getAlpha() {
+    return drawableState.alpha;
   }
 
   @Override
@@ -593,8 +617,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     updateZ();
   }
 
+  @RestrictTo(LIBRARY_GROUP)
   @ColorInt
-  private int compositeElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
+  protected int compositeElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
     float elevation = getZ() + getParentAbsoluteElevation();
     return drawableState.elevationOverlayProvider != null
         ? drawableState.elevationOverlayProvider.compositeOverlayIfNeeded(
@@ -973,7 +998,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     // The extra height is the amount that the path draws outside of the bounds of the shape. This
-    // happens for some shapes like TriangleEdgeTreament when it draws a triangle outside.
+    // happens for some shapes like TriangleEdgeTreatment when it draws a triangle outside.
     int pathExtraWidth = (int) (pathBounds.width() - getBounds().width());
     int pathExtraHeight = (int) (pathBounds.height() - getBounds().height());
 
@@ -1041,7 +1066,16 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     drawShape(canvas, fillPaint, path, drawableState.shapeAppearanceModel, getBoundsAsRectF());
   }
 
-  private void drawStrokeShape(@NonNull Canvas canvas) {
+  /**
+   * Draw the stroke.
+   *
+   * <p>This method is made available to allow subclasses within the library to alter the stroke
+   * drawing like creating a cutout on it.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  protected void drawStrokeShape(@NonNull Canvas canvas) {
     drawShape(
         canvas, strokePaint, pathInsetByStroke, strokeShapeAppearance, getBoundsInsetByStroke());
   }
@@ -1179,15 +1213,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     calculatePath(getBoundsAsRectF(), path);
-    if (path.isConvex() || Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-      try {
-        outline.setConvexPath(path);
-      } catch (IllegalArgumentException ignored) {
-        // The change to support concave paths was done late in the release cycle. People
-        // using pre-releases of Q would experience a crash here.
-      }
-
-    }
+    DrawableUtils.setOutlineToPath(outline, path);
   }
 
   private void calculatePath(@NonNull RectF bounds, @NonNull Path path) {
@@ -1244,6 +1270,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (requiresElevationOverlay) {
       int paintColor = paint.getColor();
       int tintColor = compositeElevationOverlayIfNeeded(paintColor);
+      resolvedTintColor = tintColor;
       if (tintColor != paintColor) {
         return new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
       }
@@ -1260,6 +1287,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (requiresElevationOverlay) {
       tintColor = compositeElevationOverlayIfNeeded(tintColor);
     }
+    resolvedTintColor = tintColor;
     return new PorterDuffColorFilter(tintColor, tintMode);
   }
 

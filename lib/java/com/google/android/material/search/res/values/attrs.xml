@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+  <!-- Style to use for SearchBars in this theme. -->
+  <attr name="materialSearchBarStyle" format="reference"/>
+  <!-- Style to use for SearchViews in this theme. -->
+  <attr name="materialSearchViewStyle" format="reference"/>
+  <!-- Style to use for SearchView prefixes in this theme. -->
+  <attr name="materialSearchViewPrefixStyle" format="reference"/>
+  <!-- Attribute to use for hiding the navigation icon in search bar and search view. -->
+  <attr name="hideNavigationIcon" format="boolean"/>
+
+  <declare-styleable name="SearchBar">
+    <!-- Text appearance for the main search TextView. -->
+    <attr name="android:textAppearance"/>
+    <!-- Text for the main search TextView. -->
+    <attr name="android:text"/>
+    <!-- Hint for the main search TextView. -->
+    <attr name="android:hint"/>
+    <!-- Elevation of the SearchBar. -->
+    <attr name="elevation"/>
+    <!-- Whether the default margins should be applied to the SearchBar.
+         Default is true. -->
+    <attr name="defaultMarginsEnabled" format="boolean"/>
+    <!-- Whether the default AppBarLayout scroll flags should be applied to the SearchBar.
+         Default is true. -->
+    <attr name="defaultScrollFlagsEnabled" format="boolean"/>
+    <!-- Whether the navigation icon, which defaults to a magnifying glass
+         icon, should be hidden. Default is false. -->
+    <attr name="hideNavigationIcon"/>
+    <!-- Whether the default navigation icon click listener should be enforced.
+         This could be useful when setting up the SearchBar as an Activity's
+         ActionBar, which implicitly sets a navigation icon click listener.
+         Default is false. -->
+    <attr name="forceDefaultNavigationOnClickListener" format="boolean" />
+    <!-- Whether the navigation icon should be tinted. Default is true. -->
+    <attr name="tintNavigationIcon" format="boolean"/>
+    <!-- The color the navigation icon should be tinted with. Default is null
+         as SearchBar tints programmatically with colorOnSurfaceVariant for
+         default search icon and colorOnSurface for other icons. -->
+    <attr name="navigationIconTint"/>
+    <!-- Color of the SearchBar outline stroke. -->
+    <attr name="strokeColor"/>
+    <!-- Width of the SearchBar outline stroke. -->
+    <attr name="strokeWidth"/>
+  </declare-styleable>
+
+  <declare-styleable name="SearchView">
+    <!-- Text appearance for the main search EditText. -->
+    <attr name="android:textAppearance"/>
+    <!-- Text for the main search EditText. -->
+    <attr name="android:text"/>
+    <!-- Hint for the main search EditText. -->
+    <attr name="android:hint"/>
+    <!-- Text for the search prefix which appears before the main search EditText. -->
+    <attr name="searchPrefixText" format="string"/>
+    <!-- Whether a DrawerArrowDrawable should be used for the navigation icon,
+         which provides a "hamburger" menu to back arrow animation when the
+         SearchView expands/collapses. Default is false. Consider setting
+         to true when using a "hamburger" menu icon for the associated
+         SearchBar's navigation icon. -->
+    <attr name="useDrawerArrowDrawable" format="boolean"/>
+    <!-- Whether the navigation icon should be animated from the SearchBar
+         to the SearchView. Default is true. Set to false if using the
+         same navigation icon for both the SearchBar and SearchView. -->
+    <attr name="animateNavigationIcon" format="boolean"/>
+    <!-- Whether the menu items should be animated from the SearchBar
+         to the SearchView. Default is true. Set to false if inflating the
+         same menu for both the SearchBar and SearchView. -->
+    <attr name="animateMenuItems" format="boolean"/>
+    <!-- Whether the navigation icon, which defaults to a back arrow icon,
+         should be hidden. Default is false. -->
+    <attr name="hideNavigationIcon"/>
+    <!-- Whether the soft keyboard should be shown when the SearchView is
+         shown. Default is true. -->
+    <attr name="autoShowKeyboard" format="boolean"/>
+    <!-- Layout resource to inflate as the header. -->
+    <attr name="headerLayout"/>
+  </declare-styleable>
+
+</resources>

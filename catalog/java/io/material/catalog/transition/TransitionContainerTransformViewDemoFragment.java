@@ -18,12 +18,9 @@ package io.material.catalog.transition;
 
 import io.material.catalog.R;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -31,22 +28,36 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.transition.TransitionManager;
 import com.google.android.material.transition.MaterialContainerTransform;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
 
-/** A fragment that displays the main Transition demo for the Catalog app. */
+/** A fragment that displays the View container transform transition demos for the Catalog app. */
 public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     implements OnBackPressedHandler {
 
-  @Nullable private View startView;
-  @Nullable private View endCard;
-  @Nullable private FrameLayout root;
+  @Nullable private View startCard;
+  private View startFab;
 
-  @NonNull
-  private final ContainerTransformConfigurationHelper configurationHelper =
-      getContainerTransformConfigurationHelper();
+  private View contactCard;
+  @Nullable private View endView;
+  private View expandedCard;
+
+  private FrameLayout root;
+
+  private ContainerTransformConfigurationHelper configurationHelper;
+
+  @Override
+  public void onAttach(Context context) {
+    super.onAttach(context);
+
+    configurationHelper = new ContainerTransformConfigurationHelper();
+  }
 
   @Override
   public View onCreateDemoView(
@@ -55,7 +66,10 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
         layoutInflater.inflate(
             R.layout.cat_transition_container_transform_view_fragment, viewGroup, false);
     root = view.findViewById(R.id.root);
-    endCard = view.findViewById(R.id.end_card);
+
+    startFab = view.findViewById(R.id.start_fab);
+    expandedCard = view.findViewById(R.id.expanded_card);
+    contactCard = view.findViewById(R.id.contact_card);
     return view;
   }
 
@@ -67,74 +81,79 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     addTransitionableTarget(view, R.id.horizontal_card_item);
     addTransitionableTarget(view, R.id.grid_card_item);
     addTransitionableTarget(view, R.id.grid_tall_card_item);
-    addTransitionableTarget(view, R.id.end_card);
+    addTransitionableTarget(view, R.id.expanded_card);
+    addTransitionableTarget(view, R.id.contact_card);
   }
 
   private void addTransitionableTarget(@NonNull View view, @IdRes int id) {
     View target = view.findViewById(id);
     if (target != null) {
       ViewCompat.setTransitionName(target, String.valueOf(id));
-      if (id == R.id.end_card) {
-        target.setOnClickListener(v -> showStartView());
+      if (id == R.id.expanded_card || id == R.id.contact_card) {
+        target.setOnClickListener(this::showStartView);
       } else {
         target.setOnClickListener(this::showEndView);
       }
     }
   }
 
-  private void showEndView(@Nullable View startView) {
-    // Save a reference to the start view that triggered the transition in order to know which view
-    // to transition into during the return transition.
-    this.startView = startView;
+  private void showEndView(View startView) {
+    if (startView.getId() == R.id.start_fab) {
+      this.endView = contactCard;
+    } else {
+      // Save the startView reference as the startCard that triggered the transition in order to
+      // know which card to transition into during the return transition.
+      this.startCard = startView;
+      this.endView = expandedCard;
+    }
 
     // Construct a container transform transition between two views.
     MaterialContainerTransform transition = buildContainerTransform(true);
     transition.setStartView(startView);
-    transition.setEndView(endCard);
+    transition.setEndView(endView);
+
+    // Add a single target to stop the container transform from running on both the start
+    // and end view.
+    transition.addTarget(endView);
 
     // Trigger the container transform transition.
     TransitionManager.beginDelayedTransition(root, transition);
-    if (startView != null) {
-      startView.setVisibility(View.INVISIBLE);
-    }
-    if (endCard != null) {
-      endCard.setVisibility(View.VISIBLE);
-    }
+    startView.setVisibility(View.INVISIBLE);
+    endView.setVisibility(View.VISIBLE);
   }
 
-  private void showStartView() {
+  private void showStartView(View endView) {
+    View startView = endView.getId() == R.id.contact_card ? startFab : startCard;
+
     // Construct a container transform transition between two views.
     MaterialContainerTransform transition = buildContainerTransform(false);
-    transition.setStartView(endCard);
+    transition.setStartView(endView);
     transition.setEndView(startView);
+
+    // Add a single target to stop the container transform from running on both the start
+    // and end view.
+    transition.addTarget(startView);
 
     // Trigger the container transform transition.
     TransitionManager.beginDelayedTransition(root, transition);
-    if (startView != null) {
-      startView.setVisibility(View.VISIBLE);
-    }
-    if (endCard != null) {
-      endCard.setVisibility(View.INVISIBLE);
-    }
+    startView.setVisibility(View.VISIBLE);
+    endView.setVisibility(View.INVISIBLE);
   }
 
   @NonNull
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
-    MaterialContainerTransform transform = new MaterialContainerTransform();
+    Context context = requireContext();
+    MaterialContainerTransform transform = new MaterialContainerTransform(context, entering);
     transform.setScrimColor(Color.TRANSPARENT);
+    transform.setDrawingViewId(root.getId());
     configurationHelper.configure(transform, entering);
     return transform;
   }
 
-  @NonNull
-  protected ContainerTransformConfigurationHelper getContainerTransformConfigurationHelper() {
-    return new ContainerTransformConfigurationHelper();
-  }
-
   @Override
   public boolean onBackPressed() {
-    if (endCard != null && endCard.getVisibility() == View.VISIBLE) {
-      showStartView();
+    if (endView != null && endView.getVisibility() == View.VISIBLE) {
+      showStartView(endView);
       return true;
     }
     return false;

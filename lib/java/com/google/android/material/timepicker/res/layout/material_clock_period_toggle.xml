@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright 2020 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ -->
+
+<com.google.android.material.button.MaterialButtonToggleGroup
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/material_clock_period_toggle"
+  android:layout_width="@dimen/material_clock_period_toggle_width"
+  android:layout_height="@dimen/material_clock_period_toggle_height"
+  android:orientation="vertical"
+  android:contentDescription="@string/material_clock_toggle_content_description"
+  app:checkedButton="@id/material_clock_period_am_button"
+  android:visibility="gone"
+  app:selectionRequired="true"
+  app:singleSelection="true">
+
+  <com.google.android.material.button.MaterialButton
+    style="?attr/materialButtonOutlinedStyle"
+    android:id="@+id/material_clock_period_am_button"
+    android:insetTop="8dp"
+    android:layout_width="wrap_content"
+    android:text="@string/material_timepicker_am"/>
+  <com.google.android.material.button.MaterialButton
+    style="?attr/materialButtonOutlinedStyle"
+    android:id="@+id/material_clock_period_pm_button"
+    android:layout_width="wrap_content"
+    android:insetBottom="8dp"
+    android:text="@string/material_timepicker_pm"/>
+
+</com.google.android.material.button.MaterialButtonToggleGroup>
+

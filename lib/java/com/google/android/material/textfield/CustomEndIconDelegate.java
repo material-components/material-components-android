@@ -20,16 +20,19 @@ import androidx.annotation.NonNull;
 
 /**
  * Default initialization of a custom {@link TextInputLayout.EndIconMode}.
+ *
+ * <p>It will initialize with an empty icon drawable unless one was specified in xml via the {@code
+ * app:endIconDrawable} attribute. You can also specify the drawable by calling {@link
+ * TextInputLayout#setEndIconDrawable(int)} after calling {@link
+ * TextInputLayout#setEndIconMode(int)}.
  */
 class CustomEndIconDelegate extends EndIconDelegate {
-
-  CustomEndIconDelegate(@NonNull TextInputLayout textInputLayout) {
-    super(textInputLayout);
+  CustomEndIconDelegate(@NonNull EndCompoundLayout endLayout) {
+    super(endLayout);
   }
 
   @Override
-  void initialize() {
-    textInputLayout.setEndIconOnClickListener(null);
-    textInputLayout.setEndIconOnLongClickListener(null);
+  void setUp() {
+    endLayout.setEndIconOnLongClickListener(null);
   }
 }

@@ -18,9 +18,9 @@ package com.google.android.material.animation;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.util.Property;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Property;
 import java.util.WeakHashMap;
 
 /**

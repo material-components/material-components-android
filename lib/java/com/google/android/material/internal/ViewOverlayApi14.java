@@ -23,13 +23,13 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.core.view.ViewCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.core.view.ViewCompat;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -95,11 +95,12 @@ class ViewOverlayApi14 implements ViewOverlayImpl {
 
     static {
       try {
+        //noinspection JavaReflectionMemberAccess
         invalidateChildInParentFastMethod =
             ViewGroup.class.getDeclaredMethod(
                 "invalidateChildInParentFast", int.class, int.class, Rect.class);
-      } catch (NoSuchMethodException e) {
-        throw new RuntimeException(e);
+      } catch (NoSuchMethodException ignored) {
+        // Ignore exception if method does not exist
       }
     }
 

@@ -20,6 +20,9 @@
   <!-- Style to use for TabLayout in the theme. -->
   <attr name="tabStyle" format="reference"/>
 
+  <!-- Style to use for Secondary TabLayout in the theme. -->
+  <attr name="tabSecondaryStyle" format="reference"/>
+
   <declare-styleable name="TabLayout">
     <!-- Color of the indicator used to show the currently selected tab. -->
     <attr name="tabIndicatorColor" format="color"/>
@@ -52,6 +55,22 @@
          or if it should be fitted to the content of the tab text label. If no text label is
          present, it will be set to the width of the icon or to a minimum width of 24dp. -->
     <attr name="tabIndicatorFullWidth" format="boolean"/>
+    <!-- The animation mode used to animate the selection indicator between
+         destinations. -->
+    <attr name="tabIndicatorAnimationMode">
+      <!-- Animate the selection indicator's left and right bounds in step with
+           each other. -->
+      <enum name="linear" value="0"/>
+      <!-- Animate the selection indicator's left and right bounds out of step
+           with each other, decelerating the front and accelerating the back.
+           This causes the indicator to look like it stretches between destinations
+           an then shrinks back down to fit the size of it's target tab. -->
+      <enum name="elastic" value="1"/>
+      <!-- Animate the selection indicator by sequentially fading it out from
+           its current destination and then fading it in at its new
+           destination. -->
+      <enum name="fade" value="2"/>
+    </attr>
     <!-- The behavior mode for the Tabs in this layout -->
     <attr name="tabMode">
       <enum name="scrollable" value="0"/>
@@ -77,6 +96,8 @@
     <!-- {@deprecated Instead, provide a ColorStateList to the tabTextColor attribute with a
          selected color set.}  -->
     <attr name="tabSelectedTextColor" format="color"/>
+    <!-- A reference to a TextAppearance style to be applied to selected tab. -->
+    <attr name="tabSelectedTextAppearance" format="reference"/>
     <!-- The preferred padding along the start edge of tabs. -->
     <attr name="tabPaddingStart" format="dimension"/>
     <!-- The preferred padding along the top edge of tabs. -->

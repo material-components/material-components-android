@@ -22,12 +22,13 @@ import static io.material.catalog.transition.TransitionContainerTransformStartDe
 
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import io.material.catalog.feature.DemoActivity;
@@ -66,7 +67,12 @@ public class TransitionContainerTransformEndDemoActivity extends DemoActivity {
   }
 
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
-    MaterialContainerTransform transform = new MaterialContainerTransform();
+    MaterialContainerTransform transform = new MaterialContainerTransform(this, entering);
+    // Use all 3 container layer colors since this transform can be configured using any fade mode
+    // and some of the start views don't have a background and the end view doesn't have a
+    // background.
+    transform.setAllContainerColors(
+        MaterialColors.getColor(findViewById(android.R.id.content), R.attr.colorSurface));
     transform.addTarget(android.R.id.content);
     configurationHelper.configure(transform, entering);
     return transform;

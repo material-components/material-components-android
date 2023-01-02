@@ -20,14 +20,14 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+import android.util.TypedValue;
+import android.view.View;
 import androidx.annotation.AttrRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
-import android.util.TypedValue;
-import android.view.View;
 
 /**
  * Utility methods to work with attributes.
@@ -50,12 +50,15 @@ public class MaterialAttributes {
     return null;
   }
 
-  /**
-   * Returns the {@link TypedValue} for the provided {@code attributeResId}.
-   *
-   * @throws IllegalArgumentException if the attribute is not present in the current theme.
-   */
-  public static int resolveOrThrow(
+  @NonNull
+  public static TypedValue resolveTypedValueOrThrow(
+      @NonNull View componentView, @AttrRes int attributeResId) {
+    return resolveTypedValueOrThrow(
+        componentView.getContext(), attributeResId, componentView.getClass().getCanonicalName());
+  }
+
+  @NonNull
+  public static TypedValue resolveTypedValueOrThrow(
       @NonNull Context context,
       @AttrRes int attributeResId,
       @NonNull String errorMessageComponent) {
@@ -71,7 +74,19 @@ public class MaterialAttributes {
               errorMessageComponent,
               context.getResources().getResourceName(attributeResId)));
     }
-    return typedValue.data;
+    return typedValue;
+  }
+
+  /**
+   * Returns the {@link TypedValue} for the provided {@code attributeResId}.
+   *
+   * @throws IllegalArgumentException if the attribute is not present in the current theme.
+   */
+  public static int resolveOrThrow(
+      @NonNull Context context,
+      @AttrRes int attributeResId,
+      @NonNull String errorMessageComponent) {
+    return resolveTypedValueOrThrow(context, attributeResId, errorMessageComponent).data;
   }
 
   /**
@@ -80,9 +95,9 @@ public class MaterialAttributes {
    *
    * @throws IllegalArgumentException if the attribute is not present in the current theme.
    */
-  public static int resolveOrThrow(@NonNull View componentView, @AttrRes int attributeResId) {
-    return resolveOrThrow(
-        componentView.getContext(), attributeResId, componentView.getClass().getCanonicalName());
+  public static int resolveOrThrow(
+      @NonNull View componentView, @AttrRes int attributeResId) {
+    return resolveTypedValueOrThrow(componentView, attributeResId).data;
   }
 
   /**
@@ -106,6 +121,18 @@ public class MaterialAttributes {
     TypedValue typedValue = resolve(context, attributeResId);
     return (typedValue != null && typedValue.type == TypedValue.TYPE_INT_BOOLEAN)
         ? typedValue.data != 0
+        : defaultValue;
+  }
+
+  /**
+   * Returns the integer value for the provided {@code attributeResId} or {@code defaultValue} if
+   * the attribute is not a integer or not present in the current theme.
+   */
+  public static int resolveInteger(
+      @NonNull Context context, @AttrRes int attributeResId, int defaultValue) {
+    TypedValue typedValue = resolve(context, attributeResId);
+    return (typedValue != null && typedValue.type == TypedValue.TYPE_INT_DEC)
+        ? typedValue.data
         : defaultValue;
   }
 

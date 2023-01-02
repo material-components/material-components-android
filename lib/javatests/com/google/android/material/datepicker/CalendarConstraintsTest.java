@@ -16,13 +16,15 @@
 package com.google.android.material.datepicker;
 
 import static com.google.common.truth.Truth.assertThat;
+import static java.util.Calendar.SATURDAY;
+import static java.util.Calendar.SUNDAY;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertThrows;
 
 import com.google.android.material.internal.ParcelableTestUtils;
 import java.util.Calendar;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
@@ -33,8 +35,6 @@ public class CalendarConstraintsTest {
   private static final long FEB_2016 = Month.create(2016, Calendar.FEBRUARY).timeInMillis;
   private static final long MARCH_2016 = Month.create(2016, Calendar.MARCH).timeInMillis;
   private static final long APRIL_2016 = Month.create(2016, Calendar.APRIL).timeInMillis;
-
-  @Rule public final ExpectedException exceptionRule = ExpectedException.none();
 
   @Test
   public void equalAfterParceling() {
@@ -47,7 +47,7 @@ public class CalendarConstraintsTest {
 
   @Test
   public void clampMonth_when_InsideBounds() {
-    Month today = Month.today();
+    Month today = Month.current();
     Month yearBefore = today.monthsLater(-12);
     Month yearAfter = today.monthsLater(12);
 
@@ -63,7 +63,7 @@ public class CalendarConstraintsTest {
 
   @Test
   public void clampMonth_when_beforeLowerBound() {
-    Month today = Month.today();
+    Month today = Month.current();
     Month yearBefore = today.monthsLater(-12);
     Month yearAfter = today.monthsLater(12);
 
@@ -78,7 +78,7 @@ public class CalendarConstraintsTest {
 
   @Test
   public void clampMonth_when_AfterUpperBound() {
-    Month today = Month.today();
+    Month today = Month.current();
     Month yearBefore = today.monthsLater(-12);
     Month yearAfter = today.monthsLater(12);
 
@@ -92,39 +92,111 @@ public class CalendarConstraintsTest {
   }
 
   @Test
-  public void currentDefaultsToTodayIfWithinBounds() {
-    Month today = Month.today();
-    long start = today.monthsLater(-1).timeInMillis;
-    long end = today.monthsLater(1).timeInMillis;
-    CalendarConstraints calendarConstraints =
-        new CalendarConstraints.Builder().setStart(start).setEnd(end).build();
-    assertEquals(today, calendarConstraints.getOpenAt());
-  }
-
-  @Test
   public void currentDefaultsToStartIfTodayIsInvalid() {
     CalendarConstraints calendarConstraints =
         new CalendarConstraints.Builder().setStart(FEB_2016).setEnd(APRIL_2016).build();
-    assertEquals(FEB_2016, calendarConstraints.getOpenAt().timeInMillis);
+
+    assertNull(calendarConstraints.getOpenAt());
   }
 
   @Test
   public void illegalCurrentMonthFails() {
-    exceptionRule.expect(IllegalArgumentException.class);
-    new CalendarConstraints.Builder()
-        .setStart(FEB_2016)
-        .setEnd(MARCH_2016)
-        .setOpenAt(APRIL_2016)
-        .build();
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            new CalendarConstraints.Builder()
+                .setStart(FEB_2016)
+                .setEnd(MARCH_2016)
+                .setOpenAt(APRIL_2016)
+                .build());
   }
 
   @Test
   public void illegalEndMonthFails() {
-    exceptionRule.expect(IllegalArgumentException.class);
-    new CalendarConstraints.Builder()
-        .setStart(MARCH_2016)
-        .setEnd(FEB_2016)
-        .setOpenAt(MARCH_2016)
-        .build();
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            new CalendarConstraints.Builder()
+                .setStart(MARCH_2016)
+                .setEnd(FEB_2016)
+                .setOpenAt(MARCH_2016)
+                .build());
+  }
+
+  @Test
+  public void firstDayOfWeek_sunday() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setFirstDayOfWeek(SUNDAY).build();
+
+    assertThat(calendarConstraints.getFirstDayOfWeek()).isEqualTo(SUNDAY);
+  }
+
+  @Test
+  public void firstDayOfWeek_saturday() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setFirstDayOfWeek(SATURDAY).build();
+
+    assertThat(calendarConstraints.getFirstDayOfWeek()).isEqualTo(SATURDAY);
+  }
+
+  @Test
+  public void firstDayOfWeek_notSet() {
+    CalendarConstraints calendarConstraints = new CalendarConstraints.Builder().build();
+
+    assertThat(calendarConstraints.getFirstDayOfWeek()).isEqualTo(0);
+  }
+
+  @Test
+  public void firstDayOfWeek_invalidBelowRange() {
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> new CalendarConstraints.Builder().setFirstDayOfWeek(-1).build());
+  }
+
+  @Test
+  public void firstDayOfWeek_invalidAboveRange() {
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> new CalendarConstraints.Builder().setFirstDayOfWeek(SATURDAY + 1).build());
+  }
+
+  @Test
+  public void setStart_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setStart(FEB_2016).build();
+
+    assertThat(calendarConstraints.getStart().timeInMillis).isEqualTo(FEB_2016);
+  }
+
+  @Test
+  public void setEnd_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setEnd(FEB_2016).build();
+
+    assertThat(calendarConstraints.getEnd().timeInMillis).isEqualTo(FEB_2016);
+  }
+
+  @Test
+  public void getStartMs_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setStart(FEB_2016).build();
+
+    assertThat(calendarConstraints.getStartMs()).isEqualTo(FEB_2016);
+  }
+
+  @Test
+  public void getEndMs_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setEnd(FEB_2016).build();
+
+    assertThat(calendarConstraints.getEndMs()).isEqualTo(FEB_2016);
+  }
+
+  @Test
+  public void getOpenAtMs_succeeds() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setOpenAt(FEB_2016).build();
+
+    assertThat(calendarConstraints.getOpenAtMs()).isEqualTo(FEB_2016);
   }
 }

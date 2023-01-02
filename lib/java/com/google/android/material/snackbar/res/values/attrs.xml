@@ -47,6 +47,12 @@
     <!-- Alpha level for the action button text, to allow for adjusting the lightness or darkness of
          the theme color used for Snackbar text buttons (e.g., colorPrimary). -->
     <attr name="actionTextColorAlpha" format="float"/>
+    <!-- Shape appearance style reference for Snackbar. Attribute declaration is in the
+         shape package. -->
+    <attr name="shapeAppearance" />
+    <!-- Shape appearance overlay style reference for Snackbar. To be used to augment attributes
+         declared in the shapeAppearance. Attribute declaration is in the shape package. -->
+    <attr name="shapeAppearanceOverlay" />
   </declare-styleable>
 
 </resources>

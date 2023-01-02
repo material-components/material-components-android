@@ -18,13 +18,13 @@ package io.material.catalog.feature;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.core.view.ViewCompat;
-import androidx.core.widget.NestedScrollView;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.NestedScrollView;
 import com.google.android.material.internal.ContextUtils;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;

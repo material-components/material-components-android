@@ -19,12 +19,12 @@ package com.google.android.material.internal;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.SubMenuBuilder;
 import android.view.SubMenu;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 
 /**
  * This is a {@link MenuBuilder} that returns an instance of {@link NavigationSubMenu} instead of

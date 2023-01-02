@@ -19,6 +19,24 @@
   <!-- Style to use for TextInputLayout in the theme. -->
   <attr name="textInputStyle" format="reference"/>
 
+  <!-- Style to use for Outlined Textfield in this theme. -->
+  <attr name="textInputOutlinedStyle" format="reference"/>
+
+  <!-- Style to use for Filled Textfield in this theme. -->
+  <attr name="textInputFilledStyle" format="reference"/>
+
+  <!-- Style to use for Outlined Dense Textfield in this theme. -->
+  <attr name="textInputOutlinedDenseStyle" format="reference"/>
+
+  <!-- Style to use for Filled Dense Textfield in this theme. -->
+  <attr name="textInputFilledDenseStyle" format="reference"/>
+
+  <!-- Style to use for Outlined Textfield for Exposed Dropdown Menu in this theme. -->
+  <attr name="textInputOutlinedExposedDropdownMenuStyle" format="reference"/>
+
+  <!-- Style to use for Filled Textfield for Exposed Dropdown Menu in this theme. -->
+  <attr name="textInputFilledExposedDropdownMenuStyle" format="reference"/>
+
   <declare-styleable name="TextInputLayout">
     <!-- Whether the layout is enabled -->
     <attr name="android:enabled"/>
@@ -27,6 +45,18 @@
     <!-- The text color for the hint when the text field is not activated (such
          as for the resting and disabled states). -->
     <attr name="android:textColorHint"/>
+    <!-- Makes the text field be at least this many ems wide if its width is
+         set to wrap_content. -->
+    <attr name="android:minEms"/>
+    <!-- Makes the text field be at most this many ems wide if its width is set
+         to wrap_content. -->
+    <attr name="android:maxEms"/>
+    <!-- Makes the text field be at least this dimension wide in pixels if its width is
+         set to wrap_content. -->
+    <attr name="android:minWidth"/>
+    <!-- Makes the text field be at most this dimension wide in pixels if its width is set
+         to wrap_content. -->
+    <attr name="android:maxWidth"/>
 
     <!-- Whether the layout's floating label functionality is enabled. -->
     <attr name="hintEnabled" format="boolean"/>
@@ -37,6 +67,9 @@
     <!-- Text color of the hint in the collapsed floating label.
          If set, this takes precedence over hintTextAppearance. -->
     <attr name="hintTextColor" format="color"/>
+    <!-- Whether the hint should occupy the input area when the text field is
+         unpopulated and not focused. -->
+    <attr name="expandedHintEnabled" format="boolean"/>
 
     <!-- The text to display as helper text underneath the text input area. -->
     <attr name="helperText" format="string"/>
@@ -59,6 +92,8 @@
          Should be set when the error message has special characters that a
          screen reader is not able to announce properly. -->
     <attr name="errorContentDescription" format="string"/>
+    <!-- AccessibilityLiveRegion of any error message displayed. -->
+    <attr name="errorAccessibilityLiveRegion" format="integer"/>
     <!-- End icon to be shown when an error is displayed. -->
     <attr name="errorIconDrawable" format="reference"/>
     <!-- Tint color to use for the error icon. -->
@@ -144,6 +179,30 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
+    <!-- The minimum size of the start icon. -->
+    <attr name="startIconMinSize" format="dimension"/>
+    <!-- The scale type of the start icon. -->
+    <attr name="startIconScaleType">
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#FILL}. -->
+      <enum name="fitXY" value="0" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#START}. -->
+      <enum name="fitStart" value="1" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#CENTER}. -->
+      <enum name="fitCenter" value="2" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#END}. -->
+      <enum name="fitEnd" value="3" />
+      <!-- Center the image in the view, but perform no scaling. -->
+      <enum name="center" value="4" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so both dimensions
+           (width and height) of the image will be equal to or larger than the corresponding
+           dimension of the view (minus padding). The image is then centered in the view. -->
+      <enum name="centerCrop" value="5" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so that both
+           dimensions (width and height) of the image will be equal to or less than the
+           corresponding dimension of the view (minus padding). The image is then centered in
+           the view. -->
+      <enum name="centerInside" value="6" />
+    </attr>
     <!-- The end icon mode of the TextInputLayout. It will display one of the end icons detailed
          below, or no end icon. -->
     <attr name="endIconMode">
@@ -183,6 +242,30 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
+    <!-- The minimum size of the end icon -->
+    <attr name="endIconMinSize" format="dimension"/>
+    <!-- The scale type of the end icon. -->
+    <attr name="endIconScaleType">
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#FILL}. -->
+      <enum name="fitXY" value="0" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#START}. -->
+      <enum name="fitStart" value="1" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#CENTER}. -->
+      <enum name="fitCenter" value="2" />
+      <!-- Scale the image using {@link android.graphics.Matrix.ScaleToFit#END}. -->
+      <enum name="fitEnd" value="3" />
+      <!-- Center the image in the view, but perform no scaling. -->
+      <enum name="center" value="4" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so both dimensions
+           (width and height) of the image will be equal to or larger than the corresponding
+           dimension of the view (minus padding). The image is then centered in the view. -->
+      <enum name="centerCrop" value="5" />
+      <!-- Scale the image uniformly (maintain the image's aspect ratio) so that both
+           dimensions (width and height) of the image will be equal to or less than the
+           corresponding dimension of the view (minus padding). The image is then centered in
+           the view. -->
+      <enum name="centerInside" value="6" />
+    </attr>
 
     <!-- Whether the text input area should be drawn as a filled box, an outline box, or not as a box.-->
     <attr name="boxBackgroundMode">
@@ -211,7 +294,7 @@
     <attr name="boxStrokeErrorColor" format="color"/>
     <!-- The color to use for the box's background color when in filled box mode.
          If a non-stateful color resource is specified, default colors will be used for the hover
-         and disabled states.  -->
+         and disabled states. -->
     <attr name="boxBackgroundColor" format="color"/>
     <!-- The value to use for the box's stroke when in outline box mode, or for the underline stroke
          in filled mode. -->
@@ -268,6 +351,16 @@
 
   <declare-styleable name="MaterialAutoCompleteTextView" parent="AppCompatAutoCompleteTextView">
     <attr name="android:inputType"/>
+    <attr name="android:popupElevation"/>
+
+    <!-- The default layout used to inflate auto-complete items -->
+    <attr name="simpleItemLayout" format="reference"/>
+    <!-- The default auto-completion items in a string array -->
+    <attr name="simpleItems" format="reference"/>
+    <!-- The color of the default selected item of the dropdown list. -->
+    <attr name="simpleItemSelectedColor" format="color"/>
+    <!-- The ripple color of the default selected item of the dropdown list. -->
+    <attr name="simpleItemSelectedRippleColor" format="color"/>
   </declare-styleable>
 
 </resources>

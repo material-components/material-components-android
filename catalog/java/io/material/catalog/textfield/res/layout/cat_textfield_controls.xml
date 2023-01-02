@@ -32,12 +32,6 @@
         android:layout_marginBottom="@dimen/cat_textfield_standard_spacing"
         android:layout_gravity="center_horizontal"
         android:text="@string/cat_textfield_show_error_text"/>
-    <Button
-        android:id="@+id/button_change_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/cat_textfield_customize_color"/>
 
     <Button
       android:id="@+id/button_toggle_leading_icon"
@@ -48,7 +42,7 @@
       android:text="@string/cat_textfield_show_leading_icon"
       android:visibility="gone"/>
 
-    <com.google.android.material.switchmaterial.SwitchMaterial
+    <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/cat_textfield_enabled_switch"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -60,6 +54,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/cat_textfield_large_spacing"
         android:layout_marginBottom="@dimen/cat_textfield_standard_spacing"
         android:text="@string/cat_textfield_customize_section_title"
@@ -67,6 +62,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:text="@string/cat_textfield_customize_section_description"
         android:textAppearance="?attr/textAppearanceSubtitle1"/>
     <LinearLayout
@@ -78,94 +74,86 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_label"
-          android:layout_width="match_parent"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
+          android:layout_gravity="center_horizontal"
           android:layout_margin="4dp"
           android:hint="@string/cat_textfield_customize_label_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
       </com.google.android.material.textfield.TextInputLayout>
-      <Button
-          android:id="@+id/button_update_label_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="@string/cat_textfield_update_label_text"/>
 
       <com.google.android.material.textfield.TextInputLayout
-          android:layout_width="match_parent"
+          android:id="@+id/text_input_error"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
           android:layout_margin="4dp"
+          android:layout_gravity="center_horizontal"
           android:hint="@string/cat_textfield_customize_error_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edit_text_error"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="text"
+           android:imeOptions="actionDone"/>
       </com.google.android.material.textfield.TextInputLayout>
-      <Button
-          android:id="@+id/button_update_error_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="@string/cat_textfield_update_error_text"/>
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_helper_text"
-          android:layout_width="match_parent"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
           android:layout_margin="4dp"
+          android:layout_gravity="center_horizontal"
           android:hint="@string/cat_textfield_customize_helper_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
       </com.google.android.material.textfield.TextInputLayout>
-      <Button
-          android:id="@+id/button_update_helper_text"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="@string/cat_textfield_update_helper_text"/>
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_counter_max"
-          android:layout_width="match_parent"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
           android:layout_margin="4dp"
+          android:layout_gravity="center_horizontal"
           android:hint="@string/cat_textfield_customize_counter_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:imeOptions="actionDone"/>
       </com.google.android.material.textfield.TextInputLayout>
-      <Button
-          android:id="@+id/button_counter_max"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="@string/cat_textfield_update_counter_text"/>
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_placeholder"
-          android:layout_width="match_parent"
+          android:layout_width="@dimen/material_textinput_default_width"
           android:layout_height="wrap_content"
           android:layout_margin="4dp"
+          android:layout_gravity="center_horizontal"
           android:hint="@string/cat_textfield_customize_placeholder_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:imeOptions="actionDone"/>
       </com.google.android.material.textfield.TextInputLayout>
+
       <Button
-          android:id="@+id/button_update_placeholder"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center_horizontal"
-          android:text="@string/cat_textfield_update_placeholder_text"/>
+        android:id="@+id/button_update"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cat_textfield_standard_spacing"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/cat_textfield_update_button"/>
     </LinearLayout>
   </LinearLayout>
 </ScrollView>

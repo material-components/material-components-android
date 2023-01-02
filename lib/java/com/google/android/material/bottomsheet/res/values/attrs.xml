@@ -20,6 +20,10 @@
   <attr name="bottomSheetDialogTheme" format="reference"/>
   <!-- Style to use for modal bottom sheets in this theme. -->
   <attr name="bottomSheetStyle" format="reference"/>
+  <!-- Determines if the BottomSheetDialog should be shown in edge to edge mode. -->
+  <attr name="enableEdgeToEdge" format="boolean" />
+  <!-- Style of drag handle views when being used with bottom sheets. -->
+  <attr name="bottomSheetDragHandleStyle" format="reference"/>
 
   <declare-styleable name="BottomSheetBehavior_Layout">
     <!-- The height of the bottom sheet when it is collapsed. -->
@@ -34,8 +38,9 @@
     <!-- Whether height of expanded sheet wraps content or not -->
     <attr name="behavior_fitToContents" format="boolean"/>
     <!-- Whether this bottom sheet is draggable. If not, the app will have to supply different
-         means to expand and collapse the sheet -->
-    <attr name="behavior_draggable" format="boolean"/>
+         means to expand and collapse the sheet. Attribute declaration is in
+         the resources package. -->
+    <attr name="behavior_draggable"/>
     <!-- The ratio to be used to set the height of half-expanded state in proportion to parent, when
          fitToContents is false. Defaults to true half, 0.5, if not explicitly set. Ratio must be a
          float value between 0 and 1 and produce a half-expanded state height larger than the
@@ -44,6 +49,9 @@
     <!-- The top offset of the BottomSheet in the expanded-state when fitsToContent is false.
          The default value is 0, which results in the sheet matching the parent's top. -->
     <attr name="behavior_expandedOffset" format="reference|dimension"/>
+    <!-- The vertical velocity threshold considered significant enough to warrant a
+         vertical swipe. -->
+    <attr name="behavior_significantVelocityThreshold" format="dimension"/>
     <!-- Shape appearance style reference for BottomSheet. Attribute declaration is in the shape
          package. -->
      <attr name="shapeAppearance"/>
@@ -75,7 +83,17 @@
     <!-- Sets whether this bottom sheet should adjust it's position based on the system gesture area
     on Android Q and above. Value is false (insets respected) by default. -->
     <attr name="gestureInsetBottomIgnored" format="boolean"/>
+    <attr name="paddingBottomSystemWindowInsets" />
+    <attr name="paddingLeftSystemWindowInsets" />
+    <attr name="paddingRightSystemWindowInsets" />
+    <attr name="paddingTopSystemWindowInsets" />
+    <attr name="marginLeftSystemWindowInsets" />
+    <attr name="marginRightSystemWindowInsets" />
+    <attr name="marginTopSystemWindowInsets" />
+    <attr name="shouldRemoveExpandedCorners" format="boolean"/>
     <attr name="android:elevation"/>
+    <attr name="android:maxWidth"/>
+    <attr name="android:maxHeight"/>
 
   </declare-styleable>
 

@@ -15,11 +15,10 @@
   ~ limitations under the License.
 -->
 <resources>
+  <style name="Theme.Material3.DayNight.BottomSheetDialog" parent="Theme.Material3.Dark.BottomSheetDialog"/>
 
   <!-- Material themes (day/night versions) for bottomsheets. -->
   <style name="Theme.MaterialComponents.DayNight.BottomSheetDialog"
       parent="Theme.MaterialComponents.BottomSheetDialog"/>
-  <style name="ThemeOverlay.MaterialComponents.DayNight.BottomSheetDialog"
-      parent="ThemeOverlay.MaterialComponents.BottomSheetDialog"/>
 
 </resources>

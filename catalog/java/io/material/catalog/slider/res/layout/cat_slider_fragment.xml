@@ -15,12 +15,13 @@
   limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:orientation="vertical">
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:paddingTop="16dp"
+  android:paddingLeft="16dp"
+  android:paddingRight="16dp"
+  android:orientation="vertical">
 
   <com.google.android.material.slider.Slider
       android:id="@+id/slider"
@@ -32,12 +33,13 @@
       android:valueFrom="0.0"
       android:valueTo="11.0" />
 
-  <com.google.android.material.slider.Slider
+  <com.google.android.material.slider.RangeSlider
     android:id="@+id/range_slider"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="32dp"
     android:layout_gravity="center"
+    app:values="@array/initial_slider_values"
     android:valueFrom="0.0"
     android:valueTo="11.0" />
 

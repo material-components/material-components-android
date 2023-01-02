@@ -19,24 +19,28 @@ package io.material.catalog.transition;
 import io.material.catalog.R;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.core.view.animation.PathInterpolatorCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnticipateOvershootInterpolator;
+import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
+import android.view.animation.OvershootInterpolator;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.core.view.animation.PathInterpolatorCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -50,12 +54,14 @@ import com.google.android.material.transition.MaterialContainerTransform;
  * A helper class which manages all configuration UI presented in {@link
  * TransitionContainerTransformDemoFragment}.
  */
+@TargetApi(VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ContainerTransformConfigurationHelper {
 
   private static final String CUBIC_CONTROL_FORMAT = "%.3f";
   private static final String DURATION_FORMAT = "%.0f";
+  private static final long NO_DURATION = -1;
 
-  protected boolean isArcMotionEnabled;
+  private boolean arcMotionEnabled;
   private long enterDuration;
   private long returnDuration;
   private Interpolator interpolator;
@@ -71,7 +77,7 @@ public class ContainerTransformConfigurationHelper {
     FADE_MODE_MAP.append(R.id.fade_through_button, MaterialContainerTransform.FADE_MODE_THROUGH);
   }
 
-  protected ContainerTransformConfigurationHelper() {
+  public ContainerTransformConfigurationHelper() {
     setUpDefaultValues();
   }
 
@@ -89,8 +95,13 @@ public class ContainerTransformConfigurationHelper {
 
   /** Set up the androidx transition according to the config helper's parameters. */
   void configure(MaterialContainerTransform transform, boolean entering) {
-    transform.setDuration(entering ? getEnterDuration() : getReturnDuration());
-    transform.setInterpolator(getInterpolator());
+    long duration = entering ? getEnterDuration() : getReturnDuration();
+    if (duration != NO_DURATION) {
+      transform.setDuration(duration);
+    }
+    if (getInterpolator() != null) {
+      transform.setInterpolator(getInterpolator());
+    }
     if (isArcMotionEnabled()) {
       transform.setPathMotion(new MaterialArcMotion());
     }
@@ -103,8 +114,13 @@ public class ContainerTransformConfigurationHelper {
   void configure(
       com.google.android.material.transition.platform.MaterialContainerTransform transform,
       boolean entering) {
-    transform.setDuration(entering ? getEnterDuration() : getReturnDuration());
-    transform.setInterpolator(getInterpolator());
+    long duration = entering ? getEnterDuration() : getReturnDuration();
+    if (duration != NO_DURATION) {
+      transform.setDuration(duration);
+    }
+    if (getInterpolator() != null) {
+      transform.setInterpolator(getInterpolator());
+    }
     if (isArcMotionEnabled()) {
       transform.setPathMotion(
           new com.google.android.material.transition.platform.MaterialArcMotion());
@@ -118,7 +134,7 @@ public class ContainerTransformConfigurationHelper {
    * com.google.android.material.transition.MaterialArcMotion}.
    */
   boolean isArcMotionEnabled() {
-    return isArcMotionEnabled;
+    return arcMotionEnabled;
   }
 
   /** The enter duration to be used by a custom container transform. */
@@ -147,16 +163,12 @@ public class ContainerTransformConfigurationHelper {
   }
 
   private void setUpDefaultValues() {
-    setDefaultMotionPath();
-    enterDuration = 300;
-    returnDuration = 275;
-    interpolator = new FastOutSlowInInterpolator();
+    arcMotionEnabled = false;
+    enterDuration = NO_DURATION;
+    returnDuration = NO_DURATION;
+    interpolator = null;
     fadeModeButtonId = R.id.fade_in_button;
     drawDebugEnabled = false;
-  }
-
-  protected void setDefaultMotionPath() {
-    isArcMotionEnabled = false;
   }
 
   /** Create a bottom sheet dialog that displays controls to configure a container transform. */
@@ -178,11 +190,11 @@ public class ContainerTransformConfigurationHelper {
     MaterialButtonToggleGroup toggleGroup = view.findViewById(R.id.path_motion_button_group);
     if (toggleGroup != null) {
       // Set initial value.
-      toggleGroup.check(isArcMotionEnabled ? R.id.arc_motion_button : R.id.linear_motion_button);
+      toggleGroup.check(arcMotionEnabled ? R.id.arc_motion_button : R.id.linear_motion_button);
       toggleGroup.addOnButtonCheckedListener(
           (group, checkedId, isChecked) -> {
             if (checkedId == R.id.arc_motion_button) {
-              isArcMotionEnabled = isChecked;
+              arcMotionEnabled = isChecked;
             }
           });
     }
@@ -234,7 +246,7 @@ public class ContainerTransformConfigurationHelper {
     TextView durationValue = view.findViewById(labelResId);
     if (durationSlider != null && durationValue != null) {
       // Set initial value.
-      durationSlider.setValue(duration);
+      durationSlider.setValue(duration != NO_DURATION ? duration : 0);
       durationValue.setText(String.format(DURATION_FORMAT, durationSlider.getValue()));
       // Update the duration and durationValue's text whenever the slider is slid.
       durationSlider.addOnChangeListener(
@@ -249,35 +261,84 @@ public class ContainerTransformConfigurationHelper {
   private void setUpBottomSheetInterpolation(View view) {
     RadioGroup interpolationGroup = view.findViewById(R.id.interpolation_radio_group);
     ViewGroup customContainer = view.findViewById(R.id.custom_curve_container);
-    if (interpolationGroup != null && customContainer != null) {
+    TextInputLayout overshootTensionTextInputLayout =
+        view.findViewById(R.id.overshoot_tension_text_input_layout);
+    EditText overshootTensionEditText = view.findViewById(R.id.overshoot_tension_edit_text);
+    TextInputLayout anticipateOvershootTensionTextInputLayout =
+        view.findViewById(R.id.anticipate_overshoot_tension_text_input_layout);
+    EditText anticipateOvershootTensionEditText =
+        view.findViewById(R.id.anticipate_overshoot_tension_edit_text);
 
+    if (interpolationGroup != null && customContainer != null) {
       setTextInputClearOnTextChanged(view.findViewById(R.id.x1_text_input_layout));
       setTextInputClearOnTextChanged(view.findViewById(R.id.x2_text_input_layout));
       setTextInputClearOnTextChanged(view.findViewById(R.id.y1_text_input_layout));
       setTextInputClearOnTextChanged(view.findViewById(R.id.y2_text_input_layout));
 
+      overshootTensionEditText.setText(String.valueOf(CustomOvershootInterpolator.DEFAULT_TENSION));
+      anticipateOvershootTensionEditText.setText(
+          String.valueOf(CustomAnticipateOvershootInterpolator.DEFAULT_TENSION));
+
       // Check the correct current radio button and fill in custom bezier fields if applicable.
       if (interpolator instanceof FastOutSlowInInterpolator) {
         interpolationGroup.check(R.id.radio_fast_out_slow_in);
-      } else {
+      } else if (interpolator instanceof OvershootInterpolator) {
+        interpolationGroup.check(R.id.radio_overshoot);
+        if (interpolator instanceof CustomOvershootInterpolator) {
+          CustomOvershootInterpolator customOvershootInterpolator =
+              (CustomOvershootInterpolator) interpolator;
+          overshootTensionEditText.setText(String.valueOf(customOvershootInterpolator.tension));
+        }
+      } else if (interpolator instanceof AnticipateOvershootInterpolator) {
+        interpolationGroup.check(R.id.radio_anticipate_overshoot);
+        if (interpolator instanceof CustomAnticipateOvershootInterpolator) {
+          CustomAnticipateOvershootInterpolator customAnticipateOvershootInterpolator =
+              (CustomAnticipateOvershootInterpolator) interpolator;
+          anticipateOvershootTensionEditText.setText(
+              String.valueOf(customAnticipateOvershootInterpolator.tension));
+        }
+      } else if (interpolator instanceof BounceInterpolator) {
+        interpolationGroup.check(R.id.radio_bounce);
+      } else if (interpolator instanceof CustomCubicBezier) {
         interpolationGroup.check(R.id.radio_custom);
         CustomCubicBezier currentInterp = (CustomCubicBezier) interpolator;
         setTextFloat(view.findViewById(R.id.x1_edit_text), currentInterp.controlX1);
         setTextFloat(view.findViewById(R.id.y1_edit_text), currentInterp.controlY1);
         setTextFloat(view.findViewById(R.id.x2_edit_text), currentInterp.controlX2);
         setTextFloat(view.findViewById(R.id.y2_edit_text), currentInterp.controlY2);
+      } else {
+        interpolationGroup.check(R.id.radio_default);
       }
 
-      // Enable/disable custom bezier fields depending on initial checked radio button.
-      setViewGroupDescendantsEnabled(
-          customContainer, interpolationGroup.getCheckedRadioButtonId() == R.id.radio_custom);
+      // Show/hide custom text input fields depending on initial checked radio button.
+      updateCustomTextFieldsVisibility(
+          interpolationGroup.getCheckedRadioButtonId(),
+          overshootTensionTextInputLayout,
+          anticipateOvershootTensionTextInputLayout,
+          customContainer);
 
-      // Watch for any changes to the selected radio button and update custom bezier enabled state.
-      // The custom bezier values will be captured when the configuration is applied.
+      // Watch for any changes to selected radio button and update custom text fields visibility.
+      // The custom text field values will be captured when the configuration is applied.
       interpolationGroup.setOnCheckedChangeListener(
           (group, checkedId) ->
-              setViewGroupDescendantsEnabled(customContainer, checkedId == R.id.radio_custom));
+              updateCustomTextFieldsVisibility(
+                  checkedId,
+                  overshootTensionTextInputLayout,
+                  anticipateOvershootTensionTextInputLayout,
+                  customContainer));
     }
+  }
+
+  private static void updateCustomTextFieldsVisibility(
+      int checkedId,
+      TextInputLayout overshootTensionTextInputLayout,
+      TextInputLayout anticipateOvershootTensionTextInputLayout,
+      ViewGroup customContainer) {
+    overshootTensionTextInputLayout.setVisibility(
+        checkedId == R.id.radio_overshoot ? View.VISIBLE : View.GONE);
+    anticipateOvershootTensionTextInputLayout.setVisibility(
+        checkedId == R.id.radio_anticipate_overshoot ? View.VISIBLE : View.GONE);
+    customContainer.setVisibility(checkedId == R.id.radio_custom ? View.VISIBLE : View.GONE);
   }
 
   @SuppressLint("DefaultLocale")
@@ -365,8 +426,8 @@ public class ContainerTransformConfigurationHelper {
             v -> {
               // Capture and update interpolation
               RadioGroup interpolationGroup = view.findViewById(R.id.interpolation_radio_group);
-              if (interpolationGroup != null
-                  && interpolationGroup.getCheckedRadioButtonId() == R.id.radio_custom) {
+              int checkedRadioButtonId = interpolationGroup.getCheckedRadioButtonId();
+              if (checkedRadioButtonId == R.id.radio_custom) {
                 Float x1 = getTextFloat(view.findViewById(R.id.x1_edit_text));
                 Float y1 = getTextFloat(view.findViewById(R.id.y1_edit_text));
                 Float x2 = getTextFloat(view.findViewById(R.id.x2_edit_text));
@@ -376,8 +437,32 @@ public class ContainerTransformConfigurationHelper {
                   interpolator = new CustomCubicBezier(x1, y1, x2, y2);
                   dialog.dismiss();
                 }
-              } else {
+              } else if (checkedRadioButtonId == R.id.radio_overshoot) {
+                EditText overshootTensionEditText =
+                    view.findViewById(R.id.overshoot_tension_edit_text);
+                Float tension = getTextFloat(overshootTensionEditText);
+                interpolator =
+                    tension != null
+                        ? new CustomOvershootInterpolator(tension)
+                        : new CustomOvershootInterpolator();
+                dialog.dismiss();
+              } else if (checkedRadioButtonId == R.id.radio_anticipate_overshoot) {
+                EditText overshootTensionEditText =
+                    view.findViewById(R.id.anticipate_overshoot_tension_edit_text);
+                Float tension = getTextFloat(overshootTensionEditText);
+                interpolator =
+                    tension != null
+                        ? new CustomAnticipateOvershootInterpolator(tension)
+                        : new CustomAnticipateOvershootInterpolator();
+                dialog.dismiss();
+              } else if (checkedRadioButtonId == R.id.radio_bounce) {
+                interpolator = new BounceInterpolator();
+                dialog.dismiss();
+              } else if (checkedRadioButtonId == R.id.radio_fast_out_slow_in) {
                 interpolator = new FastOutSlowInInterpolator();
+                dialog.dismiss();
+              } else {
+                interpolator = null;
                 dialog.dismiss();
               }
             });
@@ -390,17 +475,44 @@ public class ContainerTransformConfigurationHelper {
             });
   }
 
-  private static void setViewGroupDescendantsEnabled(ViewGroup viewGroup, boolean enabled) {
-    for (int i = 0; i < viewGroup.getChildCount(); i++) {
-      View view = viewGroup.getChildAt(i);
-      view.setEnabled(enabled);
-      if (view instanceof ViewGroup) {
-        setViewGroupDescendantsEnabled((ViewGroup) view, enabled);
-      }
+  /** A custom overshoot interpolator which exposes its tension. */
+  private static class CustomOvershootInterpolator extends OvershootInterpolator {
+
+    // This is the default tension value in OvershootInterpolator
+    static final float DEFAULT_TENSION = 2.0f;
+
+    final float tension;
+
+    CustomOvershootInterpolator() {
+      this(DEFAULT_TENSION);
+    }
+
+    CustomOvershootInterpolator(float tension) {
+      super(tension);
+      this.tension = tension;
     }
   }
 
-  /** A custom cubic bezier interpolator which exposes it control points. */
+  /** A custom anticipate overshoot interpolator which exposes its tension. */
+  private static class CustomAnticipateOvershootInterpolator
+      extends AnticipateOvershootInterpolator {
+
+    // This is the default tension value in AnticipateOvershootInterpolator
+    static final float DEFAULT_TENSION = 2.0f;
+
+    final float tension;
+
+    CustomAnticipateOvershootInterpolator() {
+      this(DEFAULT_TENSION);
+    }
+
+    CustomAnticipateOvershootInterpolator(float tension) {
+      super(tension);
+      this.tension = tension;
+    }
+  }
+
+  /** A custom cubic bezier interpolator which exposes its control points. */
   private static class CustomCubicBezier implements Interpolator {
 
     final float controlX1;

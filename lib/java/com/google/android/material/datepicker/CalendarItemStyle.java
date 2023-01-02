@@ -26,17 +26,18 @@ import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
-import android.widget.TextView;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
- * Loads and applies {@link R.styleable#MaterialCalendarDay} attributes to {@link TextView}
+ * Loads and applies {@code R.styleable.MaterialCalendarDay} attributes to {@link TextView}
  * instances.
  */
 final class CalendarItemStyle {
@@ -131,13 +132,25 @@ final class CalendarItemStyle {
         backgroundColor, textColor, strokeColor, strokeWidth, itemShape, insets);
   }
 
-  /** Applies the {@link R.styleable#MaterialCalendarDay} style to the provided {@code item} */
+  /**
+   * Applies the {@code R.styleable.MaterialCalendarDay} style to the provided {@code item}, with no
+   * {@code backgroundColorOverride}.
+   */
   void styleItem(@NonNull TextView item) {
+    styleItem(item, /* backgroundColorOverride= */ null);
+  }
+
+  /**
+   * Applies the {@code R.styleable.MaterialCalendarDay} style to the provided {@code item},
+   * factoring in the {@code backgroundColorOverride} if not null.
+   */
+  void styleItem(@NonNull TextView item, @Nullable ColorStateList backgroundColorOverride) {
     MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable();
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
     backgroundDrawable.setShapeAppearanceModel(itemShape);
     shapeMask.setShapeAppearanceModel(itemShape);
-    backgroundDrawable.setFillColor(backgroundColor);
+    backgroundDrawable.setFillColor(
+        backgroundColorOverride != null ? backgroundColorOverride : backgroundColor);
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
     item.setTextColor(textColor);
     Drawable d;

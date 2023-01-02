@@ -22,13 +22,14 @@ import static com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROL
 import static org.junit.Assert.assertEquals;
 
 import android.graphics.Rect;
-import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.test.InstrumentationRegistry;
 import androidx.test.filters.MediumTest;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.testapp.R;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -275,6 +276,7 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     // Very top of screen, can scroll forward to collapse but can't scroll backward.
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
 
     // Perform a swipe-up gesture across the horizontal center of the screen.
     performVerticalSwipeUpGesture(
@@ -287,6 +289,7 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     // the bar will always be entered/expanded on scroll.
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(true);
+    assertAccessibilityScrollable(true);
   }
 
   @Test
@@ -306,6 +309,8 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
 
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
+
     activityTestRule.runOnUiThread(
         () -> {
           mCoordinatorLayout.removeAllViews();
@@ -313,6 +318,7 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
 
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(false);
   }
 
   @Test
@@ -330,12 +336,16 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
 
     AppBarLayout.LayoutParams lp = (AppBarLayout.LayoutParams) mToolbar.getLayoutParams();
 
-    // Disable scrolling and update the a11y actions.
+    // Disable scrolling and call onLayout to update the a11y actions.
     lp.setScrollFlags(SCROLL_FLAG_NO_SCROLL);
     activityTestRule.runOnUiThread(
         () -> {
           mToolbar.setLayoutParams(lp);
+          final CoordinatorLayout.Behavior<AppBarLayout> behavior =
+              ((CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams()).getBehavior();
+          behavior.onLayoutChild(mCoordinatorLayout, mAppBar, mAppBar.getLayoutDirection());
         });
+
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(false);
 
@@ -344,10 +354,14 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     activityTestRule.runOnUiThread(
         () -> {
           mToolbar.setLayoutParams(lp);
+          final CoordinatorLayout.Behavior<AppBarLayout> behavior =
+              ((CoordinatorLayout.LayoutParams) mAppBar.getLayoutParams()).getBehavior();
+          behavior.onLayoutChild(mCoordinatorLayout, mAppBar, mAppBar.getLayoutDirection());
         });
     // Can scroll forward to collapse, and cannot expand because it's already expanded.
     assertAccessibilityHasScrollForwardAction(true);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(true);
 
     // Perform a swipe-up gesture across the horizontal center of the screen. The toolbar should be
     // collapsed.
@@ -361,5 +375,37 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     // for SCROLL_FLAG_SCROLL, so it can't scroll backward.
     assertAccessibilityHasScrollForwardAction(false);
     assertAccessibilityHasScrollBackwardAction(false);
+    assertAccessibilityScrollable(false);
+  }
+
+  /** Tests the lift on scroll color of the app bar layout. */
+  @Test
+  public void testLiftOnScrollColor() throws Throwable {
+    configureContent(
+        R.layout.design_appbar_toolbar_liftonscroll_color,
+        R.string.design_appbar_toolbar_scroll_tabs_pin);
+
+    final int[] appbarOnScreenXY = new int[2];
+    mAppBar.getLocationOnScreen(appbarOnScreenXY);
+
+    final int originalAppbarBottom = appbarOnScreenXY[1] + mAppBar.getHeight();
+    final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
+
+    final int appbarHeight = mAppBar.getHeight();
+    final int longSwipeAmount = 3 * appbarHeight / 2;
+
+    assertEquals(0, ((MaterialShapeDrawable) mAppBar.getBackground()).getAlpha());
+
+    // Perform a swipe-up gesture across the horizontal center of the screen.
+    performVerticalSwipeUpGesture(
+        R.id.coordinator_layout,
+        centerX,
+        originalAppbarBottom + 3 * longSwipeAmount / 2,
+        longSwipeAmount);
+
+    assertEquals(255, ((MaterialShapeDrawable) mAppBar.getBackground()).getAlpha());
+    assertEquals(
+        mAppBar.getResources().getColor(R.color.material_blue_grey_950),
+        ((MaterialShapeDrawable) mAppBar.getBackground()).getFillColor().getDefaultColor());
   }
 }

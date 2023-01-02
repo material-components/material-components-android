@@ -23,6 +23,13 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.text.TextUtils.TruncateAt;
+import android.util.AttributeSet;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.LinearLayout;
 import androidx.annotation.BoolRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -34,13 +41,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
-import android.text.TextUtils.TruncateAt;
-import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.LinearLayout;
 import com.google.android.material.button.MaterialButton.OnPressedChangeListener;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
@@ -48,9 +48,12 @@ import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.CornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -96,13 +99,13 @@ import java.util.TreeMap;
  * methods.
  *
  * <p>Note: Styling must applied to each child button individually. It is recommended to use the
- * {@link R.attr#materialButtonOutlinedStyle} attribute for all child buttons. {@link
- * R.attr#materialButtonOutlinedStyle} will most closely match the Material Design guidelines for
- * this component, and supports the checked state for child buttons.
+ * {@code materialButtonOutlinedStyle} attribute for all child buttons. {@code
+ * materialButtonOutlinedStyle} will most closely match the Material Design guidelines for this
+ * component, and supports the checked state for child buttons.
  *
  * <p>Any {@link MaterialButton}s added to this view group are automatically marked as {@code
  * checkable}, and by default multiple buttons within the same group can be checked. To enforce that
- * only one button can be checked at a time, set the {@link R.attr#singleSelection
+ * only one button can be checked at a time, set the {@code
  * app:singleSelection} attribute to {@code true} on the MaterialButtonToggleGroup or call {@link
  * #setSingleSelection(boolean) setSingleSelection(true)}.
  *
@@ -136,13 +139,12 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     void onButtonChecked(MaterialButtonToggleGroup group, @IdRes int checkedId, boolean isChecked);
   }
 
-  private static final String LOG_TAG = MaterialButtonToggleGroup.class.getSimpleName();
+  private static final String LOG_TAG = "MButtonToggleGroup";
   private static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_MaterialButtonToggleGroup;
 
   private final List<CornerData> originalCornerData = new ArrayList<>();
 
-  private final CheckedStateTracker checkedStateTracker = new CheckedStateTracker();
   private final PressedStateTracker pressedStateTracker = new PressedStateTracker();
   private final LinkedHashSet<OnButtonCheckedListener> onButtonCheckedListeners =
       new LinkedHashSet<>();
@@ -170,7 +172,9 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private boolean singleSelection;
   private boolean selectionRequired;
 
-  @IdRes private int checkedId;
+  @IdRes
+  private final int defaultCheckId;
+  private Set<Integer> checkedIds = new HashSet<>();
 
   public MaterialButtonToggleGroup(@NonNull Context context) {
     this(context, null);
@@ -187,19 +191,17 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     context = getContext();
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.MaterialButtonToggleGroup,
-            defStyleAttr,
-            DEF_STYLE_RES);
+            context, attrs, R.styleable.MaterialButtonToggleGroup, defStyleAttr, DEF_STYLE_RES);
 
     setSingleSelection(
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_singleSelection, false));
-    checkedId =
-        attributes.getResourceId(R.styleable.MaterialButtonToggleGroup_checkedButton, View.NO_ID);
+    defaultCheckId =
+        attributes.getResourceId(
+            R.styleable.MaterialButtonToggleGroup_checkedButton, View.NO_ID);
     selectionRequired =
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_selectionRequired, false);
     setChildrenDrawingOrderEnabled(true);
+    setEnabled(attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_android_enabled, true));
     attributes.recycle();
 
     ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
@@ -208,10 +210,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   @Override
   protected void onFinishInflate() {
     super.onFinishInflate();
-
-    // Checks the appropriate button as requested via XML
-    if (checkedId != View.NO_ID) {
-      checkForced(checkedId);
+    if (defaultCheckId != View.NO_ID) {
+      updateCheckedIds(Collections.singleton(defaultCheckId));
     }
   }
 
@@ -238,11 +238,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     // Sets sensible default values and an internal checked change listener for this child
     setupButtonChild(buttonChild);
 
-    // Reorders children if a checked child was added to this layout
-    if (buttonChild.isChecked()) {
-      updateCheckedStates(buttonChild.getId(), true);
-      setCheckedId(buttonChild.getId());
-    }
+    // Update button group's checked states
+    checkInternal(buttonChild.getId(), buttonChild.isChecked());
 
     // Saves original corner data
     ShapeAppearanceModel shapeAppearanceModel = buttonChild.getShapeAppearanceModel();
@@ -252,6 +249,9 @@ public class MaterialButtonToggleGroup extends LinearLayout {
             shapeAppearanceModel.getBottomLeftCornerSize(),
             shapeAppearanceModel.getTopRightCornerSize(),
             shapeAppearanceModel.getBottomRightCornerSize()));
+
+    // Enable children based on the MaterialButtonToggleGroup own isEnabled
+    buttonChild.setEnabled(isEnabled());
 
     ViewCompat.setAccessibilityDelegate(
         buttonChild,
@@ -277,7 +277,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     super.onViewRemoved(child);
 
     if (child instanceof MaterialButton) {
-      ((MaterialButton) child).removeOnCheckedChangeListener(checkedStateTracker);
       ((MaterialButton) child).setOnPressedChangeListenerInternal(null);
     }
 
@@ -296,12 +295,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     adjustChildMarginsAndUpdateLayout();
 
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-  }
-
-  @NonNull
-  @Override
-  public CharSequence getAccessibilityClassName() {
-    return MaterialButtonToggleGroup.class.getName();
   }
 
   @Override
@@ -331,11 +324,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    * @see #getCheckedButtonId()
    */
   public void check(@IdRes int id) {
-    if (id == checkedId) {
-      return;
-    }
-
-    checkForced(id);
+    checkInternal(id, true);
   }
 
   /**
@@ -348,10 +337,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    * @see #getCheckedButtonId()
    */
   public void uncheck(@IdRes int id) {
-    setCheckedStateForView(id, false);
-    updateCheckedStates(id, false);
-    checkedId = View.NO_ID;
-    dispatchOnButtonChecked(id, false);
+    checkInternal(id, false);
   }
 
   /**
@@ -364,16 +350,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    * @see #getCheckedButtonId()
    */
   public void clearChecked() {
-    skipCheckedStateTracker = true;
-    for (int i = 0; i < getChildCount(); i++) {
-      MaterialButton child = getChildButton(i);
-      child.setChecked(false);
-
-      dispatchOnButtonChecked(child.getId(), false);
-    }
-    skipCheckedStateTracker = false;
-
-    setCheckedId(View.NO_ID);
+    updateCheckedIds(new HashSet<Integer>());
   }
 
   /**
@@ -392,7 +369,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    */
   @IdRes
   public int getCheckedButtonId() {
-    return singleSelection ? checkedId : View.NO_ID;
+    return singleSelection && !checkedIds.isEmpty() ? checkedIds.iterator().next() : View.NO_ID;
   }
 
   /**
@@ -409,15 +386,15 @@ public class MaterialButtonToggleGroup extends LinearLayout {
    */
   @NonNull
   public List<Integer> getCheckedButtonIds() {
-    List<Integer> checkedIds = new ArrayList<>();
+    List<Integer> orderedCheckedIds = new ArrayList<>();
     for (int i = 0; i < getChildCount(); i++) {
-      MaterialButton child = getChildButton(i);
-      if (child.isChecked()) {
-        checkedIds.add(child.getId());
+      int childId = getChildButton(i).getId();
+      if (checkedIds.contains(childId)) {
+        orderedCheckedIds.add(childId);
       }
     }
 
-    return checkedIds;
+    return orderedCheckedIds;
   }
 
   /**
@@ -512,12 +489,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     }
   }
 
-  private void setCheckedId(int checkedId) {
-    this.checkedId = checkedId;
-
-    dispatchOnButtonChecked(checkedId, true);
-  }
-
   /**
    * Sets a negative marginStart on all but the first child, if two adjacent children both have a
    * stroke width greater than 0. This prevents a double-width stroke from being drawn for two
@@ -548,9 +519,11 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       if (getOrientation() == HORIZONTAL) {
         MarginLayoutParamsCompat.setMarginEnd(params, 0);
         MarginLayoutParamsCompat.setMarginStart(params, -smallestStrokeWidth);
+        params.topMargin = 0;
       } else {
         params.bottomMargin = 0;
         params.topMargin = -smallestStrokeWidth;
+        MarginLayoutParamsCompat.setMarginStart(params, 0);
       }
 
       currentButton.setLayoutParams(params);
@@ -594,8 +567,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
         continue;
       }
 
-      ShapeAppearanceModel.Builder builder =
-          button.getShapeAppearanceModel().toBuilder();
+      ShapeAppearanceModel.Builder builder = button.getShapeAppearanceModel().toBuilder();
       CornerData newCornerData = getNewCornerData(i, firstVisibleChildIndex, lastVisibleChildIndex);
       updateBuilderWithCornerData(builder, newCornerData);
 
@@ -658,12 +630,11 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
   @Nullable
   private CornerData getNewCornerData(
-      int index,
-      int firstVisibleChildIndex,
-      int lastVisibleChildIndex) {
-    int childCount = getChildCount();
+      int index, int firstVisibleChildIndex, int lastVisibleChildIndex) {
     CornerData cornerData = originalCornerData.get(index);
-    if (childCount == 1) {
+
+    // If only one (visible) child exists, use its original corners
+    if (firstVisibleChildIndex == lastVisibleChildIndex) {
       return cornerData;
     }
 
@@ -693,45 +664,46 @@ public class MaterialButtonToggleGroup extends LinearLayout {
         .setBottomRightCornerSize(cornerData.bottomRight);
   }
 
-  /**
-   * When a checked child is added, or a child is clicked, updates checked state and draw order of
-   * children to draw all checked children on top of all unchecked children.
-   *
-   * <p>If {@code singleSelection} is true, this will unselect any other children as well.
-   * <p> If {@code selectionRequired} is true, and the last child is unchecked.
-   *
-   * @param childId ID of child whose checked state may have changed
-   * @param childIsChecked Whether the child is checked
-   */
-  private void updateCheckedStates(int childId, boolean childIsChecked) {
-    List<Integer> checkedButtonIds = getCheckedButtonIds();
-    if (selectionRequired && checkedButtonIds.isEmpty()) {
-      // undo deselection
-      setCheckedStateForView(childId, true);
-      checkedId = childId;
+  private void checkInternal(@IdRes int buttonId, boolean checked) {
+    if (buttonId == View.NO_ID) {
+      Log.e(LOG_TAG, "Button ID is not valid: " + buttonId);
       return;
     }
+    Set<Integer> checkedIds = new HashSet<>(this.checkedIds);
+    if (checked && !checkedIds.contains(buttonId)) {
+      if (singleSelection && !checkedIds.isEmpty()) {
+        checkedIds.clear();
+      }
+      checkedIds.add(buttonId);
+    } else if (!checked && checkedIds.contains(buttonId)) {
+      // Do not uncheck button if no selection remains when selection is required.
+      if (!selectionRequired || checkedIds.size() > 1) {
+        checkedIds.remove(buttonId);
+      }
+    } else {
+      // No state change, do nothing
+      return;
+    }
+    updateCheckedIds(checkedIds);
+  }
 
-    // un select previous selection
-    if (childIsChecked && singleSelection) {
-      checkedButtonIds.remove((Integer) childId);
-      for (int buttonId : checkedButtonIds) {
-        setCheckedStateForView(buttonId, false);
-        dispatchOnButtonChecked(buttonId, false);
+  private void updateCheckedIds(Set<Integer> checkedIds) {
+    Set<Integer> previousCheckedIds = this.checkedIds;
+    this.checkedIds = new HashSet<>(checkedIds);
+    for (int i = 0; i < getChildCount(); i++) {
+      int buttonId = getChildButton(i).getId();
+      setCheckedStateForView(buttonId, checkedIds.contains(buttonId));
+      if (previousCheckedIds.contains(buttonId) != checkedIds.contains(buttonId)) {
+        dispatchOnButtonChecked(buttonId, checkedIds.contains(buttonId));
       }
     }
+    invalidate();
   }
 
   private void dispatchOnButtonChecked(@IdRes int buttonId, boolean checked) {
     for (OnButtonCheckedListener listener : onButtonCheckedListeners) {
       listener.onButtonChecked(this, buttonId, checked);
     }
-  }
-
-  private void checkForced(int checkedId) {
-    setCheckedStateForView(checkedId, true);
-    updateCheckedStates(checkedId, true);
-    setCheckedId(checkedId);
   }
 
   private void setGeneratedIdIfNeeded(@NonNull MaterialButton materialButton) {
@@ -753,7 +725,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     buttonChild.setEllipsize(TruncateAt.END);
     buttonChild.setCheckable(true);
 
-    buttonChild.addOnCheckedChangeListener(checkedStateTracker);
     buttonChild.setOnPressedChangeListenerInternal(pressedStateTracker);
 
     // Enables surface layer drawing for semi-opaque strokes
@@ -794,21 +765,26 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     childOrder = viewToIndexMap.values().toArray(new Integer[0]);
   }
 
-  private class CheckedStateTracker implements MaterialButton.OnCheckedChangeListener {
-    @Override
-    public void onCheckedChanged(@NonNull MaterialButton button, boolean isChecked) {
-      // Prevents infinite recursion
+  void onButtonCheckedStateChanged(@NonNull MaterialButton button, boolean isChecked) {
+      // Checked state change is triggered by the button group, do not update checked ids again.
       if (skipCheckedStateTracker) {
         return;
       }
+      checkInternal(button.getId(), isChecked);
+  }
 
-      if (singleSelection) {
-        checkedId = isChecked ? button.getId() : View.NO_ID;
-      }
-
-      dispatchOnButtonChecked(button.getId(), isChecked);
-      updateCheckedStates(button.getId(), isChecked);
-      invalidate();
+  /**
+   * Enables this {@link MaterialButtonToggleGroup} and all its {@link MaterialButton} children
+   *
+   * @param enabled boolean to setEnable {@link MaterialButtonToggleGroup}
+   */
+  @Override
+  public void setEnabled(boolean enabled) {
+    super.setEnabled(enabled);
+    // Enable or disable child buttons
+    for (int i = 0; i < getChildCount(); i++) {
+      MaterialButton childButton = getChildButton(i);
+      childButton.setEnabled(enabled);
     }
   }
 
@@ -816,7 +792,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
     @Override
     public void onPressedChanged(@NonNull MaterialButton button, boolean isPressed) {
-      updateCheckedStates(button.getId(), button.isChecked());
       invalidate();
     }
   }

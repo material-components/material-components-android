@@ -20,6 +20,11 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -27,10 +32,8 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Pair;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
+import com.google.android.material.internal.ViewUtils;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 
 /**
@@ -72,7 +75,7 @@ public interface DateSelector<S> extends Parcelable {
   /**
    * Returns a list of longs whose time value represents days that should be marked selected.
    *
-   * <p>Uses {@link R.styleable#MaterialCalendar_daySelectedStyle} for styling.
+   * <p>Uses {@code R.styleable.MaterialCalendar_daySelectedStyle} for styling.
    */
   @NonNull
   Collection<Long> getSelectedDays();
@@ -80,7 +83,7 @@ public interface DateSelector<S> extends Parcelable {
   /**
    * Returns a list of ranges whose time values represent ranges that should be filled.
    *
-   * <p>Uses {@link R.styleable#MaterialCalendar_rangeFillColor} for styling.
+   * <p>Uses {@code R.styleable.MaterialCalendar_rangeFillColor} for styling.
    */
   @NonNull
   Collection<Pair<Long, Long>> getSelectedRanges();
@@ -88,11 +91,33 @@ public interface DateSelector<S> extends Parcelable {
   @NonNull
   String getSelectionDisplayString(Context context);
 
+  /**
+   * Returns the selection content description.
+   *
+   * @param context the {@link Context}
+   * @return The selection content description
+   */
+  @NonNull
+  String getSelectionContentDescription(@NonNull Context context);
+
+  @Nullable
+  String getError();
+
   @StringRes
   int getDefaultTitleResId();
 
   @StyleRes
   int getDefaultThemeResId(Context context);
+
+  /**
+   * Sets the {@link SimpleDateFormat} used to format the text input field hint and error.
+   *
+   * <p>When this is set to null, a default formatter will be used that properly adjusts for
+   * language and locale.
+   *
+   * @param format The format to be used when formatting the text input field
+   */
+  void setTextInputFormat(@Nullable SimpleDateFormat format);
 
   @NonNull
   View onCreateTextInputView(
@@ -101,4 +126,26 @@ public interface DateSelector<S> extends Parcelable {
       @Nullable Bundle bundle,
       @NonNull CalendarConstraints constraints,
       @NonNull OnSelectionChangedListener<S> listener);
+
+  static void showKeyboardWithAutoHideBehavior(@NonNull EditText... editTexts) {
+    if (editTexts.length == 0) {
+      return;
+    }
+
+    View.OnFocusChangeListener listener =
+        (view, hasFocus) -> {
+          for (EditText editText : editTexts) {
+            if (editText.hasFocus()) {
+              return;
+            }
+          }
+          ViewUtils.hideKeyboard(view);
+        };
+
+    for (EditText editText : editTexts) {
+      editText.setOnFocusChangeListener(listener);
+    }
+
+    ViewUtils.requestFocusAndShowKeyboard(editTexts[0]);
+  }
 }

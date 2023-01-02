@@ -22,13 +22,13 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.util.Log;
+import android.util.Property;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleableRes;
 import androidx.collection.SimpleArrayMap;
-import android.util.Log;
-import android.util.Property;
 import java.util.ArrayList;
 import java.util.List;
 

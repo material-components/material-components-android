@@ -15,37 +15,51 @@
   ~ limitations under the License.
 -->
 <resources>
-  <style name="Base.Widget.MaterialComponents.ProgressIndicator" parent="android:Widget">
-    <item name="indicatorWidth">@dimen/mtrl_progress_indicator_width</item>
-    <item name="inverse">false</item>
-    <item name="growMode">none</item>
+  <style name="Widget.MaterialComponents.ProgressIndicator" parent="android:Widget">
+    <item name="indicatorColor">?attr/colorPrimary</item>
+    <item name="trackThickness">@dimen/mtrl_progress_track_thickness</item>
+    <item name="android:indeterminateOnly">false</item>
   </style>
 
-  <style name="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
-    <item name="indicatorType">linear</item>
-    <item name="linearSeamless">true</item>
+  <!-- LinearProgressIndicator style -->
+  <style name="Widget.MaterialComponents.LinearProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
+    <item name="indeterminateAnimationType">disjoint</item>
+    <item name="indicatorDirectionLinear">startToEnd</item>
   </style>
-  <style name="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
-    <item name="indicatorType">circular</item>
+
+  <!-- CircularProgressIndicator styles -->
+  <style name="Widget.MaterialComponents.CircularProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
+    <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_medium</item>
+    <item name="indicatorSize">@dimen/mtrl_progress_circular_size_medium</item>
+    <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_medium</item>
     <item name="trackColor">@android:color/transparent</item>
-    <item name="circularRadius">@dimen/mtrl_progress_circular_radius</item>
-    <item name="circularInset">@dimen/mtrl_progress_circular_inset</item>
+    <item name="indicatorDirectionCircular">clockwise</item>
+  </style>
+  <style name="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
+  <style name="Widget.MaterialComponents.CircularProgressIndicator.Small">
+    <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_small</item>
+    <item name="indicatorSize">@dimen/mtrl_progress_circular_size_small</item>
+    <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_small</item>
+  </style>
+  <style name="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall">
+    <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_extra_small</item>
+    <item name="indicatorSize">@dimen/mtrl_progress_circular_size_extra_small</item>
+    <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_extra_small</item>
   </style>
 
-  <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Determinate"
-      parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
-    <item name="android:indeterminate">false</item>
+  <!-- M3 LinearProgressIndicator style -->
+  <style name="Widget.Material3.LinearProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
+    <item name="trackThickness">@dimen/m3_comp_linear_progress_indicator_active_indicator_height</item>
+    <item name="trackColor">@macro/m3_comp_linear_progress_indicator_track_color</item>
+    <item name="indicatorColor">@macro/m3_comp_linear_progress_indicator_active_indicator_color</item>
   </style>
-  <style name="Widget.MaterialComponents.ProgressIndicator.Linear.Indeterminate"
-      parent="Base.Widget.MaterialComponents.ProgressIndicator.Linear">
-    <item name="android:indeterminate">true</item>
+
+  <!-- M3 CircularProgressIndicator styles -->
+  <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+    <item name="trackThickness">@dimen/m3_comp_circular_progress_indicator_active_indicator_width</item>
+    <item name="indicatorColor">@macro/m3_comp_circular_progress_indicator_active_indicator_color</item>
   </style>
-  <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Determinate"
-      parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
-    <item name="android:indeterminate">false</item>
-  </style>
-  <style name="Widget.MaterialComponents.ProgressIndicator.Circular.Indeterminate"
-      parent="Base.Widget.MaterialComponents.ProgressIndicator.Circular">
-    <item name="android:indeterminate">true</item>
-  </style>
+  <style name="Widget.Material3.CircularProgressIndicator.Medium" parent="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
+  <style name="Widget.Material3.CircularProgressIndicator.Small" parent="Widget.MaterialComponents.CircularProgressIndicator.Small"/>
+  <style name="Widget.Material3.CircularProgressIndicator.ExtraSmall" parent="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"/>
 </resources>

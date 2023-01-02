@@ -14,17 +14,27 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+
+  <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-  <LinearLayout
+
+    <LinearLayout
       android:id="@+id/bottom_drawer_2"
       android:layout_width="match_parent"
       android:layout_height="600dp"
       android:orientation="vertical">
 
-    <TextView
+      <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -32,7 +42,7 @@
         app:drawableStartCompat="@drawable/ic_person_add_24dp"
         android:text="@string/cat_bottomsheet_label_add_people"/>
 
-    <TextView
+      <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -40,7 +50,7 @@
         app:drawableStartCompat="@drawable/ic_link_24dp"
         android:text="@string/cat_bottomsheet_label_copy_link"/>
 
-    <TextView
+      <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -48,7 +58,7 @@
         app:drawableStartCompat="@drawable/ic_open_in_browser_24dp"
         android:text="@string/cat_bottomsheet_label_open_in"/>
 
-    <TextView
+      <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -57,7 +67,7 @@
         android:gravity="center_vertical"
         android:text="@string/cat_bottomsheet_label_move"/>
 
-    <TextView
+      <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -65,7 +75,7 @@
         app:drawableStartCompat="@drawable/ic_offline_pin_24dp"
         android:text="@string/cat_bottomsheet_label_available_offline"/>
 
-    <TextView
+      <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -73,7 +83,7 @@
         app:drawableStartCompat="@drawable/ic_star_24dp"
         android:text="@string/cat_bottomsheet_label_star"/>
 
-    <TextView
+      <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -81,7 +91,7 @@
         app:drawableStartCompat="@drawable/ic_edit_24dp"
         android:text="@string/cat_bottomsheet_label_rename"/>
 
-    <TextView
+      <TextView
         style="@style/selectableTextView"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -89,5 +99,6 @@
         app:drawableStartCompat="@drawable/ic_delete_24dp"
         android:text="@string/cat_bottomsheet_label_remove"/>
 
-  </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -28,35 +28,38 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:text="@string/cat_picker_theme"
-      android:textAppearance="?attr/textAppearanceHeadline5"/>
+      android:textAppearance="?attr/textAppearanceTitleLarge"/>
   <RadioGroup
       android:id="@+id/cat_picker_theme_group"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:orientation="horizontal">
+      android:orientation="vertical">
     <RadioButton
         android:id="@+id/cat_picker_theme_default"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:checked="true"
         android:text="@string/cat_picker_theme_default"
-        android:textAppearance="?attr/textAppearanceBody1"/>
+        android:textAppearance="?attr/textAppearanceBodyLarge"/>
     <RadioButton
         android:id="@+id/cat_picker_theme_dialog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/cat_picker_demo_padding"
-        android:layout_marginLeft="@dimen/cat_picker_demo_padding"
         android:text="@string/cat_picker_theme_dialog"
-        android:textAppearance="?attr/textAppearanceBody1"/>
+        android:textAppearance="?attr/textAppearanceBodyLarge"/>
     <RadioButton
         android:id="@+id/cat_picker_theme_fullscreen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/cat_picker_demo_padding"
-        android:layout_marginLeft="@dimen/cat_picker_demo_padding"
         android:text="@string/cat_picker_theme_fullscreen"
-        android:textAppearance="?attr/textAppearanceBody1"/>
+        android:textAppearance="?attr/textAppearanceBodyLarge"/>
+
+    <RadioButton
+      android:id="@+id/cat_picker_theme_custom"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_picker_theme_custom"
+      android:textAppearance="?attr/textAppearanceBodyLarge"/>
 
   </RadioGroup>
 </LinearLayout>

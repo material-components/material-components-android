@@ -20,28 +20,25 @@ import com.google.android.material.R;
 import android.annotation.SuppressLint;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import java.util.Calendar;
 import java.util.Locale;
 
 /**
  * A single row adapter representing the days of the week for {@link Calendar}.
  *
- * <p>This {@link android.widget.Adapter} respects the {@link Calendar#getFirstDayOfWeek()}
- * determined by {@link Locale#getDefault()}.
- *
  * @hide
  */
 class DaysOfWeekAdapter extends BaseAdapter {
 
-  @NonNull private final Calendar calendar;
-  private final int daysInWeek;
+  @NonNull private final Calendar calendar = UtcDates.getUtcCalendar();
+  private final int daysInWeek = calendar.getMaximum(Calendar.DAY_OF_WEEK);
   private final int firstDayOfWeek;
   /** Style value from Calendar.NARROW_FORMAT unavailable before 1.8 */
   private static final int NARROW_FORMAT = 4;
@@ -49,10 +46,16 @@ class DaysOfWeekAdapter extends BaseAdapter {
   private static final int CALENDAR_DAY_STYLE =
       VERSION.SDK_INT >= VERSION_CODES.O ? NARROW_FORMAT : Calendar.SHORT;
 
+  /**
+   * <p>This {@link android.widget.Adapter} respects the {@link Calendar#getFirstDayOfWeek()}
+   * determined by {@link Locale#getDefault()}.
+   */
   public DaysOfWeekAdapter() {
-    calendar = UtcDates.getUtcCalendar();
-    daysInWeek = calendar.getMaximum(Calendar.DAY_OF_WEEK);
     firstDayOfWeek = calendar.getFirstDayOfWeek();
+  }
+
+  public DaysOfWeekAdapter(int firstDayOfWeek) {
+    this.firstDayOfWeek = firstDayOfWeek;
   }
 
   @Nullable
@@ -86,8 +89,9 @@ class DaysOfWeekAdapter extends BaseAdapter {
           (TextView) layoutInflater.inflate(R.layout.mtrl_calendar_day_of_week, parent, false);
     }
     calendar.set(Calendar.DAY_OF_WEEK, positionToDayOfWeek(position));
+    Locale locale = dayOfWeek.getResources().getConfiguration().locale;
     dayOfWeek.setText(
-        calendar.getDisplayName(Calendar.DAY_OF_WEEK, CALENDAR_DAY_STYLE, Locale.getDefault()));
+        calendar.getDisplayName(Calendar.DAY_OF_WEEK, CALENDAR_DAY_STYLE, locale));
     dayOfWeek.setContentDescription(
         String.format(
             parent.getContext().getString(R.string.mtrl_picker_day_of_week_column_header),

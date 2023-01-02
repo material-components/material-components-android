@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2021 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+  <string name="cat_divider_demo_title"
+      description="Title of the divider demo [CHAR_LIMIT=NONE]">
+    Divider
+  </string>
+  <string name="cat_divider_description"
+      description="Description of the divider demo [CHAR_LIMIT=NONE]">
+    Demo displaying the Material divider.
+  </string>
+  <string name="cat_divider_title"
+      description="Divider's title label [CHAR_LIMIT=20]">
+    Full-bleed divider
+  </string>
+  <string name="cat_divider_subtitle"
+      description="Divider's subtitle label [CHAR_LIMIT=NONE]">
+    The full-bleed divider is displayed below.
+  </string>
+  <string name="cat_divider_inset_title"
+      description="Inset divider's title label [CHAR_LIMIT=20]">
+    Inset divider
+  </string>
+  <string name="cat_divider_inset_subtitle"
+      description="Inset divider's subtitle label [CHAR_LIMIT=NONE]">
+    The inset divider is displayed below.
+  </string>
+  <string name="cat_divider_middle_title"
+    description="Middle divider's title label [CHAR_LIMIT=20]">
+    Middle divider
+  </string>
+  <string name="cat_divider_middle_subtitle"
+    description="Middle divider's subtitle label [CHAR_LIMIT=NONE]">
+    The middle divider (a divider with both start and end insets) is displayed below.
+  </string>
+  <string name="cat_divider_heavy_title"
+    description="Heavy divider's title label [CHAR_LIMIT=20]">
+    Heavy divider
+  </string>
+  <string name="cat_divider_heavy_subtitle"
+    description="Heavy divider's subtitle label [CHAR_LIMIT=NONE]">
+    The heavy divider (a divider with a heavy stroke) is displayed below.
+  </string>
+
+  <!-- MaterialDividerItemDecoration demo. -->
+  <string name="cat_divider_item_decoration_demo_title"
+      description="Title of the MaterialDividerItemDecoration demo [CHAR_LIMIT=NONE]">
+    MaterialDividerItemDecoration
+  </string>
+  <string name="cat_divider_item_text"
+      description="Label of the item in the MaterialDividerItemDecoration demo [CHAR_LIMIT=20]">
+    Item %1$d
+  </string>
+  <string name="cat_divider_item_decoration_horizontal"
+    description="Subtitle label for dividers with horizontal orientation [CHAR_LIMIT=NONE]">
+    Layout manager with horizontal orientation
+  </string>
+  <string name="cat_divider_item_decoration_vertical"
+    description="Subtitle label for dividers with vertical orientation [CHAR_LIMIT=NONE]">
+    Layout manager with vertical orientation
+  </string>
+</resources>

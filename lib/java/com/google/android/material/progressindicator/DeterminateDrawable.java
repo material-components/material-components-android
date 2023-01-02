@@ -16,58 +16,160 @@
 
 package com.google.android.material.progressindicator;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import androidx.annotation.NonNull;
 import androidx.dynamicanimation.animation.DynamicAnimation;
-import androidx.dynamicanimation.animation.DynamicAnimation.OnAnimationUpdateListener;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import com.google.android.material.color.MaterialColors;
 
-/**
- * This class draws the graphics for determinate modes by applying different {@link DrawingDelegate}
- * for different indicator types.
- */
-class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
-
+/** This class draws the graphics for determinate mode. */
+public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
+    extends DrawableWithAnimatedVisibilityChange {
   // Constants for drawing progress.
   private static final int MAX_DRAWABLE_LEVEL = 10000;
+  // The constant for spring force stiffness.
+  private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
+
   // Drawing delegate object.
-  private final DrawingDelegate drawingDelegate;
+  private DrawingDelegate<S> drawingDelegate;
+
   // Animation.
-  private SpringAnimation springAnimator;
+  private final SpringForce springForce;
+  private final SpringAnimation springAnimation;
   // Fraction of displayed indicator in the total width.
   private float indicatorFraction;
+  // Whether to skip the spring animation on level change event.
+  private boolean skipAnimationOnLevelChange = false;
 
   DeterminateDrawable(
-      @NonNull ProgressIndicator progressIndicator, @NonNull DrawingDelegate drawingDelegate) {
-    super(progressIndicator);
+      @NonNull Context context,
+      @NonNull BaseProgressIndicatorSpec baseSpec,
+      @NonNull DrawingDelegate<S> drawingDelegate) {
+    super(context, baseSpec);
 
-    this.drawingDelegate = drawingDelegate;
+    setDrawingDelegate(drawingDelegate);
 
-    initializeAnimator();
-  }
+    springForce = new SpringForce();
 
-  // ******************* Initialization *******************
-
-  private void initializeAnimator() {
-    SpringForce springForce = new SpringForce();
     springForce.setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY);
-    springForce.setStiffness(50f);
+    springForce.setStiffness(SPRING_FORCE_STIFFNESS);
 
-    springAnimator = new SpringAnimation(this, INDICATOR_LENGTH_FRACTION);
-    springAnimator.setSpring(springForce);
-    springAnimator.addUpdateListener(
-        new OnAnimationUpdateListener() {
-          @Override
-          public void onAnimationUpdate(DynamicAnimation animation,
-              float value, float velocity) {
-            setIndicatorFraction(value / MAX_DRAWABLE_LEVEL);
-          }
-        });
+    springAnimation = new SpringAnimation(this, INDICATOR_LENGTH_IN_LEVEL);
+    springAnimation.setSpring(springForce);
 
     setGrowFraction(1f);
+  }
+
+  /**
+   * Creates an instance of {@link DeterminateDrawable} for {@link LinearProgressIndicator} with
+   * {@link LinearProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the linear indicator.
+   */
+  @NonNull
+  public static DeterminateDrawable<LinearProgressIndicatorSpec> createLinearDrawable(
+      @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
+    return new DeterminateDrawable<>(context, /*baseSpec=*/ spec, new LinearDrawingDelegate(spec));
+  }
+
+  /**
+   * Creates an instance of {@link DeterminateDrawable} for {@link CircularProgressIndicator} with
+   * {@link CircularProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the circular indicator.
+   */
+  @NonNull
+  public static DeterminateDrawable<CircularProgressIndicatorSpec> createCircularDrawable(
+      @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
+    return new DeterminateDrawable<>(
+        context, /*baseSpec=*/ spec, new CircularDrawingDelegate(spec));
+  }
+
+  public void addSpringAnimationEndListener(
+      @NonNull DynamicAnimation.OnAnimationEndListener listener) {
+    springAnimation.addEndListener(listener);
+  }
+
+  public void removeSpringAnimationEndListener(
+      @NonNull DynamicAnimation.OnAnimationEndListener listener) {
+    springAnimation.removeEndListener(listener);
+  }
+
+  // ******************* Overridden methods *******************
+
+  /**
+   * Sets the visibility of this drawable. It calls the {@link
+   * DrawableWithAnimatedVisibilityChange#setVisible(boolean, boolean)} to start the show/hide
+   * animation properly. The spring animation will be skipped when the level changes, if animation
+   * is not requested.
+   *
+   * @param visible Whether to make the drawable visible.
+   * @param restart Whether to force starting the animation from the beginning. Doesn't apply to the
+   *     spring animation for changing progress.
+   * @param animate Whether to change the visibility with animation. The spring animation for
+   *     changing progress only depends on system animator duration scale. Use {@link
+   *     BaseProgressIndicator#setProgressCompat(int, boolean)} to change the progress without
+   *     animation.
+   * @return {@code true}, if the visibility changes or will change after the animation; {@code
+   *     false}, otherwise.
+   */
+  @Override
+  boolean setVisibleInternal(boolean visible, boolean restart, boolean animate) {
+    boolean changed = super.setVisibleInternal(visible, restart, animate);
+
+    float systemAnimatorDurationScale =
+        animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
+    if (systemAnimatorDurationScale == 0) {
+      skipAnimationOnLevelChange = true;
+    } else {
+      skipAnimationOnLevelChange = false;
+      springForce.setStiffness(SPRING_FORCE_STIFFNESS / systemAnimatorDurationScale);
+    }
+
+    return changed;
+  }
+
+  /** Skips the animation of changing indicator length, directly displays the target progress. */
+  @Override
+  public void jumpToCurrentState() {
+    // Set spring target value to the current level (may not be same as the desired level, depends
+    // on the completion of progress animation) and end the animation immediately.
+    springAnimation.skipToEnd();
+    setIndicatorFraction((float) getLevel() / MAX_DRAWABLE_LEVEL);
+  }
+
+  /**
+   * When progress is updated, it changes the level of drawable's level and calls this method
+   * afterward. It sets the new progress value to animation and starts the animation.
+   *
+   * @param level New progress level.
+   */
+  @Override
+  protected boolean onLevelChange(int level) {
+    if (skipAnimationOnLevelChange) {
+      springAnimation.skipToEnd();
+      setIndicatorFraction((float) level / MAX_DRAWABLE_LEVEL);
+    } else {
+      springAnimation.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
+      springAnimation.animateToFinalPosition(level);
+    }
+    return true;
+  }
+
+  @Override
+  public int getIntrinsicWidth() {
+    return drawingDelegate.getPreferredWidth();
+  }
+
+  @Override
+  public int getIntrinsicHeight() {
+    return drawingDelegate.getPreferredHeight();
   }
 
   /**
@@ -79,36 +181,6 @@ class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
    */
   void setLevelByFraction(float fraction) {
     setLevel((int) (MAX_DRAWABLE_LEVEL * fraction));
-  }
-
-  // ******************* Overridden methods *******************
-
-  /** Skips the animation of changing indicator length, directly displays the target progress. */
-  @Override
-  public void jumpToCurrentState() {
-    // Set spring target value to the current level (may not be same as the desired level, depends
-    // on the completion of progress animator) and end the animator immediately.
-    springAnimator.cancel();
-    setIndicatorFraction((float) getLevel() / MAX_DRAWABLE_LEVEL);
-  }
-
-  /**
-   * When ProgressBar updates progress, it changes the level of drawable's level and calls this
-   * method afterward. It sets the new progress value to animator and starts the animator.
-   *
-   * @param level New progress level.
-   */
-  @Override
-  protected boolean onLevelChange(int level) {
-    // Jumps to the level directly if tests request to disable animations, otherwise, updates and
-    // starts the spring animation.
-    if (!animatorsDisabledForTesting) {
-      springAnimator.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
-      springAnimator.animateToFinalPosition(level);
-    } else {
-      jumpToCurrentState();
-    }
-    return true;
   }
 
   // ******************* Drawing methods *******************
@@ -123,21 +195,14 @@ class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
     }
 
     canvas.save();
-    drawingDelegate.adjustCanvas(canvas, progressIndicator, getGrowFraction());
-
-    float displayedIndicatorWidth = progressIndicator.getIndicatorWidth() * getGrowFraction();
+    drawingDelegate.validateSpecAndAdjustCanvas(canvas, getBounds(), getGrowFraction());
 
     // Draws the track.
-    drawingDelegate.fillTrackWithColor(
-        canvas, paint, progressIndicator.getTrackColor(), 0f, 1f, displayedIndicatorWidth);
+    drawingDelegate.fillTrack(canvas, paint);
     // Draws the indicator.
-    drawingDelegate.fillTrackWithColor(
-        canvas,
-        paint,
-        combinedIndicatorColorArray[0],
-        0f,
-        getIndicatorFraction(),
-        displayedIndicatorWidth);
+    int indicatorColor =
+        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], getAlpha());
+    drawingDelegate.fillIndicator(canvas, paint, 0f, getIndicatorFraction(), indicatorColor);
     canvas.restore();
   }
 
@@ -152,18 +217,28 @@ class DeterminateDrawable extends DrawableWithAnimatedVisibilityChange {
     invalidateSelf();
   }
 
+  @NonNull
+  DrawingDelegate<S> getDrawingDelegate() {
+    return drawingDelegate;
+  }
+
+  void setDrawingDelegate(@NonNull DrawingDelegate<S> drawingDelegate) {
+    this.drawingDelegate = drawingDelegate;
+    drawingDelegate.registerDrawable(this);
+  }
+
   // ******************* Properties *******************
 
-  private static final FloatPropertyCompat<DeterminateDrawable> INDICATOR_LENGTH_FRACTION =
-      new FloatPropertyCompat<DeterminateDrawable>("indicatorFraction") {
+  private static final FloatPropertyCompat<DeterminateDrawable> INDICATOR_LENGTH_IN_LEVEL =
+      new FloatPropertyCompat<DeterminateDrawable>("indicatorLevel") {
         @Override
         public float getValue(DeterminateDrawable drawable) {
-          return drawable.getIndicatorFraction();
+          return drawable.getIndicatorFraction() * MAX_DRAWABLE_LEVEL;
         }
 
         @Override
         public void setValue(DeterminateDrawable drawable, float value) {
-          drawable.setIndicatorFraction(value);
+          drawable.setIndicatorFraction(value / MAX_DRAWABLE_LEVEL);
         }
       };
 }

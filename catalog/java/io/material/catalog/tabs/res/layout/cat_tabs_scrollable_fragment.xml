@@ -32,6 +32,14 @@
       android:layout_marginBottom="@dimen/cat_tabs_standard_spacing"
       android:orientation="vertical">
 
+    <Button
+      android:id="@+id/add_tab_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
+      android:layout_marginRight="@dimen/cat_tabs_small_spacing"
+      android:text="@string/cat_tabs_add_tab_button_label" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,17 +48,17 @@
         android:orientation="horizontal"
         tools:ignore="ButtonStyle">
       <Button
-          android:id="@+id/add_tab_button"
+          android:id="@+id/remove_first_tab_button"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
           android:layout_marginRight="@dimen/cat_tabs_small_spacing"
-          android:text="@string/cat_tabs_add_tab_button_label" />
+          android:text="@string/cat_tabs_remove_first_tab_button_label" />
       <Button
-          android:id="@+id/remove_tab_button"
+          android:id="@+id/remove_last_tab_button"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_tabs_remove_tab_button_label" />
+          android:text="@string/cat_tabs_remove_last_tab_button_label" />
     </LinearLayout>
 
 

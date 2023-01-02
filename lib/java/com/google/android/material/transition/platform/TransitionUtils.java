@@ -20,6 +20,8 @@
  */
 package com.google.android.material.transition.platform;
 
+import android.animation.TimeInterpolator;
+import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;
 import android.graphics.Rect;
@@ -27,38 +29,105 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.util.TypedValue;
+import android.view.View;
+import android.view.ViewParent;
+import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.view.View;
-import android.view.ViewParent;
+import androidx.core.graphics.PathParser;
+import android.transition.PathMotion;
+import android.transition.PatternPathMotion;
 import android.transition.Transition;
 import android.transition.TransitionSet;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.CornerSize;
 import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOperator;
 
 @androidx.annotation.RequiresApi(android.os.Build.VERSION_CODES.LOLLIPOP)
 class TransitionUtils {
 
+  static final int NO_DURATION = -1;
+  @AttrRes static final int NO_ATTR_RES_ID = 0;
+
+  // Constants corresponding to motionPath theme attr enum values.
+  private static final int PATH_TYPE_LINEAR = 0;
+  private static final int PATH_TYPE_ARC = 1;
+
   private TransitionUtils() {}
+
+  static boolean maybeApplyThemeInterpolator(
+      Transition transition,
+      Context context,
+      @AttrRes int attrResId,
+      TimeInterpolator defaultInterpolator) {
+    if (attrResId != NO_ATTR_RES_ID && transition.getInterpolator() == null) {
+      TimeInterpolator interpolator =
+          MotionUtils.resolveThemeInterpolator(context, attrResId, defaultInterpolator);
+      transition.setInterpolator(interpolator);
+      return true;
+    }
+    return false;
+  }
+
+  static boolean maybeApplyThemeDuration(
+      Transition transition, Context context, @AttrRes int attrResId) {
+    if (attrResId != NO_ATTR_RES_ID && transition.getDuration() == NO_DURATION) {
+      int duration = MotionUtils.resolveThemeDuration(context, attrResId, NO_DURATION);
+      if (duration != NO_DURATION) {
+        transition.setDuration(duration);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  static boolean maybeApplyThemePath(
+      Transition transition, Context context, @AttrRes int attrResId) {
+    if (attrResId != NO_ATTR_RES_ID) {
+      PathMotion pathMotion = resolveThemePath(context, attrResId);
+      if (pathMotion != null) {
+        transition.setPathMotion(pathMotion);
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Nullable
+  static PathMotion resolveThemePath(Context context, @AttrRes int attrResId) {
+    TypedValue pathValue = new TypedValue();
+    if (context.getTheme().resolveAttribute(attrResId, pathValue, true)) {
+      if (pathValue.type == TypedValue.TYPE_INT_DEC) {
+        int pathInt = pathValue.data;
+        if (pathInt == PATH_TYPE_LINEAR) {
+          // Default Transition PathMotion is linear; no need to override with different PathMotion.
+          return null;
+        } else if (pathInt == PATH_TYPE_ARC) {
+          return new MaterialArcMotion();
+        } else {
+          throw new IllegalArgumentException("Invalid motion path type: " + pathInt);
+        }
+      } else if (pathValue.type == TypedValue.TYPE_STRING) {
+        String pathString = String.valueOf(pathValue.string);
+        return new PatternPathMotion(PathParser.createPathFromPathData(pathString));
+      } else {
+        throw new IllegalArgumentException(
+            "Motion path theme attribute must either be an enum value or path data string");
+      }
+    }
+    return null;
+  }
 
   static ShapeAppearanceModel convertToRelativeCornerSizes(
       ShapeAppearanceModel shapeAppearanceModel, final RectF bounds) {
     return shapeAppearanceModel.withTransformedCornerSizes(
-        new CornerSizeUnaryOperator() {
-          @NonNull
-          @Override
-          public CornerSize apply(@NonNull CornerSize cornerSize) {
-            return cornerSize instanceof RelativeCornerSize
-                ? cornerSize
-                : new RelativeCornerSize(cornerSize.getCornerSize(bounds) / bounds.height());
-          }
-        });
+        cornerSize -> RelativeCornerSize.createFromCornerSize(bounds, cornerSize));
   }
 
   // TODO: rethink how to interpolate more than just corner size
@@ -109,9 +178,19 @@ class TransitionUtils {
     CornerSize apply(@NonNull CornerSize cornerSize1, @NonNull CornerSize cornerSize2);
   }
 
-  static float lerp(
-      float startValue, float endValue, @FloatRange(from = 0.0, to = 1.0) float fraction) {
+  static float lerp(float startValue, float endValue, float fraction) {
     return startValue + fraction * (endValue - startValue);
+  }
+
+  // TODO(b/169309512): Remove in favor of AnimationUtils implementation
+  static float lerp(
+      float startValue,
+      float endValue,
+      @FloatRange(from = 0.0, to = 1.0) float startFraction,
+      @FloatRange(from = 0.0, to = 1.0) float endFraction,
+      @FloatRange(from = 0.0, to = 1.0) float fraction) {
+    return lerp(
+        startValue, endValue, startFraction, endFraction, fraction, /* allowOvershoot= */ false);
   }
 
   static float lerp(
@@ -119,7 +198,11 @@ class TransitionUtils {
       float endValue,
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      @FloatRange(from = 0.0, to = 1.0) float fraction) {
+      @FloatRange(from = 0.0) float fraction,
+      boolean allowOvershoot) {
+    if (allowOvershoot && (fraction < 0 || fraction > 1)) {
+      return lerp(startValue, endValue, fraction);
+    }
     if (fraction < startFraction) {
       return startValue;
     }

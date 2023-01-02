@@ -7,12 +7,18 @@ path: /docs/getting-started/
 
 # Getting started with Material Components for Android
 
-Take a look at our
-[guide](https://medium.com/androiddevelopers/migrating-to-material-components-for-android-ec6757795351)
-that helps you migrate your codebase from the Design Support Library to Material
-Components for Android.
+## 1. Migration guidance
 
-### 1. Depend on our library
+Take a look at our [guide](https://material.io/blog/migrating-material-3) and
+[codelab](https://goo.gle/apply-dynamic-color) to help you migrate your codebase
+using Material Components for Android to the new Material 3 system.
+
+Additionally, if you are still using the legacy Design Support Library, take a
+look at our
+[legacy guide](https://material.io/blog/migrate-android-material-components) to
+help you migrate your codebase to Material Components for Android.
+
+## 2. Maven library dependency
 
 Material Components for Android is available through Google's Maven Repository.
 To use it:
@@ -25,7 +31,7 @@ To use it:
       allprojects {
         repositories {
           google()
-          jcenter()
+          mavenCentral()
         }
       }
     ```
@@ -40,11 +46,16 @@ To use it:
       }
     ```
 
-Visit [Google's Maven Repository](http://maven.google.com) or
+Visit
+[Google's Maven Repository](https://maven.google.com/web/index.html#com.google.android.material:material)
+or
 [MVN Repository](https://mvnrepository.com/artifact/com.google.android.material/material)
 to find the latest version of the library.
 
-##### New Namespace and AndroidX
+**Note:** In order to use the new `Material3` themes and component styles, you
+should depend on version `1.5.0` or later.
+
+### New Namespace and AndroidX
 
 If your app currently depends on the original Design Support Library, you can
 make use of the
@@ -57,57 +68,90 @@ If you don't want to switch over to the new `androidx` and
 `com.google.android.material` packages yet, you can use Material Components via
 the `com.android.support:design:28.0.0` dependency.
 
-Note: You should not use the `com.android.support` and
+**Note:** You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
 
-### 2. Compile your app with Android 9
+## 3. Android 12 compilation
 
-In order to use Material Components for Android, and the latest versions of the
-Support Libraries, you will have to update your app's `compileSdkVersion` to
-`28` and download the Android 9 using the SDK manager. For more information on
-Android 9 and its timeline, take a look at the
-[Program Overview](https://developer.android.com/preview/overview) page.
+In order to use the latest versions of Material Components for Android and the
+AndroidX Jetpack libraries, you will have to install the latest version of
+Android Studio and update your app's `compileSdkVersion` to `32`.
 
-### 3. Ensure you are using `AppCompatActivity`
+As part of migrating to Android 12, you'll need to add `android:exported` to any
+activities, services, or broadcast receivers in your manifest that use intent
+filters (see the
+[documentation](https://developer.android.com/about/versions/12/behavior-changes-12#exported)).
+Consider reading through the Android 12
+[app migration guide](https://developer.android.com/about/versions/12/migration)
+and
+[behavior changes](https://developer.android.com/about/versions/12/behavior-changes-all)
+for more tips and information.
 
-Using `AppCompatActivity` will ensure that all the components work correctly. If
-you are unable to extend from `AppCompatActivity`, update your activities to use
-`AppCompatDelegate`. This will enable the `AppCompat` versions of components to
-be inflated among other important things.
+## 4. Java 8 compilation
 
-### 4. Change your app theme to inherit from a Material Components theme
+The latest Material and AndroidX Jetpack libraries now require your app to be
+compiled with Java 8. See the
+[Java 8 language features and APIs documentation](https://developer.android.com/studio/write/java8-support)
+for more information on Java 8 support and how to enable it for your app.
 
-Doing an app-wide migration by changing your app theme to inherit from a
-Material Components theme is the recommended approach. However, be sure to test
-thoroughly afterwards, as components in existing layouts may change their looks
-and behavior.
+## 5. Gradle, AGP, and Android Studio
 
-Note: If you **can't** change your theme, you can do one of the following:
+When using MDC-Android version `1.7.0-alpha02` and above, you will need to make
+sure your project is built with the following minimum requirements, in order to
+support the latest build features such as XML `macro`:
 
-*   Inherit from one of our Material Components **Bridge** themes. See the
-    [**Bridge Themes**](#bridge-themes) section for more details.
-*   Continue to inherit from an AppCompat theme and add some new theme
-    attributes to your theme. See the
-    [**App Compat Themes**](#app-compat-themes) section for more details.
+- [Gradle version 7.3.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+- [Android Gradle Plugin (AGP) version 7.2.0](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+- [Android Studio Chipmunk, version 2021.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
 
-#### **Material Components themes**
+## 6. `AppCompatActivity`
 
-The following is the list of Material Components themes you can use to get the
-latest component styles and theme-level attributes.
+Use `AppCompatActivity` to ensure that all the components work correctly. If you
+are unable to extend from `AppCompatActivity`, update your activities to use
+[`AppCompatDelegate`](https://developer.android.com/reference/androidx/appcompat/app/AppCompatDelegate).
+This will enable the AppCompat or Material versions of components to be inflated
+(depending on your theme), among other important things.
 
-*   `Theme.MaterialComponents`
-*   `Theme.MaterialComponents.NoActionBar`
-*   `Theme.MaterialComponents.Light`
-*   `Theme.MaterialComponents.Light.NoActionBar`
-*   `Theme.MaterialComponents.Light.DarkActionBar`
-*   `Theme.MaterialComponents.DayNight`
-*   `Theme.MaterialComponents.DayNight.NoActionBar`
-*   `Theme.MaterialComponents.DayNight.DarkActionBar`
+## 7. `Material3` theme inheritance
 
-Update your app theme to inherit from one of these themes, e.g.:
+We recommend you perform an app-wide migration by changing your app theme to
+inherit from a `Material3` theme. Be sure to test thoroughly afterwards, since
+this may change the appearance and behavior of existing layout components.
+
+Check out the new Material Theme Builder which can be used to generate your
+`Material3` app theme, with all of the Material Color System roles filled out
+based on your brand colors.
+
+-   [Web](https://material.io/material-theme-builder)
+-   [Figma](https://goo.gle/material-theme-builder-figma)
+
+**Note:** If you **can't** change your theme, you can continue to inherit from
+an `AppCompat` or `MaterialComponents` theme and add some new theme attributes
+to your theme. See the
+[**AppCompat or MaterialComponents themes**](#appcompat-or-materialcomponents-themes)
+section for more details.
+
+### **`Material3` themes**
+
+Here are the `Material3` themes you can use to get the latest component styles
+and theme-level attributes, as well as their `MaterialComponents` equivalents
+when applicable.
+
+`Material3`                            | `MaterialComponents`
+-------------------------------------- | --------------------
+`Theme.Material3.Light`                | `Theme.MaterialComponents.Light`
+`Theme.Material3.Light.NoActionBar`    | `Theme.MaterialComponents.Light.NoActionBar`
+`Theme.Material3.Dark`                 | `Theme.MaterialComponents`
+`Theme.Material3.Dark.NoActionBar`     | `Theme.MaterialComponents.NoActionBar`
+`Theme.Material3.DayNight`             | `Theme.MaterialComponents.DayNight`
+`Theme.Material3.DayNight.NoActionBar` | `Theme.MaterialComponents.DayNight.NoActionBar`
+N/A                                    | `Theme.MaterialComponents.Light.DarkActionBar`
+N/A                                    | `Theme.MaterialComponents.DayNight.DarkActionBar`
+
+Update your app theme to inherit from one of these themes:
 
 ```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight">
+<style name="Theme.MyApp" parent="Theme.Material3.DayNight.NoActionBar">
     <!-- ... -->
 </style>
 ```
@@ -117,65 +161,46 @@ a look at our [Theming](theming.md) guide, as well as our
 [Dark Theme](theming/Dark.md) guide for why it's important to inherit from the
 `DayNight` theme.
 
-Note: Using a Material Components theme enables a custom view inflater which
-replaces default components with their Material counterparts. Currently, this
-only replaces `<Button>` and `<AutoCompleteTextView>` XML components with
-[`<MaterialButton>`](components/Button.md) and
-[`<MaterialAutoCompleteTextView>`](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/textfield/MaterialAutoCompleteTextView.java),
-respectively.
+`Material3` themes enable a custom view inflater, which replaces default
+components with their Material counterparts. Currently, this replaces the
+following XML components:
 
-#### **Bridge Themes** {#bridge-themes}
+*   `<Button` → [`MaterialButton`](components/Button.md)
+*   `<CheckBox` → [`MaterialCheckBox`](components/Checkbox.md)
+*   `<RadioButton` → [`MaterialRadioButton`](components/RadioButton.md)
+*   `<TextView` → [`MaterialTextView`](components/MaterialTextView.md)
+*   `<AutoCompleteTextView` →
+    [`MaterialAutoCompleteTextView`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/MaterialAutoCompleteTextView.java)
 
-If you cannot change your theme to inherit from a Material Components theme, you
-can inherit from a Material Components **Bridge** theme.
+### **`AppCompat` or `MaterialComponents` Themes**
 
-```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light.Bridge">
-    <!-- ... -->
-</style>
-```
-
-Both `Theme.MaterialComponents` and `Theme.MaterialComponents.Light` have
-`.Bridge` themes:
-
-*   `Theme.MaterialComponents.Bridge`
-*   `Theme.MaterialComponents.Light.Bridge`
-*   `Theme.MaterialComponents.NoActionBar.Bridge`
-*   `Theme.MaterialComponents.Light.NoActionBar.Bridge`
-*   `Theme.MaterialComponents.Light.DarkActionBar.Bridge`
-
-Bridge themes inherit from AppCompat themes, but also define the new Material
-Components theme attributes for you. If you use a bridge theme, you can start
-using Material Design components without changing your app theme.
-
-#### **AppCompat Themes** {#app-compat-themes}
-
-You can also incrementally test new Material components without changing your
-app theme. This allows you to keep your existing layouts looking and behaving
-the same, while introducing new components to your layout one at a time.
+You can incrementally test new Material components without changing your app
+theme. This allows you to keep your existing layouts looking and behaving the
+same, while introducing new components to your layout one at a time.
 
 However, you must add the following new theme attributes to your existing app
 theme, or you will encounter `ThemeEnforcement` errors:
 
 ```xml
-<style name="Theme.MyApp" parent="Theme.AppCompat">
+<style name="Theme.MyApp" parent="Theme.AppCompat OR Theme.MaterialComponents">
 
   <!-- Original AppCompat attributes. -->
-  <item name="colorPrimary">@color/my_app_primary_color</item>
-  <item name="colorSecondary">@color/my_app_secondary_color</item>
-  <item name="android:colorBackground">@color/my_app_background_color</item>
-  <item name="colorError">@color/my_app_error_color</item>
+  <item name="colorPrimary">@color/my_app_primary</item>
+  <item name="colorPrimaryDark">@color/my_app_primary_dark</item>
+  <item name="colorSecondary">@color/my_app_secondary</item>
+  <item name="android:colorBackground">@color/my_app_background</item>
+  <item name="colorError">@color/my_app_error</item>
 
-  <!-- New MaterialComponents attributes. -->
-  <item name="colorPrimaryVariant">@color/my_app_primary_variant_color</item>
-  <item name="colorSecondaryVariant">@color/my_app_secondary_variant_color</item>
-  <item name="colorSurface">@color/my_app_surface_color</item>
-  <item name="colorOnPrimary">@color/my_app_color_on_primary</item>
-  <item name="colorOnSecondary">@color/my_app_color_on_secondary</item>
-  <item name="colorOnBackground">@color/my_app_color_on_background</item>
-  <item name="colorOnError">@color/my_app_color_on_error</item>
-  <item name="colorOnSurface">@color/my_app_color_on_surface</item>
-  <item name="scrimBackground">@color/mtrl_scrim_color</item>
+  <!-- MaterialComponents attributes (needed if parent="Theme.AppCompat"). -->
+  <item name="colorPrimaryVariant">@color/my_app_primary_variant</item>
+  <item name="colorSecondaryVariant">@color/my_app_secondary_variant</item>
+  <item name="colorSurface">@color/my_app_surface</item>
+  <item name="colorOnPrimary">@color/my_app_on_primary</item>
+  <item name="colorOnSecondary">@color/my_app_on_secondary</item>
+  <item name="colorOnBackground">@color/my_app_on_background</item>
+  <item name="colorOnError">@color/my_app_on_error</item>
+  <item name="colorOnSurface">@color/my_app_on_surface</item>
+  <item name="scrimBackground">@color/mtrl_scrim</item>
   <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
   <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
   <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
@@ -190,21 +215,56 @@ theme, or you will encounter `ThemeEnforcement` errors:
   <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
   <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
 
+  <!-- Material3 attributes (needed if parent="Theme.MaterialComponents"). -->
+  <item name="colorPrimaryInverse">@color/my_app_primary_inverse</item>
+  <item name="colorPrimaryContainer">@color/my_app_primary_container</item>
+  <item name="colorOnPrimaryContainer">@color/my_app_on_primary_container</item>
+  <item name="colorSecondaryContainer">@color/my_app_secondary_container</item>
+  <item name="colorOnSecondaryContainer">@color/my_app_on_secondary_container</item>
+  <item name="colorTertiary">@color/my_app_tertiary</item>
+  <item name="colorOnTertiary">@color/my_app_on_tertiary</item>
+  <item name="colorTertiaryContainer">@color/my_app_tertiary_container</item>
+  <item name="colorOnTertiaryContainer">@color/my_app_on_tertiary_container</item>
+  <item name="colorSurfaceVariant">@color/my_app_surface_variant</item>
+  <item name="colorOnSurfaceVariant">@color/my_app_on_surface_variant</item>
+  <item name="colorSurfaceInverse">@color/my_app_inverse_surface</item>
+  <item name="colorOnSurfaceInverse">@color/my_app_inverse_on_surface</item>
+  <item name="colorOutline">@color/my_app_outline</item>
+  <item name="colorErrorContainer">@color/my_app_error_container</item>
+  <item name="colorOnErrorContainer">@color/my_app_on_error_container</item>
+  <item name="textAppearanceDisplayLarge">@style/TextAppearance.Material3.DisplayLarge</item>
+  <item name="textAppearanceDisplayMedium">@style/TextAppearance.Material3.DisplayMedium</item>
+  <item name="textAppearanceDisplaySmall">@style/TextAppearance.Material3.DisplaySmall</item>
+  <item name="textAppearanceHeadlineLarge">@style/TextAppearance.Material3.HeadlineLarge</item>
+  <item name="textAppearanceHeadlineMedium">@style/TextAppearance.Material3.HeadlineMedium</item>
+  <item name="textAppearanceHeadlineSmall">@style/TextAppearance.Material3.HeadlineSmall</item>
+  <item name="textAppearanceTitleLarge">@style/TextAppearance.Material3.TitleLarge</item>
+  <item name="textAppearanceTitleMedium">@style/TextAppearance.Material3.TitleMedium</item>
+  <item name="textAppearanceTitleSmall">@style/TextAppearance.Material3.TitleSmall</item>
+  <item name="textAppearanceBodyLarge">@style/TextAppearance.Material3.BodyLarge</item>
+  <item name="textAppearanceBodyMedium">@style/TextAppearance.Material3.BodyMedium</item>
+  <item name="textAppearanceBodySmall">@style/TextAppearance.Material3.BodySmall</item>
+  <item name="textAppearanceLabelLarge">@style/TextAppearance.Material3.LabelLarge</item>
+  <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
+  <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
+  <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
+  <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
+  <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
 </style>
 ```
 
-### 5. Add a Material component to your app
+## 8. Add Material components
 
-Take a look at our [documentation](https://www.material.io/components/android)
+Take a look at our [documentation](https://material.io/components?platform=android)
 for the full list of available Material components. Each component's page has
 specific instructions on how to implement it in your app.
 
 Let's use [text fields](components/TextField.md) as an example.
 
-#### **Implementing a text field via XML**
+### **Implementing a text field via XML**
 
 The default
-[filled text field](https://material.io/go/design-text-fields#filled-text-field)
+[outlined text field](https://material.io/go/design-text-fields#outlined-text-field)
 XML is defined as:
 
 ```xml
@@ -219,18 +279,18 @@ XML is defined as:
 </com.google.android.material.textfield.TextInputLayout>
 ```
 
-Note: If you are **not** using a theme that inherits from a Material Components
+**Note:** If you are **not** using a theme that inherits from a `Material3`
 theme, you will have to specify the text field style as well, via
-`style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"`
+`style="@style/Widget.Material3.TextInputLayout.OutlinedBox"`
 
-Other text field styles are also provided. For example, if you want an
-[outlined text field](https://material.io/go/design-text-fields#outlined-text-field)
-in your layout, you can apply the Material Components `outlined` style to the
-text field in XML:
+Other text field styles are also provided. For example, if you want a
+[filled text field](https://material.io/go/design-text-fields#filled-text-field)
+in your layout, you can apply the `Material3` `filled` style to the text field
+in XML:
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
-    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    style="@style/Widget.Material3.TextInputLayout.FilledBox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/textfield_label">
@@ -251,6 +311,7 @@ out our [contributing guidelines](contributing.md) as well as an overview of the
 
 -   [Theming Guide](theming.md)
 -   [Contributing](contributing.md)
+-   [Using Snapshot Version](using-snapshot-version.md)
 -   [Building From Source](building-from-source.md)
 -   [Catalog App](catalog-app.md)
 -   [Class documentation](https://developer.android.com/reference/com/google/android/material/classes)

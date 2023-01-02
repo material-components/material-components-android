@@ -18,10 +18,10 @@ package com.google.android.material.expandable;
 
 import android.os.Bundle;
 import android.os.Parcelable;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.view.ViewParent;
+import androidx.annotation.IdRes;
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /**

@@ -20,9 +20,9 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import androidx.annotation.RestrictTo;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
+import androidx.annotation.RestrictTo;
 
 /**
  * An {@link ImageButton} that keeps track of visibility changes.

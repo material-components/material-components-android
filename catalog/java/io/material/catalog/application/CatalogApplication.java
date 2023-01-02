@@ -19,16 +19,18 @@ package io.material.catalog.application;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import androidx.multidex.MultiDexApplication;
 import androidx.appcompat.app.AppCompatDelegate;
 import android.util.Log;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
+import io.material.catalog.preferences.BaseCatalogPreferences;
 import java.lang.reflect.InvocationTargetException;
 import javax.inject.Inject;
 
 /** Catalog application class that provides support for using dispatching Dagger injectors. */
-public class CatalogApplication extends Application implements HasAndroidInjector {
+public class CatalogApplication extends MultiDexApplication implements HasAndroidInjector {
 
   /** Logging tag */
   public static final String TAG = "CatalogApplication";
@@ -37,14 +39,17 @@ public class CatalogApplication extends Application implements HasAndroidInjecto
       "io.material.catalog.application.componentOverride";
 
   @Inject DispatchingAndroidInjector<Object> androidInjector;
+  @Inject BaseCatalogPreferences catalogPreferences;
 
   @Override
   public void onCreate() {
     super.onCreate();
     AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+
     if (!overrideApplicationComponent(this)) {
       DaggerCatalogApplicationComponent.builder().application(this).build().inject(this);
     }
+    catalogPreferences.applyPreferences(this);
   }
 
   /**
@@ -58,7 +63,6 @@ public class CatalogApplication extends Application implements HasAndroidInjecto
    * <p>Suppressing unchecked warnings because there is no way we have a statically typed class
    * argument for instances of Class in this method.
    */
-  @SuppressWarnings("unchecked")
   private boolean overrideApplicationComponent(CatalogApplication catalogApplication) {
     try {
       ApplicationInfo applicationInfo =

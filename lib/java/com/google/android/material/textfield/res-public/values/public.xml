@@ -18,23 +18,22 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="textInputStyle" type="attr"/>
+  <public name="textInputOutlinedStyle" type="attr"/>
+  <public name="textInputFilledStyle" type="attr"/>
+  <public name="textInputOutlinedDenseStyle" type="attr"/>
+  <public name="textInputFilledDenseStyle" type="attr"/>
+  <public name="textInputOutlinedExposedDropdownMenuStyle" type="attr"/>
+  <public name="textInputFilledExposedDropdownMenuStyle" type="attr"/>
 
   <public name="boxBackgroundColor" type="attr"/>
   <public name="boxBackgroundMode" type="attr"/>
   <public name="boxCollapsedPaddingTop" type="attr"/>
-  <public name="boxCollapsedPaddingBottom" type="attr"/>
   <public name="boxCornerRadiusTopStart" type="attr"/>
   <public name="boxCornerRadiusTopEnd" type="attr"/>
   <public name="boxCornerRadiusBottomStart" type="attr"/>
   <public name="boxCornerRadiusBottomEnd" type="attr"/>
-  <public name="boxExpandedPaddingTop" type="attr"/>
-  <public name="boxExpandedPaddingBottom" type="attr"/>
-  <public name="boxPaddingStart" type="attr"/>
-  <public name="boxPaddingTop" type="attr"/>
-  <public name="boxPaddingEnd" type="attr"/>
-  <public name="boxPaddingBottom" type="attr"/>
   <public name="boxStrokeColor" type="attr"/>
-  <public name="boxStrokeErrorColor" format="color"/>
+  <public name="boxStrokeErrorColor" type="attr"/>
   <public name="boxStrokeWidth" type="attr"/>
   <public name="boxStrokeWidthFocused" type="attr"/>
 
@@ -44,16 +43,17 @@
   <public name="counterOverflowTextColor" type="attr"/>
   <public name="counterTextAppearance" type="attr"/>
   <public name="counterTextColor" type="attr"/>
-  <public name="prefixText" format="string"/>
-  <public name="prefixTextAppearance" format="reference"/>
-  <public name="prefixTextColor" format="color"/>
-  <public name="suffixText" format="string"/>
-  <public name="suffixTextAppearance" format="reference"/>
-  <public name="suffixTextColor" format="color"/>
+  <public name="prefixText" type="attr"/>
+  <public name="prefixTextAppearance" type="attr"/>
+  <public name="prefixTextColor" type="attr"/>
+  <public name="suffixText" type="attr"/>
+  <public name="suffixTextAppearance" type="attr"/>
+  <public name="suffixTextColor" type="attr"/>
   <public name="errorEnabled" type="attr"/>
   <public name="errorTextAppearance" type="attr"/>
   <public name="errorTextColor" type="attr"/>
   <public name="errorContentDescription" type="attr"/>
+  <public name="errorAccessibilityLiveRegion" type="attr"/>
   <public name="errorIconDrawable" type="attr"/>
   <public name="errorIconTint" type="attr"/>
   <public name="errorIconTintMode" type="attr"/>
@@ -62,6 +62,7 @@
   <public name="helperTextTextAppearance" type="attr"/>
   <public name="helperTextTextColor" type="attr"/>
   <public name="hintAnimationEnabled" type="attr"/>
+  <public name="expandedHintEnabled" type="attr"/>
   <public name="hintEnabled" type="attr"/>
   <public name="hintTextAppearance" type="attr"/>
   <public name="hintTextColor" type="attr"/>
@@ -70,6 +71,8 @@
   <public name="startIconCheckable" type="attr"/>
   <public name="startIconTint" type="attr"/>
   <public name="startIconTintMode" type="attr"/>
+  <public name="startIconMinSize" type="attr"/>
+  <public name="startIconScaleType" type="attr" />
   <public name="placeholderText" type="attr"/>
   <public name="placeholderTextAppearance" type="attr"/>
   <public name="placeholderTextColor" type="attr"/>
@@ -79,6 +82,8 @@
   <public name="endIconCheckable" type="attr"/>
   <public name="endIconTint" type="attr"/>
   <public name="endIconTintMode" type="attr"/>
+  <public name="endIconMinSize" type="attr"/>
+  <public name="endIconScaleType" type="attr" />
   <!-- Deprecated. Use endIconMode instead. -->
   <public name="passwordToggleEnabled" type="attr"/>
   <!--Deprecated. Use endIconDrawable instead. -->
@@ -91,6 +96,10 @@
   <public name="passwordToggleTintMode" type="attr"/>
 
   <public name="textInputLayoutFocusedRectEnabled" type="attr"/>
+  <public name="simpleItemLayout" type="attr"/>
+  <public name="simpleItems" type="attr"/>
+  <public name="simpleItemSelectedColor" type="attr"/>
+  <public name="simpleItemSelectedRippleColor" type="attr"/>
 
   <public name="Widget.Design.TextInputLayout" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.FilledBox" type="style"/>
@@ -101,4 +110,32 @@
   <public name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" type="style"/>
+
+  <public name="Widget.Material3.AutoCompleteTextView.FilledBox" type="style"/>
+  <public name="Widget.Material3.AutoCompleteTextView.FilledBox.Dense" type="style"/>
+  <public name="Widget.Material3.AutoCompleteTextView.OutlinedBox" type="style"/>
+  <public name="Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense" type="style"/>
+  <public name="Widget.Material3.TextInputEditText.FilledBox" type="style"/>
+  <public name="Widget.Material3.TextInputEditText.FilledBox.Dense" type="style"/>
+  <public name="Widget.Material3.TextInputEditText.OutlinedBox" type="style"/>
+  <public name="Widget.Material3.TextInputEditText.OutlinedBox.Dense" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.FilledBox" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.FilledBox.Dense" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.OutlinedBox" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.OutlinedBox.Dense" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu" type="style"/>
+  <public name="Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu" type="style"/>
+
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView" type="style"/>
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView.FilledBox" type="style"/>
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView.FilledBox.Dense" type="style"/>
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox" type="style"/>
+  <public name="ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText.FilledBox" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText.FilledBox.Dense" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText.OutlinedBox" type="style"/>
+  <public name="ThemeOverlay.Material3.TextInputEditText.OutlinedBox.Dense" type="style"/>
 </resources>

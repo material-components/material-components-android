@@ -28,14 +28,23 @@ import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static com.google.android.material.testutils.TestUtilsActions.waitFor;
 import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
+import static com.google.android.material.testutils.TextInputLayoutActions.setInputType;
+import static com.google.android.material.testutils.TextInputLayoutActions.setRawInputType;
 import static com.google.android.material.testutils.TextInputLayoutActions.skipAnimations;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertNull;
 
 import android.app.Activity;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
+import android.text.InputType;
 import android.widget.AutoCompleteTextView;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
@@ -49,11 +58,12 @@ import org.junit.runner.RunWith;
 @MediumTest
 @RunWith(AndroidJUnit4.class)
 public class ExposedDropdownMenuTest {
+
+  private static final String INPUT_TEXT = "I";
+
   @Rule
   public final ActivityTestRule<ExposedDropdownMenuActivity> activityTestRule =
       new ActivityTestRule<>(ExposedDropdownMenuActivity.class);
-
-  private static final String INPUT_TEXT = "I";
 
   @Test
   public void testMenuIsNonEditableWithInputTypeNone() {
@@ -61,6 +71,79 @@ public class ExposedDropdownMenuTest {
     final AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
 
     assertNull(editText.getKeyListener());
+  }
+
+  @Test
+  public void testNonEditableMenu_hasLayerBackground() {
+    Activity activity = activityTestRule.getActivity();
+
+    AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
+
+    assertThat(editText.getBackground(), instanceOf(LayerDrawable.class));
+  }
+
+  @Test
+  public void testEditableMenu_doesNotHaveLayerBackground() {
+    Activity activity = activityTestRule.getActivity();
+
+    AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled_editable);
+
+    assertThat(editText.getBackground(), not(instanceOf(LayerDrawable.class)));
+  }
+
+  @Test
+  public void testSwitchingInputType_updatesBackground() {
+    final Activity activity = activityTestRule.getActivity();
+    AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
+
+    // Switch to an editable type.
+    onView(withId(R.id.edittext_filled)).perform(setInputType(InputType.TYPE_CLASS_TEXT));
+    Drawable editableTypeBackground = editText.getBackground();
+    // Switch back to uneditable.
+    onView(withId(R.id.edittext_filled)).perform(setInputType(InputType.TYPE_NULL));
+
+    // Assert background updated.
+    assertThat(editableTypeBackground, not(instanceOf(LayerDrawable.class)));
+    // Assert second switch updated the background back to an instance of LayerDrawable.
+    assertThat(editText.getBackground(), instanceOf(LayerDrawable.class));
+  }
+
+  @Test
+  public void testSwitchingRawInputType_updatesBackground() {
+    final Activity activity = activityTestRule.getActivity();
+    AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
+
+    // Switch to an editable type.
+    onView(withId(R.id.edittext_filled)).perform(setRawInputType(InputType.TYPE_CLASS_TEXT));
+    Drawable editableTypeBackground = editText.getBackground();
+    // Switch back to uneditable.
+    onView(withId(R.id.edittext_filled)).perform(setRawInputType(InputType.TYPE_NULL));
+
+    // Assert background updated.
+    assertThat(editableTypeBackground, not(instanceOf(LayerDrawable.class)));
+    // Assert second switch updated the background back to an instance of LayerDrawable.
+    assertThat(editText.getBackground(), instanceOf(LayerDrawable.class));
+  }
+
+  @Test
+  public void testSetSimpleItemSelectedColor_succeeds() {
+    Activity activity = activityTestRule.getActivity();
+    MaterialAutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
+
+    editText.setSimpleItemSelectedColor(Color.BLUE);
+
+    assertThat(editText.getSimpleItemSelectedColor(), is(Color.BLUE));
+  }
+
+  @Test
+  public void testSetSimpleItemSelectedRippleColor_succeeds() {
+    Activity activity = activityTestRule.getActivity();
+    MaterialAutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
+
+    editText.setSimpleItemSelectedRippleColor(ColorStateList.valueOf(Color.BLUE));
+
+    assertThat(
+        editText.getSimpleItemSelectedRippleColor(), is(ColorStateList.valueOf(Color.BLUE)));
   }
 
   @Test

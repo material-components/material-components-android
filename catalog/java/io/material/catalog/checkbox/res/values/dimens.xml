@@ -19,5 +19,4 @@
   <dimen name="cat_checkbox_line_separator_margin">8dp</dimen>
   <dimen name="cat_checkbox_padding">8dp</dimen>
   <dimen name="cat_checkbox_indent">8dp</dimen>
-  <dimen name="cat_checkbox_header_size">12dp</dimen>
 </resources>

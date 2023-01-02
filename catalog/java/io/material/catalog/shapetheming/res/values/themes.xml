@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <!-- Shrine -->
+
+  <style name="ThemeOverlay.Shrine" parent="Theme.Material3.Light.NoActionBar">
+    <item name="colorPrimary">@color/shrine_theme_light_primary</item>
+    <item name="colorOnPrimary">@color/shrine_theme_light_onPrimary</item>
+    <item name="colorPrimaryContainer">@color/shrine_theme_light_primaryContainer</item>
+    <item name="colorOnPrimaryContainer">@color/shrine_theme_light_onPrimaryContainer</item>
+    <item name="colorSecondary">@color/shrine_theme_light_secondary</item>
+    <item name="colorOnSecondary">@color/shrine_theme_light_onSecondary</item>
+    <item name="colorSecondaryContainer">@color/shrine_theme_light_secondaryContainer</item>
+    <item name="colorOnSecondaryContainer">@color/shrine_theme_light_onSecondaryContainer</item>
+    <item name="colorTertiary">@color/shrine_theme_light_tertiary</item>
+    <item name="colorOnTertiary">@color/shrine_theme_light_onTertiary</item>
+    <item name="colorTertiaryContainer">@color/shrine_theme_light_tertiaryContainer</item>
+    <item name="colorOnTertiaryContainer">@color/shrine_theme_light_onTertiaryContainer</item>
+    <item name="colorError">@color/shrine_theme_light_error</item>
+    <item name="colorErrorContainer">@color/shrine_theme_light_errorContainer</item>
+    <item name="colorOnError">@color/shrine_theme_light_onError</item>
+    <item name="colorOnErrorContainer">@color/shrine_theme_light_onErrorContainer</item>
+    <item name="android:colorBackground">@color/shrine_theme_light_background</item>
+    <item name="colorOnBackground">@color/shrine_theme_light_onBackground</item>
+    <item name="colorSurface">@color/shrine_theme_light_surface</item>
+    <item name="colorOnSurface">@color/shrine_theme_light_onSurface</item>
+    <item name="colorSurfaceVariant">@color/shrine_theme_light_surfaceVariant</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_theme_light_onSurfaceVariant</item>
+    <item name="colorOutline">@color/shrine_theme_light_outline</item>
+    <item name="colorOnSurfaceInverse">@color/shrine_theme_light_inverseOnSurface</item>
+    <item name="colorSurfaceInverse">@color/shrine_theme_light_inverseSurface</item>
+    <item name="colorPrimaryInverse">@color/shrine_theme_light_inversePrimary</item>
+
+    <item name="shapeCornerFamily">cut</item>
+
+    <item name="bottomSheetDialogTheme">@style/Theme.Shrine.BottomSheetDialog</item>
+    <item name="chipStyle">@style/Widget.Shrine.Chip</item>
+    <item name="textInputStyle">@style/Widget.Shrine.TextInputLayout</item>
+  </style>
+
+  <!-- Fortnightly -->
+
+  <style name="ThemeOverlay.Fortnightly" parent="Theme.Material3.Light.NoActionBar">
+    <item name="colorPrimary">@color/fortnightly_theme_light_primary</item>
+    <item name="colorOnPrimary">@color/fortnightly_theme_light_onPrimary</item>
+    <item name="colorPrimaryContainer">@color/fortnightly_theme_light_primaryContainer</item>
+    <item name="colorOnPrimaryContainer">@color/fortnightly_theme_light_onPrimaryContainer</item>
+    <item name="colorSecondary">@color/fortnightly_theme_light_secondary</item>
+    <item name="colorOnSecondary">@color/fortnightly_theme_light_onSecondary</item>
+    <item name="colorSecondaryContainer">@color/fortnightly_theme_light_secondaryContainer</item>
+    <item name="colorOnSecondaryContainer">@color/fortnightly_theme_light_onSecondaryContainer</item>
+    <item name="colorTertiary">@color/fortnightly_theme_light_tertiary</item>
+    <item name="colorOnTertiary">@color/fortnightly_theme_light_onTertiary</item>
+    <item name="colorTertiaryContainer">@color/fortnightly_theme_light_tertiaryContainer</item>
+    <item name="colorOnTertiaryContainer">@color/fortnightly_theme_light_onTertiaryContainer</item>
+    <item name="colorError">@color/fortnightly_theme_light_error</item>
+    <item name="colorErrorContainer">@color/fortnightly_theme_light_errorContainer</item>
+    <item name="colorOnError">@color/fortnightly_theme_light_onError</item>
+    <item name="colorOnErrorContainer">@color/fortnightly_theme_light_onErrorContainer</item>
+    <item name="android:colorBackground">@color/fortnightly_theme_light_background</item>
+    <item name="colorOnBackground">@color/fortnightly_theme_light_onBackground</item>
+    <item name="colorSurface">@color/fortnightly_theme_light_surface</item>
+    <item name="colorOnSurface">@color/fortnightly_theme_light_onSurface</item>
+    <item name="colorSurfaceVariant">@color/fortnightly_theme_light_surfaceVariant</item>
+    <item name="colorOnSurfaceVariant">@color/fortnightly_theme_light_onSurfaceVariant</item>
+    <item name="colorOutline">@color/fortnightly_theme_light_outline</item>
+    <item name="colorOnSurfaceInverse">@color/fortnightly_theme_light_inverseOnSurface</item>
+    <item name="colorSurfaceInverse">@color/fortnightly_theme_light_inverseSurface</item>
+    <item name="colorPrimaryInverse">@color/fortnightly_theme_light_inversePrimary</item>
+
+    <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.None</item>
+    <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.None</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.None</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.None</item>
+    <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.None</item>
+
+    <item name="bottomSheetDialogTheme">@style/Theme.Fortnightly.BottomSheetDialog</item>
+    <item name="chipStyle">@style/Widget.Fortnightly.Chip</item>
+    <item name="textInputStyle">@style/Widget.Fortnightly.TextInputLayout</item>
+  </style>
+
+  <!-- Crane -->
+
+  <style name="ThemeOverlay.Crane" parent="Theme.Material3.Light.NoActionBar">
+    <item name="colorPrimary">@color/crane_theme_light_primary</item>
+    <item name="colorOnPrimary">@color/crane_theme_light_onPrimary</item>
+    <item name="colorPrimaryContainer">@color/crane_theme_light_primaryContainer</item>
+    <item name="colorOnPrimaryContainer">@color/crane_theme_light_onPrimaryContainer</item>
+    <item name="colorSecondary">@color/crane_theme_light_secondary</item>
+    <item name="colorOnSecondary">@color/crane_theme_light_onSecondary</item>
+    <item name="colorSecondaryContainer">@color/crane_theme_light_secondaryContainer</item>
+    <item name="colorOnSecondaryContainer">@color/crane_theme_light_onSecondaryContainer</item>
+    <item name="colorTertiary">@color/crane_theme_light_tertiary</item>
+    <item name="colorOnTertiary">@color/crane_theme_light_onTertiary</item>
+    <item name="colorTertiaryContainer">@color/crane_theme_light_tertiaryContainer</item>
+    <item name="colorOnTertiaryContainer">@color/crane_theme_light_onTertiaryContainer</item>
+    <item name="colorError">@color/crane_theme_light_error</item>
+    <item name="colorErrorContainer">@color/crane_theme_light_errorContainer</item>
+    <item name="colorOnError">@color/crane_theme_light_onError</item>
+    <item name="colorOnErrorContainer">@color/crane_theme_light_onErrorContainer</item>
+    <item name="android:colorBackground">@color/crane_theme_light_background</item>
+    <item name="colorOnBackground">@color/crane_theme_light_onBackground</item>
+    <item name="colorSurface">@color/crane_theme_light_surface</item>
+    <item name="colorOnSurface">@color/crane_theme_light_onSurface</item>
+    <item name="colorSurfaceVariant">@color/crane_theme_light_surfaceVariant</item>
+    <item name="colorOnSurfaceVariant">@color/crane_theme_light_onSurfaceVariant</item>
+    <item name="colorOutline">@color/crane_theme_light_outline</item>
+    <item name="colorOnSurfaceInverse">@color/crane_theme_light_inverseOnSurface</item>
+    <item name="colorSurfaceInverse">@color/crane_theme_light_inverseSurface</item>
+    <item name="colorPrimaryInverse">@color/crane_theme_light_inversePrimary</item>
+
+    <item name="bottomSheetDialogTheme">@style/Theme.Crane.BottomSheetDialog</item>
+    <item name="chipStyle">@style/Widget.Crane.Chip</item>
+    <item name="textInputStyle">@style/Widget.Crane.TextInputLayout</item>
+  </style>
+</resources>

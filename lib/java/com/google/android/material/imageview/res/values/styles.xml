@@ -18,7 +18,7 @@
 <resources>
 
   <style name="Widget.MaterialComponents.ShapeableImageView" parent="android:Widget">
-    <item name="strokeColor">?attr/colorAccent</item>
+    <item name="strokeColor">@color/material_on_surface_stroke</item>
   </style>
 
 </resources>

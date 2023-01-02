@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2022 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+
+  <style name="ThemeOverlay.Material3.HarmonizedColors" parent="">
+    <item name="colorError">@color/material_harmonized_color_error</item>
+    <item name="colorOnError">@color/material_harmonized_color_on_error</item>
+    <item name="colorErrorContainer">@color/material_harmonized_color_error_container</item>
+    <item name="colorOnErrorContainer">@color/material_harmonized_color_on_error_container</item>
+  </style>
+
+  <!-- Used to provide an empty theme overlay placeholder for harmonization. Do not use this theme overlay directly, as the color resources will be replaced at runtime. -->
+  <style name="ThemeOverlay.Material3.HarmonizedColors.Empty" parent="" />
+
+  <!-- Used to provide an empty theme overlay placeholder for personalized colors, e.g. content color. Do not use this theme overlay directly, as the color resources will be replaced at runtime. -->
+  <style name="ThemeOverlay.Material3.PersonalizedColors" parent="">
+    <!-- Color palettes -->
+    <item name="colorPrimary">@color/material_personalized_color_primary</item>
+    <item name="colorOnPrimary">@color/material_personalized_color_on_primary</item>
+    <item name="colorPrimaryInverse">@color/material_personalized_color_primary_inverse</item>
+    <item name="colorPrimaryContainer">@color/material_personalized_color_primary_container</item>
+    <item name="colorOnPrimaryContainer">@color/material_personalized_color_on_primary_container</item>
+    <item name="colorSecondary">@color/material_personalized_color_secondary</item>
+    <item name="colorOnSecondary">@color/material_personalized_color_on_secondary</item>
+    <item name="colorSecondaryContainer">@color/material_personalized_color_secondary_container</item>
+    <item name="colorOnSecondaryContainer">@color/material_personalized_color_on_secondary_container</item>
+    <item name="colorTertiary">@color/material_personalized_color_tertiary</item>
+    <item name="colorOnTertiary">@color/material_personalized_color_on_tertiary</item>
+    <item name="colorTertiaryContainer">@color/material_personalized_color_tertiary_container</item>
+    <item name="colorOnTertiaryContainer">@color/material_personalized_color_on_tertiary_container</item>
+    <item name="android:colorBackground">@color/material_personalized_color_background</item>
+    <item name="colorOnBackground">@color/material_personalized_color_on_background</item>
+    <item name="colorSurface">@color/material_personalized_color_surface</item>
+    <item name="colorOnSurface">@color/material_personalized_color_on_surface</item>
+    <item name="colorSurfaceVariant">@color/material_personalized_color_surface_variant</item>
+    <item name="colorOnSurfaceVariant">@color/material_personalized_color_on_surface_variant</item>
+    <item name="colorSurfaceInverse">@color/material_personalized_color_surface_inverse</item>
+    <item name="colorOnSurfaceInverse">@color/material_personalized_color_on_surface_inverse</item>
+    <item name="colorSurfaceBright">@color/material_personalized_color_surface_bright</item>
+    <item name="colorSurfaceDim">@color/material_personalized_color_surface_dim</item>
+    <item name="colorSurfaceContainer">@color/material_personalized_color_surface_container</item>
+    <item name="colorSurfaceContainerLow">@color/material_personalized_color_surface_container_low</item>
+    <item name="colorSurfaceContainerHigh">@color/material_personalized_color_surface_container_high</item>
+    <item name="colorSurfaceContainerLowest">@color/material_personalized_color_surface_container_lowest</item>
+    <item name="colorSurfaceContainerHighest">@color/material_personalized_color_surface_container_highest</item>
+    <item name="colorOutline">@color/material_personalized_color_outline</item>
+    <item name="colorOutlineVariant">@color/material_personalized_color_outline_variant</item>
+    <item name="colorError">@color/material_personalized_color_error</item>
+    <item name="colorOnError">@color/material_personalized_color_on_error</item>
+    <item name="colorErrorContainer">@color/material_personalized_color_error_container</item>
+    <item name="colorOnErrorContainer">@color/material_personalized_color_on_error_container</item>
+
+    <!-- Default Framework Text Colors. -->
+    <item name="android:textColorPrimary">@color/material_personalized_color_primary_text</item>
+    <item name="android:textColorPrimaryInverse">@color/material_personalized_color_primary_text_inverse</item>
+    <item name="android:textColorSecondary">@color/material_personalized_color_secondary_text</item>
+    <item name="android:textColorSecondaryInverse">@color/material_personalized_color_secondary_text_inverse</item>
+    <item name="android:textColorTertiary">@color/material_personalized_color_secondary_text</item>
+    <item name="android:textColorTertiaryInverse">@color/material_personalized_color_secondary_text_inverse</item>
+    <item name="android:textColorPrimaryDisableOnly">@color/material_personalized_primary_text_disable_only</item>
+    <item name="android:textColorPrimaryInverseDisableOnly">@color/material_personalized_primary_inverse_text_disable_only</item>
+    <item name="android:textColorHint">@color/material_personalized_hint_foreground</item>
+    <item name="android:textColorHintInverse">@color/material_personalized_hint_foreground_inverse</item>
+    <item name="android:textColorHighlight">@color/material_personalized__highlighted_text</item>
+    <item name="android:textColorHighlightInverse">@color/material_personalized__highlighted_text_inverse</item>
+    <item name="android:textColorAlertDialogListItem">@color/material_personalized_color_primary_text</item>
+    <item name="android:colorControlActivated">@color/material_personalized_color_control_activated</item>
+    <item name="android:colorControlNormal">@color/material_personalized_color_control_normal</item>
+    <item name="android:colorControlHighlight">@color/material_personalized_color_control_highlight</item>
+  </style>
+
+</resources>

@@ -22,15 +22,15 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import io.material.catalog.feature.DemoActivity;
 
@@ -52,7 +52,7 @@ public class TransitionContainerTransformStartDemoActivity extends DemoActivity 
 
     super.onCreate(bundle);
 
-    configurationHelper = getContainerTransformConfigurationHelper();
+    configurationHelper = new ContainerTransformConfigurationHelper();
 
     addTransitionableTarget(R.id.start_fab);
     addTransitionableTarget(R.id.single_line_list_item);
@@ -110,9 +110,5 @@ public class TransitionContainerTransformStartDemoActivity extends DemoActivity 
         ActivityOptions.makeSceneTransitionAnimation(
             this, sharedElement, "shared_element_end_root");
     startActivity(intent, options.toBundle());
-  }
-
-  protected ContainerTransformConfigurationHelper getContainerTransformConfigurationHelper() {
-    return new ContainerTransformConfigurationHelper();
   }
 }

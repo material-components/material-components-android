@@ -19,20 +19,29 @@ package io.material.catalog.bottomsheet;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /**
  * A fragment that displays the a BottomSheet demo with vertical scrollable content for the Catalog
  * app.
  */
 public class BottomSheetScrollableContentDemoFragment extends DemoFragment {
+
+  private WindowPreferencesManager windowPreferencesManager;
+
+  @Override
+  public void onCreate(@Nullable Bundle bundle) {
+    super.onCreate(bundle);
+    windowPreferencesManager = new WindowPreferencesManager(getContext());
+  }
 
   @Override
   public View onCreateDemoView(
@@ -41,6 +50,7 @@ public class BottomSheetScrollableContentDemoFragment extends DemoFragment {
 
     // Set up BottomSheetDialog
     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
+    windowPreferencesManager.applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
     bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_scrollable_content);
     View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
     BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);

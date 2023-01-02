@@ -39,6 +39,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.ColorUtils;
+import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearancePathProvider;
 
@@ -57,7 +58,8 @@ class BorderDrawable extends Drawable {
    */
   private static final float DRAW_STROKE_WIDTH_MULTIPLE = 1.3333f;
 
-  private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
+  private final ShapeAppearancePathProvider pathProvider =
+      ShapeAppearancePathProvider.getInstance();
 
   @NonNull private final Paint paint;
   private final Path shapePath = new Path();
@@ -65,7 +67,7 @@ class BorderDrawable extends Drawable {
   private final RectF rectF = new RectF();
   private final RectF boundsRectF = new RectF();
   private final BorderState state = new BorderState();
-  
+
   @Dimension float borderWidth;
   @ColorInt private int topOuterStrokeColor;
   @ColorInt private int topInnerStrokeColor;
@@ -153,9 +155,7 @@ class BorderDrawable extends Drawable {
     copyBounds(rect);
     rectF.set(rect);
     pathProvider.calculatePath(shapeAppearanceModel, 1f, rectF, shapePath);
-    if (shapePath.isConvex()) {
-      outline.setConvexPath(shapePath);
-    }
+    DrawableUtils.setOutlineToPath(outline, shapePath);
   }
 
   @Override

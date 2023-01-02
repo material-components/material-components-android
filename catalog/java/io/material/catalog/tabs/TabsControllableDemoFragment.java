@@ -20,12 +20,6 @@ import io.material.catalog.R;
 
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import androidx.annotation.ArrayRes;
-import androidx.annotation.DrawableRes;
-import androidx.annotation.LayoutRes;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.core.view.ViewCompat;
 import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +29,13 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import androidx.annotation.ArrayRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
@@ -120,9 +120,28 @@ public class TabsControllableDemoFragment extends DemoFragment {
     tabGravityCenterButton.setOnClickListener(
         v -> setAllTabLayoutGravity(TabLayout.GRAVITY_CENTER));
 
+    RadioButton tabAnimationModeLinearButton =
+        view.findViewById(R.id.tabs_animation_mode_linear_button);
+    tabAnimationModeLinearButton.setOnClickListener(
+        v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_LINEAR));
+
+    RadioButton tabsAnimationModeElasticButton =
+        view.findViewById(R.id.tabs_animation_mode_elastic_button);
+    tabsAnimationModeElasticButton.setOnClickListener(
+        v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_ELASTIC));
+
+    RadioButton tabsAnimationModeFadeButton =
+        view.findViewById(R.id.tabs_animation_mode_fade_button);
+    tabsAnimationModeFadeButton.setOnClickListener(
+        v -> setAllTabAnimationModes(TabLayout.INDICATOR_ANIMATION_MODE_FADE));
+
     SwitchCompat inlineToggle = view.findViewById(R.id.toggle_inline_switch);
     inlineToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> setAllTabLayoutInline(isChecked));
+
+    SwitchCompat fullWidthToggle = view.findViewById(R.id.toggle_full_width_switch);
+    fullWidthToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> setAllTabLayoutFullWidthIndicators(isChecked));
 
     Spinner selectedIndicatorSpinner = (Spinner) view.findViewById(R.id.selector_spinner);
     ArrayAdapter<CharSequence> adapter =
@@ -170,7 +189,7 @@ public class TabsControllableDemoFragment extends DemoFragment {
   }
 
   private void setupViewPager() {
-    pager.setAdapter(new TabsPagerAdapter(getFragmentManager(), getContext(), TAB_COUNT));
+    pager.setAdapter(new TabsPagerAdapter(getChildFragmentManager(), getContext(), TAB_COUNT));
     for (TabLayout tabLayout : tabLayouts) {
       tabLayout.setupWithViewPager(pager);
     }
@@ -252,9 +271,21 @@ public class TabsControllableDemoFragment extends DemoFragment {
     }
   }
 
+  private void setAllTabAnimationModes(int mode) {
+    for (TabLayout tabLayout : tabLayouts) {
+      tabLayout.setTabIndicatorAnimationMode(mode);
+    }
+  }
+
   private void setAllTabLayoutInline(boolean inline) {
     for (TabLayout tabLayout : tabLayouts) {
       tabLayout.setInlineLabel(inline);
+    }
+  }
+
+  private void setAllTabLayoutFullWidthIndicators(boolean fullWidth) {
+    for (TabLayout tabLayout : tabLayouts) {
+      tabLayout.setTabIndicatorFullWidth(fullWidth);
     }
   }
 

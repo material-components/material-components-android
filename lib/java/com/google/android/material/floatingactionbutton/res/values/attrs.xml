@@ -25,7 +25,7 @@
     <!-- Ripple color for the FAB. -->
     <attr name="rippleColor"/>
 
-    <!-- Size for the FAB. If fabCustomSize is set, this will be ignored. -->
+    <!-- Size for the FAB. If fabCustomSize is set, this will be ignored. Deprecated in M3. -->
     <attr name="fabSize">
       <!-- A size which will change based on the window size. -->
       <enum name="auto" value="-1"/>
@@ -51,9 +51,13 @@
     <attr name="useCompatPadding" format="boolean"/>
     <!-- Maximum icon image size. -->
     <attr name="maxImageSize" format="dimension"/>
-    <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
+    <!-- Motion spec for show animation. This should be a MotionSpec resource.
+         If this attr is set to @null, a default animation will be used which
+         respects duration and easing theme values.-->
     <attr name="showMotionSpec"/>
-    <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->
+    <!-- Motion spec for hide animation. This should be a MotionSpec resource.
+         If this attr is set to @null, a default animation will be used which
+         respects duration and easing theme values.-->
     <attr name="hideMotionSpec"/>
     <!-- Shape appearance style reference for FloatingActionButton. Attribute declaration
          is in the shape package. -->
@@ -70,6 +74,15 @@
   <declare-styleable name="ExtendedFloatingActionButton">
     <!-- Elevation for the ExtendedFloatingActionButton. -->
     <attr name="elevation"/>
+    <!-- Which extend strategy to use to extend the FAB. -->
+    <attr name="extendStrategy">
+      <!-- Strategy to extend FAB back to the width it shrunk from. -->
+      <enum name="auto" value="0"/>
+      <!-- Strategy to extend FAB to wrap content. -->
+      <enum name="wrap_content" value="1"/>
+      <!-- Strategy to extend FAB to match parent. -->
+      <enum name="match_parent" value="2"/>
+    </attr>
     <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
     <attr name="showMotionSpec"/>
     <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->
@@ -78,6 +91,8 @@
     <attr name="extendMotionSpec" format="reference"/>
     <!-- Motion spec for shrink animation. This should be a MotionSpec resource. -->
     <attr name="shrinkMotionSpec" format="reference"/>
+    <!-- FAB size when collapsed. -->
+    <attr name="collapsedSize" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="ExtendedFloatingActionButton_Behavior_Layout">
@@ -90,6 +105,60 @@
   <!-- Style to use for FloatingActionButtons in this theme. -->
   <attr name="floatingActionButtonStyle" format="reference"/>
 
+  <!-- Style to use for Primary FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonPrimaryStyle" format="reference"/>
+
+  <!-- Style to use for Secondary FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSecondaryStyle" format="reference"/>
+
+  <!-- Style to use for Tertiary FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonTertiaryStyle" format="reference"/>
+
+  <!-- Style to use for Surface FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSurfaceStyle" format="reference"/>
+
+  <!-- Style to use for Small FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallStyle" format="reference"/>
+
+  <!-- Style to use for Small Primary color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallPrimaryStyle" format="reference"/>
+
+  <!-- Style to use for Small Secondary color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallSecondaryStyle" format="reference"/>
+
+  <!-- Style to use for Small Tertiary color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallTertiaryStyle" format="reference"/>
+
+  <!-- Style to use for Small Surface color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonSmallSurfaceStyle" format="reference"/>
+
+  <!-- Style to use for Large FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonLargeStyle" format="reference"/>
+
+  <!-- Style to use for Large Primary color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonLargePrimaryStyle" format="reference"/>
+
+  <!-- Style to use for Large Secondary color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonLargeSecondaryStyle" format="reference"/>
+
+  <!-- Style to use for Large Tertiary color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonLargeTertiaryStyle" format="reference"/>
+
+  <!-- Style to use for Large Surface color FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonLargeSurfaceStyle" format="reference"/>
+
   <!-- Style to use for ExtendedFloatingActionButtons in this theme. -->
   <attr name="extendedFloatingActionButtonStyle" format="reference"/>
+
+  <!-- Style to use for Primary ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonPrimaryStyle" format="reference"/>
+
+  <!-- Style to use for Secondary ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonSecondaryStyle" format="reference"/>
+
+  <!-- Style to use for Tertiary ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonTertiaryStyle" format="reference"/>
+
+  <!-- Style to use for Surface ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonSurfaceStyle" format="reference"/>
 </resources>

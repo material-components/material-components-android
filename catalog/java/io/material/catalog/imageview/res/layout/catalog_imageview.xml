@@ -15,96 +15,116 @@
   ~   See the License for the specific language governing permissions and
   ~  limitations under the License.
   -->
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:id="@+id/main_viewGroup"
   android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:padding="@dimen/cat_imageview_padding"
-  android:orientation="vertical">
-
-  <com.google.android.material.button.MaterialButtonToggleGroup
-    android:id="@+id/togglegroup"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    app:checkedButton="@id/button_square"
-    app:selectionRequired="true"
-    app:singleSelection="true">
-    <Button
-      android:id="@+id/button_square"
-      style="?attr/materialButtonOutlinedStyle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_imageview_square" />
-
-    <Button
-      android:id="@+id/button_diamond"
-      style="?attr/materialButtonOutlinedStyle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_imageview_diamond" />
-    <Button
-      android:id="@+id/button_circle"
-      style="?attr/materialButtonOutlinedStyle"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_imageview_circle" />
-
-  </com.google.android.material.button.MaterialButtonToggleGroup>
-
-  <com.google.android.material.imageview.ShapeableImageView
-    android:id="@+id/image_view"
-    android:layout_margin="10dp"
-    android:layout_gravity="center"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:scaleType="fitXY"
-    android:adjustViewBounds="true"
-    app:strokeColor="?attr/colorSecondary"
-    app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
-    app:strokeWidth="1dp"
-    app:elevation="5dp"
-    android:padding="8dp"
-    app:srcCompat="@drawable/dog_image" />
-
+  android:layout_height="match_parent">
 
   <LinearLayout
+    android:id="@+id/main_viewGroup"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    android:layoutDirection="ltr"
-    android:orientation="horizontal"
-    tools:ignore="UnusedAttribute">
+    android:padding="@dimen/cat_imageview_padding"
+    android:orientation="vertical">
 
-    <com.google.android.material.imageview.ShapeableImageView
-      android:id="@+id/image_view_jpeg"
+    <com.google.android.material.button.MaterialButtonToggleGroup
+      android:id="@+id/togglegroup"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:adjustViewBounds="true"
-      android:scaleType="fitXY"
-      app:elevation="5dp"
-      app:shapeAppearance="@style/ShapeAppearanceImageLeft"
-      app:srcCompat="@drawable/cat_image"
-      app:strokeColor="?attr/colorSecondary"
-      app:strokeWidth="1dp" />
+      android:layout_gravity="center"
+      app:checkedButton="@id/button_square"
+      app:selectionRequired="true"
+      app:singleSelection="true">
+      <Button
+        android:id="@+id/button_square"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_imageview_square" />
+
+      <Button
+        android:id="@+id/button_diamond"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_imageview_diamond" />
+      <Button
+        android:id="@+id/button_circle"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_imageview_circle" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <com.google.android.material.imageview.ShapeableImageView
-      android:id="@+id/image_view_gif"
-      tools:ignore="InefficientWeight"
-      android:layout_width="wrap_content"
-      android:layout_height="match_parent"
-      android:layout_weight="1"
-      android:adjustViewBounds="true"
+      android:id="@+id/image_view"
+      android:layout_margin="10dp"
+      android:layout_gravity="center"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
       android:scaleType="fitXY"
-      app:elevation="5dp"
-      app:shapeAppearance="@style/ShapeAppearanceImageRight"
-      app:srcCompat="@drawable/cateyes_image"
+      android:adjustViewBounds="true"
       app:strokeColor="?attr/colorSecondary"
-      app:strokeWidth="1dp" />
+      app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+      app:strokeWidth="1dp"
+      android:elevation="5dp"
+      android:padding="8dp"
+      app:srcCompat="@drawable/dog_image" />
+
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="10dp"
+      android:layoutDirection="ltr"
+      android:orientation="horizontal"
+      tools:ignore="UnusedAttribute">
+
+      <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_view_jpeg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:elevation="5dp"
+        app:shapeAppearance="@style/ShapeAppearanceImageLeft"
+        app:srcCompat="@drawable/cat_image"
+        app:strokeColor="?attr/colorSecondary"
+        app:strokeWidth="1dp" />
+
+      <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/image_view_gif"
+        tools:ignore="InefficientWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        android:elevation="5dp"
+        app:shapeAppearance="@style/ShapeAppearanceImageRight"
+        app:srcCompat="@drawable/cateyes_image"
+        app:strokeColor="?attr/colorSecondary"
+        app:strokeWidth="1dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.imageview.ShapeableImageView
+      android:id="@+id/icon_view"
+      android:layout_margin="10dp"
+      android:layout_gravity="center"
+      android:layout_width="40dp"
+      android:layout_height="40dp"
+      android:background="?colorSecondary"
+      android:elevation="2dp"
+      app:contentPadding="8dp"
+      app:shapeAppearance="?shapeAppearanceSmallComponent"
+      app:srcCompat="@drawable/ic_pets_24dp"
+      app:tint="?colorOnSecondary"
+      tools:ignore="UnusedAttribute" />
 
   </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

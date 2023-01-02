@@ -17,6 +17,7 @@
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/card_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -30,7 +31,8 @@
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
       android:focusable="true"
-      android:minHeight="200dp">
+      android:minHeight="200dp"
+      app:contentPadding="@dimen/cat_card_content_padding">
 
     <TextView
         android:id="@+id/card_context_text"

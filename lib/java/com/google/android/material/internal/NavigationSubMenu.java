@@ -19,10 +19,10 @@ package com.google.android.material.internal;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
-import androidx.annotation.RestrictTo;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.SubMenuBuilder;
+import androidx.annotation.RestrictTo;
 
 /**
  * This is a {@link SubMenuBuilder} that it notifies the parent {@link NavigationMenu} of its menu

@@ -15,39 +15,48 @@
   limitations under the License.
   -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content">
+
+  <androidx.appcompat.widget.SearchView
+    android:id="@+id/cat_toc_search_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:theme="@style/ThemeOverlay.Catalog.AppBarLayout">
+    android:layout_gravity="center_vertical|start"
+    android:paddingEnd="16dp"
+    android:contentDescription="@string/cat_search_description"
+    android:visibility="gone"
+    app:iconifiedByDefault="false"
+    app:searchIcon="@drawable/ic_arrow_back_black_24dp"
+    app:srcCompat="@drawable/ic_search_24px" />
 
-  <LinearLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/cat_toc_header_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+      android:id="@+id/cat_toc_search_button"
+      style="@style/Widget.Catalog.TocButton"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:gravity="center"
-      android:orientation="horizontal">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:contentDescription="@null"
-        android:importantForAccessibility="no"
-        app:srcCompat="@drawable/ic_logo_components_48px"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:includeFontPadding="false"
-        android:text="@string/cat_toc_title"
-        android:textAppearance="?attr/textAppearanceHeadline6"/>
-  </LinearLayout>
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toStartOf="@id/cat_toc_preferences_button"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_search_24px"
+      android:contentDescription="@string/cat_search_description"/>
 
-  <ImageButton
-      style="@style/Widget.Catalog.EdgeToEdgeButton"
-      android:contentDescription="@string/cat_choose_theme_description"/>
+    <ImageButton
+      android:id="@+id/cat_toc_preferences_button"
+      style="@style/Widget.Catalog.TocButton"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:srcCompat="@drawable/ic_settings_24px"
+      android:contentDescription="@string/cat_choose_preferences_description"/>
 
-  <ImageButton
-      style="@style/Widget.Catalog.ChooseThemeButton"
-      android:contentDescription="@string/cat_edge_to_edge_enable_description"/>
-
+  </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -27,6 +27,7 @@ Bugs or feature requests should be submitted at our [GitHub Issues section](http
 - [All Components](https://github.com/material-components/material-components-android/tree/master/lib/)
 - [Getting Started](docs/getting-started.md)
 - [Contributing](docs/contributing.md)
+- [Using Snapshot Version](docs/using-snapshot-version.md)
 - [Building From Source](docs/building-from-source.md)
 - [Catalog App](docs/catalog-app.md)
 - [Class

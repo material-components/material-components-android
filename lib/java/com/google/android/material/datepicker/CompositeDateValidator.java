@@ -26,10 +26,68 @@ import java.util.List;
 /** A {@link DateValidator} that accepts a list of Date Validators. */
 public final class CompositeDateValidator implements DateValidator {
 
+  @NonNull private final Operator operator;
   @NonNull private final List<DateValidator> validators;
 
-  private CompositeDateValidator(@NonNull List<DateValidator> validators) {
+  private static final int COMPARATOR_ANY_ID = 1;
+
+  private static final int COMPARATOR_ALL_ID = 2;
+
+  private interface Operator {
+    boolean isValid(@NonNull List<DateValidator> validators, long date);
+
+    int getId();
+  }
+
+  private static final Operator ANY_OPERATOR =
+      new Operator() {
+
+        @Override
+        public boolean isValid(@NonNull List<DateValidator> validators, long date) {
+          for (DateValidator validator : validators) {
+            if (validator == null) {
+              continue;
+            }
+            if (validator.isValid(date)) {
+              return true;
+            }
+          }
+
+          return false;
+        }
+
+        @Override
+        public int getId() {
+          return COMPARATOR_ANY_ID;
+        }
+      };
+
+  private static final Operator ALL_OPERATOR =
+      new Operator() {
+
+        @Override
+        public boolean isValid(@NonNull List<DateValidator> validators, long date) {
+          for (DateValidator validator : validators) {
+            if (validator == null) {
+              continue;
+            }
+            if (!validator.isValid(date)) {
+              return false;
+            }
+          }
+
+          return true;
+        }
+
+        @Override
+        public int getId() {
+          return COMPARATOR_ALL_ID;
+        }
+      };
+
+  private CompositeDateValidator(@NonNull List<DateValidator> validators, Operator operator) {
     this.validators = validators;
+    this.operator = operator;
   }
 
   /**
@@ -37,7 +95,13 @@ public final class CompositeDateValidator implements DateValidator {
    */
   @NonNull
   public static DateValidator allOf(@NonNull List<DateValidator> validators) {
-    return new CompositeDateValidator(validators);
+    return new CompositeDateValidator(validators, ALL_OPERATOR);
+  }
+
+  /** Returns a {@link DateValidator} that can perform validation for any given validator. */
+  @NonNull
+  public static DateValidator anyOf(@NonNull List<DateValidator> validators) {
+    return new CompositeDateValidator(validators, ANY_OPERATOR);
   }
 
   /** Part of {@link Parcelable} requirements. Do not use. */
@@ -49,7 +113,17 @@ public final class CompositeDateValidator implements DateValidator {
           @SuppressWarnings("unchecked")
           List<DateValidator> validators =
               source.readArrayList(DateValidator.class.getClassLoader());
-          return new CompositeDateValidator(checkNotNull(validators));
+          int id = source.readInt();
+          Operator operator = null;
+          if (id == COMPARATOR_ALL_ID) {
+            operator = ALL_OPERATOR;
+          } else if (id == COMPARATOR_ANY_ID) {
+            operator = ANY_OPERATOR;
+          } else {
+            operator = ALL_OPERATOR;
+          }
+
+          return new CompositeDateValidator(checkNotNull(validators), operator);
         }
 
         @NonNull
@@ -69,15 +143,7 @@ public final class CompositeDateValidator implements DateValidator {
    */
   @Override
   public boolean isValid(long date) {
-    for (DateValidator validator : validators) {
-      if (validator == null) {
-        continue;
-      }
-      if (!validator.isValid(date)) {
-        return false;
-      }
-    }
-    return true;
+    return operator.isValid(validators, date);
   }
 
   @Override
@@ -88,6 +154,7 @@ public final class CompositeDateValidator implements DateValidator {
   @Override
   public void writeToParcel(@NonNull Parcel dest, int flags) {
     dest.writeList(validators);
+    dest.writeInt(operator.getId());
   }
 
   @Override
@@ -102,7 +169,7 @@ public final class CompositeDateValidator implements DateValidator {
 
     CompositeDateValidator that = (CompositeDateValidator) o;
 
-    return validators.equals(that.validators);
+    return validators.equals(that.validators) && operator.getId() == that.operator.getId();
   }
 
   @Override

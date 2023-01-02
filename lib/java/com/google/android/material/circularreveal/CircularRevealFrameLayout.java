@@ -19,11 +19,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.util.AttributeSet;
+import android.widget.FrameLayout;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.AttributeSet;
-import android.widget.FrameLayout;
 
 /** A CircularRevealWidget wrapper for {@link FrameLayout}. */
 public class CircularRevealFrameLayout extends FrameLayout implements CircularRevealWidget {
