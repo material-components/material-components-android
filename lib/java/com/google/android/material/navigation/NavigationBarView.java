@@ -357,12 +357,7 @@ public abstract class NavigationBarView extends FrameLayout {
     return menu;
   }
 
-  /**
-   * Returns the {@link MenuView} instance associated with this navigation bar.
-   *
-   * @hide
-   */
-  @RestrictTo(LIBRARY_GROUP)
+  /** Returns the {@link MenuView} instance associated with this navigation bar. */
   @NonNull
   public MenuView getMenuView() {
     return menuView;
