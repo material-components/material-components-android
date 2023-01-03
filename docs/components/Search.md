@@ -9,9 +9,8 @@ path: /catalog/search/
 
 # Search Bar
 
-Search is a navigation pattern that leverages Google's most iconic feature,
-search. This floating search field is a product-specific element that also
-provides a surface for additional navigation icons.
+Search is a navigation pattern which provides a floating search field with a
+surface that allows product-specific branding and additional navigation icons.
 
 ![search bar light](assets/search/search-bar-light.png)
 
