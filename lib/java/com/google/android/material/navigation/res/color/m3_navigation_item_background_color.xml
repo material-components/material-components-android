@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="?attr/colorSecondaryContainer" android:state_activated="true"/>
-  <item android:color="?attr/colorSecondaryContainer" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_navigation_drawer_active_indicator_color" android:state_activated="true"/>
+  <item android:color="@macro/m3_comp_navigation_drawer_active_indicator_color" android:state_checked="true"/>
   <item android:color="@android:color/transparent"/>
 </selector>

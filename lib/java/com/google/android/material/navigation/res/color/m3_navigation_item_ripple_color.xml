@@ -18,35 +18,31 @@
 
   <!-- Selected -->
 
-  <!-- Uses the primary state layer since tapping a selected item keeps it
-       selected. -->
-  <item android:alpha="@dimen/m3_ripple_pressed_alpha"
-    android:color="?attr/colorPrimary"
-    android:state_pressed="true" android:state_selected="true"/>
-  <item android:alpha="@dimen/m3_ripple_focused_alpha"
-    android:color="?attr/colorOnSecondaryContainer"
-    android:state_focused="true" android:state_selected="true"/>
-  <item android:alpha="@dimen/m3_ripple_hovered_alpha"
-    android:color="?attr/colorOnSecondaryContainer"
-    android:state_hovered="true" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_comp_navigation_drawer_pressed_state_layer_opacity"
+        android:color="@macro/m3_comp_navigation_drawer_active_pressed_state_layer_color"
+        android:state_pressed="true" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_comp_navigation_drawer_focus_state_layer_opacity"
+        android:color="@macro/m3_comp_navigation_drawer_active_focus_state_layer_color"
+        android:state_focused="true" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_comp_navigation_drawer_hover_state_layer_opacity"
+        android:color="@macro/m3_comp_navigation_drawer_active_hover_state_layer_color"
+        android:state_hovered="true" android:state_selected="true"/>
   <item android:alpha="@dimen/m3_ripple_default_alpha"
-    android:color="?attr/colorPrimary"
-    android:state_selected="true"/>
+        android:color="?attr/colorPrimary"
+        android:state_selected="true"/>
 
   <!-- Not selected -->
 
-  <!-- Uses the primary state layer since tapping an non-selected item will
-       select it. -->
-  <item android:alpha="@dimen/m3_ripple_selectable_pressed_alpha"
-    android:color="?attr/colorPrimary"
-    android:state_pressed="true"/>
-  <item android:alpha="@dimen/m3_ripple_focused_alpha"
-    android:color="?attr/colorOnSurface"
-    android:state_focused="true"/>
-  <item android:alpha="@dimen/m3_ripple_hovered_alpha"
-    android:color="?attr/colorOnSurface"
-    android:state_hovered="true"/>
+  <item android:alpha="@dimen/m3_comp_navigation_drawer_pressed_state_layer_opacity"
+        android:color="@macro/m3_comp_navigation_drawer_inactive_pressed_state_layer_color"
+        android:state_pressed="true"/>
+  <item android:alpha="@dimen/m3_comp_navigation_drawer_focus_state_layer_opacity"
+        android:color="@macro/m3_comp_navigation_drawer_inactive_focus_state_layer_color"
+        android:state_focused="true"/>
+  <item android:alpha="@dimen/m3_comp_navigation_drawer_hover_state_layer_opacity"
+        android:color="@macro/m3_comp_navigation_drawer_inactive_hover_state_layer_color"
+        android:state_hovered="true"/>
   <item android:alpha="@dimen/m3_ripple_default_alpha"
-    android:color="?attr/colorOnSurfaceVariant"/>
+        android:color="?attr/colorOnSurfaceVariant"/>
 
 </selector>

@@ -15,7 +15,26 @@
   ~ limitations under the License.
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurfaceVariant" android:state_enabled="false"/>
-  <item android:color="?attr/colorOnSecondaryContainer" android:state_checked="true"/>
-  <item android:color="?attr/colorOnSurfaceVariant"/>
+  <item android:alpha="@dimen/material_emphasis_disabled"
+        android:color="?attr/colorOnSurfaceVariant"
+        android:state_enabled="false"/>
+
+  <!-- Active item. -->
+  <item android:color="@macro/m3_comp_navigation_drawer_active_pressed_icon_color"
+        android:state_pressed="true" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_navigation_drawer_active_focus_icon_color"
+        android:state_focused="true" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_navigation_drawer_active_hover_icon_color"
+        android:state_hovered="true" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_navigation_drawer_active_icon_color"
+        android:state_checked="true"/>
+
+  <!-- Inactive item. -->
+  <item android:color="@macro/m3_comp_navigation_drawer_inactive_pressed_icon_color"
+        android:state_pressed="true"/>
+  <item android:color="@macro/m3_comp_navigation_drawer_inactive_focus_icon_color"
+        android:state_focused="true"/>
+  <item android:color="@macro/m3_comp_navigation_drawer_inactive_hover_icon_color"
+        android:state_hovered="true"/>
+  <item android:color="@macro/m3_comp_navigation_drawer_inactive_icon_color"/>
 </selector>
