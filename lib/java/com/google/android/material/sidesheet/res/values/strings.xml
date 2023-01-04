@@ -15,6 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
+  <!-- Side sheet accessibility pane title -->
+  <string name="side_sheet_accessibility_pane_title"
+    description="Title of the side sheet's accessibility pane that is spoken by TalkBack when the side sheet appears on screen. [CHAR_LIMIT=NONE]">Side Sheet</string>
   <!-- The class name for the SideSheetBehavior -->
   <string name="side_sheet_behavior" translatable="false">com.google.android.material.sidesheet.SideSheetBehavior</string>
 </resources>
