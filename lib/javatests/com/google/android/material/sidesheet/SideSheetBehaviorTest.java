@@ -17,16 +17,23 @@ package com.google.android.material.sidesheet;
 
 import com.google.android.material.test.R;
 
+import static com.google.android.material.sidesheet.Sheet.STATE_DRAGGING;
 import static com.google.android.material.sidesheet.Sheet.STATE_EXPANDED;
 import static com.google.android.material.sidesheet.Sheet.STATE_HIDDEN;
+import static com.google.android.material.sidesheet.Sheet.STATE_SETTLING;
 import static com.google.common.truth.Truth.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
+import android.annotation.TargetApi;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,22 +46,29 @@ public class SideSheetBehaviorTest {
 
   @NonNull TestActivity activity;
 
+  private View sideSheet;
+  private SideSheetBehavior<View> sideSheetBehavior;
+
   @Before
   public void createActivity() {
     activity = Robolectric.buildActivity(TestActivity.class).setup().get();
+    CoordinatorLayout coordinatorLayout =
+        (CoordinatorLayout) activity.getLayoutInflater().inflate(R.layout.test_side_sheet, null);
+    sideSheet = coordinatorLayout.findViewById(R.id.test_side_sheet_container);
+    sideSheetBehavior = SideSheetBehavior.from(sideSheet);
+    activity.setContentView(coordinatorLayout);
+
+    // Wait until the layout is measured.
+    shadowOf(Looper.getMainLooper()).idle();
   }
 
   @Test
   public void onInitialization_sheetIsHidden() {
-    SideSheetBehavior<View> sideSheetBehavior = new SideSheetBehavior<>();
-
     assertThat(sideSheetBehavior.getState()).isEqualTo(STATE_HIDDEN);
   }
 
   @Test
   public void expand_ofInitializedSheet_yieldsExpandedState() {
-    SideSheetBehavior<View> sideSheetBehavior = new SideSheetBehavior<>();
-
     expandSheet(sideSheetBehavior);
 
     assertThat(sideSheetBehavior.getState()).isEqualTo(STATE_EXPANDED);
@@ -62,7 +76,6 @@ public class SideSheetBehaviorTest {
 
   @Test
   public void expand_ofExpandedSheet_isIdempotent() {
-    SideSheetBehavior<View> sideSheetBehavior = new SideSheetBehavior<>();
     expandSheet(sideSheetBehavior);
     assertThat(sideSheetBehavior.getState()).isEqualTo(STATE_EXPANDED);
 
@@ -84,12 +97,84 @@ public class SideSheetBehaviorTest {
 
   @Test
   public void hide_ofHiddenSheet_isIdempotent() {
-    SideSheetBehavior<View> sideSheetBehavior = new SideSheetBehavior<>();
     assertThat(sideSheetBehavior.getState()).isEqualTo(STATE_HIDDEN);
 
     hideSheet(sideSheetBehavior);
 
     assertThat(sideSheetBehavior.getState()).isEqualTo(STATE_HIDDEN);
+  }
+
+  @Test
+  public void onInitialization_sheetIsInvisible() {
+    assertThat(sideSheet.getVisibility()).isEqualTo(View.INVISIBLE);
+  }
+
+  @Test
+  public void show_ofHiddenSheet_sheetIsVisible() {
+    expandSheet(sideSheetBehavior);
+
+    assertThat(sideSheet.getVisibility()).isEqualTo(View.VISIBLE);
+  }
+
+  @Test
+  public void hide_ofExpandedSheet_sheetIsInvisible() {
+    expandSheet(sideSheetBehavior);
+    hideSheet(sideSheetBehavior);
+
+    assertThat(sideSheet.getVisibility()).isEqualTo(View.INVISIBLE);
+  }
+
+  @Test
+  public void drag_ofExpandedSheet_sheetIsVisible() {
+    expandSheet(sideSheetBehavior);
+
+    sideSheetBehavior.setStateInternal(STATE_DRAGGING);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(sideSheet.getVisibility()).isEqualTo(View.VISIBLE);
+  }
+
+  @Test
+  public void settle_ofHiddenSheet_sheetIsVisible() {
+    // Sheet is hidden on initialization.
+    sideSheetBehavior.setStateInternal(STATE_SETTLING);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(sideSheet.getVisibility()).isEqualTo(View.VISIBLE);
+  }
+
+  @Test
+  public void settle_ofExpandedSheet_sheetIsVisible() {
+    expandSheet(sideSheetBehavior);
+
+    sideSheetBehavior.setStateInternal(STATE_SETTLING);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(sideSheet.getVisibility()).isEqualTo(View.VISIBLE);
+  }
+
+  @TargetApi(VERSION_CODES.KITKAT)
+  @Test
+  public void setAccessibilityPaneTitle_ofDefaultSheet_customTitleIsUsed() {
+    if (VERSION.SDK_INT < VERSION_CODES.KITKAT) {
+      return;
+    }
+    String defaultAccessibilityPaneTitle =
+        String.valueOf(ViewCompat.getAccessibilityPaneTitle(sideSheet));
+    shadowOf(Looper.getMainLooper()).idle();
+
+    String customAccessibilityPaneTitle = "Custom side sheet accessibility pane title";
+
+    ViewCompat.setAccessibilityPaneTitle(sideSheet, customAccessibilityPaneTitle);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    String updatedAccessibilityPaneTitle =
+        String.valueOf(ViewCompat.getAccessibilityPaneTitle(sideSheet));
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(defaultAccessibilityPaneTitle).isNotNull();
+    assertThat(updatedAccessibilityPaneTitle).isEqualTo(customAccessibilityPaneTitle);
+    assertThat(updatedAccessibilityPaneTitle).isNotEqualTo(defaultAccessibilityPaneTitle);
   }
 
   private void expandSheet(SideSheetBehavior<View> sideSheetBehavior) {

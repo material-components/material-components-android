@@ -36,7 +36,6 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
-import android.view.accessibility.AccessibilityEvent;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -63,6 +62,9 @@ import java.util.Set;
  */
 public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V>
     implements Sheet<SideSheetCallback> {
+
+  private static final int DEFAULT_ACCESSIBILITY_PANE_TITLE =
+      R.string.side_sheet_accessibility_pane_title;
 
   private SheetDelegate sheetDelegate;
 
@@ -289,11 +291,14 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       } else if (backgroundTint != null) {
         ViewCompat.setBackgroundTintList(child, backgroundTint);
       }
+      updateSheetVisibility(child);
+
       updateAccessibilityActions();
       if (ViewCompat.getImportantForAccessibility(child)
           == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
         ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
       }
+      ensureAccessibilityPaneTitleIsSet(child);
     }
     if (viewDragHelper == null) {
       viewDragHelper = ViewDragHelper.create(parent, dragCallback);
@@ -322,6 +327,23 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       }
     }
     return true;
+  }
+
+  private void updateSheetVisibility(@NonNull View sheet) {
+    // Sheet visibility is updated on state change to make TalkBack speak the accessibility pane
+    // title when the sheet expands.
+    int visibility = state == STATE_HIDDEN ? View.INVISIBLE : View.VISIBLE;
+    if (sheet.getVisibility() != visibility) {
+      sheet.setVisibility(visibility);
+    }
+  }
+
+  private void ensureAccessibilityPaneTitleIsSet(View sheet) {
+    // Set default accessibility pane title that TalkBack will speak when the sheet is expanded.
+    if (ViewCompat.getAccessibilityPaneTitle(sheet) == null) {
+      ViewCompat.setAccessibilityPaneTitle(
+          sheet, sheet.getResources().getString(DEFAULT_ACCESSIBILITY_PANE_TITLE));
+    }
   }
 
   private void maybeAssignCoplanarSiblingViewBasedId(@NonNull CoordinatorLayout parent) {
@@ -368,7 +390,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   @Override
   public boolean onInterceptTouchEvent(
       @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent event) {
-    if (!child.isShown() || !draggable) {
+    if (!shouldInterceptTouchEvent(child)) {
       ignoreEvents = true;
       return false;
     }
@@ -398,6 +420,10 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     return !ignoreEvents
         && viewDragHelper != null
         && viewDragHelper.shouldInterceptTouchEvent(event);
+  }
+
+  private boolean shouldInterceptTouchEvent(@NonNull V child) {
+    return (child.isShown() || ViewCompat.getAccessibilityPaneTitle(child) != null) && draggable;
   }
 
   int getSignificantVelocityThreshold() {
@@ -586,9 +612,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       return;
     }
 
-    if (state == STATE_EXPANDED) {
-      updateAccessibilityFocusOnExpansion();
-    }
+    updateSheetVisibility(sheet);
 
     for (SheetCallback callback : callbacks) {
       callback.onStateChanged(sheet, state);
@@ -905,22 +929,6 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       throw new IllegalArgumentException("The view is not associated with SideSheetBehavior");
     }
     return (SideSheetBehavior<V>) behavior;
-  }
-
-  private void updateAccessibilityFocusOnExpansion() {
-    if (viewRef == null) {
-      return;
-    }
-    View view = viewRef.get();
-    if (view instanceof ViewGroup && ((ViewGroup) view).getChildCount() > 0) {
-      ViewGroup viewContainer = (ViewGroup) view;
-      View firstNestedChild = viewContainer.getChildAt(0);
-      if (firstNestedChild != null) {
-        firstNestedChild.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
-      }
-    } else {
-      view.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
-    }
   }
 
   private void updateAccessibilityActions() {
