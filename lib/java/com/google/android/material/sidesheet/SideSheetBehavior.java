@@ -304,7 +304,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       viewDragHelper = ViewDragHelper.create(parent, dragCallback);
     }
 
-    int savedOutwardEdge = sheetDelegate.getOutwardEdge(child);
+    int savedOuterEdge = sheetDelegate.getOuterEdge(child);
     // First let the parent lay it out.
     parent.onLayoutChild(child, layoutDirection);
     // Offset the sheet.
@@ -314,7 +314,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     MarginLayoutParams margins = (MarginLayoutParams) child.getLayoutParams();
     innerMargin = margins != null ? sheetDelegate.calculateInnerMargin(margins) : 0;
 
-    int currentOffset = calculateCurrentOffset(savedOutwardEdge, child);
+    int currentOffset = calculateCurrentOffset(savedOuterEdge, child);
 
     ViewCompat.offsetLeftAndRight(child, currentOffset);
 
@@ -367,7 +367,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     return innerMargin;
   }
 
-  private int calculateCurrentOffset(int savedOutwardEdge, V child) {
+  private int calculateCurrentOffset(int savedOuterEdge, V child) {
     int currentOffset;
 
     switch (state) {
@@ -376,7 +376,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
         break;
       case STATE_DRAGGING:
       case STATE_SETTLING:
-        currentOffset = savedOutwardEdge - sheetDelegate.getOutwardEdge(child);
+        currentOffset = savedOuterEdge - sheetDelegate.getOuterEdge(child);
         break;
       case STATE_HIDDEN:
         currentOffset = sheetDelegate.getHiddenOffset();
@@ -674,14 +674,14 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     }
   }
 
-  int getOutwardEdgeOffsetForState(@StableSheetState int state) {
+  int getOuterEdgeOffsetForState(@StableSheetState int state) {
     switch (state) {
       case STATE_EXPANDED:
         return getExpandedOffset();
       case STATE_HIDDEN:
         return sheetDelegate.getHiddenOffset();
       default:
-        throw new IllegalArgumentException("Invalid state to get outward edge offset: " + state);
+        throw new IllegalArgumentException("Invalid state to get outer edge offset: " + state);
     }
   }
 
@@ -749,9 +749,9 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
         }
       };
 
-  private void dispatchOnSlide(@NonNull View child, int outwardEdge) {
+  private void dispatchOnSlide(@NonNull View child, int outerEdge) {
     if (!callbacks.isEmpty()) {
-      float slideOffset = sheetDelegate.calculateSlideOffset(outwardEdge);
+      float slideOffset = sheetDelegate.calculateSlideOffset(outerEdge);
       for (SheetCallback callback : callbacks) {
         callback.onSlide(child, slideOffset);
       }

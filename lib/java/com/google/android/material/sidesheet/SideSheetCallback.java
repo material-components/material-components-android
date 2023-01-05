@@ -39,8 +39,8 @@ public abstract class SideSheetCallback implements SheetCallback {
    *
    * @param sheet The sheet view.
    * @param slideOffset The new offset of this sheet within [0,1] range. Offset increases as this
-   *     sheet is moving towards the outward edge. A value of 0 means that the sheet is hidden, and
-   *     a value of 1 means that the sheet is fully expanded.
+   *     sheet is moving towards the outer edge. A value of 0 means that the sheet is hidden, and a
+   *     value of 1 means that the sheet is fully expanded.
    */
   @Override
   public abstract void onSlide(@NonNull View sheet, float slideOffset);

@@ -112,7 +112,7 @@ final class RightSheetDelegate extends SheetDelegate {
 
   @Override
   boolean isSettling(View child, int state, boolean isReleasingView) {
-    int left = sheetBehavior.getOutwardEdgeOffsetForState(state);
+    int left = sheetBehavior.getOuterEdgeOffsetForState(state);
     ViewDragHelper viewDragHelper = sheetBehavior.getViewDragHelper();
     return viewDragHelper != null
         && (isReleasingView
@@ -121,7 +121,7 @@ final class RightSheetDelegate extends SheetDelegate {
   }
 
   @Override
-  <V extends View> int getOutwardEdge(@NonNull V child) {
+  <V extends View> int getOuterEdge(@NonNull V child) {
     return child.getLeft() - sheetBehavior.getInnerMargin();
   }
 
