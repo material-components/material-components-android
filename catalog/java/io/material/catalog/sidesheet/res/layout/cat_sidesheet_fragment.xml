@@ -26,8 +26,9 @@
   <com.google.android.material.appbar.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:liftOnScrollTargetViewId="@id/nested_scroll_view"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    app:liftOnScroll="false"
+    android:stateListAnimator="@null">
 
     <androidx.appcompat.widget.Toolbar
       android:id="@+id/toolbar"
