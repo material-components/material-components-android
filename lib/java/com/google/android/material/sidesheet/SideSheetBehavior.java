@@ -751,7 +751,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
   private void dispatchOnSlide(@NonNull View child, int outwardEdge) {
     if (!callbacks.isEmpty()) {
-      float slideOffset = sheetDelegate.calculateSlideOffsetBasedOnOutwardEdge(outwardEdge);
+      float slideOffset = sheetDelegate.calculateSlideOffset(outwardEdge);
       for (SheetCallback callback : callbacks) {
         callback.onSlide(child, slideOffset);
       }

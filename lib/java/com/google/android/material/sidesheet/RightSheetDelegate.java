@@ -126,7 +126,7 @@ final class RightSheetDelegate extends SheetDelegate {
   }
 
   @Override
-  float calculateSlideOffsetBasedOnOutwardEdge(int left) {
+  float calculateSlideOffset(int left) {
     float hiddenOffset = getHiddenOffset();
     float sheetWidth = hiddenOffset - getExpandedOffset();
 
