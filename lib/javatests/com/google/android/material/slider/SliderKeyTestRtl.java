@@ -17,9 +17,9 @@
 package com.google.android.material.slider;
 
 import static android.os.Looper.getMainLooper;
-import static com.google.android.material.slider.RtlTestUtils.applyRtlPseudoLocale;
-import static com.google.android.material.slider.RtlTestUtils.checkAppSupportsRtl;
-import static com.google.android.material.slider.RtlTestUtils.checkPlatformSupportsRtl;
+import static com.google.android.material.testing.RtlTestUtils.applyRtlPseudoLocale;
+import static com.google.android.material.testing.RtlTestUtils.checkAppSupportsRtl;
+import static com.google.android.material.testing.RtlTestUtils.checkPlatformSupportsRtl;
 import static com.google.common.truth.Truth.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
