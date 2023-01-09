@@ -1040,7 +1040,12 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     if (fabAnchorMode == FAB_ANCHOR_MODE_CRADLE) {
       return -getTopEdgeTreatment().getCradleVerticalOffset();
     }
-    return 0;
+    View fab = findDependentView();
+    int translationY = 0;
+    if (fab != null) {
+      translationY = -(getMeasuredHeight() + getBottomInset() - fab.getMeasuredHeight()) / 2;
+    }
+    return translationY;
   }
 
   private float getFabTranslationX(@FabAlignmentMode int fabAlignmentMode) {
@@ -1364,24 +1369,16 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             // adds space below the fab if the BottomAppBar is hidden.
             if (originalBottomMargin == 0) {
               // Extra padding is added for the fake shadow on API < 21. Ensure we don't add too
-              // much space by removing that extra padding.
-              int bottomShadowPadding = (v.getMeasuredHeight() - height) / 2;
-              int bottomMargin = 0;
+              // much space by removing that extra padding if the fab mode is cradle.
               if (child.fabAnchorMode == FAB_ANCHOR_MODE_CRADLE) {
-                bottomMargin =
+                int bottomShadowPadding = (v.getMeasuredHeight() - height) / 2;
+                int bottomMargin =
                     child
                         .getResources()
                         .getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fab_bottom_margin);
                 // Should be moved above the bottom insets with space ignoring any shadow padding.
                 int minBottomMargin = bottomMargin - bottomShadowPadding;
                 fabLayoutParams.bottomMargin = child.getBottomInset() + minBottomMargin;
-              } else if (child.fabAnchorMode == FAB_ANCHOR_MODE_EMBED) {
-                // We want to add a margin of half of the height of the bottom app bar, minus half
-                // the height of the fab to the bottom of the fab. Since the height of the bottom
-                // app bar does not include the bottom inset, must add it to the height.
-                fabLayoutParams.bottomMargin =
-                    (child.getMeasuredHeight() + child.getBottomInset() - v.getMeasuredHeight())
-                        / 2;
               }
               fabLayoutParams.leftMargin = child.getLeftInset();
               fabLayoutParams.rightMargin = child.getRightInset();
@@ -1392,6 +1389,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
                 fabLayoutParams.rightMargin += child.fabOffsetEndMode;
               }
             }
+            child.setCutoutStateAndTranslateFab();
           }
         };
 
