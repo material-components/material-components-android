@@ -113,7 +113,7 @@
   <style name="MaterialAlertDialog.Material3" parent="MaterialAlertDialog.MaterialComponents">
     <item name="enforceMaterialTheme">true</item>
     <item name="android:layout">@layout/m3_alert_dialog</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
+    <item name="shapeAppearance">@macro/m3_comp_dialog_container_shape</item>
   </style>
 
   <style name="ShapeAppearanceOverlay.MaterialAlertDialog.Material3" parent="">
@@ -147,8 +147,8 @@
   </style>
 
   <style name="MaterialAlertDialog.Material3.Title.Text" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-    <item name="android:textAppearance">?attr/textAppearanceHeadlineSmall</item>
-    <item name="android:textColor">?attr/colorOnSurface</item>
+    <item name="android:textAppearance">@macro/m3_comp_dialog_headline_type</item>
+    <item name="android:textColor">@macro/m3_comp_dialog_headline_color</item>
   </style>
 
   <style name="MaterialAlertDialog.Material3.Title.Text.CenterStacked">
@@ -158,8 +158,8 @@
   </style>
 
   <style name="MaterialAlertDialog.Material3.Body.Text" parent="">
-    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
-    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    <item name="android:textAppearance">@macro/m3_comp_dialog_supporting_text_type</item>
+    <item name="android:textColor">@macro/m3_comp_dialog_supporting_text_color</item>
   </style>
 
   <style name="MaterialAlertDialog.Material3.Body.Text.CenterStacked">
