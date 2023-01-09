@@ -39,6 +39,7 @@ import com.google.android.material.sidesheet.SideSheetCallback;
 import com.google.android.material.sidesheet.SideSheetDialog;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.preferences.CatalogPreferencesHelper;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /** A fragment that displays the main Side Sheet demo for the Catalog app. */
 public final class SideSheetMainDemoFragment extends DemoFragment {
@@ -217,6 +218,8 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
       TextView modalSideSheetTitle = modalSheetContent.findViewById(sheetTitleIdRes);
       modalSideSheetTitle.setText(sheetTitleStringRes);
     }
+    new WindowPreferencesManager(requireContext())
+        .applyEdgeToEdgePreference(sheetDialog.getWindow());
   }
 
   private void setUpToolbar(@NonNull View view) {
