@@ -290,7 +290,7 @@
 
   <style name="Widget.Material3.Button.IconButton.Outlined">
     <item name="strokeColor">@color/m3_button_outline_color_selector</item>
-    <item name="strokeWidth">@dimen/m3_btn_stroke_size</item>
+    <item name="strokeWidth">@dimen/m3_comp_outlined_icon_button_unselected_outline_width</item>
   </style>
 
   <!-- DEPRECATED -->
@@ -328,17 +328,22 @@
 
   <style name="ThemeOverlay.Material3.Button.IconButton" parent="ThemeOverlay.Material3.Button.TextButton">
     <!-- The colors used by the color selectors -->
-    <item name="colorOnContainerUnchecked">?attr/colorOnSurfaceVariant</item>
+    <item name="colorOnContainer">@macro/m3_comp_icon_button_selected_icon_color</item>
+    <item name="colorOnContainerUnchecked">@macro/m3_comp_icon_button_unselected_icon_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Button.IconButton.Filled" parent="ThemeOverlay.Material3.Button">
     <!-- The colors used by the color selectors -->
-    <item name="colorOnContainerUnchecked">?attr/colorPrimary</item>
+    <item name="colorOnContainer">@macro/m3_comp_filled_icon_button_toggle_selected_icon_color</item>
+    <item name="colorOnContainerUnchecked">@macro/m3_comp_filled_icon_button_toggle_unselected_icon_color</item>
+    <item name="colorContainer">@macro/m3_comp_filled_icon_button_container_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Button.IconButton.Filled.Tonal" parent="ThemeOverlay.Material3.Button.TonalButton">
     <!-- The colors used by the color selectors -->
-    <item name="colorOnContainerUnchecked">?attr/colorOnSurfaceVariant</item>
+    <item name="colorOnContainer">@macro/m3_comp_filled_tonal_icon_button_toggle_selected_icon_color</item>
+    <item name="colorOnContainerUnchecked">@macro/m3_comp_filled_tonal_icon_button_toggle_unselected_icon_color</item>
+    <item name="colorContainer">@macro/m3_comp_filled_tonal_icon_button_container_color</item>
   </style>
 
 </resources>
