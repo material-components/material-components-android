@@ -25,6 +25,7 @@ import io.material.catalog.bottomnav.BottomNavigationFragment;
 import io.material.catalog.bottomsheet.BottomSheetFragment;
 import io.material.catalog.button.ButtonsFragment;
 import io.material.catalog.card.CardFragment;
+import io.material.catalog.carousel.CarouselFragment;
 import io.material.catalog.checkbox.CheckBoxFragment;
 import io.material.catalog.chip.ChipFragment;
 import io.material.catalog.color.ColorsFragment;
@@ -61,6 +62,7 @@ import io.material.catalog.transition.TransitionFragment;
       BottomNavigationFragment.Module.class,
       BottomSheetFragment.Module.class,
       CardFragment.Module.class,
+      CarouselFragment.Module.class,
       CheckBoxFragment.Module.class,
       ChipFragment.Module.class,
       ColorsFragment.Module.class,

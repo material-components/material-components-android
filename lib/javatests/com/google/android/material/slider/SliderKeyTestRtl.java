@@ -33,15 +33,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-import org.junit.Ignore;
-
 /**
  * Tests for key handling of {@link Slider} in right-to-left layout.
  */
 @RunWith(RobolectricTestRunner.class)
-@Ignore("Fix RTL support for Robolectric tests.")
+@org.junit.Ignore("(b/265311943) Fix RTL support for Robolectric tests.")
 public final class SliderKeyTestRtl extends SliderKeyTestCommon {
 
+  @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR1)
   @Before
   public void checkRtl() {
     checkPlatformSupportsRtl();
