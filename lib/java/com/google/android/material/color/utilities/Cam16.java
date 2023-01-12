@@ -67,6 +67,9 @@ public final class Cam16 {
   private final double astar;
   private final double bstar;
 
+  // Avoid allocations during conversion by pre-allocating an array.
+  private final double[] tempArray = new double[] {0.0, 0.0, 0.0};
+
   /**
    * CAM16 instances also have coordinates in the CAM16-UCS space, called J*, a*, b*, or jstar,
    * astar, bstar in code. CAM16-UCS is included in the CAM16 specification, and is used to measure
@@ -211,6 +214,11 @@ public final class Cam16 {
     double y = 0.2126 * redL + 0.7152 * greenL + 0.0722 * blueL;
     double z = 0.01932141 * redL + 0.11916382 * greenL + 0.95034478 * blueL;
 
+    return fromXyzInViewingConditions(x, y, z, viewingConditions);
+  }
+
+  static Cam16 fromXyzInViewingConditions(
+      double x, double y, double z, ViewingConditions viewingConditions) {
     // Transform XYZ to 'cone'/'rgb' responses
     double[][] matrix = XYZ_TO_CAM16RGB;
     double rT = (x * matrix[0][0]) + (y * matrix[0][1]) + (z * matrix[0][2]);
@@ -375,6 +383,11 @@ public final class Cam16 {
    * @return ARGB representation of color
    */
   int viewed(ViewingConditions viewingConditions) {
+    double[] xyz = xyzInViewingConditions(viewingConditions, tempArray);
+    return ColorUtils.argbFromXyz(xyz[0], xyz[1], xyz[2]);
+  }
+
+  double[] xyzInViewingConditions(ViewingConditions viewingConditions, double[] returnArray) {
     double alpha =
         (getChroma() == 0.0 || getJ() == 0.0) ? 0.0 : getChroma() / Math.sqrt(getJ() / 100.0);
 
@@ -418,6 +431,13 @@ public final class Cam16 {
     double y = (rF * matrix[1][0]) + (gF * matrix[1][1]) + (bF * matrix[1][2]);
     double z = (rF * matrix[2][0]) + (gF * matrix[2][1]) + (bF * matrix[2][2]);
 
-    return ColorUtils.argbFromXyz(x, y, z);
+    if (returnArray != null) {
+      returnArray[0] = x;
+      returnArray[1] = y;
+      returnArray[2] = z;
+      return returnArray;
+    } else {
+      return new double[] {x, y, z};
+    }
   }
 }

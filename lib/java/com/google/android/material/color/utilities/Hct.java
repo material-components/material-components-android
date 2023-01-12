@@ -122,6 +122,36 @@ public final class Hct {
     setInternalState(HctSolver.solveToInt(hue, chroma, newTone));
   }
 
+  /**
+   * Translate a color into different ViewingConditions.
+   *
+   * <p>Colors change appearance. They look different with lights on versus off, the same color, as
+   * in hex code, on white looks different when on black. This is called color relativity, most
+   * famously explicated by Josef Albers in Interaction of Color.
+   *
+   * <p>In color science, color appearance models can account for this and calculate the appearance
+   * of a color in different settings. HCT is based on CAM16, a color appearance model, and uses it
+   * to make these calculations.
+   *
+   * <p>See ViewingConditions.make for parameters affecting color appearance.
+   */
+  public Hct inViewingConditions(ViewingConditions vc) {
+    // 1. Use CAM16 to find XYZ coordinates of color in specified VC.
+    Cam16 cam16 = Cam16.fromInt(toInt());
+    double[] viewedInVc = cam16.xyzInViewingConditions(vc, null);
+
+    // 2. Create CAM16 of those XYZ coordinates in default VC.
+    Cam16 recastInVc =
+        Cam16.fromXyzInViewingConditions(
+            viewedInVc[0], viewedInVc[1], viewedInVc[2], ViewingConditions.DEFAULT);
+
+    // 3. Create HCT from:
+    // - CAM16 using default VC with XYZ coordinates in specified VC.
+    // - L* converted from Y in XYZ coordinates in specified VC.
+    return Hct.from(
+        recastInVc.getHue(), recastInVc.getChroma(), ColorUtils.lstarFromY(viewedInVc[1]));
+  }
+
   private void setInternalState(int argb) {
     this.argb = argb;
     Cam16 cam = Cam16.fromInt(argb);

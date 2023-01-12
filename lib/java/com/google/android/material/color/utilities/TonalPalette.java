@@ -41,7 +41,16 @@ public final class TonalPalette {
    * @return Tones matching that color's hue and chroma.
    */
   public static final TonalPalette fromInt(int argb) {
-    Hct hct = Hct.fromInt(argb);
+    return fromHct(Hct.fromInt(argb));
+  }
+
+  /**
+   * Create tones using a HCT color.
+   *
+   * @param hct HCT representation of a color.
+   * @return Tones matching that color's hue and chroma.
+   */
+  public static final TonalPalette fromHct(Hct hct) {
     return TonalPalette.fromHueAndChroma(hct.getHue(), hct.getChroma());
   }
 
@@ -77,6 +86,10 @@ public final class TonalPalette {
       cache.put(tone, color);
     }
     return color;
+  }
+
+  public Hct getHct(double tone) {
+    return Hct.from(this.hue, this.chroma, tone);
   }
 
   public double getChroma() {

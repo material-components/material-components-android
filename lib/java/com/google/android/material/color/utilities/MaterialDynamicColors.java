@@ -94,11 +94,26 @@ public final class MaterialDynamicColors {
 
   public static final DynamicColor primaryContainer =
       DynamicColor.fromPalette(
-          (s) -> s.primaryPalette, (s) -> s.isDark ? 30.0 : 90.0, (s) -> highestSurface(s));
+          (s) -> s.primaryPalette,
+          (s) -> {
+            if (!isFidelity(s)) {
+              return s.isDark ? 30.0 : 90.0;
+            }
+            return performAlbers(s.sourceColorHct, s);
+          },
+          (s) -> highestSurface(s));
 
   public static final DynamicColor onPrimaryContainer =
       DynamicColor.fromPalette(
-          (s) -> s.primaryPalette, (s) -> s.isDark ? 90.0 : 10.0, (s) -> primaryContainer, null);
+          (s) -> s.primaryPalette,
+          (s) -> {
+            if (!isFidelity(s)) {
+              return s.isDark ? 90.0 : 10.0;
+            }
+            return DynamicColor.contrastingTone(primaryContainer.getTone(s), 4.5);
+          },
+          (s) -> primaryContainer,
+          null);
 
   public static final DynamicColor primary =
       DynamicColor.fromPalette(
@@ -121,11 +136,33 @@ public final class MaterialDynamicColors {
 
   public static final DynamicColor secondaryContainer =
       DynamicColor.fromPalette(
-          (s) -> s.secondaryPalette, (s) -> s.isDark ? 30.0 : 90.0, (s) -> highestSurface(s));
+          (s) -> s.secondaryPalette,
+          (s) -> {
+            final double initialTone = s.isDark ? 30.0 : 90.0;
+            if (!isFidelity(s)) {
+              return initialTone;
+            }
+            double answer =
+                findDesiredChromaByTone(
+                    s.secondaryPalette.getHue(),
+                    s.secondaryPalette.getChroma(),
+                    initialTone,
+                    !s.isDark);
+            answer = performAlbers(s.secondaryPalette.getHct(answer), s);
+            return answer;
+          },
+          (s) -> highestSurface(s));
 
   public static final DynamicColor onSecondaryContainer =
       DynamicColor.fromPalette(
-          (s) -> s.secondaryPalette, (s) -> s.isDark ? 90.0 : 10.0, (s) -> secondaryContainer);
+          (s) -> s.secondaryPalette,
+          (s) -> {
+            if (!isFidelity(s)) {
+              return s.isDark ? 90.0 : 10.0;
+            }
+            return DynamicColor.contrastingTone(secondaryContainer.getTone(s), 4.5);
+          },
+          (s) -> secondaryContainer);
 
   public static final DynamicColor secondary =
       DynamicColor.fromPalette(
@@ -144,11 +181,28 @@ public final class MaterialDynamicColors {
 
   public static final DynamicColor tertiaryContainer =
       DynamicColor.fromPalette(
-          (s) -> s.tertiaryPalette, (s) -> s.isDark ? 30.0 : 90.0, (s) -> highestSurface(s));
+          (s) -> s.tertiaryPalette,
+          (s) -> {
+            if (!isFidelity(s)) {
+              return s.isDark ? 30.0 : 90.0;
+            }
+            final double albersTone =
+                performAlbers(s.tertiaryPalette.getHct(s.sourceColorHct.getTone()), s);
+            final Hct proposedHct = s.tertiaryPalette.getHct(albersTone);
+            return DislikeAnalyzer.fixIfDisliked(proposedHct).getTone();
+          },
+          (s) -> highestSurface(s));
 
   public static final DynamicColor onTertiaryContainer =
       DynamicColor.fromPalette(
-          (s) -> s.tertiaryPalette, (s) -> s.isDark ? 90.0 : 10.0, (s) -> tertiaryContainer);
+          (s) -> s.tertiaryPalette,
+          (s) -> {
+            if (!isFidelity(s)) {
+              return s.isDark ? 90.0 : 10.0;
+            }
+            return DynamicColor.contrastingTone(tertiaryContainer.getTone(s), 4.5);
+          },
+          (s) -> tertiaryContainer);
 
   public static final DynamicColor tertiary =
       DynamicColor.fromPalette(
@@ -288,4 +342,51 @@ public final class MaterialDynamicColors {
   // textColorHintInverse documented, in M3, as N10/N90
   public static final DynamicColor textHintInverse =
       DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 10.0 : 90.0);
+
+  private static ViewingConditions viewingConditionsForAlbers(DynamicScheme scheme) {
+    return ViewingConditions.defaultWithBackgroundLstar(scheme.isDark ? 30.0 : 80.0);
+  }
+
+  private static boolean isFidelity(DynamicScheme scheme) {
+    return scheme.variant == Variant.FIDELITY || scheme.variant == Variant.CONTENT;
+  }
+
+  static double findDesiredChromaByTone(
+      double hue, double chroma, double tone, boolean byDecreasingTone) {
+    double answer = tone;
+
+    Hct closestToChroma = Hct.from(hue, chroma, tone);
+    if (closestToChroma.getChroma() < chroma) {
+      double chromaPeak = closestToChroma.getChroma();
+      while (closestToChroma.getChroma() < chroma) {
+        answer += byDecreasingTone ? -1.0 : 1.0;
+        Hct potentialSolution = Hct.from(hue, chroma, answer);
+        if (chromaPeak > potentialSolution.getChroma()) {
+          break;
+        }
+        if (Math.abs(potentialSolution.getChroma() - chroma) < 0.4) {
+          break;
+        }
+
+        double potentialDelta = Math.abs(potentialSolution.getChroma() - chroma);
+        double currentDelta = Math.abs(closestToChroma.getChroma() - chroma);
+        if (potentialDelta < currentDelta) {
+          closestToChroma = potentialSolution;
+        }
+        chromaPeak = Math.max(chromaPeak, potentialSolution.getChroma());
+      }
+    }
+
+    return answer;
+  }
+
+  static double performAlbers(Hct prealbers, DynamicScheme scheme) {
+    final Hct albersd = prealbers.inViewingConditions(viewingConditionsForAlbers(scheme));
+    if (DynamicColor.tonePrefersLightForeground(prealbers.getTone())
+        && !DynamicColor.toneAllowsLightForeground(albersd.getTone())) {
+      return DynamicColor.enableLightForeground(prealbers.getTone());
+    } else {
+      return DynamicColor.enableLightForeground(albersd.getTone());
+    }
+  }
 }

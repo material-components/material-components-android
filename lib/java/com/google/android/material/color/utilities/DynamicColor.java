@@ -284,7 +284,8 @@ public final class DynamicColor {
     return answer;
   }
 
-  double getTone(DynamicScheme scheme) {
+  /** Returns the tone in HCT, ranging from 0 to 100, of the resolved color given scheme. */
+  public double getTone(DynamicScheme scheme) {
     double answer = tone.apply(scheme);
 
     final boolean decreasingContrast = scheme.contrastLevel < 0.0;
@@ -527,7 +528,7 @@ public final class DynamicColor {
    * Given a background tone, find a foreground tone, while ensuring they reach a contrast ratio
    * that is as close to ratio as possible.
    */
-  static double contrastingTone(double bgTone, double ratio) {
+  public static double contrastingTone(double bgTone, double ratio) {
     final double lighterTone = Contrast.lighterUnsafe(bgTone, ratio);
     final double darkerTone = Contrast.darkerUnsafe(bgTone, ratio);
     final double lighterRatio = Contrast.ratioOfTones(lighterTone, bgTone);
@@ -558,7 +559,7 @@ public final class DynamicColor {
    * Adjust a tone down such that white has 4.5 contrast, if the tone is reasonably close to
    * supporting it.
    */
-  static double enableLightForeground(double tone) {
+  public static double enableLightForeground(double tone) {
     if (tonePrefersLightForeground(tone) && !toneAllowsLightForeground(tone)) {
       return 49.0;
     }
@@ -572,12 +573,12 @@ public final class DynamicColor {
    * <p>T60 used as to create the smallest discontinuity possible when skipping down to T49 in order
    * to ensure light foregrounds.
    */
-  static boolean tonePrefersLightForeground(double tone) {
+  public static boolean tonePrefersLightForeground(double tone) {
     return Math.round(tone) <= 60;
   }
 
   /** Tones less than ~T50 always permit white at 4.5 contrast. */
-  static boolean toneAllowsLightForeground(double tone) {
+  public static boolean toneAllowsLightForeground(double tone) {
     return Math.round(tone) <= 49;
   }
 }

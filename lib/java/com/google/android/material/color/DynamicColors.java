@@ -34,7 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.os.BuildCompat;
 import com.google.android.material.color.utilities.Hct;
-import com.google.android.material.color.utilities.SchemeTonalSpot;
+import com.google.android.material.color.utilities.SchemeContent;
 import com.google.android.material.resources.MaterialAttributes;
 import java.lang.reflect.Method;
 import java.util.Collections;
@@ -294,8 +294,8 @@ public class DynamicColors {
     if (dynamicColorsOptions.getPrecondition().shouldApplyDynamicColors(activity, theme)) {
       // Applies content-based dynamic colors if content-based source is provided.
       if (dynamicColorsOptions.getContentBasedSeedColor() != null) {
-        SchemeTonalSpot scheme =
-            new SchemeTonalSpot(
+        SchemeContent scheme =
+            new SchemeContent(
                 Hct.fromInt(dynamicColorsOptions.getContentBasedSeedColor()),
                 !MaterialAttributes.resolveBoolean(
                     activity, R.attr.isLightTheme, /* defaultValue= */ true),
