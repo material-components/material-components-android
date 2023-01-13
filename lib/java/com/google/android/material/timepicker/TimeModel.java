@@ -66,7 +66,7 @@ class TimeModel implements Parcelable {
     this.format = format;
     period = getPeriod(hour);
     minuteInputValidator = new MaxInputValidator(59);
-    hourInputValidator = new MaxInputValidator(format == CLOCK_24H ? 24 : 12);
+    hourInputValidator = new MaxInputValidator(format == CLOCK_24H ? 23 : 12);
   }
 
   protected TimeModel(Parcel in) {

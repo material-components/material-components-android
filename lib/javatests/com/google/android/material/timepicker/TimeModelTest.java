@@ -43,7 +43,7 @@ public class TimeModelTest {
   public void with24HFormat_hasCorrectValidators() {
     TimeModel timeModel = new TimeModel(CLOCK_24H);
 
-    assertThat(timeModel.getHourInputValidator().getMax()).isEqualTo(24);
+    assertThat(timeModel.getHourInputValidator().getMax()).isEqualTo(23);
     assertThat(timeModel.getMinuteInputValidator().getMax()).isEqualTo(59);
   }
 
