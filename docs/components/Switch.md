@@ -27,7 +27,7 @@ as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
 
 ## Using switches
 
-Before you can use Material switches, you need to add a dependency to the
+Before you can use Material switches, you need to add a dependency on the
 Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
@@ -59,8 +59,8 @@ indicate its current state.
 
 **Note:** Since version 1.7.0, the new `MaterialSwitch` class will replace the
 obsolete `SwitchMaterial` class. In most cases you should be able to just
-replace all `SwitchMaterial` class reference with `MaterialSwitch` to enjoy the
-default look and feel. Please refer to the following sections if you need to
+replace all `SwitchMaterial` class reference with `MaterialSwitch` to achieve 
+the default look and feel. Please refer to the following sections if you need to
 customize the new styles.
 
 **Note:** For the old `SwitchMaterial` documentation, please refer to
@@ -125,8 +125,8 @@ track:
 
 ![Switch anatomy diagram](assets/switch/switch_anatomy.png)
 
-1.  Thumb
-2.  Track
+1.  Track
+2.  Thumb
 3.  Icon (optional)
 
 ### Switch attributes
@@ -150,7 +150,7 @@ Element   | Attribute           | Related method(s)                             
 **Color** | `app:thumbIconTint` | `setThumbIconTintList`<br/>`getThumbIconTintList` | `?attr/colorSurfaceVariant` (unchecked)<br/>`?attr/colorOnPrimaryContainer` (checked)
 
 You can add an optional icon to enhance the on/off indication of your custom
-switch by assiging `app:thumbIcon`. This icon will be centered and displayed on
+switch by assigning `app:thumbIcon`. This icon will be centered and displayed on
 top of the thumb drawable.
 
 ### Track attributes
