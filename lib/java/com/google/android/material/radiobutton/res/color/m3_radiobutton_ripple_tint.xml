@@ -19,25 +19,33 @@
   <!-- Checked. -->
 
   <!-- Uses the primary state layer since tapping a checked radiobutton keeps it checked. -->
-  <item android:alpha="@dimen/m3_ripple_pressed_alpha" android:color="?attr/colorPrimary"
+  <item android:alpha="@dimen/m3_comp_radio_button_selected_pressed_state_layer_opacity"
+      android:color="@macro/m3_comp_radio_button_selected_pressed_state_layer_color"
       android:state_pressed="true" android:state_checked="true"/>
-  <item android:alpha="@dimen/m3_ripple_focused_alpha" android:color="?attr/colorPrimary"
+  <item android:alpha="@dimen/m3_comp_radio_button_selected_focus_state_layer_opacity"
+      android:color="@macro/m3_comp_radio_button_selected_focus_state_layer_color"
       android:state_focused="true" android:state_checked="true"/>
-  <item android:alpha="@dimen/m3_ripple_hovered_alpha" android:color="?attr/colorPrimary"
+  <item android:alpha="@dimen/m3_comp_radio_button_selected_hover_state_layer_opacity"
+      android:color="@macro/m3_comp_radio_button_selected_hover_state_layer_color"
       android:state_hovered="true" android:state_checked="true"/>
-  <item android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorPrimary"
+  <item android:alpha="@dimen/m3_ripple_default_alpha"
+      android:color="?attr/colorPrimary"
       android:state_checked="true"/>
 
   <!-- Unchecked. -->
 
   <!-- Uses the primary state layer since tapping an unchecked radiobutton will turn it blue
        (checked). -->
-  <item android:alpha="@dimen/m3_ripple_selectable_pressed_alpha" android:color="?attr/colorPrimary"
+  <item android:alpha="@dimen/m3_comp_radio_button_unselected_pressed_state_layer_opacity"
+      android:color="@macro/m3_comp_radio_button_unselected_pressed_state_layer_color"
       android:state_pressed="true"/>
-  <item android:alpha="@dimen/m3_ripple_focused_alpha" android:color="?attr/colorOnSurface"
+  <item android:alpha="@dimen/m3_comp_radio_button_unselected_focus_state_layer_opacity"
+      android:color="@macro/m3_comp_radio_button_unselected_focus_state_layer_color"
       android:state_focused="true"/>
-  <item android:alpha="@dimen/m3_ripple_hovered_alpha" android:color="?attr/colorOnSurface"
+  <item android:alpha="@dimen/m3_comp_radio_button_unselected_hover_state_layer_opacity"
+      android:color="@macro/m3_comp_radio_button_unselected_hover_state_layer_color"
       android:state_hovered="true"/>
-  <item android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnSurface"/>
+  <item android:alpha="@dimen/m3_ripple_default_alpha"
+      android:color="?attr/colorOnSurface"/>
 
 </selector>
