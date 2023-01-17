@@ -103,6 +103,10 @@
       name="cat_card_action_move_bottom_right">Move to bottom right</string>
   <string description="A description of an action that a user of an accessibility service can perform to move the card to the center of the screen. [CHAR LIMIT=25]"
       name="cat_card_action_move_center">Move to center</string>
+  <string description="A description of an action that a user of an accessibility service can perform to select the card. [CHAR LIMIT=25]"
+    name="cat_card_action_select">Select</string>
+  <string description="A description of an action that a user of an accessibility service can perform to deselect the card. [CHAR LIMIT=25]"
+    name="cat_card_action_deselect">Deselect</string>
 
   <string description="a transient text that appears on screen when a card is dismissed [CHAR LIMIT=30]"
       name="cat_card_dismissed">Card Dismissed</string>

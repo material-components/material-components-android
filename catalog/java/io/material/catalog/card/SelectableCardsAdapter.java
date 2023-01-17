@@ -26,12 +26,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.selection.ItemKeyProvider;
 import androidx.recyclerview.selection.SelectionTracker;
 import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /** An Adapter that works with a collection of selectable card items */
@@ -99,17 +99,31 @@ class SelectableCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       if (selectionTracker != null) {
         bindSelectedState();
       }
-      // Set an OnLongClickListener for accessibility
-      materialCardView.setOnLongClickListener(
-          v -> {
-            selectionTracker.setItemsSelected(
-                Arrays.asList(details.getSelectionKey()), !materialCardView.isChecked());
-            return true;
-          });
     }
 
     private void bindSelectedState() {
-      materialCardView.setChecked(selectionTracker.isSelected(details.getSelectionKey()));
+      Long selectionKey = details.getSelectionKey();
+      materialCardView.setChecked(selectionTracker.isSelected(selectionKey));
+      if (selectionKey != null) {
+        addAccessibilityActions(selectionKey);
+      }
+    }
+
+    private void addAccessibilityActions(@NonNull Long selectionKey) {
+      ViewCompat.addAccessibilityAction(
+          materialCardView,
+          materialCardView.getContext().getString(R.string.cat_card_action_select),
+          (view, arguments) -> {
+            selectionTracker.select(selectionKey);
+            return true;
+          });
+      ViewCompat.addAccessibilityAction(
+          materialCardView,
+          materialCardView.getContext().getString(R.string.cat_card_action_deselect),
+          (view, arguments) -> {
+            selectionTracker.deselect(selectionKey);
+            return true;
+          });
     }
 
     ItemDetailsLookup.ItemDetails<Long> getItemDetails() {
