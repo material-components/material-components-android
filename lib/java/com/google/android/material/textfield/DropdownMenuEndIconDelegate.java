@@ -45,6 +45,7 @@ import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityEventCompat;
 import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.animation.AnimationUtils;
@@ -230,13 +231,21 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
   }
 
+  @SuppressLint("WrongConstant")
   @Override
   public void onPopulateAccessibilityEvent(View host, @NonNull AccessibilityEvent event) {
+    if (!accessibilityManager.isEnabled() || isEditable(autoCompleteTextView)) {
+      return;
+    }
+    // TODO(b/256138189): Find better workaround, back gesture should call
+    // AutoCompleteTextView.OnDismissListener.
+    boolean invalidState =
+        event.getEventType() == AccessibilityEventCompat.TYPE_VIEW_ACCESSIBILITY_FOCUSED
+            && isEndIconChecked
+            && !autoCompleteTextView.isPopupShowing();
     // If dropdown is non editable, layout click is what triggers showing/hiding the popup
     // list. Otherwise, arrow icon alone is what triggers it.
-    if (event.getEventType() == TYPE_VIEW_CLICKED
-        && accessibilityManager.isEnabled()
-        && !isEditable(autoCompleteTextView)) {
+    if (event.getEventType() == TYPE_VIEW_CLICKED || invalidState) {
       showHideDropdown();
       updateDropdownPopupDirty();
     }
