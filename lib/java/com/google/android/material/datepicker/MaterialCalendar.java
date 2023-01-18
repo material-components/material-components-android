@@ -302,9 +302,12 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             }
             int top = viewInRow.getTop() + calendarStyle.year.getTopInset();
             int bottom = viewInRow.getBottom() - calendarStyle.year.getBottomInset();
-            int left = row == firstRow ? firstView.getLeft() + firstView.getWidth() / 2 : 0;
+            int left =
+                row == firstRow && firstView != null
+                    ? firstView.getLeft() + firstView.getWidth() / 2
+                    : 0;
             int right =
-                row == lastRow
+                row == lastRow && lastView != null
                     ? lastView.getLeft() + lastView.getWidth() / 2
                     : recyclerView.getWidth();
             canvas.drawRect(left, top, right, bottom, calendarStyle.rangeFill);
