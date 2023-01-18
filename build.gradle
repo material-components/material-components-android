@@ -55,7 +55,7 @@ ext {
     ? project.property('mavenRepoUrl') : '/tmp/myRepo/')
 
   // Current version of the library (could be in-development/unreleased).
-  mdcLibraryVersion = '1.8.0-alpha03'
+  mdcLibraryVersion = '1.9.0-alpha01'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
 }
