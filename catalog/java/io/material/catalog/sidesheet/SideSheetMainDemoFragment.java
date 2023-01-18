@@ -42,7 +42,7 @@ import io.material.catalog.preferences.CatalogPreferencesHelper;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /** A fragment that displays the main Side Sheet demo for the Catalog app. */
-public final class SideSheetMainDemoFragment extends DemoFragment {
+public class SideSheetMainDemoFragment extends DemoFragment {
 
   @Nullable private CatalogPreferencesHelper catalogPreferencesHelper;
 
@@ -61,6 +61,10 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getDemoContent(), viewGroup, false /* attachToRoot */);
+
+    ViewGroup sideSheetsContainer = view.findViewById(R.id.cat_sidesheet_coordinator_layout);
+    View.inflate(getContext(), getSideSheetsContent(), sideSheetsContainer);
+
     setUpToolbar(view);
 
     // Set up standard side sheet.
@@ -245,6 +249,11 @@ public final class SideSheetMainDemoFragment extends DemoFragment {
   @LayoutRes
   int getDemoContent() {
     return R.layout.cat_sidesheet_fragment;
+  }
+
+  @LayoutRes
+  protected int getSideSheetsContent() {
+    return R.layout.cat_sidesheets;
   }
 
   @StyleRes
