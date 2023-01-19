@@ -71,10 +71,10 @@
     <item name="backgroundTint">@null</item>
     <item name="elevation">@dimen/m3_navigation_rail_elevation</item>
     <item name="itemActiveIndicatorStyle">@style/Widget.Material3.NavigationRailView.ActiveIndicator</item>
-    <item name="itemRippleColor">@color/m3_navigation_bar_ripple_color_selector</item>
+    <item name="itemRippleColor">@color/m3_navigation_rail_ripple_color_selector</item>
     <item name="itemIconSize">@dimen/m3_comp_navigation_rail_icon_size</item>
-    <item name="itemIconTint">@color/m3_navigation_bar_item_with_indicator_icon_tint</item>
-    <item name="itemTextColor">@color/m3_navigation_bar_item_with_indicator_label_tint</item>
+    <item name="itemIconTint">@color/m3_navigation_rail_item_with_indicator_icon_tint</item>
+    <item name="itemTextColor">@color/m3_navigation_rail_item_with_indicator_label_tint</item>
     <item name="itemPaddingTop">@dimen/m3_navigation_rail_item_padding_top</item>
     <item name="itemPaddingBottom">@dimen/m3_navigation_rail_item_padding_bottom</item>
     <item name="itemMinHeight">@dimen/m3_navigation_rail_item_min_height</item>
