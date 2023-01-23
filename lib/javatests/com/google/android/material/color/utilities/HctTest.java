@@ -16,7 +16,9 @@
 
 package com.google.android.material.color.utilities;
 
+import static com.google.android.material.color.utilities.ArgbSubject.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,6 +31,31 @@ public final class HctTest {
   private static final int BLUE = 0xff0000ff;
   private static final int WHITE = 0xffffffff;
   private static final int BLACK = 0xff000000;
+  private static final int MIDGRAY = 0xff777777;
+
+  public static final ViewingConditions VIEWING_CONDITIONS_WHITE_BACKGROUND =
+      ViewingConditions.make(
+          new double[] {
+            ColorUtils.whitePointD65()[0],
+            ColorUtils.whitePointD65()[1],
+            ColorUtils.whitePointD65()[2]
+          },
+          (200.0 / Math.PI * ColorUtils.yFromLstar(50.0) / 100.f),
+          100.0,
+          2.0,
+          false);
+
+  public static final ViewingConditions VIEWING_CONDITIONS_BLACK_BACKGROUND =
+      ViewingConditions.make(
+          new double[] {
+            ColorUtils.whitePointD65()[0],
+            ColorUtils.whitePointD65()[1],
+            ColorUtils.whitePointD65()[2]
+          },
+          (200.0 / Math.PI * ColorUtils.yFromLstar(50.0) / 100.f),
+          0.0,
+          2.0,
+          false);
 
   @Test
   public void camFromArgb_red() {
@@ -122,5 +149,150 @@ public final class HctTest {
     assertEquals(0.986, vc.getRgbD()[1], 0.001);
     assertEquals(0.933, vc.getRgbD()[2], 0.001);
     assertEquals(0.789, vc.getFlRoot(), 0.001);
+  }
+
+  private boolean colorIsOnBoundary(int argb) {
+    return ColorUtils.redFromArgb(argb) == 0
+        || ColorUtils.redFromArgb(argb) == 255
+        || ColorUtils.greenFromArgb(argb) == 0
+        || ColorUtils.greenFromArgb(argb) == 255
+        || ColorUtils.blueFromArgb(argb) == 0
+        || ColorUtils.blueFromArgb(argb) == 255;
+  }
+
+  @Test
+  public void correctness() {
+    for (int hue = 15; hue < 360; hue += 30) {
+      for (int chroma = 0; chroma <= 100; chroma += 10) {
+        for (int tone = 20; tone <= 80; tone += 10) {
+          Hct hctColor = Hct.from((double) hue, (double) chroma, (double) tone);
+
+          if (chroma > 0) {
+            assertEquals(
+                "Incorrect hue for H" + hue + " C" + chroma + " T" + tone,
+                hue,
+                hctColor.getHue(),
+                4.0);
+          }
+
+          assertTrue(
+              "Negative chroma for H" + hue + " C" + chroma + " T" + tone,
+              hctColor.getChroma() >= 0.0);
+
+          assertTrue(
+              "Chroma too high for H" + hue + " C" + chroma + " T" + tone,
+              hctColor.getChroma() <= chroma + 2.5);
+
+          if (hctColor.getChroma() < chroma - 2.5) {
+            assertTrue(
+                "Color not on boundary for non-sRGB color for H"
+                    + hue
+                    + " C"
+                    + chroma
+                    + " T"
+                    + tone,
+                colorIsOnBoundary(hctColor.toInt()));
+          }
+
+          assertEquals(tone, hctColor.getTone(), 0.5);
+        }
+      }
+    }
+  }
+
+  @Test
+  public void relativity_redInBlack() {
+    final int colorToTest = RED;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xff9F5C51)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_BLACK_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_redInWhite() {
+    final int colorToTest = RED;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xffFF5D48)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_WHITE_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_greenInBlack() {
+    final int colorToTest = GREEN;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xffACD69D)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_BLACK_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_greenInWhite() {
+    final int colorToTest = GREEN;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xff8EFF77)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_WHITE_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_blueInBlack() {
+    final int colorToTest = BLUE;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xff343654)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_BLACK_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_blueInWhite() {
+    final int colorToTest = BLUE;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xff3F49FF)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_WHITE_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_whiteInBlack() {
+    final int colorToTest = WHITE;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xffFFFFFF)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_BLACK_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_whiteInWhite() {
+    final int colorToTest = WHITE;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xffFFFFFF)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_WHITE_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_midgrayInBlack() {
+    final int colorToTest = MIDGRAY;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xff605F5F)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_BLACK_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_midgrayInWhite() {
+    final int colorToTest = MIDGRAY;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xff8E8E8E)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_WHITE_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_blackInBlack() {
+    final int colorToTest = BLACK;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xff000000)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_BLACK_BACKGROUND).toInt());
+  }
+
+  @Test
+  public void relativity_blackInWhite() {
+    final int colorToTest = BLACK;
+    final Hct hct = Hct.fromInt(colorToTest);
+    assertThat(0xff000000)
+        .isSameColorAs(hct.inViewingConditions(VIEWING_CONDITIONS_WHITE_BACKGROUND).toInt());
   }
 }
