@@ -2,17 +2,14 @@
 title: "Motion"
 layout: detail
 section: theming
-excerpt: "Transition between UI elements to help users understand and navigate an app."
-latest_update: "May 29, 2020"
+excerpt: "Motion system - easings, durations, and transitions."
+latest_update: "January 23, 2023"
 path: /theming/motion/
 -->
 
 # Motion
 
-Material motion is a set of transition patterns that help users understand and
-navigate an app. For more information on the patterns and how to choose between
-them, check out the
-[Material motion system spec](https://material.io/design/motion/the-motion-system.html).
+Material motion is a system to help create stylized and consistent animations across an app. Provided in the library are semantic easing and duration theme attributes, components that use themed motion for their built-in animations, and a set of transitions for navigational events or custom animations.
 
 Before you can use the motion library, you need to add a dependency on the
 Material Components for Android library (version `1.2.0` or later). For more
@@ -20,16 +17,147 @@ information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-**Note:** [Motion theming](#theming) is only be available in Material Components
-for Android version `1.4.0` and above.
+1.  [Theming](#theming)
+2.  [Transitions](#transitions)
+
+## Theming
+
+The Material motion system is backed by a limited number of easing and duration slots. These are the building blocks for creating any Material-styled animation. These slots are implemented as theme attributes, similar to color or shape attributes, and are used by all components in the library to create a unified motion feel.
+
+### Easing
+
+Easing theme attributes define a set of curves that are used as [Interpolators](https://developer.android.com/reference/androidx/core/animation/Interpolator).
+
+Attribute        | Default value                | Description
+-------------- | ------------------------ | ---------------------------------
+**?attr/motionEasingStandardInterpolator** | `cubic-bezier: 0.2, 0, 0, 1`  | Easing used for utility focused animations that begin and end on screen.
+**?attr/motionEasingStandardDecelerateInterpolator** | `cubic-bezier: 0, 0, 0, 1`  | Easing used for utitlity focused animations that enter the screen.
+**?attr/motionEasingStandardAccelerateInterpolator** | `cubic-bezier: 0.3, 0, 1, 1` | Easing used for utility focused animations that exit the screen.
+**?attr/motionEasingEmphasizedInterpolator** | `path: M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1` | Easing used for common, M3-styled animations that begin and end on screen.
+**?attr/motionEasingEmphasizedDecelerateInterpolator** | `cubic-bezier: 0.05, 0.7, 0.1, 1` | Easing used for common, M3-styled animations that enter the screen.
+**?attr/motionEasingEmphasizedAccelerateInterpolator** | `cubic-bezier: 0.3, 0, 0.8, 0.15` | Easing used for common, M3-styled animations that exit the screen.
+**?attr/motionEasingLinearInterpolator** | `cubic-bezier: 0, 0, 1, 1` | Easing for simple, non-stylized motion.
+
+To customize an easing value, override any of the attributes in your app’s theme to your own interpolator resource.
+
+```
+<style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    ....
+    <item name="motionEasingEmphasizedInterpolator">@interpolator/my_app_emphasized_interpolator</item>
+</style>
+```
+
+For more information on easing, see [Applying easing and duration](https://m3.material.io/styles/motion/easing-and-duration/applying-easing-and-duration#569498ab-3e78-4e1a-bf59-c3fc7b1a187b).
+
+### Duration
+
+Duration attributes are a set of durations in milliseconds that can be used for
+animations.
+
+Attribute        | Default value
+-------------- | ------------------------
+**?attr/motionDurationShort1** | `50ms`
+**?attr/motionDurationShort2** | `100ms`
+**?attr/motionDurationShort3** | `150ms`
+**?attr/motionDurationShort4** | `200ms`
+**?attr/motionDurationMedium1** | `250ms`
+**?attr/motionDurationMedium2** | `300ms`
+**?attr/motionDurationMedium3** | `350ms`
+**?attr/motionDurationMedium4** | `400ms`
+**?attr/motionDurationLong1** | `450ms`
+**?attr/motionDurationLong2** | `500ms`
+**?attr/motionDurationLong3** | `550ms`
+**?attr/motionDurationLong4** | `600ms`
+**?attr/motionDurationExtraLong1** | `700ms`
+**?attr/motionDurationExtraLong2** | `800ms`
+**?attr/motionDurationExtraLong3** | `900ms`
+**?attr/motionDurationExtraLong4** | `1000ms`
+
+In general, duration should increase as the area/traversal of an animation
+increases. Maintaining this rule when customizing duration attributes will
+ensure your transitions have a consistent sense of speed.
+
+To override a duration attribute, assign the attribute to your desired
+millisecond integer value.
+
+```
+<style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
+    ....
+    <item name="motionDurationLong2">450</item>
+</style>
+```
+
+For more information on duration, see [Applying easing and duration](https://m3.material.io/styles/motion/easing-and-duration/applying-easing-and-duration#569498ab-3e78-4e1a-bf59-c3fc7b1a187b).
+
+### Path
+
+Path attributes are values which control the behavior of animating elements.
+
+Attribute        | Default value                | Description
+-------------- | ------------------------ | ---------------------------------
+**?attr/motionPath** | `linear`   | An enum that controls the path along which animating elements move.<br/>`linear`: Elements move along a straight path from their current position to their new position. A linear path corresponds to a `null` `PathMotion`.<br/>`arc`: Elements move along a curved/arced path. An arc path corresponds to a `MaterialArcMotion` `PathMotion`.
+
+For more information of motionPath, see
+[material.io/design/motion/customization.html#motion-paths](https://material.io/design/motion/customization.html#motion-paths)
+
+### Custom animations using the motion system
+
+When implementing your own animations, use an easing and duration theme attribute so your animations tie in with animations used by Material components, bringing motion consistency across your app.
+
+When creating animations in xml, set your animation's `interpolator` and `duration` properties to a Material motion theme attribute.
+
+```
+<!-- res/anim/slide_in.xml –>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+   android:duration="?attr/motionEasingDurationMedium1"
+   android:interpolator="?attr/motionEasingStandardDecelerateInterpolator">
+ <translate
+     android:fromYDelta="20%p"
+     android:toYDelta="0"/>
+ <alpha
+     android:fromAlpha="0.0"
+     android:toAlpha="1.0"/>
+<set/>
+```
+
+If creating animations in Java or Kotlin, Material provides a `MotionUtils` class to help facilitate loading `interpolator` and `duration` theme attributes.
+
+```
+ValueAnimator animator = ValueAnimator.ofFloat(currentProgress, newProgress);
+animator.addUpdateListener(
+   new AnimatorUpdateListener() {
+     @Override
+     public void onAnimationUpdate(ValueAnimator animation) {
+       float progress = (float) animation.getAnimatedValue();
+       myView.setAlpha(progress)
+       setActiveIndicatorProgress(progress, newProgress);
+     }
+   });
+animatior.setInterpolator(
+   MotionUtils.resolveThemeInterpolator(
+       getContext(),
+       R.attr.motionEasingStandardInterpolator,  // easing theme attribute
+       new FastOutSlowInInterpolator()));  // default fallback interpolator
+animator.setDuration(
+   MotionUtils.resolveThemeDuration(
+       getContext(),
+       R.attr.motionDurationLong1, // duration theme attribute
+       500L)); // default fallback duration
+animator.start();
+```
+
+## Transitions
+
+Material provides a set of transition patterns that help users understand and navigate an app. For more information on the patterns and how to choose between them, check out the
+[Material motion transition patterns](https://m3.material.io/styles/motion/transitions/transition-patterns).
 
 Material Components for Android provides support for all four motion patterns
 defined in the Material spec.
 
 1.  [Container transform](#container-transform)
-2.  [Shared axis](#shared-axis)
-3.  [Fade through](#fade-through)
-4.  [Fade](#fade)
+2.  [Shared axis (or Forward and Backward)](#shared-axis)
+3.  [Fade through (or Top Level)](#fade-through)
+4.  [Fade (or Enter and Exit)](#fade)
 
 The library offers transition classes for these patterns, built on top of both
 the
@@ -52,7 +180,7 @@ the
 *   Supports Fragments, Views, Activities, and Windows
 *   Bug fixes not backported and may have different behavior across API Levels
 
-## Motion resources
+### Motion resources
 
 *   [Design Guidelines](https://material.io/design/motion/the-motion-system.html)
 *   [Codelab](https://codelabs.developers.google.com/codelabs/material-motion-android)
@@ -65,7 +193,7 @@ the
 *   [Android Platform Transition Guide](https://developer.android.com/training/transitions)
 *   [AndroidX Transition Library](https://developer.android.com/reference/androidx/transition/package-summary)
 
-## Container transform
+### Container transform
 
 The **container transform** pattern is designed for transitions between UI
 elements that include a container. This pattern creates a visible connection
@@ -90,14 +218,14 @@ _Examples of the container transform:_
 3.  _A FAB into a details page_
 4.  _A search bar into expanded search_
 
-### Using the container transform pattern
+#### Using the container transform pattern
 
 A container transform can be configured to transition between a number of
 Android structures including Fragments, Activities and Views.
 
-### Container transform examples
+#### Container transform examples
 
-#### Transition between Fragments
+##### Transition between Fragments
 
 In Fragment A and Fragment B's layouts, identify the start and end Views (as
 described in the [container transform overview](#container-transform)) which
@@ -229,7 +357,7 @@ the animation is applied to the Fragment view as a whole, as opposed to each
 child view individually, which is the default behavior of the Android
 Transitions system.
 
-#### Transition between activities
+##### Transition between activities
 
 **Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
@@ -323,7 +451,7 @@ val options = ActivityOptions.makeSceneTransitionAnimation(
 startActivity(intent, options.toBundle())
 ```
 
-#### Transition between Views
+##### Transition between Views
 
 In the Activity or Fragment where you are transitioning between two views,
 trigger a `MaterialContainerTransform` by manually setting the transition’s
@@ -358,13 +486,13 @@ the end view. To return, set up the same transform, switching the start and end
 Views and undoing any property changes (setting the FAB back to `View.VISIBLE`
 and the `bottomToolbar` back to `View.GONE`) done by the first transform.
 
-### Customization
+#### Customization
 
 While the out-of-the-box container transform should work in most cases, you can
 manually set the following properties on `MaterialContainerTransform` to
 customize the look and feel of the animation:
 
-#### Container transform attributes
+##### Container transform attributes
 
 <!--  Todo: Update this table with links to source where listing defaults is too lengthy (thresholds) -->
 
@@ -395,7 +523,7 @@ such as `Hold` and `MaterialElevationScale`, depend on these values from
 See the [Motion Theming section](#theming) for details on how to systematically
 update motion.
 
-#### Container transform properties
+##### Container transform properties
 
 Element                                   | Related method(s)                                                     | Default value
 ----------------------------------------- | --------------------------------------------------------------------- | -------------
@@ -427,7 +555,7 @@ set properties which differ depending on whether or not the transition is
 entering or returning, create two `MaterialContainerTransforms` and set both the
 `sharedElementEnterTransition` and `sharedElementReturnTransition`.*
 
-#### Fade through Variant
+##### Fade through Variant
 
 `MaterialContainerTransform` supports the "Container transform: fade through
 variant" mentioned in the
@@ -449,7 +577,7 @@ transition, use the following Fade Thresholds configuration:
 containerTransform.fadeProgressThresholds = MaterialContainerTransform.ProgressThresholds(0f, 1f)
 ```
 
-## Shared axis
+### Shared axis
 
 The **shared axis** pattern is used for transitions between UI elements that
 have a spatial or navigational relationship. This pattern uses a shared
@@ -463,7 +591,7 @@ _Examples of the shared axis pattern:_
 2.  _A stepper transitions along the y-axis_
 3.  _A parent-child navigation transitions along the z-axis_
 
-### Using the shared axis pattern
+#### Using the shared axis pattern
 
 `MaterialSharedAxis` is a `Visibility` transition. A `Visibility` transition is
 triggered when the target `View`'s visibility is changed or when the `View` is
@@ -474,7 +602,7 @@ in visibility or to be added or removed to trigger its animation.
 the axes along which a `MaterialSharedAxis` will move, both forward and
 backward.
 
-#### Shared axis direction
+##### Shared axis direction
 
 Axis  | Forward           | Backward
 ----- | ----------------- | ------------------
@@ -492,9 +620,9 @@ exit, return, reenter) with the correct direction.
 A shared axis transition can be configured to transition between a number of
 Android structures including Fragments, Activities and Views.
 
-### Shared axis examples
+#### Shared axis examples
 
-#### Transition between Fragments
+##### Transition between Fragments
 
 In the following example, we’re creating a shared axis Z transition between
 Fragment A and Fragment B. Moving from Fragment A to Fragment B should be a
@@ -553,7 +681,7 @@ respective axis. Alternatively, try replacing `MaterialSharedAxis` with a
 `MaterialFadeThrough` for a transition between destinations or layouts that are
 *not* spatially related.
 
-#### Transition between Activities
+##### Transition between Activities
 
 **Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
@@ -656,7 +784,7 @@ val bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
 startActivity(Intent(this, ActivityB::class.java), bundle)
 ```
 
-#### Transition between Views
+##### Transition between Views
 
 In your Activity or Fragment’s layout, identify the two views which will be
 “swapped”. The outgoing View should be added to the layout and visible. The
@@ -681,7 +809,7 @@ transition. To reverse the animation, set up a new shared axis in the opposite
 direction and set your outgoing View back to `View.VISIBLE` and your incoming
 View back to `View.GONE`.
 
-### Customization
+#### Customization
 
 `MaterialSharedAxis` is an extension of `MaterialVisibility`.
 `MaterialVisibility` is a `Visibility` transition composed of smaller, "atomic"
@@ -693,14 +821,14 @@ can be modified while the secondary provider can be either modified, replaced or
 removed. This allows for the customization of Material motion while still
 adhering to a pattern's foundation and is referred to as a *variant*.
 
-#### Shared axis composition
+##### Shared axis composition
 
 | Element                | Primary transition         | Secondary transition |
 | ---------------------- | -------------------------- | -------------------- |
 | **MaterialSharedAxis** |  **X** -`SlideDistance`<br> **Y** -`SlideDistance`<br> **Z** -`Scale` | `FadeThrough`        |
 
 
-#### Shared axis fade variant
+##### Shared axis fade variant
 
 The following is a `MaterialSharedAxis` Z transition between Activities which
 fades Activity B in and over Activity A while leaving Activity A’s alpha
@@ -728,7 +856,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-#### Shared axis attributes
+##### Shared axis attributes
 
 Element        | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
@@ -738,7 +866,7 @@ Element        | Attribute                | Related method(s)                 | 
 See the [Motion Theming section](#theming) for details on how to systematically
 update motion.
 
-## Fade through
+### Fade through
 
 The **fade through** pattern is used for transitions between UI elements that do
 not have a strong relationship to each other.
@@ -750,7 +878,7 @@ _Examples of the fade through pattern:_
 2.  _Tapping a refresh icon_
 3.  _Tapping an account switcher_
 
-### Using the fade through pattern
+#### Using the fade through pattern
 
 `MaterialFadeThrough` is a `Visibility` transition. A `Visibility` transition is
 triggered when the target `View`'s visibility is changed or when the `View` is
@@ -760,9 +888,9 @@ changing in visibility or to be added or removed to trigger its animation.
 A fade through can be configured to transition between a number of Android
 structures including Fragments, Activities and Views.
 
-### Fade through examples
+#### Fade through examples
 
-#### Transition between Fragments
+##### Transition between Fragments
 
 In Fragment A, configure an exit `MaterialFadeThrough` transition and in
 Fragment B configure an enter `MaterialFadeThrough` transition. Both of these
@@ -804,7 +932,7 @@ supportFragmentManager
   .commit()
 ```
 
-#### Transition between Activities
+##### Transition between Activities
 
 **Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
@@ -906,7 +1034,7 @@ val bundle = ActivityOptions.makeSceneTransitionAnimation(this).toBundle()
 startActivity(Intent(this, ActivityB::class.java), bundle)
 ```
 
-#### Transition between Views
+##### Transition between Views
 
 In your Activity or Fragment’s layout, identify the two Views which will be
 “swapped”. The outgoing View should be added to the layout and visible. The
@@ -930,7 +1058,7 @@ through transition. To reverse the animation, follow the same steps, setting
 your outgoing View back to `View.VISIBLE` and your incoming View back to
 `View.GONE`.
 
-### Customization
+#### Customization
 
 `MaterialFadeThrough` is an extension of `MaterialVisibility`.
 `MaterialVisibility` is a `Visibility` transition composed of smaller, "atomic"
@@ -942,13 +1070,13 @@ can be modified while the secondary provider can be either modified, replaced or
 removed. This allows for the customization of Material motion while still
 adhering to a pattern's foundation and is referred to as a *variant*.
 
-#### Fade through composition
+##### Fade through composition
 
 Element                 | Primary transition | Secondary transition
 ----------------------- | ------------------ | --------------------
 **MaterialFadeThrough** | `FadeThrough`      | `Scale`
 
-#### Fade through slide variant
+##### Fade through slide variant
 
 The code below will create a fade through between Fragments which fades Fragment
 A out (without a scale) and fades Fragment B in with a *slide* instead of a
@@ -979,7 +1107,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
 }
 ```
 
-#### Fade through attributes
+##### Fade through attributes
 
 Element        | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
@@ -989,7 +1117,7 @@ Element        | Attribute                | Related method(s)                 | 
 See the [Motion Theming section](#theming) for details on how to systematically
 update motion.
 
-## Fade
+### Fade
 
 The **fade** pattern is used for UI elements that enter or exit within the
 bounds of the screen, such as a dialog that fades in the center of the screen.
@@ -1002,16 +1130,16 @@ _Examples of the fade pattern:_
 3.  _A snackbar_
 4.  _A FAB_
 
-### Using the fade pattern
+#### Using the fade pattern
 
 `MaterialFade` is a `Visibility` transition. A `Visibility` transition is
 triggered when the target `View`'s visibility is changed or when the `View` is
 added or removed. This means `MaterialFade` requires a View to be changing in
 visibility or to be added or removed to trigger its animation.
 
-### Fade examples
+#### Fade examples
 
-#### Transition a View
+##### Transition a View
 
 In your Activity or Fragment, toggle the visibility of your target View, in this
 case a Floating Action Button, using a `MaterialFade` to animate the change.
@@ -1044,7 +1172,7 @@ hideButton.setOnClickListener {
 }
 ```
 
-### Customization
+#### Customization
 
 `MaterialFade` is an extension of `MaterialVisibility`. `MaterialVisibility` is
 a `Visibility` transition composed of smaller, "atomic"
@@ -1056,7 +1184,7 @@ can be modified while the secondary provider can be either modified, replaced or
 removed. This allows for the customization of Material motion while still
 adhering to a pattern's foundation and is referred to as a *variant*.
 
-#### Fade composition
+##### Fade composition
 
 Element          | Primary transition | Secondary transition
 ---------------- | ------------------ | --------------------
@@ -1064,7 +1192,7 @@ Element          | Primary transition | Secondary transition
 
 <!-- Todo: Add snippet of variant -->
 
-#### Fade through attributes
+##### Fade through attributes
 
 Element        | Attribute                | Related method(s)                 | Default value
 -------------- | ------------------------ | --------------------------------- | -------------
@@ -1075,84 +1203,3 @@ Element        | Attribute                | Related method(s)                 | 
 See the [Motion Theming section](#theming) for details on how to systematically
 update motion.
 
-## Theming
-
-Motion theming will only be available in Material Components for Android version
-`1.4.0-alpha01` and above.
-
-The Material motion system is backed by a limited number of slots which create a
-consistent, branded feel. These slots are implemented as theme attributes,
-similar to color or shape attributes.
-
-### Easing
-
-Easing theme attributes define a set of curves that can be inflated and used as [Interpolators](https://developer.android.com/reference/androidx/core/animation/Interpolator).
-
-Attribute        | Default value                | Description
--------------- | ------------------------ | ---------------------------------
-**?attr/motionEasingStandard** | `path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)`<br/>`FastOutExtraSlowIn`   | Easing used for elements that begin and end at rest.
-**?attr/motionEasingEmphasized** | `path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)`<br/>`FastOutExtraSlowIn`   | Easing used for elements that begin and end at rest but want extra attention drawn to the end of the animation.
-**?attr/motionEasingDecelerated** | `cubic-bezier(0.0, 0.0, 0.2, 1)`<br/>`LinearOutSlowIn`   | Easing used for incoming elements; motion begins at peak velocity and ends at rest.
-**?attr/motionEasingAccelerated** | `cubic-bezier(0.4, 0.0, 1, 1)`<br/>`FastOutLinearIn`   | Easing used for outgoing elements; motion begins at rest and ends at peak velocity.
-**?attr/motionEasingLinear** | `cubic-bezier(0, 0, 1, 1)`<br/>`Linear`   | Easing for simple motion such as fading.
-
-Easing attributes are able to accept two types of curves - cubic beziers and
-vector paths. Cubic bezier curves are in the standard (x1, y1, x2, y2) format.
-For vector path curves, the curve must start at 0,0 and end at 1, 1. Vector path
-curves can be beneficial if you’d like to introduce 3-point (quintic) easing
-curves to your app in a backwards compatible way.
-
-To update an easing value, override any of the attributes in your app’s theme
-following the `<type>(value)` string format.
-
-```
-<style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
-    ....
-    <item name="motionEasingEmphasized">path(M 0,0 C .25, 0, .266666, .333334, .333334, .7166664 C .366667, .9666664, .3333334, 1, 1, 1)</item>
-</style>
-```
-
-For more information on easing, see
-[material.io/design/motion/customization.html#applying-customizations](https://material.io/design/motion/customization.html#applying-customizations).
-
-### Duration
-
-Duration attributes are a set of durations in milliseconds that can be used for
-animations.
-
-Attribute        | Default value                | Description
--------------- | ------------------------ | ---------------------------------
-**?attr/motionDurationShort1** | `100ms`   | Duration for use with small motion areas such as icons and selection controls.
-**?attr/motionDurationShort2** | `200ms`   |
-**?attr/motionDurationMedium1** | `300ms`   | Duration for use with large motion areas such as bottom sheets and expanding chips.
-**?attr/motionDurationMedium2** | `400ms`   |
-**?attr/motionDurationLong1** | `500ms`   | Duration for use with elements that traverse a large portion of the screen, such as page transitions.
-**?attr/motionDurationLong2** | `600ms`   |
-
-In general, duration should increase as the area/traversal of an animation
-increases. Maintaining this rule when customizing duration attributes will
-ensure your transitions have a consistent sense of speed.
-
-To override a duration attribute, assign the attribute to your desired
-millisecond integer value.
-
-```
-<style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
-    ....
-    <item name="motionDurationLong2">450</item>
-</style>
-```
-
-For more information on duration, see
-[material.io/design/motion/customization.html#speed](https://material.io/design/motion/customization.html#speed)
-
-### Path
-
-Path attributes are values which control the behavior of animating elements.
-
-Attribute        | Default value                | Description
--------------- | ------------------------ | ---------------------------------
-**?attr/motionPath** | `linear`   | An enum that controls the path along which animating elements move.<br/>`linear`: Elements move along a straight path from their current position to their new position. A linear path corresponds to a `null` `PathMotion`.<br/>`arc`: Elements move along a curved/arced path. An arc path corresponds to a `MaterialArcMotion` `PathMotion`.
-
-For more information of motionPath, see
-[material.io/design/motion/customization.html#motion-paths](https://material.io/design/motion/customization.html#motion-paths)
