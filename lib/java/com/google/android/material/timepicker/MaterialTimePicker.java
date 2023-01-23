@@ -327,9 +327,15 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
     super.onViewCreated(view, bundle);
+    // TODO(b/246354286): Investigate issue with keyboard not showing on Android 12+
     if (activePresenter instanceof TimePickerTextInputPresenter) {
-      // TODO(b/246354286): Investigate issue with keyboard not showing on Android 12+
-      view.postDelayed(() -> ((TimePickerTextInputPresenter) activePresenter).resetChecked(), 100);
+      view.postDelayed(
+          () -> {
+            if (activePresenter instanceof TimePickerTextInputPresenter) {
+              ((TimePickerTextInputPresenter) activePresenter).resetChecked();
+            }
+          },
+          100);
     }
   }
 
