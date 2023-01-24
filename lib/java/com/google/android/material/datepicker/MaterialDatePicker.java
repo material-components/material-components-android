@@ -182,8 +182,9 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
     CalendarConstraints.Builder constraintsBuilder =
         new CalendarConstraints.Builder(calendarConstraints);
-    if (calendar.getCurrentMonth() != null) {
-      constraintsBuilder.setOpenAt(calendar.getCurrentMonth().timeInMillis);
+    Month currentMonth = calendar == null ? null : calendar.getCurrentMonth();
+    if (currentMonth != null) {
+      constraintsBuilder.setOpenAt(currentMonth.timeInMillis);
     }
     bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, constraintsBuilder.build());
     bundle.putParcelable(DAY_VIEW_DECORATOR_KEY, dayViewDecorator);
