@@ -39,6 +39,7 @@ import android.os.Parcelable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
 import android.text.Layout.Alignment;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -204,6 +205,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @Nullable private Mode iconTintMode;
   @Nullable private ColorStateList iconTint;
   @Nullable private Drawable icon;
+  @Nullable private String accessibilityClassName;
 
   @Px private int iconSize;
   @Px private int iconLeft;
@@ -257,9 +259,16 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   @NonNull
-  private String getA11yClassName() {
+  String getA11yClassName() {
+    if (!TextUtils.isEmpty(accessibilityClassName)) {
+      return accessibilityClassName;
+    }
     // Use the platform widget classes so Talkback can recognize this as a button.
     return (isCheckable() ? CompoundButton.class : Button.class).getName();
+  }
+
+  void setA11yClassName(@Nullable String className) {
+    accessibilityClassName = className;
   }
 
   @Override

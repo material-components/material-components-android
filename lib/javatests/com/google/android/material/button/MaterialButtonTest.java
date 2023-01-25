@@ -23,6 +23,9 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.View.MeasureSpec;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -180,6 +183,30 @@ public class MaterialButtonTest {
 
     materialButton.setToggleCheckedStateOnClick(false);
     assertThat(materialButton.isToggleCheckedStateOnClick()).isFalse();
+  }
+
+  @Test
+  public void getA11yClassName_whenCheckable() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setCheckable(true);
+
+    assertThat(materialButton.getA11yClassName()).isEqualTo(CompoundButton.class.getName());
+  }
+
+  @Test
+  public void getA11yClassName_whenNotCheckable() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setCheckable(false);
+
+    assertThat(materialButton.getA11yClassName()).isEqualTo(Button.class.getName());
+  }
+
+  @Test
+  public void getA11yClassName_whenSetToRadioButton() {
+    MaterialButton materialButton = new MaterialButton(context);
+    materialButton.setA11yClassName(RadioButton.class.getName());
+
+    assertThat(materialButton.getA11yClassName()).isEqualTo(RadioButton.class.getName());
   }
 
   @Test

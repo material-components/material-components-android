@@ -30,6 +30,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.ToggleButton;
 import androidx.annotation.BoolRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
@@ -447,6 +449,15 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     if (this.singleSelection != singleSelection) {
       this.singleSelection = singleSelection;
       clearChecked();
+    }
+    updateChildrenA11yClassName();
+  }
+
+  private void updateChildrenA11yClassName() {
+    for (int i = 0; i < getChildCount(); i++) {
+      String className =
+          singleSelection ? RadioButton.class.getName() : ToggleButton.class.getName();
+      getChildButton(i).setA11yClassName(className);
     }
   }
 

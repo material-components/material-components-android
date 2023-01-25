@@ -29,6 +29,8 @@ import android.graphics.RectF;
 import android.view.View;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.ToggleButton;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -346,5 +348,23 @@ public class MaterialButtonToggleGroupTest {
     assertThat(firstChild.isEnabled()).isTrue();
     assertThat(middleChild.isEnabled()).isTrue();
     assertThat(lastChild.isEnabled()).isTrue();
+  }
+
+  @Test
+  public void singleSelection_hasRadioButtonA11yClassName() {
+    toggleGroup.setSingleSelection(true);
+    View button1 = toggleGroup.getChildAt(0);
+
+    assertThat(((MaterialButton) button1).getA11yClassName())
+        .isEqualTo(RadioButton.class.getName());
+  }
+
+  @Test
+  public void multiSelection_hasToggleButtonA11yClassName() {
+    toggleGroup.setSingleSelection(false);
+    View button1 = toggleGroup.getChildAt(0);
+
+    assertThat(((MaterialButton) button1).getA11yClassName())
+        .isEqualTo(ToggleButton.class.getName());
   }
 }
