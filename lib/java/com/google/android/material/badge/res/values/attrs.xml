@@ -42,6 +42,16 @@
       <enum name="BOTTOM_START" value ="8388691"/>
     </attr>
 
+    <!-- Determines where the badge offsets begin in reference to the anchor. -->
+    <attr name="offsetAlignmentMode">
+      <!-- The offsets begin at the edge of the anchor. -->
+      <enum name="edge" value="0"/>
+      <!-- Follows the legacy offset alignment behavior. The horizontal offset begins at a variable
+           permanent inset from the edge of the anchor, and the vertical offset begins at the center
+           of the badge aligned with the edge of the anchor. -->
+      <enum name="legacy" value="1"/>
+    </attr>
+
     <!-- Offsets the badge horizontally towards the center of its anchor when
         the badge doesn't have text (is a "dot"). Defaults to 0. -->
     <attr name="horizontalOffset" format="dimension"/>

@@ -155,6 +155,27 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    */
   static final String DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX = "+";
 
+  /**
+   * The badge offset begins at the edge of the anchor.
+   */
+  static final int OFFSET_ALIGNMENT_MODE_EDGE = 0;
+
+  /**
+   * Follows the legacy offset alignment behavior. The horizontal offset begins at a variable
+   * permanent inset from the edge of the anchor, and the vertical offset begins at the center
+   * of the badge aligned with the edge of the anchor.
+   */
+  static final int OFFSET_ALIGNMENT_MODE_LEGACY = 1;
+
+  /**
+   * Determines where the badge offsets begin in reference to the anchor.
+   *
+   * @hide
+   */
+  @IntDef({OFFSET_ALIGNMENT_MODE_EDGE, OFFSET_ALIGNMENT_MODE_LEGACY})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface OffsetAlignmentMode {}
+
   @NonNull private final WeakReference<Context> contextRef;
   @NonNull private final MaterialShapeDrawable shapeDrawable;
   @NonNull private final TextDrawableHelper textDrawableHelper;
@@ -168,6 +189,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private float cornerRadius;
   private float halfBadgeWidth;
   private float halfBadgeHeight;
+  private final int horizontalInset;
+  private final int horizontalInsetWithText;
 
   // Need to keep a local reference in order to support updating badge gravity.
   @Nullable private WeakReference<View> anchorViewRef;
@@ -258,6 +281,16 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     setTextAppearanceResource(R.style.TextAppearance_MaterialComponents_Badge);
 
     this.state = new BadgeState(context, badgeResId, defStyleAttr, defStyleRes, savedState);
+
+    horizontalInset =
+        context
+            .getResources()
+            .getDimensionPixelSize(R.dimen.mtrl_badge_horizontal_edge_offset);
+
+    horizontalInsetWithText =
+        context
+            .getResources()
+            .getDimensionPixelSize(R.dimen.mtrl_badge_text_horizontal_edge_offset);
 
     restoreState();
   }
@@ -867,7 +900,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       viewGroup.offsetDescendantRectToMyCoords(anchorView, anchorRect);
     }
 
-    calculateCenterAndBounds(context, anchorRect, anchorView);
+    calculateCenterAndBounds(anchorRect, anchorView);
 
     updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, halfBadgeWidth, halfBadgeHeight);
 
@@ -880,18 +913,38 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private int getTotalVerticalOffsetForState() {
     int vOffset =
         hasNumber() ? state.getVerticalOffsetWithText() : state.getVerticalOffsetWithoutText();
+    // If the offset alignment mode is at the edge of the anchor, we want to move the badge
+    // so that its origin is at the edge.
+    if (state.offsetAlignmentMode == OFFSET_ALIGNMENT_MODE_EDGE) {
+      vOffset -= Math.round(halfBadgeHeight);
+    }
     return vOffset + state.getAdditionalVerticalOffset();
   }
 
   private int getTotalHorizontalOffsetForState() {
     int hOffset =
         hasNumber() ? state.getHorizontalOffsetWithText() : state.getHorizontalOffsetWithoutText();
+    // If the offset alignment mode is legacy, then we want to add the legacy inset to the offset.
+    if (state.offsetAlignmentMode == OFFSET_ALIGNMENT_MODE_LEGACY) {
+      hOffset += hasNumber() ? horizontalInsetWithText : horizontalInset;
+    }
     return hOffset + state.getAdditionalHorizontalOffset();
   }
 
-  private void calculateCenterAndBounds(
-      @NonNull Context context, @NonNull Rect anchorRect, @NonNull View anchorView) {
+  private void calculateCenterAndBounds(@NonNull Rect anchorRect, @NonNull View anchorView) {
+    if (getNumber() <= MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
+      cornerRadius = !hasNumber() ? state.badgeRadius : state.badgeWithTextRadius;
+      halfBadgeHeight = cornerRadius;
+      halfBadgeWidth = cornerRadius;
+    } else {
+      cornerRadius = state.badgeWithTextRadius;
+      halfBadgeHeight = cornerRadius;
+      String badgeText = getBadgeText();
+      halfBadgeWidth = textDrawableHelper.getTextWidth(badgeText) / 2f + state.badgeWidePadding;
+    }
+
     int totalVerticalOffset = getTotalVerticalOffsetForState();
+
     switch (state.getBadgeGravity()) {
       case BOTTOM_END:
       case BOTTOM_START:
@@ -904,43 +957,24 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
         break;
     }
 
-    if (getNumber() <= MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
-      cornerRadius = !hasNumber() ? state.badgeRadius : state.badgeWithTextRadius;
-      halfBadgeHeight = cornerRadius;
-      halfBadgeWidth = cornerRadius;
-    } else {
-      cornerRadius = state.badgeWithTextRadius;
-      halfBadgeHeight = cornerRadius;
-      String badgeText = getBadgeText();
-      halfBadgeWidth = textDrawableHelper.getTextWidth(badgeText) / 2f + state.badgeWidePadding;
-    }
-
-    int inset =
-        context
-            .getResources()
-            .getDimensionPixelSize(
-                hasNumber()
-                    ? R.dimen.mtrl_badge_text_horizontal_edge_offset
-                    : R.dimen.mtrl_badge_horizontal_edge_offset);
-
     int totalHorizontalOffset = getTotalHorizontalOffsetForState();
 
-    // Update the centerX based on the badge width and 'inset' from start or end boundary of anchor.
+    // Update the centerX based on the badge width and offset from start or end boundary of anchor.
     switch (state.getBadgeGravity()) {
       case BOTTOM_START:
       case TOP_START:
         badgeCenterX =
             ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.left - halfBadgeWidth + inset + totalHorizontalOffset
-                : anchorRect.right + halfBadgeWidth - inset - totalHorizontalOffset;
+                ? anchorRect.left - halfBadgeWidth + totalHorizontalOffset
+                : anchorRect.right + halfBadgeWidth - totalHorizontalOffset;
         break;
       case BOTTOM_END:
       case TOP_END:
       default:
         badgeCenterX =
             ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-                ? anchorRect.right + halfBadgeWidth - inset - totalHorizontalOffset
-                : anchorRect.left - halfBadgeWidth + inset + totalHorizontalOffset;
+                ? anchorRect.right + halfBadgeWidth - totalHorizontalOffset
+                : anchorRect.left - halfBadgeWidth + totalHorizontalOffset;
         break;
     }
   }

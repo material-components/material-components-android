@@ -19,6 +19,7 @@ package com.google.android.material.badge;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.badge.BadgeDrawable.OFFSET_ALIGNMENT_MODE_LEGACY;
 import static com.google.android.material.badge.BadgeDrawable.TOP_END;
 
 import android.content.Context;
@@ -41,6 +42,7 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import androidx.annotation.XmlRes;
 import com.google.android.material.badge.BadgeDrawable.BadgeGravity;
+import com.google.android.material.badge.BadgeDrawable.OffsetAlignmentMode;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
@@ -71,6 +73,9 @@ public final class BadgeState {
   final float badgeWithTextRadius;
   final float badgeWidePadding;
 
+  @OffsetAlignmentMode
+  int offsetAlignmentMode;
+
   BadgeState(
       Context context,
       @XmlRes int badgeResId,
@@ -98,6 +103,8 @@ public final class BadgeState {
         a.getDimensionPixelSize(
             R.styleable.Badge_badgeWithTextRadius,
             res.getDimensionPixelSize(R.dimen.mtrl_badge_with_text_radius));
+    offsetAlignmentMode =
+        a.getInt(R.styleable.Badge_offsetAlignmentMode, OFFSET_ALIGNMENT_MODE_LEGACY);
 
     currentState.alpha = storedState.alpha == State.NOT_SET ? 255 : storedState.alpha;
 
