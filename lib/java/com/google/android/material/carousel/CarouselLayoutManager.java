@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView.State;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -118,6 +119,18 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   public CarouselLayoutManager(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     // TODO(b/238620200): Add and obtain carousel attrs set on RecyclerView
+  }
+
+  @Override
+  public void onAttachedToWindow(RecyclerView view) {
+    super.onAttachedToWindow(view);
+    view.setAccessibilityDelegateCompat(new CarouselAccessibilityDelegate(view));
+  }
+
+  @Override
+  public void onDetachedFromWindow(RecyclerView view, Recycler recycler) {
+    super.onDetachedFromWindow(view, recycler);
+    view.setAccessibilityDelegateCompat(null);
   }
 
   @Override
@@ -724,6 +737,15 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     return isLayoutRtl() ? value - amount : value + amount;
   }
 
+  @Override
+  public void onInitializeAccessibilityEvent(@NonNull AccessibilityEvent event) {
+    super.onInitializeAccessibilityEvent(event);
+    if (getChildCount() > 0) {
+      event.setFromIndex(getPosition(getChildAt(0)));
+      event.setToIndex(getPosition(getChildAt(getChildCount() - 1)));
+    }
+  }
+
   /**
    * Gets the scroll offset for a position in the adapter.
    *
@@ -766,6 +788,30 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   @Override
   public int scrollHorizontallyBy(int dx, Recycler recycler, State state) {
     return canScrollHorizontally() ? scrollBy(dx, recycler, state) : 0;
+  }
+
+  @Override
+  public boolean requestChildRectangleOnScreen(
+      @NonNull RecyclerView parent,
+      @NonNull View child,
+      @NonNull Rect rect,
+      boolean immediate,
+      boolean focusedChildVisible) {
+    if (keylineStateList == null) {
+      return false;
+    }
+
+    int offsetForChild =
+        getScrollOffsetForPosition(keylineStateList.getDefaultState(), getPosition(child));
+    int dx = offsetForChild - horizontalScrollOffset;
+    if (!focusedChildVisible) {
+      if (dx != 0) {
+        // TODO(b/266816148): Implement smoothScrollBy when immediate is false.
+        parent.scrollBy(dx, 0);
+        return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -830,6 +876,45 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     getDecoratedBoundsWithMargins(child, boundsRect);
     float actualCx = boundsRect.left + halfItemSize;
     child.offsetLeftAndRight((int) (offsetCx - actualCx));
+  }
+
+  /**
+   * Calculate the offset of the horizontal scrollbar thumb within the horizontal range. This is the
+   * position of the thumb within the scrollbar track.
+   *
+   * <p>This is also used for accessibility when scrolling to give auditory feedback about the
+   * current scroll position within the total range.
+   *
+   * <p>This method can return an arbitrary unit as long as the unit is shared across {@link
+   * #computeHorizontalScrollExtent(State)} and {@link #computeHorizontalScrollRange(State)}.
+   */
+  @Override
+  public int computeHorizontalScrollOffset(@NonNull State state) {
+    return horizontalScrollOffset;
+  }
+
+  /**
+   * Compute the extent of the horizontal scrollbar thumb. This is the size of the thumb inside the
+   * scrollbar track.
+   *
+   * <p>This method can return an arbitrary unit as long as the unit is shared across {@link
+   * #computeHorizontalScrollExtent(State)} and {@link #computeHorizontalScrollOffset(State)}.
+   */
+  @Override
+  public int computeHorizontalScrollExtent(@NonNull State state) {
+    return (int) keylineStateList.getDefaultState().getItemSize();
+  }
+
+  /**
+   * Compute the horizontal range represented by the horizontal scroll bars. This is the total
+   * length of the scrollbar track within the range.
+   *
+   * <p>This method can return an arbitrary unit as long as the unit is shared across {@link
+   * #computeHorizontalScrollExtent(State)} and {@link #computeHorizontalScrollOffset(State)}.
+   */
+  @Override
+  public int computeHorizontalScrollRange(@NonNull State state) {
+    return maxHorizontalScroll - minHorizontalScroll;
   }
 
   /**
