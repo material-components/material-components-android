@@ -53,7 +53,9 @@
     <!-- Set these padding and inset values to 0dp on all screen sizes because the extra spacing is
          not needed and it conflicts with the expand/collapse animations. -->
     <item name="android:paddingLeft">0dp</item>
+    <item name="android:paddingStart">0dp</item>
     <item name="android:paddingRight">0dp</item>
+    <item name="android:paddingEnd">0dp</item>
     <item name="contentInsetStartWithNavigation">0dp</item>
     <item name="navigationIconTint">?attr/colorOnSurface</item>
     <item name="android:minHeight">@dimen/m3_searchview_height</item>
