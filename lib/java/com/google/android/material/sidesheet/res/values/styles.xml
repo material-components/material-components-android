@@ -41,7 +41,7 @@
   <!-- Style for the M3 Modal Side Sheet. -->
   <style name="Widget.Material3.SideSheet.Modal">
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_side_sheet_modal_elevation</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceLargeComponent</item>
+    <item name="shapeAppearance">@macro/m3_comp_sheet_side_docked_modal_container_shape</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Left</item>
   </style>
 
