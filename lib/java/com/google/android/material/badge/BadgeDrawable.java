@@ -189,8 +189,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private float cornerRadius;
   private float halfBadgeWidth;
   private float halfBadgeHeight;
-  private final int horizontalInset;
-  private final int horizontalInsetWithText;
 
   // Need to keep a local reference in order to support updating badge gravity.
   @Nullable private WeakReference<View> anchorViewRef;
@@ -251,6 +249,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private void restoreState() {
+    onBadgeTextAppearanceUpdated();
+
     onMaxCharacterCountUpdated();
 
     onNumberUpdated();
@@ -277,20 +277,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     textDrawableHelper = new TextDrawableHelper(/* delegate= */ this);
     textDrawableHelper.getTextPaint().setTextAlign(Paint.Align.CENTER);
 
-    // TODO(b/209973014): make sure this is right
-    setTextAppearanceResource(R.style.TextAppearance_MaterialComponents_Badge);
 
     this.state = new BadgeState(context, badgeResId, defStyleAttr, defStyleRes, savedState);
-
-    horizontalInset =
-        context
-            .getResources()
-            .getDimensionPixelSize(R.dimen.mtrl_badge_horizontal_edge_offset);
-
-    horizontalInsetWithText =
-        context
-            .getResources()
-            .getDimensionPixelSize(R.dimen.mtrl_badge_text_horizontal_edge_offset);
 
     restoreState();
   }
@@ -309,7 +297,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   @Deprecated
   public void updateBadgeCoordinates(
       @NonNull View anchorView, @Nullable ViewGroup customBadgeParent) {
-    if (customBadgeParent instanceof FrameLayout == false) {
+    if (!(customBadgeParent instanceof FrameLayout)) {
       throw new IllegalArgumentException("customBadgeParent must be a FrameLayout");
     }
     updateBadgeCoordinates(anchorView, (FrameLayout) customBadgeParent);
@@ -859,24 +847,30 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     return state.getAdditionalVerticalOffset();
   }
 
-  private void setTextAppearanceResource(@StyleRes int id) {
+  /**
+   * Sets this badge's text appearance resource.
+   *
+   * @param id This badge's text appearance res id.
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeTextAppearance
+   */
+  public void setTextAppearance(@StyleRes int id) {
+    state.setTextAppearanceResId(id);
+    onBadgeTextAppearanceUpdated();
+  }
+
+  private void onBadgeTextAppearanceUpdated() {
     Context context = contextRef.get();
     if (context == null) {
       return;
     }
-    setTextAppearance(new TextAppearance(context, id));
-  }
-
-  private void setTextAppearance(@Nullable TextAppearance textAppearance) {
+    TextAppearance textAppearance = new TextAppearance(context, state.getTextAppearanceResId());
     if (textDrawableHelper.getTextAppearance() == textAppearance) {
       return;
     }
-    Context context = contextRef.get();
-    if (context == null) {
-      return;
-    }
     textDrawableHelper.setTextAppearance(textAppearance, context);
+    onBadgeTextColorUpdated();
     updateCenterAndBounds();
+    invalidateSelf();
   }
 
   private void updateCenterAndBounds() {
@@ -926,7 +920,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
         hasNumber() ? state.getHorizontalOffsetWithText() : state.getHorizontalOffsetWithoutText();
     // If the offset alignment mode is legacy, then we want to add the legacy inset to the offset.
     if (state.offsetAlignmentMode == OFFSET_ALIGNMENT_MODE_LEGACY) {
-      hOffset += hasNumber() ? horizontalInsetWithText : horizontalInset;
+      hOffset += hasNumber() ? state.horizontalInsetWithText : state.horizontalInset;
     }
     return hOffset + state.getAdditionalHorizontalOffset();
   }

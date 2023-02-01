@@ -72,6 +72,8 @@ public final class BadgeState {
   final float badgeRadius;
   final float badgeWithTextRadius;
   final float badgeWidePadding;
+  final int horizontalInset;
+  final int horizontalInsetWithText;
 
   @OffsetAlignmentMode
   int offsetAlignmentMode;
@@ -99,6 +101,16 @@ public final class BadgeState {
         a.getDimensionPixelSize(
             R.styleable.Badge_badgeWidePadding,
             res.getDimensionPixelSize(R.dimen.mtrl_badge_long_text_horizontal_padding));
+    horizontalInset =
+        context
+            .getResources()
+            .getDimensionPixelSize(R.dimen.mtrl_badge_horizontal_edge_offset);
+
+    horizontalInsetWithText =
+        context
+            .getResources()
+            .getDimensionPixelSize(R.dimen.mtrl_badge_text_horizontal_edge_offset);
+
     badgeWithTextRadius =
         a.getDimensionPixelSize(
             R.styleable.Badge_badgeWithTextRadius,
@@ -146,6 +158,13 @@ public final class BadgeState {
             ? readColorFromAttributes(context, a, R.styleable.Badge_backgroundColor)
             : storedState.backgroundColor;
 
+    currentState.badgeTextAppearanceResId =
+        storedState.badgeTextAppearanceResId == null
+            ? a.getResourceId(
+                R.styleable.Badge_badgeTextAppearance,
+                R.style.TextAppearance_MaterialComponents_Badge)
+            : storedState.badgeTextAppearanceResId;
+
     // Only set the badge text color if this attribute has explicitly been set, otherwise use the
     // text color specified in the TextAppearance.
     if (storedState.badgeTextColor != null) {
@@ -155,7 +174,7 @@ public final class BadgeState {
           readColorFromAttributes(context, a, R.styleable.Badge_badgeTextColor);
     } else {
       TextAppearance textAppearance =
-          new TextAppearance(context, R.style.TextAppearance_MaterialComponents_Badge);
+          new TextAppearance(context, currentState.badgeTextAppearanceResId);
       currentState.badgeTextColor = textAppearance.getTextColor().getDefaultColor();
     }
 
@@ -297,6 +316,16 @@ public final class BadgeState {
     currentState.badgeTextColor = badgeTextColor;
   }
 
+  @StyleRes
+  int getTextAppearanceResId() {
+    return currentState.badgeTextAppearanceResId;
+  }
+
+  void setTextAppearanceResId(@StyleRes int textAppearanceResId) {
+    overridingState.badgeTextAppearanceResId = textAppearanceResId;
+    currentState.badgeTextAppearanceResId = textAppearanceResId;
+  }
+
   @BadgeGravity
   int getBadgeGravity() {
     return currentState.badgeGravity;
@@ -425,6 +454,8 @@ public final class BadgeState {
 
     @ColorInt private Integer backgroundColor;
     @ColorInt private Integer badgeTextColor;
+    @StyleRes private Integer badgeTextAppearanceResId;
+
     private int alpha = 255;
     private int number = NOT_SET;
     private int maxCharacterCount = NOT_SET;
@@ -461,6 +492,7 @@ public final class BadgeState {
       badgeResId = in.readInt();
       backgroundColor = (Integer) in.readSerializable();
       badgeTextColor = (Integer) in.readSerializable();
+      badgeTextAppearanceResId = (Integer) in.readSerializable();
       alpha = in.readInt();
       number = in.readInt();
       maxCharacterCount = in.readInt();
@@ -502,6 +534,7 @@ public final class BadgeState {
       dest.writeInt(badgeResId);
       dest.writeSerializable(backgroundColor);
       dest.writeSerializable(badgeTextColor);
+      dest.writeSerializable(badgeTextAppearanceResId);
       dest.writeInt(alpha);
       dest.writeInt(number);
       dest.writeInt(maxCharacterCount);

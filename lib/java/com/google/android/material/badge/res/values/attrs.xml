@@ -41,6 +41,8 @@
       <!-- Gravity.BOTTOM | Gravity.START -->
       <enum name="BOTTOM_START" value ="8388691"/>
     </attr>
+    <!-- A reference to a TextAppearance style to be applied to badge text. -->
+    <attr name="badgeTextAppearance" format="reference"/>
 
     <!-- Determines where the badge offsets begin in reference to the anchor. -->
     <attr name="offsetAlignmentMode">

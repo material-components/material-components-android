@@ -24,6 +24,7 @@
     <item name="maxCharacterCount">@integer/mtrl_badge_max_character_count</item>
     <item name="badgeGravity">TOP_END</item>
     <item name="offsetAlignmentMode">legacy</item>
+    <item name="badgeTextAppearance">@style/TextAppearance.MaterialComponents.Badge</item>
   </style>
 
   <style name="Base.TextAppearance.MaterialComponents.Badge" parent="TextAppearance.AppCompat">
@@ -42,14 +43,18 @@
   <!-- M3 Badge -->
   <style name="Widget.Material3.Badge" parent="Widget.MaterialComponents.Badge">
     <item name="backgroundColor">@macro/m3_comp_badge_color</item>
+    <item name="badgeTextColor">?attr/colorOnError</item>
+    <item name="offsetAlignmentMode">edge</item>
     <!-- Badge "dot" without text -->
     <item name="badgeRadius">@dimen/m3_badge_radius</item>
-    <item name="horizontalOffset">@dimen/m3_badge_horizontal_offset</item>
-    <item name="verticalOffset">@dimen/m3_badge_vertical_offset</item>
+    <item name="horizontalOffset">@dimen/m3_badge_offset</item>
+    <item name="verticalOffset">@dimen/m3_badge_offset</item>
 
     <!-- Badge with text -->
     <item name="badgeWithTextRadius">@dimen/m3_badge_with_text_radius</item>
-    <item name="horizontalOffsetWithText">@dimen/m3_badge_with_text_horizontal_offset</item>
-    <item name="verticalOffsetWithText">@dimen/m3_badge_with_text_vertical_offset</item>
+    <item name="horizontalOffsetWithText">@dimen/m3_badge_with_text_offset</item>
+    <item name="verticalOffsetWithText">@dimen/m3_badge_with_text_offset</item>
+    <item name="badgeTextAppearance">?attr/textAppearanceLabelSmall</item>
   </style>
+
 </resources>

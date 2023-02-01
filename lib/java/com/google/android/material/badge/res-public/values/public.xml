@@ -18,6 +18,7 @@
   <public name="badgeStyle" type="attr"/>
   <public name="backgroundColor" type="attr"/>
   <public name="badgeTextColor" type="attr"/>
+  <public name="badgeTextAppearance" type="attr"/>
   <public name="maxCharacterCount" type="attr"/>
   <public name="number" type="attr"/>
   <public name="badgeGravity" type="attr"/>

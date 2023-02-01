@@ -33,10 +33,13 @@
 
   <!-- M3 Dimens -->
   <dimen name="m3_badge_radius">3dp</dimen>
-  <dimen name="m3_badge_with_text_radius">7dp</dimen>
+  <dimen name="m3_badge_with_text_radius">8dp</dimen>
 
   <dimen name="m3_badge_vertical_offset">1.5dp</dimen>
   <dimen name="m3_badge_horizontal_offset">1.5dp</dimen>
   <dimen name="m3_badge_with_text_vertical_offset">4dp</dimen>
   <dimen name="m3_badge_with_text_horizontal_offset">3dp</dimen>
+
+  <dimen name="m3_badge_offset">6dp</dimen>
+  <dimen name="m3_badge_with_text_offset">12dp</dimen>
 </resources>

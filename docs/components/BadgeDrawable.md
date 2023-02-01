@@ -90,13 +90,15 @@ center, use `setHoriziontalOffset(int)` or `setVerticalOffset(int)`
 
 ### `BadgeDrawable` Attributes
 
-Feature          | Relevant attributes
----------------- | -----------------------------------------------
-Color            | `app:backgroundColor` <br> `app:badgeTextColor`
-Label            | `app:number`
-Label Length     | `app:maxCharacterCount`
-Badge Gravity    | `app:badgeGravity`
-Offset Alignment | `app:offsetAlignmentMode`
+Feature               | Relevant attributes
+--------------------- | -----------------------------------------------
+Color                 | `app:backgroundColor` <br> `app:badgeTextColor`
+Label                 | `app:number`
+Label Length          | `app:maxCharacterCount`
+Label Text Color      | `app:badgeTextColor`
+Label Text Appearance | `app:badgeTextAppearance`
+Badge Gravity         | `app:badgeGravity`
+Offset Alignment      | `app:offsetAlignmentMode`
 
 ### Talkback Support
 
