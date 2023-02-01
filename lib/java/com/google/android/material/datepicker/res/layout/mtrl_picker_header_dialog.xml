@@ -22,8 +22,6 @@
   <LinearLayout
     android:id="@+id/mtrl_picker_header"
     style="?attr/materialCalendarHeaderLayout"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/mtrl_calendar_header_height"
     android:layout_gravity="top"
     android:paddingStart="@dimen/mtrl_calendar_header_content_padding"
     android:paddingEnd="@dimen/mtrl_calendar_header_content_padding"
