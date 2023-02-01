@@ -22,7 +22,7 @@
     android:orientation="vertical">
 
     <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/multi_browse_centered_carousel_recycler_view"
+      android:id="@+id/carousel_recycler_view"
       android:layout_width="match_parent"
       android:layout_height="196dp"
       android:layout_marginHorizontal="16dp"

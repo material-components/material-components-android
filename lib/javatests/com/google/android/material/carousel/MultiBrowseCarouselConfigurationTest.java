@@ -29,14 +29,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-/** Tests for {@link StartCarouselConfiguration}. */
+/** Tests for {@link MultiBrowseCarouselConfiguration}. */
 @RunWith(RobolectricTestRunner.class)
-public class StartCarouselConfigurationTest {
+public class MultiBrowseCarouselConfigurationTest {
 
   @Test
   public void testOnFirstItemMeasuredWithMargins_createsKeylineStateWithCorrectItemSize() {
-    StartCarouselConfiguration config =
-        new StartCarouselConfiguration(createCarouselWithWidth(2470));
+    MultiBrowseCarouselConfiguration config =
+        new MultiBrowseCarouselConfiguration(createCarouselWithWidth(2470));
     View view = createViewWithSize(450, 450);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(view);
@@ -45,8 +45,8 @@ public class StartCarouselConfigurationTest {
 
   @Test
   public void testItemLargerThanContainer_resizesToFit() {
-    StartCarouselConfiguration config =
-        new StartCarouselConfiguration(createCarouselWithWidth(100));
+    MultiBrowseCarouselConfiguration config =
+        new MultiBrowseCarouselConfiguration(createCarouselWithWidth(100));
     View view = createViewWithSize(400, 400);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(view);
@@ -56,7 +56,7 @@ public class StartCarouselConfigurationTest {
   @Test
   public void testItemLargerThanContainerSize_defaultsToFullscreen() {
     Carousel carousel = createCarouselWithWidth(100);
-    StartCarouselConfiguration config = new StartCarouselConfiguration(carousel);
+    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration(carousel);
     View view = createViewWithSize(400, 400);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(view);
@@ -76,8 +76,8 @@ public class StartCarouselConfigurationTest {
   public void testKnownArrangement_correctlyCalculatesKeylineLocations() {
     float[] locOffsets = new float[] {-.5F, 225F, 675F, 942F, 1012F, 1040.5F};
 
-    StartCarouselConfiguration config =
-        new StartCarouselConfiguration(createCarouselWithWidth(1040));
+    MultiBrowseCarouselConfiguration config =
+        new MultiBrowseCarouselConfiguration(createCarouselWithWidth(1040));
     View view = createViewWithSize(450, 450);
 
     List<Keyline> keylines = config.onFirstChildMeasuredWithMargins(view).getKeylines();

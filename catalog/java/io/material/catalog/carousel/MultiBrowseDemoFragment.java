@@ -26,7 +26,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.carousel.CarouselLayoutManager;
-import com.google.android.material.carousel.StartCarouselConfiguration;
+import com.google.android.material.carousel.MultiBrowseCarouselConfiguration;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoFragment;
 
@@ -55,8 +55,6 @@ public class MultiBrowseDemoFragment extends DemoFragment {
     RecyclerView multiBrowseStartRecyclerView =
         view.findViewById(R.id.multi_browse_start_carousel_recycler_view);
     CarouselLayoutManager multiBrowseStartCarouselLayoutManager = new CarouselLayoutManager();
-    multiBrowseStartCarouselLayoutManager.setCarouselConfiguration(
-        new StartCarouselConfiguration(multiBrowseStartCarouselLayoutManager));
     multiBrowseStartCarouselLayoutManager.setDrawDebugEnabled(
         multiBrowseStartRecyclerView, debugSwitch.isChecked());
     multiBrowseStartRecyclerView.setLayoutManager(multiBrowseStartCarouselLayoutManager);
@@ -73,7 +71,8 @@ public class MultiBrowseDemoFragment extends DemoFragment {
     forceCompactSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) ->
             multiBrowseStartCarouselLayoutManager.setCarouselConfiguration(
-                new StartCarouselConfiguration(multiBrowseStartCarouselLayoutManager, isChecked)));
+                new MultiBrowseCarouselConfiguration(
+                    multiBrowseStartCarouselLayoutManager, isChecked)));
 
     CarouselAdapter adapter =
         new CarouselAdapter(

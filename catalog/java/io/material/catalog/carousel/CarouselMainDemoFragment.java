@@ -26,10 +26,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.carousel.CarouselLayoutManager;
-import com.google.android.material.carousel.CenteredCarouselConfiguration;
 import io.material.catalog.feature.DemoFragment;
 
-/** A fragment that displays the main Carousel demos for the Catalog app. */
+/** A fragment that displays the main Carousel demo for the Catalog app. */
 public class CarouselMainDemoFragment extends DemoFragment {
 
   @NonNull
@@ -46,19 +45,16 @@ public class CarouselMainDemoFragment extends DemoFragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
     super.onViewCreated(view, bundle);
 
-    // A centered multi-browse carousel
-    RecyclerView multiBrowseCenteredRecyclerView =
-        view.findViewById(R.id.multi_browse_centered_carousel_recycler_view);
+    RecyclerView carouselRecyclerView =
+        view.findViewById(R.id.carousel_recycler_view);
     CarouselLayoutManager multiBrowseCenteredCarouselLayoutManager = new CarouselLayoutManager();
-    multiBrowseCenteredCarouselLayoutManager.setCarouselConfiguration(
-        new CenteredCarouselConfiguration(multiBrowseCenteredCarouselLayoutManager));
-    multiBrowseCenteredRecyclerView.setLayoutManager(multiBrowseCenteredCarouselLayoutManager);
-    multiBrowseCenteredRecyclerView.setNestedScrollingEnabled(false);
+    carouselRecyclerView.setLayoutManager(multiBrowseCenteredCarouselLayoutManager);
+    carouselRecyclerView.setNestedScrollingEnabled(false);
 
     CarouselAdapter adapter =
         new CarouselAdapter(
-            (item, position) -> multiBrowseCenteredRecyclerView.scrollToPosition(position));
-    multiBrowseCenteredRecyclerView.setAdapter(adapter);
+            (item, position) -> carouselRecyclerView.scrollToPosition(position));
+    carouselRecyclerView.setAdapter(adapter);
 
     adapter.submitList(CarouselData.createItems());
   }

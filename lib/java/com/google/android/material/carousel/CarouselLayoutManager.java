@@ -113,7 +113,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   }
 
   public CarouselLayoutManager() {
-    setCarouselConfiguration(new StartCarouselConfiguration(this));
+    setCarouselConfiguration(new MultiBrowseCarouselConfiguration(this));
   }
 
   public CarouselLayoutManager(
