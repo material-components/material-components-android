@@ -59,17 +59,29 @@
 
   <!-- Generated from token set (md.sys.color) in context (theme=light, platform=android, audience=3p, scheme=dynamic). -->
   <!-- Primary colors -->
+  <color name="m3_sys_color_dynamic_primary_fixed">@color/m3_ref_palette_dynamic_primary90</color>
+  <color name="m3_sys_color_dynamic_on_primary_fixed">@color/m3_ref_palette_dynamic_primary10</color>
+  <color name="m3_sys_color_dynamic_primary_fixed_dim">@color/m3_ref_palette_dynamic_primary80</color>
+  <color name="m3_sys_color_dynamic_on_primary_fixed_variant">@color/m3_ref_palette_dynamic_primary30</color>
   <color name="m3_sys_color_dynamic_light_primary">@color/m3_ref_palette_dynamic_primary40</color>
   <color name="m3_sys_color_dynamic_light_primary_container">@color/m3_ref_palette_dynamic_primary90</color>
   <color name="m3_sys_color_dynamic_light_on_primary">@color/m3_ref_palette_dynamic_primary100</color>
   <color name="m3_sys_color_dynamic_light_on_primary_container">@color/m3_ref_palette_dynamic_primary10</color>
   <color name="m3_sys_color_dynamic_light_inverse_primary">@color/m3_ref_palette_dynamic_primary80</color>
   <!-- Secondary colors -->
+  <color name="m3_sys_color_dynamic_secondary_fixed">@color/m3_ref_palette_dynamic_secondary90</color>
+  <color name="m3_sys_color_dynamic_on_secondary_fixed">@color/m3_ref_palette_dynamic_secondary10</color>
+  <color name="m3_sys_color_dynamic_secondary_fixed_dim">@color/m3_ref_palette_dynamic_secondary80</color>
+  <color name="m3_sys_color_dynamic_on_secondary_fixed_variant">@color/m3_ref_palette_dynamic_secondary30</color>
   <color name="m3_sys_color_dynamic_light_secondary">@color/m3_ref_palette_dynamic_secondary40</color>
   <color name="m3_sys_color_dynamic_light_secondary_container">@color/m3_ref_palette_dynamic_secondary90</color>
   <color name="m3_sys_color_dynamic_light_on_secondary">@color/m3_ref_palette_dynamic_secondary100</color>
   <color name="m3_sys_color_dynamic_light_on_secondary_container">@color/m3_ref_palette_dynamic_secondary10</color>
   <!-- Tertiary colors -->
+  <color name="m3_sys_color_dynamic_tertiary_fixed">@color/m3_ref_palette_dynamic_tertiary90</color>
+  <color name="m3_sys_color_dynamic_on_tertiary_fixed">@color/m3_ref_palette_dynamic_tertiary10</color>
+  <color name="m3_sys_color_dynamic_tertiary_fixed_dim">@color/m3_ref_palette_dynamic_tertiary80</color>
+  <color name="m3_sys_color_dynamic_on_tertiary_fixed_variant">@color/m3_ref_palette_dynamic_tertiary30</color>
   <color name="m3_sys_color_dynamic_light_tertiary">@color/m3_ref_palette_dynamic_tertiary40</color>
   <color name="m3_sys_color_dynamic_light_tertiary_container">@color/m3_ref_palette_dynamic_tertiary90</color>
   <color name="m3_sys_color_dynamic_light_on_tertiary">@color/m3_ref_palette_dynamic_tertiary100</color>
