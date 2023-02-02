@@ -122,18 +122,6 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   }
 
   @Override
-  public void onAttachedToWindow(RecyclerView view) {
-    super.onAttachedToWindow(view);
-    view.setAccessibilityDelegateCompat(new CarouselAccessibilityDelegate(view));
-  }
-
-  @Override
-  public void onDetachedFromWindow(RecyclerView view, Recycler recycler) {
-    super.onDetachedFromWindow(view, recycler);
-    view.setAccessibilityDelegateCompat(null);
-  }
-
-  @Override
   public LayoutParams generateDefaultLayoutParams() {
     return new LayoutParams(
         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -217,8 +205,11 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
       addViewsStart(recycler, firstPosition - 1);
       addViewsEnd(recycler, state, lastPosition + 1);
     }
+  }
 
-    // Update the primary fill position from the filled view state.
+  @Override
+  public void onLayoutCompleted(State state) {
+    super.onLayoutCompleted(state);
     if (getChildCount() == 0) {
       currentFillStartPosition = 0;
     } else {
