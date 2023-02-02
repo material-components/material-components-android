@@ -883,25 +883,33 @@ public final class CollapsingTextHelper {
 
   private void drawMultilineTransition(@NonNull Canvas canvas, float currentExpandedX, float y) {
     int originalAlpha = textPaint.getAlpha();
-    // position expanded text appropriately
+    // position text appropriately
     canvas.translate(currentExpandedX, y);
-    // Expanded text
-    textPaint.setAlpha((int) (expandedTextBlend * originalAlpha));
-    // Workaround for API 31(+). Paint applies an inverse alpha of Paint object on the shadow layer
-    // when collapsing mode is scale and shadow color is opaque. The workaround is to set the shadow
-    // not opaque. Then Paint will respect to the color's alpha. Applying the shadow color for
-    // expanded text.
-    if (VERSION.SDK_INT >= VERSION_CODES.S) {
-      textPaint.setShadowLayer(
-          currentShadowRadius,
-          currentShadowDx,
-          currentShadowDy,
-          MaterialColors.compositeARGBWithAlpha(currentShadowColor, textPaint.getAlpha()));
+
+    if (!fadeModeEnabled) {
+      // Expanded text (when not in fade mode, because in fade mode at this point the expanded text
+      // has been fully faded out, so there's no need to try to draw it again)
+      textPaint.setAlpha((int) (expandedTextBlend * originalAlpha));
+      // Workaround for API 31(+). Paint applies an inverse alpha of Paint object on the shadow
+      // layer when collapsing mode is scale and shadow color is opaque. The workaround is to set
+      // the shadow not opaque. Then Paint will respect to the color's alpha. Applying the shadow
+      // color for expanded text.
+      if (VERSION.SDK_INT >= VERSION_CODES.S) {
+        textPaint.setShadowLayer(
+            currentShadowRadius,
+            currentShadowDx,
+            currentShadowDy,
+            MaterialColors.compositeARGBWithAlpha(currentShadowColor, textPaint.getAlpha()));
+      }
+      textLayout.draw(canvas);
     }
-    textLayout.draw(canvas);
 
     // Collapsed text
-    textPaint.setAlpha((int) (collapsedTextBlend * originalAlpha));
+    if (!fadeModeEnabled) {
+      // Only change the collapsed text alpha when not in fade mode, because when in fade mode it
+      // will be precalculated based on the current fraction in calculateOffsets()
+      textPaint.setAlpha((int) (collapsedTextBlend * originalAlpha));
+    }
     // Workaround for API 31(+). Applying the shadow color for collapsed text.
     if (VERSION.SDK_INT >= VERSION_CODES.S) {
       textPaint.setShadowLayer(
