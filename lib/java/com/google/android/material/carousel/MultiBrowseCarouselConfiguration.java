@@ -57,11 +57,6 @@ public final class MultiBrowseCarouselConfiguration extends CarouselConfiguratio
   // unmasked items visible at once.
   private final boolean forceCompactArrangement;
 
-  /**
-   * Create a new instance of {@link MultiBrowseCarouselConfiguration}.
-   *
-   * @param carousel the carousel which items will be fit to
-   */
   public MultiBrowseCarouselConfiguration(@NonNull Carousel carousel) {
     this(carousel, false);
   }
