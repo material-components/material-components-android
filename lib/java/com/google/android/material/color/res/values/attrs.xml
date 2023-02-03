@@ -26,6 +26,14 @@
   <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
        the primary container color. -->
   <attr name="colorOnPrimaryContainer" format="color"/>
+  <!-- A primary branding color for the app, which stays the same between light and dark themes. -->
+  <attr name="colorPrimaryFixed" format="color"/>
+  <!-- A stronger, more emphasized variant of the fixed primary branding color. -->
+  <attr name="colorPrimaryFixedDim" format="color"/>
+  <!-- The color text/iconography when drawn on top of the fixed primary branding color. -->
+  <attr name="colorOnPrimaryFixed" format="color"/>
+  <!-- A lower-emphasized variant of the color on the fixed primary branding color. -->
+  <attr name="colorOnPrimaryFixedVariant" format="color"/>
 
   <!-- The secondary branding color for the app, usually a bright complement to the primary
        branding color. -->
@@ -38,6 +46,14 @@
   <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
        the secondary container color. -->
   <attr name="colorOnSecondaryContainer" format="color"/>
+  <!-- A secondary branding color for the app, which stays the same between light and dark themes. -->
+  <attr name="colorSecondaryFixed" format="color"/>
+  <!-- A stronger, more emphasized variant of the fixed secondary branding color. -->
+  <attr name="colorSecondaryFixedDim" format="color"/>
+  <!-- The color text/iconography when drawn on top of the fixed secondary branding color. -->
+  <attr name="colorOnSecondaryFixed" format="color"/>
+  <!-- A lower-emphasized variant of the color on the fixed secondary branding color. -->
+  <attr name="colorOnSecondaryFixedVariant" format="color"/>
 
   <!-- The tertiary branding color for the app, usually a bright complement to the primary
        branding color. -->
@@ -50,6 +66,14 @@
   <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
        the tertiary container color. -->
   <attr name="colorOnTertiaryContainer" format="color"/>
+  <!-- A tertiary branding color for the app, which stays the same between light and dark themes. -->
+  <attr name="colorTertiaryFixed" format="color"/>
+  <!-- A stronger, more emphasized variant of the fixed tertiary branding color. -->
+  <attr name="colorTertiaryFixedDim" format="color"/>
+  <!-- The color text/iconography when drawn on top of the fixed tertiary branding color. -->
+  <attr name="colorOnTertiaryFixed" format="color"/>
+  <!-- A lower-emphasized variant of the color on the fixed tertiary branding color. -->
+  <attr name="colorOnTertiaryFixedVariant" format="color"/>
 
   <!-- A color that passes accessibility guidelines for text/iconography when drawn on top of
        background. -->

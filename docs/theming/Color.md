@@ -31,21 +31,33 @@ brand color:
 
 <!-- Auto-generated accent color table starts. Do not edit below or remove this comment. -->
 
-Color Role             | Android Attribute         | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
----------------------- | ------------------------- | ------------------------------------ | -----------------------------------
-Primary                | colorPrimary              | primary40</br>(system_accent1_600)   | primary80</br>(system_accent1_200)
-On Primary             | colorOnPrimary            | white</br>(system_accent1_0)         | primary20</br>(system_accent1_800)
-Primary Container      | colorPrimaryContainer     | primary90</br>(system_accent1_100)   | primary30</br>(system_accent1_700)
-On Primary Container   | colorOnPrimaryContainer   | primary10</br>(system_accent1_900)   | primary90</br>(system_accent1_100)
-Inverse Primary        | colorPrimaryInverse       | primary80</br>(system_accent1_200)   | primary40</br>(system_accent1_600)
-Secondary              | colorSecondary            | secondary40</br>(system_accent2_600) | secondary80</br>(system_accent2_200)
-On Secondary           | colorOnSecondary          | white</br>(system_accent2_0)         | secondary20</br>(system_accent2_800)
-Secondary Container    | colorSecondaryContainer   | secondary90</br>(system_accent2_100) | secondary30</br>(system_accent2_700)
-On Secondary Container | colorOnSecondaryContainer | secondary10</br>(system_accent2_900) | secondary90</br>(system_accent2_100)
-Tertiary               | colorTertiary             | tertiary40</br>(system_accent3_600)  | tertiary80</br>(system_accent3_200)
-On Tertiary            | colorOnTertiary           | white</br>(system_accent3_0)         | tertiary20</br>(system_accent3_800)
-Tertiary Container     | colorTertiaryContainer    | tertiary90</br>(system_accent3_100)  | tertiary30</br>(system_accent3_700)
-On Tertiary Container  | colorOnTertiaryContainer  | tertiary10</br>(system_accent3_900)  | tertiary90</br>(system_accent3_100)
+Color Role                 | Android Attribute            | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
+-------------------------- | ---------------------------- | ------------------------------------ | -----------------------------------
+Primary                    | colorPrimary                 | primary40</br>(system_accent1_600)   | primary80</br>(system_accent1_200)
+On Primary                 | colorOnPrimary               | white</br>(system_accent1_0)         | primary20</br>(system_accent1_800)
+Primary Container          | colorPrimaryContainer        | primary90</br>(system_accent1_100)   | primary30</br>(system_accent1_700)
+On Primary Container       | colorOnPrimaryContainer      | primary10</br>(system_accent1_900)   | primary90</br>(system_accent1_100)
+Inverse Primary            | colorPrimaryInverse          | primary80</br>(system_accent1_200)   | primary40</br>(system_accent1_600)
+Primary Fixed              | colorPrimaryFixed            | primary90</br>(system_accent1_100)   | primary90</br>(system_accent1_100)
+Primary Fixed Dim          | colorPrimaryFixedDim         | primary80</br>(system_accent1_200)   | primary80</br>(system_accent1_200)
+On Primary Fixed           | colorOnPrimaryFixed          | primary10</br>(system_accent1_900)   | primary10</br>(system_accent1_900)
+On Primary Fixed Variant   | colorOnPrimaryFixedVariant   | primary30</br>(system_accent1_700)   | primary30</br>(system_accent1_700)
+Secondary                  | colorSecondary               | secondary40</br>(system_accent2_600) | secondary80</br>(system_accent2_200)
+On Secondary               | colorOnSecondary             | white</br>(system_accent2_0)         | secondary20</br>(system_accent2_800)
+Secondary Container        | colorSecondaryContainer      | secondary90</br>(system_accent2_100) | secondary30</br>(system_accent2_700)
+On Secondary Container     | colorOnSecondaryContainer    | secondary10</br>(system_accent2_900) | secondary90</br>(system_accent2_100)
+Secondary Fixed            | colorSecondaryFixed          | secondary90</br>(system_accent2_100) | secondary90</br>(system_accent2_100)
+Secondary Fixed Dim        | colorSecondaryFixedDim       | secondary80</br>(system_accent2_200) | secondary80</br>(system_accent2_200)
+On Secondary Fixed         | colorOnSecondaryFixed        | secondary10</br>(system_accent2_900) | secondary10</br>(system_accent2_900)
+On Secondary Fixed Variant | colorOnSecondaryFixedVariant | secondary30</br>(system_accent2_700) | secondary30</br>(system_accent2_700)
+Tertiary                   | colorTertiary                | tertiary40</br>(system_accent3_600)  | tertiary80</br>(system_accent3_200)
+On Tertiary                | colorOnTertiary              | white</br>(system_accent3_0)         | tertiary20</br>(system_accent3_800)
+Tertiary Container         | colorTertiaryContainer       | tertiary90</br>(system_accent3_100)  | tertiary30</br>(system_accent3_700)
+On Tertiary Container      | colorOnTertiaryContainer     | tertiary10</br>(system_accent3_900)  | tertiary90</br>(system_accent3_100)
+Tertiary Fixed             | colorTertiaryFixed           | tertiary90</br>(system_accent3_100)  | tertiary90</br>(system_accent3_100)
+Tertiary Fixed Dim         | colorTertiaryFixedDim        | tertiary80</br>(system_accent3_200)  | tertiary80</br>(system_accent3_200)
+On Tertiary Fixed          | colorOnTertiaryFixed         | tertiary10</br>(system_accent3_900)  | tertiary10</br>(system_accent3_900)
+On Tertiary Fixed Variant  | colorOnTertiaryFixedVariant  | tertiary30</br>(system_accent3_700)  | tertiary30</br>(system_accent3_700)
 
 <!-- Auto-generated accent color table ends. Do not edit below or remove this comment. -->
 

@@ -19,16 +19,28 @@
   <public name="colorPrimaryInverse" type="attr"/>
   <public name="colorPrimaryContainer" type="attr"/>
   <public name="colorOnPrimaryContainer" type="attr"/>
+  <public name="colorPrimaryFixed" type="attr"/>
+  <public name="colorPrimaryFixedDim" type="attr"/>
+  <public name="colorOnPrimaryFixed" type="attr"/>
+  <public name="colorOnPrimaryFixedVariant" type="attr"/>
 
   <public name="colorSecondary" type="attr"/>
   <public name="colorOnSecondary" type="attr"/>
   <public name="colorSecondaryContainer" type="attr"/>
   <public name="colorOnSecondaryContainer" type="attr"/>
+  <public name="colorSecondaryFixed" type="attr"/>
+  <public name="colorSecondaryFixedDim" type="attr"/>
+  <public name="colorOnSecondaryFixed" type="attr"/>
+  <public name="colorOnSecondaryFixedVariant" type="attr"/>
 
   <public name="colorTertiary" type="attr"/>
   <public name="colorOnTertiary" type="attr"/>
   <public name="colorTertiaryContainer" type="attr"/>
   <public name="colorOnTertiaryContainer" type="attr"/>
+  <public name="colorTertiaryFixed" type="attr"/>
+  <public name="colorTertiaryFixedDim" type="attr"/>
+  <public name="colorOnTertiaryFixed" type="attr"/>
+  <public name="colorOnTertiaryFixedVariant" type="attr"/>
 
   <public name="colorOnBackground" type="attr"/>
 

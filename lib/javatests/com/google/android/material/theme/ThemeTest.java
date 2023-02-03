@@ -241,16 +241,28 @@ public class ThemeTest {
           R.attr.colorPrimaryInverse,
           R.attr.colorPrimaryContainer,
           R.attr.colorOnPrimaryContainer,
+          R.attr.colorPrimaryFixed,
+          R.attr.colorPrimaryFixedDim,
+          R.attr.colorOnPrimaryFixed,
+          R.attr.colorOnPrimaryFixedVariant,
           // Secondary colors.
           R.attr.colorSecondary,
           R.attr.colorOnSecondary,
           R.attr.colorSecondaryContainer,
           R.attr.colorOnSecondaryContainer,
+          R.attr.colorSecondaryFixed,
+          R.attr.colorSecondaryFixedDim,
+          R.attr.colorOnSecondaryFixed,
+          R.attr.colorOnSecondaryFixedVariant,
           // Tertiary colors.
           R.attr.colorTertiary,
           R.attr.colorOnTertiary,
           R.attr.colorTertiaryContainer,
-          R.attr.colorOnTertiaryContainer);
+          R.attr.colorOnTertiaryContainer,
+          R.attr.colorTertiaryFixed,
+          R.attr.colorTertiaryFixedDim,
+          R.attr.colorOnTertiaryFixed,
+          R.attr.colorOnTertiaryFixedVariant);
 
   /**
    * These are color attributes that all themes and theme overlays should have.
