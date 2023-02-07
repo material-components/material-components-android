@@ -27,11 +27,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.MultiBrowseCarouselConfiguration;
+import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the multi-browse variants of the Carousel. */
 public class MultiBrowseDemoFragment extends DemoFragment {
+
+  private MaterialDividerItemDecoration horizontalDivider;
 
   @NonNull
   @Override
@@ -48,8 +51,13 @@ public class MultiBrowseDemoFragment extends DemoFragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
     super.onViewCreated(view, bundle);
 
+    horizontalDivider =
+        new MaterialDividerItemDecoration(
+            requireContext(), MaterialDividerItemDecoration.HORIZONTAL);
+
     MaterialSwitch debugSwitch = view.findViewById(R.id.debug_switch);
     MaterialSwitch forceCompactSwitch = view.findViewById(R.id.force_compact_arrangement_switch);
+    MaterialSwitch drawDividers = view.findViewById(R.id.draw_dividers_switch);
 
     // A start-aligned multi-browse carousel
     RecyclerView multiBrowseStartRecyclerView =
@@ -73,6 +81,15 @@ public class MultiBrowseDemoFragment extends DemoFragment {
             multiBrowseStartCarouselLayoutManager.setCarouselConfiguration(
                 new MultiBrowseCarouselConfiguration(
                     multiBrowseStartCarouselLayoutManager, isChecked)));
+
+    drawDividers.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            multiBrowseStartRecyclerView.addItemDecoration(horizontalDivider);
+          } else {
+            multiBrowseStartRecyclerView.removeItemDecoration(horizontalDivider);
+          }
+        });
 
     CarouselAdapter adapter =
         new CarouselAdapter(

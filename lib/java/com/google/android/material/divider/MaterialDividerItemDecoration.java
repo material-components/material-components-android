@@ -321,7 +321,7 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     for (int i = 0; i < childCount; i++) {
       View child = parent.getChildAt(i);
       if (shouldDrawDivider(parent, child)) {
-        parent.getDecoratedBoundsWithMargins(child, tempRect);
+        parent.getLayoutManager().getDecoratedBoundsWithMargins(child, tempRect);
         // Take into consideration any translationY added to the view.
         int bottom = tempRect.bottom + Math.round(child.getTranslationY());
         int top = bottom - thickness;
@@ -356,7 +356,7 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
     for (int i = 0; i < childCount; i++) {
       View child = parent.getChildAt(i);
       if (shouldDrawDivider(parent, child)) {
-        parent.getDecoratedBoundsWithMargins(child, tempRect);
+        parent.getLayoutManager().getDecoratedBoundsWithMargins(child, tempRect);
         // Take into consideration any translationX added to the view.
         int right = tempRect.right + Math.round(child.getTranslationX());
         int left = right - thickness;

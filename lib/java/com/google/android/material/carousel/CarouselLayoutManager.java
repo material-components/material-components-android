@@ -349,9 +349,38 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     return isLayoutRtl() ? maskedStart < 0 : maskedStart > getContainerWidth();
   }
 
+  /**
+   * Returns the masked, decorated bounds with margins for {@code view}.
+   *
+   * <p>Note that this differs from the super method which returns the fully unmasked bounds of
+   * {@code view}.
+   *
+   * <p>Getting the masked, decorated bounds is useful for item decorations and other associated
+   * classes which need the actual visual bounds of an item in the RecyclerView. If the full,
+   * unmasked bounds is needed, see {@link RecyclerView#getDecoratedBoundsWithMargins(View, Rect)}.
+   *
+   * @param view the view element to check
+   * @param outBounds a rect that will receive the bounds of the element including its maks,
+   *     decoration, and margins.
+   */
+  @Override
+  public void getDecoratedBoundsWithMargins(@NonNull View view, @NonNull Rect outBounds) {
+    super.getDecoratedBoundsWithMargins(view, outBounds);
+    float centerX = outBounds.centerX();
+    float maskedSize =
+        getMaskedItemSizeForLocOffset(
+            centerX, getSurroundingKeylineRange(currentKeylineState.getKeylines(), centerX, true));
+    float delta = (outBounds.width() - maskedSize) / 2F;
+    outBounds.set(
+        (int) (outBounds.left + delta),
+        outBounds.top,
+        (int) (outBounds.right - delta),
+        outBounds.bottom);
+  }
+
   private float getDecoratedCenterXWithMargins(View child) {
     Rect bounds = new Rect();
-    getDecoratedBoundsWithMargins(child, bounds);
+    super.getDecoratedBoundsWithMargins(child, bounds);
     return bounds.centerX();
   }
 
@@ -864,7 +893,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     updateChildMaskForLocation(child, centerX, range);
 
     // Offset the child so its center is at offsetCx
-    getDecoratedBoundsWithMargins(child, boundsRect);
+    super.getDecoratedBoundsWithMargins(child, boundsRect);
     float actualCx = boundsRect.left + halfItemSize;
     child.offsetLeftAndRight((int) (offsetCx - actualCx));
   }
