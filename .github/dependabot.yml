@@ -1,0 +1,37 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/catalog"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "catalog"
+    commit-message:
+      prefix: "[Internal][Gradle] "
+      include: "scope"
+    open-pull-requests-limit: 3
+
+  - package-ecosystem: "gradle"
+    directory: "/testing"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "tests"
+    commit-message:
+      prefix: "[Internal][Gradle] "
+      include: "scope"
+    open-pull-requests-limit: 3
+
+  - package-ecosystem: "gradle"
+    directory: "/tests"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "dependencies"
+      - "tests"
+    commit-message:
+      prefix: "[Internal][Gradle] "
+      include: "scope"
+    open-pull-requests-limit: 3
