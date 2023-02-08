@@ -79,10 +79,8 @@ The following is an anatomy diagram for the search bar:
 
 1.  Container
 2.  Leading icon button
-3.  Input text Supporting text
-4.  Avatar (optional)
-5.  Supporting text
-6.  Trailing icon button (optional)
+3.  Supporting text
+4.  Avatar or trailing icon (optional)
 
 ### Attributes
 
