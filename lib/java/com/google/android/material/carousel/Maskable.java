@@ -23,8 +23,6 @@ import androidx.annotation.NonNull;
 
 /**
  * Interface for any view that can clip itself and all children to a percentage of its size.
- *
- * <p>TODO(b/238614892) Investigate moving to a ViewOutlineProvider.
  */
 interface Maskable {
 

@@ -53,16 +53,12 @@ import java.util.List;
  * A {@link LayoutManager} that can mask and offset items along the scrolling axis, creating a
  * unique list optimized for a stylized viewing experience.
  *
- * <p>Carousels require all children to be the same size and no larger than the size of the {@link
- * RecyclerView}. Typically, the first item in the adapter will be measured and used as the size for
- * all other children. Adapters can have multiple different ViewHolders but each View will be
- * measured and laid out using the dimensions received from the first child. This can differ
- * depending on the {@link CarouselConfiguration} implementation which can alternatively choose to
- * set child dimensions based on available space, ignoring child size all together.
+ * <p>{@link CarouselLayoutManager} requires all children to use {@link MaskableFrameLayout} as
+ * their root ViewGroup.
  *
- * <p>{@link CarouselLayoutManager} fills the scroll container as if items were laid out end-to-end.
- * A child's position between {@link Keyline}s (points along the scroll axis) is then used as a
- * fraction to animate child properties like offset and masking.
+ * <p>Note that when Carousel measures and lays out items, the first item in the adapter will be
+ * measured and it's desired size will be used to determine an appropriate size for all items in the
+ * carousel.
  */
 public class CarouselLayoutManager extends LayoutManager implements Carousel {
 
@@ -185,6 +181,14 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
    * <p>This method is responsible for making sure views are added when additional space is created
    * due to an initial layout or a scroll event. All offsetting due to scroll events is done by
    * {@link #scrollBy(int, Recycler, State)}.
+   *
+   * <p>This layout manager tracks item location using two "models". The first is an end-to-end
+   * model that keeps track of items as if they were laid out one after the other and fully unmasked
+   * (the same way they would be laid out in a traditional list). This model is primarily useful for
+   * tracking scroll minimums, maximums, and offsets. The second model is an offset model which is
+   * the location of an item after it's position has been interpolated from {@link Keyline#loc}
+   * (it's end-to-end location) to {@link Keyline#locOffset}. This is the model in which children
+   * are actually laid out and drawn.
    *
    * @param recycler current recycler that is attached to the {@link RecyclerView}
    * @param state state passed by the {@link RecyclerView} with useful information like item count
@@ -672,6 +676,12 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
 
   @Override
   public void measureChildWithMargins(@NonNull View child, int widthUsed, int heightUsed) {
+    if (!(child instanceof Maskable)) {
+      throw new IllegalStateException(
+          "All children of a RecyclerView using CarouselLayoutManager must use MaskableFrameLayout"
+              + " as their root ViewGroup.");
+    }
+
     LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
     Rect insets = new Rect();
