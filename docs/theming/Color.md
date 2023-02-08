@@ -147,7 +147,7 @@ want to consider getting those tonal surface colors on the fly, by using the
 convenient enums we provide in the Material Library. For example, if you want to
 get the color hex value of Surface1, you can do:
 
-``` java
+```java
 int colorSurface1 = SurfaceColors.SURFACE_1.getColor(context);
 ```
 
@@ -187,7 +187,7 @@ this helper class according to different scenarios:
 
 In your application class’ `onCreate()` method, call:
 
-``` java
+```java
 DynamicColors.applyToActivitiesIfAvailable(this);
 ```
 
@@ -202,7 +202,7 @@ If you are using Material 3 themes, `R.attr.dynamicColorThemeOverlay` will be
 You can also have finer control over theme overlay deployment by providing a
 precondition when calling the method:
 
-``` java
+```java
 DynamicColors.applyToActivitiesIfAvailable(this, (activity, themeResId) -> {
   // ...implement your own logic here. Return `true` if dynamic colors should be applied.
 });
@@ -228,7 +228,7 @@ You can also opt to apply dynamic colors to a few specific activities, by
 calling the following method in your activities’ `onCreate()` method (or before
 you inflate anything from it):
 
-``` java
+```java
 DynamicColors.applyToActivityIfAvailable(this);
 ```
 
@@ -246,7 +246,7 @@ precondition, to have finer control over theme overlay deployment. You may also
 optionally specify an `OnAppliedCallback` function, which will be called after
 dynamic colors have been applied:
 
-``` java
+```java
 DynamicColorsOptions dynamicColorOptions =
     new DynamicColorsOptions.Builder()
         .setThemeOverlay(themeOverlay)
@@ -261,7 +261,7 @@ DynamicColors.applyToActivitiesIfAvailable(application, dynamicColorOptions);
 You can also apply dynamic colors to a specific activity in the app by passing
 in the specific activity and a `DynamicColorsOptions` object:
 
-``` java
+```java
 DynamicColorsOptions dynamicColorOptions =
     new DynamicColorsOptions.Builder()
         .setThemeOverlay(themeOverlay)
@@ -277,7 +277,7 @@ Applying dynamic colors to a few of the views in an activity is more complex.
 The easiest solution is to create a themed context to create the view. We
 provide a helper method for this purpose:
 
-``` java
+```java
 context = DynamicColors.wrapContextIfAvailable(context);
 ```
 
@@ -326,7 +326,7 @@ components.
 
 When creating app colors, do not use the same name as the color slot:
 
-``` xml
+```xml
 <resources>
   <color name="color_primary">...</color>
   <color name="color_surface">...</color>
@@ -335,7 +335,7 @@ When creating app colors, do not use the same name as the color slot:
 
 Instead use literal names relevant to the RGB value, for example:
 
-``` xml
+```xml
 <resources>
   <color name="brand_blue">...</color>
   <color name="brand_grey">...</color>
@@ -403,7 +403,7 @@ package:
 
 In your application class or activity/fragment/view, call:
 
-``` java
+```java
 int harmonizedColor = MaterialColors.harmonizeWithPrimary(context, colorToHarmonize);
 ```
 
@@ -424,7 +424,7 @@ construct a `HarmonizedColorsOptions`. You can optionally pass in an array of
 resource ids for the color resources you'd like to harmonize, a
 `HarmonizedColorAttributes` object and/or the color attribute to harmonize with:
 
-``` java
+```java
 HarmonizedColorsOptions options =
     new HarmonizedColorsOptions.Builder()
         .setColorResourceIds(colorResources)
@@ -436,7 +436,7 @@ HarmonizedColorsOptions options =
 In the `HarmonizedColorsOptions` class, we also provided a convenience method
 `createMaterialDefaults()`, with Error colors being harmonized by default.
 
-``` java
+```java
 HarmonizedColorsOptions options = HarmonizedColorsOptions.createMaterialDefaults();
 HarmonizedColors.applyToContextIfAvailable(context, options);
 ```
