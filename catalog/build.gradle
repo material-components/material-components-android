@@ -17,7 +17,7 @@ dependencies {
   api "androidx.window:window-java:1.0.0-beta04"
   api "androidx.preference:preference:1.1.1"
 
-  api 'com.google.guava:guava:27.0.1-android'
+  api 'com.google.guava:guava:31.1-android'
 
   api 'com.github.bumptech.glide:glide:4.13.2'
 
