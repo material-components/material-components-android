@@ -31,7 +31,7 @@ public abstract class CarouselConfiguration {
    *
    * <p>This method is called when {@link Carousel} measures the first item to be added to its
    * scroll container. This method then must create a {@link KeylineState} which tells {@link
-   * Carousel} how to fill the scroll container with items — how many are visible at once, what
+   * Carousel} how to fill the scroll container with items - how many are visible at once, what
    * their sizes are, and where they're placed.
    *
    * <p>For example, take a simple arrangement that fills the scroll container with two large items
