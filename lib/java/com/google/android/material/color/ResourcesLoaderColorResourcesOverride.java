@@ -19,7 +19,10 @@ package com.google.android.material.color;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.os.Build.VERSION_CODES;
+import android.view.ContextThemeWrapper;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import java.util.Map;
 
@@ -48,6 +51,30 @@ class ResourcesLoaderColorResourcesOverride implements ColorResourcesOverride {
       return true;
     }
     return false;
+  }
+
+  /**
+   * Wraps the given Context with the theme overlay where color resources are updated at runtime.
+   * If not possible, the original Context will be returned.
+   *
+   * @param context The target context.
+   * @param colorResourceIdsToColorValues The mapping from the color resources id to the updated
+   *     color value.
+   */
+  @Override
+  @NonNull
+  public Context wrapContextIfPossible(
+      Context context, Map<Integer, Integer> colorResourceIdsToColorValues) {
+    ContextThemeWrapper themeWrapper =
+        new ContextThemeWrapper(context, R.style.ThemeOverlay_Material3_PersonalizedColors);
+    // Because ContextThemeWrapper does not provide a new set of resources, override config to
+    // retrieve the new set of resources and to keep the original context's resources intact.
+    themeWrapper.applyOverrideConfiguration(new Configuration());
+
+    return ResourcesLoaderUtils.addResourcesLoaderToContext(
+            themeWrapper, colorResourceIdsToColorValues)
+        ? themeWrapper
+        : context;
   }
 
   static ColorResourcesOverride getInstance() {

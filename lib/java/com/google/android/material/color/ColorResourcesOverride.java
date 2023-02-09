@@ -47,6 +47,18 @@ public interface ColorResourcesOverride {
   boolean applyIfPossible(
       @NonNull Context context, @NonNull Map<Integer, Integer> colorResourceIdsToColorValues);
 
+  /**
+   * Wraps the given Context with the theme overlay where color resources are updated at runtime.
+   * If not possible, the original Context will be returned.
+   *
+   * @param context The target context.
+   * @param colorResourceIdsToColorValues The mapping from the color resources id to the updated
+   *     color value.
+   */
+  @NonNull
+  Context wrapContextIfPossible(
+      @NonNull Context context, @NonNull Map<Integer, Integer> colorResourceIdsToColorValues);
+
   @Nullable
   static ColorResourcesOverride getInstance() {
     if (VERSION_CODES.R <= VERSION.SDK_INT && VERSION.SDK_INT <= VERSION_CODES.TIRAMISU) {
