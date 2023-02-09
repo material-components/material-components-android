@@ -230,7 +230,7 @@ public final class TabLayoutMediator {
         boolean updateIndicator =
             !(scrollState == SCROLL_STATE_SETTLING && previousScrollState == SCROLL_STATE_IDLE);
         tabLayout.setScrollPosition(
-            position, positionOffset, updateSelectedTabView, updateIndicator);
+            position, positionOffset, updateSelectedTabView, updateIndicator, false);
       }
     }
 

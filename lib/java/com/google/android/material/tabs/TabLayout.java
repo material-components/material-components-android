@@ -757,6 +757,20 @@ public class TabLayout extends HorizontalScrollView {
       float positionOffset,
       boolean updateSelectedTabView,
       boolean updateIndicatorPosition) {
+    setScrollPosition(
+        position,
+        positionOffset,
+        updateSelectedTabView,
+        updateIndicatorPosition,
+        /* alwaysScroll= */ true);
+  }
+
+  void setScrollPosition(
+      int position,
+      float positionOffset,
+      boolean updateSelectedTabView,
+      boolean updateIndicatorPosition,
+      boolean alwaysScroll) {
     final int roundedPosition = Math.round(position + positionOffset);
     if (roundedPosition < 0 || roundedPosition >= slidingTabIndicator.getChildCount()) {
       return;
@@ -771,7 +785,36 @@ public class TabLayout extends HorizontalScrollView {
     if (scrollAnimator != null && scrollAnimator.isRunning()) {
       scrollAnimator.cancel();
     }
-    scrollTo(position < 0 ? 0 : calculateScrollXForTab(position, positionOffset), 0);
+    int scrollXForPosition = calculateScrollXForTab(position, positionOffset);
+    int scrollX = getScrollX();
+    // If the position is smaller than the selected tab position, the position is getting larger
+    // to reach the selected tab position so scrollX is increasing.
+    // We only want to update the scroll position if the new scroll position is greater than
+    // the current scroll position.
+    // Conversely if the position is greater than the selected tab position, the position is
+    // getting smaller to reach the selected tab position so scrollX is decreasing.
+    // We only update the scroll position if the new scroll position is less than the current
+    // scroll position.
+    // Lastly if the position is equal to the selected position, we want to set the scroll
+    // position which also updates the selected tab view and the indicator.
+    boolean toMove =
+        (position < getSelectedTabPosition() && scrollXForPosition >= scrollX)
+            || (position > getSelectedTabPosition() && scrollXForPosition <= scrollX)
+            || (position == getSelectedTabPosition());
+    // If the layout direction is RTL, the scrollXForPosition and scrollX comparisons are
+    // reversed since scrollX values remain the same in RTL but tab positions go RTL.
+    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      toMove =
+          (position < getSelectedTabPosition() && scrollXForPosition <= scrollX)
+              || (position > getSelectedTabPosition()
+              && scrollXForPosition >= scrollX)
+              || (position == getSelectedTabPosition());
+    }
+    // We want to scroll if alwaysScroll is true, the viewpager is being dragged, or if we should
+    // scroll by the rules above.
+    if (toMove || viewPagerScrollState == SCROLL_STATE_DRAGGING || alwaysScroll) {
+      scrollTo(position < 0 ? 0 : scrollXForPosition, 0);
+    }
 
     // Update the 'selected state' view as we scroll, if enabled
     if (updateSelectedTabView) {
@@ -3536,7 +3579,7 @@ public class TabLayout extends HorizontalScrollView {
         final boolean updateIndicator =
             !(scrollState == SCROLL_STATE_SETTLING && previousScrollState == SCROLL_STATE_IDLE);
         tabLayout.setScrollPosition(
-            position, positionOffset, updateSelectedTabView, updateIndicator);
+            position, positionOffset, updateSelectedTabView, updateIndicator, false);
       }
     }
 
