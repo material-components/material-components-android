@@ -58,9 +58,10 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testAddAdapterItem_isAddedByLayoutManager() throws Throwable {
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
         });
@@ -71,9 +72,10 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testMeasureChild_usesStateItemSize() throws Throwable {
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
         });
@@ -84,9 +86,10 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testMaskedChild_isStillGivenFullWidthBounds() throws Throwable {
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return new KeylineState.Builder(DEFAULT_ITEM_WIDTH)
                 .addKeyline(225F, .5F, 225F, true)
                 .build();
@@ -102,9 +105,10 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testMaskedChild_isMaskedToCorrectSize() throws Throwable {
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return new KeylineState.Builder(DEFAULT_ITEM_WIDTH)
                 .addKeyline(225F, .8F, 90F, true)
                 .build();
@@ -120,9 +124,10 @@ public class CarouselLayoutManagerTest {
   public void testKnownArrangement_initialScrollPositionHasAllItemsWithinCarouselContainer()
       throws Throwable {
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
         });
@@ -142,9 +147,10 @@ public class CarouselLayoutManagerTest {
   public void testScrollToPosition_movesChildToFocalStartKeyline() throws Throwable {
     KeylineState keylineState = getTestCenteredKeylineState();
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }
         });
@@ -162,9 +168,10 @@ public class CarouselLayoutManagerTest {
   public void testScrollBeyondMaxHorizontalScroll_shouldLimitToMaxScrollOffset() throws Throwable {
     KeylineState keylineState = getTestCenteredKeylineState();
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }
         });
@@ -182,9 +189,10 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testInitialFill_shouldFillMinimumItemCountForContainer() throws Throwable {
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(@NonNull View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
         });
@@ -197,9 +205,10 @@ public class CarouselLayoutManagerTest {
   public void testScrollAndFill_shouldRecycleAndFillMinimumItemCountForContainer()
       throws Throwable {
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(@NonNull View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
         });
@@ -212,9 +221,10 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testEmptyAdapter_shouldClearAllViewsFromRecyclerView() throws Throwable {
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(@NonNull View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
         });

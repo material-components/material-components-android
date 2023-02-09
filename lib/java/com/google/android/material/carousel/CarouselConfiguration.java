@@ -29,12 +29,6 @@ import com.google.android.material.carousel.KeylineState.Keyline;
  */
 abstract class CarouselConfiguration {
 
-  private final Carousel carousel;
-
-  CarouselConfiguration(@NonNull Carousel carousel) {
-    this.carousel = carousel;
-  }
-
   /**
    * Calculates a keyline arrangement and returns a constructed {@link KeylineState}.
    *
@@ -56,14 +50,10 @@ abstract class CarouselConfiguration {
    *
    * @param child The first measured view from the carousel, use this view to determine the max size
    *     that all items in the carousel will be given.
+   * @param carousel The carousel to create a {@link KeylineState} for
    * @return A {@link KeylineState} to be used by the layout manager to offset and mask children
    *     along the scrolling axis.
    */
-  protected abstract KeylineState onFirstChildMeasuredWithMargins(@NonNull View child);
-
-  /** Gets the {@link Carousel} associated with this configuration. */
-  @NonNull
-  protected final Carousel getCarousel() {
-    return carousel;
-  }
+  protected abstract KeylineState onFirstChildMeasuredWithMargins(
+      @NonNull Carousel carousel, @NonNull View child);
 }

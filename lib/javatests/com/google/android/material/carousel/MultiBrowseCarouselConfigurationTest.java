@@ -35,31 +35,31 @@ public class MultiBrowseCarouselConfigurationTest {
 
   @Test
   public void testOnFirstItemMeasuredWithMargins_createsKeylineStateWithCorrectItemSize() {
-    MultiBrowseCarouselConfiguration config =
-        new MultiBrowseCarouselConfiguration(createCarouselWithWidth(2470));
+    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration();
     View view = createViewWithSize(450, 450);
 
-    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(view);
+    KeylineState keylineState =
+        config.onFirstChildMeasuredWithMargins(createCarouselWithWidth(2470), view);
     assertThat(keylineState.getItemSize()).isEqualTo(450F);
   }
 
   @Test
   public void testItemLargerThanContainer_resizesToFit() {
-    MultiBrowseCarouselConfiguration config =
-        new MultiBrowseCarouselConfiguration(createCarouselWithWidth(100));
+    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration();
     View view = createViewWithSize(400, 400);
 
-    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(view);
+    KeylineState keylineState =
+        config.onFirstChildMeasuredWithMargins(createCarouselWithWidth(100), view);
     assertThat(keylineState.getItemSize()).isAtMost(100F);
   }
 
   @Test
   public void testItemLargerThanContainerSize_defaultsToFullscreen() {
     Carousel carousel = createCarouselWithWidth(100);
-    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration(carousel);
+    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration();
     View view = createViewWithSize(400, 400);
 
-    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(view);
+    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
 
     // A fullscreen layout should be [collapsed-expanded-collapsed] where the collapsed items are
     // outside the bounds of the carousel container and the expanded center item takes up the
@@ -76,11 +76,11 @@ public class MultiBrowseCarouselConfigurationTest {
   public void testKnownArrangement_correctlyCalculatesKeylineLocations() {
     float[] locOffsets = new float[] {-.5F, 225F, 675F, 942F, 1012F, 1040.5F};
 
-    MultiBrowseCarouselConfiguration config =
-        new MultiBrowseCarouselConfiguration(createCarouselWithWidth(1040));
+    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration();
     View view = createViewWithSize(450, 450);
 
-    List<Keyline> keylines = config.onFirstChildMeasuredWithMargins(view).getKeylines();
+    List<Keyline> keylines =
+        config.onFirstChildMeasuredWithMargins(createCarouselWithWidth(1040), view).getKeylines();
     for (int i = 0; i < keylines.size(); i++) {
       assertThat(keylines.get(i).locOffset).isEqualTo(locOffsets[i]);
     }

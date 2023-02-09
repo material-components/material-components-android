@@ -57,21 +57,18 @@ public final class MultiBrowseCarouselConfiguration extends CarouselConfiguratio
   // unmasked items visible at once.
   private final boolean forceCompactArrangement;
 
-  public MultiBrowseCarouselConfiguration(@NonNull Carousel carousel) {
-    this(carousel, false);
+  public MultiBrowseCarouselConfiguration() {
+    this(false);
   }
 
   /**
    * Create a new instance of {@link MultiBrowseCarouselConfiguration}.
    *
-   * @param carousel The carousel which items will be fit to
    * @param forceCompactArrangement true if items should be fit in a way that maximizes the number
    *     of large, unmasked items. false if this configuration is free to determine an opinionated
    *     balance between item sizes.
    */
-  public MultiBrowseCarouselConfiguration(
-      @NonNull Carousel carousel, boolean forceCompactArrangement) {
-    super(carousel);
+  public MultiBrowseCarouselConfiguration(boolean forceCompactArrangement) {
     this.forceCompactArrangement = forceCompactArrangement;
   }
 
@@ -91,14 +88,15 @@ public final class MultiBrowseCarouselConfiguration extends CarouselConfiguratio
 
   @Override
   @NonNull
-  protected KeylineState onFirstChildMeasuredWithMargins(@NonNull View child) {
+  protected KeylineState onFirstChildMeasuredWithMargins(
+      @NonNull Carousel carousel, @NonNull View child) {
     LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
     float childHorizontalMargins = childLayoutParams.leftMargin + childLayoutParams.rightMargin;
 
     float smallChildWidth = getSmallSize(child.getContext()) + childHorizontalMargins;
     float extraSmallChildWidth = getExtraSmallSize(child.getContext()) + childHorizontalMargins;
 
-    float availableSpace = getCarousel().getContainerWidth();
+    float availableSpace = carousel.getContainerWidth();
 
     // The minimum viable arrangement is 1 large and 1 small child. A single large item size
     // cannot be greater than the available space minus a small child width.
@@ -193,7 +191,7 @@ public final class MultiBrowseCarouselConfiguration extends CarouselConfiguratio
 
     float smallStartCenterX = smallCount > 0 ? start + (smallChildWidth / 2F) : mediumCenterX;
 
-    float extraSmallTailCenterX = getCarousel().getContainerWidth() + (extraSmallChildWidth / 2F);
+    float extraSmallTailCenterX = carousel.getContainerWidth() + (extraSmallChildWidth / 2F);
 
     float extraSmallMask =
         getChildMaskPercentage(extraSmallChildWidth, largeChildWidth, childHorizontalMargins);

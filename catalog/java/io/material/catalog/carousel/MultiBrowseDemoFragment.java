@@ -79,8 +79,7 @@ public class MultiBrowseDemoFragment extends DemoFragment {
     forceCompactSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) ->
             multiBrowseStartCarouselLayoutManager.setCarouselConfiguration(
-                new MultiBrowseCarouselConfiguration(
-                    multiBrowseStartCarouselLayoutManager, isChecked)));
+                new MultiBrowseCarouselConfiguration(isChecked)));
 
     drawDividers.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {

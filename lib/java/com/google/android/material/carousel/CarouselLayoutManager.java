@@ -109,7 +109,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   }
 
   public CarouselLayoutManager() {
-    setCarouselConfiguration(new MultiBrowseCarouselConfiguration(this));
+    setCarouselConfiguration(new MultiBrowseCarouselConfiguration());
   }
 
   public CarouselLayoutManager(
@@ -144,7 +144,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     if (isInitialLoad) {
       View firstChild = recycler.getViewForPosition(0);
       measureChildWithMargins(firstChild, 0, 0);
-      KeylineState keylineState = config.onFirstChildMeasuredWithMargins(firstChild);
+      KeylineState keylineState = config.onFirstChildMeasuredWithMargins(this, firstChild);
       keylineStateList =
           KeylineStateList.from(this, isRtl ? KeylineState.reverse(keylineState) : keylineState);
     }

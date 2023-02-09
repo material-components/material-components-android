@@ -32,6 +32,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.carousel.CarouselHelper.CarouselTestAdapter;
@@ -70,9 +71,10 @@ public class CarouselLayoutManagerRtlTest {
   @Test
   public void testFirstAdapterItem_isDrawnAtRightOfContainer() throws Throwable {
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
         });
@@ -88,9 +90,10 @@ public class CarouselLayoutManagerRtlTest {
   public void testScrollBeyondMaxHorizontalScroll_shouldLimitToMaxScrollOffset() throws Throwable {
     KeylineState keylineState = getTestCenteredKeylineState();
     layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration(layoutManager) {
+        new CarouselConfiguration() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(View child) {
+          protected KeylineState onFirstChildMeasuredWithMargins(
+              @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }
         });
