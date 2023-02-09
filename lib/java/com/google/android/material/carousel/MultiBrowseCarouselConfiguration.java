@@ -25,7 +25,6 @@ import static java.lang.Math.round;
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import android.view.View;
-import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 
 /**
@@ -78,12 +77,6 @@ public final class MultiBrowseCarouselConfiguration extends CarouselConfiguratio
 
   private float getSmallSize(@NonNull Context context) {
     return context.getResources().getDimension(R.dimen.m3_carousel_small_item_size);
-  }
-
-  @FloatRange(from = 0F, to = 1F)
-  private static float getChildMaskPercentage(
-      float maskedSize, float unmaskedSize, float childMargins) {
-    return 1F - ((maskedSize - childMargins) / (unmaskedSize - childMargins));
   }
 
   @Override

@@ -66,9 +66,9 @@ public class MultiBrowseCarouselConfigurationTest {
     // containers full width.
     assertThat(keylineState.getKeylines()).hasSize(3);
     assertThat(keylineState.getKeylines().get(0).locOffset)
-        .isLessThan((float) carousel.getContainerPaddingStart());
+        .isLessThan(0F);
     assertThat(Iterables.getLast(keylineState.getKeylines()).locOffset)
-        .isGreaterThan((float) (carousel.getContainerWidth() - carousel.getContainerPaddingEnd()));
+        .isGreaterThan((float) carousel.getContainerWidth());
     assertThat(keylineState.getKeylines().get(1).mask).isEqualTo(0F);
   }
 

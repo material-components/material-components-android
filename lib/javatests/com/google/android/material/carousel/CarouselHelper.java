@@ -111,26 +111,6 @@ class CarouselHelper {
       public int getContainerWidth() {
         return width;
       }
-
-      @Override
-      public int getContainerPaddingStart() {
-        return 0;
-      }
-
-      @Override
-      public int getContainerPaddingTop() {
-        return 0;
-      }
-
-      @Override
-      public int getContainerPaddingEnd() {
-        return 0;
-      }
-
-      @Override
-      public int getContainerPaddingBottom() {
-        return 0;
-      }
     };
   }
 

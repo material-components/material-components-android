@@ -17,43 +17,89 @@
 package com.google.android.material.carousel;
 
 import android.view.View;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
-import com.google.android.material.carousel.KeylineState.Keyline;
 
 /**
- * Configuration class responsible for creating a {@link KeylineState} used by {@link Carousel} to
- * mask and offset views as they move along a scrolling axis.
- *
- * <p>An implementation of {@link CarouselConfiguration} is responsible for overriding {@link
- * #onFirstChildMeasuredWithMargins(View)} and constructing a {@link KeylineState}.
+ * Configuration class responsible for creating a model used by a carousel to mask and offset views
+ * as they move along a scrolling axis.
  */
-abstract class CarouselConfiguration {
+public abstract class CarouselConfiguration {
 
   /**
    * Calculates a keyline arrangement and returns a constructed {@link KeylineState}.
    *
-   * <p>This method should handle:
+   * <p>This method is called when {@link Carousel} measures the first item to be added to its
+   * scroll container. This method then must create a {@link KeylineState} which tells {@link
+   * Carousel} how to fill the scroll container with items — how many are visible at once, what
+   * their sizes are, and where they're placed.
    *
-   * <p>1) How large a child should be. This can be based on the measured width of the {@code
-   * child}, a division of the total available space, or any other strategy a subclass might prefer.
-   * Carousel will lay out all items end-to-end, each using this size, and then offset/mask/animate
-   * children as they move between points long the scroll axis called {@link Keyline}s.
+   * <p>For example, take a simple arrangement that fills the scroll container with two large items
+   * and one small item. As the user scrolls the first large item moves off-screen to the left, the
+   * second large item moves to position 1, the small item unmasks into a large item at position 2,
+   * and a new small item scrolls into view from the right. To create this arrangement, pick any
+   * size for the small item that will be smaller than the large item. Next, take the carousel's
+   * total space, subtract the small item size and divide the remainder by two - this is your large
+   * item size. After determining the size of our large and small items, we can now construct a
+   * {@link KeylineState} and add keylines representing each item:
    *
-   * <p>2) Points and ranges along the scrolling axis at which items should be masked by a set
-   * percentage. These points and ranges (a.k.a. keylines and keyline ranges) can be inside or
-   * outside the bounds of the visible scroll window. As a child moves along the scrolling axis, it
-   * will mask and unmask itself according to the points ({@link Keyline}s) it is moving between.
+   * <pre>
    *
-   * <p>3) Create and return a {@link KeylineState}. Use the full child size [1] and points/ranges
-   * [2] from above to build a {@link KeylineState}. This object is everything the layout manager
-   * needs to offset and mask items as they move along the scroll axis.
+   * // Find the centers of the items in our arrangement, aligning the first item's left with the
+   * // left of the scroll container (0).
+   * float firstLargeItemCenter = largeChildSize / 2F;
+   * float smallItemCenter = (largeChildSize * 2F) + (smallChildSize / 2F);
    *
-   * @param child The first measured view from the carousel, use this view to determine the max size
-   *     that all items in the carousel will be given.
+   * // Get our child margins to use when calculating mask percentage
+   * LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
+   * float childMargins = childLayoutParams.leftMargin + childLayoutParams.rightMargin;
+   *
+   * return new KeylineState.Builder(largeChildWidth)
+   *     .addKeylineRange(
+   *         firstLargeItemCenter, // offsetLoc
+   *         getChildMaskPercentage(largeChildSize, largeChildSize, childMargins), // mask
+   *         largeChildSize, // maskedItemSize
+   *         2, // count
+   *         true) // isFocal
+   *     .addKeyline(
+   *         smallItemCenter, // offsetLoc
+   *         getChildMaskPercentage(smallChildSize, largeChildSize, childMargins), // mask
+   *         smallChildSize); // maskedItemSize
+   *
+   * </pre>
+   *
+   * <p>A configuration does not need to take layout direction into account. {@link
+   * CarouselLayoutManager} automatically reverses the configuration's {@link KeylineState} when
+   * laid out in right-to-left. Additionally, {@link CarouselLayoutManager} shifts the focal
+   * keylines to the start or end of the container when at the start or end of a list in order to
+   * allow every item in the list to pass through the focal state.
+   *
+   * <p>For additional guidelines on constructing valid KeylineStates, see {@link
+   * KeylineState.Builder}.
+   *
    * @param carousel The carousel to create a {@link KeylineState} for
+   * @param child The first measured view from the carousel.
    * @return A {@link KeylineState} to be used by the layout manager to offset and mask children
    *     along the scrolling axis.
    */
-  protected abstract KeylineState onFirstChildMeasuredWithMargins(
+  abstract KeylineState onFirstChildMeasuredWithMargins(
       @NonNull Carousel carousel, @NonNull View child);
+
+  /**
+   * Helper method to calculate a child's mask percentage given its masked size, unmasked size, and
+   * margins.
+   *
+   * @param maskedSize The size this method calculates a mask percentage for
+   * @param unmaskedSize The size this child is when fully unmasked (mask == 0F). This should likely
+   *     be the {@code itemSize} passed to the {@link KeylineState.Builder} constructor.
+   * @param childMargins The total margins at the start+end or top+bottom of this child. By default,
+   *     these are removed from the returned mask as margins should not change in size as a child's
+   *     mask changes.
+   * @return A percentage by which the child should be masked in order to be sized at {@code
+   *     maskedSize}. 0F is fully unmasked and 1F is fully masked.
+   */
+  @FloatRange(from = 0F, to = 1F)
+  static float getChildMaskPercentage(float maskedSize, float unmaskedSize, float childMargins) {
+    return 1F - ((maskedSize - childMargins) / (unmaskedSize - childMargins));
+  }
 }

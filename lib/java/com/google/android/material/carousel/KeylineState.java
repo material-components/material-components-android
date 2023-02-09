@@ -25,21 +25,25 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * An arrangement of {@link Keyline}s that are positioned along a scrolling axis.
+ * An arrangement of keylines that are positioned along a scrolling axis.
  *
- * <p>This class is the structure used to tell a scrolling item how it should be masked, offset, or
- * treated, at certain points along the scrolling axis.
+ * <p>This class is the model used to tell a scrolling item how it should be masked, offset, or
+ * treated at certain points (keylines) along the scrolling axis.
  *
- * <p>KeylineState enforces the following rules:
+ * <p>Keylines are points located along a scrolling axis, relative to the scrolling container's
+ * bounds, that tell an item how it should be treated (masked, offset) when it's center is located
+ * at a keyline. When between keylines, a scrolling item is treated by interpolating between the
+ * states of its nearest surrounding keylines. When put together, a KeylineState contains all
+ * keylines associated with a scrolling container and is able to tell a scrolling item how it should
+ * be treated at any point (as the item moves) along the scrolling axis, creating a fluid
+ * interpolated motion tied to scroll position.
  *
- * <ol>
- *   <li>There must be one or two keylines marked as "focal". These define the range along the
- *       scrolling axis where an item or items are considered fully unmasked and viewable.
- *   <li>Keylines can only remain the same size or increase in size as they approach the focal
- *       range. Keylines before the focal range cannot be larger than a focal item.
- *   <li>Keylines can only remain the same size or decrease in size as they move away from the focal
- *       range. Keylines after the focal range cannot be larger than a focal item.
- * </ol>
+ * <p>Keylines can be either focal or non-focal. A focal keyline is a keyline where items are
+ * considered visible or interactable in their fullest form. This usually means where items will be
+ * fully unmaksed and viewable. There must be at least one focal keyline in a KeylineState. The
+ * focal keylines are important for usability and alignment. Start-aligned configurations should
+ * place focal keylines at the beginning of the scroll container, center-aligned configurations at
+ * the center of the scroll container, etc.
  */
 final class KeylineState {
 
@@ -48,7 +52,7 @@ final class KeylineState {
   private final int firstFocalKeylineIndex;
   private final int lastFocalKeylineIndex;
 
-  KeylineState(
+  private KeylineState(
       float itemSize,
       List<Keyline> keylines,
       int firstFocalKeylineIndex,
@@ -167,6 +171,26 @@ final class KeylineState {
     return builder.build();
   }
 
+  /**
+   * A builder used to construct a {@link KeylineState}.
+   *
+   * <p>{@link KeylineState.Builder} enforces the following rules:
+   *
+   * <ol>
+   *   <li>There must be one or more keylines marked as "focal". These are keylines along the
+   *       scrolling axis where an item or items are considered fully unmasked and viewable.
+   *   <li>Focal keylines must be added adjacent to each other. A non-focal keyline cannot be added
+   *       between focal keylines.
+   *   <li>A keyline's masked item size can only remain the same size or increase in size as it
+   *       approaches the focal range. A keyline's masked item size before the focal range cannot be
+   *       larger than a focal keyline's masked item size.
+   *   <li>A keyline's masked item size can only remain the same size or decrease in size as it
+   *       moves away from the focal range. A keyline's masked item size after the focal range
+   *       cannot be larger than a focal keyline's masked item size.
+   * </ol>
+   *
+   * Typically there should be a keyline for every visible item in the scrolling container.
+   */
   static final class Builder {
 
     private static final int NO_INDEX = -1;
@@ -187,16 +211,18 @@ final class KeylineState {
     /**
      * Creates a new {@link KeylineState.Builder}.
      *
-     * @param itemSize the size of a fully unmaksed item. All mask values will be a percentage of
-     *     this size.
+     * @param itemSize The size of a fully unmaksed item. This is the size that will be used by the
+     *     carousel to measure and lay out all children, overriding each child's desired size.
      */
     Builder(float itemSize) {
       this.itemSize = itemSize;
     }
 
     /**
-     * Adds a point along the scrolling axis where an object should be masked by the given {@code
-     * mask} percentage.
+     * Adds a keyline along the scrolling axis where an object should be masked by the given {@code
+     * mask} and positioned at {@code offsetLoc}.
+     *
+     * @see #addKeyline(float, float, float, boolean)
      */
     @NonNull
     @CanIgnoreReturnValue
@@ -206,18 +232,21 @@ final class KeylineState {
     }
 
     /**
-     * Adds a point along the scrolling axis where an object should be masked by the given {@code
-     * mask} percentage.
+     * Adds a keyline along the scrolling axis where an object should be masked by the given {@code
+     * mask} and positioned at {@code offsetLoc}.
      *
-     * <p>Keylines are added in order! Keylines added at the beginning of the list will appear at
-     * the start of the scroll axis.
+     * <p>Note that calls to {@link #addKeyline(float, float, float, boolean)} and {@link
+     * #addKeylineRange(float, float, float, int)} are added in order. Typically, this means
+     * keylines should be added in order of ascending {@code offsetLoc}.
      *
-     * @param offsetLoc The location along the axis where this keyline is positioned.
-     * @param mask The percentage of {@code itemSize} that a child should be masked by when its
-     *     center is at {@code loc}.
-     * @param maskedItemSize The total size of this item when masked. This might differ from the
-     *     masked size depending on how margins are included in the mask.
-     * @param isFocal Whether this keyline marks the beginning or end of the focal range.
+     * @param offsetLoc The location of this keyline along the scrolling axis. An offsetLoc of 0
+     *     will be at the start of the scroll container.
+     * @param mask The percentage of a child's full size that it should be masked by when its center
+     *     is at {@code offsetLoc}. 0 is fully unmasked and 1 is fully masked.
+     * @param maskedItemSize The total size of this item when masked. This might differ from {@code
+     *     itemSize - (itemSize * mask)} depending on how margins are included in the {@code mask}.
+     * @param isFocal Whether this keyline is considered part of the focal range. Typically, this is
+     *     when {@code mask} is equal to 0.
      */
     @NonNull
     @CanIgnoreReturnValue
@@ -266,8 +295,11 @@ final class KeylineState {
     }
 
     /**
-     * Adds a range along the scrolling axis where an object should be masked by {@code mask} when
-     * its center is between {@code offsetLoc} and {@code offsetLoc * (maskedItemSize + count)}.
+     * Adds a range of keylines along the scrolling axis where an item should be masked by {@code
+     * mask} when its center is between {@code offsetLoc} and {@code offsetLoc + (maskedItemSize *
+     * count)}.
+     *
+     * @see #addKeylineRange(float, float, float, int, boolean)
      */
     @NonNull
     @CanIgnoreReturnValue
@@ -281,21 +313,22 @@ final class KeylineState {
 
     /**
      * Adds a range along the scrolling axis where an object should be masked by {@code mask} when
-     * its center is between {@code offsetLoc} and {@code offsetLoc * (maskedItemSize + count)}.
+     * its center is between {@code offsetLoc} and {@code offsetLoc + (maskedItemSize * count)}.
      *
-     * <p>Keyline ranges are added in order! Keyline ranges added at the beginning of the list will
-     * appear at the start of the scroll axis. Also note that keylines can only increase in size or
-     * remain the same size as they approach the focal range and decrease in size or remain the same
-     * size as they exit the focal range.
+     * <p>Note that calls to {@link #addKeyline(float, float, float, boolean)} and {@link
+     * #addKeylineRange(float, float, float, int)} are added in order. Typically, this means
+     * keylines should be added in order of ascending {@code offsetLoc}.
      *
-     * @param offsetLoc location along the axis where this range starts.
-     * @param mask The percentage of {@code itemSize} that a child should be masked by when its
-     *     center is within this keyline range. 0F is fully unmasked and 1F is fully masked.
-     * @param maskedItemSize The total size of this item when masked. This might differ from the
-     *     masked size depending on how margins are included in the mask.
+     * @param offsetLoc the location along the scrolling axis where this range starts. The range's
+     *     end will be defined by {@code offsetLoc + (maskedItemSize * count)}. An offsetLoc of 0
+     *     will be at the start of the scrolling container.
+     * @param mask the percentage of a child's full size that it should be masked by when its center
+     *     is within the keyline range. 0 is fully unmasked and 1 is fully masked.
+     * @param maskedItemSize the total size of this item when masked. This might differ from {@code
+     *     itemSize - (itemSize * mask)} depending on how margins are included in the {@code mask}.
      * @param count The number of items that should be in this range at a time.
-     * @param isFocal Whether this range should be used to align the keylines within the scroll
-     *     container.
+     * @param isFocal whether this keyline range is the focal range. Typically this is when {@code
+     *     mask} is equal to 0.
      */
     @NonNull
     @CanIgnoreReturnValue
@@ -317,6 +350,7 @@ final class KeylineState {
       return this;
     }
 
+    /** Builds and returns a {@link KeylineState}. */
     @NonNull
     KeylineState build() {
       if (tmpFirstFocalKeyline == null) {
@@ -375,7 +409,7 @@ final class KeylineState {
      *     it should be in the state defined by {@code locOffset} and {@code mask}.
      * @param locOffset The location within the carousel where an item should be when its center is
      *     at {@code loc}.
-     * @param mask The percentage of this items full width that it should be masked by when its
+     * @param mask The percentage of this items full size that it should be masked by when its
      *     center is at {@code loc}.
      * @param maskedItemSize The size of this item when masked.
      */

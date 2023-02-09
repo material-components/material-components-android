@@ -547,7 +547,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     KeylineState startState = isRtl ? stateList.getRightState() : stateList.getLeftState();
     Keyline startFocalKeyline =
         isRtl ? startState.getLastFocalKeyline() : startState.getFirstFocalKeyline();
-    float firstItemDistanceFromStart = getContainerPaddingStart() * (isRtl ? 1 : -1);
+    float firstItemDistanceFromStart = getPaddingStart() * (isRtl ? 1 : -1);
     float firstItemStart =
         addStart((int) startFocalKeyline.loc, (int) (startState.getItemSize() / 2F));
     return (int) (firstItemDistanceFromStart + getParentStart() - firstItemStart);
@@ -731,26 +731,6 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   @Override
   public int getContainerWidth() {
     return getWidth();
-  }
-
-  @Override
-  public int getContainerPaddingStart() {
-    return getPaddingStart();
-  }
-
-  @Override
-  public int getContainerPaddingTop() {
-    return getPaddingTop();
-  }
-
-  @Override
-  public int getContainerPaddingEnd() {
-    return getPaddingEnd();
-  }
-
-  @Override
-  public int getContainerPaddingBottom() {
-    return getPaddingBottom();
   }
 
   private boolean isLayoutRtl() {
