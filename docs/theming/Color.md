@@ -159,7 +159,7 @@ want to consider getting those tonal surface colors on the fly, by using the
 convenient enums we provide in the Material Library. For example, if you want to
 get the color hex value of Surface1, you can do:
 
-```
+```java
 int colorSurface1 = SurfaceColors.SURFACE_1.getColor(context);
 ```
 
@@ -199,7 +199,7 @@ this helper class according to different scenarios:
 
 In your application class’ `onCreate()` method, call:
 
-```
+```java
 DynamicColors.applyToActivitiesIfAvailable(this);
 ```
 
@@ -214,7 +214,7 @@ If you are using Material 3 themes, `R.attr.dynamicColorThemeOverlay` will be
 You can also have finer control over theme overlay deployment by providing a
 precondition when calling the method:
 
-```
+```java
 DynamicColors.applyToActivitiesIfAvailable(this, (activity, themeResId) -> {
   // ...implement your own logic here. Return `true` if dynamic colors should be applied.
 });
@@ -223,7 +223,7 @@ DynamicColors.applyToActivitiesIfAvailable(this, (activity, themeResId) -> {
 Or provide your own customized dynamic color theme overlays, likely inheriting
 from the Material3 theme overlays above, by doing:
 
-```
+``` java
 DynamicColors.applyToActivitiesIfAvailable(this, R.style.ThemeOverlay_MyApp_DynamicColors_DayNight);
 ```
 
@@ -240,7 +240,7 @@ You can also opt to apply dynamic colors to a few specific activities, by
 calling the following method in your activities’ `onCreate()` method (or before
 you inflate anything from it):
 
-```
+```java
 DynamicColors.applyToActivityIfAvailable(this);
 ```
 
@@ -258,7 +258,7 @@ precondition, to have finer control over theme overlay deployment. You may also
 optionally specify an `OnAppliedCallback` function, which will be called after
 dynamic colors have been applied:
 
-```
+```java
 DynamicColorsOptions dynamicColorOptions =
     new DynamicColorsOptions.Builder()
         .setThemeOverlay(themeOverlay)
@@ -273,7 +273,7 @@ DynamicColors.applyToActivitiesIfAvailable(application, dynamicColorOptions);
 You can also apply dynamic colors to a specific activity in the app by passing
 in the specific activity and a `DynamicColorsOptions` object:
 
-```
+```java
 DynamicColorsOptions dynamicColorOptions =
     new DynamicColorsOptions.Builder()
         .setThemeOverlay(themeOverlay)
@@ -289,7 +289,7 @@ Applying dynamic colors to a few of the views in an activity is more complex.
 The easiest solution is to create a themed context to create the view. We
 provide a helper method for this purpose:
 
-```
+```java
 context = DynamicColors.wrapContextIfAvailable(context);
 ```
 
@@ -415,7 +415,7 @@ package:
 
 In your application class or activity/fragment/view, call:
 
-```
+```java
 int harmonizedColor = MaterialColors.harmonizeWithPrimary(context, colorToHarmonize);
 ```
 
@@ -436,7 +436,7 @@ construct a `HarmonizedColorsOptions`. You can optionally pass in an array of
 resource ids for the color resources you'd like to harmonize, a
 `HarmonizedColorAttributes` object and/or the color attribute to harmonize with:
 
-```
+```java
 HarmonizedColorsOptions options =
     new HarmonizedColorsOptions.Builder()
         .setColorResourceIds(colorResources)
@@ -448,7 +448,7 @@ HarmonizedColorsOptions options =
 In the `HarmonizedColorsOptions` class, we also provided a convenience method
 `createMaterialDefaults()`, with Error colors being harmonized by default.
 
-```
+```java
 HarmonizedColorsOptions options = HarmonizedColorsOptions.createMaterialDefaults();
 HarmonizedColors.applyToContextIfAvailable(context, options);
 ```
@@ -456,13 +456,13 @@ HarmonizedColors.applyToContextIfAvailable(context, options);
 If you need to harmonize color resources at runtime to a context and use the
 harmonized color resources in xml, call:
 
-```
+```java
 HarmonizedColors.applyToContextIfAvailable(context, harmonizedColorsOptions);
 ```
 
 To return a new `Context` with color resources being harmonized, call:
 
-```
+```java
 HarmonizedColors.wrapContextIfAvailable(context, harmonizedColorsOptions);
 ```
 
@@ -497,7 +497,7 @@ Here is an example of how we harmonize Error colors with theme overlay, to avoid
 accidentally overriding the resources from the main theme/context. We have an
 array of color attributes defined as:
 
-```
+```java
 private static final int[] HARMONIZED_MATERIAL_ATTRIBUTES =
       new int[] {
         R.attr.colorError,
@@ -509,7 +509,7 @@ private static final int[] HARMONIZED_MATERIAL_ATTRIBUTES =
 
 And a theme overlay defined as:
 
-```
+```xml
 <style name="ThemeOverlay.Material3.HarmonizedColors" parent="">
     <item name="colorError">@color/material_harmonized_color_error</item>
     <item name="colorOnError">@color/material_harmonized_color_on_error</item>
@@ -534,7 +534,7 @@ If you would like to harmonize additional color attributes along with
 harmonizing Error roles by default, the `HarmonizedColorAttributes` would look
 like:
 
-```
+```java
 HarmonizedColorAttributes.create(
     ArrayUtils.addAll(createMaterialDefaults().getAttributes(), myAppAttributes),
     R.style.ThemeOverlay_MyApp_HarmonizedColors);
@@ -551,7 +551,7 @@ dynamic colors have been applied, to ensure visual cohesion for reserved colors
 suggested default when applying dynamic colors, is to harmonize M3 Error colors
 in the callback when constructing `DynamicColorsOptions`:
 
-```
+```java
 DynamicColorsOptions dynamicColorOptions =
     new DynamicColorsOptions.Builder(activity)
         ...
@@ -570,7 +570,7 @@ generated from applying dynamic colors when constructing
 `wrapContextIfAvailable(harmonizedColorsOptions)` to apply resources
 harmonization:
 
-```
+```java
 Context newContext = DynamicColors.wrapContextIfAvailable(getContext());
 
 HarmonizedColorsOptions options =
@@ -606,12 +606,12 @@ Name                    | Method                 | Description
 The library provides the following two helper methods in the `MaterialColors`
 class which return the above-mentioned `ColorRoles` object:
 
-```
+```java
 ColorRoles colorRoles = MaterialColors.getColorRoles(context, color);
 ```
 
 or
 
-```
+```java
 ColorRoles colorRoles = MaterialColors.getColorRoles(color, /* isLightTheme= */ booleanValue);
 ```
