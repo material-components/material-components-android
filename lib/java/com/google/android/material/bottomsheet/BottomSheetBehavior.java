@@ -529,6 +529,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       peekHeightMin =
           parent.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
       setWindowInsetsListener(child);
+      ViewCompat.setWindowInsetsAnimationCallback(child, new InsetsAnimationCallback(child));
       viewRef = new WeakReference<>(child);
       // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
       // default to android:background declared in styles or layout.

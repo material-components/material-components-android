@@ -91,11 +91,25 @@
         android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"/>
 
+    <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/cat_persistent_bottomsheet_textinputlayout"
+      android:layout_width="@dimen/material_textinput_default_width"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/cat_persistent_bottomsheet_state"
+      android:layout_centerHorizontal="true"
+      android:layout_margin="16dp"
+      android:layout_gravity="center_horizontal"
+      android:hint="@string/cat_bottomsheet_textfield_label">
+      <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:id="@+id/cat_bottomsheet_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/cat_persistent_bottomsheet_state"
+        android:layout_below="@id/cat_persistent_bottomsheet_textinputlayout"
         android:layout_centerHorizontal="true"
         android:text="@string/cat_bottomsheet_button_label_enabled"/>
 
