@@ -21,10 +21,10 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 
 /**
- * Configuration class responsible for creating a model used by a carousel to mask and offset views
- * as they move along a scrolling axis.
+ * A class responsible for creating a model used by a carousel to mask and offset views as they move
+ * along a scrolling axis.
  */
-public abstract class CarouselConfiguration {
+public abstract class CarouselStrategy {
 
   /**
    * Calculates a keyline arrangement and returns a constructed {@link KeylineState}.
@@ -68,11 +68,11 @@ public abstract class CarouselConfiguration {
    *
    * </pre>
    *
-   * <p>A configuration does not need to take layout direction into account. {@link
-   * CarouselLayoutManager} automatically reverses the configuration's {@link KeylineState} when
-   * laid out in right-to-left. Additionally, {@link CarouselLayoutManager} shifts the focal
-   * keylines to the start or end of the container when at the start or end of a list in order to
-   * allow every item in the list to pass through the focal state.
+   * <p>A strategy does not need to take layout direction into account. {@link
+   * CarouselLayoutManager} automatically reverses the strategy's {@link KeylineState} when laid out
+   * in right-to-left. Additionally, {@link CarouselLayoutManager} shifts the focal keylines to the
+   * start or end of the container when at the start or end of a list in order to allow every item
+   * in the list to pass through the focal state.
    *
    * <p>For additional guidelines on constructing valid KeylineStates, see {@link
    * KeylineState.Builder}.

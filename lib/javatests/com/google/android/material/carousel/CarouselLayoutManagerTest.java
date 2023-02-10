@@ -57,8 +57,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testAddAdapterItem_isAddedByLayoutManager() throws Throwable {
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -71,8 +71,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testMeasureChild_usesStateItemSize() throws Throwable {
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -85,8 +85,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testMaskedChild_isStillGivenFullWidthBounds() throws Throwable {
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -104,8 +104,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testMaskedChild_isMaskedToCorrectSize() throws Throwable {
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -123,8 +123,8 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testKnownArrangement_initialScrollPositionHasAllItemsWithinCarouselContainer()
       throws Throwable {
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -146,8 +146,8 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testScrollToPosition_movesChildToFocalStartKeyline() throws Throwable {
     KeylineState keylineState = getTestCenteredKeylineState();
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -167,8 +167,8 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testScrollBeyondMaxHorizontalScroll_shouldLimitToMaxScrollOffset() throws Throwable {
     KeylineState keylineState = getTestCenteredKeylineState();
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -188,8 +188,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testInitialFill_shouldFillMinimumItemCountForContainer() throws Throwable {
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -204,8 +204,8 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testScrollAndFill_shouldRecycleAndFillMinimumItemCountForContainer()
       throws Throwable {
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -220,8 +220,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testEmptyAdapter_shouldClearAllViewsFromRecyclerView() throws Throwable {
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {

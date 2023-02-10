@@ -29,13 +29,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 
-/** Tests for {@link MultiBrowseCarouselConfiguration}. */
+/** Tests for {@link MultiBrowseCarouselStrategy}. */
 @RunWith(RobolectricTestRunner.class)
-public class MultiBrowseCarouselConfigurationTest {
+public class MultiBrowseCarouselStrategyTest {
 
   @Test
   public void testOnFirstItemMeasuredWithMargins_createsKeylineStateWithCorrectItemSize() {
-    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration();
+    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
     View view = createViewWithSize(450, 450);
 
     KeylineState keylineState =
@@ -45,7 +45,7 @@ public class MultiBrowseCarouselConfigurationTest {
 
   @Test
   public void testItemLargerThanContainer_resizesToFit() {
-    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration();
+    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
     View view = createViewWithSize(400, 400);
 
     KeylineState keylineState =
@@ -56,7 +56,7 @@ public class MultiBrowseCarouselConfigurationTest {
   @Test
   public void testItemLargerThanContainerSize_defaultsToFullscreen() {
     Carousel carousel = createCarouselWithWidth(100);
-    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration();
+    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
     View view = createViewWithSize(400, 400);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
@@ -65,8 +65,7 @@ public class MultiBrowseCarouselConfigurationTest {
     // outside the bounds of the carousel container and the expanded center item takes up the
     // containers full width.
     assertThat(keylineState.getKeylines()).hasSize(3);
-    assertThat(keylineState.getKeylines().get(0).locOffset)
-        .isLessThan(0F);
+    assertThat(keylineState.getKeylines().get(0).locOffset).isLessThan(0F);
     assertThat(Iterables.getLast(keylineState.getKeylines()).locOffset)
         .isGreaterThan((float) carousel.getContainerWidth());
     assertThat(keylineState.getKeylines().get(1).mask).isEqualTo(0F);
@@ -76,7 +75,7 @@ public class MultiBrowseCarouselConfigurationTest {
   public void testKnownArrangement_correctlyCalculatesKeylineLocations() {
     float[] locOffsets = new float[] {-.5F, 225F, 675F, 942F, 1012F, 1040.5F};
 
-    MultiBrowseCarouselConfiguration config = new MultiBrowseCarouselConfiguration();
+    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
     View view = createViewWithSize(450, 450);
 
     List<Keyline> keylines =

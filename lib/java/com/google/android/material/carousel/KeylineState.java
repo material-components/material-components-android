@@ -41,8 +41,8 @@ import java.util.List;
  * <p>Keylines can be either focal or non-focal. A focal keyline is a keyline where items are
  * considered visible or interactable in their fullest form. This usually means where items will be
  * fully unmaksed and viewable. There must be at least one focal keyline in a KeylineState. The
- * focal keylines are important for usability and alignment. Start-aligned configurations should
- * place focal keylines at the beginning of the scroll container, center-aligned configurations at
+ * focal keylines are important for usability and alignment. Start-aligned strategies should
+ * place focal keylines at the beginning of the scroll container, center-aligned strategies at
  * the center of the scroll container, etc.
  */
 final class KeylineState {

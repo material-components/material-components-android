@@ -26,7 +26,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.carousel.CarouselLayoutManager;
-import com.google.android.material.carousel.MultiBrowseCarouselConfiguration;
+import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
 import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoFragment;
@@ -78,8 +78,8 @@ public class MultiBrowseDemoFragment extends DemoFragment {
 
     forceCompactSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) ->
-            multiBrowseStartCarouselLayoutManager.setCarouselConfiguration(
-                new MultiBrowseCarouselConfiguration(isChecked)));
+            multiBrowseStartCarouselLayoutManager.setCarouselStrategy(
+                new MultiBrowseCarouselStrategy(isChecked)));
 
     drawDividers.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {

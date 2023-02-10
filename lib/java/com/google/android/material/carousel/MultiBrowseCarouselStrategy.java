@@ -28,19 +28,19 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 /**
- * A Carousel configuration that knows how to size and fit large, medium and small items into a
+ * A {@link CarouselStrategy} that knows how to size and fit large, medium and small items into a
  * container to create a layout for quick browsing of multiple items at once.
  *
- * <p>Note that this configuration will adjust the size of large items. In order to ensure large,
- * medium, and small items both fit perfectly into the available space and are numbered/arranged in
- * a visually pleasing and opinionated way, this configuration finds the nearest number of large
- * items that will fit into an approved arrangement that requires the least amount of size
- * adjustment necessary.
+ * <p>Note that this strategy will adjust the size of large items. In order to ensure large, medium,
+ * and small items both fit perfectly into the available space and are numbered/arranged in a
+ * visually pleasing and opinionated way, this strategy finds the nearest number of large items that
+ * will fit into an approved arrangement that requires the least amount of size adjustment
+ * necessary.
  *
  * <p>This class will automatically be reversed by {@link CarouselLayoutManager} if being laid out
  * right-to-left and does not need to make any account for layout direction itself.
  */
-public final class MultiBrowseCarouselConfiguration extends CarouselConfiguration {
+public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
 
   // The percentage by which a medium item needs to be larger than a small item and smaller
   // than an large item. This is used to ensure a medium item is truly somewhere between the
@@ -56,18 +56,18 @@ public final class MultiBrowseCarouselConfiguration extends CarouselConfiguratio
   // unmasked items visible at once.
   private final boolean forceCompactArrangement;
 
-  public MultiBrowseCarouselConfiguration() {
+  public MultiBrowseCarouselStrategy() {
     this(false);
   }
 
   /**
-   * Create a new instance of {@link MultiBrowseCarouselConfiguration}.
+   * Create a new instance of {@link MultiBrowseCarouselStrategy}.
    *
    * @param forceCompactArrangement true if items should be fit in a way that maximizes the number
-   *     of large, unmasked items. false if this configuration is free to determine an opinionated
+   *     of large, unmasked items. false if this strategy is free to determine an opinionated
    *     balance between item sizes.
    */
-  public MultiBrowseCarouselConfiguration(boolean forceCompactArrangement) {
+  public MultiBrowseCarouselStrategy(boolean forceCompactArrangement) {
     this.forceCompactArrangement = forceCompactArrangement;
   }
 

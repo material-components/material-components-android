@@ -70,8 +70,8 @@ public class CarouselLayoutManagerRtlTest {
 
   @Test
   public void testFirstAdapterItem_isDrawnAtRightOfContainer() throws Throwable {
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
@@ -89,8 +89,8 @@ public class CarouselLayoutManagerRtlTest {
   @Test
   public void testScrollBeyondMaxHorizontalScroll_shouldLimitToMaxScrollOffset() throws Throwable {
     KeylineState keylineState = getTestCenteredKeylineState();
-    layoutManager.setCarouselConfiguration(
-        new CarouselConfiguration() {
+    layoutManager.setCarouselStrategy(
+        new CarouselStrategy() {
           @Override
           protected KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {

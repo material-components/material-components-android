@@ -22,7 +22,6 @@ import static com.google.android.material.animation.AnimationUtils.lerp;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -32,7 +31,6 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import androidx.recyclerview.widget.RecyclerView.Recycler;
 import androidx.recyclerview.widget.RecyclerView.State;
-import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -74,7 +72,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   private int maxHorizontalScroll;
 
   private final DebugItemDecoration debugItemDecoration = new DebugItemDecoration();
-  @NonNull private CarouselConfiguration config;
+  @NonNull private CarouselStrategy carouselStrategy;
   @Nullable private KeylineStateList keylineStateList;
   // A KeylineState shifted for any current scroll offset.
   @Nullable private KeylineState currentKeylineState;
@@ -109,12 +107,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   }
 
   public CarouselLayoutManager() {
-    setCarouselConfiguration(new MultiBrowseCarouselConfiguration());
-  }
-
-  public CarouselLayoutManager(
-      @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    // TODO(b/238620200): Add and obtain carousel attrs set on RecyclerView
+    setCarouselStrategy(new MultiBrowseCarouselStrategy());
   }
 
   @Override
@@ -123,8 +116,12 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
   }
 
-  public void setCarouselConfiguration(@NonNull CarouselConfiguration carouselConfiguration) {
-    this.config = carouselConfiguration;
+  /**
+   * Sets the {@link CarouselStrategy} used by this layout manager to mask and offset child views as
+   * they move along the scrolling axis.
+   */
+  public void setCarouselStrategy(@NonNull CarouselStrategy carouselStrategy) {
+    this.carouselStrategy = carouselStrategy;
     this.keylineStateList = null;
     requestLayout();
   }
@@ -139,12 +136,13 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     boolean isRtl = isLayoutRtl();
 
     // If a keyline state hasn't been created, use the first child as a representative of how each
-    // child would like to be measured and allow the config to create a keyline state.
+    // child would like to be measured and allow the strategy to create a keyline state.
     boolean isInitialLoad = keylineStateList == null;
     if (isInitialLoad) {
       View firstChild = recycler.getViewForPosition(0);
       measureChildWithMargins(firstChild, 0, 0);
-      KeylineState keylineState = config.onFirstChildMeasuredWithMargins(this, firstChild);
+      KeylineState keylineState =
+          carouselStrategy.onFirstChildMeasuredWithMargins(this, firstChild);
       keylineStateList =
           KeylineStateList.from(this, isRtl ? KeylineState.reverse(keylineState) : keylineState);
     }
@@ -176,7 +174,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
 
   /**
    * Adds and places children into the {@link RecyclerView}, handling child layout and recycling
-   * according to this class' {@link CarouselConfiguration}.
+   * according to this class' {@link CarouselStrategy}.
    *
    * <p>This method is responsible for making sure views are added when additional space is created
    * due to an initial layout or a scroll event. All offsetting due to scroll events is done by
@@ -689,8 +687,8 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     widthUsed += insets.left + insets.right;
     heightUsed += insets.top + insets.bottom;
 
-    // If the configuration's keyline set is available, use the item size from the keyline set.
-    // Otherwise, measure the item to what it would like to be so the configuration will be given an
+    // If the strategy's keyline set is available, use the item size from the keyline set.
+    // Otherwise, measure the item to what it would like to be so the strategy will be given an
     // opportunity to use this desired size in making it's sizing decision.
     final float childWidthDimension =
         keylineStateList != null ? keylineStateList.getDefaultState().getItemSize() : lp.width;
@@ -928,8 +926,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   }
 
   /**
-   * Enables drawing that illustrates keylines and other internal concepts to help debug
-   * configurations.
+   * Enables drawing that illustrates keylines and other internal concepts to help debug strategy.
    *
    * @param recyclerView The {@link RecyclerView} this layout manager is attached to.
    * @param enabled Whether to draw debug lines.
@@ -964,7 +961,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
 
   /**
    * A {@link RecyclerView.ItemDecoration} that draws keylines and other information to help debug
-   * configurations.
+   * strategies.
    */
   private static class DebugItemDecoration extends RecyclerView.ItemDecoration {
 
