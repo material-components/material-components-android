@@ -200,10 +200,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     this((ShapeAppearanceModel) shapePathModel);
   }
 
-  /**
-   * @param shapeAppearanceModel the {@link ShapeAppearanceModel} containing the path that will be
-   *     rendered in this drawable.
-   */
   public MaterialShapeDrawable(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     this(new MaterialShapeDrawableState(shapeAppearanceModel, null));
   }
