@@ -208,7 +208,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     this(new MaterialShapeDrawableState(shapeAppearanceModel, null));
   }
 
-  private MaterialShapeDrawable(@NonNull MaterialShapeDrawableState drawableState) {
+  /**
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  protected MaterialShapeDrawable(@NonNull MaterialShapeDrawableState drawableState) {
     this.drawableState = drawableState;
     strokePaint.setStyle(Style.STROKE);
     fillPaint.setStyle(Style.FILL);
@@ -1394,39 +1398,45 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return drawableState.shapeAppearanceModel.isRoundRect(getBoundsAsRectF());
   }
 
-  static final class MaterialShapeDrawableState extends ConstantState {
+  /**
+   * Drawable state for {@link MaterialShapeDrawable}
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  protected static class MaterialShapeDrawableState extends ConstantState {
 
-    @NonNull public ShapeAppearanceModel shapeAppearanceModel;
-    @Nullable public ElevationOverlayProvider elevationOverlayProvider;
+    @NonNull ShapeAppearanceModel shapeAppearanceModel;
+    @Nullable ElevationOverlayProvider elevationOverlayProvider;
 
-    @Nullable public ColorFilter colorFilter;
-    @Nullable public ColorStateList fillColor = null;
-    @Nullable public ColorStateList strokeColor = null;
-    @Nullable public ColorStateList strokeTintList = null;
-    @Nullable public ColorStateList tintList = null;
-    @Nullable public PorterDuff.Mode tintMode = PorterDuff.Mode.SRC_IN;
-    @Nullable public Rect padding = null;
+    @Nullable ColorFilter colorFilter;
+    @Nullable ColorStateList fillColor = null;
+    @Nullable ColorStateList strokeColor = null;
+    @Nullable ColorStateList strokeTintList = null;
+    @Nullable ColorStateList tintList = null;
+    @Nullable PorterDuff.Mode tintMode = PorterDuff.Mode.SRC_IN;
+    @Nullable Rect padding = null;
 
-    public float scale = 1f;
-    public float interpolation = 1f;
-    public float strokeWidth;
+    float scale = 1f;
+    float interpolation = 1f;
+    float strokeWidth;
 
-    public int alpha = 255;
-    public float parentAbsoluteElevation = 0;
-    public float elevation = 0;
-    public float translationZ = 0;
-    public int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
-    public int shadowCompatRadius = 0;
-    public int shadowCompatOffset = 0;
-    public int shadowCompatRotation = 0;
+    int alpha = 255;
+    float parentAbsoluteElevation = 0;
+    float elevation = 0;
+    float translationZ = 0;
+    int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
+    int shadowCompatRadius = 0;
+    int shadowCompatOffset = 0;
+    int shadowCompatRotation = 0;
 
-    public boolean useTintColorForShadow = false;
+    boolean useTintColorForShadow = false;
 
-    public Style paintStyle = Style.FILL_AND_STROKE;
+    Style paintStyle = Style.FILL_AND_STROKE;
 
     public MaterialShapeDrawableState(
-        ShapeAppearanceModel shapeAppearanceModel,
-        ElevationOverlayProvider elevationOverlayProvider) {
+        @NonNull ShapeAppearanceModel shapeAppearanceModel,
+        @Nullable ElevationOverlayProvider elevationOverlayProvider) {
       this.shapeAppearanceModel = shapeAppearanceModel;
       this.elevationOverlayProvider = elevationOverlayProvider;
     }
