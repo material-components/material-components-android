@@ -130,6 +130,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   public void onLayoutChildren(Recycler recycler, State state) {
     if (state.getItemCount() <= 0) {
       removeAndRecycleAllViews(recycler);
+      currentFillStartPosition = 0;
       return;
     }
 
@@ -166,6 +167,10 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
           calculateShouldHorizontallyScrollBy(
               0, horizontalScrollOffset, minHorizontalScroll, maxHorizontalScroll);
     }
+
+    // Ensure currentFillStartPosition is valid if the number of items in the adapter has changed.
+    currentFillStartPosition = MathUtils.clamp(currentFillStartPosition, 0, state.getItemCount());
+
     updateCurrentKeylineStateForScrollOffset();
 
     detachAndScrapAttachedViews(recycler);
@@ -506,9 +511,16 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
    * <p>This method should be called any time a change in the scroll offset occurs.
    */
   private void updateCurrentKeylineStateForScrollOffset() {
-    this.currentKeylineState =
-        keylineStateList.getShiftedState(
-            horizontalScrollOffset, minHorizontalScroll, maxHorizontalScroll);
+    if (maxHorizontalScroll <= minHorizontalScroll) {
+      // We don't have enough items in the list to scroll and we should use the keyline state
+      // that aligns items to the start of the container.
+      this.currentKeylineState =
+          isLayoutRtl() ? keylineStateList.getRightState() : keylineStateList.getLeftState();
+    } else {
+      this.currentKeylineState =
+          keylineStateList.getShiftedState(
+              horizontalScrollOffset, minHorizontalScroll, maxHorizontalScroll);
+    }
     debugItemDecoration.setKeylines(currentKeylineState.getKeylines());
   }
 
@@ -569,6 +581,12 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     // item hit the center of the end focal keyline.
     float endFocalLocDistanceFromStart = endFocalKeyline.loc - getParentStart();
     float endFocalLocDistanceFromEnd = getParentEnd() - endFocalKeyline.loc;
+    if (abs(endFocalLocDistanceFromStart) > abs(lastItemDistanceFromFirstItem)) {
+      // The last item comes before the last focal keyline which means all items should be within
+      // the focal range and there is nowhere to scroll.
+      return 0;
+    }
+
     return (int)
         (lastItemDistanceFromFirstItem - endFocalLocDistanceFromStart + endFocalLocDistanceFromEnd);
   }

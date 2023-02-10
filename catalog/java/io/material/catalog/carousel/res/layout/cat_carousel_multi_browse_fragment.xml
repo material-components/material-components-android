@@ -21,6 +21,24 @@
     android:layout_width="match_parent"
     android:orientation="vertical">
 
+    <TextView
+      android:id="@+id/multi_browse_title_text_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="16dp"
+      android:layout_marginVertical="4dp"
+      android:text="@string/cat_carousel_multi_browse_title"
+      android:textAppearance="?attr/textAppearanceTitleMedium" />
+
+    <TextView
+      android:id="@+id/multi_browse_desc_text_view"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="16dp"
+      android:layout_marginVertical="4dp"
+      android:text="@string/cat_carousel_multi_browse_desc"
+      android:textAppearance="?attr/textAppearanceBodyMedium" />
+
     <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/debug_switch"
       android:layout_width="match_parent"
@@ -51,23 +69,24 @@
       android:textAppearance="?attr/textAppearanceBodyLarge"
       android:text="@string/cat_carousel_draw_dividers_label"/>
 
-    <TextView
-      android:id="@+id/multi_browse_title_text_view"
-      android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+      style="?attr/textInputFilledExposedDropdownMenuStyle"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_gravity="center_vertical"
       android:layout_marginHorizontal="16dp"
-      android:layout_marginVertical="4dp"
-      android:text="@string/cat_carousel_multi_browse_title"
-      android:textAppearance="?attr/textAppearanceTitleMedium" />
+      android:layout_marginVertical="8dp"
+      app:helperTextEnabled="false">
 
-    <TextView
-      android:id="@+id/multi_browse_desc_text_view"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginHorizontal="16dp"
-      android:layout_marginVertical="4dp"
-      android:text="@string/cat_carousel_multi_browse_desc"
-      android:textAppearance="?attr/textAppearanceBodyMedium" />
+      <AutoCompleteTextView
+        android:id="@+id/item_count_dropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:hint="@string/cat_carousel_adapter_item_count_hint_label"
+        app:simpleItems="@array/cat_carousel_adapter_count_content"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/multi_browse_start_carousel_recycler_view"
@@ -75,8 +94,6 @@
       android:layout_height="196dp"
       android:layout_marginHorizontal="16dp"
       android:layout_marginVertical="16dp"
-      android:paddingStart="70dp"
-      android:paddingEnd="24dp"
       android:clipChildren="false"
       android:clipToPadding="false" />
 

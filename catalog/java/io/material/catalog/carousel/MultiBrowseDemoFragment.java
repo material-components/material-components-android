@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AutoCompleteTextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.carousel.CarouselLayoutManager;
@@ -58,6 +59,7 @@ public class MultiBrowseDemoFragment extends DemoFragment {
     MaterialSwitch debugSwitch = view.findViewById(R.id.debug_switch);
     MaterialSwitch forceCompactSwitch = view.findViewById(R.id.force_compact_arrangement_switch);
     MaterialSwitch drawDividers = view.findViewById(R.id.draw_dividers_switch);
+    AutoCompleteTextView itemCountDropdown = view.findViewById(R.id.item_count_dropdown);
 
     // A start-aligned multi-browse carousel
     RecyclerView multiBrowseStartRecyclerView =
@@ -93,6 +95,10 @@ public class MultiBrowseDemoFragment extends DemoFragment {
     CarouselAdapter adapter =
         new CarouselAdapter(
             (item, position) -> multiBrowseStartRecyclerView.scrollToPosition(position));
+
+    itemCountDropdown.setOnItemClickListener(
+        (parent, view1, position, id) ->
+            adapter.submitList(CarouselData.createItems().subList(0, position)));
 
     multiBrowseStartRecyclerView.setAdapter(adapter);
     adapter.submitList(CarouselData.createItems());
