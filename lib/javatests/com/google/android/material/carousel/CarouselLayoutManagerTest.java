@@ -117,7 +117,7 @@ public class CarouselLayoutManagerTest {
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(1));
 
     MaskableFrameLayout child = (MaskableFrameLayout) recyclerView.getChildAt(0);
-    assertThat(child.getMaskRect().width()).isEqualTo(450F * .2F);
+    assertThat(child.getMaskRectF().width()).isEqualTo(450F * .2F);
   }
 
   @Test
@@ -134,10 +134,10 @@ public class CarouselLayoutManagerTest {
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
 
     MaskableFrameLayout firstChild = (MaskableFrameLayout) recyclerView.getChildAt(0);
-    int maskLeft = (int) firstChild.getMaskRect().left;
+    int maskLeft = (int) firstChild.getMaskRectF().left;
     MaskableFrameLayout lastChild =
         (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 1);
-    int maskRight = (int) (lastChild.getWidth() - lastChild.getMaskRect().right);
+    int maskRight = (int) (lastChild.getWidth() - lastChild.getMaskRectF().right);
 
     assertThat(firstChild.getLeft() + maskLeft).isEqualTo(0);
     assertThat(lastChild.getRight() - maskRight).isEqualTo(DEFAULT_RECYCLER_VIEW_WIDTH);

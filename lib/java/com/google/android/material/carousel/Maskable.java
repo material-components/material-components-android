@@ -43,7 +43,7 @@ interface Maskable {
 
   /** Gets a {@link RectF} that this {@link View} is masking itself by. */
   @NonNull
-  RectF getMaskRect();
+  RectF getMaskRectF();
 
   /** Adds an {@link OnMaskChangedListener}. */
   void addOnMaskChangedListener(@NonNull OnMaskChangedListener listener);

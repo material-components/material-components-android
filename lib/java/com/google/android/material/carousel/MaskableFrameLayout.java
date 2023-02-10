@@ -100,7 +100,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable {
   /** Gets a {@link RectF} that this {@link View} is masking itself by. */
   @NonNull
   @Override
-  public RectF getMaskRect() {
+  public RectF getMaskRectF() {
     return maskRect;
   }
 
@@ -178,7 +178,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable {
           new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
-              RectF maskRect = ((MaskableFrameLayout) view).getMaskRect();
+              RectF maskRect = ((MaskableFrameLayout) view).getMaskRectF();
               float cornerSize = ((MaskableFrameLayout) view).getCornerRadiusFromShapeAppearance();
               if (!maskRect.isEmpty()) {
                 outline.setRoundRect(
