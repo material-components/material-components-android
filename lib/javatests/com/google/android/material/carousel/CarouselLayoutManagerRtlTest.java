@@ -73,7 +73,7 @@ public class CarouselLayoutManagerRtlTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
@@ -92,7 +92,7 @@ public class CarouselLayoutManagerRtlTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }

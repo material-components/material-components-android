@@ -81,7 +81,7 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
 
   @Override
   @NonNull
-  protected KeylineState onFirstChildMeasuredWithMargins(
+  KeylineState onFirstChildMeasuredWithMargins(
       @NonNull Carousel carousel, @NonNull View child) {
     LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
     float childHorizontalMargins = childLayoutParams.leftMargin + childLayoutParams.rightMargin;

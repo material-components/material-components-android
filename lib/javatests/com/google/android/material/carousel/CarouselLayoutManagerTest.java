@@ -60,7 +60,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
@@ -74,7 +74,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
@@ -88,7 +88,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return new KeylineState.Builder(DEFAULT_ITEM_WIDTH)
                 .addKeyline(225F, .5F, 225F, true)
@@ -107,7 +107,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return new KeylineState.Builder(DEFAULT_ITEM_WIDTH)
                 .addKeyline(225F, .8F, 90F, true)
@@ -126,7 +126,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
@@ -149,7 +149,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }
@@ -170,7 +170,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }
@@ -191,7 +191,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
@@ -207,7 +207,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
@@ -223,7 +223,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          protected KeylineState onFirstChildMeasuredWithMargins(
+          KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
