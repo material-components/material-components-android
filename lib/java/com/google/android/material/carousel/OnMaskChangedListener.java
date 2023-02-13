@@ -25,7 +25,7 @@ import androidx.annotation.NonNull;
 public interface OnMaskChangedListener {
 
   /**
-   * Called when changes in a mask's {@link RectF} changes.
+   * Called when changes in a mask's {@link RectF} occur.
    *
    * @param maskRect the bounds of the mask relative to the drawing bounds of the View
    */

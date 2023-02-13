@@ -74,7 +74,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable {
   }
 
   /**
-   * Sets the percentage by which this view should mask itself along the x axis.
+   * Sets the percentage by which this {@link View} masks by along the x axis.
    *
    * @param percentage 0 when this view is fully unmasked. 1 when this view is fully masked.
    */
@@ -88,7 +88,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable {
   }
 
   /**
-   * Gets the percentage by which this {@link View} should mask itself along the x axis.
+   * Gets the percentage by which this {@link View} is masked by along the x axis.
    *
    * @return a float between 0 and 1 where 0 is fully unmasked and 1 is fully masked.
    */
@@ -97,7 +97,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable {
     return maskXPercentage;
   }
 
-  /** Gets a {@link RectF} that this {@link View} is masking itself by. */
+  /** Gets a {@link RectF} that this {@link View} is masked itself by. */
   @NonNull
   @Override
   public RectF getMaskRectF() {
