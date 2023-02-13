@@ -324,6 +324,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   private int extraRightMarginWindowInset;
   private int extraBottomMarginGestureInset;
   private int extraBottomMarginAnchorView;
+  private boolean extraBottomMarginAnchorViewChanged = true;
 
   private boolean pendingShowingView;
 
@@ -473,6 +474,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     marginParams.rightMargin = view.originalMargins.right + extraRightMarginWindowInset;
     marginParams.topMargin = view.originalMargins.top;
     view.requestLayout();
+
+    if (getAnchorView() != null) {
+      extraBottomMarginAnchorViewChanged = false;
+    }
 
     if (VERSION.SDK_INT >= VERSION_CODES.Q && shouldUpdateGestureInset()) {
       // Ensure there is only one gesture inset runnable running at a time
@@ -879,11 +884,14 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private void recalculateAndUpdateMargins() {
     int newBottomMarginAnchorView = calculateBottomMarginForAnchorView();
-    if (newBottomMarginAnchorView == extraBottomMarginAnchorView) {
-      return;
+    if (newBottomMarginAnchorView != extraBottomMarginAnchorView) {
+      extraBottomMarginAnchorView = newBottomMarginAnchorView;
+      extraBottomMarginAnchorViewChanged = true;
     }
-    extraBottomMarginAnchorView = newBottomMarginAnchorView;
-    updateMargins();
+
+    if (extraBottomMarginAnchorViewChanged) {
+      updateMargins();
+    }
   }
 
   private int calculateBottomMarginForAnchorView() {
