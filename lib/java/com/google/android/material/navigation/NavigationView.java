@@ -27,6 +27,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Path;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -44,7 +45,6 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
@@ -73,6 +73,7 @@ import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.WindowUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -975,11 +976,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
             Activity activity = ContextUtils.getActivity(getContext());
             if (activity != null && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-              DisplayMetrics displayMetrics = new DisplayMetrics();
-              activity.getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+              Rect displayBounds = WindowUtils.getCurrentWindowBounds(activity);
 
               boolean isBehindSystemNav =
-                  displayMetrics.heightPixels - getHeight() == tmpLocation[1];
+                  displayBounds.height() - getHeight() == tmpLocation[1];
               boolean hasNonZeroAlpha =
                   Color.alpha(activity.getWindow().getNavigationBarColor()) != 0;
               setDrawBottomInsetForeground(
@@ -988,8 +988,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
               // The navigation view could be right aligned or just hidden out of view in a drawer
               // layout when the global layout listener is called.
               boolean isOnRightSide =
-                  (displayMetrics.widthPixels == tmpLocation[0])
-                      || (displayMetrics.widthPixels - getWidth() == tmpLocation[0]);
+                  (displayBounds.width() == tmpLocation[0])
+                      || (displayBounds.width() - getWidth() == tmpLocation[0]);
 
               setDrawRightInsetForeground(isOnRightSide);
             }

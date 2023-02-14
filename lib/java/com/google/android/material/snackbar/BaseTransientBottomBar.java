@@ -48,7 +48,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -60,7 +59,6 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowInsets;
-import android.view.WindowManager;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
 import androidx.annotation.ColorInt;
@@ -83,6 +81,7 @@ import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.internal.WindowUtils;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -297,8 +296,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           }
           // Calculate current bottom inset, factoring in translationY to account for where the
           // view will likely be animating to.
+          int screenHeight = WindowUtils.getCurrentWindowBounds(context).height();
           int currentInsetBottom =
-              getScreenHeight() - getViewAbsoluteBottom() + (int) view.getTranslationY();
+              screenHeight - getViewAbsoluteBottom() + (int) view.getTranslationY();
           if (currentInsetBottom >= extraBottomMarginGestureInset) {
             // No need to add extra offset if view is already outside of bottom gesture area
             return;
@@ -821,14 +821,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     int[] absoluteLocation = new int[2];
     view.getLocationOnScreen(absoluteLocation);
     return absoluteLocation[1] + view.getHeight();
-  }
-
-  @RequiresApi(VERSION_CODES.JELLY_BEAN_MR1)
-  private int getScreenHeight() {
-    WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-    DisplayMetrics displayMetrics = new DisplayMetrics();
-    windowManager.getDefaultDisplay().getRealMetrics(displayMetrics);
-    return displayMetrics.heightPixels;
   }
 
   private void setUpBehavior(CoordinatorLayout.LayoutParams lp) {
