@@ -20,6 +20,7 @@ import static java.lang.Math.max;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import androidx.annotation.ColorInt;
@@ -34,6 +35,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   private float trackLength = 300f;
   private float displayedTrackThickness;
   private float displayedCornerRadius;
+  private Path displayedTrackPath;
 
   /** Instantiates LinearDrawingDelegate with the current spec. */
   public LinearDrawingDelegate(@NonNull LinearProgressIndicatorSpec spec) {
@@ -118,20 +120,21 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       return;
     }
 
-    // Horizontal position of the start adjusted based on the rounded corner radius.
-    float adjustedStartX =
-        -trackLength / 2 + startFraction * (trackLength - 2 * displayedCornerRadius);
-    // Horizontal position of the end adjusted based on the rounded corner radius.
-    float adjustedEndX =
-        -trackLength / 2
-            + endFraction * (trackLength - 2 * displayedCornerRadius)
-            + 2 * displayedCornerRadius;
+    float originX = -trackLength / 2;
+
+    // Adjusts start X and end X so when the progress indicator will start from 0 when
+    // startFraction == 0, and always retain the specified corner radius.
+    float adjustedStartX = originX + startFraction * trackLength - displayedCornerRadius * 2;
+    float adjustedEndX = originX + endFraction * trackLength;
 
     // Sets up the paint.
     paint.setStyle(Style.FILL);
     paint.setAntiAlias(true);
     paint.setColor(color);
 
+    canvas.save();
+    // Avoid the indicator being drawn out of the track.
+    canvas.clipPath(displayedTrackPath);
     RectF indicatorBound =
         new RectF(
             adjustedStartX,
@@ -139,6 +142,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
             adjustedEndX,
             displayedTrackThickness / 2);
     canvas.drawRoundRect(indicatorBound, displayedCornerRadius, displayedCornerRadius, paint);
+    canvas.restore();
   }
 
   /**
@@ -156,12 +160,17 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     paint.setAntiAlias(true);
     paint.setColor(trackColor);
 
-    RectF trackBound =
+    displayedTrackPath = new Path();
+    displayedTrackPath.addRoundRect(
         new RectF(
             -trackLength / 2,
             -displayedTrackThickness / 2,
             trackLength / 2,
-            displayedTrackThickness / 2);
-    canvas.drawRoundRect(trackBound, displayedCornerRadius, displayedCornerRadius, paint);
+            displayedTrackThickness / 2),
+        displayedCornerRadius,
+        displayedCornerRadius,
+        Path.Direction.CCW
+    );
+    canvas.drawPath(displayedTrackPath, paint);
   }
 }
