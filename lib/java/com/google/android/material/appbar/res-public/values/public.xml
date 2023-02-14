@@ -23,6 +23,7 @@
   <public name="collapsingToolbarLayoutLargeSize" type="attr"/>
   <public name="toolbarSurfaceStyle" type="attr"/>
   <public name="layout_scrollInterpolator" type="attr"/>
+  <public name="layout_scrollEffect" type="attr"/>
   <public name="behavior_overlapTop" type="attr"/>
   <public name="expandedTitleMargin" type="attr"/>
   <public name="expandedTitleMarginStart" type="attr"/>

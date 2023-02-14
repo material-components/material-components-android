@@ -266,6 +266,34 @@ In the layout:
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
+Optionally, you can change the style in which the app bar disappears and
+appears when scrolling by setting a scroll effect. By default, a scroll effect
+of `none` is set which translates the app bar in-step with the scrolling
+content. The following option shows setting the `compress` scroll effect
+which clips the top app bar until it meets the top of the screen:
+
+In the layout:
+
+```xml
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    ...>
+
+    <com.google.android.material.appbar.AppBarLayout
+        ...>
+
+        <com.google.android.material.appbar.MaterialToolbar
+            ...
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            app:layout_scrollEffect="compress"
+            />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    ...
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
+
 ### Status bar and edge-to-edge
 
 ![Small top app bar with edge-to-edge status bar](assets/topappbar/topappbar_small.png)
@@ -375,6 +403,7 @@ Element                                                         | Attribute     
 **`AppBarLayout` lift on scroll**                               | `app:liftOnScroll`              | `setLiftOnScroll`<br>`isLiftOnScroll`                                                                 | `true`
 **`AppBarLayout` lift on scroll color**                         | `app:liftOnScrollColor`         | N/A                                                                                                   | `@null` (defaults to elevation overlay color)
 **`AppBarLayout` lift on scroll target view**                   | `app:liftOnScrollTargetViewId`  | `setLiftOnScrollTargetViewId`<br>`getLiftOnScrollTargetViewId`                                        | `@null`
+**`AppBarLayout` scroll effect**                                | `app:layout_scrollEffect`       | `setScrollEffect`<br>`getScrollEffect`                                                                | `none`
 
 #### `AppBarLayout` styles
 
