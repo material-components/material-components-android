@@ -301,6 +301,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
               screenHeight - getViewAbsoluteBottom() + (int) view.getTranslationY();
           if (currentInsetBottom >= extraBottomMarginGestureInset) {
             // No need to add extra offset if view is already outside of bottom gesture area
+            appliedBottomMarginGestureInset = extraBottomMarginGestureInset;
             return;
           }
 
@@ -312,6 +313,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             return;
           }
 
+          appliedBottomMarginGestureInset = extraBottomMarginGestureInset;
+
           // Move view outside of bottom gesture area
           MarginLayoutParams marginParams = (MarginLayoutParams) layoutParams;
           marginParams.bottomMargin += extraBottomMarginGestureInset - currentInsetBottom;
@@ -322,8 +325,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   private int extraBottomMarginWindowInset;
   private int extraLeftMarginWindowInset;
   private int extraRightMarginWindowInset;
-  private int extraBottomMarginGestureInset;
   private int extraBottomMarginAnchorView;
+
+  private int extraBottomMarginGestureInset;
+  private int appliedBottomMarginGestureInset;
 
   private boolean pendingShowingView;
 
@@ -455,10 +460,16 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private void updateMargins() {
     LayoutParams layoutParams = view.getLayoutParams();
-    if (!(layoutParams instanceof MarginLayoutParams) || view.originalMargins == null) {
+    if (!(layoutParams instanceof MarginLayoutParams)) {
       Log.w(TAG, "Unable to update margins because layout params are not MarginLayoutParams");
       return;
     }
+
+    if (view.originalMargins == null) {
+      Log.w(TAG, "Unable to update margins because original view margins are not set");
+      return;
+    }
+
     if (view.getParent() == null) {
       // Parent will set layout params to view again. Wait for addView() is done to update layout
       // params, in case we save the already updated margins as the original margins.
@@ -467,17 +478,32 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     int extraBottomMargin =
         getAnchorView() != null ? extraBottomMarginAnchorView : extraBottomMarginWindowInset;
-    MarginLayoutParams marginParams = (MarginLayoutParams) layoutParams;
-    marginParams.bottomMargin = view.originalMargins.bottom + extraBottomMargin;
-    marginParams.leftMargin = view.originalMargins.left + extraLeftMarginWindowInset;
-    marginParams.rightMargin = view.originalMargins.right + extraRightMarginWindowInset;
-    marginParams.topMargin = view.originalMargins.top;
-    view.requestLayout();
 
-    if (VERSION.SDK_INT >= VERSION_CODES.Q && shouldUpdateGestureInset()) {
-      // Ensure there is only one gesture inset runnable running at a time
-      view.removeCallbacks(bottomMarginGestureInsetRunnable);
-      view.post(bottomMarginGestureInsetRunnable);
+    MarginLayoutParams marginParams = (MarginLayoutParams) layoutParams;
+    int newBottomMargin = view.originalMargins.bottom + extraBottomMargin;
+    int newLeftMargin = view.originalMargins.left + extraLeftMarginWindowInset;
+    int newRightMargin = view.originalMargins.right + extraRightMarginWindowInset;
+    int newTopMargin = view.originalMargins.top;
+
+    boolean marginChanged =
+        marginParams.bottomMargin != newBottomMargin
+            || marginParams.leftMargin != newLeftMargin
+            || marginParams.rightMargin != newRightMargin
+            || marginParams.topMargin != newTopMargin;
+    if (marginChanged) {
+      marginParams.bottomMargin = newBottomMargin;
+      marginParams.leftMargin = newLeftMargin;
+      marginParams.rightMargin = newRightMargin;
+      marginParams.topMargin = newTopMargin;
+      view.requestLayout();
+    }
+
+    if (marginChanged || appliedBottomMarginGestureInset != extraBottomMarginGestureInset) {
+      if (VERSION.SDK_INT >= VERSION_CODES.Q && shouldUpdateGestureInset()) {
+        // Ensure there is only one gesture inset runnable running at a time
+        view.removeCallbacks(bottomMarginGestureInsetRunnable);
+        view.post(bottomMarginGestureInsetRunnable);
+      }
     }
   }
 
@@ -870,11 +896,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void recalculateAndUpdateMargins() {
-    int newBottomMarginAnchorView = calculateBottomMarginForAnchorView();
-    if (newBottomMarginAnchorView == extraBottomMarginAnchorView) {
-      return;
-    }
-    extraBottomMarginAnchorView = newBottomMarginAnchorView;
+    extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
     updateMargins();
   }
 
