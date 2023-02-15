@@ -88,6 +88,25 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+      android:id="@+id/position_slider_label"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="16dp"
+      android:layout_marginTop="16dp"
+      android:labelFor="@id/position_slider"
+      android:text="@string/cat_carousel_position_slider_label"
+      android:textAppearance="?attr/textAppearanceBodyLarge"/>
+
+    <com.google.android.material.slider.Slider
+      android:id="@+id/position_slider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="16dp"
+      android:layout_marginBottom="8dp"
+      android:contentDescription="@string/cat_carousel_position_slider_content_description"
+      android:stepSize="1.0"/>
+
     <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/multi_browse_start_carousel_recycler_view"
       android:layout_width="match_parent"

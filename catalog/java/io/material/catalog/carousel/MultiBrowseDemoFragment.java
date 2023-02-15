@@ -30,6 +30,8 @@ import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
 import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.slider.Slider;
+import com.google.android.material.slider.Slider.OnSliderTouchListener;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the multi-browse variants of the Carousel. */
@@ -60,6 +62,7 @@ public class MultiBrowseDemoFragment extends DemoFragment {
     MaterialSwitch forceCompactSwitch = view.findViewById(R.id.force_compact_arrangement_switch);
     MaterialSwitch drawDividers = view.findViewById(R.id.draw_dividers_switch);
     AutoCompleteTextView itemCountDropdown = view.findViewById(R.id.item_count_dropdown);
+    Slider positionSlider = view.findViewById(R.id.position_slider);
 
     // A start-aligned multi-browse carousel
     RecyclerView multiBrowseStartRecyclerView =
@@ -97,10 +100,38 @@ public class MultiBrowseDemoFragment extends DemoFragment {
             (item, position) -> multiBrowseStartRecyclerView.scrollToPosition(position));
 
     itemCountDropdown.setOnItemClickListener(
-        (parent, view1, position, id) ->
-            adapter.submitList(CarouselData.createItems().subList(0, position)));
+        (parent, view1, position, id) -> {
+          adapter.submitList(
+              CarouselData.createItems().subList(0, position),
+              updateSliderRange(positionSlider, adapter));
+        });
+
+    positionSlider.addOnSliderTouchListener(
+        new OnSliderTouchListener() {
+          @Override
+          public void onStartTrackingTouch(@NonNull Slider slider) {}
+
+          @Override
+          public void onStopTrackingTouch(@NonNull Slider slider) {
+            multiBrowseStartRecyclerView.smoothScrollToPosition((int) slider.getValue() - 1);
+          }
+        });
 
     multiBrowseStartRecyclerView.setAdapter(adapter);
-    adapter.submitList(CarouselData.createItems());
+    adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));
+  }
+
+  private static Runnable updateSliderRange(Slider slider, CarouselAdapter adapter) {
+    return () -> {
+      if (adapter.getItemCount() == 0) {
+        slider.setValueFrom(0);
+        slider.setValueTo(0);
+        return;
+      }
+
+      slider.setValue(1);
+      slider.setValueFrom(1);
+      slider.setValueTo(adapter.getItemCount());
+    };
   }
 }

@@ -25,7 +25,9 @@ import static java.lang.Math.max;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PointF;
 import android.graphics.Rect;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
@@ -804,6 +806,35 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     currentFillStartPosition = MathUtils.clamp(position, 0, max(0, getItemCount() - 1));
     updateCurrentKeylineStateForScrollOffset();
     requestLayout();
+  }
+
+  @Override
+  public void smoothScrollToPosition(RecyclerView recyclerView, State state, int position) {
+    LinearSmoothScroller linearSmoothScroller =
+        new LinearSmoothScroller(recyclerView.getContext()) {
+          @Nullable
+          @Override
+          public PointF computeScrollVectorForPosition(int targetPosition) {
+            if (keylineStateList == null) {
+              return null;
+            }
+
+            float targetScrollOffset =
+                getScrollOffsetForPosition(keylineStateList.getDefaultState(), targetPosition);
+            return new PointF(targetScrollOffset - horizontalScrollOffset, 0F);
+          }
+
+          @Override
+          public int calculateDxToMakeVisible(View view, int snapPreference) {
+            // Override dx calculations so the target view is brought all the way into the focal
+            // range instead of just being made visible.
+            float targetScrollOffset =
+                getScrollOffsetForPosition(keylineStateList.getDefaultState(), getPosition(view));
+            return (int) (horizontalScrollOffset - targetScrollOffset);
+          }
+        };
+    linearSmoothScroller.setTargetPosition(position);
+    startSmoothScroll(linearSmoothScroller);
   }
 
   @Override

@@ -20,6 +20,8 @@
   <string name="cat_carousel_force_compact_arrangement_label" translatable="false">Force compact arrangement</string>
   <string name="cat_carousel_draw_dividers_label" translatable="false">Draw dividers</string>
   <string name="cat_carousel_adapter_item_count_hint_label" translatable="false">Item count</string>
+  <string name="cat_carousel_position_slider_label" translatable="false">Scroll position</string>
+  <string name="cat_carousel_position_slider_content_description" translatable="false">Scroll position slider</string>
 
   <string-array name="cat_carousel_adapter_count_content" translatable="false">
     <item>0</item>
