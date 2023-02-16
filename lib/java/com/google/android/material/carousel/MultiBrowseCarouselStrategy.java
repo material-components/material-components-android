@@ -26,6 +26,8 @@ import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import android.view.View;
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 
 /**
  * A {@link CarouselStrategy} that knows how to size and fit large, medium and small items into a
@@ -66,7 +68,10 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
    * @param forceCompactArrangement true if items should be fit in a way that maximizes the number
    *     of large, unmasked items. false if this strategy is free to determine an opinionated
    *     balance between item sizes.
+   *
+   * @hide
    */
+  @RestrictTo(Scope.LIBRARY_GROUP)
   public MultiBrowseCarouselStrategy(boolean forceCompactArrangement) {
     this.forceCompactArrangement = forceCompactArrangement;
   }
