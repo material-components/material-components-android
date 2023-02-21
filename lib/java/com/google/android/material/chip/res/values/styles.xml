@@ -388,11 +388,11 @@
 
   <style name="ThemeOverlay.Material3.Chip" parent="">
     <!-- To tint vector drawables used as leading icons -->
-    <item name="colorControlNormal">@color/m3_chip_text_color</item>
+    <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Chip.Assist" parent="">
     <!-- To tint vector drawables used as leading icons -->
-    <item name="colorControlNormal">@color/m3_assist_chip_icon_tint_color</item>
+    <item name="colorControlNormal">?attr/colorPrimary</item>
   </style>
 </resources>
