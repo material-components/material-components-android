@@ -20,6 +20,7 @@ import android.app.Activity;
 import android.util.SparseIntArray;
 import androidx.annotation.IdRes;
 import androidx.annotation.StyleRes;
+import com.google.android.material.color.ThemeUtils;
 
 /** Utils for theme themeOverlays. */
 public class ThemeOverlayUtils {
@@ -51,9 +52,10 @@ public class ThemeOverlayUtils {
     return themeOverlays.get(id);
   }
 
+  @SuppressWarnings("RestrictTo")
   public static void applyThemeOverlays(Activity activity) {
     for (int i = 0; i < themeOverlays.size(); ++i) {
-      activity.setTheme(themeOverlays.valueAt(i));
+      ThemeUtils.applyThemeOverlay(activity, themeOverlays.valueAt(i));
     }
   }
 }

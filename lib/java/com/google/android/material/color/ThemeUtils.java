@@ -16,6 +16,8 @@
 
 package com.google.android.material.color;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.Theme;
@@ -23,14 +25,22 @@ import android.view.View;
 import android.view.Window;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 
-/** Utility methods for theme. */
-final class ThemeUtils {
+// TODO(b/269781013): move this class to internal folder, which involves resolving cyclic dependency
+//           between color and internal folders
+/**
+ * Utility methods for theme.
+ *
+ * @hide
+ */
+@RestrictTo(LIBRARY_GROUP)
+public final class ThemeUtils {
 
   private ThemeUtils() {}
 
-  static void applyThemeOverlay(@NonNull Context context, @StyleRes int theme) {
+  public static void applyThemeOverlay(@NonNull Context context, @StyleRes int theme) {
     // Use applyStyle() instead of setTheme() due to Force Dark issue.
     context.getTheme().applyStyle(theme, /* force= */ true);
 
