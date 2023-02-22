@@ -2769,35 +2769,37 @@ public class TextInputLayout extends LinearLayout {
         bounds.right = rect.right - editText.getPaddingRight();
         return bounds;
       case BOX_BACKGROUND_FILLED:
-        bounds.left = getLabelLeftBoundAlightWithPrefix(rect.left, isRtl);
+        bounds.left = getLabelLeftBoundAlignedWithPrefixAndSuffix(rect.left, isRtl);
         bounds.top = rect.top + boxCollapsedPaddingTopPx;
-        bounds.right = getLabelRightBoundAlignedWithSuffix(rect.right, isRtl);
+        bounds.right = getLabelRightBoundAlignedWithPrefixAndSuffix(rect.right, isRtl);
         return bounds;
       case BOX_BACKGROUND_NONE:
       default:
-        bounds.left = getLabelLeftBoundAlightWithPrefix(rect.left, isRtl);
+        bounds.left = getLabelLeftBoundAlignedWithPrefixAndSuffix(rect.left, isRtl);
         bounds.top = getPaddingTop();
-        bounds.right = getLabelRightBoundAlignedWithSuffix(rect.right, isRtl);
+        bounds.right = getLabelRightBoundAlignedWithPrefixAndSuffix(rect.right, isRtl);
         return bounds;
     }
   }
 
-  private int getLabelLeftBoundAlightWithPrefix(int rectLeft, boolean isRtl) {
-    int left = rectLeft + editText.getCompoundPaddingLeft();
-    if (getPrefixText() != null && !isRtl) {
-      // Label should be vertically aligned with prefix
-      left = left - getPrefixTextView().getMeasuredWidth() + getPrefixTextView().getPaddingLeft();
+  private int getLabelLeftBoundAlignedWithPrefixAndSuffix(int rectLeft, boolean isRtl) {
+    if (!isRtl && getPrefixText() != null) {
+      return rectLeft + startLayout.getPrefixTextStartOffset();
     }
-    return left;
+    if (isRtl && getSuffixText() != null) {
+      return rectLeft + endLayout.getSuffixTextEndOffset();
+    }
+    return rectLeft + editText.getCompoundPaddingLeft();
   }
 
-  private int getLabelRightBoundAlignedWithSuffix(int rectRight, boolean isRtl) {
-    int right = rectRight - editText.getCompoundPaddingRight();
-    if (getPrefixText() != null && isRtl) {
-      // Label should be vertically aligned with prefix if in RTL
-      right += getPrefixTextView().getMeasuredWidth() - getPrefixTextView().getPaddingRight();
+  private int getLabelRightBoundAlignedWithPrefixAndSuffix(int rectRight, boolean isRtl) {
+    if (!isRtl && getSuffixText() != null) {
+      return rectRight - endLayout.getSuffixTextEndOffset();
     }
-    return right;
+    if (isRtl && getPrefixText() != null) {
+      return rectRight - startLayout.getPrefixTextStartOffset();
+    }
+    return rectRight - editText.getCompoundPaddingRight();
   }
 
   @NonNull

@@ -328,6 +328,21 @@ class StartCompoundLayout extends LinearLayout {
         editText.getCompoundPaddingBottom());
   }
 
+  int getPrefixTextStartOffset() {
+    int startIconOffset;
+    if (isStartIconVisible()) {
+      startIconOffset =
+          startIconView.getMeasuredWidth()
+              + MarginLayoutParamsCompat.getMarginEnd(
+                  (MarginLayoutParams) startIconView.getLayoutParams());
+    } else {
+      startIconOffset = 0;
+    }
+    return ViewCompat.getPaddingStart(this)
+        + ViewCompat.getPaddingStart(prefixTextView)
+        + startIconOffset;
+  }
+
   void onHintStateChanged(boolean hintExpanded) {
     this.hintExpanded = hintExpanded;
     updateVisibility();

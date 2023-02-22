@@ -737,6 +737,21 @@ class EndCompoundLayout extends LinearLayout {
         textInputLayout.editText.getPaddingBottom());
   }
 
+  int getSuffixTextEndOffset() {
+    int endIconOffset;
+    if (isEndIconVisible() || isErrorIconVisible()) {
+      endIconOffset =
+          endIconView.getMeasuredWidth()
+              + MarginLayoutParamsCompat.getMarginStart(
+              (MarginLayoutParams) endIconView.getLayoutParams());
+    } else {
+      endIconOffset = 0;
+    }
+    return ViewCompat.getPaddingEnd(this)
+        + ViewCompat.getPaddingEnd(suffixTextView)
+        + endIconOffset;
+  }
+
   @Nullable
   CheckableImageButton getCurrentEndIconView() {
     if (isErrorIconVisible()) {
