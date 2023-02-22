@@ -17,7 +17,7 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 33
+  compileSdkVersion = 'android-UpsideDownCake'
   minSdkVersion = 14
   targetSdkVersion = 33
 
