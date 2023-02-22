@@ -80,6 +80,16 @@ public class ViewUtils {
     getInputMethodManager(view).showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
   }
 
+  public static void requestFocusAndShowKeyboard(@NonNull final View view) {
+    requestFocusAndShowKeyboard(view, /* useWindowInsetsController= */ true);
+  }
+
+  public static void requestFocusAndShowKeyboard(
+      @NonNull final View view, boolean useWindowInsetsController) {
+    view.requestFocus();
+    view.post(() -> showKeyboard(view, useWindowInsetsController));
+  }
+
   public static void hideKeyboard(@NonNull View view) {
     hideKeyboard(view, /* useWindowInsetsController= */ true);
   }
@@ -159,20 +169,6 @@ public class ViewUtils {
   public static float dpToPx(@NonNull Context context, @Dimension(unit = Dimension.DP) int dp) {
     Resources r = context.getResources();
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
-  }
-
-  public static void requestFocusAndShowKeyboard(@NonNull final View view) {
-    view.requestFocus();
-    view.post(
-        new Runnable() {
-          @Override
-          public void run() {
-            InputMethodManager inputMethodManager =
-                (InputMethodManager)
-                    view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-          }
-        });
   }
 
   /**

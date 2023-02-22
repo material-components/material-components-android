@@ -108,7 +108,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     // Instead, the text in chip should be hidden.
     chip.setVisibility(checked ? GONE : VISIBLE);
     if (isChecked()) {
-      ViewUtils.requestFocusAndShowKeyboard(editText);
+      ViewUtils.requestFocusAndShowKeyboard(editText, /* useWindowInsetsController= */ false);
     }
   }
 

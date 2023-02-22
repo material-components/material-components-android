@@ -146,6 +146,12 @@ public interface DateSelector<S> extends Parcelable {
       editText.setOnFocusChangeListener(listener);
     }
 
-    ViewUtils.requestFocusAndShowKeyboard(editTexts[0]);
+    // TODO(b/246354286): Investigate issue with keyboard not showing on Android 12+
+    View viewToFocus = editTexts[0];
+    viewToFocus.postDelayed(
+        () ->
+            ViewUtils.requestFocusAndShowKeyboard(
+                viewToFocus, /* useWindowInsetsController= */ false),
+        100);
   }
 }

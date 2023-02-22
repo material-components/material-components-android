@@ -17,6 +17,7 @@ package com.google.android.material.datepicker;
 
 import com.google.android.material.test.R;
 
+import static androidx.core.content.ContextCompat.getSystemService;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
@@ -25,6 +26,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 import android.widget.TextView.BufferType;
 import androidx.core.util.Pair;
@@ -39,7 +41,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.Shadows;
 import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowInputMethodManager;
 import org.robolectric.shadows.ShadowLooper;
 
 @RunWith(RobolectricTestRunner.class)
@@ -375,6 +379,20 @@ public class RangeDateSelectorTest {
     rangeDateSelector.setSelection(selection);
 
     assertThat(rangeDateSelector.getSelectedRanges()).containsExactly(selection);
+  }
+
+  @Test
+  public void focusAndShowKeyboardAtStartup() {
+    InputMethodManager inputMethodManager = getSystemService(activity, InputMethodManager.class);
+    ShadowInputMethodManager shadowIMM = Shadows.shadowOf(inputMethodManager);
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(startTextInput.getEditText().isFocused()).isTrue();
+    assertThat(shadowIMM.isSoftInputVisible()).isTrue();
   }
 
   private View getRootView() {
