@@ -19,12 +19,16 @@ package io.material.catalog.transition;
 import io.material.catalog.R;
 
 import android.util.SparseIntArray;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.OnApplyWindowInsetsListener;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.transition.MaterialSharedAxis;
 
 /** A helper class that sets up and manages shared axis demo controls. */
@@ -46,6 +50,21 @@ public class SharedAxisHelper {
     backButton = controlsLayout.findViewById(R.id.back_button);
     nextButton = controlsLayout.findViewById(R.id.next_button);
     directionRadioGroup = controlsLayout.findViewById(R.id.radio_button_group_direction);
+    ViewCompat.setOnApplyWindowInsetsListener(
+        controlsLayout,
+        new OnApplyWindowInsetsListener() {
+          @NonNull
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(
+              @NonNull View v, @NonNull WindowInsetsCompat insets) {
+            v.setPadding(
+                v.getPaddingLeft(),
+                v.getPaddingTop(),
+                v.getPaddingRight(),
+                insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom);
+            return insets;
+          }
+        });
   }
 
   public void setNextButtonOnClickListener(@Nullable OnClickListener onClickListener) {

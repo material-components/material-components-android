@@ -46,9 +46,8 @@ public class TransitionContainerTransformStartDemoActivity extends DemoActivity 
   protected void onCreate(@Nullable Bundle bundle) {
     getWindow().requestFeature(Window.FEATURE_ACTIVITY_TRANSITIONS);
 
-    // Set up shared element transition and disable overlay so views don't show above system bars
+    // Set up shared element transition
     setExitSharedElementCallback(new MaterialContainerTransformSharedElementCallback());
-    getWindow().setSharedElementsUseOverlay(false);
 
     super.onCreate(bundle);
 
