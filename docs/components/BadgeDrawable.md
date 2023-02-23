@@ -13,7 +13,7 @@ path: /catalog/badging/
 
 Badge                                         | Badge with number                                    | Badge with a maximum character count
 --------------------------------------------- | ---------------------------------------------------- | ------------------------------------
-![badge_icon](assets/badge/IconOnlyBadge.png) | ![badge_with_number_8](assets/badge/BadgeNumber.png) | ![badge_with_999+](assets/badge/BadgeNumberLongerThanMaxCharCount.png)
+![badge_icon](assets/badge/IconOnlyBadge.png) | ![badge_with_number_99](assets/badge/BadgeNumber.png) | ![badge_with_999+](assets/badge/BadgeNumberLongerThanMaxCharCount.png)
 
 **Note:** This component is still under development and may not support the full
 range of customization Material Android components generally support, for
