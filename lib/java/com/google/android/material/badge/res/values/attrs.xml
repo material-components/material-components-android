@@ -21,12 +21,22 @@
   <attr name="badgeStyle" format="reference"/>
 
   <declare-styleable name="Badge">
-    <!-- The radius of a badge without text (a "dot"). -->
+    <!-- The radius of a badge without text (a "dot"). Deprecated, use badgeWidth
+          and badgeHeight instead. If set, will override badge width/height. -->
     <attr name="badgeRadius" format="dimension"/>
     <!-- Start and end padding for a badge that is oblong due to long text. -->
     <attr name="badgeWidePadding" format="dimension"/>
-    <!-- Radius of a badge with text. -->
+    <!-- Radius of a badge with text. Deprecated, use badgeWithTextWidth and badgeWithTextHeight
+          instead. If set, will override badge with text's width/height. -->
     <attr name="badgeWithTextRadius" format="dimension"/>
+    <!-- Width of the badge without text. -->
+    <attr name="badgeWidth" format="dimension"/>
+    <!-- Width of the badge with text. -->
+    <attr name="badgeWithTextWidth" format="dimension"/>
+    <!-- Height of the badge without text. -->
+    <attr name="badgeHeight" format="dimension"/>
+    <!-- Height of the badge with text. -->
+    <attr name="badgeWithTextHeight" format="dimension"/>
     <attr name="backgroundColor" format="color"/>
     <attr name="badgeTextColor" format="color"/>
     <attr name="maxCharacterCount" format="integer"/>
@@ -43,6 +53,16 @@
     </attr>
     <!-- A reference to a TextAppearance style to be applied to badge text. -->
     <attr name="badgeTextAppearance" format="reference"/>
+    <!-- Shape appearance style reference for the badge without text (a "dot"). -->
+    <attr name="badgeShapeAppearance" format="reference"/>
+    <!-- Shape appearance overlay style reference for the badge without text (a "dot").
+          To be used to augment attributes declared in the badgeWithTextShapeAppearance. -->
+    <attr name="badgeShapeAppearanceOverlay" format="reference"/>
+     <!-- Shape appearance style reference for the badge with text. -->
+    <attr name="badgeWithTextShapeAppearance" format="reference"/>
+    <!-- Shape appearance overlay style reference for the badge with text.
+          To be used to augment attributes declared in the badgeWithTextShapeAppearance. -->
+    <attr name="badgeWithTextShapeAppearanceOverlay" format="reference"/>
 
     <!-- Determines where the badge offsets begin in reference to the anchor. -->
     <attr name="offsetAlignmentMode">

@@ -25,6 +25,14 @@
   <public name="horizontalOffset" type="attr"/>
   <public name="verticalOffset" type="attr"/>
   <public name="offsetAlignmentMode" type="attr"/>
+  <public name="badgeWidth" type="attr"/>
+  <public name="badgeWithTextWidth" type="attr"/>
+  <public name="badgeHeight" type="attr"/>
+  <public name="badgeWithTextHeight" type="attr"/>
+  <public name="badgeShapeAppearance" type="attr"/>
+  <public name="badgeWithTextShapeAppearance" type="attr"/>
+  <public name="badgeShapeAppearanceOverlay" type="attr"/>
+  <public name="badgeWithTextShapeAppearanceOverlay" type="attr"/>
   <public name="Widget.MaterialComponents.Badge" type="style"/>
   <public name="Widget.Material3.Badge" type="style"/>
 </resources>
