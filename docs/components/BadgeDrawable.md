@@ -84,21 +84,30 @@ top and end edges of the anchor (with some offsets). The other options are
 ### `BadgeDrawable` center offsets
 
 By default, `BadgeDrawable` is aligned with the top and end edges of its anchor
-view (with some offsets). Call `setBadgeGravity(int)` to change it to one of the
+view (with some offsets if `offsetAlignmentMode` is `legacy`). Call `setBadgeGravity(int)` to change it to one of the
 other supported modes. To adjust the badge's offsets relative to the anchor's
-center, use `setHoriziontalOffset(int)` or `setVerticalOffset(int)`
+center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
 
 ### `BadgeDrawable` Attributes
 
-Feature               | Relevant attributes
---------------------- | -----------------------------------------------
-Color                 | `app:backgroundColor` <br> `app:badgeTextColor`
-Label                 | `app:number`
-Label Length          | `app:maxCharacterCount`
-Label Text Color      | `app:badgeTextColor`
-Label Text Appearance | `app:badgeTextAppearance`
-Badge Gravity         | `app:badgeGravity`
-Offset Alignment      | `app:offsetAlignmentMode`
+| Feature               | Relevant attributes                        |
+| --------------------- | ------------------------------------------ |
+| Color                 | `app:backgroundColor` <br>                 |
+:                       : `app\:badgeTextColor`                      :
+| Width                 | `app:badgeWidth` <br>                      |
+:                       : `app\:badgeWithTextWidth`                  :
+| Height                | `app:badgeHeight` <br>                     |
+:                       : `app\:badgeWithTextHeight`                 :
+| Shape                 | `app:badgeShapeAppearance` <br>            |
+:                       : `app\:badgeShapeAppearanceOverlay` <br>    :
+:                       : `app\:badgeWithTextShapeAppearance` <br>   :
+:                       : `app\:badgeWithTextShapeAppearanceOverlay` :
+| Label                 | `app:number`                               |
+| Label Length          | `app:maxCharacterCount`                    |
+| Label Text Color      | `app:badgeTextColor`                       |
+| Label Text Appearance | `app:badgeTextAppearance`                  |
+| Badge Gravity         | `app:badgeGravity`                         |
+| Offset Alignment      | `app:offsetAlignmentMode`                  |
 
 ### Talkback Support
 

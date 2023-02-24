@@ -16,8 +16,8 @@
   -->
 <resources>
 
-  <dimen name="mtrl_badge_radius">4dp</dimen>
-  <dimen name="mtrl_badge_with_text_radius">8dp</dimen>
+  <dimen name="mtrl_badge_size">8dp</dimen>
+  <dimen name="mtrl_badge_with_text_size">16dp</dimen>
   <!-- Leading and trailing text padding when a badge is displaying text that is too long to fit in
        a circular badge, i.e. if badge number is greater than 9. -->
   <dimen name="mtrl_badge_long_text_horizontal_padding">4dp</dimen>
@@ -32,8 +32,8 @@
   <dimen name="mtrl_badge_toolbar_action_menu_item_vertical_offset">12dp</dimen>
 
   <!-- M3 Dimens -->
-  <dimen name="m3_badge_radius">3dp</dimen>
-  <dimen name="m3_badge_with_text_radius">8dp</dimen>
+  <dimen name="m3_badge_size">6dp</dimen>
+  <dimen name="m3_badge_with_text_size">16dp</dimen>
 
   <dimen name="m3_badge_vertical_offset">1.5dp</dimen>
   <dimen name="m3_badge_horizontal_offset">1.5dp</dimen>

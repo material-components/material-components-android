@@ -17,14 +17,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
   <style name="Widget.MaterialComponents.Badge" parent="android:Widget">
-    <item name="badgeRadius">@dimen/mtrl_badge_radius</item>
+    <item name="badgeWidth">@dimen/mtrl_badge_size</item>
+    <item name="badgeHeight">@dimen/mtrl_badge_size</item>
+    <item name="badgeWithTextWidth">@dimen/mtrl_badge_with_text_size</item>
+    <item name="badgeWithTextHeight">@dimen/mtrl_badge_with_text_size</item>
     <item name="badgeWidePadding">@dimen/mtrl_badge_long_text_horizontal_padding</item>
-    <item name="badgeWithTextRadius">@dimen/mtrl_badge_with_text_radius</item>
     <item name="backgroundColor">?attr/colorError</item>
     <item name="maxCharacterCount">@integer/mtrl_badge_max_character_count</item>
     <item name="badgeGravity">TOP_END</item>
     <item name="offsetAlignmentMode">legacy</item>
     <item name="badgeTextAppearance">@style/TextAppearance.MaterialComponents.Badge</item>
+    <item name="badgeShapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="badgeWithTextShapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
   </style>
 
   <style name="Base.TextAppearance.MaterialComponents.Badge" parent="TextAppearance.AppCompat">
@@ -46,12 +50,14 @@
     <item name="badgeTextColor">?attr/colorOnError</item>
     <item name="offsetAlignmentMode">edge</item>
     <!-- Badge "dot" without text -->
-    <item name="badgeRadius">@dimen/m3_badge_radius</item>
     <item name="horizontalOffset">@dimen/m3_badge_offset</item>
     <item name="verticalOffset">@dimen/m3_badge_offset</item>
+    <item name="badgeWidth">@dimen/m3_badge_size</item>
+    <item name="badgeHeight">@dimen/m3_badge_size</item>
 
     <!-- Badge with text -->
-    <item name="badgeWithTextRadius">@dimen/m3_badge_with_text_radius</item>
+    <item name="badgeWithTextWidth">@dimen/m3_badge_with_text_size</item>
+    <item name="badgeWithTextHeight">@dimen/m3_badge_with_text_size</item>
     <item name="horizontalOffsetWithText">@dimen/m3_badge_with_text_offset</item>
     <item name="verticalOffsetWithText">@dimen/m3_badge_with_text_offset</item>
     <item name="badgeTextAppearance">?attr/textAppearanceLabelSmall</item>

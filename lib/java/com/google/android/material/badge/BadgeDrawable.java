@@ -51,6 +51,7 @@ import com.google.android.material.internal.TextDrawableHelper.TextDrawableDeleg
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -176,6 +177,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   @Retention(RetentionPolicy.SOURCE)
   @interface OffsetAlignmentMode {}
 
+  /** A value to indicate that a badge radius has not been specified. */
+  static final int BADGE_RADIUS_NOT_SPECIFIED = -1;
+
   @NonNull private final WeakReference<Context> contextRef;
   @NonNull private final MaterialShapeDrawable shapeDrawable;
   @NonNull private final TextDrawableHelper textDrawableHelper;
@@ -249,6 +253,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private void restoreState() {
+    onBadgeShapeAppearanceUpdated();
     onBadgeTextAppearanceUpdated();
 
     onMaxCharacterCountUpdated();
@@ -272,14 +277,23 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     this.contextRef = new WeakReference<>(context);
     ThemeEnforcement.checkMaterialTheme(context);
     badgeBounds = new Rect();
-    shapeDrawable = new MaterialShapeDrawable();
 
     textDrawableHelper = new TextDrawableHelper(/* delegate= */ this);
     textDrawableHelper.getTextPaint().setTextAlign(Paint.Align.CENTER);
 
 
     this.state = new BadgeState(context, badgeResId, defStyleAttr, defStyleRes, savedState);
-
+    shapeDrawable =
+        new MaterialShapeDrawable(
+            ShapeAppearanceModel.builder(
+                    context,
+                    state.hasNumber()
+                        ? state.getBadgeWithTextShapeAppearanceResId()
+                        : state.getBadgeShapeAppearanceResId(),
+                    state.hasNumber()
+                        ? state.getBadgeWithTextShapeAppearanceOverlayResId()
+                        : state.getBadgeShapeAppearanceOverlayResId())
+                .build());
     restoreState();
   }
 
@@ -520,6 +534,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   private void onNumberUpdated() {
     textDrawableHelper.setTextWidthDirty(true);
+    onBadgeShapeAppearanceUpdated();
     updateCenterAndBounds();
     invalidateSelf();
   }
@@ -873,6 +888,68 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     invalidateSelf();
   }
 
+  /**
+   * Sets this badge without text's shape appearance resource.
+   *
+   * @param id This badge's shape appearance res id when there is no text.
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeShapeAppearance
+   */
+  public void setBadgeWithoutTextShapeAppearance(@StyleRes int id) {
+    state.setBadgeShapeAppearanceResId(id);
+    onBadgeShapeAppearanceUpdated();
+  }
+
+  /**
+   * Sets this badge without text's shape appearance overlay resource.
+   *
+   * @param id This badge's shape appearance overlay res id when there is no text.
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeShapeAppearanceOverlay
+   */
+  public void setBadgeWithoutTextShapeAppearanceOverlay(@StyleRes int id) {
+    state.setBadgeShapeAppearanceOverlayResId(id);
+    onBadgeShapeAppearanceUpdated();
+  }
+
+  /**
+   * Sets this badge with text's shape appearance resource.
+   *
+   * @param id This badge's shape appearance res id when there is text.
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeWithTextShapeAppearance
+   */
+  public void setBadgeWithTextShapeAppearance(@StyleRes int id) {
+    state.setBadgeWithTextShapeAppearanceResId(id);
+    onBadgeShapeAppearanceUpdated();
+  }
+
+  /**
+   * Sets this badge with text's shape appearance overlay resource.
+   *
+   * @param id This badge's shape appearance overlay res id when there is text.
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeWithTextShapeAppearanceOverlay
+   */
+  public void setBadgeWithTextShapeAppearanceOverlay(@StyleRes int id) {
+    state.setBadgeWithTextShapeAppearanceOverlayResId(id);
+    onBadgeShapeAppearanceUpdated();
+  }
+
+  private void onBadgeShapeAppearanceUpdated() {
+    Context context = contextRef.get();
+    if (context == null) {
+      return;
+    }
+    shapeDrawable.setShapeAppearanceModel(
+        ShapeAppearanceModel.builder(
+                context,
+                state.hasNumber()
+                    ? state.getBadgeWithTextShapeAppearanceResId()
+                    : state.getBadgeShapeAppearanceResId(),
+                state.hasNumber()
+                    ? state.getBadgeWithTextShapeAppearanceOverlayResId()
+                    : state.getBadgeShapeAppearanceOverlayResId())
+            .build());
+    invalidateSelf();
+  }
+
   private void updateCenterAndBounds() {
     Context context = contextRef.get();
     View anchorView = anchorViewRef != null ? anchorViewRef.get() : null;
@@ -898,7 +975,11 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, halfBadgeWidth, halfBadgeHeight);
 
-    shapeDrawable.setCornerSize(cornerRadius);
+    // If there is a badge radius specified, override the corner size set by the shape appearance
+    // with the badge radius.
+    if (cornerRadius != BADGE_RADIUS_NOT_SPECIFIED) {
+      shapeDrawable.setCornerSize(cornerRadius);
+    }
     if (!tmpRect.equals(badgeBounds)) {
       shapeDrawable.setBounds(badgeBounds);
     }
@@ -926,15 +1007,22 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private void calculateCenterAndBounds(@NonNull Rect anchorRect, @NonNull View anchorView) {
-    if (getNumber() <= MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
-      cornerRadius = !hasNumber() ? state.badgeRadius : state.badgeWithTextRadius;
+    cornerRadius = !hasNumber() ? state.badgeRadius : state.badgeWithTextRadius;
+    if (cornerRadius != BADGE_RADIUS_NOT_SPECIFIED) {
       halfBadgeHeight = cornerRadius;
       halfBadgeWidth = cornerRadius;
     } else {
-      cornerRadius = state.badgeWithTextRadius;
-      halfBadgeHeight = cornerRadius;
+      halfBadgeHeight =
+          Math.round(!hasNumber() ? state.badgeHeight / 2 : state.badgeWithTextHeight / 2);
+      halfBadgeWidth =
+          Math.round(!hasNumber() ? state.badgeWidth / 2 : state.badgeWithTextWidth / 2);
+    }
+    if (getNumber() > MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
       String badgeText = getBadgeText();
-      halfBadgeWidth = textDrawableHelper.getTextWidth(badgeText) / 2f + state.badgeWidePadding;
+      halfBadgeWidth =
+          Math.max(
+              halfBadgeWidth,
+              textDrawableHelper.getTextWidth(badgeText) / 2f + state.badgeWidePadding);
     }
 
     int totalVerticalOffset = getTotalVerticalOffsetForState();
