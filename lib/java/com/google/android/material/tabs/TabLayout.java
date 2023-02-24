@@ -3316,8 +3316,11 @@ public class TabLayout extends HorizontalScrollView {
      * in a viewpager.
      */
     private void jumpIndicatorToPosition(int position) {
-      // Don't update the indicator position if the scroll state is not idle.
-      if (viewPagerScrollState != SCROLL_STATE_IDLE) {
+      // Don't update the indicator position if the scroll state is not idle, and the indicator
+      // is drawn.
+      if (viewPagerScrollState != SCROLL_STATE_IDLE
+          && !(getTabSelectedIndicator().getBounds().left == -1
+              && getTabSelectedIndicator().getBounds().right == -1)) {
         return;
       }
       final View currentView = getChildAt(position);
