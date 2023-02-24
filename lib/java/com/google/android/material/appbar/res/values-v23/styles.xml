@@ -15,6 +15,22 @@
   ~ limitations under the License.
 -->
 <resources>
+  <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="Base.ThemeOverlay.MaterialComponents.Toolbar.Surface">
+    <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
+    <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="Base.ThemeOverlay.MaterialComponents.ActionBar.Primary">
+    <item name="android:textColorSecondary">@color/material_on_primary_emphasis_medium</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.ActionBar.Surface" parent="Base.ThemeOverlay.MaterialComponents.ActionBar.Surface">
+    <item name="android:textColorPrimary">@color/material_on_surface_emphasis_high_type</item>
+    <item name="android:textColorSecondary">@color/material_on_surface_emphasis_medium</item>
+    <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
+    <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
+  </style>
+
   <style name="Widget.Material3.ActionBar.Solid" parent="Base.Widget.Material3.ActionBar.Solid">
     <item name="background">@drawable/m3_appbar_background</item>
     <item name="backgroundStacked">@drawable/m3_appbar_background</item>

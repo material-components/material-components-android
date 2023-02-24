@@ -43,15 +43,17 @@
 
   <style name="Widget.MaterialComponents.BottomAppBar.PrimarySurface" parent="Widget.MaterialComponents.BottomAppBar.Colored"/>
 
-  <style name="ThemeOverlay.MaterialComponents.BottomAppBar.Surface" parent="">
-    <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
-    <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
-  </style>
-
   <style name="ThemeOverlay.MaterialComponents.BottomAppBar.Primary" parent="">
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
     <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
   </style>
+
+  <style name="Base.ThemeOverlay.MaterialComponents.BottomAppBar.Surface" parent="">
+    <item name="colorControlNormal">?attr/colorOnSurface</item>
+    <item name="actionMenuTextColor">?attr/colorOnSurface</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.BottomAppBar.Surface" parent="Base.ThemeOverlay.MaterialComponents.BottomAppBar.Surface" />
 
   <!-- M3 Styles -->
 

@@ -86,10 +86,12 @@
     <item name="colorControlNormal">?attr/colorOnSurface</item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="">
-    <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
-    <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
+  <style name="Base.ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="">
+    <item name="colorControlNormal">?attr/colorOnSurface</item>
+    <item name="actionMenuTextColor">?attr/colorOnSurface</item>
   </style>
+
+  <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="Base.ThemeOverlay.MaterialComponents.Toolbar.Surface" />
 
   <!-- ActionBar styles -->
   <style name="Widget.MaterialComponents.ActionBar.Solid" parent="Widget.AppCompat.ActionBar.Solid">
@@ -128,23 +130,27 @@
     <item name="maxButtonHeight">@dimen/mtrl_toolbar_default_height</item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="ThemeOverlay.AppCompat.ActionBar">
+  <style name="Base.ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="ThemeOverlay.AppCompat.ActionBar">
     <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
-    <item name="android:textColorSecondary">@color/material_on_primary_emphasis_medium</item>
+    <item name="android:textColorSecondary">?attr/colorOnPrimary</item>
     <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
     <!-- Used to tint the ActionMode background and preserve the underline. -->
     <item name="android:colorBackground">?attr/colorPrimary</item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.ActionBar.Surface" parent="ThemeOverlay.AppCompat.ActionBar">
-    <item name="android:textColorPrimary">@color/material_on_surface_emphasis_high_type</item>
-    <item name="android:textColorSecondary">@color/material_on_surface_emphasis_medium</item>
-    <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
-    <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
+  <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="Base.ThemeOverlay.MaterialComponents.ActionBar.Primary" />
+
+  <style name="Base.ThemeOverlay.MaterialComponents.ActionBar.Surface" parent="ThemeOverlay.AppCompat.ActionBar">
+    <item name="android:textColorPrimary">?attr/colorOnSurface</item>
+    <item name="android:textColorSecondary">?attr/colorOnSurface</item>
+    <item name="actionMenuTextColor">?attr/colorSurface</item>
+    <item name="colorControlNormal">?attr/colorSurface</item>
     <!-- Used to tint the ActionMode background and preserve the underline. -->
     <item name="android:colorBackground">?attr/colorSurface</item>
   </style>
+
+  <style name="ThemeOverlay.MaterialComponents.ActionBar.Surface" parent="Base.ThemeOverlay.MaterialComponents.ActionBar.Surface" />
 
   <!-- M3 AppBarLayout styles -->
   <style name="Widget.Material3.AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
