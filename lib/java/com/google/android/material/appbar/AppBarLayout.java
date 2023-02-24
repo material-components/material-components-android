@@ -68,6 +68,7 @@ import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.NestedScrollingChild;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewCompat.NestedScrollType;
+import androidx.core.view.ViewCompat.ScrollAxis;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -1107,6 +1108,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     return liftOnScrollTargetView != null ? liftOnScrollTargetView.get() : null;
   }
 
+  boolean isLiftOnScrollTargetView(@NonNull View view) {
+    return (liftOnScrollTargetViewId != View.NO_ID && view.getId() == liftOnScrollTargetViewId)
+        || (liftOnScrollTargetView != null && view == liftOnScrollTargetView.get());
+  }
+
   private void clearLiftOnScrollTargetView() {
     if (liftOnScrollTargetView != null) {
       liftOnScrollTargetView.clear();
@@ -1496,9 +1502,14 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         @NonNull CoordinatorLayout parent,
         @NonNull T child,
         @NonNull View directTargetChild,
-        View target,
-        int nestedScrollAxes,
-        int type) {
+        @NonNull View target,
+        @ScrollAxis int nestedScrollAxes,
+        @NestedScrollType int type) {
+
+      if (!shouldRespectNestedScroll(parent, child, target)) {
+        return false;
+      }
+
       // Return true if we're nested scrolling vertically, and we either have lift on scroll enabled
       // or we can scroll the children.
       final boolean started =
@@ -1517,6 +1528,23 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       lastStartedType = type;
 
       return started;
+    }
+
+    private boolean shouldRespectNestedScroll(
+        @NonNull CoordinatorLayout parent,
+        @NonNull T appBarLayout,
+        @NonNull View target) {
+      return (target.getParent() == parent && hasScrollingBehavior(target))
+          || appBarLayout.isLiftOnScrollTargetView(target);
+    }
+
+    private boolean hasScrollingBehavior(@NonNull View view) {
+      if (view.getLayoutParams() instanceof CoordinatorLayout.LayoutParams) {
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+        return lp.getBehavior() instanceof ScrollingViewBehavior;
+      }
+
+      return false;
     }
 
     // Return true if there are scrollable children and the scrolling view is big enough to scroll.
@@ -1884,10 +1912,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       final int childCount = coordinatorLayout.getChildCount();
       for (int i = 0; i < childCount; i++) {
         final View child = coordinatorLayout.getChildAt(i);
-
-        CoordinatorLayout.LayoutParams lp =
-            (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-        if (lp.getBehavior() instanceof ScrollingViewBehavior) {
+        if (hasScrollingBehavior(child)) {
           return child;
         }
       }
