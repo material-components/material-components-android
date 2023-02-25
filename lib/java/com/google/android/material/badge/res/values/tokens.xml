@@ -22,5 +22,12 @@
   <!-- Generated from token set (md.comp.badge) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_badge_color">?attr/colorError</macro>
+  <style name="ShapeAppearance.M3.Comp.Badge.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
+  <dimen name="m3_comp_badge_size">6dp</dimen>
+  <style name="ShapeAppearance.M3.Comp.Badge.Large.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
+  <dimen name="m3_comp_badge_large_size">16dp</dimen>
+  <!-- Enabled - Label text -->
+  <macro name="m3_comp_badge_large_label_text_color">?attr/colorOnError</macro>
+  <macro name="m3_comp_badge_large_label_text_type">?attr/textAppearanceLabelSmall</macro>
 
 </resources>
