@@ -32,8 +32,8 @@
   <dimen name="mtrl_badge_toolbar_action_menu_item_vertical_offset">12dp</dimen>
 
   <!-- M3 Dimens -->
-  <dimen name="m3_badge_size">6dp</dimen>
-  <dimen name="m3_badge_with_text_size">16dp</dimen>
+  <dimen name="m3_badge_size">@dimen/m3_comp_badge_size</dimen>
+  <dimen name="m3_badge_with_text_size">@dimen/m3_comp_badge_large_size</dimen>
 
   <dimen name="m3_badge_vertical_offset">1.5dp</dimen>
   <dimen name="m3_badge_horizontal_offset">1.5dp</dimen>

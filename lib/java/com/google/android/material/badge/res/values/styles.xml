@@ -27,8 +27,8 @@
     <item name="badgeGravity">TOP_END</item>
     <item name="offsetAlignmentMode">legacy</item>
     <item name="badgeTextAppearance">@style/TextAppearance.MaterialComponents.Badge</item>
-    <item name="badgeShapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
-    <item name="badgeWithTextShapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="badgeShapeAppearance">@style/ShapeAppearance.MaterialComponents.Badge</item>
+    <item name="badgeWithTextShapeAppearance">@style/ShapeAppearance.MaterialComponents.Badge</item>
   </style>
 
   <style name="Base.TextAppearance.MaterialComponents.Badge" parent="TextAppearance.AppCompat">
@@ -44,23 +44,30 @@
 
   <style name="TextAppearance.MaterialComponents.Badge" parent="Base.TextAppearance.MaterialComponents.Badge"/>
 
+  <style name="ShapeAppearance.MaterialComponents.Badge">
+    <item name="cornerFamily">?attr/shapeCornerFamily</item>
+    <item name="cornerSize">50%</item>
+  </style>
+
   <!-- M3 Badge -->
   <style name="Widget.Material3.Badge" parent="Widget.MaterialComponents.Badge">
     <item name="backgroundColor">@macro/m3_comp_badge_color</item>
-    <item name="badgeTextColor">?attr/colorOnError</item>
+    <item name="badgeTextColor">@macro/m3_comp_badge_large_label_text_color</item>
     <item name="offsetAlignmentMode">edge</item>
     <!-- Badge "dot" without text -->
     <item name="horizontalOffset">@dimen/m3_badge_offset</item>
     <item name="verticalOffset">@dimen/m3_badge_offset</item>
     <item name="badgeWidth">@dimen/m3_badge_size</item>
     <item name="badgeHeight">@dimen/m3_badge_size</item>
+    <item name="badgeShapeAppearance">@style/ShapeAppearance.M3.Comp.Badge.Shape</item>
 
     <!-- Badge with text -->
     <item name="badgeWithTextWidth">@dimen/m3_badge_with_text_size</item>
     <item name="badgeWithTextHeight">@dimen/m3_badge_with_text_size</item>
     <item name="horizontalOffsetWithText">@dimen/m3_badge_with_text_offset</item>
     <item name="verticalOffsetWithText">@dimen/m3_badge_with_text_offset</item>
-    <item name="badgeTextAppearance">?attr/textAppearanceLabelSmall</item>
+    <item name="badgeTextAppearance">@macro/m3_comp_badge_large_label_text_type</item>
+    <item name="badgeWithTextShapeAppearance">@style/ShapeAppearance.M3.Comp.Badge.Shape</item>
   </style>
 
 </resources>
