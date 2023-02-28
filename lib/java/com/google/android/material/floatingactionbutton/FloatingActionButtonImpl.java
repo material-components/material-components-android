@@ -372,6 +372,9 @@ class FloatingActionButtonImpl {
 
   void onElevationsChanged(
       float elevation, float hoveredFocusedTranslationZ, float pressedTranslationZ) {
+    // If there is currently a state animation, we want to end the animation by jumping
+    // the drawable to the current state before changing the elevation.
+    jumpDrawableToCurrentState();
     updatePadding();
     updateShapeElevation(elevation);
   }
