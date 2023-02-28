@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Tumia programu ya kuingiza data ya maandishi</string>
   <string name="mtrl_picker_a11y_prev_month">Rudi kwenye mwezi uliotangulia</string>
   <string name="mtrl_picker_a11y_next_month">Nenda kwenye mwezi unaofuata</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Gusa ili uende kwenye sehemu ya kuchagua mwaka</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Gusa ili uende kwenye sehemu ya kuchagua siku</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Gusa ili ubadilishe kwenda mwonekano wa mwaka</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Gusa ili ubadilishe kwenda mwonekano wa Kalenda</string>
   <string name="mtrl_picker_day_of_week_column_header">Safu wima ya siku: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Uteuzi wa sasa: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Sogeza kwenye mwaka wa %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Uteuzi wa tarehe ya kuanza: %1$s - Uteuzi wa tarehe ya mwisho: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">hakuna</string>
+  <string name="mtrl_picker_navigate_to_year_description">Sogeza kwenye mwaka wa %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Sogeza kwenye mwaka huu %1$d</string>
+  <string name="mtrl_picker_today_description">Leo %1$s</string>
+  <string name="mtrl_picker_start_date_description">Tarehe ya kuanza %1$s</string>
+  <string name="mtrl_picker_end_date_description">Tarehe ya kumaliza %1$s</string>
 </resources>

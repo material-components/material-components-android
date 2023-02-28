@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Preklop na način vnosa besedila</string>
   <string name="mtrl_picker_a11y_prev_month">Spremeni na prejšnji mesec</string>
   <string name="mtrl_picker_a11y_next_month">Spremeni na naslednji mesec</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Dotik za preklop na izbiro leta</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Dotik za preklop na izbiro dneva</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Dotaknite se za preklop na pogled leta</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Dotaknite se za preklop na pogled koledarja</string>
   <string name="mtrl_picker_day_of_week_column_header">Stolpec dni: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Trenutna izbira: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Pomik na leto %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Izbira začetnega datuma: %1$s – Izbira končnega datuma: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">brez</string>
+  <string name="mtrl_picker_navigate_to_year_description">Pomik na leto %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Pomik na trenutno leto %1$d</string>
+  <string name="mtrl_picker_today_description">Danes %1$s</string>
+  <string name="mtrl_picker_start_date_description">Začetni datum %1$s</string>
+  <string name="mtrl_picker_end_date_description">Končni datum %1$s</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -24,14 +24,14 @@
   <string name="mtrl_picker_date_header_unselected">ఎంచుకున్న తేది</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">సరే</string>
-  <string name="mtrl_picker_cancel">రద్దు చేయి</string>
+  <string name="mtrl_picker_cancel">రద్దు చేయండి</string>
   <string name="mtrl_picker_text_input_date_hint">తేదీ</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">ప్రారంభ తేదీ</string>
   <string name="mtrl_picker_text_input_date_range_end_hint">ముగింపు తేదీ</string>
   <string name="mtrl_picker_text_input_year_abbr">సం</string>
   <string name="mtrl_picker_text_input_month_abbr">నె</string>
   <string name="mtrl_picker_text_input_day_abbr">రో</string>
-  <string name="mtrl_picker_save">సేవ్ చేయి</string>
+  <string name="mtrl_picker_save">సేవ్ చేయండి</string>
   <string name="mtrl_picker_invalid_range">చెల్లని పరిధి.</string>
   <string name="mtrl_picker_out_of_range">పరిధి వెలుపల ఉంది: %1$s</string>
   <string name="mtrl_picker_invalid_format">ఫార్మాట్ చెల్లదు.</string>
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">వచన ఇన్‌పుట్ మోడ్‌కు మారుస్తుంది</string>
   <string name="mtrl_picker_a11y_prev_month">మునుపటి నెలకు మార్చుతుంది</string>
   <string name="mtrl_picker_a11y_next_month">వచ్చే నెలకు మార్చుతుంది</string>
-  <string name="mtrl_picker_toggle_to_year_selection">\'సంవత్సరాన్ని ఎంపిక చేసుకోవడం\'కు మారడానికి నొక్కండి</string>
-  <string name="mtrl_picker_toggle_to_day_selection">\'రోజును ఎంపిక చేసుకోవడం\'కు మారడానికి నొక్కండి</string>
+  <string name="mtrl_picker_toggle_to_year_selection">సంవత్సర వీక్షణకు మారడానికి ట్యాప్ చేయండి</string>
+  <string name="mtrl_picker_toggle_to_day_selection">క్యాలెండర్ వీక్షణకు మారడానికి ట్యాప్ చేయండి</string>
   <string name="mtrl_picker_day_of_week_column_header">రోజుల నిలువు వరుస: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">ప్రస్తుత ఎంపిక: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">%1$sసంవత్సరానికి నావిగేట్ చేస్తుంది</string>
+  <string name="mtrl_picker_announce_current_range_selection">ప్రారంభ తేదీ ఎంపిక: %1$s – ముగింపు తేదీ ఎంపిక: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">ఏదీ వద్దు</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$dసంవత్సరానికి నావిగేట్ చేస్తుంది</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">ప్రస్తుత సంవత్సరానికి %1$d నావిగేట్ చేయండి</string>
+  <string name="mtrl_picker_today_description">ఈరోజు %1$s</string>
+  <string name="mtrl_picker_start_date_description">ప్రారంభ తేదీ %1$s</string>
+  <string name="mtrl_picker_end_date_description">ముగింపు తేదీ %1$s</string>
 </resources>

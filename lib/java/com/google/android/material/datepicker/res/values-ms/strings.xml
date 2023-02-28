@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Beralih kepada mod input teks</string>
   <string name="mtrl_picker_a11y_prev_month">Tukar kepada bulan sebelumnya</string>
   <string name="mtrl_picker_a11y_next_month">Tukar kepada bulan seterusnya</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Ketik untuk beralih kepada pemilihan tahun</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Ketik untuk beralih kepada pemilihan hari</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Ketik untuk menukar kepada paparan tahun</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Ketik untuk menukar kepada paparan Kalendar</string>
   <string name="mtrl_picker_day_of_week_column_header">Lajur hari: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Pilihan semasa: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Navigasi ke tahun %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Pilihan tarikh mula: %1$s – Pilihan tarikh tamat: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">tiada</string>
+  <string name="mtrl_picker_navigate_to_year_description">Navigasi ke tahun %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Navigasi ke tahun semasa %1$d</string>
+  <string name="mtrl_picker_today_description">Hari ini %1$s</string>
+  <string name="mtrl_picker_start_date_description">Tarikh mula %1$s</string>
+  <string name="mtrl_picker_end_date_description">Tarikh tamat %1$s</string>
 </resources>

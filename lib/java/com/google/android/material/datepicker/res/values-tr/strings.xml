@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Metin giriş moduna geç</string>
   <string name="mtrl_picker_a11y_prev_month">Önceki aya değiştir</string>
   <string name="mtrl_picker_a11y_next_month">Sonraki aya değiştir</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Yıl seçmeye geçmek için dokunun</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Gün seçmeye geçmek için dokunun</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Yıl görünümüne geçmek için dokunun</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Takvim görünümüne geçmek için dokunun</string>
   <string name="mtrl_picker_day_of_week_column_header">Gün sütunu: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Geçerli seçim: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">%1$s yılına git</string>
+  <string name="mtrl_picker_announce_current_range_selection">Başlangıç tarihi seçimi: %1$s – Bitiş tarihi seçimi: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">yok</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$d yılına git</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Geçerli yıla (%1$d) git</string>
+  <string name="mtrl_picker_today_description">Bugün, %1$s</string>
+  <string name="mtrl_picker_start_date_description">Başlangıç tarihi: %1$s</string>
+  <string name="mtrl_picker_end_date_description">Bitiş tarihi: %1$s</string>
 </resources>

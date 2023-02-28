@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Canvia al mode d\'introducció de text</string>
   <string name="mtrl_picker_a11y_prev_month">Canvia al mes anterior</string>
   <string name="mtrl_picker_a11y_next_month">Canvia al mes següent</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Toca per canviar a la selecció de l\'any</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Toca per canviar a la selecció del dia</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Toca per canviar a la visualització d\'any</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Toca per canviar a la visualització de calendari</string>
   <string name="mtrl_picker_day_of_week_column_header">Columna de dies: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Selecció actual: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Canvia a l\'any %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Selecció de la data d\'inici: %1$s – Selecció de la data de finalització: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">cap</string>
+  <string name="mtrl_picker_navigate_to_year_description">Canvia a l\'any %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Navega fins a l\'any actual %1$d</string>
+  <string name="mtrl_picker_today_description">Avui, dia %1$s</string>
+  <string name="mtrl_picker_start_date_description">Data d\'inici: %1$s</string>
+  <string name="mtrl_picker_end_date_description">Data de finalització: %1$s</string>
 </resources>

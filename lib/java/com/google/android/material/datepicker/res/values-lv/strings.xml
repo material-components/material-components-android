@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Pārslēgties uz teksta ievades režīmu</string>
   <string name="mtrl_picker_a11y_prev_month">Pāriet uz iepriekšējo mēnesi</string>
   <string name="mtrl_picker_a11y_next_month">Pāriet uz nākamo mēnesi</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Pieskarties, lai pārslēgtos uz gada atlasīšanu</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Pieskarties, lai pārslēgtos uz dienas atlasīšanu</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Pieskarieties, lai pārslēgtos uz gada skatu</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Pieskarieties, lai pārslēgtos uz Kalendāra skatu</string>
   <string name="mtrl_picker_day_of_week_column_header">Dienu sleja: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Pašreizējā atlase: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Pāriet uz šo gadu: %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Sākuma datuma atlase: %1$s; beigu datuma atlase: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">nav</string>
+  <string name="mtrl_picker_navigate_to_year_description">Pāriet uz šo gadu: %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Pāriet uz pašreizējo gadu (%1$d)</string>
+  <string name="mtrl_picker_today_description">Šodien (%1$s)</string>
+  <string name="mtrl_picker_start_date_description">Sākuma datums: %1$s</string>
+  <string name="mtrl_picker_end_date_description">Beigu datums: %1$s</string>
 </resources>

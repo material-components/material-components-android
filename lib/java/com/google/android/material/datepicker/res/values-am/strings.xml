@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">ወደ ጽሁፍ ግቤት ሁነታ ቀይር</string>
   <string name="mtrl_picker_a11y_prev_month">ወደ ቀዳሚው ወር ቀይር</string>
   <string name="mtrl_picker_a11y_next_month">ወደ የሚቀጥለው ወር ቀይር</string>
-  <string name="mtrl_picker_toggle_to_year_selection">ወደ ዓመት መምረጥ ለመቀየር መታ ያድርጉ</string>
-  <string name="mtrl_picker_toggle_to_day_selection">ወደ ቀን መምረጥ ለመቀየር መታ ያድርጉ</string>
+  <string name="mtrl_picker_toggle_to_year_selection">ወደ የዓመት እይታ ለመቀየር መታ ያድርጉ</string>
+  <string name="mtrl_picker_toggle_to_day_selection">ወደ የቀን መቁጠሪያ እይታ ለመቀየር መታ ያድርጉ</string>
   <string name="mtrl_picker_day_of_week_column_header">የቀኖች ዓምድ፦ %1$s</string>
   <string name="mtrl_picker_announce_current_selection">የአሁኑ ምርጫ፦ %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">ወደ ዓመት %1$s አሰስ</string>
+  <string name="mtrl_picker_announce_current_range_selection">የመጀመሪያ ቀን ምርጫ፦ %1$s – የማብቂያ ቀን ምርጫ፦ %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">ምንም</string>
+  <string name="mtrl_picker_navigate_to_year_description">ወደ ዓመት %1$d አሰስ</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">ወደ የአሁኑ ዓመት %1$d አስስ</string>
+  <string name="mtrl_picker_today_description">ዛሬ %1$s</string>
+  <string name="mtrl_picker_start_date_description">የመጀመሪያ ቀን %1$s</string>
+  <string name="mtrl_picker_end_date_description">የማብቂያ ቀን %1$s</string>
 </resources>

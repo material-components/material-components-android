@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Přepnout na režim zadávání textu</string>
   <string name="mtrl_picker_a11y_prev_month">Přejít na předchozí měsíc</string>
   <string name="mtrl_picker_a11y_next_month">Přejít na další měsíc</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Klepnutím přepnete na výběr roku</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Klepnutím přepnete na výběr dne</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Klepnutím přepnete na zobrazení jednotlivých let</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Klepnutím přepnete na zobrazení kalendáře</string>
   <string name="mtrl_picker_day_of_week_column_header">Sloupec dnů: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Aktuální výběr: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Přejít na rok %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Výběr data zahájení: %1$s – Výběr data ukončení: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">prázdné</string>
+  <string name="mtrl_picker_navigate_to_year_description">Přejít na rok %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Přejít na aktuální rok %1$d</string>
+  <string name="mtrl_picker_today_description">Dnes %1$s</string>
+  <string name="mtrl_picker_start_date_description">Datum zahájení %1$s</string>
+  <string name="mtrl_picker_end_date_description">Datum ukončení %1$s</string>
 </resources>

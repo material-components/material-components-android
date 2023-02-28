@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">मजकूर इनपुट मोडवर स्विच करा</string>
   <string name="mtrl_picker_a11y_prev_month">मागील महिन्यावर बदला</string>
   <string name="mtrl_picker_a11y_next_month">पुढील महिन्यावर बदला</string>
-  <string name="mtrl_picker_toggle_to_year_selection">वर्ष निवडण्यासाठी स्विच करा वर टॅप करा</string>
-  <string name="mtrl_picker_toggle_to_day_selection">दिवस निवडण्यासाठी स्विच करा वर टॅप करा</string>
+  <string name="mtrl_picker_toggle_to_year_selection">वर्ष या दृश्यावर स्विच करण्यासाठी टॅप करा</string>
+  <string name="mtrl_picker_toggle_to_day_selection">कॅलेंडर या दृश्यावर स्विच करण्यासाठी टॅप करा</string>
   <string name="mtrl_picker_day_of_week_column_header">दिवसांचा स्तंभ: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">सध्याची निवड: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">%1$s वर्षावर नेव्हिगेट करा</string>
+  <string name="mtrl_picker_announce_current_range_selection">सुरू होण्याच्या तारखेची निवड: %1$s – संपण्याच्या तारखेची निवड: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">काहीही नाही</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$d वर्षावर नेव्हिगेट करा</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">सध्याचे वर्ष %1$d यावर नेव्हिगेट करा</string>
+  <string name="mtrl_picker_today_description">आज %1$s</string>
+  <string name="mtrl_picker_start_date_description">सुरू होण्याची तारीख %1$s</string>
+  <string name="mtrl_picker_end_date_description">संपण्याची तारीख %1$s</string>
 </resources>

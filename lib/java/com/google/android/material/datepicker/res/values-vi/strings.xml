@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Chuyển sang chế độ nhập văn bản</string>
   <string name="mtrl_picker_a11y_prev_month">Chuyển về tháng trước</string>
   <string name="mtrl_picker_a11y_next_month">Chuyển sang tháng tiếp theo</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Nhấn để chuyển sang chế độ chọn một năm</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Nhấn để chuyển sang chế độ chọn một ngày</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Nhấn để chuyển sang chế độ xem theo năm</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Nhấn để chuyển sang chế độ xem theo lịch</string>
   <string name="mtrl_picker_day_of_week_column_header">Cột ngày: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Lựa chọn hiện tại: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Chuyển tới năm %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Ngày bắt đầu được chọn: %1$s – Ngày kết thúc được chọn: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">không có</string>
+  <string name="mtrl_picker_navigate_to_year_description">Chuyển tới năm %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Chuyển đến năm hiện tại %1$d</string>
+  <string name="mtrl_picker_today_description">Hôm nay %1$s</string>
+  <string name="mtrl_picker_start_date_description">Ngày bắt đầu %1$s</string>
+  <string name="mtrl_picker_end_date_description">Ngày kết thúc %1$s</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Comutați la modul de introducere a textului</string>
   <string name="mtrl_picker_a11y_prev_month">Treceți la luna anterioară</string>
   <string name="mtrl_picker_a11y_next_month">Treceți la luna următoare</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Atingeți pentru a comuta la selectarea unui an</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Atingeți pentru a comuta la selectarea unei zile</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Atingeți pentru a comuta la afișarea An</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Atingeți pentru a comuta la afișarea Calendar</string>
   <string name="mtrl_picker_day_of_week_column_header">Coloana cu zile: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Selecția actuală: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Navigați la anul %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Selectarea datei de începere: %1$s – selectarea datei de încheiere: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">niciuna</string>
+  <string name="mtrl_picker_navigate_to_year_description">Navigați la anul %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Navigați la anul actual %1$d</string>
+  <string name="mtrl_picker_today_description">Astăzi, la %1$s</string>
+  <string name="mtrl_picker_start_date_description">Data de începere: %1$s</string>
+  <string name="mtrl_picker_end_date_description">Data de încheiere: %1$s</string>
 </resources>

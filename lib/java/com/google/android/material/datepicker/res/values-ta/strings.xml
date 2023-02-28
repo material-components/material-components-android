@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">உரை உள்ளீட்டு முறைக்கு மாற்றும்</string>
   <string name="mtrl_picker_a11y_prev_month">முந்தைய மாதத்தைக் காட்டு</string>
   <string name="mtrl_picker_a11y_next_month">அடுத்த மாதத்தைக் காட்டு</string>
-  <string name="mtrl_picker_toggle_to_year_selection">ஆண்டைத் தேர்வுசெய்வதற்கு மாற்ற தட்டவும்</string>
-  <string name="mtrl_picker_toggle_to_day_selection">நாளைத் தேர்வுசெய்வதற்கு மாற்ற தட்டவும்</string>
+  <string name="mtrl_picker_toggle_to_year_selection">ஆண்டுக் காட்சிக்கு மாற தட்டவும்</string>
+  <string name="mtrl_picker_toggle_to_day_selection">கேலெண்டர் காட்சிக்கு மாற தட்டவும்</string>
   <string name="mtrl_picker_day_of_week_column_header">நாட்களின் நெடுவரிசை: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">தற்போதைய தேர்வு: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">%1$s ஆம் ஆண்டிற்குச் செல்லும்</string>
+  <string name="mtrl_picker_announce_current_range_selection">தொடங்கும் தேதியைத் தேர்ந்தெடுங்கள்: %1$s – முடியும் தேதியைத் தேர்ந்தெடுங்கள்: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">எதுவுமில்லை</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$d ஆம் ஆண்டிற்குச் செல்லும்</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">தற்போதைய வருடத்திற்கு (%1$d) செல்லும்</string>
+  <string name="mtrl_picker_today_description">இன்று %1$s</string>
+  <string name="mtrl_picker_start_date_description">தொடங்கும் தேதி %1$s</string>
+  <string name="mtrl_picker_end_date_description">முடியும் தேதி %1$s</string>
 </resources>

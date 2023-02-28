@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">पाठको इनपुट मोडमा बदल्नुहोस्</string>
   <string name="mtrl_picker_a11y_prev_month">अघिल्लो महिनामा सार्नुहोस्</string>
   <string name="mtrl_picker_a11y_next_month">अर्को महिनामा सार्नुहोस्</string>
-  <string name="mtrl_picker_toggle_to_year_selection">कुनै वर्ष चयन गर्ने विकल्प प्रयोग गर्न ट्याप गर्नुहोस्</string>
-  <string name="mtrl_picker_toggle_to_day_selection">कुनै दिन चयन गर्ने विकल्प प्रयोग गर्न ट्याप गर्नुहोस्</string>
+  <string name="mtrl_picker_toggle_to_year_selection">वर्षको भ्यू प्रयोग गर्न ट्याप गर्नुहोस्</string>
+  <string name="mtrl_picker_toggle_to_day_selection">पात्रोको भ्यू प्रयोग गर्न ट्याप गर्नुहोस्</string>
   <string name="mtrl_picker_day_of_week_column_header">दिनहरूको स्तम्भ: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">हालको चयन: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">वर्ष %1$s मा जानुहोस्</string>
+  <string name="mtrl_picker_announce_current_range_selection">सुरु हुने मितिको चयन: %1$s – अन्त्य हुने मितिको चयन: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">कुनै पनि होइन</string>
+  <string name="mtrl_picker_navigate_to_year_description">वर्ष %1$d मा जानुहोस्</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">चालु वर्ष %1$d मा जानुहोस्</string>
+  <string name="mtrl_picker_today_description">आज %1$s</string>
+  <string name="mtrl_picker_start_date_description">प्रारम्भ हुने मिति: %1$s</string>
+  <string name="mtrl_picker_end_date_description">समापन हुने मिति: %1$s</string>
 </resources>

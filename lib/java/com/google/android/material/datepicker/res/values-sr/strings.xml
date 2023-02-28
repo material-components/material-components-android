@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Пређите на режим уноса текста</string>
   <string name="mtrl_picker_a11y_prev_month">Пређите на претходни месец</string>
   <string name="mtrl_picker_a11y_next_month">Пређите на следећи месец</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Додирните да бисте прешли на избор године</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Додирните да бисте прешли на избор дана</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Додирните да бисте прешли на приказ године</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Додирните да бисте прешли на приказ календара</string>
   <string name="mtrl_picker_day_of_week_column_header">Колона са данима: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Актуелни избор: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Идите на годину %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Избор датума почетка: %1$s – Избор датума завршетка: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">ништа</string>
+  <string name="mtrl_picker_navigate_to_year_description">Идите на годину %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Идите на актуелну годину %1$d</string>
+  <string name="mtrl_picker_today_description">Данас %1$s</string>
+  <string name="mtrl_picker_start_date_description">Датум почетка %1$s</string>
+  <string name="mtrl_picker_end_date_description">Датум завршетка %1$s</string>
 </resources>

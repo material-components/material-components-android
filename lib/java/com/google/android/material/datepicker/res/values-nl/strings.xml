@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Overschakelen naar tekstinvoermodus</string>
   <string name="mtrl_picker_a11y_prev_month">Naar vorige maand gaan</string>
   <string name="mtrl_picker_a11y_next_month">Naar volgende maand gaan</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Tik om naar jaarselectie te schakelen</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Tik om naar dagselectie te schakelen</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Tik om over te schakelen naar de jaarweergave</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Tik om over te schakelen naar de agendaweergave</string>
   <string name="mtrl_picker_day_of_week_column_header">Kolom met dagen: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Huidige selectie: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Naar jaar %1$s navigeren</string>
+  <string name="mtrl_picker_announce_current_range_selection">Startdatumselectie: %1$s – Einddatumselectie: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">geen</string>
+  <string name="mtrl_picker_navigate_to_year_description">Naar jaar %1$d navigeren</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Naar het huidige jaar %1$d gaan</string>
+  <string name="mtrl_picker_today_description">Vandaag %1$s</string>
+  <string name="mtrl_picker_start_date_description">Startdatum %1$s</string>
+  <string name="mtrl_picker_end_date_description">Einddatum %1$s</string>
 </resources>

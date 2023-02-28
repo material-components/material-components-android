@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Kalo te modaliteti i \"Hyrjes së tekstit\"</string>
   <string name="mtrl_picker_a11y_prev_month">Ndrysho te muaji i kaluar</string>
   <string name="mtrl_picker_a11y_next_month">Ndrysho te muaji i ardhshëm</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Trokit për të kaluar te zgjedhja e një viti</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Trokit për të kaluar te zgjedhja e një dite</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Trokit për t\'u kthyer te pamja vjetore</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Trokit për t\'u kthyer te pamja e \"Kalendarit\"</string>
   <string name="mtrl_picker_day_of_week_column_header">Kolona e ditëve: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Zgjedhja aktuale: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Navigo te viti %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Zgjedhja e datës së fillimit: %1$s - Zgjedhja e datës së përfundimit: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">asnjë</string>
+  <string name="mtrl_picker_navigate_to_year_description">Navigo te viti %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Navigo te viti aktual %1$d</string>
+  <string name="mtrl_picker_today_description">Sot %1$s</string>
+  <string name="mtrl_picker_start_date_description">Data e fillimit: %1$s</string>
+  <string name="mtrl_picker_end_date_description">Data e mbarimit: %1$s</string>
 </resources>

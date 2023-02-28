@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">החלפה לשיטת קלט של טקסט</string>
   <string name="mtrl_picker_a11y_prev_month">מעבר לחודש הקודם</string>
   <string name="mtrl_picker_a11y_next_month">מעבר לחודש הבא</string>
-  <string name="mtrl_picker_toggle_to_year_selection">יש להקיש כדי להחליף לבחירת שנה</string>
-  <string name="mtrl_picker_toggle_to_day_selection">יש להקיש כדי להחליף לבחירת יום</string>
+  <string name="mtrl_picker_toggle_to_year_selection">יש להקיש כדי לעבור לתצוגת שנתית</string>
+  <string name="mtrl_picker_toggle_to_day_selection">יש להקיש כדי לעבור לתצוגת יומן</string>
   <string name="mtrl_picker_day_of_week_column_header">עמודה של ימים: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">הבחירה הנוכחית: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">ניווט לשנת %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">בחירת תאריך ההתחלה: %1$s – בחירת תאריך הסיום: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">ללא</string>
+  <string name="mtrl_picker_navigate_to_year_description">ניווט לשנת %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">ניווט לשנה הנוכחית %1$d</string>
+  <string name="mtrl_picker_today_description">היום %1$s</string>
+  <string name="mtrl_picker_start_date_description">תאריך ההתחלה %1$s</string>
+  <string name="mtrl_picker_end_date_description">תאריך הסיום %1$s</string>
 </resources>

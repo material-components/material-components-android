@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Cambiar al modo de entrada de texto</string>
   <string name="mtrl_picker_a11y_prev_month">Cambiar al mes anterior</string>
   <string name="mtrl_picker_a11y_next_month">Cambiar al mes siguiente</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Presiona para seleccionar un año</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Presiona para seleccionar un día</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Presiona para cambiar a la vista de año</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Presiona para cambiar a la vista de Calendario</string>
   <string name="mtrl_picker_day_of_week_column_header">Columna de días: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Selección actual: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Navegar al año %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Selección de fecha de inicio: %1$s – Selección de fecha de finalización: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">nada</string>
+  <string name="mtrl_picker_navigate_to_year_description">Navegar al año %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Navegar al año actual (%1$d)</string>
+  <string name="mtrl_picker_today_description">Hoy, %1$s</string>
+  <string name="mtrl_picker_start_date_description">Fecha de inicio: %1$s</string>
+  <string name="mtrl_picker_end_date_description">Fecha de finalización: %1$s</string>
 </resources>

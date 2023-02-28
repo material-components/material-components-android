@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">テキスト入力モードに切り替え</string>
   <string name="mtrl_picker_a11y_prev_month">前月に変更</string>
   <string name="mtrl_picker_a11y_next_month">翌月に変更</string>
-  <string name="mtrl_picker_toggle_to_year_selection">タップすると、年の選択に切り替わります</string>
-  <string name="mtrl_picker_toggle_to_day_selection">タップすると、日の選択に切り替わります</string>
+  <string name="mtrl_picker_toggle_to_year_selection">タップすると年表示に切り替わります</string>
+  <string name="mtrl_picker_toggle_to_day_selection">タップするとカレンダー表示に切り替わります</string>
   <string name="mtrl_picker_day_of_week_column_header">曜日の列: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">現在の選択: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">%1$s 年に移動</string>
+  <string name="mtrl_picker_announce_current_range_selection">開始日の選択: %1$s – 終了日の選択: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">なし</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$d 年に移動</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">現在の年（%1$d）に移動</string>
+  <string name="mtrl_picker_today_description">今日（%1$s）</string>
+  <string name="mtrl_picker_start_date_description">開始日 %1$s</string>
+  <string name="mtrl_picker_end_date_description">終了日 %1$s</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">切换到文本字段输入模式</string>
   <string name="mtrl_picker_a11y_prev_month">转到上个月</string>
   <string name="mtrl_picker_a11y_next_month">转到下个月</string>
-  <string name="mtrl_picker_toggle_to_year_selection">点按即可切换到选择某年</string>
-  <string name="mtrl_picker_toggle_to_day_selection">点按即可切换到选择某天</string>
+  <string name="mtrl_picker_toggle_to_year_selection">点按即可切换到年视图</string>
+  <string name="mtrl_picker_toggle_to_day_selection">点按即可切换到日历视图</string>
   <string name="mtrl_picker_day_of_week_column_header">表示周几的列：%1$s</string>
   <string name="mtrl_picker_announce_current_selection">当前的选择是：%1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">转到 %1$s 年</string>
+  <string name="mtrl_picker_announce_current_range_selection">开始日期选择：%1$s – 结束日期选择：%2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">无</string>
+  <string name="mtrl_picker_navigate_to_year_description">转到 %1$d 年</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">转到今年%1$d</string>
+  <string name="mtrl_picker_today_description">今天%1$s</string>
+  <string name="mtrl_picker_start_date_description">开始日期 %1$s</string>
+  <string name="mtrl_picker_end_date_description">结束日期 %1$s</string>
 </resources>

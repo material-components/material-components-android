@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@
   <string name="mtrl_picker_text_input_day_abbr">d</string>
   <string name="mtrl_picker_save">सेव करें</string>
   <string name="mtrl_picker_invalid_range">तारीखों की अमान्य सीमा.</string>
-  <string name="mtrl_picker_out_of_range">तारीख की मान्य सीमा से बाहर: %1$s</string>
+  <string name="mtrl_picker_out_of_range">चुनी गई तारीख मान्य नहीं है: %1$s</string>
   <string name="mtrl_picker_invalid_format">गलत फ़ॉर्मैट.</string>
   <string name="mtrl_picker_invalid_format_use">%1$s का इस्तेमाल करें</string>
   <string name="mtrl_picker_invalid_format_example">उदाहरण: %1$s</string>
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">टेक्स्ट के इनपुट मोड पर स्विच करें</string>
   <string name="mtrl_picker_a11y_prev_month">पिछले महीने पर जाएं</string>
   <string name="mtrl_picker_a11y_next_month">अगले महीने पर जाएं</string>
-  <string name="mtrl_picker_toggle_to_year_selection">\'साल चुनना\' पर स्विच करने के लिए टैप करें</string>
-  <string name="mtrl_picker_toggle_to_day_selection">\'दिन चुनना\' पर स्विच करने के लिए टैप करें</string>
+  <string name="mtrl_picker_toggle_to_year_selection">साल के व्यू पर स्विच करने के लिए टैप करें</string>
+  <string name="mtrl_picker_toggle_to_day_selection">कैलेंडर के व्यू पर स्विच करने के लिए टैप करें</string>
   <string name="mtrl_picker_day_of_week_column_header">दिनों का कॉलम: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">फ़िलहाल, यह चुना गया है: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">साल %1$s पर जाएं</string>
+  <string name="mtrl_picker_announce_current_range_selection">शुरू होने की तारीख चुनें: %1$s – खत्म होने की तारीख चुनें: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">कोई भी तारीख नहीं चुनी गई</string>
+  <string name="mtrl_picker_navigate_to_year_description">साल %1$d पर जाएं</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">मौजूदा साल %1$d पर जाएं</string>
+  <string name="mtrl_picker_today_description">आज %1$s</string>
+  <string name="mtrl_picker_start_date_description">शुरू होने की तारीख %1$s</string>
+  <string name="mtrl_picker_end_date_description">खत्म होने की तारीख %1$s</string>
 </resources>

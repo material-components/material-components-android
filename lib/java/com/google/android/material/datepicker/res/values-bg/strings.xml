@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Превключване към режим за въвеждане на текст</string>
   <string name="mtrl_picker_a11y_prev_month">Преминаване към предишния месец</string>
   <string name="mtrl_picker_a11y_next_month">Преминаване към следващия месец</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Докоснете, за да превключите към избиране на година</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Докоснете, за да превключите към избиране на ден</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Докоснете за превключване към годишен изглед</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Докоснете за превключване към календарен изглед</string>
   <string name="mtrl_picker_day_of_week_column_header">Колона за дни: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Текущ избор: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Навигиране до %1$s г.</string>
+  <string name="mtrl_picker_announce_current_range_selection">Избиране на начална дата: %1$s – Избиране на крайна дата: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">няма</string>
+  <string name="mtrl_picker_navigate_to_year_description">Навигиране до %1$d г.</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Навигиране до текущата година %1$d</string>
+  <string name="mtrl_picker_today_description">Днес – %1$s</string>
+  <string name="mtrl_picker_start_date_description">Начална дата: %1$s</string>
+  <string name="mtrl_picker_end_date_description">Крайна дата: %1$s</string>
 </resources>

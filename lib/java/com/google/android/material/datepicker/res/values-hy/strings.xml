@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Ավարտի ամսաթիվը</string>
   <string name="mtrl_picker_range_header_only_end_selected">Մեկնարկի ամսաթիվը – %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
-  <string name="mtrl_picker_date_header_unselected">Ընտրված ամսաթիվը</string>
+  <string name="mtrl_picker_date_header_unselected">Ընտրված ամսաթիվ</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">Եղավ</string>
   <string name="mtrl_picker_cancel">Չեղարկել</string>
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Անցնել տեքստի մուտքագրման ռեժիմին</string>
   <string name="mtrl_picker_a11y_prev_month">Անցնել նախորդ ամիս</string>
   <string name="mtrl_picker_a11y_next_month">Անցնել հաջորդ ամիս</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Հպեք՝ տարեթվի ընտությանն անցնելու համար</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Հպեք՝ օրվա ընտությանն անցնելու համար</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Հպեք՝ տարվա դիտակերպին անցնելու համար</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Հպեք՝ Օրացույցի դիտակերպին անցնելու համար</string>
   <string name="mtrl_picker_day_of_week_column_header">Օրերի սյունակ՝ %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Ներկայիս ընտրությունը՝ %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Անցնել %1$s թվական</string>
+  <string name="mtrl_picker_announce_current_range_selection">Մեկնարկի ամսաթվի ընտրություն՝ %1$s – Ավարտի ամսաթվի ընտրություն՝ %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">ոչ մեկը</string>
+  <string name="mtrl_picker_navigate_to_year_description">Անցնել %1$d թվական</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Անցնել ընթացիկ տարվան (%1$d)</string>
+  <string name="mtrl_picker_today_description">Այսօր (%1$s)</string>
+  <string name="mtrl_picker_start_date_description">Սկզբի ամսաթիվը՝ %1$s</string>
+  <string name="mtrl_picker_end_date_description">Ավարտի ամսաթիվը՝ %1$s</string>
 </resources>

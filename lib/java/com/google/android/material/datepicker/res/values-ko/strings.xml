@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@
   <string name="mtrl_picker_text_input_day_abbr">일</string>
   <string name="mtrl_picker_save">저장</string>
   <string name="mtrl_picker_invalid_range">날짜 범위가 잘못되었습니다.</string>
-  <string name="mtrl_picker_out_of_range">%1$s은(는) 범위를 벗어난 날짜입니다.</string>
+  <string name="mtrl_picker_out_of_range">%1$s은 범위를 벗어난 날짜입니다.</string>
   <string name="mtrl_picker_invalid_format">형식이 잘못되었습니다.</string>
   <string name="mtrl_picker_invalid_format_use">%1$s 사용</string>
   <string name="mtrl_picker_invalid_format_example">예: %1$s</string>
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">텍스트 입력 모드로 전환</string>
   <string name="mtrl_picker_a11y_prev_month">이전 달로 변경</string>
   <string name="mtrl_picker_a11y_next_month">다음 달로 변경</string>
-  <string name="mtrl_picker_toggle_to_year_selection">탭하여 연도 선택으로 전환</string>
-  <string name="mtrl_picker_toggle_to_day_selection">탭하여 요일 선택으로 전환</string>
+  <string name="mtrl_picker_toggle_to_year_selection">탭하여 연도 뷰로 전환</string>
+  <string name="mtrl_picker_toggle_to_day_selection">탭하여 캘린더 뷰로 전환</string>
   <string name="mtrl_picker_day_of_week_column_header">요일 열: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">현재 %1$s 선택됨</string>
-  <string name="mtrl_picker_navigate_to_year_description">%1$s년으로 이동</string>
+  <string name="mtrl_picker_announce_current_range_selection">시작일 선택: %1$s, 종료일 선택: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">없음</string>
+  <string name="mtrl_picker_navigate_to_year_description">%1$d년으로 이동</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">현재 연도(%1$d)로 이동</string>
+  <string name="mtrl_picker_today_description">오늘(%1$s)</string>
+  <string name="mtrl_picker_start_date_description">시작일: %1$s</string>
+  <string name="mtrl_picker_end_date_description">종료일: %1$s</string>
 </resources>

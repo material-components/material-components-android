@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Lumipat sa pamamaraan ng pag-input ng text</string>
   <string name="mtrl_picker_a11y_prev_month">Lumipat sa nakaraang buwan</string>
   <string name="mtrl_picker_a11y_next_month">Lumipat sa susunod na buwan</string>
-  <string name="mtrl_picker_toggle_to_year_selection">I-tap para lumipat sa pagpili ng taon</string>
-  <string name="mtrl_picker_toggle_to_day_selection">I-tap para lumipat sa pagpili ng araw</string>
+  <string name="mtrl_picker_toggle_to_year_selection">I-tap para lumipat sa view ng taon</string>
+  <string name="mtrl_picker_toggle_to_day_selection">I-tap para lumipat sa view ng Kalendaryo</string>
   <string name="mtrl_picker_day_of_week_column_header">Column ng mga araw: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Kasalukuyang seleksyon: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Mag-navigate patungo sa taong %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Napiling petsa ng pagsisimula: %1$s – Napiling petsa ng pagtatapos: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">wala</string>
+  <string name="mtrl_picker_navigate_to_year_description">Mag-navigate patungo sa taong %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Mag-navigate sa kasalukuyang taon %1$d</string>
+  <string name="mtrl_picker_today_description">Ngayon %1$s</string>
+  <string name="mtrl_picker_start_date_description">Petsa ng pagsisimula %1$s</string>
+  <string name="mtrl_picker_end_date_description">Petsa ng pagtatapos %1$s</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Shintshela kwimodi yokufaka yombhalo</string>
   <string name="mtrl_picker_a11y_prev_month">Shintshela kunyanga edlule</string>
   <string name="mtrl_picker_a11y_next_month">Shintshela kunyanga elandelayo</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Thepha ukuze ushintshele ekukhetheni unyaka</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Thepha ukuze ushintshe ekukhetheni usuku</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Thepha ukuze ushintshele ekubukeni konyaka</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Thepha ukuze ushintshele ekubukeni Kwekhalenda</string>
   <string name="mtrl_picker_day_of_week_column_header">Ikholomu yezinsuku: %1$s</string>
   <string name="mtrl_picker_announce_current_selection">Ukukhetha kwamanje: %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">Zulela onyakeni %1$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Ukukhethwa kosuku lokuqala: %1$s – Ukukhethwa kosuku lokuphela: %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">lutho</string>
+  <string name="mtrl_picker_navigate_to_year_description">Zulela onyakeni %1$d</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">Funa onyakeni wamanje %1$d</string>
+  <string name="mtrl_picker_today_description">Namuhla %1$s</string>
+  <string name="mtrl_picker_start_date_description">Ilanga lokuqala %1$s</string>
+  <string name="mtrl_picker_end_date_description">Ilanga lokuphela %1$s</string>
 </resources>

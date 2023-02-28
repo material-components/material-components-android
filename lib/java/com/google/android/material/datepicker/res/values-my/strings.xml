@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2022 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,9 +41,15 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">စာသား ထည့်သွင်းမှုမုဒ်သို့ ပြောင်းရန်</string>
   <string name="mtrl_picker_a11y_prev_month">ယခင်လသို့ ပြောင်းရန်</string>
   <string name="mtrl_picker_a11y_next_month">နောက်လသို့ ပြောင်းရန်</string>
-  <string name="mtrl_picker_toggle_to_year_selection">နှစ်ရွေးချယ်ခြင်းသို့ ပြောင်းရန် တို့ပါ</string>
-  <string name="mtrl_picker_toggle_to_day_selection">ရက်ရွေးချယ်ခြင်းသို့ ပြောင်းရန် တို့ပါ</string>
+  <string name="mtrl_picker_toggle_to_year_selection">နှစ်အလိုက်မြင်ကွင်းသို့ ပြောင်းရန် တို့နိုင်သည်</string>
+  <string name="mtrl_picker_toggle_to_day_selection">ပြက္ခဒိန်မြင်ကွင်းသို့ ပြောင်းရန် တို့နိုင်သည်</string>
   <string name="mtrl_picker_day_of_week_column_header">ရက်ကော်လံ- %1$s</string>
   <string name="mtrl_picker_announce_current_selection">လက်ရှိ ရွေးချယ်မှု- %1$s</string>
-  <string name="mtrl_picker_navigate_to_year_description">နှစ် %1$s သို့ လမ်းညွှန်ရန်</string>
+  <string name="mtrl_picker_announce_current_range_selection">စတင်ရက် ရွေးရန်- %1$s – ပြီးဆုံးရက် ရွေးရန်- %2$s</string>
+  <string name="mtrl_picker_announce_current_selection_none">မရှိ</string>
+  <string name="mtrl_picker_navigate_to_year_description">နှစ် %1$d သို့ လမ်းညွှန်ရန်</string>
+  <string name="mtrl_picker_navigate_to_current_year_description">လက်ရှိခုနှစ် %1$d သို့ သွားရန်</string>
+  <string name="mtrl_picker_today_description">ယနေ့ %1$s</string>
+  <string name="mtrl_picker_start_date_description">စတင်ရက် %1$s</string>
+  <string name="mtrl_picker_end_date_description">ပြီးဆုံးရက် %1$s</string>
 </resources>
