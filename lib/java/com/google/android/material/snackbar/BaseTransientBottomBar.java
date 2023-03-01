@@ -434,13 +434,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
 
-    animationSlideDuration = MotionUtils.resolveThemeDuration(context, R.attr.motionDurationLong2,
+    animationSlideDuration = MotionUtils.resolveThemeDuration(context, R.attr.motionDurationShort4,
         DEFAULT_SLIDE_ANIMATION_DURATION);
-    animationFadeInDuration = MotionUtils.resolveThemeDuration(context, R.attr.motionDurationLong2,
+    animationFadeInDuration = MotionUtils.resolveThemeDuration(context, R.attr.motionDurationShort2,
         DEFAULT_ANIMATION_FADE_IN_DURATION);
     animationFadeOutDuration =
         MotionUtils.resolveThemeDuration(
-            context, R.attr.motionDurationMedium1, DEFAULT_ANIMATION_FADE_OUT_DURATION);
+            context, R.attr.motionDurationShort1, DEFAULT_ANIMATION_FADE_OUT_DURATION);
     animationFadeInterpolator =
         MotionUtils.resolveThemeInterpolator(
             context,
