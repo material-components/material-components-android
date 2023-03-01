@@ -130,6 +130,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
   private int layoutGravity = Gravity.NO_GRAVITY;
   @Px private int drawerLayoutCornerSize = 0;
+  private boolean drawerLayoutCornerClippingEnabled = false;
 
   @Nullable private Path shapeClipPath;
   private final RectF shapeClipBounds = new RectF();
@@ -153,11 +154,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     // Custom attributes
     TintTypedArray a =
         ThemeEnforcement.obtainTintedStyledAttributes(
-            context,
-            attrs,
-            R.styleable.NavigationView,
-            defStyleAttr,
-            DEF_STYLE_RES);
+            context, attrs, R.styleable.NavigationView, defStyleAttr, DEF_STYLE_RES);
 
     if (a.hasValue(R.styleable.NavigationView_android_background)) {
       ViewCompat.setBackground(this, a.getDrawable(R.styleable.NavigationView_android_background));
@@ -166,9 +163,12 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     // Get the drawer layout corner size and layout gravity to be used to shape the exposed corners
     // of this view when placed inside a drawer layout.
     drawerLayoutCornerSize =
-        a.getDimensionPixelSize(
-            R.styleable.NavigationView_drawerLayoutCornerSize, 0);
+        a.getDimensionPixelSize(R.styleable.NavigationView_drawerLayoutCornerSize, 0);
     layoutGravity = a.getInt(R.styleable.NavigationView_android_layout_gravity, Gravity.NO_GRAVITY);
+    setDrawerLayoutCornerClippingEnabled(
+        a.getBoolean(
+            R.styleable.NavigationView_drawerLayoutCornerClippingEnabled,
+            drawerLayoutCornerClippingEnabled));
 
     // Set the background to a MaterialShapeDrawable if it hasn't been set or if it can be converted
     // to a MaterialShapeDrawable.
@@ -204,7 +204,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     if (subheaderTextAppearance == NavigationMenuPresenter.NO_TEXT_APPEARANCE_SET
-            && subheaderColor == null) {
+        && subheaderColor == null) {
       // If there isn't a text appearance set, we'll use a default text color
       subheaderColor = createDefaultColorStateList(android.R.attr.textColorSecondary);
     }
@@ -241,18 +241,18 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     if (itemBackground == null && hasShapeAppearance(a)) {
       itemBackground = createDefaultItemBackground(a);
 
-      ColorStateList itemRippleColor = MaterialResources.getColorStateList(
-          context, a, R.styleable.NavigationView_itemRippleColor);
+      ColorStateList itemRippleColor =
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.NavigationView_itemRippleColor);
 
       // Use a ripple matching the item's shape as the foreground for api level 21+ and if a ripple
       // color is set. Otherwise the selectableItemBackground foreground from the item layout will
       // be used
       if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && itemRippleColor != null) {
         Drawable itemRippleMask = createDefaultItemDrawable(a, null);
-        RippleDrawable ripple = new RippleDrawable(
-            RippleUtils.sanitizeRippleDrawableColor(itemRippleColor),
-            null,
-            itemRippleMask);
+        RippleDrawable ripple =
+            new RippleDrawable(
+                RippleUtils.sanitizeRippleDrawableColor(itemRippleColor), null, itemRippleMask);
         presenter.setItemForeground(ripple);
       }
     }
@@ -289,8 +289,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         a.getBoolean(R.styleable.NavigationView_topInsetScrimEnabled, topInsetScrimEnabled));
 
     setBottomInsetScrimEnabled(
-        a.getBoolean(R.styleable.NavigationView_bottomInsetScrimEnabled, bottomInsetScrimEnabled)
-    );
+        a.getBoolean(R.styleable.NavigationView_bottomInsetScrimEnabled, bottomInsetScrimEnabled));
 
     final int itemIconPadding =
         a.getDimensionPixelSize(R.styleable.NavigationView_itemIconPadding, 0);
@@ -346,6 +345,37 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /**
+   * Gets whether NavigationView will clip itself and its children to its shape appearance and
+   * drawer layout corner size.
+   *
+   * <p>See {@link #setDrawerLayoutCornerClippingEnabled(boolean)}.
+   *
+   * @return true if this view will clip itself and its children to its shape appearance and drawer
+   *     layout corner size
+   */
+  public boolean isDrawerLayoutCornerClippingEnabled() {
+    return drawerLayoutCornerClippingEnabled;
+  }
+
+  /**
+   * Sets whether NavigationView should clip itself and its children to its shape appearance and
+   * drawer layout corner size.
+   *
+   * <p>Clipping uses {@link Canvas#clipPath(Path)} which is expensive and should be used only when
+   * necessary. The most common example of this is when using a header layout with a full bleed
+   * image or other content that would obscure the top end corner shape.
+   *
+   * @param enabled true if navigation view should use canvas clipping to clip itself and all
+   *     children to its shape appearance and drawer layout corner size.
+   */
+  public void setDrawerLayoutCornerClippingEnabled(boolean enabled) {
+    if (drawerLayoutCornerClippingEnabled != enabled) {
+      drawerLayoutCornerClippingEnabled = enabled;
+      invalidate();
+    }
+  }
+
+  /**
    * Determine whether this view is placed inside a drawer layout and should have its exposed
    * corners shaped according to the <code>app:drawerLayoutCornerSize</code> attribute.
    *
@@ -357,8 +387,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         && getBackground() instanceof MaterialShapeDrawable) {
       // Get the absolute gravity of this view and set the top and bottom exposed corner sizes.
       MaterialShapeDrawable background = (MaterialShapeDrawable) getBackground();
-      ShapeAppearanceModel.Builder builder =
-          background.getShapeAppearanceModel().toBuilder();
+      ShapeAppearanceModel.Builder builder = background.getShapeAppearanceModel().toBuilder();
       int absGravity =
           GravityCompat.getAbsoluteGravity(layoutGravity, ViewCompat.getLayoutDirection(this));
       if (absGravity == Gravity.LEFT) {
@@ -423,8 +452,9 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    */
   @NonNull
   private Drawable createDefaultItemBackground(@NonNull TintTypedArray a) {
-    ColorStateList fillColor = MaterialResources.getColorStateList(
-        getContext(), a, R.styleable.NavigationView_itemShapeFillColor);
+    ColorStateList fillColor =
+        MaterialResources.getColorStateList(
+            getContext(), a, R.styleable.NavigationView_itemShapeFillColor);
     return createDefaultItemDrawable(a, fillColor);
   }
 
@@ -437,7 +467,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     MaterialShapeDrawable materialShapeDrawable =
         new MaterialShapeDrawable(
             ShapeAppearanceModel.builder(
-                getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId)
+                    getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId)
                 .build());
     materialShapeDrawable.setFillColor(fillColor);
 
@@ -499,7 +529,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
   @Override
   protected void dispatchDraw(@NonNull Canvas canvas) {
-    if (shapeClipPath == null) {
+    if (shapeClipPath == null || !isDrawerLayoutCornerClippingEnabled()) {
       super.dispatchDraw(canvas);
       return;
     }
@@ -822,16 +852,14 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     return presenter.getItemMaxLines();
   }
 
-  /**
-   * Whether or not the NavigationView will draw a scrim behind the window's top inset.
-   */
+  /** Whether or not the NavigationView will draw a scrim behind the window's top inset. */
   public boolean isTopInsetScrimEnabled() {
     return this.topInsetScrimEnabled;
   }
 
   /**
-   * Set whether or not the NavigationView should draw a scrim behind the window's top
-   * inset (typically the status bar).
+   * Set whether or not the NavigationView should draw a scrim behind the window's top inset
+   * (typically the status bar).
    *
    * @param enabled true when the NavigationView should draw a scrim.
    */
@@ -839,16 +867,14 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     this.topInsetScrimEnabled = enabled;
   }
 
-  /**
-   * Whether or not the NavigationView will draw a scrim behind the window's bottom inset.
-   */
+  /** Whether or not the NavigationView will draw a scrim behind the window's bottom inset. */
   public boolean isBottomInsetScrimEnabled() {
     return this.bottomInsetScrimEnabled;
   }
 
   /**
-   * Set whether or not the NavigationView should draw a scrim behind the window's bottom
-   * inset (typically the navigation bar)
+   * Set whether or not the NavigationView should draw a scrim behind the window's bottom inset
+   * (typically the navigation bar)
    *
    * @param enabled true when the NavigationView should draw a scrim.
    */
@@ -871,47 +897,35 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     presenter.setDividerInsetStart(dividerInsetStart);
   }
 
-  /**
-   * Get the distance between the end of a divider and the end of the NavigationView.
-   */
+  /** Get the distance between the end of a divider and the end of the NavigationView. */
   @Px
   public int getDividerInsetEnd() {
     return presenter.getDividerInsetEnd();
   }
 
-  /**
-   * Set the distance between the end of a divider and the end of the NavigationView.
-   */
+  /** Set the distance between the end of a divider and the end of the NavigationView. */
   public void setDividerInsetEnd(@Px int dividerInsetEnd) {
     presenter.setDividerInsetEnd(dividerInsetEnd);
   }
 
-  /**
-   * Get the distance between the start of the NavigationView and the start of a menu subheader.
-   */
+  /** Get the distance between the start of the NavigationView and the start of a menu subheader. */
   @Px
   public int getSubheaderInsetStart() {
     return presenter.getSubheaderInsetStart();
   }
 
-  /**
-   * Set the distance between the start of the NavigationView and the start of a menu subheader.
-   */
+  /** Set the distance between the start of the NavigationView and the start of a menu subheader. */
   public void setSubheaderInsetStart(@Px int subheaderInsetStart) {
     presenter.setSubheaderInsetStart(subheaderInsetStart);
   }
 
-  /**
-   * Get the distance between the end of a menu subheader and the end of the NavigationView.
-   */
+  /** Get the distance between the end of a menu subheader and the end of the NavigationView. */
   @Px
   public int getSubheaderInsetEnd() {
     return presenter.getSubheaderInsetEnd();
   }
 
-  /**
-   * Set the distance between the end of a menu subheader and the end of the NavigationView.
-   */
+  /** Set the distance between the end of a menu subheader and the end of the NavigationView. */
   public void setSubheaderInsetEnd(@Px int subheaderInsetEnd) {
     presenter.setSubheaderInsetEnd(subheaderInsetEnd);
   }
@@ -978,8 +992,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             if (activity != null && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
               Rect displayBounds = WindowUtils.getCurrentWindowBounds(activity);
 
-              boolean isBehindSystemNav =
-                  displayBounds.height() - getHeight() == tmpLocation[1];
+              boolean isBehindSystemNav = displayBounds.height() - getHeight() == tmpLocation[1];
               boolean hasNonZeroAlpha =
                   Color.alpha(activity.getWindow().getNavigationBarColor()) != 0;
               setDrawBottomInsetForeground(
@@ -996,9 +1009,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
           }
         };
 
-    getViewTreeObserver()
-        .addOnGlobalLayoutListener(
-            onGlobalLayoutListener);
+    getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
   }
 
   /** Listener for handling events on navigation items. */

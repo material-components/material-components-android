@@ -167,5 +167,8 @@
     <!-- Corner size for the exposed corners (those not attached to the side
          of the screen) when the navigation view is placed inside a drawer layout.-->
     <attr name="drawerLayoutCornerSize" format="dimension"/>
+    <!-- True if the navigation view should use clip children to its shape
+         appearance and drawerLayoutCornerSize.-->
+    <attr name="drawerLayoutCornerClippingEnabled" format="boolean"/>
   </declare-styleable>
 </resources>
