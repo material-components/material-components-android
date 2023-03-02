@@ -47,7 +47,7 @@
       android:layout_marginHorizontal="16dp"
       android:layout_marginVertical="8dp"
       android:textAppearance="?attr/textAppearanceBodyLarge"
-      android:text="@string/cat_carousel_draw_debug_switch_label"/>
+      android:text="@string/cat_carousel_debug_mode_label"/>
 
     <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/force_compact_arrangement_switch"

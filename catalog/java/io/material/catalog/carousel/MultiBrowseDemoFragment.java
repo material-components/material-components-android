@@ -68,7 +68,7 @@ public class MultiBrowseDemoFragment extends DemoFragment {
     RecyclerView multiBrowseStartRecyclerView =
         view.findViewById(R.id.multi_browse_start_carousel_recycler_view);
     CarouselLayoutManager multiBrowseStartCarouselLayoutManager = new CarouselLayoutManager();
-    multiBrowseStartCarouselLayoutManager.setDrawDebugEnabled(
+    multiBrowseStartCarouselLayoutManager.setDebuggingEnabled(
         multiBrowseStartRecyclerView, debugSwitch.isChecked());
     multiBrowseStartRecyclerView.setLayoutManager(multiBrowseStartCarouselLayoutManager);
     multiBrowseStartRecyclerView.setNestedScrollingEnabled(false);
@@ -77,7 +77,7 @@ public class MultiBrowseDemoFragment extends DemoFragment {
         (buttonView, isChecked) -> {
           multiBrowseStartRecyclerView.setBackgroundResource(
               isChecked ? R.drawable.dashed_outline_rectangle : 0);
-          multiBrowseStartCarouselLayoutManager.setDrawDebugEnabled(
+          multiBrowseStartCarouselLayoutManager.setDebuggingEnabled(
               multiBrowseStartRecyclerView, isChecked);
         });
 

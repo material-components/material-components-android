@@ -144,6 +144,16 @@ public class CarouselLayoutManagerRtlTest {
     assertThat(recyclerView.getChildAt(0).getRight()).isEqualTo(DEFAULT_RECYCLER_VIEW_WIDTH);
   }
 
+  @Test
+  public void testScrollToEndThenToStart_childrenHaveValidOrder() throws Throwable {
+    // TODO(b/271293808): Refactor to use parameterized tests.
+    setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(10));
+    scrollToPosition(recyclerView, layoutManager, 9);
+    scrollToPosition(recyclerView, layoutManager, 2);
+
+    CarouselHelper.assertChildrenHaveValidOrder(layoutManager);
+  }
+
   /**
    * Assigns explicit sizes to fixtures being used to construct the testing environment.
    *

@@ -16,7 +16,7 @@
   -->
 
 <resources>
-  <string name="cat_carousel_draw_debug_switch_label" translatable="false">Draw debug lines</string>
+  <string name="cat_carousel_debug_mode_label" translatable="false">Debug mode</string>
   <string name="cat_carousel_force_compact_arrangement_label" translatable="false">Force compact arrangement</string>
   <string name="cat_carousel_draw_dividers_label" translatable="false">Draw dividers</string>
   <string name="cat_carousel_adapter_item_count_hint_label" translatable="false">Item count</string>
