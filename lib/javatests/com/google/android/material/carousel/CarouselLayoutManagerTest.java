@@ -15,6 +15,7 @@
  */
 package com.google.android.material.carousel;
 
+import static com.google.android.material.carousel.CarouselHelper.assertChildrenHaveValidOrder;
 import static com.google.android.material.carousel.CarouselHelper.createDataSetWithSize;
 import static com.google.android.material.carousel.CarouselHelper.scrollHorizontallyBy;
 import static com.google.android.material.carousel.CarouselHelper.scrollToPosition;
@@ -230,6 +231,32 @@ public class CarouselLayoutManagerTest {
 
     assertThat(recyclerView.getChildCount()).isEqualTo(1);
     assertThat(recyclerView.getChildAt(0).getLeft()).isEqualTo(0);
+  }
+
+  @Test
+  public void testScrollToEnd_childrenHaveValidOrder() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(10));
+    scrollToPosition(recyclerView, layoutManager, 9);
+
+    assertChildrenHaveValidOrder(layoutManager);
+  }
+
+  @Test
+  public void testScrollToMiddle_childrenHaveValidOrder() throws Throwable {
+    setAdapterItems(
+        recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(200));
+    scrollToPosition(recyclerView, layoutManager, 99);
+
+    assertChildrenHaveValidOrder(layoutManager);
+  }
+
+  @Test
+  public void testScrollToEndThenToStart_childrenHaveValidOrder() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(10));
+    scrollToPosition(recyclerView, layoutManager, 9);
+    scrollToPosition(recyclerView, layoutManager, 2);
+
+    assertChildrenHaveValidOrder(layoutManager);
   }
 
   /**

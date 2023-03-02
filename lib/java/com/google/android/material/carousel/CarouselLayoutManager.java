@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import androidx.recyclerview.widget.RecyclerView.Recycler;
 import androidx.recyclerview.widget.RecyclerView.State;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
@@ -62,6 +63,8 @@ import java.util.List;
  */
 public class CarouselLayoutManager extends LayoutManager implements Carousel {
 
+  private static final String TAG = "CarouselLayoutManager";
+
   private int horizontalScrollOffset;
 
   // Min scroll is the offset number that offsets the list to the right/bottom as much as possible.
@@ -73,6 +76,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   // will move the list to the start of the container.
   private int maxHorizontalScroll;
 
+  private boolean isDebuggingEnabled = false;
   private final DebugItemDecoration debugItemDecoration = new DebugItemDecoration();
   @NonNull private CarouselStrategy carouselStrategy;
   @Nullable private KeylineStateList keylineStateList;
@@ -214,6 +218,8 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
       addViewsStart(recycler, firstPosition - 1);
       addViewsEnd(recycler, state, lastPosition + 1);
     }
+
+    validateChildOrderIfDebugging();
   }
 
   @Override
@@ -224,6 +230,8 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     } else {
       currentFillStartPosition = getPosition(getChildAt(0));
     }
+
+    validateChildOrderIfDebugging();
   }
 
   /**
@@ -247,7 +255,8 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
       if (isLocOffsetOutOfFillBoundsEnd(calculations.locOffset, calculations.range)) {
         continue;
       }
-      addAndLayoutView(calculations.child, calculations.locOffset);
+      // Add this child to the first index of the RecyclerView.
+      addAndLayoutView(calculations.child, /* index= */ 0, calculations.locOffset);
     }
   }
 
@@ -273,7 +282,58 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
       if (isLocOffsetOutOfFillBoundsStart(calculations.locOffset, calculations.range)) {
         continue;
       }
-      addAndLayoutView(calculations.child, calculations.locOffset);
+      // Add this child to the last index of the RecyclerView
+      addAndLayoutView(calculations.child, /* index= */ -1, calculations.locOffset);
+    }
+  }
+
+  /** Used for debugging. Logs the internal representation of children to default logger. */
+  private void logChildrenIfDebugging() {
+    if (!isDebuggingEnabled) {
+      return;
+    }
+
+    if (Log.isLoggable(TAG, Log.DEBUG)) {
+      Log.d(TAG, "internal representation of views on the screen");
+      for (int i = 0; i < getChildCount(); i++) {
+        View child = getChildAt(i);
+        float centerX = getDecoratedCenterXWithMargins(child);
+        Log.d(
+            TAG,
+            "item position " + getPosition(child) + ", center:" + centerX + ", child index:" + i);
+      }
+      Log.d(TAG, "==============");
+    }
+  }
+
+  /**
+   * Used for debugging. Validates that child views are laid out in correct order. This is important
+   * because rest of the algorithm relies on this constraint.
+   *
+   * <p>Child 0 should be closest to adapter position 0 and last child should be closest to the last
+   * adapter position.
+   */
+  private void validateChildOrderIfDebugging() {
+    if (!isDebuggingEnabled || getChildCount() < 1) {
+      return;
+    }
+
+    for (int i = 0; i < getChildCount() - 1; i++) {
+      int currPos = getPosition(getChildAt(i));
+      int nextPos = getPosition(getChildAt(i + 1));
+      if (currPos > nextPos) {
+        logChildrenIfDebugging();
+        throw new IllegalStateException(
+            "Detected invalid child order. Child at index ["
+                + i
+                + "] had adapter position ["
+                + currPos
+                + "] and child at index ["
+                + (i + 1)
+                + "] had adapter position ["
+                + nextPos
+                + "].");
+      }
     }
   }
 
@@ -294,7 +354,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     View child = recycler.getViewForPosition(position);
     measureChildWithMargins(child, 0, 0);
 
-    float centerX = addEnd((int) start, (int) halfItemSize);
+    int centerX = addEnd((int) start, (int) halfItemSize);
     KeylineRange range =
         getSurroundingKeylineRange(currentKeylineState.getKeylines(), centerX, false);
 
@@ -309,11 +369,13 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
    * scrolling axis.
    *
    * @param child the child view to add and lay out
+   * @param index the index at which to add the child to the RecyclerView. Use 0 for adding to the
+   *     start of the list and -1 for adding to the end.
    * @param offsetCx where the center of the masked child should be placed along the scrolling axis
    */
-  private void addAndLayoutView(View child, float offsetCx) {
+  private void addAndLayoutView(View child, int index, float offsetCx) {
     float halfItemSize = currentKeylineState.getItemSize() / 2F;
-    addView(child);
+    addView(child, index);
     layoutDecoratedWithMargins(
         child,
         /* left= */ (int) (offsetCx - halfItemSize),
@@ -336,7 +398,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
    */
   private boolean isLocOffsetOutOfFillBoundsStart(float locOffset, KeylineRange range) {
     float maskedSize = getMaskedItemSizeForLocOffset(locOffset, range);
-    int maskedEnd = addEnd((int) locOffset, (int) (maskedSize / 2));
+    int maskedEnd = addEnd((int) locOffset, (int) (maskedSize / 2F));
     return isLayoutRtl() ? maskedEnd > getContainerWidth() : maskedEnd < 0;
   }
 
@@ -354,7 +416,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
    */
   private boolean isLocOffsetOutOfFillBoundsEnd(float locOffset, KeylineRange range) {
     float maskedSize = getMaskedItemSizeForLocOffset(locOffset, range);
-    int maskedStart = addStart((int) locOffset, (int) (maskedSize / 2));
+    int maskedStart = addStart((int) locOffset, (int) (maskedSize / 2F));
     return isLayoutRtl() ? maskedStart < 0 : maskedStart > getContainerWidth();
   }
 
@@ -560,7 +622,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     Keyline startFocalKeyline =
         isRtl ? startState.getLastFocalKeyline() : startState.getFirstFocalKeyline();
     float firstItemDistanceFromStart = getPaddingStart() * (isRtl ? 1 : -1);
-    float firstItemStart =
+    int firstItemStart =
         addStart((int) startFocalKeyline.loc, (int) (startState.getItemSize() / 2F));
     return (int) (firstItemDistanceFromStart + getParentStart() - firstItemStart);
   }
@@ -922,7 +984,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
    */
   private void offsetChildLeftAndRight(
       View child, float startOffset, float halfItemSize, Rect boundsRect) {
-    float centerX = addEnd((int) startOffset, (int) halfItemSize);
+    int centerX = addEnd((int) startOffset, (int) halfItemSize);
     KeylineRange range =
         getSurroundingKeylineRange(currentKeylineState.getKeylines(), centerX, false);
 
@@ -975,14 +1037,20 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
   }
 
   /**
-   * Enables drawing that illustrates keylines and other internal concepts to help debug strategy.
+   * Enables features to help debug keylines and other internal layout manager logic.
+   *
+   * <p>This will draw lines on top of the RecyclerView that show where keylines are placed for the
+   * current {@link CarouselStrategy}. Enabling debugging will also throw an exception when an
+   * invalid child order is detected (child index and adapter position are incorrectly ordered). See
+   * {@link #validateChildOrderIfDebugging()} ()} ()} for more details.
    *
    * @param recyclerView The {@link RecyclerView} this layout manager is attached to.
-   * @param enabled Whether to draw debug lines.
+   * @param enabled Whether to draw debug lines and throw on state errors.
    * @hide
    */
   @RestrictTo(Scope.LIBRARY_GROUP)
-  public void setDrawDebugEnabled(@NonNull RecyclerView recyclerView, boolean enabled) {
+  public void setDebuggingEnabled(@NonNull RecyclerView recyclerView, boolean enabled) {
+    this.isDebuggingEnabled = enabled;
     recyclerView.removeItemDecoration(debugItemDecoration);
     if (enabled) {
       recyclerView.addItemDecoration(debugItemDecoration);

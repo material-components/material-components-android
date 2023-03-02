@@ -15,6 +15,7 @@
  */
 package com.google.android.material.carousel;
 
+import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 import android.graphics.Color;
@@ -38,6 +39,29 @@ import org.hamcrest.MatcherAssert;
 class CarouselHelper {
 
   private CarouselHelper() {}
+
+
+  /** Ensure that as child index increases, adapter position also increases. */
+  static void assertChildrenHaveValidOrder(WrappedCarouselLayoutManager layoutManager) {
+    // CarouselLayoutManager keeps track of internal start position state and should always have
+    // an accurate ordering where adapter position increases as child index increases.
+    for (int i = 0; i < layoutManager.getChildCount() - 1; i++) {
+      int currentAdapterPosition = layoutManager.getPosition(layoutManager.getChildAt(i));
+      int nextAdapterPosition = layoutManager.getPosition(layoutManager.getChildAt(i + 1));
+      assertWithMessage(
+          "Child at index "
+              + i
+              + " had a greater adapter position ["
+              + currentAdapterPosition
+              + "] than child at index "
+              + (i + 1)
+              + " ["
+              + nextAdapterPosition
+              + "]")
+          .that(currentAdapterPosition)
+          .isLessThan(nextAdapterPosition);
+    }
+  }
 
   /**
    * Explicitly set a view's size.
