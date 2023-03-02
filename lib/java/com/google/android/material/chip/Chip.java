@@ -968,7 +968,7 @@ public class Chip extends AppCompatCheckBox
     if (getCloseIconTouchBounds().contains(event.getX(), event.getY()) && isEnabled()) {
       return PointerIcon.getSystemIcon(getContext(), PointerIcon.TYPE_HAND);
     }
-    return null;
+    return super.onResolvePointerIcon(event, pointerIndex);
   }
 
   /** @hide */
