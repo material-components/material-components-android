@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
@@ -48,6 +49,14 @@ import java.util.List;
 public class SearchRecyclerDemoActivity extends DemoActivity {
 
   private static final int ITEM_COUNT = 30;
+
+  private final OnBackPressedCallback contextualToolbarOnBackPressedCallback =
+      new OnBackPressedCallback(/* enabled= */ false) {
+        @Override
+        public void handleOnBackPressed() {
+          hideContextualToolbarAndClearSelection();
+        }
+      };
 
   private List<Item> items;
   private Adapter adapter;
@@ -92,19 +101,9 @@ public class SearchRecyclerDemoActivity extends DemoActivity {
           return insets;
         });
 
-    return view;
-  }
+    getOnBackPressedDispatcher().addCallback(this, contextualToolbarOnBackPressedCallback);
 
-  @Override
-  public void onBackPressed() {
-    if (searchView.isShowing()) {
-      searchView.hide();
-      return;
-    }
-    if (hideContextualToolbarAndClearSelection()) {
-      return;
-    }
-    super.onBackPressed();
+    return view;
   }
 
   @Override
@@ -121,10 +120,10 @@ public class SearchRecyclerDemoActivity extends DemoActivity {
           long selectedItemCount = getSelectedItemCount();
           if (selectedItemCount > 0 && Adapter.selectionModeEnabled) {
             contextualToolbar.setTitle(String.valueOf(selectedItemCount));
-            searchBar.expand(contextualToolbarContainer, appBarLayout);
+            expandContextualToolbar();
           } else {
             Adapter.selectionModeEnabled = false;
-            searchBar.collapse(contextualToolbarContainer, appBarLayout);
+            collapseContextualToolbar();
           }
         });
 
@@ -156,13 +155,21 @@ public class SearchRecyclerDemoActivity extends DemoActivity {
         });
   }
 
-  private boolean hideContextualToolbarAndClearSelection() {
+  private void hideContextualToolbarAndClearSelection() {
     Adapter.selectionModeEnabled = false;
-    if (searchBar.collapse(contextualToolbarContainer, appBarLayout)) {
+    if (collapseContextualToolbar()) {
       setItemsSelected(false);
-      return true;
     }
-    return false;
+  }
+
+  private void expandContextualToolbar() {
+    contextualToolbarOnBackPressedCallback.setEnabled(true);
+    searchBar.expand(contextualToolbarContainer, appBarLayout);
+  }
+
+  private boolean collapseContextualToolbar() {
+    contextualToolbarOnBackPressedCallback.setEnabled(false);
+    return searchBar.collapse(contextualToolbarContainer, appBarLayout);
   }
 
   private List<Item> generateItems() {

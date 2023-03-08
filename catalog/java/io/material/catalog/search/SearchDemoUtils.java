@@ -21,17 +21,20 @@ import io.material.catalog.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
+import com.google.android.material.search.SearchView.TransitionState;
 import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +54,7 @@ final class SearchDemoUtils {
 
   @SuppressLint("NewApi")
   public static void setUpSearchView(
-      Activity activity, SearchBar searchBar, SearchView searchView) {
+      AppCompatActivity activity, SearchBar searchBar, SearchView searchView) {
     searchView.inflateMenu(R.menu.cat_searchview_menu);
     searchView.setOnMenuItemClickListener(
         menuItem -> {
@@ -65,6 +68,17 @@ final class SearchDemoUtils {
               submitSearchQuery(searchBar, searchView, searchView.getText().toString());
               return false;
             });
+    OnBackPressedCallback onBackPressedCallback =
+        new OnBackPressedCallback(/* enabled= */ false) {
+          @Override
+          public void handleOnBackPressed() {
+            searchView.hide();
+          }
+        };
+    activity.getOnBackPressedDispatcher().addCallback(activity, onBackPressedCallback);
+    searchView.addTransitionListener(
+        (searchView1, previousState, newState) ->
+            onBackPressedCallback.setEnabled(newState == TransitionState.SHOWN));
   }
 
   static void showSnackbar(Activity activity, MenuItem menuItem) {

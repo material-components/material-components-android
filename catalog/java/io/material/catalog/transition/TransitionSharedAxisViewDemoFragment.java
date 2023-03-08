@@ -22,16 +22,23 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.transition.TransitionManager;
 import com.google.android.material.transition.MaterialSharedAxis;
 import io.material.catalog.feature.DemoFragment;
-import io.material.catalog.feature.OnBackPressedHandler;
 
 /** A fragment that displays the Shared Axis Transition (View) demo for the Catalog app. */
-public class TransitionSharedAxisViewDemoFragment extends DemoFragment
-    implements OnBackPressedHandler {
+public class TransitionSharedAxisViewDemoFragment extends DemoFragment {
+
+  private final OnBackPressedCallback onBackPressedCallback =
+      new OnBackPressedCallback(/* enabled= */ false) {
+        @Override
+        public void handleOnBackPressed() {
+          switchView();
+        }
+      };
 
   private ViewGroup container;
   private View startView;
@@ -56,17 +63,10 @@ public class TransitionSharedAxisViewDemoFragment extends DemoFragment
     startView = view.findViewById(R.id.start_view);
     endView = view.findViewById(R.id.end_view);
 
+    requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+
     sharedAxisHelper.setBackButtonOnClickListener(v -> switchView());
     sharedAxisHelper.setNextButtonOnClickListener(v -> switchView());
-  }
-
-  @Override
-  public boolean onBackPressed() {
-    if (!isStartViewShowing()) {
-      switchView();
-      return true;
-    }
-    return false;
   }
 
   private void switchView() {
@@ -79,6 +79,7 @@ public class TransitionSharedAxisViewDemoFragment extends DemoFragment
     endView.setVisibility(startViewShowing ? View.VISIBLE : View.GONE);
 
     sharedAxisHelper.updateButtonsEnabled(!startViewShowing);
+    onBackPressedCallback.setEnabled(startViewShowing);
   }
 
   private MaterialSharedAxis createTransition(boolean entering) {

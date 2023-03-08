@@ -25,6 +25,7 @@
   <application
     android:name="io.material.catalog.application.${application_name}"
     android:allowBackup="true"
+    android:enableOnBackInvokedCallback="true"
     android:icon="@mipmap/ic_launcher"
     android:label="@string/cat_app_name"
     android:supportsRtl="true"

@@ -23,18 +23,26 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.transition.MaterialSharedAxis;
 import io.material.catalog.feature.DemoFragment;
-import io.material.catalog.feature.OnBackPressedHandler;
 
 /** A fragment that displays the Shared Axis Transition demo for the Catalog app. */
-public class TransitionSharedAxisDemoFragment extends DemoFragment implements OnBackPressedHandler {
+public class TransitionSharedAxisDemoFragment extends DemoFragment {
 
   private static final int LAYOUT_RES_ID_START = R.layout.cat_transition_shared_axis_start;
   private static final int LAYOUT_RES_ID_END = R.layout.cat_transition_shared_axis_end;
+
+  private final OnBackPressedCallback onBackPressedCallback =
+      new OnBackPressedCallback(/* enabled= */ false) {
+        @Override
+        public void handleOnBackPressed() {
+          replaceFragment(LAYOUT_RES_ID_START);
+        }
+      };
 
   private SharedAxisHelper sharedAxisHelper;
 
@@ -50,20 +58,12 @@ public class TransitionSharedAxisDemoFragment extends DemoFragment implements On
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
     sharedAxisHelper = new SharedAxisHelper(view.findViewById(R.id.controls_layout));
+    requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
 
     replaceFragment(LAYOUT_RES_ID_START);
 
     sharedAxisHelper.setBackButtonOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_START));
     sharedAxisHelper.setNextButtonOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_END));
-  }
-
-  @Override
-  public boolean onBackPressed() {
-    if (requireView().findViewById(R.id.end_root) != null) {
-      replaceFragment(LAYOUT_RES_ID_START);
-      return true;
-    }
-    return false;
   }
 
   private void replaceFragment(@LayoutRes int layoutResId) {
@@ -80,6 +80,7 @@ public class TransitionSharedAxisDemoFragment extends DemoFragment implements On
         .commit();
 
     sharedAxisHelper.updateButtonsEnabled(!entering);
+    onBackPressedCallback.setEnabled(entering);
   }
 
   private MaterialSharedAxis createTransition(boolean entering) {

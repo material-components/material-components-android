@@ -29,6 +29,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,11 +38,9 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialContainerTransform;
 import io.material.catalog.feature.DemoFragment;
-import io.material.catalog.feature.OnBackPressedHandler;
 
 /** A fragment that displays the main Transition demo for the Catalog app. */
-public class TransitionContainerTransformDemoFragment extends DemoFragment
-    implements OnBackPressedHandler {
+public class TransitionContainerTransformDemoFragment extends DemoFragment {
 
   private static final String END_FRAGMENT_TAG = "END_FRAGMENT_TAG";
 
@@ -150,6 +149,18 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
         .replace(R.id.fragment_container, fragment, END_FRAGMENT_TAG)
         .addToBackStack("ContainerTransformFragment::end")
         .commit();
+
+    requireActivity()
+        .getOnBackPressedDispatcher()
+        .addCallback(
+            this,
+            new OnBackPressedCallback(/* enabled= */ true) {
+              @Override
+              public void handleOnBackPressed() {
+                getChildFragmentManager().popBackStack();
+                remove();
+              }
+            });
   }
 
   private void configureTransitions(Fragment fragment) {
@@ -174,14 +185,5 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment
     transform.setDrawingViewId(entering ? R.id.end_root : R.id.start_root);
     configurationHelper.configure(transform, entering);
     return transform;
-  }
-
-  @Override
-  public boolean onBackPressed() {
-    if (getView().findViewById(R.id.end_root) != null) {
-      getChildFragmentManager().popBackStack();
-      return true;
-    }
-    return false;
   }
 }

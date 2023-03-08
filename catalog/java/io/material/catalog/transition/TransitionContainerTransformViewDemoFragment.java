@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,11 +36,9 @@ import androidx.core.view.ViewCompat;
 import androidx.transition.TransitionManager;
 import com.google.android.material.transition.MaterialContainerTransform;
 import io.material.catalog.feature.DemoFragment;
-import io.material.catalog.feature.OnBackPressedHandler;
 
 /** A fragment that displays the View container transform transition demos for the Catalog app. */
-public class TransitionContainerTransformViewDemoFragment extends DemoFragment
-    implements OnBackPressedHandler {
+public class TransitionContainerTransformViewDemoFragment extends DemoFragment {
 
   @Nullable private View startCard;
   private View startFab;
@@ -120,6 +119,20 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     TransitionManager.beginDelayedTransition(root, transition);
     startView.setVisibility(View.INVISIBLE);
     endView.setVisibility(View.VISIBLE);
+
+    View finalEndView = this.endView;
+
+    requireActivity()
+        .getOnBackPressedDispatcher()
+        .addCallback(
+            this,
+            new OnBackPressedCallback(/* enabled= */ true) {
+              @Override
+              public void handleOnBackPressed() {
+                showStartView(finalEndView);
+                remove();
+              }
+            });
   }
 
   private void showStartView(View endView) {
@@ -148,15 +161,6 @@ public class TransitionContainerTransformViewDemoFragment extends DemoFragment
     transform.setDrawingViewId(root.getId());
     configurationHelper.configure(transform, entering);
     return transform;
-  }
-
-  @Override
-  public boolean onBackPressed() {
-    if (endView != null && endView.getVisibility() == View.VISIBLE) {
-      showStartView(endView);
-      return true;
-    }
-    return false;
   }
 
   @Override

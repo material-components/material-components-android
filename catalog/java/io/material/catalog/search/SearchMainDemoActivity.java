@@ -32,10 +32,6 @@ import io.material.catalog.feature.DemoActivity;
 /** An activity that displays the main Open Search Bar demo for the Catalog app. */
 public class SearchMainDemoActivity extends DemoActivity {
 
-  private SearchBar searchBar;
-  private SearchView searchView;
-  private LinearLayout suggestionContainer;
-
   @Nullable
   @Override
   public View onCreateDemoView(
@@ -44,9 +40,9 @@ public class SearchMainDemoActivity extends DemoActivity {
       @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.cat_search_fragment, viewGroup, false);
 
-    searchBar = view.findViewById(R.id.cat_search_bar);
-    searchView = view.findViewById(R.id.cat_search_view);
-    suggestionContainer = view.findViewById(R.id.cat_search_view_suggestion_container);
+    SearchBar searchBar = view.findViewById(R.id.cat_search_bar);
+    SearchView searchView = view.findViewById(R.id.cat_search_view);
+    LinearLayout suggestionContainer = view.findViewById(R.id.cat_search_view_suggestion_container);
 
     SearchDemoUtils.setUpSearchBar(this, searchBar);
     SearchDemoUtils.setUpSearchView(this, searchBar, searchView);
@@ -54,15 +50,6 @@ public class SearchMainDemoActivity extends DemoActivity {
     SearchDemoUtils.startOnLoadAnimation(searchBar, bundle);
 
     return view;
-  }
-
-  @Override
-  public void onBackPressed() {
-    if (searchView.isShowing()) {
-      searchView.hide();
-      return;
-    }
-    super.onBackPressed();
   }
 
   @Override

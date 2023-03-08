@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -47,12 +48,19 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
-import io.material.catalog.feature.OnBackPressedHandler;
 import io.material.catalog.preferences.CatalogPreferencesHelper;
 import java.util.List;
 
 /** A fragment that displays the main Bottom App Bar demos for the Catalog app. */
-public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBackPressedHandler {
+public class BottomAppBarMainDemoFragment extends DemoFragment {
+
+  private final OnBackPressedCallback bottomDrawerOnBackPressedCallback =
+      new OnBackPressedCallback(/* enabled= */ false) {
+        @Override
+        public void handleOnBackPressed() {
+          bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        }
+      };
 
   protected BottomAppBar bar;
   protected View barNavView;
@@ -153,27 +161,6 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   }
 
   @Override
-  public boolean onBackPressed() {
-    if (bottomDrawerBehavior.getState() != BottomSheetBehavior.STATE_HIDDEN) {
-      bottomDrawerBehavior.addBottomSheetCallback(
-          new BottomSheetCallback() {
-            @Override
-            public void onStateChanged(@NonNull View bottomSheet, int newState) {
-              if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                barNavView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
-              }
-            }
-
-            @Override
-            public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
-          });
-      bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
-      return true;
-    }
-    return false;
-  }
-
-  @Override
   public boolean shouldShowDefaultDemoActionBar() {
     return false;
   }
@@ -205,6 +192,25 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
     bottomDrawerBehavior = BottomSheetBehavior.from(bottomDrawer);
     bottomDrawerBehavior.setUpdateImportantForAccessibilityOnSiblings(true);
     bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    bottomDrawerBehavior.addBottomSheetCallback(
+        new BottomSheetCallback() {
+          @Override
+          public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            bottomDrawerOnBackPressedCallback.setEnabled(
+                newState == BottomSheetBehavior.STATE_EXPANDED
+                    || newState == BottomSheetBehavior.STATE_HALF_EXPANDED);
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+              barNavView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+            }
+          }
+
+          @Override
+          public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+        });
+
+    requireActivity()
+        .getOnBackPressedDispatcher()
+        .addCallback(this, bottomDrawerOnBackPressedCallback);
 
     bar.setNavigationOnClickListener(
         v -> bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED));
