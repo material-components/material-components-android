@@ -36,8 +36,6 @@ import androidx.annotation.RequiresApi;
 import androidx.core.math.MathUtils;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import java.util.ArrayList;
-import java.util.List;
 
 /** A {@link FrameLayout} than is able to mask itself and all children. */
 public class MaskableFrameLayout extends FrameLayout implements Maskable {
@@ -46,7 +44,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable {
   private final RectF maskRect = new RectF();
   private final Path maskPath = new Path();
 
-  private final List<OnMaskChangedListener> onMaskChangedListeners = new ArrayList<>();
+  @Nullable private OnMaskChangedListener onMaskChangedListener;
 
   private final ShapeAppearanceModel shapeAppearanceModel;
 
@@ -105,13 +103,8 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable {
   }
 
   @Override
-  public void addOnMaskChangedListener(@NonNull OnMaskChangedListener listener) {
-    onMaskChangedListeners.add(listener);
-  }
-
-  @Override
-  public void removeOnMaskChangedListener(@NonNull OnMaskChangedListener listener) {
-    onMaskChangedListeners.remove(listener);
+  public void setOnMaskChangedListener(@Nullable OnMaskChangedListener onMaskChangedListener) {
+    this.onMaskChangedListener = onMaskChangedListener;
   }
 
   private void onMaskChanged() {
@@ -122,8 +115,8 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable {
     // masked away.
     float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
     maskRect.set(maskWidth, 0F, (getWidth() - maskWidth), getHeight());
-    for (OnMaskChangedListener listener : onMaskChangedListeners) {
-      listener.onMaskChanged(maskRect);
+    if (onMaskChangedListener != null) {
+      onMaskChangedListener.onMaskChanged(maskRect);
     }
     refreshMaskPath();
   }
