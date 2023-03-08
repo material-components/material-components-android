@@ -88,7 +88,7 @@ The main means of changing the look of carousel is by setting the height of your
 If your `RecyclerView`'s item layout contains text or other content that needs to react to changes in the item's mask, you can listen for changes in mask size by setting an `onMaskChangedListener` on your `MaskableFrameLayout` inside your `RecyclerView.ViewHolder`.
 
 ```kotlin
-(viewHolder.itemView as MaskableFrameLayout).addOnMaskChangedListener(
+(viewHolder.itemView as MaskableFrameLayout).setOnMaskChangedListener(
     maskRect ->
       // Any custom motion to run when mask size changes
       viewHolder.title.setTranslationX(maskRect.left);

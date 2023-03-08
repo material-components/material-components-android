@@ -43,7 +43,7 @@ public class MaskableFrameLayoutTest {
   @Test
   public void testSetMaskXPercentage_shouldTriggerMaskChangedListeners() {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(100, 100);
-    maskableFrameLayout.addOnMaskChangedListener(listener);
+    maskableFrameLayout.setOnMaskChangedListener(listener);
 
     maskableFrameLayout.setMaskXPercentage(.5F);
 
