@@ -17,6 +17,7 @@
 package com.google.android.material.color.utilities;
 
 import static com.google.android.material.color.utilities.ArgbSubject.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -76,5 +77,88 @@ public final class DynamicColorTest {
 
     final SchemeTonalSpot darkScheme = new SchemeTonalSpot(Hct.fromInt(0xff4285f4), true, 0.0);
     assertThat(dynamicColor.getArgb(darkScheme)).isSameColorAs(0x33ffffff);
+  }
+
+  @Test
+  public void respectsContrast() {
+    final Hct[] seedColors =
+        new Hct[] {
+            Hct.fromInt(0xFFFF0000),
+            Hct.fromInt(0xFFFFFF00),
+            Hct.fromInt(0xFF00FF00),
+            Hct.fromInt(0xFF0000FF)
+        };
+
+    final double[] contrastLevels = {-1.0, -0.5, 0.0, 0.5, 1.0};
+
+    for (Hct seedColor : seedColors) {
+      for (double contrastLevel : contrastLevels) {
+        for (boolean isDark : new boolean[] {false, true}) {
+          final DynamicScheme[] schemes =
+              new DynamicScheme[] {
+                  new SchemeContent(seedColor, isDark, contrastLevel),
+                  new SchemeMonochrome(seedColor, isDark, contrastLevel),
+                  new SchemeTonalSpot(seedColor, isDark, contrastLevel),
+                  new SchemeFidelity(seedColor, isDark, contrastLevel)
+              };
+          for (final DynamicScheme scheme : schemes) {
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme, MaterialDynamicColors.onPrimary, MaterialDynamicColors.primary));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme,
+                    MaterialDynamicColors.onPrimaryContainer,
+                    MaterialDynamicColors.primaryContainer));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme, MaterialDynamicColors.onSecondary, MaterialDynamicColors.secondary));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme,
+                    MaterialDynamicColors.onSecondaryContainer,
+                    MaterialDynamicColors.secondaryContainer));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme, MaterialDynamicColors.onTertiary, MaterialDynamicColors.tertiary));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme,
+                    MaterialDynamicColors.onTertiaryContainer,
+                    MaterialDynamicColors.tertiaryContainer));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme, MaterialDynamicColors.onError, MaterialDynamicColors.error));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme,
+                    MaterialDynamicColors.onErrorContainer,
+                    MaterialDynamicColors.errorContainer));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme, MaterialDynamicColors.onBackground, MaterialDynamicColors.background));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme,
+                    MaterialDynamicColors.onSurfaceVariant,
+                    MaterialDynamicColors.surfaceVariant));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme,
+                    MaterialDynamicColors.onSurfaceInverse,
+                    MaterialDynamicColors.surfaceInverse));
+          }
+        }
+      }
+    }
+  }
+
+  private boolean pairSatisfiesContrast(DynamicScheme scheme, DynamicColor fg, DynamicColor bg) {
+    double fgTone = fg.getHct(scheme).getTone();
+    double bgTone = bg.getHct(scheme).getTone();
+    // TODO(b/270915664) - Fix inconsistencies.
+    // TODO(b/270915664) - Minimum requirement should be 4.5 when not reducing contrast.
+    double minimumRequirement = 3.0;
+    return Contrast.ratioOfTones(fgTone, bgTone) >= minimumRequirement;
   }
 }
