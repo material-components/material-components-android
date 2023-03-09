@@ -302,21 +302,21 @@ public final class DynamicColor {
     double maxRatio = Contrast.RATIO_MAX;
     if (bgDynamicColor != null) {
       final boolean bgHasBg =
-          bgDynamicColor.background != null && bgDynamicColor.background.apply(scheme) == null;
+          bgDynamicColor.background != null && bgDynamicColor.background.apply(scheme) != null;
       final double standardRatio =
           Contrast.ratioOfTones(tone.apply(scheme), bgDynamicColor.tone.apply(scheme));
       if (decreasingContrast) {
         final double minContrastRatio =
             Contrast.ratioOfTones(
                 toneMinContrast.apply(scheme), bgDynamicColor.toneMinContrast.apply(scheme));
-        minRatio = bgHasBg ? 1.0 : minContrastRatio;
+        minRatio = bgHasBg ? minContrastRatio : 1.0;
         maxRatio = standardRatio;
       } else {
         final double maxContrastRatio =
             Contrast.ratioOfTones(
                 toneMaxContrast.apply(scheme), bgDynamicColor.toneMaxContrast.apply(scheme));
-        minRatio = !bgHasBg ? 1.0 : min(maxContrastRatio, standardRatio);
-        maxRatio = !bgHasBg ? 21.0 : max(maxContrastRatio, standardRatio);
+        minRatio = bgHasBg ? min(maxContrastRatio, standardRatio) : 1.0;
+        maxRatio = bgHasBg ? max(maxContrastRatio, standardRatio) : 21.0;
       }
     }
 
