@@ -61,4 +61,12 @@ public class CanvasCompat {
       return canvas.saveLayerAlpha(left, top, right, bottom, alpha, Canvas.ALL_SAVE_FLAG);
     }
   }
+
+  /**
+   * Helper interface to allow delegates to alter the canvas before and after a canvas operation.
+   */
+  public interface CanvasOperation {
+    void run(@NonNull Canvas canvas);
+  }
+
 }

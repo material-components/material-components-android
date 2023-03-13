@@ -39,6 +39,7 @@ import androidx.transition.PathMotion;
 import androidx.transition.PatternPathMotion;
 import androidx.transition.Transition;
 import androidx.transition.TransitionSet;
+import com.google.android.material.canvas.CanvasCompat.CanvasOperation;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.CornerSize;
@@ -349,10 +350,6 @@ class TransitionUtils {
     }
     op.run(canvas);
     canvas.restoreToCount(checkpoint);
-  }
-
-  interface CanvasOperation {
-    void run(Canvas canvas);
   }
 
   static void maybeAddTransition(TransitionSet transitionSet, @Nullable Transition transition) {
