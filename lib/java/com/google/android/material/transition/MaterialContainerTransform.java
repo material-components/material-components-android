@@ -70,11 +70,11 @@ import androidx.transition.PathMotion;
 import androidx.transition.Transition;
 import androidx.transition.TransitionValues;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.canvas.CanvasCompat.CanvasOperation;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
-import com.google.android.material.transition.TransitionUtils.CanvasOperation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
