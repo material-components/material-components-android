@@ -900,6 +900,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     offsetRectWithShadow(rect);
   }
 
+  private void getTouchTargetRect(@NonNull Rect rect) {
+    getMeasuredContentRect(rect);
+    int touchTargetPadding = impl.getTouchTargetPadding();
+    rect.inset(-touchTargetPadding, -touchTargetPadding);
+  }
+
   private void offsetRectWithShadow(@NonNull Rect rect) {
     rect.left += shadowPadding.left;
     rect.top += shadowPadding.top;
@@ -917,7 +923,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public boolean onTouchEvent(@NonNull MotionEvent ev) {
     if (ev.getAction() == MotionEvent.ACTION_DOWN) {
       // Skipping the gesture if it doesn't start in the FAB 'content' area
-      if (getContentRect(touchArea) && !touchArea.contains((int) ev.getX(), (int) ev.getY())) {
+      getTouchTargetRect(touchArea);
+      if (!touchArea.contains((int) ev.getX(), (int) ev.getY())) {
         return false;
       }
     }
