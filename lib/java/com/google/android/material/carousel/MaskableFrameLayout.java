@@ -34,6 +34,8 @@ import androidx.annotation.DoNotInline;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.math.MathUtils;
 import com.google.android.material.animation.AnimationUtils;
@@ -158,8 +160,15 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
     }
   }
 
+
+  /**
+   * Set whether this view should always use canvas clipping to clip to its masked shape.
+   *
+   * @hide
+   */
   @VisibleForTesting
-  void setForceCompatClipping(boolean forceCompatClipping) {
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public void setForceCompatClipping(boolean forceCompatClipping) {
     maskableDelegate.setForceCompatClippingEnabled(this, forceCompatClipping);
   }
 
