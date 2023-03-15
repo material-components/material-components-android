@@ -58,6 +58,7 @@
     <attr name="paddingBottomSystemWindowInsets" format="boolean"/>
     <attr name="paddingLeftSystemWindowInsets" format="boolean"/>
     <attr name="paddingRightSystemWindowInsets" format="boolean"/>
+    <attr name="paddingStartSystemWindowInsets" format="boolean"/>
     <attr name="paddingTopSystemWindowInsets" format="boolean"/>
     <attr name="marginLeftSystemWindowInsets" format="boolean"/>
     <attr name="marginRightSystemWindowInsets" format="boolean"/>

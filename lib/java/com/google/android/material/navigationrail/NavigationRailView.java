@@ -35,6 +35,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -105,6 +106,7 @@ public class NavigationRailView extends NavigationBarView {
   @Nullable private View headerView;
   @Nullable private Boolean paddingTopSystemWindowInsets = null;
   @Nullable private Boolean paddingBottomSystemWindowInsets = null;
+  @Nullable private Boolean paddingStartSystemWindowInsets = null;
 
   public NavigationRailView(@NonNull Context context) {
     this(context, null);
@@ -150,13 +152,17 @@ public class NavigationRailView extends NavigationBarView {
 
     if (attributes.hasValue(R.styleable.NavigationRailView_paddingTopSystemWindowInsets)) {
       paddingTopSystemWindowInsets =
-          attributes.getBoolean(
-              R.styleable.NavigationRailView_paddingTopSystemWindowInsets, false);
+          attributes.getBoolean(R.styleable.NavigationRailView_paddingTopSystemWindowInsets, false);
     }
     if (attributes.hasValue(R.styleable.NavigationRailView_paddingBottomSystemWindowInsets)) {
       paddingBottomSystemWindowInsets =
           attributes.getBoolean(
               R.styleable.NavigationRailView_paddingBottomSystemWindowInsets, false);
+    }
+    if (attributes.hasValue(R.styleable.NavigationRailView_paddingStartSystemWindowInsets)) {
+      paddingStartSystemWindowInsets =
+          attributes.getBoolean(
+              R.styleable.NavigationRailView_paddingStartSystemWindowInsets, false);
     }
 
     attributes.recycle();
@@ -176,18 +182,17 @@ public class NavigationRailView extends NavigationBarView {
               @NonNull RelativePadding initialPadding) {
             // Apply the top, bottom, and start padding for a start edge aligned
             // NavigationRailView to dodge the system status and navigation bars
+            Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             if (shouldApplyWindowInsetPadding(paddingTopSystemWindowInsets)) {
-              initialPadding.top += insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
+              initialPadding.top += systemBarInsets.top;
             }
             if (shouldApplyWindowInsetPadding(paddingBottomSystemWindowInsets)) {
-              initialPadding.bottom +=
-                  insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom;
+              initialPadding.bottom += systemBarInsets.bottom;
             }
-
-            boolean isRtl = ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
-            int systemWindowInsetLeft = insets.getSystemWindowInsetLeft();
-            int systemWindowInsetRight = insets.getSystemWindowInsetRight();
-            initialPadding.start += isRtl ? systemWindowInsetRight : systemWindowInsetLeft;
+            if (shouldApplyWindowInsetPadding(paddingStartSystemWindowInsets)) {
+              initialPadding.start +=
+                  ViewUtils.isLayoutRtl(view) ? systemBarInsets.right : systemBarInsets.left;
+            }
             initialPadding.applyToView(view);
             return insets;
           }
@@ -197,7 +202,7 @@ public class NavigationRailView extends NavigationBarView {
   /**
    * Whether the top or bottom of this view should be padded in to avoid the system window insets.
    *
-   * If the {@code paddingInsetFlag} is set, that value will take precedent. Otherwise,
+   * <p>If the {@code paddingInsetFlag} is set, that value will take precedent. Otherwise,
    * fitsSystemWindow will be used.
    */
   private boolean shouldApplyWindowInsetPadding(Boolean paddingInsetFlag) {
@@ -311,9 +316,7 @@ public class NavigationRailView extends NavigationBarView {
     return getNavigationRailMenuView().getMenuGravity();
   }
 
-  /**
-   * Get the minimum height each item in the navigation rail's menu should be.
-   */
+  /** Get the minimum height each item in the navigation rail's menu should be. */
   public int getItemMinimumHeight() {
     NavigationRailMenuView menuView = (NavigationRailMenuView) getMenuView();
     return menuView.getItemMinimumHeight();
@@ -322,7 +325,7 @@ public class NavigationRailView extends NavigationBarView {
   /**
    * Set the minimum height each item in the navigation rail's menu should use.
    *
-   * If this is unset (-1), each item will be at least as tall as the navigation rail is wide.
+   * <p>If this is unset (-1), each item will be at least as tall as the navigation rail is wide.
    */
   public void setItemMinimumHeight(@Px int minHeight) {
     NavigationRailMenuView menuView = (NavigationRailMenuView) getMenuView();

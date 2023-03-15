@@ -42,6 +42,9 @@
     <!-- Whether the navigation rail should apply padding to have its menu
          items above the bottom window insets. -->
     <attr name="paddingBottomSystemWindowInsets"/>
+    <!-- Whether the navigation rail should apply any padding to its start to
+         account for any system window insets. -->
+    <attr name="paddingStartSystemWindowInsets"/>
   </declare-styleable>
 
 </resources>

@@ -21,6 +21,7 @@
   <public name="paddingBottomSystemWindowInsets" type="attr"/>
   <public name="paddingLeftSystemWindowInsets" type="attr"/>
   <public name="paddingRightSystemWindowInsets" type="attr"/>
+  <public name="paddingStartSystemWindowInsets" type="attr"/>
   <public name="paddingTopSystemWindowInsets" type="attr"/>
   <public name="marginLeftSystemWindowInsets" type="attr"/>
   <public name="marginRightSystemWindowInsets" type="attr"/>
