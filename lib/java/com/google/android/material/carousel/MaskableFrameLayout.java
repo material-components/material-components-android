@@ -71,8 +71,8 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   }
 
   private MaskableDelegate createMaskableDelegate() {
-    if (VERSION.SDK_INT >= VERSION_CODES.R) {
-      return new MaskableDelegateV30(this);
+    if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
+      return new MaskableDelegateV33(this);
     } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       return new MaskableDelegateV21(this);
     } else {
@@ -303,7 +303,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   }
 
   /**
-   * A {@link MaskableDelegate} for API 21-29 that uses {@link ViewOutlineProvider} to clip when the
+   * A {@link MaskableDelegate} for API 21-32 that uses {@link ViewOutlineProvider} to clip when the
    * shape being clipped is a round rect with symmetrical corners and canvas clipping for all other
    * shapes.
    *
@@ -366,16 +366,16 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   }
 
   /**
-   * A {@link MaskableDelegate} for API 30+ that uses {@link ViewOutlineProvider} to clip for
+   * A {@link MaskableDelegate} for API 33+ that uses {@link ViewOutlineProvider} to clip for
    * all shapes.
    *
-   * <p>{@link Outline#setPath(Path)} was added in API 30 and allows using {@link
+   * <p>{@link Outline#setPath(Path)} was added in API 33 and allows using {@link
    * ViewOutlineProvider} to clip for all shapes.
    */
-  @RequiresApi(VERSION_CODES.R)
-  private static class MaskableDelegateV30 extends MaskableDelegate {
+  @RequiresApi(VERSION_CODES.TIRAMISU)
+  private static class MaskableDelegateV33 extends MaskableDelegate {
 
-    MaskableDelegateV30(View view) {
+    MaskableDelegateV33(View view) {
       initMaskOutlineProvider(view);
     }
 
