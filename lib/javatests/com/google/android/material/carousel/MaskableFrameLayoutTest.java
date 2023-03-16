@@ -113,10 +113,10 @@ public class MaskableFrameLayoutTest {
     assertThat(maskableFrameLayout.getClipToOutline()).isFalse();
   }
 
-  @RequiresApi(api = VERSION_CODES.R)
-  @Config(sdk = VERSION_CODES.R)
+  @RequiresApi(api = VERSION_CODES.TIRAMISU)
+  @Config(sdk = VERSION_CODES.TIRAMISU)
   @Test
-  public void testCutCornersApi30_usesViewOutlineProvider() {
+  public void testCutCornersApi33_usesViewOutlineProvider() {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
     ShapeAppearanceModel model =
         new ShapeAppearanceModel.Builder()
