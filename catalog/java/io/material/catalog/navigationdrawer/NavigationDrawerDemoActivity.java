@@ -21,19 +21,27 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
-import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
 import com.google.android.material.navigation.NavigationView;
 import io.material.catalog.feature.DemoActivity;
 
 /** A fragment that displays the main Navigation Drawer demo for the Catalog app. */
 public class NavigationDrawerDemoActivity extends DemoActivity {
+
+  private final OnBackPressedCallback drawerOnBackPressedCallback =
+      new OnBackPressedCallback(/* enabled= */ false) {
+        @Override
+        public void handleOnBackPressed() {
+          drawerLayout.closeDrawers();
+        }
+      };
 
   private DrawerLayout drawerLayout;
 
@@ -46,6 +54,8 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
     View view =
         layoutInflater.inflate(R.layout.cat_navigationdrawer, viewGroup, false /* attachToRoot */);
 
+    getOnBackPressedDispatcher().addCallback(this, drawerOnBackPressedCallback);
+
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
@@ -57,26 +67,39 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
             toolbar,
             R.string.cat_navigationdrawer_button_show_content_description,
             R.string.cat_navigationdrawer_button_hide_content_description));
+    drawerLayout.addDrawerListener(
+        new SimpleDrawerListener() {
+          @Override
+          public void onDrawerOpened(@NonNull View drawerView) {
+            drawerOnBackPressedCallback.setEnabled(true);
+          }
 
-    NavigationView navigationView = view.findViewById(R.id.navigation_view);
-    navigationView.setNavigationItemSelectedListener(
-        menuItem -> {
-          navigationView.setCheckedItem(menuItem);
-          drawerLayout.closeDrawer(Gravity.START);
-          return true;
+          @Override
+          public void onDrawerClosed(@NonNull View drawerView) {
+            drawerOnBackPressedCallback.setEnabled(false);
+          }
         });
+
+    NavigationView navigationViewStart = view.findViewById(R.id.navigation_view_start);
+    initNavigationView(navigationViewStart);
+
+    NavigationView navigationViewEnd = view.findViewById(R.id.navigation_view_end);
+    initNavigationView(navigationViewEnd);
+
+    view.findViewById(R.id.show_end_drawer_gravity)
+        .setOnClickListener(v -> drawerLayout.openDrawer(navigationViewEnd));
 
     return view;
   }
 
-  @Override
-  public boolean onOptionsItemSelected(@NonNull MenuItem menuItem) {
-    if (menuItem.getItemId() == android.R.id.home) {
-      drawerLayout.openDrawer(Gravity.START);
-      return true;
-    }
-
-    return super.onOptionsItemSelected(menuItem);
+  private void initNavigationView(NavigationView navigationView) {
+    navigationView.setCheckedItem(R.id.search_item);
+    navigationView.setNavigationItemSelectedListener(
+        menuItem -> {
+          navigationView.setCheckedItem(menuItem);
+          drawerLayout.closeDrawer(navigationView);
+          return true;
+        });
   }
 
   @Override

@@ -24,7 +24,16 @@
     controlled by a navigation menu icon.
   </string>
 
-  <string name="cat_navigationdrawer_instructions">Press the menu icon above to open the navigation drawer.</string>
+  <string name="cat_navigationdrawer_instructions"
+          description="Instructions for the navigation drawer demo. [CHAR_LIMIT=300]">
+    Press the Top App Bar menu icon above to open a start-aligned navigation drawer.
+    \n\n
+    Or press the button below to open an end-aligned navigation drawer.
+  </string>
+  <string name="cat_navigationdrawer_show_end_drawer"
+          description="Label for opening the navigation drawer at the end of the screen. [CHAR_LIMIT=100]">
+    Open End Drawer
+  </string>
   <string name="cat_navigationdrawer_header_mail">Mail</string>
   <string name="cat_navigationdrawer_header_labels">Labels</string>
   <string name="cat_navigationdrawer_label">Label</string>

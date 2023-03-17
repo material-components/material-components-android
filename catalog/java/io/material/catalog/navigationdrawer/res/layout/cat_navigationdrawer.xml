@@ -44,23 +44,45 @@
           app:title="@string/cat_navigationdrawer_title"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:padding="64dp"
+      android:orientation="vertical">
+
+      <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
         android:gravity="center"
         android:text="@string/cat_navigationdrawer_instructions"
-        android:textAppearance="?attr/textAppearanceBodyLarge"
-        android:padding="64dp" />
+        android:textAppearance="?attr/textAppearanceBodyLarge" />
 
+      <Button
+        android:id="@+id/show_end_drawer_gravity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/cat_navigationdrawer_show_end_drawer" />
+
+    </LinearLayout>
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
   <com.google.android.material.navigation.NavigationView
-      android:id="@+id/navigation_view"
+      android:id="@+id/navigation_view_start"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
       android:layout_gravity="start"
       app:headerLayout="@layout/cat_navigationdrawer_header"
       app:menu="@menu/cat_navigationdrawer_menu"/>
+
+  <com.google.android.material.navigation.NavigationView
+    android:id="@+id/navigation_view_end"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    app:headerLayout="@layout/cat_navigationdrawer_header"
+    app:menu="@menu/cat_navigationdrawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>
