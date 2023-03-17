@@ -698,7 +698,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    * is created and set.
    */
   private void refreshItemBackground() {
-    Drawable iconContainerBackgroundDrawable = null;
+    Drawable iconContainerRippleDrawable = null;
     Drawable itemBackgroundDrawable = itemBackground;
     boolean defaultHighlightEnabled = true;
 
@@ -713,9 +713,9 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
         // Remove the default focus highlight that highlights the entire view and rely on the
         // active indicator ripple to communicate state.
         defaultHighlightEnabled = false;
-        // Set the icon container's background to a ripple masked by the active indicator's
+        // Set the icon container's foreground to a ripple masked by the active indicator's
         // drawable.
-        iconContainerBackgroundDrawable =
+        iconContainerRippleDrawable =
             new RippleDrawable(
                 RippleUtils.sanitizeRippleDrawableColor(itemRippleColor), null, maskDrawable);
       } else if (itemBackgroundDrawable == null) {
@@ -727,7 +727,9 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     // Check that this item includes an icon container. If a NavigationBarView's subclass supplies
     // a custom item layout, this can be null.
     if (iconContainer != null) {
-      ViewCompat.setBackground(iconContainer, iconContainerBackgroundDrawable);
+      // Remove any padding to avoid the active indicator from from being clipped
+      iconContainer.setPadding(0, 0, 0, 0);
+      iconContainer.setForeground(iconContainerRippleDrawable);
     }
     ViewCompat.setBackground(this, itemBackgroundDrawable);
     if (VERSION.SDK_INT >= VERSION_CODES.O) {
@@ -810,7 +812,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   private void updateActiveIndicatorLayoutParams(int availableWidth) {
     // Set width to the min of either the desired indicator width or the available width minus
     // a horizontal margin.
-    if (activeIndicatorView == null) {
+    if (activeIndicatorView == null || availableWidth <= 0) {
       return;
     }
 
