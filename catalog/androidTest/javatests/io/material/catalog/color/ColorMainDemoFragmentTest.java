@@ -17,6 +17,7 @@
 package io.material.catalog.color;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -35,6 +36,56 @@ import org.junit.runner.RunWith;
 @MediumTest
 @RunWith(AndroidJUnit4.class)
 public final class ColorMainDemoFragmentTest {
+
+  private static final int[] STRING_RESOURCE_IDS =
+      new int[] {
+        R.string.cat_color_role_primary,
+        R.string.cat_color_role_on_primary,
+        R.string.cat_color_role_primary_container,
+        R.string.cat_color_role_on_primary_container,
+        R.string.cat_color_role_primary_fixed,
+        R.string.cat_color_role_primary_fixed_dim,
+        R.string.cat_color_role_on_primary_fixed,
+        R.string.cat_color_role_on_primary_fixed_variant,
+        R.string.cat_color_role_inverse_primary,
+        R.string.cat_color_role_secondary,
+        R.string.cat_color_role_on_secondary,
+        R.string.cat_color_role_secondary_container,
+        R.string.cat_color_role_on_secondary_container,
+        R.string.cat_color_role_secondary_fixed,
+        R.string.cat_color_role_secondary_fixed_dim,
+        R.string.cat_color_role_on_secondary_fixed,
+        R.string.cat_color_role_on_secondary_fixed_variant,
+        R.string.cat_color_role_tertiary,
+        R.string.cat_color_role_on_tertiary,
+        R.string.cat_color_role_tertiary_container,
+        R.string.cat_color_role_on_tertiary_container,
+        R.string.cat_color_role_tertiary_fixed,
+        R.string.cat_color_role_tertiary_fixed_dim,
+        R.string.cat_color_role_on_tertiary_fixed,
+        R.string.cat_color_role_on_tertiary_fixed_variant,
+        R.string.cat_color_role_error,
+        R.string.cat_color_role_on_error,
+        R.string.cat_color_role_error_container,
+        R.string.cat_color_role_on_error_container,
+        R.string.cat_color_role_outline,
+        R.string.cat_color_role_outline_variant,
+        R.string.cat_color_role_background,
+        R.string.cat_color_role_on_background,
+        R.string.cat_color_role_surface,
+        R.string.cat_color_role_on_surface,
+        R.string.cat_color_role_surface_variant,
+        R.string.cat_color_role_on_surface_variant,
+        R.string.cat_color_role_inverse_surface,
+        R.string.cat_color_role_inverse_on_surface,
+        R.string.cat_color_role_surface_bright,
+        R.string.cat_color_role_surface_dim,
+        R.string.cat_color_role_surface_container,
+        R.string.cat_color_role_surface_container_low,
+        R.string.cat_color_role_surface_container_high,
+        R.string.cat_color_role_surface_container_lowest,
+        R.string.cat_color_role_surface_container_highest,
+      };
 
   @Rule
   public final ActivityScenarioRule<MainActivity> activityScenarioRule =
@@ -57,33 +108,12 @@ public final class ColorMainDemoFragmentTest {
 
   @Test
   public void checkColorRowTextValueIsShown() {
-    onView(withText(R.string.cat_color_role_primary)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_primary)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_primary_container)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_primary_container)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_inverse_primary)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_secondary)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_secondary)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_secondary_container)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_secondary_container)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_tertiary)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_tertiary)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_tertiary_container)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_tertiary_container)).check(matches(isDisplayed()));
+    for (int stringResId : STRING_RESOURCE_IDS) {
+      checkIsTextDisplayed(stringResId);
+    }
+  }
 
-    onView(withText(R.string.cat_color_role_error)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_error)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_error_container)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_error_container)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_outline)).check(matches(isDisplayed()));
-
-    onView(withText(R.string.cat_color_role_background)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_background)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_surface)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_surface)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_surface_variant)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_on_surface_variant)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_inverse_surface)).check(matches(isDisplayed()));
-    onView(withText(R.string.cat_color_role_inverse_on_surface)).check(matches(isDisplayed()));
+  private void checkIsTextDisplayed(int text) {
+    onView(withText(text)).perform(scrollTo()).check(matches(isDisplayed()));
   }
 }

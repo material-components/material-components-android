@@ -79,7 +79,26 @@ public final class ColorMainDemoFragment extends DemoFragment {
         new ColorRow(
             new ColorRoleItem(R.string.cat_color_role_inverse_surface, R.attr.colorSurfaceInverse),
             new ColorRoleItem(
-                R.string.cat_color_role_inverse_on_surface, R.attr.colorOnSurfaceInverse)));
+                R.string.cat_color_role_inverse_on_surface, R.attr.colorOnSurfaceInverse)),
+        new ColorRow(
+            new ColorRoleItem(R.string.cat_color_role_surface_bright, R.attr.colorSurfaceBright),
+            new ColorRoleItem(R.string.cat_color_role_surface_dim, R.attr.colorSurfaceDim)),
+        new ColorRow(
+            new ColorRoleItem(
+                R.string.cat_color_role_surface_container_low, R.attr.colorSurfaceContainerLow),
+            new ColorRoleItem(
+                R.string.cat_color_role_surface_container_high, R.attr.colorSurfaceContainerHigh)),
+        new ColorRow(
+            new ColorRoleItem(
+                R.string.cat_color_role_surface_container_lowest,
+                R.attr.colorSurfaceContainerLowest),
+            new ColorRoleItem(
+                R.string.cat_color_role_surface_container_highest,
+                R.attr.colorSurfaceContainerHighest)),
+        new ColorRow(
+            new ColorRoleItem(
+                R.string.cat_color_role_surface_container, R.attr.colorSurfaceContainer),
+            null));
   }
 
   private List<ColorRow> getColorRolesContent() {
@@ -93,6 +112,15 @@ public final class ColorMainDemoFragment extends DemoFragment {
             new ColorRoleItem(
                 R.string.cat_color_role_on_primary_container, R.attr.colorOnPrimaryContainer)),
         new ColorRow(
+            new ColorRoleItem(R.string.cat_color_role_primary_fixed, R.attr.colorPrimaryFixed),
+            new ColorRoleItem(
+                R.string.cat_color_role_primary_fixed_dim, R.attr.colorPrimaryFixedDim)),
+        new ColorRow(
+            new ColorRoleItem(R.string.cat_color_role_on_primary_fixed, R.attr.colorOnPrimaryFixed),
+            new ColorRoleItem(
+                R.string.cat_color_role_on_primary_fixed_variant,
+                R.attr.colorOnPrimaryFixedVariant)),
+        new ColorRow(
             new ColorRoleItem(R.string.cat_color_role_inverse_primary, R.attr.colorPrimaryInverse),
             /* colorRoleItemRight= */ null),
         new ColorRow(
@@ -104,13 +132,33 @@ public final class ColorMainDemoFragment extends DemoFragment {
             new ColorRoleItem(
                 R.string.cat_color_role_on_secondary_container, R.attr.colorOnSecondaryContainer)),
         new ColorRow(
+            new ColorRoleItem(R.string.cat_color_role_secondary_fixed, R.attr.colorSecondaryFixed),
+            new ColorRoleItem(
+                R.string.cat_color_role_secondary_fixed_dim, R.attr.colorSecondaryFixedDim)),
+        new ColorRow(
+            new ColorRoleItem(
+                R.string.cat_color_role_on_secondary_fixed, R.attr.colorOnSecondaryFixed),
+            new ColorRoleItem(
+                R.string.cat_color_role_on_secondary_fixed_variant,
+                R.attr.colorOnSecondaryFixedVariant)),
+        new ColorRow(
             new ColorRoleItem(R.string.cat_color_role_tertiary, R.attr.colorTertiary),
             new ColorRoleItem(R.string.cat_color_role_on_tertiary, R.attr.colorOnTertiary)),
         new ColorRow(
             new ColorRoleItem(
                 R.string.cat_color_role_tertiary_container, R.attr.colorTertiaryContainer),
             new ColorRoleItem(
-                R.string.cat_color_role_on_tertiary_container, R.attr.colorOnTertiaryContainer)));
+                R.string.cat_color_role_on_tertiary_container, R.attr.colorOnTertiaryContainer)),
+        new ColorRow(
+            new ColorRoleItem(R.string.cat_color_role_tertiary_fixed, R.attr.colorTertiaryFixed),
+            new ColorRoleItem(
+                R.string.cat_color_role_tertiary_fixed_dim, R.attr.colorTertiaryFixedDim)),
+        new ColorRow(
+            new ColorRoleItem(
+                R.string.cat_color_role_on_tertiary_fixed, R.attr.colorOnTertiaryFixed),
+            new ColorRoleItem(
+                R.string.cat_color_role_on_tertiary_fixed_variant,
+                R.attr.colorOnTertiaryFixedVariant)));
   }
 
   private List<ColorRow> getColorRolesUtility() {
@@ -124,6 +172,7 @@ public final class ColorMainDemoFragment extends DemoFragment {
                 R.string.cat_color_role_on_error_container, R.attr.colorOnErrorContainer)),
         new ColorRow(
             new ColorRoleItem(R.string.cat_color_role_outline, R.attr.colorOutline),
-            /* colorRoleItemRight= */ null));
+            new ColorRoleItem(
+                R.string.cat_color_role_outline_variant, R.attr.colorOutlineVariant)));
   }
 }
