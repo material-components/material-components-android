@@ -24,7 +24,6 @@ import androidx.test.core.app.ApplicationProvider;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.TimeZone;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -36,14 +35,15 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 @DoNotInstrument
 public class DateStringsTest {
 
-  private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
-  private static final int CURRENT_YEAR = Calendar.getInstance(UTC).get(Calendar.YEAR);
+  private static final int CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
 
   private Calendar startDate;
   private Calendar endDate;
 
   private static Calendar setupLocalizedCalendar(Locale locale, int year, int month, int day) {
-    Calendar calendar = Calendar.getInstance(UTC, locale);
+    Locale.setDefault(locale);
+    Calendar calendar = Calendar.getInstance();
+    calendar.clear();
     calendar.set(Calendar.YEAR, year);
     calendar.set(Calendar.MONTH, month);
     calendar.set(Calendar.DAY_OF_MONTH, day);
