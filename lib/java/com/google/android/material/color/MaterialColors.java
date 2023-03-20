@@ -18,6 +18,7 @@ package com.google.android.material.color;
 import com.google.android.material.R;
 
 import static android.graphics.Color.TRANSPARENT;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -30,6 +31,7 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.ColorUtils;
 import com.google.android.material.color.utilities.Blend;
@@ -54,10 +56,15 @@ public class MaterialColors {
   private static final int TONE_ON_ACCENT_LIGHT = 100;
   private static final int TONE_ACCENT_CONTAINER_LIGHT = 90;
   private static final int TONE_ON_ACCENT_CONTAINER_LIGHT = 10;
+  private static final int TONE_SURFACE_CONTAINER_LIGHT = 94;
+  private static final int TONE_SURFACE_CONTAINER_HIGH_LIGHT = 92;
   private static final int TONE_ACCENT_DARK = 80;
   private static final int TONE_ON_ACCENT_DARK = 20;
   private static final int TONE_ACCENT_CONTAINER_DARK = 30;
   private static final int TONE_ON_ACCENT_CONTAINER_DARK = 90;
+  private static final int TONE_SURFACE_CONTAINER_DARK = 12;
+  private static final int TONE_SURFACE_CONTAINER_HIGH_DARK = 17;
+  private static final int CHROMA_NEUTRAL = 6;
 
   private MaterialColors() {
     // Private constructor to prevent unwanted construction.
@@ -272,9 +279,7 @@ public class MaterialColors {
    */
   @NonNull
   public static ColorRoles getColorRoles(@NonNull Context context, @ColorInt int color) {
-    return getColorRoles(
-        color,
-        MaterialAttributes.resolveBoolean(context, R.attr.isLightTheme, /* defaultValue= */ true));
+    return getColorRoles(color, isLightTheme(context));
   }
 
   /**
@@ -298,10 +303,59 @@ public class MaterialColors {
             getColorRole(color, TONE_ON_ACCENT_CONTAINER_DARK));
   }
 
+  /**
+   * Returns the color int of the surface container color role, based on the provided input color.
+   * This method should be only used internally.
+   *
+   * @param context The target context.
+   * @param seedColor The input color provided for generating surface container color role.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @ColorInt
+  public static int getSurfaceContainerFromSeed(@NonNull Context context, @ColorInt int seedColor) {
+    int tone = isLightTheme(context) ? TONE_SURFACE_CONTAINER_LIGHT : TONE_SURFACE_CONTAINER_DARK;
+    return getColorRole(seedColor, tone, CHROMA_NEUTRAL);
+  }
+
+  /**
+   * Returns the color int of the surface container high color role, based on the provided input
+   * color. This method should be only used internally.
+   *
+   * @param context The target context.
+   * @param seedColor The input color provided for generating surface container high color role.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @ColorInt
+  public static int getSurfaceContainerHighFromSeed(
+      @NonNull Context context, @ColorInt int seedColor) {
+    int tone =
+        isLightTheme(context)
+            ? TONE_SURFACE_CONTAINER_HIGH_LIGHT
+            : TONE_SURFACE_CONTAINER_HIGH_DARK;
+    return getColorRole(seedColor, tone, CHROMA_NEUTRAL);
+  }
+
+  private static boolean isLightTheme(@NonNull Context context) {
+    return MaterialAttributes.resolveBoolean(
+        context, R.attr.isLightTheme, /* defaultValue= */ true);
+  }
+
   @ColorInt
   private static int getColorRole(@ColorInt int color, @IntRange(from = 0, to = 100) int tone) {
     Hct hctColor = Hct.fromInt(color);
     hctColor.setTone(tone);
+    return hctColor.toInt();
+  }
+
+  @ColorInt
+  private static int getColorRole(
+      @ColorInt int color, @IntRange(from = 0, to = 100) int tone, int chroma) {
+    Hct hctColor = Hct.fromInt(getColorRole(color, tone));
+    hctColor.setChroma(chroma);
     return hctColor.toInt();
   }
 }
