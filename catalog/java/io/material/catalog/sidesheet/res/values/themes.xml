@@ -17,4 +17,7 @@
   <style name="ThemeOverlay.Catalog.SideSheet.Modal.Detached" parent="ThemeOverlay.Material3.SideSheetDialog">
     <item name="sideSheetModalStyle">@style/Widget.Material3.SideSheet.Modal.Detached</item>
   </style>
+  <style name="ThemeOverlay.Catalog.SideSheet.MaterialButtonToggleGroup" parent="">
+    <item name="materialButtonStyle">?attr/materialButtonOutlinedStyle</item>
+  </style>
 </resources>

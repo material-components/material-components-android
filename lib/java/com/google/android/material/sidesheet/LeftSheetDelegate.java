@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2022 The Android Open Source Project
+ * Copyright (C) 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,21 +25,21 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.sidesheet.Sheet.SheetEdge;
 
 /**
- * A delegate for {@link SideSheetBehavior} to handle positioning logic for sheets based on the
- * right edge of the screen that expand from right to left.
+ * A delegate for {@link SideSheetBehavior} to handle positioning logic for sheets based on the left
+ * edge of the screen that expand from left to right.
  */
-final class RightSheetDelegate extends SheetDelegate {
+final class LeftSheetDelegate extends SheetDelegate {
 
   final SideSheetBehavior<? extends View> sheetBehavior;
 
-  RightSheetDelegate(@NonNull SideSheetBehavior<? extends View> sheetBehavior) {
+  LeftSheetDelegate(@NonNull SideSheetBehavior<? extends View> sheetBehavior) {
     this.sheetBehavior = sheetBehavior;
   }
 
   @SheetEdge
   @Override
   int getSheetEdge() {
-    return SideSheetBehavior.EDGE_RIGHT;
+    return SideSheetBehavior.EDGE_LEFT;
   }
 
   /** Returns the sheet's offset in pixels from the origin edge when hidden. */
@@ -47,48 +47,47 @@ final class RightSheetDelegate extends SheetDelegate {
   int getHiddenOffset() {
     // Return the parent's width in pixels, which results in the sheet being offset entirely off of
     // screen.
-    return sheetBehavior.getParentWidth();
+    return -sheetBehavior.getChildWidth() - sheetBehavior.getInnerMargin();
   }
 
   /** Returns the sheet's offset in pixels from the origin edge when expanded. */
   @Override
   int getExpandedOffset() {
     // Calculate the expanded offset based on the width of the content.
-    return max(
-        0, getHiddenOffset() - sheetBehavior.getChildWidth() - sheetBehavior.getInnerMargin());
+    return max(0, sheetBehavior.getParentInnerEdge() + sheetBehavior.getInnerMargin());
   }
 
   /** Whether the view has been released from a drag close to the origin edge. */
   @Override
   boolean isReleasedCloseToOriginEdge(@NonNull View releasedChild) {
-    // To be considered released close to the origin (right) edge, the released child's left must
-    // be at least halfway to the origin (right) edge of the screen.
-    return releasedChild.getLeft() > (getHiddenOffset() - getExpandedOffset()) / 2;
+    // To be considered released close to the origin (left) edge, the released child's right must
+    // be at least halfway to the origin (left) edge of the screen.
+    return releasedChild.getRight() < (getExpandedOffset() - getHiddenOffset()) / 2;
   }
 
   @Override
   boolean isSwipeSignificant(float xVelocity, float yVelocity) {
     return SheetUtils.isSwipeMostlyHorizontal(xVelocity, yVelocity)
-        && yVelocity > sheetBehavior.getSignificantVelocityThreshold();
+        && Math.abs(xVelocity) > sheetBehavior.getSignificantVelocityThreshold();
   }
 
   @Override
   boolean shouldHide(@NonNull View child, float velocity) {
-    final float newRight = child.getRight() + velocity * sheetBehavior.getHideFriction();
-    return Math.abs(newRight) > sheetBehavior.getHideThreshold();
+    final float newLeft = child.getLeft() + velocity * sheetBehavior.getHideFriction();
+    return Math.abs(newLeft) > sheetBehavior.getHideThreshold();
   }
 
   @Override
   <V extends View> int getOuterEdge(@NonNull V child) {
-    return child.getLeft() - sheetBehavior.getInnerMargin();
+    return child.getRight() + sheetBehavior.getInnerMargin();
   }
 
   @Override
   float calculateSlideOffset(int left) {
     float hiddenOffset = getHiddenOffset();
-    float sheetWidth = hiddenOffset - getExpandedOffset();
+    float sheetWidth = getExpandedOffset() - hiddenOffset;
 
-    return (hiddenOffset - left) / sheetWidth;
+    return (left - hiddenOffset) / sheetWidth;
   }
 
   @Override
@@ -99,32 +98,32 @@ final class RightSheetDelegate extends SheetDelegate {
     // Wait until the sheet partially enters the screen to avoid an initial content jump to the
     // right edge of the screen.
     if (sheetLeft <= parentWidth) {
-      coplanarSiblingLayoutParams.rightMargin = parentWidth - sheetLeft;
+      coplanarSiblingLayoutParams.leftMargin = sheetRight;
     }
   }
 
   @Override
   public int getParentInnerEdge(@NonNull CoordinatorLayout parent) {
-    return parent.getRight();
+    return parent.getLeft();
   }
 
   @Override
   int calculateInnerMargin(@NonNull MarginLayoutParams marginLayoutParams) {
-    return marginLayoutParams.rightMargin;
+    return marginLayoutParams.leftMargin;
   }
 
   @Override
   int getMinViewPositionHorizontal() {
-    return getExpandedOffset();
+    return -sheetBehavior.getChildWidth();
   }
 
   @Override
   int getMaxViewPositionHorizontal() {
-    return sheetBehavior.getParentWidth();
+    return sheetBehavior.getInnerMargin();
   }
 
   @Override
   boolean isExpandingOutwards(float xVelocity) {
-    return xVelocity < 0;
+    return xVelocity > 0;
   }
 }

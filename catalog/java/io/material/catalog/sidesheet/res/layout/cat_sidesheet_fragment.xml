@@ -90,6 +90,37 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="@string/cat_sidesheet_coplanar_detached_button_show_text" />
+
+      <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/sheet_gravity_button_toggle_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.Catalog.SideSheet.MaterialButtonToggleGroup"
+        android:layout_marginTop="16dp"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+          <Button
+            android:id="@+id/left_gravity_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_sidesheet_button_text_left" />
+          <Button
+            android:id="@+id/right_gravity_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_sidesheet_button_text_right" />
+          <Button
+            android:id="@+id/start_gravity_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_sidesheet_button_text_start" />
+          <Button
+            android:id="@+id/end_gravity_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_sidesheet_button_text_end" />
+      </com.google.android.material.button.MaterialButtonToggleGroup>
+
       <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

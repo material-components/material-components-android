@@ -93,6 +93,19 @@
     Close sheet
   </string>
 
+  <string name="cat_sidesheet_button_text_left" description="Label of button which sets the side sheet's layout_gravity to left. [CHAR_LIMIT=NONE]">
+    Left
+  </string>
+  <string name="cat_sidesheet_button_text_right" description="Label of button which sets the side sheet's layout_gravity to right. [CHAR_LIMIT=NONE]">
+    Right
+  </string>
+  <string name="cat_sidesheet_button_text_start" description="Label of button which sets the side sheet's layout_gravity to start. [CHAR_LIMIT=NONE]">
+    Start
+  </string>
+  <string name="cat_sidesheet_button_text_end" description="Label of button which sets the side sheet's layout_gravity to end. [CHAR_LIMIT=NONE]">
+    End
+  </string>
+
   <string name="cat_sidesheet_filler_text" translatable="false">
     \t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.
     \n\n\t\tSuspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae, molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor bibendum, vel congue leo egestas.

@@ -19,9 +19,8 @@ package com.google.android.material.sidesheet;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
 import androidx.annotation.NonNull;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.sidesheet.Sheet.SheetEdge;
-import com.google.android.material.sidesheet.Sheet.StableSheetState;
-import com.google.android.material.sidesheet.SideSheetBehavior.StateSettlingTracker;
 
 /**
  * A delegate for {@link SideSheetBehavior} to handle logic specific to the sheet's edge position.
@@ -35,27 +34,16 @@ abstract class SheetDelegate {
   @SheetEdge
   abstract int getSheetEdge();
 
-  /**
-   * Determines whether the sheet is currently settling to a target {@link StableSheetState} using
-   * {@link StateSettlingTracker}.
-   */
-  abstract boolean isSettling(View child, int state, boolean isReleasingView);
-
   /** Returns the sheet's offset from the origin edge when hidden. */
   abstract int getHiddenOffset();
 
   /** Returns the sheet's offset from the origin edge when expanded. */
   abstract int getExpandedOffset();
 
-  /**
-   * Calculates the target {@link StableSheetState} state of the sheet after it's released from a
-   * drag, using the x and y velocity of the drag to determine the state.
-   *
-   * @return the target state
-   */
-  @StableSheetState
-  abstract int calculateTargetStateOnViewReleased(
-      @NonNull View releasedChild, float xVelocity, float yVelocity);
+  /** Whether the view has been released from a drag close to the origin edge. */
+  abstract boolean isReleasedCloseToOriginEdge(@NonNull View releasedChild);
+
+  abstract boolean isSwipeSignificant(float xVelocity, float yVelocity);
 
   /**
    * Whether the sheet should hide, based on the position of child, velocity of the drag event, and
@@ -88,4 +76,26 @@ abstract class SheetDelegate {
    * For right based sheets, the inner margin would be the right margin.
    */
   abstract int calculateInnerMargin(@NonNull MarginLayoutParams marginLayoutParams);
+
+  /**
+   * Returns the inner edge of the parent. For example, for the right sheet, the return value would
+   * be {@code parent.getRight()}.
+   */
+  abstract int getParentInnerEdge(@NonNull CoordinatorLayout parent);
+
+  /**
+   * Returns the minimum horizontal view position, used to calculate the drag range of the sheet.
+   */
+  abstract int getMinViewPositionHorizontal();
+
+  /**
+   * Returns the maximum horizontal view position, used to calculate the drag range of the sheet.
+   */
+  abstract int getMaxViewPositionHorizontal();
+
+  /**
+   * Returns whether the sheet is expanding outwards based on its horizontal velocity and sheet
+   * edge.
+   */
+  abstract boolean isExpandingOutwards(float xVelocity);
 }

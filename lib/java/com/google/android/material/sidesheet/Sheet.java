@@ -71,6 +71,11 @@ interface Sheet<C extends SheetCallback> {
    * left.
    */
   int EDGE_RIGHT = 0;
+  /**
+   * The sheet is based on the left edge of the screen; it slides from the left edge towards the
+   * right.
+   */
+  int EDGE_LEFT = 1;
 
   /**
    * The edge of the screen that a sheet slides out of.
@@ -78,7 +83,7 @@ interface Sheet<C extends SheetCallback> {
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
-  @IntDef({EDGE_RIGHT})
+  @IntDef({EDGE_RIGHT, EDGE_LEFT})
   @Retention(RetentionPolicy.SOURCE)
   @interface SheetEdge {}
 

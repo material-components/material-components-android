@@ -22,6 +22,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDialog;
 import androidx.appcompat.widget.Toolbar;
+import android.util.SparseIntArray;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,18 +35,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.sidesheet.SideSheetBehavior;
 import com.google.android.material.sidesheet.SideSheetCallback;
 import com.google.android.material.sidesheet.SideSheetDialog;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.preferences.CatalogPreferencesHelper;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A fragment that displays the main Side Sheet demo for the Catalog app. */
 public class SideSheetMainDemoFragment extends DemoFragment {
 
   @Nullable private CatalogPreferencesHelper catalogPreferencesHelper;
+  private final List<View> sideSheetViews = new ArrayList<>();
+
+  private static final SparseIntArray GRAVITY_ID_RES_MAP = new SparseIntArray();
+
+  static {
+    GRAVITY_ID_RES_MAP.append(R.id.left_gravity_button, Gravity.LEFT);
+    GRAVITY_ID_RES_MAP.append(R.id.right_gravity_button, Gravity.RIGHT);
+    GRAVITY_ID_RES_MAP.append(R.id.start_gravity_button, Gravity.START);
+    GRAVITY_ID_RES_MAP.append(R.id.end_gravity_button, Gravity.END);
+  }
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
@@ -182,6 +198,25 @@ public class SideSheetMainDemoFragment extends DemoFragment {
         R.id.coplanar_detached_side_sheet_state_text,
         R.id.coplanar_detached_side_sheet_slide_offset_text);
 
+    MaterialButtonToggleGroup sheetGravityButtonToggleGroup =
+        view.findViewById(R.id.sheet_gravity_button_toggle_group);
+    // Check the end gravity button since the default gravity is end.
+    sheetGravityButtonToggleGroup.check(R.id.end_gravity_button);
+    sheetGravityButtonToggleGroup.addOnButtonCheckedListener(
+        (group, checkedId, isChecked) -> {
+          int newGravity;
+          if (isChecked) {
+            newGravity = getGravityForIdRes(checkedId);
+
+            for (View sideSheetView : sideSheetViews) {
+              ViewGroup.LayoutParams layoutParams = sideSheetView.getLayoutParams();
+              if (layoutParams instanceof LayoutParams) {
+                ((LayoutParams) layoutParams).gravity = newGravity;
+                sideSheetView.requestLayout();
+              }
+            }
+          }
+        });
     return view;
   }
 
@@ -198,6 +233,8 @@ public class SideSheetMainDemoFragment extends DemoFragment {
 
     View standardSideSheetCloseIconButton = sideSheet.findViewById(closeIconButtonId);
     standardSideSheetCloseIconButton.setOnClickListener(v -> hideSideSheet(sideSheetBehavior));
+
+    sideSheetViews.add(sideSheet);
 
     return sideSheet;
   }
@@ -259,6 +296,11 @@ public class SideSheetMainDemoFragment extends DemoFragment {
   @StyleRes
   private int getDetachedModalThemeOverlayResId() {
     return R.style.ThemeOverlay_Catalog_SideSheet_Modal_Detached;
+  }
+
+  @IdRes
+  private static int getGravityForIdRes(@IdRes int gravityButtonIdRes) {
+    return GRAVITY_ID_RES_MAP.get(gravityButtonIdRes);
   }
 
   @Override
