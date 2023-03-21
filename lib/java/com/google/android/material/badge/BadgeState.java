@@ -77,6 +77,7 @@ public final class BadgeState {
   final float badgeWithTextWidth;
   final float badgeWithTextHeight;
   final float badgeWidePadding;
+  final float badgeVerticalPadding;
   final int horizontalInset;
   final int horizontalInsetWithText;
 
@@ -105,6 +106,10 @@ public final class BadgeState {
         a.getDimensionPixelSize(
             R.styleable.Badge_badgeWidePadding,
             res.getDimensionPixelSize(R.dimen.mtrl_badge_long_text_horizontal_padding));
+    badgeVerticalPadding =
+        a.getDimension(
+            R.styleable.Badge_badgeVerticalPadding,
+            res.getDimension(R.dimen.m3_badge_with_text_vertical_padding));
     horizontalInset =
         context
             .getResources()

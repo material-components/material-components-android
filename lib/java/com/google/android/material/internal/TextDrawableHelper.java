@@ -47,7 +47,7 @@ public class TextDrawableHelper {
           if (fontResolvedSynchronously) {
             return;
           }
-          textWidthDirty = true;
+          textSizeDirty = true;
           TextDrawableDelegate textDrawableDelegate = delegate.get();
           if (textDrawableDelegate != null) {
             textDrawableDelegate.onTextSizeChange();
@@ -56,7 +56,7 @@ public class TextDrawableHelper {
 
         @Override
         public void onFontRetrievalFailed(int reason) {
-          textWidthDirty = true;
+          textSizeDirty = true;
           // Use fallback font.
           TextDrawableDelegate textDrawableDelegate = delegate.get();
           if (textDrawableDelegate != null) {
@@ -66,7 +66,8 @@ public class TextDrawableHelper {
       };
 
   private float textWidth;
-  private boolean textWidthDirty = true;
+  private float textHeight;
+  private boolean textSizeDirty = true;
   @Nullable private WeakReference<TextDrawableDelegate> delegate = new WeakReference<>(null);
   @Nullable private TextAppearance textAppearance;
 
@@ -88,21 +89,29 @@ public class TextDrawableHelper {
   }
 
   public void setTextWidthDirty(boolean dirty) {
-    textWidthDirty = dirty;
+    textSizeDirty = dirty;
   }
 
   public boolean isTextWidthDirty() {
-    return textWidthDirty;
+    return textSizeDirty;
+  }
+
+  public void setTextSizeDirty(boolean dirty) {
+    textSizeDirty = dirty;
+  }
+
+  private void refreshTextDimens(String text) {
+    textWidth = calculateTextWidth(text);
+    textHeight = calculateTextHeight(text);
+    textSizeDirty = false;
   }
 
   /** Returns the visual width of the {@code text} based on its current text appearance. */
   public float getTextWidth(String text) {
-    if (!textWidthDirty) {
+    if (!textSizeDirty) {
       return textWidth;
     }
-
-    textWidth = calculateTextWidth(text);
-    textWidthDirty = false;
+    refreshTextDimens(text);
     return textWidth;
   }
 
@@ -111,6 +120,22 @@ public class TextDrawableHelper {
       return 0f;
     }
     return textPaint.measureText(charSequence, 0, charSequence.length());
+  }
+
+  /** Returns the visual height of the {@code text} based on its current text appearance. */
+  public float getTextHeight(@Nullable String text) {
+    if (!textSizeDirty) {
+      return textHeight;
+    }
+    refreshTextDimens(text);
+    return textHeight;
+  }
+
+  private float calculateTextHeight(@Nullable String str) {
+    if (str == null) {
+      return 0f;
+    }
+    return Math.abs(textPaint.getFontMetrics().ascent);
   }
 
   /**
@@ -141,7 +166,7 @@ public class TextDrawableHelper {
           textPaint.drawableState = textDrawableDelegate.getState();
         }
         textAppearance.updateDrawState(context, textPaint, fontCallback);
-        textWidthDirty = true;
+        textSizeDirty = true;
       }
 
       TextDrawableDelegate textDrawableDelegate = delegate.get();

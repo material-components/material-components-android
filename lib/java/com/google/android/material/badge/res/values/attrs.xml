@@ -26,6 +26,8 @@
     <attr name="badgeRadius" format="dimension"/>
     <!-- Start and end padding for a badge that is oblong due to long text. -->
     <attr name="badgeWidePadding" format="dimension"/>
+    <!-- Top and bottom padding for a badge that is tall due to large text. -->
+    <attr name="badgeVerticalPadding" format="dimension"/>
     <!-- Radius of a badge with text. Deprecated, use badgeWithTextWidth and badgeWithTextHeight
           instead. If set, will override badge with text's width/height. -->
     <attr name="badgeWithTextRadius" format="dimension"/>

@@ -42,4 +42,5 @@
 
   <dimen name="m3_badge_offset">6dp</dimen>
   <dimen name="m3_badge_with_text_offset">12dp</dimen>
+  <dimen name="m3_badge_with_text_vertical_padding">2dp</dimen>
 </resources>

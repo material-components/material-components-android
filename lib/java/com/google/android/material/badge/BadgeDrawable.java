@@ -533,7 +533,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private void onNumberUpdated() {
-    textDrawableHelper.setTextWidthDirty(true);
+    textDrawableHelper.setTextSizeDirty(true);
     onBadgeShapeAppearanceUpdated();
     updateCenterAndBounds();
     invalidateSelf();
@@ -564,7 +564,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   private void onMaxCharacterCountUpdated() {
     updateMaxBadgeNumber();
-    textDrawableHelper.setTextWidthDirty(true);
+    textDrawableHelper.setTextSizeDirty(true);
     updateCenterAndBounds();
     invalidateSelf();
   }
@@ -1017,8 +1017,20 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       halfBadgeWidth =
           Math.round(!hasNumber() ? state.badgeWidth / 2 : state.badgeWithTextWidth / 2);
     }
+    String badgeText = getBadgeText();
+    // If the badge has a number, we want to make sure that the badge is at least tall/wide
+    // enough to encompass the text with padding.
+    if (hasNumber()) {
+      halfBadgeHeight =
+          Math.max(
+              halfBadgeHeight,
+               textDrawableHelper.getTextHeight(badgeText) / 2f + state.badgeVerticalPadding);
+
+      // If the badge has text, it should at least have the same width as it does height
+      halfBadgeWidth = Math.max(halfBadgeWidth, halfBadgeHeight);
+    }
+
     if (getNumber() > MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
-      String badgeText = getBadgeText();
       halfBadgeWidth =
           Math.max(
               halfBadgeWidth,

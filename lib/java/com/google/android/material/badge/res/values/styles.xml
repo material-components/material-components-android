@@ -68,6 +68,7 @@
     <item name="verticalOffsetWithText">@dimen/m3_badge_with_text_offset</item>
     <item name="badgeTextAppearance">@macro/m3_comp_badge_large_label_text_type</item>
     <item name="badgeWithTextShapeAppearance">@style/ShapeAppearance.M3.Comp.Badge.Shape</item>
+    <item name="badgeVerticalPadding">@dimen/m3_badge_with_text_vertical_padding</item>
   </style>
 
 </resources>
