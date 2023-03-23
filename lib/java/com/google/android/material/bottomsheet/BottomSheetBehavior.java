@@ -22,6 +22,8 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
@@ -37,6 +39,7 @@ import android.util.Log;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.RoundedCorner;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -44,12 +47,15 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
+import android.view.WindowInsets;
 import android.view.accessibility.AccessibilityEvent;
+import android.window.BackEvent;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.VisibleForTesting;
@@ -57,6 +63,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.graphics.Insets;
 import androidx.core.math.MathUtils;
+import androidx.core.os.BuildCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -66,6 +73,8 @@ import androidx.customview.view.AbsSavedState;
 import androidx.customview.widget.ViewDragHelper;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.ViewUtils.RelativePadding;
+import com.google.android.material.motion.MaterialBackHandler;
+import com.google.android.material.motion.MaterialBottomContainerBackHelper;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -84,7 +93,8 @@ import java.util.Map;
  * window-like. For BottomSheetDialog use {@link BottomSheetDialog#setTitle(int)}, and for
  * BottomSheetDialogFragment use {@link ViewCompat#setAccessibilityPaneTitle(View, CharSequence)}.
  */
-public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
+public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V>
+    implements MaterialBackHandler {
 
   /** Callback for monitoring events about bottom sheets. */
   public abstract static class BottomSheetCallback {
@@ -318,6 +328,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @NonNull private final ArrayList<BottomSheetCallback> callbacks = new ArrayList<>();
 
   @Nullable private VelocityTracker velocityTracker;
+  @Nullable MaterialBottomContainerBackHelper bottomContainerBackHelper;
 
   int activePointerId;
 
@@ -456,6 +467,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // first time we layout with this behavior by checking (viewRef == null).
     viewRef = null;
     viewDragHelper = null;
+    bottomContainerBackHelper = null;
   }
 
   @Override
@@ -464,6 +476,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // Release references so we don't run unnecessary codepaths while not attached to a view.
     viewRef = null;
     viewDragHelper = null;
+    bottomContainerBackHelper = null;
   }
 
   @Override
@@ -533,6 +546,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       setWindowInsetsListener(child);
       ViewCompat.setWindowInsetsAnimationCallback(child, new InsetsAnimationCallback(child));
       viewRef = new WeakReference<>(child);
+      bottomContainerBackHelper = new MaterialBottomContainerBackHelper(child);
       // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
       // default to android:background declared in styles or layout.
       if (materialShapeDrawable != null) {
@@ -1409,7 +1423,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       if (interpolatorAnimator.isRunning()) {
         interpolatorAnimator.reverse();
       } else {
-        float to = removeCorners ? 0f : 1f;
+        float to = removeCorners ? calculateInterpolationWithCornersRemoved() : 1f;
         float from = 1f - to;
         interpolatorAnimator.setFloatValues(from, to);
         interpolatorAnimator.start();
@@ -1418,8 +1432,48 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       if (interpolatorAnimator != null && interpolatorAnimator.isRunning()) {
         interpolatorAnimator.cancel();
       }
-      materialShapeDrawable.setInterpolation(expandedCornersRemoved ? 0f : 1f);
+      materialShapeDrawable.setInterpolation(
+          expandedCornersRemoved ? calculateInterpolationWithCornersRemoved() : 1f);
     }
+  }
+
+  private float calculateInterpolationWithCornersRemoved() {
+    if (materialShapeDrawable != null
+        && viewRef != null
+        && viewRef.get() != null
+        && VERSION.SDK_INT >= VERSION_CODES.S) {
+      V view = viewRef.get();
+      int[] location = new int[2];
+      view.getLocationOnScreen(location);
+      // Only use device corner radius if sheet is touching top of screen.
+      if (location[1] == 0) {
+        final WindowInsets insets = view.getRootWindowInsets();
+        if (insets != null) {
+          float topLeftInterpolation =
+              calculateCornerInterpolation(
+                  materialShapeDrawable.getTopLeftCornerResolvedSize(),
+                  insets.getRoundedCorner(RoundedCorner.POSITION_TOP_LEFT));
+          float topRightInterpolation =
+              calculateCornerInterpolation(
+                  materialShapeDrawable.getTopRightCornerResolvedSize(),
+                  insets.getRoundedCorner(RoundedCorner.POSITION_TOP_RIGHT));
+          return Math.max(topLeftInterpolation, topRightInterpolation);
+        }
+      }
+    }
+    return 0;
+  }
+
+  @RequiresApi(VERSION_CODES.S)
+  private float calculateCornerInterpolation(
+      float materialShapeDrawableCornerSize, @Nullable RoundedCorner deviceRoundedCorner) {
+    if (deviceRoundedCorner != null) {
+      float deviceCornerRadius = deviceRoundedCorner.getRadius();
+      if (deviceCornerRadius > 0 && materialShapeDrawableCornerSize > 0) {
+        return deviceCornerRadius / materialShapeDrawableCornerSize;
+      }
+    }
+    return 0;
   }
 
   private boolean isExpandedAndShouldRemoveCorners() {
@@ -1506,6 +1560,67 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return Math.abs(newTop - collapsedOffset) / (float) peek > HIDE_THRESHOLD;
   }
 
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Override
+  public void startBackProgress(@NonNull BackEvent backEvent) {
+    if (bottomContainerBackHelper == null) {
+      return;
+    }
+    bottomContainerBackHelper.startBackProgress(backEvent);
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Override
+  public void updateBackProgress(@NonNull BackEvent backEvent) {
+    if (bottomContainerBackHelper == null) {
+      return;
+    }
+    bottomContainerBackHelper.updateBackProgress(backEvent);
+  }
+
+  @Override
+  public void handleBackInvoked() {
+    if (bottomContainerBackHelper == null) {
+      return;
+    }
+    BackEvent backEvent = bottomContainerBackHelper.onHandleBackInvoked();
+    if (backEvent == null || !BuildCompat.isAtLeastU()) {
+      // If using traditional button system nav or if pre-U, just hide or collapse the bottom sheet.
+      setState(hideable ? STATE_HIDDEN : STATE_COLLAPSED);
+      return;
+    }
+    if (hideable) {
+      bottomContainerBackHelper.finishBackProgressNotPersistent(
+          backEvent,
+          new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              // Hide immediately following the built-in predictive back slide down animation.
+              setStateInternal(STATE_HIDDEN);
+            }
+          });
+    } else {
+      bottomContainerBackHelper.finishBackProgressPersistent(
+          backEvent, /* animatorListener= */ null);
+      setState(STATE_COLLAPSED);
+    }
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Override
+  public void cancelBackProgress() {
+    if (bottomContainerBackHelper == null) {
+      return;
+    }
+    bottomContainerBackHelper.cancelBackProgress();
+  }
+
+  @VisibleForTesting
+  @Nullable
+  MaterialBottomContainerBackHelper getBackHelper() {
+    return bottomContainerBackHelper;
+  }
+
   @Nullable
   @VisibleForTesting
   View findScrollingChild(View view) {
@@ -1556,7 +1671,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private void createShapeValueAnimator() {
-    interpolatorAnimator = ValueAnimator.ofFloat(0f, 1f);
+    interpolatorAnimator = ValueAnimator.ofFloat(calculateInterpolationWithCornersRemoved(), 1f);
     interpolatorAnimator.setDuration(CORNER_ANIMATION_DURATION);
     interpolatorAnimator.addUpdateListener(
         new AnimatorUpdateListener() {

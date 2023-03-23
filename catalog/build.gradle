@@ -1,6 +1,13 @@
 apply plugin: 'com.android.application'
 
 dependencies {
+
+  constraints {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+      because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+    }
+  }
+
   api 'com.google.dagger:dagger:2.45'
   annotationProcessor 'com.google.dagger:dagger-compiler:2.45'
 
@@ -12,6 +19,7 @@ dependencies {
   api 'androidx.constraintlayout:constraintlayout:2.1.0'
   api 'androidx.gridlayout:gridlayout:1.0.0'
   api "androidx.multidex:multidex:2.0.1"
+  api "androidx.activity:activity:1.8.0-alpha02"
   api "androidx.recyclerview:recyclerview:1.2.1"
   api 'androidx.window:window:1.0.0-beta04'
   api "androidx.window:window-java:1.0.0-beta04"

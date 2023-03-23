@@ -51,10 +51,6 @@ import com.google.android.material.animation.AnimationUtils;
 @RestrictTo(LIBRARY_GROUP)
 public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper {
 
-  private static final int HIDE_DURATION_MAX = 300;
-  private static final int HIDE_DURATION_MIN = 150;
-  private static final int CANCEL_DURATION = 75;
-
   private final float maxScaleXDistanceShrink;
   private final float maxScaleXDistanceGrow;
   private final float maxScaleYDistance;
@@ -135,7 +131,7 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
     }
     finishAnimator.setInterpolator(new FastOutSlowInInterpolator());
     finishAnimator.setDuration(
-        AnimationUtils.lerp(HIDE_DURATION_MAX, HIDE_DURATION_MIN, backEvent.getProgress()));
+        AnimationUtils.lerp(hideDurationMax, hideDurationMin, backEvent.getProgress()));
     finishAnimator.addListener(
         new AnimatorListenerAdapter() {
           @Override
@@ -166,7 +162,7 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
           ObjectAnimator.ofFloat(childView, View.SCALE_Y, 1));
     }
 
-    cancelAnimatorSet.setDuration(CANCEL_DURATION);
+    cancelAnimatorSet.setDuration(cancelDuration);
     cancelAnimatorSet.start();
   }
 

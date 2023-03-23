@@ -18,6 +18,7 @@ package com.google.android.material.motion;
 import com.google.android.material.R;
 
 import android.animation.TimeInterpolator;
+import android.content.Context;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.window.BackEvent;
@@ -33,20 +34,37 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  */
 abstract class MaterialBackAnimationHelper {
 
+  private static final int HIDE_DURATION_MAX_DEFAULT = 300;
+  private static final int HIDE_DURATION_MIN_DEFAULT = 150;
+  private static final int CANCEL_DURATION_DEFAULT = 100;
+
   @NonNull private final TimeInterpolator progressInterpolator;
 
   @NonNull protected final View view;
+  protected final int hideDurationMax;
+  protected final int hideDurationMin;
+  protected final int cancelDuration;
 
   @Nullable private BackEvent backEvent;
 
   public MaterialBackAnimationHelper(@NonNull View view) {
     this.view = view;
 
+    Context context = view.getContext();
     progressInterpolator =
         MotionUtils.resolveThemeInterpolator(
-            view.getContext(),
+            context,
             R.attr.motionEasingStandardDecelerateInterpolator,
             PathInterpolatorCompat.create(0, 0, 0, 1));
+    hideDurationMax =
+        MotionUtils.resolveThemeDuration(
+            context, R.attr.motionDurationMedium2, HIDE_DURATION_MAX_DEFAULT);
+    hideDurationMin =
+        MotionUtils.resolveThemeDuration(
+            context, R.attr.motionDurationShort3, HIDE_DURATION_MIN_DEFAULT);
+    cancelDuration =
+        MotionUtils.resolveThemeDuration(
+            context, R.attr.motionDurationShort2, CANCEL_DURATION_DEFAULT);
   }
 
   protected float interpolateProgress(float progress) {

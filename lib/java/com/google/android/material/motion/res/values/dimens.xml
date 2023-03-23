@@ -20,4 +20,6 @@
   <dimen name="m3_back_progress_side_container_max_scale_x_distance_grow">12dp</dimen>
   <dimen name="m3_back_progress_side_container_max_scale_y_distance">48dp</dimen>
 
+  <dimen name="m3_back_progress_bottom_container_max_scale_x_distance">48dp</dimen>
+  <dimen name="m3_back_progress_bottom_container_max_scale_y_distance">24dp</dimen>
 </resources>

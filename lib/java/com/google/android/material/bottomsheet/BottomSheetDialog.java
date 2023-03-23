@@ -50,6 +50,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.internal.EdgeToEdgeUtils;
+import com.google.android.material.motion.MaterialBackOrchestrator;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
 /**
@@ -80,6 +81,7 @@ public class BottomSheetDialog extends AppCompatDialog {
   private boolean canceledOnTouchOutsideSet;
   private EdgeToEdgeCallback edgeToEdgeCallback;
   private boolean edgeToEdgeEnabled;
+  @Nullable private MaterialBackOrchestrator backOrchestrator;
 
   public BottomSheetDialog(@NonNull Context context) {
     this(context, 0);
@@ -161,6 +163,9 @@ public class BottomSheetDialog extends AppCompatDialog {
       if (behavior != null) {
         behavior.setHideable(cancelable);
       }
+      if (getWindow() != null) {
+        updateListeningForBackCallbacks();
+      }
     }
   }
 
@@ -193,12 +198,18 @@ public class BottomSheetDialog extends AppCompatDialog {
         edgeToEdgeCallback.setWindow(window);
       }
     }
+
+    updateListeningForBackCallbacks();
   }
 
   @Override
   public void onDetachedFromWindow() {
     if (edgeToEdgeCallback != null) {
       edgeToEdgeCallback.setWindow(null);
+    }
+
+    if (backOrchestrator != null) {
+      backOrchestrator.stopListeningForBackCallbacks();
     }
   }
 
@@ -283,6 +294,7 @@ public class BottomSheetDialog extends AppCompatDialog {
       behavior = BottomSheetBehavior.from(bottomSheet);
       behavior.addBottomSheetCallback(bottomSheetCallback);
       behavior.setHideable(cancelable);
+      backOrchestrator = new MaterialBackOrchestrator(behavior, bottomSheet);
     }
     return container;
   }
@@ -368,6 +380,17 @@ public class BottomSheetDialog extends AppCompatDialog {
           }
         });
     return container;
+  }
+
+  private void updateListeningForBackCallbacks() {
+    if (backOrchestrator == null) {
+      return;
+    }
+    if (cancelable) {
+      backOrchestrator.startListeningForBackCallbacks();
+    } else {
+      backOrchestrator.stopListeningForBackCallbacks();
+    }
   }
 
   boolean shouldWindowCloseOnTouchOutside() {
