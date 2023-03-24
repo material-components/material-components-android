@@ -21,6 +21,7 @@
     <item name="shapeAppearance">?shapeAppearanceMediumComponent</item>
     <item name="keyboardIcon">@drawable/ic_keyboard_black_24dp</item>
     <item name="clockIcon">@drawable/ic_clock_black_24dp</item>
+    <item name="backgroundTint">?attr/colorSurface</item>
   </style>
 
   <style name="Widget.MaterialComponents.TimePicker.Display" parent="Widget.MaterialComponents.Chip.Choice">
@@ -142,6 +143,7 @@
 
   <style name="Widget.Material3.MaterialTimePicker" parent="Widget.MaterialComponents.TimePicker">
     <item name="shapeAppearance">@macro/m3_comp_time_picker_container_shape</item>
+    <item name="backgroundTint">@macro/m3_comp_time_picker_container_color</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">

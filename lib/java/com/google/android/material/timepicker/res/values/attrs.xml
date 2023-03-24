@@ -39,6 +39,7 @@
 
     <attr name="keyboardIcon" />
     <attr name="clockIcon" />
+    <attr name="backgroundTint" />
 
   </declare-styleable>
 
