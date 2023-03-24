@@ -211,8 +211,8 @@
     <item name="yearStyle">@style/Widget.Material3.MaterialCalendar.Year</item>
     <item name="yearSelectedStyle">@style/Widget.Material3.MaterialCalendar.Year.Selected</item>
     <item name="yearTodayStyle">@style/Widget.Material3.MaterialCalendar.Year.Today</item>
-    <item name="rangeFillColor">?attr/colorSurfaceVariant</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerExtraLarge</item>
+    <item name="rangeFillColor">@macro/m3_comp_date_picker_modal_range_selection_active_indicator_container_color</item>
+    <item name="shapeAppearance">@macro/m3_comp_date_picker_modal_container_shape</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Fullscreen">
@@ -221,11 +221,12 @@
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderLayout" parent="Widget.MaterialComponents.MaterialCalendar.HeaderLayout">
+    <item name="android:layout_height">@dimen/m3_comp_date_picker_modal_header_container_height</item>
     <item name="android:background">@android:color/transparent</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderLayout.Fullscreen">
-    <item name="android:layout_height">@dimen/mtrl_calendar_header_height_fullscreen</item>
+    <item name="android:layout_height">@dimen/m3_comp_date_picker_modal_range_selection_header_container_height</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderDivider" parent="Widget.MaterialComponents.MaterialCalendar.HeaderDivider">
@@ -233,18 +234,18 @@
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
-    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
-    <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
+    <item name="android:textColor">@macro/m3_comp_date_picker_modal_header_supporting_text_color</item>
+    <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_header_supporting_text_type</item>
     <item name="autoSizeMaxTextSize">14sp</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
-    <item name="android:textAppearance">?attr/textAppearanceHeadlineLarge</item>
-    <item name="android:textColor">?attr/colorOnSurface</item>
+    <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_header_headline_type</item>
+    <item name="android:textColor">@macro/m3_comp_date_picker_modal_header_headline_color</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderSelection.Fullscreen">
-    <item name="android:textAppearance">?attr/textAppearanceHeadlineSmall</item>
+    <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_range_selection_header_headline_type</item>
     <item name="android:maxLines">1</item>
     <item name="autoSizeMaxTextSize">20sp</item>
   </style>
@@ -259,17 +260,17 @@
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.DayOfWeekLabel" parent="Widget.MaterialComponents.MaterialCalendar.DayOfWeekLabel">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
-    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_weekdays_label_text_type</item>
+    <item name="android:textColor">@macro/m3_comp_date_picker_modal_weekdays_label_text_color</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.DayTextView" parent="Widget.MaterialComponents.MaterialCalendar.DayTextView">
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_date_label_text_type</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.MonthTextView" parent="Widget.MaterialComponents.MaterialCalendar.MonthTextView">
-    <item name="android:textAppearance">?attr/textAppearanceTitleSmall</item>
-    <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_range_selection_month_subhead_type</item>
+    <item name="android:textColor">@macro/m3_comp_date_picker_modal_range_selection_month_subhead_color</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Item" parent="">
@@ -281,12 +282,14 @@
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Day" parent="Widget.Material3.MaterialCalendar.Item">
+    <item name="itemShapeAppearance">@style/ShapeAppearance.M3.Comp.DatePicker.Modal.Date.Container.Shape</item>
     <item name="android:width">@dimen/mtrl_calendar_day_width</item>
     <item name="android:height">@dimen/mtrl_calendar_day_height</item>
     <item name="android:insetTop">@dimen/mtrl_calendar_day_vertical_padding</item>
     <item name="android:insetBottom">@dimen/mtrl_calendar_day_vertical_padding</item>
     <item name="android:insetLeft">@dimen/mtrl_calendar_day_horizontal_padding</item>
     <item name="android:insetRight">@dimen/mtrl_calendar_day_horizontal_padding</item>
+    <item name="itemTextColor">@macro/m3_comp_date_picker_modal_date_unselected_label_text_color</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Day.Invalid">
@@ -295,15 +298,15 @@
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Day.Selected">
-    <item name="itemFillColor">?attr/colorPrimary</item>
-    <item name="itemTextColor">?attr/colorOnPrimary</item>
+    <item name="itemFillColor">@macro/m3_comp_date_picker_modal_date_selected_container_color</item>
+    <item name="itemTextColor">@macro/m3_comp_date_picker_modal_date_selected_label_text_color</item>
     <item name="itemStrokeWidth">0dp</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Day.Today">
-    <item name="itemTextColor">?attr/colorPrimary</item>
-    <item name="itemStrokeColor">?attr/colorPrimary</item>
-    <item name="itemStrokeWidth">@dimen/mtrl_calendar_day_today_stroke</item>
+    <item name="itemTextColor">@macro/m3_comp_date_picker_modal_date_today_label_text_color</item>
+    <item name="itemStrokeColor">@macro/m3_comp_date_picker_modal_date_today_container_outline_color</item>
+    <item name="itemStrokeWidth">@dimen/m3_comp_date_picker_modal_date_today_container_outline_width</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Year" parent="Widget.Material3.MaterialCalendar.Item">
@@ -313,11 +316,12 @@
     <item name="android:insetBottom">@dimen/mtrl_calendar_year_vertical_padding</item>
     <item name="android:insetLeft">@dimen/mtrl_calendar_year_horizontal_padding</item>
     <item name="android:insetRight">@dimen/mtrl_calendar_year_horizontal_padding</item>
+    <item name="itemTextColor">@macro/m3_comp_date_picker_modal_year_selection_year_unselected_label_text_color</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.Year.Selected">
-    <item name="itemFillColor">?attr/colorPrimary</item>
-    <item name="itemTextColor">?attr/colorOnPrimary</item>
+    <item name="itemFillColor">@macro/m3_comp_date_picker_modal_year_selection_year_selected_container_color</item>
+    <item name="itemTextColor">@macro/m3_comp_date_picker_modal_year_selection_year_selected_label_text_color</item>
     <item name="itemStrokeWidth">0dp</item>
   </style>
 
