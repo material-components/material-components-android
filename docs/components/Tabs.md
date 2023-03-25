@@ -460,7 +460,7 @@ all tabs but do not affect other components:
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="tabStyle">@style/Widget.App.LabelLarge</item>
+    <item name="tabStyle">@style/Widget.App.TabLayout</item>
 </style>
 
 <style name="Widget.App.TabLayout" parent="Widget.Material3.TabLayout">
