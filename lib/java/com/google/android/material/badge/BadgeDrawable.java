@@ -1077,10 +1077,19 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     Rect textBounds = new Rect();
     String badgeText = getBadgeText();
     textDrawableHelper.getTextPaint().getTextBounds(badgeText, 0, badgeText.length(), textBounds);
+
+    // The text is centered horizontally using Paint.Align.Center. We calculate the correct
+    // y-coordinate ourselves using textbounds.exactCenterY, but this can look askew at low
+    // screen densities due to canvas.drawText rounding the coordinates to the nearest integer.
+    // To mitigate this, we round the y-coordinate following these rules:
+    // If the badge.bottom is <= 0, the text is drawn above its original origin (0,0) so
+    // we round down the y-coordinate since we want to keep it above its new origin.
+    // If the badge.bottom is positive, we round up for the opposite reason.
+    float exactCenterY = badgeCenterY - textBounds.exactCenterY();
     canvas.drawText(
         badgeText,
         badgeCenterX,
-        badgeCenterY + textBounds.height() / 2,
+        textBounds.bottom <= 0 ? (int) exactCenterY : Math.round(exactCenterY),
         textDrawableHelper.getTextPaint());
   }
 
