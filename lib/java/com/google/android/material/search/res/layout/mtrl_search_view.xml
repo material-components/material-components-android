@@ -63,7 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:visibility="gone"
-            app:navigationIcon="@empty"/>
+            app:navigationIcon="@null"/>
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/open_search_view_toolbar"
