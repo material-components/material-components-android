@@ -230,17 +230,26 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     Dialog dialog = new Dialog(requireContext(), getThemeResId(requireContext()));
     Context context = dialog.getContext();
     fullscreen = isFullscreen(context);
-    int surfaceColor =
-        MaterialAttributes.resolveOrThrow(
-            context, R.attr.colorSurface, MaterialDatePicker.class.getCanonicalName());
     background =
         new MaterialShapeDrawable(
             context,
             null,
             R.attr.materialCalendarStyle,
             R.style.Widget_MaterialComponents_MaterialCalendar);
+
+    TypedArray a =
+        context.obtainStyledAttributes(
+            null,
+            R.styleable.MaterialCalendar,
+            R.attr.materialCalendarStyle,
+            R.style.Widget_MaterialComponents_MaterialCalendar);
+
+    int backgroundColor = a.getColor(R.styleable.MaterialCalendar_backgroundTint, 0);
+
+    a.recycle();
+
     background.initializeElevationOverlay(context);
-    background.setFillColor(ColorStateList.valueOf(surfaceColor));
+    background.setFillColor(ColorStateList.valueOf(backgroundColor));
     background.setElevation(ViewCompat.getElevation(dialog.getWindow().getDecorView()));
     return dialog;
   }

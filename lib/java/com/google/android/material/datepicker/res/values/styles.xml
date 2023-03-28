@@ -31,6 +31,7 @@
 
   <style name="Widget.MaterialComponents.MaterialCalendar" parent="android:Widget">
     <item name="android:windowFullscreen">false</item>
+    <item name="backgroundTint">?attr/colorSurface</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     <item name="dayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
     <item name="dayInvalidStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Invalid</item>
@@ -204,6 +205,7 @@
   <!-- M3 Date Picker styles -->
   <style name="Widget.Material3.MaterialCalendar" parent="Widget.MaterialComponents.MaterialCalendar">
     <item name="android:windowFullscreen">false</item>
+    <item name="backgroundTint">@macro/m3_comp_date_picker_modal_container_color</item>
     <item name="dayStyle">@style/Widget.Material3.MaterialCalendar.Day</item>
     <item name="dayInvalidStyle">@style/Widget.Material3.MaterialCalendar.Day.Invalid</item>
     <item name="daySelectedStyle">@style/Widget.Material3.MaterialCalendar.Day.Selected</item>

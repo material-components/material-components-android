@@ -39,6 +39,7 @@
 
   <declare-styleable name="MaterialCalendar">
     <attr name="android:windowFullscreen"/>
+    <attr name="backgroundTint"/>
     <attr name="dayStyle" format="reference"/>
     <attr name="dayInvalidStyle" format="reference"/>
     <attr name="daySelectedStyle" format="reference"/>
