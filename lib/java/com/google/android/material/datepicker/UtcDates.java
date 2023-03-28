@@ -172,6 +172,11 @@ class UtcDates {
       formatHint = formatHint.replace("y", "yyyy");
     }
 
+    // Remove duplicate year characters for Korean.
+    if (Locale.getDefault().getLanguage().equals(Locale.KOREAN.getLanguage())) {
+      formatHint = formatHint.replaceAll("y+", "y");
+    }
+
     return formatHint.replace("d", dayChar).replace("M", monthChar).replace("y", yearChar);
   }
 

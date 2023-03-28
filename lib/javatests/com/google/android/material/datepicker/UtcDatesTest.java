@@ -74,4 +74,13 @@ public class UtcDatesTest {
 
     assertEquals("m/j/aaaa", hint);
   }
+
+  @Test
+  @Config(qualifiers = "ko")
+  public void textInputHintForKorean() {
+    SimpleDateFormat sdf = new SimpleDateFormat("yy.M.d.");
+    String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
+
+    assertEquals("년.월.일.", hint);
+  }
 }
