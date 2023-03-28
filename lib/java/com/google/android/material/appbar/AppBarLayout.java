@@ -280,8 +280,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
       setExpanded(
           a.getBoolean(R.styleable.AppBarLayout_expanded, false),
-          false, /* animate */
-          false /* force */);
+          /* animate */ false,
+          /* force */ false);
     }
 
     if (Build.VERSION.SDK_INT >= 21 && a.hasValue(R.styleable.AppBarLayout_elevation)) {
