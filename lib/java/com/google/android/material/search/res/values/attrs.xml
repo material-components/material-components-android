@@ -22,8 +22,12 @@
   <attr name="materialSearchViewStyle" format="reference"/>
   <!-- Style to use for SearchView prefixes in this theme. -->
   <attr name="materialSearchViewPrefixStyle" format="reference"/>
+  <!-- Style to use for SearchView Toolbar in this theme. -->
+  <attr name="materialSearchViewToolbarStyle" format="reference"/>
   <!-- Attribute to use for hiding the navigation icon in search bar and search view. -->
   <attr name="hideNavigationIcon" format="boolean"/>
+  <!-- Attribute to use for setting the search toolbar height. -->
+  <attr name="materialSearchViewToolbarHeight" format="dimension"/>
 
   <declare-styleable name="SearchBar">
     <!-- Text appearance for the main search TextView. -->

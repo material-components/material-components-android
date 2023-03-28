@@ -19,14 +19,14 @@
     xmlns:tools="http://schemas.android.com/tools">
 
   <View
-      android:id="@+id/search_view_scrim"
+      android:id="@+id/open_search_view_scrim"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:alpha="0"
       android:background="?attr/scrimBackground"/>
 
   <com.google.android.material.internal.ClippableRoundedCornerLayout
-      android:id="@+id/search_view_root"
+      android:id="@+id/open_search_view_root"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:focusable="true"
@@ -34,60 +34,60 @@
       android:visibility="gone">
 
     <LinearLayout
-        android:id="@+id/search_view_background"
+        android:id="@+id/open_search_view_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
       <View
-          android:id="@+id/search_view_status_bar_spacer"
+          android:id="@+id/open_search_view_status_bar_spacer"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:visibility="gone"/>
 
       <FrameLayout
-          android:id="@+id/search_view_header_container"
+          android:id="@+id/open_search_view_header_container"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:visibility="gone"/>
 
       <FrameLayout
-          android:id="@+id/search_view_toolbar_container"
+          android:id="@+id/open_search_view_toolbar_container"
           android:layout_width="match_parent"
           android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/search_view_dummy_toolbar"
-            style="@style/Widget.Material3.SearchView.Toolbar"
+            android:id="@+id/open_search_view_dummy_toolbar"
+            style="?attr/materialSearchViewToolbarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            app:navigationIcon="@empty"/>
 
         <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/search_view_toolbar"
-            style="@style/Widget.Material3.SearchView.Toolbar"
+            android:id="@+id/open_search_view_toolbar"
+            style="?attr/materialSearchViewToolbarStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipChildren="false"
-            app:navigationContentDescription="@string/searchview_navigation_content_description"
-            app:navigationIcon="@drawable/ic_arrow_back_black_24">
+            app:navigationContentDescription="@string/searchview_navigation_content_description">
 
           <LinearLayout
               android:layout_width="match_parent"
-              android:layout_height="@dimen/m3_searchview_height"
+              android:layout_height="?attr/materialSearchViewToolbarHeight"
               android:gravity="center_vertical"
               android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/search_view_search_prefix"
+                android:id="@+id/open_search_view_search_prefix"
                 style="?attr/materialSearchViewPrefixStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:visibility="gone"/>
 
             <EditText
-                android:id="@+id/search_view_edit_text"
+                android:id="@+id/open_search_view_edit_text"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
@@ -99,7 +99,7 @@
                 tools:ignore="LabelFor"/>
 
             <ImageButton
-                android:id="@+id/search_view_clear_button"
+                android:id="@+id/open_search_view_clear_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -112,13 +112,13 @@
       </FrameLayout>
 
       <View
-          android:id="@+id/search_view_divider"
+          android:id="@+id/open_search_view_divider"
           android:layout_width="match_parent"
           android:layout_height="@dimen/m3_searchview_divider_size"
           android:background="@macro/m3_comp_search_view_divider_color"/>
 
       <com.google.android.material.internal.TouchObserverFrameLayout
-          android:id="@+id/search_view_content_container"
+          android:id="@+id/open_search_view_content_container"
           android:layout_width="match_parent"
           android:layout_height="match_parent"/>
     </LinearLayout>

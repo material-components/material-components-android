@@ -48,6 +48,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -186,19 +187,19 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
     LayoutInflater.from(context).inflate(R.layout.mtrl_search_view, this);
     layoutInflated = true;
 
-    scrim = findViewById(R.id.search_view_scrim);
-    rootView = findViewById(R.id.search_view_root);
-    backgroundView = findViewById(R.id.search_view_background);
-    statusBarSpacer = findViewById(R.id.search_view_status_bar_spacer);
-    headerContainer = findViewById(R.id.search_view_header_container);
-    toolbarContainer = findViewById(R.id.search_view_toolbar_container);
-    toolbar = findViewById(R.id.search_view_toolbar);
-    dummyToolbar = findViewById(R.id.search_view_dummy_toolbar);
-    searchPrefix = findViewById(R.id.search_view_search_prefix);
-    editText = findViewById(R.id.search_view_edit_text);
-    clearButton = findViewById(R.id.search_view_clear_button);
-    divider = findViewById(R.id.search_view_divider);
-    contentContainer = findViewById(R.id.search_view_content_container);
+    scrim = findViewById(R.id.open_search_view_scrim);
+    rootView = findViewById(R.id.open_search_view_root);
+    backgroundView = findViewById(R.id.open_search_view_background);
+    statusBarSpacer = findViewById(R.id.open_search_view_status_bar_spacer);
+    headerContainer = findViewById(R.id.open_search_view_header_container);
+    toolbarContainer = findViewById(R.id.open_search_view_toolbar_container);
+    toolbar = findViewById(R.id.open_search_view_toolbar);
+    dummyToolbar = findViewById(R.id.open_search_view_dummy_toolbar);
+    searchPrefix = findViewById(R.id.open_search_view_search_prefix);
+    editText = findViewById(R.id.open_search_view_edit_text);
+    clearButton = findViewById(R.id.open_search_view_clear_button);
+    divider = findViewById(R.id.open_search_view_divider);
+    contentContainer = findViewById(R.id.open_search_view_content_container);
 
     searchViewAnimationHelper = new SearchViewAnimationHelper(this);
     elevationOverlayProvider = new ElevationOverlayProvider(context);
@@ -380,7 +381,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
       return;
     }
 
-    int navigationIcon = R.drawable.ic_arrow_back_black_24;
+    int navigationIcon = getDefaultNavigationIconResource();
     if (searchBar == null) {
       toolbar.setNavigationIcon(navigationIcon);
     } else {
@@ -623,7 +624,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
 
   /** Returns the text of main {@link EditText}, which usually represents the search text. */
   @SuppressLint("KotlinPropertyAccess") // Editable extends CharSequence.
-  @Nullable
+  @NonNull // EditText never returns null after initialization.
   public Editable getText() {
     return editText.getText();
   }
@@ -881,6 +882,17 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
             child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
       }
     }
+  }
+
+  /**
+   * Provides the resource identifier for the back arrow icon.
+   *
+   * @hide
+   */
+  @DrawableRes
+  @RestrictTo(LIBRARY_GROUP)
+  protected int getDefaultNavigationIconResource() {
+    return R.drawable.ic_arrow_back_black_24;
   }
 
   /** Behavior that sets up an {@link SearchView} with an {@link SearchBar}. */

@@ -17,7 +17,7 @@
 <!-- This text view isn't exposed to accessibility because its attributes are mirrored on the
      parent container to more closely resemble the behavior of an EditText. -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/search_bar_text_view"
+    android:id="@+id/open_search_bar_text_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:ellipsize="end"

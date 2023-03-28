@@ -57,6 +57,7 @@
     <item name="android:paddingRight">0dp</item>
     <item name="android:paddingEnd">0dp</item>
     <item name="contentInsetStartWithNavigation">0dp</item>
+    <item name="navigationIcon">@drawable/ic_arrow_back_black_24</item>
     <item name="navigationIconTint">?attr/colorOnSurface</item>
     <item name="android:minHeight">@dimen/m3_searchview_height</item>
     <item name="maxButtonHeight">@dimen/m3_searchview_height</item>
