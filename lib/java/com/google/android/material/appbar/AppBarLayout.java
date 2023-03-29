@@ -2043,7 +2043,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
     @Override
     int getMaxDragOffset(@NonNull T view) {
-      return -view.getDownNestedScrollRange();
+      return -view.getDownNestedScrollRange() + view.getTopInset();
     }
 
     @Override
