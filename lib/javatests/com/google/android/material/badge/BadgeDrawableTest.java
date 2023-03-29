@@ -43,6 +43,7 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 @DoNotInstrument
 public class BadgeDrawableTest {
 
+  private static final String TEST_BADGE_TEXT = "Test";
   private static final int TEST_BADGE_NUMBER = 26;
   private static final Locale TEST_BADGE_NUMBER_LOCALE = new Locale("ar");
 
@@ -65,6 +66,7 @@ public class BadgeDrawableTest {
         ResourcesCompat.getColor(context.getResources(), android.R.color.white, context.getTheme());
     BadgeDrawable badgeDrawable = BadgeDrawable.create(context);
     BadgeState.State drawableState = badgeDrawable.getSavedState();
+    badgeDrawable.setText(TEST_BADGE_TEXT);
     badgeDrawable.setNumber(TEST_BADGE_NUMBER);
     badgeDrawable.setBadgeGravity(BadgeDrawable.TOP_START);
 
@@ -94,6 +96,7 @@ public class BadgeDrawableTest {
     BadgeState.State createdFromParcel = BadgeState.State.CREATOR.createFromParcel(parcel);
     BadgeDrawable restoredBadgeDrawable =
         BadgeDrawable.createFromSavedState(context, createdFromParcel);
+    assertThat(restoredBadgeDrawable.getText()).isEqualTo(TEST_BADGE_TEXT);
     assertThat(restoredBadgeDrawable.getNumber()).isEqualTo(TEST_BADGE_NUMBER);
     assertThat(restoredBadgeDrawable.getBackgroundColor()).isEqualTo(testBackgroundColor);
     assertThat(restoredBadgeDrawable.getBadgeTextColor()).isEqualTo(testBadgeTextColor);

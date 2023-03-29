@@ -140,6 +140,26 @@ public final class BadgeState {
 
     currentState.alpha = storedState.alpha == State.NOT_SET ? 255 : storedState.alpha;
 
+    // Only set the badge number if it exists in the style.
+    // Defaulting it to 0 means the badge will incorrectly show text when the user may want a
+    // numberless badge.
+    if (storedState.number != State.NOT_SET) {
+      currentState.number = storedState.number;
+    } else if (a.hasValue(R.styleable.Badge_number)) {
+      currentState.number = a.getInt(R.styleable.Badge_number, 0);
+    } else {
+      currentState.number = State.BADGE_NUMBER_NONE;
+    }
+
+    if (storedState.text != null) {
+      currentState.text = storedState.text;
+    } else if (a.hasValue(R.styleable.Badge_badgeText)) {
+      currentState.text = a.getString(R.styleable.Badge_badgeText);
+    }
+
+    currentState.contentDescriptionForText = storedState.contentDescriptionForText == null
+        ? currentState.text : storedState.contentDescriptionForText;
+
     currentState.contentDescriptionNumberless =
         storedState.contentDescriptionNumberless == null
             ? context.getString(R.string.mtrl_badge_numberless_content_description)
@@ -161,17 +181,6 @@ public final class BadgeState {
         storedState.maxCharacterCount == State.NOT_SET
             ? a.getInt(R.styleable.Badge_maxCharacterCount, DEFAULT_MAX_BADGE_CHARACTER_COUNT)
             : storedState.maxCharacterCount;
-
-    // Only set the badge number if it exists in the style.
-    // Defaulting it to 0 means the badge will incorrectly show text when the user may want a
-    // numberless badge.
-    if (storedState.number != State.NOT_SET) {
-      currentState.number = storedState.number;
-    } else if (a.hasValue(R.styleable.Badge_number)) {
-      currentState.number = a.getInt(R.styleable.Badge_number, 0);
-    } else {
-      currentState.number = State.BADGE_NUMBER_NONE;
-    }
 
     currentState.badgeShapeAppearanceResId =
         storedState.badgeShapeAppearanceResId == null
@@ -320,6 +329,23 @@ public final class BadgeState {
 
   void clearNumber() {
     setNumber(State.BADGE_NUMBER_NONE);
+  }
+
+  boolean hasText() {
+    return currentState.text != null;
+  }
+
+  String getText() {
+    return currentState.text;
+  }
+
+  void setText(String text) {
+    overridingState.text = text;
+    currentState.text = text;
+  }
+
+  void clearText() {
+    setText(null);
   }
 
   int getAlpha() {
@@ -476,6 +502,15 @@ public final class BadgeState {
     currentState.additionalVerticalOffset = offset;
   }
 
+  CharSequence getContentDescriptionForText() {
+    return currentState.contentDescriptionForText;
+  }
+
+  void setContentDescriptionForText(CharSequence contentDescription) {
+    overridingState.contentDescriptionForText = contentDescription;
+    currentState.contentDescriptionForText = contentDescription;
+  }
+
   CharSequence getContentDescriptionNumberless() {
     return currentState.contentDescriptionNumberless;
   }
@@ -542,10 +577,13 @@ public final class BadgeState {
     @StyleRes private Integer badgeWithTextShapeAppearanceOverlayResId;
 
     private int alpha = 255;
+
+    @Nullable private String text;
     private int number = NOT_SET;
     private int maxCharacterCount = NOT_SET;
     private Locale numberLocale;
 
+    @Nullable private CharSequence contentDescriptionForText;
     @Nullable private CharSequence contentDescriptionNumberless;
     @PluralsRes private int contentDescriptionQuantityStrings;
     @StringRes private int contentDescriptionExceedsMaxBadgeNumberRes;
@@ -583,8 +621,10 @@ public final class BadgeState {
       badgeWithTextShapeAppearanceResId = (Integer) in.readSerializable();
       badgeWithTextShapeAppearanceOverlayResId = (Integer) in.readSerializable();
       alpha = in.readInt();
+      text = in.readString();
       number = in.readInt();
       maxCharacterCount = in.readInt();
+      contentDescriptionForText = in.readString();
       contentDescriptionNumberless = in.readString();
       contentDescriptionQuantityStrings = in.readInt();
       badgeGravity = (Integer) in.readSerializable();
@@ -629,10 +669,13 @@ public final class BadgeState {
       dest.writeSerializable(badgeWithTextShapeAppearanceResId);
       dest.writeSerializable(badgeWithTextShapeAppearanceOverlayResId);
       dest.writeInt(alpha);
+      dest.writeString(text);
       dest.writeInt(number);
       dest.writeInt(maxCharacterCount);
       dest.writeString(
-          contentDescriptionNumberless == null ? null : contentDescriptionNumberless.toString());
+          contentDescriptionForText != null ? contentDescriptionForText.toString() : null);
+      dest.writeString(
+          contentDescriptionNumberless != null ? contentDescriptionNumberless.toString() : null);
       dest.writeInt(contentDescriptionQuantityStrings);
       dest.writeSerializable(badgeGravity);
       dest.writeSerializable(horizontalOffsetWithoutText);

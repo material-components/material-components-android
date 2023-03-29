@@ -42,6 +42,7 @@
     <attr name="backgroundColor" format="color"/>
     <attr name="badgeTextColor" format="color"/>
     <attr name="maxCharacterCount" format="integer"/>
+    <attr name="badgeText" format="string"/>
     <attr name="number" format="integer"/>
     <attr name="badgeGravity">
       <!-- Gravity.TOP | Gravity.END -->

@@ -96,16 +96,21 @@ center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
 | Width                 | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                   |
 | Height                | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                 |
 | Shape                 | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay`                                                                                                  |
-| Label                 | `app:number`                                                                                                     |
+| Label                 | `app:badgeText` (for text) <br> `app:number` (for numbers)                                                       |
 | Label Length          | `app:maxCharacterCount`                                                                                          |
 | Label Text Color      | `app:badgeTextColor`                                                                                             |
 | Label Text Appearance | `app:badgeTextAppearance`                                                                                        |
 | Badge Gravity         | `app:badgeGravity`                                                                                               |
 | Offset Alignment      | `app:offsetAlignmentMode`                                                                                        |
 
+**Note:** If both `app:badgeText` and `app:number` are specified, the badge label will be `app:badgeText`.
+
 ### Talkback Support
 
-`BadgeDrawable` provides a getter for its content description, which is based on
-the number (if any) displayed. Users should specify content description:
-`setContentDescriptionNumberless(CharSequence)`
-`setContentDescriptionQuantityStringsResource(@StringRes)`
+`BadgeDrawable` provides a getter for its content description, which is based on the displayed
+number or text (if any). To specify the content description, the developer is provided
+with the following methods:
+-   `setContentDescriptionForText(CharSequence)`
+-   `setContentDescriptionQuantityStringsResource(@PluralsRes int)`
+-   `setContentDescriptionExceedsMaxBadgeNumberStringResource(@StringRes int)`
+-   `setContentDescriptionNumberless(CharSequence)`
