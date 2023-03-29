@@ -18,6 +18,7 @@ package io.material.catalog.bottomappbar;
 
 import io.material.catalog.R;
 
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,10 +29,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import android.window.BackEvent;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
@@ -56,9 +59,27 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
 
   private final OnBackPressedCallback bottomDrawerOnBackPressedCallback =
       new OnBackPressedCallback(/* enabled= */ false) {
+        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+        @Override
+        public void handleOnBackStarted(@NonNull BackEvent backEvent) {
+          bottomDrawerBehavior.startBackProgress(backEvent);
+        }
+
+        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+        @Override
+        public void handleOnBackProgressed(@NonNull BackEvent backEvent) {
+          bottomDrawerBehavior.updateBackProgress(backEvent);
+        }
+
         @Override
         public void handleOnBackPressed() {
-          bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+          bottomDrawerBehavior.handleBackInvoked();
+        }
+
+        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+        @Override
+        public void handleOnBackCancelled() {
+          bottomDrawerBehavior.cancelBackProgress();
         }
       };
 
@@ -196,9 +217,22 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
         new BottomSheetCallback() {
           @Override
           public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            bottomDrawerOnBackPressedCallback.setEnabled(
-                newState == BottomSheetBehavior.STATE_EXPANDED
-                    || newState == BottomSheetBehavior.STATE_HALF_EXPANDED);
+            switch (newState) {
+              case BottomSheetBehavior.STATE_EXPANDED:
+              case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                bottomDrawerOnBackPressedCallback.setEnabled(true);
+                break;
+              case BottomSheetBehavior.STATE_COLLAPSED:
+              case BottomSheetBehavior.STATE_HIDDEN:
+                bottomDrawerOnBackPressedCallback.setEnabled(false);
+                break;
+              case BottomSheetBehavior.STATE_DRAGGING:
+              case BottomSheetBehavior.STATE_SETTLING:
+              default:
+                // Do nothing, only change callback enabled for "stable" states.
+                break;
+            }
+
             if (newState == BottomSheetBehavior.STATE_HIDDEN) {
               barNavView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
             }

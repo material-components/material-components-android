@@ -1597,6 +1597,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             public void onAnimationEnd(Animator animation) {
               // Hide immediately following the built-in predictive back slide down animation.
               setStateInternal(STATE_HIDDEN);
+              if (viewRef != null && viewRef.get() != null) {
+                viewRef.get().requestLayout();
+              }
             }
           });
     } else {
