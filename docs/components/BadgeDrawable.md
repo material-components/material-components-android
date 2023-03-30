@@ -91,12 +91,12 @@ center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
 ### `BadgeDrawable` Attributes
 
 | Feature               | Relevant attributes                                                                                                                                      |
-|-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Color                 | `app:backgroundColor` <br> `app:badgeTextColor`                                                                                                                                     |
-| Width                 | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                                                                                 |
-| Height                | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                                                                                |
-| Shape                 | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay`                                                                                                                |
-| Label                 | `app:badgeText` (for text) <br> `app:number` (for numbers)                                                                                                                                                 |
+|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Color                 | `app:backgroundColor` <br> `app:badgeTextColor`                                                                                                          |
+| Width                 | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                                                           |
+| Height                | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                                                         |
+| Shape                 | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay` |
+| Label                 | `app:badgeText` (for text) <br> `app:number` (for numbers)                                                                                               |
 | Label Length          | `app:maxCharacterCount`                                                                                                                                  |
 | Label Text Color      | `app:badgeTextColor`                                                                                                                                     |
 | Label Text Appearance | `app:badgeTextAppearance`                                                                                                                                |

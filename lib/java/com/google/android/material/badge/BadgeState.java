@@ -149,8 +149,7 @@ public final class BadgeState {
       currentState.text = a.getString(R.styleable.Badge_badgeText);
     }
 
-    currentState.contentDescriptionForText = storedState.contentDescriptionForText == null
-        ? currentState.text : storedState.contentDescriptionForText;
+    currentState.contentDescriptionForText = storedState.contentDescriptionForText;
 
     currentState.contentDescriptionNumberless =
         storedState.contentDescriptionNumberless == null
