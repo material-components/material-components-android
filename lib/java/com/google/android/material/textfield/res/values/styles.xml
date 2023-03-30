@@ -398,12 +398,11 @@
     <item name="endIconTint">@color/m3_textfield_indicator_text_color</item>
     <item name="passwordToggleDrawable">@drawable/m3_password_eye</item>
 
-   <!-- Using outlined tokens with same values. -->
-    <item name="counterTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
-    <item name="counterOverflowTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
-    <item name="errorTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
-    <item name="helperTextTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
-    <item name="hintTextAppearance">@macro/m3_comp_outlined_text_field_supporting_text_type</item>
+    <item name="counterTextAppearance">@macro/m3_comp_filled_text_field_supporting_text_type</item>
+    <item name="counterOverflowTextAppearance">@macro/m3_comp_filled_text_field_supporting_text_type</item>
+    <item name="errorTextAppearance">@macro/m3_comp_filled_text_field_supporting_text_type</item>
+    <item name="helperTextTextAppearance">@macro/m3_comp_filled_text_field_supporting_text_type</item>
+    <item name="hintTextAppearance">@macro/m3_comp_filled_text_field_supporting_text_type</item>
    <!-- Using same token from input text text appearance. -->
     <item name="placeholderTextAppearance">@macro/m3_comp_filled_text_field_input_text_type</item>
     <item name="prefixTextAppearance">?attr/textAppearanceTitleMedium</item>
