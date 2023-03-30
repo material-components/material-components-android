@@ -18,21 +18,21 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.comp.filled-autocomplete) in default context. -->
+
+  <!-- Generated from token set (md.comp.filled-autocomplete) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <dimen name="m3_comp_filled_autocomplete_menu_container_elevation">@dimen/m3_sys_elevation_level2</dimen>
-  <!-- Ignore (md.comp.filled-autocomplete.menu.container.shadow-color) due to no theme attribute for (md.sys.color.shadow). -->
   <macro name="m3_comp_filled_autocomplete_menu_list_item_selected_container_color">?attr/colorSurfaceVariant</macro>
   <!-- Enabled - Input text -->
   <macro name="m3_comp_filled_autocomplete_text_field_input_text_type">?attr/textAppearanceBodyLarge</macro>
 
-  <!-- Generated from token set (md.comp.outlined-autocomplete) in default context. -->
+  <!-- Generated from token set (md.comp.outlined-autocomplete) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <dimen name="m3_comp_outlined_autocomplete_menu_container_elevation">@dimen/m3_sys_elevation_level2</dimen>
-  <!-- Ignore (md.comp.outlined-autocomplete.menu.container.shadow-color) due to no theme attribute for (md.sys.color.shadow). -->
   <macro name="m3_comp_outlined_autocomplete_menu_list_item_selected_container_color">?attr/colorSurfaceVariant</macro>
   <!-- Enabled - Input text -->
   <macro name="m3_comp_outlined_autocomplete_text_field_input_text_type">?attr/textAppearanceBodyLarge</macro>
   <!-- Enabled - Caret -->
   <macro name="m3_comp_outlined_autocomplete_text_field_caret_color">?attr/colorPrimary</macro>
+
 </resources>

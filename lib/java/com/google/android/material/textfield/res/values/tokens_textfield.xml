@@ -18,10 +18,12 @@
 <!-- Version: v0.126 -->
 
 <resources>
-  <!-- Generated from token set (md.comp.filled-text-field) in default context. -->
+
+  <!-- Generated from token set (md.comp.filled-text-field) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_filled_text_field_container_color">?attr/colorSurfaceVariant</macro>
-  <!-- Please use this with the top shape appearance overlay in styles. -->
+  <!-- Please use the resource below in shapeAppearance
+       and @style/ShapeAppearanceOverlay.Material3.Corner.Top in shapeAppearanceOverlay. -->
   <macro name="m3_comp_filled_text_field_container_shape">?attr/shapeAppearanceCornerExtraSmall</macro>
   <!-- Enabled - Input text -->
   <macro name="m3_comp_filled_text_field_input_text_type">?attr/textAppearanceBodyLarge</macro>
@@ -32,7 +34,7 @@
   <macro name="m3_comp_filled_text_field_error_supporting_text_color">?attr/colorError</macro>
   <macro name="m3_comp_filled_text_field_error_trailing_icon_color">?attr/colorError</macro>
 
-  <!-- Generated from token set (md.comp.outlined-text-field) in default context. -->
+  <!-- Generated from token set (md.comp.outlined-text-field) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_outlined_text_field_container_shape">?attr/shapeAppearanceCornerExtraSmall</macro>
   <!-- Enabled - Outline -->
@@ -78,4 +80,5 @@
   <macro name="m3_comp_outlined_text_field_error_outline_color">?attr/colorError</macro>
   <macro name="m3_comp_outlined_text_field_error_supporting_text_color">?attr/colorError</macro>
   <macro name="m3_comp_outlined_text_field_error_trailing_icon_color">?attr/colorError</macro>
+
 </resources>
