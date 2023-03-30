@@ -285,12 +285,11 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
     }
 
     BackEvent backEvent = searchViewAnimationHelper.onHandleBackInvoked();
-    if (searchBar == null || backEvent == null || !BuildCompat.isAtLeastU()) {
+    if (BuildCompat.isAtLeastU() && searchBar != null && backEvent != null) {
+      searchViewAnimationHelper.finishBackProgress();
+    } else {
       hide();
-      return;
     }
-
-    searchViewAnimationHelper.finishBackProgress();
   }
 
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
