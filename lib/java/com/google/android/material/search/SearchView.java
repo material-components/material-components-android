@@ -48,6 +48,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.window.BackEvent;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
@@ -57,8 +58,10 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.os.BuildCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.widget.TextViewCompat;
@@ -73,6 +76,9 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ToolbarUtils;
 import com.google.android.material.internal.TouchObserverFrameLayout;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.motion.MaterialBackHandler;
+import com.google.android.material.motion.MaterialBackOrchestrator;
+import com.google.android.material.motion.MaterialMainContainerBackHelper;
 import com.google.android.material.shape.MaterialShapeUtils;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -119,7 +125,8 @@ import java.util.Set;
  * </pre>
  */
 @SuppressWarnings("RestrictTo")
-public class SearchView extends FrameLayout implements CoordinatorLayout.AttachedBehavior {
+public class SearchView extends FrameLayout implements CoordinatorLayout.AttachedBehavior,
+    MaterialBackHandler {
 
   private static final long TALKBACK_FOCUS_CHANGE_DELAY_MS = 100;
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_SearchView;
@@ -140,6 +147,8 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
 
   private final boolean layoutInflated;
   private final SearchViewAnimationHelper searchViewAnimationHelper;
+  @NonNull private final MaterialBackOrchestrator backOrchestrator =
+      new MaterialBackOrchestrator(this);
   private final ElevationOverlayProvider elevationOverlayProvider;
   private final Set<TransitionListener> transitionListeners = new LinkedHashSet<>();
 
@@ -249,6 +258,58 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
   @NonNull
   public CoordinatorLayout.Behavior<SearchView> getBehavior() {
     return new SearchView.Behavior();
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Override
+  public void startBackProgress(@NonNull BackEvent backEvent) {
+    if (isHiddenOrHiding() || searchBar == null) {
+      return;
+    }
+    searchViewAnimationHelper.startBackProgress(backEvent);
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Override
+  public void updateBackProgress(@NonNull BackEvent backEvent) {
+    if (isHiddenOrHiding() || searchBar == null) {
+      return;
+    }
+    searchViewAnimationHelper.updateBackProgress(backEvent);
+  }
+
+  @Override
+  public void handleBackInvoked() {
+    if (isHiddenOrHiding()) {
+      return;
+    }
+
+    BackEvent backEvent = searchViewAnimationHelper.onHandleBackInvoked();
+    if (searchBar == null || backEvent == null || !BuildCompat.isAtLeastU()) {
+      hide();
+      return;
+    }
+
+    searchViewAnimationHelper.finishBackProgress();
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Override
+  public void cancelBackProgress() {
+    if (isHiddenOrHiding() || searchBar == null) {
+      return;
+    }
+    searchViewAnimationHelper.cancelBackProgress();
+  }
+
+  @VisibleForTesting
+  MaterialMainContainerBackHelper getBackHelper() {
+    return searchViewAnimationHelper.getBackHelper();
+  }
+
+  private boolean isHiddenOrHiding() {
+    return currentTransitionState.equals(TransitionState.HIDDEN)
+        || currentTransitionState.equals(TransitionState.HIDING);
   }
 
   @Nullable
@@ -716,6 +777,15 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
     Set<TransitionListener> listeners = new LinkedHashSet<>(transitionListeners);
     for (TransitionListener listener : listeners) {
       listener.onStateChanged(this, previousState, state);
+    }
+
+    // Only automatically handle back if we have a search bar to collapse to.
+    if (searchBar != null) {
+      if (state.equals(TransitionState.SHOWN)) {
+        backOrchestrator.startListeningForBackCallbacks();
+      } else if (state.equals(TransitionState.HIDDEN)) {
+        backOrchestrator.stopListeningForBackCallbacks();
+      }
     }
   }
 

@@ -22,4 +22,7 @@
 
   <dimen name="m3_back_progress_bottom_container_max_scale_x_distance">48dp</dimen>
   <dimen name="m3_back_progress_bottom_container_max_scale_y_distance">24dp</dimen>
+
+  <dimen name="m3_back_progress_main_container_min_edge_gap">8dp</dimen>
+  <dimen name="m3_back_progress_main_container_max_translation_y">24dp</dimen>
 </resources>

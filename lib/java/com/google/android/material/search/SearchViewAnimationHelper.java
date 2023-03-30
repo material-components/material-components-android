@@ -16,6 +16,9 @@
 
 package com.google.android.material.search;
 
+import static com.google.android.material.animation.AnimationUtils.lerp;
+import static java.lang.Math.max;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -23,6 +26,7 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION_CODES;
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
@@ -33,6 +37,10 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.window.BackEvent;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
@@ -46,6 +54,8 @@ import com.google.android.material.internal.ReversableAnimatedValueInterpolator;
 import com.google.android.material.internal.ToolbarUtils;
 import com.google.android.material.internal.TouchObserverFrameLayout;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.motion.MaterialMainContainerBackHelper;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /** Helper class for {@link SearchView} animations. */
 @SuppressWarnings("RestrictTo")
@@ -89,6 +99,9 @@ class SearchViewAnimationHelper {
   private final View divider;
   private final TouchObserverFrameLayout contentContainer;
 
+  private final MaterialMainContainerBackHelper backHelper;
+  @Nullable private AnimatorSet backProgressAnimatorSet;
+
   private SearchBar searchBar;
 
   SearchViewAnimationHelper(SearchView searchView) {
@@ -104,6 +117,8 @@ class SearchViewAnimationHelper {
     this.clearButton = searchView.clearButton;
     this.divider = searchView.divider;
     this.contentContainer = searchView.contentContainer;
+
+    backHelper = new MaterialMainContainerBackHelper(rootView);
   }
 
   void setSearchBar(SearchBar searchBar) {
@@ -118,11 +133,12 @@ class SearchViewAnimationHelper {
     }
   }
 
-  void hide() {
+  @CanIgnoreReturnValue
+  AnimatorSet hide() {
     if (searchBar != null) {
-      startHideAnimationCollapse();
+      return startHideAnimationCollapse();
     } else {
-      startHideAnimationTranslate();
+      return startHideAnimationTranslate();
     }
   }
 
@@ -158,7 +174,7 @@ class SearchViewAnimationHelper {
         });
   }
 
-  private void startHideAnimationCollapse() {
+  private AnimatorSet startHideAnimationCollapse() {
     if (searchView.isAdjustNothingSoftInputMode()) {
       searchView.clearFocusAndHideKeyboard();
     }
@@ -180,6 +196,7 @@ class SearchViewAnimationHelper {
           }
         });
     animatorSet.start();
+    return animatorSet;
   }
 
   private void startShowAnimationTranslate() {
@@ -213,7 +230,7 @@ class SearchViewAnimationHelper {
         });
   }
 
-  private void startHideAnimationTranslate() {
+  private AnimatorSet startHideAnimationTranslate() {
     if (searchView.isAdjustNothingSoftInputMode()) {
       searchView.clearFocusAndHideKeyboard();
     }
@@ -235,6 +252,7 @@ class SearchViewAnimationHelper {
           }
         });
     animatorSet.start();
+    return animatorSet;
   }
 
   private AnimatorSet getTranslateAnimatorSet(boolean show) {
@@ -255,12 +273,16 @@ class SearchViewAnimationHelper {
 
   private AnimatorSet getExpandCollapseAnimatorSet(boolean show) {
     AnimatorSet animatorSet = new AnimatorSet();
+    boolean backProgress = backProgressAnimatorSet != null;
+    if (!backProgress) {
+      animatorSet.playTogether(
+          getButtonsProgressAnimator(show), getButtonsTranslationAnimator(show));
+    }
     animatorSet.playTogether(
         getScrimAlphaAnimator(show),
         getRootViewAnimator(show),
         getClearButtonAnimator(show),
         getContentAnimator(show),
-        getButtonsAnimator(show),
         getHeaderContainerAnimator(show),
         getDummyToolbarAnimator(show),
         getActionMenuViewsAlphaAnimator(show),
@@ -276,11 +298,9 @@ class SearchViewAnimationHelper {
           @Override
           public void onAnimationEnd(Animator animation) {
             setContentViewsAlpha(show ? 1 : 0);
-            if (show) {
-              // After expanding, we should reset the clip bounds so it can react to screen or
-              // layout changes. Otherwise it will result in wrong clipping on the layout.
-              rootView.resetClipBoundsAndCornerRadius();
-            }
+            // After expanding or collapsing, we should reset the clip bounds so it can react to the
+            // screen or layout changes. Otherwise it will result in wrong clipping on the layout.
+            rootView.resetClipBoundsAndCornerRadius();
           }
         });
     return animatorSet;
@@ -314,43 +334,33 @@ class SearchViewAnimationHelper {
   }
 
   private Animator getRootViewAnimator(boolean show) {
-    Rect toClipBounds = ViewUtils.calculateRectFromBounds(searchView);
-    Rect fromClipBounds = calculateFromClipBounds();
+    Rect initialHideToClipBounds = backHelper.getInitialHideToClipBounds();
+    Rect initialHideFromClipBounds = backHelper.getInitialHideFromClipBounds();
+    Rect toClipBounds =
+        initialHideToClipBounds != null
+            ? initialHideToClipBounds
+            : ViewUtils.calculateRectFromBounds(rootView);
+    Rect fromClipBounds =
+        initialHideFromClipBounds != null
+            ? initialHideFromClipBounds
+            : ViewUtils.calculateOffsetRectFromBounds(rootView, searchBar);
     Rect clipBounds = new Rect(fromClipBounds);
 
-    float initialCornerRadius = searchBar.getCornerSize();
+    float fromCornerRadius = searchBar.getCornerSize();
+    float toCornerRadius = max(rootView.getCornerRadius(), backHelper.getDeviceCornerRadius());
 
     ValueAnimator animator =
         ValueAnimator.ofObject(new RectEvaluator(clipBounds), fromClipBounds, toClipBounds);
     animator.addUpdateListener(
         valueAnimator -> {
-          float cornerRadius = initialCornerRadius * (1 - valueAnimator.getAnimatedFraction());
+          float cornerRadius =
+              lerp(fromCornerRadius, toCornerRadius, valueAnimator.getAnimatedFraction());
           rootView.updateClipBoundsAndCornerRadius(clipBounds, cornerRadius);
         });
     animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
     animator.setInterpolator(
         ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
     return animator;
-  }
-
-  private Rect calculateFromClipBounds() {
-    int[] searchBarAbsolutePosition = new int[2];
-    searchBar.getLocationOnScreen(searchBarAbsolutePosition);
-    int searchBarAbsoluteLeft = searchBarAbsolutePosition[0];
-    int searchBarAbsoluteTop = searchBarAbsolutePosition[1];
-
-    // Use rootView to handle potential fitsSystemWindows padding applied to parent searchView.
-    int[] searchViewAbsolutePosition = new int[2];
-    rootView.getLocationOnScreen(searchViewAbsolutePosition);
-    int searchViewAbsoluteLeft = searchViewAbsolutePosition[0];
-    int searchViewAbsoluteTop = searchViewAbsolutePosition[1];
-
-    int fromLeft = searchBarAbsoluteLeft - searchViewAbsoluteLeft;
-    int fromTop = searchBarAbsoluteTop - searchViewAbsoluteTop;
-    int fromRight = fromLeft + searchBar.getWidth();
-    int fromBottom = fromTop + searchBar.getHeight();
-
-    return new Rect(fromLeft, fromTop, fromRight, fromBottom);
   }
 
   private Animator getClearButtonAnimator(boolean show) {
@@ -365,10 +375,18 @@ class SearchViewAnimationHelper {
     return animator;
   }
 
-  private Animator getButtonsAnimator(boolean show) {
+  private AnimatorSet getButtonsProgressAnimator(boolean show) {
+    AnimatorSet animatorSet = new AnimatorSet();
+    addBackButtonProgressAnimatorIfNeeded(animatorSet);
+    animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+    animatorSet.setInterpolator(
+        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+    return animatorSet;
+  }
+
+  private AnimatorSet getButtonsTranslationAnimator(boolean show) {
     AnimatorSet animatorSet = new AnimatorSet();
     addBackButtonTranslationAnimatorIfNeeded(animatorSet);
-    addBackButtonProgressAnimatorIfNeeded(animatorSet);
     addActionMenuViewAnimatorIfNeeded(animatorSet);
     animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
     animatorSet.setInterpolator(
@@ -412,7 +430,7 @@ class SearchViewAnimationHelper {
       DrawerArrowDrawable drawerArrowDrawable = (DrawerArrowDrawable) drawable;
       ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
       animator.addUpdateListener(
-          animation -> drawerArrowDrawable.setProgress(animation.getAnimatedFraction()));
+          animation -> drawerArrowDrawable.setProgress((Float) animation.getAnimatedValue()));
       animatorSet.playTogether(animator);
     }
   }
@@ -422,7 +440,7 @@ class SearchViewAnimationHelper {
       FadeThroughDrawable fadeThroughDrawable = (FadeThroughDrawable) drawable;
       ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
       animator.addUpdateListener(
-          animation -> fadeThroughDrawable.setProgress(animation.getAnimatedFraction()));
+          animation -> fadeThroughDrawable.setProgress((Float) animation.getAnimatedValue()));
       animatorSet.playTogether(animator);
     }
   }
@@ -592,5 +610,64 @@ class SearchViewAnimationHelper {
         menuItem.setFocusableInTouchMode(false);
       }
     }
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  void startBackProgress(@NonNull BackEvent backEvent) {
+    backHelper.startBackProgress(backEvent, searchBar);
+
+    if (searchView.isAdjustNothingSoftInputMode()) {
+      searchView.clearFocusAndHideKeyboard();
+    }
+
+    // Start and immediately pause the animator set so that we can seek it with setCurrentPlayTime()
+    // in updateBackProgress() when the progress value changes.
+    backProgressAnimatorSet = getButtonsProgressAnimator(/* show= */ false);
+    backProgressAnimatorSet.start();
+    backProgressAnimatorSet.pause();
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  public void updateBackProgress(@NonNull BackEvent backEvent) {
+    backHelper.updateBackProgress(backEvent, searchBar.getCornerSize());
+
+    if (backProgressAnimatorSet != null) {
+      backProgressAnimatorSet.setCurrentPlayTime(
+          (long) (backEvent.getProgress() * backProgressAnimatorSet.getDuration()));
+    }
+  }
+
+  @Nullable
+  public BackEvent onHandleBackInvoked() {
+    return backHelper.onHandleBackInvoked();
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  public void finishBackProgress() {
+    AnimatorSet hideAnimatorSet = hide();
+    long totalDuration = hideAnimatorSet.getTotalDuration();
+
+    backHelper.finishBackProgress(totalDuration, searchBar);
+
+    if (backProgressAnimatorSet != null) {
+      getButtonsTranslationAnimator(/* show= */ false).start();
+      backProgressAnimatorSet.resume();
+    }
+
+    backProgressAnimatorSet = null;
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  public void cancelBackProgress() {
+    backHelper.cancelBackProgress(searchBar);
+
+    if (backProgressAnimatorSet != null) {
+      backProgressAnimatorSet.reverse();
+    }
+    backProgressAnimatorSet = null;
+  }
+
+  MaterialMainContainerBackHelper getBackHelper() {
+    return backHelper;
   }
 }

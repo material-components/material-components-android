@@ -132,6 +132,26 @@ public class ViewUtils {
   }
 
   @NonNull
+  public static Rect calculateOffsetRectFromBounds(@NonNull View view, @NonNull View offsetView) {
+    int[] offsetViewAbsolutePosition = new int[2];
+    offsetView.getLocationOnScreen(offsetViewAbsolutePosition);
+    int offsetViewAbsoluteLeft = offsetViewAbsolutePosition[0];
+    int offsetViewAbsoluteTop = offsetViewAbsolutePosition[1];
+
+    int[] viewAbsolutePosition = new int[2];
+    view.getLocationOnScreen(viewAbsolutePosition);
+    int viewAbsoluteLeft = viewAbsolutePosition[0];
+    int viewAbsoluteTop = viewAbsolutePosition[1];
+
+    int fromLeft = offsetViewAbsoluteLeft - viewAbsoluteLeft;
+    int fromTop = offsetViewAbsoluteTop - viewAbsoluteTop;
+    int fromRight = fromLeft + offsetView.getWidth();
+    int fromBottom = fromTop + offsetView.getHeight();
+
+    return new Rect(fromLeft, fromTop, fromRight, fromBottom);
+  }
+
+  @NonNull
   public static List<View> getChildren(@Nullable View view) {
     List<View> children = new ArrayList<>();
     if (view instanceof ViewGroup) {

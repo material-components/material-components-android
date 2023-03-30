@@ -38,6 +38,7 @@ import androidx.annotation.RestrictTo;
 public class ClippableRoundedCornerLayout extends FrameLayout {
 
   @Nullable private Path path;
+  private float cornerRadius;
 
   public ClippableRoundedCornerLayout(@NonNull Context context) {
     super(context);
@@ -66,7 +67,16 @@ public class ClippableRoundedCornerLayout extends FrameLayout {
 
   public void resetClipBoundsAndCornerRadius() {
     path = null;
+    cornerRadius = 0f;
     invalidate();
+  }
+
+  public float getCornerRadius() {
+    return cornerRadius;
+  }
+
+  public void updateCornerRadius(float cornerRadius) {
+    updateClipBoundsAndCornerRadius(getLeft(), getTop(), getRight(), getBottom(), cornerRadius);
   }
 
   public void updateClipBoundsAndCornerRadius(@NonNull Rect rect, float cornerRadius) {
@@ -82,6 +92,7 @@ public class ClippableRoundedCornerLayout extends FrameLayout {
     if (path == null) {
       path = new Path();
     }
+    this.cornerRadius = cornerRadius;
     path.reset();
     path.addRoundRect(rectF, cornerRadius, cornerRadius, Path.Direction.CW);
     path.close();
