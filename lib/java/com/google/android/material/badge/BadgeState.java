@@ -37,6 +37,7 @@ import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
@@ -76,8 +77,6 @@ public final class BadgeState {
   final float badgeHeight;
   final float badgeWithTextWidth;
   final float badgeWithTextHeight;
-  final float badgeWidePadding;
-  final float badgeVerticalPadding;
   final int horizontalInset;
   final int horizontalInsetWithText;
 
@@ -102,14 +101,7 @@ public final class BadgeState {
     Resources res = context.getResources();
     badgeRadius =
         a.getDimensionPixelSize(R.styleable.Badge_badgeRadius, BADGE_RADIUS_NOT_SPECIFIED);
-    badgeWidePadding =
-        a.getDimensionPixelSize(
-            R.styleable.Badge_badgeWidePadding,
-            res.getDimensionPixelSize(R.dimen.mtrl_badge_long_text_horizontal_padding));
-    badgeVerticalPadding =
-        a.getDimension(
-            R.styleable.Badge_badgeVerticalPadding,
-            res.getDimension(R.dimen.m3_badge_with_text_vertical_padding));
+
     horizontalInset =
         context
             .getResources()
@@ -235,6 +227,19 @@ public final class BadgeState {
         storedState.badgeGravity == null
             ? a.getInt(R.styleable.Badge_badgeGravity, TOP_END)
             : storedState.badgeGravity;
+
+    currentState.badgeHorizontalPadding =
+        storedState.badgeHorizontalPadding == null
+            ? a.getDimensionPixelSize(
+                R.styleable.Badge_badgeWidePadding,
+                res.getDimensionPixelSize(R.dimen.mtrl_badge_long_text_horizontal_padding))
+            : storedState.badgeHorizontalPadding;
+    currentState.badgeVerticalPadding =
+        storedState.badgeVerticalPadding == null
+            ? a.getDimensionPixelSize(
+                R.styleable.Badge_badgeVerticalPadding,
+                res.getDimensionPixelSize(R.dimen.m3_badge_with_text_vertical_padding))
+            : storedState.badgeVerticalPadding;
 
     currentState.horizontalOffsetWithoutText =
         storedState.horizontalOffsetWithoutText == null
@@ -442,6 +447,26 @@ public final class BadgeState {
     currentState.badgeGravity = badgeGravity;
   }
 
+  @Px
+  int getBadgeHorizontalPadding() {
+    return currentState.badgeHorizontalPadding;
+  }
+
+  void setBadgeHorizontalPadding(@Px int horizontalPadding) {
+    overridingState.badgeHorizontalPadding = horizontalPadding;
+    currentState.badgeHorizontalPadding = horizontalPadding;
+  }
+
+  @Px
+  int getBadgeVerticalPadding() {
+    return currentState.badgeVerticalPadding;
+  }
+
+  void setBadgeVerticalPadding(@Px int verticalPadding) {
+    overridingState.badgeVerticalPadding = verticalPadding;
+    currentState.badgeVerticalPadding = verticalPadding;
+  }
+
   @Dimension(unit = Dimension.PX)
   int getHorizontalOffsetWithoutText() {
     return currentState.horizontalOffsetWithoutText;
@@ -591,6 +616,10 @@ public final class BadgeState {
     @BadgeGravity private Integer badgeGravity;
     private Boolean isVisible = true;
 
+    @Px private Integer badgeHorizontalPadding;
+
+    @Px private Integer badgeVerticalPadding;
+
     @Dimension(unit = Dimension.PX)
     private Integer horizontalOffsetWithoutText;
 
@@ -628,6 +657,8 @@ public final class BadgeState {
       contentDescriptionNumberless = in.readString();
       contentDescriptionQuantityStrings = in.readInt();
       badgeGravity = (Integer) in.readSerializable();
+      badgeHorizontalPadding = (Integer) in.readSerializable();
+      badgeVerticalPadding = (Integer) in.readSerializable();
       horizontalOffsetWithoutText = (Integer) in.readSerializable();
       verticalOffsetWithoutText = (Integer) in.readSerializable();
       horizontalOffsetWithText = (Integer) in.readSerializable();
@@ -678,6 +709,8 @@ public final class BadgeState {
           contentDescriptionNumberless != null ? contentDescriptionNumberless.toString() : null);
       dest.writeInt(contentDescriptionQuantityStrings);
       dest.writeSerializable(badgeGravity);
+      dest.writeSerializable(badgeHorizontalPadding);
+      dest.writeSerializable(badgeVerticalPadding);
       dest.writeSerializable(horizontalOffsetWithoutText);
       dest.writeSerializable(verticalOffsetWithoutText);
       dest.writeSerializable(horizontalOffsetWithText);

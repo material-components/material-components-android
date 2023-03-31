@@ -784,6 +784,48 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /**
+   * Sets how much (in pixels) horizontal padding to add to the badge when it has label contents.
+   * Note that badges have a minimum width as specified by
+   * com.google.android.material.R.styleable#Badge_badgeWidth.
+   *
+   * @param horizontalPadding badge's horizontal padding
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeWidePadding
+   */
+  public void setHorizontalPadding(@Px int horizontalPadding) {
+    if (horizontalPadding != state.getBadgeHorizontalPadding()) {
+      state.setBadgeHorizontalPadding(horizontalPadding);
+      updateCenterAndBounds();
+    }
+  }
+
+  /** Returns the badge horizontal padding in pixels. */
+  @Px
+  public int getHorizontalPadding() {
+    return state.getBadgeHorizontalPadding();
+  }
+
+  /**
+   * Sets how much (in pixels) vertical padding to add to the badge when it has label contents. Note
+   * that badges have a minimum height as specified by
+   * com.google.android.material.R.styleable#Badge_badgeHeight.
+   *
+   * @param verticalPadding badge's vertical padding
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeVerticalPadding
+   */
+  public void setVerticalPadding(@Px int verticalPadding) {
+    if (verticalPadding != state.getBadgeVerticalPadding()) {
+      state.setBadgeVerticalPadding(verticalPadding);
+      updateCenterAndBounds();
+    }
+  }
+
+  /** Returns the badge vertical padding in pixels. */
+  @Px
+  public int getVerticalPadding() {
+    return state.getBadgeVerticalPadding();
+  }
+
+  /**
    * Sets how much (in pixels) to horizontally move this badge towards the center of its anchor.
    *
    * <p>This sets the horizontal offset for badges without text (dots) and with text.
@@ -1106,7 +1148,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       halfBadgeHeight =
           Math.max(
               halfBadgeHeight,
-               textDrawableHelper.getTextHeight(badgeContent) / 2f + state.badgeVerticalPadding);
+              textDrawableHelper.getTextHeight(badgeContent) / 2f
+                  + state.getBadgeVerticalPadding());
 
       // If the badge has text, it should at least have the same width as it does height
       halfBadgeWidth = Math.max(halfBadgeWidth, halfBadgeHeight);
@@ -1119,7 +1162,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       halfBadgeWidth =
           Math.max(
               halfBadgeWidth,
-              textDrawableHelper.getTextWidth(badgeContent) / 2f + state.badgeWidePadding);
+              textDrawableHelper.getTextWidth(badgeContent) / 2f
+                  + state.getBadgeHorizontalPadding());
     }
 
     int totalVerticalOffset = getTotalVerticalOffsetForState();

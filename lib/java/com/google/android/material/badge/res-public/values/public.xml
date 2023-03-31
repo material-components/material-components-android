@@ -23,6 +23,8 @@
   <public name="badgeText" type="attr"/>
   <public name="number" type="attr"/>
   <public name="badgeGravity" type="attr"/>
+  <public name="badgeWidePadding" type="attr"/>
+  <public name="badgeVerticalPadding" type="attr"/>
   <public name="horizontalOffset" type="attr"/>
   <public name="verticalOffset" type="attr"/>
   <public name="offsetAlignmentMode" type="attr"/>

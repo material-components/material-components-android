@@ -50,6 +50,9 @@ public class BadgeDrawableTest {
   private static final int TEST_BADGE_HORIZONTAL_OFFSET = 10;
   private static final int TEST_BADGE_VERTICAL_OFFSET = 5;
 
+  private static final int TEST_BADGE_HORIZONTAL_PADDING = 10;
+  private static final int TEST_BADGE_VERTICAL_PADDING = 10;
+
   private final Context context = ApplicationProvider.getApplicationContext();
 
   @Before
@@ -69,6 +72,9 @@ public class BadgeDrawableTest {
     badgeDrawable.setText(TEST_BADGE_TEXT);
     badgeDrawable.setNumber(TEST_BADGE_NUMBER);
     badgeDrawable.setBadgeGravity(BadgeDrawable.TOP_START);
+
+    badgeDrawable.setHorizontalPadding(TEST_BADGE_HORIZONTAL_PADDING);
+    badgeDrawable.setVerticalPadding(TEST_BADGE_VERTICAL_PADDING);
 
     badgeDrawable.setHorizontalOffset(TEST_BADGE_HORIZONTAL_OFFSET);
     badgeDrawable.setVerticalOffset(TEST_BADGE_VERTICAL_OFFSET);
@@ -104,6 +110,9 @@ public class BadgeDrawableTest {
     assertThat(restoredBadgeDrawable.getAlpha()).isEqualTo(255);
     assertThat(restoredBadgeDrawable.getMaxCharacterCount()).isEqualTo(4);
     assertThat(restoredBadgeDrawable.getBadgeGravity()).isEqualTo(BadgeDrawable.TOP_START);
+    // badge padding
+    assertThat(restoredBadgeDrawable.getHorizontalPadding()).isEqualTo(TEST_BADGE_HORIZONTAL_PADDING);
+    assertThat(restoredBadgeDrawable.getVerticalPadding()).isEqualTo(TEST_BADGE_VERTICAL_PADDING);
     // badge offsets
     assertThat(restoredBadgeDrawable.getHorizontalOffset()).isEqualTo(TEST_BADGE_HORIZONTAL_OFFSET);
     assertThat(restoredBadgeDrawable.getVerticalOffset()).isEqualTo(TEST_BADGE_VERTICAL_OFFSET);
