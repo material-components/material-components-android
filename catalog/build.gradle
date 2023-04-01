@@ -27,7 +27,7 @@ dependencies {
 
   api 'com.google.guava:guava:31.1-android'
 
-  api 'com.github.bumptech.glide:glide:4.15.0'
+  api 'com.github.bumptech.glide:glide:4.15.1'
 
   api project(':lib')
 
