@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 dependencies {
 
   constraints {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.20") {
       because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
     }
   }
