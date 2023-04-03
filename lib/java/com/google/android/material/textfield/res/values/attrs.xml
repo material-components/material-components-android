@@ -116,6 +116,15 @@
       <enum name="screen" value="15"/>
     </attr>
 
+    <!-- Color for the cursor. If set, this takes precedence over
+         ?attr/colorControlActivated set for the edit text.
+         Note: Only has effect on API levels 28+. -->
+    <attr name="cursorColor" format="color"/>
+    <!-- Error color for the cursor.
+         If null, the cursor color won't change on error.
+         Note: Only has effect on API levels 28+. -->
+    <attr name="cursorErrorColor" format="color"/>
+
     <!-- Whether the layout is laid out as if the character counter will be displayed. -->
     <attr name="counterEnabled" format="boolean"/>
     <!-- The max length to display in the character counter. -->

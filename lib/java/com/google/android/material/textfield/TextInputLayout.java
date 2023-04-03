@@ -73,6 +73,7 @@ import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
@@ -257,6 +258,9 @@ public class TextInputLayout extends LinearLayout {
 
   @Nullable private ColorStateList counterTextColor;
   @Nullable private ColorStateList counterOverflowTextColor;
+
+  @Nullable private ColorStateList cursorColor;
+  @Nullable private ColorStateList cursorErrorColor;
 
   private boolean hintEnabled;
   private CharSequence hint;
@@ -609,6 +613,9 @@ public class TextInputLayout extends LinearLayout {
     if (hintAppearance != -1) {
       setHintTextAppearance(a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, 0));
     }
+
+    cursorColor = a.getColorStateList(R.styleable.TextInputLayout_cursorColor);
+    cursorErrorColor = a.getColorStateList(R.styleable.TextInputLayout_cursorErrorColor);
 
     final int errorTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
@@ -1540,6 +1547,10 @@ public class TextInputLayout extends LinearLayout {
         this.editText.setHint(null);
       }
       this.isProvidingHint = true;
+    }
+
+    if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+      updateCursorColor();
     }
 
     if (counterView != null) {
@@ -2528,6 +2539,80 @@ public class TextInputLayout extends LinearLayout {
   @StyleRes
   public int getPlaceholderTextAppearance() {
     return placeholderTextAppearance;
+  }
+
+  /**
+   * Sets the cursor color. Using this method will take precedence over using the
+   * value of {@code ?attr/colorControlActivated}.
+   *
+   * <p>Note: This method only has effect on API levels 28+. On lower API levels
+   * {@code ?attr/colorControlActivated} will be used for the cursor color.
+   *
+   * @param cursorColor the cursor color to be set
+   * @see #getCursorColor
+   * @see #setCursorErrorColor
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_cursorColor
+   */
+  @RequiresApi(VERSION_CODES.Q)
+  public void setCursorColor(@Nullable ColorStateList cursorColor) {
+    if (this.cursorColor != cursorColor) {
+      this.cursorColor = cursorColor;
+      updateCursorColor();
+    }
+  }
+
+  /**
+   * Returns the cursor color. It will return the value of {@code app:cursorColor} if set, or
+   * <code>null</code> otherwise.
+   *
+   * <p>Note: This value only has effect on API levels 28+. On lower API levels
+   * {@code ?attr/colorControlActivated} will be used for the cursor color.
+   *
+   * @see #setCursorColor
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_cursorColor
+   */
+  @Nullable
+  @RequiresApi(VERSION_CODES.Q)
+  public ColorStateList getCursorColor() {
+    return cursorColor;
+  }
+
+  /**
+   * Sets the cursor color when an error is being displayed. If null, the cursor doesn't change its
+   * color when the text field is in an error state.
+   *
+   * <p>Note: This method only has effect on API levels 28+. On lower API levels
+   * {@code ?attr/colorControlActivated} will be used for the cursor color.
+   *
+   * @param cursorErrorColor the error color to use for the cursor
+   * @see #getCursorErrorColor
+   * @see #setCursorColor
+   * @see #setError(CharSequence)
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_cursorErrorColor
+   */
+  @RequiresApi(VERSION_CODES.Q)
+  public void setCursorErrorColor(@Nullable ColorStateList cursorErrorColor) {
+    if (this.cursorErrorColor != cursorErrorColor) {
+      this.cursorErrorColor = cursorErrorColor;
+      if (isOnError()) {
+        updateCursorColor();
+      }
+    }
+  }
+
+  /**
+   * Returns the cursor error color.
+   *
+   * <p>Note: This value only has effect on API levels 28+. On lower API levels
+   * {@code ?attr/colorControlActivated} will be used for the cursor color.
+   *
+   * @see #setCursorErrorColor
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_cursorErrorColor
+   */
+  @Nullable
+  @RequiresApi(VERSION_CODES.Q)
+  public ColorStateList getCursorErrorColor() {
+    return cursorErrorColor;
   }
 
   /**
@@ -4232,7 +4317,6 @@ public class TextInputLayout extends LinearLayout {
 
     final boolean hasFocus = isFocused() || (editText != null && editText.hasFocus());
     final boolean isHovered = isHovered() || (editText != null && editText.isHovered());
-    final boolean isOnError = shouldShowError() || (counterView != null && counterOverflowed);
 
     // Update the text box's stroke color based on the current state.
     if (!isEnabled()) {
@@ -4258,7 +4342,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     if (VERSION.SDK_INT >= VERSION_CODES.Q) {
-      updateCursorColor(isOnError);
+      updateCursorColor();
     }
 
     endLayout.onTextInputBoxStateUpdated();
@@ -4298,6 +4382,10 @@ public class TextInputLayout extends LinearLayout {
     applyBoxAttributes();
   }
 
+  private boolean isOnError() {
+    return shouldShowError() || (counterView != null && counterOverflowed);
+  }
+
   private void updateStrokeErrorColor(boolean hasFocus, boolean isHovered) {
     int defaultStrokeErrorColor = strokeErrorColor.getDefaultColor();
     int hoveredStrokeErrorColor =
@@ -4317,23 +4405,22 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  @TargetApi(VERSION_CODES.Q)
-  private void updateCursorColor(boolean isOnError) {
-    ColorStateList cursorColor =
-        MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorControlActivated);
-    if (editText == null || editText.getTextCursorDrawable() == null || cursorColor == null) {
-      // If there's no cursor or if its color is null, return.
+  @RequiresApi(VERSION_CODES.Q)
+  private void updateCursorColor() {
+    ColorStateList color = cursorColor != null
+        ? cursorColor
+        : MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorControlActivated);
+
+    if (editText == null || editText.getTextCursorDrawable() == null) {
+      // If there's no cursor, return.
       return;
     }
 
     Drawable cursorDrawable = editText.getTextCursorDrawable();
-    if (isOnError) {
-      // Use the stroke error color for the cursor error color, or the box stroke color if
-      // strokeErrorColor is null.
-      cursorColor =
-          strokeErrorColor != null ? strokeErrorColor : ColorStateList.valueOf(boxStrokeColor);
+    if (isOnError() && cursorErrorColor != null) {
+      color = cursorErrorColor;
     }
-    DrawableCompat.setTintList(cursorDrawable, cursorColor);
+    DrawableCompat.setTintList(cursorDrawable, color);
   }
 
   private void expandHint(boolean animate) {

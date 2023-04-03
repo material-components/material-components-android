@@ -452,10 +452,6 @@ indicator, optional helper/error text and optional leading/trailing icons.
 7.  Helper/error/counter text
 8.  Prefix/suffix/placeholder (not shown)
 
-**Note:** All the attributes in the tables below should be set on the
-`TextInputLayout`, with the exception of the input text attributes, which should
-be set on the `TextInputEditText`.
-
 #### Container attributes
 
 Element                | Attribute                | Related method(s)                                                                       | Default value
@@ -489,7 +485,7 @@ Element                        | Attribute                  | Related method(s) 
 **Note:** The `android:hint` should always be set on the `TextInputLayout`
 instead of on the `EditText` in order to avoid unintended behaviors.
 
-#### Input text attributes
+#### Input text attributes (set on the `TextInputEditText`)
 
 Element                  | Attribute                                                                | Related method(s)                                            | Default value
 ------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------ | -------------
@@ -499,7 +495,13 @@ Element                  | Attribute                                            
 **Cursor color**         | N/A (color comes from the theme attr `?attr/colorControlActivated`)      | N/A                                                          | `?attr/colorPrimary`
 **Text highlight color** | N/A (color comes from the theme attr `?android:attr/textColorHighlight`) | N/A                                                          | [`@color/m3_highlighted_text`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_highlighted_text.xml)
 
-**Note:** The input text attributes should be set on the `TextInputEditText`.
+#### Input text attributes (set on the `TextInputLayout`)
+
+Element                  | Attribute                                | Related method(s)                                                     | Default value
+------------------------ |------------------------------------------|-----------------------------------------------------------------------| -------------
+**Cursor color**         | `app:cursorColor` on API levels 28+      | `setCursorColor`<br/>`getCursorColor`<br/>on API levels 28+           | `@null` (uses `?attr/colorControlActivated` by default)
+**Cursor error color**   | `app:cursorErrorColor` on API levels 28+ | `setCursorErrorColor`<br/>`getCursorErrorColor`<br/>on API levels 28+ | `?attr/colorError` on API levels 28+, `?attr/colorControlActivated` otherwise
+
 
 #### Trailing icon attributes
 
@@ -636,10 +638,6 @@ helper/error text and optional leading/trailing icons.
 6.  Helper/error/counter text
 7.  Prefix/suffix/placeholder (not shown)
 
-**Note:** All the attributes in the tables below should be set on the
-`TextInputLayout`, with the exception of the input text attributes, which should
-be set on the `TextInputEditText`.
-
 #### Container attributes
 
 Element                  | Attribute                   | Related method(s)                                                            | Default value
@@ -672,7 +670,7 @@ Element                        | Attribute                | Related method(s)   
 **Note:** The `android:hint` should always be set on the `TextInputLayout`
 instead of on the `EditText` in order to avoid unintended behaviors.
 
-#### Input text attributes
+#### Input text attributes (set on the `TextInputEditText`)
 
 Element                  | Attribute                                                                | Related method(s)                                            | Default value
 ------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------ | -------------
@@ -682,7 +680,13 @@ Element                  | Attribute                                            
 **Cursor color**         | N/A (color comes from the theme attr `?attr/colorControlActivated`)      | N/A                                                          | `?attr/colorPrimary`
 **Text highlight color** | N/A (color comes from the theme attr `?android:attr/textColorHighlight`) | N/A                                                          | [`@color/m3_highlighted_text`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_highlighted_text.xml)
 
-**Note:** The input text attributes should be set on the `TextInputEditText`.
+#### Input text attributes (set on the `TextInputLayout`)
+
+Element                  | Attribute                                | Related method(s)                                                     | Default value
+------------------------ |------------------------------------------|-----------------------------------------------------------------------| -------------
+**Cursor color**         | `app:cursorColor` on API levels 28+      | `setCursorColor`<br/>`getCursorColor`<br/>on API levels 28+           | `@null` (uses `?attr/colorControlActivated` by default)
+**Cursor error color**   | `app:cursorErrorColor` on API levels 28+ | `setCursorErrorColor`<br/>`getCursorErrorColor`<br/>on API levels 28+ | `?attr/colorError` on API levels 28+, `?attr/colorControlActivated` otherwise
+
 
 #### Trailing icon attributes
 

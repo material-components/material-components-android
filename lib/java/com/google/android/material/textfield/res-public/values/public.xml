@@ -84,6 +84,8 @@
   <public name="endIconTintMode" type="attr"/>
   <public name="endIconMinSize" type="attr"/>
   <public name="endIconScaleType" type="attr" />
+  <public name="cursorColor" type="attr"/>
+  <public name="cursorErrorColor" type="attr"/>
   <!-- Deprecated. Use endIconMode instead. -->
   <public name="passwordToggleEnabled" type="attr"/>
   <!--Deprecated. Use endIconDrawable instead. -->
