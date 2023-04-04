@@ -3132,10 +3132,12 @@ public class TabLayout extends HorizontalScrollView {
       int left = 0;
       int right = 0;
 
-      for (View view : new View[] {textView, iconView, customView}) {
-        if (view != null && view.getVisibility() == View.VISIBLE) {
-          left = initialized ? Math.min(left, view.getLeft()) : view.getLeft();
-          right = initialized ? Math.max(right, view.getRight()) : view.getRight();
+      for (int i = 0; i < getChildCount(); i++) {
+        final View child = getChildAt(i);
+
+        if (child.getVisibility() != View.GONE) {
+          left = initialized ? Math.min(left, child.getLeft()) : child.getLeft();
+          right = initialized ? Math.max(right, child.getRight()) : child.getRight();
           initialized = true;
         }
       }
@@ -3154,10 +3156,12 @@ public class TabLayout extends HorizontalScrollView {
       int top = 0;
       int bottom = 0;
 
-      for (View view : new View[] {textView, iconView, customView}) {
-        if (view != null && view.getVisibility() == View.VISIBLE) {
-          top = initialized ? Math.min(top, view.getTop()) : view.getTop();
-          bottom = initialized ? Math.max(bottom, view.getBottom()) : view.getBottom();
+      for (int i = 0; i < getChildCount(); i++) {
+        final View child = getChildAt(i);
+
+        if (child.getVisibility() != View.GONE) {
+          top = initialized ? Math.min(top, child.getTop()) : child.getTop();
+          bottom = initialized ? Math.max(bottom, child.getBottom()) : child.getBottom();
           initialized = true;
         }
       }
