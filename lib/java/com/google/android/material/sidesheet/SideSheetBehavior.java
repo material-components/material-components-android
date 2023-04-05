@@ -160,17 +160,20 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
   private void setSheetEdge(@SheetEdge int sheetEdge) {
     if (sheetDelegate == null || sheetDelegate.getSheetEdge() != sheetEdge) {
-      ShapeAppearanceModel.Builder builder = shapeAppearanceModel.toBuilder();
       if (sheetEdge == EDGE_RIGHT) {
         this.sheetDelegate = new RightSheetDelegate(this);
-        if (!hasRightMargin()) {
+        if (shapeAppearanceModel != null && !hasRightMargin()) {
+          ShapeAppearanceModel.Builder builder = shapeAppearanceModel.toBuilder();
           builder.setTopRightCornerSize(0).setBottomRightCornerSize(0);
           updateMaterialShapeDrawable(builder.build());
         }
         return;
-      } else if (sheetEdge == EDGE_LEFT) {
+      }
+
+      if (sheetEdge == EDGE_LEFT) {
         this.sheetDelegate = new LeftSheetDelegate(this);
-        if (!hasLeftMargin()) {
+        if (shapeAppearanceModel != null && !hasLeftMargin()) {
+          ShapeAppearanceModel.Builder builder = shapeAppearanceModel.toBuilder();
           builder.setTopLeftCornerSize(0).setBottomLeftCornerSize(0);
           updateMaterialShapeDrawable(builder.build());
         }
