@@ -86,19 +86,19 @@ The following is an anatomy diagram for the search bar:
 
 The following attributes can be changed for `SearchBar`:
 
-Element   | Attribute       | Related method(s)                         | Default value
---------- | --------------- | ----------------------------------------- | -------------
-**Min height** | `android:minHeight` | `setMinHeight`<br/>`getMinHeight` | `@dimen/m3_searchbar_height`
-**Search text appearance** | `android:textAppearance` | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
-**Search text** | `android:text` | `setText`<br/>`getText` | `null`
-**Search hint** | `android:hint` | `setHint`<br/>`getHint` | `null`
-**Flag for default margins** | `app:defaultMarginsEnabled` | -- | `true`
-**Flag for navigation icon** | `app:hideNavigationIcon` | -- | `false`
+Element                      | Attribute                   | Related method(s)                           | Default value
+---------------------------- | --------------------------- | ------------------------------------------- | -------------
+**Min height**               | `android:minHeight`         | `setMinHeight`<br/>`getMinHeight`           | `@dimen/m3_searchbar_height`
+**Search text appearance**   | `android:textAppearance`    | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
+**Search text**              | `android:text`              | `setText`<br/>`getText`                     | `null`
+**Search hint**              | `android:hint`              | `setHint`<br/>`getHint`                     | `null`
+**Flag for default margins** | `app:defaultMarginsEnabled` | --                                          | `true`
+**Flag for navigation icon** | `app:hideNavigationIcon`    | --                                          | `false`
 
 ## Styles
 
-Element           | Style
------------------ | ------------------------------------------------
+Element                      | Style
+---------------------------- | ----------------------------
 **Search Bar Default style** | `Widget.Material3.SearchBar`
 
 Default search bar style theme attribute: `?attr/materialSearchBarStyle`.
@@ -204,19 +204,19 @@ The following is an anatomy diagram for the search view:
 
 The following attributes can be changed for `SearchView`:
 
-Element   | Attribute       | Related method(s)                         | Default value
---------- | --------------- | ----------------------------------------- | -------------
-**Search text appearance** | `android:textAppearance` | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
-**Search text** | `android:text` | `setText`<br/>`getText` | `null`
-**Search hint** | `android:hint` | `setHint`<br/>`getHint` | `null`
-**Flag for navigation icon** | `app:hideNavigationIcon` | -- | `true`
-**Flag for `DrawerArrowDrawable`** | `app:useDrawerArrowDrawable` | -- | `false`
-**Flag for soft keyboard** | `app:autoShowKeyboard` | -- | `true`
+Element                            | Attribute                    | Related method(s)                           | Default value
+---------------------------------- | ---------------------------- | ------------------------------------------- | -------------
+**Search text appearance**         | `android:textAppearance`     | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
+**Search text**                    | `android:text`               | `setText`<br/>`getText`                     | `null`
+**Search hint**                    | `android:hint`               | `setHint`<br/>`getHint`                     | `null`
+**Flag for navigation icon**       | `app:hideNavigationIcon`     | --                                          | `true`
+**Flag for `DrawerArrowDrawable`** | `app:useDrawerArrowDrawable` | --                                          | `false`
+**Flag for soft keyboard**         | `app:autoShowKeyboard`       | --                                          | `true`
 
 ## Styles
 
-Element           | Style
------------------ | ------------------------------------------------
+Element                       | Style
+----------------------------- | -----------------------------
 **Search View Default style** | `Widget.Material3.SearchView`
 
 Default search view style theme attribute: `?attr/materialSearchViewStyle`.
