@@ -123,15 +123,15 @@ public class MultiBrowseDemoFragment extends DemoFragment {
 
   private static Runnable updateSliderRange(Slider slider, CarouselAdapter adapter) {
     return () -> {
-      if (adapter.getItemCount() == 0) {
-        slider.setValueFrom(0);
-        slider.setValueTo(0);
+      if (adapter.getItemCount() <= 1) {
+        slider.setEnabled(false);
         return;
       }
 
-      slider.setValue(1);
       slider.setValueFrom(1);
+      slider.setValue(1);
       slider.setValueTo(adapter.getItemCount());
+      slider.setEnabled(true);
     };
   }
 }
