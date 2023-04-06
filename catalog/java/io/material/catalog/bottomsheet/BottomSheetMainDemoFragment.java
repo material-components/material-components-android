@@ -95,6 +95,9 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getDemoContent(), viewGroup, false /* attachToRoot */);
 
+    ViewGroup content = view.findViewById(R.id.cat_bottomsheet_coordinator_layout);
+    content.addView(layoutInflater.inflate(getStandardBottomSheetLayout(), content, false));
+
     // Set up BottomSheetDialog
     bottomSheetDialog = new BottomSheetDialog(requireContext());
     bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_content);
@@ -245,6 +248,11 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
   @LayoutRes
   protected int getDemoContent() {
     return R.layout.cat_bottomsheet_fragment;
+  }
+
+  @LayoutRes
+  protected int getStandardBottomSheetLayout() {
+    return R.layout.cat_bottomsheet_standard;
   }
 
   private BottomSheetCallback createBottomSheetCallback(@NonNull TextView text) {
