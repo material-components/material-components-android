@@ -192,6 +192,10 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
   @Override
   public void setTextInputFormat(@Nullable SimpleDateFormat format) {
+    if (format != null) {
+      UtcDates.normalizeTextInputFormat(format);
+    }
+
     this.textInputFormat = format;
   }
 

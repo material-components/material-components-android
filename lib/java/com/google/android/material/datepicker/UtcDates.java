@@ -149,6 +149,10 @@ class UtcDates {
     return format;
   }
 
+  static void normalizeTextInputFormat(@NonNull DateFormat dateFormat) {
+    dateFormat.setTimeZone(UtcDates.getTimeZone());
+  }
+
   static SimpleDateFormat getDefaultTextInputFormat() {
     String defaultFormatPattern =
         ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))

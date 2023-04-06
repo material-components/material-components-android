@@ -96,6 +96,10 @@ public class SingleDateSelector implements DateSelector<Long> {
 
   @Override
   public void setTextInputFormat(@Nullable SimpleDateFormat format) {
+    if (format != null) {
+      UtcDates.normalizeTextInputFormat(format);
+    }
+
     this.textInputFormat = format;
   }
 
