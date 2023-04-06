@@ -120,7 +120,7 @@ particular type), a background scrim, and, optionally, title and buttons.
 
 Element                             | **Attribute**                                            | **Related methods**                                    | **Default value**
 ----------------------------------- | -------------------------------------------------------- | ------------------------------------------------------ | -----------------
-**Color**                           | N/A                                                      | N/A                                                    | `?attr/colorSurface`
+**Color**                           | `app:backgroundTint`                                     | N/A                                                    | `?attr/colorSurface`
 **Shape**                           | `app:shapeAppearance`<br/>`app:shapeAppearanceOverlay`   | N/A                                                    | `?attr/shapeAppearanceMediumComponent` with a corner size of `28dp`
 **Background inset start and end**  | `app:backgroundInsetStart`<br/>`app:backgroundInsetEnd`  | `setBackgroundInsetStart`<br/>`setBackgroundInsetEnd`  | `24dp`
 **Background inset top and bottom** | `app:backgroundInsetTop`<br/>`app:backgroundInsetBottom` | `setBackgroundInsetTop`<br/>`setBackgroundInsetBottom` | `80dp`

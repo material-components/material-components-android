@@ -27,6 +27,7 @@
   </style>
 
   <style name="MaterialAlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
+    <item name="backgroundTint">?attr/colorSurface</item>
     <item name="android:layout">@layout/mtrl_alert_dialog</item>
     <item name="listItemLayout">@layout/mtrl_alert_select_dialog_item</item>
     <item name="multiChoiceItemLayout">@layout/mtrl_alert_select_dialog_multichoice</item>
@@ -111,6 +112,7 @@
   </style>
 
   <style name="MaterialAlertDialog.Material3" parent="MaterialAlertDialog.MaterialComponents">
+    <item name="backgroundTint">@macro/m3_comp_dialog_container_color</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="android:layout">@layout/m3_alert_dialog</item>
     <item name="shapeAppearance">@macro/m3_comp_dialog_container_shape</item>
