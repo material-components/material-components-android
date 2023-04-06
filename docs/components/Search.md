@@ -92,6 +92,7 @@ Element                      | Attribute                   | Related method(s)  
 **Search text appearance**   | `android:textAppearance`    | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
 **Search text**              | `android:text`              | `setText`<br/>`getText`                     | `null`
 **Search hint**              | `android:hint`              | `setHint`<br/>`getHint`                     | `null`
+**Color**                    | `app:backgroundTint`        | --                                          | `?attr/colorSurface`
 **Flag for default margins** | `app:defaultMarginsEnabled` | --                                          | `true`
 **Flag for navigation icon** | `app:hideNavigationIcon`    | --                                          | `false`
 
@@ -209,6 +210,7 @@ Element                            | Attribute                    | Related meth
 **Search text appearance**         | `android:textAppearance`     | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
 **Search text**                    | `android:text`               | `setText`<br/>`getText`                     | `null`
 **Search hint**                    | `android:hint`               | `setHint`<br/>`getHint`                     | `null`
+**Color**                          | `app:backgroundTint`         | --                                          | `?attr/colorSurface`
 **Flag for navigation icon**       | `app:hideNavigationIcon`     | --                                          | `true`
 **Flag for `DrawerArrowDrawable`** | `app:useDrawerArrowDrawable` | --                                          | `false`
 **Flag for soft keyboard**         | `app:autoShowKeyboard`       | --                                          | `true`

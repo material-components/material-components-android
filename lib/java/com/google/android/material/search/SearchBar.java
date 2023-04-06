@@ -172,6 +172,7 @@ public class SearchBar extends Toolbar {
 
     ShapeAppearanceModel shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
+    int backgroundColor = a.getColor(R.styleable.SearchBar_backgroundTint, 0);
     float elevation = a.getDimension(R.styleable.SearchBar_elevation, 0);
     defaultMarginsEnabled = a.getBoolean(R.styleable.SearchBar_defaultMarginsEnabled, true);
     defaultScrollFlagsEnabled = a.getBoolean(R.styleable.SearchBar_defaultScrollFlagsEnabled, true);
@@ -203,7 +204,7 @@ public class SearchBar extends Toolbar {
 
     ViewCompat.setElevation(this, elevation);
     initTextView(textAppearanceResId, text, hint);
-    initBackground(shapeAppearanceModel, elevation, strokeWidth, strokeColor);
+    initBackground(shapeAppearanceModel, backgroundColor, elevation, strokeWidth, strokeColor);
 
     accessibilityManager =
         (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
@@ -275,6 +276,7 @@ public class SearchBar extends Toolbar {
 
   private void initBackground(
       ShapeAppearanceModel shapeAppearance,
+      @ColorInt int backgroundColor,
       float elevation,
       float strokeWidth,
       @ColorInt int strokeColor) {
@@ -285,7 +287,6 @@ public class SearchBar extends Toolbar {
       backgroundShape.setStroke(strokeWidth, strokeColor);
     }
 
-    int backgroundColor = MaterialColors.getColor(this, R.attr.colorSurface);
     int rippleColor = MaterialColors.getColor(this, R.attr.colorControlHighlight);
     Drawable background;
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

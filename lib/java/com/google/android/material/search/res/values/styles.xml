@@ -17,6 +17,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
   <style name="Widget.Material3.SearchBar" parent="android:Widget">
+    <item name="backgroundTint">@macro/m3_comp_search_bar_container_color</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="android:minHeight">@dimen/m3_searchbar_height</item>
     <item name="android:paddingStart">@dimen/m3_searchbar_padding_start</item>
@@ -42,6 +43,7 @@
   </style>
 
   <style name="Widget.Material3.SearchView" parent="android:Widget">
+    <item name="backgroundTint">@macro/m3_comp_search_view_container_color</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="android:elevation">@dimen/m3_searchview_elevation</item>
     <item name="android:textAppearance">@style/TextAppearance.Material3.SearchView</item>

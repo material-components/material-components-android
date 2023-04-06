@@ -49,6 +49,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.window.BackEvent;
+import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
@@ -157,6 +158,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
   private boolean animatedNavigationIcon;
   private boolean animatedMenuItems;
   private boolean autoShowKeyboard;
+  @ColorInt private final int backgroundColor;
   private boolean useWindowInsetsController;
   private boolean statusBarSpacerEnabledOverride;
   @NonNull private TransitionState currentTransitionState = TransitionState.HIDDEN;
@@ -179,6 +181,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.SearchView, defStyleAttr, DEF_STYLE_RES);
 
+    backgroundColor = a.getColor(R.styleable.SearchView_backgroundTint, 0);
     int headerLayoutResId = a.getResourceId(R.styleable.SearchView_headerLayout, -1);
     int textAppearanceResId = a.getResourceId(R.styleable.SearchView_android_textAppearance, -1);
     String text = a.getString(R.styleable.SearchView_android_text);
@@ -330,9 +333,9 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
     if (elevationOverlayProvider == null || backgroundView == null) {
       return;
     }
-    int backgroundColor =
-        elevationOverlayProvider.compositeOverlayWithThemeSurfaceColorIfNeeded(elevation);
-    backgroundView.setBackgroundColor(backgroundColor);
+    int backgroundColorWithOverlay =
+        elevationOverlayProvider.compositeOverlayIfNeeded(backgroundColor, elevation);
+    backgroundView.setBackgroundColor(backgroundColorWithOverlay);
   }
 
   private float getOverlayElevation() {

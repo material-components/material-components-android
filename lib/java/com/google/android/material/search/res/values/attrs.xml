@@ -36,6 +36,8 @@
     <attr name="android:text"/>
     <!-- Hint for the main search TextView. -->
     <attr name="android:hint"/>
+    <!-- Color of the container. -->
+    <attr name="backgroundTint"/>
     <!-- Elevation of the SearchBar. -->
     <attr name="elevation"/>
     <!-- Whether the default margins should be applied to the SearchBar.
@@ -71,6 +73,8 @@
     <attr name="android:text"/>
     <!-- Hint for the main search EditText. -->
     <attr name="android:hint"/>
+    <!-- Color of the container. -->
+    <attr name="backgroundTint"/>
     <!-- Text for the search prefix which appears before the main search EditText. -->
     <attr name="searchPrefixText" format="string"/>
     <!-- Whether a DrawerArrowDrawable should be used for the navigation icon,
