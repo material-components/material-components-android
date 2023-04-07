@@ -150,6 +150,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
   private final SearchViewAnimationHelper searchViewAnimationHelper;
   @NonNull private final MaterialBackOrchestrator backOrchestrator =
       new MaterialBackOrchestrator(this);
+  private final boolean backHandlingEnabled;
   private final ElevationOverlayProvider elevationOverlayProvider;
   private final Set<TransitionListener> transitionListeners = new LinkedHashSet<>();
 
@@ -193,6 +194,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
     animatedMenuItems = a.getBoolean(R.styleable.SearchView_animateMenuItems, true);
     boolean hideNavigationIcon = a.getBoolean(R.styleable.SearchView_hideNavigationIcon, false);
     autoShowKeyboard = a.getBoolean(R.styleable.SearchView_autoShowKeyboard, true);
+    backHandlingEnabled = a.getBoolean(R.styleable.SearchView_backHandlingEnabled, true);
 
     a.recycle();
 
@@ -781,8 +783,9 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
       listener.onStateChanged(this, previousState, state);
     }
 
-    // Only automatically handle back if we have a search bar to collapse to.
-    if (searchBar != null) {
+    // Only automatically handle back if we have a search bar to collapse to, and if back handling
+    // is enabled for the SearchView.
+    if (searchBar != null && backHandlingEnabled) {
       if (state.equals(TransitionState.SHOWN)) {
         backOrchestrator.startListeningForBackCallbacks();
       } else if (state.equals(TransitionState.HIDDEN)) {

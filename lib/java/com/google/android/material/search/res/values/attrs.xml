@@ -99,6 +99,9 @@
     <attr name="autoShowKeyboard" format="boolean"/>
     <!-- Layout resource to inflate as the header. -->
     <attr name="headerLayout"/>
+    <!-- Whether the automatic back handling behavior should be enabled.
+         Default is true. -->
+    <attr name="backHandlingEnabled" format="boolean"/>
   </declare-styleable>
 
 </resources>
