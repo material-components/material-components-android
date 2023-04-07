@@ -18,7 +18,8 @@
 <resources>
   <dimen name="m3_carousel_small_item_default_corner_size">28dp</dimen>
   <dimen name="m3_carousel_debug_keyline_width">2dp</dimen>
-  <dimen name="m3_carousel_small_item_size">56dp</dimen>
+  <dimen name="m3_carousel_small_item_size_min">40dp</dimen>
+  <dimen name="m3_carousel_small_item_size_max">56dp</dimen>
   <dimen name="m3_carousel_extra_small_item_size">10dp</dimen>
   <dimen name="m3_carousel_gone_size">1dp</dimen>
 </resources>
