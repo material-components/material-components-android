@@ -35,11 +35,13 @@ import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
@@ -413,8 +415,16 @@ public class SearchBar extends Toolbar {
 
   @Override
   public void inflateMenu(@MenuRes int resId) {
+    // Pause dispatching item changes during inflation to improve performance.
+    Menu menu = getMenu();
+    if (menu instanceof MenuBuilder) {
+      ((MenuBuilder) menu).stopDispatchingItemsChanged();
+    }
     super.inflateMenu(resId);
     this.menuResId = resId;
+    if (menu instanceof MenuBuilder) {
+      ((MenuBuilder) menu).startDispatchingItemsChanged();
+    }
   }
 
   @Override
