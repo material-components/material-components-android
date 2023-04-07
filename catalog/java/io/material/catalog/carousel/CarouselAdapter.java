@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
 /** An adapter that displays {@link CarouselItem}s for a Carousel. */
@@ -44,10 +45,16 @@ class CarouselAdapter extends ListAdapter<CarouselItem, CarouselItemViewHolder> 
       };
 
   private final CarouselItemListener listener;
+  @LayoutRes private final int itemLayoutRes;
 
   CarouselAdapter(CarouselItemListener listener) {
+    this(listener, R.layout.cat_carousel_item);
+  }
+
+  CarouselAdapter(CarouselItemListener listener, @LayoutRes int itemLayoutRes) {
     super(DIFF_CALLBACK);
     this.listener = listener;
+    this.itemLayoutRes = itemLayoutRes;
   }
 
   @NonNull
@@ -55,7 +62,7 @@ class CarouselAdapter extends ListAdapter<CarouselItem, CarouselItemViewHolder> 
   public CarouselItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int pos) {
     return new CarouselItemViewHolder(
         LayoutInflater.from(viewGroup.getContext())
-            .inflate(R.layout.cat_carousel_item, viewGroup, false), listener);
+            .inflate(itemLayoutRes, viewGroup, false), listener);
   }
 
   @Override

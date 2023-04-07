@@ -97,7 +97,8 @@ public class MultiBrowseDemoFragment extends DemoFragment {
 
     CarouselAdapter adapter =
         new CarouselAdapter(
-            (item, position) -> multiBrowseStartRecyclerView.scrollToPosition(position));
+            (item, position) -> multiBrowseStartRecyclerView.scrollToPosition(position),
+            R.layout.cat_carousel_item_narrow);
 
     itemCountDropdown.setOnItemClickListener(
         (parent, view1, position, id) -> {
