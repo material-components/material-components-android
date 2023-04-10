@@ -74,8 +74,8 @@ public class MaskableFrameLayoutTest {
     assertThat(topRightCornerSize.getCornerSize(maskableFrameLayout.getMaskRectF())).isEqualTo(25F);
   }
 
-  @RequiresApi(api = VERSION_CODES.LOLLIPOP)
-  @Config(sdk = VERSION_CODES.LOLLIPOP)
+  @RequiresApi(api = VERSION_CODES.LOLLIPOP_MR1)
+  @Config(sdk = VERSION_CODES.LOLLIPOP_MR1)
   @Test
   public void testForceCompatClipping_shouldNotUseViewOutlineProvider() {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
@@ -87,10 +87,10 @@ public class MaskableFrameLayoutTest {
     assertThat(maskableFrameLayout.getClipToOutline()).isFalse();
   }
 
-  @RequiresApi(api = VERSION_CODES.LOLLIPOP)
-  @Config(sdk = VERSION_CODES.LOLLIPOP)
+  @RequiresApi(api = VERSION_CODES.LOLLIPOP_MR1)
+  @Config(sdk = VERSION_CODES.LOLLIPOP_MR1)
   @Test
-  public void testRoundedCornersApi21_usesViewOutlineProvider() {
+  public void testRoundedCornersApi22_usesViewOutlineProvider() {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
     ShapeAppearanceModel model = new ShapeAppearanceModel.Builder().setAllCornerSizes(10F).build();
     maskableFrameLayout.setShapeAppearanceModel(model);
@@ -98,10 +98,10 @@ public class MaskableFrameLayoutTest {
     assertThat(maskableFrameLayout.getClipToOutline()).isTrue();
   }
 
-  @RequiresApi(api = VERSION_CODES.LOLLIPOP)
-  @Config(sdk = VERSION_CODES.LOLLIPOP)
+  @RequiresApi(api = VERSION_CODES.LOLLIPOP_MR1)
+  @Config(sdk = VERSION_CODES.LOLLIPOP_MR1)
   @Test
-  public void testCutCornersApi21_doesNotUseViewOutlineProvider() {
+  public void testCutCornersApi22_doesNotUseViewOutlineProvider() {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
     ShapeAppearanceModel model =
         new ShapeAppearanceModel.Builder()
