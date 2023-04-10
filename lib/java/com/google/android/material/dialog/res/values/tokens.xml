@@ -21,7 +21,6 @@
 
   <!-- Generated from token set (md.comp.dialog) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
-  <macro name="m3_comp_dialog_container_color">?attr/colorSurface</macro>
   <macro name="m3_comp_dialog_container_shape">?attr/shapeAppearanceCornerExtraLarge</macro>
   <!-- Enabled - Headline -->
   <macro name="m3_comp_dialog_headline_type">?attr/textAppearanceHeadlineSmall</macro>

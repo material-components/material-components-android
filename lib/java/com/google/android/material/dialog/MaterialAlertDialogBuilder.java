@@ -28,7 +28,6 @@ import android.content.DialogInterface.OnKeyListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.res.ColorStateList;
 import android.content.res.Resources.Theme;
-import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
@@ -42,6 +41,7 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.AttrRes;
+import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,6 +50,7 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -73,7 +74,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
   private static final int MATERIAL_ALERT_DIALOG_THEME_OVERLAY = R.attr.materialAlertDialogTheme;
 
   @Nullable private Drawable background;
-  @NonNull private final Rect backgroundInsets;
+  @NonNull @Dimension private final Rect backgroundInsets;
 
   private static int getMaterialAlertDialogThemeOverlay(@NonNull Context context) {
     TypedValue materialAlertDialogThemeOverlay =
@@ -116,16 +117,12 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
     backgroundInsets =
         MaterialDialogs.getDialogBackgroundInsets(context, DEF_STYLE_ATTR, DEF_STYLE_RES);
 
-    TypedArray a =
-        context.obtainStyledAttributes(
-            /* set= */ null, R.styleable.MaterialAlertDialog, DEF_STYLE_ATTR, DEF_STYLE_RES);
-    int backgroundColor = a.getColor(R.styleable.MaterialAlertDialog_backgroundTint, 0);
-    a.recycle();
-
+    int surfaceColor =
+        MaterialColors.getColor(context, R.attr.colorSurface, getClass().getCanonicalName());
     MaterialShapeDrawable materialShapeDrawable =
         new MaterialShapeDrawable(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
     materialShapeDrawable.initializeElevationOverlay(context);
-    materialShapeDrawable.setFillColor(ColorStateList.valueOf(backgroundColor));
+    materialShapeDrawable.setFillColor(ColorStateList.valueOf(surfaceColor));
 
     // dialogCornerRadius first appeared in Android Pie
     if (Build.VERSION.SDK_INT >= VERSION_CODES.P) {
