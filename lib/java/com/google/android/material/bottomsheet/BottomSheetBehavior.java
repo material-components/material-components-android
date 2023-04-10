@@ -577,11 +577,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (parentHeight - childHeight < insetTop) {
       if (paddingTopSystemWindowInsets) {
         // If the bottomsheet would land in the middle of the status bar when fully expanded add
-        // extra space to make sure it goes all the way.
-        childHeight = parentHeight;
+        // extra space to make sure it goes all the way up or up to max height if it is specified.
+        childHeight = (maxHeight == NO_MAX_SIZE) ? parentHeight : min(parentHeight, maxHeight);
       } else {
         // If we don't want the bottomsheet to go under the status bar we cap its height
-        childHeight = parentHeight - insetTop;
+        int insetHeight = parentHeight - insetTop;
+        childHeight = (maxHeight == NO_MAX_SIZE) ? insetHeight : min(insetHeight, maxHeight);
       }
     }
     fitToContentsOffset = max(0, parentHeight - childHeight);
