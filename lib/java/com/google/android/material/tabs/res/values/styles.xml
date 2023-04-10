@@ -88,6 +88,8 @@
     <item name="badgeStyle">@style/Widget.Material3.Badge.AdjustToBounds</item>
   </style>
 
+  <style name="Widget.Material3.TabLayout" parent="Base.Widget.Material3.TabLayout"/>
+
   <!-- Styles for M3 Tabs used on an elevatable surface. -->
   <style name="Base.Widget.Material3.TabLayout.OnSurface" parent="Widget.Material3.TabLayout">
     <item name="android:background">@android:color/transparent</item>
