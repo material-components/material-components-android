@@ -29,6 +29,7 @@
     <item name="badgeTextAppearance">@style/TextAppearance.MaterialComponents.Badge</item>
     <item name="badgeShapeAppearance">@style/ShapeAppearance.MaterialComponents.Badge</item>
     <item name="badgeWithTextShapeAppearance">@style/ShapeAppearance.MaterialComponents.Badge</item>
+    <item name="autoAdjustToWithinGrandparentBounds">false</item>
   </style>
 
   <style name="Base.TextAppearance.MaterialComponents.Badge" parent="TextAppearance.AppCompat">
@@ -69,6 +70,10 @@
     <item name="badgeTextAppearance">@macro/m3_comp_badge_large_label_text_type</item>
     <item name="badgeWithTextShapeAppearance">@style/ShapeAppearance.M3.Comp.Badge.Shape</item>
     <item name="badgeVerticalPadding">@dimen/m3_badge_with_text_vertical_padding</item>
+  </style>
+
+  <style name="Widget.Material3.Badge.AdjustToBounds" parent="Widget.Material3.Badge">
+    <item name="autoAdjustToWithinGrandparentBounds">true</item>
   </style>
 
 </resources>

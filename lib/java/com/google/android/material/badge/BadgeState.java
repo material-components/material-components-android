@@ -273,6 +273,11 @@ public final class BadgeState {
     currentState.additionalVerticalOffset =
         storedState.additionalVerticalOffset == null ? 0 : storedState.additionalVerticalOffset;
 
+    currentState.autoAdjustToWithinGrandparentBounds =
+        storedState.autoAdjustToWithinGrandparentBounds == null
+            ? a.getBoolean(R.styleable.Badge_autoAdjustToWithinGrandparentBounds, false)
+            : storedState.autoAdjustToWithinGrandparentBounds;
+
     a.recycle();
 
     if (storedState.numberLocale == null) {
@@ -574,6 +579,15 @@ public final class BadgeState {
     currentState.numberLocale = locale;
   }
 
+  boolean isAutoAdjustedToGrandparentBounds() {
+    return currentState.autoAdjustToWithinGrandparentBounds;
+  }
+
+  void setAutoAdjustToGrandparentBounds(boolean autoAdjustToGrandparentBounds) {
+    overridingState.autoAdjustToWithinGrandparentBounds = autoAdjustToGrandparentBounds;
+    currentState.autoAdjustToWithinGrandparentBounds = autoAdjustToGrandparentBounds;
+  }
+
   private static int readColorFromAttributes(
       Context context, @NonNull TypedArray a, @StyleableRes int index) {
     return MaterialResources.getColorStateList(context, a, index).getDefaultColor();
@@ -638,6 +652,8 @@ public final class BadgeState {
     @Dimension(unit = Dimension.PX)
     private Integer additionalVerticalOffset;
 
+    private Boolean autoAdjustToWithinGrandparentBounds;
+
     public State() {}
 
     State(@NonNull Parcel in) {
@@ -667,6 +683,7 @@ public final class BadgeState {
       additionalVerticalOffset = (Integer) in.readSerializable();
       isVisible = (Boolean) in.readSerializable();
       numberLocale = (Locale) in.readSerializable();
+      autoAdjustToWithinGrandparentBounds = (Boolean) in.readSerializable();
     }
 
     public static final Creator<State> CREATOR =
@@ -719,6 +736,7 @@ public final class BadgeState {
       dest.writeSerializable(additionalVerticalOffset);
       dest.writeSerializable(isVisible);
       dest.writeSerializable(numberLocale);
+      dest.writeSerializable(autoAdjustToWithinGrandparentBounds);
     }
   }
 }

@@ -35,6 +35,7 @@
   <public name="badgeShapeAppearance" type="attr"/>
   <public name="badgeWithTextShapeAppearance" type="attr"/>
   <public name="badgeShapeAppearanceOverlay" type="attr"/>
+  <public name="autoAdjustToWithinGrandparentBounds" type="attr"/>
   <public name="badgeWithTextShapeAppearanceOverlay" type="attr"/>
   <public name="Widget.MaterialComponents.Badge" type="style"/>
   <public name="Widget.Material3.Badge" type="style"/>

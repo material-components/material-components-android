@@ -91,6 +91,9 @@
          badge has text. If this is not defined, it will default to
          verticalOffset's value. -->
     <attr name="verticalOffsetWithText" format="dimension"/>
+    <!-- Automatically move the badge so it is within the anchor view's
+         grandparent's bounds. -->
+    <attr name="autoAdjustToWithinGrandparentBounds" format="boolean"/>
   </declare-styleable>
 
 </resources>

@@ -81,9 +81,12 @@
     <item name="tabRippleColor">@color/m3_tabs_ripple_color</item>
     <item name="tabIndicatorFullWidth">false</item>
     <item name="tabIndicatorAnimationDuration">?attr/motionDurationLong2</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.TabLayout</item>
   </style>
 
-  <style name="Widget.Material3.TabLayout" parent="Base.Widget.Material3.TabLayout"/>
+  <style name="ThemeOverlay.Material3.TabLayout" parent="">
+    <item name="badgeStyle">@style/Widget.Material3.Badge.AdjustToBounds</item>
+  </style>
 
   <!-- Styles for M3 Tabs used on an elevatable surface. -->
   <style name="Base.Widget.Material3.TabLayout.OnSurface" parent="Widget.Material3.TabLayout">

@@ -104,7 +104,7 @@ center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
 | Offset Alignment      | `app:offsetAlignmentMode`                                                                                                                                |
 | Horizontal Padding    | `app:badgeWidePadding`                                                                                                                                   |
 | Vertical Padding      | `app:badgeVerticalPadding`                                                                                                                               |
-
+| Auto Adjust           | `app:autoAdjustToWithinGrandparentBounds`                                                                                                                |
 **Note:** If both `app:badgeText` and `app:number` are specified, the badge label will be `app:badgeText`.
 
 ### Talkback Support
