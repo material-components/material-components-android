@@ -44,7 +44,7 @@ import com.google.android.material.animation.AnimationUtils;
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelper {
+public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelper<View> {
 
   private final float maxScaleXDistance;
   private final float maxScaleYDistance;

@@ -25,14 +25,19 @@ import android.window.BackEvent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.core.view.animation.PathInterpolatorCompat;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /**
  * Base helper class for views that support back handling, which assists with common animation
  * details and back event validation.
+ *
+ * @hide
  */
-abstract class MaterialBackAnimationHelper {
+@RestrictTo(Scope.LIBRARY_GROUP)
+public abstract class MaterialBackAnimationHelper<V extends View> {
 
   private static final int HIDE_DURATION_MAX_DEFAULT = 300;
   private static final int HIDE_DURATION_MIN_DEFAULT = 150;
@@ -40,14 +45,14 @@ abstract class MaterialBackAnimationHelper {
 
   @NonNull private final TimeInterpolator progressInterpolator;
 
-  @NonNull protected final View view;
+  @NonNull protected final V view;
   protected final int hideDurationMax;
   protected final int hideDurationMin;
   protected final int cancelDuration;
 
   @Nullable private BackEvent backEvent;
 
-  public MaterialBackAnimationHelper(@NonNull View view) {
+  public MaterialBackAnimationHelper(@NonNull V view) {
     this.view = view;
 
     Context context = view.getContext();

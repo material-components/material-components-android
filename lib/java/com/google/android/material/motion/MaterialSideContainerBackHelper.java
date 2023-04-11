@@ -49,7 +49,7 @@ import com.google.android.material.animation.AnimationUtils;
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper {
+public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper<View> {
 
   private final float maxScaleXDistanceShrink;
   private final float maxScaleXDistanceGrow;

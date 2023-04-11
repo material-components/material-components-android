@@ -51,7 +51,7 @@ import com.google.android.material.internal.ViewUtils;
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper {
+public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper<View> {
 
   private static final float MIN_SCALE = 0.9f;
 
