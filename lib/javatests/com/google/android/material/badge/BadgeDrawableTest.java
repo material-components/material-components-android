@@ -93,6 +93,8 @@ public class BadgeDrawableTest {
     badgeDrawable.setBackgroundColor(testBackgroundColor);
     badgeDrawable.setBadgeTextColor(testBadgeTextColor);
     badgeDrawable.setVisible(false);
+    badgeDrawable.setMaxNumber(999);
+    badgeDrawable.setMaxCharacterCount(4);
     badgeDrawable.setBadgeNumberLocale(TEST_BADGE_NUMBER_LOCALE);
 
     Parcel parcel = Parcel.obtain();
@@ -109,6 +111,7 @@ public class BadgeDrawableTest {
     // Values based on the default badge style.
     assertThat(restoredBadgeDrawable.getAlpha()).isEqualTo(255);
     assertThat(restoredBadgeDrawable.getMaxCharacterCount()).isEqualTo(4);
+    assertThat(restoredBadgeDrawable.getMaxNumber()).isEqualTo(999);
     assertThat(restoredBadgeDrawable.getBadgeGravity()).isEqualTo(BadgeDrawable.TOP_START);
     // badge padding
     assertThat(restoredBadgeDrawable.getHorizontalPadding()).isEqualTo(TEST_BADGE_HORIZONTAL_PADDING);

@@ -42,6 +42,7 @@
     <attr name="backgroundColor" format="color"/>
     <attr name="badgeTextColor" format="color"/>
     <attr name="maxCharacterCount" format="integer"/>
+    <attr name="maxNumber" format="integer"/>
     <attr name="badgeText" format="string"/>
     <attr name="number" format="integer"/>
     <attr name="badgeGravity">
@@ -61,7 +62,7 @@
     <!-- Shape appearance overlay style reference for the badge without text (a "dot").
           To be used to augment attributes declared in the badgeWithTextShapeAppearance. -->
     <attr name="badgeShapeAppearanceOverlay" format="reference"/>
-     <!-- Shape appearance style reference for the badge with text. -->
+    <!-- Shape appearance style reference for the badge with text. -->
     <attr name="badgeWithTextShapeAppearance" format="reference"/>
     <!-- Shape appearance overlay style reference for the badge with text.
           To be used to augment attributes declared in the badgeWithTextShapeAppearance. -->

@@ -23,7 +23,7 @@
     <item name="badgeWithTextHeight">@dimen/mtrl_badge_with_text_size</item>
     <item name="badgeWidePadding">@dimen/mtrl_badge_long_text_horizontal_padding</item>
     <item name="backgroundColor">?attr/colorError</item>
-    <item name="maxCharacterCount">@integer/mtrl_badge_max_character_count</item>
+    <item name="maxNumber">999</item>
     <item name="badgeGravity">TOP_END</item>
     <item name="offsetAlignmentMode">legacy</item>
     <item name="badgeTextAppearance">@style/TextAppearance.MaterialComponents.Badge</item>

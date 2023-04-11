@@ -19,6 +19,7 @@ package com.google.android.material.badge;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.badge.BadgeDrawable.BADGE_CONTENT_NOT_TRUNCATED;
 import static com.google.android.material.badge.BadgeDrawable.BADGE_RADIUS_NOT_SPECIFIED;
 import static com.google.android.material.badge.BadgeDrawable.OFFSET_ALIGNMENT_MODE_LEGACY;
 import static com.google.android.material.badge.BadgeDrawable.TOP_END;
@@ -60,11 +61,6 @@ import java.util.Locale;
  */
 @RestrictTo(LIBRARY_GROUP)
 public final class BadgeState {
-  /**
-   * Maximum number of characters a badge supports displaying by default. It could be changed using
-   * {@link BadgeDrawable#setMaxCharacterCount(int)}.
-   */
-  private static final int DEFAULT_MAX_BADGE_CHARACTER_COUNT = 4;
 
   private static final String BADGE_RESOURCE_TAG = "badge";
 
@@ -149,8 +145,7 @@ public final class BadgeState {
       currentState.text = a.getString(R.styleable.Badge_badgeText);
     }
 
-    currentState.contentDescriptionForText = storedState.contentDescriptionForText == null
-        ? currentState.text : storedState.contentDescriptionForText;
+    currentState.contentDescriptionForText = storedState.contentDescriptionForText;
 
     currentState.contentDescriptionNumberless =
         storedState.contentDescriptionNumberless == null
@@ -171,8 +166,13 @@ public final class BadgeState {
 
     currentState.maxCharacterCount =
         storedState.maxCharacterCount == State.NOT_SET
-            ? a.getInt(R.styleable.Badge_maxCharacterCount, DEFAULT_MAX_BADGE_CHARACTER_COUNT)
+            ? a.getInt(R.styleable.Badge_maxCharacterCount, BADGE_CONTENT_NOT_TRUNCATED)
             : storedState.maxCharacterCount;
+
+    currentState.maxNumber =
+        storedState.maxNumber == State.NOT_SET
+            ? a.getInt(R.styleable.Badge_maxNumber, BADGE_CONTENT_NOT_TRUNCATED)
+            : storedState.maxNumber;
 
     currentState.badgeShapeAppearanceResId =
         storedState.badgeShapeAppearanceResId == null
@@ -374,6 +374,15 @@ public final class BadgeState {
   void setMaxCharacterCount(int maxCharacterCount) {
     overridingState.maxCharacterCount = maxCharacterCount;
     currentState.maxCharacterCount = maxCharacterCount;
+  }
+
+  int getMaxNumber() {
+    return currentState.maxNumber;
+  }
+
+  void setMaxNumber(int maxNumber) {
+    overridingState.maxNumber = maxNumber;
+    currentState.maxNumber = maxNumber;
   }
 
   @ColorInt
@@ -620,6 +629,7 @@ public final class BadgeState {
     @Nullable private String text;
     private int number = NOT_SET;
     private int maxCharacterCount = NOT_SET;
+    private int maxNumber = NOT_SET;
     private Locale numberLocale;
 
     @Nullable private CharSequence contentDescriptionForText;
@@ -669,6 +679,7 @@ public final class BadgeState {
       text = in.readString();
       number = in.readInt();
       maxCharacterCount = in.readInt();
+      maxNumber = in.readInt();
       contentDescriptionForText = in.readString();
       contentDescriptionNumberless = in.readString();
       contentDescriptionQuantityStrings = in.readInt();
@@ -720,6 +731,7 @@ public final class BadgeState {
       dest.writeString(text);
       dest.writeInt(number);
       dest.writeInt(maxCharacterCount);
+      dest.writeInt(maxNumber);
       dest.writeString(
           contentDescriptionForText != null ? contentDescriptionForText.toString() : null);
       dest.writeString(

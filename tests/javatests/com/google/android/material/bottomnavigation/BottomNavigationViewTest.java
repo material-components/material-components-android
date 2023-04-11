@@ -695,7 +695,7 @@ public class BottomNavigationViewTest {
 
           assertTrue(testView.getBadge(R.id.destination_home).isVisible());
           assertEquals(75, testView.getBadge(R.id.destination_home).getNumber());
-          assertEquals(4, testView.getBadge(R.id.destination_home).getMaxCharacterCount());
+          assertEquals(999, testView.getBadge(R.id.destination_home).getMaxNumber());
         });
   }
 
