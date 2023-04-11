@@ -29,6 +29,7 @@
   </declare-styleable>
 
   <declare-styleable name="MaterialAlertDialog">
+    <attr name="backgroundTint"/>
     <attr name="backgroundInsetStart" format="dimension"/>
     <attr name="backgroundInsetTop" format="dimension"/>
     <attr name="backgroundInsetEnd" format="dimension"/>
