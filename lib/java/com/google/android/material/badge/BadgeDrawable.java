@@ -158,7 +158,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * If the badge string exceeds the maximum allowed number of characters, append this suffix to the
    * truncated badge text and display it as the badge text instead.
    */
-  static final String DEFAULT_EXCEED_MAX_BADGE_TEXT_SUFFIX = "…";
+  static final String DEFAULT_EXCEED_MAX_BADGE_TEXT_SUFFIX = "\u2026";
 
   /**
    * The badge offset begins at the edge of the anchor.
