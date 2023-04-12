@@ -102,6 +102,9 @@
     <item name="actionMenuTextColor">?attr/colorOnSurfaceVariant</item>
     <item name="colorControlNormal">?attr/colorOnSurfaceVariant</item>
     <item name="actionOverflowButtonStyle">@style/Widget.Material3.Search.ActionButton.Overflow</item>
+    <item name="materialSearchViewPrefixStyle">@style/Widget.Material3.SearchView.Prefix</item>
+    <item name="materialSearchViewToolbarHeight">@dimen/m3_searchview_height</item>
+    <item name="materialSearchViewToolbarStyle">@style/Widget.Material3.SearchView.Toolbar</item>
     <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.Search.Toolbar.Button.Navigation</item>
   </style>
 
