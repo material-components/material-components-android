@@ -149,13 +149,19 @@ class UtcDates {
     return format;
   }
 
+  static DateFormat getNormalizedFormat(@NonNull DateFormat dateFormat) {
+    DateFormat clone = (DateFormat) dateFormat.clone();
+    clone.setTimeZone(getTimeZone());
+    return clone;
+  }
+
   static SimpleDateFormat getDefaultTextInputFormat() {
     String defaultFormatPattern =
         ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))
             .toPattern()
             .replaceAll("\\s+", "");
     SimpleDateFormat format = new SimpleDateFormat(defaultFormatPattern, Locale.getDefault());
-    format.setTimeZone(UtcDates.getTimeZone());
+    format.setTimeZone(getTimeZone());
     format.setLenient(false);
     return format;
   }

@@ -23,6 +23,7 @@ import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.core.app.ApplicationProvider;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,5 +83,16 @@ public class UtcDatesTest {
     String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
 
     assertEquals("년.월.일.", hint);
+  }
+
+  @Test
+  public void normalizeTextInputFormat() {
+    SimpleDateFormat sdf = new SimpleDateFormat("M/d/y");
+    sdf.setTimeZone(TimeZone.getTimeZone("US/Pacific"));
+
+    SimpleDateFormat normalized = (SimpleDateFormat) UtcDates.getNormalizedFormat(sdf);
+
+    assertEquals(TimeZone.getTimeZone("US/Pacific"), sdf.getTimeZone());
+    assertEquals(TimeZone.getTimeZone("UTC"), normalized.getTimeZone());
   }
 }
