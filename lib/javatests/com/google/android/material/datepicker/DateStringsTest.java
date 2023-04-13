@@ -310,7 +310,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ false,
             /* isEndOfRange= */ false);
 
-    assertThat(contentDescription, is("Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Monday, November 30, 2020"));
   }
 
   @Test
@@ -324,7 +324,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ true,
             /* isEndOfRange= */ false);
 
-    assertThat(contentDescription, is("Start date Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Start date Monday, November 30, 2020"));
   }
 
   @Test
@@ -338,7 +338,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ false,
             /* isEndOfRange= */ true);
 
-    assertThat(contentDescription, is("End date Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("End date Monday, November 30, 2020"));
   }
 
   @Test
@@ -352,7 +352,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ true,
             /* isEndOfRange= */ true);
 
-    assertThat(contentDescription, is("Start date Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Start date Monday, November 30, 2020"));
   }
 
   @Test
@@ -366,7 +366,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ false,
             /* isEndOfRange= */ false);
 
-    assertThat(contentDescription, is("Today Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Today Monday, November 30, 2020"));
   }
 
   @Test
@@ -380,7 +380,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ true,
             /* isEndOfRange= */ false);
 
-    assertThat(contentDescription, is("Start date Today Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Start date Today Monday, November 30, 2020"));
   }
 
   @Test
@@ -394,7 +394,7 @@ public class DateStringsTest {
             /* isStartOfRange= */ false,
             /* isEndOfRange= */ true);
 
-    assertThat(contentDescription, is("End date Today Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("End date Today Monday, November 30, 2020"));
   }
 
   @Test
@@ -408,7 +408,21 @@ public class DateStringsTest {
             /* isStartOfRange= */ true,
             /* isEndOfRange= */ true);
 
-    assertThat(contentDescription, is("Start date Today Mon, Nov 30, 2020"));
+    assertThat(contentDescription, is("Start date Today Monday, November 30, 2020"));
+  }
+
+  @Test
+  public void getLocalizedDayContentDescription_german() {
+    startDate = setupLocalizedCalendar(Locale.GERMAN, 2020, 10, 30);
+    String contentDescription =
+        DateStrings.getDayContentDescription(
+            ApplicationProvider.getApplicationContext(),
+            startDate.getTimeInMillis(),
+            /* isToday= */ false,
+            /* isStartOfRange= */ false,
+            /* isEndOfRange= */ false);
+
+    assertThat(contentDescription, is("Montag, 30. November 2020"));
   }
 
   @Test

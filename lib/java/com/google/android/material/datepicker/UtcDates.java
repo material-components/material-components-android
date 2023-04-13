@@ -212,13 +212,13 @@ class UtcDates {
   }
 
   @TargetApi(VERSION_CODES.N)
-  static android.icu.text.DateFormat getAbbrMonthWeekdayDayFormat(Locale locale) {
-    return getAndroidFormat(android.icu.text.DateFormat.ABBR_MONTH_WEEKDAY_DAY, locale);
+  static android.icu.text.DateFormat getMonthWeekdayDayFormat(Locale locale) {
+    return getAndroidFormat(android.icu.text.DateFormat.MONTH_WEEKDAY_DAY, locale);
   }
 
   @TargetApi(VERSION_CODES.N)
-  static android.icu.text.DateFormat getYearAbbrMonthWeekdayDayFormat(Locale locale) {
-    return getAndroidFormat(android.icu.text.DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY, locale);
+  static android.icu.text.DateFormat getYearMonthWeekdayDayFormat(Locale locale) {
+    return getAndroidFormat(android.icu.text.DateFormat.YEAR_MONTH_WEEKDAY_DAY, locale);
   }
 
   static DateFormat getMediumFormat() {
