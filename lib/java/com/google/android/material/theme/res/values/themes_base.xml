@@ -161,6 +161,8 @@
     <item name="navigationViewStyle">@style/Widget.Material3.NavigationView</item>
     <item name="materialSearchBarStyle">@style/Widget.Material3.SearchBar</item>
     <item name="materialSearchViewStyle">@style/Widget.Material3.SearchView</item>
+    <item name="materialSearchViewToolbarHeight">@dimen/m3_searchview_height</item>
+    <item name="materialSearchViewToolbarStyle">@style/Widget.Material3.SearchView.Toolbar</item>
     <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
     <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
@@ -422,6 +424,8 @@
     <item name="navigationViewStyle">@style/Widget.Material3.NavigationView</item>
     <item name="materialSearchBarStyle">@style/Widget.Material3.SearchBar</item>
     <item name="materialSearchViewStyle">@style/Widget.Material3.SearchView</item>
+    <item name="materialSearchViewToolbarHeight">@dimen/m3_searchview_height</item>
+    <item name="materialSearchViewToolbarStyle">@style/Widget.Material3.SearchView.Toolbar</item>
     <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
     <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
