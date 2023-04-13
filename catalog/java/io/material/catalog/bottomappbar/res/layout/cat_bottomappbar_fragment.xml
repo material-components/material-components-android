@@ -44,7 +44,7 @@
 
   <LinearLayout
       android:id="@+id/bottom_drawer"
-      style="@style/Widget.Material3.BottomSheet"
+      style="@style/Widget.Catalog.BottomSheet"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
