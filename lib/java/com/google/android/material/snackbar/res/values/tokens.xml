@@ -21,6 +21,7 @@
 
   <!-- Generated from token set (md.comp.snackbar) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
+  <macro name="m3_comp_snackbar_container_color">?attr/colorSurfaceInverse</macro>
   <dimen name="m3_comp_snackbar_container_elevation">@dimen/m3_sys_elevation_level3</dimen>
   <macro name="m3_comp_snackbar_container_shape">?attr/shapeAppearanceCornerExtraSmall</macro>
   <!-- Enabled - Supporting text -->

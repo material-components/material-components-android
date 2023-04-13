@@ -70,7 +70,7 @@
   <style name="Base.Widget.Material3.Snackbar" parent="Base.Widget.MaterialComponents.Snackbar">
     <item name="enforceMaterialTheme">true</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Snackbar</item>
-    <item name="backgroundTint">?attr/colorSurfaceInverse</item>
+    <item name="backgroundTint">@macro/m3_comp_snackbar_container_color</item>
     <item name="actionTextColorAlpha">@dimen/m3_snackbar_action_text_color_alpha</item>
   </style>
 
