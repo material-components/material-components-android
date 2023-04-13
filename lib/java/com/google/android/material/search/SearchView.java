@@ -543,6 +543,15 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
     searchViewAnimationHelper.setSearchBar(searchBar);
     if (searchBar != null) {
       searchBar.setOnClickListener(v -> show());
+      if (BuildCompat.isAtLeastU()) {
+        try {
+          searchBar.setHandwritingDelegatorCallback(this::show);
+          editText.setIsHandwritingDelegate(true);
+        } catch (LinkageError e) {
+          // Running on a device with an older build of Android U
+          // TODO(b/274154553): Remove try/catch block after Android U Beta 1 is released
+        }
+      }
     }
     updateNavigationIconIfNeeded();
     setUpBackgroundViewElevationOverlay();
