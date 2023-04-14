@@ -1444,10 +1444,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         && viewRef.get() != null
         && VERSION.SDK_INT >= VERSION_CODES.S) {
       V view = viewRef.get();
-      int[] location = new int[2];
-      view.getLocationOnScreen(location);
       // Only use device corner radius if sheet is touching top of screen.
-      if (location[1] == 0) {
+      if (isAtTopOfScreen()) {
         final WindowInsets insets = view.getRootWindowInsets();
         if (insets != null) {
           float topLeftInterpolation =
@@ -1477,9 +1475,18 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return 0;
   }
 
+  private boolean isAtTopOfScreen() {
+    if (viewRef == null || viewRef.get() == null) {
+      return false;
+    }
+    int[] location = new int[2];
+    viewRef.get().getLocationOnScreen(location);
+    return location[1] == 0;
+  }
+
   private boolean isExpandedAndShouldRemoveCorners() {
     // Only remove corners when it's full screen.
-    return state == STATE_EXPANDED && (shouldRemoveExpandedCorners || getExpandedOffset() == 0);
+    return state == STATE_EXPANDED && (shouldRemoveExpandedCorners || isAtTopOfScreen());
   }
 
   private int calculatePeekHeight() {
