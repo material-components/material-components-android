@@ -347,7 +347,7 @@ class SearchViewAnimationHelper {
     Rect clipBounds = new Rect(fromClipBounds);
 
     float fromCornerRadius = searchBar.getCornerSize();
-    float toCornerRadius = max(rootView.getCornerRadius(), backHelper.getDeviceCornerRadius());
+    float toCornerRadius = max(rootView.getCornerRadius(), backHelper.getExpandedCornerSize());
 
     ValueAnimator animator =
         ValueAnimator.ofObject(new RectEvaluator(clipBounds), fromClipBounds, toClipBounds);

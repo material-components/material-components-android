@@ -61,7 +61,7 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
   private float initialTouchY;
   @Nullable private Rect initialHideToClipBounds;
   @Nullable private Rect initialHideFromClipBounds;
-  @Nullable private Integer deviceCornerRadius;
+  @Nullable private Integer expandedCornerSize;
 
   public MaterialMainContainerBackHelper(@NonNull View view) {
     super(view);
@@ -132,7 +132,7 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
     view.setTranslationY(translationY);
     if (view instanceof ClippableRoundedCornerLayout) {
       ((ClippableRoundedCornerLayout) view)
-          .updateCornerRadius(lerp(getDeviceCornerRadius(), collapsedCornerSize, progress));
+          .updateCornerRadius(lerp(getExpandedCornerSize(), collapsedCornerSize, progress));
     }
   }
 
@@ -187,18 +187,24 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
       ClippableRoundedCornerLayout clippableRoundedCornerLayout) {
     ValueAnimator cornerAnimator =
         ValueAnimator.ofFloat(
-            clippableRoundedCornerLayout.getCornerRadius(), getDeviceCornerRadius());
+            clippableRoundedCornerLayout.getCornerRadius(), getExpandedCornerSize());
     cornerAnimator.addUpdateListener(
         animation ->
             clippableRoundedCornerLayout.updateCornerRadius((Float) animation.getAnimatedValue()));
     return cornerAnimator;
   }
 
-  public int getDeviceCornerRadius() {
-    if (deviceCornerRadius == null) {
-      deviceCornerRadius = getMaxDeviceCornerRadius();
+  public int getExpandedCornerSize() {
+    if (expandedCornerSize == null) {
+      expandedCornerSize = isAtTopOfScreen() ? getMaxDeviceCornerRadius() : 0;
     }
-    return deviceCornerRadius;
+    return expandedCornerSize;
+  }
+
+  private boolean isAtTopOfScreen() {
+    int[] location = new int[2];
+    view.getLocationOnScreen(location);
+    return location[1] == 0;
   }
 
   private int getMaxDeviceCornerRadius() {
