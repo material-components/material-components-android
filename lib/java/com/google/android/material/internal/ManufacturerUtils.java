@@ -15,9 +15,8 @@
  */
 package com.google.android.material.internal;
 
-import com.google.android.material.R;
-
 import android.os.Build;
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import java.util.Locale;
@@ -33,17 +32,17 @@ public class ManufacturerUtils {
 
   /** Returns true if the device manufacturer is Meizu. */
   public static boolean isMeizuDevice() {
-    return Build.MANUFACTURER.toLowerCase(Locale.ENGLISH).equals(MEIZU);
+    return getManufacturer().equals(MEIZU);
   }
 
   /** Returns true if the device manufacturer is LG. */
   public static boolean isLGEDevice() {
-    return Build.MANUFACTURER.toLowerCase(Locale.ENGLISH).equals(LGE);
+    return getManufacturer().equals(LGE);
   }
 
   /** Returns true if the device manufacturer is Samsung. */
   public static boolean isSamsungDevice() {
-    return Build.MANUFACTURER.toLowerCase(Locale.ENGLISH).equals(SAMSUNG);
+    return getManufacturer().equals(SAMSUNG);
   }
 
   /**
@@ -51,5 +50,15 @@ public class ManufacturerUtils {
    */
   public static boolean isDateInputKeyboardMissingSeparatorCharacters() {
     return isLGEDevice() || isSamsungDevice();
+  }
+
+  @NonNull
+  private static String getManufacturer() {
+    final String manufacturer = Build.MANUFACTURER;
+    if (manufacturer != null) {
+      return manufacturer.toLowerCase(Locale.ENGLISH);
+    } else {
+      return "";
+    }
   }
 }
