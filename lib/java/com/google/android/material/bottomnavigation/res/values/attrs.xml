@@ -26,6 +26,11 @@
     <attr name="android:minHeight" />
     <!-- Whether or not to add a shadow with a divider that is compatible across pre-21 legacy backgrounds. -->
     <attr name="compatShadowEnabled" format="boolean"/>
+    <!-- Shape appearance style reference for BottomNavigationView. Attribute declaration is in the Shape package. -->
+    <attr name="shapeAppearance"/>
+    <!-- Shape appearance overlay style reference for BottomNavigationView. To be used to augment
+         attributes declared in the shapeAppearance. Attribute declaration is in the Shape package. -->
+    <attr name="shapeAppearanceOverlay"/>
   </declare-styleable>
 
 </resources>

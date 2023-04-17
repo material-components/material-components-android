@@ -22,6 +22,7 @@
   <!-- Generated from token set (md.comp.navigation-bar) in context (platform=android, audience=3p). -->
   <!-- Enabled - Container -->
   <macro name="m3_comp_navigation_bar_container_color">?attr/colorSurface</macro>
+  <style name="ShapeAppearance.M3.Comp.NavigationBar.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.None"/>
   <dimen name="m3_comp_navigation_bar_container_height">80dp</dimen>
   <dimen name="m3_comp_navigation_bar_container_elevation">@dimen/m3_sys_elevation_level2</dimen>
   <!-- Enabled - Label text -->

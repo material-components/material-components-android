@@ -79,6 +79,7 @@
     <item name="itemPaddingBottom">@dimen/m3_bottom_nav_item_padding_bottom</item>
     <item name="android:minHeight">@dimen/m3_bottom_nav_min_height</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.BottomNavigationView</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationBar.Container.Shape</item>
   </style>
 
   <style name="Widget.Material3.BottomNavigationView" parent="Base.Widget.Material3.BottomNavigationView">
