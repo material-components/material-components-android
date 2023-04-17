@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2023 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/coordinator_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:fitsSystemWindows="true">
+
+  <ScrollView
+    android:id="@+id/cat_tabs_controllable_scrollview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
+
+      <LinearLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center_horizontal"
+        android:orientation="vertical">
+
+        <androidx.viewpager2.widget.ViewPager2
+          android:id="@+id/viewpager"
+          android:layout_width="match_parent"
+          android:layout_height="100dp"/>
+      </LinearLayout>
+
+      <GridLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:padding="@dimen/cat_tabs_standard_spacing"
+        android:columnCount="2">
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:labelFor="@+id/toggle_icons_switch"
+          android:text="@string/cat_tabs_icon_switch_label"/>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@id/toggle_icons_switch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checked="true"
+          app:showText="false"/>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:labelFor="@+id/toggle_labels_switch"
+          android:text="@string/cat_tabs_labels_switch_label"/>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@id/toggle_labels_switch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checked="true"
+          app:showText="false"/>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center_vertical"
+          android:text="@string/cat_tabs_gravity_selector_label"/>
+
+        <RadioGroup
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checkedButton="@+id/tabs_gravity_fill_button"
+          android:orientation="horizontal">
+          <RadioButton
+            android:id="@+id/tabs_gravity_fill_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/cat_tabs_small_spacing"
+            android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
+            android:text="@string/cat_tabs_gravity_fill"/>
+          <RadioButton
+            android:id="@+id/tabs_gravity_center_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/cat_tabs_small_spacing"
+            android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
+            android:text="@string/cat_tabs_gravity_center"/>
+        </RadioGroup>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center_vertical"
+          android:text="@string/cat_tabs_animation_mode_selector_label"/>
+
+        <RadioGroup
+          android:id="@+id/cat_tabs_animation_mode_group"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+          <RadioButton
+            android:id="@+id/tabs_animation_mode_linear_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/cat_tabs_small_spacing"
+            android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
+            android:text="@string/cat_tabs_animation_mode_linear"/>
+          <RadioButton
+            android:id="@+id/tabs_animation_mode_elastic_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/cat_tabs_small_spacing"
+            android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
+            android:text="@string/cat_tabs_animation_mode_elastic"/>
+          <RadioButton
+            android:id="@+id/tabs_animation_mode_fade_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/cat_tabs_small_spacing"
+            android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
+            android:text="@string/cat_tabs_animation_mode_fade"/>
+        </RadioGroup>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:labelFor="@+id/toggle_inline_switch"
+          android:text="@string/cat_tabs_inline_switch_label"/>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@id/toggle_inline_switch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checked="false"
+          app:showText="false"/>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end"
+          android:labelFor="@+id/toggle_full_width_switch"
+          android:text="@string/cat_tabs_full_width_switch_label"/>
+
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@id/toggle_full_width_switch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checked="false"
+          app:showText="false"/>
+
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center_vertical"
+          android:labelFor="@+id/selector_spinner"
+          android:text="@string/cat_tabs_indicator_spinner_label"/>
+
+        <Spinner
+          android:id="@id/selector_spinner"
+          android:layout_width="wrap_content"
+          android:layout_height="48dp"/>
+
+      </GridLayout>
+    </LinearLayout>
+  </ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -77,6 +77,13 @@ public class TabsFragment extends DemoLandingFragment {
             return new TabsAutoDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_tabs_viewpager_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TabsViewPagerDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

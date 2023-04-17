@@ -50,6 +50,7 @@
   <string name="cat_tabs_controllable_demo_title">Controllable Tabs Demo</string>
   <string name="cat_tabs_scrollable_demo_title">Scrollable Tabs Demo</string>
   <string name="cat_tabs_auto_demo_title">Auto Tabs Demo</string>
+  <string name="cat_tabs_viewpager_demo_title">Tabs with Viewpager Demo</string>
   <string name="cat_tabs_auto_scrollable_explanation">
     Tabs in \"auto\" mode behave like fixed tabs with tabGravity = \"center\" when the tabs are less
     wide than the screen, and behave like scrollable tabs when the tabs are wider than the screen.
