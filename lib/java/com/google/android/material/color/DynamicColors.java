@@ -39,6 +39,7 @@ import com.google.android.material.resources.MaterialAttributes;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /** Utility for applying dynamic colors to application/activities. */
@@ -366,9 +367,10 @@ public class DynamicColors {
       return true;
     }
     DeviceSupportCondition deviceSupportCondition =
-        DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS.get(Build.MANUFACTURER.toLowerCase());
+        DYNAMIC_COLOR_SUPPORTED_MANUFACTURERS.get(Build.MANUFACTURER.toLowerCase(Locale.ROOT));
     if (deviceSupportCondition == null) {
-      deviceSupportCondition = DYNAMIC_COLOR_SUPPORTED_BRANDS.get(Build.BRAND.toLowerCase());
+      deviceSupportCondition =
+          DYNAMIC_COLOR_SUPPORTED_BRANDS.get(Build.BRAND.toLowerCase(Locale.ROOT));
     }
     return deviceSupportCondition != null && deviceSupportCondition.isSupported();
   }
