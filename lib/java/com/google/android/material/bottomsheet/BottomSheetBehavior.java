@@ -1365,6 +1365,26 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
+   * Sets whether the bottom sheet should remove its corners when it reaches the expanded state.
+   *
+   * <p>If false, the bottom sheet will only remove its corners if it is expanded and reaches the
+   * top of the screen.
+   */
+  public void setShouldRemoveExpandedCorners(boolean shouldRemoveExpandedCorners) {
+    if (this.shouldRemoveExpandedCorners != shouldRemoveExpandedCorners) {
+      this.shouldRemoveExpandedCorners = shouldRemoveExpandedCorners;
+      updateDrawableForTargetState(getState(), /* animate= */ true);
+    }
+  }
+
+  /**
+   * Returns whether the bottom sheet will remove its corners when it reaches the expanded state.
+   */
+  public boolean isShouldRemoveExpandedCorners() {
+    return shouldRemoveExpandedCorners;
+  }
+
+  /**
    * Gets the current state of the bottom sheet.
    *
    * @return One of {@link #STATE_EXPANDED}, {@link #STATE_HALF_EXPANDED}, {@link #STATE_COLLAPSED},
