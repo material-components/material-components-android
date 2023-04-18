@@ -572,9 +572,12 @@ public final class DynamicColor {
    *
    * <p>T60 used as to create the smallest discontinuity possible when skipping down to T49 in order
    * to ensure light foregrounds.
+   *
+   * <p>Since `tertiaryContainer` in dark monochrome scheme requires a tone of 60, it should not be
+   * adjusted. Therefore, 60 is excluded here.
    */
   public static boolean tonePrefersLightForeground(double tone) {
-    return Math.round(tone) <= 60;
+    return Math.round(tone) < 60;
   }
 
   /** Tones less than ~T50 always permit white at 4.5 contrast. */

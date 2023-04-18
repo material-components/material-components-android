@@ -39,100 +39,86 @@ public final class MaterialColorUtilitiesHelper {
 
   private MaterialColorUtilitiesHelper() {}
 
+  private static final MaterialDynamicColors dynamicColors = new MaterialDynamicColors();
   private static final Map<Integer, DynamicColor> colorResourceIdToColorValue;
   static {
     Map<Integer, DynamicColor> map = new HashMap<>();
-    map.put(R.color.material_personalized_color_primary, MaterialDynamicColors.primary);
-    map.put(R.color.material_personalized_color_on_primary, MaterialDynamicColors.onPrimary);
+    map.put(R.color.material_personalized_color_primary, dynamicColors.primary());
+    map.put(R.color.material_personalized_color_on_primary, dynamicColors.onPrimary());
+    map.put(R.color.material_personalized_color_primary_inverse, dynamicColors.inversePrimary());
     map.put(
-        R.color.material_personalized_color_primary_inverse, MaterialDynamicColors.primaryInverse);
-    map.put(
-        R.color.material_personalized_color_primary_container,
-        MaterialDynamicColors.primaryContainer);
+        R.color.material_personalized_color_primary_container, dynamicColors.primaryContainer());
     map.put(
         R.color.material_personalized_color_on_primary_container,
-        MaterialDynamicColors.onPrimaryContainer);
-    map.put(R.color.material_personalized_color_secondary, MaterialDynamicColors.secondary);
-    map.put(R.color.material_personalized_color_on_secondary, MaterialDynamicColors.onSecondary);
+        dynamicColors.onPrimaryContainer());
+    map.put(R.color.material_personalized_color_secondary, dynamicColors.secondary());
+    map.put(R.color.material_personalized_color_on_secondary, dynamicColors.onSecondary());
     map.put(
         R.color.material_personalized_color_secondary_container,
-        MaterialDynamicColors.secondaryContainer);
+        dynamicColors.secondaryContainer());
     map.put(
         R.color.material_personalized_color_on_secondary_container,
-        MaterialDynamicColors.onSecondaryContainer);
-    map.put(R.color.material_personalized_color_tertiary, MaterialDynamicColors.tertiary);
-    map.put(R.color.material_personalized_color_on_tertiary, MaterialDynamicColors.onTertiary);
+        dynamicColors.onSecondaryContainer());
+    map.put(R.color.material_personalized_color_tertiary, dynamicColors.tertiary());
+    map.put(R.color.material_personalized_color_on_tertiary, dynamicColors.onTertiary());
     map.put(
-        R.color.material_personalized_color_tertiary_container,
-        MaterialDynamicColors.tertiaryContainer);
+        R.color.material_personalized_color_tertiary_container, dynamicColors.tertiaryContainer());
     map.put(
         R.color.material_personalized_color_on_tertiary_container,
-        MaterialDynamicColors.onTertiaryContainer);
-    map.put(R.color.material_personalized_color_background, MaterialDynamicColors.background);
-    map.put(R.color.material_personalized_color_on_background, MaterialDynamicColors.onBackground);
-    map.put(R.color.material_personalized_color_surface, MaterialDynamicColors.surface);
-    map.put(R.color.material_personalized_color_on_surface, MaterialDynamicColors.onSurface);
+        dynamicColors.onTertiaryContainer());
+    map.put(R.color.material_personalized_color_background, dynamicColors.background());
+    map.put(R.color.material_personalized_color_on_background, dynamicColors.onBackground());
+    map.put(R.color.material_personalized_color_surface, dynamicColors.surface());
+    map.put(R.color.material_personalized_color_on_surface, dynamicColors.onSurface());
+    map.put(R.color.material_personalized_color_surface_variant, dynamicColors.surfaceVariant());
     map.put(
-        R.color.material_personalized_color_surface_variant, MaterialDynamicColors.surfaceVariant);
+        R.color.material_personalized_color_on_surface_variant, dynamicColors.onSurfaceVariant());
+    map.put(R.color.material_personalized_color_surface_inverse, dynamicColors.inverseSurface());
     map.put(
-        R.color.material_personalized_color_on_surface_variant,
-        MaterialDynamicColors.onSurfaceVariant);
+        R.color.material_personalized_color_on_surface_inverse, dynamicColors.inverseOnSurface());
+    map.put(R.color.material_personalized_color_surface_bright, dynamicColors.surfaceBright());
+    map.put(R.color.material_personalized_color_surface_dim, dynamicColors.surfaceDim());
     map.put(
-        R.color.material_personalized_color_surface_inverse, MaterialDynamicColors.surfaceInverse);
-    map.put(
-        R.color.material_personalized_color_on_surface_inverse,
-        MaterialDynamicColors.onSurfaceInverse);
-    map.put(
-        R.color.material_personalized_color_surface_bright, MaterialDynamicColors.surfaceBright);
-    map.put(R.color.material_personalized_color_surface_dim, MaterialDynamicColors.surfaceDim);
-    map.put(
-        R.color.material_personalized_color_surface_container,
-        MaterialDynamicColors.surfaceContainer);
+        R.color.material_personalized_color_surface_container, dynamicColors.surfaceContainer());
     map.put(
         R.color.material_personalized_color_surface_container_low,
-        MaterialDynamicColors.surfaceSub1);
+        dynamicColors.surfaceContainerLow());
     map.put(
         R.color.material_personalized_color_surface_container_high,
-        MaterialDynamicColors.surfaceAdd1);
+        dynamicColors.surfaceContainerHigh());
     map.put(
         R.color.material_personalized_color_surface_container_lowest,
-        MaterialDynamicColors.surfaceSub2);
+        dynamicColors.surfaceContainerLowest());
     map.put(
         R.color.material_personalized_color_surface_container_highest,
-        MaterialDynamicColors.surfaceAdd2);
-    map.put(R.color.material_personalized_color_outline, MaterialDynamicColors.outline);
+        dynamicColors.surfaceContainerHighest());
+    map.put(R.color.material_personalized_color_outline, dynamicColors.outline());
+    map.put(R.color.material_personalized_color_outline_variant, dynamicColors.outlineVariant());
+    map.put(R.color.material_personalized_color_error, dynamicColors.error());
+    map.put(R.color.material_personalized_color_on_error, dynamicColors.onError());
+    map.put(R.color.material_personalized_color_error_container, dynamicColors.errorContainer());
     map.put(
-        R.color.material_personalized_color_outline_variant, MaterialDynamicColors.outlineVariant);
-    map.put(R.color.material_personalized_color_error, MaterialDynamicColors.error);
-    map.put(R.color.material_personalized_color_on_error, MaterialDynamicColors.onError);
+        R.color.material_personalized_color_on_error_container, dynamicColors.onErrorContainer());
     map.put(
-        R.color.material_personalized_color_error_container, MaterialDynamicColors.errorContainer);
+        R.color.material_personalized_color_control_activated, dynamicColors.controlActivated());
+    map.put(R.color.material_personalized_color_control_normal, dynamicColors.controlNormal());
     map.put(
-        R.color.material_personalized_color_on_error_container,
-        MaterialDynamicColors.onErrorContainer);
-    map.put(
-        R.color.material_personalized_color_control_activated,
-        MaterialDynamicColors.controlActivated);
-    map.put(
-        R.color.material_personalized_color_control_normal, MaterialDynamicColors.controlNormal);
-    map.put(
-        R.color.material_personalized_color_control_highlight,
-        MaterialDynamicColors.controlHighlight);
+        R.color.material_personalized_color_control_highlight, dynamicColors.controlHighlight());
     map.put(
         R.color.material_personalized_color_text_primary_inverse,
-        MaterialDynamicColors.textPrimaryInverse);
+        dynamicColors.textPrimaryInverse());
     map.put(
         R.color.material_personalized_color_text_secondary_and_tertiary_inverse,
-        MaterialDynamicColors.textSecondaryAndTertiaryInverse);
+        dynamicColors.textSecondaryAndTertiaryInverse());
     map.put(
         R.color.material_personalized_color_text_secondary_and_tertiary_inverse_disabled,
-        MaterialDynamicColors.textSecondaryAndTertiaryInverseDisabled);
+        dynamicColors.textSecondaryAndTertiaryInverseDisabled());
     map.put(
         R.color.material_personalized_color_text_primary_inverse_disable_only,
-        MaterialDynamicColors.textPrimaryInverseDisableOnly);
+        dynamicColors.textPrimaryInverseDisableOnly());
     map.put(
         R.color.material_personalized_color_text_hint_foreground_inverse,
-        MaterialDynamicColors.textHintInverse);
+        dynamicColors.textHintInverse());
     colorResourceIdToColorValue = Collections.unmodifiableMap(map);
   }
 

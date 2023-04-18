@@ -25,201 +25,203 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public final class SchemeFidelityTest {
 
+  private final MaterialDynamicColors dynamicColors = new MaterialDynamicColors();
+
   @Test
   public void lightTheme_minContrast_primary() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(MaterialDynamicColors.primary.getArgb(scheme)).isSameColorAs(0xff1218ff);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff1218ff);
   }
 
   @Test
   public void lightTheme_standardContrast_primary() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(MaterialDynamicColors.primary.getArgb(scheme)).isSameColorAs(0xff0001c3);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff0001c3);
   }
 
   @Test
   public void lightTheme_maxContrast_primary() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(MaterialDynamicColors.primary.getArgb(scheme)).isSameColorAs(0xff000181);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff000181);
   }
 
   @Test
   public void lightTheme_minContrast_primaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(MaterialDynamicColors.primaryContainer.getArgb(scheme)).isSameColorAs(0xff5660ff);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff5660ff);
   }
 
   @Test
   public void lightTheme_standardContrast_primaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(MaterialDynamicColors.primaryContainer.getArgb(scheme)).isSameColorAs(0xff2d36ff);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff2d36ff);
   }
 
   @Test
   public void lightTheme_maxContrast_primaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(MaterialDynamicColors.primaryContainer.getArgb(scheme)).isSameColorAs(0xff0000e3);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff0000e3);
   }
 
   @Test
   public void lightTheme_minContrast_tertiaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(MaterialDynamicColors.tertiaryContainer.getArgb(scheme)).isSameColorAs(0xffd93628);
+    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xffd93628);
   }
 
   @Test
   public void lightTheme_standardContrast_tertiaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(MaterialDynamicColors.tertiaryContainer.getArgb(scheme)).isSameColorAs(0xffb31910);
+    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xffb31910);
   }
 
   @Test
   public void lightTheme_maxContrast_tertiaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(MaterialDynamicColors.tertiaryContainer.getArgb(scheme)).isSameColorAs(0xff8c0002);
+    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xff8c0002);
   }
 
   @Test
   public void lightTheme_minContrast_objectionableTertiaryContainerLightens() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff850096), false, -1.0);
-    assertThat(MaterialDynamicColors.tertiaryContainer.getArgb(scheme)).isSameColorAs(0xffbcac5a);
+    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xffbcac5a);
   }
 
   @Test
   public void lightTheme_standardContrast_objectionableTertiaryContainerLightens() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff850096), false, 0.0);
-    assertThat(MaterialDynamicColors.tertiaryContainer.getArgb(scheme)).isSameColorAs(0xffbcac5a);
+    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xffbcac5a);
   }
 
   @Test
   public void lightTheme_maxContrast_objectionableTertiaryContainerDarkens() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff850096), false, 1.0);
-    assertThat(MaterialDynamicColors.tertiaryContainer.getArgb(scheme)).isSameColorAs(0xff4d4300);
+    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xff4d4300);
   }
 
   @Test
   public void lightTheme_minContrast_onPrimaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).isSameColorAs(0xffcbcdff);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffcbcdff);
   }
 
   @Test
   public void lightTheme_standardContrast_onPrimaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).isSameColorAs(0xffcecfff);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffcecfff);
   }
 
   @Test
   public void lightTheme_maxContrast_onPrimaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).isSameColorAs(0xffd6d6ff);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffd6d6ff);
   }
 
   @Test
   public void lightTheme_minContrast_surface() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(MaterialDynamicColors.surface.getArgb(scheme)).isSameColorAs(0xfffbf8ff);
+    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xfffbf8ff);
   }
 
   @Test
   public void lightTheme_standardContrast_surface() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(MaterialDynamicColors.surface.getArgb(scheme)).isSameColorAs(0xfffbf8ff);
+    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xfffbf8ff);
   }
 
   @Test
   public void lightTheme_maxContrast_surface() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(MaterialDynamicColors.surface.getArgb(scheme)).isSameColorAs(0xfffbf8ff);
+    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xfffbf8ff);
   }
 
   @Test
   public void darkTheme_minContrast_primary() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(MaterialDynamicColors.primary.getArgb(scheme)).isSameColorAs(0xff5660ff);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff5660ff);
   }
 
   @Test
   public void darkTheme_standardContrast_primary() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 0.0);
-    assertThat(MaterialDynamicColors.primary.getArgb(scheme)).isSameColorAs(0xffbec2ff);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xffbec2ff);
   }
 
   @Test
   public void darkTheme_maxContrast_primary() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(MaterialDynamicColors.primary.getArgb(scheme)).isSameColorAs(0xfff6f4ff);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xfff6f4ff);
   }
 
   @Test
   public void darkTheme_minContrast_primaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(MaterialDynamicColors.primaryContainer.getArgb(scheme)).isSameColorAs(0xff0000e6);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff0000e6);
   }
 
   @Test
   public void darkTheme_standardContrast_primaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 0.0);
-    assertThat(MaterialDynamicColors.primaryContainer.getArgb(scheme)).isSameColorAs(0xff0000e6);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff0000e6);
   }
 
   @Test
   public void darkTheme_maxContrast_primaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(MaterialDynamicColors.primaryContainer.getArgb(scheme)).isSameColorAs(0xffc4c6ff);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffc4c6ff);
   }
 
   @Test
   public void darkTheme_minContrast_onPrimaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).isSameColorAs(0xff7a83ff);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff7a83ff);
   }
 
   @Test
   public void darkTheme_standardContrast_onPrimaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 0.0);
-    assertThat(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).isSameColorAs(0xffa4aaff);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffa4aaff);
   }
 
   @Test
   public void darkTheme_maxContrast_onPrimaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(MaterialDynamicColors.onPrimaryContainer.getArgb(scheme)).isSameColorAs(0xff0001c6);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff0001c6);
   }
 
   @Test
   public void darkTheme_minContrast_onTertiaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme)).isSameColorAs(0xfffe513e);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xfffe513e);
   }
 
   @Test
   public void darkTheme_standardContrast_onTertiaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 0.0);
-    assertThat(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme)).isSameColorAs(0xffFF9181);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xffFF9181);
   }
 
   @Test
   public void darkTheme_maxContrast_onTertiaryContainer() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(MaterialDynamicColors.onTertiaryContainer.getArgb(scheme)).isSameColorAs(0xff790001);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff790001);
   }
 
   @Test
   public void darkTheme_minContrast_surface() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(MaterialDynamicColors.surface.getArgb(scheme)).isSameColorAs(0xff12121d);
+    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xff12121d);
   }
 
   @Test
   public void darkTheme_standardContrast_surface() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 0.0);
-    assertThat(MaterialDynamicColors.surface.getArgb(scheme)).isSameColorAs(0xff12121d);
+    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xff12121d);
   }
 
   @Test
   public void darkTheme_maxContrast_surface() {
     SchemeFidelity scheme = new SchemeFidelity(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(MaterialDynamicColors.surface.getArgb(scheme)).isSameColorAs(0xff12121d);
+    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xff12121d);
   }
 }

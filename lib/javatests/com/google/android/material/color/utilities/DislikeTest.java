@@ -16,6 +16,7 @@
 
 package com.google.android.material.color.utilities;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -70,5 +71,12 @@ public final class DislikeTest {
       Hct likable = DislikeAnalyzer.fixIfDisliked(hct);
       assertFalse(DislikeAnalyzer.isDisliked(likable));
     }
+  }
+
+  @Test
+  public void tone67NotDisliked() {
+    Hct color = Hct.from(100.0, 50.0, 67.0);
+    assertFalse(DislikeAnalyzer.isDisliked(color));
+    assertEquals(color.toInt(), DislikeAnalyzer.fixIfDisliked(color).toInt());
   }
 }
