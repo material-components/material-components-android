@@ -24,6 +24,7 @@ import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
 import androidx.core.os.BuildCompat;
 import java.util.Map;
 
@@ -48,8 +49,22 @@ public interface ColorResourcesOverride {
       @NonNull Context context, @NonNull Map<Integer, Integer> colorResourceIdsToColorValues);
 
   /**
-   * Wraps the given Context with the theme overlay where color resources are updated at runtime.
-   * If not possible, the original Context will be returned.
+   * Overrides the color resources to the given context, returns {@code true} if new color values
+   * have been applied.
+   *
+   * @param context The target context.
+   * @param colorResourceIdsToColorValues The mapping from the color resources id to the updated
+   *     color value.
+   * @param theme The resource ID of the theme overlay to be applied.
+   */
+  boolean applyIfPossible(
+      @NonNull Context context,
+      @NonNull Map<Integer, Integer> colorResourceIdsToColorValues,
+      @StyleRes int theme);
+
+  /**
+   * Wraps the given Context with the theme overlay where color resources are updated at runtime. If
+   * not possible, the original Context will be returned.
    *
    * @param context The target context.
    * @param colorResourceIdsToColorValues The mapping from the color resources id to the updated
@@ -58,6 +73,21 @@ public interface ColorResourcesOverride {
   @NonNull
   Context wrapContextIfPossible(
       @NonNull Context context, @NonNull Map<Integer, Integer> colorResourceIdsToColorValues);
+
+  /**
+   * Wraps the given Context with the theme overlay where color resources are updated at runtime. If
+   * not possible, the original Context will be returned.
+   *
+   * @param context The target context.
+   * @param colorResourceIdsToColorValues The mapping from the color resources id to the updated
+   *     color value.
+   * @param theme The resource ID of the theme overlay to be applied.
+   */
+  @NonNull
+  Context wrapContextIfPossible(
+      @NonNull Context context,
+      @NonNull Map<Integer, Integer> colorResourceIdsToColorValues,
+      @StyleRes int theme);
 
   @Nullable
   static ColorResourcesOverride getInstance() {

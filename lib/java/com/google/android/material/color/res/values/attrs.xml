@@ -168,6 +168,10 @@
   <!-- The default dynamic color theme overlay to use when applying dynamic colors. -->
   <attr name="dynamicColorThemeOverlay" format="reference"/>
 
+  <!-- Do not use. For internal migration only. -->
+  <!-- TODO(b/272585197) Remove after tonal surface migration is complete. -->
+  <attr name="preUDynamicNeutralChromaUpdateEnabled" format="boolean"/>
+
   <!-- Deprecated. -->
 
   <!-- A tonal variation of the primary color. -->
