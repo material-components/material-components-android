@@ -95,7 +95,7 @@
     <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:minHeight">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:paddingBottom">@dimen/m3_bottom_sheet_drag_handle_bottom_padding</item>
-    <item name="srcCompat">@drawable/mtrl_bottomsheet_drag_handle</item>
+    <item name="srcCompat">@drawable/m3_bottom_sheet_drag_handle</item>
     <item name="tint">@macro/m3_comp_sheet_bottom_docked_drag_handle_color</item>
   </style>
 </resources>

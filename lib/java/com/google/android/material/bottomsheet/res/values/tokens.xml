@@ -29,5 +29,7 @@
   <macro name="m3_comp_sheet_bottom_docked_container_shape">?attr/shapeAppearanceCornerExtraLarge</macro>
   <!-- Enabled - Drag handle -->
   <macro name="m3_comp_sheet_bottom_docked_drag_handle_color">?attr/colorOnSurfaceVariant</macro>
+  <dimen name="m3_comp_sheet_bottom_docked_drag_handle_width">32dp</dimen>
+  <dimen name="m3_comp_sheet_bottom_docked_drag_handle_height">4dp</dimen>
 
 </resources>
