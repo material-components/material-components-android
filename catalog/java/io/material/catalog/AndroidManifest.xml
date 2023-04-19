@@ -52,6 +52,10 @@
       android:exported="true"
       android:label="@string/cat_navigationdrawer_title" />
     <activity
+      android:name=".navigationdrawer.CustomNavigationDrawerDemoActivity"
+      android:exported="true"
+      android:label="@string/cat_navigationdrawer_custom_title" />
+    <activity
       android:name=".topappbar.TopAppBarActionBarDemoActivity"
       android:exported="true"
       android:label="@string/cat_topappbar_action_bar_title"

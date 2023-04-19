@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2023 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+      android:id="@+id/linear_layout"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical"
+      android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+      <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          style="?attr/catalogToolbarStyle"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:navigationIcon="@drawable/ic_drawer_menu_24px"
+          app:title="@string/cat_navigationdrawer_title"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:padding="64dp"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/cat_navigationdrawer_instructions"
+        android:textAppearance="?attr/textAppearanceBodyLarge" />
+
+      <Button
+        android:id="@+id/show_end_drawer_gravity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/cat_navigationdrawer_show_end_drawer" />
+
+    </LinearLayout>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+  <RelativeLayout
+    android:id="@+id/custom_drawer_start"
+    android:layout_width="@dimen/m3_comp_navigation_drawer_container_width"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="?attr/colorSurface">
+
+    <TextView
+      android:id="@+id/text1_start"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:paddingHorizontal="16dp"
+      android:text="@string/cat_navigationdrawer_custom_text" />
+
+    <TextView
+      android:id="@+id/text2_start"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_below="@id/text1_start"
+      android:layout_centerInParent="true"
+      android:paddingHorizontal="16dp"
+      android:text="@string/cat_navigationdrawer_custom_text" />
+
+    <TextView
+      android:id="@+id/text3_start"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_alignParentEnd="true"
+      android:layout_below="@id/text2_start"
+      android:paddingHorizontal="16dp"
+      android:text="@string/cat_navigationdrawer_custom_text" />
+
+    <View
+      android:id="@+id/square_red_start"
+      android:layout_width="75dp"
+      android:layout_height="75dp"
+      android:layout_marginEnd="16dp"
+      android:layout_alignParentEnd="true"
+      android:layout_centerVertical="true"
+      android:background="#ff0000" />
+
+    <View
+      android:id="@+id/square_green_start"
+      android:layout_width="50dp"
+      android:layout_height="125dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginTop="16dp"
+      android:layout_below="@id/square_red_start"
+      android:layout_alignParentEnd="true"
+      android:background="#00ff00" />
+
+    <View
+      android:id="@+id/square_blue_start"
+      android:layout_width="125dp"
+      android:layout_height="150dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginTop="16dp"
+      android:layout_below="@id/square_green_start"
+      android:layout_alignParentEnd="true"
+      android:background="#0000ff" />
+  </RelativeLayout>
+
+  <RelativeLayout
+    android:id="@+id/custom_drawer_end"
+    android:layout_width="@dimen/m3_comp_navigation_drawer_container_width"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:background="?attr/colorSurface">
+
+    <TextView
+      android:id="@+id/text1_end"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:paddingHorizontal="16dp"
+      android:text="@string/cat_navigationdrawer_custom_text" />
+
+    <TextView
+      android:id="@+id/text2_end"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_below="@id/text1_end"
+      android:layout_centerInParent="true"
+      android:paddingHorizontal="16dp"
+      android:text="@string/cat_navigationdrawer_custom_text" />
+
+    <TextView
+      android:id="@+id/text3_end"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:layout_alignParentEnd="true"
+      android:layout_below="@id/text2_end"
+      android:paddingHorizontal="16dp"
+      android:text="@string/cat_navigationdrawer_custom_text" />
+
+    <View
+      android:id="@+id/square_red_end"
+      android:layout_width="75dp"
+      android:layout_height="75dp"
+      android:layout_marginStart="16dp"
+      android:layout_centerVertical="true"
+      android:background="#ff0000" />
+
+    <View
+      android:id="@+id/square_green_end"
+      android:layout_width="50dp"
+      android:layout_height="125dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:layout_below="@id/square_red_end"
+      android:background="#00ff00" />
+
+    <View
+      android:id="@+id/square_blue_end"
+      android:layout_width="125dp"
+      android:layout_height="150dp"
+      android:layout_marginStart="16dp"
+      android:layout_marginTop="16dp"
+      android:layout_below="@id/square_green_end"
+      android:background="#0000ff" />
+  </RelativeLayout>
+
+</androidx.drawerlayout.widget.DrawerLayout>

@@ -46,4 +46,10 @@
   <string name="cat_navigationdrawer_header_image_content_description">Account icon</string>
   <string name="cat_navigationdrawer_header_title">Material 3 Components</string>
   <string name="cat_navigationdrawer_header_subtitle">example@material.io</string>
+
+  <string name="cat_navigationdrawer_custom_title"
+    description="The title for the custom navigation drawer demo. [CHAR_LIMIT=100]">Custom Navigation Drawer</string>
+  <string name="cat_navigationdrawer_custom_text"
+    description="Text for the custom navigation drawer demo. [CHAR_LIMIT=100]">Maintain aspect ratio</string>
+
 </resources>

@@ -103,15 +103,22 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
     float scaleY = 1 - scaleYDelta;
     view.setScaleY(scaleY);
 
-    View childView = getOnlyChildViewOrNull(view);
-    if (childView != null) {
-      // Preserve the original aspect ratio of the child content, and add content margins.
-      childView.setPivotX(leftGravity ? childView.getWidth() : 0);
-      childView.setPivotY(0);
-      float childScaleX = swipeEdgeMatchesGravity ? 1 - scaleXDelta : 1f;
-      float childScaleY = scaleX / scaleY * childScaleX;
-      childView.setScaleX(childScaleX);
-      childView.setScaleY(childScaleY);
+    if (view instanceof ViewGroup) {
+      ViewGroup viewGroup = (ViewGroup) view;
+      for (int i = 0; i < viewGroup.getChildCount(); i++) {
+        View childView = viewGroup.getChildAt(i);
+        // Preserve the original aspect ratio and container alignment of the child content, and add
+        // content margins.
+        childView.setPivotX(
+            leftGravity
+                ? (width - childView.getRight() + childView.getWidth())
+                : -childView.getLeft());
+        childView.setPivotY(-childView.getTop());
+        float childScaleX = swipeEdgeMatchesGravity ? 1 - scaleXDelta : 1f;
+        float childScaleY = scaleX / scaleY * childScaleX;
+        childView.setScaleX(childScaleX);
+        childView.setScaleY(childScaleY);
+      }
     }
   }
 
@@ -155,11 +162,12 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
         ObjectAnimator.ofFloat(view, View.SCALE_X, 1),
         ObjectAnimator.ofFloat(view, View.SCALE_Y, 1));
 
-    View childView = getOnlyChildViewOrNull(view);
-    if (childView != null) {
-      cancelAnimatorSet.playTogether(
-          ObjectAnimator.ofFloat(childView, View.SCALE_X, 1),
-          ObjectAnimator.ofFloat(childView, View.SCALE_Y, 1));
+    if (view instanceof ViewGroup) {
+      ViewGroup viewGroup = (ViewGroup) view;
+      for (int i = 0; i < viewGroup.getChildCount(); i++) {
+        View childView = viewGroup.getChildAt(i);
+        cancelAnimatorSet.playTogether(ObjectAnimator.ofFloat(childView, View.SCALE_Y, 1));
+      }
     }
 
     cancelAnimatorSet.setDuration(cancelDuration);
@@ -170,16 +178,5 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
     int absoluteGravity =
         GravityCompat.getAbsoluteGravity(gravity, ViewCompat.getLayoutDirection(view));
     return (absoluteGravity & checkFor) == checkFor;
-  }
-
-  @Nullable
-  private static View getOnlyChildViewOrNull(View view) {
-    if (view instanceof ViewGroup) {
-      ViewGroup viewGroup = (ViewGroup) view;
-      if (viewGroup.getChildCount() == 1) {
-        return viewGroup.getChildAt(0);
-      }
-    }
-    return null;
   }
 }

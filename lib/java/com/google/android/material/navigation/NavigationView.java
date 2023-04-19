@@ -21,9 +21,7 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
-import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.content.Context;
@@ -73,7 +71,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.ColorUtils;
 import androidx.core.os.BuildCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
@@ -82,7 +79,6 @@ import androidx.customview.view.AbsSavedState;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
-import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ContextUtils;
 import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.internal.NavigationMenuPresenter;
@@ -152,8 +148,6 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
 
   @Nullable private Path shapeClipPath;
   private final RectF shapeClipBounds = new RectF();
-
-  private static final int DRAWER_LAYOUT_SCRIM_COLOR = 0x99000000;
 
   private final MaterialSideContainerBackHelper sideContainerBackHelper =
       new MaterialSideContainerBackHelper(this);
@@ -1025,25 +1019,12 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     }
 
     int gravity = drawerLayoutPair.second.gravity;
-    int initialScrimColor = DRAWER_LAYOUT_SCRIM_COLOR;
-    int initialScrimAlpha = Color.alpha(initialScrimColor);
-    AnimatorUpdateListener scrimUpdateListener =
-        animation -> {
-          int newScrimAlpha =
-              AnimationUtils.lerp(initialScrimAlpha, 0, animation.getAnimatedFraction());
-          drawerLayout.setScrimColor(
-              ColorUtils.setAlphaComponent(initialScrimColor, newScrimAlpha));
-        };
-    AnimatorListener animatorListener =
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationEnd(Animator animation) {
-            drawerLayout.closeDrawer(NavigationView.this, false);
-            drawerLayout.setScrimColor(initialScrimColor);
-          }
-        };
+    AnimatorListener scrimCloseAnimatorListener =
+        DrawerLayoutUtils.getScrimCloseAnimatorListener(drawerLayout, this);
+    AnimatorUpdateListener scrimCloseAnimatorUpdateListener =
+        DrawerLayoutUtils.getScrimCloseAnimatorUpdateListener(drawerLayout);
     sideContainerBackHelper.finishBackProgress(
-        backEvent, gravity, animatorListener, scrimUpdateListener);
+        backEvent, gravity, scrimCloseAnimatorListener, scrimCloseAnimatorUpdateListener);
   }
 
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)

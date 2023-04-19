@@ -29,6 +29,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.Arrays;
+import java.util.List;
 
 /** A landing fragment that links to navigation drawer demos for the Catalog app. */
 public class NavigationDrawerFragment extends DemoLandingFragment {
@@ -52,6 +54,17 @@ public class NavigationDrawerFragment extends DemoLandingFragment {
         return new Intent(requireContext(), NavigationDrawerDemoActivity.class);
       }
     };
+  }
+
+  @NonNull
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    return Arrays.asList(new Demo(R.string.cat_navigationdrawer_custom_title) {
+      @Override
+      public Intent createActivityIntent() {
+        return new Intent(requireContext(), CustomNavigationDrawerDemoActivity.class);
+      }
+    });
   }
 
   /** The Dagger module for {@link NavigationDrawerFragment} dependencies. */
