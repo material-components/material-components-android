@@ -45,6 +45,11 @@
     <!-- Whether the navigation rail should apply any padding to its start to
          account for any system window insets. -->
     <attr name="paddingStartSystemWindowInsets"/>
+    <!-- Shape appearance style reference for NavigationRail. Attribute declaration is in the Shape package. -->
+    <attr name="shapeAppearance"/>
+    <!-- Shape appearance overlay style reference for NavigationRail. To be used to augment
+         attributes declared in the shapeAppearance. Attribute declaration is in the Shape package. -->
+    <attr name="shapeAppearanceOverlay"/>
   </declare-styleable>
 
 </resources>

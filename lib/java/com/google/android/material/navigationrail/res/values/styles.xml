@@ -70,6 +70,7 @@
     <item name="android:background">@macro/m3_comp_navigation_rail_container_color</item>
     <item name="backgroundTint">@null</item>
     <item name="elevation">@dimen/m3_navigation_rail_elevation</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationRail.Container.Shape</item>
     <item name="itemActiveIndicatorStyle">@style/Widget.Material3.NavigationRailView.ActiveIndicator</item>
     <item name="itemRippleColor">@color/m3_navigation_rail_ripple_color_selector</item>
     <item name="itemIconSize">@dimen/m3_comp_navigation_rail_icon_size</item>
