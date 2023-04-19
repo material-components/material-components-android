@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import com.google.android.material.search.SearchBar;
@@ -39,11 +40,12 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.List;
 
-final class SearchDemoUtils {
+/** Provides utility methods for the search demo. */
+public final class SearchDemoUtils {
 
   private SearchDemoUtils() {}
 
-  public static void setUpSearchBar(Activity activity, SearchBar searchBar) {
+  public static void setUpSearchBar(@NonNull Activity activity, @NonNull SearchBar searchBar) {
     searchBar.inflateMenu(R.menu.cat_searchbar_menu);
     searchBar.setOnMenuItemClickListener(
         menuItem -> {
@@ -54,7 +56,9 @@ final class SearchDemoUtils {
 
   @SuppressLint("NewApi")
   public static void setUpSearchView(
-      AppCompatActivity activity, SearchBar searchBar, SearchView searchView) {
+      @NonNull AppCompatActivity activity,
+      @NonNull SearchBar searchBar,
+      @NonNull SearchView searchView) {
     searchView.inflateMenu(R.menu.cat_searchview_menu);
     searchView.setOnMenuItemClickListener(
         menuItem -> {
@@ -81,21 +85,23 @@ final class SearchDemoUtils {
             onBackPressedCallback.setEnabled(newState == TransitionState.SHOWN));
   }
 
-  static void showSnackbar(Activity activity, MenuItem menuItem) {
+  public static void showSnackbar(@NonNull Activity activity, @NonNull MenuItem menuItem) {
     Snackbar.make(
             activity.findViewById(android.R.id.content), menuItem.getTitle(), Snackbar.LENGTH_SHORT)
         .show();
   }
 
-  static void startOnLoadAnimation(SearchBar searchBar, @Nullable Bundle bundle) {
+  public static void startOnLoadAnimation(@NonNull SearchBar searchBar, @Nullable Bundle bundle) {
     // Don't start animation on rotation. Only needed in demo because minIntervalSeconds is 0.
     if (bundle == null) {
       searchBar.startOnLoadAnimation();
     }
   }
 
-  static void setUpSuggestions(
-      ViewGroup suggestionContainer, SearchBar searchBar, SearchView searchView) {
+  public static void setUpSuggestions(
+      @NonNull ViewGroup suggestionContainer,
+      @NonNull SearchBar searchBar,
+      @NonNull SearchView searchView) {
     addSuggestionTitleView(
         suggestionContainer, R.string.cat_searchview_suggestion_section_title_yesterday);
     addSuggestionItemViews(suggestionContainer, getYesterdaySuggestions(), searchBar, searchView);
