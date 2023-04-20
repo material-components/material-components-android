@@ -373,7 +373,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private boolean isAnchorViewWrappedInCompatParent() {
     View customBadgeAnchorParent = getCustomBadgeParent();
     return customBadgeAnchorParent != null
-        &&  customBadgeAnchorParent.getId() == R.id.mtrl_anchor_parent;
+        && customBadgeAnchorParent.getId() == R.id.mtrl_anchor_parent;
   }
 
   /** Returns a {@link FrameLayout} that will set this {@code BadgeDrawable} as its foreground. */
@@ -539,8 +539,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   /** Clears the badge's number. */
   public void clearNumber() {
-    state.clearNumber();
-    onNumberUpdated();
+    if (state.hasNumber()) {
+      state.clearNumber();
+      onNumberUpdated();
+    }
   }
 
   private void onNumberUpdated() {
@@ -1414,7 +1416,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
       text = text.substring(0, maxCharacterCount - 1);
       return String.format(
-          context.getString(R.string.m3_exceed_max_badge_text_suffix),
+          context.getString(R.string.mtrl_exceed_max_badge_text_suffix),
           text,
           DEFAULT_EXCEED_MAX_BADGE_TEXT_SUFFIX);
     } else {

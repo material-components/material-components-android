@@ -92,12 +92,12 @@ center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
 
 | Feature               | Relevant attributes                                                                                                                                      |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Color                 | `app:backgroundColor` <br> `app:badgeTextColor`                                                                                                                                      |
+| Color                 | `app:backgroundColor` <br> `app:badgeTextColor`                                                                                                          |
 | Width                 | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                                                           |
 | Height                | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                                                         |
-| Shape                 | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay`                                                                                                                 |
-| Label                 | `app:badgeText` (for text) <br> `app:number` (for numbers)                                                                                                                                                  |
-| Label Length          | `app:maxCharacterCount` (for all text) <br> `app:maxNumber` (for numbers only)                                                                                                                                                     |
+| Shape                 | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay` |
+| Label                 | `app:badgeText` (for text) <br> `app:number` (for numbers)                                                                                               |
+| Label Length          | `app:maxCharacterCount` (for all text) <br> `app:maxNumber` (for numbers only)                                                                           |
 | Label Text Color      | `app:badgeTextColor`                                                                                                                                     |
 | Label Text Appearance | `app:badgeTextAppearance`                                                                                                                                |
 | Badge Gravity         | `app:badgeGravity`                                                                                                                                       |
@@ -105,6 +105,7 @@ center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
 | Horizontal Padding    | `app:badgeWidePadding`                                                                                                                                   |
 | Vertical Padding      | `app:badgeVerticalPadding`                                                                                                                               |
 | Auto Adjust           | `app:autoAdjustToWithinGrandparentBounds`                                                                                                                |
+
 **Note:** If both `app:badgeText` and `app:number` are specified, the badge label will be `app:badgeText`.
 
 ### Talkback Support
