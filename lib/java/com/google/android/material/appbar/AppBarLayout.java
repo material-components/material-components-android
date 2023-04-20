@@ -42,7 +42,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -1445,7 +1444,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   // TODO(b/76413401): remove this base class and generic type after the widget migration is done
   protected static class BaseBehavior<T extends AppBarLayout> extends HeaderBehavior<T> {
     private static final int MAX_OFFSET_ANIMATION_DURATION = 600; // ms
-    private static final double EXPAND_BY_KEY_EVENT_THRESHOLD_PERCENTAGE = 0.1;
 
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
     // TODO(b/76413401): remove this base class and generic type after the widget migration
@@ -1827,54 +1825,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       abl.onOffsetChanged(getTopAndBottomOffset());
 
       updateAccessibilityActions(parent, abl);
-      // TODO(b/243555083): Until CoordinatorLayout fixes triggering scroll events with physical
-      //  keyboard scrolling, we have this hack in place.
-      View v = findFirstScrollingChild(parent);
-      if (v != null) {
-        if (VERSION.SDK_INT >= VERSION_CODES.P) {
-          v.addOnUnhandledKeyEventListener(
-              (v1, event) -> {
-                controlExpansionOnKeyPress(event, v, abl);
-                return false;
-              });
-        } else {
-          // Unfortunately if not using >= API 28, we don't have access to the unhandled key event
-          // handler. Using setOnKeyListener is less ideal since it will replace any listener
-          // already on the scrollable child. Furthermore, the 'scrolling' may be occurring due to
-          // switching focus between children of the scrollable child, which will not trigger this
-          // listener.
-          v.setOnKeyListener(
-              (v1, keyCode, event) -> {
-                controlExpansionOnKeyPress(event, v, abl);
-                return false;
-              });
-        }
-      }
       return handled;
-    }
-
-    // TODO(b/243555083): Until CoordinatorLayout fixes triggering scroll events with physical
-    //  keyboard scrolling, we have this hack in place.
-    private void controlExpansionOnKeyPress(
-        KeyEvent event, View scrollableChild, AppBarLayout abl) {
-      if (event.getAction() == KeyEvent.ACTION_DOWN || event.getAction() == KeyEvent.ACTION_UP) {
-        int keyCode = event.getKeyCode();
-        if (keyCode == KeyEvent.KEYCODE_DPAD_UP
-            || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_UP
-            || keyCode == KeyEvent.KEYCODE_PAGE_UP) {
-          // If within height threshold, we expand.
-          if (scrollableChild.getScrollY()
-              < scrollableChild.getMeasuredHeight() * EXPAND_BY_KEY_EVENT_THRESHOLD_PERCENTAGE) {
-            abl.setExpanded(true);
-          }
-        } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN
-            || keyCode == KeyEvent.KEYCODE_SYSTEM_NAVIGATION_DOWN
-            || keyCode == KeyEvent.KEYCODE_PAGE_DOWN) {
-          if (scrollableChild.getScrollY() > 0) {
-            abl.setExpanded(false);
-          }
-        }
-      }
     }
 
     private void updateAccessibilityActions(
