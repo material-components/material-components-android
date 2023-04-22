@@ -76,6 +76,16 @@
         android:gravity="start|bottom"
         app:firstBaselineToTopHeight="@dimen/mtrl_calendar_selection_baseline_to_top_fullscreen"
         app:lineHeight="@dimen/mtrl_calendar_header_selection_line_height"/>
+
+      <Button
+        android:id="@+id/clear_button"
+        style="?attr/materialCalendarHeaderConfirmButton"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/mtrl_min_touch_target_size"
+        android:layout_gravity="end|top"
+        android:contentDescription="@string/mtrl_picker_clear"
+        android:text="@string/mtrl_picker_clear"/>
+
     </FrameLayout>
 
     <LinearLayout
