@@ -645,6 +645,9 @@ public class MaterialDatePicker<S> extends DialogFragment {
         v -> {
           // Update confirm button in case in progress selection has been reset
           updateActionButtonEnabledState();
+          v -> {
+            // Update confirm button in case in progress selection has been reset
+            updateActionButtonEnabledState();
 
           headerToggleButton.toggle();
           inputMode = (inputMode == INPUT_MODE_TEXT) ? INPUT_MODE_CALENDAR : INPUT_MODE_TEXT;
