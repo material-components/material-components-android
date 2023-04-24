@@ -21,6 +21,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -321,9 +322,8 @@ public class DynamicColors {
         SchemeContent scheme =
             new SchemeContent(
                 Hct.fromInt(dynamicColorsOptions.getContentBasedSeedColor()),
-                !MaterialAttributes.resolveBoolean(
-                    activity, R.attr.isLightTheme, /* defaultValue= */ true),
-                /* contrastLevel= */ 0);
+                !MaterialColors.isLightTheme(activity),
+                getSystemContrast(activity));
         ColorResourcesOverride resourcesOverride = ColorResourcesOverride.getInstance();
         if (resourcesOverride == null) {
           return;
@@ -371,9 +371,27 @@ public class DynamicColors {
   @NonNull
   public static Context wrapContextIfAvailable(
       @NonNull Context originalContext, @StyleRes int theme) {
+    return wrapContextIfAvailable(
+        originalContext, new DynamicColorsOptions.Builder().setThemeOverlay(theme).build());
+  }
+
+  /**
+   * Wraps the given context with the given theme overlay provided in {@link DynamicColorsOptions}.
+   * The returned context can be used to create views with dynamic color support.
+   *
+   * <p>If dynamic color support is not available, the original context will be returned.
+   *
+   * @param originalContext The original context.
+   * @param dynamicColorsOptions The dynamic colors options object that specifies the theme resource
+   *     ID, seed color for content-based dynamic colors.
+   */
+  @NonNull
+  public static Context wrapContextIfAvailable(
+      @NonNull Context originalContext, @NonNull DynamicColorsOptions dynamicColorsOptions) {
     if (!isDynamicColorAvailable()) {
       return originalContext;
     }
+    int theme = dynamicColorsOptions.getThemeOverlay();
     if (theme == USE_DEFAULT_THEME_OVERLAY) {
       theme = getDefaultThemeOverlay(originalContext);
     }
@@ -382,16 +400,29 @@ public class DynamicColors {
       return originalContext;
     }
 
-    if (shouldOverrideNeutralChroma(originalContext)) {
+    if (dynamicColorsOptions.getContentBasedSeedColor() != null) {
+      SchemeContent scheme =
+          new SchemeContent(
+              Hct.fromInt(dynamicColorsOptions.getContentBasedSeedColor()),
+              !MaterialColors.isLightTheme(originalContext),
+              getSystemContrast(originalContext));
       ColorResourcesOverride resourcesOverride = ColorResourcesOverride.getInstance();
       if (resourcesOverride != null) {
         return resourcesOverride.wrapContextIfPossible(
             originalContext,
-            createColorResourcesIdsToColorValuesWithUpdatedChroma(originalContext),
-            theme);
+            MaterialColorUtilitiesHelper.createColorResourcesIdsToColorValues(scheme));
+      }
+    } else {
+      if (shouldOverrideNeutralChroma(originalContext)) {
+        ColorResourcesOverride resourcesOverride = ColorResourcesOverride.getInstance();
+        if (resourcesOverride != null) {
+          return resourcesOverride.wrapContextIfPossible(
+              originalContext,
+              createColorResourcesIdsToColorValuesWithUpdatedChroma(originalContext),
+              theme);
+        }
       }
     }
-
     return new ContextThemeWrapper(originalContext, theme);
   }
 
@@ -528,5 +559,10 @@ public class DynamicColors {
 
   private interface DeviceSupportCondition {
     boolean isSupported();
+  }
+
+  private static float getSystemContrast(Context context) {
+    UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
+    return (uiModeManager == null || !BuildCompat.isAtLeastU()) ? 0 : uiModeManager.getContrast();
   }
 }

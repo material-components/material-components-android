@@ -339,7 +339,7 @@ public class MaterialColors {
     return getColorRole(seedColor, tone, CHROMA_NEUTRAL);
   }
 
-  private static boolean isLightTheme(@NonNull Context context) {
+  static boolean isLightTheme(@NonNull Context context) {
     return MaterialAttributes.resolveBoolean(
         context, R.attr.isLightTheme, /* defaultValue= */ true);
   }
