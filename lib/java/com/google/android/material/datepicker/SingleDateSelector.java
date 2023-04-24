@@ -33,7 +33,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
@@ -113,7 +112,6 @@ public class SingleDateSelector implements DateSelector<Long> {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_text_input_date, viewGroup, false);
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
-    dateTextInput.setErrorAccessibilityLiveRegion(ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
     EditText dateEditText = dateTextInput.getEditText();
     if (ManufacturerUtils.isDateInputKeyboardMissingSeparatorCharacters()) {
       // Using the URI variation places the '/' and '.' in more prominent positions

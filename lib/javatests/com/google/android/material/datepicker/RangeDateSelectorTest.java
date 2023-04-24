@@ -27,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView.BufferType;
 import androidx.core.util.Pair;
@@ -111,7 +112,7 @@ public class RangeDateSelectorTest {
 
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
 
-    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo("m/d/yy");
+    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo("mm/dd/yyyy");
   }
 
   @Test
@@ -132,8 +133,8 @@ public class RangeDateSelectorTest {
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
     TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
 
-    startTextInput.getEditText().setText("2/2/2010", BufferType.EDITABLE);
-    endTextInput.getEditText().setText("2/2/2008", BufferType.EDITABLE);
+    startTextInput.getEditText().setText("02/02/2010", BufferType.EDITABLE);
+    endTextInput.getEditText().setText("02/02/2008", BufferType.EDITABLE);
 
     activity.setContentView(root);
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
@@ -228,8 +229,8 @@ public class RangeDateSelectorTest {
     activity.setContentView(root);
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
-    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo("m/d/yy");
-    assertThat(endTextInput.getPlaceholderText().toString()).isEqualTo("m/d/yy");
+    assertThat(startTextInput.getPlaceholderText().toString()).isEqualTo("mm/dd/yyyy");
+    assertThat(endTextInput.getPlaceholderText().toString()).isEqualTo("mm/dd/yyyy");
   }
 
   @Test
@@ -341,7 +342,7 @@ public class RangeDateSelectorTest {
     View root = getRootView();
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
     activity.setContentView(root);
-    startTextInput.getEditText().setText("1/1/");
+    startTextInput.getEditText().setText("11/1111111");
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
     assertThat(rangeDateSelector.getError()).isNotEmpty();
@@ -352,10 +353,106 @@ public class RangeDateSelectorTest {
     View root = getRootView();
     TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
     activity.setContentView(root);
-    endTextInput.getEditText().setText("1/1/");
+    endTextInput.getEditText().setText("11/1111111");
     ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
 
     assertThat(rangeDateSelector.getError()).isNotEmpty();
+  }
+
+  @Test
+  public void getError_isNotEmptyWhenInvalidStartDateIsPatternLength() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("MM/dd/yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    textInputLayout.getEditText().setText("11/1111111");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNotEmpty();
+  }
+
+  @Test
+  public void getError_isNotEmptyWhenInvalidEndDateIsPatternLength() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("MM/dd/yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    textInputLayout.getEditText().setText("11/1111111");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNotEmpty();
+  }
+
+  @Test
+  public void getError_isNotEmptyWhenInvalidStartDateIsMoreThanPatternLength() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("MM/dd/yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    textInputLayout.getEditText().setText("12/12/20233");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNotEmpty();
+  }
+
+  @Test
+  public void getError_isNotEmptyWhenInvalidEndDateIsMoreThanPatternLength() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("MM/dd/yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    textInputLayout.getEditText().setText("12/12/20233");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNotEmpty();
+  }
+
+  @Test
+  public void getError_isNullWhenInvalidStartDateIsLessThanPatternLength() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("MM/dd/yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    textInputLayout.getEditText().setText("11/11/111");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNull();
+  }
+
+  @Test
+  public void getError_isNullWhenInvalidEndDateIsLessThanPatternLength() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("MM/dd/yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    textInputLayout.getEditText().setText("11/11/111");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNull();
+  }
+
+  @Test
+  public void getError_isNullWhenValidStartDateIsPatternLength() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("MM/dd/yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    textInputLayout.getEditText().setText("12/12/2023");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNull();
+  }
+
+  @Test
+  public void getError_isNullWhenValidEndDateIsPatternLength() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("MM/dd/yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    textInputLayout.getEditText().setText("12/12/2023");
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(rangeDateSelector.getError()).isNull();
   }
 
   @Test
@@ -379,6 +476,113 @@ public class RangeDateSelectorTest {
     rangeDateSelector.setSelection(selection);
 
     assertThat(rangeDateSelector.getSelectedRanges()).containsExactly(selection);
+  }
+
+  @Test
+  public void textField_addsDelimitersAutomatically() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    EditText startEditText = startTextInput.getEditText();
+    EditText endEditText = endTextInput.getEditText();
+
+    startEditText.append("1");
+    endEditText.append("1");
+
+    assertThat(startEditText.getText().toString()).isEqualTo("1");
+    assertThat(endEditText.getText().toString()).isEqualTo("1");
+
+    startEditText.append("2");
+    endEditText.append("2");
+
+    assertThat(startEditText.getText().toString()).isEqualTo("12/");
+    assertThat(endEditText.getText().toString()).isEqualTo("12/");
+
+    startEditText.append("1");
+    endEditText.append("1");
+
+    assertThat(startEditText.getText().toString()).isEqualTo("12/1");
+    assertThat(endEditText.getText().toString()).isEqualTo("12/1");
+
+    startEditText.append("2");
+    endEditText.append("2");
+
+    assertThat(startEditText.getText().toString()).isEqualTo("12/12/");
+    assertThat(endEditText.getText().toString()).isEqualTo("12/12/");
+
+    startEditText.append("2023");
+    endEditText.append("2023");
+
+    assertThat(startEditText.getText().toString()).isEqualTo("12/12/2023");
+    assertThat(endEditText.getText().toString()).isEqualTo("12/12/2023");
+  }
+
+  @Test
+  public void textField_addsMultipleDelimitersAutomatically() {
+    rangeDateSelector.setTextInputFormat(new SimpleDateFormat("mm/.-dd/.-yyyy"));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    EditText startEditText = startTextInput.getEditText();
+    EditText endEditText = endTextInput.getEditText();
+
+    startEditText.append("1");
+    startEditText.append("2");
+    startEditText.append("1");
+    endEditText.append("1");
+    endEditText.append("2");
+    endEditText.append("1");
+
+    assertThat(startEditText.getText().toString()).isEqualTo("12/.-1");
+    assertThat(endEditText.getText().toString()).isEqualTo("12/.-1");
+  }
+
+  @Test
+  public void textField_shouldAllowAddingDelimitersManually() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    EditText startEditText = startTextInput.getEditText();
+    EditText endEditText = endTextInput.getEditText();
+
+    startEditText.append("1");
+    startEditText.append("2");
+    startEditText.getText().delete(startEditText.length() - 1, startEditText.length());
+    startEditText.append("-");
+    endEditText.append("1");
+    endEditText.append("2");
+    endEditText.getText().delete(endEditText.length() - 1, endEditText.length());
+    endEditText.append("-");
+
+    assertThat(startEditText.getText().toString()).isEqualTo("12-");
+    assertThat(endEditText.getText().toString()).isEqualTo("12-");
+  }
+
+  @Test
+  public void textField_shouldNotRemoveDelimitersAutomatically() {
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    EditText startEditText = startTextInput.getEditText();
+    EditText endEditText = endTextInput.getEditText();
+    startEditText.setText("12/12/2023");
+    endEditText.setText("12/12/2023");
+
+    startEditText.getText().delete(startEditText.length() - 4, startEditText.length());
+    endEditText.getText().delete(endEditText.length() - 4, endEditText.length());
+
+    assertThat(startEditText.getText().toString()).isEqualTo("12/12/");
+    assertThat(endEditText.getText().toString()).isEqualTo("12/12/");
+
+    startEditText.getText().delete(startEditText.length() - 4, startEditText.length());
+    endEditText.getText().delete(endEditText.length() - 4, endEditText.length());
+
+    assertThat(startEditText.getText().toString()).isEqualTo("12");
+    assertThat(endEditText.getText().toString()).isEqualTo("12");
   }
 
   @Test

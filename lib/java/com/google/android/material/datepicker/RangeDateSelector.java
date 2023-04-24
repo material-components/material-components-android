@@ -35,7 +35,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
 import androidx.core.util.Preconditions;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
@@ -212,8 +211,6 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     final TextInputLayout startTextInput =
         root.findViewById(R.id.mtrl_picker_text_input_range_start);
     final TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
-    startTextInput.setErrorAccessibilityLiveRegion(ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
-    endTextInput.setErrorAccessibilityLiveRegion(ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
     EditText startEditText = startTextInput.getEditText();
     EditText endEditText = endTextInput.getEditText();
     if (ManufacturerUtils.isDateInputKeyboardMissingSeparatorCharacters()) {

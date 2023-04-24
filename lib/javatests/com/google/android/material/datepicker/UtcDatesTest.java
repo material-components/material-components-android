@@ -22,7 +22,9 @@ import static org.junit.Assert.assertEquals;
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.core.app.ApplicationProvider;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Locale;
 import java.util.TimeZone;
 import org.junit.Before;
 import org.junit.Test;
@@ -48,7 +50,7 @@ public class UtcDatesTest {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/y");
     String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
 
-    assertEquals("m/d/yyyy", hint);
+    assertEquals("m/d/y", hint);
   }
 
   @Test
@@ -73,7 +75,7 @@ public class UtcDatesTest {
     SimpleDateFormat sdf = new SimpleDateFormat("M/d/y");
     String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
 
-    assertEquals("m/j/aaaa", hint);
+    assertEquals("m/j/a", hint);
   }
 
   @Test
@@ -94,5 +96,69 @@ public class UtcDatesTest {
 
     assertEquals(TimeZone.getTimeZone("US/Pacific"), sdf.getTimeZone());
     assertEquals(TimeZone.getTimeZone("UTC"), normalized.getTimeZone());
+  }
+
+  @Test
+  public void getDefaultTextInputFormat() {
+    SimpleDateFormat sdf = UtcDates.getDefaultTextInputFormat();
+
+    assertEquals("MM/dd/yyyy", sdf.toPattern());
+  }
+
+  @Test
+  @Config(qualifiers = "fr-rFR")
+  public void getDefaultTextInputFormatForFrench() {
+    SimpleDateFormat sdf = UtcDates.getDefaultTextInputFormat();
+
+    assertEquals("dd/MM/yyyy", sdf.toPattern());
+  }
+
+  @Test
+  @Config(qualifiers = "ru")
+  public void getDefaultTextInputFormatForRussian() {
+    SimpleDateFormat sdf = UtcDates.getDefaultTextInputFormat();
+
+    assertEquals("dd.MM.yyyy", sdf.toPattern());
+  }
+
+  @Test
+  @Config(qualifiers = "se")
+  public void getDefaultTextInputFormatForSwedish() {
+    SimpleDateFormat sdf = UtcDates.getDefaultTextInputFormat();
+
+    assertEquals("yyyy-MM-dd", sdf.toPattern());
+  }
+
+  @Test
+  public void getDatePatternAsInputFormat_filterDateCharactersAndDelimiters() {
+    String pattern = UtcDates.getDatePatternAsInputFormat("ddDe/FMM-mNo._!$% xYyyyyz");
+
+    assertEquals("dd/MM-.yyyy", pattern);
+  }
+
+  @Test
+  public void getDatePatternAsInputFormat_enforce2CharsForDayMonth4CharsForYear() {
+    String pattern = UtcDates.getDatePatternAsInputFormat("d/M/y");
+
+    assertEquals("dd/MM/yyyy", pattern);
+  }
+
+  @Test
+  public void getDatePatternAsInputFormat_removeDotSuffix() {
+    String pattern = UtcDates.getDatePatternAsInputFormat("yyyy.MM.dd.");
+
+    assertEquals("yyyy.MM.dd", pattern);
+  }
+
+  @Test
+  @Config(qualifiers = "kkj")
+  public void getDatePatternAsInputFormat_fixForKakoLanguage() {
+    String defaultPattern =
+        ((SimpleDateFormat) DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault()))
+            .toPattern();
+    String pattern = UtcDates.getDatePatternAsInputFormat(defaultPattern);
+
+    assertEquals("dd/MM y", defaultPattern);
+    assertEquals("dd/MM/yyyy", pattern);
   }
 }

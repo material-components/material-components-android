@@ -18,6 +18,7 @@ package com.google.android.material.datepicker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -27,19 +28,20 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 abstract class DateFormatTextWatcher extends TextWatcherAdapter {
 
-  private static final int VALIDATION_DELAY = 1000;
-
   @NonNull private final TextInputLayout textInputLayout;
 
+  private final String formatHint;
   private final DateFormat dateFormat;
   private final CalendarConstraints constraints;
   private final String outOfRange;
   private final Runnable setErrorCallback;
 
   private Runnable setRangeErrorCallback;
+  private int lastLength = 0;
 
   DateFormatTextWatcher(
       final String formatHint,
@@ -47,6 +49,7 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
       @NonNull TextInputLayout textInputLayout,
       CalendarConstraints constraints) {
 
+    this.formatHint = formatHint;
     this.dateFormat = dateFormat;
     this.textInputLayout = textInputLayout;
     this.constraints = constraints;
@@ -81,7 +84,8 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
     textInputLayout.removeCallbacks(setRangeErrorCallback);
     textInputLayout.setError(null);
     onValidDate(null);
-    if (TextUtils.isEmpty(s)) {
+
+    if (TextUtils.isEmpty(s) || s.length() < formatHint.length()) {
       return;
     }
 
@@ -102,6 +106,28 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
     }
   }
 
+  @Override
+  public void beforeTextChanged(@NonNull CharSequence s, int start, int count, int after) {
+    lastLength = s.length();
+  }
+
+  @Override
+  public void afterTextChanged(@NonNull Editable s) {
+    // Exclude some languages from automatically adding delimiters.
+    if (Locale.getDefault().getLanguage().equals(Locale.KOREAN.getLanguage())) {
+      return;
+    }
+
+    if (s.length() == 0 || s.length() >= formatHint.length() || s.length() < lastLength) {
+      return;
+    }
+
+    char nextCharHint = formatHint.charAt(s.length());
+    if (!Character.isDigit(nextCharHint)) {
+      s.append(nextCharHint);
+    }
+  }
+
   private Runnable createRangeErrorCallback(final long milliseconds) {
     return () -> {
       String dateString = DateStrings.getDateString(milliseconds);
@@ -116,6 +142,6 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
   }
 
   public void runValidation(View view, Runnable validation) {
-    view.postDelayed(validation, VALIDATION_DELAY);
+    view.post(validation);
   }
 }
