@@ -16,6 +16,7 @@
   -->
 
 <resources>
+  <!-- Not used. Kept for backward compatibility -->
   <integer name="mtrl_badge_max_character_count">4</integer>
   <integer name="m3_badge_max_number">999</integer>
 </resources>
