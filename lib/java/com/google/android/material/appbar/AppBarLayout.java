@@ -34,6 +34,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.ColorStateListDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Build.VERSION;
@@ -51,6 +52,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
+import androidx.annotation.DoNotInline;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
@@ -234,7 +236,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     context = getContext();
     setOrientation(VERTICAL);
 
-    if (Build.VERSION.SDK_INT >= 21) {
+    if (VERSION.SDK_INT >= 21) {
       // Use the bounds view outline provider so that we cast a shadow, even without a
       // background
       if (getOutlineProvider() == ViewOutlineProvider.BACKGROUND) {
@@ -256,10 +258,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         MaterialResources.getColorStateList(
             context, a, R.styleable.AppBarLayout_liftOnScrollColor);
 
-    if (getBackground() instanceof ColorDrawable) {
-      ColorDrawable background = (ColorDrawable) getBackground();
+    ColorStateList backgroundCSL = getBackgroundCSL();
+    if (backgroundCSL != null) {
       MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-      materialShapeDrawable.setFillColor(ColorStateList.valueOf(background.getColor()));
+      materialShapeDrawable.setFillColor(backgroundCSL);
       // If there is a lift on scroll color specified, we do not initialize the elevation overlay
       // and set the alpha to zero manually.
       if (liftOnScrollColor != null) {
@@ -283,12 +285,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           /* force */ false);
     }
 
-    if (Build.VERSION.SDK_INT >= 21 && a.hasValue(R.styleable.AppBarLayout_elevation)) {
+    if (VERSION.SDK_INT >= 21 && a.hasValue(R.styleable.AppBarLayout_elevation)) {
       ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(
           this, a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0));
     }
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
       // In O+, we have these values set in the style. Since there is no defStyleAttr for
       // AppBarLayout at the AppCompat level, check for these attributes here.
       if (a.hasValue(R.styleable.AppBarLayout_android_keyboardNavigationCluster)) {
@@ -319,6 +321,17 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             return onWindowInsetChanged(insets);
           }
         });
+  }
+
+  @Nullable
+  private ColorStateList getBackgroundCSL() {
+    Drawable background = getBackground();
+    if (background instanceof ColorDrawable) {
+      return ColorStateList.valueOf(((ColorDrawable) background).getColor());
+    } else if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+      return DrawableHelperV29.maybeGetBackgroundCSL(background);
+    }
+    return null;
   }
 
   private void initializeLiftOnScrollWithColor(MaterialShapeDrawable background) {
@@ -2553,6 +2566,18 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         ViewCompat.setClipBounds(child, null);
         child.setTranslationY(0);
       }
+    }
+  }
+
+  @RequiresApi(VERSION_CODES.Q)
+  private static class DrawableHelperV29 {
+    @DoNotInline
+    @Nullable
+    private static ColorStateList maybeGetBackgroundCSL(@Nullable Drawable background) {
+      if (background instanceof ColorStateListDrawable) {
+        return ((ColorStateListDrawable) background).getColorStateList();
+      }
+      return null;
     }
   }
 }
