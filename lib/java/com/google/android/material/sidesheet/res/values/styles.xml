@@ -41,22 +41,28 @@
   <!-- Style for the M3 Modal Side Sheet. -->
   <style name="Widget.Material3.SideSheet.Modal">
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_side_sheet_modal_elevation</item>
-    <item name="android:layout_gravity">right</item>
     <item name="shapeAppearance">@macro/m3_comp_sheet_side_docked_modal_container_shape</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.Corner.Left</item>
   </style>
 
   <!-- Style for the M3 Detached Modal Side Sheet. -->
   <style name="Widget.Material3.SideSheet.Modal.Detached">
     <item name="android:layout_margin">@dimen/m3_side_sheet_margin_detached</item>
     <item name="shapeAppearance">@macro/m3_comp_sheet_side_detached_container_shape</item>
-    <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
   <!-- Animation used for the M3 Modal Side Sheet. -->
   <style name="Animation.Material3.SideSheetDialog" parent="Animation.AppCompat.Dialog">
-    <item name="android:windowEnterAnimation">@anim/m3_side_sheet_slide_in</item>
-    <item name="android:windowExitAnimation">@anim/m3_side_sheet_slide_out</item>
+    <item name="android:windowEnterAnimation">@anim/m3_side_sheet_enter_from_right</item>
+    <item name="android:windowExitAnimation">@anim/m3_side_sheet_exit_to_right</item>
+  </style>
+
+  <!-- Animation used for the Right M3 Modal Side Sheet. -->
+  <style name="Animation.Material3.SideSheetDialog.Right"/>
+
+  <!-- Animation used for the Left M3 Modal Side Sheet. -->
+  <style name="Animation.Material3.SideSheetDialog.Left">
+    <item name="android:windowEnterAnimation">@anim/m3_side_sheet_enter_from_left</item>
+    <item name="android:windowExitAnimation">@anim/m3_side_sheet_exit_to_left</item>
   </style>
 
 </resources>
