@@ -59,7 +59,7 @@ indicate its current state.
 
 **Note:** Since version 1.7.0, the new `MaterialSwitch` class will replace the
 obsolete `SwitchMaterial` class. In most cases you should be able to just
-replace all `SwitchMaterial` class reference with `MaterialSwitch` to achieve 
+replace all `SwitchMaterial` class reference with `MaterialSwitch` to achieve
 the default look and feel. Please refer to the following sections if you need to
 customize the new styles.
 
@@ -144,14 +144,19 @@ Element   | Attribute       | Related method(s)                         | Defaul
 
 ### Icon attributes
 
-Element   | Attribute           | Related method(s)                                 | Default value
---------- | ------------------- | ------------------------------------------------- | -------------
-**Icon**  | `app:thumbIcon`     | `setThumbIconDrawable`<br/>`getThumbIconDrawable` | `null`
-**Color** | `app:thumbIconTint` | `setThumbIconTintList`<br/>`getThumbIconTintList` | `?attr/colorSurfaceVariant` (unchecked)<br/>`?attr/colorOnPrimaryContainer` (checked)
-
 You can add an optional icon to enhance the on/off indication of your custom
 switch by assigning `app:thumbIcon`. This icon will be centered and displayed on
 top of the thumb drawable.
+
+Element    | Attribute             | Related method(s)                                 | Default value
+---------- |-----------------------|---------------------------------------------------| -------------
+**Icon**   | `app:thumbIcon`       | `setThumbIconDrawable`<br/>`getThumbIconDrawable` | `null`
+**Width**  | `app:thumbIconWidth`  | `setThumbIconWidth`<br/>`getThumbIconWidth`       | Intrinsic width
+**Height** | `app:thumbIconHeight` | `setThumbIconHeight`<br/>`getThumbIconHeight`     | Intrinsic height
+**Color**  | `app:thumbIconTint`   | `setThumbIconTintList`<br/>`getThumbIconTintList` | `?attr/colorSurfaceVariant` (unchecked)<br/>`?attr/colorOnPrimaryContainer` (checked)
+
+**Note:** Custom thumb icon width/height is supported only for API 23 and above.
+For API < 23, the intrinsic size of the thumb icon will always be used.
 
 ### Track attributes
 

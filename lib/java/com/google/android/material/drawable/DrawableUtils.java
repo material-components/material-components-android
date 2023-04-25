@@ -16,6 +16,8 @@
 
 package com.google.android.material.drawable;
 
+import static java.lang.Math.max;
+
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -39,6 +41,8 @@ import android.view.Gravity;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.XmlRes;
@@ -57,6 +61,21 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public final class DrawableUtils {
+
+  /**
+   * Indicates to use the intrinsic size of the {@link Drawable}.
+   * 
+   * <p>Used in {@link #compositeTwoLayeredDrawable(Drawable, Drawable, int, int)}.
+   */
+  public static final int INTRINSIC_SIZE = -1;
+
+  // The value that the Drawable#getIntrinsicWidth() method returns when the drawable has no
+  // intrinsic width.
+  private static final int UNSPECIFIED_WIDTH = -1;
+
+  // The value that the Drawable#getIntrinsicHeight() method returns when the drawable has no
+  // intrinsic height.
+  private static final int UNSPECIFIED_HEIGHT = -1;
 
   private DrawableUtils() {}
 
@@ -190,15 +209,23 @@ public final class DrawableUtils {
   }
 
   /**
-   * Composites two drawables, returning a drawable instance of {@link LayerDrawable}, with the
-   * second on top of the first. If any of the drawables is null, this method will return the other.
+   * Composites two drawables, returning a drawable instance of {@link LayerDrawable},
+   * with the top layer centered.
+   * 
+   * <p>If any of the drawables is null, this method will return the other.
    *
-   * @param bottomLayerDrawable the drawable to be on the first layer (bottom)
-   * @param topLayerDrawable the drawable to be on the second layer (top)
+   * @param bottomLayerDrawable the drawable to be on the bottom layer
+   * @param topLayerDrawable the drawable to be on the top layer
    */
   @Nullable
   public static Drawable compositeTwoLayeredDrawable(
-      @Nullable Drawable bottomLayerDrawable, @Nullable Drawable topLayerDrawable) {
+      @Nullable Drawable bottomLayerDrawable,
+      @Nullable Drawable topLayerDrawable) {
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      return compositeTwoLayeredDrawable(
+          bottomLayerDrawable, topLayerDrawable, INTRINSIC_SIZE, INTRINSIC_SIZE);
+    }
+
     if (bottomLayerDrawable == null) {
       return topLayerDrawable;
     }
@@ -207,21 +234,64 @@ public final class DrawableUtils {
     }
     LayerDrawable drawable =
         new LayerDrawable(new Drawable[] {bottomLayerDrawable, topLayerDrawable});
-    int topLayerNewWidth;
-    int topLayerNewHeight;
-    if (topLayerDrawable.getIntrinsicWidth() == -1 || topLayerDrawable.getIntrinsicHeight() == -1) {
-      // If there's no intrinsic width or height, keep bottom layer's size.
-      topLayerNewWidth = bottomLayerDrawable.getIntrinsicWidth();
-      topLayerNewHeight = bottomLayerDrawable.getIntrinsicHeight();
-    } else if (topLayerDrawable.getIntrinsicWidth() <= bottomLayerDrawable.getIntrinsicWidth()
-        && topLayerDrawable.getIntrinsicHeight() <= bottomLayerDrawable.getIntrinsicHeight()) {
-      // If the top layer is smaller than the bottom layer in both its width and height, keep top
-      // layer's size.
-      topLayerNewWidth = topLayerDrawable.getIntrinsicWidth();
-      topLayerNewHeight = topLayerDrawable.getIntrinsicHeight();
+    int horizontalInset =
+        max(bottomLayerDrawable.getIntrinsicWidth()
+            - getTopLayerIntrinsicWidth(bottomLayerDrawable, topLayerDrawable), 0) / 2;
+    int verticalInset =
+        max(bottomLayerDrawable.getIntrinsicHeight()
+            - getTopLayerIntrinsicHeight(bottomLayerDrawable, topLayerDrawable), 0) / 2;
+    drawable.setLayerInset(1, horizontalInset, verticalInset, horizontalInset, verticalInset);
+    return drawable;
+  }
+
+  /**
+   * Composites two drawables, returning a drawable instance of {@link LayerDrawable},
+   * with the top layer centered to the bottom layer. The top layer will be scaled according to the
+   * provided desired width/height and the size of the bottom layer so the top layer can fit in the
+   * bottom layer and preserve its desired aspect ratio.
+   * 
+   * <p>If any of the drawables is null, this method will return the other.
+   *
+   * @param bottomLayerDrawable the drawable to be on the bottom layer
+   * @param topLayerDrawable the drawable to be on the top layer
+   * @param topLayerDesiredWidth top layer desired width in pixels, or {@link #INTRINSIC_SIZE} to
+   *     use the intrinsic width.
+   * @param topLayerDesiredHeight top layer desired height in pixels, or {@link #INTRINSIC_SIZE} to
+   *     use the intrinsic height.
+   */
+  @RequiresApi(VERSION_CODES.M)
+  @Nullable
+  public static Drawable compositeTwoLayeredDrawable(
+      @Nullable Drawable bottomLayerDrawable,
+      @Nullable Drawable topLayerDrawable,
+      @Px int topLayerDesiredWidth,
+      @Px int topLayerDesiredHeight) {
+    if (bottomLayerDrawable == null) {
+      return topLayerDrawable;
+    }
+    if (topLayerDrawable == null) {
+      return bottomLayerDrawable;
+    }
+    LayerDrawable drawable =
+        new LayerDrawable(new Drawable[] {bottomLayerDrawable, topLayerDrawable});
+
+    if (topLayerDesiredWidth == INTRINSIC_SIZE) {
+      topLayerDesiredWidth = getTopLayerIntrinsicWidth(bottomLayerDrawable, topLayerDrawable);
+    }
+    if (topLayerDesiredHeight == INTRINSIC_SIZE) {
+      topLayerDesiredHeight = getTopLayerIntrinsicHeight(bottomLayerDrawable, topLayerDrawable);
+    }
+
+    final int topLayerNewWidth;
+    final int topLayerNewHeight;
+    if (topLayerDesiredWidth <= bottomLayerDrawable.getIntrinsicWidth()
+        && topLayerDesiredHeight <= bottomLayerDrawable.getIntrinsicHeight()) {
+      // If the top layer's desired size is smaller than the bottom layer's size in both its width
+      // and height, keep top layer's desired size.
+      topLayerNewWidth = topLayerDesiredWidth;
+      topLayerNewHeight = topLayerDesiredHeight;
     } else {
-      float topLayerRatio =
-          (float) topLayerDrawable.getIntrinsicWidth() / topLayerDrawable.getIntrinsicHeight();
+      float topLayerRatio = (float) topLayerDesiredWidth / topLayerDesiredHeight;
       float bottomLayerRatio =
           (float) bottomLayerDrawable.getIntrinsicWidth()
               / bottomLayerDrawable.getIntrinsicHeight();
@@ -237,17 +307,24 @@ public final class DrawableUtils {
         topLayerNewWidth = (int) (topLayerRatio * topLayerNewHeight);
       }
     }
-    // Centers the top layer inside the bottom layer. Before M there's no layer gravity support, we
-    // need to use layer insets to adjust the top layer position manually.
-    if (VERSION.SDK_INT >= VERSION_CODES.M) {
-      drawable.setLayerSize(1, topLayerNewWidth, topLayerNewHeight);
-      drawable.setLayerGravity(1, Gravity.CENTER);
-    } else {
-      int horizontalInset = (bottomLayerDrawable.getIntrinsicWidth() - topLayerNewWidth) / 2;
-      int verticalInset = (bottomLayerDrawable.getIntrinsicHeight() - topLayerNewHeight) / 2;
-      drawable.setLayerInset(1, horizontalInset, verticalInset, horizontalInset, verticalInset);
-    }
+
+    drawable.setLayerSize(1, topLayerNewWidth, topLayerNewHeight);
+    drawable.setLayerGravity(1, Gravity.CENTER);
     return drawable;
+  }
+
+  private static int getTopLayerIntrinsicWidth(
+      @NonNull Drawable bottomLayerDrawable, @NonNull Drawable topLayerDrawable) {
+    int topLayerIntrinsicWidth = topLayerDrawable.getIntrinsicWidth();
+    return topLayerIntrinsicWidth == UNSPECIFIED_WIDTH
+        ? bottomLayerDrawable.getIntrinsicWidth() : topLayerIntrinsicWidth;
+  }
+
+  private static int getTopLayerIntrinsicHeight(
+      @NonNull Drawable bottomLayerDrawable, @NonNull Drawable topLayerDrawable) {
+    int topLayerIntrinsicHeight = topLayerDrawable.getIntrinsicHeight();
+    return topLayerIntrinsicHeight == UNSPECIFIED_HEIGHT
+        ? bottomLayerDrawable.getIntrinsicHeight() : topLayerIntrinsicHeight;
   }
 
   /** Returns a new state that adds the checked state to the input state. */

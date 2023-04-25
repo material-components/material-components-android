@@ -23,7 +23,7 @@
   <declare-styleable name="MaterialSwitch">
     <!-- Drawable used for the thumb icon that will be drawn upon the thumb. -->
     <attr name="thumbIcon" format="reference"/>
-    <!-- Tint that will be applied to the thumb icon drawable.. -->
+    <!-- Tint that will be applied to the thumb icon drawable. -->
     <attr name="thumbIconTint" format="color"/>
     <!-- The blending mode used to apply the tint specified by thumbIconTint
          to thumbIcon. The default mode is SRC_IN if not specified. -->
@@ -46,6 +46,10 @@
            result to valid color values. Saturate(S + D) -->
       <enum name="add" value="16" />
     </attr>
+    <!-- Width of the thumb icon. The attribute is supported only for API 23 and above. -->
+    <attr name="thumbIconWidth" format="dimension"/>
+    <!-- Height of the thumb icon. The attribute is supported only for API 23 and above. -->
+    <attr name="thumbIconHeight" format="dimension"/>
     <!-- Drawable used for the track decoration that will be drawn upon the track.
          By default it will draw an outline on the track in the unchecked state. -->
     <attr name="trackDecoration" format="reference"/>
