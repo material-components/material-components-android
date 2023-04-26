@@ -46,47 +46,6 @@ import io.material.catalog.feature.DemoActivity;
 @SuppressWarnings("RestrictTo")
 public class CustomNavigationDrawerDemoActivity extends DemoActivity {
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  private final OnBackAnimationCallback drawerOnBackAnimationCallback =
-      new OnBackAnimationCallback() {
-        @Override
-        public void onBackStarted(@NonNull BackEvent backEvent) {
-          sideContainerBackHelper.startBackProgress(backEvent);
-        }
-
-        @Override
-        public void onBackProgressed(@NonNull BackEvent backEvent) {
-          DrawerLayout.LayoutParams drawerLayoutParams =
-              (LayoutParams) currentDrawerView.getLayoutParams();
-          sideContainerBackHelper.updateBackProgress(backEvent, drawerLayoutParams.gravity);
-        }
-
-        @Override
-        public void onBackInvoked() {
-          BackEvent backEvent = sideContainerBackHelper.onHandleBackInvoked();
-          if (backEvent == null) {
-            drawerLayout.closeDrawers();
-            return;
-          }
-
-          DrawerLayout.LayoutParams drawerLayoutParams =
-              (LayoutParams) currentDrawerView.getLayoutParams();
-          int gravity = drawerLayoutParams.gravity;
-          AnimatorListener scrimCloseAnimatorListener =
-              DrawerLayoutUtils.getScrimCloseAnimatorListener(drawerLayout, currentDrawerView);
-          AnimatorUpdateListener scrimCloseAnimatorUpdateListener =
-              DrawerLayoutUtils.getScrimCloseAnimatorUpdateListener(drawerLayout);
-
-          sideContainerBackHelper.finishBackProgress(
-              backEvent, gravity, scrimCloseAnimatorListener, scrimCloseAnimatorUpdateListener);
-        }
-
-        @Override
-        public void onBackCancelled() {
-          sideContainerBackHelper.cancelBackProgress();
-        }
-      };
-
   private final OnBackPressedCallback drawerOnBackPressedCallback =
       new OnBackPressedCallback(/* enabled= */ true) {
         @Override
@@ -94,6 +53,8 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
           drawerLayout.closeDrawers();
         }
       };
+
+  @Nullable private OnBackAnimationCallback drawerOnBackAnimationCallback;
 
   private DrawerLayout drawerLayout;
   private View currentDrawerView;
@@ -128,6 +89,9 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
             sideContainerBackHelper = new MaterialSideContainerBackHelper(drawerView);
 
             if (BuildCompat.isAtLeastU()) {
+              if (drawerOnBackAnimationCallback == null) {
+                drawerOnBackAnimationCallback = createOnBackAnimationCallback();
+              }
               drawerLayout.post(
                   () ->
                       getOnBackInvokedDispatcher()
@@ -147,8 +111,11 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
             sideContainerBackHelper = null;
 
             if (BuildCompat.isAtLeastU()) {
-              getOnBackInvokedDispatcher()
-                  .unregisterOnBackInvokedCallback(drawerOnBackAnimationCallback);
+              if (drawerOnBackAnimationCallback != null) {
+                getOnBackInvokedDispatcher()
+                    .unregisterOnBackInvokedCallback(drawerOnBackAnimationCallback);
+                drawerOnBackAnimationCallback = null;
+              }
             } else {
               drawerOnBackPressedCallback.remove();
             }
@@ -165,5 +132,48 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
   @Override
   protected boolean shouldShowDefaultDemoActionBar() {
     return false;
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  private OnBackAnimationCallback createOnBackAnimationCallback() {
+    return new OnBackAnimationCallback() {
+
+      @Override
+      public void onBackStarted(@NonNull BackEvent backEvent) {
+        sideContainerBackHelper.startBackProgress(backEvent);
+      }
+
+      @Override
+      public void onBackProgressed(@NonNull BackEvent backEvent) {
+        DrawerLayout.LayoutParams drawerLayoutParams =
+            (LayoutParams) currentDrawerView.getLayoutParams();
+        sideContainerBackHelper.updateBackProgress(backEvent, drawerLayoutParams.gravity);
+      }
+
+      @Override
+      public void onBackInvoked() {
+        BackEvent backEvent = sideContainerBackHelper.onHandleBackInvoked();
+        if (backEvent == null) {
+          drawerLayout.closeDrawers();
+          return;
+        }
+
+        DrawerLayout.LayoutParams drawerLayoutParams =
+            (LayoutParams) currentDrawerView.getLayoutParams();
+        int gravity = drawerLayoutParams.gravity;
+        AnimatorListener scrimCloseAnimatorListener =
+            DrawerLayoutUtils.getScrimCloseAnimatorListener(drawerLayout, currentDrawerView);
+        AnimatorUpdateListener scrimCloseAnimatorUpdateListener =
+            DrawerLayoutUtils.getScrimCloseAnimatorUpdateListener(drawerLayout);
+
+        sideContainerBackHelper.finishBackProgress(
+            backEvent, gravity, scrimCloseAnimatorListener, scrimCloseAnimatorUpdateListener);
+      }
+
+      @Override
+      public void onBackCancelled() {
+        sideContainerBackHelper.cancelBackProgress();
+      }
+    };
   }
 }
