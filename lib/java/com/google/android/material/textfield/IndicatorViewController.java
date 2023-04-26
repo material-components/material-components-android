@@ -395,10 +395,11 @@ final class IndicatorViewController {
 
   private int getIndicatorHorizontalPadding(
         boolean isFontScaleLarge, @DimenRes int largeFontPaddingRes, int defaultPadding) {
-    if (helperTextHorizontalPaddingPx != NO_HELPER_TEXT_HORIZONTAL_PADDING)
-      return helperTextHorizontalPaddingPx;
-    else
+    if (helperTextHorizontalPaddingPx != NO_HELPER_TEXT_HORIZONTAL_PADDING) {
+		  return helperTextHorizontalPaddingPx;
+    } else {
       return getIndicatorPadding(isFontScaleLarge, largeFontPaddingRes, defaultPadding);
+    }
   }
 
   void addIndicator(TextView indicator, @IndicatorIndex int index) {
