@@ -21,9 +21,12 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.min;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -37,13 +40,18 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
+import android.window.BackEvent;
+import androidx.annotation.GravityInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.math.MathUtils;
+import androidx.core.os.BuildCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -51,6 +59,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import androidx.customview.widget.ViewDragHelper;
+import com.google.android.material.motion.MaterialSideContainerBackHelper;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -115,6 +124,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   @IdRes private int coplanarSiblingViewId = View.NO_ID;
 
   @Nullable private VelocityTracker velocityTracker;
+  @Nullable private MaterialSideContainerBackHelper sideContainerBackHelper;
 
   private int initialX;
 
@@ -191,6 +201,14 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     }
   }
 
+  @GravityInt
+  private int getGravityFromSheetEdge() {
+    if (sheetDelegate != null) {
+      return sheetDelegate.getSheetEdge() == Sheet.EDGE_RIGHT ? Gravity.RIGHT : Gravity.LEFT;
+    }
+    return Gravity.RIGHT;
+  }
+
   private boolean hasRightMargin() {
     LayoutParams layoutParams = getViewLayoutParams();
     return layoutParams != null && layoutParams.rightMargin > 0;
@@ -259,6 +277,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     // first time we layout with this behavior by checking (viewRef == null).
     viewRef = null;
     viewDragHelper = null;
+    sideContainerBackHelper = null;
   }
 
   @Override
@@ -267,6 +286,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     // Release references so we don't run unnecessary codepaths while not attached to a view.
     viewRef = null;
     viewDragHelper = null;
+    sideContainerBackHelper = null;
   }
 
   @Override
@@ -332,6 +352,8 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     if (viewRef == null) {
       // First layout with this behavior.
       viewRef = new WeakReference<>(child);
+
+      sideContainerBackHelper = new MaterialSideContainerBackHelper(child);
 
       // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
       // default to android:background declared in styles or layout.
@@ -949,6 +971,66 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   @RestrictTo(LIBRARY_GROUP)
   public int getLastStableState() {
     return lastStableState;
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Override
+  public void startBackProgress(@NonNull BackEvent backEvent) {
+    if (sideContainerBackHelper == null) {
+      return;
+    }
+    sideContainerBackHelper.startBackProgress(backEvent);
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Override
+  public void updateBackProgress(@NonNull BackEvent backEvent) {
+    if (sideContainerBackHelper == null) {
+      return;
+    }
+    sideContainerBackHelper.updateBackProgress(
+        backEvent, getGravityFromSheetEdge());
+  }
+
+  @Override
+  public void handleBackInvoked() {
+    if (sideContainerBackHelper == null) {
+      return;
+    }
+    BackEvent backEvent = sideContainerBackHelper.onHandleBackInvoked();
+    if (backEvent == null || !BuildCompat.isAtLeastU()) {
+      setState(STATE_HIDDEN);
+      return;
+    }
+
+    sideContainerBackHelper.finishBackProgress(
+        backEvent,
+        getGravityFromSheetEdge(),
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            setStateInternal(STATE_HIDDEN);
+            if (viewRef != null && viewRef.get() != null) {
+              viewRef.get().requestLayout();
+            }
+          }
+        },
+        /* finishAnimatorUpdateListener= */ null);
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  @Override
+  public void cancelBackProgress() {
+    if (sideContainerBackHelper == null) {
+      return;
+    }
+    sideContainerBackHelper.cancelBackProgress();
+  }
+
+  @VisibleForTesting
+  @Nullable
+  MaterialSideContainerBackHelper getBackHelper() {
+    return sideContainerBackHelper;
   }
 
   class StateSettlingTracker {

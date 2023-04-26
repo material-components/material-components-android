@@ -20,6 +20,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.RestrictTo;
+import com.google.android.material.motion.MaterialBackHandler;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -27,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
  * Interface for sheet constants and {@code IntDefs} to be shared between the different {@link
  * Sheet} implementations.
  */
-interface Sheet<C extends SheetCallback> {
+interface Sheet<C extends SheetCallback> extends MaterialBackHandler {
   /** The sheet is dragging. */
   int STATE_DRAGGING = 1;
 
