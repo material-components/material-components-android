@@ -21,7 +21,7 @@ import com.google.android.material.R;
 import static android.view.View.TRANSLATION_Y;
 import static android.view.View.VISIBLE;
 
-import static com.google.android.material.textfield.TextInputLayout.NO_HELPER_TEXT_HORIZONTAL_PADDING;
+import static com.google.android.material.textfield.TextInputLayout.USE_DEFAULT_PADDING;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -120,7 +120,7 @@ final class IndicatorViewController {
   @Nullable private TextView helperTextView;
   private int helperTextTextAppearance;
   @Nullable private ColorStateList helperTextViewTextColor;
-  private int helperTextHorizontalPaddingPx = NO_HELPER_TEXT_HORIZONTAL_PADDING;
+  private int helperTextHorizontalPaddingPx = USE_DEFAULT_PADDING;
 
   private Typeface typeface;
 
@@ -395,7 +395,7 @@ final class IndicatorViewController {
 
   private int getIndicatorHorizontalPadding(
         boolean isFontScaleLarge, @DimenRes int largeFontPaddingRes, int defaultPadding) {
-    if (helperTextHorizontalPaddingPx != NO_HELPER_TEXT_HORIZONTAL_PADDING) {
+    if (helperTextHorizontalPaddingPx != USE_DEFAULT_PADDING) {
 		  return helperTextHorizontalPaddingPx;
     } else {
       return getIndicatorPadding(isFontScaleLarge, largeFontPaddingRes, defaultPadding);

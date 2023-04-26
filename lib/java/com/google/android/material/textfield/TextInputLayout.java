@@ -187,7 +187,7 @@ import java.util.LinkedHashSet;
  */
 public class TextInputLayout extends LinearLayout {
 
-  static final int NO_HELPER_TEXT_HORIZONTAL_PADDING = -1;
+  static final int USE_DEFAULT_PADDING = -1;
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_TextInputLayout;
 
@@ -665,7 +665,7 @@ public class TextInputLayout extends LinearLayout {
     final CharSequence helperText = a.getText(R.styleable.TextInputLayout_helperText);
     final int helperTextHorizontalPadding = a.getDimensionPixelOffset(
         R.styleable.TextInputLayout_helperTextHorizontalPadding,
-        NO_HELPER_TEXT_HORIZONTAL_PADDING
+        USE_DEFAULT_PADDING
     );
     final int placeholderTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_placeholderTextAppearance, 0);
