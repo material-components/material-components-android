@@ -37,24 +37,32 @@ class BackgroundHighlightDecorator extends DayViewDecorator {
       new ArrayList<>(Arrays.asList(addDays(today, 1), addDays(today, 3), addDays(today, -2)));
 
   @Nullable private ColorStateList backgroundHighlightColor;
+  @Nullable private ColorStateList textHighlightColor;
 
   @Override
   public void initialize(@NonNull Context context) {
     int highlightColor =
         MaterialColors.getColor(
-            context,
-            R.attr.colorTertiaryContainer,
-            BackgroundHighlightDecorator.class.getSimpleName());
+            context, R.attr.colorTertiary, BackgroundHighlightDecorator.class.getSimpleName());
     backgroundHighlightColor = ColorStateList.valueOf(highlightColor);
+    int textColor =
+        MaterialColors.getColor(
+            context, R.attr.colorOnTertiary, BackgroundHighlightDecorator.class.getSimpleName());
+    textHighlightColor = ColorStateList.valueOf(textColor);
   }
 
   @Nullable
   @Override
   public ColorStateList getBackgroundColor(
       @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
-    return valid && !selected && shouldShowHighlight(year, month, day)
-        ? backgroundHighlightColor
-        : null;
+    return shouldShowHighlight(year, month, day, valid, selected) ? backgroundHighlightColor : null;
+  }
+
+  @Nullable
+  @Override
+  public ColorStateList getTextColor(
+      @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
+    return shouldShowHighlight(year, month, day, valid, selected) ? textHighlightColor : null;
   }
 
   @Nullable
@@ -73,6 +81,11 @@ class BackgroundHighlightDecorator extends DayViewDecorator {
     return String.format(
         context.getString(R.string.cat_picker_day_view_decorator_highlights_content_description),
         originalContentDescription);
+  }
+
+  private boolean shouldShowHighlight(
+      int year, int month, int day, boolean valid, boolean selected) {
+    return valid && !selected && shouldShowHighlight(year, month, day);
   }
 
   private boolean shouldShowHighlight(int year, int month, int day) {

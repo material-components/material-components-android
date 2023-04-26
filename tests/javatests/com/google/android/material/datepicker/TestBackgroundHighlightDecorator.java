@@ -34,6 +34,7 @@ public class TestBackgroundHighlightDecorator extends DayViewDecorator {
   private final List<Calendar> highlightDays;
 
   private ColorStateList backgroundHighlightColor;
+  private ColorStateList textHighlightColor;
 
   public TestBackgroundHighlightDecorator(Calendar startDay) {
     this.startDay = startDay;
@@ -45,6 +46,7 @@ public class TestBackgroundHighlightDecorator extends DayViewDecorator {
   @Override
   public void initialize(@NonNull Context context) {
     backgroundHighlightColor = ColorStateList.valueOf(getBackgroundHighlightColor(context));
+    textHighlightColor = ColorStateList.valueOf(getTextHighlightColor(context));
   }
 
   @Nullable
@@ -56,10 +58,22 @@ public class TestBackgroundHighlightDecorator extends DayViewDecorator {
         : null;
   }
 
+  @Nullable
+  @Override
+  public ColorStateList getTextColor(
+      @NonNull Context context, int year, int month, int day, boolean valid, boolean selected) {
+    return valid && !selected && shouldShowHighlight(year, month, day) ? textHighlightColor : null;
+  }
+
   @ColorInt
   private int getBackgroundHighlightColor(Context context) {
     return MaterialColors.getColor(
-        context, R.attr.colorTertiaryContainer, getFallbackBackgroundHighlightColor(context));
+        context, R.attr.colorTertiary, getFallbackBackgroundHighlightColor(context));
+  }
+
+  @ColorInt
+  private int getTextHighlightColor(Context context) {
+    return MaterialColors.getColor(context, R.attr.colorOnTertiary, R.attr.colorControlNormal);
   }
 
   @ColorInt

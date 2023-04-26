@@ -137,14 +137,17 @@ final class CalendarItemStyle {
    * {@code backgroundColorOverride}.
    */
   void styleItem(@NonNull TextView item) {
-    styleItem(item, /* backgroundColorOverride= */ null);
+    styleItem(item, /* backgroundColorOverride= */ null, /* textColorOverride= */ null);
   }
 
   /**
    * Applies the {@code R.styleable.MaterialCalendarDay} style to the provided {@code item},
    * factoring in the {@code backgroundColorOverride} if not null.
    */
-  void styleItem(@NonNull TextView item, @Nullable ColorStateList backgroundColorOverride) {
+  void styleItem(
+      @NonNull TextView item,
+      @Nullable ColorStateList backgroundColorOverride,
+      @Nullable ColorStateList textColorOverride) {
     MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable();
     MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
     backgroundDrawable.setShapeAppearanceModel(itemShape);
@@ -152,7 +155,7 @@ final class CalendarItemStyle {
     backgroundDrawable.setFillColor(
         backgroundColorOverride != null ? backgroundColorOverride : backgroundColor);
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
-    item.setTextColor(textColor);
+    item.setTextColor(textColorOverride != null ? textColorOverride : textColor);
     Drawable d;
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       d = new RippleDrawable(textColor.withAlpha(30), backgroundDrawable, shapeMask);

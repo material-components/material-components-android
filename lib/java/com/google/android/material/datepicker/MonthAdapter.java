@@ -214,7 +214,9 @@ class MonthAdapter extends BaseAdapter {
 
       ColorStateList backgroundColorOverride =
           dayViewDecorator.getBackgroundColor(context, year, month, dayNumber, valid, selected);
-      style.styleItem(dayTextView, backgroundColorOverride);
+      ColorStateList textColorOverride =
+          dayViewDecorator.getTextColor(context, year, month, dayNumber, valid, selected);
+      style.styleItem(dayTextView, backgroundColorOverride, textColorOverride);
 
       Drawable drawableLeft =
           dayViewDecorator.getCompoundDrawableLeft(
