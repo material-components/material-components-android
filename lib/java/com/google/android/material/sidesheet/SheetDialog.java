@@ -43,6 +43,7 @@ import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import com.google.android.material.motion.MaterialBackOrchestrator;
 import com.google.android.material.sidesheet.Sheet.StableSheetState;
 
 /**
@@ -63,6 +64,8 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
   boolean cancelable = true;
   private boolean canceledOnTouchOutside = true;
   private boolean canceledOnTouchOutsideSet;
+
+  @Nullable private MaterialBackOrchestrator backOrchestrator;
 
   SheetDialog(
       @NonNull Context context,
@@ -117,6 +120,20 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
     if (this.cancelable != cancelable) {
       this.cancelable = cancelable;
     }
+    if (getWindow() != null) {
+      updateListeningForBackCallbacks();
+    }
+  }
+
+  private void updateListeningForBackCallbacks() {
+    if (backOrchestrator == null) {
+      return;
+    }
+    if (cancelable) {
+      backOrchestrator.startListeningForBackCallbacks();
+    } else {
+      backOrchestrator.stopListeningForBackCallbacks();
+    }
   }
 
   @Override
@@ -131,6 +148,15 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
   public void onAttachedToWindow() {
     super.onAttachedToWindow();
     maybeUpdateWindowAnimationsBasedOnLayoutDirection();
+    updateListeningForBackCallbacks();
+  }
+
+  @Override
+  public void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    if (backOrchestrator != null) {
+      backOrchestrator.stopListeningForBackCallbacks();
+    }
   }
 
   /**
@@ -190,6 +216,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
       sheet = container.findViewById(getDialogId());
       behavior = getBehaviorFromSheet(sheet);
       addSheetCancelOnHideCallback(behavior);
+      backOrchestrator = new MaterialBackOrchestrator(behavior, sheet);
     }
   }
 
