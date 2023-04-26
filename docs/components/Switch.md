@@ -154,15 +154,11 @@ You can add an optional icon to enhance the on/off indication of your custom
 switch by assigning `app:thumbIcon`. This icon will be centered and displayed on
 top of the thumb drawable.
 
-Element    | Attribute             | Related method(s)                                 | Default value
----------- |-----------------------|---------------------------------------------------| -------------
-**Icon**   | `app:thumbIcon`       | `setThumbIconDrawable`<br/>`getThumbIconDrawable` | `null`
-**Width**  | `app:thumbIconWidth`  | `setThumbIconWidth`<br/>`getThumbIconWidth`       | Intrinsic width
-**Height** | `app:thumbIconHeight` | `setThumbIconHeight`<br/>`getThumbIconHeight`     | Intrinsic height
-**Color**  | `app:thumbIconTint`   | `setThumbIconTintList`<br/>`getThumbIconTintList` | `?attr/colorSurfaceVariant` (unchecked)<br/>`?attr/colorOnPrimaryContainer` (checked)
-
-**Note:** Custom thumb icon width/height is supported only for API 23 and above.
-For API < 23, the intrinsic size of the thumb icon will always be used.
+Element   | Attribute           | Related method(s)                                 | Default value
+--------- |---------------------|---------------------------------------------------| -------------
+**Icon**  | `app:thumbIcon`     | `setThumbIconDrawable`<br/>`getThumbIconDrawable` | `null`
+**Size**  | `app:thumbIconSize` | `setThumbIconSize`<br/>`getThumbIconSize`         | `16dp`
+**Color** | `app:thumbIconTint` | `setThumbIconTintList`<br/>`getThumbIconTintList` | `?attr/colorSurfaceVariant` (unchecked)<br/>`?attr/colorOnPrimaryContainer` (checked)
 
 ### Track attributes
 
