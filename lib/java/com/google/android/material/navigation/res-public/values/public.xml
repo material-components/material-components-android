@@ -44,7 +44,6 @@
   <public name="subheaderInsetStart" type="attr"/>
   <public name="subheaderInsetEnd" type="attr"/>
   <public name="drawerLayoutCornerSize" type="attr"/>
-  <public name="drawerLayoutCornerClippingEnabled" type="attr"/>
   <public name="Widget.Design.NavigationView" type="style"/>
   <public name="Widget.Material3.NavigationView" type="style"/>
   <public name="ShapeAppearanceOverlay.Material3.NavigationView.Item" type="style"/>

@@ -28,7 +28,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
@@ -93,7 +92,7 @@ import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.shape.ShapeAppearancePathProvider;
+import com.google.android.material.shape.ShapeableDelegate;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /**
@@ -144,15 +143,11 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   private boolean bottomInsetScrimEnabled = true;
 
   @Px private int drawerLayoutCornerSize = 0;
-  private boolean drawerLayoutCornerClippingEnabled = false;
-
-  @Nullable private Path shapeClipPath;
-  private final RectF shapeClipBounds = new RectF();
+  private final ShapeableDelegate shapeableDelegate = ShapeableDelegate.create(this);
 
   private final MaterialSideContainerBackHelper sideContainerBackHelper =
       new MaterialSideContainerBackHelper(this);
-  private final MaterialBackOrchestrator backOrchestrator =
-      new MaterialBackOrchestrator(this);
+  private final MaterialBackOrchestrator backOrchestrator = new MaterialBackOrchestrator(this);
   private final DrawerListener backDrawerListener =
       new SimpleDrawerListener() {
 
@@ -201,10 +196,6 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     // placed inside a drawer layout.
     drawerLayoutCornerSize =
         a.getDimensionPixelSize(R.styleable.NavigationView_drawerLayoutCornerSize, 0);
-    setDrawerLayoutCornerClippingEnabled(
-        a.getBoolean(
-            R.styleable.NavigationView_drawerLayoutCornerClippingEnabled,
-            drawerLayoutCornerClippingEnabled));
 
     // Set the background to a MaterialShapeDrawable if it hasn't been set or if it can be converted
     // to a MaterialShapeDrawable.
@@ -381,34 +372,15 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   }
 
   /**
-   * Gets whether NavigationView will clip itself and its children to its shape appearance and
-   * drawer layout corner size.
+   * Set whether this view should always use canvas clipping to clip to its masked shape when
+   * applicable.
    *
-   * <p>See {@link #setDrawerLayoutCornerClippingEnabled(boolean)}.
-   *
-   * @return true if this view will clip itself and its children to its shape appearance and drawer
-   *     layout corner size
+   * @hide
    */
-  public boolean isDrawerLayoutCornerClippingEnabled() {
-    return drawerLayoutCornerClippingEnabled;
-  }
-
-  /**
-   * Sets whether NavigationView should clip itself and its children to its shape appearance and
-   * drawer layout corner size.
-   *
-   * <p>Clipping uses {@link Canvas#clipPath(Path)} which is expensive and should be used only when
-   * necessary. The most common example of this is when using a header layout with a full bleed
-   * image or other content that would obscure the top end corner shape.
-   *
-   * @param enabled true if navigation view should use canvas clipping to clip itself and all
-   *     children to its shape appearance and drawer layout corner size.
-   */
-  public void setDrawerLayoutCornerClippingEnabled(boolean enabled) {
-    if (drawerLayoutCornerClippingEnabled != enabled) {
-      drawerLayoutCornerClippingEnabled = enabled;
-      invalidate();
-    }
+  @VisibleForTesting
+  @RestrictTo(LIBRARY_GROUP)
+  public void setForceCompatClippingEnabled(boolean enabled) {
+    shapeableDelegate.setForceCompatClippingEnabled(this, enabled);
   }
 
   /**
@@ -422,38 +394,33 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
         && getLayoutParams() instanceof DrawerLayout.LayoutParams
         && drawerLayoutCornerSize > 0
         && getBackground() instanceof MaterialShapeDrawable) {
-      // Get the absolute gravity of this view and set the top and bottom exposed corner sizes.
-      MaterialShapeDrawable background = (MaterialShapeDrawable) getBackground();
-      ShapeAppearanceModel.Builder builder = background.getShapeAppearanceModel().toBuilder();
       int layoutGravity = ((DrawerLayout.LayoutParams) getLayoutParams()).gravity;
-      int absGravity =
-          GravityCompat.getAbsoluteGravity(layoutGravity, ViewCompat.getLayoutDirection(this));
-      if (absGravity == Gravity.LEFT) {
-        // Exposed edge is on the right
-        builder.setTopRightCornerSize(drawerLayoutCornerSize);
-        builder.setBottomRightCornerSize(drawerLayoutCornerSize);
+      boolean isAbsGravityLeft =
+          GravityCompat.getAbsoluteGravity(layoutGravity, ViewCompat.getLayoutDirection(this))
+              == Gravity.LEFT;
+
+      // Create and set a background to a MaterialShapeDrawable with the gravity edge's corners
+      // set to zero. This is needed in addition to the ShapeableDelegate's clip since the
+      // background of this view will not be clipped when using canvas (,compat) clipping.
+      MaterialShapeDrawable background = (MaterialShapeDrawable) getBackground();
+      ShapeAppearanceModel.Builder builder =
+          background.getShapeAppearanceModel().toBuilder()
+              .setAllCornerSizes(drawerLayoutCornerSize);
+      if (isAbsGravityLeft) {
+        builder.setTopLeftCornerSize(0F);
+        builder.setBottomLeftCornerSize(0F);
       } else {
         // Exposed edge is on the left
-        builder.setTopLeftCornerSize(drawerLayoutCornerSize);
-        builder.setBottomLeftCornerSize(drawerLayoutCornerSize);
+        builder.setTopRightCornerSize(0F);
+        builder.setBottomRightCornerSize(0F);
       }
-      background.setShapeAppearanceModel(builder.build());
-
-      if (shapeClipPath == null) {
-        shapeClipPath = new Path();
-      }
-      shapeClipPath.reset();
-      shapeClipBounds.set(0, 0, width, height);
-      ShapeAppearancePathProvider.getInstance()
-          .calculatePath(
-              background.getShapeAppearanceModel(),
-              background.getInterpolation(),
-              shapeClipBounds,
-              shapeClipPath);
-      invalidate();
-    } else {
-      shapeClipPath = null;
-      shapeClipBounds.setEmpty();
+      ShapeAppearanceModel model = builder.build();
+      background.setShapeAppearanceModel(model);
+      shapeableDelegate.onShapeAppearanceChanged(this, model);
+      shapeableDelegate.onMaskChanged(this, new RectF(0, 0, width, height));
+      // Let shapeableDelegate offset the bounds of the edge with zeroed corners so
+      // ViewOutlineProvider can use a symmetrical shape on API 22-32.
+      shapeableDelegate.setOffsetZeroCornerEdgeBoundsEnabled(this, true);
     }
   }
 
@@ -592,15 +559,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
 
   @Override
   protected void dispatchDraw(@NonNull Canvas canvas) {
-    if (shapeClipPath == null || !isDrawerLayoutCornerClippingEnabled()) {
-      super.dispatchDraw(canvas);
-      return;
-    }
-
-    int save = canvas.save();
-    canvas.clipPath(shapeClipPath);
-    super.dispatchDraw(canvas);
-    canvas.restoreToCount(save);
+    shapeableDelegate.maybeClip(canvas, super::dispatchDraw);
   }
 
   /** @hide */
