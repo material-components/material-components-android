@@ -63,13 +63,13 @@ final class RightSheetDelegate extends SheetDelegate {
   boolean isReleasedCloseToOriginEdge(@NonNull View releasedChild) {
     // To be considered released close to the origin (right) edge, the released child's left must
     // be at least halfway to the origin (right) edge of the screen.
-    return releasedChild.getLeft() > (getHiddenOffset() - getExpandedOffset()) / 2;
+    return releasedChild.getLeft() > (getHiddenOffset() + getExpandedOffset()) / 2;
   }
 
   @Override
   boolean isSwipeSignificant(float xVelocity, float yVelocity) {
     return SheetUtils.isSwipeMostlyHorizontal(xVelocity, yVelocity)
-        && yVelocity > sheetBehavior.getSignificantVelocityThreshold();
+        && Math.abs(xVelocity) > sheetBehavior.getSignificantVelocityThreshold();
   }
 
   @Override
