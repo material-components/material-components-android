@@ -30,6 +30,8 @@ import android.os.Build.VERSION_CODES;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.view.ViewGroup.MarginLayoutParams;
 import android.window.BackEvent;
 import androidx.annotation.GravityInt;
 import androidx.annotation.NonNull;
@@ -130,7 +132,7 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
       @Nullable AnimatorUpdateListener finishAnimatorUpdateListener) {
     boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEvent.EDGE_LEFT;
     boolean leftGravity = checkAbsoluteGravity(gravity, Gravity.LEFT);
-    float scaledWidth = view.getWidth() * view.getScaleX();
+    float scaledWidth = view.getWidth() * view.getScaleX() + getEdgeMargin(leftGravity);
     ObjectAnimator finishAnimator =
         ObjectAnimator.ofFloat(view, View.TRANSLATION_X, leftGravity ? -scaledWidth : scaledWidth);
     if (finishAnimatorUpdateListener != null) {
@@ -178,5 +180,14 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
     int absoluteGravity =
         GravityCompat.getAbsoluteGravity(gravity, ViewCompat.getLayoutDirection(view));
     return (absoluteGravity & checkFor) == checkFor;
+  }
+
+  private int getEdgeMargin(boolean leftGravity) {
+    LayoutParams layoutParams = view.getLayoutParams();
+    if (layoutParams instanceof MarginLayoutParams) {
+      MarginLayoutParams marginLayoutParams = (MarginLayoutParams) layoutParams;
+      return leftGravity ? marginLayoutParams.leftMargin : marginLayoutParams.rightMargin;
+    }
+    return 0;
   }
 }
