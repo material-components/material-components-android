@@ -492,6 +492,7 @@ public class DynamicColors {
    * @return True, if Android version is S or T and preUDynamicNeutralChromaUpdateEnabled is true in
    *     current context.
    */
+  @ChecksSdkIntAtLeast(api = VERSION_CODES.S)
   private static boolean shouldOverrideNeutralChroma(@NonNull Context context) {
     // TODO(b/272585197) Remove after tonal surface migration is complete.
     boolean shouldUpdateNeutralChroma =
