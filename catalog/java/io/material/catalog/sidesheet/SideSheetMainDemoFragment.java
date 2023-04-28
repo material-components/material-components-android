@@ -100,8 +100,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
             view,
             R.id.standard_side_sheet_container,
             R.id.show_standard_side_sheet_button,
-            R.id.close_icon_button,
-            /* shouldHandleBack= */ true);
+            R.id.close_icon_button);
 
     setSideSheetCallback(
         standardRightSideSheet, R.id.side_sheet_state_text, R.id.side_sheet_slide_offset_text);
@@ -112,8 +111,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
             view,
             R.id.standard_detached_side_sheet_container,
             R.id.show_standard_detached_side_sheet_button,
-            R.id.detached_close_icon_button,
-            /* shouldHandleBack= */ true);
+            R.id.detached_close_icon_button);
 
     setSideSheetCallback(
         detachedStandardSideSheet,
@@ -126,8 +124,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
             view,
             R.id.vertically_scrolling_side_sheet_container,
             R.id.show_vertically_scrolling_side_sheet_button,
-            R.id.vertically_scrolling_side_sheet_close_icon_button,
-            /* shouldHandleBack= */ true);
+            R.id.vertically_scrolling_side_sheet_close_icon_button);
 
     setSideSheetCallback(
         verticallyScrollingSideSheet,
@@ -148,8 +145,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
             view,
             R.id.coplanar_side_sheet_container,
             R.id.show_coplanar_side_sheet_button,
-            R.id.coplanar_side_sheet_close_icon_button,
-            /* shouldHandleBack= */ false);
+            R.id.coplanar_side_sheet_close_icon_button);
 
     setSideSheetCallback(
         coplanarSideSheet,
@@ -162,8 +158,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
             view,
             R.id.coplanar_detached_side_sheet_container,
             R.id.show_coplanar_detached_side_sheet_button,
-            R.id.coplanar_detached_side_sheet_close_icon_button,
-            /* shouldHandleBack= */ false);
+            R.id.coplanar_detached_side_sheet_close_icon_button);
 
     setSideSheetCallback(
         detachedCoplanarSideSheet,
@@ -224,8 +219,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
       @NonNull View view,
       @IdRes int sideSheetContainerId,
       @IdRes int showSideSheetButtonId,
-      @IdRes int closeIconButtonId,
-      boolean shouldHandleBack) {
+      @IdRes int closeIconButtonId) {
     View sideSheet = view.findViewById(sideSheetContainerId);
     SideSheetBehavior<View> sideSheetBehavior = SideSheetBehavior.from(sideSheet);
 
@@ -235,9 +229,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
     View standardSideSheetCloseIconButton = sideSheet.findViewById(closeIconButtonId);
     standardSideSheetCloseIconButton.setOnClickListener(v -> hideSideSheet(sideSheetBehavior));
 
-    if (shouldHandleBack) {
-      setupBackHandling(sideSheetBehavior);
-    }
+    setupBackHandling(sideSheetBehavior);
 
     sideSheetViews.add(sideSheet);
 

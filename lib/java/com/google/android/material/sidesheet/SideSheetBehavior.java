@@ -23,6 +23,7 @@ import static java.lang.Math.min;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -59,6 +60,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import androidx.customview.widget.ViewDragHelper;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.motion.MaterialSideContainerBackHelper;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -988,8 +990,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     if (sideContainerBackHelper == null) {
       return;
     }
-    sideContainerBackHelper.updateBackProgress(
-        backEvent, getGravityFromSheetEdge());
+    sideContainerBackHelper.updateBackProgress(backEvent, getGravityFromSheetEdge());
   }
 
   @Override
@@ -1015,7 +1016,31 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
             }
           }
         },
-        /* finishAnimatorUpdateListener= */ null);
+        getCoplanarFinishAnimatorUpdateListener());
+  }
+
+  @Nullable
+  private AnimatorUpdateListener getCoplanarFinishAnimatorUpdateListener() {
+    View coplanarSiblingView = getCoplanarSiblingView();
+    if (coplanarSiblingView == null) {
+      return null;
+    }
+
+    MarginLayoutParams coplanarSiblingLayoutParams =
+        (MarginLayoutParams) coplanarSiblingView.getLayoutParams();
+    if (coplanarSiblingLayoutParams == null) {
+      return null;
+    }
+
+    int coplanarSiblingAdjacentMargin =
+        sheetDelegate.getCoplanarSiblingAdjacentMargin(coplanarSiblingLayoutParams);
+
+    return animation -> {
+      sheetDelegate.updateCoplanarSiblingAdjacentMargin(
+          coplanarSiblingLayoutParams,
+          AnimationUtils.lerp(coplanarSiblingAdjacentMargin, 0, animation.getAnimatedFraction()));
+      coplanarSiblingView.requestLayout();
+    };
   }
 
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)

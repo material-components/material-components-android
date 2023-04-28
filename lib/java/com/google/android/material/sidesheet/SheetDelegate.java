@@ -71,6 +71,17 @@ abstract class SheetDelegate {
   abstract void updateCoplanarSiblingLayoutParams(
       @NonNull MarginLayoutParams coplanarSiblingLayoutParams, int sheetLeft, int sheetRight);
 
+  /** Sets the coplanar sheet's margin that's adjacent to the side sheet to the provided value. */
+  abstract void updateCoplanarSiblingAdjacentMargin(
+      @NonNull MarginLayoutParams coplanarSiblingLayoutParams, int coplanarSiblingAdjacentMargin);
+
+  /**
+   * Returns the coplanar sibling's margin that's adjacent to the sheet's left or right edge,
+   * depending on the sheet edge.
+   */
+  abstract int getCoplanarSiblingAdjacentMargin(
+      @NonNull MarginLayoutParams coplanarSiblingLayoutParams);
+
   /**
    * Calculates the margin on the inner side of the sheet based on the {@link MarginLayoutParams}.
    * For right based sheets, the inner margin would be the right margin.

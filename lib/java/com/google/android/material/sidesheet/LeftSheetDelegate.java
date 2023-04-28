@@ -103,6 +103,17 @@ final class LeftSheetDelegate extends SheetDelegate {
   }
 
   @Override
+  void updateCoplanarSiblingAdjacentMargin(
+      @NonNull MarginLayoutParams coplanarSiblingLayoutParams, int coplanarSiblingAdjacentMargin) {
+    coplanarSiblingLayoutParams.leftMargin = coplanarSiblingAdjacentMargin;
+  }
+
+  @Override
+  int getCoplanarSiblingAdjacentMargin(@NonNull MarginLayoutParams coplanarSiblingLayoutParams) {
+    return coplanarSiblingLayoutParams.leftMargin;
+  }
+
+  @Override
   public int getParentInnerEdge(@NonNull CoordinatorLayout parent) {
     return parent.getLeft();
   }
