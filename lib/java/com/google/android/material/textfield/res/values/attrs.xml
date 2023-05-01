@@ -370,6 +370,8 @@
     <attr name="simpleItemSelectedColor" format="color"/>
     <!-- The ripple color of the default selected item of the dropdown list. -->
     <attr name="simpleItemSelectedRippleColor" format="color"/>
+    <!-- The container color of the dropdown menu. -->
+    <attr name="dropDownBackgroundTint" format="color"/>
   </declare-styleable>
 
 </resources>

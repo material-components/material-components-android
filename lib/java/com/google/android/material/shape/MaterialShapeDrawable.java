@@ -172,13 +172,31 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * when the overlay will be active.
    */
   @NonNull
-  public static MaterialShapeDrawable createWithElevationOverlay(Context context, float elevation) {
-    int colorSurface =
-        MaterialColors.getColor(
-            context, R.attr.colorSurface, MaterialShapeDrawable.class.getSimpleName());
+  public static MaterialShapeDrawable createWithElevationOverlay(
+      @NonNull Context context, float elevation) {
+    return createWithElevationOverlay(context, elevation, /* backgroundTint= */ null);
+  }
+
+  /**
+   * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
+   * fill color of {@code backgroundTint}, and an elevation of {@code elevation}. When {@code
+   * backgroundTint} is {@code null}, {@code colorSurface} will be used as default.
+   *
+   * <p>See {@link ElevationOverlayProvider#compositeOverlayIfNeeded(int, float)} for information on
+   * when the overlay will be active.
+   */
+  @NonNull
+  public static MaterialShapeDrawable createWithElevationOverlay(
+      @NonNull Context context, float elevation, @Nullable ColorStateList backgroundTint) {
+    if (backgroundTint == null) {
+      final int colorSurface =
+          MaterialColors.getColor(
+              context, R.attr.colorSurface, MaterialShapeDrawable.class.getSimpleName());
+      backgroundTint = ColorStateList.valueOf(colorSurface);
+    }
     MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
     materialShapeDrawable.initializeElevationOverlay(context);
-    materialShapeDrawable.setFillColor(ColorStateList.valueOf(colorSurface));
+    materialShapeDrawable.setFillColor(backgroundTint);
     materialShapeDrawable.setElevation(elevation);
     return materialShapeDrawable;
   }

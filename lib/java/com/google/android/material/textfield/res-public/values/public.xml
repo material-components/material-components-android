@@ -102,6 +102,7 @@
   <public name="simpleItems" type="attr"/>
   <public name="simpleItemSelectedColor" type="attr"/>
   <public name="simpleItemSelectedRippleColor" type="attr"/>
+  <public name="dropDownBackgroundTint" type="attr"/>
 
   <public name="Widget.Design.TextInputLayout" type="style"/>
   <public name="Widget.MaterialComponents.TextInputLayout.FilledBox" type="style"/>

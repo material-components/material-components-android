@@ -949,8 +949,16 @@ public class TextInputLayout extends LinearLayout {
             .setBottomLeftCornerSize(cornerRadius)
             .setBottomRightCornerSize(cornerRadius)
             .build();
+
+    ColorStateList dropDownBackgroundTint = null;
+    if (editText instanceof MaterialAutoCompleteTextView) {
+      MaterialAutoCompleteTextView materialAutoCompleteTextView =
+          ((MaterialAutoCompleteTextView) editText);
+      dropDownBackgroundTint = materialAutoCompleteTextView.getDropDownBackgroundTintList();
+    }
     MaterialShapeDrawable popupDrawable =
-        MaterialShapeDrawable.createWithElevationOverlay(getContext(), elevation);
+        MaterialShapeDrawable.createWithElevationOverlay(
+            getContext(), elevation, dropDownBackgroundTint);
     popupDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     popupDrawable.setPadding(0, verticalPadding, 0, verticalPadding);
     return popupDrawable;

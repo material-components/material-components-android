@@ -47,6 +47,7 @@ import android.widget.Filterable;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import androidx.annotation.ArrayRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -56,6 +57,7 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 /**
  * A special sub-class of {@link android.widget.AutoCompleteTextView} that is auto-inflated so that
@@ -77,6 +79,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   @NonNull private final Rect tempRect = new Rect();
   @LayoutRes private final int simpleItemLayout;
   private final float popupElevation;
+  @Nullable private ColorStateList dropDownBackgroundTint;
   private int simpleItemSelectedColor;
   @Nullable private ColorStateList simpleItemSelectedRippleColor;
 
@@ -122,6 +125,14 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
         attributes.getDimensionPixelOffset(
             R.styleable.MaterialAutoCompleteTextView_android_popupElevation,
             R.dimen.mtrl_exposed_dropdown_menu_popup_elevation);
+
+    if (attributes.hasValue(R.styleable.MaterialAutoCompleteTextView_dropDownBackgroundTint)) {
+      dropDownBackgroundTint =
+          ColorStateList.valueOf(
+              attributes.getColor(
+                  R.styleable.MaterialAutoCompleteTextView_dropDownBackgroundTint,
+                  Color.TRANSPARENT));
+    }
 
     simpleItemSelectedColor =
         attributes.getColor(
@@ -244,6 +255,54 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
    */
   public void setSimpleItems(@NonNull String[] stringArray) {
     setAdapter(new MaterialArrayAdapter<>(getContext(), simpleItemLayout, stringArray));
+  }
+
+  /**
+   * Sets the color of the popup dropdown container. It will take effect only if the popup
+   * background is a {@link MaterialShapeDrawable}, which is the default when using a Material
+   * theme.
+   *
+   * @param dropDownBackgroundColor the popup dropdown container color
+   * @see #setDropDownBackgroundTintList(ColorStateList)
+   * @see #getDropDownBackgroundTintList()
+   * @attr ref
+   *     com.google.android.material.R.styleable#MaterialAutoCompleteTextView_dropDownBackgroundTint
+   */
+  public void setDropDownBackgroundTint(@ColorInt int dropDownBackgroundColor) {
+    setDropDownBackgroundTintList(ColorStateList.valueOf(dropDownBackgroundColor));
+  }
+
+  /**
+   * Sets the color of the popup dropdown container. It will take effect only if the popup
+   * background is a {@link MaterialShapeDrawable}, which is the default when using a Material
+   * theme.
+   *
+   * @param dropDownBackgroundTint the popup dropdown container tint as a {@link ColorStateList}
+   *     object.
+   * @see #setDropDownBackgroundTint(int)
+   * @see #getDropDownBackgroundTintList()
+   * @attr ref
+   *     com.google.android.material.R.styleable#MaterialAutoCompleteTextView_dropDownBackgroundTint
+   */
+  public void setDropDownBackgroundTintList(@Nullable ColorStateList dropDownBackgroundTint) {
+    this.dropDownBackgroundTint = dropDownBackgroundTint;
+    Drawable dropDownBackground = getDropDownBackground();
+    if (dropDownBackground instanceof MaterialShapeDrawable) {
+      ((MaterialShapeDrawable) dropDownBackground).setFillColor(this.dropDownBackgroundTint);
+    }
+  }
+
+  /**
+   * Returns the color of the popup dropdown container.
+   *
+   * @see #setDropDownBackgroundTint(int)
+   * @see #setDropDownBackgroundTintList(ColorStateList)
+   * @attr ref
+   *     com.google.android.material.R.styleable#MaterialAutoCompleteTextView_dropDownBackgroundTint
+   */
+  @Nullable
+  public ColorStateList getDropDownBackgroundTintList() {
+    return dropDownBackgroundTint;
   }
 
   /**
