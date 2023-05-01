@@ -991,6 +991,31 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       return;
     }
     sideContainerBackHelper.updateBackProgress(backEvent, getGravityFromSheetEdge());
+
+    updateCoplanarSiblingBackProgress();
+  }
+
+  private void updateCoplanarSiblingBackProgress() {
+    if (viewRef == null || viewRef.get() == null) {
+      return;
+    }
+    View sheet = viewRef.get();
+
+    View coplanarSiblingView = getCoplanarSiblingView();
+    if (coplanarSiblingView == null) {
+      return;
+    }
+
+    MarginLayoutParams coplanarSiblingLayoutParams =
+        (MarginLayoutParams) coplanarSiblingView.getLayoutParams();
+    if (coplanarSiblingLayoutParams == null) {
+      return;
+    }
+
+    int updatedCoplanarSiblingAdjacentMargin = (int) (childWidth * sheet.getScaleX() + innerMargin);
+    sheetDelegate.updateCoplanarSiblingAdjacentMargin(
+        coplanarSiblingLayoutParams, updatedCoplanarSiblingAdjacentMargin);
+    coplanarSiblingView.requestLayout();
   }
 
   @Override
