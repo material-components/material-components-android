@@ -17,13 +17,12 @@ package com.google.android.material.carousel;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.android.material.carousel.MultiBrowseCarouselStrategy.Arrangement;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
-/** Tests for {@link MultiBrowseCarouselStrategy.Arrangement}. */
+/** Tests for {@link Arrangement}. */
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
 public final class ArrangementTest {
