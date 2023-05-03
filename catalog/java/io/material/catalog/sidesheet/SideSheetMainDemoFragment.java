@@ -371,10 +371,12 @@ public class SideSheetMainDemoFragment extends DemoFragment {
   }
 
   private SideSheetCallback createSideSheetCallback(
-      TextView stateTextView, TextView slideOffsetTextView) {
+      @NonNull TextView stateTextView, @NonNull TextView slideOffsetTextView) {
     return new SideSheetCallback() {
       @Override
       public void onStateChanged(@NonNull View sheet, int newState) {
+        stateTextView.setVisibility(View.VISIBLE);
+
         switch (newState) {
           case SideSheetBehavior.STATE_DRAGGING:
             stateTextView.setText(R.string.cat_sidesheet_state_dragging);
@@ -393,6 +395,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
 
       @Override
       public void onSlide(@NonNull View sheet, float slideOffset) {
+        slideOffsetTextView.setVisibility(View.VISIBLE);
         slideOffsetTextView.setText(
             getResources().getString(R.string.cat_sidesheet_slide_offset_text, slideOffset));
       }

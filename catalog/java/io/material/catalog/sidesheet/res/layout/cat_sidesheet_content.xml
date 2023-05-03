@@ -51,6 +51,7 @@
     android:layout_height="wrap_content"
     android:text="@string/cat_sidesheet_state_settling"
     android:textAppearance="?attr/textAppearanceHeadlineSmall"
+    android:visibility="gone"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/side_sheet_title_text" />
@@ -61,6 +62,7 @@
     android:layout_height="wrap_content"
     android:text="@string/cat_sidesheet_slide_offset_text"
     android:textAppearance="?attr/textAppearanceHeadlineSmall"
+    android:visibility="gone"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toBottomOf="@id/side_sheet_state_text" />
