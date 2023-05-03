@@ -42,7 +42,7 @@ final class LeftSheetDelegate extends SheetDelegate {
     return SideSheetBehavior.EDGE_LEFT;
   }
 
-  /** Returns the sheet's offset in pixels from the origin edge when hidden. */
+  /** Returns the sheet's offset in pixels from the inner edge when hidden. */
   @Override
   int getHiddenOffset() {
     // Return the parent's width in pixels, which results in the sheet being offset entirely off of
@@ -50,18 +50,18 @@ final class LeftSheetDelegate extends SheetDelegate {
     return -sheetBehavior.getChildWidth() - sheetBehavior.getInnerMargin();
   }
 
-  /** Returns the sheet's offset in pixels from the origin edge when expanded. */
+  /** Returns the sheet's offset in pixels from the inner edge when expanded. */
   @Override
   int getExpandedOffset() {
     // Calculate the expanded offset based on the width of the content.
     return max(0, sheetBehavior.getParentInnerEdge() + sheetBehavior.getInnerMargin());
   }
 
-  /** Whether the view has been released from a drag close to the origin edge. */
+  /** Whether the view has been released from a drag close to the inner edge. */
   @Override
-  boolean isReleasedCloseToOriginEdge(@NonNull View releasedChild) {
-    // To be considered released close to the origin (left) edge, the released child's right must
-    // be at least halfway to the origin (left) edge of the screen.
+  boolean isReleasedCloseToInnerEdge(@NonNull View releasedChild) {
+    // To be considered released close to the inner (left) edge, the released child's right must
+    // be at least halfway to the inner (left) edge of the screen.
     return releasedChild.getRight() < (getExpandedOffset() - getHiddenOffset()) / 2;
   }
 

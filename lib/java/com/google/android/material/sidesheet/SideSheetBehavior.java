@@ -557,7 +557,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   }
 
   /**
-   * Returns the sheet's offset from the origin edge when expanded. It will calculate the offset
+   * Returns the sheet's offset from the inner edge when expanded. It will calculate the offset
    * based on the width of the content.
    */
   public int getExpandedOffset() {
@@ -859,10 +859,10 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       targetState = STATE_EXPANDED;
 
     } else if (shouldHide(releasedChild, xVelocity)) {
-      // Hide if the view was either released close to the origin/right edge or it was a significant
+      // Hide if the view was either released close to the inner edge or it was a significant
       // horizontal swipe; otherwise settle to expanded state.
       if (sheetDelegate.isSwipeSignificant(xVelocity, yVelocity)
-          || sheetDelegate.isReleasedCloseToOriginEdge(releasedChild)) {
+          || sheetDelegate.isReleasedCloseToInnerEdge(releasedChild)) {
         targetState = STATE_HIDDEN;
       } else {
         targetState = STATE_EXPANDED;

@@ -34,14 +34,14 @@ abstract class SheetDelegate {
   @SheetEdge
   abstract int getSheetEdge();
 
-  /** Returns the sheet's offset from the origin edge when hidden. */
+  /** Returns the sheet's offset from the inner edge when hidden. */
   abstract int getHiddenOffset();
 
-  /** Returns the sheet's offset from the origin edge when expanded. */
+  /** Returns the sheet's offset from the inner edge when expanded. */
   abstract int getExpandedOffset();
 
-  /** Whether the view has been released from a drag close to the origin edge. */
-  abstract boolean isReleasedCloseToOriginEdge(@NonNull View releasedChild);
+  /** Whether the view has been released from a drag close to the inner edge. */
+  abstract boolean isReleasedCloseToInnerEdge(@NonNull View releasedChild);
 
   abstract boolean isSwipeSignificant(float xVelocity, float yVelocity);
 
