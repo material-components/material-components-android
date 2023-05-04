@@ -61,7 +61,8 @@ import java.util.List;
  * measured and it's desired size will be used to determine an appropriate size for all items in the
  * carousel.
  */
-public class CarouselLayoutManager extends LayoutManager implements Carousel {
+public class CarouselLayoutManager extends LayoutManager
+    implements Carousel, RecyclerView.SmoothScroller.ScrollVectorProvider {
 
   private static final String TAG = "CarouselLayoutManager";
 
@@ -844,7 +845,8 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
    * than the min and max scroll offsets but this will be clamped in {@link #scrollBy(int, Recycler,
    * State)} (Recycler, State)} by {@link #calculateShouldHorizontallyScrollBy(int, int, int, int)}.
    */
-  private int getScrollOffsetForPosition(KeylineState keylineState, int position) {
+  private int getScrollOffsetForPosition(int position) {
+    KeylineState keylineState = keylineStateList.getDefaultState();
     if (isLayoutRtl()) {
       return (int)
           ((getContainerWidth() - keylineState.getLastFocalKeyline().loc)
@@ -858,13 +860,34 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
     }
   }
 
+  @Nullable
+  @Override
+  public PointF computeScrollVectorForPosition(int targetPosition) {
+    if (keylineStateList == null) {
+      return null;
+    }
+
+    return new PointF(getOffsetToScrollToPosition(targetPosition), 0F);
+  }
+
+  /**
+   * Gets the offset needed to scroll to a position from the current scroll offset.
+   *
+   * <p>This will calculate the horizontal scroll offset needed to place a child at {@code
+   * position}'s center at the start-most focal keyline.
+   */
+  int getOffsetToScrollToPosition(int position) {
+    int targetScrollOffset = getScrollOffsetForPosition(position);
+    return targetScrollOffset - horizontalScrollOffset;
+  }
+
   @Override
   public void scrollToPosition(int position) {
     if (keylineStateList == null) {
       return;
     }
     horizontalScrollOffset =
-        getScrollOffsetForPosition(keylineStateList.getDefaultState(), position);
+        getScrollOffsetForPosition(position);
     currentFillStartPosition = MathUtils.clamp(position, 0, max(0, getItemCount() - 1));
     updateCurrentKeylineStateForScrollOffset();
     requestLayout();
@@ -877,13 +900,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
           @Nullable
           @Override
           public PointF computeScrollVectorForPosition(int targetPosition) {
-            if (keylineStateList == null) {
-              return null;
-            }
-
-            float targetScrollOffset =
-                getScrollOffsetForPosition(keylineStateList.getDefaultState(), targetPosition);
-            return new PointF(targetScrollOffset - horizontalScrollOffset, 0F);
+            return CarouselLayoutManager.this.computeScrollVectorForPosition(targetPosition);
           }
 
           @Override
@@ -891,7 +908,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
             // Override dx calculations so the target view is brought all the way into the focal
             // range instead of just being made visible.
             float targetScrollOffset =
-                getScrollOffsetForPosition(keylineStateList.getDefaultState(), getPosition(view));
+                getScrollOffsetForPosition(getPosition(view));
             return (int) (horizontalScrollOffset - targetScrollOffset);
           }
         };
@@ -920,9 +937,7 @@ public class CarouselLayoutManager extends LayoutManager implements Carousel {
       return false;
     }
 
-    int offsetForChild =
-        getScrollOffsetForPosition(keylineStateList.getDefaultState(), getPosition(child));
-    int dx = offsetForChild - horizontalScrollOffset;
+    int dx = getOffsetToScrollToPosition(getPosition(child));
     if (!focusedChildVisible) {
       if (dx != 0) {
         // TODO(b/266816148): Implement smoothScrollBy when immediate is false.

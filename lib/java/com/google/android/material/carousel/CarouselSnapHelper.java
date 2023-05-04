@@ -1,0 +1,197 @@
+/*
+ * Copyright 2023 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.google.android.material.carousel;
+
+import android.graphics.PointF;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.LayoutManager;
+import androidx.recyclerview.widget.SnapHelper;
+import android.view.View;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+/**
+ * Implementation of the {@link SnapHelper} that supports snapping items to the carousel keylines
+ * according to the strategy.
+ */
+public class CarouselSnapHelper extends SnapHelper {
+
+  private final boolean disableFling;
+
+  public CarouselSnapHelper() {
+    this(true);
+  }
+
+  public CarouselSnapHelper(boolean disableFling) {
+    this.disableFling = disableFling;
+  }
+
+  @Nullable
+  @Override
+  public int[] calculateDistanceToFinalSnap(
+      @NonNull LayoutManager layoutManager, @NonNull View view) {
+    // If the layout manager is not a CarouselLayoutManager, we return with a zero offset
+    // as there are no keylines to snap to.
+    if (!(layoutManager instanceof CarouselLayoutManager)) {
+      return new int[] {0, 0};
+    }
+
+    int offset = 0;
+    if (layoutManager.canScrollHorizontally()) {
+      offset = distanceToFirstFocalKeyline(view, (CarouselLayoutManager) layoutManager);
+    }
+    // TODO(b/279088745): Implement snap helper for vertical scrolling.
+    return new int[] {offset, 0};
+  }
+
+  private int distanceToFirstFocalKeyline(
+      @NonNull View targetView, CarouselLayoutManager layoutManager) {
+    return layoutManager.getOffsetToScrollToPosition(layoutManager.getPosition(targetView));
+  }
+
+  @Nullable
+  @Override
+  public View findSnapView(LayoutManager layoutManager) {
+    // TODO(b/279088745): Implement snap helper for vertical scrolling.
+    if (layoutManager.canScrollHorizontally()) {
+      return findViewNearestFirstKeyline(layoutManager);
+    }
+    return null;
+  }
+
+  /**
+   * Return the child view that is currently closest to the first focal keyline.
+   *
+   * @param layoutManager The {@link LayoutManager} associated with the attached {@link
+   *     RecyclerView}.
+   * @return the child view that is currently closest to the first focal keyline.
+   */
+  @Nullable
+  private View findViewNearestFirstKeyline(LayoutManager layoutManager) {
+    int childCount = layoutManager.getChildCount();
+    if (childCount == 0 || !(layoutManager instanceof CarouselLayoutManager)) {
+      return null;
+    }
+    View closestChild = null;
+    int absClosest = Integer.MAX_VALUE;
+
+    CarouselLayoutManager carouselLayoutManager = (CarouselLayoutManager) layoutManager;
+    for (int i = 0; i < childCount; i++) {
+      final View child = layoutManager.getChildAt(i);
+      final int position = layoutManager.getPosition(child);
+      final int offset =
+          Math.abs(carouselLayoutManager.getOffsetToScrollToPosition(position));
+
+      // If child center is closer than previous closest, set it as closest
+      if (offset < absClosest) {
+        absClosest = offset;
+        closestChild = child;
+      }
+    }
+    return closestChild;
+  }
+
+  @Override
+  public int findTargetSnapPosition(LayoutManager layoutManager, int velocityX, int velocityY) {
+    if (!disableFling) {
+      return RecyclerView.NO_POSITION;
+    }
+
+    final int itemCount = layoutManager.getItemCount();
+    if (itemCount == 0) {
+      return RecyclerView.NO_POSITION;
+    }
+
+    // A child that is exactly centered on the first focal keyline is eligible
+    // for both before and after
+    View closestChildBeforeKeyline = null;
+    int distanceBefore = Integer.MIN_VALUE;
+    View closestChildAfterKeyline = null;
+    int distanceAfter = Integer.MAX_VALUE;
+
+    // Find the first view before the first focal keyline, and the first view after it
+    final int childCount = layoutManager.getChildCount();
+    for (int i = 0; i < childCount; i++) {
+      final View child = layoutManager.getChildAt(i);
+      if (child == null) {
+        continue;
+      }
+      final int distance =
+          distanceToFirstFocalKeyline(child, (CarouselLayoutManager) layoutManager);
+
+      if (distance <= 0 && distance > distanceBefore) {
+        // Child is before the keyline and closer then the previous best
+        distanceBefore = distance;
+        closestChildBeforeKeyline = child;
+      }
+      if (distance >= 0 && distance < distanceAfter) {
+        // Child is after the keyline and closer then the previous best
+        distanceAfter = distance;
+        closestChildAfterKeyline = child;
+      }
+    }
+
+    // Return the position of the closest child from the first focal keyline, in the direction of
+    // the fling
+    final boolean forwardDirection = isForwardFling(layoutManager, velocityX, velocityY);
+    if (forwardDirection && closestChildAfterKeyline != null) {
+      return layoutManager.getPosition(closestChildAfterKeyline);
+    } else if (!forwardDirection && closestChildBeforeKeyline != null) {
+      return layoutManager.getPosition(closestChildBeforeKeyline);
+    }
+
+    // There is no child in the direction of the fling (eg. start/end of list).
+    // Extrapolate from the child that is visible to get the position of the view to
+    // snap to.
+    View visibleView = forwardDirection ? closestChildBeforeKeyline : closestChildAfterKeyline;
+    if (visibleView == null) {
+      return RecyclerView.NO_POSITION;
+    }
+    int visiblePosition = layoutManager.getPosition(visibleView);
+    int snapToPosition =
+        visiblePosition + (isReverseLayout(layoutManager) == forwardDirection ? -1 : 1);
+
+    if (snapToPosition < 0 || snapToPosition >= itemCount) {
+      return RecyclerView.NO_POSITION;
+    }
+    return snapToPosition;
+  }
+
+  private boolean isForwardFling(
+      RecyclerView.LayoutManager layoutManager, int velocityX, int velocityY) {
+    if (layoutManager.canScrollHorizontally()) {
+      return velocityX > 0;
+    } else {
+      return velocityY > 0;
+    }
+  }
+
+  // Calculates the direction of the layout based on the direction of the scroll vector when
+  // scrolling to the end of the list. This is not equivalent to `isRtl` because the recyclerview
+  // layout manager may set `reverseLayout`.
+  private boolean isReverseLayout(RecyclerView.LayoutManager layoutManager) {
+    final int itemCount = layoutManager.getItemCount();
+    if ((layoutManager instanceof RecyclerView.SmoothScroller.ScrollVectorProvider)) {
+      RecyclerView.SmoothScroller.ScrollVectorProvider vectorProvider =
+          (RecyclerView.SmoothScroller.ScrollVectorProvider) layoutManager;
+      PointF vectorForEnd = vectorProvider.computeScrollVectorForPosition(itemCount - 1);
+      if (vectorForEnd != null) {
+        return vectorForEnd.x < 0 || vectorForEnd.y < 0;
+      }
+    }
+    return false;
+  }
+}

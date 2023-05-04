@@ -285,4 +285,25 @@ class CarouselHelper {
       return scroll;
     }
   }
+
+  static KeylineState getTestCenteredKeylineState() {
+    float smallSize = 56F;
+    float extraSmallSize = 10F;
+    float largeSize = 450F;
+    float mediumSize = 88F;
+
+    float extraSmallMask = getKeylineMaskPercentage(extraSmallSize, largeSize);
+    float smallMask = getKeylineMaskPercentage(smallSize, largeSize);
+    float mediumMask = getKeylineMaskPercentage(mediumSize, largeSize);
+
+    return new KeylineState.Builder(450F)
+        .addKeyline(5F, extraSmallMask, extraSmallSize)
+        .addKeylineRange(38F, smallMask, smallSize, 2)
+        .addKeyline(166F, mediumMask, mediumSize)
+        .addKeylineRange(435F, 0F, largeSize, 2, true)
+        .addKeyline(1154F, mediumMask, mediumSize)
+        .addKeylineRange(1226F, smallMask, smallSize, 2)
+        .addKeyline(1315F, extraSmallMask, extraSmallSize)
+        .build();
+  }
 }
