@@ -602,8 +602,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     updateDrawableForTargetState(state, /* animate= */ false);
 
-    nestedScrollingChildRef = new WeakReference<>(findScrollingChild(child));
-
     for (int i = 0; i < callbacks.size(); i++) {
       callbacks.get(i).onLayout(child);
     }
@@ -621,6 +619,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // Record the velocity
     if (action == MotionEvent.ACTION_DOWN) {
       reset();
+      nestedScrollingChildRef = new WeakReference<>(findScrollingChild(child));
     }
     if (velocityTracker == null) {
       velocityTracker = VelocityTracker.obtain();
