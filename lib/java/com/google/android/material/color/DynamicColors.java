@@ -117,6 +117,7 @@ public class DynamicColors {
     deviceMap.put("robolectric", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("samsung", SAMSUNG_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("sharp", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("shift", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("sony", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("tcl", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("tecno", DEFAULT_DEVICE_SUPPORT_CONDITION);
