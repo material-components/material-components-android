@@ -19,8 +19,10 @@
   <string name="cat_carousel_debug_mode_label" translatable="false">Debug mode</string>
   <string name="cat_carousel_force_compact_arrangement_label" translatable="false">Force compact arrangement</string>
   <string name="cat_carousel_draw_dividers_label" translatable="false">Draw dividers</string>
+  <string name="cat_carousel_enable_snap_label" description="The title of a switch to enable snapping to carousel items.[CHAR_LIMIT=NONE]">Enable Snap</string>
   <string name="cat_carousel_adapter_item_count_hint_label" translatable="false">Item count</string>
   <string name="cat_carousel_position_slider_label" translatable="false">Scroll position</string>
+  <string name="cat_carousel_snap_switch_description" description="Content description of a switch to enable snapping.[CHAR_LIMIT=NONE]">Enable snapping to carousel items</string>
   <string name="cat_carousel_position_slider_content_description" translatable="false">Scroll position slider</string>
 
   <string-array name="cat_carousel_adapter_count_content" translatable="false">

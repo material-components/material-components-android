@@ -27,6 +27,7 @@ import android.widget.AutoCompleteTextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.carousel.CarouselLayoutManager;
+import com.google.android.material.carousel.CarouselSnapHelper;
 import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
 import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -61,6 +62,7 @@ public class MultiBrowseDemoFragment extends DemoFragment {
     MaterialSwitch debugSwitch = view.findViewById(R.id.debug_switch);
     MaterialSwitch forceCompactSwitch = view.findViewById(R.id.force_compact_arrangement_switch);
     MaterialSwitch drawDividers = view.findViewById(R.id.draw_dividers_switch);
+    MaterialSwitch snapSwitch = view.findViewById(R.id.snap_switch);
     AutoCompleteTextView itemCountDropdown = view.findViewById(R.id.item_count_dropdown);
     Slider positionSlider = view.findViewById(R.id.position_slider);
 
@@ -92,6 +94,16 @@ public class MultiBrowseDemoFragment extends DemoFragment {
             multiBrowseStartRecyclerView.addItemDecoration(horizontalDivider);
           } else {
             multiBrowseStartRecyclerView.removeItemDecoration(horizontalDivider);
+          }
+        });
+
+    CarouselSnapHelper snapHelper = new CarouselSnapHelper();
+    snapSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            snapHelper.attachToRecyclerView(multiBrowseStartRecyclerView);
+          } else {
+            snapHelper.attachToRecyclerView(null);
           }
         });
 

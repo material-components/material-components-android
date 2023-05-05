@@ -69,6 +69,17 @@
       android:textAppearance="?attr/textAppearanceBodyLarge"
       android:text="@string/cat_carousel_draw_dividers_label"/>
 
+    <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/snap_switch"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:checked="false"
+      android:layout_marginHorizontal="16dp"
+      android:layout_marginVertical="8dp"
+      android:textAppearance="?attr/textAppearanceBodyLarge"
+      android:contentDescription="@string/cat_carousel_snap_switch_description"
+      android:text="@string/cat_carousel_enable_snap_label"/>
+
     <com.google.android.material.textfield.TextInputLayout
       style="?attr/textInputFilledExposedDropdownMenuStyle"
       android:layout_width="match_parent"
