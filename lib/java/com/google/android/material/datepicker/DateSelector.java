@@ -139,7 +139,7 @@ public interface DateSelector<S> extends Parcelable {
               return;
             }
           }
-          ViewUtils.hideKeyboard(view);
+          ViewUtils.hideKeyboard(view, /* useWindowInsetsController= */ false);
         };
 
     for (EditText editText : editTexts) {
