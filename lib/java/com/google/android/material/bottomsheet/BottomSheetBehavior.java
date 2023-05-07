@@ -29,6 +29,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -341,6 +342,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @VisibleForTesting
   final SparseIntArray expandHalfwayActionIds = new SparseIntArray();
 
+  private Rect tempRect = new Rect();
+  private int[] tempIntArray = new int[2];
+
   public BottomSheetBehavior() {}
 
   public BottomSheetBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
@@ -619,7 +623,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // Record the velocity
     if (action == MotionEvent.ACTION_DOWN) {
       reset();
-      nestedScrollingChildRef = new WeakReference<>(findScrollingChild(child));
+      nestedScrollingChildRef = new WeakReference(findScrollingChild(child, event.getRawX(), event.getRawY()));
     }
     if (velocityTracker == null) {
       velocityTracker = VelocityTracker.obtain();
@@ -1652,24 +1656,49 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Nullable
+  private View findScrollingChild(View view, float screenTouchX, float screenTouchY) {
+    int globalTouchX = (int) screenTouchX;
+    int globalTouchY = (int) screenTouchY;
+    // find touch down point relative to the root view
+    int[] location = tempIntArray;
+    View rootView = view.getRootView();
+    if (rootView != null) {
+      rootView.getLocationOnScreen(location);
+      globalTouchX -= location[0];
+      globalTouchY -= location[1];
+    }
+    return findScrollingChild(view, globalTouchX, globalTouchY);
+  }
+
+  @Nullable
   @VisibleForTesting
-  View findScrollingChild(View view) {
+  View findScrollingChild(View view, int globalTouchX, int globalTouchY) {
     if (view.getVisibility() != View.VISIBLE) {
       return null;
     }
-    if (ViewCompat.isNestedScrollingEnabled(view)) {
+    if (ViewCompat.isNestedScrollingEnabled(view)
+            && isPointInVisibleViewArea(view, globalTouchX, globalTouchY)) {
       return view;
     }
     if (view instanceof ViewGroup) {
       ViewGroup group = (ViewGroup) view;
       for (int i = 0, count = group.getChildCount(); i < count; i++) {
-        View scrollingChild = findScrollingChild(group.getChildAt(i));
+        View scrollingChild = findScrollingChild(group.getChildAt(i), globalTouchX, globalTouchY);
         if (scrollingChild != null) {
           return scrollingChild;
         }
       }
     }
     return null;
+  }
+
+  private boolean isPointInVisibleViewArea(View view, int globalPointX, int globalPointY) {
+    Rect rect = tempRect;
+    rect.setEmpty();
+    if (view.getGlobalVisibleRect(rect)) {
+      return rect.contains(globalPointX, globalPointY);
+    }
+    return false;
   }
 
   private boolean shouldHandleDraggingWithHelper() {
