@@ -29,6 +29,8 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.ColorStateListDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -368,5 +370,28 @@ public final class DrawableUtils {
     } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && path.isConvex()) {
       outline.setConvexPath(path);
     }
+  }
+
+  /**
+   * Returns the {@link ColorStateList} that can be retrieved from the {@code drawable}, or null
+   * if no {@link ColorStateList} can be retrieved.
+   */
+  @Nullable
+  public static ColorStateList getColorStateListOrNull(@Nullable final Drawable drawable) {
+    if (drawable == null) {
+      return null;
+    }
+
+    if (drawable instanceof ColorDrawable) {
+      return ColorStateList.valueOf(((ColorDrawable) drawable).getColor());
+    }
+
+    if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+      if (drawable instanceof ColorStateListDrawable) {
+        return ((ColorStateListDrawable) drawable).getColorStateList();
+      }
+    }
+
+    return null;
   }
 }

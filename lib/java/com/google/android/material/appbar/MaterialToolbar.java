@@ -25,7 +25,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -34,7 +33,6 @@ import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
@@ -43,6 +41,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
+
+import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ToolbarUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -378,16 +378,19 @@ public class MaterialToolbar extends Toolbar {
 
   private void initBackground(Context context) {
     Drawable background = getBackground();
-    if (background != null && !(background instanceof ColorDrawable)) {
-      return;
+    ColorStateList backgroundCSL = DrawableUtils.getColorStateListOrNull(background);
+
+    if (background == null || backgroundCSL != null) {
+      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+      if (backgroundCSL != null) {
+        materialShapeDrawable.setFillColor(backgroundCSL);
+      } else {
+        materialShapeDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
+      }
+      materialShapeDrawable.initializeElevationOverlay(context);
+      materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
+      ViewCompat.setBackground(this, materialShapeDrawable);
     }
-    MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-    int backgroundColor =
-        background != null ? ((ColorDrawable) background).getColor() : Color.TRANSPARENT;
-    materialShapeDrawable.setFillColor(ColorStateList.valueOf(backgroundColor));
-    materialShapeDrawable.initializeElevationOverlay(context);
-    materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
-    ViewCompat.setBackground(this, materialShapeDrawable);
   }
 
   @Nullable

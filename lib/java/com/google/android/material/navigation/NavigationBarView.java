@@ -25,6 +25,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
@@ -56,6 +57,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -195,10 +197,19 @@ public abstract class NavigationBarView extends FrameLayout {
       setItemTextColor(attributes.getColorStateList(R.styleable.NavigationBarView_itemTextColor));
     }
 
-    if (getBackground() == null || getBackground() instanceof ColorDrawable) {
-      // Add a MaterialShapeDrawable as background that supports tinting in every API level.
-      ViewCompat.setBackground(this, createMaterialShapeDrawableBackground(context,
-          ShapeAppearanceModel.builder(context, attrs, defStyleAttr, defStyleRes).build()));
+    Drawable background = getBackground();
+    ColorStateList backgroundCSL = DrawableUtils.getColorStateListOrNull(background);
+    if (background == null || backgroundCSL != null) {
+      ShapeAppearanceModel shapeAppearanceModel =
+          ShapeAppearanceModel.builder(context, attrs, defStyleAttr, defStyleRes).build();
+      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+      if (backgroundCSL != null) {
+        materialShapeDrawable.setFillColor(backgroundCSL);
+      } else {
+        materialShapeDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
+      }
+      materialShapeDrawable.initializeElevationOverlay(context);
+      ViewCompat.setBackground(this, materialShapeDrawable);
     }
 
     if (attributes.hasValue(R.styleable.NavigationBarView_itemPaddingTop)) {
@@ -304,20 +315,6 @@ public abstract class NavigationBarView extends FrameLayout {
           @Override
           public void onMenuModeChange(MenuBuilder menu) {}
         });
-  }
-
-  @NonNull
-  private MaterialShapeDrawable createMaterialShapeDrawableBackground(
-      Context context, ShapeAppearanceModel shapeAppearanceModel) {
-    MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-    Drawable originalBackground = getBackground();
-    if (originalBackground instanceof ColorDrawable) {
-      materialShapeDrawable.setFillColor(
-          ColorStateList.valueOf(((ColorDrawable) originalBackground).getColor()));
-    }
-    materialShapeDrawable.initializeElevationOverlay(context);
-    materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
-    return materialShapeDrawable;
   }
 
   @Override

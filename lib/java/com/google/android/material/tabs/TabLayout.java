@@ -546,10 +546,10 @@ public class TabLayout extends HorizontalScrollView {
             DEF_STYLE_RES,
             R.styleable.TabLayout_tabTextAppearance);
 
-    if (getBackground() instanceof ColorDrawable) {
-      ColorDrawable background = (ColorDrawable) getBackground();
+    ColorStateList backgroundCSL = DrawableUtils.getColorStateListOrNull(getBackground());
+    if (backgroundCSL != null) {
       MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-      materialShapeDrawable.setFillColor(ColorStateList.valueOf(background.getColor()));
+      materialShapeDrawable.setFillColor(backgroundCSL);
       materialShapeDrawable.initializeElevationOverlay(context);
       materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
       ViewCompat.setBackground(this, materialShapeDrawable);
