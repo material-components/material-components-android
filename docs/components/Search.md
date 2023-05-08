@@ -352,4 +352,6 @@ method to achieve the same result.
 
 ## API and source code
 
+*   [Class definition](https://developer.android.com/reference/com/google/android/material/search/SearchView)
+
 * [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/search/SearchView.java)
