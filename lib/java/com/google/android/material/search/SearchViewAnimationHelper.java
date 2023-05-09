@@ -339,7 +339,7 @@ class SearchViewAnimationHelper {
     Rect toClipBounds =
         initialHideToClipBounds != null
             ? initialHideToClipBounds
-            : ViewUtils.calculateRectFromBounds(rootView);
+            : ViewUtils.calculateRectFromBounds(searchView);
     Rect fromClipBounds =
         initialHideFromClipBounds != null
             ? initialHideFromClipBounds
