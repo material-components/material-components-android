@@ -23,7 +23,7 @@ ext {
 
   androidXVersions = [
     annotation            : '1.2.0',
-    appCompat             : '1.5.0',
+    appCompat             : '1.6.1',
     cardView              : '1.0.0',
     constraintlayout      : '2.0.1',
     coordinatorlayout     : '1.1.0',
