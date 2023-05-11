@@ -114,7 +114,11 @@ public class CarouselLayoutManager extends LayoutManager
   }
 
   public CarouselLayoutManager() {
-    setCarouselStrategy(new MultiBrowseCarouselStrategy());
+    this(new MultiBrowseCarouselStrategy());
+  }
+
+  public CarouselLayoutManager(@NonNull CarouselStrategy strategy) {
+    setCarouselStrategy(strategy);
   }
 
   @Override

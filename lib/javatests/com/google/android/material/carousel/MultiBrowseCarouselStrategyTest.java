@@ -18,11 +18,10 @@ package com.google.android.material.carousel;
 import com.google.android.material.test.R;
 
 import static com.google.android.material.carousel.CarouselHelper.createCarouselWithWidth;
+import static com.google.android.material.carousel.CarouselHelper.createViewWithSize;
 import static com.google.common.truth.Truth.assertThat;
 
-import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.carousel.KeylineState.Keyline;
 import com.google.common.collect.Iterables;
@@ -38,7 +37,7 @@ public class MultiBrowseCarouselStrategyTest {
   @Test
   public void testOnFirstItemMeasuredWithMargins_createsKeylineStateWithCorrectItemSize() {
     MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
-    View view = createViewWithSize(200, 200);
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 200, 200);
 
     KeylineState keylineState =
         config.onFirstChildMeasuredWithMargins(createCarouselWithWidth(584), view);
@@ -48,7 +47,7 @@ public class MultiBrowseCarouselStrategyTest {
   @Test
   public void testItemLargerThanContainer_resizesToFit() {
     MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
-    View view = createViewWithSize(400, 400);
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 400, 400);
 
     KeylineState keylineState =
         config.onFirstChildMeasuredWithMargins(createCarouselWithWidth(100), view);
@@ -59,7 +58,7 @@ public class MultiBrowseCarouselStrategyTest {
   public void testItemLargerThanContainerSize_defaultsToOneLargeOneSmall() {
     Carousel carousel = createCarouselWithWidth(100);
     MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
-    View view = createViewWithSize(400, 400);
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 400, 400);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
     float minSmallItemSize =
@@ -81,7 +80,7 @@ public class MultiBrowseCarouselStrategyTest {
     float[] locOffsets = new float[] {-.5F, 100F, 300F, 464F, 556F, 584.5F};
 
     MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
-    View view = createViewWithSize(200, 200);
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 200, 200);
 
     List<Keyline> keylines =
         config.onFirstChildMeasuredWithMargins(createCarouselWithWidth(584), view).getKeylines();
@@ -95,7 +94,7 @@ public class MultiBrowseCarouselStrategyTest {
     float[] locOffsets = new float[] {-.5F, 100F, 300F, 428F, 456.5F};
 
     MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
-    View view = createViewWithSize(200, 200);
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 200, 200);
 
     List<Keyline> keylines =
         config.onFirstChildMeasuredWithMargins(createCarouselWithWidth(456), view).getKeylines();
@@ -115,7 +114,9 @@ public class MultiBrowseCarouselStrategyTest {
     int carouselSize = (int) (largeSize + mediumSize + smallSize + maxMediumAdjustment);
 
     MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
-    View view = createViewWithSize((int) largeSize, (int) largeSize);
+    View view =
+        createViewWithSize(
+            ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
     KeylineState keylineState =
         strategy.onFirstChildMeasuredWithMargins(createCarouselWithWidth(carouselSize), view);
 
@@ -135,7 +136,9 @@ public class MultiBrowseCarouselStrategyTest {
     int carouselSize = (int) (largeSize + mediumSize + smallSize - maxMediumAdjustment);
 
     MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
-    View view = createViewWithSize((int) largeSize, (int) largeSize);
+    View view =
+        createViewWithSize(
+            ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
     KeylineState keylineState =
         strategy.onFirstChildMeasuredWithMargins(createCarouselWithWidth(carouselSize), view);
 
@@ -146,16 +149,16 @@ public class MultiBrowseCarouselStrategyTest {
     assertThat(keylineState.getKeylines().get(2).maskedItemSize).isLessThan(mediumSize);
   }
 
-
   @Test
   public void testArrangementFit_onlyAdjustsSmallSizeDown() {
     float largeSize = 56F * 3;
     float smallSize = 56F;
     float mediumSize = (largeSize + smallSize) / 2F;
 
-    View view = createViewWithSize((int) largeSize, (int) largeSize);
-    float minSmallSize =
-        view.getResources().getDimension(R.dimen.m3_carousel_small_item_size_min);
+    View view =
+        createViewWithSize(
+            ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
+    float minSmallSize = view.getResources().getDimension(R.dimen.m3_carousel_small_item_size_min);
     int carouselSize = (int) (largeSize + mediumSize + minSmallSize);
 
     MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
@@ -174,7 +177,9 @@ public class MultiBrowseCarouselStrategyTest {
     float smallSize = 40F;
     float mediumSize = (largeSize + smallSize) / 2F;
 
-    View view = createViewWithSize((int) largeSize, (int) largeSize);
+    View view =
+        createViewWithSize(
+            ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
     float maxSmallSize =
         view.getResources().getDimension(R.dimen.m3_carousel_small_item_size_max);
     int carouselSize = (int) (largeSize + mediumSize + maxSmallSize);
@@ -187,14 +192,5 @@ public class MultiBrowseCarouselStrategyTest {
     assertThat(keylineState.getKeylines().get(1).maskedItemSize).isEqualTo(largeSize);
     // Small items should be adjusted to the small size
     assertThat(keylineState.getKeylines().get(3).maskedItemSize).isEqualTo(maxSmallSize);
-  }
-
-  private static View createViewWithSize(int width, int height) {
-    View view = new View(ApplicationProvider.getApplicationContext());
-    view.setLayoutParams(new LayoutParams(width, height));
-    view.measure(
-        MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
-        MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
-    return view;
   }
 }
