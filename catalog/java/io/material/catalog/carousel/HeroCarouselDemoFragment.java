@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 The Android Open Source Project
+ * Copyright 2023 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,15 +29,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.CarouselSnapHelper;
-import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
+import com.google.android.material.carousel.HeroCarouselStrategy;
 import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.slider.Slider.OnSliderTouchListener;
 import io.material.catalog.feature.DemoFragment;
 
-/** A fragment that displays the multi-browse variants of the Carousel. */
-public class MultiBrowseDemoFragment extends DemoFragment {
+/** A fragment that displays the hero variant of the Carousel. */
+public class HeroCarouselDemoFragment extends DemoFragment {
 
   private MaterialDividerItemDecoration horizontalDivider;
 
@@ -47,7 +48,7 @@ public class MultiBrowseDemoFragment extends DemoFragment {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     return layoutInflater.inflate(
-        R.layout.cat_carousel_multi_browse_fragment, viewGroup, false /* attachToRoot */);
+        R.layout.cat_carousel_hero_fragment, viewGroup, false /* attachToRoot */);
   }
 
   @Override
@@ -60,64 +61,68 @@ public class MultiBrowseDemoFragment extends DemoFragment {
             requireContext(), MaterialDividerItemDecoration.HORIZONTAL);
 
     MaterialSwitch debugSwitch = view.findViewById(R.id.debug_switch);
-    MaterialSwitch forceCompactSwitch = view.findViewById(R.id.force_compact_arrangement_switch);
     MaterialSwitch drawDividers = view.findViewById(R.id.draw_dividers_switch);
-    MaterialSwitch snapSwitch = view.findViewById(R.id.snap_switch);
+    MaterialSwitch enableFlingSwitch = view.findViewById(R.id.enable_fling_switch);
     AutoCompleteTextView itemCountDropdown = view.findViewById(R.id.item_count_dropdown);
     Slider positionSlider = view.findViewById(R.id.position_slider);
 
-    // A start-aligned multi-browse carousel
-    RecyclerView multiBrowseStartRecyclerView =
-        view.findViewById(R.id.multi_browse_start_carousel_recycler_view);
-    CarouselLayoutManager multiBrowseStartCarouselLayoutManager = new CarouselLayoutManager();
-    multiBrowseStartCarouselLayoutManager.setDebuggingEnabled(
-        multiBrowseStartRecyclerView, debugSwitch.isChecked());
-    multiBrowseStartRecyclerView.setLayoutManager(multiBrowseStartCarouselLayoutManager);
-    multiBrowseStartRecyclerView.setNestedScrollingEnabled(false);
+    // A start-aligned hero carousel
+    RecyclerView heroStartRecyclerView =
+        view.findViewById(R.id.hero_start_carousel_recycler_view);
+    CarouselLayoutManager heroStartCarouselLayoutManager =
+        new CarouselLayoutManager(new HeroCarouselStrategy());
+    heroStartCarouselLayoutManager.setDebuggingEnabled(
+        heroStartRecyclerView, debugSwitch.isChecked());
+    heroStartRecyclerView.setLayoutManager(heroStartCarouselLayoutManager);
+    heroStartRecyclerView.setNestedScrollingEnabled(false);
 
     debugSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
-          multiBrowseStartRecyclerView.setBackgroundResource(
+          heroStartRecyclerView.setBackgroundResource(
               isChecked ? R.drawable.dashed_outline_rectangle : 0);
-          multiBrowseStartCarouselLayoutManager.setDebuggingEnabled(
-              multiBrowseStartRecyclerView, isChecked);
+          heroStartCarouselLayoutManager.setDebuggingEnabled(
+              heroStartRecyclerView, isChecked);
         });
-
-    forceCompactSwitch.setOnCheckedChangeListener(
-        (buttonView, isChecked) ->
-            multiBrowseStartCarouselLayoutManager.setCarouselStrategy(
-                new MultiBrowseCarouselStrategy(isChecked)));
 
     drawDividers.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           if (isChecked) {
-            multiBrowseStartRecyclerView.addItemDecoration(horizontalDivider);
+            heroStartRecyclerView.addItemDecoration(horizontalDivider);
           } else {
-            multiBrowseStartRecyclerView.removeItemDecoration(horizontalDivider);
-          }
-        });
-
-    CarouselSnapHelper snapHelper = new CarouselSnapHelper();
-    snapSwitch.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> {
-          if (isChecked) {
-            snapHelper.attachToRecyclerView(multiBrowseStartRecyclerView);
-          } else {
-            snapHelper.attachToRecyclerView(null);
+            heroStartRecyclerView.removeItemDecoration(horizontalDivider);
           }
         });
 
     CarouselAdapter adapter =
         new CarouselAdapter(
-            (item, position) -> multiBrowseStartRecyclerView.scrollToPosition(position),
-            R.layout.cat_carousel_item_narrow);
+            (item, position) -> heroStartRecyclerView.scrollToPosition(position),
+            R.layout.cat_carousel_item);
+
+    SnapHelper disableFlingSnapHelper = new CarouselSnapHelper();
+    SnapHelper enableFlingSnapHelper = new CarouselSnapHelper(false);
+
+    if (enableFlingSwitch.isChecked()) {
+      enableFlingSnapHelper.attachToRecyclerView(heroStartRecyclerView);
+    } else {
+      disableFlingSnapHelper.attachToRecyclerView(heroStartRecyclerView);
+    }
+
+    enableFlingSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            disableFlingSnapHelper.attachToRecyclerView(null);
+            enableFlingSnapHelper.attachToRecyclerView(heroStartRecyclerView);
+          } else {
+            enableFlingSnapHelper.attachToRecyclerView(null);
+            disableFlingSnapHelper.attachToRecyclerView(heroStartRecyclerView);
+          }
+        });
 
     itemCountDropdown.setOnItemClickListener(
-        (parent, view1, position, id) -> {
-          adapter.submitList(
-              CarouselData.createItems().subList(0, position),
-              updateSliderRange(positionSlider, adapter));
-        });
+        (parent, view1, position, id) ->
+            adapter.submitList(
+                CarouselData.createItems().subList(0, position),
+                updateSliderRange(positionSlider, adapter)));
 
     positionSlider.addOnSliderTouchListener(
         new OnSliderTouchListener() {
@@ -126,11 +131,11 @@ public class MultiBrowseDemoFragment extends DemoFragment {
 
           @Override
           public void onStopTrackingTouch(@NonNull Slider slider) {
-            multiBrowseStartRecyclerView.smoothScrollToPosition((int) slider.getValue() - 1);
+            heroStartRecyclerView.smoothScrollToPosition((int) slider.getValue() - 1);
           }
         });
 
-    multiBrowseStartRecyclerView.setAdapter(adapter);
+    heroStartRecyclerView.setAdapter(adapter);
     adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));
   }
 
