@@ -16,14 +16,12 @@
 
 package com.google.android.material.color;
 
-import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import com.google.android.material.color.DynamicColors.OnAppliedCallback;
 import com.google.android.material.color.DynamicColors.Precondition;
@@ -127,13 +125,11 @@ public class DynamicColorsOptions {
     }
 
     /**
-     * Sets the content based source image to extract the seed color from to generate Material color
-     * palette. Calling this method will clear any source color previously set with
+     * Sets the content based source image from which to extract the seed color for the Material
+     * color palette. Calling this method will clear any source color previously set with
      * #setContentBasedSource(int).
      *
-     * @hide
      */
-    @RestrictTo(LIBRARY_GROUP)
     @NonNull
     @CanIgnoreReturnValue
     public Builder setContentBasedSource(@NonNull Bitmap contentBasedSource) {
@@ -146,9 +142,7 @@ public class DynamicColorsOptions {
      * Sets the content based source color to generate Material color palette. Calling this method
      * will clear any source bitmap previously set with #setContentBasedSource(Bitmap).
      *
-     * @hide
      */
-    @RestrictTo(LIBRARY_GROUP)
     @NonNull
     @CanIgnoreReturnValue
     public Builder setContentBasedSource(@ColorInt int contentBasedSource) {
