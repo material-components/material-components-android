@@ -615,3 +615,118 @@ or
 ```java
 ColorRoles colorRoles = MaterialColors.getColorRoles(color, /* isLightTheme= */ booleanValue);
 ```
+
+## Content-based Dynamic Colors
+
+Content-based color describes the color system’s capability to generate and
+apply a color scheme based on in-app content. In-app content colors can be
+derived from a range of sources, such as album artwork, a brand logo, or a video
+tile.
+
+##### *Use Content-based Dynamic Colors*
+
+A single source color is extracted from a bitmap and then used to derive five
+key colors. Specific tones are mapped into specific color roles that are then
+mapped to Material components.
+
+During this process, chroma fidelity enables Material colors to flex to
+consistently achieve desired chroma, whether high or low. It maintains color
+schemes’ integrity, so existing products will not break. A content scheme then
+produces the range of tones needed for both light and dark theme applications.
+
+We have provided the following two APIs in the `DynamicColorsOptions` class.
+
+API Method                     | Description
+------------------------------ | ---------------------------------------
+#setContentBasedSource(Bitmap) | Provides a Bitmap from which a single source color is extracted as input
+#setContentBasedSource(int)    | Provides a single source color as input
+
+An example usage for applying content-based dynamic colors to a specific
+activity can be seen below. Since we are overriding color resources in xml at
+runtime, make sure the method is invoked before you inflate the view to take
+effect.
+
+```
+import com.google.android.material.color.DynamicColorsOptions;
+import com.google.android.material.color.DynamicColors;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+
+    // Invoke before the view is inflated in your activity.
+    DynamicColors.applyToActivityIfAvailable(
+        this,
+        new DynamicColorsOptions.Builder()
+            .setContentBasedSource(bitmap)
+            .build()
+    );
+
+    setContentView(R.layout.xyz);
+  }
+```
+
+An example usage for applying content-based dynamic colors to a specific
+fragment/view:
+
+```
+import com.google.android.material.color.DynamicColorsOptions;
+import com.google.android.material.color.DynamicColors;
+
+  @Override
+  public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
+
+    Context context = DynamicColors.wrapContextIfAvailable(
+            requireContext(),
+            new DynamicColorsOptions.Builder()
+                .setContentBasedSource(sourceColor)
+                .build());
+
+    return layoutInflater.cloneInContext(context).inflate(R.layout.xyz, viewGroup, false);
+  }
+```
+
+This method will return a context with a content-based dynamic colors theme
+overlay applied, if Dynamic Colors are available on the device.
+
+**Important:** Please note that this feature is only available for S+.
+
+## Contrast Control
+
+Tone quantifies the lightness or darkness of colors. It's one foundational
+dimension of the Material color system and schemes. The difference in tone
+between two colors creates visual contrast. A greater difference creates higher
+contrast. Color contrast control allows users to adjust their UI contrast levels
+in the system so they can comfortably see and use digital experiences.
+
+##### *Use Contrast Control - non-Dynamic*
+
+If you are not using dynamic colors and would like to use contrast control for
+your branded or custom themes, we have created the following API in the
+`ColorContrast` class that you can call manually.
+
+*Apply contrast to all activities in the app*
+
+In your application class’ `onCreate()` method, call:
+
+```
+ColorContrast.applyToActivitiesIfAvailable(
+        this,
+        new ColorContrastOptions.Builder()
+            .setMediumContrastThemeOverlay(mediumContrastThemeOverlayResId)
+            .setHighContrastThemeOverlay(highContrastThemeOverlayResId)
+            .build();
+);
+```
+
+Note that if you want contrast support for both light and dark theme, then for
+`mediumContrastThemeOverlayResId` and `highContrastThemeOverlayResId`, you
+should pass in a DayNight theme, which will help facilitate easy switching
+between your app’s Light and Dark theme.
+
+##### *Use Contrast Control - Custom Colors*
+
+If you have custom colors in your app that would like to obey contrast changes
+from the system, whether or not you are using dynamic colors, they should be
+included in the abovementioned theme overlays for medium and high contrast
+support. To make your custom colors obey contrast for all activities in the app,
+please refer to the API from the section above.
