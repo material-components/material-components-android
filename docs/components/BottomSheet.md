@@ -262,8 +262,9 @@ API and source code:
 The following example shows a standard bottom sheet in its collapsed and
 expanded states:
 
-![Standard bottom sheet example. Collapsed on the left and expanded on the
-right.](assets/bottomsheet/bottomsheet_standard.png)
+Collapsed                                                                                 | Expanded
+----------------------------------------------------------------------------------------- | --------
+![Standard collapsed bottom sheet example.](assets/bottomsheet/bottomsheet_standard1.png) | ![Standard expanded bottom sheet example.](assets/bottomsheet/bottomsheet_standard2.png)
 
 `BottomSheetBehavior` works in tandem with `CoordinatorLayout` to let you
 display content on a bottom sheet, perform enter/exit animations, respond to
@@ -320,6 +321,18 @@ Apply the `BottomSheetBehavior` to a direct child `View` of `CoordinatorLayout`:
 
 In this example, the bottom sheet is the `FrameLayout`.
 
+You can use the `BottomSheetBehavior` to set attributes like so:
+
+```kt
+val standardBottomSheet = findViewById<FrameLayout>(R.id.standard_bottom_sheet)
+val standardBottomSheetBehavior = BottomSheetBehavior.from(standardBottomSheet)
+// Use this to programmatically apply behavior attributes; eg.
+// standardBottomSheetBehavior.setState(STATE_EXPANDED);
+```
+
+More information about using the behavior to set attributes is in the
+[setting behavior](#setting-behavior) section.
+
 ## Modal bottom sheet
 
 Modal bottom sheets present a set of choices while blocking interaction with the
@@ -347,7 +360,9 @@ API and source code:
 The following example shows a modal bottom sheet in its collapsed and expanded
 states:
 
-![Modal bottom sheet example. Collapsed on the left and expanded on the right.](assets/bottomsheet/bottomsheet_modal.png)
+Collapsed                                                                           | Expanded
+----------------------------------------------------------------------------------- | --------
+![Modal collapsed bottom sheet example.](assets/bottomsheet/bottomsheet_modal1.png) | ![Modal expanded bottom sheet example.](assets/bottomsheet/bottomsheet_modal2.png)
 
 First, subclass `BottomSheetDialogFragment` and overwrite `onCreateView` to
 provide a layout for the contents of the sheet (in this example, it's
@@ -384,13 +399,15 @@ you need to use `Activity.getSupportFragmentManager()`.
 
 ## Anatomy and key properties
 
-Bottom sheets have a sheet, content, and, if modal, a scrim.
+Bottom sheets have a sheet, a drag handle, and, if modal, a scrim.
 
 ![Bottom sheet anatomy](assets/bottomsheet/bottomsheet_anatomy.png)
 
 1.  Sheet
-2.  Content
+2.  Drag Handle
 3.  Scrim (in modal bottom sheets)
+
+Content can also be added below the drag handle. (see [Using bottom sheets](#using-bottom-sheets))
 
 ### Sheet attributes
 
