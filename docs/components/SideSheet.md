@@ -31,8 +31,8 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-Note: Side sheets are available starting from `1.8.0-alpha02`. To use side sheets,
-make sure you're depending on [library version `1.8.0-alpha02`](https://github.com/material-components/material-components-android/releases/tag/1.8.0-alpha02)
+Note: Side sheets were introduced in `1.8.0`. To use side sheets, make sure
+you're depending on [library version `1.8.0`](https://github.com/material-components/material-components-android/releases/tag/1.8.0)
 or later.
 
 Standard side sheet basic usage:
@@ -346,6 +346,8 @@ theme.
 API and source code:
 
 *   `SideSheetBehavior`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/sidesheet/SideSheetBehavior)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/sidesheet/SideSheetBehavior.java)
 *   `SideSheetDialog`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/sidesheet/SideSheetDialog)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/sidesheet/SideSheetDialog.java)
