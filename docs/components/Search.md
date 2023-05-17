@@ -28,8 +28,8 @@ the Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-Note: Material Search is available starting from `1.8.0-alpha03`. To use Material
-Search, make sure you're depending on [library version `1.8.0-alpha03`](https://github.com/material-components/material-components-android/releases/tag/1.8.0-alpha03)
+Note: Material Search was introduced in `1.8.0`. To use Material Search, make
+sure you're depending on [library version `1.8.0`](https://github.com/material-components/material-components-android/releases/tag/1.8.0)
 or later.
 
 ### Making Search Components accessible
@@ -352,6 +352,6 @@ method to achieve the same result.
 
 ## API and source code
 
-*   [Class definition](https://developer.android.com/reference/com/google/android/material/search/SearchView)
+* [Class definition](https://developer.android.com/reference/com/google/android/material/search/SearchView)
 
 * [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/search/SearchView.java)
