@@ -17,6 +17,7 @@ package com.google.android.material.carousel;
 
 import static com.google.android.material.carousel.CarouselHelper.assertChildrenHaveValidOrder;
 import static com.google.android.material.carousel.CarouselHelper.createDataSetWithSize;
+import static com.google.android.material.carousel.CarouselHelper.getKeylineMaskPercentage;
 import static com.google.android.material.carousel.CarouselHelper.getTestCenteredKeylineState;
 import static com.google.android.material.carousel.CarouselHelper.scrollHorizontallyBy;
 import static com.google.android.material.carousel.CarouselHelper.scrollToPosition;
@@ -25,6 +26,8 @@ import static com.google.android.material.carousel.CarouselHelper.setViewSize;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import androidx.annotation.NonNull;
@@ -192,8 +195,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testEmptyAdapter_shouldClearAllViewsFromRecyclerView() throws Throwable {
     // Fill the adapter and then empty it to make sure all views are removed and recycled
-    setAdapterItems(
-        recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(200));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(200));
     scrollToPosition(recyclerView, layoutManager, 100);
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(0));
 
@@ -202,14 +204,14 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testSingleItem_shouldBeInFocalRange() throws Throwable {
-    setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(1));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(1));
 
     assertThat(((Maskable) recyclerView.getChildAt(0)).getMaskXPercentage()).isEqualTo(0F);
   }
 
   @Test
   public void testSingleItem_shouldNotScrollLeft() throws Throwable {
-    setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(1));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(1));
     scrollHorizontallyBy(recyclerView, layoutManager, 100);
 
     assertThat(recyclerView.getChildAt(0).getLeft()).isEqualTo(0);
@@ -217,7 +219,7 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testSingleItem_shouldNotScrollRight() throws Throwable {
-    setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(1));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(1));
     scrollHorizontallyBy(recyclerView, layoutManager, -100);
 
     assertThat(recyclerView.getChildAt(0).getLeft()).isEqualTo(0);
@@ -225,8 +227,7 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testChangeAdapterItemCount_shouldAlignFirstItemToStart() throws Throwable {
-    setAdapterItems(
-        recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(200));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(200));
     scrollToPosition(recyclerView, layoutManager, 100);
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(1));
 
@@ -236,7 +237,7 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testScrollToEnd_childrenHaveValidOrder() throws Throwable {
-    setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(10));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollToPosition(recyclerView, layoutManager, 9);
 
     assertChildrenHaveValidOrder(layoutManager);
@@ -244,8 +245,7 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testScrollToMiddle_childrenHaveValidOrder() throws Throwable {
-    setAdapterItems(
-        recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(200));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(200));
     scrollToPosition(recyclerView, layoutManager, 99);
 
     assertChildrenHaveValidOrder(layoutManager);
@@ -253,11 +253,60 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testScrollToEndThenToStart_childrenHaveValidOrder() throws Throwable {
-    setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(10));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollToPosition(recyclerView, layoutManager, 9);
     scrollToPosition(recyclerView, layoutManager, 2);
 
     assertChildrenHaveValidOrder(layoutManager);
+  }
+
+  @Test
+  public void testContainedLayout_doesNotAllowFirstItemToBleed() throws Throwable {
+    layoutManager.setCarouselStrategy(new TestContainmentCarouselStrategy(/* isContained= */ true));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    scrollHorizontallyBy(recyclerView, layoutManager, 900);
+
+    Rect firstChildMask =
+        getMaskRectOffsetToRecyclerViewCoords((MaskableFrameLayout) recyclerView.getChildAt(0));
+    assertThat(firstChildMask.left).isAtLeast(0);
+  }
+
+  @Test
+  public void testContainedLayout_doesNotAllowLastItemToBleed() throws Throwable {
+    layoutManager.setCarouselStrategy(new TestContainmentCarouselStrategy(/* isContained= */ true));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    scrollToPosition(recyclerView, layoutManager, 5);
+    scrollHorizontallyBy(recyclerView, layoutManager, -165);
+
+    Rect lastChildMask =
+        getMaskRectOffsetToRecyclerViewCoords(
+            (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 1));
+    assertThat(lastChildMask.right).isAtMost(DEFAULT_RECYCLER_VIEW_WIDTH);
+  }
+
+  @Test
+  public void testUncontainedLayout_allowsFistItemToBleed() throws Throwable {
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* isContained= */ false));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    scrollHorizontallyBy(recyclerView, layoutManager, 900);
+
+    Rect firstItemMask =
+        getMaskRectOffsetToRecyclerViewCoords((MaskableFrameLayout) recyclerView.getChildAt(0));
+    assertThat(firstItemMask.left).isLessThan(0);
+  }
+
+  @Test
+  public void testUncontainedLayout_allowsLastItemToBleed() throws Throwable {
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* isContained= */ false));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    scrollHorizontallyBy(recyclerView, layoutManager, 900);
+
+    Rect lastItemMask =
+        getMaskRectOffsetToRecyclerViewCoords(
+            (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 1));
+    assertThat(lastItemMask.right).isGreaterThan(DEFAULT_RECYCLER_VIEW_WIDTH);
   }
 
   /**
@@ -276,5 +325,53 @@ public class CarouselLayoutManagerTest {
 
     recyclerView.setLayoutManager(layoutManager);
     recyclerView.setAdapter(adapter);
+  }
+
+  /**
+   * Gets the bounds of {@code child}'s mask after they are offset to the parent RecyclerView's
+   * coordinates
+   */
+  private Rect getMaskRectOffsetToRecyclerViewCoords(MaskableFrameLayout child) {
+    RectF maskRect = child.getMaskRectF();
+    Rect offsetRect =
+        new Rect(
+            (int) maskRect.left, (int) maskRect.top, (int) maskRect.right, (int) maskRect.bottom);
+    recyclerView.offsetDescendantRectToMyCoords(child, offsetRect);
+    return offsetRect;
+  }
+
+  /**
+   * A CarouselStrategy used to test that items are masked correctly when contained vs. uncontained.
+   */
+  private static class TestContainmentCarouselStrategy extends CarouselStrategy {
+
+    private final boolean isContained;
+
+    TestContainmentCarouselStrategy(boolean isContained) {
+      this.isContained = isContained;
+    }
+
+    @Override
+    KeylineState onFirstChildMeasuredWithMargins(@NonNull Carousel carousel, @NonNull View child) {
+      float largeSize = DEFAULT_RECYCLER_VIEW_WIDTH * .75F; // 990F
+      float smallSize = DEFAULT_RECYCLER_VIEW_WIDTH - largeSize; // 330F
+      float xSmallSize = 100F;
+
+      float xSmallHead = xSmallSize / -2F;
+      float focal = largeSize / 2F;
+      float smallTail = focal + (largeSize / 2F) + (smallSize / 2F);
+      float xSmallTail = DEFAULT_RECYCLER_VIEW_WIDTH + (xSmallSize / 2F);
+      return new KeylineState.Builder(largeSize)
+          .addKeyline(xSmallHead, getKeylineMaskPercentage(xSmallSize, largeSize), xSmallSize)
+          .addKeyline(focal, 0F, largeSize, true)
+          .addKeyline(smallTail, getKeylineMaskPercentage(smallSize, largeSize), smallSize)
+          .addKeyline(xSmallTail, getKeylineMaskPercentage(xSmallSize, largeSize), xSmallSize)
+          .build();
+    }
+
+    @Override
+    boolean isContained() {
+      return isContained;
+    }
   }
 }
