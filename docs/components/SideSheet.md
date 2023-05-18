@@ -194,8 +194,8 @@ can be dragged horizontally and dismissed by sliding them off of the screen.
 API and source code:
 
 *   `SideSheetDialog`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/sidesheet/SideSheetDialog.java)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/sidesheet/BottomSheetDialogFragment.java)
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/sidesheet/SideSheetDialog)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/sidesheet/SideSheetDialog.java)
 
 ### Modal side sheet example
 
