@@ -384,6 +384,11 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     return getDateSelector().getSelection();
   }
 
+  @InputMode
+  public int getInputMode() {
+    return inputMode;
+  }
+
   private void enableEdgeToEdgeIfNeeded(Window window) {
     if (edgeToEdgeEnabled) {
       // Avoid enabling edge-to-edge multiple times.
@@ -415,10 +420,10 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     edgeToEdgeEnabled = true;
   }
 
-  private void updateTitle(boolean textInputMode) {
+  private void updateTitle() {
     // Set up title text forcing single line for landscape text input mode due to space constraints.
     headerTitleTextView.setText(
-        textInputMode && isLandscape() ? singleLineTitleText : fullTitleText);
+        inputMode == INPUT_MODE_TEXT && isLandscape() ? singleLineTitleText : fullTitleText);
   }
 
   @VisibleForTesting
@@ -436,13 +441,13 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     calendar =
         MaterialCalendar.newInstance(
             getDateSelector(), themeResId, calendarConstraints, dayViewDecorator);
-    boolean textInputMode = headerToggleButton.isChecked();
+
     pickerFragment =
-        textInputMode
+        inputMode == INPUT_MODE_TEXT
             ? MaterialTextInputPicker.newInstance(
                 getDateSelector(), themeResId, calendarConstraints)
             : calendar;
-    updateTitle(textInputMode);
+    updateTitle();
     updateHeader(getHeaderText());
 
     FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
@@ -481,6 +486,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
             confirmButton.setEnabled(getDateSelector().isSelectionComplete());
 
             headerToggleButton.toggle();
+            inputMode = (inputMode == INPUT_MODE_TEXT) ? INPUT_MODE_CALENDAR : INPUT_MODE_TEXT;
             updateToggleContentDescription(headerToggleButton);
             startPickerFragment();
           }
@@ -489,7 +495,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
   private void updateToggleContentDescription(@NonNull CheckableImageButton toggle) {
     String contentDescription =
-        headerToggleButton.isChecked()
+        inputMode == INPUT_MODE_TEXT
             ? toggle.getContext().getString(R.string.mtrl_picker_toggle_to_calendar_input_mode)
             : toggle.getContext().getString(R.string.mtrl_picker_toggle_to_text_input_mode);
     headerToggleButton.setContentDescription(contentDescription);
