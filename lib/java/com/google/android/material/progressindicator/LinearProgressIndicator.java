@@ -49,7 +49,7 @@ import java.lang.annotation.RetentionPolicy;
  *   <li>{@code indicatorDirectionLinear}: the sweeping direction of the indicator.
  * </ul>
  */
-public final class LinearProgressIndicator
+public class LinearProgressIndicator
     extends BaseProgressIndicator<LinearProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_LinearProgressIndicator;
 
