@@ -601,16 +601,14 @@ For more information on bottom app bars see the
 ## Predictive Back
 
 The `NavigationView` component automatically supports
-[Predictive Back](../foundations/PredictiveBack.md) by default when it is set up
-within a `DrawerLayout`, as mentioned in the sections above.
-
-No further integration is required on the app side other than the general
-Predictive Back prerequisites and migration steps mentioned
-[here](../foundations/PredictiveBack.md#usage).
+[Predictive Back](../foundations/PredictiveBack.md) when it is set up within a
+`DrawerLayout`, as mentioned in the sections above. No further integration is
+required on the app side other than the general Predictive Back prerequisites
+and migration steps mentioned [here](../foundations/PredictiveBack.md#usage).
 
 Visit the
 [Predictive Back design guidelines](https://m3.material.io/components/side-sheets/guidelines#d77245e3-1013-48f8-a9d7-76f484e1be13)
-to see how the component will behave when a user swipes back.
+to see how the component behaves when a user swipes back.
 
 ## Theming
 

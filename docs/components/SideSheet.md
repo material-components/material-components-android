@@ -299,73 +299,64 @@ and
 
 ## Predictive Back
 
-The modal `SideSheetDialog` component automatically supports
-[Predictive Back](../foundations/PredictiveBack.md) by default.
+### Modal Side Sheets
 
-No further integration is required on the app side other than the general
-Predictive Back prerequisites and migration steps mentioned
-[here](../foundations/PredictiveBack.md#usage).
+The modal `SideSheetDialog` component automatically supports
+[Predictive Back](../foundations/PredictiveBack.md). No further integration is
+required on the app side other than the general Predictive Back prerequisites
+and migration steps mentioned [here](../foundations/PredictiveBack.md#usage).
 
 Visit the
 [Predictive Back design guidelines](https://m3.material.io/components/side-sheets/guidelines#d77245e3-1013-48f8-a9d7-76f484e1be13)
-to see how the component will behave when a user swipes back.
+to see how the component behaves when a user swipes back.
+
+### Standard and Coplanar (Non-Modal) Side Sheets
 
 To set up Predictive Back for standard or coplanar (non-modal) side sheets using
-`SideSheetBehavior`, you can create an AndroidX back callback that forwards
-the system `BackEvent` objects to your `SideSheetBehavior`:
+`SideSheetBehavior`, create an AndroidX back callback that forwards the system
+`BackEvent` objects to your `SideSheetBehavior`:
 
-```java
-OnBackPressedCallback sideSheetBackCallback = new OnBackPressedCallback(/* enabled= */ false) {
+```kt
+val sideSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false) {
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  @Override
-  public void handleOnBackStarted(@NonNull BackEvent backEvent) {
-    sideSheetBehavior.startBackProgress(backEvent);
-  }
-
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  @Override
-  public void handleOnBackProgressed(@NonNull BackEvent backEvent) {
-    sideSheetBehavior.updateBackProgress(backEvent);
-  }
-
-  @Override
-  public void handleOnBackPressed() {
-    sideSheetBehavior.handleBackInvoked();
+  override fun handleOnBackStarted(backEvent: BackEvent) {
+    sideSheetBehavior.startBackProgress(backEvent)
   }
 
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  @Override
-  public void handleOnBackCancelled() {
-    sideSheetBehavior.cancelBackProgress();
+  override fun handleOnBackProgressed(backEvent: BackEvent) {
+    sideSheetBehavior.updateBackProgress(backEvent)
   }
-};
+
+  override fun handleOnBackPressed() {
+    sideSheetBehavior.handleBackInvoked()
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  override fun handleOnBackCancelled() {
+    sideSheetBehavior.cancelBackProgress()
+  }
+}
 ```
 
-And then you can add and enable the back callback as follows:
+And then add and enable the back callback as follows:
 
-```java
-getOnBackPressedDispatcher().addCallback(this, sideSheetBackCallback);
+```kt
+getOnBackPressedDispatcher().addCallback(this, sideSheetBackCallback)
 
-sideSheetBehavior.addCallback(new SideSheetCallback() {
-  @Override
-  public void onStateChanged(@NonNull View sideSheet, int newState) {
-    switch (newState) {
-      case SideSheetBehavior.STATE_EXPANDED:
-      case SideSheetBehavior.STATE_SETTLING:
-        sideSheetBackCallback.setEnabled(true);
-        break;
-      case SideSheetBehavior.STATE_HIDDEN:
-        sideSheetBackCallback.setEnabled(false);
-        break;
-      case SideSheetBehavior.STATE_DRAGGING:
-      default:
-        break;
+sideSheetBehavior.addCallback(object : SideSheetCallback() {
+  override fun onStateChanged(sideSheet: View, newState: Int) {
+    when (newState) {
+      STATE_EXPANDED, STATE_SETTLING -> sideSheetBackCallback.setEnabled(true)
+      STATE_HIDDEN -> sideSheetBackCallback.setEnabled(false)
+      else -> {
+        // Do nothing, only change callback enabled for above states.
+      }
     }
   }
 
-  @Override
-  public void onSlide(@NonNull View sideSheet, float slideOffset) {}
-});
+  override fun onSlide(sideSheet: View, slideOffset: Float) {}
+})
 ```
 
 ## Theming side sheets

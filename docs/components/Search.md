@@ -354,16 +354,15 @@ method to achieve the same result.
 ## Predictive Back
 
 The `SearchView` component automatically supports
-[Predictive Back](../foundations/PredictiveBack.md) by default when it is set up
-with and connected to a `SearchBar`, as mentioned in the sections above.
-
-No further integration is required on the app side other than the general
-Predictive Back prerequisites and migration steps mentioned
+[Predictive Back](../foundations/PredictiveBack.md) when it is set up with and
+connected to a `SearchBar`, as mentioned in the sections above. No further
+integration is required on the app side other than the general Predictive Back
+prerequisites and migration steps mentioned
 [here](../foundations/PredictiveBack.md#usage).
 
 Visit the
 [Predictive Back design guidelines](https://m3.material.io/components/search/guidelines#3f2d4e47-2cf5-4c33-b6e1-5368ceaade55)
-to see how the component will behave when a user swipes back.
+to see how the component behaves when a user swipes back.
 
 ## API and source code
 

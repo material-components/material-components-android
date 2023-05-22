@@ -471,77 +471,65 @@ and
 
 ## Predictive Back
 
-The modal `BottomSheetDialogFragment` and `BottomSheetDialog` components
-automatically support [Predictive Back](../foundations/PredictiveBack.md) by
-default.
+### Modal Bottom Sheets
 
-No further integration is required on the app side other than the general
+The modal `BottomSheetDialogFragment` and `BottomSheetDialog` components
+automatically support [Predictive Back](../foundations/PredictiveBack.md). No
+further integration is required on the app side other than the general
 Predictive Back prerequisites and migration steps mentioned
 [here](../foundations/PredictiveBack.md#usage).
 
 Visit the
 [Predictive Back design guidelines](https://m3.material.io/components/bottom-sheets/guidelines#3d7735e2-73ea-4f3e-bd42-e70161fc1085)
-to see how the component will behave when a user swipes back.
+to see how the component behaves when a user swipes back.
+
+### Standard (Non-Modal) Bottom Sheets
 
 To set up Predictive Back for standard (non-modal) bottom sheets using
-`BottomSheetBehavior`, you can create an AndroidX back callback that forwards
-the system `BackEvent` objects to your `BottomSheetBehavior`:
+`BottomSheetBehavior`, create an AndroidX back callback that forwards the system
+`BackEvent` objects to your `BottomSheetBehavior`:
 
-```java
-OnBackPressedCallback bottomSheetBackCallback = new OnBackPressedCallback(/* enabled= */ false) {
+```kt
+val bottomSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false) {
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  @Override
-  public void handleOnBackStarted(@NonNull BackEvent backEvent) {
-    bottomSheetBehavior.startBackProgress(backEvent);
-  }
-
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  @Override
-  public void handleOnBackProgressed(@NonNull BackEvent backEvent) {
-    bottomSheetBehavior.updateBackProgress(backEvent);
-  }
-
-  @Override
-  public void handleOnBackPressed() {
-    bottomSheetBehavior.handleBackInvoked();
+  override fun handleOnBackStarted(backEvent: BackEvent) {
+    bottomSheetBehavior.startBackProgress(backEvent)
   }
 
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  @Override
-  public void handleOnBackCancelled() {
-    bottomSheetBehavior.cancelBackProgress();
+  override fun handleOnBackProgressed(backEvent: BackEvent) {
+    bottomSheetBehavior.updateBackProgress(backEvent)
   }
-};
+
+  override fun handleOnBackPressed() {
+    bottomSheetBehavior.handleBackInvoked()
+  }
+
+  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
+  override fun handleOnBackCancelled() {
+    bottomSheetBehavior.cancelBackProgress()
+  }
+}
 ```
 
-And then you can add and enable the back callback as follows:
+And then add and enable the back callback as follows:
 
-```java
-getOnBackPressedDispatcher().addCallback(this, bottomSheetBackCallback);
+```kt
+getOnBackPressedDispatcher().addCallback(this, bottomSheetBackCallback)
 
-bottomSheetBehavior.addBottomSheetCallback(new BottomSheetCallback() {
-  @Override
-  public void onStateChanged(@NonNull View bottomSheet, int newState) {
-    switch (newState) {
-      case BottomSheetBehavior.STATE_EXPANDED:
-      case BottomSheetBehavior.STATE_HALF_EXPANDED:
-        bottomSheetBackCallback.setEnabled(true);
-        break;
-      case BottomSheetBehavior.STATE_COLLAPSED:
-      case BottomSheetBehavior.STATE_HIDDEN:
-        bottomSheetBackCallback.setEnabled(false);
-        break;
-      case BottomSheetBehavior.STATE_DRAGGING:
-      case BottomSheetBehavior.STATE_SETTLING:
-      default:
+bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
+  override fun onStateChanged(bottomSheet: View, newState: Int) {
+    when (newState) {
+      STATE_EXPANDED, STATE_HALF_EXPANDED -> bottomSheetBackCallback.setEnabled(true)
+      STATE_COLLAPSED, STATE_HIDDEN -> bottomSheetBackCallback.setEnabled(false)
+      else -> {
         // Do nothing, only change callback enabled for "stable" states.
-        break;
+      }
     }
   }
 
-  @Override
-  public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
-});
+  override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+})
 ```
 
 ## Theming bottom sheets

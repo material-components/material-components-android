@@ -14,12 +14,13 @@ the user a glimpse of where swiping back will bring them. Before completing a
 swipe, the user can decide to continue to the previous view or stay in the
 current view.
 
-In Android T (13), the OS introduced support for predictive back-to-home, which
-shows the user a preview of the home screen when swiping back to exit an app.
+In Android 13 (T / API level 33), the OS introduced support for predictive
+back-to-home, which shows the user a preview of the home screen when swiping
+back to exit an app.
 
-With Android U (14), the OS adds support for in-app predictive back, which apps
-can take advantage of to show the user previous destinations when swiping back
-within the app itself.
+With Android 14 (U / API level 34), the OS adds support for in-app predictive
+back, which apps can take advantage of to show the user previous destinations
+when swiping back within the app itself.
 
 ## Design & API documentation
 
@@ -27,17 +28,6 @@ within the app itself.
 -   [Android design guidelines](https://developer.android.com/design/ui/mobile/guides/patterns/predictive-back)
 -   [Framework & AndroidX Predictive Back developer guide](https://developer.android.com/guide/navigation/predictive-back-gesture)
 -   [Android 14 Predictive Back developer guide](https://developer.android.com/about/versions/14/features/predictive-back)
-
-## Talks
-
--   [What's New in Android (Google I/O 2023)](https://youtu.be/qXhjN66O7Bk?t=1193)
--   [What's New in Material Design (Google I/O 2023)](https://youtu.be/vnDhq8W98O4?t=156)
--   [Building for the Future of Android (Google I/O 2023)](https://www.youtube.com/watch?v=WMMPXayjP8g&t=333s)
-
-## Blog Posts
-
--   [Second Beta of Android 14](https://android-developers.googleblog.com/2023/05/android-14-beta-2.html)
--   [Google I/O 2023: What's new in Jetpack](https://android-developers.googleblog.com/2023/05/whats-new-in-jetpack-io-2023.html)
 
 ## Usage
 
@@ -67,5 +57,19 @@ animations:
 - [Bottom sheet](../components/BottomSheet.md#predictive-back) (automatically for modal, standard requires integration)
 - [Side sheet](../components/SideSheet.md#predictive-back) (automatically for modal, standard and coplanar require integration)
 - [Navigation drawer](../components/NavigationDrawer.md#predictive-back) (automatically for `NavigationView` within `DrawerLayout`)
-- Navigation bar / Bottom navigation view (support coming soon)
-- Navigation rail (support coming soon)
+
+Future predictive back support is planned for the following Material Components:
+
+- Navigation bar / Bottom navigation view
+- Navigation rail
+
+## Talks
+
+-   [What's New in Android (Google I/O 2023)](https://youtu.be/qXhjN66O7Bk?t=1193)
+-   [What's New in Material Design (Google I/O 2023)](https://youtu.be/vnDhq8W98O4?t=156)
+-   [Building for the Future of Android (Google I/O 2023)](https://www.youtube.com/watch?v=WMMPXayjP8g&t=333s)
+
+## Blog Posts
+
+-   [Second Beta of Android 14](https://android-developers.googleblog.com/2023/05/android-14-beta-2.html)
+-   [Google I/O 2023: What's new in Jetpack](https://android-developers.googleblog.com/2023/05/whats-new-in-jetpack-io-2023.html)
