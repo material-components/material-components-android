@@ -192,6 +192,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     bundle.putCharSequence(POSITIVE_BUTTON_TEXT_KEY, positiveButtonText);
     bundle.putInt(NEGATIVE_BUTTON_TEXT_RES_ID_KEY, negativeButtonTextResId);
     bundle.putCharSequence(NEGATIVE_BUTTON_TEXT_KEY, negativeButtonText);
+    bundle.putInt(INPUT_MODE_KEY, inputMode);
   }
 
   @Override
