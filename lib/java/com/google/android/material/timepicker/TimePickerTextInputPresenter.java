@@ -236,7 +236,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   public void hide() {
     View currentFocus = timePickerView.getFocusedChild();
     if (currentFocus != null) {
-      ViewUtils.hideKeyboard(currentFocus);
+      ViewUtils.hideKeyboard(currentFocus, /* useWindowInsetsController= */ false);
     }
 
     timePickerView.setVisibility(GONE);
