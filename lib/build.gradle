@@ -18,9 +18,12 @@ dependencies {
   api compatibility("fragment")
   api compatibility("lifecycleRuntime")
   api compatibility("recyclerview")
+  api compatibility("resourceInspectionAnnotation")
   api compatibility("transition")
   api compatibility("vectordrawable")
   api compatibility("viewpager2")
+
+  annotationProcessor compatibility("resourceInspectionProcessor")
 
   implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
 
