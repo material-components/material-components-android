@@ -92,16 +92,19 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
   @VisibleForTesting
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void startBackProgress(float touchY, @NonNull View collapsedView) {
-    collapsedView.setVisibility(View.INVISIBLE);
-
     initialHideToClipBounds = ViewUtils.calculateRectFromBounds(view);
     initialHideFromClipBounds = ViewUtils.calculateOffsetRectFromBounds(view, collapsedView);
     initialTouchY = touchY;
   }
 
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void updateBackProgress(@NonNull BackEvent backEvent, float collapsedCornerSize) {
+  public void updateBackProgress(
+      @NonNull BackEvent backEvent, @NonNull View collapsedView, float collapsedCornerSize) {
     super.onUpdateBackProgress(backEvent);
+
+    if (collapsedView.getVisibility() != View.INVISIBLE) {
+      collapsedView.setVisibility(View.INVISIBLE);
+    }
 
     boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEvent.EDGE_LEFT;
     updateBackProgress(
