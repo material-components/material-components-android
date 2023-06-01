@@ -21,7 +21,6 @@ import com.google.android.material.R;
 import static com.google.android.material.animation.AnimationUtils.lerp;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -773,16 +772,17 @@ public class CarouselLayoutManager extends LayoutManager
 
     // If the carousel is a CONTAINED carousel, ensure the mask collapses against the side of the
     // container instead of bleeding and being clipped by the RecyclerView's bounds.
+    // Only do this if there is only one side of the mask that is out of bounds; if
+    // both sides are out of bounds on the same side, then the whole mask is out of view.
     if (carouselStrategy.isContained()) {
       float offsetCx = calculateChildOffsetCenterForLocation(child, childCenterLocation, range);
       float maskedLeft = offsetCx - (maskRect.width() / 2F);
       float maskedRight = offsetCx + (maskRect.width() / 2F);
-
-      if (maskedLeft < getParentLeft()) {
-        maskRect.left = min(maskRect.left + (getParentLeft() - maskedLeft), childWidth / 2F);
+      if (maskedLeft < getParentLeft() && maskedRight >= getParentLeft()) {
+        maskRect.left = maskRect.left + (getParentLeft() - maskedLeft);
       }
-      if (maskedRight > getParentRight()) {
-        maskRect.right = max(maskRect.right - (maskedRight - getParentRight()), childWidth / 2F);
+      if (maskedRight > getParentRight() && maskedLeft <= getParentRight()) {
+        maskRect.right = max(maskRect.right - (maskedRight - getParentRight()), maskRect.left);
       }
     }
     ((Maskable) child).setMaskRectF(maskRect);
