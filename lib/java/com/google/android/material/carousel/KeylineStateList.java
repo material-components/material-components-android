@@ -16,11 +16,14 @@
 
 package com.google.android.material.carousel;
 
+import androidx.core.math.MathUtils;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.carousel.KeylineState.Keyline;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * An object that manages a {@link KeylineState} and handles shifting the focal keyline range to the
@@ -41,7 +44,6 @@ class KeylineStateList {
   private static final int NO_INDEX = -1;
 
   private final KeylineState defaultState;
-
   private final List<KeylineState> leftStateSteps;
   private final List<KeylineState> rightStateSteps;
 
@@ -115,29 +117,65 @@ class KeylineStateList {
    */
   public KeylineState getShiftedState(
       float scrollOffset, float minScrollOffset, float maxScrollOffset) {
+    return getShiftedState(scrollOffset, minScrollOffset, maxScrollOffset, false);
+  }
+
+  /**
+   * Gets a shifted KeylineState appropriate for a scroll offset.
+   *
+   * <p>The first and last items in a carousel should never detach or scroll away from the edges of
+   * the carousel container. To enforce this while still allowing each item in the carousel to enter
+   * the focused range when the focused range is not, by default, at the beginning or end of the
+   * list, keylines need to shift along the scrolling axis in order to reach every item.
+   *
+   * @param scrollOffset the scroll offset
+   * @param minScrollOffset the minimum scroll offset. This moves the items as far right in a
+   *     container as possible.
+   * @param maxScrollOffset the maximum scroll offset. This moves the items as far left in a
+   *     container as possible.
+   * @param roundToNearestStep if true, returns the {@link KeylineState} that has been shifted and
+   *     'rounded' to the nearest 'step'. Otherwise, it returns the {@link KeylineState} that has
+   *     been shifted exactly according to the scroll offset.
+   * @return a {@link KeylineState} that has been shifted according on the scroll offset.
+   */
+   KeylineState getShiftedState(
+      float scrollOffset,
+      float minScrollOffset,
+      float maxScrollOffset,
+      boolean roundToNearestStep) {
     float leftShiftOffset = minScrollOffset + leftShiftRange;
     float rightShiftOffset = maxScrollOffset - rightShiftRange;
+    List<KeylineState> steps;
+    float[] interpolationPoints;
+    float interpolation;
     if (scrollOffset < leftShiftOffset) {
-      float interpolation =
+      interpolation =
           AnimationUtils.lerp(
               /* outputMin= */ 1F,
               /* outputMax= */ 0F,
               /* inputMin: */ minScrollOffset,
               /* inputMax= */ leftShiftOffset,
               /* value= */ scrollOffset);
-      return lerp(leftStateSteps, interpolation, leftStateStepsInterpolationPoints);
+      steps = leftStateSteps;
+      interpolationPoints = leftStateStepsInterpolationPoints;
     } else if (scrollOffset > rightShiftOffset) {
-      float interpolation =
+      interpolation =
           AnimationUtils.lerp(
               /* outputMin= */ 0F,
               /* outputMax= */ 1F,
               /* inputMin= */ rightShiftOffset,
               /* inputMax= */ maxScrollOffset,
               /* value= */ scrollOffset);
-      return lerp(rightStateSteps, interpolation, rightStateStepsInterpolationPoints);
+      steps = rightStateSteps;
+      interpolationPoints = rightStateStepsInterpolationPoints;
     } else {
       return defaultState;
     }
+
+    if (roundToNearestStep) {
+      return closestStateStepFromInterpolation(steps, interpolation, interpolationPoints);
+    }
+    return lerp(steps, interpolation, interpolationPoints);
   }
 
   /**
@@ -153,7 +191,28 @@ class KeylineStateList {
    */
   private static KeylineState lerp(
       List<KeylineState> stateSteps, float interpolation, float[] stateStepsInterpolationPoints) {
+    float[] stateStepsRange =
+        getStateStepsRange(stateSteps, interpolation, stateStepsInterpolationPoints);
+    return KeylineState.lerp(
+        stateSteps.get((int) stateStepsRange[1]),
+        stateSteps.get((int) stateStepsRange[2]),
+        stateStepsRange[0]);
+  }
 
+  /**
+   * Gets the state steps range of the form of an array [progress, fromIndex, toIndex], where
+   * progress indicates the progress in between fromIndex and toIndex and the 2 indices represent
+   * steps in the given stateSteps.
+   *
+   * @param stateSteps The steps in which to determine the 2 state steps we are in between.
+   * @param interpolation The interpolation of the state steps we are at.
+   * @param stateStepsInterpolationPoints The state step interpolation points; each interpolation
+   *        point corresponds to at which interpolation we are at the corresponding state step.
+   * @return an array of the form [progress, fromIndex, toIndex] where progress represents the
+   *        progress in between the state steps at fromIndex and toIndex.
+   */
+  private static float[] getStateStepsRange(List<KeylineState> stateSteps,
+      float interpolation, float[] stateStepsInterpolationPoints) {
     int numberOfSteps = stateSteps.size();
     // Find the step that contains `interpolation` and remap the the surrounding interpolation
     // points lower and upper bounds to its own 0-1 value.
@@ -165,16 +224,26 @@ class KeylineStateList {
         int toIndex = i;
         float steppedProgress =
             AnimationUtils.lerp(0F, 1F, lowerBounds, upperBounds, interpolation);
-        return KeylineState.lerp(
-            stateSteps.get(fromIndex), stateSteps.get(toIndex), steppedProgress);
+        return new float[] {steppedProgress, fromIndex, toIndex};
       }
       lowerBounds = upperBounds;
     }
+    // Return the index of the default state. This should occur if the stateSteps only hold the
+    // default KeylineState, meaning the default state's focal range is already placed at the left
+    // or right of the carousel container.
+    return new float[] {0, 0, 0};
+  }
 
-    // Return the default state. This should occur if the stateSteps only hold the default
-    // KeylineState, meaning the default state's focal range is already placed at the left or
-    // right of the carousel container.
-    return stateSteps.get(0);
+  private KeylineState closestStateStepFromInterpolation(
+      List<KeylineState> stateSteps, float interpolation, float[] stateStepsInterpolationPoints) {
+    float[] stateStepsRange =
+        getStateStepsRange(stateSteps, interpolation, stateStepsInterpolationPoints);
+    // If the progress is larger than half, take the state step at the toIndex.
+    // Otherwise, return the fromIndex.
+    if (stateStepsRange[0] > 0.5f) {
+      return stateSteps.get((int) stateStepsRange[2]);
+    }
+    return stateSteps.get((int) stateStepsRange[1]);
   }
 
   /**
@@ -473,5 +542,43 @@ class KeylineStateList {
     }
 
     return NO_INDEX;
+  }
+
+  Map<Integer, KeylineState> getKeylineStateForPositionMap(
+      int itemCount, int minHorizontalScroll, int maxHorizontalScroll, boolean isRTL) {
+    float itemSize = defaultState.getItemSize();
+    Map<Integer, KeylineState> keylineStates = new HashMap<>();
+    int rightStepsIndex = 0;
+    int leftStepsIndex = 0;
+    // Associate the positions with the appropriate right state step.
+    for (int i = 0; i < itemCount; i++) {
+      // If RTL, the scroll position is negative since item positions are backwards.
+      int position = isRTL ? itemCount - i - 1 : i;
+      float itemPosition = position * itemSize * (isRTL ? -1 : 1);
+      if (itemPosition > maxHorizontalScroll - rightShiftRange
+          || i >= itemCount - rightStateSteps.size()) {
+        keylineStates.put(
+            position,
+            rightStateSteps.get(MathUtils.clamp(rightStepsIndex, 0, rightStateSteps.size() - 1)));
+        rightStepsIndex++;
+      }
+    }
+    // If the item is in the left shift range, we associate the position with the
+    // appropriate left state step. Since the leftStateSteps goes from the default
+    // state to the start state, we iterate backwards.
+    for (int i = itemCount - 1; i >= 0; i--) {
+      // If RTL, the scroll position is negative since item positions are backwards.
+      int position = isRTL ? itemCount - i - 1 : i;
+      float itemPosition = position * itemSize * (isRTL ? -1 : 1);
+      if (itemPosition < minHorizontalScroll + leftShiftRange || i < leftStateSteps.size()) {
+        // If the item is in range of the left shift, we start associating the
+        // position with the leftStateSteps.
+        keylineStates.put(
+            position,
+            leftStateSteps.get(MathUtils.clamp(leftStepsIndex, 0, leftStateSteps.size() - 1)));
+          leftStepsIndex++;
+        }
+      }
+    return keylineStates;
   }
 }

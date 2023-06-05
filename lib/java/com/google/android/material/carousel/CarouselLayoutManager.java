@@ -42,6 +42,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.math.MathUtils;
 import androidx.core.util.Preconditions;
@@ -50,6 +51,7 @@ import com.google.android.material.carousel.KeylineState.Keyline;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A {@link LayoutManager} that can mask and offset items along the scrolling axis, creating a
@@ -67,16 +69,19 @@ public class CarouselLayoutManager extends LayoutManager
 
   private static final String TAG = "CarouselLayoutManager";
 
-  private int horizontalScrollOffset;
+  @VisibleForTesting
+  int horizontalScrollOffset;
 
   // Min scroll is the offset number that offsets the list to the right/bottom as much as possible.
   // In LTR layouts, this will be the scroll offset to move to the start of the container. In RTL,
   // this will move the list to the end of the container.
-  private int minHorizontalScroll;
+  @VisibleForTesting
+  int minHorizontalScroll;
   // Max scroll is the offset number that moves the list to the left/top of the list as much as
   // possible. In LTR layouts, this will move the list to the end of the container. In RTL, this
   // will move the list to the start of the container.
-  private int maxHorizontalScroll;
+  @VisibleForTesting
+  int maxHorizontalScroll;
 
   private boolean isDebuggingEnabled = false;
   private final DebugItemDecoration debugItemDecoration = new DebugItemDecoration();
@@ -89,6 +94,9 @@ public class CarouselLayoutManager extends LayoutManager
   // optimize fill loops by starting the fill from an adapter position that will need the least
   // number of loop iterations to fill the RecyclerView.
   private int currentFillStartPosition = 0;
+
+  // Tracks the keyline state associated with each item in the RecyclerView.
+  @Nullable private Map<Integer, KeylineState> keylineStatePositionMap;
 
   /**
    * An internal object used to store and run checks on a child to be potentially added to the
@@ -176,6 +184,12 @@ public class CarouselLayoutManager extends LayoutManager
     if (isInitialLoad) {
       // Scroll to the start of the list on first load.
       horizontalScrollOffset = startHorizontalScroll;
+      keylineStatePositionMap =
+          keylineStateList.getKeylineStateForPositionMap(
+              getItemCount(),
+              minHorizontalScroll,
+              maxHorizontalScroll,
+              isLayoutRtl());
     } else {
       // Clamp the horizontal scroll offset by the new min and max by pinging the scroll by
       // calculator with a 0 delta.
@@ -885,9 +899,11 @@ public class CarouselLayoutManager extends LayoutManager
    * position}'s center at the start-most focal keyline. The returned value might be less or greater
    * than the min and max scroll offsets but this will be clamped in {@link #scrollBy(int, Recycler,
    * State)} (Recycler, State)} by {@link #calculateShouldHorizontallyScrollBy(int, int, int, int)}.
+   *
+   * @param position The position to get the scroll offset to.
+   * @param keylineState The keyline state in which to calculate the scroll offset to.
    */
-  private int getScrollOffsetForPosition(int position) {
-    KeylineState keylineState = keylineStateList.getDefaultState();
+  private int getScrollOffsetForPosition(int position, KeylineState keylineState) {
     if (isLayoutRtl()) {
       return (int)
           ((getContainerWidth() - keylineState.getLastFocalKeyline().loc)
@@ -908,7 +924,8 @@ public class CarouselLayoutManager extends LayoutManager
       return null;
     }
 
-    return new PointF(getOffsetToScrollToPosition(targetPosition), 0F);
+    KeylineState keylineForScroll = getKeylineStateForPosition(targetPosition);
+    return new PointF(getOffsetToScrollToPosition(targetPosition, keylineForScroll), 0F);
   }
 
   /**
@@ -917,9 +934,51 @@ public class CarouselLayoutManager extends LayoutManager
    * <p>This will calculate the horizontal scroll offset needed to place a child at {@code
    * position}'s center at the start-most focal keyline.
    */
-  int getOffsetToScrollToPosition(int position) {
-    int targetScrollOffset = getScrollOffsetForPosition(position);
+  int getOffsetToScrollToPosition(int position, @NonNull KeylineState keylineState) {
+    int targetScrollOffset = getScrollOffsetForPosition(position, keylineState);
     return targetScrollOffset - horizontalScrollOffset;
+  }
+
+  /**
+   * Gets the offset needed to snap to a position from the current scroll offset.
+   *
+   * <p>This will calculate the horizontal scroll offset needed to place a child at {@code
+   * position}'s center at the start-most focal keyline of the target keyline state to snap to.
+   *
+   * <p>Sometimes we may want to do a partial snap. Eg. When there is a fling event, the snap
+   * distance is fetched before it finishes scrolling and the target keyline state is not yet
+   * updated. Once the fling event finishes scrolling, the snap is triggered again with the correct
+   * target keyline state. If {@code partialSnap} is true, then we want to snap to whichever is
+   * smaller between {@code targetKeylineStateForSnap}, which is the closest keyline state step to
+   * the current keyline state, or the KeylineState at the correct position in {@code
+   * keylineStatePositionList}. Note that if there is any distance left to be snapped when the
+   * fling-scroll stops, the snap helper will handle it.
+   */
+  int getOffsetToScrollToPositionForSnap(int position, boolean partialSnap) {
+    KeylineState targetKeylineStateForSnap = keylineStateList.getShiftedState(
+        horizontalScrollOffset, minHorizontalScroll, maxHorizontalScroll, true);
+    int targetSnapOffset = getOffsetToScrollToPosition(position, targetKeylineStateForSnap);
+    int positionOffset = targetSnapOffset;
+    if (keylineStatePositionMap != null) {
+      positionOffset = getOffsetToScrollToPosition(position, getKeylineStateForPosition(position));
+    }
+    if (partialSnap) {
+      return Math.abs(positionOffset) < Math.abs(targetSnapOffset)
+          ? positionOffset
+          : targetSnapOffset;
+    }
+    return targetSnapOffset;
+  }
+
+  private KeylineState getKeylineStateForPosition(int position) {
+    if (keylineStatePositionMap != null) {
+      KeylineState keylineState = keylineStatePositionMap.get(
+          MathUtils.clamp(position, 0, max(0, getItemCount() - 1)));
+      if (keylineState != null) {
+        return keylineState;
+      }
+    }
+    return keylineStateList.getDefaultState();
   }
 
   @Override
@@ -927,7 +986,8 @@ public class CarouselLayoutManager extends LayoutManager
     if (keylineStateList == null) {
       return;
     }
-    horizontalScrollOffset = getScrollOffsetForPosition(position);
+    horizontalScrollOffset =
+        getScrollOffsetForPosition(position, getKeylineStateForPosition(position));
     currentFillStartPosition = MathUtils.clamp(position, 0, max(0, getItemCount() - 1));
     updateCurrentKeylineStateForScrollOffset();
     requestLayout();
@@ -945,9 +1005,15 @@ public class CarouselLayoutManager extends LayoutManager
 
           @Override
           public int calculateDxToMakeVisible(View view, int snapPreference) {
+            if (keylineStateList == null) {
+              return 0;
+            }
             // Override dx calculations so the target view is brought all the way into the focal
             // range instead of just being made visible.
-            float targetScrollOffset = getScrollOffsetForPosition(getPosition(view));
+            KeylineState scrollToKeyline = getKeylineStateForPosition(getPosition(view));
+
+            float targetScrollOffset =
+                getScrollOffsetForPosition(getPosition(view), scrollToKeyline);
             return (int) (horizontalScrollOffset - targetScrollOffset);
           }
         };
@@ -976,7 +1042,9 @@ public class CarouselLayoutManager extends LayoutManager
       return false;
     }
 
-    int dx = getOffsetToScrollToPosition(getPosition(child));
+    int dx =
+        getOffsetToScrollToPosition(
+            getPosition(child), getKeylineStateForPosition(getPosition(child)));
     if (!focusedChildVisible) {
       if (dx != 0) {
         // TODO(b/266816148): Implement smoothScrollBy when immediate is false.

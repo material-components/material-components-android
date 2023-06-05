@@ -119,12 +119,38 @@ public class CarouselSnapHelperTest {
             layoutManager, snapHelper.findSnapView(layoutManager));
     assertThat(distance[0]).isEqualTo(50);
 
+    int horizontalScrollBefore = layoutManager.horizontalScrollOffset;
     // If scrolled enough, the snap view should be the item at position 4.
+    // We scrolled by the item width, so the snap distance should still be 50.
     scrollHorizontallyBy(recyclerView, layoutManager, DEFAULT_ITEM_WIDTH);
+    int horizontalScrollAfter = layoutManager.horizontalScrollOffset;
+
     distance =
         snapHelper.calculateDistanceToFinalSnap(
             layoutManager, snapHelper.findSnapView(layoutManager));
-    assertThat(distance[0]).isEqualTo(50);
+
+    // When shifting from position 3 -> position 4, the target keyline that we are snapping to
+    // will also shift. We must account for this in the snap distance; the snap will be 50 (the
+    // original snap distance if keylines stayed the same) minus the difference in focal keyline
+    // location between keyline states.
+    KeylineStateList stateList =
+        KeylineStateList.from(layoutManager, getTestCenteredKeylineState());
+    KeylineState target1 =
+        stateList.getShiftedState(
+            horizontalScrollBefore,
+            layoutManager.minHorizontalScroll,
+            layoutManager.maxHorizontalScroll,
+            true);
+    float firstTargetKeylineLoc = target1.getFirstFocalKeyline().loc;
+    KeylineState target2 =
+        stateList.getShiftedState(
+            horizontalScrollAfter,
+            layoutManager.minHorizontalScroll,
+            layoutManager.maxHorizontalScroll,
+            true);
+    float secondTargetKeylineLoc = target2.getFirstFocalKeyline().loc;
+
+    assertThat(distance[0]).isEqualTo(50 - (int) (secondTargetKeylineLoc - firstTargetKeylineLoc));
   }
 
   @Test

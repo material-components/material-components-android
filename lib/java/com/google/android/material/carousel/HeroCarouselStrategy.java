@@ -43,7 +43,7 @@ import androidx.core.math.MathUtils;
 public class HeroCarouselStrategy extends CarouselStrategy {
 
   private static final int[] SMALL_COUNTS = new int[] {1};
-  private static final int[] MEDIUM_COUNTS = new int[] {0};
+  private static final int[] MEDIUM_COUNTS = new int[] {0, 1};
 
   @Override
   @NonNull
@@ -56,7 +56,9 @@ public class HeroCarouselStrategy extends CarouselStrategy {
     float smallChildWidthMin = getSmallSizeMin(child.getContext()) + childHorizontalMargins;
     float smallChildWidthMax = getSmallSizeMax(child.getContext()) + childHorizontalMargins;
 
-    float measuredChildWidth = availableSpace;
+    float measuredChildHeight = child.getMeasuredHeight();
+    float measuredChildWidth = measuredChildHeight * 2;
+
     float targetLargeChildWidth = min(measuredChildWidth + childHorizontalMargins, availableSpace);
     // Ideally we would like to create a balanced arrangement where a small item is 1/3 the size of
     // the large item. Clamp the small target size within our min-max range and as close to 1/3 of
@@ -79,17 +81,19 @@ public class HeroCarouselStrategy extends CarouselStrategy {
     for (int i = 0; i < largeCounts.length; i++) {
       largeCounts[i] = largeCountMin + i;
     }
+
     Arrangement arrangement = Arrangement.findLowestCostArrangement(
-        availableSpace,
-        targetSmallChildWidth,
-        smallChildWidthMin,
-        smallChildWidthMax,
-        SMALL_COUNTS,
-        targetMediumChildWidth,
-        MEDIUM_COUNTS,
-        targetLargeChildWidth,
-        largeCounts);
+          availableSpace,
+          targetSmallChildWidth,
+          smallChildWidthMin,
+          smallChildWidthMax,
+          SMALL_COUNTS,
+          targetMediumChildWidth,
+          MEDIUM_COUNTS,
+          targetLargeChildWidth,
+          largeCounts);
     return createLeftAlignedKeylineState(
         child.getContext(), childHorizontalMargins, availableSpace, arrangement);
   }
 }
+

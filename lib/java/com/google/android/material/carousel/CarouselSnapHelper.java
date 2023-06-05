@@ -15,10 +15,15 @@
  */
 package com.google.android.material.carousel;
 
+import static java.lang.Math.max;
+
 import android.graphics.PointF;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.LayoutManager;
+import androidx.recyclerview.widget.RecyclerView.SmoothScroller;
 import androidx.recyclerview.widget.SnapHelper;
+import android.util.DisplayMetrics;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +35,7 @@ import androidx.annotation.Nullable;
 public class CarouselSnapHelper extends SnapHelper {
 
   private final boolean disableFling;
+  private RecyclerView recyclerView;
 
   public CarouselSnapHelper() {
     this(true);
@@ -39,10 +45,21 @@ public class CarouselSnapHelper extends SnapHelper {
     this.disableFling = disableFling;
   }
 
+  @Override
+  public void attachToRecyclerView(@Nullable RecyclerView recyclerView) {
+    super.attachToRecyclerView(recyclerView);
+    this.recyclerView = recyclerView;
+  }
+
   @Nullable
   @Override
   public int[] calculateDistanceToFinalSnap(
       @NonNull LayoutManager layoutManager, @NonNull View view) {
+    return calculateDistanceToSnap(layoutManager, view, false);
+  }
+
+  private int[] calculateDistanceToSnap(
+      @NonNull LayoutManager layoutManager, @NonNull View view, boolean partialSnap) {
     // If the layout manager is not a CarouselLayoutManager, we return with a zero offset
     // as there are no keylines to snap to.
     if (!(layoutManager instanceof CarouselLayoutManager)) {
@@ -51,15 +68,17 @@ public class CarouselSnapHelper extends SnapHelper {
 
     int offset = 0;
     if (layoutManager.canScrollHorizontally()) {
-      offset = distanceToFirstFocalKeyline(view, (CarouselLayoutManager) layoutManager);
+      offset =
+          distanceToFirstFocalKeyline(view, (CarouselLayoutManager) layoutManager, partialSnap);
     }
     // TODO(b/279088745): Implement snap helper for vertical scrolling.
     return new int[] {offset, 0};
   }
 
   private int distanceToFirstFocalKeyline(
-      @NonNull View targetView, CarouselLayoutManager layoutManager) {
-    return layoutManager.getOffsetToScrollToPosition(layoutManager.getPosition(targetView));
+      @NonNull View targetView, CarouselLayoutManager layoutManager, boolean partialSnap) {
+    return layoutManager.getOffsetToScrollToPositionForSnap(
+        layoutManager.getPosition(targetView), partialSnap);
   }
 
   @Nullable
@@ -93,7 +112,7 @@ public class CarouselSnapHelper extends SnapHelper {
       final View child = layoutManager.getChildAt(i);
       final int position = layoutManager.getPosition(child);
       final int offset =
-          Math.abs(carouselLayoutManager.getOffsetToScrollToPosition(position));
+          Math.abs(carouselLayoutManager.getOffsetToScrollToPositionForSnap(position, false));
 
       // If child center is closer than previous closest, set it as closest
       if (offset < absClosest) {
@@ -130,7 +149,7 @@ public class CarouselSnapHelper extends SnapHelper {
         continue;
       }
       final int distance =
-          distanceToFirstFocalKeyline(child, (CarouselLayoutManager) layoutManager);
+          distanceToFirstFocalKeyline(child, (CarouselLayoutManager) layoutManager, false);
 
       if (distance <= 0 && distance > distanceBefore) {
         // Child is before the keyline and closer then the previous best
@@ -193,5 +212,43 @@ public class CarouselSnapHelper extends SnapHelper {
       }
     }
     return false;
+  }
+
+  /**
+   * {@inheritDoc}
+   *
+   * <p>This is mostly a copy of {@code SnapHelper#createSnapScroller} with a slight adjustment to
+   * call {@link CarouselSnapHelper#calculateDistanceToSnap(LayoutManager, View, boolean)}
+   * (LayoutManager, View)}. We want to do a partial snap since the correct target keyline state may
+   * not have updated yet since this gets called before the keylines shift.
+   */
+  @Nullable
+  @Override
+  protected SmoothScroller createScroller(@NonNull LayoutManager layoutManager) {
+    return layoutManager instanceof RecyclerView.SmoothScroller.ScrollVectorProvider
+        ? new LinearSmoothScroller(recyclerView.getContext()) {
+          @Override
+          protected void onTargetFound(
+              View targetView,
+              RecyclerView.State state,
+              RecyclerView.SmoothScroller.Action action) {
+            if (recyclerView != null) {
+              int[] snapDistances =
+                  calculateDistanceToSnap(recyclerView.getLayoutManager(), targetView, true);
+              int dx = snapDistances[0];
+              int dy = snapDistances[1];
+              int time = this.calculateTimeForDeceleration(max(Math.abs(dx), Math.abs(dy)));
+              if (time > 0) {
+                action.update(dx, dy, time, this.mDecelerateInterpolator);
+              }
+            }
+          }
+
+          @Override
+          protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
+            return 100.0F / (float) displayMetrics.densityDpi;
+          }
+        }
+        : null;
   }
 }
