@@ -76,10 +76,9 @@ final class ColorGrid {
     this.materialColorSpecOnAccentContainer = materialColorSpecOnAccentContainer;
   }
 
-  View renderView(Context context, ViewGroup container) {
+  View renderView(LayoutInflater layoutInflater, ViewGroup container) {
     View catalogColorsGrid =
-        LayoutInflater.from(context)
-            .inflate(R.layout.cat_colors_grid, container, /* attachToRoot= */ false);
+        layoutInflater.inflate(R.layout.cat_colors_grid, container, /* attachToRoot= */ false);
 
     bindColorSpecItem(catalogColorsGrid, R.id.cat_color_accent, materialColorSpecAccent);
     bindColorSpecItem(catalogColorsGrid, R.id.cat_color_on_accent, materialColorSpecOnAccent);
