@@ -37,7 +37,7 @@ final class ColorResourcesLoaderCreator {
 
   private ColorResourcesLoaderCreator() {}
 
-  private static final String TAG = ColorResourcesLoaderCreator.class.getSimpleName();
+  private static final String TAG = "ColorResLoaderCreator";
 
   @Nullable
   static ResourcesLoader create(
@@ -51,6 +51,11 @@ final class ColorResourcesLoaderCreator {
       FileDescriptor arscFile = null;
       try {
         arscFile = Os.memfd_create("temp.arsc", /* flags= */ 0);
+        if (arscFile == null) {
+          // For robolectric tests, memfd_create will return null without ErrnoException.
+          Log.w(TAG, "Cannot create memory file descriptor.");
+          return null;
+        }
         // Note: This must not be closed through the OutputStream.
         try (OutputStream pipeWriter = new FileOutputStream(arscFile)) {
           pipeWriter.write(contentBytes);
