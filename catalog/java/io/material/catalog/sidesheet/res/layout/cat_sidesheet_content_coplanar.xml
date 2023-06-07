@@ -29,6 +29,7 @@
     android:layout_height="wrap_content"
     android:contentDescription="@string/cat_sidesheet_close_button_content_desc"
     app:icon="@drawable/ic_close_vd_theme_24px"
+    app:iconTint="?attr/colorOnSurfaceVariant"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toTopOf="parent"
     tools:ignore="ContentDescription" />
