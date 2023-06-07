@@ -33,7 +33,7 @@
     app:icon="@drawable/ic_close_vd_theme_24px"
     app:iconTint="?attr/colorOnSurfaceVariant"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@id/detached_side_sheet_title_text"
+    app:layout_constraintBaseline_toBaselineOf="@id/detached_side_sheet_title_text"
     tools:ignore="ContentDescription" />
 
   <TextView
