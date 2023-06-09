@@ -20,6 +20,7 @@ import io.material.catalog.R;
 
 import static android.view.View.NO_ID;
 
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,14 +32,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.GravityInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
@@ -405,16 +405,18 @@ public class SideSheetMainDemoFragment extends DemoFragment {
   private OnBackPressedCallback createNonModalOnBackPressedCallback(
       SideSheetBehavior<View> behavior) {
     return new OnBackPressedCallback(/* enabled= */ false) {
-      @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
       @Override
-      public void handleOnBackStarted(@NonNull BackEvent backEvent) {
-        behavior.startBackProgress(backEvent);
+      public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
+        if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+          behavior.startBackProgress(backEvent.toBackEvent());
+        }
       }
 
-      @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
       @Override
-      public void handleOnBackProgressed(@NonNull BackEvent backEvent) {
-        behavior.updateBackProgress(backEvent);
+      public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
+        if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+          behavior.updateBackProgress(backEvent.toBackEvent());
+        }
       }
 
       @Override
@@ -422,10 +424,11 @@ public class SideSheetMainDemoFragment extends DemoFragment {
         behavior.handleBackInvoked();
       }
 
-      @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
       @Override
       public void handleOnBackCancelled() {
-        behavior.cancelBackProgress();
+        if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+          behavior.cancelBackProgress();
+        }
       }
     };
   }

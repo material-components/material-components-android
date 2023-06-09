@@ -18,6 +18,7 @@ package io.material.catalog.bottomappbar;
 
 import io.material.catalog.R;
 
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,12 +30,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
@@ -59,16 +59,18 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
 
   private final OnBackPressedCallback bottomDrawerOnBackPressedCallback =
       new OnBackPressedCallback(/* enabled= */ false) {
-        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
         @Override
-        public void handleOnBackStarted(@NonNull BackEvent backEvent) {
-          bottomDrawerBehavior.startBackProgress(backEvent);
+        public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
+          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            bottomDrawerBehavior.startBackProgress(backEvent.toBackEvent());
+          }
         }
 
-        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
         @Override
-        public void handleOnBackProgressed(@NonNull BackEvent backEvent) {
-          bottomDrawerBehavior.updateBackProgress(backEvent);
+        public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
+          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            bottomDrawerBehavior.updateBackProgress(backEvent.toBackEvent());
+          }
         }
 
         @Override
@@ -76,10 +78,11 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
           bottomDrawerBehavior.handleBackInvoked();
         }
 
-        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
         @Override
         public void handleOnBackCancelled() {
-          bottomDrawerBehavior.cancelBackProgress();
+          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            bottomDrawerBehavior.cancelBackProgress();
+          }
         }
       };
 

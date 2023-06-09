@@ -19,6 +19,7 @@ package io.material.catalog.bottomsheet;
 import io.material.catalog.R;
 
 import android.app.Activity;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -29,12 +30,11 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -50,16 +50,18 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
   private final OnBackPressedCallback persistentBottomSheetBackCallback =
       new OnBackPressedCallback(/* enabled= */ false) {
 
-        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
         @Override
-        public void handleOnBackStarted(@NonNull BackEvent backEvent) {
-          persistentBottomSheetBehavior.startBackProgress(backEvent);
+        public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
+          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            persistentBottomSheetBehavior.startBackProgress(backEvent.toBackEvent());
+          }
         }
 
-        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
         @Override
-        public void handleOnBackProgressed(@NonNull BackEvent backEvent) {
-          persistentBottomSheetBehavior.updateBackProgress(backEvent);
+        public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
+          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            persistentBottomSheetBehavior.updateBackProgress(backEvent.toBackEvent());
+          }
         }
 
         @Override
@@ -67,10 +69,11 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
           persistentBottomSheetBehavior.handleBackInvoked();
         }
 
-        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
         @Override
         public void handleOnBackCancelled() {
-          persistentBottomSheetBehavior.cancelBackProgress();
+          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            persistentBottomSheetBehavior.cancelBackProgress();
+          }
         }
       };
 
