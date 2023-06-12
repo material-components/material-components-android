@@ -40,7 +40,9 @@ import com.google.android.material.shape.ShapeableDelegate;
 /** A {@link FrameLayout} than is able to mask itself and all children. */
 public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapeable {
 
-  private float maskXPercentage = 0F;
+  private static final float MASK_PERCENTAGE_UNSET = -1F;
+  private float maskXPercentage = 0f;
+
   private final RectF maskRect = new RectF();
   @Nullable private OnMaskChangedListener onMaskChangedListener;
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
@@ -65,7 +67,14 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-    onMaskChanged();
+
+    if (maskXPercentage != MASK_PERCENTAGE_UNSET) {
+      // The mask percentage is set, so it is necessary to recalculate the mask size after each
+      // resizing of the view.
+      updateMaskXPercentage(maskXPercentage);
+    } else {
+      // The mask is set directly, so no recalculation is required.
+    }
   }
 
   @Override
@@ -121,13 +130,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   @Deprecated
   public void setMaskXPercentage(float percentage) {
     percentage = MathUtils.clamp(percentage, 0F, 1F);
-    if (maskXPercentage != percentage) {
-      this.maskXPercentage = percentage;
-      // Translate the percentage into an actual pixel value of how much of this view should be
-      // masked away.
-      float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
-      setMaskRectF(new RectF(maskWidth, 0F, (getWidth() - maskWidth), getHeight()));
-    }
+    updateMaskXPercentage(percentage);
   }
 
   /**
@@ -137,14 +140,33 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
    */
   @Override
   public void setMaskRectF(@NonNull RectF maskRect) {
-    this.maskRect.set(maskRect);
-    onMaskChanged();
+    maskXPercentage = MASK_PERCENTAGE_UNSET;
+    updateMaskRectF(maskRect);
+  }
+
+  private void updateMaskXPercentage(float percentage) {
+    if (maskXPercentage != percentage) {
+      maskXPercentage = percentage;
+
+      // Translate the percentage into an actual pixel value of how much of this view should be
+      // masked away.
+      float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
+      updateMaskRectF(new RectF(maskWidth, 0F, (getWidth() - maskWidth), getHeight()));
+    }
+  }
+
+  private void updateMaskRectF(@NonNull RectF rect) {
+    if (!maskRect.equals(rect)) {
+      maskRect.set(rect);
+      onMaskChanged();
+    }
   }
 
   /**
    * Gets the percentage by which this {@link View} is masked by along the x axis.
    *
-   * @return a float between 0 and 1 where 0 is fully unmasked and 1 is fully masked.
+   * @return a float between 0 and 1, where 0 is fully unmasked and 1 is fully masked, or
+   *     {@value MASK_PERCENTAGE_UNSET}, if the mask is set manually.
    * @deprecated This is no longer used as {@link CarouselLayoutManager} calculates its own mask
    *     percentages.
    */
