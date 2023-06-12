@@ -16,6 +16,7 @@
 
 package com.google.android.material.datepicker;
 
+import static com.google.android.material.datepicker.MaterialDatePicker.INPUT_MODE_CALENDAR;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Calendar.APRIL;
 import static java.util.Calendar.FEBRUARY;
@@ -95,7 +96,6 @@ public class MaterialDatePickerTest {
 
   @Test
   public void testSelectionAsOpenAt() {
-
     MaterialDatePicker.Builder<Long> datePickerBuilder = MaterialDatePicker.Builder.datePicker();
     CalendarConstraints calendarConstraints =
         new CalendarConstraints.Builder().setStart(FEB_2016).setEnd(APRIL_2016).build();
@@ -177,5 +177,12 @@ public class MaterialDatePickerTest {
     datePickerBuilder.setCalendarConstraints(calendarConstraints);
     datePickerBuilder.build();
     assertEquals(0, calendarConstraints.getFirstDayOfWeek());
+  }
+
+  @Test
+  public void testInputModeCalendarAsDefault() {
+    MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker().build();
+
+    assertEquals(INPUT_MODE_CALENDAR, materialDatePicker.getInputMode());
   }
 }
