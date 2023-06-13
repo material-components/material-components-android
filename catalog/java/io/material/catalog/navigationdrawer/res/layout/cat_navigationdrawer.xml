@@ -66,6 +66,23 @@
         android:layout_marginTop="32dp"
         android:text="@string/cat_navigationdrawer_show_end_drawer" />
 
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center_vertical"
+          android:labelFor="@+id/bold_text_switch"
+          android:text="@string/cat_navigationdrawer_label_active_bold" />
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@+id/bold_text_switch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="12dp" />
+      </LinearLayout>
+
     </LinearLayout>
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -75,6 +92,7 @@
       android:layout_height="match_parent"
       android:layout_gravity="start"
       app:headerLayout="@layout/cat_navigationdrawer_header"
+      app:itemTextAppearanceActiveBoldEnabled="true"
       app:menu="@menu/cat_navigationdrawer_menu"/>
 
   <com.google.android.material.navigation.NavigationView
@@ -83,6 +101,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="end"
     app:headerLayout="@layout/cat_navigationdrawer_header"
+    app:itemTextAppearanceActiveBoldEnabled="true"
     app:menu="@menu/cat_navigationdrawer_menu"/>
 
 </androidx.drawerlayout.widget.DrawerLayout>

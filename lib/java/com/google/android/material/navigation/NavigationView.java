@@ -248,6 +248,9 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
       textAppearance = a.getResourceId(R.styleable.NavigationView_itemTextAppearance, 0);
     }
 
+    boolean textAppearanceActiveBoldEnabled =
+        a.getBoolean(R.styleable.NavigationView_itemTextAppearanceActiveBoldEnabled, true);
+
     if (a.hasValue(R.styleable.NavigationView_itemIconSize)) {
       setItemIconSize(a.getDimensionPixelSize(R.styleable.NavigationView_itemIconSize, 0));
     }
@@ -344,6 +347,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     if (textAppearance != NavigationMenuPresenter.NO_TEXT_APPEARANCE_SET) {
       presenter.setItemTextAppearance(textAppearance);
     }
+    presenter.setItemTextAppearanceActiveBoldEnabled(textAppearanceActiveBoldEnabled);
     presenter.setItemTextColor(itemTextColor);
     presenter.setItemBackground(itemBackground);
     presenter.setItemIconPadding(itemIconPadding);
@@ -844,6 +848,15 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
    */
   public void setItemTextAppearance(@StyleRes int resId) {
     presenter.setItemTextAppearance(resId);
+  }
+
+  /**
+   * Sets whether the active menu item label is bold.
+   *
+   * @attr ref R.styleable#NavigationView_itemTextAppearanceActiveBoldEnabled
+   */
+  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+    presenter.setItemTextAppearanceActiveBoldEnabled(isBold);
   }
 
   /**

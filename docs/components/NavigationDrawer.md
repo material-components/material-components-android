@@ -290,11 +290,12 @@ Element                | Attribute(s)                                           
 
 ### Text attributes
 
-Element        | Attribute                | Related method(s)                        | Default value
--------------- | ------------------------ | ---------------------------------------- | -------------
-**Color**      | `app:itemTextColor`      | `setItemTextColor`<br>`getItemTextColor` | `?attr/colorOnSecondaryContainer` when active else `?attr/colorOnSurfaceVariant`
-**Typography** | `app:itemTextAppearance` | `setItemTextAppearance`                  | `?attr/textAppearanceLabelLarge`
-**Max lines**  | `app:itemMaxLines`       | `setItemMaxLines`<br>`getItemMaxLines`   | `1`
+| Element                 | Attribute                                 | Related method(s)                        | Default value                                                                    |
+|-------------------------|-------------------------------------------|------------------------------------------|----------------------------------------------------------------------------------|
+| **Color**               | `app:itemTextColor`                       | `setItemTextColor`<br>`getItemTextColor` | `?attr/colorOnSecondaryContainer` when active else `?attr/colorOnSurfaceVariant` |
+| **Typography**          | `app:itemTextAppearance`                  | `setItemTextAppearance`                  | `?attr/textAppearanceLabelLarge`                                                 |
+| **Typography (active)** | `app:itemTextAppearanceActiveBoldEnabled` | `setItemTextAppearanceActiveBoldEnabled` | `true`                                                                           |
+| **Max lines**           | `app:itemMaxLines`                        | `setItemMaxLines`<br>`getItemMaxLines`   | `1`                                                                              |
 
 ### Icon attributes
 

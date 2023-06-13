@@ -89,6 +89,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   @Nullable private final ColorStateList itemTextColorDefault;
   @StyleRes private int itemTextAppearanceInactive;
   @StyleRes private int itemTextAppearanceActive;
+  private boolean itemTextAppearanceActiveBoldEnabled;
   private Drawable itemBackground;
   @Nullable private ColorStateList itemRippleColor;
   private int itemBackgroundRes;
@@ -281,6 +282,20 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         if (itemTextColorFromUser != null) {
           item.setTextColor(itemTextColorFromUser);
         }
+      }
+    }
+  }
+
+  /**
+   * Sets whether the active menu item label is bold.
+   *
+   * @param isBold whether the active menu item label is bold
+   */
+  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+    this.itemTextAppearanceActiveBoldEnabled = isBold;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setTextAppearanceActiveBoldEnabled(isBold);
       }
     }
   }
@@ -710,6 +725,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setTextColor(itemTextColorDefault);
       child.setTextAppearanceInactive(itemTextAppearanceInactive);
       child.setTextAppearanceActive(itemTextAppearanceActive);
+      child.setTextAppearanceActiveBoldEnabled(itemTextAppearanceActiveBoldEnabled);
       child.setTextColor(itemTextColorFromUser);
       if (itemPaddingTop != NO_PADDING) {
         child.setItemPaddingTop(itemPaddingTop);

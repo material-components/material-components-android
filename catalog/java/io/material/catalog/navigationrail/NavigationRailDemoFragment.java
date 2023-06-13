@@ -35,6 +35,7 @@ import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeDrawable.BadgeGravity;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.navigation.NavigationBarView.OnItemSelectedListener;
 import com.google.android.material.navigationrail.NavigationRailView;
 import io.material.catalog.feature.DemoFragment;
@@ -187,6 +188,12 @@ public class NavigationRailDemoFragment extends DemoFragment {
           @Override
           public void onNothingSelected(AdapterView<?> parent) {}
         });
+
+    MaterialSwitch materialSwitch = view.findViewById(R.id.bold_text_switch);
+    materialSwitch.setChecked(true);
+    materialSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) ->
+            navigationRailView.setItemTextAppearanceActiveBoldEnabled(isChecked));
   }
 
   private void initAddIncreaseBadgeNumberButton(Button incrementBadgeNumberButton) {

@@ -101,6 +101,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   private final TextView smallLabel;
   private final TextView largeLabel;
   private int itemPosition = INVALID_ITEM_POSITION;
+  @StyleRes private int activeTextAppearance = 0;
 
   @Nullable private MenuItemImpl itemData;
 
@@ -635,10 +636,15 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   }
 
   public void setTextAppearanceActive(@StyleRes int activeTextAppearance) {
+    this.activeTextAppearance = activeTextAppearance;
     setTextAppearanceWithoutFontScaling(largeLabel, activeTextAppearance);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
+  }
+
+  public void setTextAppearanceActiveBoldEnabled(boolean isBold) {
+    setTextAppearanceActive(activeTextAppearance);
     // TODO(b/246765947): Use component tokens to control font weight
-    largeLabel.setTypeface(largeLabel.getTypeface(), Typeface.BOLD);
+    largeLabel.setTypeface(largeLabel.getTypeface(), isBold ? Typeface.BOLD : Typeface.NORMAL);
   }
 
   /**

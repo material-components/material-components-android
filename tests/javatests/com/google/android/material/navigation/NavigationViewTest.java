@@ -16,6 +16,7 @@
 package com.google.android.material.navigation;
 
 import static android.os.Build.VERSION_CODES.KITKAT;
+import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -50,6 +51,7 @@ import static com.google.android.material.testutils.TestUtilsMatchers.withBackgr
 import static com.google.android.material.testutils.TestUtilsMatchers.withStartDrawableFilledWith;
 import static com.google.android.material.testutils.TestUtilsMatchers.withTextColor;
 import static com.google.android.material.testutils.TestUtilsMatchers.withTextSize;
+import static com.google.android.material.testutils.TestUtilsMatchers.withTypefaceStyle;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -61,6 +63,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Parcelable;
@@ -192,16 +195,20 @@ public class NavigationViewTest {
     }
 
     // Set a new text appearance on our NavigationView
-    onView(withId(R.id.start_drawer)).perform(setItemTextAppearance(R.style.TextSmallStyle));
+    onView(withId(R.id.start_drawer))
+        .perform(setItemTextAppearance(R.style.TextSmallStyle, /* isActiveBold= */ false));
 
     // And check that all the menu items have the new style
     final int newTextSize = res.getDimensionPixelSize(R.dimen.text_small_size);
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
-      onView(
-              allOf(
-                  withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
-                  isDescendantOfA(withId(R.id.start_drawer))))
-          .check(matches(withTextSize(newTextSize)));
+      Matcher<View> menuItemMatcher =
+          allOf(
+              withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
+              isDescendantOfA(withId(R.id.start_drawer)));
+      onView(menuItemMatcher).check(matches(withTextSize(newTextSize)));
+      if (VERSION.SDK_INT >= LOLLIPOP) {
+        onView(menuItemMatcher).check(matches(withTypefaceStyle(Typeface.NORMAL)));
+      }
     }
   }
 
@@ -579,6 +586,8 @@ public class NavigationViewTest {
           expectedToBeChecked ? checkedItemForeground : uncheckedItemForeground;
       final @ColorInt int expectedItemBackground =
           expectedToBeChecked ? checkedItemBackground : uncheckedItemBackground;
+      final int expectedItemTypefaceStyle =
+          expectedToBeChecked ? Typeface.BOLD : Typeface.NORMAL;
 
       // For the background fill check we need to select a view that has its background
       // set by the current implementation (see disclaimer in testBackground)
@@ -595,6 +604,11 @@ public class NavigationViewTest {
               withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
               isDescendantOfA(withId(R.id.start_drawer)));
       onView(menuItemTextMatcher).check(matches(withTextColor(expectedItemForeground)));
+
+      // Check typeface style
+      if (VERSION.SDK_INT >= LOLLIPOP) {
+        onView(menuItemTextMatcher).check(matches(withTypefaceStyle(expectedItemTypefaceStyle)));
+      }
     }
   }
 

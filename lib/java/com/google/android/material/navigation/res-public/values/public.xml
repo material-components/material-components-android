@@ -35,6 +35,7 @@
   <public name="itemShapeFillColor" type="attr"/>
   <public name="itemTextAppearanceInactive" type="attr"/>
   <public name="itemTextAppearanceActive" type="attr"/>
+  <public name="itemTextAppearanceActiveBoldEnabled" type="attr"/>
   <public name="labelVisibilityMode" type="attr"/>
   <public name="topInsetScrimEnabled" type="attr"/>
   <public name="bottomInsetScrimEnabled" type="attr"/>

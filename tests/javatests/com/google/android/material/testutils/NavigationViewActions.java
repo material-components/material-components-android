@@ -36,7 +36,7 @@ import org.hamcrest.Matcher;
 
 public class NavigationViewActions {
   /** Sets item text appearance on the content of the navigation view. */
-  public static ViewAction setItemTextAppearance(final @StyleRes int resId) {
+  public static ViewAction setItemTextAppearance(@StyleRes final int resId, boolean isActiveBold) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -54,6 +54,7 @@ public class NavigationViewActions {
 
         NavigationView navigationView = (NavigationView) view;
         navigationView.setItemTextAppearance(resId);
+        navigationView.setItemTextAppearanceActiveBoldEnabled(isActiveBold);
 
         uiController.loopMainThreadUntilIdle();
       }

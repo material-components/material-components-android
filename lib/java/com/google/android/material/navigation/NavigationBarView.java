@@ -187,6 +187,10 @@ public abstract class NavigationBarView extends FrameLayout {
           attributes.getResourceId(R.styleable.NavigationBarView_itemTextAppearanceActive, 0));
     }
 
+    boolean isBold =
+        attributes.getBoolean(R.styleable.NavigationBarView_itemTextAppearanceActiveBoldEnabled, true);
+    setItemTextAppearanceActiveBoldEnabled(isBold);
+
     if (attributes.hasValue(R.styleable.NavigationBarView_itemTextColor)) {
       setItemTextColor(attributes.getColorStateList(R.styleable.NavigationBarView_itemTextColor));
     }
@@ -770,6 +774,15 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemTextAppearanceActive(@StyleRes int textAppearanceRes) {
     menuView.setItemTextAppearanceActive(textAppearanceRes);
+  }
+
+  /**
+   * Sets whether the active menu item labels are bold.
+   *
+   * @param isBold whether the active menu item labels are bold
+   */
+  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+    menuView.setItemTextAppearanceActiveBoldEnabled(isBold);
   }
 
   /**

@@ -80,6 +80,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
   int subheaderTextAppearance = NO_TEXT_APPEARANCE_SET;
   @Nullable ColorStateList subheaderColor;
   int textAppearance = NO_TEXT_APPEARANCE_SET;
+  boolean textAppearanceActiveBoldEnabled = true;
   ColorStateList textColor;
   ColorStateList iconTintList;
   Drawable itemBackground;
@@ -291,6 +292,11 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemTextAppearance(@StyleRes int resId) {
     textAppearance = resId;
+    updateMenuView(false);
+  }
+
+  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+    textAppearanceActiveBoldEnabled = isBold;
     updateMenuView(false);
   }
 
@@ -573,9 +579,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
           {
             NavigationMenuItemView itemView = (NavigationMenuItemView) holder.itemView;
             itemView.setIconTintList(iconTintList);
-            if (textAppearance != NO_TEXT_APPEARANCE_SET) {
-              itemView.setTextAppearance(textAppearance);
-            }
+            itemView.setTextAppearance(textAppearance);
             if (textColor != null) {
               itemView.setTextColor(textColor);
             }
@@ -597,7 +601,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
               itemView.setIconSize(itemIconSize);
             }
             itemView.setMaxLines(itemMaxLines);
-            itemView.initialize(item.getMenuItem(), 0);
+            itemView.initialize(item.getMenuItem(), /* isBold= */ textAppearanceActiveBoldEnabled);
             setAccessibilityDelegate(itemView, position, false);
             break;
           }
@@ -606,9 +610,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
             TextView subHeader = (TextView) holder.itemView;
             NavigationMenuTextItem item = (NavigationMenuTextItem) items.get(position);
             subHeader.setText(item.getMenuItem().getTitle());
-            if (subheaderTextAppearance != NO_TEXT_APPEARANCE_SET) {
-              TextViewCompat.setTextAppearance(subHeader, subheaderTextAppearance);
-            }
+            TextViewCompat.setTextAppearance(subHeader, subheaderTextAppearance);
             subHeader.setPadding(
                 subheaderInsetStart,
                 subHeader.getPaddingTop(),
