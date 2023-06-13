@@ -784,20 +784,34 @@ public class CarouselLayoutManager extends LayoutManager
     float maskWidth = lerp(0F, childWidth / 2F, 0F, 1F, maskProgress);
     RectF maskRect = new RectF(maskWidth, 0F, (childWidth - maskWidth), childHeight);
 
+    float offsetCx = calculateChildOffsetCenterForLocation(child, childCenterLocation, range);
+    float maskedLeft = offsetCx - (maskRect.width() / 2F);
+    float maskedRight = offsetCx + (maskRect.width() / 2F);
+
     // If the carousel is a CONTAINED carousel, ensure the mask collapses against the side of the
     // container instead of bleeding and being clipped by the RecyclerView's bounds.
     // Only do this if there is only one side of the mask that is out of bounds; if
     // both sides are out of bounds on the same side, then the whole mask is out of view.
     if (carouselStrategy.isContained()) {
-      float offsetCx = calculateChildOffsetCenterForLocation(child, childCenterLocation, range);
-      float maskedLeft = offsetCx - (maskRect.width() / 2F);
-      float maskedRight = offsetCx + (maskRect.width() / 2F);
-      if (maskedLeft < getParentLeft() && maskedRight >= getParentLeft()) {
-        maskRect.left = maskRect.left + (getParentLeft() - maskedLeft);
+      if (maskedLeft < getParentLeft() && maskedRight > getParentLeft()) {
+        float diff = getParentLeft() - maskedLeft;
+        maskRect.left += diff;
+        maskedLeft += diff;
       }
-      if (maskedRight > getParentRight() && maskedLeft <= getParentRight()) {
-        maskRect.right = max(maskRect.right - (maskedRight - getParentRight()), maskRect.left);
+      if (maskedRight > getParentRight() && maskedLeft < getParentRight()) {
+        float diff = maskedRight - getParentRight();
+        maskRect.right = max(maskRect.right - diff, maskRect.left);
+        maskedRight = max(maskedRight - diff, maskedLeft);
       }
+    }
+
+    // 'Push out' any masks that are on the parent edge by rounding up/down and adding or
+    // subtracting a pixel. Otherwise, the mask on the 'edge' looks like it has a width of 1 pixel.
+    if (maskedRight <= getParentLeft()) {
+      maskRect.right = (float) Math.floor(maskRect.right) - 1;
+    }
+    if (maskedLeft >= getParentRight()) {
+      maskRect.left = (float) Math.ceil(maskRect.left) + 1;
     }
     ((Maskable) child).setMaskRectF(maskRect);
   }

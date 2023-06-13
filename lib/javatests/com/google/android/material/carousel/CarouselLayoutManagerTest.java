@@ -309,6 +309,68 @@ public class CarouselLayoutManagerTest {
     assertThat(lastItemMask.right).isGreaterThan(DEFAULT_RECYCLER_VIEW_WIDTH);
   }
 
+  @Test
+  public void testMasksLeftOfParent_areRoundedDown() throws Throwable {
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* isContained= */ false));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    scrollHorizontallyBy(recyclerView, layoutManager, 900);
+
+    for (int i = 0; i < recyclerView.getChildCount(); i++) {
+      View child = recyclerView.getChildAt(i);
+      Rect itemMask = getMaskRectOffsetToRecyclerViewCoords((MaskableFrameLayout) child);
+      assertThat(itemMask.right).isNotEqualTo(0);
+    }
+  }
+
+  @Test
+  public void testMaskOnLeftParentEdge_areRoundedUp() throws Throwable {
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* isContained= */ false));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    // Scroll to end
+    scrollToPosition(recyclerView, layoutManager, 9);
+
+    // Carousel strategy at end is {small, large}. Last child will be large item, second last
+    // child will be small item. So third last child's right mask edge should not show.
+    Rect thirdLastChildMask =
+        getMaskRectOffsetToRecyclerViewCoords(
+            (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 3));
+    assertThat(thirdLastChildMask.right).isLessThan(0);
+    assertThat(thirdLastChildMask.right).isAtLeast(thirdLastChildMask.left);
+  }
+
+  @Test
+  public void testMaskOnRightBoundary_areRoundedUp() throws Throwable {
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* isContained= */ false));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    scrollHorizontallyBy(recyclerView, layoutManager, 900);
+
+    // For every child, assert that the mask left edge is located beyond the recycler view
+    // width (parent's right edge).
+    for (int i = recyclerView.getChildCount() - 1; i >= 0; i--) {
+      View child = recyclerView.getChildAt(i);
+      Rect itemMask = getMaskRectOffsetToRecyclerViewCoords((MaskableFrameLayout) child);
+      assertThat(itemMask.left).isNotEqualTo(DEFAULT_RECYCLER_VIEW_WIDTH);
+    }
+  }
+
+  @Test
+  public void testMaskOnRightParentEdge_areRoundedUp() throws Throwable {
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* isContained= */ false));
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+
+    // Carousel strategy is {large, small}. First child will be large item, second child will
+    // be small item, so the third child's left mask edge should not show up at the right parent
+    // edge.
+    Rect thirdChildMask =
+        getMaskRectOffsetToRecyclerViewCoords((MaskableFrameLayout) recyclerView.getChildAt(2));
+    assertThat(thirdChildMask.left).isGreaterThan(DEFAULT_RECYCLER_VIEW_WIDTH);
+    assertThat(thirdChildMask.left).isAtMost(thirdChildMask.right);
+  }
+
   /**
    * Assigns explicit sizes to fixtures being used to construct the testing environment.
    *
