@@ -30,7 +30,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
-import androidx.core.os.BuildCompat;
 
 /**
  * Utility class for views that support back handling via {@link MaterialBackHandler} which helps
@@ -98,7 +97,7 @@ public final class MaterialBackOrchestrator {
 
   @Nullable
   private static BackCallbackDelegate createBackCallbackDelegate() {
-    if (BuildCompat.isAtLeastU()) {
+    if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
       return new Api34BackCallbackDelegate();
     } else if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
       return new Api33BackCallbackDelegate();

@@ -69,7 +69,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
-import androidx.core.os.BuildCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -982,7 +981,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     DrawerLayout drawerLayout = drawerLayoutPair.first;
 
     BackEventCompat backEvent = sideContainerBackHelper.onHandleBackInvoked();
-    if (backEvent == null || !BuildCompat.isAtLeastU()) {
+    if (backEvent == null || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE) {
       drawerLayout.closeDrawer(this);
       return;
     }

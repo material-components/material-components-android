@@ -63,7 +63,6 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.os.BuildCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.widget.TextViewCompat;
@@ -548,7 +547,7 @@ public class SearchView extends FrameLayout
     searchViewAnimationHelper.setSearchBar(searchBar);
     if (searchBar != null) {
       searchBar.setOnClickListener(v -> show());
-      if (BuildCompat.isAtLeastU()) {
+      if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
         try {
           searchBar.setHandwritingDelegatorCallback(this::show);
           editText.setIsHandwritingDelegate(true);

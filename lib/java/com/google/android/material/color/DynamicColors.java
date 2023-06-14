@@ -499,7 +499,7 @@ public class DynamicColors {
         MaterialAttributes.resolveBoolean(
             context, R.attr.preUDynamicNeutralChromaUpdateEnabled, /* defaultValue= */ false);
     // Update neutral palette chroma from 4 to 6 for backward compatibility.
-    return !BuildCompat.isAtLeastU()
+    return VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE
         && VERSION.SDK_INT >= VERSION_CODES.S
         && shouldUpdateNeutralChroma;
   }
@@ -564,6 +564,8 @@ public class DynamicColors {
 
   private static float getSystemContrast(Context context) {
     UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
-    return (uiModeManager == null || !BuildCompat.isAtLeastU()) ? 0 : uiModeManager.getContrast();
+    return (uiModeManager == null || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE)
+        ? 0
+        : uiModeManager.getContrast();
   }
 }

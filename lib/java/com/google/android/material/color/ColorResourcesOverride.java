@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.os.BuildCompat;
 import java.util.Map;
 
 /**
@@ -93,7 +92,7 @@ public interface ColorResourcesOverride {
   static ColorResourcesOverride getInstance() {
     if (VERSION_CODES.R <= VERSION.SDK_INT && VERSION.SDK_INT <= VERSION_CODES.TIRAMISU) {
       return ResourcesLoaderColorResourcesOverride.getInstance();
-    } else if (BuildCompat.isAtLeastU()) {
+    } else if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
       // TODO(b/255833419): Replace with FabricatedOverlayColorResourcesOverride() when available
       // for U+.
       return ResourcesLoaderColorResourcesOverride.getInstance();

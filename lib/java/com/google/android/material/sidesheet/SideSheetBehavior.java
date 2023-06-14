@@ -27,6 +27,8 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -50,7 +52,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.math.MathUtils;
-import androidx.core.os.BuildCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -1020,7 +1021,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       return;
     }
     BackEventCompat backEvent = sideContainerBackHelper.onHandleBackInvoked();
-    if (backEvent == null || !BuildCompat.isAtLeastU()) {
+    if (backEvent == null || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE) {
       setState(STATE_HIDDEN);
       return;
     }

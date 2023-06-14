@@ -63,7 +63,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.graphics.Insets;
 import androidx.core.math.MathUtils;
-import androidx.core.os.BuildCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -1610,7 +1609,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return;
     }
     BackEventCompat backEvent = bottomContainerBackHelper.onHandleBackInvoked();
-    if (backEvent == null || !BuildCompat.isAtLeastU()) {
+    if (backEvent == null || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE) {
       // If using traditional button system nav or if pre-U, just hide or collapse the bottom sheet.
       setState(hideable ? STATE_HIDDEN : STATE_COLLAPSED);
       return;

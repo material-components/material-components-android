@@ -20,6 +20,7 @@ import io.material.catalog.R;
 
 import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -35,7 +36,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.os.BuildCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.LayoutParams;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
@@ -89,7 +89,7 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
             currentDrawerView = drawerView;
             sideContainerBackHelper = new MaterialSideContainerBackHelper(drawerView);
 
-            if (BuildCompat.isAtLeastU()) {
+            if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
               if (drawerOnBackAnimationCallback == null) {
                 drawerOnBackAnimationCallback = createOnBackAnimationCallback();
               }
@@ -111,7 +111,7 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
             currentDrawerView = null;
             sideContainerBackHelper = null;
 
-            if (BuildCompat.isAtLeastU()) {
+            if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
               if (drawerOnBackAnimationCallback != null) {
                 getOnBackInvokedDispatcher()
                     .unregisterOnBackInvokedCallback(drawerOnBackAnimationCallback);
