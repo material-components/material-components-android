@@ -87,6 +87,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   @Nullable Drawable itemBackground;
   private int itemPaddingTop;
   private int itemPaddingBottom;
+  private int activeIndicatorLabelPadding;
   private float shiftAmount;
   private float scaleUpFactor;
   private float scaleDownFactor;
@@ -146,6 +147,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
 
     itemPaddingTop = getResources().getDimensionPixelSize(getItemDefaultMarginResId());
     itemPaddingBottom = labelGroup.getPaddingBottom();
+    activeIndicatorLabelPadding = getResources().getDimensionPixelSize(R.dimen.m3_navigation_item_active_indicator_label_padding);
 
     // The labels used aren't always visible, so they are unreliable for accessibility. Instead,
     // the content description of the NavigationBarItemView should be used for accessibility.
@@ -190,6 +192,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   protected int getSuggestedMinimumHeight() {
     LayoutParams labelGroupParams = (LayoutParams) labelGroup.getLayoutParams();
     return getSuggestedIconHeight()
+        + (labelGroup.getVisibility() == VISIBLE ? activeIndicatorLabelPadding : 0)
         + labelGroupParams.topMargin
         + labelGroup.getMeasuredHeight()
         + labelGroupParams.bottomMargin;
@@ -785,6 +788,14 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     }
   }
 
+  /** Set the padding between the active indicator container and the item label. */
+  public void setActiveIndicatorLabelPadding(int activeIndicatorLabelPadding) {
+    if (this.activeIndicatorLabelPadding != activeIndicatorLabelPadding) {
+      this.activeIndicatorLabelPadding = activeIndicatorLabelPadding;
+      refreshChecked();
+    }
+  }
+
   /** Set whether or not this item should show an active indicator when checked. */
   public void setActiveIndicatorEnabled(boolean enabled) {
     this.activeIndicatorEnabled = enabled;
@@ -983,16 +994,9 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   }
 
   private int getSuggestedIconHeight() {
-    int badgeHeight = 0;
-    if (badgeDrawable != null) {
-      badgeHeight = badgeDrawable.getMinimumHeight() / 2;
-    }
-
-    // Account for the fact that the badge may fit within the top margin. Bottom margin is ignored
-    // because the icon view will be aligned to the baseline of the label group. But give space for
-    // the badge at the bottom as well, so that icon does not move if badge gravity is changed.
     LayoutParams iconContainerParams = (LayoutParams) getIconOrContainer().getLayoutParams();
-    return max(badgeHeight, iconContainerParams.topMargin) + icon.getMeasuredWidth() + badgeHeight;
+    return iconContainerParams.topMargin
+        + getIconOrContainer().getMeasuredHeight();
   }
 
   /**

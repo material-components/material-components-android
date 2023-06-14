@@ -72,6 +72,8 @@
     <!-- The distance from the bottom of the label to the bottom of the navigation
          bar item.-->
     <attr name="itemPaddingBottom" format="dimension"/>
+    <!-- Padding between the active indicator container and label. -->
+    <attr name="activeIndicatorLabelPadding" format="dimension"/>
 
     <!-- The style used for each navigation item's active indicator-->
     <attr name="itemActiveIndicatorStyle" format="reference"/>

@@ -311,13 +311,14 @@ for more attributes.
 
 #### Active indicator attributes
 
-**Element**           | **Attribute**          | **Related methods**                                                                   | **Default value**
---------------------- | ---------------------- | ------------------------------------------------------------------------------------- | -----------------
-**Color**             | `android:color`        | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                       | `?attr/colorSecondaryContainer`
-**Width**             | `android:width`        | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                       | `56dp`
-**Height**            | `android:height`       | `setItemActiveIndicatorHeight`<br/>`setItemActiveIndicatorHeight`                     | `32dp`
-**Shape**             | `app:shapeAppearance`  | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`   | `50% rounded`
-**Margin horizontal** | `app:marginHorizontal` | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal` | `4dp`
+**Element**                             | **Attribute**                     | **Related methods**                                                                   | **Default value**
+--------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------- | -----------------
+**Color**                               | `android:color`                   | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                       | `?attr/colorSecondaryContainer`
+**Width**                               | `android:width`                   | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                       | `56dp`
+**Height**                              | `android:height`                  | `setItemActiveIndicatorHeight`<br/>`setItemActiveIndicatorHeight`                     | `32dp`
+**Shape**                               | `app:shapeAppearance`             | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`   | `50% rounded`
+**Margin horizontal**                   | `app:marginHorizontal`            | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal` | `4dp`
+**Padding between indicator and label** | `app:activeIndicatorLabelPadding` | `setActiveIndicatorLabelPadding` <br/> `setActiveIndicatorLabelPadding`               | `4dp`
 
 #### Icon attributes
 

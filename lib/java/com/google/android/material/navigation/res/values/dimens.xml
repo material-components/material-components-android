@@ -43,5 +43,6 @@
   <dimen name="m3_navigation_menu_divider_horizontal_padding">28dp</dimen>
   <dimen name="m3_navigation_menu_headline_horizontal_padding">28dp</dimen>
   <dimen name="m3_navigation_drawer_layout_corner_size">16dp</dimen>
+  <dimen name="m3_navigation_item_active_indicator_label_padding">4dp</dimen>
 </resources>
 

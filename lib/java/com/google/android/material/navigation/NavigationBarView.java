@@ -211,6 +211,11 @@ public abstract class NavigationBarView extends FrameLayout {
           attributes.getDimensionPixelSize(R.styleable.NavigationBarView_itemPaddingBottom, 0));
     }
 
+    if (attributes.hasValue(R.styleable.NavigationBarView_activeIndicatorLabelPadding)) {
+      setActiveIndicatorLabelPadding(
+          attributes.getDimensionPixelSize(R.styleable.NavigationBarView_activeIndicatorLabelPadding, 0));
+    }
+
     if (attributes.hasValue(R.styleable.NavigationBarView_elevation)) {
       setElevation(attributes.getDimensionPixelSize(R.styleable.NavigationBarView_elevation, 0));
     }
@@ -573,6 +578,21 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemPaddingBottom(@Px int paddingBottom) {
     menuView.setItemPaddingBottom(paddingBottom);
+  }
+
+  /**
+   * Set the distance between the active indicator container and the item's label.
+   */
+  public void setActiveIndicatorLabelPadding(@Px int activeIndicatorLabelPadding) {
+    menuView.setActiveIndicatorLabelPadding(activeIndicatorLabelPadding);
+  }
+
+  /**
+   * Get the distance between the active indicator container and the item's label.
+   */
+  @Px
+  public int getActiveIndicatorLabelPadding() {
+    return menuView.getActiveIndicatorLabelPadding();
   }
 
   /**
