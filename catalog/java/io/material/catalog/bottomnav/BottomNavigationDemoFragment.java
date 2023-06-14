@@ -34,6 +34,7 @@ import androidx.core.math.MathUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeDrawable.BadgeGravity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.navigation.NavigationBarView.OnItemSelectedListener;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
@@ -192,6 +193,15 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
 
           @Override
           public void onNothingSelected(AdapterView<?> parent) {}
+        });
+
+    MaterialSwitch materialSwitch = view.findViewById(R.id.bold_text_switch);
+    materialSwitch.setChecked(true);
+    materialSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (BottomNavigationView bn : bottomNavigationViews) {
+            bn.setItemTextAppearanceActiveBoldEnabled(isChecked);
+          }
         });
   }
 

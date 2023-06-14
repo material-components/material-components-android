@@ -16,7 +16,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools">
-  <LinearLayout
+  <FrameLayout
     android:id="@+id/standard_side_sheet_container"
     style="@style/Widget.Material3.SideSheet"
     android:layout_width="256dp"
@@ -25,9 +25,9 @@
     app:layout_behavior="@string/side_sheet_behavior"
     tools:targetApi="lollipop">
     <include layout="@layout/cat_sidesheet_content" />
-  </LinearLayout>
+  </FrameLayout>
 
-  <LinearLayout
+  <FrameLayout
     android:id="@+id/standard_detached_side_sheet_container"
     style="@style/Widget.Material3.SideSheet.Detached"
     android:layout_width="256dp"
@@ -36,9 +36,9 @@
     app:layout_behavior="@string/side_sheet_behavior"
     tools:targetApi="lollipop">
     <include layout="@layout/cat_sidesheet_detached_content" />
-  </LinearLayout>
+  </FrameLayout>
 
-  <LinearLayout
+  <FrameLayout
     android:id="@+id/vertically_scrolling_side_sheet_container"
     style="@style/Widget.Material3.SideSheet"
     android:layout_width="256dp"
@@ -47,9 +47,9 @@
     app:layout_behavior="@string/side_sheet_behavior"
     tools:targetApi="lollipop">
     <include layout="@layout/cat_sidesheet_content_vertically_scrolling" />
-  </LinearLayout>
+  </FrameLayout>
 
-  <LinearLayout
+  <FrameLayout
     android:id="@+id/coplanar_side_sheet_container"
     style="@style/Widget.Material3.SideSheet"
     android:layout_width="256dp"
@@ -59,9 +59,9 @@
     app:layout_behavior="@string/side_sheet_behavior"
     tools:targetApi="lollipop">
     <include layout="@layout/cat_sidesheet_content_coplanar" />
-  </LinearLayout>
+  </FrameLayout>
 
-  <LinearLayout
+  <FrameLayout
     android:id="@+id/coplanar_detached_side_sheet_container"
     style="@style/Widget.Material3.SideSheet.Detached"
     android:layout_width="256dp"
@@ -71,5 +71,5 @@
     app:layout_behavior="@string/side_sheet_behavior"
     tools:targetApi="lollipop">
     <include layout="@layout/cat_sidesheet_content_coplanar_detached" />
-  </LinearLayout>
+  </FrameLayout>
 </merge>

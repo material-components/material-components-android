@@ -18,6 +18,7 @@ package com.google.android.material.carousel;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import androidx.recyclerview.widget.RecyclerView;
@@ -305,5 +306,14 @@ class CarouselHelper {
         .addKeylineRange(1226F, smallMask, smallSize, 2)
         .addKeyline(1315F, extraSmallMask, extraSmallSize)
         .build();
+  }
+
+  static View createViewWithSize(Context context, int width, int height) {
+    View view = new View(context);
+    view.setLayoutParams(new RecyclerView.LayoutParams(width, height));
+    view.measure(
+        MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
+        MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
+    return view;
   }
 }

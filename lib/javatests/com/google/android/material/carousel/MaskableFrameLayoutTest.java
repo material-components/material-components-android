@@ -67,6 +67,7 @@ public class MaskableFrameLayoutTest {
     ShapeAppearanceModel model =
         new ShapeAppearanceModel.Builder().setAllCornerSizes(new AbsoluteCornerSize(200F)).build();
     maskableFrameLayout.setShapeAppearanceModel(model);
+    maskableFrameLayout.setMaskRectF(new RectF(0F, 0F, 50F, 50F));
     CornerSize topRightCornerSize =
         maskableFrameLayout.getShapeAppearanceModel().getTopRightCornerSize();
 
@@ -80,6 +81,7 @@ public class MaskableFrameLayoutTest {
   public void testForceCompatClipping_shouldNotUseViewOutlineProvider() {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
     ShapeAppearanceModel model = new ShapeAppearanceModel.Builder().setAllCornerSizes(10F).build();
+    maskableFrameLayout.setMaskRectF(new RectF(0F, 0F, 50F, 50F));
     maskableFrameLayout.setShapeAppearanceModel(model);
 
     assertThat(maskableFrameLayout.getClipToOutline()).isTrue();
@@ -94,6 +96,7 @@ public class MaskableFrameLayoutTest {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
     ShapeAppearanceModel model = new ShapeAppearanceModel.Builder().setAllCornerSizes(10F).build();
     maskableFrameLayout.setShapeAppearanceModel(model);
+    maskableFrameLayout.setMaskRectF(new RectF(0F, 0F, 50F, 50F));
 
     assertThat(maskableFrameLayout.getClipToOutline()).isTrue();
   }

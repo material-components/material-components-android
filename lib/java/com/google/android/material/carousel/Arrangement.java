@@ -235,7 +235,7 @@ final class Arrangement {
    * @return the arrangement that is considered the most desirable and has been adjusted to fit
    *     within the available space
    */
-    static Arrangement findLowestCostArrangement(
+  static Arrangement findLowestCostArrangement(
       float availableSpace,
       float targetSmallSize,
       float minSmallSize,

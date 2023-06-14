@@ -20,6 +20,7 @@ surface that allows product-specific branding and additional navigation icons.
 *   [Search Bar](#search-bar)
 *   [Search View](#search-view)
 *   [Putting it all together](#putting-it-all-together)
+*   [Predictive Back](#predictive-back)
 
 ## Using search components
 
@@ -28,8 +29,8 @@ the Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-Note: Material Search is available starting from `1.8.0-alpha03`. To use Material
-Search, make sure you're depending on [library version `1.8.0-alpha03`](https://github.com/material-components/material-components-android/releases/tag/1.8.0-alpha03)
+Note: Material Search was introduced in `1.8.0`. To use Material Search, make
+sure you're depending on [library version `1.8.0`](https://github.com/material-components/material-components-android/releases/tag/1.8.0)
 or later.
 
 ### Making Search Components accessible
@@ -350,8 +351,21 @@ as well as the expand and collapse animations. If you can't use a
 `CoordinatorLayout`, instead you can call the `SearchView#setUpWithSearchBar`
 method to achieve the same result.
 
+## Predictive Back
+
+The `SearchView` component automatically supports
+[Predictive Back](../foundations/PredictiveBack.md) when it is set up with and
+connected to a `SearchBar`, as mentioned in the sections above. No further
+integration is required on the app side other than the general Predictive Back
+prerequisites and migration steps mentioned
+[here](../foundations/PredictiveBack.md#usage).
+
+Visit the
+[Predictive Back design guidelines](https://m3.material.io/components/search/guidelines#3f2d4e47-2cf5-4c33-b6e1-5368ceaade55)
+to see how the component behaves when a user swipes back.
+
 ## API and source code
 
-*   [Class definition](https://developer.android.com/reference/com/google/android/material/search/SearchView)
+* [Class definition](https://developer.android.com/reference/com/google/android/material/search/SearchView)
 
 * [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/search/SearchView.java)

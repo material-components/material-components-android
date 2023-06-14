@@ -22,6 +22,7 @@ import android.app.Application.ActivityLifecycleCallbacks;
 import android.app.UiModeManager;
 import android.app.UiModeManager.ContrastChangeListener;
 import android.content.Context;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
@@ -30,7 +31,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
-import androidx.core.os.BuildCompat;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -134,7 +134,7 @@ public class ColorContrast {
   /** Returns {@code true} if contrast control is available on the current SDK level. */
   @ChecksSdkIntAtLeast(api = VERSION_CODES.UPSIDE_DOWN_CAKE)
   public static boolean isContrastAvailable() {
-    return BuildCompat.isAtLeastU();
+    return VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE;
   }
 
   private static int getContrastThemeOverlayResourceId(

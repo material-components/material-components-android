@@ -120,8 +120,22 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
     percentage = MathUtils.clamp(percentage, 0F, 1F);
     if (maskXPercentage != percentage) {
       this.maskXPercentage = percentage;
-      onMaskChanged();
+      // Translate the percentage into an actual pixel value of how much of this view should be
+      // masked away.
+      float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
+      setMaskRectF(new RectF(maskWidth, 0F, (getWidth() - maskWidth), getHeight()));
     }
+  }
+
+  /**
+   * Sets the {@link RectF} that this {@link View} will be masked by.
+   *
+   * @param maskRect a rect in the view's coordinates to mask by
+   */
+  @Override
+  public void setMaskRectF(@NonNull RectF maskRect) {
+    this.maskRect.set(maskRect);
+    onMaskChanged();
   }
 
   /**
@@ -150,10 +164,6 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
     if (getWidth() == 0) {
       return;
     }
-    // Translate the percentage into an actual pixel value of how much of this view should be
-    // masked away.
-    float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
-    maskRect.set(maskWidth, 0F, (getWidth() - maskWidth), getHeight());
     shapeableDelegate.onMaskChanged(this, maskRect);
     if (onMaskChangedListener != null) {
       onMaskChangedListener.onMaskChanged(maskRect);

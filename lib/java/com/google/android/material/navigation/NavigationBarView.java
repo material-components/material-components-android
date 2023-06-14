@@ -187,6 +187,10 @@ public abstract class NavigationBarView extends FrameLayout {
           attributes.getResourceId(R.styleable.NavigationBarView_itemTextAppearanceActive, 0));
     }
 
+    boolean isBold =
+        attributes.getBoolean(R.styleable.NavigationBarView_itemTextAppearanceActiveBoldEnabled, true);
+    setItemTextAppearanceActiveBoldEnabled(isBold);
+
     if (attributes.hasValue(R.styleable.NavigationBarView_itemTextColor)) {
       setItemTextColor(attributes.getColorStateList(R.styleable.NavigationBarView_itemTextColor));
     }
@@ -205,6 +209,11 @@ public abstract class NavigationBarView extends FrameLayout {
     if (attributes.hasValue(R.styleable.NavigationBarView_itemPaddingBottom)) {
       setItemPaddingBottom(
           attributes.getDimensionPixelSize(R.styleable.NavigationBarView_itemPaddingBottom, 0));
+    }
+
+    if (attributes.hasValue(R.styleable.NavigationBarView_activeIndicatorLabelPadding)) {
+      setActiveIndicatorLabelPadding(
+          attributes.getDimensionPixelSize(R.styleable.NavigationBarView_activeIndicatorLabelPadding, 0));
     }
 
     if (attributes.hasValue(R.styleable.NavigationBarView_elevation)) {
@@ -572,6 +581,21 @@ public abstract class NavigationBarView extends FrameLayout {
   }
 
   /**
+   * Set the distance between the active indicator container and the item's label.
+   */
+  public void setActiveIndicatorLabelPadding(@Px int activeIndicatorLabelPadding) {
+    menuView.setActiveIndicatorLabelPadding(activeIndicatorLabelPadding);
+  }
+
+  /**
+   * Get the distance between the active indicator container and the item's label.
+   */
+  @Px
+  public int getActiveIndicatorLabelPadding() {
+    return menuView.getActiveIndicatorLabelPadding();
+  }
+
+  /**
    * Get whether or not a selected item should show an active indicator.
    *
    * @return true if an active indicator will be shown when an item is selected.
@@ -770,6 +794,15 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemTextAppearanceActive(@StyleRes int textAppearanceRes) {
     menuView.setItemTextAppearanceActive(textAppearanceRes);
+  }
+
+  /**
+   * Sets whether the active menu item labels are bold.
+   *
+   * @param isBold whether the active menu item labels are bold
+   */
+  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+    menuView.setItemTextAppearanceActiveBoldEnabled(isBold);
   }
 
   /**

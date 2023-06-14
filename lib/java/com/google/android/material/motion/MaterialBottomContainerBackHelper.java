@@ -25,13 +25,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.res.Resources;
-import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.ViewGroup;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
@@ -59,20 +57,17 @@ public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelp
         resources.getDimension(R.dimen.m3_back_progress_bottom_container_max_scale_y_distance);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void startBackProgress(@NonNull BackEvent backEvent) {
+  public void startBackProgress(@NonNull BackEventCompat backEvent) {
     super.onStartBackProgress(backEvent);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void updateBackProgress(@NonNull BackEvent backEvent) {
+  public void updateBackProgress(@NonNull BackEventCompat backEvent) {
     super.onUpdateBackProgress(backEvent);
 
     updateBackProgress(backEvent.getProgress());
   }
 
   @VisibleForTesting
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void updateBackProgress(float progress) {
     progress = interpolateProgress(progress);
 
@@ -99,9 +94,8 @@ public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelp
     }
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void finishBackProgressPersistent(
-      @NonNull BackEvent backEvent, @Nullable AnimatorListener animatorListener) {
+      @NonNull BackEventCompat backEvent, @Nullable AnimatorListener animatorListener) {
     Animator animator = createResetScaleAnimator();
     animator.setDuration(
         AnimationUtils.lerp(hideDurationMax, hideDurationMin, backEvent.getProgress()));
@@ -111,9 +105,8 @@ public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelp
     animator.start();
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void finishBackProgressNotPersistent(
-      @NonNull BackEvent backEvent, @Nullable AnimatorListener animatorListener) {
+      @NonNull BackEventCompat backEvent, @Nullable AnimatorListener animatorListener) {
     float scaledHeight = view.getHeight() * view.getScaleY();
     ObjectAnimator finishAnimator = ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, scaledHeight);
     finishAnimator.setInterpolator(new FastOutSlowInInterpolator());
@@ -133,7 +126,6 @@ public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelp
     finishAnimator.start();
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void cancelBackProgress() {
     super.onCancelBackProgress();
 

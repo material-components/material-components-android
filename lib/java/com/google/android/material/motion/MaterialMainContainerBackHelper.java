@@ -34,7 +34,7 @@ import android.os.Build.VERSION_CODES;
 import android.view.RoundedCorner;
 import android.view.View;
 import android.view.WindowInsets;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -82,34 +82,35 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
     return initialHideFromClipBounds;
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void startBackProgress(@NonNull BackEvent backEvent, @NonNull View collapsedView) {
+  public void startBackProgress(@NonNull BackEventCompat backEvent, @Nullable View collapsedView) {
     super.onStartBackProgress(backEvent);
 
     startBackProgress(backEvent.getTouchY(), collapsedView);
   }
 
   @VisibleForTesting
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void startBackProgress(float touchY, @NonNull View collapsedView) {
-    collapsedView.setVisibility(View.INVISIBLE);
-
+  public void startBackProgress(float touchY, @Nullable View collapsedView) {
     initialHideToClipBounds = ViewUtils.calculateRectFromBounds(view);
-    initialHideFromClipBounds = ViewUtils.calculateOffsetRectFromBounds(view, collapsedView);
+    if (collapsedView != null) {
+      initialHideFromClipBounds = ViewUtils.calculateOffsetRectFromBounds(view, collapsedView);
+    }
     initialTouchY = touchY;
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void updateBackProgress(@NonNull BackEvent backEvent, float collapsedCornerSize) {
+  public void updateBackProgress(
+      @NonNull BackEventCompat backEvent, @Nullable View collapsedView, float collapsedCornerSize) {
     super.onUpdateBackProgress(backEvent);
 
-    boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEvent.EDGE_LEFT;
+    if (collapsedView != null && collapsedView.getVisibility() != View.INVISIBLE) {
+      collapsedView.setVisibility(View.INVISIBLE);
+    }
+
+    boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEventCompat.EDGE_LEFT;
     updateBackProgress(
         backEvent.getProgress(), leftSwipeEdge, backEvent.getTouchY(), collapsedCornerSize);
   }
 
   @VisibleForTesting
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void updateBackProgress(
       float progress, boolean leftSwipeEdge, float touchY, float collapsedCornerSize) {
     float width = view.getWidth();
@@ -136,8 +137,7 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
     }
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void finishBackProgress(long duration, @NonNull View collapsedView) {
+  public void finishBackProgress(long duration, @Nullable View collapsedView) {
     AnimatorSet resetAnimator = createResetScaleAndTranslationAnimator(collapsedView);
     resetAnimator.setDuration(duration);
     resetAnimator.start();
@@ -145,8 +145,7 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
     resetInitialValues();
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void cancelBackProgress(@NonNull View collapsedView) {
+  public void cancelBackProgress(@Nullable View collapsedView) {
     super.onCancelBackProgress();
 
     AnimatorSet cancelAnimatorSet = createResetScaleAndTranslationAnimator(collapsedView);
@@ -166,19 +165,22 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
   }
 
   @NonNull
-  private AnimatorSet createResetScaleAndTranslationAnimator(@NonNull View collapsedView) {
+  private AnimatorSet createResetScaleAndTranslationAnimator(@Nullable View collapsedView) {
     AnimatorSet animatorSet = new AnimatorSet();
     animatorSet.playTogether(
         ObjectAnimator.ofFloat(view, View.SCALE_X, 1),
         ObjectAnimator.ofFloat(view, View.SCALE_Y, 1),
         ObjectAnimator.ofFloat(view, View.TRANSLATION_X, 0),
         ObjectAnimator.ofFloat(view, View.TRANSLATION_Y, 0));
-    animatorSet.addListener(new AnimatorListenerAdapter() {
-      @Override
-      public void onAnimationEnd(Animator animation) {
-        collapsedView.setVisibility(View.VISIBLE);
-      }
-    });
+    animatorSet.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            if (collapsedView != null) {
+              collapsedView.setVisibility(View.VISIBLE);
+            }
+          }
+        });
     return animatorSet;
   }
 

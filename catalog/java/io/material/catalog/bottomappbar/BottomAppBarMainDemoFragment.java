@@ -18,7 +18,6 @@ package io.material.catalog.bottomappbar;
 
 import io.material.catalog.R;
 
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -29,12 +28,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
@@ -59,15 +57,13 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
 
   private final OnBackPressedCallback bottomDrawerOnBackPressedCallback =
       new OnBackPressedCallback(/* enabled= */ false) {
-        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
         @Override
-        public void handleOnBackStarted(@NonNull BackEvent backEvent) {
+        public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
           bottomDrawerBehavior.startBackProgress(backEvent);
         }
 
-        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
         @Override
-        public void handleOnBackProgressed(@NonNull BackEvent backEvent) {
+        public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
           bottomDrawerBehavior.updateBackProgress(backEvent);
         }
 
@@ -76,7 +72,6 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
           bottomDrawerBehavior.handleBackInvoked();
         }
 
-        @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
         @Override
         public void handleOnBackCancelled() {
           bottomDrawerBehavior.cancelBackProgress();

@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.navigation.NavigationView;
 import io.material.catalog.feature.DemoActivity;
 
@@ -88,6 +89,14 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
 
     view.findViewById(R.id.show_end_drawer_gravity)
         .setOnClickListener(v -> drawerLayout.openDrawer(navigationViewEnd));
+
+    MaterialSwitch materialSwitch = view.findViewById(R.id.bold_text_switch);
+    materialSwitch.setChecked(true);
+    materialSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          navigationViewStart.setItemTextAppearanceActiveBoldEnabled(isChecked);
+          navigationViewEnd.setItemTextAppearanceActiveBoldEnabled(isChecked);
+        });
 
     return view;
   }

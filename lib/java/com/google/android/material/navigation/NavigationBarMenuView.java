@@ -89,6 +89,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   @Nullable private final ColorStateList itemTextColorDefault;
   @StyleRes private int itemTextAppearanceInactive;
   @StyleRes private int itemTextAppearanceActive;
+  private boolean itemTextAppearanceActiveBoldEnabled;
   private Drawable itemBackground;
   @Nullable private ColorStateList itemRippleColor;
   private int itemBackgroundRes;
@@ -96,6 +97,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       new SparseArray<>(ITEM_POOL_SIZE);
   private int itemPaddingTop = NO_PADDING;
   private int itemPaddingBottom = NO_PADDING;
+  private int itemActiveIndicatorLabelPadding = NO_PADDING;
   private boolean itemActiveIndicatorEnabled;
   private int itemActiveIndicatorWidth;
   private int itemActiveIndicatorHeight;
@@ -286,6 +288,20 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   }
 
   /**
+   * Sets whether the active menu item label is bold.
+   *
+   * @param isBold whether the active menu item label is bold
+   */
+  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+    this.itemTextAppearanceActiveBoldEnabled = isBold;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setTextAppearanceActiveBoldEnabled(isBold);
+      }
+    }
+  }
+
+  /**
    * Returns the text appearance used for the active menu item label.
    *
    * @return the text appearance ID used for the active menu item label
@@ -347,6 +363,26 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
         item.setItemPaddingBottom(paddingBottom);
+      }
+    }
+  }
+
+  /**
+   * Get the distance between the item's active indicator container and the label.
+   */
+  @Px
+  public int getActiveIndicatorLabelPadding() {
+    return itemActiveIndicatorLabelPadding;
+  }
+
+  /**
+   * Set the distance between the active indicator container and the item's label.
+   */
+  public void setActiveIndicatorLabelPadding(@Px int activeIndicatorLabelPadding) {
+    itemActiveIndicatorLabelPadding = activeIndicatorLabelPadding;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorLabelPadding(activeIndicatorLabelPadding);
       }
     }
   }
@@ -710,12 +746,16 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setTextColor(itemTextColorDefault);
       child.setTextAppearanceInactive(itemTextAppearanceInactive);
       child.setTextAppearanceActive(itemTextAppearanceActive);
+      child.setTextAppearanceActiveBoldEnabled(itemTextAppearanceActiveBoldEnabled);
       child.setTextColor(itemTextColorFromUser);
       if (itemPaddingTop != NO_PADDING) {
         child.setItemPaddingTop(itemPaddingTop);
       }
       if (itemPaddingBottom != NO_PADDING) {
         child.setItemPaddingBottom(itemPaddingBottom);
+      }
+      if (itemActiveIndicatorLabelPadding != NO_PADDING) {
+        child.setActiveIndicatorLabelPadding(itemActiveIndicatorLabelPadding);
       }
       child.setActiveIndicatorWidth(itemActiveIndicatorWidth);
       child.setActiveIndicatorHeight(itemActiveIndicatorHeight);

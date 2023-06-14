@@ -37,7 +37,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -612,33 +612,36 @@ class SearchViewAnimationHelper {
     }
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  void startBackProgress(@NonNull BackEvent backEvent) {
+  void startBackProgress(@NonNull BackEventCompat backEvent) {
     backHelper.startBackProgress(backEvent, searchBar);
-
-    if (searchView.isAdjustNothingSoftInputMode()) {
-      searchView.clearFocusAndHideKeyboard();
-    }
-
-    // Start and immediately pause the animator set so that we can seek it with setCurrentPlayTime()
-    // in updateBackProgress() when the progress value changes.
-    backProgressAnimatorSet = getButtonsProgressAnimator(/* show= */ false);
-    backProgressAnimatorSet.start();
-    backProgressAnimatorSet.pause();
   }
 
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void updateBackProgress(@NonNull BackEvent backEvent) {
-    backHelper.updateBackProgress(backEvent, searchBar.getCornerSize());
+  public void updateBackProgress(@NonNull BackEventCompat backEvent) {
+    if (backEvent.getProgress() <= 0f) {
+      return;
+    }
 
-    if (backProgressAnimatorSet != null) {
+    backHelper.updateBackProgress(backEvent, searchBar, searchBar.getCornerSize());
+
+    if (backProgressAnimatorSet == null) {
+      if (searchView.isAdjustNothingSoftInputMode()) {
+        searchView.clearFocusAndHideKeyboard();
+      }
+
+      // Start and immediately pause the animator set so we can seek it with setCurrentPlayTime() in
+      // subsequent updateBackProgress() calls when the progress value changes.
+      backProgressAnimatorSet = getButtonsProgressAnimator(/* show= */ false);
+      backProgressAnimatorSet.start();
+      backProgressAnimatorSet.pause();
+    } else {
       backProgressAnimatorSet.setCurrentPlayTime(
           (long) (backEvent.getProgress() * backProgressAnimatorSet.getDuration()));
     }
   }
 
   @Nullable
-  public BackEvent onHandleBackInvoked() {
+  public BackEventCompat onHandleBackInvoked() {
     return backHelper.onHandleBackInvoked();
   }
 

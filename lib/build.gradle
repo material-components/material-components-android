@@ -6,6 +6,7 @@ apply plugin: 'maven-publish'
 version = mdcLibraryVersion
 
 dependencies {
+  api compatibility("activity")
   api compatibility("annotation")
   api compatibility("appcompat")
   api compatibility("cardview")
@@ -18,9 +19,12 @@ dependencies {
   api compatibility("fragment")
   api compatibility("lifecycleRuntime")
   api compatibility("recyclerview")
+  api compatibility("resourceInspectionAnnotation")
   api compatibility("transition")
   api compatibility("vectordrawable")
   api compatibility("viewpager2")
+
+  annotationProcessor compatibility("resourceInspectionProcessor")
 
   implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
 

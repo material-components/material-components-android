@@ -22,6 +22,7 @@ See [Bottom Sheet documentation](BottomSheet.md) for documentation about
 *   [Modal side sheet](#modal-side-sheet)
 *   [Coplanar side sheet](#coplanar-side-sheet)
 *   [Anatomy and key properties](#anatomy-and-key-properties)
+*   [Predictive Back](#predictive-back)
 *   [Theming](#theming-side-sheets)
 
 ## Using side sheets
@@ -31,8 +32,8 @@ Material Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-Note: Side sheets are available starting from `1.8.0-alpha02`. To use side sheets,
-make sure you're depending on [library version `1.8.0-alpha02`](https://github.com/material-components/material-components-android/releases/tag/1.8.0-alpha02)
+Note: Side sheets were introduced in `1.8.0`. To use side sheets, make sure
+you're depending on [library version `1.8.0`](https://github.com/material-components/material-components-android/releases/tag/1.8.0)
 or later.
 
 Standard side sheet basic usage:
@@ -194,8 +195,8 @@ can be dragged horizontally and dismissed by sliding them off of the screen.
 API and source code:
 
 *   `SideSheetDialog`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/sidesheet/SideSheetDialog.java)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/sidesheet/BottomSheetDialogFragment.java)
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/sidesheet/SideSheetDialog)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/sidesheet/SideSheetDialog.java)
 
 ### Modal side sheet example
 
@@ -296,6 +297,65 @@ See the full list of
 and
 [themes and theme overlays](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/sidesheet/res/values/themes.xml).
 
+## Predictive Back
+
+### Modal Side Sheets
+
+The modal `SideSheetDialog` component automatically supports
+[Predictive Back](../foundations/PredictiveBack.md). No further integration is
+required on the app side other than the general Predictive Back prerequisites
+and migration steps mentioned [here](../foundations/PredictiveBack.md#usage).
+
+Visit the
+[Predictive Back design guidelines](https://m3.material.io/components/side-sheets/guidelines#d77245e3-1013-48f8-a9d7-76f484e1be13)
+to see how the component behaves when a user swipes back.
+
+### Standard and Coplanar (Non-Modal) Side Sheets
+
+To set up Predictive Back for standard or coplanar (non-modal) side sheets using
+`SideSheetBehavior`, create an AndroidX back callback that forwards
+`BackEventCompat` objects to your `SideSheetBehavior`:
+
+```kt
+val sideSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false) {
+  override fun handleOnBackStarted(backEvent: BackEventCompat) {
+    sideSheetBehavior.startBackProgress(backEvent)
+  }
+
+  override fun handleOnBackProgressed(backEvent: BackEventCompat) {
+    sideSheetBehavior.updateBackProgress(backEvent)
+  }
+
+  override fun handleOnBackPressed() {
+    sideSheetBehavior.handleBackInvoked()
+  }
+
+  override fun handleOnBackCancelled() {
+    sideSheetBehavior.cancelBackProgress()
+  }
+}
+```
+
+And then add and enable the back callback as follows:
+
+```kt
+getOnBackPressedDispatcher().addCallback(this, sideSheetBackCallback)
+
+sideSheetBehavior.addCallback(object : SideSheetCallback() {
+  override fun onStateChanged(sideSheet: View, newState: Int) {
+    when (newState) {
+      STATE_EXPANDED, STATE_SETTLING -> sideSheetBackCallback.setEnabled(true)
+      STATE_HIDDEN -> sideSheetBackCallback.setEnabled(false)
+      else -> {
+        // Do nothing, only change callback enabled for above states.
+      }
+    }
+  }
+
+  override fun onSlide(sideSheet: View, slideOffset: Float) {}
+})
+```
+
 ## Theming side sheets
 
 Side sheets support
@@ -346,6 +406,8 @@ theme.
 API and source code:
 
 *   `SideSheetBehavior`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/sidesheet/SideSheetBehavior)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/sidesheet/SideSheetBehavior.java)
 *   `SideSheetDialog`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/sidesheet/SideSheetDialog)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/sidesheet/SideSheetDialog.java)

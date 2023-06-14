@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -48,7 +49,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.MenuRes;
@@ -62,7 +63,6 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.os.BuildCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.widget.TextViewCompat;
@@ -88,7 +88,6 @@ import java.util.Set;
 
 /**
  * Layout that provides a full screen search view and can be used with {@link SearchBar}.
- *
  *
  * <p>The example below shows how to use the {@link SearchBar} and {@link SearchView} together:
  *
@@ -126,8 +125,8 @@ import java.util.Set;
  * </pre>
  */
 @SuppressWarnings("RestrictTo")
-public class SearchView extends FrameLayout implements CoordinatorLayout.AttachedBehavior,
-    MaterialBackHandler {
+public class SearchView extends FrameLayout
+    implements CoordinatorLayout.AttachedBehavior, MaterialBackHandler {
 
   private static final long TALKBACK_FOCUS_CHANGE_DELAY_MS = 100;
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_SearchView;
@@ -148,8 +147,10 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
 
   private final boolean layoutInflated;
   private final SearchViewAnimationHelper searchViewAnimationHelper;
-  @NonNull private final MaterialBackOrchestrator backOrchestrator =
-      new MaterialBackOrchestrator(this);
+
+  @NonNull
+  private final MaterialBackOrchestrator backOrchestrator = new MaterialBackOrchestrator(this);
+
   private final boolean backHandlingEnabled;
   private final ElevationOverlayProvider elevationOverlayProvider;
   private final Set<TransitionListener> transitionListeners = new LinkedHashSet<>();
@@ -265,19 +266,19 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
     return new SearchView.Behavior();
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void startBackProgress(@NonNull BackEvent backEvent) {
+  public void startBackProgress(@NonNull BackEventCompat backEvent) {
     if (isHiddenOrHiding() || searchBar == null) {
       return;
     }
     searchViewAnimationHelper.startBackProgress(backEvent);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void updateBackProgress(@NonNull BackEvent backEvent) {
-    if (isHiddenOrHiding() || searchBar == null) {
+  public void updateBackProgress(@NonNull BackEventCompat backEvent) {
+    if (isHiddenOrHiding()
+        || searchBar == null
+        || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE) {
       return;
     }
     searchViewAnimationHelper.updateBackProgress(backEvent);
@@ -289,18 +290,21 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
       return;
     }
 
-    BackEvent backEvent = searchViewAnimationHelper.onHandleBackInvoked();
-    if (BuildCompat.isAtLeastU() && searchBar != null && backEvent != null) {
+    BackEventCompat backEvent = searchViewAnimationHelper.onHandleBackInvoked();
+    if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE
+        && searchBar != null
+        && backEvent != null) {
       searchViewAnimationHelper.finishBackProgress();
     } else {
       hide();
     }
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
   public void cancelBackProgress() {
-    if (isHiddenOrHiding() || searchBar == null) {
+    if (isHiddenOrHiding()
+        || searchBar == null
+        || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE) {
       return;
     }
     searchViewAnimationHelper.cancelBackProgress();
@@ -543,7 +547,7 @@ public class SearchView extends FrameLayout implements CoordinatorLayout.Attache
     searchViewAnimationHelper.setSearchBar(searchBar);
     if (searchBar != null) {
       searchBar.setOnClickListener(v -> show());
-      if (BuildCompat.isAtLeastU()) {
+      if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
         try {
           searchBar.setHandwritingDelegatorCallback(this::show);
           editText.setIsHandwritingDelegate(true);

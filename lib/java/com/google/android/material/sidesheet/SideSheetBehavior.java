@@ -27,6 +27,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -41,18 +42,16 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.GravityInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.math.MathUtils;
-import androidx.core.os.BuildCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -975,18 +974,16 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     return lastStableState;
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void startBackProgress(@NonNull BackEvent backEvent) {
+  public void startBackProgress(@NonNull BackEventCompat backEvent) {
     if (sideContainerBackHelper == null) {
       return;
     }
     sideContainerBackHelper.startBackProgress(backEvent);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void updateBackProgress(@NonNull BackEvent backEvent) {
+  public void updateBackProgress(@NonNull BackEventCompat backEvent) {
     if (sideContainerBackHelper == null) {
       return;
     }
@@ -1023,8 +1020,8 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     if (sideContainerBackHelper == null) {
       return;
     }
-    BackEvent backEvent = sideContainerBackHelper.onHandleBackInvoked();
-    if (backEvent == null || !BuildCompat.isAtLeastU()) {
+    BackEventCompat backEvent = sideContainerBackHelper.onHandleBackInvoked();
+    if (backEvent == null || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE) {
       setState(STATE_HIDDEN);
       return;
     }
@@ -1068,7 +1065,6 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     };
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
   public void cancelBackProgress() {
     if (sideContainerBackHelper == null) {

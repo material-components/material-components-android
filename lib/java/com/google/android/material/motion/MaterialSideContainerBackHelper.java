@@ -26,17 +26,15 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.res.Resources;
-import android.os.Build.VERSION_CODES;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.GravityInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.view.GravityCompat;
@@ -69,21 +67,18 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
         resources.getDimension(R.dimen.m3_back_progress_side_container_max_scale_y_distance);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void startBackProgress(@NonNull BackEvent backEvent) {
+  public void startBackProgress(@NonNull BackEventCompat backEvent) {
     super.onStartBackProgress(backEvent);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void updateBackProgress(@NonNull BackEvent backEvent, @GravityInt int gravity) {
+  public void updateBackProgress(@NonNull BackEventCompat backEvent, @GravityInt int gravity) {
     super.onUpdateBackProgress(backEvent);
 
-    boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEvent.EDGE_LEFT;
+    boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEventCompat.EDGE_LEFT;
     updateBackProgress(backEvent.getProgress(), leftSwipeEdge, gravity);
   }
 
   @VisibleForTesting
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void updateBackProgress(float progress, boolean leftSwipeEdge, @GravityInt int gravity) {
     progress = interpolateProgress(progress);
     boolean leftGravity = checkAbsoluteGravity(gravity, Gravity.LEFT);
@@ -124,13 +119,12 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
     }
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void finishBackProgress(
-      @NonNull BackEvent backEvent,
+      @NonNull BackEventCompat backEvent,
       @GravityInt int gravity,
       @Nullable AnimatorListener animatorListener,
       @Nullable AnimatorUpdateListener finishAnimatorUpdateListener) {
-    boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEvent.EDGE_LEFT;
+    boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEventCompat.EDGE_LEFT;
     boolean leftGravity = checkAbsoluteGravity(gravity, Gravity.LEFT);
     float scaledWidth = view.getWidth() * view.getScaleX() + getEdgeMargin(leftGravity);
     ObjectAnimator finishAnimator =
@@ -155,7 +149,6 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
     finishAnimator.start();
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void cancelBackProgress() {
     super.onCancelBackProgress();
 

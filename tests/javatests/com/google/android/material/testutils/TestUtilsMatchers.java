@@ -564,6 +564,21 @@ public class TestUtilsMatchers {
     };
   }
 
+  /** Returns a matcher that matches TextViews with the specified typeface style. */
+  public static Matcher<View> withTypefaceStyle(final int typefaceStyle) {
+    return new TypeSafeMatcher<View>(TextView.class) {
+      @Override
+      public void describeTo(final Description description) {
+        description.appendText("view with typeface style: " + typefaceStyle);
+      }
+
+      @Override
+      public boolean matchesSafely(final View view) {
+        return typefaceStyle == ((TextView) view).getTypeface().getStyle();
+      }
+    };
+  }
+
   /**
    * Returns a matcher that matches the action view of the specified menu item.
    *

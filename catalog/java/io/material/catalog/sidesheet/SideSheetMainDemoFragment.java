@@ -20,7 +20,6 @@ import io.material.catalog.R;
 
 import static android.view.View.NO_ID;
 
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -31,14 +30,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.GravityInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
@@ -405,15 +403,13 @@ public class SideSheetMainDemoFragment extends DemoFragment {
   private OnBackPressedCallback createNonModalOnBackPressedCallback(
       SideSheetBehavior<View> behavior) {
     return new OnBackPressedCallback(/* enabled= */ false) {
-      @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
       @Override
-      public void handleOnBackStarted(@NonNull BackEvent backEvent) {
+      public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
         behavior.startBackProgress(backEvent);
       }
 
-      @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
       @Override
-      public void handleOnBackProgressed(@NonNull BackEvent backEvent) {
+      public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
         behavior.updateBackProgress(backEvent);
       }
 
@@ -422,7 +418,6 @@ public class SideSheetMainDemoFragment extends DemoFragment {
         behavior.handleBackInvoked();
       }
 
-      @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
       @Override
       public void handleOnBackCancelled() {
         behavior.cancelBackProgress();

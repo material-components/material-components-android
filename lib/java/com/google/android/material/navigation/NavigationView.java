@@ -56,7 +56,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
@@ -65,12 +65,10 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
-import androidx.core.os.BuildCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -248,6 +246,9 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
       textAppearance = a.getResourceId(R.styleable.NavigationView_itemTextAppearance, 0);
     }
 
+    boolean textAppearanceActiveBoldEnabled =
+        a.getBoolean(R.styleable.NavigationView_itemTextAppearanceActiveBoldEnabled, true);
+
     if (a.hasValue(R.styleable.NavigationView_itemIconSize)) {
       setItemIconSize(a.getDimensionPixelSize(R.styleable.NavigationView_itemIconSize, 0));
     }
@@ -344,6 +345,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     if (textAppearance != NavigationMenuPresenter.NO_TEXT_APPEARANCE_SET) {
       presenter.setItemTextAppearance(textAppearance);
     }
+    presenter.setItemTextAppearanceActiveBoldEnabled(textAppearanceActiveBoldEnabled);
     presenter.setItemTextColor(itemTextColor);
     presenter.setItemBackground(itemBackground);
     presenter.setItemIconPadding(itemIconPadding);
@@ -847,6 +849,15 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   }
 
   /**
+   * Sets whether the active menu item label is bold.
+   *
+   * @attr ref R.styleable#NavigationView_itemTextAppearanceActiveBoldEnabled
+   */
+  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+    presenter.setItemTextAppearanceActiveBoldEnabled(isBold);
+  }
+
+  /**
    * Sets the size to be used for the menu item icons in pixels. If no icons are set, calling this
    * method will do nothing.
    *
@@ -952,16 +963,14 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     presenter.setSubheaderInsetEnd(subheaderInsetEnd);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void startBackProgress(@NonNull BackEvent backEvent) {
+  public void startBackProgress(@NonNull BackEventCompat backEvent) {
     requireDrawerLayoutParent();
     sideContainerBackHelper.startBackProgress(backEvent);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void updateBackProgress(@NonNull BackEvent backEvent) {
+  public void updateBackProgress(@NonNull BackEventCompat backEvent) {
     Pair<DrawerLayout, DrawerLayout.LayoutParams> drawerLayoutPair = requireDrawerLayoutParent();
     sideContainerBackHelper.updateBackProgress(backEvent, drawerLayoutPair.second.gravity);
   }
@@ -971,8 +980,8 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     Pair<DrawerLayout, DrawerLayout.LayoutParams> drawerLayoutPair = requireDrawerLayoutParent();
     DrawerLayout drawerLayout = drawerLayoutPair.first;
 
-    BackEvent backEvent = sideContainerBackHelper.onHandleBackInvoked();
-    if (backEvent == null || !BuildCompat.isAtLeastU()) {
+    BackEventCompat backEvent = sideContainerBackHelper.onHandleBackInvoked();
+    if (backEvent == null || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE) {
       drawerLayout.closeDrawer(this);
       return;
     }
@@ -986,7 +995,6 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
         backEvent, gravity, scrimCloseAnimatorListener, scrimCloseAnimatorUpdateListener);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
   public void cancelBackProgress() {
     requireDrawerLayoutParent();

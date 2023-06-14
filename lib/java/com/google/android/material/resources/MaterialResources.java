@@ -196,6 +196,13 @@ public class MaterialResources {
   }
 
   /**
+   * Returns the font scale size.
+   */
+  public static float getFontScale(@NonNull Context context) {
+    return context.getResources().getConfiguration().fontScale;
+  }
+
+  /**
    * Return the {@code R.styleable.TextAppearance_android_textSize} value from a text appearance
    * style at its density scaled value only.
    *

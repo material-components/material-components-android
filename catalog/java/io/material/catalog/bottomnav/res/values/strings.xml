@@ -57,6 +57,7 @@
   <string name="cat_bottom_nav_badge_gravity_bottom_start">Bottom start</string>
 
   <string name="cat_bottom_nav_badge_gravity_spinner_label">Badge gravity</string>
+  <string name="cat_bottom_nav_label_active_bold" translatable="false">Bold active label</string>
 
 </resources>
 

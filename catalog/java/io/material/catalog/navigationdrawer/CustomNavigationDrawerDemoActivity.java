@@ -20,6 +20,7 @@ import io.material.catalog.R;
 
 import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -30,11 +31,11 @@ import android.view.ViewGroup;
 import android.window.BackEvent;
 import android.window.OnBackAnimationCallback;
 import android.window.OnBackInvokedDispatcher;
+import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.os.BuildCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.LayoutParams;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
@@ -88,7 +89,7 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
             currentDrawerView = drawerView;
             sideContainerBackHelper = new MaterialSideContainerBackHelper(drawerView);
 
-            if (BuildCompat.isAtLeastU()) {
+            if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
               if (drawerOnBackAnimationCallback == null) {
                 drawerOnBackAnimationCallback = createOnBackAnimationCallback();
               }
@@ -110,7 +111,7 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
             currentDrawerView = null;
             sideContainerBackHelper = null;
 
-            if (BuildCompat.isAtLeastU()) {
+            if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
               if (drawerOnBackAnimationCallback != null) {
                 getOnBackInvokedDispatcher()
                     .unregisterOnBackInvokedCallback(drawerOnBackAnimationCallback);
@@ -140,19 +141,20 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
 
       @Override
       public void onBackStarted(@NonNull BackEvent backEvent) {
-        sideContainerBackHelper.startBackProgress(backEvent);
+        sideContainerBackHelper.startBackProgress(new BackEventCompat(backEvent));
       }
 
       @Override
       public void onBackProgressed(@NonNull BackEvent backEvent) {
         DrawerLayout.LayoutParams drawerLayoutParams =
             (LayoutParams) currentDrawerView.getLayoutParams();
-        sideContainerBackHelper.updateBackProgress(backEvent, drawerLayoutParams.gravity);
+        sideContainerBackHelper.updateBackProgress(
+            new BackEventCompat(backEvent), drawerLayoutParams.gravity);
       }
 
       @Override
       public void onBackInvoked() {
-        BackEvent backEvent = sideContainerBackHelper.onHandleBackInvoked();
+        BackEventCompat backEvent = sideContainerBackHelper.onHandleBackInvoked();
         if (backEvent == null) {
           drawerLayout.closeDrawers();
           return;

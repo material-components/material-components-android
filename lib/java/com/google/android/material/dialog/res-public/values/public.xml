@@ -66,17 +66,14 @@
   <public name="Theme.Material3.Light.Dialog" type="style"/>
   <public name="Theme.Material3.Light.Dialog.Alert" type="style"/>
   <public name="Theme.Material3.Light.Dialog.MinWidth" type="style"/>
-  <public name="Theme.Material3.Light.DialogWhenLarge" type="style"/>
 
   <public name="Theme.Material3.Dark.Dialog" type="style"/>
   <public name="Theme.Material3.Dark.Dialog.Alert" type="style"/>
   <public name="Theme.Material3.Dark.Dialog.MinWidth" type="style"/>
-  <public name="Theme.Material3.Dark.DialogWhenLarge" type="style"/>
 
   <public name="Theme.Material3.DayNight.Dialog" type="style"/>
   <public name="Theme.Material3.DayNight.Dialog.Alert" type="style"/>
   <public name="Theme.Material3.DayNight.Dialog.MinWidth" type="style"/>
-  <public name="Theme.Material3.DayNight.DialogWhenLarge" type="style"/>
 
   <public name="ThemeOverlay.Material3.Dialog" type="style"/>
   <public name="ThemeOverlay.Material3.Dialog.Alert" type="style"/>

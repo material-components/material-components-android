@@ -64,7 +64,13 @@ public class CarouselFragment extends DemoLandingFragment {
         new Demo(R.string.cat_carousel_multi_browse_demo_title) {
           @Override
           public Fragment createFragment() {
-            return new MultiBrowseDemoFragment();
+            return new MultiBrowseCarouselDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_carousel_hero_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new HeroCarouselDemoFragment();
           }
         },
         new Demo(R.string.cat_carousel_default_list_demo_title) {

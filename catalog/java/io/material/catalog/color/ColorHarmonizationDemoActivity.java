@@ -148,7 +148,7 @@ public class ColorHarmonizationDemoActivity extends DemoActivity {
       @IdRes int layoutId) {
     ColorGrid colorGrid = createColorGrid(context, colorHarmonizationGridRowData);
     LinearLayout layout = demoView.findViewById(layoutId);
-    layout.addView(colorGrid.renderView(context, layout));
+    layout.addView(colorGrid.renderView(getLayoutInflater(), layout));
   }
 
   private ColorGrid createColorGrid(

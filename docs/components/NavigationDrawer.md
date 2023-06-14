@@ -21,6 +21,7 @@ access to destinations in your app.
 *   [Standard navigation drawer](#standard-navigation-drawer)
 *   [Modal navigation drawer](#modal-navigation-drawer)
 *   [Bottom navigation drawer](#bottom-navigation-drawer)
+*   [Predictive Back](#predictive-back)
 *   [Theming](#theming)
 
 ## Using navigation drawers
@@ -289,11 +290,12 @@ Element                | Attribute(s)                                           
 
 ### Text attributes
 
-Element        | Attribute                | Related method(s)                        | Default value
--------------- | ------------------------ | ---------------------------------------- | -------------
-**Color**      | `app:itemTextColor`      | `setItemTextColor`<br>`getItemTextColor` | `?attr/colorOnSecondaryContainer` when active else `?attr/colorOnSurfaceVariant`
-**Typography** | `app:itemTextAppearance` | `setItemTextAppearance`                  | `?attr/textAppearanceLabelLarge`
-**Max lines**  | `app:itemMaxLines`       | `setItemMaxLines`<br>`getItemMaxLines`   | `1`
+| Element                 | Attribute                                 | Related method(s)                        | Default value                                                                    |
+|-------------------------|-------------------------------------------|------------------------------------------|----------------------------------------------------------------------------------|
+| **Color**               | `app:itemTextColor`                       | `setItemTextColor`<br>`getItemTextColor` | `?attr/colorOnSecondaryContainer` when active else `?attr/colorOnSurfaceVariant` |
+| **Typography**          | `app:itemTextAppearance`                  | `setItemTextAppearance`                  | `?attr/textAppearanceLabelLarge`                                                 |
+| **Typography (active)** | `app:itemTextAppearanceActiveBoldEnabled` | `setItemTextAppearanceActiveBoldEnabled` | `true`                                                                           |
+| **Max lines**           | `app:itemMaxLines`                        | `setItemMaxLines`<br>`getItemMaxLines`   | `1`                                                                              |
 
 ### Icon attributes
 
@@ -596,6 +598,18 @@ bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSh
 
 For more information on bottom app bars see the
 [documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/BottomAppBar.md).
+
+## Predictive Back
+
+The `NavigationView` component automatically supports
+[Predictive Back](../foundations/PredictiveBack.md) when it is set up within a
+`DrawerLayout`, as mentioned in the sections above. No further integration is
+required on the app side other than the general Predictive Back prerequisites
+and migration steps mentioned [here](../foundations/PredictiveBack.md#usage).
+
+Visit the
+[Predictive Back design guidelines](https://m3.material.io/components/side-sheets/guidelines#d77245e3-1013-48f8-a9d7-76f484e1be13)
+to see how the component behaves when a user swipes back.
 
 ## Theming
 

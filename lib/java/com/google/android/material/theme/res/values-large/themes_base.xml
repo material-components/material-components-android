@@ -16,6 +16,12 @@
 -->
 <resources>
 
+  <style name="Base.Theme.Material3.Light.DialogWhenLarge"
+      parent="Base.Theme.Material3.Light.Dialog.FixedSize"/>
+
+  <style name="Base.Theme.Material3.Dark.DialogWhenLarge"
+      parent="Base.Theme.Material3.Dark.Dialog.FixedSize"/>
+
   <style name="Base.Theme.MaterialComponents.DialogWhenLarge"
       parent="Base.Theme.MaterialComponents.Dialog.FixedSize"/>
 

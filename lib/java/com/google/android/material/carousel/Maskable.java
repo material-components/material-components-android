@@ -28,6 +28,9 @@ interface Maskable {
   /**
    * Set the percentage by which this {@link View} should mask itself along the x axis.
    *
+   * <p>This method serves the same purpose as {@link #setMaskRectF(RectF)} but requires the
+   * implementing view to calculate the correct rect given the mask percentage.
+   *
    * @param percentage 0 when this view is fully unmasked. 1 when this view is fully masked.
    */
   void setMaskXPercentage(@FloatRange(from = 0F, to = 1F) float percentage);
@@ -39,6 +42,13 @@ interface Maskable {
    */
   @FloatRange(from = 0F, to = 1F)
   float getMaskXPercentage();
+
+  /**
+   * Sets a {@link RectF} that this {@link View} will mask itself by.
+   *
+   * @param maskRect a rect in the view's coordinates to mask by
+   */
+  void setMaskRectF(@NonNull RectF maskRect);
 
   /** Gets a {@link RectF} that this {@link View} is masking itself by. */
   @NonNull

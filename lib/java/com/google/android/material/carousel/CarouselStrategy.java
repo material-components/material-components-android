@@ -102,4 +102,15 @@ public abstract class CarouselStrategy {
   static float getChildMaskPercentage(float maskedSize, float unmaskedSize, float childMargins) {
     return 1F - ((maskedSize - childMargins) / (unmaskedSize - childMargins));
   }
+
+  /**
+   * Gets whether this carousel should mask items against the edges of the carousel container.
+   *
+   * @return true if items in the carousel should mask/squash against the edges of the carousel
+   *     container. false if the carousel should allow items to bleed past the edges of the
+   *     container and be clipped.
+   */
+  boolean isContained() {
+    return true;
+  }
 }

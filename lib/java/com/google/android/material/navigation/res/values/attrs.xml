@@ -59,6 +59,9 @@
          android:textColor in itemTextAppearanceActive. Instead, set itemTextColor to a
          ColorStateList to make the text color stateful. -->
     <attr name="itemTextAppearanceActive" format="reference"/>
+    <!-- Whether the active navigation item is bold. Attribute type definition is in navigation
+         package. -->
+    <attr name="itemTextAppearanceActiveBoldEnabled"/>
     <!-- The color to apply to the navigation items' text. Setting itemTextColor will take
          precedence over android:textColor in itemTextAppearanceInactive or
          itemTextAppearanceActive. Attribute type definition is in navigation package. -->
@@ -69,6 +72,8 @@
     <!-- The distance from the bottom of the label to the bottom of the navigation
          bar item.-->
     <attr name="itemPaddingBottom" format="dimension"/>
+    <!-- Padding between the active indicator container and label. -->
+    <attr name="activeIndicatorLabelPadding" format="dimension"/>
 
     <!-- The style used for each navigation item's active indicator-->
     <attr name="itemActiveIndicatorStyle" format="reference"/>
@@ -107,6 +112,9 @@
     <attr name="itemBackground" format="reference"/>
     <attr name="itemRippleColor"/>
     <attr name="itemTextAppearance" format="reference"/>
+    <!-- Whether the active navigation item is bold. Attribute type definition is in navigation
+         package. -->
+    <attr name="itemTextAppearanceActiveBoldEnabled" format="boolean"/>
     <!-- Layout resource to inflate as the header -->
     <attr name="headerLayout"/>
     <!-- Horizontal padding (left and right) of navigation items, around the icon & text -->

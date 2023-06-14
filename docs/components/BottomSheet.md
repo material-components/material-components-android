@@ -20,6 +20,7 @@ containing supplementary content that are anchored to the bottom of the screen.
 *   [Standard bottom sheet](#standard-bottom-sheet)
 *   [Modal bottom sheet](#modal-bottom-sheet)
 *   [Anatomy and key properties](#anatomy-and-key-properties)
+*   [Predictive Back](#predictive-back)
 *   [Theming](#theming-bottom-sheets)
 
 ## Using bottom sheets
@@ -262,8 +263,9 @@ API and source code:
 The following example shows a standard bottom sheet in its collapsed and
 expanded states:
 
-![Standard bottom sheet example. Collapsed on the left and expanded on the
-right.](assets/bottomsheet/bottomsheet_standard.png)
+Collapsed                                                                                 | Expanded
+----------------------------------------------------------------------------------------- | --------
+![Standard collapsed bottom sheet example.](assets/bottomsheet/bottomsheet_standard1.png) | ![Standard expanded bottom sheet example.](assets/bottomsheet/bottomsheet_standard2.png)
 
 `BottomSheetBehavior` works in tandem with `CoordinatorLayout` to let you
 display content on a bottom sheet, perform enter/exit animations, respond to
@@ -320,6 +322,18 @@ Apply the `BottomSheetBehavior` to a direct child `View` of `CoordinatorLayout`:
 
 In this example, the bottom sheet is the `FrameLayout`.
 
+You can use the `BottomSheetBehavior` to set attributes like so:
+
+```kt
+val standardBottomSheet = findViewById<FrameLayout>(R.id.standard_bottom_sheet)
+val standardBottomSheetBehavior = BottomSheetBehavior.from(standardBottomSheet)
+// Use this to programmatically apply behavior attributes; eg.
+// standardBottomSheetBehavior.setState(STATE_EXPANDED);
+```
+
+More information about using the behavior to set attributes is in the
+[setting behavior](#setting-behavior) section.
+
 ## Modal bottom sheet
 
 Modal bottom sheets present a set of choices while blocking interaction with the
@@ -347,7 +361,9 @@ API and source code:
 The following example shows a modal bottom sheet in its collapsed and expanded
 states:
 
-![Modal bottom sheet example. Collapsed on the left and expanded on the right.](assets/bottomsheet/bottomsheet_modal.png)
+Collapsed                                                                           | Expanded
+----------------------------------------------------------------------------------- | --------
+![Modal collapsed bottom sheet example.](assets/bottomsheet/bottomsheet_modal1.png) | ![Modal expanded bottom sheet example.](assets/bottomsheet/bottomsheet_modal2.png)
 
 First, subclass `BottomSheetDialogFragment` and overwrite `onCreateView` to
 provide a layout for the contents of the sheet (in this example, it's
@@ -384,13 +400,15 @@ you need to use `Activity.getSupportFragmentManager()`.
 
 ## Anatomy and key properties
 
-Bottom sheets have a sheet, content, and, if modal, a scrim.
+Bottom sheets have a sheet, a drag handle, and, if modal, a scrim.
 
 ![Bottom sheet anatomy](assets/bottomsheet/bottomsheet_anatomy.png)
 
 1.  Sheet
-2.  Content
+2.  Drag Handle
 3.  Scrim (in modal bottom sheets)
+
+Content can also be added below the drag handle. (see [Using bottom sheets](#using-bottom-sheets))
 
 ### Sheet attributes
 
@@ -450,6 +468,66 @@ See the full list of
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/res/values/attrs.xml),
 and
 [themes and theme overlays](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/res/values/themes.xml).
+
+## Predictive Back
+
+### Modal Bottom Sheets
+
+The modal `BottomSheetDialogFragment` and `BottomSheetDialog` components
+automatically support [Predictive Back](../foundations/PredictiveBack.md). No
+further integration is required on the app side other than the general
+Predictive Back prerequisites and migration steps mentioned
+[here](../foundations/PredictiveBack.md#usage).
+
+Visit the
+[Predictive Back design guidelines](https://m3.material.io/components/bottom-sheets/guidelines#3d7735e2-73ea-4f3e-bd42-e70161fc1085)
+to see how the component behaves when a user swipes back.
+
+### Standard (Non-Modal) Bottom Sheets
+
+To set up Predictive Back for standard (non-modal) bottom sheets using
+`BottomSheetBehavior`, create an AndroidX back callback that forwards
+`BackEventCompat` objects to your `BottomSheetBehavior`:
+
+```kt
+val bottomSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false) {
+  override fun handleOnBackStarted(backEvent: BackEventCompat) {
+    bottomSheetBehavior.startBackProgress(backEvent)
+  }
+
+  override fun handleOnBackProgressed(backEvent: BackEventCompat) {
+    bottomSheetBehavior.updateBackProgress(backEvent)
+  }
+
+  override fun handleOnBackPressed() {
+    bottomSheetBehavior.handleBackInvoked()
+  }
+
+  override fun handleOnBackCancelled() {
+    bottomSheetBehavior.cancelBackProgress()
+  }
+}
+```
+
+And then add and enable the back callback as follows:
+
+```kt
+getOnBackPressedDispatcher().addCallback(this, bottomSheetBackCallback)
+
+bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
+  override fun onStateChanged(bottomSheet: View, newState: Int) {
+    when (newState) {
+      STATE_EXPANDED, STATE_HALF_EXPANDED -> bottomSheetBackCallback.setEnabled(true)
+      STATE_COLLAPSED, STATE_HIDDEN -> bottomSheetBackCallback.setEnabled(false)
+      else -> {
+        // Do nothing, only change callback enabled for "stable" states.
+      }
+    }
+  }
+
+  override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+})
+```
 
 ## Theming bottom sheets
 

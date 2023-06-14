@@ -34,6 +34,7 @@
           description="Label for opening the navigation drawer at the end of the screen. [CHAR_LIMIT=100]">
     Open End Drawer
   </string>
+  <string name="cat_navigationdrawer_label_active_bold" translatable="false">Bold active label</string>
   <string name="cat_navigationdrawer_header_mail">Mail</string>
   <string name="cat_navigationdrawer_header_labels">Labels</string>
   <string name="cat_navigationdrawer_label">Label</string>

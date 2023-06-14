@@ -35,6 +35,7 @@
   <public name="itemShapeFillColor" type="attr"/>
   <public name="itemTextAppearanceInactive" type="attr"/>
   <public name="itemTextAppearanceActive" type="attr"/>
+  <public name="itemTextAppearanceActiveBoldEnabled" type="attr"/>
   <public name="labelVisibilityMode" type="attr"/>
   <public name="topInsetScrimEnabled" type="attr"/>
   <public name="bottomInsetScrimEnabled" type="attr"/>
@@ -50,6 +51,7 @@
   <public name="ThemeOverlay.Material3.NavigationView" type="style"/>
   <public name="Widget.Material3.DrawerLayout" type="style"/>
 
+  <public name="activeIndicatorLabelPadding" type="attr"/>
   <public name="itemPaddingTop" type="attr"/>
   <public name="itemPaddingBottom" type="attr"/>
   <public name="itemActiveIndicatorStyle" type="attr"/>

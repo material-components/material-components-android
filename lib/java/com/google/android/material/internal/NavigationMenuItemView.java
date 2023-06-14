@@ -61,6 +61,8 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
   boolean checkable;
 
+  boolean isBold = true;
+
   private final CheckedTextView textView;
 
   private FrameLayout actionArea;
@@ -125,6 +127,11 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     setContentDescription(itemData.getContentDescription());
     TooltipCompat.setTooltipText(this, itemData.getTooltipText());
     adjustAppearance();
+  }
+
+  public void initialize(@NonNull MenuItemImpl itemData, boolean isBold) {
+    this.isBold = isBold;
+    initialize(itemData, 0);
   }
 
   private boolean shouldExpandActionArea() {
@@ -210,7 +217,8 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     refreshDrawableState();
     textView.setChecked(checked);
     // TODO(b/246765947): Use component tokens to control font weight
-    textView.setTypeface(textView.getTypeface(), checked ? Typeface.BOLD : Typeface.NORMAL);
+    textView.setTypeface(
+        textView.getTypeface(), checked && isBold ? Typeface.BOLD : Typeface.NORMAL);
   }
 
   @Override

@@ -311,13 +311,14 @@ for more attributes.
 
 #### Active indicator attributes
 
-**Element**           | **Attribute**          | **Related methods**                                                                   | **Default value**
---------------------- | ---------------------- | ------------------------------------------------------------------------------------- | -----------------
-**Color**             | `android:color`        | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                       | `?attr/colorSecondaryContainer`
-**Width**             | `android:width`        | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                       | `56dp`
-**Height**            | `android:height`       | `setItemActiveIndicatorHeight`<br/>`setItemActiveIndicatorHeight`                     | `32dp`
-**Shape**             | `app:shapeAppearance`  | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`   | `50% rounded`
-**Margin horizontal** | `app:marginHorizontal` | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal` | `4dp`
+**Element**                             | **Attribute**                     | **Related methods**                                                                   | **Default value**
+--------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------- | -----------------
+**Color**                               | `android:color`                   | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                       | `?attr/colorSecondaryContainer`
+**Width**                               | `android:width`                   | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                       | `56dp`
+**Height**                              | `android:height`                  | `setItemActiveIndicatorHeight`<br/>`setItemActiveIndicatorHeight`                     | `32dp`
+**Shape**                               | `app:shapeAppearance`             | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`   | `50% rounded`
+**Margin horizontal**                   | `app:marginHorizontal`            | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal` | `4dp`
+**Padding between indicator and label** | `app:activeIndicatorLabelPadding` | `setActiveIndicatorLabelPadding` <br/> `setActiveIndicatorLabelPadding`               | `4dp`
 
 #### Icon attributes
 
@@ -330,13 +331,14 @@ for more attributes.
 
 #### Text label attributes
 
-**Element**               | **Attribute**                          | **Related methods**                                                 | **Default value**
-------------------------- | -------------------------------------- | ------------------------------------------------------------------- | -----------------
-**Text label**            | `android:title` in the `menu` resource | N/A                                                                 | N/A
-**Color (inactive)**      | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurfaceVariant`
-**Color (active)**        | `app:itemTextColor`                    | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurface`
-**Typography (inactive)** | `app:itemTextAppearanceInactive`       | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive` | `?attr/textAppearanceTitleSmall`
-**Typography (active)**   | `app:itemTextAppearanceActive`         | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`     | `?attr/textAppearanceTitleSmall`
+| **Element**               | **Attribute**                             | **Related methods**                                                 | **Default value**                |
+|---------------------------|-------------------------------------------|---------------------------------------------------------------------|----------------------------------|
+| **Text label**            | `android:title` in the `menu` resource    | N/A                                                                 | N/A                              |
+| **Color (inactive)**      | `app:itemTextColor`                       | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurfaceVariant`    |
+| **Color (active)**        | `app:itemTextColor`                       | `setItemTextColor`<br/>`getItemTextColor`                           | `?attr/colorOnSurface`           |
+| **Typography (inactive)** | `app:itemTextAppearanceInactive`          | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive` | `?attr/textAppearanceTitleSmall` |
+| **Typography (active)**   | `app:itemTextAppearanceActive`            | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`     | `?attr/textAppearanceTitleSmall` |
+| **Typography (active)**   | `app:itemTextAppearanceActiveBoldEnabled` | `setItemTextAppearanceActiveBoldEnabled`                            | `true`                           |
 
 #### Styles
 
