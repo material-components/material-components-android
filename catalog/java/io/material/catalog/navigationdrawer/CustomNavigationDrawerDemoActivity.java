@@ -30,6 +30,7 @@ import android.view.ViewGroup;
 import android.window.BackEvent;
 import android.window.OnBackAnimationCallback;
 import android.window.OnBackInvokedDispatcher;
+import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -140,19 +141,20 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
 
       @Override
       public void onBackStarted(@NonNull BackEvent backEvent) {
-        sideContainerBackHelper.startBackProgress(backEvent);
+        sideContainerBackHelper.startBackProgress(new BackEventCompat(backEvent));
       }
 
       @Override
       public void onBackProgressed(@NonNull BackEvent backEvent) {
         DrawerLayout.LayoutParams drawerLayoutParams =
             (LayoutParams) currentDrawerView.getLayoutParams();
-        sideContainerBackHelper.updateBackProgress(backEvent, drawerLayoutParams.gravity);
+        sideContainerBackHelper.updateBackProgress(
+            new BackEventCompat(backEvent), drawerLayoutParams.gravity);
       }
 
       @Override
       public void onBackInvoked() {
-        BackEvent backEvent = sideContainerBackHelper.onHandleBackInvoked();
+        BackEventCompat backEvent = sideContainerBackHelper.onHandleBackInvoked();
         if (backEvent == null) {
           drawerLayout.closeDrawers();
           return;

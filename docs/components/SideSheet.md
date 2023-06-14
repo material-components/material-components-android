@@ -313,18 +313,16 @@ to see how the component behaves when a user swipes back.
 ### Standard and Coplanar (Non-Modal) Side Sheets
 
 To set up Predictive Back for standard or coplanar (non-modal) side sheets using
-`SideSheetBehavior`, create an AndroidX back callback that forwards the system
-`BackEvent` objects to your `SideSheetBehavior`:
+`SideSheetBehavior`, create an AndroidX back callback that forwards
+`BackEventCompat` objects to your `SideSheetBehavior`:
 
 ```kt
 val sideSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false) {
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  override fun handleOnBackStarted(backEvent: BackEvent) {
+  override fun handleOnBackStarted(backEvent: BackEventCompat) {
     sideSheetBehavior.startBackProgress(backEvent)
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  override fun handleOnBackProgressed(backEvent: BackEvent) {
+  override fun handleOnBackProgressed(backEvent: BackEventCompat) {
     sideSheetBehavior.updateBackProgress(backEvent)
   }
 
@@ -332,7 +330,6 @@ val sideSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false) 
     sideSheetBehavior.handleBackInvoked()
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   override fun handleOnBackCancelled() {
     sideSheetBehavior.cancelBackProgress()
   }

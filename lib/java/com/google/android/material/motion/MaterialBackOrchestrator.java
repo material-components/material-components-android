@@ -24,6 +24,7 @@ import android.window.BackEvent;
 import android.window.OnBackAnimationCallback;
 import android.window.OnBackInvokedCallback;
 import android.window.OnBackInvokedDispatcher;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.DoNotInline;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -123,12 +124,12 @@ public final class MaterialBackOrchestrator {
 
         @Override
         public void onBackStarted(@NonNull BackEvent backEvent) {
-          backHandler.startBackProgress(backEvent);
+          backHandler.startBackProgress(new BackEventCompat(backEvent));
         }
 
         @Override
         public void onBackProgressed(@NonNull BackEvent backEvent) {
-          backHandler.updateBackProgress(backEvent);
+          backHandler.updateBackProgress(new BackEventCompat(backEvent));
         }
 
         @Override

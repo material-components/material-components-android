@@ -37,7 +37,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -612,13 +612,12 @@ class SearchViewAnimationHelper {
     }
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  void startBackProgress(@NonNull BackEvent backEvent) {
+  void startBackProgress(@NonNull BackEventCompat backEvent) {
     backHelper.startBackProgress(backEvent, searchBar);
   }
 
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void updateBackProgress(@NonNull BackEvent backEvent) {
+  public void updateBackProgress(@NonNull BackEventCompat backEvent) {
     if (backEvent.getProgress() <= 0f) {
       return;
     }
@@ -642,7 +641,7 @@ class SearchViewAnimationHelper {
   }
 
   @Nullable
-  public BackEvent onHandleBackInvoked() {
+  public BackEventCompat onHandleBackInvoked() {
     return backHelper.onHandleBackInvoked();
   }
 

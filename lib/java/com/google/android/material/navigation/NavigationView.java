@@ -56,7 +56,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
@@ -65,7 +65,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
@@ -965,16 +964,14 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     presenter.setSubheaderInsetEnd(subheaderInsetEnd);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void startBackProgress(@NonNull BackEvent backEvent) {
+  public void startBackProgress(@NonNull BackEventCompat backEvent) {
     requireDrawerLayoutParent();
     sideContainerBackHelper.startBackProgress(backEvent);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void updateBackProgress(@NonNull BackEvent backEvent) {
+  public void updateBackProgress(@NonNull BackEventCompat backEvent) {
     Pair<DrawerLayout, DrawerLayout.LayoutParams> drawerLayoutPair = requireDrawerLayoutParent();
     sideContainerBackHelper.updateBackProgress(backEvent, drawerLayoutPair.second.gravity);
   }
@@ -984,7 +981,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     Pair<DrawerLayout, DrawerLayout.LayoutParams> drawerLayoutPair = requireDrawerLayoutParent();
     DrawerLayout drawerLayout = drawerLayoutPair.first;
 
-    BackEvent backEvent = sideContainerBackHelper.onHandleBackInvoked();
+    BackEventCompat backEvent = sideContainerBackHelper.onHandleBackInvoked();
     if (backEvent == null || !BuildCompat.isAtLeastU()) {
       drawerLayout.closeDrawer(this);
       return;
@@ -999,7 +996,6 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
         backEvent, gravity, scrimCloseAnimatorListener, scrimCloseAnimatorUpdateListener);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
   public void cancelBackProgress() {
     requireDrawerLayoutParent();

@@ -6,6 +6,7 @@ apply plugin: 'maven-publish'
 version = mdcLibraryVersion
 
 dependencies {
+  api compatibility("activity")
   api compatibility("annotation")
   api compatibility("appcompat")
   api compatibility("cardview")

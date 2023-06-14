@@ -18,8 +18,6 @@ package io.material.catalog.bottomappbar;
 
 import io.material.catalog.R;
 
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -61,16 +59,12 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
       new OnBackPressedCallback(/* enabled= */ false) {
         @Override
         public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
-          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            bottomDrawerBehavior.startBackProgress(backEvent.toBackEvent());
-          }
+          bottomDrawerBehavior.startBackProgress(backEvent);
         }
 
         @Override
         public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
-          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            bottomDrawerBehavior.updateBackProgress(backEvent.toBackEvent());
-          }
+          bottomDrawerBehavior.updateBackProgress(backEvent);
         }
 
         @Override
@@ -80,9 +74,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
 
         @Override
         public void handleOnBackCancelled() {
-          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            bottomDrawerBehavior.cancelBackProgress();
-          }
+          bottomDrawerBehavior.cancelBackProgress();
         }
       };
 

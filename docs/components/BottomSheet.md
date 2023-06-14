@@ -486,18 +486,16 @@ to see how the component behaves when a user swipes back.
 ### Standard (Non-Modal) Bottom Sheets
 
 To set up Predictive Back for standard (non-modal) bottom sheets using
-`BottomSheetBehavior`, create an AndroidX back callback that forwards the system
-`BackEvent` objects to your `BottomSheetBehavior`:
+`BottomSheetBehavior`, create an AndroidX back callback that forwards
+`BackEventCompat` objects to your `BottomSheetBehavior`:
 
 ```kt
 val bottomSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false) {
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  override fun handleOnBackStarted(backEvent: BackEvent) {
+  override fun handleOnBackStarted(backEvent: BackEventCompat) {
     bottomSheetBehavior.startBackProgress(backEvent)
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  override fun handleOnBackProgressed(backEvent: BackEvent) {
+  override fun handleOnBackProgressed(backEvent: BackEventCompat) {
     bottomSheetBehavior.updateBackProgress(backEvent)
   }
 
@@ -505,7 +503,6 @@ val bottomSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false
     bottomSheetBehavior.handleBackInvoked()
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   override fun handleOnBackCancelled() {
     bottomSheetBehavior.cancelBackProgress()
   }

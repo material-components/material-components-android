@@ -20,8 +20,6 @@ import io.material.catalog.R;
 
 import static android.view.View.NO_ID;
 
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -407,16 +405,12 @@ public class SideSheetMainDemoFragment extends DemoFragment {
     return new OnBackPressedCallback(/* enabled= */ false) {
       @Override
       public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
-        if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-          behavior.startBackProgress(backEvent.toBackEvent());
-        }
+        behavior.startBackProgress(backEvent);
       }
 
       @Override
       public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
-        if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-          behavior.updateBackProgress(backEvent.toBackEvent());
-        }
+        behavior.updateBackProgress(backEvent);
       }
 
       @Override
@@ -426,9 +420,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
 
       @Override
       public void handleOnBackCancelled() {
-        if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-          behavior.cancelBackProgress();
-        }
+        behavior.cancelBackProgress();
       }
     };
   }

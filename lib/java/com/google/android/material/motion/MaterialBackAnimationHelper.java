@@ -19,12 +19,10 @@ import com.google.android.material.R;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
-import android.os.Build.VERSION_CODES;
 import android.view.View;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.view.animation.PathInterpolatorCompat;
@@ -50,7 +48,7 @@ public abstract class MaterialBackAnimationHelper<V extends View> {
   protected final int hideDurationMin;
   protected final int cancelDuration;
 
-  @Nullable private BackEvent backEvent;
+  @Nullable private BackEventCompat backEvent;
 
   public MaterialBackAnimationHelper(@NonNull V view) {
     this.view = view;
@@ -76,13 +74,11 @@ public abstract class MaterialBackAnimationHelper<V extends View> {
     return progressInterpolator.getInterpolation(progress);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  protected void onStartBackProgress(@NonNull BackEvent backEvent) {
+  protected void onStartBackProgress(@NonNull BackEventCompat backEvent) {
     this.backEvent = backEvent;
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  protected void onUpdateBackProgress(@NonNull BackEvent backEvent) {
+  protected void onUpdateBackProgress(@NonNull BackEventCompat backEvent) {
     if (this.backEvent == null) {
       throw new IllegalStateException("Must call startBackProgress() before updateBackProgress()");
     }
@@ -90,21 +86,20 @@ public abstract class MaterialBackAnimationHelper<V extends View> {
   }
 
   @Nullable
-  public BackEvent onHandleBackInvoked() {
-    BackEvent finalBackEvent = this.backEvent;
+  public BackEventCompat onHandleBackInvoked() {
+    BackEventCompat finalBackEvent = this.backEvent;
     this.backEvent = null;
     return finalBackEvent;
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @CanIgnoreReturnValue
   @NonNull
-  protected BackEvent onCancelBackProgress() {
+  protected BackEventCompat onCancelBackProgress() {
     if (this.backEvent == null) {
       throw new IllegalStateException(
           "Must call startBackProgress() and updateBackProgress() before cancelBackProgress()");
     }
-    BackEvent finalBackEvent = this.backEvent;
+    BackEventCompat finalBackEvent = this.backEvent;
     this.backEvent = null;
     return finalBackEvent;
   }

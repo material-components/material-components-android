@@ -17,10 +17,8 @@ package com.google.android.material.motion;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-import android.os.Build.VERSION_CODES;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 
 /**
@@ -32,23 +30,22 @@ import androidx.annotation.RestrictTo;
 public interface MaterialBackHandler {
 
   /**
-   * Call this method from {@link android.window.OnBackAnimationCallback#onBackStarted(BackEvent)}
-   * or {@link androidx.activity.OnBackPressedCallback#handleOnBackStarted(BackEvent)} so that the
-   * back handler can initialize and start animating.
+   * Call this method from {@link
+   * android.window.OnBackAnimationCallback#onBackStarted(android.window.BackEvent)} or {@link
+   * androidx.activity.OnBackPressedCallback#handleOnBackStarted(BackEventCompat)} so that the back
+   * handler can initialize and start animating.
    *
-   * <p>Note that this must be called prior to calling {@link #updateBackProgress(BackEvent)}.
+   * <p>Note that this must be called prior to calling {@link #updateBackProgress(BackEventCompat)}.
    */
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  void startBackProgress(@NonNull BackEvent backEvent);
+  void startBackProgress(@NonNull BackEventCompat backEvent);
 
   /**
    * Call this method from {@link
-   * android.window.OnBackAnimationCallback#onBackProgressed(BackEvent)} or {@link
-   * androidx.activity.OnBackPressedCallback#handleOnBackProgressed(BackEvent)} so that the back
-   * handler can continue animating with a new progress value.
+   * android.window.OnBackAnimationCallback#onBackProgressed(android.window.BackEvent)} or {@link
+   * androidx.activity.OnBackPressedCallback#handleOnBackProgressed(BackEventCompat)} so that the
+   * back handler can continue animating with a new progress value.
    */
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  void updateBackProgress(@NonNull BackEvent backEvent);
+  void updateBackProgress(@NonNull BackEventCompat backEvent);
 
   /**
    * Call this method from {@link android.window.OnBackAnimationCallback#onBackInvoked()} or {@link
@@ -62,6 +59,5 @@ public interface MaterialBackHandler {
    * {@link androidx.activity.OnBackPressedCallback#handleOnBackCancelled()} so that the back
    * handler can cancel the back animation.
    */
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   void cancelBackProgress();
 }

@@ -22,6 +22,7 @@ ext {
   targetSdkVersion = 33
 
   androidXVersions = [
+    activity                     : '1.8.0-alpha05',
     annotation                   : '1.2.0',
     appCompat                    : '1.6.1',
     cardView                     : '1.0.0',
@@ -86,6 +87,8 @@ private def getTransformedProjectPath(projectPath) {
  */
 def compatibility(name) {
   switch (name) {
+    case "activity":
+      return "androidx.activity:activity:${androidXVersions.activity}"
     case "annotation":
       return "androidx.annotation:annotation:${androidXVersions.annotation}"
     case "appcompat":

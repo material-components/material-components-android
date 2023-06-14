@@ -34,7 +34,7 @@ import android.os.Build.VERSION_CODES;
 import android.view.RoundedCorner;
 import android.view.View;
 import android.view.WindowInsets;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -82,15 +82,13 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
     return initialHideFromClipBounds;
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
-  public void startBackProgress(@NonNull BackEvent backEvent, @Nullable View collapsedView) {
+  public void startBackProgress(@NonNull BackEventCompat backEvent, @Nullable View collapsedView) {
     super.onStartBackProgress(backEvent);
 
     startBackProgress(backEvent.getTouchY(), collapsedView);
   }
 
   @VisibleForTesting
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void startBackProgress(float touchY, @Nullable View collapsedView) {
     initialHideToClipBounds = ViewUtils.calculateRectFromBounds(view);
     if (collapsedView != null) {
@@ -99,22 +97,20 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
     initialTouchY = touchY;
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void updateBackProgress(
-      @NonNull BackEvent backEvent, @Nullable View collapsedView, float collapsedCornerSize) {
+      @NonNull BackEventCompat backEvent, @Nullable View collapsedView, float collapsedCornerSize) {
     super.onUpdateBackProgress(backEvent);
 
     if (collapsedView != null && collapsedView.getVisibility() != View.INVISIBLE) {
       collapsedView.setVisibility(View.INVISIBLE);
     }
 
-    boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEvent.EDGE_LEFT;
+    boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEventCompat.EDGE_LEFT;
     updateBackProgress(
         backEvent.getProgress(), leftSwipeEdge, backEvent.getTouchY(), collapsedCornerSize);
   }
 
   @VisibleForTesting
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void updateBackProgress(
       float progress, boolean leftSwipeEdge, float touchY, float collapsedCornerSize) {
     float width = view.getWidth();
@@ -141,7 +137,6 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
     }
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void finishBackProgress(long duration, @Nullable View collapsedView) {
     AnimatorSet resetAnimator = createResetScaleAndTranslationAnimator(collapsedView);
     resetAnimator.setDuration(duration);
@@ -150,7 +145,6 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
     resetInitialValues();
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   public void cancelBackProgress(@Nullable View collapsedView) {
     super.onCancelBackProgress();
 

@@ -19,8 +19,6 @@ package io.material.catalog.bottomsheet;
 import io.material.catalog.R;
 
 import android.app.Activity;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -52,16 +50,12 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
 
         @Override
         public void handleOnBackStarted(@NonNull BackEventCompat backEvent) {
-          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            persistentBottomSheetBehavior.startBackProgress(backEvent.toBackEvent());
-          }
+          persistentBottomSheetBehavior.startBackProgress(backEvent);
         }
 
         @Override
         public void handleOnBackProgressed(@NonNull BackEventCompat backEvent) {
-          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            persistentBottomSheetBehavior.updateBackProgress(backEvent.toBackEvent());
-          }
+          persistentBottomSheetBehavior.updateBackProgress(backEvent);
         }
 
         @Override
@@ -71,9 +65,7 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
 
         @Override
         public void handleOnBackCancelled() {
-          if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            persistentBottomSheetBehavior.cancelBackProgress();
-          }
+          persistentBottomSheetBehavior.cancelBackProgress();
         }
       };
 

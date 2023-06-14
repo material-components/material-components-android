@@ -49,7 +49,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
 import android.view.WindowInsets;
 import android.view.accessibility.AccessibilityEvent;
-import android.window.BackEvent;
+import androidx.activity.BackEventCompat;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -1588,18 +1588,16 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return Math.abs(newTop - collapsedOffset) / (float) peek > HIDE_THRESHOLD;
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void startBackProgress(@NonNull BackEvent backEvent) {
+  public void startBackProgress(@NonNull BackEventCompat backEvent) {
     if (bottomContainerBackHelper == null) {
       return;
     }
     bottomContainerBackHelper.startBackProgress(backEvent);
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
-  public void updateBackProgress(@NonNull BackEvent backEvent) {
+  public void updateBackProgress(@NonNull BackEventCompat backEvent) {
     if (bottomContainerBackHelper == null) {
       return;
     }
@@ -1611,7 +1609,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (bottomContainerBackHelper == null) {
       return;
     }
-    BackEvent backEvent = bottomContainerBackHelper.onHandleBackInvoked();
+    BackEventCompat backEvent = bottomContainerBackHelper.onHandleBackInvoked();
     if (backEvent == null || !BuildCompat.isAtLeastU()) {
       // If using traditional button system nav or if pre-U, just hide or collapse the bottom sheet.
       setState(hideable ? STATE_HIDDEN : STATE_COLLAPSED);
@@ -1637,7 +1635,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
-  @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   @Override
   public void cancelBackProgress() {
     if (bottomContainerBackHelper == null) {
