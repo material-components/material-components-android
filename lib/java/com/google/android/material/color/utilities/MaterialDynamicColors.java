@@ -126,13 +126,28 @@ public final class MaterialDynamicColors {
   @NonNull
   public DynamicColor outline() {
     return DynamicColor.fromPalette(
-        (s) -> s.neutralVariantPalette, (s) -> 50.0, this::highestSurface);
+        (s) -> s.neutralVariantPalette, (s) -> s.isDark ? 60.0 : 50.0, this::highestSurface);
   }
 
   @NonNull
   public DynamicColor outlineVariant() {
     return DynamicColor.fromPalette(
         (s) -> s.neutralVariantPalette, (s) -> s.isDark ? 30.0 : 80.0, this::highestSurface);
+  }
+
+  @NonNull
+  public DynamicColor shadow() {
+    return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> 0.0);
+  }
+
+  @NonNull
+  public DynamicColor scrim() {
+    return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> 0.0);
+  }
+
+  @NonNull
+  public DynamicColor surfaceTint() {
+    return DynamicColor.fromPalette((s) -> s.primaryPalette, (s) -> s.isDark ? 80.0 : 40.0);
   }
 
   @NonNull
