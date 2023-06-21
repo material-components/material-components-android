@@ -169,9 +169,17 @@ public class TextInputEditText extends AppCompatEditText {
   @Override
   public boolean getGlobalVisibleRect(@Nullable Rect r, @Nullable Point globalOffset) {
     TextInputLayout textInputLayout = getTextInputLayout();
-    return shouldUseTextInputLayoutFocusedRect(textInputLayout)
-        ? textInputLayout.getGlobalVisibleRect(r, globalOffset)
-        : super.getGlobalVisibleRect(r, globalOffset);
+    if (shouldUseTextInputLayoutFocusedRect(textInputLayout)) {
+      boolean isVisible = textInputLayout.getGlobalVisibleRect(r, globalOffset);
+      if (isVisible && globalOffset != null) {
+        // View#getGlobalVisibleRect returns a globalOffset offset by the negative amount of the
+        // scroll in the given view. Here we need to offset the negative amount of the scroll in
+        // TextInputEditText when calling getGlobalVisibleRect on the parent TextInputLayout.
+        globalOffset.offset(-getScrollX(), -getScrollY());
+      }
+      return isVisible;
+    }
+    return super.getGlobalVisibleRect(r, globalOffset);
   }
 
   @Override
