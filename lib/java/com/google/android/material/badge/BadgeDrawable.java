@@ -47,9 +47,11 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.XmlRes;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -186,6 +188,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   /** A value to indicate that badge content should not be truncated. */
   public static final int BADGE_CONTENT_NOT_TRUNCATED = -2;
+
+  /** The font scale threshold to changing the vertical offset of the badge. **/
+  private static final float FONT_SCALE_THRESHOLD = .3F;
 
   @NonNull private final WeakReference<Context> contextRef;
   @NonNull private final MaterialShapeDrawable shapeDrawable;
@@ -1010,6 +1015,29 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /**
+   * Sets how much (in pixels) to vertically move this badge away the center of its anchor when this
+   * badge has text and the font scale is at max size. This is in conjunction with the vertical
+   * offset with text.
+   *
+   * @param px how much to move the badge's vertical offset away from the center by when the font is
+   *     large.
+   */
+  public void setLargeFontVerticalOffsetAdjustment(@Px int px) {
+    state.setLargeFontVerticalOffsetAdjustment(px);
+    updateCenterAndBounds();
+  }
+
+  /**
+   * Returns how much (in pixels) this badge is being vertically moved away the center of its
+   * anchor when the badge has text and the font scale is at max. Note that this is not the total
+   * vertical offset.
+   */
+  @Px
+  public int getLargeFontVerticalOffsetAdjustment() {
+    return state.getLargeFontVerticalOffsetAdjustment();
+  }
+
+  /**
    * Sets how much (in pixels) more (in addition to {@code savedState.verticalOffset}) to vertically
    * move this badge towards the center of its anchor. Currently used to adjust the placement of
    * badges on toolbar items.
@@ -1165,10 +1193,22 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private int getTotalVerticalOffsetForState() {
-    int vOffset =
-        hasBadgeContent()
-            ? state.getVerticalOffsetWithText()
-            : state.getVerticalOffsetWithoutText();
+    int vOffset = state.getVerticalOffsetWithoutText();
+    if (hasBadgeContent()) {
+      vOffset = state.getVerticalOffsetWithText();
+      Context context = contextRef.get();
+      if (context != null) {
+        float progress =
+            AnimationUtils.lerp(0F, 1F,
+                FONT_SCALE_THRESHOLD, 1F, MaterialResources.getFontScale(context) - 1F);
+        vOffset =
+            AnimationUtils.lerp(
+                vOffset, vOffset - state.getLargeFontVerticalOffsetAdjustment(), progress);
+      }
+    }
+
+
+
     // If the offset alignment mode is at the edge of the anchor, we want to move the badge
     // so that its origin is at the edge.
     if (state.offsetAlignmentMode == OFFSET_ALIGNMENT_MODE_EDGE) {
