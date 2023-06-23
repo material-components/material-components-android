@@ -430,8 +430,8 @@ Element              | Attribute                                                
 
 Element        | Attribute                                       | Related method(s)                                                     | Default value
 -------------- | ----------------------------------------------- | --------------------------------------------------------------------- | -------------
-**Icon**       | `app:chipIcon`                                  | `setChipIconVisible`<br/>`isChipIconVisible`                          | `null`
-**Visibility** | `app:chipIconVisible`                           | `setChipIcon`<br/>`setChipIconResource`<br/>`getChipIcon`             | `true` (input and assist)
+**Icon**       | `app:chipIcon`                                  | `setChipIcon`<br/>`setChipIconResource`<br/>`getChipIcon`             | `null`
+**Visibility** | `app:chipIconVisible`                           | `setChipIconVisible`<br/>`isChipIconVisible`                          | `true` (input and assist)
 **Color**      | `app:chipIconTint`                              | `setChipIconTint`<br/>`setChipIconTintResource`<br/>`getChipIconTint` | `null`
 **Size**       | `app:chipIconSize`                              | `setChipIconSize`<br/>`setChipIconSizeResource`<br/>`getChipIconSize` | `18dp`
 **Padding**    | `app:iconStartPadding`<br/>`app:iconEndPadding` | `setIcon*Padding`<br/>`setIcon*PaddingResource`<br/>`getIcon*Padding` | `0dp`, `-2dp` (filter end padding)
