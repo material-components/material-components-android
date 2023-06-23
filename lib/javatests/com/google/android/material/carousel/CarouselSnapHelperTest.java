@@ -119,11 +119,11 @@ public class CarouselSnapHelperTest {
             layoutManager, snapHelper.findSnapView(layoutManager));
     assertThat(distance[0]).isEqualTo(50);
 
-    int horizontalScrollBefore = layoutManager.horizontalScrollOffset;
+    int horizontalScrollBefore = layoutManager.scrollOffset;
     // If scrolled enough, the snap view should be the item at position 4.
     // We scrolled by the item width, so the snap distance should still be 50.
     scrollHorizontallyBy(recyclerView, layoutManager, DEFAULT_ITEM_WIDTH);
-    int horizontalScrollAfter = layoutManager.horizontalScrollOffset;
+    int horizontalScrollAfter = layoutManager.scrollOffset;
 
     distance =
         snapHelper.calculateDistanceToFinalSnap(
@@ -138,15 +138,15 @@ public class CarouselSnapHelperTest {
     KeylineState target1 =
         stateList.getShiftedState(
             horizontalScrollBefore,
-            layoutManager.minHorizontalScroll,
-            layoutManager.maxHorizontalScroll,
+            layoutManager.minScroll,
+            layoutManager.maxScroll,
             true);
     float firstTargetKeylineLoc = target1.getFirstFocalKeyline().loc;
     KeylineState target2 =
         stateList.getShiftedState(
             horizontalScrollAfter,
-            layoutManager.minHorizontalScroll,
-            layoutManager.maxHorizontalScroll,
+            layoutManager.minScroll,
+            layoutManager.maxScroll,
             true);
     float secondTargetKeylineLoc = target2.getFirstFocalKeyline().loc;
 

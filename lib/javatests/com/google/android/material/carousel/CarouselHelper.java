@@ -117,6 +117,14 @@ class CarouselHelper {
     layoutManager.waitForScroll(3L);
   }
 
+  static void scrollVerticallyBy(
+      RecyclerView recyclerView, WrappedCarouselLayoutManager layoutManager, int dy)
+      throws Throwable {
+    layoutManager.expectScrolls(1);
+    recyclerView.scrollBy(0, dy);
+    layoutManager.waitForScroll(3L);
+  }
+
   /**
    * Handles setting the items of the adapter and waiting until the recycler view has made a layout
    * pass.
@@ -137,12 +145,48 @@ class CarouselHelper {
     layoutManager.waitForLayout(3L);
   }
 
+  /**
+   * Handles setting the orientation of the carousel and waiting until the recycler view has made a
+   * layout pass.
+   */
+  static void setVerticalOrientation(
+      RecyclerView recyclerView,
+      WrappedCarouselLayoutManager layoutManager)
+      throws Throwable {
+    layoutManager.expectLayouts(1);
+    layoutManager.setOrientation(CarouselLayoutManager.VERTICAL);
+    recyclerView.measure(
+        MeasureSpec.makeMeasureSpec(recyclerView.getMeasuredWidth(), MeasureSpec.EXACTLY),
+        MeasureSpec.makeMeasureSpec(recyclerView.getMeasuredHeight(), MeasureSpec.EXACTLY));
+    recyclerView.layout(0, 0, recyclerView.getMeasuredWidth(), recyclerView.getMeasuredHeight());
+    layoutManager.waitForLayout(3L);
+  }
+
   /** Creates a {@link Carousel} with a specified {@code width}. */
   static Carousel createCarouselWithWidth(int width) {
+    return createCarouselWithSizeAndOrientation(width, CarouselLayoutManager.HORIZONTAL);
+  }
+
+  /**
+   * Creates a {@link Carousel} with a specified {@code size} for both width and height and the
+   * specified orientation.
+   */
+  static Carousel createCarouselWithSizeAndOrientation(int size, int orientation) {
     return new Carousel() {
+
       @Override
       public int getContainerWidth() {
-        return width;
+        return size;
+      }
+
+      @Override
+      public int getContainerHeight() {
+        return size;
+      }
+
+      @Override
+      public boolean isHorizontal() {
+        return orientation == CarouselLayoutManager.HORIZONTAL;
       }
     };
   }
@@ -285,6 +329,13 @@ class CarouselHelper {
       scrollLatch.countDown();
       return scroll;
     }
+
+    @Override
+    public int scrollVerticallyBy(int dy, Recycler recycler, State state) {
+      int scroll = super.scrollVerticallyBy(dy, recycler, state);
+      scrollLatch.countDown();
+      return scroll;
+    }
   }
 
   static KeylineState getTestCenteredKeylineState() {
@@ -305,6 +356,25 @@ class CarouselHelper {
         .addKeyline(1154F, mediumMask, mediumSize)
         .addKeylineRange(1226F, smallMask, smallSize, 2)
         .addKeyline(1315F, extraSmallMask, extraSmallSize)
+        .build();
+  }
+
+  static KeylineState getTestCenteredVerticalKeylineState() {
+    // Keylines in the form small-medium-large-medium-small; the sizes of
+    // these keylines add up to default recycler view height (200).
+    float smallSize = 18F;
+    float largeSize = 100F;
+    float mediumSize = 32F;
+
+    float smallMask = getKeylineMaskPercentage(smallSize, largeSize);
+    float mediumMask = getKeylineMaskPercentage(mediumSize, largeSize);
+
+    return new KeylineState.Builder(100F)
+        .addKeyline(9F, smallMask, smallSize)
+        .addKeyline(25F, mediumMask, mediumSize)
+        .addKeyline(66F, 0F, largeSize, true)
+        .addKeyline(132F, mediumMask, mediumSize)
+        .addKeyline(157F, smallMask, smallSize)
         .build();
   }
 

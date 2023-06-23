@@ -18,6 +18,13 @@ package com.google.android.material.carousel;
 
 /** An interface that defines a widget that can be configured as a Carousel. */
 interface Carousel {
+
   /** Gets the width of the carousel container. */
   int getContainerWidth();
+
+  /** Gets the height of the carousel container. */
+  int getContainerHeight();
+
+  /** Whether or not the orientation is horizontal.  */
+  boolean isHorizontal();
 }
