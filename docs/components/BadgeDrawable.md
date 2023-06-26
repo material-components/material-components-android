@@ -76,10 +76,11 @@ can specify a `FrameLayout` to display the badge instead.
 
 ### `BadgeDrawable` Gravity Modes
 
-`BadgeDrawable` provides four pre-packaged gravity modes that control how the
-badge aligns with its anchor view. By default (`TOP_END`) badge aligns with the
-top and end edges of the anchor (with some offsets). The other options are
-`TOP_START`, `BOTTOM_START` and `BOTTOM_END`.
+`BadgeDrawable` offers two gravity modes to control how the badge aligns with
+its anchor view. By default, (`TOP_END`) badge aligns with the top and end edges
+of the anchor (with some offsets). Alternatively, you can use `TOP_START` to
+align the badge with the top and start edges of the anchor. Note that
+`BOTTOM_START` and `BOTTOM_END` are deprecated and not recommended for use.
 
 ### `BadgeDrawable` center offsets
 

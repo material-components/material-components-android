@@ -89,10 +89,6 @@
           description="Label for the option that will cause badges to be positioned at the end, above the icon. [CHAR_LIMIT=50]">Top end</string>
   <string name="cat_navigation_rail_badge_gravity_top_start"
           description="Label for the option that will cause badges to be positioned at the start, above the icon. [CHAR_LIMIT=50]">Top start</string>
-  <string name="cat_navigation_rail_badge_gravity_bottom_end"
-          description="Label for the option that will cause badges to be positioned at the end, below the icon. [CHAR_LIMIT=50]">Bottom end</string>
-  <string name="cat_navigation_rail_badge_gravity_bottom_start"
-          description="Label for the option that will cause badges to be positioned at starting, below the icon. [CHAR_LIMIT=50]">Bottom start</string>
   <string name="cat_navigation_rail_label_active_bold"
           description="Label for controlling whether the active label is bold. [CHAR_LIMIT=50]" translatable="false">Bold active label</string>
 
