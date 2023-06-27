@@ -104,7 +104,7 @@ public class CarouselLayoutManager extends LayoutManager
   /** Vertical orientation for Carousel. */
   public static final int VERTICAL = RecyclerView.VERTICAL;
 
-  @RecyclerView.Orientation private int orientation;
+  private CarouselOrientationHelper orientationHelper;
 
   /**
    * An internal object used to store and run checks on a child to be potentially added to the
@@ -145,14 +145,14 @@ public class CarouselLayoutManager extends LayoutManager
   public CarouselLayoutManager(
       @NonNull CarouselStrategy strategy, @RecyclerView.Orientation int orientation) {
     setCarouselStrategy(strategy);
-    this.orientation = orientation;
+    setOrientation(orientation);
   }
 
   @SuppressLint("UnknownNullness") // b/240775049: Cannot annotate properly
   public CarouselLayoutManager(
       Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     Properties properties = getProperties(context, attrs, defStyleAttr, defStyleRes);
-    this.orientation = properties.orientation;
+    setOrientation(properties.orientation);
     setCarouselStrategy(new MultiBrowseCarouselStrategy());
   }
 
@@ -422,24 +422,9 @@ public class CarouselLayoutManager extends LayoutManager
   private void addAndLayoutView(View child, int index, ChildCalculations calculations) {
     float halfItemSize = currentKeylineState.getItemSize() / 2F;
     addView(child, index);
-    int left;
-    int top;
-    int bottom;
-    int right;
     int start = (int) (calculations.offsetCenter - halfItemSize);
     int end = (int) (calculations.offsetCenter + halfItemSize);
-    if (isHorizontal()) {
-      left = start;
-      top = getParentTop();
-      right = end;
-      bottom = getParentBottom();
-    } else {
-      left = getParentLeft();
-      top = start;
-      right = getParentRight();
-      bottom = end;
-    }
-    layoutDecoratedWithMargins(child, left, top, right, bottom);
+    orientationHelper.layoutDecoratedWithMargins(child, start, end);
     updateChildMaskForLocation(child, calculations.center, calculations.range);
   }
 
@@ -463,7 +448,7 @@ public class CarouselLayoutManager extends LayoutManager
 
   @Override
   public boolean isHorizontal() {
-    return orientation == HORIZONTAL;
+    return orientationHelper.orientation == HORIZONTAL;
   }
 
   /**
@@ -765,9 +750,7 @@ public class CarouselLayoutManager extends LayoutManager
       // has scrolled in the end-to-end layout. Then use that value calculate what would be a
       // Keyline#locOffset.
       LayoutParams lp = (LayoutParams) child.getLayoutParams();
-      float marginMask =
-          (isHorizontal() ? (lp.rightMargin + lp.leftMargin) : (lp.topMargin + lp.bottomMargin))
-              / currentKeylineState.getItemSize();
+      float marginMask = orientationHelper.getMaskMargins(lp) / currentKeylineState.getItemSize();
       float outOfBoundOffset =
           (childCenterLocation - range.rightOrBottom.loc)
               * (1F - range.rightOrBottom.mask + marginMask);
@@ -826,10 +809,7 @@ public class CarouselLayoutManager extends LayoutManager
     float maskWidth = lerp(0F, childWidth / 2F, 0F, 1F, maskProgress);
     float maskHeight = lerp(0F, childHeight / 2F, 0F, 1F, maskProgress);
 
-    RectF maskRect = new RectF(0F, maskHeight, childWidth, childHeight - maskHeight);
-    if (isHorizontal()) {
-      maskRect = new RectF(maskWidth, 0F, (childWidth - maskWidth), childHeight);
-    }
+    RectF maskRect = orientationHelper.getMaskRect(childHeight, childWidth, maskHeight, maskWidth);
 
     float offsetCenter = calculateChildOffsetCenterForLocation(child, childCenterLocation, range);
     float maskedTop = offsetCenter - (maskRect.height() / 2F);
@@ -837,53 +817,20 @@ public class CarouselLayoutManager extends LayoutManager
     float maskedLeft = offsetCenter - (maskRect.width() / 2F);
     float maskedRight = offsetCenter + (maskRect.width() / 2F);
 
+    RectF offsetMaskRect = new RectF(maskedLeft, maskedTop, maskedRight, maskedBottom);
+    RectF parentBoundsRect =
+        new RectF(getParentLeft(), getParentTop(), getParentRight(), getParentBottom());
     // If the carousel is a CONTAINED carousel, ensure the mask collapses against the side of the
     // container instead of bleeding and being clipped by the RecyclerView's bounds.
     // Only do this if there is only one side of the mask that is out of bounds; if
     // both sides are out of bounds on the same side, then the whole mask is out of view.
     if (carouselStrategy.isContained()) {
-      if (isHorizontal()) {
-        if (maskedLeft < getParentLeft() && maskedRight > getParentLeft()) {
-          float diff = getParentLeft() - maskedLeft;
-          maskRect.left += diff;
-          maskedLeft += diff;
-        }
-        if (maskedRight > getParentRight() && maskedLeft < getParentRight()) {
-          float diff = maskedRight - getParentRight();
-          maskRect.right = max(maskRect.right - diff, maskRect.left);
-          maskedRight = max(maskedRight - diff, maskedLeft);
-        }
-      } else {
-        if (maskedTop < getParentTop() && maskedBottom > getParentTop()) {
-          float diff = getParentTop() - maskedTop;
-          maskRect.top += diff;
-          maskedTop += diff;
-        }
-        if (maskedBottom > getParentBottom() && maskedTop < getParentBottom()) {
-          float diff = maskedBottom - getParentBottom();
-          maskRect.bottom = max(maskRect.bottom - diff, maskRect.top);
-          maskedBottom = max(maskedBottom - diff, maskedTop);
-        }
-      }
+      orientationHelper.containMaskWithinBounds(maskRect, offsetMaskRect, parentBoundsRect);
     }
 
     // 'Push out' any masks that are on the parent edge by rounding up/down and adding or
     // subtracting a pixel. Otherwise, the mask on the 'edge' looks like it has a width of 1 pixel.
-    if (isHorizontal()) {
-      if (maskedRight <= getParentLeft()) {
-      maskRect.right = (float) Math.floor(maskRect.right) - 1;
-      }
-      if (maskedLeft >= getParentRight()) {
-        maskRect.left = (float) Math.ceil(maskRect.left) + 1;
-      }
-    } else {
-      if (maskedBottom <= getParentTop()) {
-        maskRect.bottom = (float) Math.floor(maskRect.bottom) - 1;
-      }
-      if (maskedTop >= getParentBottom()) {
-      maskRect.top = (float) Math.ceil(maskRect.top) + 1;
-      }
-    }
+    orientationHelper.moveMaskOnEdgeOutsideBounds(maskRect, offsetMaskRect, parentBoundsRect);
     ((Maskable) child).setMaskRectF(maskRect);
   }
 
@@ -906,11 +853,11 @@ public class CarouselLayoutManager extends LayoutManager
     // Otherwise, measure the item to what it would like to be so the strategy will be given an
     // opportunity to use this desired size in making it's sizing decision.
     final float childWidthDimension =
-        keylineStateList != null && orientation == HORIZONTAL
+        keylineStateList != null && orientationHelper.orientation == HORIZONTAL
             ? keylineStateList.getDefaultState().getItemSize()
             : lp.width;
     final float childHeightDimension =
-        keylineStateList != null && orientation == VERTICAL
+        keylineStateList != null && orientationHelper.orientation == VERTICAL
             ? keylineStateList.getDefaultState().getItemSize()
             : lp.height;
     final int widthSpec =
@@ -932,41 +879,27 @@ public class CarouselLayoutManager extends LayoutManager
   }
 
   private int getParentLeft() {
-    if (isHorizontal()) {
-      return 0;
-    }
-    return getPaddingLeft();
+    return orientationHelper.getParentLeft();
   }
 
   private int getParentStart() {
-    if (isHorizontal()) {
-      return isLayoutRtl() ? getParentRight() : getParentLeft();
-    }
-    return getParentTop();
+    return orientationHelper.getParentStart();
   }
 
   private int getParentRight() {
-    int right = getWidth();
-    // If orientation is vertical, we want to subtract padding from the right.
-    if (!isHorizontal()) {
-      right -= getPaddingRight();
-    }
-    return right;
+    return orientationHelper.getParentRight();
   }
 
   private int getParentEnd() {
-    if (isHorizontal()) {
-      return isLayoutRtl() ? getParentLeft() : getParentRight();
-    }
-    return getParentBottom();
+    return orientationHelper.getParentEnd();
   }
 
   private int getParentTop() {
-    return isHorizontal() ? getPaddingTop() : 0;
+    return orientationHelper.getParentTop();
   }
 
   private int getParentBottom() {
-    return isHorizontal() ? getHeight() - getPaddingBottom() : getHeight();
+    return orientationHelper.getParentBottom();
   }
 
   @Override
@@ -990,7 +923,7 @@ public class CarouselLayoutManager extends LayoutManager
     return getContainerHeight();
   }
 
-  private boolean isLayoutRtl() {
+  boolean isLayoutRtl() {
     return isHorizontal() && getLayoutDirection() == ViewCompat.LAYOUT_DIRECTION_RTL;
   }
 
@@ -1258,13 +1191,7 @@ public class CarouselLayoutManager extends LayoutManager
     // Offset the child so its center is at offsetCenter
     super.getDecoratedBoundsWithMargins(child, boundsRect);
     updateChildMaskForLocation(child, center, range);
-    if (isHorizontal()) {
-      float actualCx = boundsRect.left + halfItemSize;
-      child.offsetLeftAndRight((int) (offsetCenter - actualCx));
-    } else {
-      float actualCy = boundsRect.top + halfItemSize;
-      child.offsetTopAndBottom((int) (offsetCenter - actualCy));
-    }
+    orientationHelper.offsetChild(child, boundsRect, halfItemSize, offsetCenter);
   }
 
   /**
@@ -1329,7 +1256,7 @@ public class CarouselLayoutManager extends LayoutManager
    */
   @RecyclerView.Orientation
   public int getOrientation() {
-    return orientation;
+    return orientationHelper.orientation;
   }
 
   /**
@@ -1344,8 +1271,8 @@ public class CarouselLayoutManager extends LayoutManager
 
     assertNotInLayoutOrScroll(null);
 
-    if (orientation != this.orientation) {
-      this.orientation = orientation;
+    if (orientationHelper == null || orientation != orientationHelper.orientation) {
+      orientationHelper = CarouselOrientationHelper.createOrientationHelper(this, orientation);
       refreshKeylineState();
     }
   }
