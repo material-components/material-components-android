@@ -28,6 +28,18 @@ public final class SchemeContentTest {
   private final MaterialDynamicColors dynamicColors = new MaterialDynamicColors();
 
   @Test
+  public void testKeyColors() {
+    SchemeContent scheme = new SchemeContent(Hct.fromInt(0xff0000ff), false, 0.0);
+
+    assertThat(dynamicColors.primaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff080CFF);
+    assertThat(dynamicColors.secondaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff656DD3);
+    assertThat(dynamicColors.tertiaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff81009F);
+    assertThat(dynamicColors.neutralPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff767684);
+    assertThat(dynamicColors.neutralVariantPaletteKeyColor().getArgb(scheme))
+        .isSameColorAs(0xff757589);
+  }
+
+  @Test
   public void lightTheme_minContrast_primary() {
     SchemeContent scheme = new SchemeContent(Hct.fromInt(0xFF0000ff), false, -1.0);
     assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xFF1218FF);

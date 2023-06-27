@@ -28,6 +28,18 @@ public final class SchemeVibrantTest {
   private final MaterialDynamicColors dynamicColors = new MaterialDynamicColors();
 
   @Test
+  public void testKeyColors() {
+    SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), false, 0.0);
+
+    assertThat(dynamicColors.primaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff080CFF);
+    assertThat(dynamicColors.secondaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff7B7296);
+    assertThat(dynamicColors.tertiaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff886C9D);
+    assertThat(dynamicColors.neutralPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff777682);
+    assertThat(dynamicColors.neutralVariantPaletteKeyColor().getArgb(scheme))
+        .isSameColorAs(0xff767685);
+  }
+
+  @Test
   public void lightTheme_minContrast_primary() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), false, -1.0);
     assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff5660ff);
@@ -174,18 +186,18 @@ public final class SchemeVibrantTest {
   @Test
   public void darkTheme_minContrast_surface() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xff12131a);
+    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xff12131c);
   }
 
   @Test
   public void darkTheme_standardContrast_surface() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, 0.0);
-    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xff12131a);
+    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xff12131c);
   }
 
   @Test
   public void darkTheme_maxContrast_surface() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xff12131a);
+    assertThat(dynamicColors.surface().getArgb(scheme)).isSameColorAs(0xff12131c);
   }
 }

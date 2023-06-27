@@ -28,6 +28,18 @@ public final class SchemeFruitSaladTest {
   private final MaterialDynamicColors dynamicColors = new MaterialDynamicColors();
 
   @Test
+  public void testKeyColors() {
+    SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), false, 0.0);
+
+    assertThat(dynamicColors.primaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff0091C0);
+    assertThat(dynamicColors.secondaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff3A7E9E);
+    assertThat(dynamicColors.tertiaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff6E72AC);
+    assertThat(dynamicColors.neutralPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff777682);
+    assertThat(dynamicColors.neutralVariantPaletteKeyColor().getArgb(scheme))
+        .isSameColorAs(0xff75758B);
+  }
+
+  @Test
   public void lightTheme_minContrast_primary() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), false, -1.0);
     assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff007ea7);

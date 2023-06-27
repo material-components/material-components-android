@@ -28,21 +28,32 @@ public final class SchemeTonalSpotTest {
   private final MaterialDynamicColors dynamicColors = new MaterialDynamicColors();
 
   @Test
+  public void testKeyColors() {
+    SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
+    assertThat(dynamicColors.primaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff6E72AC);
+    assertThat(dynamicColors.secondaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff75758B);
+    assertThat(dynamicColors.tertiaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff936B84);
+    assertThat(dynamicColors.neutralPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff77767d);
+    assertThat(dynamicColors.neutralVariantPaletteKeyColor().getArgb(scheme))
+        .isSameColorAs(0xff777680);
+  }
+
+  @Test
   public void lightTheme_minContrast_primary() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff6a6fb1);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff6c70aa);
   }
 
   @Test
   public void lightTheme_standardContrast_primary() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff545999);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff555992);
   }
 
   @Test
   public void lightTheme_maxContrast_primary() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff161a59);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff181c51);
   }
 
   @Test
@@ -60,19 +71,19 @@ public final class SchemeTonalSpotTest {
   @Test
   public void lightTheme_maxContrast_primaryContainer() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff383c7c);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff3a3e74);
   }
 
   @Test
   public void lightTheme_minContrast_onPrimaryContainer() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff5a5fa0);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff5C5F98);
   }
 
   @Test
   public void lightTheme_standardContrast_onPrimaryContainer() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff0e1253);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff11144B);
   }
 
   @Test
@@ -174,7 +185,7 @@ public final class SchemeTonalSpotTest {
   @Test
   public void darkTheme_minContrast_primary() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff6a6fb1);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff6C70AA);
   }
 
   @Test
@@ -192,13 +203,13 @@ public final class SchemeTonalSpotTest {
   @Test
   public void darkTheme_minContrast_primaryContainer() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff3c4180);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff3E4278);
   }
 
   @Test
   public void darkTheme_standardContrast_primaryContainer() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 0.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff3c4180);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff3E4278);
   }
 
   @Test
@@ -210,7 +221,7 @@ public final class SchemeTonalSpotTest {
   @Test
   public void darkTheme_minContrast_onPrimaryContainer() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffabaff7);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffadb0ef);
   }
 
   @Test
@@ -222,7 +233,7 @@ public final class SchemeTonalSpotTest {
   @Test
   public void darkTheme_maxContrast_onPrimaryContainer() {
     SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff2e3271);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff30346A);
   }
 
   @Test
