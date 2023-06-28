@@ -87,6 +87,11 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
 
     int width = view.getWidth();
     int height = view.getHeight();
+
+    if (width <= 0f || height <= 0f) {
+      return;
+    }
+
     float maxScaleXDeltaShrink = maxScaleXDistanceShrink / width;
     float maxScaleXDeltaGrow = maxScaleXDistanceGrow / width;
     float maxScaleYDelta = maxScaleYDistance / height;
@@ -112,7 +117,7 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
                 : -childView.getLeft());
         childView.setPivotY(-childView.getTop());
         float childScaleX = swipeEdgeMatchesGravity ? 1 - scaleXDelta : 1f;
-        float childScaleY = scaleX / scaleY * childScaleX;
+        float childScaleY = scaleY != 0f ? scaleX / scaleY * childScaleX : 1f;
         childView.setScaleX(childScaleX);
         childView.setScaleY(childScaleY);
       }

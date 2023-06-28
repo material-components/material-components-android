@@ -93,7 +93,11 @@
   </style>
 
   <style name="ThemeOverlay.Material3.NavigationRailView" parent="">
-    <item name="badgeStyle">@style/Widget.Material3.Badge.AdjustToBounds</item>
+    <item name="badgeStyle">@style/Widget.Material3.NavigationRailView.Badge</item>
+  </style>
+
+  <style name="Widget.Material3.NavigationRailView.Badge" parent="Widget.Material3.Badge.AdjustToBounds">
+    <item name="largeFontVerticalOffsetAdjustment">@dimen/m3_large_text_vertical_offset_adjustment</item>
   </style>
 
 </resources>

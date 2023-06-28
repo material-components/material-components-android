@@ -39,12 +39,14 @@ public class SchemeExpressive extends DynamicScheme {
         isDark,
         contrastLevel,
         TonalPalette.fromHueAndChroma(
-            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 120.0), 40.0),
+            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 240.0), 40.0),
         TonalPalette.fromHueAndChroma(
             DynamicScheme.getRotatedHue(sourceColorHct, HUES, SECONDARY_ROTATIONS), 24.0),
         TonalPalette.fromHueAndChroma(
             DynamicScheme.getRotatedHue(sourceColorHct, HUES, TERTIARY_ROTATIONS), 32.0),
-        TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 8.0),
-        TonalPalette.fromHueAndChroma(sourceColorHct.getHue(), 12.0));
+        TonalPalette.fromHueAndChroma(
+            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 15.0), 8.0),
+        TonalPalette.fromHueAndChroma(
+            MathUtils.sanitizeDegreesDouble(sourceColorHct.getHue() + 15.0), 12.0));
   }
 }

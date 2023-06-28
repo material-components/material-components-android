@@ -28,6 +28,7 @@
   <public name="badgeVerticalPadding" type="attr"/>
   <public name="horizontalOffset" type="attr"/>
   <public name="verticalOffset" type="attr"/>
+  <public name="largeFontVerticalOffsetAdjustment" type="attr"/>
   <public name="offsetAlignmentMode" type="attr"/>
   <public name="badgeWidth" type="attr"/>
   <public name="badgeWithTextWidth" type="attr"/>

@@ -56,6 +56,7 @@ import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -749,20 +750,25 @@ public class NavigationViewTest {
     ViewCompat.onInitializeAccessibilityNodeInfo(navigationMenuView, nodeInfo);
 
     CollectionInfoCompat collectionInfo = nodeInfo.getCollectionInfo();
-    assertEquals(8, collectionInfo.getRowCount());
+    assertEquals(7, collectionInfo.getRowCount());
     assertEquals(1, collectionInfo.getColumnCount());
 
     activityTestRule.runOnUiThread(
         () -> {
-          verifyItemInfo(navigationMenuView.getChildAt(0), 0, true);
-          verifyItemInfo(navigationMenuView.getChildAt(1), 1, false);
-          verifyItemInfo(navigationMenuView.getChildAt(2), 2, false);
-          verifyItemInfo(navigationMenuView.getChildAt(3), 3, false);
-          verifyItemInfo(navigationMenuView.getChildAt(4), 4, false);
+          AccessibilityNodeInfoCompat headerNodeInfo = AccessibilityNodeInfoCompat.obtain();
+          ViewCompat.onInitializeAccessibilityNodeInfo(
+              navigationMenuView.getChildAt(0), headerNodeInfo);
+          CollectionItemInfoCompat headerCollectionItemInfo =
+              headerNodeInfo.getCollectionItemInfo();
+          assertNull(headerCollectionItemInfo);
+          verifyItemInfo(navigationMenuView.getChildAt(1), 0, false);
+          verifyItemInfo(navigationMenuView.getChildAt(2), 1, false);
+          verifyItemInfo(navigationMenuView.getChildAt(3), 2, false);
+          verifyItemInfo(navigationMenuView.getChildAt(4), 3, false);
           // index 5 = separator
-          verifyItemInfo(navigationMenuView.getChildAt(6), 5, true);
-          verifyItemInfo(navigationMenuView.getChildAt(7), 6, false);
-          verifyItemInfo(navigationMenuView.getChildAt(8), 7, false);
+          verifyItemInfo(navigationMenuView.getChildAt(6), 4, true);
+          verifyItemInfo(navigationMenuView.getChildAt(7), 5, false);
+          verifyItemInfo(navigationMenuView.getChildAt(8), 6, false);
         });
   }
 

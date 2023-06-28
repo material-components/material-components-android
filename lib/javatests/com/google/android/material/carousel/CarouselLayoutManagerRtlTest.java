@@ -102,7 +102,7 @@ public class CarouselLayoutManagerRtlTest {
     scrollToPosition(recyclerView, layoutManager, 200);
 
     KeylineState leftState =
-        KeylineStateList.from(layoutManager, KeylineState.reverse(keylineState)).getLeftState();
+        KeylineStateList.from(layoutManager, KeylineState.reverse(keylineState)).getStartState();
 
     MaskableFrameLayout child =
         (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 1);

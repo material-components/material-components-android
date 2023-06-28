@@ -32,15 +32,19 @@ interface Maskable {
    * implementing view to calculate the correct rect given the mask percentage.
    *
    * @param percentage 0 when this view is fully unmasked. 1 when this view is fully masked.
+   * @deprecated {@link CarouselLayoutManager} calculates its own mask percentages.
    */
+  @Deprecated
   void setMaskXPercentage(@FloatRange(from = 0F, to = 1F) float percentage);
 
   /**
    * Gets the percentage by which this {@link View} should mask itself along the x axis.
    *
    * @return a float between 0 and 1 where 0 is fully unmasked and 1 is fully masked.
+   * @deprecated {@link CarouselLayoutManager} calculates its own mask percentages.
    */
   @FloatRange(from = 0F, to = 1F)
+  @Deprecated
   float getMaskXPercentage();
 
   /**

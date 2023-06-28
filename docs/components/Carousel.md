@@ -28,11 +28,7 @@ page.
 
 Carousel is built on top of `RecyclerView`. To learn how to use `RecyclerView` to display a list of items, please see [Create dynamic lists with RecyclerView](https://developer.android.com/develop/ui/views/layout/recyclerview).
 
-## Multi-browse carousels
-
-A multi-browse carousel allows quick browsing of many small items, like a photo thumbnail gallery. A start-aligned, multi-browse carousel is the default carousel.
-
-To turn a horizontal list into a multi-browse carousel, first wrap your `RecyclerView`'s item layout in a `MaskableFrameLayout`. `MaskableFrameLayout` is a `FrameLayout` that is able to mask (clip) itself, and its children, to a percentage of its width. When a mask is set to 0%, the the entire view is visible in its original, "unmaksed" width. As a mask approaches 100%, the edges of the view begin to crop in towards the center, leaving a narrower and narrower sliver of the original view visible. Carousel masks and unmasks items as they are scrolled across the viewport to create a stylized look and feel.
+To turn a horizontal list into a carousel, first wrap your `RecyclerView`'s item layout in a `MaskableFrameLayout`. `MaskableFrameLayout` is a `FrameLayout` that is able to mask (clip) itself, and its children, to a percentage of its width. When a mask is set to 0%, the the entire view is visible in its original, "unmasked" width. As a mask approaches 100%, the edges of the view begin to crop in towards the center, leaving a narrower and narrower sliver of the original view visible. Carousel masks and unmasks items as they are scrolled across the viewport to create a stylized look and feel.
 
 ```xml
 <com.google.android.material.carousel.MaskableFrameLayout
@@ -71,7 +67,56 @@ Next, set your `RecyclerView`s layout manager to a new `CarouselLayoutManager`.
 carouselRecyclerView.setLayoutManager(CarouselLayoutManager())
 ```
 
-These are the basic steps to create a carousel with large items at the start of the list followed by medium and small items, depending on the size of the `RecyclerView` container.
+These are the basic steps to create a carousel. The look of the carousel depends
+on which carousel strategy you are using; you can have a
+[multi-browse strategy](#multi-browse-strategy) or
+[hero strategy](#hero-strategy).
+
+## Multi-browse strategy
+
+![A contained, multi-browse Carousel](assets/carousel/multibrowse.png)
+
+A multi-browse strategy allows quick browsing of many small items, like a photo
+thumbnail gallery. A start-aligned, multi-browse strategy is the default
+strategy for the carousel.
+
+With a multi-browse strategy, large items are at the start of the list followed
+by medium and small items, depending on the size of the `RecyclerView`
+container.
+
+You can use the multi-browse strategy by passing in no arguments to the
+CarouselLayoutManager constructor: `new CarouselLayoutManager()`.
+
+## Hero strategy
+
+![A contained, hero Carousel](assets/carousel/hero.png)
+
+A hero strategy highlights large content, like movies and other media, for more
+considered browsing and selection. It draws attention and focus to a main
+carousel item while hinting at the next item in line.
+
+With a hero strategy, typically there is one large item is at the start of the
+list followed by a small item. When there is one large item, the large item
+takes up the entire size of the `RecyclerView` container, save some space for
+the small item.
+
+There may be more than one large item depending on the dimensions of the
+carousel. On a horizontal carousel, the width of a large item will maximally be
+twice its height, and vice versa for vertical carousels. More large items are
+added when the maximum large item size has been reached. For example, horizontal
+carousels with `match_parent` as the width will have more and more large items
+as the screen size grows.
+
+You can use the hero strategy by passing in the strategy to the
+CarouselLayoutManager constructor: `new CarouselLayoutManager(new
+HeroStrategy())`.
+
+With the hero strategy, it is recommended to use the `CarouselSnapHelper` to snap to the nearest item like so:
+
+```
+SnapHelper snapHelper = new CarouselSnapHelper();
+snapHelper.attachToRecyclerView(carouselRecyclerView);
+```
 
 ## Customizing carousel
 

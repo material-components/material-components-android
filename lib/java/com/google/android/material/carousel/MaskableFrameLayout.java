@@ -114,8 +114,11 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
    * Sets the percentage by which this {@link View} masks by along the x axis.
    *
    * @param percentage 0 when this view is fully unmasked. 1 when this view is fully masked.
+   * @deprecated This is no longer used as {@link CarouselLayoutManager} calculates its own mask
+   *     percentages.
    */
   @Override
+  @Deprecated
   public void setMaskXPercentage(float percentage) {
     percentage = MathUtils.clamp(percentage, 0F, 1F);
     if (maskXPercentage != percentage) {
@@ -142,8 +145,11 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
    * Gets the percentage by which this {@link View} is masked by along the x axis.
    *
    * @return a float between 0 and 1 where 0 is fully unmasked and 1 is fully masked.
+   * @deprecated This is no longer used as {@link CarouselLayoutManager} calculates its own mask
+   *     percentages.
    */
   @Override
+  @Deprecated
   public float getMaskXPercentage() {
     return maskXPercentage;
   }

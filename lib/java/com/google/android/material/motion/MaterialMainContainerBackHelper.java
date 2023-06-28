@@ -115,6 +115,10 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
       float progress, boolean leftSwipeEdge, float touchY, float collapsedCornerSize) {
     float width = view.getWidth();
     float height = view.getHeight();
+    if (width <= 0f || height <= 0f) {
+      return;
+    }
+
     float scale = lerp(1, MIN_SCALE, progress);
 
     float availableHorizontalSpace = max(0, (width - MIN_SCALE * width) / 2 - minEdgeGap);

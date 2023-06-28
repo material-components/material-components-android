@@ -50,8 +50,6 @@ public class NavigationRailDemoFragment extends DemoFragment {
       new int[] {
         BadgeDrawable.TOP_END,
         BadgeDrawable.TOP_START,
-        BadgeDrawable.BOTTOM_END,
-        BadgeDrawable.BOTTOM_START
       };
 
   private int numVisibleChildren = 3;

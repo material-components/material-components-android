@@ -73,6 +73,10 @@ public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelp
 
     float width = view.getWidth();
     float height = view.getHeight();
+    if (width <= 0f || height <= 0f) {
+      return;
+    }
+
     float maxScaleXDelta = maxScaleXDistance / width;
     float maxScaleYDelta = maxScaleYDistance / height;
     float scaleXDelta = AnimationUtils.lerp(0, maxScaleXDelta, progress);
@@ -89,7 +93,7 @@ public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelp
         View childView = viewGroup.getChildAt(i);
         // Preserve the original aspect ratio and container alignment of the child content.
         childView.setPivotY(-childView.getTop());
-        childView.setScaleY(scaleX / scaleY);
+        childView.setScaleY(scaleY != 0f ? scaleX / scaleY : 1f);
       }
     }
   }

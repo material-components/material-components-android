@@ -66,13 +66,16 @@ public class CarouselSnapHelper extends SnapHelper {
       return new int[] {0, 0};
     }
 
-    int offset = 0;
+    int offset =
+        distanceToFirstFocalKeyline(view, (CarouselLayoutManager) layoutManager, partialSnap);
     if (layoutManager.canScrollHorizontally()) {
-      offset =
-          distanceToFirstFocalKeyline(view, (CarouselLayoutManager) layoutManager, partialSnap);
+      return new int[] {offset, 0};
     }
-    // TODO(b/279088745): Implement snap helper for vertical scrolling.
-    return new int[] {offset, 0};
+
+    if (layoutManager.canScrollVertically()) {
+      return new int[] {0, offset};
+    }
+    return new int[] {0, 0};
   }
 
   private int distanceToFirstFocalKeyline(
@@ -84,11 +87,7 @@ public class CarouselSnapHelper extends SnapHelper {
   @Nullable
   @Override
   public View findSnapView(LayoutManager layoutManager) {
-    // TODO(b/279088745): Implement snap helper for vertical scrolling.
-    if (layoutManager.canScrollHorizontally()) {
-      return findViewNearestFirstKeyline(layoutManager);
-    }
-    return null;
+    return findViewNearestFirstKeyline(layoutManager);
   }
 
   /**

@@ -19,7 +19,5 @@
   <string-array name="cat_bottom_nav_badge_gravity_titles">
     <item>@string/cat_bottom_nav_badge_gravity_top_end</item>
     <item>@string/cat_bottom_nav_badge_gravity_top_start</item>
-    <item>@string/cat_bottom_nav_badge_gravity_bottom_end</item>
-    <item>@string/cat_bottom_nav_badge_gravity_bottom_start</item>
   </string-array>
 </resources>

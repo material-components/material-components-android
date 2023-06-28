@@ -44,6 +44,37 @@ public final class MaterialDynamicColors {
     return s.isDark ? surfaceBright() : surfaceDim();
   }
 
+  // Compatibility Keys Colors for Android
+  @NonNull
+  public DynamicColor primaryPaletteKeyColor() {
+    return DynamicColor.fromPalette(
+        (s) -> s.primaryPalette, (s) -> s.primaryPalette.getKeyColor().getTone());
+  }
+
+  @NonNull
+  public DynamicColor secondaryPaletteKeyColor() {
+    return DynamicColor.fromPalette(
+        (s) -> s.secondaryPalette, (s) -> s.secondaryPalette.getKeyColor().getTone());
+  }
+
+  @NonNull
+  public DynamicColor tertiaryPaletteKeyColor() {
+    return DynamicColor.fromPalette(
+        (s) -> s.tertiaryPalette, (s) -> s.tertiaryPalette.getKeyColor().getTone());
+  }
+
+  @NonNull
+  public DynamicColor neutralPaletteKeyColor() {
+    return DynamicColor.fromPalette(
+        (s) -> s.neutralPalette, (s) -> s.neutralPalette.getKeyColor().getTone());
+  }
+
+  @NonNull
+  public DynamicColor neutralVariantPaletteKeyColor() {
+    return DynamicColor.fromPalette(
+        (s) -> s.neutralVariantPalette, (s) -> s.neutralVariantPalette.getKeyColor().getTone());
+  }
+
   @NonNull
   public DynamicColor background() {
     return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> s.isDark ? 6.0 : 98.0);
@@ -126,13 +157,28 @@ public final class MaterialDynamicColors {
   @NonNull
   public DynamicColor outline() {
     return DynamicColor.fromPalette(
-        (s) -> s.neutralVariantPalette, (s) -> 50.0, this::highestSurface);
+        (s) -> s.neutralVariantPalette, (s) -> s.isDark ? 60.0 : 50.0, this::highestSurface);
   }
 
   @NonNull
   public DynamicColor outlineVariant() {
     return DynamicColor.fromPalette(
         (s) -> s.neutralVariantPalette, (s) -> s.isDark ? 30.0 : 80.0, this::highestSurface);
+  }
+
+  @NonNull
+  public DynamicColor shadow() {
+    return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> 0.0);
+  }
+
+  @NonNull
+  public DynamicColor scrim() {
+    return DynamicColor.fromPalette((s) -> s.neutralPalette, (s) -> 0.0);
+  }
+
+  @NonNull
+  public DynamicColor surfaceTint() {
+    return DynamicColor.fromPalette((s) -> s.primaryPalette, (s) -> s.isDark ? 80.0 : 40.0);
   }
 
   @NonNull

@@ -264,8 +264,14 @@ public final class BadgeState {
     currentState.verticalOffsetWithText =
         storedState.verticalOffsetWithText == null
             ? a.getDimensionPixelOffset(
-                R.styleable.Badge_verticalOffsetWithText, currentState.verticalOffsetWithoutText)
+            R.styleable.Badge_verticalOffsetWithText, currentState.verticalOffsetWithoutText)
             : storedState.verticalOffsetWithText;
+
+    currentState.largeFontVerticalOffsetAdjustment =
+        storedState.largeFontVerticalOffsetAdjustment == null
+            ? a.getDimensionPixelOffset(
+            R.styleable.Badge_largeFontVerticalOffsetAdjustment, 0)
+            : storedState.largeFontVerticalOffsetAdjustment;
 
     currentState.additionalHorizontalOffset =
         storedState.additionalHorizontalOffset == null ? 0 : storedState.additionalHorizontalOffset;
@@ -522,6 +528,16 @@ public final class BadgeState {
   }
 
   @Dimension(unit = Dimension.PX)
+  int getLargeFontVerticalOffsetAdjustment() {
+    return currentState.largeFontVerticalOffsetAdjustment;
+  }
+
+  void setLargeFontVerticalOffsetAdjustment(@Dimension(unit = Dimension.PX) int offsetAdjustment) {
+    overridingState.largeFontVerticalOffsetAdjustment = offsetAdjustment;
+    currentState.largeFontVerticalOffsetAdjustment = offsetAdjustment;
+  }
+
+  @Dimension(unit = Dimension.PX)
   int getAdditionalHorizontalOffset() {
     return currentState.additionalHorizontalOffset;
   }
@@ -662,6 +678,9 @@ public final class BadgeState {
     @Dimension(unit = Dimension.PX)
     private Integer additionalVerticalOffset;
 
+    @Dimension(unit = Dimension.PX)
+    private Integer largeFontVerticalOffsetAdjustment;
+
     private Boolean autoAdjustToWithinGrandparentBounds;
 
     public State() {}
@@ -690,6 +709,7 @@ public final class BadgeState {
       verticalOffsetWithoutText = (Integer) in.readSerializable();
       horizontalOffsetWithText = (Integer) in.readSerializable();
       verticalOffsetWithText = (Integer) in.readSerializable();
+      largeFontVerticalOffsetAdjustment = (Integer) in.readSerializable();
       additionalHorizontalOffset = (Integer) in.readSerializable();
       additionalVerticalOffset = (Integer) in.readSerializable();
       isVisible = (Boolean) in.readSerializable();
@@ -744,6 +764,7 @@ public final class BadgeState {
       dest.writeSerializable(verticalOffsetWithoutText);
       dest.writeSerializable(horizontalOffsetWithText);
       dest.writeSerializable(verticalOffsetWithText);
+      dest.writeSerializable(largeFontVerticalOffsetAdjustment);
       dest.writeSerializable(additionalHorizontalOffset);
       dest.writeSerializable(additionalVerticalOffset);
       dest.writeSerializable(isVisible);

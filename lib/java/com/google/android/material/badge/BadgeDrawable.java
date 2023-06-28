@@ -30,6 +30,7 @@ import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,9 +48,11 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.XmlRes;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -114,14 +117,16 @@ import java.util.Locale;
  * </pre>
  *
  * <p>By default, {@code BadgeDrawable} is aligned to the top and end edges of its anchor view (with
- * some offsets). Call {@link #setBadgeGravity(int)} to change it to one of the other supported
- * modes. To adjust the badge's offsets w.r.t. the anchor's center, use {@link
+ * some offsets). Call {@link #setBadgeGravity(int)} to change it to {@link #TOP_START}, the other
+ * supported mode. To adjust the badge's offsets w.r.t. the anchor's center, use {@link
  * BadgeDrawable#setHorizontalOffset(int)}, {@link BadgeDrawable#setVerticalOffset(int)}
  *
  * <p>Note: This is still under development and may not support the full range of customization
  * Material Android components generally support (e.g. themed attributes).
  */
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
+
+  private static final String TAG = "Badge";
 
   /** Position the badge can be set to. */
   @IntDef({
@@ -139,11 +144,21 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   /** The badge is positioned along the top and start edges of its anchor view */
   public static final int TOP_START = Gravity.TOP | Gravity.START;
 
-  /** The badge is positioned along the bottom and end edges of its anchor view */
-  public static final int BOTTOM_END = Gravity.BOTTOM | Gravity.END;
+  /**
+   * The badge is positioned along the bottom and end edges of its anchor view
+   *
+   * @deprecated Bottom badge gravities are deprecated in favor of top gravities; use {@link
+   *     #TOP_START} or {@link #TOP_END} instead.
+   */
+  @Deprecated public static final int BOTTOM_END = Gravity.BOTTOM | Gravity.END;
 
-  /** The badge is positioned along the bottom and start edges of its anchor view */
-  public static final int BOTTOM_START = Gravity.BOTTOM | Gravity.START;
+  /**
+   * The badge is positioned along the bottom and start edges of its anchor view
+   *
+   * @deprecated Bottom badge gravities are deprecated in favor of top gravities; use {@link
+   *     #TOP_START} or {@link #TOP_END} instead.
+   */
+  @Deprecated public static final int BOTTOM_START = Gravity.BOTTOM | Gravity.START;
 
   @StyleRes private static final int DEFAULT_STYLE = R.style.Widget_MaterialComponents_Badge;
   @AttrRes private static final int DEFAULT_THEME_ATTR = R.attr.badgeStyle;
@@ -186,6 +201,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   /** A value to indicate that badge content should not be truncated. */
   public static final int BADGE_CONTENT_NOT_TRUNCATED = -2;
+
+  /** The font scale threshold to changing the vertical offset of the badge. **/
+  private static final float FONT_SCALE_THRESHOLD = .3F;
 
   @NonNull private final WeakReference<Context> contextRef;
   @NonNull private final MaterialShapeDrawable shapeDrawable;
@@ -659,9 +677,13 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   /**
    * Sets this badge's gravity with respect to its anchor view.
    *
-   * @param gravity Constant representing one of 4 possible {@link BadgeGravity} values.
+   * @param gravity Constant representing one of the possible {@link BadgeGravity} values. There are
+   *     two recommended gravities: {@link #TOP_START} and {@link #TOP_END}.
    */
   public void setBadgeGravity(@BadgeGravity int gravity) {
+    if (gravity == BOTTOM_START || gravity == BOTTOM_END) {
+      Log.w(TAG, "Bottom badge gravities are deprecated; please use a top gravity instead.");
+    }
     if (state.getBadgeGravity() != gravity) {
       state.setBadgeGravity(gravity);
       onBadgeGravityUpdated();
@@ -1010,6 +1032,29 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /**
+   * Sets how much (in pixels) to vertically move this badge away the center of its anchor when this
+   * badge has text and the font scale is at max size. This is in conjunction with the vertical
+   * offset with text.
+   *
+   * @param px how much to move the badge's vertical offset away from the center by when the font is
+   *     large.
+   */
+  public void setLargeFontVerticalOffsetAdjustment(@Px int px) {
+    state.setLargeFontVerticalOffsetAdjustment(px);
+    updateCenterAndBounds();
+  }
+
+  /**
+   * Returns how much (in pixels) this badge is being vertically moved away the center of its
+   * anchor when the badge has text and the font scale is at max. Note that this is not the total
+   * vertical offset.
+   */
+  @Px
+  public int getLargeFontVerticalOffsetAdjustment() {
+    return state.getLargeFontVerticalOffsetAdjustment();
+  }
+
+  /**
    * Sets how much (in pixels) more (in addition to {@code savedState.verticalOffset}) to vertically
    * move this badge towards the center of its anchor. Currently used to adjust the placement of
    * badges on toolbar items.
@@ -1165,10 +1210,22 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private int getTotalVerticalOffsetForState() {
-    int vOffset =
-        hasBadgeContent()
-            ? state.getVerticalOffsetWithText()
-            : state.getVerticalOffsetWithoutText();
+    int vOffset = state.getVerticalOffsetWithoutText();
+    if (hasBadgeContent()) {
+      vOffset = state.getVerticalOffsetWithText();
+      Context context = contextRef.get();
+      if (context != null) {
+        float progress =
+            AnimationUtils.lerp(0F, 1F,
+                FONT_SCALE_THRESHOLD, 1F, MaterialResources.getFontScale(context) - 1F);
+        vOffset =
+            AnimationUtils.lerp(
+                vOffset, vOffset - state.getLargeFontVerticalOffsetAdjustment(), progress);
+      }
+    }
+
+
+
     // If the offset alignment mode is at the edge of the anchor, we want to move the badge
     // so that its origin is at the edge.
     if (state.offsetAlignmentMode == OFFSET_ALIGNMENT_MODE_EDGE) {

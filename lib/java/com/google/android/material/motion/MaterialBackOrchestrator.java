@@ -123,11 +123,17 @@ public final class MaterialBackOrchestrator {
 
         @Override
         public void onBackStarted(@NonNull BackEvent backEvent) {
+          if (!isListeningForBackCallbacks()) {
+            return;
+          }
           backHandler.startBackProgress(new BackEventCompat(backEvent));
         }
 
         @Override
         public void onBackProgressed(@NonNull BackEvent backEvent) {
+          if (!isListeningForBackCallbacks()) {
+            return;
+          }
           backHandler.updateBackProgress(new BackEventCompat(backEvent));
         }
 
@@ -138,6 +144,9 @@ public final class MaterialBackOrchestrator {
 
         @Override
         public void onBackCancelled() {
+          if (!isListeningForBackCallbacks()) {
+            return;
+          }
           backHandler.cancelBackProgress();
         }
       };
@@ -148,6 +157,10 @@ public final class MaterialBackOrchestrator {
   private static class Api33BackCallbackDelegate implements BackCallbackDelegate {
 
     @Nullable private OnBackInvokedCallback onBackInvokedCallback;
+
+    boolean isListeningForBackCallbacks() {
+      return onBackInvokedCallback != null;
+    }
 
     @DoNotInline
     @Override

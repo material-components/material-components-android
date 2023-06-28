@@ -92,6 +92,11 @@
          badge has text. If this is not defined, it will default to
          verticalOffset's value. -->
     <attr name="verticalOffsetWithText" format="dimension"/>
+    <!-- How much to move the verticalOffsetWithText away from the center by
+         when the badge has text and the font is large. When the font is large,
+         we may want to shift the badge away from the center for more readability. This
+         attribute determines how much to shift the normal vertical offset by. -->
+    <attr name="largeFontVerticalOffsetAdjustment" format="dimension"/>
     <!-- Automatically move the badge so it is within the anchor view's
          grandparent's bounds. -->
     <attr name="autoAdjustToWithinGrandparentBounds" format="boolean"/>

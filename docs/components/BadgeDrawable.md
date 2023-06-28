@@ -76,10 +76,11 @@ can specify a `FrameLayout` to display the badge instead.
 
 ### `BadgeDrawable` Gravity Modes
 
-`BadgeDrawable` provides four pre-packaged gravity modes that control how the
-badge aligns with its anchor view. By default (`TOP_END`) badge aligns with the
-top and end edges of the anchor (with some offsets). The other options are
-`TOP_START`, `BOTTOM_START` and `BOTTOM_END`.
+`BadgeDrawable` offers two gravity modes to control how the badge aligns with
+its anchor view. By default, (`TOP_END`) badge aligns with the top and end edges
+of the anchor (with some offsets). Alternatively, you can use `TOP_START` to
+align the badge with the top and start edges of the anchor. Note that
+`BOTTOM_START` and `BOTTOM_END` are deprecated and not recommended for use.
 
 ### `BadgeDrawable` center offsets
 
@@ -90,21 +91,22 @@ center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
 
 ### `BadgeDrawable` Attributes
 
-| Feature               | Relevant attributes                                                                                                                                      |
-|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Color                 | `app:backgroundColor` <br> `app:badgeTextColor`                                                                                                          |
-| Width                 | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                                                           |
-| Height                | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                                                         |
-| Shape                 | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay` |
-| Label                 | `app:badgeText` (for text) <br> `app:number` (for numbers)                                                                                               |
-| Label Length          | `app:maxCharacterCount` (for all text) <br> `app:maxNumber` (for numbers only)                                                                           |
-| Label Text Color      | `app:badgeTextColor`                                                                                                                                     |
-| Label Text Appearance | `app:badgeTextAppearance`                                                                                                                                |
-| Badge Gravity         | `app:badgeGravity`                                                                                                                                       |
-| Offset Alignment      | `app:offsetAlignmentMode`                                                                                                                                |
-| Horizontal Padding    | `app:badgeWidePadding`                                                                                                                                   |
-| Vertical Padding      | `app:badgeVerticalPadding`                                                                                                                               |
-| Auto Adjust           | `app:autoAdjustToWithinGrandparentBounds`                                                                                                                |
+| Feature                   | Relevant attributes                                                                                                                                      |
+|-----------------------    |----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Color                     | `app:backgroundColor` <br> `app:badgeTextColor`                                                                                                          |
+| Width                     | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                                                           |
+| Height                    | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                                                         |
+| Shape                     | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay` |
+| Label                     | `app:badgeText` (for text) <br> `app:number` (for numbers)                                                                                               |
+| Label Length              | `app:maxCharacterCount` (for all text) <br> `app:maxNumber` (for numbers only)                                                                           |
+| Label Text Color          | `app:badgeTextColor`                                                                                                                                     |
+| Label Text Appearance     | `app:badgeTextAppearance`                                                                                                                                |
+| Badge Gravity             | `app:badgeGravity`                                                                                                                                       |
+| Offset Alignment          | `app:offsetAlignmentMode`                                                                                                                                |
+| Horizontal Padding        | `app:badgeWidePadding`                                                                                                                                   |
+| Vertical Padding          | `app:badgeVerticalPadding`                                                                                                                               |
+| Large Font Vertical Offset| `app:largeFontVerticalOffsetAdjustment`                                                                                                                  |
+| Auto Adjust               | `app:autoAdjustToWithinGrandparentBounds`                                                                                                                |
 
 **Note:** If both `app:badgeText` and `app:number` are specified, the badge label will be `app:badgeText`.
 
