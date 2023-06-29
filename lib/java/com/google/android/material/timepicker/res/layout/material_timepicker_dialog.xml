@@ -35,25 +35,18 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" />
 
-  <androidx.constraintlayout.widget.Barrier
-    android:id="@+id/barrier"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:barrierDirection="bottom"
-    app:barrierMargin="@dimen/material_timepicker_dialog_buttons_margin_top"
-    app:constraint_referenced_ids="material_textinput_timepicker, material_timepicker_view" />
-
   <com.google.android.material.timepicker.TimePickerView
     android:id="@+id/material_timepicker_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="@dimen/material_clock_face_margin_top"
-    android:layout_marginBottom="24dp"
+    android:layout_marginBottom="@dimen/material_clock_face_margin_bottom"
     android:layout_marginLeft="24dp"
     android:layout_marginRight="24dp"
     android:visibility="gone"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/material_timepicker_mode_button"
     app:layout_constraintTop_toTopOf="parent" />
 
   <ViewStub
@@ -63,11 +56,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="44dp"
-    android:layout_marginBottom="24dp"
+    android:layout_marginBottom="@dimen/material_clock_face_margin_bottom"
     android:layout_marginLeft="24dp"
     android:layout_marginRight="24dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/material_timepicker_mode_button"
     app:layout_constraintTop_toTopOf="parent" />
 
   <com.google.android.material.button.MaterialButton
@@ -77,7 +71,7 @@
     android:layout_height="wrap_content"
     android:layout_marginStart="12dp"
     app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/barrier" />
+    app:layout_constraintBottom_toBottomOf="parent" />
 
   <Button
     android:id="@+id/material_timepicker_cancel_button"

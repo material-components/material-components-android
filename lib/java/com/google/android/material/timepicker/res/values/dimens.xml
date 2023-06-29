@@ -25,7 +25,7 @@
   <dimen name="material_clock_period_toggle_vertical_gap">12dp</dimen>
   <dimen name="material_clock_face_margin_top">44dp</dimen>
   <dimen name="clock_face_margin_start">64dp</dimen>
-  <dimen name="material_timepicker_dialog_buttons_margin_top">24dp</dimen>
+  <dimen name="material_clock_face_margin_bottom">24dp</dimen>
   <dimen name="material_clock_hand_stroke_width">2dp</dimen>
   <dimen name="material_clock_hand_padding">4dp</dimen>
   <dimen name="material_clock_hand_center_dot_radius">4dp</dimen>
