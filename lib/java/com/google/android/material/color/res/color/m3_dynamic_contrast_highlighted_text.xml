@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,8 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
-  <style name="ThemeOverlay.Material3.DynamicColors.DayNight" parent="ThemeOverlay.Material3.DynamicColors.Dark" />
-
-  <style name="ThemeOverlay.Material3.DynamicColors.Contrast.DayNight" parent="ThemeOverlay.Material3.DynamicColors.Contrast.Dark" />
-</resources>
+<!-- Material3 alternative to textColorHighlight for dynamic light theme -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  tools:ignore="NewApi">
+  <item android:alpha="@dimen/material_emphasis_medium" android:color="@android:color/system_primary_light" />
+</selector>

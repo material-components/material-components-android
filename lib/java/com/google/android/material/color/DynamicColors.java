@@ -23,11 +23,13 @@ import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.app.UiModeManager;
 import android.content.Context;
+import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
@@ -44,6 +46,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /** Utility for applying dynamic colors to application/activities. */
 public class DynamicColors {
@@ -138,6 +141,12 @@ public class DynamicColors {
 
   private static final int USE_DEFAULT_THEME_OVERLAY = 0;
   private static final int UPDATED_NEUTRAL_PALETTE_CHROMA = 6;
+  private static final String TAG = DynamicColors.class.getSimpleName();
+
+  private static final String SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ENTRY_NAME =
+      "system_outline_variant_dark";
+
+  private static final int SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ID = 0x010600c1;
 
   private DynamicColors() {}
 
@@ -446,6 +455,11 @@ public class DynamicColors {
   }
 
   private static int getDefaultThemeOverlay(@NonNull Context context) {
+    // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public
+    // release.
+    if (isDynamicContrastAvailable(context)) {
+      return R.style.ThemeOverlay_Material3_DynamicColors_Contrast_DayNight;
+    }
     TypedArray dynamicColorAttributes =
         context.obtainStyledAttributes(DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE);
     final int theme = dynamicColorAttributes.getResourceId(0, 0);
@@ -567,5 +581,27 @@ public class DynamicColors {
     return (uiModeManager == null || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE)
         ? 0
         : uiModeManager.getContrast();
+  }
+
+  private static boolean isDynamicContrastAvailable(Context context) {
+    if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE && areSystemColorRolesDefined(context)) {
+      return true;
+    }
+    return false;
+  }
+
+  // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public release.
+  //
+  //  This is to check and make sure the last material resource defined in the android block of
+  // resources matches the resource name from app's context.
+  private static boolean areSystemColorRolesDefined(Context context) {
+    try {
+      return Objects.equals(
+          context.getResources().getResourceEntryName(SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ID),
+          SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ENTRY_NAME);
+    } catch (NotFoundException e) {
+      Log.i(TAG, SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ENTRY_NAME + " resource not found.", e);
+    }
+    return false;
   }
 }
