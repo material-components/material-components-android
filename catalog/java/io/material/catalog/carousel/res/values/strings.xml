@@ -22,6 +22,8 @@
   <string name="cat_carousel_enable_snap_label" description="The title of a switch to enable snapping to carousel items.[CHAR_LIMIT=NONE]">Enable Snap</string>
   <string name="cat_carousel_enable_fling_label" description="The title of a switch to enable the flinging gesture.[CHAR_LIMIT=NONE]">Enable fling</string>
 
+  <string name="cat_carousel_show_debug_options" description="The title of the button that shows carousel debug options.[CHAR_LIMIT=NONE]">Show debug options</string>
+
   <string name="cat_carousel_adapter_item_count_hint_label" translatable="false">Item count</string>
   <string name="cat_carousel_position_slider_label" translatable="false">Scroll position</string>
   <string name="cat_carousel_snap_switch_description" description="Content description of a switch to enable snapping.[CHAR_LIMIT=NONE]">Enable snapping to carousel items</string>
@@ -47,6 +49,7 @@
 
   <string name="cat_carousel_multi_browse_demo_title" translatable="false">Multi-browse Carousel</string>
   <string name="cat_carousel_hero_demo_title" description="Name of the hero variant demo. [CHAR_LIMIT=NONE]">Hero Carousel</string>
+  <string name="cat_carousel_fullscreen_demo_title" translatable="false">Fullscreen Carousel</string>
   <string name="cat_carousel_default_list_demo_title" translatable="false">Default List</string>
 
   <string name="cat_carousel_multi_browse_title" translatable="false">Multi-browse</string>
@@ -54,6 +57,9 @@
 
   <string name="cat_carousel_hero_title" description="Title of the hero variant demo. [CHAR_LIMIT=NONE]">Hero</string>
   <string name="cat_carousel_hero_desc" description="Description of the hero variant demo.[CHAR_LIMIT=NONE]">Hero carousels allow browsing with a focus on one main item at a time.</string>
+
+  <string name="cat_carousel_fullscreen_title" description="Title of the fullscreen variant demo. [CHAR_LIMIT=NONE]">Fullscreen</string>
+  <string name="cat_carousel_fullscreen_desc" description="Title of the fullscreen variant demo. [CHAR_LIMIT=NONE]">Fullscreen carousels allow browsing with a focus on one item at a time.</string>
 
   <string name="cat_carousel_default_title" translatable="false">Default</string>
   <string name="cat_carousel_default_desc" translatable="false">A default horizontal list.</string>
