@@ -204,7 +204,7 @@ To show a modal side sheet, instantiate a `SideSheetDialog` with the desired
 `context`:
 
 ```kt
-val sideSheetDialog = new SideSheetDialog(requireContext());
+val sideSheetDialog = SideSheetDialog(requireContext());
 ```
 
 Then, you can set the content view of the `SideSheetDialog`:
