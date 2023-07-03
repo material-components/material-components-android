@@ -30,12 +30,12 @@
     android:paddingStart="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:paddingLeft="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:paddingTop="@dimen/mtrl_calendar_header_content_padding_fullscreen"
-    android:paddingEnd="@dimen/mtrl_calendar_header_content_padding_fullscreen"
-    android:paddingRight="@dimen/mtrl_calendar_header_content_padding_fullscreen"
+    android:paddingEnd="@dimen/mtrl_calendar_content_padding_fullscreen_right"
+    android:paddingRight="@dimen/mtrl_calendar_content_padding_fullscreen_right"
     tools:ignore="Overdraw">
 
     <com.google.android.material.button.MaterialButton
-      android:id="@+id/cancel_button"
+      android:id="@+id/header_cancel_button"
       style="?attr/materialCalendarHeaderCancelButton"
       android:layout_width="@dimen/mtrl_min_touch_target_size"
       android:layout_height="@dimen/mtrl_min_touch_target_size"
@@ -77,15 +77,6 @@
         app:firstBaselineToTopHeight="@dimen/mtrl_calendar_selection_baseline_to_top_fullscreen"
         app:lineHeight="@dimen/mtrl_calendar_header_selection_line_height"/>
 
-      <Button
-        android:id="@+id/clear_button"
-        style="?attr/materialCalendarHeaderConfirmButton"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/mtrl_min_touch_target_size"
-        android:layout_gravity="end|top"
-        android:contentDescription="@string/mtrl_picker_clear"
-        android:text="@string/mtrl_picker_clear"/>
-
     </FrameLayout>
 
     <LinearLayout
@@ -94,10 +85,10 @@
       android:orientation="@integer/mtrl_calendar_header_orientation">
 
       <com.google.android.material.button.MaterialButton
-        android:id="@+id/confirm_button"
+        android:id="@+id/header_confirm_button"
         style="?attr/materialCalendarHeaderConfirmButton"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/mtrl_min_touch_target_size"
+        android:layout_height="@dimen/mtrl_calendar_action_height_fullscreen"
         android:layout_gravity="end|top"
         android:contentDescription="@string/mtrl_picker_save"
         android:text="@string/mtrl_picker_save"/>
