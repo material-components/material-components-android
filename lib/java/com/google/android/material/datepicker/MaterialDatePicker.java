@@ -174,6 +174,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
   private CheckableImageButton headerToggleButton;
   @Nullable private MaterialShapeDrawable background;
   private Button confirmButton;
+  private Button headerConfirmButton;
   private Button clearButton;
   private boolean isClearable;
   private boolean dismissOnClear;
@@ -374,6 +375,47 @@ public class MaterialDatePicker<S> extends DialogFragment {
           getContext().getResources().getText(negativeButtonContentDescriptionResId));
     }
     cancelButton.setOnClickListener(this::onNegativeButtonClick);
+
+    // In fullscreen mode we have a confirm and cancel button in the header as well
+    if (fullscreen) {
+      headerConfirmButton = root.findViewById(R.id.header_confirm_button);
+      headerConfirmButton.setEnabled(getDateSelector().isSelectionComplete());
+      headerConfirmButton.setTag(CONFIRM_BUTTON_TAG);
+      if (positiveButtonText != null) {
+        headerConfirmButton.setText(positiveButtonText);
+      } else if (positiveButtonTextResId != 0) {
+        headerConfirmButton.setText(positiveButtonTextResId);
+      }
+      headerConfirmButton.setOnClickListener(
+          new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
+                  onPositiveButtonClickListeners) {
+                listener.onPositiveButtonClick(getSelection());
+              }
+              dismiss();
+            }
+          });
+
+      Button headerCancelButton = root.findViewById(R.id.header_cancel_button);
+      headerCancelButton.setTag(CANCEL_BUTTON_TAG);
+      if (negativeButtonText != null) {
+        headerCancelButton.setText(negativeButtonText);
+      } else if (negativeButtonTextResId != 0) {
+        headerCancelButton.setText(negativeButtonTextResId);
+      }
+      headerCancelButton.setOnClickListener(
+          new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              for (View.OnClickListener listener : onNegativeButtonClickListeners) {
+                listener.onClick(v);
+              }
+              dismiss();
+            }
+          });
+    }
 
     clearButton = root.findViewById(R.id.clear_button);
     clearButton.setTag(CLEAR_BUTTON_TAG);
@@ -576,6 +618,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
           @Override
           public void onIncompleteSelectionChanged() {
             confirmButton.setEnabled(false);
+            if (fullscreen) headerConfirmButton.setEnabled(false);
             clearButton.setEnabled(false);
           }
         });
@@ -612,6 +655,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
 
   private void updateActionButtonEnabledState() {
     confirmButton.setEnabled(getDateSelector().isSelectionComplete());
+    if (fullscreen) headerConfirmButton.setEnabled(getDateSelector().isSelectionComplete());
     clearButton.setEnabled(isClearable && getDateSelector().isSelectionComplete());
   }
 
