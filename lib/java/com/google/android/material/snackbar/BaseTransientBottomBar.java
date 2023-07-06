@@ -845,7 +845,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private int getViewAbsoluteBottom() {
     int[] absoluteLocation = new int[2];
-    view.getLocationOnScreen(absoluteLocation);
+    view.getLocationInWindow(absoluteLocation);
     return absoluteLocation[1] + view.getHeight();
   }
 
