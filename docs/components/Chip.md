@@ -16,12 +16,18 @@ represent an input, attribute, or action.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using chips](#using-chips)
 *   [Assist chip](#assist-chip)
 *   [Filter chip](#filter-chip)
 *   [Input chip](#input-chip)
 *   [Suggestion chip](#suggestion-chip)
 *   [Theming chips](#theming-chips)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/chips/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/chip/package-summary)
 
 ## Using chips
 

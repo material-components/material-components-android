@@ -16,10 +16,16 @@ screens, data sets, and other interactions.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using tabs](#using-tabs)
 *   [Fixed tabs](#fixed-tabs)
 *   [Scrollable tabs](#scrollable-tabs)
 *   [Theming tabs](#theming-tabs)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/tabs/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/tabs/package-summary)
 
 ## Using tabs
 
@@ -88,6 +94,15 @@ tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
     }
 })
 ```
+
+API and source code:
+
+*   `TabLayout`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)
+*   `TabItem`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/tabs/TabItem)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabItem.java)
 
 ### Making tabs accessible
 
@@ -225,15 +240,6 @@ only tabs available.
 
 ### Fixed tabs example
 
-API and source code:
-
-*   `TabLayout`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)
-*   `TabItem`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/tabs/TabItem)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabItem.java)
-
 The following example shows a row of fixed tabs.
 
 ![Example of 3 fixed tabs.](assets/tabs/tabs_fixed.png)
@@ -276,15 +282,6 @@ Scrollable tabs are displayed without fixed widths. They are scrollable, such
 that some tabs will remain off-screen until scrolled.
 
 ### Scrollable tabs example
-
-API and source code:
-
-*   `TabLayout`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)
-*   `TabItem`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/tabs/TabItem)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabItem.java)
 
 The following example shows a row of scrollable tabs.
 

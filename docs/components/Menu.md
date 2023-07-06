@@ -16,10 +16,16 @@ temporary surfaces.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using menus](#using-menus)
 *   [Dropdown menus](#dropdown-menus)
 *   [Exposed dropdown menus](#exposed-dropdown-menus)
 *   [Theming](#theming-menus)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/menus/overview)
+*   [API reference](https://developer.android.com/reference/android/view/Menu)
 
 ## Using menus
 
@@ -97,8 +103,6 @@ context, popup, and list popup window menus), 2\.
 Dropdown menus display a list of options, triggered by an icon, button, or
 action. Their placement varies based on the element that opens them.
 
-### Dropdown menu examples
-
 API and source code:
 
 *   `Menu`
@@ -111,6 +115,8 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/android/widget/PopupMenu)
 *   `ListPopupWindow`
     *   [Class definition](https://developer.android.com/reference/android/widget/ListPopupWindow)
+
+### Dropdown menu examples
 
 #### Overflow menus
 
@@ -454,8 +460,6 @@ options. Some variations can accept user-entered input.
 [Material text fields](https://material.io/design/components/text-fields.html)
 and their usage, see the [TextInputLayout documentation](TextField.md).
 
-### Exposed dropdown menu example
-
 API and source code:
 
 *   `TextInputLayout`
@@ -466,6 +470,8 @@ API and source code:
 *   `MaterialAutoCompleteTextView`
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/MaterialAutoCompleteTextView)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/MaterialAutoCompleteTextView.java)
+
+### Exposed dropdown menu example
 
 **Note:** `MaterialComponentsViewInflater` auto-inflates
 `<AutoCompleteTextView>` to

@@ -16,10 +16,16 @@ selections from a range of values.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using sliders](#using-sliders)
 *   [Continuous slider](#continuous-slider)
 *   [Discrete slider](#discrete-slider)
 *   [Theming sliders](#theming-sliders)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/sliders/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/slider/package-summary)
 
 ## Using sliders
 
@@ -67,8 +73,15 @@ slider.addOnChangeListener { slider, value, fromUser ->
 }
 ```
 
+API and source code:
+
+*   `Slider`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/Slider)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/Slider.java)
+
 ![2 range sliders](assets/slider/slider_basic_range.png)
 
+A slider with two thumbs is called a range slider.
 Add a `RangeSlider` to a layout:
 
 ```xml
@@ -116,6 +129,12 @@ rangeSlider.addOnChangeListener { rangeSlider, value, fromUser ->
     // Responds to when slider's value is changed
 }
 ```
+
+API and source code:
+
+*   `RangeSlider`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/RangeSlider)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/RangeSlider.java)
 
 ### Making sliders accessible
 
@@ -184,18 +203,10 @@ There are two types of sliders: 1\. [Continuous slider](#continuous-slider), 2\.
 
 !["Slider examples of both continuous and discrete sliders."](assets/slider/slider_types.png)
 
-A slider with two thumbs is called a range slider.
-
 ## Continuous slider
 
 Continuous sliders allow users to make meaningful selections that don’t require
 a specific value.
-
-API and source code:
-
-*   `Slider`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/Slider)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/Slider.java)
 
 The following example shows a continuous slider.
 
@@ -215,12 +226,6 @@ In the layout:
 ```
 
 ### Continuous range slider
-
-API and source code:
-
-*   `RangeSlider`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/RangeSlider)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/RangeSlider.java)
 
 The following example shows a continuous range slider.
 
@@ -244,12 +249,6 @@ In the layout:
 Discrete sliders display a numeric value label upon pressing the thumb, which
 allows a user to input an exact value.
 
-API and source code:
-
-*   `Slider`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/Slider)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/Slider.java)
-
 The following example shows a discrete slider.
 
 !["Discrete single point slider with pressed thumb at a value of 20."](assets/slider/slider_disc.png)
@@ -263,12 +262,6 @@ In the layout:
 ```
 
 ### Discrete range slider
-
-API and source code:
-
-*   `RangeSlider`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/RangeSlider)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/RangeSlider.java)
 
 The following example shows a discrete range slider.
 

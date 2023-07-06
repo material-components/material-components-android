@@ -18,9 +18,15 @@ button.](assets/snackbar/snackbar_hero.png)
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using snackbars](#using-snackbars)
 *   [Snackbar](#snackbar)
 *   [Theming snackbars](#theming-snackbars)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/snackbar/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/snackbar/package-summary)
 
 ## Using snackbars
 

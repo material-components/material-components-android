@@ -16,12 +16,18 @@ containing supplementary content that are anchored to the bottom of the screen.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using bottom sheets](#using-bottom-sheets)
 *   [Standard bottom sheet](#standard-bottom-sheet)
 *   [Modal bottom sheet](#modal-bottom-sheet)
 *   [Anatomy and key properties](#anatomy-and-key-properties)
 *   [Predictive Back](#predictive-back)
 *   [Theming](#theming-bottom-sheets)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/bottom-sheets/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/bottomsheet/package-summary)
 
 ## Using bottom sheets
 
@@ -246,7 +252,8 @@ simultaneously viewing and interacting with both regions. They are commonly used
 to keep a feature or secondary content visible on screen when content in the
 main UI region is frequently scrolled or panned.
 
-`BottomSheetBehavior` is applied to a child of
+[`BottomSheetBehavior`](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior)
+is applied to a child of
 [CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)
 to make that child a **persistent bottom sheet**, which is a view that comes up
 from the bottom of the screen, elevated over the main content. It can be dragged
@@ -341,9 +348,9 @@ rest of the screen. They are an alternative to inline menus and simple dialogs
 on mobile devices, providing additional room for content, iconography, and
 actions.
 
-`BottomSheetDialogFragment` is a thin layer on top of the regular support
-library Fragment that renders your fragment as a **modal bottom sheet**,
-fundamentally acting as a dialog.
+[`BottomSheetDialogFragment`](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetDialogFragment)
+is a thin layer on top of the regular support library Fragment that renders your
+fragment as a **modal bottom sheet**, fundamentally acting as a dialog.
 
 Modal bottom sheets render a shadow on the content below them, to indicate that
 they are modal. If the content outside of the dialog is tapped, the bottom sheet

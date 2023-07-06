@@ -15,9 +15,15 @@ path: /catalog/time-pickers/
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using time pickers](#using-time-pickers)
 *   [Time pickers](#time-pickers)
 *   [Theming time pickers](#theming-time-pickers)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/time-pickers/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/timepicker/package-summary)
 
 ## Using time pickers
 

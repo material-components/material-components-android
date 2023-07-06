@@ -16,11 +16,17 @@ surface that allows product-specific branding and additional navigation icons.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using search components](#using-search-components)
 *   [Search Bar](#search-bar)
 *   [Search View](#search-view)
 *   [Putting it all together](#putting-it-all-together)
 *   [Predictive Back](#predictive-back)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/search/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/search/package-summary)
 
 ## Using search components
 
@@ -71,6 +77,12 @@ searchBar.setOnMenuItemClickListener(
 
 Note: `SearchBar` aims to provide a consistent search bar across all apps, so
 it does not support setting a custom background via `android:background`.
+
+API and source code:
+
+*   `SearchBar`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/search/SearchBar)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/search/SearchBar.java)
 
 ### Anatomy and key properties
 
@@ -148,11 +160,6 @@ if (searchBar.collapse(contextualToolbar, appBarLayout)) {
   return;
 }
 ```
-
-## API and source code
-
-*   [Class definition](https://developer.android.com/reference/com/google/android/material/search/SearchBar)
-*   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/search/SearchBar.java)
 
 ## Search View
 

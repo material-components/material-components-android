@@ -16,10 +16,16 @@ can contain critical information, require decisions, or involve multiple tasks.
 
 **Contents**
 
+*   [Design & API documentation](#design-api-documentation)
 *   [Using dialogs](#using-dialogs)
 *   [Basic dialog](#basic-dialog)
 *   [Full-screen dialog](#full-screen-dialog)
 *   [Theming](#theming-dialogs)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/date-pickers/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/dialog/package-summary)
 
 ## Using dialogs
 

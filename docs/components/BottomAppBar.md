@@ -20,9 +20,15 @@ revert back to the previous style.
 
 **Contents**
 
+*   [Design & API documentation](#design-api-documentation)
 *   [Using bottom app bars](#using-bottom-app-bars)
 *   [Bottom app bar](#bottom-app-bar)
 *   [Theming bottom app bars](#theming-bottom-app-bars)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/bottom-app-bar/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/bottomappbar/package-summary)
 
 ## Using bottom app bars
 

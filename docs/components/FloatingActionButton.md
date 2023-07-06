@@ -17,12 +17,18 @@ represents the primary action of a screen.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using FABs](#using-fabs)
 *   [FABs](#fabs)
 *   [Small FABs](#small-fabs)
 *   [Large FABs](#large-fabs)
 *   [Extended FABs](#extended-fabs)
 *   [Theming FABs](#theming-fabs)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/floating-action-button/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/fa/package-summary)
 
 ## Using FABs
 

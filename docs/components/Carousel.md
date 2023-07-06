@@ -15,11 +15,31 @@ Carousels contain a collection of items that can move into or out of view
 
 **Contents**
 
+*   [Design & API documentation](#design-api-documentation)
 *   [Using carousel](#using-carousel)
 *   [Multi-browse carousels](#multi-browse-carousels)
 *   [Customizing carousel](#customizing-carousel)
 
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/carousel/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/carousel/package-summary)
+
 ## Using carousel
+
+API and source code:
+
+*   `RecyclerView`
+    *   [Class definition](https://developer.android.com/reference/androidx/recyclerview/widget/RecyclerView)
+*   `CarouselLayoutManager`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/carousel/CarouselLayoutManager)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/carousel/CarouselLayoutManager.java)
+*   `CarouselStrategy`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/carousel/CarouselStrategy)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/carousel/CarouselStrategy.java)
+*   `MaskableFrameLayout`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/carousel/MaskableFrameLayout)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/carousel/MaskableFrameLayout.java)
 
 Before you can use Material carousels, you need to add a dependency on the
 Material Components for Android library. For more information, go to the
@@ -76,6 +96,12 @@ on which carousel strategy you are using; you can have a
 
 ![A contained, multi-browse Carousel](assets/carousel/multibrowse.png)
 
+API and source code:
+
+*   `MultiBrowseCarouselStrategy`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/carousel/MultiBrowseCarouselStrategy)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/carousel/MultiBrowseCarouselStrategy.java)
+
 A multi-browse strategy allows quick browsing of many small items, like a photo
 thumbnail gallery. A start-aligned, multi-browse strategy is the default
 strategy for the carousel.
@@ -130,7 +156,11 @@ The main means of changing the look of carousel is by setting the height of your
 
 ### Reacting to changes in item mask size
 
-If your `RecyclerView`'s item layout contains text or other content that needs to react to changes in the item's mask, you can listen for changes in mask size by setting an `onMaskChangedListener` on your `MaskableFrameLayout` inside your `RecyclerView.ViewHolder`.
+If your `RecyclerView`'s item layout contains text or other content that needs
+to react to changes in the item's mask, you can listen for changes in mask size
+by setting an
+[`onMaskChangedListener`](https://developer.android.com/reference/com/google/android/material/carousel/OnMaskChangedListener)
+on your `MaskableFrameLayout` inside your `RecyclerView.ViewHolder`.
 
 ```kotlin
 (viewHolder.itemView as MaskableFrameLayout).setOnMaskChangedListener(

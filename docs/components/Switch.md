@@ -21,9 +21,15 @@ as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using switches](#using-switches)
 *   [Switch](#switch)
 *   [Theming switches](#theming-switches)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/switch/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/switchmaterial/package-summary)
 
 ## Using switches
 
@@ -57,6 +63,12 @@ often used on mobile devices to enable and disable options in an options menu. A
 switch consists of a track and thumb; the thumb moves along the track to
 indicate its current state.
 
+API and source code:
+
+*   `MaterialSwitch`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/materialswitch/MaterialSwitch)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/materialswitch/MaterialSwitch.java)
+
 **Note:** Since version 1.7.0, the new `MaterialSwitch` class will replace the
 obsolete `SwitchMaterial` class. In most cases you should be able to just
 replace all `SwitchMaterial` class reference with `MaterialSwitch` to achieve
@@ -68,12 +80,6 @@ customize the new styles.
 [Theming switches (deprecated)](#theming-switches-deprecated).
 
 ### Switches example
-
-API and source code:
-
-*   `MaterialSwitch`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/materialswitch/MaterialSwitch)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/materialswitch/MaterialSwitch.java)
 
 The following example shows a list of five switches.
 

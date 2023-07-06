@@ -16,11 +16,17 @@ information and actions related to the current screen.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using top app bars](#using-top-app-bars)
 *   [Regular top app bars](#regular-top-app-bars)
 *   [Collapsing top app bar](#collapsing-top-app-bars)
 *   [Contextual action bar](#contextual-action-bar)
 *   [Theming](#theming-the-top-app-bar)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/top-app-bar/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/appbar/package-summary)
 
 ## Using top app bars
 
@@ -78,7 +84,7 @@ types can be grouped into [Collapsing top app bars](#collapsing-top-app-bars).
 
 ![Types of top app bars](assets/topappbar/topappbar_types.png)
 
-Top app bars use the following APIs and source code:
+API and source code:
 
 *   `CoordinatorLayout`
     *   [Class definition](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)

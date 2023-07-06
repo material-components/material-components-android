@@ -16,6 +16,7 @@ access to destinations in your app.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using navigation drawers](#using-navigation-drawers)
 *   [Anatomy](#anatomy)
 *   [Standard navigation drawer](#standard-navigation-drawer)
@@ -23,6 +24,11 @@ access to destinations in your app.
 *   [Bottom navigation drawer](#bottom-navigation-drawer)
 *   [Predictive Back](#predictive-back)
 *   [Theming](#theming)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/navigation-drawer/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/navigation/package-summary)
 
 ## Using navigation drawers
 
@@ -350,13 +356,13 @@ allow interaction with both screen content and the drawer at the same time. They
 can be used on tablet and desktop, but they aren’t suitable for mobile devices
 due to limited screen size.
 
-### Standard navigation drawer example
-
 API and source code:
 
 *   `NavigationView`
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/navigation/NavigationView)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/NavigationView.java)
+
+### Standard navigation drawer example
 
 The following example shows a permanently visible standard navigation drawer.
 
@@ -412,7 +418,9 @@ elevated above most of the app’s UI and don’t affect the screen’s layout g
 They are primarily used for mobile devices where screen space is limited, and
 can be replaced by standard drawers on tablet and desktop.
 
-### Modal navigation drawer example
+[DrawerLayout](https://developer.android.com/reference/androidx/drawerlayout/widget/DrawerLayout)
+is used in conjunction with NavigationDrawer to achieve the modal navigation
+drawer.
 
 API and source code:
 
@@ -421,6 +429,8 @@ API and source code:
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/NavigationView.java)
 *   `DrawerLayout`
     *   [Class definition](https://developer.android.com/reference/androidx/drawerlayout/widget/DrawerLayout)
+
+### Modal navigation drawer example
 
 The following example shows a modal navigation drawer.
 
@@ -494,110 +504,6 @@ navigationView.setNavigationItemSelectedListener { menuItem ->
 
 For more information on top app bars see the
 [documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/TopAppBar.md).
-
-## Bottom navigation drawer
-
-[Bottom navigation drawers](https://material.io/components/navigation-drawer#bottom-drawer)
-are modal drawers that are anchored to the bottom of the screen instead of the
-left or right edge. They are only used with bottom app bars.
-
-These drawers open upon tapping the navigation menu icon in the bottom app bar.
-They are only for use on mobile devices.
-
-### Bottom navigation drawer example
-
-API and source code:
-
-*   `NavigationView`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/navigation/NavigationView)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/NavigationView.java)
-*   `BottomSheetBehavior`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetBehavior.java)
-
-The following example shows a bottom navigation drawer with a bottom app bar.
-
-![2 views: screen with bottom app bar; nav drawer covering bottom with scrim
-over remaining screen.](assets/navigationdrawer/navigation_drawer_bottom.png)
-
-In the layout:
-
-```xml
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    ...
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="?attr/actionBarSize">
-
-        <!-- Screen content -->
-
-        <FrameLayout
-            android:id="@+id/scrim"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.google.android.material.navigation.NavigationView
-            ...
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/bottom_sheet_behavior"
-            app:behavior_hideable="true" />
-
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottomAppBar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:navigationIcon="@drawable/ic_menu_24dp" />
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-```
-
-In code:
-
-```kt
-val bottomSheetBehavior = BottomSheetBehavior.from(navigationView)
-bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-
-bottomAppBar.setNavigationOnClickListener {
-    bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-}
-
-navigationView.setNavigationItemSelectedListener { menuItem ->
-    // Handle menu item selected
-    menuItem.isChecked = true
-    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-    true
-}
-
-scrim.setOnClickListener {
-    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-}
-
-bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
-    override fun onSlide(bottomSheet: View, slideOffset: Float) {
-        val baseColor = Color.BLACK
-        // 60% opacity
-        val baseAlpha = ResourcesCompat.getFloat(resources, R.dimen.material_emphasis_medium)
-        // Map slideOffset from [-1.0, 1.0] to [0.0, 1.0]
-        val offset = (slideOffset - (-1f)) / (1f - (-1f)) * (1f - 0f) + 0f
-        val alpha = MathUtils.lerp(0f, 255f, offset * baseAlpha).toInt()
-        val color = Color.argb(alpha, baseColor.red, baseColor.green, baseColor.blue)
-        scrim.setBackgroundColor(color)
-    }
-    override fun onStateChanged(bottomSheet: View, newState: Int) {
-    }
-})
-```
-
-For more information on bottom app bars see the
-[documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/BottomAppBar.md).
 
 ## Predictive Back
 

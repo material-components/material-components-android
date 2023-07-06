@@ -16,10 +16,16 @@ edit text.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using text fields](#using-text-fields)
 *   [Filled text field](#filled-text-field)
 *   [Outlined text field](#outlined-text-field)
 *   [Theming](#theming-text-fields)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/text-fields/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/textfield/package-summary)
 
 ## Using text fields
 
@@ -42,6 +48,15 @@ page.
 
 </com.google.android.material.textfield.TextInputLayout>
 ```
+
+API and source code:
+
+*   `TextInputLayout`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/TextInputLayout.java)
+*   `TextInputEditText`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/TextInputEditText)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/TextInputEditText.java)
 
 **Note:** A text field is composed of a `TextInputLayout` and a
 `TextInputEditText` as a direct child. Using an `EditText` as the child might
@@ -392,15 +407,6 @@ surrounded by other content and components.
 
 ### Filled text field examples
 
-API and source code:
-
-*   `TextInputLayout`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/TextInputLayout.java)
-*   `TextInputEditText`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/TextInputEditText)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/TextInputEditText.java)
-
 The following example shows a filled text field with a label.
 
 ![Filled text field](assets/textfields/textfields_filled.png)
@@ -579,15 +585,6 @@ helps simplify the layout.
 **Note:** The outlined text field is the default style.
 
 ### Outlined text field examples
-
-API and source code:
-
-*   `TextInputLayout`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/TextInputLayout.java)
-*   `TextInputEditText`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/textfield/TextInputEditText)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/TextInputEditText.java)
 
 The following example shows an outlined text field.
 

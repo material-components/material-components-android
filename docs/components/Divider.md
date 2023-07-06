@@ -16,9 +16,15 @@ groups.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using dividers](#using-dividers)
 *   [Divider's key properties](#key-properties)
 *   [Theming dividers](#theming-dividers)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/divider/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/divider/package-summary)
 
 ## Using dividers
 

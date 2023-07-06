@@ -9,6 +9,11 @@ path: /catalog/badging/
 
 # `BadgeDrawable`
 
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/badges/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/badge/package-summary)
+
 ## Using badges
 
 Badge                                         | Badge with number                                    | Badge with a maximum character count
@@ -23,13 +28,16 @@ A `BadgeDrawable` represents dynamic information such as a number of pending
 requests in a [`BottomNavigationView`](BottomNavigation.md) or
 [`TabLayout`](Tabs.md).
 
-## Design & API Documentation
-
--   [Material Design guidelines: Bottom Navigation](https://material.io/design/components/bottom-navigation.html#behavior)
--   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/badge/BadgeDrawable.java)
--   [Class overview](https://developer.android.com/reference/com/google/android/material/badge/BadgeDrawable)
-
 ## Usage
+
+API and source code:
+
+*   `BadgeDrawable`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/badge/BadgeDrawable)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/badge/BadgeDrawable.java)
+*   `BadgeUtils`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/badge/BadgeUtils)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/badge/BadgeUtils.java)
 
 Create an instance of `BadgeDrawable` by calling `create(Context)` or
 `createFromAttributes(Context, AttributeSet, int, int)}`.

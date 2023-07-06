@@ -23,9 +23,15 @@ Use radio buttons to:
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using radio buttons](#using-radio-buttons)
 *   [Radio button](#radio-button)
 *   [Theming radio buttons](#theming-radio-buttons)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/radio-button/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/radiobutton/package-summary)
 
 ## Using radio buttons
 
@@ -59,8 +65,6 @@ buttons allow the user to select one option from a set. Use radio buttons when
 the user needs to see all available options. If available options can be
 collapsed, consider using a dropdown menu because it uses less space.
 
-### Radio buttons example
-
 API and source code:
 
 *   `MaterialRadioButton`
@@ -68,6 +72,8 @@ API and source code:
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/radiobutton/MaterialRadioButton.java)
 *   `RadioGroup`
     *   [Class definition](https://developer.android.com/reference/android/widget/RadioGroup)
+
+### Radio buttons example
 
 The following example shows a radio button group with five radio buttons.
 

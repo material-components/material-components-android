@@ -16,9 +16,15 @@ access to primary destinations in your app on tablet and desktop screens.
 
 **Contents**
 
+*   [Design & API Documentation](#design-api-documentation)
 *   [Using navigation rail](#using-navigation-rail)
 *   [Navigation rail example](#navigation-rail-example)
 *   [Theming](#theming-a-navigation-rail)
+
+## Design & API Documentation
+
+*   [Google Material3 Spec](https://material.io/components/navigation-rail/overview)
+*   [API Reference](https://developer.android.com/reference/com/google/android/material/navigationrail/package-summary)
 
 ## Using navigation rail
 
@@ -120,6 +126,12 @@ which is set to true by default. To remove this behavior, set
 bottom insets independently by using `app:paddingTopSystemWindowInsets` and
 `app:paddingBottomSystemWindowInsets`.
 
+API and source code:
+
+*   `NavigationRailView`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/navigationrail/NavigationRailView)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigationrail/NavigationRailView.java)
+
 ### Making navigation rail accessible
 
 You should set an `android:title` for each of your `menu` items so that screen
@@ -214,12 +226,6 @@ navigationRail.removeBadge(menuItemId)
 See the [`BadgeDrawable`](BadgeDrawable.md) documentation for more information.
 
 ## Navigation rail example
-
-API and source code:
-
-*   `NavigationRailView`
-    *   [Class description](https://developer.android.com/reference/com/google/android/material/navigationrail/NavigationRailView)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigationrail/NavigationRailView.java)
 
 The following example shows a navigation rail with four icons:
 
