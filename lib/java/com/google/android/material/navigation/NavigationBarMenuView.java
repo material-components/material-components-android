@@ -869,7 +869,10 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     }
     if (buttons != null) {
       for (NavigationBarItemView itemView : buttons) {
-        itemView.setBadge(this.badgeDrawables.get(itemView.getId()));
+        BadgeDrawable badge = this.badgeDrawables.get(itemView.getId());
+        if (badge != null) {
+          itemView.setBadge(badge);
+        }
       }
     }
   }
@@ -903,14 +906,11 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
   void removeBadge(int menuItemId) {
     validateMenuItemId(menuItemId);
-    BadgeDrawable badgeDrawable = badgeDrawables.get(menuItemId);
     NavigationBarItemView itemView = findItemView(menuItemId);
     if (itemView != null) {
       itemView.removeBadge();
     }
-    if (badgeDrawable != null) {
-      badgeDrawables.remove(menuItemId);
-    }
+    badgeDrawables.put(menuItemId, null);
   }
 
   private void setBadgeIfNeeded(@NonNull NavigationBarItemView child) {
