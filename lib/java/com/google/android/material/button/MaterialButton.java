@@ -112,6 +112,11 @@ import java.util.LinkedHashSet;
  *
  * <p>Specify the radius of all four corners of the button using the {@code app:cornerRadius}
  * attribute.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Button.md">component
+ * developer guidance</a> and <a href="https://material.io/components/buttons/overview">design
+ * guidelines</a>.
  */
 public class MaterialButton extends AppCompatButton implements Checkable, Shapeable {
 

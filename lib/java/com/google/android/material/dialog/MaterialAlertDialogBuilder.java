@@ -64,6 +64,11 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  *
  * <p>The type of dialog returned is still an {@link AlertDialog}; there is no specific Material
  * implementation of {@link AlertDialog}.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Dialog.md">component
+ * developer guidance</a> and <a href="https://material.io/components/dialogs/overview">design
+ * guidelines</a>.
  */
 public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
 

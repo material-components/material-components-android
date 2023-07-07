@@ -77,6 +77,11 @@ import java.util.LinkedHashSet;
  * <p>If setting a custom {@code app:buttonCompat}, make sure to also set {@code app:buttonIcon} if
  * an icon is desired. The checkbox does not support having a custom {@code app:buttonCompat} and
  * preserving the default {@code app:buttonIcon} checkmark at the same time.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Checkbox.md">component
+ * developer guidance</a> and <a href="https://material.io/components/checkbox/overview">design
+ * guidelines</a>.
  */
 public class MaterialCheckBox extends AppCompatCheckBox {
 

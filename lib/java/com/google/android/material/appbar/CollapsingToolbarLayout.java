@@ -109,13 +109,22 @@ import java.lang.annotation.RetentionPolicy;
  * view' to the Toolbar which allows us to work out the available space for the title. This can
  * interfere with any views which you add.
  *
- * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedTitleTextAppearance
- * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleTextAppearance
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/TopAppBar.md">component
+ * developer guidance</a> and <a href="https://material.io/components/top-app-bar/overview">design
+ * guidelines</a>.
+ *
+ * @attr ref
+ *     com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedTitleTextAppearance
+ * @attr ref
+ *     com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleTextAppearance
  * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_contentScrim
  * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleMargin
- * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleMarginStart
+ * @attr ref
+ *     com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleMarginStart
  * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleMarginEnd
- * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleMarginBottom
+ * @attr ref
+ *     com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleMarginBottom
  * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_statusBarScrim
  * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_toolbarId
  */

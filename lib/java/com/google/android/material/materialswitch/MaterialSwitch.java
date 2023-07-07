@@ -47,6 +47,11 @@ import com.google.android.material.internal.ViewUtils;
  * A class that creates a Material Themed Switch. This class is intended to provide a brand new
  * Switch design and replace the obsolete
  * {@link com.google.android.material.switchmaterial.SwitchMaterial} class.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Switch.md">component
+ * developer guidance</a> and <a href="https://material.io/components/switch/overview">design
+ * guidelines</a>.
  */
 public class MaterialSwitch extends SwitchCompat {
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_CompoundButton_MaterialSwitch;

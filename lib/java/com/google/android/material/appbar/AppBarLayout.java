@@ -136,8 +136,10 @@ import java.util.List;
  * &lt;/androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
  * </pre>
  *
- * @see <a href="https://material.io/components/app-bars-top#anatomy">
- *     https://material.io/components/app-bars-top#anatomy</a>
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/TopAppBar.md">component
+ * developer guidance</a> and <a href="https://material.io/components/top-app-bar/overview">design
+ * guidelines</a>.
  */
 public class AppBarLayout extends LinearLayout implements CoordinatorLayout.AttachedBehavior {
 

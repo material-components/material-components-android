@@ -123,6 +123,11 @@ import java.util.Locale;
  *
  * <p>Note: This is still under development and may not support the full range of customization
  * Material Android components generally support (e.g. themed attributes).
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/BadgeDrawable.md">component
+ * developer guidance</a> and <a href="https://material.io/components/badges/overview">design
+ * guidelines</a>.
  */
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 

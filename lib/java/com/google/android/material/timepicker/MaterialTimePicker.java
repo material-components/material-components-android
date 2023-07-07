@@ -63,7 +63,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-/** A {@link Dialog} with a clock display and a clock face to choose the time. */
+/**
+ * A {@link Dialog} with a clock display and a clock face to choose the time.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/TimePicker.md">component
+ * developer guidance</a> and <a href="https://material.io/components/time-pickers/overview">design
+ * guidelines</a>.
+ */
 public final class MaterialTimePicker extends DialogFragment implements OnDoubleTapListener {
 
   private final Set<OnClickListener> positiveButtonListeners = new LinkedHashSet<>();

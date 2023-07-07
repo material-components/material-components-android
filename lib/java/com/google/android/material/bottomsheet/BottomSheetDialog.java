@@ -65,6 +65,11 @@ import com.google.android.material.shape.MaterialShapeDrawable;
  * status bar. Padding can be applied automatically to the left, right, or bottom if any of
  * `paddingBottomSystemWindowInsets`, `paddingLeftSystemWindowInsets`, or
  * `paddingRightSystemWindowInsets` are set to true in the style.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/BottomSheet.md">component
+ * developer guidance</a> and <a
+ * href="https://material.io/components/bottom-sheets/overview">design guidelines</a>.
  */
 public class BottomSheetDialog extends AppCompatDialog {
 

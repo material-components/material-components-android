@@ -97,6 +97,11 @@ import java.util.List;
  * <p>The background color of this view defaults to the your theme's {@code colorSecondary}. If you
  * wish to change this at runtime then you can do so via {@link
  * #setBackgroundTintList(ColorStateList)}.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/FloatingActionButton.md">component
+ * developer guidance</a> and <a
+ * href="https://material.io/components/floating-action-button/overview">design guidelines</a>.
  */
 public class FloatingActionButton extends VisibilityAwareImageButton
     implements TintableBackgroundView,

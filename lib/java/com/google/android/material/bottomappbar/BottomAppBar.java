@@ -107,6 +107,11 @@ import java.util.List;
  * colorSurface}, as it is in the default style, you should set {@code materialThemeOverlay} to
  * {@code @style/ThemeOverlay.MaterialComponents.BottomAppBar.Surface}.
  *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/BottomAppBar.md">component
+ * developer guidance</a> and <a
+ * href="https://material.io/components/bottom-app-bar/overview">design guidelines</a>.
+ *
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_backgroundTint
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabAlignmentMode
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabAnchorMode

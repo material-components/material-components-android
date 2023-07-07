@@ -28,7 +28,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import com.google.android.material.sidesheet.Sheet.StableSheetState;
 
-/** Base class for {@link android.app.Dialog}s styled as a side sheet. */
+/**
+ * Base class for {@link android.app.Dialog}s styled as a side sheet.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/SideSheet.md">component
+ * developer guidance</a> and <a href="https://material.io/components/side-sheets/overview">design
+ * guidelines</a>.
+ */
 public class SideSheetDialog extends SheetDialog<SideSheetCallback> {
 
   private static final int SIDE_SHEET_DIALOG_THEME_ATTR = R.attr.sideSheetDialogTheme;

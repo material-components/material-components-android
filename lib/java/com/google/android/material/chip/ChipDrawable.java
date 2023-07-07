@@ -157,6 +157,11 @@ import java.util.Arrays;
  * closeIcon}. chipIcon and checkedIcon inherit the state of this drawable, but closeIcon contains
  * its own state that you can set with {@link #setCloseIconState(int[])}.
  *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Chip.md">component
+ * developer guidance</a> and <a href="https://material.io/components/chips/overview">design
+ * guidelines</a>.
+ *
  * @see Chip
  */
 public class ChipDrawable extends MaterialShapeDrawable

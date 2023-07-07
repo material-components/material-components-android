@@ -62,6 +62,11 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  *
  * <p>To be notified when a snackbar has been shown or dismissed, you can provide a {@link Callback}
  * via {@link BaseTransientBottomBar#addCallback(BaseCallback)}.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Snackbar.md">component
+ * developer guidance</a> and <a href="https://material.io/components/snackbar/overview">design
+ * guidelines</a>.
  */
 public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 

@@ -96,6 +96,11 @@ import com.google.android.material.resources.MaterialResources;
  *     android:contentDescription="@string/my_navigation_rail_fab_content_desc"
  *     app:srcCompat="@drawable/ic_add" /&gt;
  * </pre>
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/NavigationRail.md">component
+ * developer guidance</a> and <a
+ * href="https://material.io/components/navigation-rail/overview">design guidelines</a>.
  */
 public class NavigationRailView extends NavigationBarView {
 

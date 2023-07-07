@@ -76,6 +76,11 @@ import java.lang.annotation.RetentionPolicy;
  * to getParent() on children of the MaterialCardView, will not return the MaterialCardView itself,
  * but rather an intermediate View. If you need to access a MaterialCardView directly, set an {@code
  * android:id} and use {@link View#findViewById(int)}.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Card.md">component
+ * developer guidance</a> and <a href="https://material.io/components/cards/overview">design
+ * guidelines</a>.
  */
 public class MaterialCardView extends CardView implements Checkable, Shapeable {
 

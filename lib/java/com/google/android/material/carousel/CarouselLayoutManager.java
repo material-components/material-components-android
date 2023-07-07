@@ -66,6 +66,11 @@ import java.util.Map;
  * <p>Note that when Carousel measures and lays out items, the first item in the adapter will be
  * measured and it's desired size will be used to determine an appropriate size for all items in the
  * carousel.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Carousel.md">component
+ * developer guidance</a> and <a href="https://material.io/components/carousel/overview">design
+ * guidelines</a>.
  */
 public class CarouselLayoutManager extends LayoutManager
     implements Carousel, RecyclerView.SmoothScroller.ScrollVectorProvider {

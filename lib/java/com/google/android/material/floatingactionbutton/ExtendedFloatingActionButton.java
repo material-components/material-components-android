@@ -75,8 +75,13 @@ import java.util.List;
  * #setText(CharSequence)}.
  *
  * <p>The background color of this view defaults to the your theme's {@code colorSecondary}. If you
- * wish to change this at runtime then you can do so via
- * {@link #setBackgroundTintList(android.content.res.ColorStateList)}.
+ * wish to change this at runtime then you can do so via {@link
+ * #setBackgroundTintList(android.content.res.ColorStateList)}.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/FloatingActionButton.md">component
+ * developer guidance</a> and <a href="https://material.io/components/extended-fab/overview">design
+ * guidelines</a>.
  */
 public class ExtendedFloatingActionButton extends MaterialButton implements AttachedBehavior {
 

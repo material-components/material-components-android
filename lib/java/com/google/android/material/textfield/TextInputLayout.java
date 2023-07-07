@@ -191,6 +191,11 @@ import java.util.LinkedHashSet;
  * to {@code getParent()} on children of the TextInputLayout -- such as a TextInputEditText -- may
  * not return the TextInputLayout itself, but rather an intermediate View. If you need to access a
  * View directly, set an {@code android:id} and use {@link View#findViewById(int)}.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/TextField.md">component
+ * developer guidance</a> and <a href="https://material.io/components/text-fields/overview">design
+ * guidelines</a>.
  */
 public class TextInputLayout extends LinearLayout {
 

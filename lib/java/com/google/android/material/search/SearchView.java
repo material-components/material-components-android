@@ -123,6 +123,11 @@ import java.util.Set;
  *   &lt;/com.google.android.material.search.SearchView&gt;
  * &lt;/androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
  * </pre>
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Search.md">component
+ * developer guidance</a> and <a href="https://material.io/components/search/overview">design
+ * guidelines</a>.
  */
 @SuppressWarnings("RestrictTo")
 public class SearchView extends FrameLayout

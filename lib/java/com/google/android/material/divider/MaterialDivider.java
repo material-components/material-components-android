@@ -44,6 +44,11 @@ import com.google.android.material.shape.MaterialShapeDrawable;
  * <p>The divider will display the correct default Material colors without the use of a style flag
  * in a layout file. Make sure to set {@code android:layout_height="wrap_content"} to ensure that
  * the correct thickness is set for the divider.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Divider.md">component
+ * developer guidance</a> and <a href="https://material.io/components/divider/overview">design
+ * guidelines</a>.
  */
 public class MaterialDivider extends View {
 

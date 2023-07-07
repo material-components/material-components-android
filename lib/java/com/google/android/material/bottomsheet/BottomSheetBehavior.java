@@ -91,6 +91,11 @@ import java.util.Map;
  * <p>To send useful accessibility events, set a title on bottom sheets that are windows or are
  * window-like. For BottomSheetDialog use {@link BottomSheetDialog#setTitle(int)}, and for
  * BottomSheetDialogFragment use {@link ViewCompat#setAccessibilityPaneTitle(View, CharSequence)}.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/BottomSheet.md">component
+ * developer guidance</a> and <a
+ * href="https://material.io/components/bottom-sheets/overview">design guidelines</a>.
  */
 public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V>
     implements MaterialBackHandler {

@@ -47,6 +47,11 @@ import java.util.List;
  * <p>{@code app:minSeparation}: <b>Optional.</b> The minimum distance between two thumbs that would
  * otherwise overlap.
  *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Slider.md">component
+ * developer guidance</a> and <a href="https://material.io/components/sliders/overview">design
+ * guidelines</a>.
+ *
  * @attr ref com.google.android.material.R.styleable#RangeSlider_values
  * @attr ref com.google.android.material.R.styleable#RangeSlider_minSeparation
  */

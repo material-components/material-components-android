@@ -46,9 +46,14 @@ import com.google.android.material.internal.ThemeEnforcement;
  * accessibility support for {@link com.google.android.material.textfield.TextInputLayout}.
  *
  * <p><strong>Note:</strong> If you programmatically construct a {@link TextInputEditText} as a
- * child of a {@link TextInputLayout}, you should use {@link TextInputLayout}'s `context` to
- * create the view. This will allow {@link TextInputLayout} to pass along the appropriate styling
- * to the {@link TextInputEditText}.
+ * child of a {@link TextInputLayout}, you should use {@link TextInputLayout}'s `context` to create
+ * the view. This will allow {@link TextInputLayout} to pass along the appropriate styling to the
+ * {@link TextInputEditText}.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/TextField.md">component
+ * developer guidance</a> and <a href="https://material.io/components/text-fields/overview">design
+ * guidelines</a>.
  */
 public class TextInputEditText extends AppCompatEditText {
 

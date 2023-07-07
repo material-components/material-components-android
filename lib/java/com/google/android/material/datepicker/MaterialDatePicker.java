@@ -66,7 +66,14 @@ import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
 import java.util.LinkedHashSet;
 
-/** A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions. */
+/**
+ * A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/DatePicker.md">component
+ * developer guidance</a> and <a href="https://material.io/components/date-pickers/overview">design
+ * guidelines</a>.
+ */
 public final class MaterialDatePicker<S> extends DialogFragment {
 
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";

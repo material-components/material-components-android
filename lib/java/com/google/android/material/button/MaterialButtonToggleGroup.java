@@ -123,6 +123,11 @@ import java.util.TreeMap;
  * shapeAppearanceOverlay}, or {@code cornerRadius} attribute set on MaterialButton children such
  * that only the left-most corners of the first child and the right-most corners of the last child
  * retain their shape appearance or corner size.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Button.md">component
+ * developer guidance</a> and <a href="https://material.io/components/buttons/overview">design
+ * guidelines</a>.
  */
 public class MaterialButtonToggleGroup extends LinearLayout {
 

@@ -164,6 +164,11 @@ import java.util.Iterator;
  * &lt;/androidx.viewpager.widget.ViewPager&gt;
  * </pre>
  *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Tabs.md">component
+ * developer guidance</a> and <a href="https://material.io/components/tabs/overview">design
+ * guidelines</a>.
+ *
  * @see <a href="http://www.google.com/design/spec/components/tabs.html">Tabs</a>
  * @attr ref com.google.android.material.R.styleable#TabLayout_tabPadding
  * @attr ref com.google.android.material.R.styleable#TabLayout_tabPaddingStart

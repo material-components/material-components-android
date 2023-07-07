@@ -37,6 +37,11 @@ import com.google.android.material.slider.Slider.OnSliderTouchListener;
  * <p>{@code android:value}: <b>Optional.</b> The initial value of the slider. If not specified, the
  * slider's minimum value {@code android:valueFrom} is used.
  *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Slider.md">component
+ * developer guidance</a> and <a href="https://material.io/components/sliders/overview">design
+ * guidelines</a>.
+ *
  * @attr ref com.google.android.material.R.styleable#SingleSlider_android_value
  */
 public class Slider extends BaseSlider<Slider, OnChangeListener, OnSliderTouchListener> {

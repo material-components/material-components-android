@@ -53,6 +53,11 @@ import com.google.android.material.resources.MaterialResources;
  *             layoutManager.getOrientation());
  *     recyclerView.addItemDecoration(dividerItemDecoration);
  * </pre>
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/Divider.md">component
+ * developer guidance</a> and <a href="https://material.io/components/divider/overview">design
+ * guidelines</a>.
  */
 public class MaterialDividerItemDecoration extends ItemDecoration {
   public static final int HORIZONTAL = LinearLayout.HORIZONTAL;

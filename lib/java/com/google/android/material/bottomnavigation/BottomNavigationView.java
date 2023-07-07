@@ -86,6 +86,11 @@ import com.google.android.material.shape.MaterialShapeDrawable;
  *          android:icon="@drawable/ic_action_navigation_menu" /&gt;
  * &lt;/menu&gt;
  * </pre>
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/BottomNavigation.md">component
+ * developer guidance</a> and <a
+ * href="https://material.io/components/navigation-bar/overview">design guidelines</a>.
  */
 public class BottomNavigationView extends NavigationBarView {
   private static final int MAX_ITEM_COUNT = 5;

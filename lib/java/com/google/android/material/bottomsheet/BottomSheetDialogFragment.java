@@ -28,6 +28,11 @@ import androidx.annotation.Nullable;
 /**
  * Modal bottom sheet. This is a version of {@link androidx.fragment.app.DialogFragment} that shows
  * a bottom sheet using {@link BottomSheetDialog} instead of a floating dialog.
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/BottomSheet.md">component
+ * developer guidance</a> and <a
+ * href="https://material.io/components/bottom-sheets/overview">design guidelines</a>.
  */
 public class BottomSheetDialogFragment extends AppCompatDialogFragment {
 

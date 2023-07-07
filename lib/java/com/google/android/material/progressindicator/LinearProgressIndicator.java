@@ -48,6 +48,11 @@ import java.lang.annotation.RetentionPolicy;
  *   <li>{@code indeterminateAnimationType}: the type of indeterminate animation.
  *   <li>{@code indicatorDirectionLinear}: the sweeping direction of the indicator.
  * </ul>
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/ProgressIndicator.md">component
+ * developer guidance</a> and <a
+ * href="https://material.io/components/progress-indicators/overview">design guidelines</a>.
  */
 public final class LinearProgressIndicator
     extends BaseProgressIndicator<LinearProgressIndicatorSpec> {

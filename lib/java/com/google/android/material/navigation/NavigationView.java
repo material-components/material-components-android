@@ -118,6 +118,11 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  *         app:menu="@menu/my_navigation_items" /&gt;
  * &lt;/androidx.drawerlayout.widget.DrawerLayout&gt;
  * </pre>
+ *
+ * <p>For more information, see the <a
+ * href="https://github.com/material-components/material-components-android/blob/master/docs/components/NavigationDrawer.md">component
+ * developer guidance</a> and <a
+ * href="https://material.io/components/navigation-drawer/overview">design guidelines</a>.
  */
 public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBackHandler {
 
