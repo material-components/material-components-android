@@ -144,6 +144,30 @@ SnapHelper snapHelper = new CarouselSnapHelper();
 snapHelper.attachToRecyclerView(carouselRecyclerView);
 ```
 
+## Fullscreen strategy
+
+![A contained, fullscreen Carousel](assets/carousel/fullscreen.png)
+
+A fullscreen strategy shows one item at a time that takes up the entire space
+of the carousel.
+
+You can use the fullscreen strategy by passing in the strategy to the
+CarouselLayoutManager constructor: `new CarouselLayoutManager(new
+FullScreenStrategy())`.
+
+With the fullscreen strategy, it is recommended to use a vertical orientation
+carousel by either setting the orientation on the CarouselLayoutManager with the
+setter, or through its constructor: `new CarouselLayoutManager(new
+FullScreenCarouselStrategy(), RecyclerView.VERTICAL)`
+
+It is also recommended to use the `CarouselSnapHelper`
+to snap to the nearest item like so:
+
+```
+SnapHelper snapHelper = new CarouselSnapHelper();
+snapHelper.attachToRecyclerView(carouselRecyclerView);
+```
+
 ## Customizing carousel
 
 ### Item size
