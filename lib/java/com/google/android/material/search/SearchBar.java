@@ -211,6 +211,9 @@ public class SearchBar extends Toolbar {
     accessibilityManager =
         (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
     setupTouchExplorationStateChangeListener();
+    if (getContentDescription() == null) {
+      setContentDescription(getResources().getText(R.string.searchbar_default_content_description));
+    }
   }
 
   private void setupTouchExplorationStateChangeListener() {

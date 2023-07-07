@@ -22,6 +22,8 @@
     com.google.android.material.search.SearchBar$ScrollingViewBehavior
   </string>
 
+  <string name="searchbar_default_content_description"
+          description="Content description for the search bar, which is a product component name. [CHAR_LIMIT=NONE]">Search Bar</string>
   <!-- Default content description for the navigation button (i.e. the back arrow) for
        SearchView. -->
   <string name="searchview_navigation_content_description"
