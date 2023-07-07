@@ -269,6 +269,7 @@ Element        | Attribute                   | Related method(s)                
 **Color**      | `app:backgroundTint`        | N/A                                                     | `?attr/colorSurface`
 **Coplanar sibling view id** | `app:coplanarSiblingViewId` | `setCoplanarSiblingViewId`<br/>`setCoplanarSiblingView` | N/A
 **Shape**      | `app:shapeAppearance`       | N/A                                                     | `?attr/shapeAppearanceLargeComponent`
+**Sheet edge** | `android:layout_gravity`    | `setSheetEdge` (modal only)                             | end
 **Elevation**  | `android:elevation`         | N/A                                                     | 0dp
 **Max width**  | `android:maxWidth`          | `setMaxWidth`<br/>`getMaxWidth`                         | N/A
 **Max height** | `android:maxHeight`         | `setMaxHeight`<br/>`getMaxHeight`                       | N/A
@@ -281,6 +282,52 @@ More info about these attributes and how to use them in the
 Behavior                                    | Related method(s)                                                         | Default value
 ------------------------------------------- | ------------------------------------------------------------------------- | -------------
 `app:behavior_draggable`                    | `setDraggable`<br/>`isDraggable`                                          | `true`
+
+### Sheet edge
+You can set the sheet to originate from the left or right side of the screen.
+You can also automatically switch the sheet edge based on layout direction, by
+setting the sheet edge to `start` or `end`.
+
+#### Standard and Coplanar Sheets
+To set a standard or coplanar sheet's edge, set the `gravity` property of the
+side sheet `View`'s `CoordinatorLayout.LayoutParams`, then request a layout pass
+on the side sheet `View`.
+
+```kt
+val layoutParams = sideSheetView.layoutParams
+if (layoutParams is CoordinatorLayout.LayoutParams) {
+  layoutParams.gravity = sheetGravity
+  sideSheetView.requestLayout()
+}
+```
+
+You can also set the sheet edge with XML, by setting `android:layout_gravity`
+to the desired gravity:
+
+```xml
+<FrameLayout
+  android:id="@+id/side_sheet_container"
+  style="@style/Widget.Material3.SideSheet"
+  android:layout_width="256dp"
+  android:layout_height="match_parent"
+  android:layout_gravity="start"
+  app:layout_behavior="@string/side_sheet_behavior">
+  <include layout="@layout/side_sheet_layout" />
+</FrameLayout>
+```
+
+#### Modal Sheets
+To set a modal sheet's edge, pass a `Gravity` constant into `SideSheetDialog`'s
+dedicated `setSheetEdge` method. For example, set the sheet edge to `start` like
+this:
+
+```kt
+sideSheetDialog.setSheetEdge(Gravity.START)
+```
+
+Note: Runtime changes to sheet edges are not supported for modal sheets and may
+not work as expected. If you'd like to change the sheet edge at runtime, you
+should recreate the sheet, then call `setSheetEdge` with the new gravity.
 
 ### Styles
 
