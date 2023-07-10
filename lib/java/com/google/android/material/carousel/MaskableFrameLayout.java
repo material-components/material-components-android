@@ -40,8 +40,10 @@ import com.google.android.material.shape.ShapeableDelegate;
 /** A {@link FrameLayout} than is able to mask itself and all children. */
 public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapeable {
 
-  private float maskXPercentage = 0F;
-  private final RectF maskRect = new RectF();
+  private static final float MASK_X_PERCENTAGE_UNSET = -1F;
+
+  private float maskXPercentage = MASK_X_PERCENTAGE_UNSET;
+  @Nullable private RectF maskRect = null;
   @Nullable private OnMaskChangedListener onMaskChangedListener;
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
   private final ShapeableDelegate shapeableDelegate = ShapeableDelegate.create(this);
@@ -65,7 +67,13 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-    onMaskChanged();
+    if (maskXPercentage != MASK_X_PERCENTAGE_UNSET) {
+      // If the mask x percentage has been set, the mask rect needs to be recalculated by calling
+      // setMaskXPercentage which will then handle calling onMaskChanged
+      setMaskXPercentage(maskXPercentage);
+    } else {
+      onMaskChanged();
+    }
   }
 
   @Override
@@ -120,23 +128,28 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   @Override
   @Deprecated
   public void setMaskXPercentage(float percentage) {
-    percentage = MathUtils.clamp(percentage, 0F, 1F);
-    if (maskXPercentage != percentage) {
-      this.maskXPercentage = percentage;
-      // Translate the percentage into an actual pixel value of how much of this view should be
-      // masked away.
-      float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
-      setMaskRectF(new RectF(maskWidth, 0F, (getWidth() - maskWidth), getHeight()));
-    }
+    this.maskXPercentage = MathUtils.clamp(percentage, 0F, 1F);
+    // Translate the percentage into an actual pixel value of how much of this view should be
+    // masked away.
+    float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
+    updateMaskRectF(new RectF(maskWidth, 0F, (getWidth() - maskWidth), getHeight()));
   }
 
   /**
    * Sets the {@link RectF} that this {@link View} will be masked by.
    *
+   * <p>Calling this method will overwrite any mask set using {@link #setMaskXPercentage(float)}.
+   *
    * @param maskRect a rect in the view's coordinates to mask by
    */
   @Override
   public void setMaskRectF(@NonNull RectF maskRect) {
+    this.maskXPercentage = MASK_X_PERCENTAGE_UNSET;
+    updateMaskRectF(maskRect);
+  }
+
+  private void updateMaskRectF(@NonNull RectF maskRect) {
+    ensureMaskRectF();
     this.maskRect.set(maskRect);
     onMaskChanged();
   }
@@ -158,7 +171,14 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   @NonNull
   @Override
   public RectF getMaskRectF() {
+    ensureMaskRectF();
     return maskRect;
+  }
+
+  private void ensureMaskRectF() {
+    if (maskRect == null) {
+      maskRect = new RectF(0F, 0F, getWidth(), getHeight());
+    }
   }
 
   @Override
@@ -167,12 +187,12 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   }
 
   private void onMaskChanged() {
-    if (getWidth() == 0) {
+    if (getWidth() == 0 || getHeight() == 0) {
       return;
     }
-    shapeableDelegate.onMaskChanged(this, maskRect);
+    shapeableDelegate.onMaskChanged(this, getMaskRectF());
     if (onMaskChangedListener != null) {
-      onMaskChangedListener.onMaskChanged(maskRect);
+      onMaskChangedListener.onMaskChanged(getMaskRectF());
     }
   }
 
@@ -191,10 +211,10 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   @Override
   public boolean onTouchEvent(MotionEvent event) {
     // Only handle touch events that are within the masked bounds of this view.
-    if (!maskRect.isEmpty() && event.getAction() == MotionEvent.ACTION_DOWN) {
+    if (!getMaskRectF().isEmpty() && event.getAction() == MotionEvent.ACTION_DOWN) {
       float x = event.getX();
       float y = event.getY();
-      if (!maskRect.contains(x, y)) {
+      if (!getMaskRectF().contains(x, y)) {
         return false;
       }
     }

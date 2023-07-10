@@ -114,7 +114,7 @@ public class CarouselLayoutManagerRtlTest {
   public void testSingleItem_shouldBeInFocalRange() throws Throwable {
     setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(1));
 
-    assertThat(((Maskable) recyclerView.getChildAt(0)).getMaskXPercentage()).isEqualTo(0F);
+    assertThat(recyclerView.getChildAt(0).getWidth()).isEqualTo(DEFAULT_ITEM_WIDTH);
   }
 
   @Test
