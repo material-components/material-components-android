@@ -281,6 +281,7 @@
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
+    <item name="contrastColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Contrast.Light</item>
   </style>
 
   <style name="Base.V14.Theme.Material3.Dark" parent="Theme.MaterialComponents">
@@ -545,6 +546,7 @@
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Dark</item>
+    <item name="contrastColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Contrast.Dark</item>
   </style>
 
   <style name="Base.Theme.Material3.Light" parent="Base.V14.Theme.Material3.Light"/>

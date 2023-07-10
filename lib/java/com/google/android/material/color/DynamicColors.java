@@ -53,6 +53,9 @@ public class DynamicColors {
   private static final int[] DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE =
       new int[] {R.attr.dynamicColorThemeOverlay};
 
+  private static final int[] CONTRAST_COLOR_THEME_OVERLAY_ATTRIBUTE =
+      new int[] {R.attr.contrastColorThemeOverlay};
+
   @RequiresApi(api = VERSION_CODES.S)
   private static final int[] SYSTEM_NEUTRAL_PALETTE_RES_IDS =
       new int[] {
@@ -457,13 +460,13 @@ public class DynamicColors {
   private static int getDefaultThemeOverlay(@NonNull Context context) {
     // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public
     // release.
-    if (isDynamicContrastAvailable(context)) {
-      return R.style.ThemeOverlay_Material3_DynamicColors_Contrast_DayNight;
-    }
-    TypedArray dynamicColorAttributes =
-        context.obtainStyledAttributes(DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE);
-    final int theme = dynamicColorAttributes.getResourceId(0, 0);
-    dynamicColorAttributes.recycle();
+    int[] themeOverlayAttribute =
+        isDynamicContrastAvailable(context)
+            ? CONTRAST_COLOR_THEME_OVERLAY_ATTRIBUTE
+            : DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE;
+    TypedArray colorAttributes = context.obtainStyledAttributes(themeOverlayAttribute);
+    final int theme = colorAttributes.getResourceId(0, 0);
+    colorAttributes.recycle();
     return theme;
   }
 

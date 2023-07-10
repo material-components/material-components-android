@@ -17,5 +17,4 @@
 <resources>
   <style name="ThemeOverlay.Material3.DynamicColors.DayNight" parent="ThemeOverlay.Material3.DynamicColors.Dark" />
 
-  <style name="ThemeOverlay.Material3.DynamicColors.Contrast.DayNight" parent="ThemeOverlay.Material3.DynamicColors.Contrast.Dark" />
 </resources>
