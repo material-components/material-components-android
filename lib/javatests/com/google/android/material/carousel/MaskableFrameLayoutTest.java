@@ -131,54 +131,6 @@ public class MaskableFrameLayoutTest {
     assertThat(maskableFrameLayout.getClipToOutline()).isTrue();
   }
 
-  @Test
-  public void testUseMaskRect_shouldIgnoreMaskXPercentage() {
-    MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
-    ShapeAppearanceModel model = new ShapeAppearanceModel.Builder().setAllCornerSizes(10F).build();
-    maskableFrameLayout.setShapeAppearanceModel(model);
-
-    maskableFrameLayout.setMaskXPercentage(.5F);
-    maskableFrameLayout.setMaskRectF(new RectF(0F, 0F, 50F, 50F));
-
-    assertThat(maskableFrameLayout.getMaskXPercentage()).isEqualTo(-1F);
-  }
-
-  @Test
-  public void testOnSizeChangedWithMaskXPercentageSet_shouldUpdateMaskRect() {
-    MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
-    ShapeAppearanceModel model = new ShapeAppearanceModel.Builder().setAllCornerSizes(10F).build();
-    maskableFrameLayout.setShapeAppearanceModel(model);
-    maskableFrameLayout.setMaskXPercentage(.5F);
-
-    maskableFrameLayout.setLayoutParams(new LayoutParams(100, 100));
-    maskableFrameLayout.measure(
-        MeasureSpec.makeMeasureSpec(100, MeasureSpec.EXACTLY),
-        MeasureSpec.makeMeasureSpec(100, MeasureSpec.EXACTLY));
-    maskableFrameLayout.layout(
-        0, 0, maskableFrameLayout.getMeasuredWidth(), maskableFrameLayout.getMeasuredHeight());
-
-    assertThat(maskableFrameLayout.getMaskRectF()).isEqualTo(new RectF(25F, 0F, 75F, 100F));
-  }
-
-  @Test
-  public void testOnSizeChangedWithMaskRect_shouldNotChangeMaskRect() {
-    MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
-    ShapeAppearanceModel model = new ShapeAppearanceModel.Builder().setAllCornerSizes(10F).build();
-    maskableFrameLayout.setShapeAppearanceModel(model);
-
-    RectF mask = new RectF(10F, 0F, 40F, 50F);
-    maskableFrameLayout.setMaskRectF(mask);
-
-    maskableFrameLayout.setLayoutParams(new LayoutParams(100, 100));
-    maskableFrameLayout.measure(
-        MeasureSpec.makeMeasureSpec(100, MeasureSpec.EXACTLY),
-        MeasureSpec.makeMeasureSpec(100, MeasureSpec.EXACTLY));
-    maskableFrameLayout.layout(
-        0, 0, maskableFrameLayout.getMeasuredWidth(), maskableFrameLayout.getMeasuredHeight());
-
-    assertThat(maskableFrameLayout.getMaskRectF()).isEqualTo(mask);
-  }
-
   private static MaskableFrameLayout createMaskableFrameLayoutWithSize(int width, int height) {
     MaskableFrameLayout maskableFrameLayout =
         new MaskableFrameLayout(ApplicationProvider.getApplicationContext());
