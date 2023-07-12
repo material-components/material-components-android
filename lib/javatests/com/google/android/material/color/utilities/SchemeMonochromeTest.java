@@ -43,7 +43,7 @@ public final class SchemeMonochromeTest {
   @Test
   public void lightTheme_minContrast_primary() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), false, -1);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff3c3c3c);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff747474);
   }
 
   @Test
@@ -61,7 +61,7 @@ public final class SchemeMonochromeTest {
   @Test
   public void lightTheme_minContrast_primaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), false, -1);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff5f5f5f);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffd9d9d9);
   }
 
   @Test
@@ -73,13 +73,13 @@ public final class SchemeMonochromeTest {
   @Test
   public void lightTheme_maxContrast_primaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), false, 1);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff3a3a3a);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff3b3b3b);
   }
 
   @Test
   public void lightTheme_minContrast_onPrimaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), false, -1);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffd9d9d9);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff5e5e5e);
   }
 
   @Test
@@ -91,7 +91,7 @@ public final class SchemeMonochromeTest {
   @Test
   public void lightTheme_maxContrast_onPrimaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), false, 1);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffcdcdcd);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffffffff);
   }
 
   @Test
@@ -115,7 +115,7 @@ public final class SchemeMonochromeTest {
   @Test
   public void darkTheme_minContrast_primary() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), true, -1);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xffcccccc);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff919191);
   }
 
   @Test
@@ -133,7 +133,7 @@ public final class SchemeMonochromeTest {
   @Test
   public void darkTheme_minContrast_primaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), true, -1);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffa3a3a3);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff3a3a3a);
   }
 
   @Test
@@ -145,13 +145,13 @@ public final class SchemeMonochromeTest {
   @Test
   public void darkTheme_maxContrast_primaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), true, 1);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffd5d5d5);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffd4d4d4);
   }
 
   @Test
   public void darkTheme_minContrast_onPrimaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), true, -1);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff393939);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffa4a4a4);
   }
 
   @Test
@@ -163,13 +163,13 @@ public final class SchemeMonochromeTest {
   @Test
   public void darkTheme_maxContrast_onPrimaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), true, 1);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff404040);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
   }
 
   @Test
   public void darkTheme_minContrast_onTertiaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), true, -1);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xffd1d1d1);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xffa4a4a4);
   }
 
   @Test
@@ -181,7 +181,7 @@ public final class SchemeMonochromeTest {
   @Test
   public void darkTheme_maxContrast_onTertiaryContainer() {
     SchemeMonochrome scheme = new SchemeMonochrome(Hct.fromInt(0xff0000ff), true, 1);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff393939);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
   }
 
   @Test

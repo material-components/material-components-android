@@ -60,7 +60,7 @@ public final class SchemeVibrantTest {
   @Test
   public void lightTheme_minContrast_primaryContainer() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffe0e0ff);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffd5d6ff);
   }
 
   @Test
@@ -78,7 +78,7 @@ public final class SchemeVibrantTest {
   @Test
   public void lightTheme_minContrast_onPrimaryContainer() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff3e47ff);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff333dff);
   }
 
   @Test
@@ -90,7 +90,7 @@ public final class SchemeVibrantTest {
   @Test
   public void lightTheme_maxContrast_onPrimaryContainer() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffd6d6ff);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffffffff);
   }
 
   @Test
@@ -114,7 +114,7 @@ public final class SchemeVibrantTest {
   @Test
   public void darkTheme_minContrast_primary() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff5660ff);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff7c84ff);
   }
 
   @Test
@@ -126,13 +126,13 @@ public final class SchemeVibrantTest {
   @Test
   public void darkTheme_maxContrast_primary() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xfff6f4ff);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xfffdf9ff);
   }
 
   @Test
   public void darkTheme_minContrast_primaryContainer() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff0000ef);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff0001c9);
   }
 
   @Test
@@ -150,7 +150,7 @@ public final class SchemeVibrantTest {
   @Test
   public void darkTheme_minContrast_onPrimaryContainer() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffa9afff);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff949bff);
   }
 
   @Test
@@ -162,13 +162,13 @@ public final class SchemeVibrantTest {
   @Test
   public void darkTheme_maxContrast_onPrimaryContainer() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff0001c6);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
   }
 
   @Test
   public void darkTheme_minContrast_onTertiaryContainer() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xffc9a9df);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xffb798cd);
   }
 
   @Test
@@ -180,7 +180,7 @@ public final class SchemeVibrantTest {
   @Test
   public void darkTheme_maxContrast_onTertiaryContainer() {
     SchemeVibrant scheme = new SchemeVibrant(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff472e5b);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
   }
 
   @Test

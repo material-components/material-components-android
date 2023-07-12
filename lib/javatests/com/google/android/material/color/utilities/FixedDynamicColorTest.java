@@ -55,12 +55,12 @@ public final class FixedDynamicColorTest {
   public void fixedColorsInLightMonochrome() {
     final DynamicScheme scheme = new SchemeMonochrome(Hct.fromInt(0xFFFF0000), false, 0.0);
 
-    assertThat(dynamicColors.primaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(10.0);
-    assertThat(dynamicColors.primaryFixedDim().getHct(scheme).getTone()).isWithin(1.0).of(20.0);
-    assertThat(dynamicColors.onPrimaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(90.0);
+    assertThat(dynamicColors.primaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(40.0);
+    assertThat(dynamicColors.primaryFixedDim().getHct(scheme).getTone()).isWithin(1.0).of(30.0);
+    assertThat(dynamicColors.onPrimaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(100.0);
     assertThat(dynamicColors.onPrimaryFixedVariant().getHct(scheme).getTone())
         .isWithin(1.0)
-        .of(70.0);
+        .of(90.0);
     assertThat(dynamicColors.secondaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(80.0);
     assertThat(dynamicColors.secondaryFixedDim().getHct(scheme).getTone()).isWithin(1.0).of(70.0);
     assertThat(dynamicColors.onSecondaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(10.0);
@@ -69,22 +69,22 @@ public final class FixedDynamicColorTest {
         .of(25.0);
     assertThat(dynamicColors.tertiaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(40.0);
     assertThat(dynamicColors.tertiaryFixedDim().getHct(scheme).getTone()).isWithin(1.0).of(30.0);
-    assertThat(dynamicColors.onTertiaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(90.0);
+    assertThat(dynamicColors.onTertiaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(100.0);
     assertThat(dynamicColors.onTertiaryFixedVariant().getHct(scheme).getTone())
         .isWithin(1.0)
-        .of(70.0);
+        .of(90.0);
   }
 
   @Test
   public void fixedColorsInDarkMonochrome() {
     final DynamicScheme scheme = new SchemeMonochrome(Hct.fromInt(0xFFFF0000), true, 0.0);
 
-    assertThat(dynamicColors.primaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(100.0);
-    assertThat(dynamicColors.primaryFixedDim().getHct(scheme).getTone()).isWithin(1.0).of(90.0);
-    assertThat(dynamicColors.onPrimaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(10.0);
+    assertThat(dynamicColors.primaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(40.0);
+    assertThat(dynamicColors.primaryFixedDim().getHct(scheme).getTone()).isWithin(1.0).of(30.0);
+    assertThat(dynamicColors.onPrimaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(100.0);
     assertThat(dynamicColors.onPrimaryFixedVariant().getHct(scheme).getTone())
         .isWithin(1.0)
-        .of(30.0);
+        .of(90.0);
     assertThat(dynamicColors.secondaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(80.0);
     assertThat(dynamicColors.secondaryFixedDim().getHct(scheme).getTone()).isWithin(1.0).of(70.0);
     assertThat(dynamicColors.onSecondaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(10.0);
@@ -93,9 +93,9 @@ public final class FixedDynamicColorTest {
         .of(25.0);
     assertThat(dynamicColors.tertiaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(40.0);
     assertThat(dynamicColors.tertiaryFixedDim().getHct(scheme).getTone()).isWithin(1.0).of(30.0);
-    assertThat(dynamicColors.onTertiaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(90.0);
+    assertThat(dynamicColors.onTertiaryFixed().getHct(scheme).getTone()).isWithin(1.0).of(100.0);
     assertThat(dynamicColors.onTertiaryFixedVariant().getHct(scheme).getTone())
         .isWithin(1.0)
-        .of(70.0);
+        .of(90.0);
   }
 }

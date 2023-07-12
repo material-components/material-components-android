@@ -60,7 +60,7 @@ public final class SchemeFruitSaladTest {
   @Test
   public void lightTheme_minContrast_primaryContainer() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffC2E8FF);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffaae0ff);
   }
 
   @Test
@@ -78,7 +78,7 @@ public final class SchemeFruitSaladTest {
   @Test
   public void lightTheme_minContrast_tertiaryContainer() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xffE0E0FF);
+    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xffd5d6ff);
   }
 
   @Test
@@ -96,7 +96,7 @@ public final class SchemeFruitSaladTest {
   @Test
   public void lightTheme_minContrast_onPrimaryContainer() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff006C90);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff006688);
   }
 
   @Test
@@ -108,7 +108,7 @@ public final class SchemeFruitSaladTest {
   @Test
   public void lightTheme_maxContrast_onPrimaryContainer() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffACE1FF);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffffffff);
   }
 
   @Test
@@ -144,7 +144,7 @@ public final class SchemeFruitSaladTest {
   @Test
   public void darkTheme_minContrast_primary() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff007EA7);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff1e9bcb);
   }
 
   @Test
@@ -156,13 +156,13 @@ public final class SchemeFruitSaladTest {
   @Test
   public void darkTheme_maxContrast_primary() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xFFECF7FF);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xfff7fbff);
   }
 
   @Test
   public void darkTheme_minContrast_primaryContainer() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xFF004D67);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff003f56);
   }
 
   @Test
@@ -180,7 +180,7 @@ public final class SchemeFruitSaladTest {
   @Test
   public void darkTheme_minContrast_onPrimaryContainer() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff55C0F2);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff3fafe0);
   }
 
   @Test
@@ -192,13 +192,13 @@ public final class SchemeFruitSaladTest {
   @Test
   public void darkTheme_maxContrast_onPrimaryContainer() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff003E54);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
   }
 
   @Test
   public void darkTheme_minContrast_onTertiaryContainer() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xffADB0EF);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff9b9fdd);
   }
 
   @Test
@@ -210,7 +210,7 @@ public final class SchemeFruitSaladTest {
   @Test
   public void darkTheme_maxContrast_onTertiaryContainer() {
     SchemeFruitSalad scheme = new SchemeFruitSalad(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff30346A);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
   }
 
   @Test

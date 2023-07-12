@@ -31,7 +31,7 @@ public final class DynamicColorTest {
   @Test
   public void fromArgbNoBackground_doesntChangeForContrast() {
     final int blueArgb = 0xff0000ff;
-    final DynamicColor dynamicColor = DynamicColor.fromArgb(blueArgb);
+    final DynamicColor dynamicColor = DynamicColor.fromArgb("blue", blueArgb);
 
     final SchemeTonalSpot standardContrast = new SchemeTonalSpot(Hct.fromInt(blueArgb), false, 0.0);
     assertThat(dynamicColor.getArgb(standardContrast)).isSameColorAs(blueArgb);
@@ -44,36 +44,19 @@ public final class DynamicColorTest {
   }
 
   @Test
-  public void toneDeltaConstraintNoPreference_evaluatesCorrectly() {
-    final int blueArgb = 0xff0000ff;
-    final int redArgb = 0xffff0000;
-    final DynamicColor otherDynamicColor = DynamicColor.fromArgb(redArgb);
-    final DynamicColor dynamicColor =
-        DynamicColor.fromArgb(
-            blueArgb,
-            (s) -> 30.0,
-            null,
-            (s) -> new ToneDeltaConstraint(30, otherDynamicColor, TonePolarity.NO_PREFERENCE));
-    final SchemeTonalSpot scheme = new SchemeTonalSpot(Hct.fromInt(blueArgb), false, 0.0);
-    assertThat(dynamicColor.getArgb(scheme)).isSameColorAs(0xff0000ef);
-  }
-
-  @Test
   public void dynamicColor_withOpacity() {
     final DynamicColor dynamicColor =
         new DynamicColor(
-            s -> 0.0,
-            s -> 0.0,
-            s -> s.isDark ? 100.0 : 0.0,
-            s -> s.isDark ? 0.20 : 0.12,
-            null,
-            scheme ->
-                DynamicColor.toneMinContrastDefault(
-                    (s) -> s.isDark ? 100.0 : 0.0, null, scheme, null),
-            scheme ->
-                DynamicColor.toneMaxContrastDefault(
-                    (s) -> s.isDark ? 100.0 : 0.0, null, scheme, null),
-            null);
+            /* name= */ "control",
+            /* palette= */ (s) -> s.primaryPalette,
+            /* tone= */ (s) -> s.isDark ? 100.0 : 0.0,
+            /* isBackground= */ false,
+            /* background= */ null,
+            /* secondBackground= */ null,
+            /* contrastCurve= */ null,
+            /* toneDeltaPair= */ null,
+            /* opacity= */ s -> s.isDark ? 0.20 : 0.12);
+
     final SchemeTonalSpot lightScheme = new SchemeTonalSpot(Hct.fromInt(0xff4285f4), false, 0.0);
     assertThat(dynamicColor.getArgb(lightScheme)).isSameColorAs(0x1f000000);
 
@@ -135,7 +118,10 @@ public final class DynamicColorTest {
                     scheme, dynamicColors.onBackground(), dynamicColors.background()));
             assertTrue(
                 pairSatisfiesContrast(
-                    scheme, dynamicColors.onSurfaceVariant(), dynamicColors.surfaceVariant()));
+                    scheme, dynamicColors.onSurfaceVariant(), dynamicColors.surfaceBright()));
+            assertTrue(
+                pairSatisfiesContrast(
+                    scheme, dynamicColors.onSurfaceVariant(), dynamicColors.surfaceDim()));
             assertTrue(
                 pairSatisfiesContrast(
                     scheme, dynamicColors.inverseOnSurface(), dynamicColors.inverseSurface()));
@@ -152,17 +138,17 @@ public final class DynamicColorTest {
             dynamicColors
                 .onPrimaryContainer()
                 .getArgb(new SchemeFidelity(Hct.fromInt(0xFFFF0000), false, 0.5)))
-        .isSameColorAs(0xFFFFE5E1);
+        .isSameColorAs(0xFFFFFFFF);
     assertThat(
             dynamicColors
                 .onSecondaryContainer()
                 .getArgb(new SchemeContent(Hct.fromInt(0xFF0000FF), false, 0.5)))
-        .isSameColorAs(0xFFFFFCFF);
+        .isSameColorAs(0xFFFFFFFF);
     assertThat(
             dynamicColors
                 .onTertiaryContainer()
                 .getArgb(new SchemeContent(Hct.fromInt(0xFFFFFF00), true, -0.5)))
-        .isSameColorAs(0xFF616600);
+        .isSameColorAs(0xffbac040);
     assertThat(
             dynamicColors
                 .inverseSurface()
@@ -172,7 +158,7 @@ public final class DynamicColorTest {
             dynamicColors
                 .inversePrimary()
                 .getArgb(new SchemeContent(Hct.fromInt(0xFFFF0000), false, -0.5)))
-        .isSameColorAs(0xFFFF907F);
+        .isSameColorAs(0xffff422f);
     assertThat(
             dynamicColors
                 .outlineVariant()
