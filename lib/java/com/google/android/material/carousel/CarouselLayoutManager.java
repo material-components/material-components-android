@@ -177,6 +177,14 @@ public class CarouselLayoutManager extends LayoutManager
   }
 
   @Override
+  public void onAttachedToWindow(RecyclerView view) {
+    super.onAttachedToWindow(view);
+    // TODO: b/291123558 - Keylines should be also be refreshed when
+    // there's any change affecting dimens of the RecyclerView.
+    refreshKeylineState();
+  }
+
+  @Override
   public void onLayoutChildren(Recycler recycler, State state) {
     if (state.getItemCount() <= 0) {
       removeAndRecycleAllViews(recycler);
