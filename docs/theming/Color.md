@@ -698,6 +698,16 @@ between two colors creates visual contrast. A greater difference creates higher
 contrast. Color contrast control allows users to adjust their UI contrast levels
 in the system so they can comfortably see and use digital experiences.
 
+##### *Use Contrast Control - Dynamic*
+
+You will get contrast control for free if you already use dynamic colors.
+Material color roles enforce contrast through tone while maintaining hierarchy
+and visual relationships. The color value of a Material color role (e.g.
+primaryContainer) can systematically adjust in tone to achieve sufficient
+contrast.
+
+**Important:** Please note that this feature is only available for U+.
+
 ##### *Use Contrast Control - non-Dynamic*
 
 If you are not using dynamic colors and would like to use contrast control for
