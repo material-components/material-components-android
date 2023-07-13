@@ -26,6 +26,7 @@
     android:id="@+id/app_bar"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:background="@color/material_blue_grey_900"
     app:liftOnScroll="true"
     app:liftOnScrollColor="@color/material_blue_grey_950">
 

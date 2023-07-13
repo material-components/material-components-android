@@ -36,6 +36,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.ColorStateListDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -74,6 +75,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.animation.ArgbEvaluatorCompat;
 import com.google.android.material.appbar.AppBarLayout.BaseBehavior.SavedState;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.motion.MotionUtils;
@@ -271,7 +273,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       } else {
         initializeLiftOnScrollWithElevation(context, materialShapeDrawable);
       }
-      ViewCompat.setBackground(this, materialShapeDrawable);
     }
 
     liftOnScrollColorDuration = MotionUtils.resolveThemeDuration(context,
@@ -337,19 +338,34 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   }
 
   private void initializeLiftOnScrollWithColor(MaterialShapeDrawable background) {
-    background.setAlpha(lifted ? 255 : 0);
-    background.setFillColor(liftOnScrollColor);
-    liftOnScrollColorUpdateListener = valueAnimator -> {
-      float alpha = (float) valueAnimator.getAnimatedValue();
-      background.setAlpha((int) alpha);
+    MaterialShapeDrawable liftBackground = new MaterialShapeDrawable();
+    liftBackground.setFillColor(liftOnScrollColor);
+    liftBackground.setAlpha(lifted ? 255 : 0);
+    background.setAlpha(lifted ? 0 : 255);
 
-      for (LiftOnScrollListener liftOnScrollListener : liftOnScrollListeners) {
-        if (background.getFillColor() != null) {
-          liftOnScrollListener.onUpdate(
-              0, background.getFillColor().withAlpha((int) alpha).getDefaultColor());
-        }
-      }
-    };
+    liftOnScrollColorUpdateListener =
+        valueAnimator -> {
+          float liftAlpha = (float) valueAnimator.getAnimatedValue();
+          background.setAlpha((int) (255f - liftAlpha));
+          liftBackground.setAlpha((int) liftAlpha);
+
+          if (!liftOnScrollListeners.isEmpty()) {
+            int mixedColor =
+                ArgbEvaluatorCompat.getInstance()
+                    .evaluate(
+                        liftAlpha / 255f,
+                        background.getResolvedTintColor(),
+                        liftBackground.getResolvedTintColor());
+            for (LiftOnScrollListener liftOnScrollListener : liftOnScrollListeners) {
+              if (background.getFillColor() != null) {
+                liftOnScrollListener.onUpdate(0, mixedColor);
+              }
+            }
+          }
+        };
+
+    LayerDrawable layerBackground = new LayerDrawable(new Drawable[] {background, liftBackground});
+    ViewCompat.setBackground(this, layerBackground);
   }
 
   private void initializeLiftOnScrollWithElevation(
@@ -365,6 +381,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         liftOnScrollListener.onUpdate(elevation, background.getResolvedTintColor());
       }
     };
+    ViewCompat.setBackground(this, background);
   }
 
   /**
@@ -1003,7 +1020,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     if (force && this.lifted != lifted) {
       this.lifted = lifted;
       refreshDrawableState();
-      if (liftOnScroll && getBackground() instanceof MaterialShapeDrawable) {
+      if (liftOnScroll && isLiftOnScrollCompatibleBackground()) {
         if (liftOnScrollColor != null) {
           startLiftOnScrollColorAnimation(
               lifted ? 0 : 255, lifted ? 255 : 0);
@@ -1013,6 +1030,21 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         }
       }
       return true;
+    }
+    return false;
+  }
+
+  private boolean isLiftOnScrollCompatibleBackground() {
+    if (getBackground() instanceof MaterialShapeDrawable) {
+      return true;
+    }
+    if (getBackground() instanceof LayerDrawable) {
+      LayerDrawable layerBackground = (LayerDrawable) getBackground();
+      if (layerBackground.getNumberOfLayers() == 2
+          && layerBackground.getDrawable(0) instanceof MaterialShapeDrawable
+          && layerBackground.getDrawable(1) instanceof MaterialShapeDrawable) {
+        return true;
+      }
     }
     return false;
   }
