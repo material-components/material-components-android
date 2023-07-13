@@ -55,7 +55,7 @@ import java.lang.annotation.RetentionPolicy;
  * developer guidance</a> and <a
  * href="https://material.io/components/progress-indicators/overview">design guidelines</a>.
  */
-public final class CircularProgressIndicator
+public class CircularProgressIndicator
     extends BaseProgressIndicator<CircularProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_CircularProgressIndicator;

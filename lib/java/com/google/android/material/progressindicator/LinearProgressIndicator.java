@@ -54,7 +54,7 @@ import java.lang.annotation.RetentionPolicy;
  * developer guidance</a> and <a
  * href="https://material.io/components/progress-indicators/overview">design guidelines</a>.
  */
-public final class LinearProgressIndicator
+public class LinearProgressIndicator
     extends BaseProgressIndicator<LinearProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_LinearProgressIndicator;
 
