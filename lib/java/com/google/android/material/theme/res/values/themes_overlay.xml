@@ -225,9 +225,20 @@
     <item name="colorOnErrorContainer">@android:color/system_on_error_container_light</item>
 
     <!-- Default Framework Text Colors. -->
+    <item name="android:textColorPrimary">@color/m3_dynamic_default_color_primary_text</item>
+    <item name="android:textColorPrimaryInverse">@color/m3_dynamic_dark_default_color_primary_text</item>
+    <item name="android:textColorSecondary">@color/m3_dynamic_default_color_secondary_text</item>
+    <item name="android:textColorSecondaryInverse">@color/m3_dynamic_dark_default_color_secondary_text</item>
+    <item name="android:textColorTertiary">@color/m3_dynamic_default_color_secondary_text</item>
+    <item name="android:textColorTertiaryInverse">@color/m3_dynamic_dark_default_color_secondary_text</item>
+    <item name="android:textColorPrimaryDisableOnly">@color/m3_dynamic_primary_text_disable_only</item>
+    <item name="android:textColorPrimaryInverseDisableOnly">@color/m3_dynamic_dark_primary_text_disable_only</item>
+    <item name="android:textColorHint">@color/m3_dynamic_hint_foreground</item>
+    <item name="android:textColorHintInverse">@color/m3_dynamic_dark_hint_foreground</item>
     <!-- textColorHighlight and textColorHighlightInverse are using system color resource directly in the CSL for contrast support, as they use the primary color palette. -->
     <item name="android:textColorHighlight">@color/m3_dynamic_contrast_highlighted_text</item>
     <item name="android:textColorHighlightInverse">@color/m3_dynamic_contrast_dark_highlighted_text</item>
+    <item name="android:textColorAlertDialogListItem">@color/m3_dynamic_default_color_primary_text</item>
   </style>
 
   <style name="ThemeOverlay.Material3.DynamicColors.Contrast.Dark" parent=""
@@ -281,9 +292,20 @@
     <item name="colorOnErrorContainer">@android:color/system_on_error_container_dark</item>
 
     <!-- Default Framework Text Colors. -->
+    <item name="android:textColorPrimary">@color/m3_dynamic_dark_default_color_primary_text</item>
+    <item name="android:textColorPrimaryInverse">@color/m3_dynamic_default_color_primary_text</item>
+    <item name="android:textColorSecondary">@color/m3_dynamic_dark_default_color_secondary_text</item>
+    <item name="android:textColorSecondaryInverse">@color/m3_dynamic_default_color_secondary_text</item>
+    <item name="android:textColorTertiary">@color/m3_dynamic_dark_default_color_secondary_text</item>
+    <item name="android:textColorTertiaryInverse">@color/m3_dynamic_default_color_secondary_text</item>
+    <item name="android:textColorPrimaryDisableOnly">@color/m3_dynamic_dark_primary_text_disable_only</item>
+    <item name="android:textColorPrimaryInverseDisableOnly">@color/m3_dynamic_primary_text_disable_only</item>
+    <item name="android:textColorHint">@color/m3_dynamic_dark_hint_foreground</item>
+    <item name="android:textColorHintInverse">@color/m3_dynamic_hint_foreground</item>
     <!-- textColorHighlight and textColorHighlightInverse are using system color resource directly in the CSL for contrast support, as they use the primary color palette. -->
     <item name="android:textColorHighlight">@color/m3_dynamic_contrast_dark_highlighted_text</item>
     <item name="android:textColorHighlightInverse">@color/m3_dynamic_contrast_highlighted_text</item>
+    <item name="android:textColorAlertDialogListItem">@color/m3_dynamic_dark_default_color_primary_text</item>
   </style>
 
 </resources>
