@@ -24,6 +24,7 @@ import static java.lang.Math.max;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -41,6 +42,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -51,6 +53,8 @@ import androidx.core.math.MathUtils;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.carousel.KeylineState.Keyline;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -112,6 +116,27 @@ public class CarouselLayoutManager extends LayoutManager
   private CarouselOrientationHelper orientationHelper;
 
   /**
+   * Aligns large items to the start of the carousel.
+   */
+  public static final int ALIGNMENT_START = 0;
+
+  /**
+   * Aligns large items to the center of the carousel.
+   */
+  public static final int ALIGNMENT_CENTER = 1;
+
+  /**
+   * Determines where to align the large items in the carousel.
+   *
+   * @hide
+   */
+  @IntDef({ALIGNMENT_START, ALIGNMENT_CENTER})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface Alignment {}
+
+  @Alignment private int carouselAlignment = ALIGNMENT_START;
+
+  /**
    * An internal object used to store and run checks on a child to be potentially added to the
    * RecyclerView and laid out.
    */
@@ -156,9 +181,31 @@ public class CarouselLayoutManager extends LayoutManager
   @SuppressLint("UnknownNullness") // b/240775049: Cannot annotate properly
   public CarouselLayoutManager(
       Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    Properties properties = getProperties(context, attrs, defStyleAttr, defStyleRes);
-    setOrientation(properties.orientation);
     setCarouselStrategy(new MultiBrowseCarouselStrategy());
+
+    setCarouselAttributes(context, attrs);
+  }
+
+  private void setCarouselAttributes(Context context, AttributeSet attrs) {
+    if (attrs != null) {
+      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Carousel);
+      setCarouselAlignment(a.getInt(R.styleable.Carousel_carousel_alignment, ALIGNMENT_START));
+      setOrientation(a.getInt(R.styleable.RecyclerView_android_orientation, HORIZONTAL));
+      a.recycle();
+    }
+  }
+
+  /**
+   * Sets the alignment of the focal items in the carousel.
+   */
+  public void setCarouselAlignment(@Alignment int alignment) {
+    this.carouselAlignment = alignment;
+    refreshKeylineState();
+  }
+
+  @Override
+  public int getCarouselAlignment() {
+    return carouselAlignment;
   }
 
   @Override

@@ -17,6 +17,7 @@ package com.google.android.material.carousel;
 
 import com.google.android.material.test.R;
 
+import static com.google.android.material.carousel.CarouselHelper.createCarousel;
 import static com.google.android.material.carousel.CarouselHelper.createCarouselWithWidth;
 import static com.google.android.material.carousel.CarouselHelper.createViewWithSize;
 import static com.google.common.truth.Truth.assertThat;
@@ -133,6 +134,31 @@ public class HeroCarouselStrategyTest {
 
     List<Keyline> keylines =
         config.onFirstChildMeasuredWithMargins(createCarouselWithWidth(400), view).getKeylines();
+    for (int i = 0; i < keylines.size(); i++) {
+      assertThat(keylines.get(i).locOffset).isEqualTo(locOffsets[i]);
+    }
+  }
+
+  @Test
+  public void testKnownCenterAlignmentArrangement_correctlyCalculatesKeylineLocations() {
+    float largeSize = 40F * 3; // 120F
+    float smallSize = 40F;
+
+    View view =
+        createViewWithSize(
+            ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
+    int carouselSize = (int) (largeSize + smallSize * 2);
+
+    MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
+    List<Keyline> keylines =
+        strategy.onFirstChildMeasuredWithMargins(
+            createCarousel(
+                carouselSize,
+                CarouselLayoutManager.HORIZONTAL,
+                CarouselLayoutManager.ALIGNMENT_CENTER), view).getKeylines();
+
+    float[] locOffsets = new float[] {-.5F, 20F, 100F, 180F, 200.5F};
+
     for (int i = 0; i < keylines.size(); i++) {
       assertThat(keylines.get(i).locOffset).isEqualTo(locOffsets[i]);
     }

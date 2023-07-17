@@ -16,7 +16,7 @@
 
 package com.google.android.material.carousel;
 
-import static com.google.android.material.carousel.CarouselStrategyHelper.createLeftAlignedKeylineState;
+import static com.google.android.material.carousel.CarouselStrategyHelper.createKeylineState;
 import static com.google.android.material.carousel.CarouselStrategyHelper.getSmallSizeMax;
 import static com.google.android.material.carousel.CarouselStrategyHelper.getSmallSizeMin;
 import static com.google.android.material.carousel.CarouselStrategyHelper.maxValue;
@@ -116,8 +116,13 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
     // not in an asc./dec. order but are in order of priority. A small count array of { 2, 3, 1 }
     // says that ideally an arrangement with 2 small items is found, then 3 is next most desirable,
     // then finally 1.
+
     int[] smallCounts = SMALL_COUNTS;
     int[] mediumCounts = forceCompactArrangement ? MEDIUM_COUNTS_COMPACT : MEDIUM_COUNTS;
+    if (carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER) {
+      smallCounts = doubleCounts(smallCounts);
+      mediumCounts = doubleCounts(mediumCounts);
+    }
     // Find the minimum space left for large items after filling the carousel with the most
     // permissible medium and small items to determine a plausible minimum large count.
     float minAvailableLargeSpace =
@@ -142,10 +147,11 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
         targetLargeChildSize,
         largeCounts);
 
-    return createLeftAlignedKeylineState(
+    return createKeylineState(
         child.getContext(),
         childMargins,
         availableSpace,
-        arrangement);
+        arrangement,
+        carousel.getCarouselAlignment());
   }
 }

@@ -16,7 +16,7 @@
 
 package com.google.android.material.carousel;
 
-import static com.google.android.material.carousel.CarouselStrategyHelper.createLeftAlignedKeylineState;
+import static com.google.android.material.carousel.CarouselStrategyHelper.createKeylineState;
 import static com.google.android.material.carousel.CarouselStrategyHelper.getSmallSizeMax;
 import static com.google.android.material.carousel.CarouselStrategyHelper.getSmallSizeMin;
 import static com.google.android.material.carousel.CarouselStrategyHelper.maxValue;
@@ -91,18 +91,29 @@ public class HeroCarouselStrategy extends CarouselStrategy {
     for (int i = 0; i < largeCounts.length; i++) {
       largeCounts[i] = largeCountMin + i;
     }
-    Arrangement arrangement = Arrangement.findLowestCostArrangement(
+    boolean isCenterAligned =
+        carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER;
+    Arrangement arrangement =
+        Arrangement.findLowestCostArrangement(
+            availableSpace,
+            targetSmallChildSize,
+            smallChildSizeMin,
+            smallChildSizeMax,
+                isCenterAligned
+                ? doubleCounts(SMALL_COUNTS)
+                : SMALL_COUNTS,
+            targetMediumChildSize,
+                isCenterAligned
+                ? doubleCounts(MEDIUM_COUNTS)
+                : MEDIUM_COUNTS,
+            targetLargeChildSize,
+            largeCounts);
+    return createKeylineState(
+        child.getContext(),
+        childMargins,
         availableSpace,
-        targetSmallChildSize,
-        smallChildSizeMin,
-        smallChildSizeMax,
-        SMALL_COUNTS,
-        targetMediumChildSize,
-        MEDIUM_COUNTS,
-        targetLargeChildSize,
-        largeCounts);
-    return createLeftAlignedKeylineState(
-        child.getContext(), childMargins, availableSpace, arrangement);
-  }
+        arrangement,
+        carousel.getCarouselAlignment());
+    }
 }
 

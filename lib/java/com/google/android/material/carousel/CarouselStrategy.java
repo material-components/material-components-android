@@ -104,6 +104,20 @@ public abstract class CarouselStrategy {
   }
 
   /**
+   * Helper method to return an array that doubles every number in the given array.
+   *
+   * @param count the array containing numbers to be doubled
+   * @return A new array that doubles each number in the original count array
+   */
+  static int[] doubleCounts(int[] count) {
+    int[] doubledCount = new int[count.length];
+    for (int i = 0; i < doubledCount.length; i++) {
+      doubledCount[i] = count[i] * 2;
+    }
+    return doubledCount;
+  }
+
+  /**
    * Gets whether this carousel should mask items against the edges of the carousel container.
    *
    * @return true if items in the carousel should mask/squash against the edges of the carousel

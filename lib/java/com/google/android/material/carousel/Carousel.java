@@ -16,6 +16,8 @@
 
 package com.google.android.material.carousel;
 
+import com.google.android.material.carousel.CarouselLayoutManager.Alignment;
+
 /** An interface that defines a widget that can be configured as a Carousel. */
 interface Carousel {
 
@@ -27,4 +29,7 @@ interface Carousel {
 
   /** Whether or not the orientation is horizontal.  */
   boolean isHorizontal();
+
+  /** Gets the alignment of the carousel.  */
+  @Alignment int getCarouselAlignment();
 }
