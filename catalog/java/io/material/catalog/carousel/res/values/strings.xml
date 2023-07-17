@@ -21,6 +21,8 @@
   <string name="cat_carousel_draw_dividers_label" translatable="false">Draw dividers</string>
   <string name="cat_carousel_enable_snap_label" description="The title of a switch to enable snapping to carousel items.[CHAR_LIMIT=NONE]">Enable Snap</string>
   <string name="cat_carousel_enable_fling_label" description="The title of a switch to enable the flinging gesture.[CHAR_LIMIT=NONE]">Enable fling</string>
+  <string name="cat_carousel_start_align_label" description="The title of a button to make the carousel start-aligned.[CHAR_LIMIT=NONE]">Start align</string>
+  <string name="cat_carousel_center_align_label" description="The title of a button to make the carousel center-aligned.[CHAR_LIMIT=NONE]">Center align</string>
 
   <string name="cat_carousel_show_debug_options" description="The title of the button that shows carousel debug options.[CHAR_LIMIT=NONE]">Show debug options</string>
 

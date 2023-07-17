@@ -68,6 +68,27 @@
       android:textAppearance="?attr/textAppearanceBodyLarge"
       android:text="@string/cat_carousel_enable_fling_label"/>
 
+    <RadioGroup
+      android:checkedButton="@+id/start_align"
+      android:orientation="horizontal"
+      android:layout_width="match_parent"
+      android:layout_marginHorizontal="16dp"
+      android:layout_height="wrap_content">
+      <RadioButton
+        android:id="@+id/start_align"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:enabled="true"
+        android:text="@string/cat_carousel_start_align_label"/>
+      <RadioButton
+        android:id="@+id/center_align"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:checked="false"
+        android:enabled="true"
+        android:text="@string/cat_carousel_center_align_label"/>
+    </RadioGroup>
+
     <com.google.android.material.textfield.TextInputLayout
       style="?attr/textInputFilledExposedDropdownMenuStyle"
       android:layout_width="match_parent"

@@ -18,6 +18,9 @@ package io.material.catalog.carousel;
 
 import io.material.catalog.R;
 
+import static com.google.android.material.carousel.CarouselLayoutManager.ALIGNMENT_CENTER;
+import static com.google.android.material.carousel.CarouselLayoutManager.ALIGNMENT_START;
+
 import android.os.Bundle;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
@@ -25,6 +28,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
+import android.widget.RadioButton;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.carousel.CarouselLayoutManager;
@@ -65,8 +69,10 @@ public class HeroCarouselDemoFragment extends DemoFragment {
     MaterialSwitch enableFlingSwitch = view.findViewById(R.id.enable_fling_switch);
     AutoCompleteTextView itemCountDropdown = view.findViewById(R.id.item_count_dropdown);
     Slider positionSlider = view.findViewById(R.id.position_slider);
+    RadioButton startAlignButton = view.findViewById(R.id.start_align);
+    RadioButton centerAlignButton = view.findViewById(R.id.center_align);
 
-    // A start-aligned hero carousel
+    // A hero carousel
     RecyclerView heroStartRecyclerView =
         view.findViewById(R.id.hero_start_carousel_recycler_view);
     CarouselLayoutManager heroStartCarouselLayoutManager =
@@ -134,6 +140,11 @@ public class HeroCarouselDemoFragment extends DemoFragment {
             heroStartRecyclerView.smoothScrollToPosition((int) slider.getValue() - 1);
           }
         });
+
+    startAlignButton.setOnClickListener(
+        v -> heroStartCarouselLayoutManager.setCarouselAlignment(ALIGNMENT_START));
+    centerAlignButton.setOnClickListener(
+        v -> heroStartCarouselLayoutManager.setCarouselAlignment(ALIGNMENT_CENTER));
 
     heroStartRecyclerView.setAdapter(adapter);
     adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));
