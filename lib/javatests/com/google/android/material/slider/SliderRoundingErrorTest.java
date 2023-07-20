@@ -18,9 +18,10 @@ package com.google.android.material.slider;
 
 import com.google.android.material.test.R;
 
+import static android.os.Looper.getMainLooper;
 import static com.google.android.material.slider.SliderHelper.touchSliderAtValue;
 import static com.google.common.truth.Truth.assertThat;
-import static org.robolectric.annotation.LooperMode.Mode.LEGACY;
+import static org.robolectric.Shadows.shadowOf;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -30,10 +31,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.LooperMode;
 
 /** Tests for floating point rounding error handling of {@link Slider} */
-@LooperMode(LEGACY)
 @RunWith(RobolectricTestRunner.class)
 public class SliderRoundingErrorTest {
 
@@ -58,8 +57,10 @@ public class SliderRoundingErrorTest {
   @Test
   public void testKnownValues_snapTouchToValue_NoRoundingError() {
     touchSliderAtValue(slider, 0f, MotionEvent.ACTION_DOWN);
+    shadowOf(getMainLooper()).idle();
     for (float i = 100f; i < 10000f; i += 100) {
       touchSliderAtValue(slider, i, MotionEvent.ACTION_MOVE);
+      shadowOf(getMainLooper()).idle();
       assertThat(slider.getValue()).isEqualTo(i);
     }
   }

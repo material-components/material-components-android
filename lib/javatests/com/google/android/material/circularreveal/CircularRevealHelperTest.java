@@ -20,7 +20,6 @@ import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import android.app.Activity;
@@ -88,27 +87,8 @@ public class CircularRevealHelperTest {
   }
 
   @Test
-  @Config(sdk = VERSION_CODES.JELLY_BEAN)
-  public void jbUsesBitmapShaderStrategy() {
-    helper = new CircularRevealHelper(delegate);
-    helper.setRevealInfo(smallRevealInfo);
-
-    helper.buildCircularRevealCache();
-    helper.draw(canvas);
-    helper.destroyCircularRevealCache();
-
-    verify(canvas)
-        .drawCircle(
-            eq(smallRevealInfo.centerX),
-            eq(smallRevealInfo.centerY),
-            eq(smallRevealInfo.radius),
-            ArgumentMatchers.<Paint>any());
-    verify(canvas, never()).clipPath(ArgumentMatchers.<Path>any());
-  }
-
-  @Test
-  @Config(sdk = VERSION_CODES.JELLY_BEAN_MR2)
-  public void jbMr2UsesClipPathStrategy() {
+  @Config(sdk = 19)
+  public void oldSdkUsesClipPathStrategy() {
     helper = new CircularRevealHelper(delegate);
     helper.setRevealInfo(smallRevealInfo);
 
@@ -133,29 +113,8 @@ public class CircularRevealHelperTest {
   }
 
   @Test
-  @Config(sdk = VERSION_CODES.JELLY_BEAN)
-  public void jbDrawsScrim() {
-    helper = new CircularRevealHelper(delegate);
-    helper.setCircularRevealScrimColor(Color.RED);
-
-    helper.setRevealInfo(smallRevealInfo);
-
-    helper.buildCircularRevealCache();
-    helper.draw(canvas);
-    helper.destroyCircularRevealCache();
-
-    // Once for the BitmapShader, once for the scrim.
-    verify(canvas, times(2))
-        .drawCircle(
-            eq(smallRevealInfo.centerX),
-            eq(smallRevealInfo.centerY),
-            eq(smallRevealInfo.radius),
-            ArgumentMatchers.<Paint>any());
-  }
-
-  @Test
-  @Config(sdk = VERSION_CODES.JELLY_BEAN_MR2)
-  public void jbMr2DrawsScrim() {
+  @Config(sdk = 19)
+  public void oldSdkDrawsScrim() {
     helper = new CircularRevealHelper(delegate);
     helper.setCircularRevealScrimColor(Color.RED);
 
