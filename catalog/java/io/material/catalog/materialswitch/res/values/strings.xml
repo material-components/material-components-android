@@ -33,6 +33,10 @@
     description="The description of how switches look like when disabled. [CHAR LIMIT=NONE]">
     Switch elements that are disabled cannot be interacted with and will appear faded.
   </string>
+  <string name="cat_switch_icon_guide"
+    description="The description of how switches look like with icon. [CHAR LIMIT=NONE]">
+    Switch elements with an icon, default size (16dp) and 24dp.
+  </string>
   <string name="cat_switch_enabled"
     description="The label of enabled switches. [CHAR LIMIT=NONE]">
     Enabled
