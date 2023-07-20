@@ -17,6 +17,7 @@
 
 <resources>
   <dimen name="mtrl_switch_thumb_size">32dp</dimen>
+  <dimen name="mtrl_switch_thumb_icon_size">16dp</dimen>
   <dimen name="mtrl_switch_track_width">@dimen/m3_comp_switch_track_width</dimen>
   <dimen name="mtrl_switch_track_height">@dimen/m3_comp_switch_track_height</dimen>
   <dimen name="mtrl_switch_text_padding">16dp</dimen>

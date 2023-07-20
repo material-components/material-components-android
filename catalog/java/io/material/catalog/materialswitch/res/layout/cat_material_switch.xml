@@ -16,10 +16,10 @@
   limitations under the License.
   -->
 
-<ScrollView
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <LinearLayout
     android:id="@+id/main_viewGroup"
@@ -75,6 +75,30 @@
         android:checked="false"
         android:enabled="false"
         android:text="@string/cat_switch_disabled" />
+
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_columnSpan="2"
+        android:text="@string/cat_switch_icon_guide"
+        android:textSize="@dimen/cat_switch_header_size" />
+
+      <com.google.android.material.materialswitch.MaterialSwitch
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="true"
+        android:enabled="true"
+        app:thumbIcon="@drawable/mtrl_ic_check"
+        android:text="@string/cat_switch_enabled" />
+
+      <com.google.android.material.materialswitch.MaterialSwitch
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="true"
+        android:enabled="true"
+        app:thumbIcon="@drawable/mtrl_ic_check"
+        app:thumbIconSize="24dp"
+        android:text="@string/cat_switch_enabled" />
     </GridLayout>
 
     <ImageView

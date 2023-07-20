@@ -46,10 +46,8 @@
            result to valid color values. Saturate(S + D) -->
       <enum name="add" value="16" />
     </attr>
-    <!-- Width of the thumb icon. The attribute is supported only for API 23 and above. -->
-    <attr name="thumbIconWidth" format="dimension"/>
-    <!-- Height of the thumb icon. The attribute is supported only for API 23 and above. -->
-    <attr name="thumbIconHeight" format="dimension"/>
+    <!-- Size of the thumb icon. -->
+    <attr name="thumbIconSize" format="dimension"/>
     <!-- Drawable used for the track decoration that will be drawn upon the track.
          By default it will draw an outline on the track in the unchecked state. -->
     <attr name="trackDecoration" format="reference"/>

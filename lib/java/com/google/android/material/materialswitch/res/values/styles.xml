@@ -19,6 +19,7 @@
     <item name="track">@drawable/mtrl_switch_track</item>
     <item name="trackDecoration">@drawable/mtrl_switch_track_decoration</item>
     <item name="thumbTint">@color/mtrl_switch_thumb_tint</item>
+    <item name="thumbIconSize">@dimen/mtrl_switch_thumb_icon_size</item>
     <item name="thumbIconTint">@color/mtrl_switch_thumb_icon_tint</item>
     <item name="trackTint">@color/mtrl_switch_track_tint</item>
     <item name="trackDecorationTint">@color/mtrl_switch_track_decoration_tint</item>
