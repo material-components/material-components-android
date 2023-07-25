@@ -629,6 +629,11 @@ class SearchViewAnimationHelper {
         searchView.clearFocusAndHideKeyboard();
       }
 
+      // Early return if navigation icon animation is disabled.
+      if (!searchView.isAnimatedNavigationIcon()) {
+        return;
+      }
+
       // Start and immediately pause the animator set so we can seek it with setCurrentPlayTime() in
       // subsequent updateBackProgress() calls when the progress value changes.
       backProgressAnimatorSet = getButtonsProgressAnimator(/* show= */ false);
