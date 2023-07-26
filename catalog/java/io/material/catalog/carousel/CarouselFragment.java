@@ -78,12 +78,6 @@ public class CarouselFragment extends DemoLandingFragment {
           public Fragment createFragment() {
             return new FullScreenStrategyDemoFragment();
           }
-        },
-        new Demo(R.string.cat_carousel_default_list_demo_title) {
-          @Override
-          public Fragment createFragment() {
-            return new DefaultListDemoFragment();
-          }
         });
   }
 
