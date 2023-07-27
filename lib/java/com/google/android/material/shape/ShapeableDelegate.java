@@ -140,10 +140,14 @@ public abstract class ShapeableDelegate {
   }
 
   private void updateShapePath() {
-    if (!maskBounds.isEmpty() && shapeAppearanceModel != null) {
+    if (isMaskBoundsValid() && shapeAppearanceModel != null) {
       ShapeAppearancePathProvider.getInstance()
           .calculatePath(shapeAppearanceModel, 1F, maskBounds, shapePath);
     }
+  }
+
+  private boolean isMaskBoundsValid() {
+    return maskBounds.left <= maskBounds.right && maskBounds.top <= maskBounds.bottom;
   }
 
   public void maybeClip(@NonNull Canvas canvas, @NonNull CanvasOperation op) {

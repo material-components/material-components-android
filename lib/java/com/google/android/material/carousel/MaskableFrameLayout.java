@@ -167,9 +167,6 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   }
 
   private void onMaskChanged() {
-    if (getWidth() == 0) {
-      return;
-    }
     shapeableDelegate.onMaskChanged(this, maskRect);
     if (onMaskChangedListener != null) {
       onMaskChangedListener.onMaskChanged(maskRect);

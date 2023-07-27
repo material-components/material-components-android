@@ -18,6 +18,7 @@ package com.google.android.material.carousel;
 import static com.google.android.material.carousel.CarouselLayoutManager.HORIZONTAL;
 import static com.google.android.material.carousel.CarouselLayoutManager.VERTICAL;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -222,9 +223,15 @@ abstract class CarouselOrientationHelper {
           RectF maskRect, RectF offsetMaskRect, RectF parentBoundsRect) {
         if (offsetMaskRect.bottom <= parentBoundsRect.top) {
           maskRect.bottom = (float) Math.floor(maskRect.bottom) - 1;
+          // Make sure that maskRect.top is equal to or smaller than maskRect.bottom.
+          // Otherwise the mask may not be re-drawn as the mask is invalid.
+          maskRect.top = min(maskRect.top, maskRect.bottom);
         }
         if (offsetMaskRect.top >= parentBoundsRect.bottom) {
           maskRect.top = (float) Math.ceil(maskRect.top) + 1;
+          // Make sure that maskRect.bottom is equal to or bigger than maskRect.top.
+          // Otherwise the mask may not be re-drawn as the mask is invalid.
+          maskRect.bottom = max(maskRect.top, maskRect.bottom);
         }
       }
 
@@ -310,9 +317,15 @@ abstract class CarouselOrientationHelper {
           RectF maskRect, RectF offsetMaskRect, RectF parentBoundsRect) {
         if (offsetMaskRect.right <= parentBoundsRect.left) {
           maskRect.right = (float) Math.floor(maskRect.right) - 1;
+          // Make sure that maskRect.left is equal to or smaller than maskRect.right.
+          // Otherwise the mask may not be re-drawn as the mask is invalid.
+          maskRect.left = min(maskRect.left, maskRect.right);
         }
         if (offsetMaskRect.left >= parentBoundsRect.right) {
           maskRect.left = (float) Math.ceil(maskRect.left) + 1;
+          // Make sure that maskRect.right is equal to or bigger than maskRect.left.
+          // Otherwise the mask may not be re-drawn as the mask is invalid.
+          maskRect.right = max(maskRect.left, maskRect.right);
         }
       }
 
