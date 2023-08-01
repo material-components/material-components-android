@@ -10,7 +10,7 @@ dependencies {
 
   api 'com.google.dagger:dagger-android:2.46.1'
   api 'com.google.dagger:dagger-android-support:2.46.1'
-  annotationProcessor 'com.google.dagger:dagger-android-processor:2.46.1'
+  annotationProcessor 'com.google.dagger:dagger-android-processor:2.47'
 
   api 'androidx.multidex:multidex:2.0.1'
   api 'androidx.constraintlayout:constraintlayout:2.1.0'
