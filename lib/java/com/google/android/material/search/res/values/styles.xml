@@ -38,6 +38,7 @@
 
   <style name="Widget.Material3.SearchBar.Outlined">
     <item name="elevation">0dp</item>
+    <item name="backgroundTint">?attr/colorSurface</item>
     <item name="strokeWidth">@dimen/m3_searchbar_outlined_stroke_width</item>
     <item name="strokeColor">?attr/colorOutline</item>
   </style>
