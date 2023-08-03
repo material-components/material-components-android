@@ -284,8 +284,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
       setExpanded(
           a.getBoolean(R.styleable.AppBarLayout_expanded, false),
-          /* animate */ false,
-          /* force */ false);
+          /* animate= */ false,
+          /* force= */ false);
     }
 
     if (VERSION.SDK_INT >= 21 && a.hasValue(R.styleable.AppBarLayout_elevation)) {
@@ -677,6 +677,15 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     return behavior;
   }
 
+  @Nullable
+  public MaterialShapeDrawable getMaterialShapeBackground() {
+    Drawable background = getBackground();
+    if (background instanceof LayerDrawable) {
+      background = ((LayerDrawable) background).getDrawable(0);
+    }
+    return background instanceof MaterialShapeDrawable ? (MaterialShapeDrawable) background : null;
+  }
+
   @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
@@ -1035,11 +1044,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   }
 
   private boolean isLiftOnScrollCompatibleBackground() {
-    if (getBackground() instanceof MaterialShapeDrawable) {
+    Drawable background = getBackground();
+    if (background instanceof MaterialShapeDrawable) {
       return true;
     }
-    if (getBackground() instanceof LayerDrawable) {
-      LayerDrawable layerBackground = (LayerDrawable) getBackground();
+    if (background instanceof LayerDrawable) {
+      LayerDrawable layerBackground = (LayerDrawable) background;
       if (layerBackground.getNumberOfLayers() == 2
           && layerBackground.getDrawable(0) instanceof MaterialShapeDrawable
           && layerBackground.getDrawable(1) instanceof MaterialShapeDrawable) {
