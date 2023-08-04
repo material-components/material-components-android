@@ -323,7 +323,7 @@ public class DynamicColors {
     if (dynamicColorsOptions.getContentBasedSeedColor() == null) {
       themeOverlayResourceId =
           dynamicColorsOptions.getThemeOverlay() == USE_DEFAULT_THEME_OVERLAY
-              ? getDefaultThemeOverlay(activity)
+              ? getDefaultThemeOverlay(activity, DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE)
               : dynamicColorsOptions.getThemeOverlay();
     }
 
@@ -350,6 +350,13 @@ public class DynamicColors {
       } else if (!maybeApplyThemeOverlayWithUpdatedNeutralChroma(
           activity, themeOverlayResourceId)) {
         ThemeUtils.applyThemeOverlay(activity, themeOverlayResourceId);
+        // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public
+        // release. Contrast ThemeOverlay is applied on top of Dynamic ThemeOverlay to keep client's
+        // custom Dynamic theme attributes.
+        if (isDynamicContrastAvailable(activity)) {
+          ThemeUtils.applyThemeOverlay(
+              activity, getDefaultThemeOverlay(activity, CONTRAST_COLOR_THEME_OVERLAY_ATTRIBUTE));
+        }
       }
       // Applies client's callback after content-based dynamic colors or just dynamic colors has
       // been applied.
@@ -406,7 +413,7 @@ public class DynamicColors {
     }
     int theme = dynamicColorsOptions.getThemeOverlay();
     if (theme == USE_DEFAULT_THEME_OVERLAY) {
-      theme = getDefaultThemeOverlay(originalContext);
+      theme = getDefaultThemeOverlay(originalContext, DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE);
     }
 
     if (theme == 0) {
@@ -436,7 +443,16 @@ public class DynamicColors {
         }
       }
     }
-    return new ContextThemeWrapper(originalContext, theme);
+    Context dynamicContext = new ContextThemeWrapper(originalContext, theme);
+    // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public
+    // release. Contrast ThemeOverlay is applied on top of Dynamic ThemeOverlay to keep client's
+    // custom Dynamic theme attributes.
+    if (isDynamicContrastAvailable(originalContext)) {
+      return new ContextThemeWrapper(
+          dynamicContext,
+          getDefaultThemeOverlay(dynamicContext, CONTRAST_COLOR_THEME_OVERLAY_ATTRIBUTE));
+    }
+    return dynamicContext;
   }
 
   /** Returns {@code true} if dynamic colors are available on the current SDK level. */
@@ -458,16 +474,10 @@ public class DynamicColors {
     return deviceSupportCondition != null && deviceSupportCondition.isSupported();
   }
 
-  private static int getDefaultThemeOverlay(@NonNull Context context) {
-    // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public
-    // release.
-    int[] themeOverlayAttribute =
-        isDynamicContrastAvailable(context)
-            ? CONTRAST_COLOR_THEME_OVERLAY_ATTRIBUTE
-            : DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE;
-    TypedArray colorAttributes = context.obtainStyledAttributes(themeOverlayAttribute);
-    final int theme = colorAttributes.getResourceId(0, 0);
-    colorAttributes.recycle();
+  private static int getDefaultThemeOverlay(@NonNull Context context, int[] themeOverlayAttribute) {
+    TypedArray dynamicColorAttributes = context.obtainStyledAttributes(themeOverlayAttribute);
+    final int theme = dynamicColorAttributes.getResourceId(0, 0);
+    dynamicColorAttributes.recycle();
     return theme;
   }
 
