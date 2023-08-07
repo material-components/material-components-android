@@ -42,7 +42,7 @@ import io.material.catalog.feature.DemoFragment;
 /** A fragment that displays the fullscreen variant of the Carousel. */
 public class FullScreenStrategyDemoFragment extends DemoFragment {
 
-  private MaterialDividerItemDecoration horizontalDivider;
+  private MaterialDividerItemDecoration verticalDivider;
   private BottomSheetDialog bottomSheetDialog;
 
   @NonNull
@@ -65,9 +65,9 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
     // Opt in to perform swipe to dismiss animation when dismissing bottom sheet dialog.
     bottomSheetDialog.setDismissWithAnimation(true);
 
-    horizontalDivider =
+    verticalDivider =
         new MaterialDividerItemDecoration(
-            requireContext(), MaterialDividerItemDecoration.HORIZONTAL);
+            requireContext(), MaterialDividerItemDecoration.VERTICAL);
 
     Button showBottomSheetButton = view.findViewById(R.id.show_bottomsheet_button);
     showBottomSheetButton.setOnClickListener(new OnClickListener() {
@@ -107,9 +107,9 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
     drawDividers.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           if (isChecked) {
-            fullscreenRecyclerView.addItemDecoration(horizontalDivider);
+            fullscreenRecyclerView.addItemDecoration(verticalDivider);
           } else {
-            fullscreenRecyclerView.removeItemDecoration(horizontalDivider);
+            fullscreenRecyclerView.removeItemDecoration(verticalDivider);
           }
         });
 
