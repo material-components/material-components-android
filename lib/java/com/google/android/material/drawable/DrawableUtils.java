@@ -293,8 +293,7 @@ public final class DrawableUtils {
       drawable.setLayerGravity(1, Gravity.CENTER);
     } else {
       Drawable scaledTopLayerDrawable =
-          new ScaledDrawableWrapper(topLayerDrawable, topLayerNewWidth, topLayerNewHeight)
-              .getDrawable();
+          new ScaledDrawableWrapper(topLayerDrawable, topLayerNewWidth, topLayerNewHeight);
 
       drawable = new LayerDrawable(new Drawable[] {bottomLayerDrawable, scaledTopLayerDrawable});
 
