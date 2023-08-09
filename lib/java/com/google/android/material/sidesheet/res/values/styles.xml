@@ -19,7 +19,7 @@
   <!-- Style for the M3 Standard Side Sheet. -->
   <style name="Widget.Material3.SideSheet" parent="">
     <item name="enforceMaterialTheme">true</item>
-    <item name="backgroundTint">@macro/m3_comp_sheet_side_docked_container_color</item>
+    <item name="backgroundTint">@macro/m3_comp_sheet_side_docked_standard_container_color</item>
     <!-- Layout_* attributes break when set via a default style, but it's ok to
          set layout_* attributes from this style, because this style always
          needs to be explicitly set on the behavior's associated View in the
@@ -41,6 +41,7 @@
   <!-- Style for the M3 Modal Side Sheet. -->
   <style name="Widget.Material3.SideSheet.Modal">
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_side_sheet_modal_elevation</item>
+    <item name="backgroundTint">@macro/m3_comp_sheet_side_docked_modal_container_color</item>
     <item name="shapeAppearance">@macro/m3_comp_sheet_side_docked_modal_container_shape</item>
   </style>
 

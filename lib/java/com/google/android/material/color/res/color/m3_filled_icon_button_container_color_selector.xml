@@ -18,7 +18,7 @@
   <!-- Disabled state -->
   <item android:color="?attr/colorOnSurface" android:alpha="@dimen/material_emphasis_disabled_background" android:state_enabled="false"/>
   <!-- Checkable, unchecked state -->
-  <item android:color="?attr/colorSurfaceVariant" android:state_checkable="true" android:state_checked="false"/>
+  <item android:color="?attr/colorSurfaceContainerHighest" android:state_checkable="true" android:state_checked="false"/>
   <!-- Default, Enabled state -->
   <item android:color="?attr/colorContainer"/>
 </selector>

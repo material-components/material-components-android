@@ -15,12 +15,32 @@
   ~ limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="@dimen/m3_comp_switch_disabled_track_opacity"
+  <!-- State Disabled, Unchecked -->
+  <item
+    android:alpha="@dimen/m3_comp_switch_disabled_track_opacity"
     android:color="@macro/m3_comp_switch_disabled_unselected_track_color"
     android:state_enabled="false" android:state_checked="false"/>
-  <item android:alpha="@dimen/m3_comp_switch_disabled_track_opacity"
+  <!-- State Disabled, Checked -->
+  <item
+    android:alpha="@dimen/m3_comp_switch_disabled_track_opacity"
     android:color="@macro/m3_comp_switch_disabled_selected_track_color"
     android:state_enabled="false" android:state_checked="true"/>
-  <item android:color="@macro/m3_comp_switch_selected_track_color" android:state_checked="true"/>
-  <item android:color="@macro/m3_comp_switch_unselected_track_color"/>
+  <!-- State Checked -->
+  <item
+    android:color="@macro/m3_comp_switch_selected_track_color"
+    android:state_checked="true"/>
+
+  <!-- State Unchecked -->
+  <item
+    android:color="@macro/m3_comp_switch_unselected_hover_track_color"
+    android:state_hovered="true" android:state_checked="false"/>
+  <item
+    android:color="@macro/m3_comp_switch_unselected_focus_track_color"
+    android:state_focused="true" android:state_checked="false"/>
+  <item
+    android:color="@macro/m3_comp_switch_unselected_pressed_track_color"
+    android:state_pressed="true" android:state_checked="false"/>
+  <item
+    android:color="@macro/m3_comp_switch_unselected_track_color"
+    android:state_checked="false"/>
 </selector>

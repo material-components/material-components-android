@@ -53,7 +53,7 @@
 
   <!-- Style for Material3 NavigationView. -->
   <style name="Widget.Material3.NavigationView" parent="Widget.MaterialComponents.NavigationView">
-    <item name="android:background">@macro/m3_comp_navigation_drawer_container_color</item>
+    <item name="android:background">@macro/m3_comp_navigation_drawer_modal_container_color</item>
     <item name="android:maxWidth">@dimen/m3_comp_navigation_drawer_container_width</item>
     <item name="subheaderColor">@macro/m3_comp_navigation_drawer_headline_color</item>
     <item name="subheaderTextAppearance">@macro/m3_comp_navigation_drawer_headline_type</item>

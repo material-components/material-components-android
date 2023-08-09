@@ -150,6 +150,7 @@
   <style name="Widget.Material3.AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
     <item name="liftOnScroll">true</item>
     <item name="android:background">@macro/m3_comp_top_app_bar_small_container_color</item>
+    <item name="liftOnScrollColor">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">
       @animator/m3_appbar_state_list_animator
     </item>
@@ -235,9 +236,9 @@
   <style name="Base.Widget.Material3.ActionBar.Solid" parent="Widget.AppCompat.ActionBar.Solid">
     <item name="titleTextStyle">@style/TextAppearance.Material3.ActionBar.Title</item>
     <item name="subtitleTextStyle">@style/TextAppearance.Material3.ActionBar.Subtitle</item>
-    <item name="background">@macro/m3_comp_top_app_bar_small_container_color</item>
-    <item name="backgroundStacked">@macro/m3_comp_top_app_bar_small_container_color</item>
-    <item name="backgroundSplit">@macro/m3_comp_top_app_bar_small_container_color</item>
+    <item name="background">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
+    <item name="backgroundStacked">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
+    <item name="backgroundSplit">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
   </style>
 
   <style name="Widget.Material3.ActionBar.Solid" parent="Base.Widget.Material3.ActionBar.Solid" />
@@ -245,9 +246,9 @@
   <style name="Base.Widget.Material3.Light.ActionBar.Solid" parent="Widget.AppCompat.Light.ActionBar.Solid">
     <item name="titleTextStyle">@style/TextAppearance.Material3.ActionBar.Title</item>
     <item name="subtitleTextStyle">@style/TextAppearance.Material3.ActionBar.Subtitle</item>
-    <item name="background">@macro/m3_comp_top_app_bar_small_container_color</item>
-    <item name="backgroundStacked">@macro/m3_comp_top_app_bar_small_container_color</item>
-    <item name="backgroundSplit">@macro/m3_comp_top_app_bar_small_container_color</item>
+    <item name="background">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
+    <item name="backgroundStacked">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
+    <item name="backgroundSplit">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
   </style>
 
   <style name="Widget.Material3.Light.ActionBar.Solid" parent="Base.Widget.Material3.Light.ActionBar.Solid" />
@@ -255,8 +256,8 @@
   <style name="Base.Widget.Material3.ActionMode" parent="Widget.AppCompat.ActionMode">
     <item name="titleTextStyle">@style/TextAppearance.Material3.ActionBar.Title</item>
     <item name="subtitleTextStyle">@style/TextAppearance.Material3.ActionBar.Subtitle</item>
-    <item name="background">@macro/m3_comp_top_app_bar_small_container_color</item>
-    <item name="backgroundSplit">@macro/m3_comp_top_app_bar_small_container_color</item>
+    <item name="background">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
+    <item name="backgroundSplit">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
   </style>
 
   <style name="Widget.Material3.ActionMode" parent="Base.Widget.Material3.ActionMode" />

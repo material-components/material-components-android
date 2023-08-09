@@ -28,8 +28,21 @@
     android:state_enabled="false" android:state_checked="true"/>
 
   <!-- State Checked -->
-  <item android:color="@macro/m3_comp_switch_selected_icon_color" android:state_checked="true"/>
+  <item
+    android:color="@macro/m3_comp_switch_selected_icon_color"
+    android:state_checked="true"/>
 
   <!-- State Unchecked -->
-  <item android:color="@macro/m3_comp_switch_unselected_icon_color"/>
+  <item
+    android:color="@macro/m3_comp_switch_unselected_hover_icon_color"
+    android:state_hovered="true" android:state_checked="false"/>
+  <item
+    android:color="@macro/m3_comp_switch_unselected_focus_icon_color"
+    android:state_focused="true" android:state_checked="false"/>
+  <item
+    android:color="@macro/m3_comp_switch_unselected_pressed_icon_color"
+    android:state_pressed="true" android:state_checked="false"/>
+  <item
+    android:color="@macro/m3_comp_switch_unselected_icon_color"
+    android:state_checked="false"/>
 </selector>

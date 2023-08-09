@@ -463,6 +463,7 @@
     <item name="simpleItemSelectedColor">@macro/m3_comp_outlined_autocomplete_menu_list_item_selected_container_color</item>
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
+    <item name="dropDownBackgroundTint">@macro/m3_comp_outlined_autocomplete_menu_container_color</item>
     <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_outlined_autocomplete_menu_container_elevation</item>
   </style>
 
@@ -471,6 +472,7 @@
     <item name="simpleItemSelectedColor">@macro/m3_comp_outlined_autocomplete_menu_list_item_selected_container_color</item>
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
+    <item name="dropDownBackgroundTint">@macro/m3_comp_outlined_autocomplete_menu_container_color</item>
     <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_outlined_autocomplete_menu_container_elevation</item>
   </style>
 
@@ -479,6 +481,7 @@
     <item name="simpleItemSelectedColor">@macro/m3_comp_filled_autocomplete_menu_list_item_selected_container_color</item>
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
+    <item name="dropDownBackgroundTint">@macro/m3_comp_filled_autocomplete_menu_container_color</item>
     <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_filled_autocomplete_menu_container_elevation</item>
   </style>
 
@@ -487,6 +490,7 @@
     <item name="simpleItemSelectedColor">@macro/m3_comp_filled_autocomplete_menu_list_item_selected_container_color</item>
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
+    <item name="dropDownBackgroundTint">@macro/m3_comp_filled_autocomplete_menu_container_color</item>
     <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_filled_autocomplete_menu_container_elevation</item>
   </style>
 
