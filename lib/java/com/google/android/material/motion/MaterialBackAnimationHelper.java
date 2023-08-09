@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
@@ -26,7 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.view.animation.PathInterpolatorCompat;
-import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /**
  * Base helper class for views that support back handling, which assists with common animation
@@ -37,6 +37,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public abstract class MaterialBackAnimationHelper<V extends View> {
 
+  private static final String TAG = "MaterialBackHelper";
   private static final int HIDE_DURATION_MAX_DEFAULT = 300;
   private static final int HIDE_DURATION_MIN_DEFAULT = 150;
   private static final int CANCEL_DURATION_DEFAULT = 100;
@@ -78,11 +79,14 @@ public abstract class MaterialBackAnimationHelper<V extends View> {
     this.backEvent = backEvent;
   }
 
-  protected void onUpdateBackProgress(@NonNull BackEventCompat backEvent) {
+  @Nullable
+  protected BackEventCompat onUpdateBackProgress(@NonNull BackEventCompat backEvent) {
     if (this.backEvent == null) {
-      throw new IllegalStateException("Must call startBackProgress() before updateBackProgress()");
+      Log.w(TAG, "Must call startBackProgress() before updateBackProgress()");
     }
+    BackEventCompat finalBackEvent = this.backEvent;
     this.backEvent = backEvent;
+    return finalBackEvent;
   }
 
   @Nullable
@@ -92,11 +96,11 @@ public abstract class MaterialBackAnimationHelper<V extends View> {
     return finalBackEvent;
   }
 
-  @CanIgnoreReturnValue
-  @NonNull
+  @Nullable
   protected BackEventCompat onCancelBackProgress() {
     if (this.backEvent == null) {
-      throw new IllegalStateException(
+      Log.w(
+          TAG,
           "Must call startBackProgress() and updateBackProgress() before cancelBackProgress()");
     }
     BackEventCompat finalBackEvent = this.backEvent;

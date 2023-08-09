@@ -99,7 +99,9 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
 
   public void updateBackProgress(
       @NonNull BackEventCompat backEvent, @Nullable View collapsedView, float collapsedCornerSize) {
-    super.onUpdateBackProgress(backEvent);
+    if (super.onUpdateBackProgress(backEvent) == null) {
+      return;
+    }
 
     if (collapsedView != null && collapsedView.getVisibility() != View.INVISIBLE) {
       collapsedView.setVisibility(View.INVISIBLE);
@@ -150,7 +152,9 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
   }
 
   public void cancelBackProgress(@Nullable View collapsedView) {
-    super.onCancelBackProgress();
+    if (super.onCancelBackProgress() == null) {
+      return;
+    }
 
     AnimatorSet cancelAnimatorSet = createResetScaleAndTranslationAnimator(collapsedView);
     if (view instanceof ClippableRoundedCornerLayout) {

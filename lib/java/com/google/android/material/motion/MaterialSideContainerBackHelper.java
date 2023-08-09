@@ -72,7 +72,9 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
   }
 
   public void updateBackProgress(@NonNull BackEventCompat backEvent, @GravityInt int gravity) {
-    super.onUpdateBackProgress(backEvent);
+    if (super.onUpdateBackProgress(backEvent) == null) {
+      return;
+    }
 
     boolean leftSwipeEdge = backEvent.getSwipeEdge() == BackEventCompat.EDGE_LEFT;
     updateBackProgress(backEvent.getProgress(), leftSwipeEdge, gravity);
@@ -155,7 +157,9 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
   }
 
   public void cancelBackProgress() {
-    super.onCancelBackProgress();
+    if (super.onCancelBackProgress() == null) {
+      return;
+    }
 
     AnimatorSet cancelAnimatorSet = new AnimatorSet();
     cancelAnimatorSet.playTogether(
