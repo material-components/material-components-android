@@ -62,7 +62,9 @@ public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelp
   }
 
   public void updateBackProgress(@NonNull BackEventCompat backEvent) {
-    super.onUpdateBackProgress(backEvent);
+    if (super.onUpdateBackProgress(backEvent) == null) {
+      return;
+    }
 
     updateBackProgress(backEvent.getProgress());
   }
@@ -131,7 +133,9 @@ public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelp
   }
 
   public void cancelBackProgress() {
-    super.onCancelBackProgress();
+    if (super.onCancelBackProgress() == null) {
+      return;
+    }
 
     Animator animator = createResetScaleAnimator();
     animator.setDuration(cancelDuration);
