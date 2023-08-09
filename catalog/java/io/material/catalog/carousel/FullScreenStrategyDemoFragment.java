@@ -38,6 +38,7 @@ import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.slider.Slider.OnSliderTouchListener;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /** A fragment that displays the fullscreen variant of the Carousel. */
 public class FullScreenStrategyDemoFragment extends DemoFragment {
@@ -64,6 +65,9 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
     bottomSheetDialog.setContentView(R.layout.cat_carousel_bottom_sheet_contents);
     // Opt in to perform swipe to dismiss animation when dismissing bottom sheet dialog.
     bottomSheetDialog.setDismissWithAnimation(true);
+
+    new WindowPreferencesManager(requireContext())
+        .applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
 
     verticalDivider =
         new MaterialDividerItemDecoration(
