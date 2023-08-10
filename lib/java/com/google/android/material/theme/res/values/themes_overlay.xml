@@ -220,8 +220,8 @@
     <item name="colorOutline">@android:color/system_outline_light</item>
     <item name="colorOutlineVariant">@android:color/system_outline_variant_light</item>
     <item name="colorError">@android:color/system_error_light</item>
-    <item name="colorOnError">@android:color/system_error_container_light</item>
-    <item name="colorErrorContainer">@android:color/system_on_error_light</item>
+    <item name="colorOnError">@android:color/system_on_error_light</item>
+    <item name="colorErrorContainer">@android:color/system_error_container_light</item>
     <item name="colorOnErrorContainer">@android:color/system_on_error_container_light</item>
 
     <!-- Default Framework Text Colors. -->
