@@ -294,6 +294,13 @@ The following diagram shows the elements of a date picker:
 6.  Current date
 7.  Selected date
 
+### Container
+
+Element   | Attribute             | Related method(s) | Default value
+--------- | --------------------- | ----------------- | -------------
+**Color** | `app:backgroundTint`  | N/A               | `?attr/colorSurfaceContainerHigh`
+**Shape** | `app:shapeAppearance` | N/A               | `?attr/shapeAppearanceCornerExtraLarge`
+
 ### Title
 
 Element        | Attribute                         | Related method(s)                          | Default value

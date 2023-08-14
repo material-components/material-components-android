@@ -264,7 +264,7 @@ The following is an anatomy diagram for the bottom navigation bar:
 
 **Element**       | **Attribute**         | **Related methods** | **Default value**
 ----------------- | --------------------- | ------------------- | -----------------
-**Color**         | `app:backgroundTint`  | N/A                 | `?attr/colorSurface`
+**Color**         | `app:backgroundTint`  | N/A                 | `?attr/colorSurfaceContainer`
 **Elevation**     | `app:elevation`       | `setElevation`      | `3dp`
 **Compat Shadow** | `compatShadowEnabled` | N/A                 | `false`
 

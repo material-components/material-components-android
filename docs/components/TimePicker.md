@@ -140,7 +140,7 @@ Element                         | Attribute                      | Related metho
 **Title**                       | `N/A`                          | `Builder.setTitleText`                                | `Select Time`
 **Keyboard Icon**               | `app:keyboardIcon`             | `N/A`                                                 | `@drawable/ic_keyboard_black_24dp`
 **Clock Icon**                  | `app:clockIcon`                | `N/A`                                                 | `@drawable/ic_clock_black_24dp`
-**Clock face Background Color** | `app:clockFaceBackgroundColor` | `N/A`                                                 | `?attr/colorSurfaceVariant`
+**Clock face Background Color** | `app:clockFaceBackgroundColor` | `N/A`                                                 | `?attr/colorSurfaceContainerHighest`
 **Clock hand color**            | `app:clockNumberTextColor`     | `N/A`                                                 | `?attr/colorPrimary`
 **Clock Number Text Color**     | `app:clockNumberTextColor`     | `N/A`                                                 | `?attr/colorOnBackground`
 

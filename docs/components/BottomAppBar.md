@@ -236,7 +236,7 @@ floating action button (FAB), action item(s) and an overflow menu.
 
 Element       | Attribute                | Related method(s)                          | Default value
 ------------- | ------------------------ | ------------------------------------------ | -------------
-**Color**     | `app:backgroundTint`     | `setBackgroundTint`<br>`getBackgroundTint` | `?attr/colorSurface`
+**Color**     | `app:backgroundTint`     | `setBackgroundTint`<br>`getBackgroundTint` | `?attr/colorSurfaceContainer`
 **Elevation** | `app:elevation`          | `setElevation`                             | `3dp`
 **Height**    | `android:minHeight`      | `setMinimumHeight`<br>`getMinimumHeight`   | `80dp`
 **Shadows**   | `app:addElevationShadow` | N/A                                        | `false`

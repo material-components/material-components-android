@@ -367,7 +367,7 @@ shown in the [card examples](#card-examples) section.
 
 Element              | Attribute                 | Related method(s)                                                   | Default value
 -------------------- | ------------------------- | ------------------------------------------------------------------- | -------------
-**Color**            | `app:cardBackgroundColor` | `setCardBackgroundColor`<br/>`getCardBackgroundColor`               | `?attr/colorSurface` or `?attr/colorSurfaceVariant` (filled style)
+**Color**            | `app:cardBackgroundColor` | `setCardBackgroundColor`<br/>`getCardBackgroundColor`               | `?attr/colorSurface` (outlined style)</br>`?attr/colorSurfaceContainerHighest` (filled style)</br>`?attr/colorSurfaceContainerLow` (elevated style)
 **Foreground color** | `app:cardForegroundColor` | `setCardForegroundColor`<br/>`getCardForegroundColor`               | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/m3_card_foreground_color.xml))
 **Stroke color**     | `app:strokeColor`         | `setStrokeColor`<br/>`getStrokeColor`<br/>`getStrokeColorStateList` | `?attr/colorOutline` (unchecked)<br/>`?attr/colorSecondary` (checked)
 **Stroke width**     | `app:strokeWidth`         | `setStrokeWidth`<br/>`getStrokeWidth`                               | `1dp` (outlined style)<br/>`0dp` (elevated or filled style)

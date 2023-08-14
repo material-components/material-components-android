@@ -70,29 +70,29 @@ combinations. These additional color attributes are as follows:
 
 <!-- Auto-generated additional color table starts. Do not edit below or remove this comment. -->
 
-Color Role                | Android Attribute            | Light Theme Baseline (Dynamic) Color             | Dark Theme Baseline (Dynamic) Color
-------------------------- | ---------------------------- | ------------------------------------------------ | -----------------------------------
-Error                     | colorError                   | error40</br>(Same)                               | error80</br>(Same)
-On Error                  | colorOnError                 | white</br>(Same)                                 | error20</br>(Same)
-Error Container           | colorErrorContainer          | error90</br>(Same)                               | error30</br>(Same)
-On Error Container        | colorOnErrorContainer        | error10</br>(Same)                               | error90</br>(Same)
-Outline                   | colorOutline                 | neutral_variant50</br>(system_neutral2_500)      | neutral_variant60</br>(system_neutral2_400)
-Outline Variant           | colorOutlineVariant          | neutral_variant80</br>(system_neutral2_200)      | neutral_variant30</br>(system_neutral2_700)
-Background                | android:colorBackground      | primary99</br>(system_neutral1_10)               | neutral10</br>(system_neutral1_900)
-On Background             | colorOnBackground            | neutral10</br>(system_neutral1_900)              | neutral90</br>(system_neutral1_100)
-Surface                   | colorSurface                 | primary99</br>(system_neutral1_10)               | neutral10</br>(system_neutral1_900)
-On Surface                | colorOnSurface               | neutral10</br>(system_neutral1_900)              | neutral90</br>(system_neutral1_100)
-Surface Variant           | colorSurfaceVariant          | neutral_variant90</br>(system_neutral2_100)      | neutral_variant30</br>(system_neutral2_700)
-On Surface Variant        | colorOnSurfaceVariant        | neutral_variant30</br>(system_neutral2_700)      | neutral_variant80</br>(system_neutral2_200)
-Inverse Surface           | colorSurfaceInverse          | neutral24</br>(system_neutral1_800)              | neutral90</br>(system_neutral1_100)
-Inverse On Surface        | colorOnSurfaceInverse        | neutral95</br>(system_neutral1_50)               | neutral24</br>(system_neutral1_800)
-Surface Bright            | colorSurfaceBright           | neutral98</br>(m3_ref_palette_dynamic_neutral98) | neutral24</br>(m3_ref_palette_dynamic_neutral24)
-Surface Dim               | colorSurfaceDim              | neutral87</br>(m3_ref_palette_dynamic_neutral87) | neutral6</br>(m3_ref_palette_dynamic_neutral6)
-Surface Container         | colorSurfaceContainer        | neutral94</br>(m3_ref_palette_dynamic_neutral94) | neutral12</br>(m3_ref_palette_dynamic_neutral12)
-Surface Container Low     | colorSurfaceContainerLow     | neutral96</br>(m3_ref_palette_dynamic_neutral96) | neutral10</br>(system_neutral1_900)
-Surface Container Lowest  | colorSurfaceContainerLowest  | white</br>(system_neutral1_0)                    | neutral4</br>(m3_ref_palette_dynamic_neutral4)
-Surface Container High    | colorSurfaceContainerHigh    | neutral92</br>(m3_ref_palette_dynamic_neutral92) | neutral17</br>(m3_ref_palette_dynamic_neutral17)
-Surface Container Highest | colorSurfaceContainerHighest | neutral90</br>(system_neutral1_100)              | neutral24</br>(m3_ref_palette_dynamic_neutral22)
+Color Role                | Android Attribute            | Light Theme Baseline (Dynamic) Color                     | Dark Theme Baseline (Dynamic) Color
+------------------------- | ---------------------------- | -------------------------------------------------------- | -----------------------------------
+Error                     | colorError                   | error40</br>(Same)                                       | error80</br>(Same)
+On Error                  | colorOnError                 | white</br>(Same)                                         | error20</br>(Same)
+Error Container           | colorErrorContainer          | error90</br>(Same)                                       | error30</br>(Same)
+On Error Container        | colorOnErrorContainer        | error10</br>(Same)                                       | error90</br>(Same)
+Outline                   | colorOutline                 | neutral_variant50</br>(system_neutral2_500)              | neutral_variant60</br>(system_neutral2_400)
+Outline Variant           | colorOutlineVariant          | neutral_variant80</br>(system_neutral2_200)              | neutral_variant30</br>(system_neutral2_700)
+Background                | android:colorBackground      | neutral98</br>(m3_ref_palette_dynamic_neutral_variant98) | neutral6</br>(m3_ref_palette_dynamic_neutral_variant6)
+On Background             | colorOnBackground            | neutral10</br>(system_neutral1_900)                      | neutral90</br>(system_neutral1_100)
+Surface                   | colorSurface                 | neutral98</br>(m3_ref_palette_dynamic_neutral_variant98) | neutral6</br>(m3_ref_palette_dynamic_neutral_variant6)
+On Surface                | colorOnSurface               | neutral10</br>(system_neutral1_900)                      | neutral90</br>(system_neutral1_100)
+Surface Variant           | colorSurfaceVariant          | neutral_variant90</br>(system_neutral2_100)              | neutral_variant30</br>(system_neutral2_700)
+On Surface Variant        | colorOnSurfaceVariant        | neutral_variant30</br>(system_neutral2_700)              | neutral_variant80</br>(system_neutral2_200)
+Inverse Surface           | colorSurfaceInverse          | neutral20</br>(system_neutral1_800)                      | neutral90</br>(system_neutral1_100)
+Inverse On Surface        | colorOnSurfaceInverse        | neutral95</br>(system_neutral1_50)                       | neutral20</br>(system_neutral1_800)
+Surface Bright            | colorSurfaceBright           | neutral98</br>(m3_ref_palette_dynamic_neutral_variant98) | neutral24</br>(m3_ref_palette_dynamic_neutral_variant24)
+Surface Dim               | colorSurfaceDim              | neutral87</br>(m3_ref_palette_dynamic_neutral_variant87) | neutral6</br>(m3_ref_palette_dynamic_neutral_variant6)
+Surface Container         | colorSurfaceContainer        | neutral94</br>(m3_ref_palette_dynamic_neutral_variant94) | neutral12</br>(m3_ref_palette_dynamic_neutral_variant12)
+Surface Container Low     | colorSurfaceContainerLow     | neutral96</br>(m3_ref_palette_dynamic_neutral_variant96) | neutral10</br>(system_neutral2_900)
+Surface Container Lowest  | colorSurfaceContainerLowest  | white</br>(system_neutral2_0)                            | neutral4</br>(m3_ref_palette_dynamic_neutral_variant4)
+Surface Container High    | colorSurfaceContainerHigh    | neutral92</br>(m3_ref_palette_dynamic_neutral_variant92) | neutral17</br>(m3_ref_palette_dynamic_neutral_variant17)
+Surface Container Highest | colorSurfaceContainerHighest | neutral90</br>(system_neutral2_100)                      | neutral22</br>(m3_ref_palette_dynamic_neutral_variant22)
 
 <!-- Auto-generated additional color table ends. Do not edit below or remove this comment. -->
 
@@ -223,7 +223,7 @@ DynamicColors.applyToActivitiesIfAvailable(this, (activity, themeResId) -> {
 Or provide your own customized dynamic color theme overlays, likely inheriting
 from the Material3 theme overlays above, by doing:
 
-``` java
+```java
 DynamicColors.applyToActivitiesIfAvailable(this, R.style.ThemeOverlay_MyApp_DynamicColors_DayNight);
 ```
 
@@ -637,7 +637,7 @@ produces the range of tones needed for both light and dark theme applications.
 We have provided the following two APIs in the `DynamicColorsOptions` class.
 
 API Method                     | Description
------------------------------- | ---------------------------------------
+------------------------------ | -----------
 #setContentBasedSource(Bitmap) | Provides a Bitmap from which a single source color is extracted as input
 #setContentBasedSource(int)    | Provides a single source color as input
 

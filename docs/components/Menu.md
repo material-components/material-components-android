@@ -426,7 +426,7 @@ The following are menu anatomy diagrams showing all possible elements:
 Element        | Attribute                     | Related method(s) | Default value
 -------------- | ----------------------------- | ----------------- | -------------
 **Background** | `android:popupMenuBackground` | N/A               | `?attr/popupMenuBackground`
-**Color**      | N/A                           | N/A               | `?attr/colorSurface`
+**Color**      | N/A                           | N/A               | `?attr/colorSurfaceContainer`
 **Elevation**  | `android:popupElevation`      | N/A               | `3dp`
 
 #### Text attributes
@@ -571,17 +571,17 @@ For all attributes that apply to the `TextInputLayout`, see the
 #### `MaterialAutoCompleteTextView` attributes (input text, dropdown menu)
 
 Element                                   | Attribute                                                           | Related method(s)                                                                                   | Default value
------------------------------------------ | ------------------------------------------------------------------- |-----------------------------------------------------------------------------------------------------| -------------
+----------------------------------------- | ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- | -------------
 **Input text**                            | `android:text`                                                      | `setText`<br/>`getText`                                                                             | `@null`
 **Typography**                            | `android:textAppearance`                                            | `setTextAppearance`                                                                                 | `?attr/textAppearanceBodyLarge`
 **Input accepted**                        | `android:inputType`                                                 | `N/A`                                                                                               | framework's default
 **Input text color**                      | `android:textColor`                                                 | `setTextColor`<br/>`getTextColors`<br/>`getCurrentTextColor`                                        | `?android:textColorPrimary`
 **Cursor color**                          | N/A (color comes from the theme attr `?attr/colorControlActivated`) | N/A                                                                                                 | `?attr/colorPrimary`
-**Dropdown menu<br/>container color**     | `app:dropDownBackgroundTint`                                        | `setDropDownBackgroundTint`<br/>`setDropDownBackgroundTintList`<br/>`getDropDownBackgroundTintList` | `@null`</br>(which means `colorSurface` with</br> elevation overlay will be used)
+**Dropdown menu<br/>container color**     | `app:dropDownBackgroundTint`                                        | `setDropDownBackgroundTint`<br/>`setDropDownBackgroundTintList`<br/>`getDropDownBackgroundTintList` | `colorSurfaceContainer`
 **Dropdown menu elevation**               | `android:popupElevation`                                            | `getPopupElevation`                                                                                 | `3dp`
 **Simple items**                          | `app:simpleItems`                                                   | `setSimpleItems`                                                                                    | `null`
 **Simple item layout**                    | `app:simpleItemLayout`                                              | N/A                                                                                                 | `@layout/m3_auto_complete_simple_item`
-**Selected simple item color**            | `app:simpleItemSelectedColor`                                       | `setSimpleItemSelectedColor`<br/>`getSimpleItemSelectedColor`                                       | `?attr/colorSurfaceVariant`
+**Selected simple item color**            | `app:simpleItemSelectedColor`                                       | `setSimpleItemSelectedColor`<br/>`getSimpleItemSelectedColor`                                       | `?attr/colorSurfaceContainerHighest`
 **Selected simple item<br/>ripple color** | `app:simpleItemSelectedRippleColor`                                 | `setSimpleItemSelectedRippleColor`<br/>`getSimpleItemSelectedRippleColor`                           | `@color/m3_simple_item_ripple_color`
 
 #### Styles

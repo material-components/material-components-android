@@ -264,15 +264,15 @@ Side sheets have a sheet, content, and, if modal, a scrim.
 
 ### Sheet attributes
 
-Element        | Attribute                   | Related method(s)                                       | Default value
--------------- |-----------------------------|---------------------------------------------------------| -------------
-**Color**      | `app:backgroundTint`        | N/A                                                     | `?attr/colorSurface`
+Element                      | Attribute                   | Related method(s)                                       | Default value
+---------------------------- | --------------------------- | ------------------------------------------------------- | -------------
+**Color**                    | `app:backgroundTint`        | N/A                                                     | `?attr/colorSurface`</br>`?attr/colorSurfaceContainerLow` (modal)
 **Coplanar sibling view id** | `app:coplanarSiblingViewId` | `setCoplanarSiblingViewId`<br/>`setCoplanarSiblingView` | N/A
-**Shape**      | `app:shapeAppearance`       | N/A                                                     | `?attr/shapeAppearanceLargeComponent`
-**Sheet edge** | `android:layout_gravity`    | `setSheetEdge` (modal only)                             | end
-**Elevation**  | `android:elevation`         | N/A                                                     | 0dp
-**Max width**  | `android:maxWidth`          | `setMaxWidth`<br/>`getMaxWidth`                         | N/A
-**Max height** | `android:maxHeight`         | `setMaxHeight`<br/>`getMaxHeight`                       | N/A
+**Shape**                    | `app:shapeAppearance`       | N/A                                                     | `?attr/shapeAppearanceLargeComponent`
+**Sheet edge**               | `android:layout_gravity`    | `setSheetEdge` (modal only)                             | end
+**Elevation**                | `android:elevation`         | N/A                                                     | 0dp
+**Max width**                | `android:maxWidth`          | `setMaxWidth`<br/>`getMaxWidth`                         | N/A
+**Max height**               | `android:maxHeight`         | `setMaxHeight`<br/>`getMaxHeight`                       | N/A
 
 ### Behavior attributes
 

@@ -155,17 +155,17 @@ switch by assigning `app:thumbIcon`. This icon will be centered and displayed on
 top of the thumb drawable.
 
 Element   | Attribute           | Related method(s)                                 | Default value
---------- |---------------------|---------------------------------------------------| -------------
+--------- | ------------------- | ------------------------------------------------- | -------------
 **Icon**  | `app:thumbIcon`     | `setThumbIconDrawable`<br/>`getThumbIconDrawable` | `null`
 **Size**  | `app:thumbIconSize` | `setThumbIconSize`<br/>`getThumbIconSize`         | `16dp`
-**Color** | `app:thumbIconTint` | `setThumbIconTintList`<br/>`getThumbIconTintList` | `?attr/colorSurfaceVariant` (unchecked)<br/>`?attr/colorOnPrimaryContainer` (checked)
+**Color** | `app:thumbIconTint` | `setThumbIconTintList`<br/>`getThumbIconTintList` | `?attr/colorSurfaceContainerHighest` (unchecked)<br/>`?attr/colorOnPrimaryContainer` (checked)
 
 ### Track attributes
 
 Element              | Attribute                 | Related method(s)                                             | Default value
 -------------------- | ------------------------- | ------------------------------------------------------------- | -------------
 **Track**            | `app:track`               | `setTrackDrawable`<br/>`getTrackDrawable`                     | `@drawable/mtrl_switch_track`
-**Color**            | `app:trackTint`           | `setTrackTintList`<br/>`getTrackTintList`                     | `?attr/colorSurfaceVariant` (unchecked)<br/>`?attr/colorPrimary` (checked)
+**Color**            | `app:trackTint`           | `setTrackTintList`<br/>`getTrackTintList`                     | `?attr/colorSurfaceContainerHighest` (unchecked)<br/>`?attr/colorPrimary` (checked)
 **Decoration**       | `app:trackDecoration`     | `setTrackDecorationDrawable`<br/>`getTrackDecorationDrawable` | `@drawable/mtrl_switch_track_decoration`<br/>(Shows an outline of the track.)
 **Decoration color** | `app:trackDecorationTint` | `setTrackDecorationTintList`<br/>`getTrackDecorationTintList` | `?attr/colorOutline` (unchecked)<br/>`@android:color/transparent` (checked)
 

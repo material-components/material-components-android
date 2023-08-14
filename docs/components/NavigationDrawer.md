@@ -263,12 +263,12 @@ subtitles, and an optional scrim.
 
 Element                 | Attribute(s)                                                        | Related method(s)                                | Default value
 ----------------------- | ------------------------------------------------------------------- | ------------------------------------------------ | -------------
-**Color**               | `android:background`                                                | `setBackground`<br>`getBackground`               | `?attr/colorSurface`
+**Color**               | `android:background`                                                | `setBackground`<br>`getBackground`               | `?attr/colorSurfaceContainerLow`
 **Shape**               | `app:shapeAppearance`<br>`app:shapeAppearanceOverlay`               | N/A                                              | `null`
 **Elevation**           | `app:elevation` (can be used on `NavigationView` or `DrawerLayout`) | `setElevation`<br>`getElevation`                 | `0dp` (`NavigationView`) or `1dp` (`DrawerLayout`)
 **Max width**           | `android:maxWidth`                                                  | N/A                                              | `280dp`
 **Fits system windows** | `android:fitsSystemWindows`                                         | `setFitsSystemWindows`<br>`getFitsSystemWindows` | `true`
-**Drawer corner size**  | `drawerLayoutCornerSize`                                            | N/A                                              |  `16dp`
+**Drawer corner size**  | `drawerLayoutCornerSize`                                            | N/A                                              | `16dp`
 
 ### Header attributes
 

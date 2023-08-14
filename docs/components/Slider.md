@@ -299,7 +299,7 @@ Element                                    | Attribute                | Related 
 **Height**                                 | `app:trackHeight`        | `setTrackHeight`<br/>`getTrackHeight`                     | `4dp`
 **Color**                                  | `app:trackColor`         | `setTrackTintList`<br/>`getTrackTintList`                 | `null`
 **Color for track's active part**          | `app:trackColorActive`   | `setTrackActiveTintList`<br/>`getTrackActiveTintList`     | `?attr/colorPrimary`
-**Color for track's inactive part**        | `app:trackColorInactive` | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList` | `?attr/colorSurfaceVariant`
+**Color for track's inactive part**        | `app:trackColorInactive` | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList` | `?attr/colorSurfaceContainerHighest`
 **Minimum separation for adjacent thumbs** | `app:minSeparation`      | `setMinSeparation`<br/>`getMinSeparation`                 | `0dp`
 
 **Note:** `app:trackColor` takes precedence over `app:trackColorActive` and

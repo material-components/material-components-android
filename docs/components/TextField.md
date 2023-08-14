@@ -462,7 +462,7 @@ indicator, optional helper/error text and optional leading/trailing icons.
 
 Element                | Attribute                | Related method(s)                                                                       | Default value
 ---------------------- | ------------------------ | --------------------------------------------------------------------------------------- | -------------
-**Color**              | `app:boxBackgroundColor` | `setBoxBackgroundColor`<br/>`setBoxBackgroundColorResource`<br/>`getBoxBackgroundColor` | `?attr/colorSurfaceVariant` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/m3_textfield_filled_background_color.xml))
+**Color**              | `app:boxBackgroundColor` | `setBoxBackgroundColor`<br/>`setBoxBackgroundColorResource`<br/>`getBoxBackgroundColor` | `?attr/colorSurfaceContainerHighest` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/m3_textfield_filled_background_color.xml))
 **Shape**              | `app:shapeAppearance`    | N/A                                                                                     | `?attr/shapeAppearanceSmallComponent`
 **Text field enabled** | `android:enabled`        | `setEnabled`                                                                            | `true`
 

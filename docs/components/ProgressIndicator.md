@@ -293,7 +293,7 @@ Element                       | Attribute                   | Related method(s) 
 ----------------------------- | --------------------------- | --------------------------------------------------------- | -------------
 **Track thickness**           | `app:trackThickness`        | `setTrackThickness`</br>`getTrackThickness`               | `4dp`
 **Indicator color**           | `app:indicatorColor`        | `setIndicatorColor`</br>`getIndicatorColor`               | `colorPrimary`
-**Track color**               | `app:trackColor`            | `setTrackColor`</br>`getTrackColor`                       | `indicatorColor` at `disabledAlpha`
+**Track color**               | `app:trackColor`            | `setTrackColor`</br>`getTrackColor`                       | `colorSurfaceContainerHighest` (linear)</br>`@android:color/transparent` (circular)
 **Track corner radius**       | `app:trackCornerRadius`     | `setTrackCornerRadius`</br>`getTrackCornerRadius`         | `0dp`
 **Show animation behavior**   | `app:showAnimationBehavior` | `setShowAnimationBehavior`</br>`getShowAnimationBehavior` | `none`
 **Hide animation behavior**   | `app:hideAnimationBehavior` | `setHideAnimationBehavior`</br>`getHideAnimationBehavior` | `none`
