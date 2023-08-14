@@ -117,6 +117,21 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
         new CarouselAdapter(
             (item, position) -> fullscreenRecyclerView.scrollToPosition(position),
             R.layout.cat_carousel_item_vertical);
+    fullscreenRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      private boolean dragged = false;
+
+      @Override
+      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+        if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+          dragged = true;
+        } else if (dragged && newState == RecyclerView.SCROLL_STATE_IDLE) {
+          if (recyclerView.computeVerticalScrollRange() != 0) {
+            positionSlider.setValue((adapter.getItemCount() - 1) * recyclerView.computeVerticalScrollOffset() / recyclerView.computeVerticalScrollRange() + 1);
+          }
+          dragged = false;
+        }
+      }
+    });
 
     SnapHelper flingDisabledSnapHelper = new CarouselSnapHelper();
     SnapHelper flingEnabledSnapHelper = new CarouselSnapHelper(false);

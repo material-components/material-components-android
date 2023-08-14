@@ -101,8 +101,26 @@ public class HeroCarouselDemoFragment extends DemoFragment {
 
     CarouselAdapter adapter =
         new CarouselAdapter(
-            (item, position) -> heroStartRecyclerView.scrollToPosition(position),
+            (item, position) -> {
+              heroStartRecyclerView.scrollToPosition(position);
+              positionSlider.setValue(position + 1);
+            },
             R.layout.cat_carousel_item);
+    heroStartRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+      private boolean dragged = false;
+
+      @Override
+      public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+        if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+          dragged = true;
+        } else if (dragged && newState == RecyclerView.SCROLL_STATE_IDLE) {
+          if (recyclerView.computeHorizontalScrollRange() != 0) {
+            positionSlider.setValue((adapter.getItemCount() - 1) * recyclerView.computeHorizontalScrollOffset() / recyclerView.computeHorizontalScrollRange() + 1);
+          }
+          dragged = false;
+        }
+      }
+    });
 
     SnapHelper disableFlingSnapHelper = new CarouselSnapHelper();
     SnapHelper enableFlingSnapHelper = new CarouselSnapHelper(false);
