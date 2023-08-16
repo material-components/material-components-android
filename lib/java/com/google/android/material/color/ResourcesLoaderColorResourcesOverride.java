@@ -24,7 +24,6 @@ import android.os.Build.VERSION_CODES;
 import android.view.ContextThemeWrapper;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.annotation.StyleRes;
 import java.util.Map;
 
 /**
@@ -47,24 +46,8 @@ class ResourcesLoaderColorResourcesOverride implements ColorResourcesOverride {
   @Override
   public boolean applyIfPossible(
       Context context, Map<Integer, Integer> colorResourceIdsToColorValues) {
-    return applyIfPossible(
-        context, colorResourceIdsToColorValues, R.style.ThemeOverlay_Material3_PersonalizedColors);
-  }
-
-  /**
-   * Overrides the color resources to the given context, returns {@code true} if new color values
-   * have been applied.
-   *
-   * @param context The target context.
-   * @param colorResourceIdsToColorValues The mapping from the color resources id to the updated
-   *     color value.
-   * @param theme The resource ID of the theme overlay to be applied.
-   */
-  @Override
-  public boolean applyIfPossible(
-      Context context, Map<Integer, Integer> colorResourceIdsToColorValues, @StyleRes int theme) {
     if (ResourcesLoaderUtils.addResourcesLoaderToContext(context, colorResourceIdsToColorValues)) {
-      ThemeUtils.applyThemeOverlay(context, theme);
+      ThemeUtils.applyThemeOverlay(context, R.style.ThemeOverlay_Material3_PersonalizedColors);
       return true;
     }
     return false;
@@ -82,24 +65,8 @@ class ResourcesLoaderColorResourcesOverride implements ColorResourcesOverride {
   @NonNull
   public Context wrapContextIfPossible(
       Context context, Map<Integer, Integer> colorResourceIdsToColorValues) {
-    return wrapContextIfPossible(
-        context, colorResourceIdsToColorValues, R.style.ThemeOverlay_Material3_PersonalizedColors);
-  }
-
-  /**
-   * Wraps the given Context with the theme overlay where color resources are updated at runtime. If
-   * not possible, the original Context will be returned.
-   *
-   * @param context The target context.
-   * @param colorResourceIdsToColorValues The mapping from the color resources id to the updated
-   *     color value.
-   * @param theme The resource ID of the theme overlay to be applied.
-   */
-  @Override
-  @NonNull
-  public Context wrapContextIfPossible(
-      Context context, Map<Integer, Integer> colorResourceIdsToColorValues, @StyleRes int theme) {
-    ContextThemeWrapper themeWrapper = new ContextThemeWrapper(context, theme);
+    ContextThemeWrapper themeWrapper =
+        new ContextThemeWrapper(context, R.style.ThemeOverlay_Material3_PersonalizedColors);
     // Because ContextThemeWrapper does not provide a new set of resources, override config to
     // retrieve the new set of resources and to keep the original context's resources intact.
     themeWrapper.applyOverrideConfiguration(new Configuration());
