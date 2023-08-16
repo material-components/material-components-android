@@ -103,6 +103,10 @@ for guidance on how you can adjust your brand colors for a dark theme.
 
 ## Elevation overlays
 
+**Note:** Surface with elevation overlays has been replaced in Material
+components with the
+[tonal surface color system](./Color.md#using-surface-colors).
+
 In addition to the color palette adjustments mentioned above, communicating the
 hierarchy of a UI via elevation requires some dark theme-specific
 considerations.
@@ -118,10 +122,6 @@ This is accomplished via elevation overlays, which are semi-transparent
 color. The semi-transparent alpha percentage is calculated using an equation
 based on elevation, which results in higher alpha percentages at higher
 elevations, and therefore lighter surfaces.
-
-Starting with the `Theme.Material3.*` themes, elevation overlays are now enabled
-for light themes as well, in order to consistently communicate elevation
-hierarchy with color.
 
 **Note:** we avoid overdraw with the elevation overlays by calculating a
 composite blend of the surface color with the overlay color and using that as

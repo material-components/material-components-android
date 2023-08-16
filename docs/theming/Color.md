@@ -98,9 +98,55 @@ Surface Container Highest | colorSurfaceContainerHighest | neutral90</br>(system
 
 ## Using Surface Colors
 
-Material 3 uses primary colored elevation overlays to present a visual hierarchy
-with different elevations in both light and dark themes. Material 3 themes
-enable this by default with setting `?attr/elevationOverlayColor` to
+As of version 1.11.0-alpha02 and above, Material3 components will use the
+following tonal surface color roles by default (instead of elevation overlays
+which involved blending the Surface and Primary colors):
+
+-   `colorSurfaceContainer`
+-   `colorSurfaceContainerLow`
+-   `colorSurfaceContainerHigh`
+-   `colorSurfaceContainerLowest`
+-   `colorSurfaceContainerHighest`
+-   `colorSurfaceDim`
+-   `colorSurfaceBright`
+
+These color roles are used as the default container/background color in the
+components below. Please check the
+[Surface colors guidelines](https://m3.material.io/styles/color/the-color-system/color-roles#0abbf8b7-61e1-49ee-9f97-4967beb1e4fe)
+for more details.
+
+*   [Bottom App Bar](../components/BottomAppBar.md)
+*   [Bottom Navigation](../components/BottomNavigation.md)
+*   [Bottom Sheet](../components/BottomSheet.md)
+*   [Button](../components/Button.md)
+*   [Card](../components/Card.md)
+*   [Chip](../components/Chip.md)
+*   [Date Picker](../components/DatePicker.md)
+*   [Dialog](../components/Dialog.md)
+*   [Floating Action Button](../components/FloatingActionButton.md)
+*   [Menu](../components/Menu.md)
+*   [Navigation Drawer](../components/NavigationDrawer.md)
+*   [Search](../components/Search.md)
+*   [Switch](../components/Switch.md)
+*   [Tabs](../components/Tabs.md)
+*   [Text Field](../components/TextField.md)
+*   [Time Picker](../components/TimePicker.md)
+*   [Top App Bar](../components/TopAppBar.md)
+
+### Using Surface with Elevation Overlay
+
+**Note:** Surface with elevation overlay has been replaced with tonal surface
+colors in Material's components. If you use the Material styles or default
+styles in the Material theme, the container color will no longer respond to the
+elevation overlay color. The elevation overlay utility has not been removed from
+the implementation. If the surface with elevation overlay is needed for
+migration purposes, please set the corresponding container color to
+`?attr/colorSurface`. The maintenance to the elevation overlay has been
+discontinued.
+
+Surface with elevation overlay uses primary colored overlays to present a visual
+hierarchy with different elevations in both light and dark themes. Material 3
+themes enable this by default with setting `?attr/elevationOverlayColor` to
 `?attr/colorPrimary`.
 
 Elevation overlays use the following theme attributes:
@@ -116,11 +162,10 @@ defaults shown above.
 
 The elevation overlays will be applied to surface colors to create tonal
 variations. Within the Material 3 color palette, there are five predefined
-surface tonal variations (Surface1-5) which are used as the default surface
-colors (by applying different elevations) of different Material 3 components.
-However, these surface tonal colors are **NOT** implemented as color resources,
-but their actual color values are calculated *on the fly* with the
-`?attr/elevationOverlayColor`, as mentioned above.
+surface tonal variations (Surface1-5) which are available to be applied to
+different Material 3 components. However, these surface tonal colors are **NOT**
+implemented as color resources, but their actual color values are calculated *on
+the fly* with the `?attr/elevationOverlayColor`, as mentioned above.
 
 In a practical scenario, you have three ways to include those tonal surface
 colors in your app:
@@ -128,13 +173,12 @@ colors in your app:
 ##### Material Design Components
 
 The easiest way to use surface colors with tonal variations is with Material
-Design Components, which have built-in support for tonal surface
-colors/elevation overlays. You can customize surface colors of those components
-by changing their elevation.
+Design Components, which have built-in support for surface with elevation
+overlays. You can customize surface colors of those components by changing their
+elevation.
 
-Here is a list of Material components that support elevation overlays. These
-components have `colorSurface` set as the default background color and can be
-elevated:
+Here is a list of Material components that support elevation overlays when
+`?attr/colorSurface` is set as the container/background color.
 
 *   [Top App Bar](../components/TopAppBar.md)
 *   [Bottom App Bar](../components/BottomAppBar.md)
