@@ -34,13 +34,10 @@ import android.view.ContextThemeWrapper;
 import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
 import androidx.core.os.BuildCompat;
 import com.google.android.material.color.utilities.Hct;
 import com.google.android.material.color.utilities.SchemeContent;
-import com.google.android.material.resources.MaterialAttributes;
 import java.lang.reflect.Method;
 import java.util.Collections;
 import java.util.HashMap;
@@ -55,24 +52,6 @@ public class DynamicColors {
 
   private static final int[] CONTRAST_COLOR_THEME_OVERLAY_ATTRIBUTE =
       new int[] {R.attr.contrastColorThemeOverlay};
-
-  @RequiresApi(api = VERSION_CODES.S)
-  private static final int[] SYSTEM_NEUTRAL_PALETTE_RES_IDS =
-      new int[] {
-        android.R.color.system_neutral1_0,
-        android.R.color.system_neutral1_10,
-        android.R.color.system_neutral1_50,
-        android.R.color.system_neutral1_100,
-        android.R.color.system_neutral1_200,
-        android.R.color.system_neutral1_300,
-        android.R.color.system_neutral1_400,
-        android.R.color.system_neutral1_500,
-        android.R.color.system_neutral1_600,
-        android.R.color.system_neutral1_700,
-        android.R.color.system_neutral1_800,
-        android.R.color.system_neutral1_900,
-        android.R.color.system_neutral1_1000,
-      };
 
   private static final DeviceSupportCondition DEFAULT_DEVICE_SUPPORT_CONDITION =
       new DeviceSupportCondition() {
@@ -144,7 +123,6 @@ public class DynamicColors {
   }
 
   private static final int USE_DEFAULT_THEME_OVERLAY = 0;
-  private static final int UPDATED_NEUTRAL_PALETTE_CHROMA = 6;
   private static final String TAG = DynamicColors.class.getSimpleName();
 
   private static final String SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ENTRY_NAME =
@@ -318,18 +296,16 @@ public class DynamicColors {
       return;
     }
     // Set default theme overlay as 0, as it's not used in content-based dynamic colors.
-    int themeOverlayResourceId = 0;
+    int theme = 0;
     // Only retrieves the theme overlay if we're applying just dynamic colors.
     if (dynamicColorsOptions.getContentBasedSeedColor() == null) {
-      themeOverlayResourceId =
+      theme =
           dynamicColorsOptions.getThemeOverlay() == USE_DEFAULT_THEME_OVERLAY
               ? getDefaultThemeOverlay(activity, DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE)
               : dynamicColorsOptions.getThemeOverlay();
     }
 
-    if (dynamicColorsOptions
-        .getPrecondition()
-        .shouldApplyDynamicColors(activity, themeOverlayResourceId)) {
+    if (dynamicColorsOptions.getPrecondition().shouldApplyDynamicColors(activity, theme)) {
       // Applies content-based dynamic colors if content-based source is provided.
       if (dynamicColorsOptions.getContentBasedSeedColor() != null) {
         SchemeContent scheme =
@@ -347,9 +323,8 @@ public class DynamicColors {
             return;
           }
         }
-      } else if (!maybeApplyThemeOverlayWithUpdatedNeutralChroma(
-          activity, themeOverlayResourceId)) {
-        ThemeUtils.applyThemeOverlay(activity, themeOverlayResourceId);
+      } else {
+        ThemeUtils.applyThemeOverlay(activity, theme);
         // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public
         // release. Contrast ThemeOverlay is applied on top of Dynamic ThemeOverlay to keep client's
         // custom Dynamic theme attributes.
@@ -432,16 +407,6 @@ public class DynamicColors {
             originalContext,
             MaterialColorUtilitiesHelper.createColorResourcesIdsToColorValues(scheme));
       }
-    } else {
-      if (shouldOverrideNeutralChroma(originalContext)) {
-        ColorResourcesOverride resourcesOverride = ColorResourcesOverride.getInstance();
-        if (resourcesOverride != null) {
-          return resourcesOverride.wrapContextIfPossible(
-              originalContext,
-              createColorResourcesIdsToColorValuesWithUpdatedChroma(originalContext),
-              theme);
-        }
-      }
     }
     Context dynamicContext = new ContextThemeWrapper(originalContext, theme);
     // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public
@@ -479,57 +444,6 @@ public class DynamicColors {
     final int theme = dynamicColorAttributes.getResourceId(0, 0);
     dynamicColorAttributes.recycle();
     return theme;
-  }
-
-  @RequiresApi(api = VERSION_CODES.S)
-  private static Map<Integer, Integer> createColorResourcesIdsToColorValuesWithUpdatedChroma(
-      Context context) {
-    Map<Integer, Integer> colorResourcesIdsToColorValues = new HashMap<>();
-    for (int neutralResId : SYSTEM_NEUTRAL_PALETTE_RES_IDS) {
-      Hct colorHct = Hct.fromInt(ContextCompat.getColor(context, neutralResId));
-      colorHct.setChroma(UPDATED_NEUTRAL_PALETTE_CHROMA);
-      colorResourcesIdsToColorValues.put(neutralResId, colorHct.toInt());
-    }
-    return colorResourcesIdsToColorValues;
-  }
-
-  /**
-   * Applies the theme overlay to the context with an updated neutral palette with chroma 6, if
-   * possible. See {@link #shouldOverrideNeutralChroma(Context)} for when the neutral palettes
-   * should be updated.
-   *
-   * @return Whether the theme overlay is applied with updated neutral palettes successfully.
-   */
-  private static boolean maybeApplyThemeOverlayWithUpdatedNeutralChroma(
-      @NonNull Context context, int themeOverlayResourceId) {
-    if (shouldOverrideNeutralChroma(context)) {
-      ColorResourcesOverride resourcesOverride = ColorResourcesOverride.getInstance();
-      if (resourcesOverride != null) {
-        return resourcesOverride.applyIfPossible(
-            context,
-            createColorResourcesIdsToColorValuesWithUpdatedChroma(context),
-            themeOverlayResourceId);
-      }
-    }
-    return false;
-  }
-
-  /**
-   * Checks whether the neutral palette should be overridden with chroma 6.
-   *
-   * @return True, if Android version is S or T and preUDynamicNeutralChromaUpdateEnabled is true in
-   *     current context.
-   */
-  @ChecksSdkIntAtLeast(api = VERSION_CODES.S)
-  private static boolean shouldOverrideNeutralChroma(@NonNull Context context) {
-    // TODO(b/272585197) Remove after tonal surface migration is complete.
-    boolean shouldUpdateNeutralChroma =
-        MaterialAttributes.resolveBoolean(
-            context, R.attr.preUDynamicNeutralChromaUpdateEnabled, /* defaultValue= */ false);
-    // Update neutral palette chroma from 4 to 6 for backward compatibility.
-    return VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE
-        && VERSION.SDK_INT >= VERSION_CODES.S
-        && shouldUpdateNeutralChroma;
   }
 
   /** The interface that provides a precondition to decide if dynamic colors should be applied. */
