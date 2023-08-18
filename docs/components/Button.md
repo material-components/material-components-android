@@ -1018,13 +1018,13 @@ theme to all buttons but does not affect other components:
     <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
 </style>
 
-<style name="ThemeOverlay.App.Button.TextButton" parent="">
-    <item name="colorPrimary">@color/shrine_pink_900</item>
+<style name="ThemeOverlay.App.Button.TextButton" parent="ThemeOverlay.Material3.Button.TextButton">
+    <item name="colorOnContainer">@color/shrine_pink_900</item>
 </style>
 
-<style name="ThemeOverlay.App.Button" parent="">
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnPrimary">@color/shrine_pink_900</item>
+<style name="ThemeOverlay.App.Button" parent="ThemeOverlay.Material3.Button">
+    <item name="colorContainer">@color/shrine_pink_100</item>
+    <item name="colorOnContainer">@color/shrine_pink_900</item>
 </style>
 ```
 
