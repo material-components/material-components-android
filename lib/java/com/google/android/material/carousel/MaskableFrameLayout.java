@@ -40,7 +40,9 @@ import com.google.android.material.shape.ShapeableDelegate;
 /** A {@link FrameLayout} than is able to mask itself and all children. */
 public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapeable {
 
-  private float maskXPercentage = 0F;
+  private static final int NOT_SET = -1;
+
+  private float maskXPercentage = NOT_SET;
   private final RectF maskRect = new RectF();
   @Nullable private OnMaskChangedListener onMaskChangedListener;
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
@@ -65,7 +67,9 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   @Override
   protected void onSizeChanged(int w, int h, int oldw, int oldh) {
     super.onSizeChanged(w, h, oldw, oldh);
-    onMaskChanged();
+    if (maskXPercentage != NOT_SET) {
+      updateMaskRectForMaskXPercentage();
+    }
   }
 
   @Override
@@ -123,10 +127,16 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
     percentage = MathUtils.clamp(percentage, 0F, 1F);
     if (maskXPercentage != percentage) {
       this.maskXPercentage = percentage;
-      // Translate the percentage into an actual pixel value of how much of this view should be
-      // masked away.
-      float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
-      setMaskRectF(new RectF(maskWidth, 0F, (getWidth() - maskWidth), getHeight()));
+      updateMaskRectForMaskXPercentage();
+    }
+  }
+
+  private void updateMaskRectForMaskXPercentage() {
+    if (maskXPercentage != NOT_SET) {
+    // Translate the percentage into an actual pixel value of how much of this view should be
+    // masked away.
+    float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
+    setMaskRectF(new RectF(maskWidth, 0F, (getWidth() - maskWidth), getHeight()));
     }
   }
 

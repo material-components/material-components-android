@@ -28,6 +28,7 @@ import static com.google.android.material.testing.RtlTestUtils.checkPlatformSupp
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.graphics.RectF;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -107,8 +108,9 @@ public class CarouselLayoutManagerRtlTest {
   @Test
   public void testSingleItem_shouldBeInFocalRange() throws Throwable {
     setAdapterItems(recyclerView, layoutManager, adapter, CarouselHelper.createDataSetWithSize(1));
+    RectF maskRect = ((Maskable) recyclerView.getChildAt(0)).getMaskRectF();
 
-    assertThat(((Maskable) recyclerView.getChildAt(0)).getMaskXPercentage()).isEqualTo(0F);
+    assertThat((int) (maskRect.right - maskRect.left)).isEqualTo(DEFAULT_ITEM_WIDTH);
   }
 
   @Test
