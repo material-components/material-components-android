@@ -31,6 +31,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.ColorStateListDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -200,16 +201,23 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     drawerLayoutCornerSize =
         a.getDimensionPixelSize(R.styleable.NavigationView_drawerLayoutCornerSize, 0);
 
+    Drawable background = getBackground();
     // Set the background to a MaterialShapeDrawable if it hasn't been set or if it can be converted
     // to a MaterialShapeDrawable.
-    if (getBackground() == null || getBackground() instanceof ColorDrawable) {
+    if (background == null
+        || background instanceof ColorDrawable
+        || (VERSION.SDK_INT >= VERSION_CODES.Q
+            && background instanceof ColorStateListDrawable)) {
       ShapeAppearanceModel shapeAppearanceModel =
           ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
-      Drawable orig = getBackground();
       MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-      if (orig instanceof ColorDrawable) {
+      if (background instanceof ColorDrawable) {
         materialShapeDrawable.setFillColor(
-            ColorStateList.valueOf(((ColorDrawable) orig).getColor()));
+            ColorStateList.valueOf(((ColorDrawable) background).getColor()));
+      }
+      if (VERSION.SDK_INT >= VERSION_CODES.Q && background instanceof ColorStateListDrawable) {
+        materialShapeDrawable.setFillColor(
+            ((ColorStateListDrawable) background).getColorStateList());
       }
       materialShapeDrawable.initializeElevationOverlay(context);
       ViewCompat.setBackground(this, materialShapeDrawable);
