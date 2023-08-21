@@ -419,10 +419,10 @@ public class CarouselLayoutManager extends LayoutManager
       Log.d(TAG, "internal representation of views on the screen");
       for (int i = 0; i < getChildCount(); i++) {
         View child = getChildAt(i);
-        float centerX = getDecoratedCenterXWithMargins(child);
+        float center = getDecoratedCenterWithMargins(child);
         Log.d(
             TAG,
-            "item position " + getPosition(child) + ", center:" + centerX + ", child index:" + i);
+            "item position " + getPosition(child) + ", center:" + center + ", child index:" + i);
       }
       Log.d(TAG, "==============");
     }
@@ -560,22 +560,30 @@ public class CarouselLayoutManager extends LayoutManager
   @Override
   public void getDecoratedBoundsWithMargins(@NonNull View view, @NonNull Rect outBounds) {
     super.getDecoratedBoundsWithMargins(view, outBounds);
-    float centerX = outBounds.centerX();
+    float center = outBounds.centerY();
+    if (isHorizontal()) {
+      center = outBounds.centerX();
+    }
     float maskedSize =
         getMaskedItemSizeForLocOffset(
-            centerX, getSurroundingKeylineRange(currentKeylineState.getKeylines(), centerX, true));
-    float delta = (outBounds.width() - maskedSize) / 2F;
+            center, getSurroundingKeylineRange(currentKeylineState.getKeylines(), center, true));
+    float deltaX = isHorizontal() ? (outBounds.width() - maskedSize) / 2F : 0;
+    float deltaY = isHorizontal() ? 0 : (outBounds.height() - maskedSize) / 2F;
+
     outBounds.set(
-        (int) (outBounds.left + delta),
-        outBounds.top,
-        (int) (outBounds.right - delta),
-        outBounds.bottom);
+        (int) (outBounds.left + deltaX),
+        (int) (outBounds.top + deltaY),
+        (int) (outBounds.right - deltaX),
+        (int) (outBounds.bottom - deltaY));
   }
 
-  private float getDecoratedCenterXWithMargins(View child) {
+  private float getDecoratedCenterWithMargins(View child) {
     Rect bounds = new Rect();
     super.getDecoratedBoundsWithMargins(child, bounds);
-    return bounds.centerX();
+    if (isHorizontal()) {
+      return bounds.centerX();
+    }
+    return bounds.centerY();
   }
 
   /**
@@ -591,10 +599,10 @@ public class CarouselLayoutManager extends LayoutManager
     // Remove items that are out of bounds at the head of the list
     while (getChildCount() > 0) {
       View child = getChildAt(0);
-      float centerX = getDecoratedCenterXWithMargins(child);
+      float center = getDecoratedCenterWithMargins(child);
       KeylineRange range =
-          getSurroundingKeylineRange(currentKeylineState.getKeylines(), centerX, true);
-      if (isLocOffsetOutOfFillBoundsStart(centerX, range)) {
+          getSurroundingKeylineRange(currentKeylineState.getKeylines(), center, true);
+      if (isLocOffsetOutOfFillBoundsStart(center, range)) {
         removeAndRecycleView(child, recycler);
       } else {
         break;
@@ -604,10 +612,10 @@ public class CarouselLayoutManager extends LayoutManager
     // Remove items that are out of bounds at the tail of the list
     while (getChildCount() - 1 >= 0) {
       View child = getChildAt(getChildCount() - 1);
-      float centerX = getDecoratedCenterXWithMargins(child);
+      float center = getDecoratedCenterWithMargins(child);
       KeylineRange range =
-          getSurroundingKeylineRange(currentKeylineState.getKeylines(), centerX, true);
-      if (isLocOffsetOutOfFillBoundsEnd(centerX, range)) {
+          getSurroundingKeylineRange(currentKeylineState.getKeylines(), center, true);
+      if (isLocOffsetOutOfFillBoundsEnd(center, range)) {
         removeAndRecycleView(child, recycler);
       } else {
         break;
@@ -625,8 +633,9 @@ public class CarouselLayoutManager extends LayoutManager
    * together.
    *
    * <p>If no keyline is found for the left, the left-most keyline is returned. If no keyline to the
-   * right is found, the right-most keyline is returned. This means the {@code location} is outside
-   * the bounds of the outer-most keylines.
+   * right is found, the right-most keyline is returned. If the orientation is vertical, the same
+   * goes for top-most and bottom-most keylines respectively. This means the {@code location} is
+   * outside the bounds of the outer-most keylines.
    *
    * @param location The location along the scrolling axis that should be contained by the returned
    *     keyline range. This can be either a location in the end-to-end model ({@link Keyline#loc}
@@ -634,62 +643,62 @@ public class CarouselLayoutManager extends LayoutManager
    * @param isOffset true if {@code location} has been offset and should be compared against {@link
    *     Keyline#locOffset}, false if {@code location} should be compared against {@link
    *     Keyline#loc}.
-   * @return A pair whose first item is the nearest {@link Keyline} before centerX and whose second
-   *     item is the nearest {@link Keyline} after centerX.
+   * @return A pair whose first item is the nearest {@link Keyline} before center and whose second
+   *     item is the nearest {@link Keyline} after center.
    */
   private static KeylineRange getSurroundingKeylineRange(
       List<Keyline> keylines, float location, boolean isOffset) {
-    int leftMinDistanceIndex = -1;
-    float leftMinDistance = Float.MAX_VALUE;
-    int leftMostIndex = -1;
-    float leftMostX = Float.MAX_VALUE;
+    int startMinDistanceIndex = -1;
+    float startMinDistance = Float.MAX_VALUE;
+    int startMostIndex = -1;
+    float startMostX = Float.MAX_VALUE;
 
-    int rightMinDistanceIndex = -1;
-    float rightMinDistance = Float.MAX_VALUE;
-    int rightMostIndex = -1;
-    float rightMostX = -Float.MAX_VALUE;
+    int endMinDistanceIndex = -1;
+    float endMinDistance = Float.MAX_VALUE;
+    int endMostIndex = -1;
+    float endMostX = -Float.MAX_VALUE;
 
     for (int i = 0; i < keylines.size(); i++) {
       Keyline keyline = keylines.get(i);
       float currentLoc = isOffset ? keyline.locOffset : keyline.loc;
       float delta = abs(currentLoc - location);
 
-      // Find the keyline closest to the left of centerX with the lowest index.
+      // Find the keyline closest to the left of center with the lowest index.
       if (currentLoc <= location) {
-        if (delta <= leftMinDistance) {
-          leftMinDistance = delta;
-          leftMinDistanceIndex = i;
+        if (delta <= startMinDistance) {
+          startMinDistance = delta;
+          startMinDistanceIndex = i;
         }
       }
-      // The keyline is to the right of centerX
-      // Find the keyline closest to the right of centerX with the greatest index.
-      if (currentLoc > location && delta <= rightMinDistance) {
-        rightMinDistance = delta;
-        rightMinDistanceIndex = i;
+      // The keyline is to the right of center
+      // Find the keyline closest to the right of center with the greatest index.
+      if (currentLoc > location && delta <= endMinDistance) {
+        endMinDistance = delta;
+        endMinDistanceIndex = i;
       }
       // Find the left-most keyline
-      if (currentLoc <= leftMostX) {
-        leftMostIndex = i;
-        leftMostX = currentLoc;
+      if (currentLoc <= startMostX) {
+        startMostIndex = i;
+        startMostX = currentLoc;
       }
       // Find the right-most keyline
-      if (currentLoc > rightMostX) {
-        rightMostIndex = i;
-        rightMostX = currentLoc;
+      if (currentLoc > endMostX) {
+        endMostIndex = i;
+        endMostX = currentLoc;
       }
     }
 
-    // If a keyline to the left or right hasn't been found, centerX is outside the bounds of the
+    // If a keyline to the left or right hasn't been found, center is outside the bounds of the
     // outer-most keylines. Use the outer-most keyline instead.
-    if (leftMinDistanceIndex == -1) {
-      leftMinDistanceIndex = leftMostIndex;
+    if (startMinDistanceIndex == -1) {
+      startMinDistanceIndex = startMostIndex;
     }
-    if (rightMinDistanceIndex == -1) {
-      rightMinDistanceIndex = rightMostIndex;
+    if (endMinDistanceIndex == -1) {
+      endMinDistanceIndex = endMostIndex;
     }
 
     return new KeylineRange(
-        keylines.get(leftMinDistanceIndex), keylines.get(rightMinDistanceIndex));
+        keylines.get(startMinDistanceIndex), keylines.get(endMinDistanceIndex));
   }
 
   /**
