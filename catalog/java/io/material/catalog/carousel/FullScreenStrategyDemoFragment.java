@@ -68,10 +68,8 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
 
     new WindowPreferencesManager(requireContext())
         .applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
-
     verticalDivider =
-        new MaterialDividerItemDecoration(
-            requireContext(), MaterialDividerItemDecoration.VERTICAL);
+        new MaterialDividerItemDecoration(requireContext(), MaterialDividerItemDecoration.VERTICAL);
 
     Button showBottomSheetButton = view.findViewById(R.id.show_bottomsheet_button);
     showBottomSheetButton.setOnClickListener(new OnClickListener() {
@@ -121,6 +119,26 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
         new CarouselAdapter(
             (item, position) -> fullscreenRecyclerView.scrollToPosition(position),
             R.layout.cat_carousel_item_vertical);
+    fullscreenRecyclerView.addOnScrollListener(
+        new RecyclerView.OnScrollListener() {
+          private boolean dragged = false;
+
+          @Override
+          public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
+              dragged = true;
+            } else if (dragged && newState == RecyclerView.SCROLL_STATE_IDLE) {
+              if (recyclerView.computeVerticalScrollRange() != 0) {
+                positionSlider.setValue(
+                    (adapter.getItemCount() - 1)
+                            * recyclerView.computeVerticalScrollOffset()
+                            / recyclerView.computeVerticalScrollRange()
+                        + 1);
+              }
+              dragged = false;
+            }
+          }
+        });
 
     SnapHelper flingDisabledSnapHelper = new CarouselSnapHelper();
     SnapHelper flingEnabledSnapHelper = new CarouselSnapHelper(false);
@@ -151,7 +169,7 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
 
           @Override
           public void onStopTrackingTouch(@NonNull Slider slider) {
-            fullscreenRecyclerView.smoothScrollToPosition((int) slider.getValue() - 1);
+            fullscreenRecyclerView.smoothScrollToPosition(((int) slider.getValue()) - 1);
           }
         });
 
