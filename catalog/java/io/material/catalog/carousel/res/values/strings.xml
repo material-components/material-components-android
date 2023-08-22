@@ -52,6 +52,7 @@
   <string name="cat_carousel_multi_browse_demo_title" translatable="false">Multi-browse Carousel</string>
   <string name="cat_carousel_hero_demo_title" description="Name of the hero variant demo. [CHAR_LIMIT=NONE]">Hero Carousel</string>
   <string name="cat_carousel_fullscreen_demo_title" translatable="false">Fullscreen Carousel</string>
+  <string name="cat_carousel_uncontained_demo_title" description="Name of the uncontained variant demo. [CHAR_LIMIT=NONE]">Uncontained Carousel</string>
 
   <string name="cat_carousel_multi_browse_title" translatable="false">Multi-browse</string>
   <string name="cat_carousel_multi_browse_desc" translatable="false">Multi-browse carousels allow quick browsing of many small items, like a photo thumbnail gallery.</string>
@@ -61,6 +62,9 @@
 
   <string name="cat_carousel_fullscreen_title" description="Title of the fullscreen variant demo. [CHAR_LIMIT=NONE]">Fullscreen</string>
   <string name="cat_carousel_fullscreen_desc" description="Title of the fullscreen variant demo. [CHAR_LIMIT=NONE]">Fullscreen carousels allow browsing with a focus on one item at a time.</string>
+
+  <string name="cat_carousel_uncontained_title" description="Title of the uncontained variant demo. [CHAR_LIMIT=NONE]">Uncontained</string>
+  <string name="cat_carousel_uncontained_desc" description="Title of the uncontained variant demo. [CHAR_LIMIT=NONE]">Uncontained carousels show items at their original sizes, with items getting smaller as they reach the edges of the screen and are cut off in the direction they scroll.</string>
 
   <string name="cat_carousel_image_1_content_desc" translatable="false">A daisy at sunset</string>
   <string name="cat_carousel_image_2_content_desc" translatable="false">Portrait of a person with hair covering their face</string>

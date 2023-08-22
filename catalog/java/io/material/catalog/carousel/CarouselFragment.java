@@ -78,6 +78,12 @@ public class CarouselFragment extends DemoLandingFragment {
           public Fragment createFragment() {
             return new FullScreenStrategyDemoFragment();
           }
+        },
+        new Demo(R.string.cat_carousel_uncontained_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new UncontainedCarouselDemoFragment();
+          }
         });
   }
 
