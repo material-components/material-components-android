@@ -18,7 +18,9 @@ package com.google.android.material.carousel;
 import com.google.android.material.test.R;
 
 import static com.google.android.material.carousel.CarouselHelper.createCarouselWithWidth;
+import static com.google.android.material.carousel.CarouselHelper.createCenterAlignedCarouselWithSize;
 import static com.google.android.material.carousel.CarouselHelper.createViewWithSize;
+import static com.google.android.material.carousel.CarouselStrategyHelper.getSmallSizeMin;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.view.View;
@@ -48,7 +50,8 @@ public class UncontainedCarouselStrategyTest {
     assertThat(keylineState.getKeylines()).hasSize(4);
     assertThat(keylineState.getKeylines().get(0).locOffset).isLessThan(0F);
     assertThat(keylineState.getKeylines().get(1).mask).isEqualTo(0F);
-    assertThat(keylineState.getKeylines().get(2).locOffset).isEqualTo(carousel.getContainerWidth() + xSmallSize/2F);
+    assertThat(keylineState.getKeylines().get(2).locOffset)
+        .isEqualTo(carousel.getContainerWidth() + xSmallSize / 2F);
     assertThat(Iterables.getLast(keylineState.getKeylines()).locOffset)
         .isGreaterThan((float) carousel.getContainerWidth());
   }
@@ -117,6 +120,87 @@ public class UncontainedCarouselStrategyTest {
     assertThat(keylineState.getKeylines().get(3).mask).isEqualTo(0F);
     assertThat(keylineState.getKeylines().get(4).mask).isEqualTo(0F);
     assertThat(Iterables.getLast(keylineState.getKeylines()).locOffset)
+        .isGreaterThan((float) carousel.getContainerWidth());
+  }
+
+  @Test
+  public void testCenterAligned_defaultKeylineHasTwoCutoffs() {
+    Carousel carousel = createCenterAlignedCarouselWithSize(400);
+    UncontainedCarouselStrategy config = new UncontainedCarouselStrategy();
+    int itemSize = 250;
+    // With this item size, we have 400 - 250 = 150 remaining space which means 75 on each side
+    // of one focal item.
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), itemSize, 400);
+
+    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
+
+    // The layout should be [xSmall-medium-large-medium-xSmall]
+    assertThat(keylineState.getKeylines()).hasSize(5);
+    assertThat(keylineState.getKeylines().get(0).locOffset).isLessThan(0F);
+    assertThat(keylineState.getKeylines().get(1).cutoff)
+        .isEqualTo(150F); // 75*2 since 2/3 should be cut off
+    assertThat(keylineState.getKeylines().get(2).mask).isEqualTo(0F);
+    assertThat(keylineState.getKeylines().get(3).cutoff)
+        .isEqualTo(150F); // 75*2 since 2/3 should be cut off
+    assertThat(keylineState.getKeylines().get(4).locOffset)
+        .isGreaterThan((float) carousel.getContainerWidth());
+  }
+
+  @Test
+  public void testCenterAligned_cutoffMinSize() {
+    Carousel carousel = createCenterAlignedCarouselWithSize(400);
+    UncontainedCarouselStrategy config = new UncontainedCarouselStrategy();
+    int itemSize = 200;
+    // 2 items fit perfectly in the width so there is no remaining space. Medium items should still
+    // be the minimum item mask size.
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), itemSize, 400);
+
+    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
+
+    float minSmallSize = getSmallSizeMin(ApplicationProvider.getApplicationContext());
+
+    // The layout should be [xSmall-medium-large-large-medium-xSmall]
+    assertThat(keylineState.getKeylines()).hasSize(6);
+    assertThat(keylineState.getKeylines().get(0).locOffset).isLessThan(0F);
+    assertThat(keylineState.getKeylines().get(1).cutoff)
+        .isEqualTo(keylineState.getKeylines().get(1).maskedItemSize);
+    assertThat(keylineState.getKeylines().get(1).locOffset).isLessThan(0F);
+    assertThat(keylineState.getKeylines().get(1).maskedItemSize).isEqualTo(minSmallSize);
+    assertThat(keylineState.getKeylines().get(2).mask).isEqualTo(0F);
+    assertThat(keylineState.getKeylines().get(3).mask).isEqualTo(0F);
+    assertThat(keylineState.getKeylines().get(4).cutoff)
+        .isEqualTo(keylineState.getKeylines().get(1).maskedItemSize);
+    assertThat(keylineState.getKeylines().get(4).locOffset)
+        .isGreaterThan((float) carousel.getContainerWidth());
+    assertThat(keylineState.getKeylines().get(4).maskedItemSize).isEqualTo(minSmallSize);
+    assertThat(keylineState.getKeylines().get(5).locOffset)
+        .isGreaterThan((float) carousel.getContainerWidth());
+  }
+
+  @Test
+  public void testCenterAligned_cutoffMaxSize() {
+    Carousel carousel = createCenterAlignedCarouselWithSize(400);
+    UncontainedCarouselStrategy config = new UncontainedCarouselStrategy();
+    int itemSize = 140;
+    // 2 items fit into width of 400 with 120 remaining space; 60 on each side. Only a 1/3 should be
+    // showing which means an item width of 180 for the cut off items, but we do not want these
+    // items to be bigger than the focal item so the max item size should be the focal item size.
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), itemSize, 400);
+
+    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
+
+    // The layout should be [xSmall-medium-large-large-medium-xSmall]
+    assertThat(keylineState.getKeylines()).hasSize(6);
+    assertThat(keylineState.getKeylines().get(0).locOffset).isLessThan(0F);
+    assertThat(keylineState.getKeylines().get(1).maskedItemSize).isEqualTo((float) itemSize);
+    // Item size should be max size: 180F, so 140 - 60 (remaining space) = 80
+    assertThat(keylineState.getKeylines().get(1).cutoff).isEqualTo(80F);
+    assertThat(keylineState.getKeylines().get(2).mask).isEqualTo(0F);
+    assertThat(keylineState.getKeylines().get(3).mask).isEqualTo(0F);
+    assertThat(keylineState.getKeylines().get(4).maskedItemSize).isEqualTo((float) itemSize);
+    // Item size should be max size: 180F, so 140 - 60 (remaining space) = 80
+    assertThat(keylineState.getKeylines().get(4).cutoff).isEqualTo(80F);
+    assertThat(keylineState.getKeylines().get(5).locOffset)
         .isGreaterThan((float) carousel.getContainerWidth());
   }
 }

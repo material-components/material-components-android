@@ -17,7 +17,9 @@
 package com.google.android.material.carousel;
 
 import static com.google.android.material.carousel.CarouselStrategyHelper.getExtraSmallSize;
+import static com.google.android.material.carousel.CarouselStrategyHelper.getSmallSizeMin;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
@@ -71,6 +73,31 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
     int largeCount = (int) Math.floor(availableSpace/largeChildSize);
     float remainingSpace = availableSpace - largeCount*largeChildSize;
     int mediumCount = 0;
+    boolean isCenter = carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER;
+
+    if (isCenter) {
+      remainingSpace /= 2F;
+      float smallChildSizeMin = getSmallSizeMin(child.getContext()) + childMargins;
+      // Ideally we would like to choose a size 3x the remaining space such that 2/3 are cut off.
+      // If this is bigger than the large child size however, we limit the child size to the large
+      // child size.
+      mediumChildSize = min(3*remainingSpace, largeChildSize);
+
+      // We also have a minimum child width such that the size is not too small.
+      mediumChildSize = max(mediumChildSize, smallChildSizeMin);
+
+      // Note that a center aligned keyline state will always have exactly 2 mediums with this
+      // strategy; one to be cut off at the front, and one for the end.
+      return createCenterAlignedKeylineState(
+          availableSpace,
+          childMargins,
+          largeChildSize,
+          largeCount,
+          mediumChildSize,
+          xSmallChildSize,
+          remainingSpace);
+    }
+
     // If the keyline location for the next large size would be within the remaining space,
     // then we can place a large child there as the last non-anchor keyline because visually
     // keylines will become smaller as it goes past the large keyline location.
@@ -85,7 +112,7 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
       mediumChildSize = max(remainingSpace + remainingSpace/2F, mediumChildSize);
     }
 
-    return createKeylineState(
+    return createLeftAlignedKeylineState(
         child.getContext(),
         childMargins,
         availableSpace,
@@ -96,7 +123,45 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
         xSmallChildSize);
   }
 
-  private KeylineState createKeylineState(
+  private KeylineState createCenterAlignedKeylineState(
+      float availableSpace,
+      float childMargins,
+      float largeSize,
+      int largeCount,
+      float mediumSize,
+      float xSmallSize,
+      float remainingSpace) {
+
+    float extraSmallMask = getChildMaskPercentage(xSmallSize, largeSize, childMargins);
+    float mediumMask = getChildMaskPercentage(mediumSize, largeSize, childMargins);
+    float largeMask = 0F;
+
+    float start = 0F;
+    // Take the remaining space and show as much as you can
+    float firstMediumCenterX = start + remainingSpace - mediumSize/2F;
+    start = firstMediumCenterX + mediumSize / 2F;
+    float extraSmallHeadCenterX = firstMediumCenterX - mediumSize / 2F - (xSmallSize / 2F);
+
+    float largeStartCenterX = start + largeSize / 2F;
+    start += largeCount * largeSize;
+
+    KeylineState.Builder builder =
+        new KeylineState.Builder(largeSize, availableSpace)
+            .addAnchorKeyline(extraSmallHeadCenterX, extraSmallMask, xSmallSize)
+            .addKeyline(firstMediumCenterX, mediumMask, mediumSize, false)
+            .addKeylineRange(largeStartCenterX, largeMask, largeSize, largeCount, true);
+
+    float secondMediumCenterX = start + mediumSize / 2F;
+    start += mediumSize;
+    builder.addKeyline(
+        secondMediumCenterX, mediumMask, mediumSize, false);
+
+    float xSmallCenterX = start + xSmallSize / 2F;
+    builder.addAnchorKeyline(xSmallCenterX, extraSmallMask, xSmallSize);
+    return builder.build();
+  }
+
+  private KeylineState createLeftAlignedKeylineState(
       Context context,
       float childMargins,
       float availableSpace,

@@ -196,6 +196,30 @@ class CarouselHelper {
     };
   }
 
+  static Carousel createCenterAlignedCarouselWithSize(int size) {
+    return new Carousel() {
+      @Override
+      public int getContainerWidth() {
+        return size;
+      }
+
+      @Override
+      public int getContainerHeight() {
+        return size;
+      }
+
+      @Override
+      public boolean isHorizontal() {
+        return true;
+      }
+
+      @Override
+      public int getCarouselAlignment() {
+        return CarouselLayoutManager.ALIGNMENT_CENTER;
+      }
+    };
+  }
+
   /**
    * Creates a {@link Carousel} with a specified {@code size} for both width and height and the
    * specified alignment and orientation.
