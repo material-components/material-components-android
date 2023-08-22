@@ -101,8 +101,8 @@ final class CarouselStrategyHelper {
     float largeMask = 0F;
 
     KeylineState.Builder builder =
-        new KeylineState.Builder(arrangement.largeSize)
-            .addKeyline(extraSmallHeadCenterX, extraSmallMask, extraSmallChildWidth)
+        new KeylineState.Builder(arrangement.largeSize, availableSpace)
+            .addAnchorKeyline(extraSmallHeadCenterX, extraSmallMask, extraSmallChildWidth)
             .addKeylineRange(
                 largeStartCenterX, largeMask, arrangement.largeSize, arrangement.largeCount, true);
     if (arrangement.mediumCount > 0) {
@@ -112,7 +112,7 @@ final class CarouselStrategyHelper {
       builder.addKeylineRange(
           smallStartCenterX, smallMask, arrangement.smallSize, arrangement.smallCount);
     }
-    builder.addKeyline(extraSmallTailCenterX, extraSmallMask, extraSmallChildWidth);
+    builder.addAnchorKeyline(extraSmallTailCenterX, extraSmallMask, extraSmallChildWidth);
     return builder.build();
   }
 
@@ -193,8 +193,8 @@ final class CarouselStrategyHelper {
     float largeMask = 0F;
 
     KeylineState.Builder builder =
-        new KeylineState.Builder(arrangement.largeSize)
-            .addKeyline(extraSmallHeadCenterX, extraSmallMask, extraSmallChildWidth);
+        new KeylineState.Builder(arrangement.largeSize, availableSpace)
+            .addAnchorKeyline(extraSmallHeadCenterX, extraSmallMask, extraSmallChildWidth);
     if (arrangement.smallCount > 0) {
       builder.addKeylineRange(
           halfSmallStartCenterX,
@@ -229,7 +229,7 @@ final class CarouselStrategyHelper {
           (int) Math.ceil(arrangement.smallCount / 2F));
     }
 
-    builder.addKeyline(extraSmallTailCenterX, extraSmallMask, extraSmallChildWidth);
+    builder.addAnchorKeyline(extraSmallTailCenterX, extraSmallMask, extraSmallChildWidth);
     return builder.build();
   }
 

@@ -93,7 +93,7 @@ public class CarouselLayoutManagerTest {
           @Override
           KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
-            return new KeylineState.Builder(DEFAULT_ITEM_WIDTH)
+            return new KeylineState.Builder(DEFAULT_ITEM_WIDTH, DEFAULT_RECYCLER_VIEW_WIDTH)
                 .addKeyline(225F, .5F, 225F, true)
                 .build();
           }
@@ -112,7 +112,7 @@ public class CarouselLayoutManagerTest {
           @Override
           KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
-            return new KeylineState.Builder(DEFAULT_ITEM_WIDTH)
+            return new KeylineState.Builder(DEFAULT_ITEM_WIDTH, DEFAULT_RECYCLER_VIEW_WIDTH)
                 .addKeyline(225F, .8F, 90F, true)
                 .build();
           }
@@ -675,11 +675,11 @@ public class CarouselLayoutManagerTest {
       float focal = largeSize / 2F;
       float smallTail = focal + (largeSize / 2F) + (smallSize / 2F);
       float xSmallTail = availableSpace + (xSmallSize / 2F);
-      return new KeylineState.Builder(largeSize)
-          .addKeyline(xSmallHead, getKeylineMaskPercentage(xSmallSize, largeSize), xSmallSize)
+      return new KeylineState.Builder(largeSize, availableSpace)
+          .addAnchorKeyline(xSmallHead, getKeylineMaskPercentage(xSmallSize, largeSize), xSmallSize)
           .addKeyline(focal, 0F, largeSize, true)
           .addKeyline(smallTail, getKeylineMaskPercentage(smallSize, largeSize), smallSize)
-          .addKeyline(xSmallTail, getKeylineMaskPercentage(xSmallSize, largeSize), xSmallSize)
+          .addAnchorKeyline(xSmallTail, getKeylineMaskPercentage(xSmallSize, largeSize), xSmallSize)
           .build();
     }
 

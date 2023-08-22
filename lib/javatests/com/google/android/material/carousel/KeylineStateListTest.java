@@ -43,7 +43,7 @@ public class KeylineStateListTest {
           new float[] {20F, 60F, 90F, 110F, 125F, 135F}
         };
     KeylineState state =
-        new KeylineState.Builder(40F)
+        new KeylineState.Builder(40F, 140)
             .addKeyline(5F, getKeylineMaskPercentage(10F, 40F), 10F)
             .addKeyline(20F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeylineRange(50F, 0F, 40F, 2, true)
@@ -72,7 +72,7 @@ public class KeylineStateListTest {
           new float[] {20F, 60F, 90F, 110F, 125F, 135F}
         };
     KeylineState state =
-        new KeylineState.Builder(40F)
+        new KeylineState.Builder(40F, 140)
             .addKeyline(5F, getKeylineMaskPercentage(10F, 40F), 10F)
             .addKeyline(20F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeylineRange(50F, 0F, 40F, 2, true)
@@ -103,7 +103,7 @@ public class KeylineStateListTest {
         };
 
     KeylineState state =
-        new KeylineState.Builder(40F)
+        new KeylineState.Builder(40F, 140)
             .addKeyline(5F, getKeylineMaskPercentage(10F, 40F), 10F)
             .addKeyline(20F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeylineRange(50F, 0F, 40F, 2, true)
@@ -126,7 +126,7 @@ public class KeylineStateListTest {
   @Test
   public void testCenterArrangement_shouldNotShift() {
     KeylineState state =
-        new KeylineState.Builder(40F)
+        new KeylineState.Builder(40F, 140)
             .addKeyline(5F, getKeylineMaskPercentage(10F, 40F), 10F)
             .addKeyline(20F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeylineRange(50F, 0F, 40F, 2, true)
@@ -144,7 +144,7 @@ public class KeylineStateListTest {
   @Test
   public void testStartArrangement_shouldShiftStart() {
     KeylineState state =
-        new KeylineState.Builder(40F)
+        new KeylineState.Builder(40F, 70)
             .addKeyline(20F, 0F, 40F, true)
             .addKeyline(50F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(65F, getKeylineMaskPercentage(10F, 40F), 10F)
@@ -169,7 +169,7 @@ public class KeylineStateListTest {
         };
 
     KeylineState state =
-        new KeylineState.Builder(40F)
+        new KeylineState.Builder(40F, 70)
             .addKeyline(20F, 0F, 40F, true)
             .addKeyline(50F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(65F, getKeylineMaskPercentage(10F, 40F), 10F)
@@ -191,16 +191,17 @@ public class KeylineStateListTest {
   public void testStartArrangementWithOutOfBoundsKeylines_shouldShiftStart() {
     float[][] startStepsLocOffsets =
         new float[][] {
-          new float[] {-10F, 10F, 40F, 70F, 85F},
-          new float[] {-10F, 20F, 50F, 70F, 85F}
+          new float[] {-10F, 10F, 40F, 70F, 90F},
+          new float[] {-10F, 20F, 50F, 70F, 90F}
         };
 
     KeylineState state =
-        new KeylineState.Builder(40F)
-            .addKeylineRange(-10F, getKeylineMaskPercentage(20F, 40F), 20F, 2)
+        new KeylineState.Builder(40F, 90)
+            .addAnchorKeyline(-10F, getKeylineMaskPercentage(20F, 40F), 20F)
+            .addKeyline(10F, getKeylineMaskPercentage(20F, 40F), 20F, false)
             .addKeyline(40F, 0F, 40F, true)
             .addKeyline(70F, getKeylineMaskPercentage(20F, 40F), 20F)
-            .addKeyline(85F, getKeylineMaskPercentage(10F, 40F), 10F)
+            .addKeyline(90F, getKeylineMaskPercentage(20F, 40F), 20F)
             .build();
     KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(90), state);
 
@@ -220,17 +221,21 @@ public class KeylineStateListTest {
   public void testStartArrangementWithOutOfBoundsKeyline_shouldShiftEnd() {
     float[][] endStepsLocOffsets =
         new float[][] {
-          new float[] {-10F, 10F, 40F, 70F, 90F, 110F, 125F},
-          new float[] {-10F, 10F, 30F, 60F, 90F, 110F, 125F},
-          new float[] {-10F, 10F, 30F, 50F, 80F, 110F, 125F},
+            // keyline sizes are as follows: {20, 20, 20, 20, 40, 20, 20}
+            new float[] {-50F, -30F, -10F, 10F, 40F, 70F, 90F},
+            // keyline sizes are as follows: {20, 20, 20, 20, 20, 40, 20}
+            new float[] {-50F, -30F, -10F, 10F, 30F, 60F, 90F},
+            // keyline sizes are as follows: {20, 20, 20, 20, 20, 20, 40}
+            new float[] {-50F, -30F, -10F, 10F, 30F, 50F, 80F},
         };
 
     KeylineState state =
-        new KeylineState.Builder(40F)
-            .addKeylineRange(-10F, getKeylineMaskPercentage(20F, 40F), 20F, 2)
+        new KeylineState.Builder(40F, 100F)
+            .addAnchorKeyline(-10F, getKeylineMaskPercentage(20F, 40F), 20F)
+            .addKeyline(10F, getKeylineMaskPercentage(20F, 40F), 20F, false)
             .addKeyline(40F, 0F, 40F, true)
             .addKeylineRange(70F, getKeylineMaskPercentage(20F, 40F), 20F, 3)
-            .addKeyline(125F, getKeylineMaskPercentage(10F, 40F), 10F)
+            .addKeyline(130F, getKeylineMaskPercentage(20F, 40F), 20F)
             .build();
     KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(100), state);
 
@@ -239,7 +244,8 @@ public class KeylineStateListTest {
     float maxScroll = 5 * 40F;
 
     for (int j = 0; j < scrollSteps.length; j++) {
-      KeylineState s = stateList.getShiftedState(maxScroll - scrollSteps[j], minScroll, maxScroll);
+      KeylineState s =
+          stateList.getShiftedState(maxScroll - scrollSteps[j], minScroll, maxScroll, true);
       for (int i = 0; i < s.getKeylines().size(); i++) {
         assertThat(s.getKeylines().get(i).locOffset).isEqualTo(endStepsLocOffsets[j][i]);
       }
@@ -255,7 +261,7 @@ public class KeylineStateListTest {
           new float[] {20F, 50F, 65F}
         };
     KeylineState state =
-        new KeylineState.Builder(40F)
+        new KeylineState.Builder(40F, 70)
             .addKeyline(5F, getKeylineMaskPercentage(10F, 40F), 10F)
             .addKeyline(20F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(50F, 0F, 40F, true)
@@ -276,7 +282,7 @@ public class KeylineStateListTest {
   @Test
   public void testEndArrangement_shouldNotShiftEnd() {
     KeylineState state =
-        new KeylineState.Builder(40F)
+        new KeylineState.Builder(40F, 70)
             .addKeyline(5F, getKeylineMaskPercentage(10F, 40F), 10F)
             .addKeyline(20F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(50F, 0F, 40F, true)
@@ -290,14 +296,14 @@ public class KeylineStateListTest {
   }
 
   @Test
-  public void testFullScreenArrangementWithOutOfBoundsKeylines_nothingShifts() {
+  public void testFullScreenArrangementWithAnchorKeylines_nothingShifts() {
     float[] locOffsets = new float[] {-5F, 20F, 45F};
 
     KeylineState state =
-        new KeylineState.Builder(40F)
-            .addKeyline(-5F, getKeylineMaskPercentage(210F, 40F), 10F)
+        new KeylineState.Builder(40F, 40)
+            .addAnchorKeyline(-5F, getKeylineMaskPercentage(210F, 40F), 10F)
             .addKeyline(20F, 0F, 40F, true)
-            .addKeyline(45F, getKeylineMaskPercentage(10F, 40F), 10F)
+            .addAnchorKeyline(45F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
     KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(40), state);
 
@@ -312,7 +318,7 @@ public class KeylineStateListTest {
   @Test
   public void testMultipleFocalItems_shiftsFocalRange() {
     KeylineState state =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 500)
             .addKeyline(25F, .5F, 50F)
             .addKeylineRange(100F, 0F, 100F, 4, true)
             .addKeyline(475F, .5F, 50F)
@@ -326,7 +332,7 @@ public class KeylineStateListTest {
   @Test
   public void testKeylineStateForPosition() {
     KeylineState state =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 500)
             .addKeyline(25F, .5F, 50F)
             .addKeylineRange(100F, 0F, 100F, 4, true)
             .addKeyline(475F, .5F, 50F)
@@ -354,7 +360,7 @@ public class KeylineStateListTest {
   @Test
   public void testKeylineStateForPositionRTL() {
     KeylineState state =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 500)
             .addKeyline(25F, .5F, 50F)
             .addKeylineRange(100F, 0F, 100F, 4, true)
             .addKeyline(475F, .5F, 50F)
@@ -383,7 +389,7 @@ public class KeylineStateListTest {
   @Test
   public void testKeylineStateForPositionVertical() {
     KeylineState state =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 500)
             .addKeyline(25F, .5F, 50F)
             .addKeylineRange(100F, 0F, 100F, 4, true)
             .addKeyline(475F, .5F, 50F)
@@ -407,5 +413,71 @@ public class KeylineStateListTest {
       latestKeylineLoc = keylineLoc;
     }
     assertThat(latestKeylineLoc).isEqualTo(stateList.getEndState().getFirstFocalKeyline().loc);
+  }
+
+  @Test
+  public void testCutoffEndKeylines_changeEndKeylineLocOffsets() {
+    float[][] endStepsLocOffsets =
+        new float[][] {
+            // keyline sizes are as follows: {large, large, cutoff-large}
+            new float[] {-5F, 20F, 60F, 100F, 125F},
+            // keyline sizes are as follows: {cutoff-large, large, large}
+            new float[] {-25F, 0F, 40F, 80F, 105F},
+        };
+
+    // Carousel size is 100, with 2 larges and a cutoff large
+    KeylineState state =
+        new KeylineState.Builder(40F, 100)
+            .addAnchorKeyline(-5F, getKeylineMaskPercentage(10F, 40F), 10F)
+            .addKeyline(20F, 0F, 40F, /* isFocal= */ true)
+            .addKeyline(60F, 0F, 40F, /* isFocal= */ true)
+            .addKeyline(100F, 0F, 40F, /* isFocal= */ true)
+            .addAnchorKeyline(125F, getKeylineMaskPercentage(10F, 40F), 10F)
+            .build();
+    KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(100), state);
+
+    float[] scrollSteps = new float[] {40F, 0F};
+    float minScroll = 0F;
+    float maxScroll = 5 * 80F;
+
+    for (int j = 0; j < scrollSteps.length; j++) {
+      KeylineState s = stateList.getShiftedState(maxScroll - scrollSteps[j], minScroll, maxScroll);
+      for (int i = 0; i < s.getKeylines().size(); i++) {
+        assertThat(s.getKeylines().get(i).locOffset).isEqualTo(endStepsLocOffsets[j][i]);
+      }
+    }
+  }
+
+  @Test
+  public void testCutoffStartKeylines_doesNotChangeEndKeylineLocOffsets() {
+    float[][] endStepsLocOffsets =
+        new float[][] {
+            // keyline sizes are as follows: {cutoff-large, large, large}
+            new float[] {-25F, 0F, 40F, 80F, 105F},
+            // keyline sizes are as follows: {cutoff-large, large, large}
+            new float[] {-25F, 0F, 40F, 80F, 105F},
+        };
+
+    // Carousel size is 100, with cutoff large and 2 larges
+    KeylineState state =
+        new KeylineState.Builder(40F, 100)
+            .addAnchorKeyline(-25F, getKeylineMaskPercentage(10F, 40F), 10F)
+            .addKeyline(0F, 0F, 40F, /* isFocal= */ true)
+            .addKeyline(40F, 0F, 40F, /* isFocal= */ true)
+            .addKeyline(80F, 0F, 40F, /* isFocal= */ true)
+            .addAnchorKeyline(105F, getKeylineMaskPercentage(10F, 40F), 10F)
+            .build();
+    KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(100), state);
+
+    float[] scrollSteps = new float[] {40F, 0F};
+    float minScroll = 0F;
+    float maxScroll = 5 * 80F;
+
+    for (int j = 0; j < scrollSteps.length; j++) {
+      KeylineState s = stateList.getShiftedState(maxScroll - scrollSteps[j], minScroll, maxScroll);
+      for (int i = 0; i < s.getKeylines().size(); i++) {
+        assertThat(s.getKeylines().get(i).locOffset).isEqualTo(endStepsLocOffsets[j][i]);
+      }
+    }
   }
 }

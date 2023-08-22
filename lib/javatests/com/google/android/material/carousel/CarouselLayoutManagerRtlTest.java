@@ -97,7 +97,9 @@ public class CarouselLayoutManagerRtlTest {
     scrollToPosition(recyclerView, layoutManager, 200);
 
     KeylineState leftState =
-        KeylineStateList.from(layoutManager, KeylineState.reverse(keylineState)).getStartState();
+        KeylineStateList.from(
+                layoutManager, KeylineState.reverse(keylineState, DEFAULT_RECYCLER_VIEW_WIDTH))
+            .getStartState();
 
     MaskableFrameLayout child =
         (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 1);
@@ -182,7 +184,7 @@ public class CarouselLayoutManagerRtlTest {
     float smallMask = 1F - (smallSize / largeSize);
     float mediumMask = 1F - (mediumSize / largeSize);
 
-    return new KeylineState.Builder(450F)
+    return new KeylineState.Builder(450F, DEFAULT_RECYCLER_VIEW_WIDTH)
         .addKeyline(5F, extraSmallMask, extraSmallSize)
         .addKeylineRange(38F, smallMask, smallSize, 2)
         .addKeyline(166F, mediumMask, mediumSize)

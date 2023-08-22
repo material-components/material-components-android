@@ -41,13 +41,13 @@ public final class KeylineStateTest {
   public void testNoFocalRange_throwsException() {
     assertThrows(
         IllegalStateException.class,
-        () -> new KeylineState.Builder(100F).addKeyline(0, .5F, 50F).build());
+        () -> new KeylineState.Builder(100F, 0).addKeyline(0, .5F, 50F).build());
   }
 
   @Test
   public void testZeroSizedKeyline_shouldNotAddKeyline() {
     KeylineState keylineState =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 0)
             .addKeyline(50F, 0F, 100F, true)
             .addKeyline(100F, 1F, 0F)
             .build();
@@ -57,7 +57,7 @@ public final class KeylineStateTest {
   @Test
   public void testZeroCountKeylineRange_shouldNotAddKeylines() {
     KeylineState keylineState =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 0)
             .addKeyline(50F, 0F, 100F, true)
             .addKeylineRange(110F, .8F, 20F, 0)
             .build();
@@ -69,7 +69,7 @@ public final class KeylineStateTest {
     assertThrows(
         IllegalArgumentException.class,
         () ->
-            new KeylineState.Builder(100F)
+            new KeylineState.Builder(100F, 0)
                 .addKeyline(25F, .5F, 50F, true)
                 .addKeyline(100F, 0F, 100F)
                 .addKeyline(200F, 0F, 100F, true)
@@ -81,7 +81,7 @@ public final class KeylineStateTest {
     assertThrows(
         IllegalArgumentException.class,
         () ->
-            new KeylineState.Builder(100F)
+            new KeylineState.Builder(100F, 0)
                 .addKeyline(50F, 0F, 100F, true)
                 .addKeyline(150F, 0F, 100F)
                 .addKeyline(275F, .5F, 50F, true)
@@ -93,7 +93,7 @@ public final class KeylineStateTest {
     assertThrows(
         IllegalArgumentException.class,
         () ->
-            new KeylineState.Builder(100F)
+            new KeylineState.Builder(100F, 0)
                 .addKeyline(50F, 0F, 100F, true)
                 .addKeyline(125F, .5F, 50F)
                 .addKeyline(200F, 0F, 100F, true)
@@ -109,9 +109,10 @@ public final class KeylineStateTest {
 
   @Test
   public void testReverseKeylines_shouldReverse() {
+    int recyclerWidth = 100;
     // Extra small items are 10F, Small items are 50F, large items are 100F
     KeylineState keylineState =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, recyclerWidth)
             .addKeyline(-5F, getKeylineMaskPercentage(10F, 100F), 10F)
             .addKeyline(50F, 0F, 100F, true)
             .addKeyline(125F, getKeylineMaskPercentage(50F, 100F), 50F)
@@ -119,13 +120,13 @@ public final class KeylineStateTest {
             .build();
 
     KeylineState expectedState =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, recyclerWidth)
             .addKeyline(-5F, getKeylineMaskPercentage(10F, 100F), 10F)
             .addKeyline(25F, getKeylineMaskPercentage(50, 100F), 50F)
             .addKeyline(100F, 0F, 100F, true)
             .addKeyline(155F, getKeylineMaskPercentage(10F, 100F), 10F)
             .build();
-    KeylineState reversedState = KeylineState.reverse(keylineState);
+    KeylineState reversedState = KeylineState.reverse(keylineState, recyclerWidth);
 
     assertThat(reversedState.getKeylines()).hasSize(expectedState.getKeylines().size());
     for (int i = 0; i < reversedState.getKeylines().size(); i++) {
@@ -155,7 +156,7 @@ public final class KeylineStateTest {
   public void testStartArrangement_hasFocalRangeAtFrontOfList() {
     // Create a keyline state that has a [e-e-p-p] arrangement.
     KeylineState keylineState =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 0)
             .addKeylineRange(50F, 0F, 100F, 2, true)
             .addKeylineRange(325F, .5F, 50F, 2)
             .build();
@@ -167,27 +168,27 @@ public final class KeylineStateTest {
   @Test
   public void testAddKeyline_onlyAddsSingleKeyline() {
     KeylineState keylineState =
-        new KeylineState.Builder(100F).addKeyline(50F, 0F, 100F, true).build();
+        new KeylineState.Builder(100F, 0).addKeyline(50F, 0F, 100F, true).build();
     assertThat(keylineState.getKeylines()).hasSize(1);
   }
 
   @Test
   public void testAddKeylineRange_addsTwoKeylines() {
     KeylineState keylineState =
-        new KeylineState.Builder(100F).addKeylineRange(50F, 0F, 100F, 2, true).build();
+        new KeylineState.Builder(100F, 0).addKeylineRange(50F, 0F, 100F, 2, true).build();
     assertThat(keylineState.getKeylines()).hasSize(2);
   }
 
   @Test
   public void testLerpKeylineStates_statesHaveDifferentNumberOfKeylinesShouldThrowException() {
     KeylineState keylineDefaultState =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 0)
             .addKeyline(25F, .5F, 50F)
             .addKeylineRange(100F, 0F, 100F, 2, true)
             .addKeyline(275F, .5F, 50F)
             .build();
     KeylineState keylineStartState =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 0)
             .addKeylineRange(50F, 0F, 100F, 2, true)
             .addKeylineRange(225F, .5F, 50F, 3)
             .build();
@@ -200,13 +201,13 @@ public final class KeylineStateTest {
   @Test
   public void testLerpKeylineStates_focalIndicesShiftAtHalfWayPoint() {
     KeylineState keylineDefaultState =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 0)
             .addKeyline(25F, .5F, 50F)
             .addKeylineRange(100F, 0F, 100F, 2, true)
             .addKeyline(275F, .5F, 50F)
             .build();
     KeylineState keylineStartState =
-        new KeylineState.Builder(100F)
+        new KeylineState.Builder(100F, 0)
             .addKeylineRange(50F, 0F, 100F, 2, true)
             .addKeylineRange(225F, .5F, 50F, 2)
             .build();
@@ -239,6 +240,49 @@ public final class KeylineStateTest {
         .isEqualTo(keylineDefaultState.getLastFocalKeylineIndex());
   }
 
+  @Test
+  public void testAddingAnchorKeyline_mustBeAtStartOrEnd() {
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            new KeylineState.Builder(100F, 0)
+                .addAnchorKeyline(25F, .5F, 50F)
+                .addAnchorKeyline(100F, 0F, 100F)
+                .addAnchorKeyline(200F, 0F, 100F)
+                .build());
+    }
+
+  @Test
+  public void testGetFirstNonAnchorKeyline() {
+    KeylineState keylineDefaultState =
+        new KeylineState.Builder(100F, 0)
+            .addAnchorKeyline(25F, .5F, 50F)
+            .addKeylineRange(100F, 0F, 100F, 2, true)
+            .build();
+    assertThat(keylineDefaultState.getFirstNonAnchorKeyline().maskedItemSize).isEqualTo(100F);
+  }
+
+  @Test
+  public void testGetLastNonAnchorKeyline() {
+    KeylineState keylineDefaultState =
+        new KeylineState.Builder(100F, 0)
+            .addAnchorKeyline(25F, .5F, 50F)
+            .addKeyline(100F, 0F, 100F, true)
+            .addAnchorKeyline(175F, .5F, 50F)
+            .build();
+    assertThat(keylineDefaultState.getFirstNonAnchorKeyline().maskedItemSize).isEqualTo(100F);
+  }
+
+  @Test
+  public void testAnchorKeyline_cannotBeFocal() {
+    assertThrows(
+        IllegalArgumentException.class,
+        () ->
+            new KeylineState.Builder(100F, 0)
+                .addKeyline(25F, .5F, 50F, /* isFocal= */ true, /* isAnchor= */ true)
+                .build());
+  }
+
   /**
    * Creates a {@link KeylineState.Builder} that has a centered focal range with three large items,
    * and one medium item, two small items, and one extra small item on each side of the focal range.
@@ -256,7 +300,7 @@ public final class KeylineStateTest {
     float smallMask = 1F - (smallSize / largeSize);
     float mediumMask = 1F - (mediumSize / largeSize);
 
-    return new KeylineState.Builder(largeSize)
+    return new KeylineState.Builder(largeSize, 2470)
         .addKeyline(5F, extraSmallMask, extraSmallSize)
         .addKeylineRange(85F, smallMask, smallSize, 2)
         .addKeyline(435F, mediumMask, mediumSize)

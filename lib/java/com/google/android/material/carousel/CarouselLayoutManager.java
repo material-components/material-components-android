@@ -294,7 +294,8 @@ public class CarouselLayoutManager extends LayoutManager
     KeylineState keylineState = carouselStrategy.onFirstChildMeasuredWithMargins(this, firstChild);
     keylineStateList =
         KeylineStateList.from(
-            this, isLayoutRtl() ? KeylineState.reverse(keylineState) : keylineState);
+            this,
+            isLayoutRtl() ? KeylineState.reverse(keylineState, getContainerSize()) : keylineState);
   }
 
   /**
