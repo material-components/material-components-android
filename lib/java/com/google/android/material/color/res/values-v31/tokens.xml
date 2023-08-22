@@ -37,13 +37,21 @@
   <color name="m3_sys_color_dynamic_dark_on_tertiary">@color/m3_ref_palette_dynamic_tertiary20</color>
   <color name="m3_sys_color_dynamic_dark_on_tertiary_container">@color/m3_ref_palette_dynamic_tertiary90</color>
   <!-- Surface colors -->
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral6 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface_dim">@color/m3_ref_palette_dynamic_neutral_variant6</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral24 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface_bright">@color/m3_ref_palette_dynamic_neutral_variant24</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral12 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface_container">@color/m3_ref_palette_dynamic_neutral_variant12</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral10 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface_container_low">@color/m3_ref_palette_dynamic_neutral_variant10</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral17 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface_container_high">@color/m3_ref_palette_dynamic_neutral_variant17</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral4 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface_container_lowest">@color/m3_ref_palette_dynamic_neutral_variant4</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral22 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface_container_highest">@color/m3_ref_palette_dynamic_neutral_variant22</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral6 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface">@color/m3_ref_palette_dynamic_neutral_variant6</color>
   <color name="m3_sys_color_dynamic_dark_surface_variant">@color/m3_ref_palette_dynamic_neutral_variant30</color>
   <color name="m3_sys_color_dynamic_dark_on_surface">@color/m3_ref_palette_dynamic_neutral90</color>
@@ -51,6 +59,7 @@
   <color name="m3_sys_color_dynamic_dark_inverse_surface">@color/m3_ref_palette_dynamic_neutral90</color>
   <color name="m3_sys_color_dynamic_dark_inverse_on_surface">@color/m3_ref_palette_dynamic_neutral20</color>
   <!-- Background colors -->
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral6 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_background">@color/m3_ref_palette_dynamic_neutral_variant6</color>
   <color name="m3_sys_color_dynamic_dark_on_background">@color/m3_ref_palette_dynamic_neutral90</color>
   <!-- Hairline colors -->
@@ -87,13 +96,21 @@
   <color name="m3_sys_color_dynamic_light_on_tertiary">@color/m3_ref_palette_dynamic_tertiary100</color>
   <color name="m3_sys_color_dynamic_light_on_tertiary_container">@color/m3_ref_palette_dynamic_tertiary10</color>
   <!-- Surface colors -->
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral87 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_surface_dim">@color/m3_ref_palette_dynamic_neutral_variant87</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral98 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_surface_bright">@color/m3_ref_palette_dynamic_neutral_variant98</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral94 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_surface_container">@color/m3_ref_palette_dynamic_neutral_variant94</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral96 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_surface_container_low">@color/m3_ref_palette_dynamic_neutral_variant96</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral92 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_surface_container_high">@color/m3_ref_palette_dynamic_neutral_variant92</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral100 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_surface_container_lowest">@color/m3_ref_palette_dynamic_neutral_variant100</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral90 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_surface_container_highest">@color/m3_ref_palette_dynamic_neutral_variant90</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral98 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_surface">@color/m3_ref_palette_dynamic_neutral_variant98</color>
   <color name="m3_sys_color_dynamic_light_surface_variant">@color/m3_ref_palette_dynamic_neutral_variant90</color>
   <color name="m3_sys_color_dynamic_light_on_surface">@color/m3_ref_palette_dynamic_neutral10</color>
@@ -101,6 +118,7 @@
   <color name="m3_sys_color_dynamic_light_inverse_surface">@color/m3_ref_palette_dynamic_neutral20</color>
   <color name="m3_sys_color_dynamic_light_inverse_on_surface">@color/m3_ref_palette_dynamic_neutral95</color>
   <!-- Background colors -->
+  <!-- The resource value @color/m3_ref_palette_dynamic_neutral98 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_background">@color/m3_ref_palette_dynamic_neutral_variant98</color>
   <color name="m3_sys_color_dynamic_light_on_background">@color/m3_ref_palette_dynamic_neutral10</color>
   <!-- Hairline colors -->
