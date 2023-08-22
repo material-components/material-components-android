@@ -94,6 +94,7 @@ public class DynamicColors {
     deviceMap.put("kyocera", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("lenovo", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("lge", DEFAULT_DEVICE_SUPPORT_CONDITION);
+    deviceMap.put("meizu", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("motorola", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("nothing", DEFAULT_DEVICE_SUPPORT_CONDITION);
     deviceMap.put("oneplus", DEFAULT_DEVICE_SUPPORT_CONDITION);
