@@ -19,12 +19,11 @@
   <item>
     <shape
         android:shape="rectangle">
-      <!-- TODO(b/272585197) Manually map this based on the token mapping of divider. -->
-      <solid android:color="?attr/colorSurfaceVariant"/>
+      <solid android:color="@macro/m3_comp_divider_color"/>
     </shape>
   </item>
   <!-- ..., then draws a rectangle with the container color to cover the area not for the divider. -->
-  <item android:bottom="1dp">
+  <item android:bottom="@dimen/m3_comp_divider_thickness">
     <shape
         android:shape="rectangle">
       <solid android:color="@macro/m3_comp_primary_navigation_tab_container_color"/>

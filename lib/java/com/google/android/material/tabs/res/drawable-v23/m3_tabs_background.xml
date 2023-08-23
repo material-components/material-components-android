@@ -26,9 +26,8 @@
   <item
       android:gravity="bottom">
     <shape>
-      <size android:height="1dp" />
-      <!-- TODO(b/272585197) Manually map this based on the token mapping of divider. -->
-      <solid android:color="?attr/colorSurfaceVariant" />
+      <size android:height="@dimen/m3_comp_divider_thickness" />
+      <solid android:color="@macro/m3_comp_divider_color" />
     </shape>
   </item>
 </layer-list>
