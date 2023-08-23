@@ -22,5 +22,5 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_gravity="top|start"
-  android:gravity="start|bottom"
+  android:gravity="top|start"
   app:firstBaselineToTopHeight="@dimen/mtrl_calendar_title_baseline_to_top"/>

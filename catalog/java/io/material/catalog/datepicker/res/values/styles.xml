@@ -35,7 +35,7 @@
 
   <style name="Widget.Catalog.MaterialCalendar.HeaderTitle.WithDescription" parent="@style/Widget.Material3.MaterialCalendar.HeaderTitle">
     <item name="android:maxLines">@integer/cat_picker_demo_description_header_title_max_lines</item>
-    <item name="autoSizeTextType">none</item>
+    <item name="autoSizeTextType">uniform</item>
   </style>
 
   <style name="Widget.Catalog.MaterialCalendar.HeaderSelection.WithDescription" parent="@style/Widget.Material3.MaterialCalendar.HeaderSelection">
