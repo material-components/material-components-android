@@ -1211,9 +1211,13 @@ public class CarouselLayoutManager extends LayoutManager
         getOffsetToScrollToPosition(
             getPosition(child), getKeylineStateForPosition(getPosition(child)));
     if (!focusedChildVisible) {
+      // TODO(b/266816148): Implement smoothScrollBy when immediate is false.
       if (delta != 0) {
-        // TODO(b/266816148): Implement smoothScrollBy when immediate is false.
-        parent.scrollBy(delta, 0);
+        if (isHorizontal()) {
+          parent.scrollBy(delta, 0);
+        } else {
+          parent.scrollBy(0, delta);
+        }
         return true;
       }
     }
@@ -1307,7 +1311,12 @@ public class CarouselLayoutManager extends LayoutManager
    */
   @Override
   public int computeHorizontalScrollExtent(@NonNull State state) {
-    return keylineStateList == null ? 0 : (int) keylineStateList.getDefaultState().getItemSize();
+    if (getChildCount() == 0 || keylineStateList == null || getItemCount() <= 1) {
+      return 0;
+    }
+    float itemRatio =
+        (keylineStateList.getDefaultState().getItemSize() / computeHorizontalScrollRange(state));
+    return (int) (getWidth() * itemRatio);
   }
 
   /**
@@ -1329,7 +1338,12 @@ public class CarouselLayoutManager extends LayoutManager
 
   @Override
   public int computeVerticalScrollExtent(@NonNull State state) {
-    return keylineStateList == null ? 0 : (int) keylineStateList.getDefaultState().getItemSize();
+    if (getChildCount() == 0 || keylineStateList == null || getItemCount() <= 1) {
+      return 0;
+    }
+    float itemRatio =
+        (keylineStateList.getDefaultState().getItemSize() / computeVerticalScrollRange(state));
+    return (int) (getHeight() * itemRatio);
   }
 
   @Override

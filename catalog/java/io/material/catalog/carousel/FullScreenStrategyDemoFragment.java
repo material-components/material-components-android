@@ -18,6 +18,8 @@ package io.material.catalog.carousel;
 
 import io.material.catalog.R;
 
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.SnapHelper;
@@ -48,10 +50,14 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
 
   @NonNull
   @Override
+  @SuppressLint("SourceLockedOrientationActivity")
   public View onCreateDemoView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
+    // We want to force portrait mode for the fullscreen vertical carousel
+    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
     return layoutInflater.inflate(
         R.layout.cat_carousel_full_screen_fragment, viewGroup, false /* attachToRoot */);
   }
@@ -90,8 +96,7 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
     RecyclerView fullscreenRecyclerView =
         view.findViewById(R.id.fullscreen_carousel_recycler_view);
     CarouselLayoutManager carouselLayoutManager =
-        new CarouselLayoutManager(new FullScreenCarouselStrategy(),
-            RecyclerView.VERTICAL);
+        new CarouselLayoutManager(new FullScreenCarouselStrategy(), RecyclerView.VERTICAL);
     carouselLayoutManager.setDebuggingEnabled(
         fullscreenRecyclerView, debugSwitch.isChecked());
     fullscreenRecyclerView.setLayoutManager(carouselLayoutManager);
