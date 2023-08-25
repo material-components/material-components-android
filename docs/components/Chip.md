@@ -176,7 +176,7 @@ following:
 val checkedChipId = chipGroup.checkedChipId // Returns View.NO_ID if singleSelection = false
 val checkedChipIds = chipGroup.checkedChipIds // Returns a list of the selected chips' IDs, if any
 
-chipGroup.setOnCheckedChangeListener { group, checkedId ->
+chipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
     // Responds to child chip checked/unchecked
 }
 ```
