@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import io.material.catalog.feature.DemoActivity;
 import io.material.catalog.feature.DemoUtils;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /** A base activity for the Top App Bar Action Bar demos for the Catalog app. */
 public abstract class BaseTopAppBarActionBarDemoActivity extends DemoActivity {
@@ -44,6 +45,8 @@ public abstract class BaseTopAppBarActionBarDemoActivity extends DemoActivity {
 
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     getSupportActionBar().setSubtitle(R.string.cat_topappbar_action_bar_subtitle);
+
+    new WindowPreferencesManager(this).applyEdgeToEdgePreference(getWindow());
   }
 
   @Override
