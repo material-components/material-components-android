@@ -1448,8 +1448,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       if (interpolatorAnimator.isRunning()) {
         interpolatorAnimator.reverse();
       } else {
+        float from = materialShapeDrawable.getInterpolation();
         float to = removeCorners ? calculateInterpolationWithCornersRemoved() : 1f;
-        float from = 1f - to;
         interpolatorAnimator.setFloatValues(from, to);
         interpolatorAnimator.start();
       }
