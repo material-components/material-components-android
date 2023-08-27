@@ -315,6 +315,7 @@ public class TextInputLayout extends LinearLayout {
 
   @Nullable private Drawable startDummyDrawable;
   private int startDummyDrawableWidth;
+  private CharSequence disabledErrorText;
 
   /**
    * Values for the end icon mode.
@@ -2139,6 +2140,13 @@ public class TextInputLayout extends LinearLayout {
       setErrorEnabled(true);
     }
 
+    // If the layout is disabled,
+    // save the error to display it when the layout is enabled
+    if (!isEnabled()) {
+      disabledErrorText = errorText;
+      return;
+    }
+
     if (!TextUtils.isEmpty(errorText)) {
       indicatorViewController.showError(errorText);
     } else {
@@ -2763,6 +2771,15 @@ public class TextInputLayout extends LinearLayout {
     // drawable state
     recursiveSetEnabled(this, enabled);
     super.setEnabled(enabled);
+
+    if (!enabled) {
+      disabledErrorText = getError();
+      if (!TextUtils.isEmpty(disabledErrorText)) {
+        indicatorViewController.hideError();
+      }
+    } else if (!TextUtils.isEmpty(disabledErrorText) && isErrorEnabled()) {
+      setError(disabledErrorText);
+    }
   }
 
   private static void recursiveSetEnabled(@NonNull final ViewGroup vg, final boolean enabled) {
