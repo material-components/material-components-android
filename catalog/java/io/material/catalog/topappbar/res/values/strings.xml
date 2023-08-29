@@ -97,6 +97,8 @@
   <string name="cat_topappbar_increment_badge_number" description="The title of a button to increment the notification number. [CHAR_LIMIT=20]">+Badge number</string>
     <!-- Badge increment button label -->
   <string name="cat_topappbar_edit_menu_toggle" description="The title of a switch to toggle between showing and hiding an edit menu. [CHAR_LIMIT=NONE]">Show edit menu</string>
+  <string name="cat_topappbar_lift_on_scroll_toggle" description="The title of a switch to toggle between enabling and disabling lift on scroll. [CHAR_LIMIT=NONE]">Enable lift on scroll</string>
+  <string name="cat_topappbar_lifted" description="The title of a switch to toggle between lifting and not lifting the app bar. [CHAR_LIMIT=NONE]">Lift the app bar</string>
 
   <string name="cat_topappbar_compress_effect_demo_title">Compress Effect Demo</string>
   <string name="cat_topappbar_compress_toolbar_title">Compress Title</string>

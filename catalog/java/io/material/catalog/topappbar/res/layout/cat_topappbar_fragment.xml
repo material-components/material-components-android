@@ -52,6 +52,20 @@
         android:layout_gravity="center_horizontal"
         android:text="@string/cat_topappbar_edit_menu_toggle"
         android:checked="true"/>
+      <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/cat_topappbar_switch_lift_on_scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/cat_topappbar_lift_on_scroll_toggle"
+        android:checked="true"/>
+      <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/cat_topappbar_switch_lifted"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/cat_topappbar_lifted"
+        android:enabled="false"/>
       <Button
         android:id="@+id/cat_topappbar_button_increment_badge"
         android:layout_width="wrap_content"

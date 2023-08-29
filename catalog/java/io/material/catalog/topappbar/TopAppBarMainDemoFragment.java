@@ -28,6 +28,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.button.MaterialButton;
@@ -38,9 +39,12 @@ import io.material.catalog.feature.DemoUtils;
 /** A fragment that displays the main Top App Bar demo for the Catalog app. */
 public class TopAppBarMainDemoFragment extends DemoFragment {
 
+  private AppBarLayout appBarLayout;
   private Toolbar toolbar;
   private BadgeDrawable badgeDrawable;
   private MaterialSwitch editMenuToggle;
+  private MaterialSwitch liftOnScrollToggle;
+  private MaterialSwitch liftToggle;
   private MaterialButton incrementBadgeNumber;
 
   @Override
@@ -54,6 +58,7 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.cat_topappbar_fragment, viewGroup, false);
 
+    appBarLayout = view.findViewById(R.id.appbarlayout);
     toolbar = view.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.setSupportActionBar(toolbar);
@@ -65,6 +70,20 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
           toolbar.getMenu().findItem(R.id.cat_topappbar_item_edit).setVisible(isChecked);
           BadgeUtils.attachBadgeDrawable(badgeDrawable, toolbar, R.id.cat_topappbar_item_favorite);
         });
+
+    liftOnScrollToggle = view.findViewById(R.id.cat_topappbar_switch_lift_on_scroll);
+    liftOnScrollToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          appBarLayout.setLiftOnScroll(isChecked);
+          liftToggle.setEnabled(!isChecked);
+          if (!isChecked) {
+            appBarLayout.setLifted(liftToggle.isChecked());
+          }
+        });
+
+    liftToggle = view.findViewById(R.id.cat_topappbar_switch_lifted);
+    liftToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> appBarLayout.setLifted(isChecked));
 
     incrementBadgeNumber = view.findViewById(R.id.cat_topappbar_button_increment_badge);
     incrementBadgeNumber.setOnClickListener(
