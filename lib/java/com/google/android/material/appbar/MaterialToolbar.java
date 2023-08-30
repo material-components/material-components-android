@@ -378,15 +378,13 @@ public class MaterialToolbar extends Toolbar {
 
   private void initBackground(Context context) {
     Drawable background = getBackground();
-    ColorStateList backgroundCSL = DrawableUtils.getColorStateListOrNull(background);
+    ColorStateList backgroundCSL = background != null
+        ? DrawableUtils.getColorStateListOrNull(background)
+        : ColorStateList.valueOf(Color.TRANSPARENT);
 
-    if (background == null || backgroundCSL != null) {
+    if (backgroundCSL != null) {
       MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-      if (backgroundCSL != null) {
-        materialShapeDrawable.setFillColor(backgroundCSL);
-      } else {
-        materialShapeDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
-      }
+      materialShapeDrawable.setFillColor(backgroundCSL);
       materialShapeDrawable.initializeElevationOverlay(context);
       materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
       ViewCompat.setBackground(this, materialShapeDrawable);

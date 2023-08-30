@@ -26,7 +26,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -197,17 +196,17 @@ public abstract class NavigationBarView extends FrameLayout {
       setItemTextColor(attributes.getColorStateList(R.styleable.NavigationBarView_itemTextColor));
     }
 
+    // Add a MaterialShapeDrawable as background that supports tinting in every API level.
     Drawable background = getBackground();
-    ColorStateList backgroundCSL = DrawableUtils.getColorStateListOrNull(background);
-    if (background == null || backgroundCSL != null) {
+    ColorStateList backgroundCSL = background != null
+        ? DrawableUtils.getColorStateListOrNull(background)
+        : ColorStateList.valueOf(Color.TRANSPARENT);
+
+    if (backgroundCSL != null) {
       ShapeAppearanceModel shapeAppearanceModel =
           ShapeAppearanceModel.builder(context, attrs, defStyleAttr, defStyleRes).build();
       MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-      if (backgroundCSL != null) {
-        materialShapeDrawable.setFillColor(backgroundCSL);
-      } else {
-        materialShapeDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
-      }
+      materialShapeDrawable.setFillColor(backgroundCSL);
       materialShapeDrawable.initializeElevationOverlay(context);
       ViewCompat.setBackground(this, materialShapeDrawable);
     }

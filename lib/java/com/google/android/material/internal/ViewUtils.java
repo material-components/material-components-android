@@ -17,16 +17,19 @@
 package com.google.android.material.internal;
 
 import com.google.android.material.R;
+import com.google.android.material.drawable.DrawableUtils;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.ColorStateListDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -40,6 +43,7 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
+
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -436,13 +440,22 @@ public class ViewUtils {
   }
 
   /**
-   * Returns the provided view's background color, if it has ColorDrawable as its background, or
-   * {@code null} if the background has a different drawable type.
+   * Returns the color if it can be retrieved from the {@code view}'s background drawable, or null
+   * otherwise.
+   * <p>
+   * In particular:
+   * <ul>
+   *   <li>If the {@code view}'s background drawable is a {@link ColorDrawable}, the method will
+   *   return the drawable's color.</li>
+   *   <li>If the {@code view}'s background drawable is a {@link ColorStateListDrawable}, the method
+   *   will return the default color of the drawable's {@link ColorStateList}.</li>
+   * </ul>
    */
   @Nullable
   public static Integer getBackgroundColor(@NonNull View view) {
-    return view.getBackground() instanceof ColorDrawable
-        ? ((ColorDrawable) view.getBackground()).getColor()
+    final ColorStateList backgroundCSL = DrawableUtils.getColorStateListOrNull(view.getBackground());
+    return backgroundCSL != null
+        ? backgroundCSL.getDefaultColor()
         : null;
   }
 }

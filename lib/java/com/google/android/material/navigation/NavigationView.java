@@ -30,7 +30,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -202,17 +201,18 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     drawerLayoutCornerSize =
         a.getDimensionPixelSize(R.styleable.NavigationView_drawerLayoutCornerSize, 0);
 
+    // Set the background to a MaterialShapeDrawable if it hasn't been set or if it can be converted
+    // to a MaterialShapeDrawable.
     Drawable background = getBackground();
-    ColorStateList backgroundCSL = DrawableUtils.getColorStateListOrNull(background);
-    if (background == null || backgroundCSL != null) {
+    ColorStateList backgroundCSL = background != null
+        ? DrawableUtils.getColorStateListOrNull(background)
+        : ColorStateList.valueOf(Color.TRANSPARENT);
+
+    if (backgroundCSL != null) {
       ShapeAppearanceModel shapeAppearanceModel =
           ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
       MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-      if (backgroundCSL != null) {
-        materialShapeDrawable.setFillColor(backgroundCSL);
-      } else {
-        materialShapeDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
-      }
+      materialShapeDrawable.setFillColor(backgroundCSL);
       materialShapeDrawable.initializeElevationOverlay(context);
       ViewCompat.setBackground(this, materialShapeDrawable);
     }

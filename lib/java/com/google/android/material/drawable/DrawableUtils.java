@@ -373,8 +373,16 @@ public final class DrawableUtils {
   }
 
   /**
-   * Returns the {@link ColorStateList} that can be retrieved from the {@code drawable}, or null
-   * if no {@link ColorStateList} can be retrieved.
+   * Returns the {@link ColorStateList} if it can be retrieved from the {@code drawable}, or null
+   * otherwise.
+   * <p>
+   * In particular:
+   * <ul>
+   *   <li>If the {@code drawable} is a {@link ColorStateListDrawable}, the method will
+   *   return the {@code drawable}'s {@link ColorStateList}.</li>
+   *   <li>If the {@code drawable} is a {@link ColorDrawable}, the method will return a
+   *   {@link ColorStateList} containing the {@code drawable}'s color.</li>
+   * </ul>
    */
   @Nullable
   public static ColorStateList getColorStateListOrNull(@Nullable final Drawable drawable) {
