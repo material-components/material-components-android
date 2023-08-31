@@ -4429,7 +4429,7 @@ public class TextInputLayout extends LinearLayout {
       return;
     }
 
-    Drawable cursorDrawable = editText.getTextCursorDrawable();
+    Drawable cursorDrawable = DrawableCompat.wrap(editText.getTextCursorDrawable()).mutate();
     if (isOnError() && cursorErrorColor != null) {
       color = cursorErrorColor;
     }
