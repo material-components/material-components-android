@@ -126,7 +126,7 @@ public class MultiBrowseCarouselDemoFragment extends DemoFragment {
               if (recyclerView.computeHorizontalScrollRange() != 0) {
                 positionSlider.setValue(
                     (adapter.getItemCount() - 1)
-                            * recyclerView.computeHorizontalScrollOffset()
+                            * Math.abs(recyclerView.computeHorizontalScrollOffset())
                             / recyclerView.computeHorizontalScrollRange()
                         + 1);
               }
