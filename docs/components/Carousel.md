@@ -164,7 +164,17 @@ FullScreenStrategy())`.
 With the fullscreen strategy, it is recommended to use a vertical orientation
 carousel by either setting the orientation on the CarouselLayoutManager with the
 setter, or through its constructor: `new CarouselLayoutManager(new
-FullScreenCarouselStrategy(), RecyclerView.VERTICAL)`
+FullScreenCarouselStrategy(), RecyclerView.VERTICAL)`. Stick to portrait
+orientation only, or adapt your layout to a different strategy when using
+landscape in order to maintain the aspect ratios of your images.
+
+It is also recommended to use the `CarouselSnapHelper`
+to snap to the nearest item like so:
+
+```
+SnapHelper snapHelper = new CarouselSnapHelper();
+snapHelper.attachToRecyclerView(carouselRecyclerView);
+```
 
 It is also recommended to use the `CarouselSnapHelper`
 to snap to the nearest item like so:
