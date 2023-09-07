@@ -22,7 +22,7 @@ ext {
   targetSdkVersion = 33
 
   androidXVersions = [
-    activity                     : '1.8.0-alpha06',
+    activity                     : '1.8.0-beta01',
     annotation                   : '1.2.0',
     appCompat                    : '1.6.1',
     cardView                     : '1.0.0',
