@@ -36,7 +36,6 @@ import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -546,10 +545,11 @@ public class TabLayout extends HorizontalScrollView {
             DEF_STYLE_RES,
             R.styleable.TabLayout_tabTextAppearance);
 
-    if (getBackground() instanceof ColorDrawable) {
-      ColorDrawable background = (ColorDrawable) getBackground();
+    ColorStateList backgroundColorStateList =
+        DrawableUtils.getColorStateListOrNull(getBackground());
+    if (backgroundColorStateList != null) {
       MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-      materialShapeDrawable.setFillColor(ColorStateList.valueOf(background.getColor()));
+      materialShapeDrawable.setFillColor(backgroundColorStateList);
       materialShapeDrawable.initializeElevationOverlay(context);
       materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
       ViewCompat.setBackground(this, materialShapeDrawable);

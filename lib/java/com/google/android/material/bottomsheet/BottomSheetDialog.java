@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -50,6 +49,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.internal.EdgeToEdgeUtils;
+import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.motion.MaterialBackOrchestrator;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
@@ -467,12 +467,15 @@ public class BottomSheetDialog extends AppCompatDialog {
       if (backgroundTint != null) {
         // First check for a tint
         lightBottomSheet = isColorLight(backgroundTint.getDefaultColor());
-      } else if (bottomSheet.getBackground() instanceof ColorDrawable) {
-        // Then check for the background color
-        lightBottomSheet = isColorLight(((ColorDrawable) bottomSheet.getBackground()).getColor());
       } else {
-        // Otherwise don't change the status bar color
-        lightBottomSheet = null;
+        Integer backgroundColor = ViewUtils.getBackgroundColor(bottomSheet);
+        if (backgroundColor != null) {
+          // Then check for the background color
+          lightBottomSheet = isColorLight(backgroundColor);
+        } else {
+          // Otherwise don't change the status bar color
+          lightBottomSheet = null;
+        }
       }
     }
 
