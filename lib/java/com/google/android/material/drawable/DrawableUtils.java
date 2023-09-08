@@ -254,6 +254,8 @@ public final class DrawableUtils {
       return bottomLayerDrawable;
     }
 
+    boolean shouldScaleTopLayer =
+        topLayerDesiredWidth != INTRINSIC_SIZE && topLayerDesiredHeight != INTRINSIC_SIZE;
     if (topLayerDesiredWidth == INTRINSIC_SIZE) {
       topLayerDesiredWidth = getTopLayerIntrinsicWidth(bottomLayerDrawable, topLayerDrawable);
     }
@@ -294,11 +296,11 @@ public final class DrawableUtils {
       drawable.setLayerSize(1, topLayerNewWidth, topLayerNewHeight);
       drawable.setLayerGravity(1, Gravity.CENTER);
     } else {
-      Drawable scaledTopLayerDrawable =
-          new ScaledDrawableWrapper(topLayerDrawable, topLayerNewWidth, topLayerNewHeight)
-              .getDrawable();
-
-      drawable = new LayerDrawable(new Drawable[] {bottomLayerDrawable, scaledTopLayerDrawable});
+      if (shouldScaleTopLayer) {
+        topLayerDrawable =
+            new ScaledDrawableWrapper(topLayerDrawable, topLayerNewWidth, topLayerNewHeight);
+      }
+      drawable = new LayerDrawable(new Drawable[] {bottomLayerDrawable, topLayerDrawable});
 
       final int horizontalInset =
           max((bottomLayerDrawable.getIntrinsicWidth() - topLayerNewWidth) / 2, 0);
