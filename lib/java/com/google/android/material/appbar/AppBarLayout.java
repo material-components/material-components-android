@@ -1018,11 +1018,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     if (force && this.lifted != lifted) {
       this.lifted = lifted;
       refreshDrawableState();
-      if (liftOnScroll && isLiftOnScrollCompatibleBackground()) {
+      if (isLiftOnScrollCompatibleBackground()) {
         if (liftOnScrollColor != null) {
-          startLiftOnScrollColorAnimation(
-              lifted ? 0 : 255, lifted ? 255 : 0);
-        } else {
+          // Only start the liftOnScrollColor based animation because the elevation based
+          // animation will happen via the lifted drawable state change and state list animator.
+          startLiftOnScrollColorAnimation(lifted ? 0 : 255, lifted ? 255 : 0);
+        } else if (liftOnScroll) {
           startLiftOnScrollColorAnimation(
               lifted ? 0 : appBarElevation, lifted ? appBarElevation : 0);
         }
