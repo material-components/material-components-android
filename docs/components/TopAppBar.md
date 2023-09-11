@@ -327,6 +327,15 @@ appBarLayout.setStatusBarForeground(
     MaterialShapeDrawable.createWithElevationOverlay(getContext()));
 ```
 
+Or if using Tonal Surface Colors instead of Elevation Overlays, you can simply
+set the `statusBarForeground` to `colorSurface` to let `AppBarLayout`
+automatically match the status bar color to its own background:
+
+```
+appBarLayout.setStatusBarForegroundColor(
+    MaterialColors.getColor(appBarLayout, R.attr.colorSurface));
+```
+
 ### Center aligned top app bar example
 
 All of the same guidance and code from the sections above is relevant for Center

@@ -75,6 +75,7 @@ import androidx.customview.view.AbsSavedState;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.ArgbEvaluatorCompat;
 import com.google.android.material.appbar.AppBarLayout.BaseBehavior.SavedState;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.motion.MotionUtils;
@@ -220,6 +221,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   private int[] tmpStatesArray;
 
   @Nullable private Drawable statusBarForeground;
+  @Nullable private Integer statusBarForegroundOriginalColor;
 
   private final float appBarElevation;
 
@@ -332,19 +334,29 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     liftBackground.setAlpha(lifted ? 255 : 0);
     background.setAlpha(lifted ? 0 : 255);
 
+    ColorStateList colorSurface =
+        MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorSurface);
+
     liftOnScrollColorUpdateListener =
         valueAnimator -> {
           float liftAlpha = (float) valueAnimator.getAnimatedValue();
           background.setAlpha((int) (255f - liftAlpha));
           liftBackground.setAlpha((int) liftAlpha);
 
+          int mixedColor =
+              ArgbEvaluatorCompat.getInstance()
+                  .evaluate(
+                      liftAlpha / 255f,
+                      background.getResolvedTintColor(),
+                      liftBackground.getResolvedTintColor());
+          if (statusBarForeground != null
+              && statusBarForegroundOriginalColor != null
+              && colorSurface != null
+              && statusBarForegroundOriginalColor == colorSurface.getDefaultColor()) {
+            DrawableCompat.setTint(statusBarForeground, mixedColor);
+          }
+
           if (!liftOnScrollListeners.isEmpty()) {
-            int mixedColor =
-                ArgbEvaluatorCompat.getInstance()
-                    .evaluate(
-                        liftAlpha / 255f,
-                        background.getResolvedTintColor(),
-                        liftBackground.getResolvedTintColor());
             for (LiftOnScrollListener liftOnScrollListener : liftOnScrollListeners) {
               if (background.getFillColor() != null) {
                 liftOnScrollListener.onUpdate(0, mixedColor);
@@ -447,6 +459,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         statusBarForeground.setCallback(null);
       }
       statusBarForeground = drawable != null ? drawable.mutate() : null;
+      statusBarForegroundOriginalColor = extractStatusBarForegroundColor();
       if (statusBarForeground != null) {
         if (statusBarForeground.isStateful()) {
           statusBarForeground.setState(getDrawableState());
@@ -495,6 +508,19 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   @Nullable
   public Drawable getStatusBarForeground() {
     return statusBarForeground;
+  }
+
+  @Nullable
+  private Integer extractStatusBarForegroundColor() {
+    if (statusBarForeground instanceof MaterialShapeDrawable) {
+      return ((MaterialShapeDrawable) statusBarForeground).getResolvedTintColor();
+    }
+    ColorStateList statusBarForegroundColorStateList =
+        DrawableUtils.getColorStateListOrNull(statusBarForeground);
+    if (statusBarForegroundColorStateList != null) {
+      return statusBarForegroundColorStateList.getDefaultColor();
+    }
+    return null;
   }
 
   @Override

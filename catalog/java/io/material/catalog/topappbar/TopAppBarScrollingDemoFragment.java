@@ -29,7 +29,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.color.MaterialColors;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 
@@ -52,8 +52,8 @@ public class TopAppBarScrollingDemoFragment extends DemoFragment {
     activity.setSupportActionBar(toolbar);
 
     AppBarLayout appBarLayout = view.findViewById(R.id.appbarlayout);
-    appBarLayout.setStatusBarForeground(
-        MaterialShapeDrawable.createWithElevationOverlay(requireContext()));
+    appBarLayout.setStatusBarForegroundColor(
+        MaterialColors.getColor(appBarLayout, R.attr.colorSurface));
 
     return view;
   }
