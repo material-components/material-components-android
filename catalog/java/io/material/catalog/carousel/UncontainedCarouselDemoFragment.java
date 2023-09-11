@@ -32,7 +32,6 @@ import com.google.android.material.carousel.UncontainedCarouselStrategy;
 import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.slider.Slider.OnSliderTouchListener;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the uncontained variant of the Carousel. */
@@ -78,8 +77,7 @@ public class UncontainedCarouselDemoFragment extends DemoFragment {
         (buttonView, isChecked) -> {
           uncontainedRecyclerView.setBackgroundResource(
               isChecked ? R.drawable.dashed_outline_rectangle : 0);
-          uncontainedCarouselLayoutManager.setDebuggingEnabled(
-              uncontainedRecyclerView, isChecked);
+          uncontainedCarouselLayoutManager.setDebuggingEnabled(uncontainedRecyclerView, isChecked);
         });
 
     drawDividers.setOnCheckedChangeListener(
@@ -109,25 +107,7 @@ public class UncontainedCarouselDemoFragment extends DemoFragment {
             },
             R.layout.cat_carousel_item_narrow);
     uncontainedRecyclerView.addOnScrollListener(
-        new RecyclerView.OnScrollListener() {
-          private boolean dragged = false;
-
-          @Override
-          public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-              dragged = true;
-            } else if (dragged && newState == RecyclerView.SCROLL_STATE_IDLE) {
-              if (recyclerView.computeHorizontalScrollRange() != 0) {
-                positionSlider.setValue(
-                    (adapter.getItemCount() - 1)
-                        * recyclerView.computeHorizontalScrollOffset()
-                        / recyclerView.computeHorizontalScrollRange()
-                        + 1);
-              }
-              dragged = false;
-            }
-          }
-        });
+        CarouselDemoUtils.createUpdateSliderOnScrollListener(positionSlider, adapter));
 
     itemCountDropdown.setOnItemClickListener(
         (parent, view1, position, id) ->
@@ -136,15 +116,7 @@ public class UncontainedCarouselDemoFragment extends DemoFragment {
                 updateSliderRange(positionSlider, adapter)));
 
     positionSlider.addOnSliderTouchListener(
-        new OnSliderTouchListener() {
-          @Override
-          public void onStartTrackingTouch(@NonNull Slider slider) {}
-
-          @Override
-          public void onStopTrackingTouch(@NonNull Slider slider) {
-            uncontainedRecyclerView.smoothScrollToPosition(((int) slider.getValue()) - 1);
-          }
-        });
+        CarouselDemoUtils.createScrollToPositionSliderTouchListener(uncontainedRecyclerView));
 
     uncontainedRecyclerView.setAdapter(adapter);
     adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));

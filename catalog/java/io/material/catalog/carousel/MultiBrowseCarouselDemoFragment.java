@@ -32,7 +32,6 @@ import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
 import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.slider.Slider.OnSliderTouchListener;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the multi-browse variants of the Carousel. */
@@ -115,25 +114,7 @@ public class MultiBrowseCarouselDemoFragment extends DemoFragment {
             },
             R.layout.cat_carousel_item_narrow);
     multiBrowseStartRecyclerView.addOnScrollListener(
-        new RecyclerView.OnScrollListener() {
-          private boolean dragged = false;
-
-          @Override
-          public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-            if (newState == RecyclerView.SCROLL_STATE_DRAGGING) {
-              dragged = true;
-            } else if (dragged && newState == RecyclerView.SCROLL_STATE_IDLE) {
-              if (recyclerView.computeHorizontalScrollRange() != 0) {
-                positionSlider.setValue(
-                    (adapter.getItemCount() - 1)
-                            * recyclerView.computeHorizontalScrollOffset()
-                            / recyclerView.computeHorizontalScrollRange()
-                        + 1);
-              }
-              dragged = false;
-            }
-          }
-        });
+        CarouselDemoUtils.createUpdateSliderOnScrollListener(positionSlider, adapter));
 
     itemCountDropdown.setOnItemClickListener(
         (parent, view1, position, id) -> {
@@ -143,15 +124,7 @@ public class MultiBrowseCarouselDemoFragment extends DemoFragment {
         });
 
     positionSlider.addOnSliderTouchListener(
-        new OnSliderTouchListener() {
-          @Override
-          public void onStartTrackingTouch(@NonNull Slider slider) {}
-
-          @Override
-          public void onStopTrackingTouch(@NonNull Slider slider) {
-            multiBrowseStartRecyclerView.smoothScrollToPosition(((int) slider.getValue()) - 1);
-          }
-        });
+        CarouselDemoUtils.createScrollToPositionSliderTouchListener(multiBrowseStartRecyclerView));
 
     multiBrowseStartRecyclerView.setAdapter(adapter);
     adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));
