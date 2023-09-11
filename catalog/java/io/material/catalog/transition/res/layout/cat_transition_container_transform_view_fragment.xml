@@ -26,6 +26,7 @@
   <include layout="@layout/cat_transition_list_fragment" />
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
+    style="?attr/floatingActionButtonSecondaryStyle"
     android:id="@+id/start_fab"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

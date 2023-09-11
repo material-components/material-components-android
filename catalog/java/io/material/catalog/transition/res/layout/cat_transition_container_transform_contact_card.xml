@@ -15,6 +15,7 @@
   ~ limitations under the License.
   -->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/contact_card"
   android:layout_width="220dp"
   android:layout_height="wrap_content"
@@ -72,10 +73,12 @@
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
       android:padding="16dp"
-      android:background="?attr/colorSecondary"
+      android:background="?attr/colorSecondaryContainer"
       android:drawablePadding="16dp"
       android:drawableStart="@drawable/ic_edit_vd_theme_24dp"
+      app:drawableTint="?attr/colorOnSecondaryContainer"
       android:text="@string/cat_transition_contact_card_compose"
+      android:textColor="?attr/colorOnSecondaryContainer"
       android:textAppearance="?attr/textAppearanceButton" />
   </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
