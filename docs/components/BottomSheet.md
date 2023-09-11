@@ -208,7 +208,7 @@ edge) if the navigation bar is transparent and `app:enableEdgeToEdge` is true.
 To enable edge-to-edge by default for modal bottom sheets, you can override
 `?attr/bottomSheetDialogTheme` like the below example:
 
-```
+```xml
 <style name="AppTheme" parent="Theme.Material3.*">
   ...
   <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>

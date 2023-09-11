@@ -690,7 +690,7 @@ activity can be seen below. Since we are overriding color resources in xml at
 runtime, make sure the method is invoked before you inflate the view to take
 effect.
 
-```
+```java
 import com.google.android.material.color.DynamicColorsOptions;
 import com.google.android.material.color.DynamicColors;
 
@@ -712,7 +712,7 @@ import com.google.android.material.color.DynamicColors;
 An example usage for applying content-based dynamic colors to a specific
 fragment/view:
 
-```
+```java
 import com.google.android.material.color.DynamicColorsOptions;
 import com.google.android.material.color.DynamicColors;
 
@@ -762,7 +762,7 @@ your branded or custom themes, we have created the following API in the
 
 In your application class’ `onCreate()` method, call:
 
-```
+```java
 ColorContrast.applyToActivitiesIfAvailable(
         this,
         new ColorContrastOptions.Builder()

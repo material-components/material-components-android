@@ -322,9 +322,9 @@ background.
 
 In code:
 
-```
-appBarLayout.setStatusBarForeground(
-    MaterialShapeDrawable.createWithElevationOverlay(getContext()));
+```kt
+appBarLayout.statusBarForeground =
+    MaterialShapeDrawable.createWithElevationOverlay(context)
 ```
 
 ### Center aligned top app bar example

@@ -60,7 +60,7 @@ time format you choose.
 You can use either `TimeFormat.CLOCK_12H` (1 ring) or `TimeFormat.CLOCK_24H` (2 rings),
 depending on the location of the device:
 
-```
+```kt
 val isSystem24Hour = is24HourFormat(this)
 val clockFormat = if (isSystem24Hour) TimeFormat.CLOCK_24H else TimeFormat.CLOCK_12H
 ```
@@ -88,7 +88,7 @@ To show the time picker to the user:
 
 Subscribe to positive button click, negative button click, cancel and dismiss events with the following calls:
 
-```
+```kt
 picker.addOnPositiveButtonClickListener {
     // call back code
 }

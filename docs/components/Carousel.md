@@ -86,8 +86,8 @@ Next, set your `RecyclerView`s layout manager to a new `CarouselLayoutManager`.
   android:clipToPadding="false" />
 ```
 
-```kotlin
-carouselRecyclerView.setLayoutManager(CarouselLayoutManager())
+```java
+carouselRecyclerView.setLayoutManager(new CarouselLayoutManager());
 ```
 
 These are the basic steps to create a carousel. The look of the carousel depends
@@ -145,7 +145,7 @@ HeroStrategy())`.
 
 With the hero strategy, it is recommended to use the `CarouselSnapHelper` to snap to the nearest item like so:
 
-```
+```java
 SnapHelper snapHelper = new CarouselSnapHelper();
 snapHelper.attachToRecyclerView(carouselRecyclerView);
 ```
@@ -171,15 +171,7 @@ landscape in order to maintain the aspect ratios of your images.
 It is also recommended to use the `CarouselSnapHelper`
 to snap to the nearest item like so:
 
-```
-SnapHelper snapHelper = new CarouselSnapHelper();
-snapHelper.attachToRecyclerView(carouselRecyclerView);
-```
-
-It is also recommended to use the `CarouselSnapHelper`
-to snap to the nearest item like so:
-
-```
+```java
 SnapHelper snapHelper = new CarouselSnapHelper();
 snapHelper.attachToRecyclerView(carouselRecyclerView);
 ```
@@ -211,14 +203,13 @@ by setting an
 [`onMaskChangedListener`](https://developer.android.com/reference/com/google/android/material/carousel/OnMaskChangedListener)
 on your `MaskableFrameLayout` inside your `RecyclerView.ViewHolder`.
 
-```kotlin
-(viewHolder.itemView as MaskableFrameLayout).setOnMaskChangedListener(
-    maskRect ->
+```java
+((MaskableFrameLayout) viewHolder.itemView).setOnMaskChangedListener(
+    maskRect -> {
       // Any custom motion to run when mask size changes
       viewHolder.title.setTranslationX(maskRect.left);
       viewHolder.title.setAlpha(lerp(1F, 0F, 0F, 80F, maskRect.left));
-    );
-}
+    });
 ```
 
 In the example above, a title is translated so it appears pinned to the left masking edge of the item. As the item masks and becomes too small for the title, it is faded out.
@@ -227,7 +218,7 @@ In the example above, a title is translated so it appears pinned to the left mas
 
 You can control the alignment of the focal (large) items in the carousel by setting the `app:carousel_alignment` attribute on your RecyclerView, if you are also setting the RecyclerView's LayoutManager through `app:layoutManager`:
 
-```
+```xml
     <androidx.recyclerview.widget.RecyclerView
       ...
       app:layoutManager="com.google.android.material.carousel.CarouselLayoutManager"
@@ -237,7 +228,7 @@ You can control the alignment of the focal (large) items in the carousel by sett
 
 If CarouselLayoutManager is being set programmatically, you may set the alignment as well programmatically:
 
-```
+```java
 carouselLayoutManager.setCarouselAlignment(CarouselLayoutManager.CENTER);
 ```
 
