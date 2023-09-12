@@ -117,7 +117,7 @@ To show the picker to the user:
 
 Subscribe to button clicks or dismiss events with the following calls:
 
-```
+```kt
 picker.addOnPositiveButtonClickListener {
     // Respond to positive button click.
 }

@@ -40,7 +40,7 @@ Attribute        | Default value                | Description
 
 To customize an easing value, override any of the attributes in your app’s theme to your own interpolator resource.
 
-```
+```xml
 <style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
     ....
     <item name="motionEasingEmphasizedInterpolator">@interpolator/my_app_emphasized_interpolator</item>
@@ -80,7 +80,7 @@ ensure your transitions have a consistent sense of speed.
 To override a duration attribute, assign the attribute to your desired
 millisecond integer value.
 
-```
+```xml
 <style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
     ....
     <item name="motionDurationLong2">450</item>
@@ -106,7 +106,7 @@ When implementing your own animations, use an easing and duration theme attribut
 
 When creating animations in xml, set your animation's `interpolator` and `duration` properties to a Material motion theme attribute.
 
-```
+```xml
 <!-- res/anim/slide_in.xml –>
 <set xmlns:android="http://schemas.android.com/apk/res/android"
    android:duration="?attr/motionEasingDurationMedium1"
@@ -122,28 +122,18 @@ When creating animations in xml, set your animation's `interpolator` and `durati
 
 If creating animations in Java or Kotlin, Material provides a `MotionUtils` class to help facilitate loading `interpolator` and `duration` theme attributes.
 
-```
-ValueAnimator animator = ValueAnimator.ofFloat(currentProgress, newProgress);
-animator.addUpdateListener(
-   new AnimatorUpdateListener() {
-     @Override
-     public void onAnimationUpdate(ValueAnimator animation) {
-       float progress = (float) animation.getAnimatedValue();
-       myView.setAlpha(progress)
-       setActiveIndicatorProgress(progress, newProgress);
-     }
-   });
-animatior.setInterpolator(
-   MotionUtils.resolveThemeInterpolator(
-       getContext(),
-       R.attr.motionEasingStandardInterpolator,  // easing theme attribute
-       new FastOutSlowInInterpolator()));  // default fallback interpolator
-animator.setDuration(
-   MotionUtils.resolveThemeDuration(
-       getContext(),
-       R.attr.motionDurationLong1, // duration theme attribute
-       500L)); // default fallback duration
-animator.start();
+```kt
+val interpolator = MotionUtils.resolveThemeInterpolator(
+  context,
+  R.attr.motionEasingStandardInterpolator,  // interpolator theme attribute
+  FastOutSlowInInterpolator()  // default fallback interpolator
+)
+
+val duration = MotionUtils.resolveThemeDuration(
+  context,
+  R.attr.motionDurationLong1,  // duration theme attribute
+  500  // default fallback duration
+)
 ```
 
 ## Transitions
@@ -237,6 +227,7 @@ will be shared. Add a matching `transitionName` to each of these Views.
   android:id="@+id/start_view"
   android:transitionName="shared_element_container" />
 ```
+
 ```xml
 <!--fragment_b.xml-->
 <View
