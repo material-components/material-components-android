@@ -61,6 +61,7 @@ import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.CollapsingTextHelper;
 import com.google.android.material.internal.DescendantOffsetUtils;
@@ -796,13 +797,22 @@ public class CollapsingToolbarLayout extends FrameLayout {
       disableLiftOnScrollIfNeeded((AppBarLayout) parent);
     }
 
-    // If using fade title collapse mode and no content scrim, provide default content scrim based
-    // on elevation overlay.
+    // If using fade title collapse mode and no content scrim, provide default content scrim.
     if (fadeModeEnabled && contentScrim == null) {
+      setContentScrimColor(getDefaultContentScrimColorForTitleCollapseFadeMode());
+    }
+  }
+
+  @ColorInt
+  private int getDefaultContentScrimColorForTitleCollapseFadeMode() {
+    ColorStateList colorSurfaceContainer =
+        MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorSurfaceContainer);
+    if (colorSurfaceContainer != null) {
+      return colorSurfaceContainer.getDefaultColor();
+    } else {
       float appBarElevation = getResources().getDimension(R.dimen.design_appbar_elevation);
-      int scrimColor =
-          elevationOverlayProvider.compositeOverlayWithThemeSurfaceColorIfNeeded(appBarElevation);
-      setContentScrimColor(scrimColor);
+      return elevationOverlayProvider.compositeOverlayWithThemeSurfaceColorIfNeeded(
+          appBarElevation);
     }
   }
 
