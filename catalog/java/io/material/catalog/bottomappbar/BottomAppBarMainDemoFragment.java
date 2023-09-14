@@ -207,7 +207,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
     View bottomDrawer = coordinatorLayout.findViewById(R.id.bottom_drawer);
     bottomDrawerBehavior = BottomSheetBehavior.from(bottomDrawer);
     bottomDrawerBehavior.setUpdateImportantForAccessibilityOnSiblings(true);
-    bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    bottomDrawer.post(() -> bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN));
     bottomDrawerBehavior.addBottomSheetCallback(
         new BottomSheetCallback() {
           @Override
