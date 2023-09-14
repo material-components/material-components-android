@@ -365,13 +365,13 @@ public class CarouselLayoutManager extends LayoutManager
    * @param startPosition the adapter position from which to start adding views
    */
   private void addViewsStart(Recycler recycler, int startPosition) {
-    int start = calculateChildStartForFill(startPosition);
+    float start = calculateChildStartForFill(startPosition);
     for (int i = startPosition; i >= 0; i--) {
       ChildCalculations calculations = makeChildCalculations(recycler, start, i);
       if (isLocOffsetOutOfFillBoundsStart(calculations.offsetCenter, calculations.range)) {
         break;
       }
-      start = addStart(start, (int) currentKeylineState.getItemSize());
+      start = addStart(start, currentKeylineState.getItemSize());
 
       // If this child's start is beyond the end of the container, don't add the child but continue
       // to loop so we can eventually get to children that are within bounds.
@@ -392,13 +392,13 @@ public class CarouselLayoutManager extends LayoutManager
    * @param startPosition the adapter position from which to start adding views
    */
   private void addViewsEnd(Recycler recycler, State state, int startPosition) {
-    int start = calculateChildStartForFill(startPosition);
+    float start = calculateChildStartForFill(startPosition);
     for (int i = startPosition; i < state.getItemCount(); i++) {
       ChildCalculations calculations = makeChildCalculations(recycler, start, i);
       if (isLocOffsetOutOfFillBoundsEnd(calculations.offsetCenter, calculations.range)) {
         break;
       }
-      start = addEnd(start, (int) currentKeylineState.getItemSize());
+      start = addEnd(start, currentKeylineState.getItemSize());
 
       // If this child's end is beyond the start of the container, don't add the child but continue
       // to loop so we can eventually get to children that are within bounds.
@@ -473,11 +473,10 @@ public class CarouselLayoutManager extends LayoutManager
    * @return a {@link ChildCalculations} object
    */
   private ChildCalculations makeChildCalculations(Recycler recycler, float start, int position) {
-    float halfItemSize = currentKeylineState.getItemSize() / 2F;
     View child = recycler.getViewForPosition(position);
     measureChildWithMargins(child, 0, 0);
 
-    int center = addEnd((int) start, (int) halfItemSize);
+    float center = addEnd(start, currentKeylineState.getItemSize() / 2F);
     KeylineRange range =
         getSurroundingKeylineRange(currentKeylineState.getKeylines(), center, false);
 
@@ -517,7 +516,7 @@ public class CarouselLayoutManager extends LayoutManager
    */
   private boolean isLocOffsetOutOfFillBoundsStart(float locOffset, KeylineRange range) {
     float maskedSize = getMaskedItemSizeForLocOffset(locOffset, range);
-    int maskedEnd = addEnd((int) locOffset, (int) (maskedSize / 2F));
+    float maskedEnd = addEnd(locOffset, maskedSize / 2F);
     return isLayoutRtl() ? maskedEnd > getContainerSize() : maskedEnd < 0;
   }
 
@@ -540,7 +539,7 @@ public class CarouselLayoutManager extends LayoutManager
    */
   private boolean isLocOffsetOutOfFillBoundsEnd(float locOffset, KeylineRange range) {
     float maskedSize = getMaskedItemSizeForLocOffset(locOffset, range);
-    int maskedStart = addStart((int) locOffset, (int) (maskedSize / 2F));
+    float maskedStart = addStart(locOffset, maskedSize / 2F);
     return isLayoutRtl() ? maskedStart < 0 : maskedStart > getContainerSize();
   }
 
@@ -755,8 +754,7 @@ public class CarouselLayoutManager extends LayoutManager
     Keyline startFocalKeyline =
         isRtl ? startState.getLastFocalKeyline() : startState.getFirstFocalKeyline();
     float firstItemDistanceFromStart = getPaddingStart() * (isRtl ? 1 : -1);
-    int firstItemStart =
-        addStart((int) startFocalKeyline.loc, (int) (startState.getItemSize() / 2F));
+    float firstItemStart = addStart(startFocalKeyline.loc, startState.getItemSize() / 2F);
     return (int) (firstItemDistanceFromStart + getParentStart() - firstItemStart);
   }
 
@@ -798,11 +796,11 @@ public class CarouselLayoutManager extends LayoutManager
    * @param startPosition the adapter position of the item whose start position will be calculated
    * @return the start location of the view at {@code startPosition} along the scroll axis
    */
-  private int calculateChildStartForFill(int startPosition) {
+  private float calculateChildStartForFill(int startPosition) {
     float childScrollOffset = getParentStart() - scrollOffset;
     float positionOffset = currentKeylineState.getItemSize() * startPosition;
 
-    return addEnd((int) childScrollOffset, (int) positionOffset);
+    return addEnd(childScrollOffset, positionOffset);
   }
 
   /**
@@ -1013,12 +1011,12 @@ public class CarouselLayoutManager extends LayoutManager
   }
 
   /** Moves {@code value} towards the start of the container by {@code amount}. */
-  private int addStart(int value, int amount) {
+  private float addStart(float value, float amount) {
     return isLayoutRtl() ? value + amount : value - amount;
   }
 
   /** Moves {@code value} towards the end of the container by {@code amount}. */
-  private int addEnd(int value, int amount) {
+  private float addEnd(float value, float amount) {
     return isLayoutRtl() ? value - amount : value + amount;
   }
 
@@ -1251,12 +1249,12 @@ public class CarouselLayoutManager extends LayoutManager
 
     float halfItemSize = currentKeylineState.getItemSize() / 2F;
     int startPosition = getPosition(getChildAt(0));
-    int start = calculateChildStartForFill(startPosition);
+    float start = calculateChildStartForFill(startPosition);
     Rect boundsRect = new Rect();
     for (int i = 0; i < getChildCount(); i++) {
       View child = getChildAt(i);
       offsetChild(child, start, halfItemSize, boundsRect);
-      start = addEnd(start, (int) currentKeylineState.getItemSize());
+      start = addEnd(start, currentKeylineState.getItemSize());
     }
 
     // Fill any additional space caused by scrolling with more items.
@@ -1276,7 +1274,7 @@ public class CarouselLayoutManager extends LayoutManager
    * @param boundsRect a Rect to use to find the current bounds of {@code child}
    */
   private void offsetChild(View child, float startOffset, float halfItemSize, Rect boundsRect) {
-    int center = addEnd((int) startOffset, (int) halfItemSize);
+    float center = addEnd(startOffset, halfItemSize);
     KeylineRange range =
         getSurroundingKeylineRange(currentKeylineState.getKeylines(), center, false);
     float offsetCenter = calculateChildOffsetCenterForLocation(child, center, range);
