@@ -186,16 +186,19 @@ final class KeylineState {
     KeylineState.Builder builder =
         new KeylineState.Builder(keylineState.getItemSize(), availableSpace);
 
+    // The new start offset should now be the same distance from the left of the carousel container
+    // as the last item's right was from the right of the container.
     float start =
-        keylineState.getFirstKeyline().locOffset
-            - (keylineState.getFirstKeyline().maskedItemSize / 2F);
+        availableSpace
+            - keylineState.getLastKeyline().locOffset
+            - (keylineState.getLastKeyline().maskedItemSize / 2F);
     for (int i = keylineState.getKeylines().size() - 1; i >= 0; i--) {
       Keyline k = keylineState.getKeylines().get(i);
       float offset = start + (k.maskedItemSize / 2F);
       boolean isFocal =
           i >= keylineState.getFirstFocalKeylineIndex()
               && i <= keylineState.getLastFocalKeylineIndex();
-      builder.addKeyline(offset, k.mask, k.maskedItemSize, isFocal);
+      builder.addKeyline(offset, k.mask, k.maskedItemSize, isFocal, k.isAnchor);
       start += k.maskedItemSize;
     }
 
@@ -242,7 +245,6 @@ final class KeylineState {
     private float lastKeylineMaskedSize = 0F;
 
     private int latestAnchorKeylineIndex = NO_INDEX;
-
 
     /**
      * Creates a new {@link KeylineState.Builder}.

@@ -315,7 +315,29 @@ class KeylineStateList {
   private static boolean isFirstFocalItemAtLeftOfContainer(KeylineState state) {
     float firstFocalItemLeft =
         state.getFirstFocalKeyline().locOffset - (state.getFirstFocalKeyline().maskedItemSize / 2F);
-    return firstFocalItemLeft <= 0F || state.getFirstFocalKeyline() == state.getFirstKeyline();
+    return firstFocalItemLeft >= 0F
+        && state.getFirstFocalKeyline() == state.getFirstNonAnchorKeyline();
+  }
+
+  /**
+   * Determines whether or not the first focal item for the given {@code state} is at the right of
+   * the carousel container and fully visible.
+   *
+   * @param carousel the {@link Carousel} associated with this {@link KeylineStateList}.
+   * @param state the state to check for right item position
+   * @return true if the {@code state}'s first focal item has its right aligned with the right of
+   *     the {@code carousel} container and is fully visible.
+   */
+  private static boolean isLastFocalItemVisibleAtRightOfContainer(
+      Carousel carousel, KeylineState state) {
+    int containerSize = carousel.getContainerHeight();
+    if (carousel.isHorizontal()) {
+      containerSize = carousel.getContainerWidth();
+    }
+    float lastFocalItemRight =
+        state.getLastFocalKeyline().locOffset + (state.getLastFocalKeyline().maskedItemSize / 2F);
+    return lastFocalItemRight <= containerSize
+        && state.getLastFocalKeyline() == state.getLastNonAnchorKeyline();
   }
 
   /**
@@ -339,6 +361,7 @@ class KeylineStateList {
     List<KeylineState> steps = new ArrayList<>();
     steps.add(defaultState);
     int firstNonAnchorKeylineIndex = findFirstNonAnchorKeylineIndex(defaultState);
+
     // If the first focal item is already at the left of the container or there are no in bounds
     // keylines, return a list of steps that only includes the default state (there is nowhere to
     // shift).
@@ -348,15 +371,26 @@ class KeylineStateList {
     }
 
     int start = firstNonAnchorKeylineIndex;
-    int end = defaultState.getFirstFocalKeylineIndex() - 1;
+    int end = defaultState.getFirstFocalKeylineIndex();
     int numberOfSteps = end - start;
-    float cutoffs = 0;
-
+    float carouselSize =
+        carousel.isHorizontal() ? carousel.getContainerWidth() : carousel.getContainerHeight();
     float originalStart =
         defaultState.getFirstKeyline().locOffset
             - (defaultState.getFirstKeyline().maskedItemSize / 2F);
 
-    for (int i = 0; i <= numberOfSteps; i++) {
+    if (numberOfSteps <= 0 && defaultState.getFirstFocalKeyline().cutoff > 0) {
+      // If there are no steps, there still might be a cutoff focal item that we should shift into
+      // view. Add a step that shifts all the keylines over to bring the first focal item into full
+      // view.
+      float cutoffs = defaultState.getFirstFocalKeyline().cutoff;
+      steps.add(
+          shiftKeylinesAndCreateKeylineState(defaultState, originalStart + cutoffs, carouselSize));
+      return steps;
+    }
+
+    float cutoffs = 0;
+    for (int i = 0; i < numberOfSteps; i++) {
       KeylineState prevStepState = steps.get(steps.size() - 1);
       int itemOrigIndex = start + i;
       // If this is the first item from the original state, place it at the end of the dest state.
@@ -382,33 +416,10 @@ class KeylineStateList {
               originalStart + cutoffs,
               newFirstFocalIndex,
               newLastFocalIndex,
-              carousel.isHorizontal()
-                  ? carousel.getContainerWidth()
-                  : carousel.getContainerHeight());
+              carouselSize);
       steps.add(shifted);
     }
     return steps;
-  }
-
-  /**
-   * Determines whether or not the first focal item for the given {@code state} is at the right of
-   * the carousel container and fully visible.
-   *
-   * @param carousel the {@link Carousel} associated with this {@link KeylineStateList}.
-   * @param state the state to check for right item position
-   * @return true if the {@code state}'s first focal item has its right aligned with the right of
-   *     the {@code carousel} container and is fully visible.
-   */
-  private static boolean isLastFocalItemVisibleAtRightOfContainer(
-      Carousel carousel, KeylineState state) {
-    int containerSize = carousel.getContainerHeight();
-    if (carousel.isHorizontal()) {
-      containerSize = carousel.getContainerWidth();
-    }
-    float lastFocalItemRight =
-        state.getLastFocalKeyline().locOffset + (state.getLastFocalKeyline().maskedItemSize / 2F);
-    return lastFocalItemRight <= containerSize
-        && state.getLastFocalKeyline() == state.getLastNonAnchorKeyline();
   }
 
   /**
@@ -441,35 +452,26 @@ class KeylineStateList {
       return steps;
     }
 
+    int start = defaultState.getLastFocalKeylineIndex();
+    int end = lastNonAnchorKeylineIndex;
+    int numberOfSteps = end - start;
     float carouselSize =
         carousel.isHorizontal() ? carousel.getContainerWidth() : carousel.getContainerHeight();
-
     float originalStart =
         defaultState.getFirstKeyline().locOffset
             - (defaultState.getFirstKeyline().maskedItemSize / 2F);
 
-    // If we are here, it means that the last keyline is focal, but is cut off
-    // since it is not visible. If this is the case, we want to add one step where
-    // the keylines are shifted so that the last keyline is visible.
-    if (defaultState.getLastFocalKeyline() == defaultState.getLastNonAnchorKeyline()) {
-      KeylineState shifted =
-          moveKeylineAndCreateKeylineState(
-              defaultState,
-              /* keylineSrcIndex= */ defaultState.getLastFocalKeylineIndex(),
-              /* keylineDstIndex= */ defaultState.getFirstFocalKeylineIndex(),
-              originalStart - defaultState.getLastFocalKeyline().cutoff,
-              defaultState.getFirstFocalKeylineIndex(),
-              defaultState.getLastFocalKeylineIndex(),
-              carouselSize);
-      steps.add(shifted);
+    if (numberOfSteps <= 0 && defaultState.getLastFocalKeyline().cutoff > 0) {
+      // If there are no steps, there still might be a cutoff focal item that we should shift into
+      // view. Add a step that shifts all the keylines over to bring the last focal item into full
+      // view.
+      float cutoffs = defaultState.getLastFocalKeyline().cutoff;
+      steps.add(
+          shiftKeylinesAndCreateKeylineState(defaultState, originalStart - cutoffs, carouselSize));
       return steps;
     }
 
-    int start = defaultState.getLastFocalKeylineIndex();
-    int end = lastNonAnchorKeylineIndex;
-    int numberOfSteps = end - start;
     float cutoffs = 0;
-
     for (int i = 0; i < numberOfSteps; i++) {
       KeylineState prevStepState = steps.get(steps.size() - 1);
       int itemOrigIndex = end - i;
@@ -501,6 +503,28 @@ class KeylineStateList {
     }
 
     return steps;
+  }
+
+  /**
+   * Creates a new, valid KeylineState that has the same order as {@code state} but with all
+   * keylines shifted along the scrolling axis.
+   *
+   * @param state the state to shift
+   * @param startOffset the point along the scrolling axis where keylines should start being added
+   *     from
+   * @param carouselSize the size of the carousel container
+   * @return a new {@link KeylineState} with the shifted keylines
+   */
+  private static KeylineState shiftKeylinesAndCreateKeylineState(
+      KeylineState state, float startOffset, float carouselSize) {
+    return moveKeylineAndCreateKeylineState(
+        state,
+        0,
+        0,
+        startOffset,
+        state.getFirstFocalKeylineIndex(),
+        state.getLastFocalKeylineIndex(),
+        carouselSize);
   }
 
   /**
