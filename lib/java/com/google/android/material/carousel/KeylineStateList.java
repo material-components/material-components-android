@@ -144,7 +144,7 @@ class KeylineStateList {
    *     been shifted exactly according to the scroll offset.
    * @return a {@link KeylineState} that has been shifted according on the scroll offset.
    */
-   KeylineState getShiftedState(
+  KeylineState getShiftedState(
       float scrollOffset,
       float minScrollOffset,
       float maxScrollOffset,
@@ -154,34 +154,34 @@ class KeylineStateList {
     List<KeylineState> steps;
     float[] interpolationPoints;
     float interpolation;
-     if (scrollOffset < startShiftOffset) {
-       interpolation =
-           AnimationUtils.lerp(
-               /* outputMin= */ 1F,
-               /* outputMax= */ 0F,
-               /* inputMin: */ minScrollOffset,
-               /* inputMax= */ startShiftOffset,
-               /* value= */ scrollOffset);
-       steps = startStateSteps;
-       interpolationPoints = startStateStepsInterpolationPoints;
-     } else if (scrollOffset > endShiftOffset) {
-       interpolation =
-           AnimationUtils.lerp(
-               /* outputMin= */ 0F,
-               /* outputMax= */ 1F,
-               /* inputMin= */ endShiftOffset,
-               /* inputMax= */ maxScrollOffset,
-               /* value= */ scrollOffset);
-       steps = endStateSteps;
-       interpolationPoints = endStateStepsInterpolationPoints;
-     } else {
-       return defaultState;
-     }
+    if (scrollOffset < startShiftOffset) {
+      interpolation =
+          AnimationUtils.lerp(
+              /* outputMin= */ 1F,
+              /* outputMax= */ 0F,
+              /* inputMin: */ minScrollOffset,
+              /* inputMax= */ startShiftOffset,
+              /* value= */ scrollOffset);
+      steps = startStateSteps;
+      interpolationPoints = startStateStepsInterpolationPoints;
+    } else if (scrollOffset > endShiftOffset) {
+      interpolation =
+          AnimationUtils.lerp(
+              /* outputMin= */ 0F,
+              /* outputMax= */ 1F,
+              /* inputMin= */ endShiftOffset,
+              /* inputMax= */ maxScrollOffset,
+              /* value= */ scrollOffset);
+      steps = endStateSteps;
+      interpolationPoints = endStateStepsInterpolationPoints;
+    } else {
+      return defaultState;
+    }
 
-     if (roundToNearestStep) {
-       return closestStateStepFromInterpolation(steps, interpolation, interpolationPoints);
-     }
-     return lerp(steps, interpolation, interpolationPoints);
+    if (roundToNearestStep) {
+      return closestStateStepFromInterpolation(steps, interpolation, interpolationPoints);
+    }
+    return lerp(steps, interpolation, interpolationPoints);
   }
 
   /**
@@ -213,12 +213,12 @@ class KeylineStateList {
    * @param stateSteps The steps in which to determine the 2 state steps we are in between.
    * @param interpolation The interpolation of the state steps we are at.
    * @param stateStepsInterpolationPoints The state step interpolation points; each interpolation
-   *        point corresponds to at which interpolation we are at the corresponding state step.
+   *     point corresponds to at which interpolation we are at the corresponding state step.
    * @return an array of the form [progress, fromIndex, toIndex] where progress represents the
-   *        progress in between the state steps at fromIndex and toIndex.
+   *     progress in between the state steps at fromIndex and toIndex.
    */
-  private static float[] getStateStepsRange(List<KeylineState> stateSteps,
-      float interpolation, float[] stateStepsInterpolationPoints) {
+  private static float[] getStateStepsRange(
+      List<KeylineState> stateSteps, float interpolation, float[] stateStepsInterpolationPoints) {
     int numberOfSteps = stateSteps.size();
     // Find the step that contains `interpolation` and remap the the surrounding interpolation
     // points lower and upper bounds to its own 0-1 value.
@@ -365,8 +365,7 @@ class KeylineStateList {
     // If the first focal item is already at the left of the container or there are no in bounds
     // keylines, return a list of steps that only includes the default state (there is nowhere to
     // shift).
-    if (isFirstFocalItemAtLeftOfContainer(defaultState)
-        || firstNonAnchorKeylineIndex == NO_INDEX) {
+    if (isFirstFocalItemAtLeftOfContainer(defaultState) || firstNonAnchorKeylineIndex == NO_INDEX) {
       return steps;
     }
 
@@ -438,8 +437,7 @@ class KeylineStateList {
    * last state will be the right state or the state that has the focal range at the right of the
    * carousel.
    */
-  private static List<KeylineState> getStateStepsEnd(
-      Carousel carousel, KeylineState defaultState) {
+  private static List<KeylineState> getStateStepsEnd(Carousel carousel, KeylineState defaultState) {
     List<KeylineState> steps = new ArrayList<>();
     steps.add(defaultState);
     int lastNonAnchorKeylineIndex = findLastNonAnchorKeylineIndex(defaultState);
@@ -643,9 +641,9 @@ class KeylineStateList {
         keylineStates.put(
             position,
             startStateSteps.get(MathUtils.clamp(startStepsIndex, 0, startStateSteps.size() - 1)));
-          startStepsIndex++;
-        }
+        startStepsIndex++;
       }
+    }
     return keylineStates;
   }
 }
