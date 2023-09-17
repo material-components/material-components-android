@@ -199,7 +199,10 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     ViewGroup.LayoutParams params = bottomSheetChildView.getLayoutParams();
     BottomSheetBehavior<View> bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetChildView);
     bottomSheetBehavior.setUpdateImportantForAccessibilityOnSiblings(fullScreenSwitch.isChecked());
-    bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_EXPANDED) {
+      TextView bottomSheetText = view.findViewById(R.id.cat_persistent_bottomsheet_state);
+      bottomSheetText.setText(R.string.cat_bottomsheet_state_expanded);
+    }
     View modalBottomSheetChildView = bottomSheetDialog.findViewById(R.id.bottom_drawer_2);
     ViewGroup.LayoutParams layoutParams = modalBottomSheetChildView.getLayoutParams();
     BottomSheetBehavior<FrameLayout> modalBottomSheetBehavior = bottomSheetDialog.getBehavior();
