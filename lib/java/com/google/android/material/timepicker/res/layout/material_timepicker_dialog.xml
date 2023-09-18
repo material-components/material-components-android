@@ -83,7 +83,8 @@
     android:minWidth="72dp"
     android:text="@string/mtrl_timepicker_cancel"
     app:layout_constraintEnd_toStartOf="@id/material_timepicker_ok_button"
-    app:layout_constraintTop_toTopOf="@id/material_timepicker_mode_button" />
+    app:layout_constraintTop_toTopOf="@id/material_timepicker_mode_button"
+    app:layout_constraintBottom_toBottomOf="parent" />
 
   <Button
     android:id="@+id/material_timepicker_ok_button"
@@ -95,6 +96,7 @@
     android:minWidth="64dp"
     android:text="@string/mtrl_timepicker_confirm"
     app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintTop_toTopOf="@id/material_timepicker_mode_button" />
+    app:layout_constraintTop_toTopOf="@id/material_timepicker_mode_button"
+    app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
