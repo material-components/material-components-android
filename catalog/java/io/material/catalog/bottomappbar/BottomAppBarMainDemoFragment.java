@@ -208,25 +208,12 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
     bottomDrawerBehavior = BottomSheetBehavior.from(bottomDrawer);
     bottomDrawerBehavior.setUpdateImportantForAccessibilityOnSiblings(true);
     bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    bottomDrawer.post(() -> updateBackHandlingEnabled(bottomDrawerBehavior.getState()));
     bottomDrawerBehavior.addBottomSheetCallback(
         new BottomSheetCallback() {
           @Override
           public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            switch (newState) {
-              case BottomSheetBehavior.STATE_EXPANDED:
-              case BottomSheetBehavior.STATE_HALF_EXPANDED:
-                bottomDrawerOnBackPressedCallback.setEnabled(true);
-                break;
-              case BottomSheetBehavior.STATE_COLLAPSED:
-              case BottomSheetBehavior.STATE_HIDDEN:
-                bottomDrawerOnBackPressedCallback.setEnabled(false);
-                break;
-              case BottomSheetBehavior.STATE_DRAGGING:
-              case BottomSheetBehavior.STATE_SETTLING:
-              default:
-                // Do nothing, only change callback enabled for "stable" states.
-                break;
-            }
+            updateBackHandlingEnabled(newState);
 
             if (newState == BottomSheetBehavior.STATE_HIDDEN) {
               barNavView.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
@@ -243,6 +230,24 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
 
     bar.setNavigationOnClickListener(
         v -> bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED));
+  }
+
+  private void updateBackHandlingEnabled(int state) {
+    switch (state) {
+      case BottomSheetBehavior.STATE_EXPANDED:
+      case BottomSheetBehavior.STATE_HALF_EXPANDED:
+        bottomDrawerOnBackPressedCallback.setEnabled(true);
+        break;
+      case BottomSheetBehavior.STATE_COLLAPSED:
+      case BottomSheetBehavior.STATE_HIDDEN:
+        bottomDrawerOnBackPressedCallback.setEnabled(false);
+        break;
+      case BottomSheetBehavior.STATE_DRAGGING:
+      case BottomSheetBehavior.STATE_SETTLING:
+      default:
+        // Do nothing, only change callback enabled for "stable" states.
+        break;
+    }
   }
 
   private void showSnackbar(CharSequence text) {
