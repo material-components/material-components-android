@@ -785,8 +785,21 @@ public class SearchView extends FrameLayout
   }
 
   void setTransitionState(@NonNull TransitionState state) {
+    setTransitionState(state, /* updateModalForAccessibility= */ true);
+  }
+
+  private void setTransitionState(
+      @NonNull TransitionState state, boolean updateModalForAccessibility) {
     if (currentTransitionState.equals(state)) {
       return;
+    }
+
+    if (updateModalForAccessibility) {
+      if (state == TransitionState.SHOWN) {
+        setModalForAccessibility(true);
+      } else if (state == TransitionState.HIDDEN) {
+        setModalForAccessibility(false);
+      }
     }
 
     TransitionState previousState = currentTransitionState;
@@ -825,7 +838,6 @@ public class SearchView extends FrameLayout
       return;
     }
     searchViewAnimationHelper.show();
-    setModalForAccessibility(true);
   }
 
   /**
@@ -840,7 +852,6 @@ public class SearchView extends FrameLayout
       return;
     }
     searchViewAnimationHelper.hide();
-    setModalForAccessibility(false);
   }
 
   /** Updates the visibility of the {@link SearchView} without an animation. */
@@ -848,10 +859,9 @@ public class SearchView extends FrameLayout
     boolean wasVisible = rootView.getVisibility() == VISIBLE;
     rootView.setVisibility(visible ? VISIBLE : GONE);
     updateNavigationIconProgressIfNeeded();
-    if (wasVisible != visible) {
-      setModalForAccessibility(visible);
-    }
-    setTransitionState(visible ? TransitionState.SHOWN : TransitionState.HIDDEN);
+    setTransitionState(
+        visible ? TransitionState.SHOWN : TransitionState.HIDDEN,
+        /* updateModalForAccessibility= */ wasVisible != visible);
   }
 
   private void updateNavigationIconProgressIfNeeded() {
