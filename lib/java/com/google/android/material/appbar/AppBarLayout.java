@@ -334,8 +334,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     liftBackground.setAlpha(lifted ? 255 : 0);
     background.setAlpha(lifted ? 0 : 255);
 
-    ColorStateList colorSurface =
-        MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorSurface);
+    Integer colorSurface = MaterialColors.getColorOrNull(getContext(), R.attr.colorSurface);
 
     liftOnScrollColorUpdateListener =
         valueAnimator -> {
@@ -351,8 +350,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
                       liftBackground.getResolvedTintColor());
           if (statusBarForeground != null
               && statusBarForegroundOriginalColor != null
-              && colorSurface != null
-              && statusBarForegroundOriginalColor == colorSurface.getDefaultColor()) {
+              && statusBarForegroundOriginalColor.equals(colorSurface)) {
             DrawableCompat.setTint(statusBarForeground, mixedColor);
           }
 
