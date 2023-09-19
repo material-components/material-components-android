@@ -21,9 +21,11 @@
 
   <!-- Generated from token set (md.sys.state) in context (platform=android, audience=3p). -->
   <item name="m3_sys_state_dragged_state_layer_opacity" format="float" type="dimen">0.16</item>
-  <item name="m3_sys_state_pressed_state_layer_opacity" format="float" type="dimen">0.12</item>
+  <!-- The resource value 0.12 has been overridden by the config. -->
+  <item name="m3_sys_state_pressed_state_layer_opacity" format="float" type="dimen">0.10</item>
   <!-- RippleDrawable uses 60% of the focused alpha for API 28+. -->
-  <item name="m3_sys_state_focus_state_layer_opacity" format="float" type="dimen">0.2</item>
+  <!-- The resource value 0.2 has been overridden by the config. -->
+  <item name="m3_sys_state_focus_state_layer_opacity" format="float" type="dimen">0.17</item>
   <!-- RippleDrawable uses 20% of the hovered alpha for API 28+. -->
   <item name="m3_sys_state_hover_state_layer_opacity" format="float" type="dimen">0.4</item>
 

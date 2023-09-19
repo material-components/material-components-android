@@ -27,9 +27,11 @@
   <!-- RippleDrawable uses half the alpha for pressed for the overlay and half the alpha for pressed
        for the ripple animation. Using double the desired alpha ensures that the desired alpha
        is displayed when the overlay and ripple display at different times (unbounded ripples). -->
-  <item name="m3_sys_state_pressed_state_layer_opacity" format="float" type="dimen">0.24</item>
+  <!-- The resource value 0.24 has been overridden by the config. -->
+  <item name="m3_sys_state_pressed_state_layer_opacity" format="float" type="dimen">0.20</item>
   <!-- RippleDrawable uses half the alpha for focused, so this is double the desired alpha. -->
-  <item name="m3_sys_state_focus_state_layer_opacity" format="float" type="dimen">0.24</item>
+  <!-- The resource value 0.24 has been overridden by the config. -->
+  <item name="m3_sys_state_focus_state_layer_opacity" format="float" type="dimen">0.20</item>
   <!-- RippleDrawable uses half the alpha for hovered, so this is double the desired alpha.
        The hovered state is not supported by RippleDrawable pre-24. -->
   <item name="m3_sys_state_hover_state_layer_opacity" format="float" type="dimen">0.16</item>
