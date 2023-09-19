@@ -82,6 +82,12 @@ public class CarouselLayoutManager extends LayoutManager
 
   private static final String TAG = "CarouselLayoutManager";
 
+  /**
+   * When LayoutManager needs to scroll to a position, it sets this variable and requests a
+   * layout which will check this variable and re-layout accordingly.
+   */
+  int pendingScrollPosition = RecyclerView.NO_POSITION;
+
   @VisibleForTesting int scrollOffset;
 
   // Min scroll is the offset number that offsets the list to the right/bottom as much as possible.
@@ -268,16 +274,21 @@ public class CarouselLayoutManager extends LayoutManager
     maxScroll = isRtl ? startScroll : endScroll;
 
     if (isInitialLoad) {
-      // Scroll to the start of the list on first load.
-      scrollOffset = startScroll;
       keylineStatePositionMap =
           keylineStateList.getKeylineStateForPositionMap(
               getItemCount(), minScroll, maxScroll, isLayoutRtl());
-    } else {
-      // Clamp the horizontal scroll offset by the new min and max by pinging the scroll by
-      // calculator with a 0 delta.
-      scrollOffset += calculateShouldScrollBy(0, scrollOffset, minScroll, maxScroll);
+      if (pendingScrollPosition == RecyclerView.NO_POSITION) {
+        // Scroll to the start of the list on first load.
+        scrollOffset = startScroll;
+      } else {
+        scrollOffset =
+            getScrollOffsetForPosition(
+                pendingScrollPosition, getKeylineStateForPosition(pendingScrollPosition));
+      }
     }
+    // Clamp the horizontal scroll offset by the new min and max by pinging the scroll by
+    // calculator with a 0 delta.
+    scrollOffset += calculateShouldScrollBy(0, scrollOffset, minScroll, maxScroll);
 
     // Ensure currentFillStartPosition is valid if the number of items in the adapter has changed.
     currentFillStartPosition = MathUtils.clamp(currentFillStartPosition, 0, state.getItemCount());
@@ -1124,6 +1135,7 @@ public class CarouselLayoutManager extends LayoutManager
 
   @Override
   public void scrollToPosition(int position) {
+    pendingScrollPosition = position;
     if (keylineStateList == null) {
       return;
     }
