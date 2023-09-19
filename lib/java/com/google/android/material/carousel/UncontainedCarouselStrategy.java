@@ -46,6 +46,8 @@ import androidx.annotation.RestrictTo.Scope;
  */
 public final class UncontainedCarouselStrategy extends CarouselStrategy {
 
+  private static final float MEDIUM_LARGE_ITEM_PERCENTAGE_THRESHOLD = 0.85F;
+
   @RestrictTo(Scope.LIBRARY_GROUP)
   public UncontainedCarouselStrategy() {
   }
@@ -70,9 +72,8 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
     float xSmallChildSize = getExtraSmallSize(child.getContext()) + childMargins;
 
     // Calculate how much space there is remaining after squeezing in as many large items as we can.
-    int largeCount = (int) Math.floor(availableSpace/largeChildSize);
+    int largeCount = max(1, (int) Math.floor(availableSpace/largeChildSize));
     float remainingSpace = availableSpace - largeCount*largeChildSize;
-    int mediumCount = 0;
     boolean isCenter = carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER;
 
     if (isCenter) {
@@ -98,19 +99,14 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
           remainingSpace);
     }
 
-    // If the keyline location for the next large size would be within the remaining space,
-    // then we can place a large child there as the last non-anchor keyline because visually
-    // keylines will become smaller as it goes past the large keyline location.
-    // Otherwise, we want to add a medium item instead so that visually there will still
-    // be the effect of the item getting smaller closer to the end.
-    if (remainingSpace > largeChildSize/2F) {
-      largeCount += 1;
-    } else {
+    int mediumCount = 0;
+
+    if (remainingSpace > 0) {
       mediumCount = 1;
-      // We want the medium size to be large enough to be at least 1/3 of the way cut
-      // off.
-      mediumChildSize = max(remainingSpace + remainingSpace/2F, mediumChildSize);
     }
+
+    // Calculate the medium size so that it fulfils certain criteria.
+    mediumChildSize = calculateMediumChildSize(mediumChildSize, largeChildSize, remainingSpace);
 
     return createLeftAlignedKeylineState(
         child.getContext(),
@@ -121,6 +117,35 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
         mediumChildSize,
         mediumCount,
         xSmallChildSize);
+  }
+
+  /**
+   * Calculates a size of a medium child in the carousel that is not bigger than the large child
+   * size, and attempts to be small enough such that there is a size disparity between the medium
+   * and large sizes, but large enough to have a sufficient percentage cut off.
+   */
+  private float calculateMediumChildSize(
+      float mediumChildSize, float largeChildSize, float remainingSpace) {
+    // With the remaining space, we want to add a 'medium' item that gets sufficiently cut off
+    // but is close enough to the anchor keyline such that there is a range of motion.
+    // Ideally the medium child size is large enough such that a third is cut off.
+    mediumChildSize = max(remainingSpace * 1.5f, mediumChildSize);
+    // The size we wish to limit the medium size to.
+    float largeItemThreshold = largeChildSize * MEDIUM_LARGE_ITEM_PERCENTAGE_THRESHOLD;
+
+    // If the medium child is larger than the threshold percentage of the large child size,
+    // it's too similar and won't create sufficient motion when scrolling items between the large
+    // items and the medium item.
+    if (mediumChildSize > largeItemThreshold) {
+      // Choose whichever is bigger between the maximum threshold of the medium child size, or
+      // a size such that only 20% of the space is cut off.
+      mediumChildSize =
+          max(largeItemThreshold, remainingSpace * 1.2F);
+    }
+
+    // Ensure that the final medium size is not larger than the large size.
+    mediumChildSize = min(largeChildSize, mediumChildSize);
+    return mediumChildSize;
   }
 
   private KeylineState createCenterAlignedKeylineState(
@@ -171,6 +196,10 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
       int mediumCount,
       float xSmallSize) {
 
+    // Make the left anchor size half the cut off item size to make the motion at the left closer
+    // to the right where the cut off is.
+    float leftAnchorSize = max(xSmallSize, mediumSize * 0.5F);
+    float leftAnchorMask = getChildMaskPercentage(leftAnchorSize, largeSize, childMargins);
     float extraSmallMask =
         getChildMaskPercentage(xSmallSize, largeSize, childMargins);
     float mediumMask =
@@ -178,47 +207,27 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
     float largeMask = 0F;
 
     float start = 0F;
-    float extraSmallHeadCenterX = start - (xSmallSize / 2F);
+    float leftAnchorCenterX = start - (leftAnchorSize / 2F);
 
     float largeStartCenterX = largeSize/2F;
-    // We exclude one large item from the large count so we can calculate the correct
-    // cutoff value for the last large item if it is getting cut off.
-    int excludedLargeCount = max(largeCount - 1, 1);
-    start += excludedLargeCount * largeSize;
-    // Where to start laying the last possibly-cutoff large item.
-    float lastEndStart = start + largeSize / 2F;
+    start += largeCount * largeSize;
 
     // Add xsmall keyline, and then if there is more than 1 large keyline, add
     // however many large keylines there are except for the last one that may be cut off.
     KeylineState.Builder builder =
         new KeylineState.Builder(largeSize, availableSpace)
-            .addAnchorKeyline(extraSmallHeadCenterX, extraSmallMask, xSmallSize)
+            .addAnchorKeyline(leftAnchorCenterX, leftAnchorMask, leftAnchorSize)
             .addKeylineRange(
                 largeStartCenterX,
                 largeMask,
                 largeSize,
-                excludedLargeCount,
+                largeCount,
                 /* isFocal= */ true);
-
-    // If we have more than 1 large item, then here we include the last large item that is
-    // possibly getting cut off.
-    if (largeCount > 1) {
-      start += largeSize;
-      builder.addKeyline(
-          lastEndStart,
-          largeMask,
-          largeSize,
-          /* isFocal= */ true);
-    }
 
     if (mediumCount > 0) {
       float mediumCenterX = start + mediumSize / 2F;
       start += mediumSize;
-      builder.addKeyline(
-          mediumCenterX,
-          mediumMask,
-          mediumSize,
-          /* isFocal= */ false);
+      builder.addKeyline(mediumCenterX, mediumMask, mediumSize, /* isFocal= */ false);
     }
 
     float xSmallCenterX = start + getExtraSmallSize(context) / 2F;

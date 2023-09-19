@@ -44,16 +44,14 @@ public class UncontainedCarouselStrategyTest {
     float xSmallSize =
         view.getResources().getDimension(R.dimen.m3_carousel_gone_size);
 
-    // A fullscreen layout should be [xSmall-large-xSmall-xSmall] where the xSmall items are
+    // A fullscreen layout should be [xSmall-large-xSmall] where the xSmall items are
     // outside the bounds of the carousel container and the large item takes up the
     // containers full width.
-    assertThat(keylineState.getKeylines()).hasSize(4);
+    assertThat(keylineState.getKeylines()).hasSize(3);
     assertThat(keylineState.getKeylines().get(0).locOffset).isLessThan(0F);
     assertThat(keylineState.getKeylines().get(1).mask).isEqualTo(0F);
     assertThat(keylineState.getKeylines().get(2).locOffset)
         .isEqualTo(carousel.getContainerWidth() + xSmallSize / 2F);
-    assertThat(Iterables.getLast(keylineState.getKeylines()).locOffset)
-        .isGreaterThan((float) carousel.getContainerWidth());
   }
 
   @Test
@@ -79,10 +77,9 @@ public class UncontainedCarouselStrategyTest {
   public void testRemainingSpaceWithItemSize_fitsItemWithThirdCutoff() {
     Carousel carousel = createCarouselWithWidth(400);
     UncontainedCarouselStrategy config = new UncontainedCarouselStrategy();
-    // With size 125px, 3 large items can fit with in 400px, with 25px left over which is less than
-    // half 125px. This means that a large keyline will not fit in the remaining space
-    // such that any motion is seen when scrolling past the keyline, so a medium item
-    // should be added.
+    // With size 125px, 3 large items can fit with in 400px, with 25px left. 25px * 3 = 75px, which
+    // will be the size of the medium item since it can be a third cut off and it is less than the
+    // threshold percentage * large item size.
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 125, 400);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
@@ -101,24 +98,26 @@ public class UncontainedCarouselStrategyTest {
   }
 
   @Test
-  public void testRemainingSpaceWithItemSize_fitsLargeItemWithCutoff() {
+  public void testRemainingSpaceWithItemSize_fitsMediumItemWithCutoff() {
     Carousel carousel = createCarouselWithWidth(400);
     UncontainedCarouselStrategy config = new UncontainedCarouselStrategy();
     int itemSize = 105;
-    // With size 105px, 3 large items can fit with in 400px, with 85px left over which is more than
-    // half 105px. This means that an extra large keyline will fit in the remaining space such
-    // that motion is seen when scrolling past the keyline, so it should add a large item.
+    // With size 105px, 3 large items can fit with in 400px, with 85px left over.  85*3 = 255 which
+    // is well over the size of the large item, so the medium size will be limited to whichever is
+    // larger between 85% of the large size, or 110% of the remainingSpace to make it at most
+    // 10% cut off.
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), itemSize, 400);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
 
-    // The layout should be [xSmall-large-large-large-large-xSmall]
+    // The layout should be [xSmall-large-large-large-medium-xSmall]
     assertThat(keylineState.getKeylines()).hasSize(6);
     assertThat(keylineState.getKeylines().get(0).locOffset).isLessThan(0F);
     assertThat(keylineState.getKeylines().get(1).mask).isEqualTo(0F);
     assertThat(keylineState.getKeylines().get(2).mask).isEqualTo(0F);
     assertThat(keylineState.getKeylines().get(3).mask).isEqualTo(0F);
-    assertThat(keylineState.getKeylines().get(4).mask).isEqualTo(0F);
+    // remainingSpace * 120%
+    assertThat(keylineState.getKeylines().get(4).maskedItemSize).isEqualTo(85*1.2F);
     assertThat(Iterables.getLast(keylineState.getKeylines()).locOffset)
         .isGreaterThan((float) carousel.getContainerWidth());
   }
