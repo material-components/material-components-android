@@ -22,7 +22,6 @@ import static com.google.android.material.appbar.AppBarLayout.LayoutParams.SCROL
 import static org.junit.Assert.assertEquals;
 
 import android.graphics.Rect;
-import android.graphics.drawable.LayerDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -395,19 +394,11 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     final int appbarHeight = mAppBar.getHeight();
     final int longSwipeAmount = 3 * appbarHeight / 2;
 
-    LayerDrawable background = (LayerDrawable) mAppBar.getBackground();
-    MaterialShapeDrawable backgroundLayer = (MaterialShapeDrawable) background.getDrawable(0);
-    MaterialShapeDrawable liftLayer = (MaterialShapeDrawable) background.getDrawable(1);
+    MaterialShapeDrawable backgroundDrawable = mAppBar.getMaterialShapeBackground();
 
     assertEquals(
         mAppBar.getResources().getColor(R.color.material_blue_grey_900),
-        backgroundLayer.getResolvedTintColor());
-    assertEquals(
-        mAppBar.getResources().getColor(R.color.material_blue_grey_950),
-        liftLayer.getResolvedTintColor());
-
-    assertEquals(255, backgroundLayer.getAlpha());
-    assertEquals(0, liftLayer.getAlpha());
+        backgroundDrawable.getResolvedTintColor());
 
     // Perform a swipe-up gesture across the horizontal center of the screen.
     performVerticalSwipeUpGesture(
@@ -416,7 +407,8 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
         originalAppbarBottom + 3 * longSwipeAmount / 2,
         longSwipeAmount);
 
-    assertEquals(0, backgroundLayer.getAlpha());
-    assertEquals(255, liftLayer.getAlpha());
+    assertEquals(
+        mAppBar.getResources().getColor(R.color.material_blue_grey_950),
+        backgroundDrawable.getResolvedTintColor());
   }
 }
