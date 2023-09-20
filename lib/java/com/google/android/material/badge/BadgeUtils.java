@@ -105,6 +105,9 @@ public class BadgeUtils {
    * A convenience method to attach a BadgeDrawable to the specified menu item on a toolbar, update
    * the BadgeDrawable's coordinates based on its anchor and adjust the BadgeDrawable's offset so it
    * is not clipped off by the toolbar.
+   *
+   * <p>Menu item views are reused by the menu, so any structural changes to the menu may require
+   * detaching the BadgeDrawable and re-attaching it to the correct item.
    */
   public static void attachBadgeDrawable(
       @NonNull BadgeDrawable badgeDrawable, @NonNull Toolbar toolbar, @IdRes int menuItemId) {
@@ -117,6 +120,9 @@ public class BadgeUtils {
    * not clipped off by the toolbar. For API 18+, the BadgeDrawable will be added as a view overlay.
    * For pre-API 18, the BadgeDrawable will be set as the foreground of a FrameLayout that is an
    * ancestor of the anchor.
+   *
+   * <p>Menu item views are reused by the menu, so any structural changes to the menu may require
+   * detaching the BadgeDrawable and re-attaching it to the correct item.
    */
   public static void attachBadgeDrawable(
       @NonNull final BadgeDrawable badgeDrawable,
