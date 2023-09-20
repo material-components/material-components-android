@@ -140,7 +140,8 @@ carousels with `match_parent` as the width will have more and more large items
 as the screen size grows.
 
 You can use the hero strategy by passing in the strategy to the
-CarouselLayoutManager constructor: `CarouselLayoutManager(HeroStrategy())`.
+CarouselLayoutManager constructor: `new CarouselLayoutManager(new
+HeroCarouselStrategy())`.
 
 With the hero strategy, it is recommended to use the `CarouselSnapHelper` to snap to the nearest item like so:
 
@@ -157,8 +158,8 @@ A fullscreen strategy shows one item at a time that takes up the entire space
 of the carousel.
 
 You can use the fullscreen strategy by passing in the strategy to the
-CarouselLayoutManager constructor:
-`CarouselLayoutManager(FullScreenStrategy())`.
+CarouselLayoutManager constructor: `new CarouselLayoutManager(new
+FullScreenCarouselStrategy())`.
 
 With the fullscreen strategy, it is recommended to use a vertical orientation
 carousel by either setting the orientation on the CarouselLayoutManager with the
@@ -174,6 +175,26 @@ to snap to the nearest item like so:
 val snapHelper = CarouselSnapHelper()
 snapHelper.attachToRecyclerView(carouselRecyclerView)
 ```
+
+## Uncontained strategy
+
+![An uncontained Carousel](assets/carousel/uncontained.png)
+
+An uncontained strategy fits as many items as possible into the carousel without
+altering the item size. With the remaining space, it fits one item that is
+the smallest it can be to fill the space but still gets cut off in a
+way such that there is a visible effect of items getting smaller as it goes out
+of the carousel bounds.
+
+You can use the uncontained strategy by passing in the strategy to the
+CarouselLayoutManager constructor: `new CarouselLayoutManager(new
+UncontainedCarouselStrategy())`.
+
+As the uncontained strategy does not alter item sizes, it is ideal for use cases
+where aspect ratios of the items must be maintained. However, this can lead to
+aesthetically displeasing layouts when the carousel size is almost perfectly
+divisible by the item size, so it is advised to update the item sizes based on
+the carousel size.
 
 ## Attributes
 
