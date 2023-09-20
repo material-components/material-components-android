@@ -375,6 +375,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
 
+    cardViewHelper.updateClickable();
     MaterialShapeUtils.setParentAbsoluteElevation(this, cardViewHelper.getBackground());
   }
 
