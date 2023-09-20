@@ -284,6 +284,7 @@ public class CarouselLayoutManager extends LayoutManager
         scrollOffset =
             getScrollOffsetForPosition(
                 pendingScrollPosition, getKeylineStateForPosition(pendingScrollPosition));
+        currentFillStartPosition = pendingScrollPosition;
       }
     }
     // Clamp the horizontal scroll offset by the new min and max by pinging the scroll by
