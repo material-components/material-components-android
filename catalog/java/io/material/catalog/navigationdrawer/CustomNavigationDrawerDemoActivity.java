@@ -36,6 +36,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.LayoutParams;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
@@ -86,24 +87,7 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
         new SimpleDrawerListener() {
           @Override
           public void onDrawerOpened(@NonNull View drawerView) {
-            currentDrawerView = drawerView;
-            sideContainerBackHelper = new MaterialSideContainerBackHelper(drawerView);
-
-            if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-              if (drawerOnBackAnimationCallback == null) {
-                drawerOnBackAnimationCallback = createOnBackAnimationCallback();
-              }
-              drawerLayout.post(
-                  () ->
-                      getOnBackInvokedDispatcher()
-                          .registerOnBackInvokedCallback(
-                              OnBackInvokedDispatcher.PRIORITY_OVERLAY,
-                              drawerOnBackAnimationCallback));
-            } else {
-              getOnBackPressedDispatcher()
-                  .addCallback(
-                      CustomNavigationDrawerDemoActivity.this, drawerOnBackPressedCallback);
-            }
+            updateBackCallback(drawerView);
           }
 
           @Override
@@ -127,7 +111,36 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
     view.findViewById(R.id.show_end_drawer_gravity)
         .setOnClickListener(v -> drawerLayout.openDrawer(endDrawer));
 
+    drawerLayout.post(() -> {
+      if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+        updateBackCallback(view.findViewById(R.id.custom_drawer_start));
+      } else if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+        updateBackCallback(endDrawer);
+      }
+    });
+
     return view;
+  }
+
+  private void updateBackCallback(View drawerView) {
+    currentDrawerView = drawerView;
+    sideContainerBackHelper = new MaterialSideContainerBackHelper(drawerView);
+
+    if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      if (drawerOnBackAnimationCallback == null) {
+        drawerOnBackAnimationCallback = createOnBackAnimationCallback();
+      }
+      drawerLayout.post(
+          () ->
+              getOnBackInvokedDispatcher()
+                  .registerOnBackInvokedCallback(
+                      OnBackInvokedDispatcher.PRIORITY_OVERLAY,
+                      drawerOnBackAnimationCallback));
+    } else {
+      getOnBackPressedDispatcher()
+          .addCallback(
+              this, drawerOnBackPressedCallback);
+    }
   }
 
   @Override
