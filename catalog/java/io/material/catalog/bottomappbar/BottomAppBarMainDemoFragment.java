@@ -236,9 +236,9 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
     switch (state) {
       case BottomSheetBehavior.STATE_EXPANDED:
       case BottomSheetBehavior.STATE_HALF_EXPANDED:
+      case BottomSheetBehavior.STATE_COLLAPSED:
         bottomDrawerOnBackPressedCallback.setEnabled(true);
         break;
-      case BottomSheetBehavior.STATE_COLLAPSED:
       case BottomSheetBehavior.STATE_HIDDEN:
         bottomDrawerOnBackPressedCallback.setEnabled(false);
         break;
