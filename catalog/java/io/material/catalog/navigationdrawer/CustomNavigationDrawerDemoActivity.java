@@ -36,7 +36,6 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.LayoutParams;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
@@ -112,9 +111,9 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
         .setOnClickListener(v -> drawerLayout.openDrawer(endDrawer));
 
     drawerLayout.post(() -> {
-      if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+      if (drawerLayout.isDrawerOpen(view.findViewById(R.id.custom_drawer_start))) {
         updateBackCallback(view.findViewById(R.id.custom_drawer_start));
-      } else if (drawerLayout.isDrawerOpen(GravityCompat.END)) {
+      } else if (drawerLayout.isDrawerOpen(endDrawer)) {
         updateBackCallback(endDrawer);
       }
     });
