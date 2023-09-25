@@ -816,13 +816,15 @@ public class SearchView extends FrameLayout
 
     // Only automatically handle back if we have a search bar to collapse to, and if back handling
     // is enabled for the SearchView.
-    if (searchBar != null && backHandlingEnabled) {
-      if (state.equals(TransitionState.SHOWN)) {
-        backOrchestrator.startListeningForBackCallbacks();
-      } else if (state.equals(TransitionState.HIDDEN)) {
-        backOrchestrator.stopListeningForBackCallbacks();
+    post(() -> {
+      if (searchBar != null && backHandlingEnabled) {
+        if (state.equals(TransitionState.SHOWN)) {
+          backOrchestrator.startListeningForBackCallbacks();
+        } else if (state.equals(TransitionState.HIDDEN)) {
+          backOrchestrator.stopListeningForBackCallbacks();
+        }
       }
-    }
+    });
   }
 
   /** Returns whether the {@link SearchView}'s main content view is shown or showing. */
