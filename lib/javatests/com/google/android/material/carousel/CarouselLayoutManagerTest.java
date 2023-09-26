@@ -578,6 +578,19 @@ public class CarouselLayoutManagerTest {
     assertThat(secondChildMask.top).isAtMost(secondChildMask.bottom);
   }
 
+  @Test
+  public void testScrollOffset_isNotReset() throws Throwable {
+    int itemCount = 10;
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(itemCount));
+    assertThat(layoutManager.scrollOffset).isEqualTo(layoutManager.minScroll);
+
+    scrollToPosition(recyclerView, layoutManager, itemCount / 2);
+
+    setVerticalOrientation(recyclerView, layoutManager);
+    assertThat(layoutManager.scrollOffset).isNotEqualTo(layoutManager.minScroll);
+    assertThat(layoutManager.computeScrollVectorForPosition(itemCount / 2).y).isEqualTo(0f);
+  }
+
   /**
    * Assigns explicit sizes to fixtures being used to construct the testing environment.
    *
