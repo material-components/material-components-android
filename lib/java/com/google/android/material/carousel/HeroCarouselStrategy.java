@@ -82,6 +82,11 @@ public class HeroCarouselStrategy extends CarouselStrategy {
             getSmallSizeMax(child.getContext()) + childMargins);
     float targetMediumChildSize = (targetLargeChildSize + targetSmallChildSize) / 2F;
 
+    int[] smallCounts = SMALL_COUNTS;
+    if (availableSpace < smallChildSizeMin * 2) {
+      smallCounts = new int[] { 0 };
+    }
+
     // Find the minimum space left for large items after filling the carousel with the most
     // permissible small items to determine a plausible minimum large count.
     float minAvailableLargeSpace = availableSpace - (smallChildSizeMax * maxValue(SMALL_COUNTS));
@@ -100,8 +105,8 @@ public class HeroCarouselStrategy extends CarouselStrategy {
             smallChildSizeMin,
             smallChildSizeMax,
                 isCenterAligned
-                ? doubleCounts(SMALL_COUNTS)
-                : SMALL_COUNTS,
+                ? doubleCounts(smallCounts)
+                : smallCounts,
             targetMediumChildSize,
                 isCenterAligned
                 ? doubleCounts(MEDIUM_COUNTS)

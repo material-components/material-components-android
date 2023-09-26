@@ -118,11 +118,19 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
     // then finally 1.
 
     int[] smallCounts = SMALL_COUNTS;
+    if (availableSpace < smallChildSizeMin * 2) {
+      // If the available space is too small to fit a large item and small item and a large item
+      // (large items must be at least as big as a small item), allow arrangements with no small
+      // items.
+      smallCounts = new int[] { 0 };
+    }
+
     int[] mediumCounts = forceCompactArrangement ? MEDIUM_COUNTS_COMPACT : MEDIUM_COUNTS;
     if (carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER) {
       smallCounts = doubleCounts(smallCounts);
       mediumCounts = doubleCounts(mediumCounts);
     }
+
     // Find the minimum space left for large items after filling the carousel with the most
     // permissible medium and small items to determine a plausible minimum large count.
     float minAvailableLargeSpace =
