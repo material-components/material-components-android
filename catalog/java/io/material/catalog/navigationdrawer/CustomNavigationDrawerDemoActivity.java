@@ -129,12 +129,10 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
       if (drawerOnBackAnimationCallback == null) {
         drawerOnBackAnimationCallback = createOnBackAnimationCallback();
       }
-      drawerLayout.post(
-          () ->
-              getOnBackInvokedDispatcher()
-                  .registerOnBackInvokedCallback(
-                      OnBackInvokedDispatcher.PRIORITY_OVERLAY,
-                      drawerOnBackAnimationCallback));
+      getOnBackInvokedDispatcher()
+          .registerOnBackInvokedCallback(
+              OnBackInvokedDispatcher.PRIORITY_OVERLAY,
+              drawerOnBackAnimationCallback);
     } else {
       getOnBackPressedDispatcher()
           .addCallback(
