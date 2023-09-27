@@ -564,6 +564,7 @@ public class SearchView extends FrameLayout
     }
     updateNavigationIconIfNeeded();
     setUpBackgroundViewElevationOverlay();
+    updateListeningForBackCallbacks(getCurrentTransitionState());
   }
 
   /**
@@ -814,6 +815,10 @@ public class SearchView extends FrameLayout
       listener.onStateChanged(this, previousState, state);
     }
 
+    updateListeningForBackCallbacks(state);
+  }
+
+  private void updateListeningForBackCallbacks(@NonNull TransitionState state) {
     // Only automatically handle back if we have a search bar to collapse to, and if back handling
     // is enabled for the SearchView.
     if (searchBar != null && backHandlingEnabled) {
