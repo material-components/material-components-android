@@ -32,4 +32,7 @@ interface Carousel {
 
   /** Gets the alignment of the carousel.  */
   @Alignment int getCarouselAlignment();
+
+  /** Gets the number of items in the carousel. */
+  int getItemCount();
 }

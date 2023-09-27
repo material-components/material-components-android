@@ -132,6 +132,8 @@ public class CarouselLayoutManager extends LayoutManager
   /** Aligns large items to the center of the carousel. */
   public static final int ALIGNMENT_CENTER = 1;
 
+  private int lastItemCount;
+
   /**
    * An estimation of the current focused position, determined by which item center is closest to
    * the first focal keyline. This is used when restoring item position after the carousel keylines
@@ -1417,6 +1419,29 @@ public class CarouselLayoutManager extends LayoutManager
       orientationHelper = CarouselOrientationHelper.createOrientationHelper(this, orientation);
       refreshKeylineState();
     }
+  }
+
+  @Override
+  public void onItemsAdded(@NonNull RecyclerView recyclerView, int positionStart, int itemCount) {
+    super.onItemsAdded(recyclerView, positionStart, itemCount);
+    updateItemCount();
+  }
+
+  @Override
+  public void onItemsRemoved(@NonNull RecyclerView recyclerView, int positionStart, int itemCount) {
+    super.onItemsRemoved(recyclerView, positionStart, itemCount);
+    updateItemCount();
+  }
+
+  private void updateItemCount() {
+    int newItemCount = getItemCount();
+    if (newItemCount == this.lastItemCount || keylineStateList == null) {
+      return;
+    }
+    if (carouselStrategy.shouldRefreshKeylineState(this, this.lastItemCount)) {
+      refreshKeylineState();
+    }
+    this.lastItemCount = newItemCount;
   }
 
   /**

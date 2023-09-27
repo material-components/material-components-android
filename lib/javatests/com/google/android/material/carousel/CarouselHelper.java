@@ -39,6 +39,8 @@ import org.hamcrest.MatcherAssert;
 /** A helper class to facilitate Carousel tests */
 class CarouselHelper {
 
+  private static final int DEFAULT_ITEM_COUNT = 10;
+
   private CarouselHelper() {}
 
 
@@ -193,6 +195,11 @@ class CarouselHelper {
       public int getCarouselAlignment() {
         return CarouselLayoutManager.ALIGNMENT_START;
       }
+
+      @Override
+      public int getItemCount() {
+        return DEFAULT_ITEM_COUNT;
+      }
     };
   }
 
@@ -216,6 +223,11 @@ class CarouselHelper {
       @Override
       public int getCarouselAlignment() {
         return CarouselLayoutManager.ALIGNMENT_CENTER;
+      }
+
+      @Override
+      public int getItemCount() {
+        return DEFAULT_ITEM_COUNT;
       }
     };
   }
@@ -245,6 +257,45 @@ class CarouselHelper {
       @Override
       public int getCarouselAlignment() {
         return alignment;
+      }
+
+      @Override
+      public int getItemCount() {
+        return DEFAULT_ITEM_COUNT;
+      }
+    };
+  }
+
+  /**
+   * Creates a {@link Carousel} with a specified {@code size} for both width and height and the
+   * specified item count and alignment.
+   */
+  static Carousel createCarouselWithItemCount(int size, int alignment, int itemCount) {
+    return new Carousel() {
+
+      @Override
+      public int getContainerWidth() {
+        return size;
+      }
+
+      @Override
+      public int getContainerHeight() {
+        return size;
+      }
+
+      @Override
+      public boolean isHorizontal() {
+        return true;
+      }
+
+      @Override
+      public int getCarouselAlignment() {
+        return alignment;
+      }
+
+      @Override
+      public int getItemCount() {
+        return itemCount;
       }
     };
   }

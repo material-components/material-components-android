@@ -49,6 +49,7 @@ public class HeroCarouselStrategy extends CarouselStrategy {
 
   private static final int[] SMALL_COUNTS = new int[] {1};
   private static final int[] MEDIUM_COUNTS = new int[] {0, 1};
+  private static final int MIN_ITEMS_FOR_CENTER_ALIGNMENT = 2;
 
   @Override
   @NonNull
@@ -97,7 +98,8 @@ public class HeroCarouselStrategy extends CarouselStrategy {
       largeCounts[i] = largeCountMin + i;
     }
     boolean isCenterAligned =
-        carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER;
+        carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER
+            && carousel.getItemCount() > MIN_ITEMS_FOR_CENTER_ALIGNMENT;
     Arrangement arrangement =
         Arrangement.findLowestCostArrangement(
             availableSpace,
@@ -118,7 +120,16 @@ public class HeroCarouselStrategy extends CarouselStrategy {
         childMargins,
         availableSpace,
         arrangement,
-        carousel.getCarouselAlignment());
+        isCenterAligned
+            ? CarouselLayoutManager.ALIGNMENT_CENTER
+            : CarouselLayoutManager.ALIGNMENT_START);
     }
+
+  @Override
+  boolean shouldRefreshKeylineState(@NonNull Carousel carousel, int oldItemCount) {
+    return carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER
+        && (oldItemCount == MIN_ITEMS_FOR_CENTER_ALIGNMENT
+        || carousel.getItemCount() == MIN_ITEMS_FOR_CENTER_ALIGNMENT);
+  }
 }
 

@@ -127,4 +127,16 @@ public abstract class CarouselStrategy {
   boolean isContained() {
     return true;
   }
+
+  /**
+   * Whether or not the strategy keylines should be refreshed based on the old item count and the
+   * carousel's current parameters.
+   *
+   * @return true if the keylines should be refreshed.
+   */
+  boolean shouldRefreshKeylineState(Carousel carousel, int oldItemCount) {
+    // TODO: b/301332183 - Update existing strategies with logic on when to refresh keyline
+    // state based on item count.
+    return false;
+  }
 }
