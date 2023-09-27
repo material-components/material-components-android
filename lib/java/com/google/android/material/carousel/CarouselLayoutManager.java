@@ -22,6 +22,7 @@ import static androidx.recyclerview.widget.RecyclerView.NO_POSITION;
 import static com.google.android.material.animation.AnimationUtils.lerp;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -781,23 +782,36 @@ public class CarouselLayoutManager extends LayoutManager
     KeylineState endState = isRtl ? stateList.getStartState() : stateList.getEndState();
     Keyline endFocalKeyline =
         isRtl ? endState.getFirstFocalKeyline() : endState.getLastFocalKeyline();
+    Keyline firstNonAnchorKeyline =
+        isRtl ? endState.getLastNonAnchorKeyline() : endState.getFirstNonAnchorKeyline();
     // Get the total distance from the first item to the last item in the end-to-end model
     float lastItemDistanceFromFirstItem =
         (((state.getItemCount() - 1) * endState.getItemSize()) + getPaddingEnd())
             * (isRtl ? -1F : 1F);
-    // We want the last item in the list to only be able to scroll to the end of the list. Subtract
-    // the distance to the end focal keyline and then add the distance needed to let the last
-    // item hit the center of the end focal keyline.
+
     float endFocalLocDistanceFromStart = endFocalKeyline.loc - getParentStart();
     float endFocalLocDistanceFromEnd = getParentEnd() - endFocalKeyline.loc;
-    if (abs(endFocalLocDistanceFromStart) > abs(lastItemDistanceFromFirstItem)) {
-      // The last item comes before the last focal keyline which means all items should be within
-      // the focal range and there is nowhere to scroll.
+    if (firstNonAnchorKeyline == null
+        || (firstNonAnchorKeyline.cutoff == 0
+            && abs(endFocalLocDistanceFromStart) > abs(lastItemDistanceFromFirstItem))) {
+      // For keyline states that do not have a cutoff, this means that the last item comes before
+      // the last focal keyline which means all items should be within the focal range and there
+      // is nowhere to scroll. For keyline states that do have a cutoff, this does not hold true
+      // since an item is not guaranteed to be fully in the focal range so we calculate the end
+      // scroll amount normally.
       return 0;
     }
 
-    return (int)
-        (lastItemDistanceFromFirstItem - endFocalLocDistanceFromStart + endFocalLocDistanceFromEnd);
+    // We want the last item in the list to only be able to scroll to the end of the list. Subtract
+    // the distance to the end focal keyline and then add the distance needed to let the last
+    // item hit the center of the end focal keyline.
+    int endScroll =
+        (int)
+            (lastItemDistanceFromFirstItem
+                - endFocalLocDistanceFromStart
+                + endFocalLocDistanceFromEnd);
+
+    return isRtl ? min(0, endScroll) : max(0, endScroll);
   }
 
   /**
