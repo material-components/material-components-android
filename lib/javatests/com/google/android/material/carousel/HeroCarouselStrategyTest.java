@@ -79,6 +79,23 @@ public class HeroCarouselStrategyTest {
   }
 
   @Test
+  public void testSmallContainer_shouldShowOneLargeItem() {
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 100, 400);
+    float minSmallItemSize =
+        view.getResources().getDimension(R.dimen.m3_carousel_small_item_size_min);
+    // Create a carousel that will not fit a large and small item where the large item is at least
+    // as big as the min small item.
+    int carouselWidth = (int) (minSmallItemSize * 1.5f);
+    Carousel carousel = createCarouselWithWidth(carouselWidth);
+
+    HeroCarouselStrategy config = new HeroCarouselStrategy();
+    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
+
+    assertThat(keylineState.getKeylines()).hasSize(3);
+    assertThat(keylineState.getKeylines().get(1).maskedItemSize).isEqualTo((float) carouselWidth);
+  }
+
+  @Test
   public void testKnownArrangement_correctlyCalculatesKeylineLocations() {
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 400, 200);
 
