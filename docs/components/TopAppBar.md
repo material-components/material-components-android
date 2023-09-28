@@ -125,7 +125,8 @@ In the layout:
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/topAppBar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
             app:title="@string/page_title"
             app:menu="@menu/top_app_bar"
             app:navigationIcon="@drawable/ic_close_24dp" />
@@ -144,6 +145,11 @@ In the layout:
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
+
+**Note:** In order to allow your Top App Bar to grow taller when the system font
+setting increases, you can use `android:layout_height="wrap_content"` +
+`android:minHeight="?attr/actionBarSize"` on your `MaterialToolbar`, as shown in
+the example above.
 
 In `@menu/top_app_bar.xml`:
 
