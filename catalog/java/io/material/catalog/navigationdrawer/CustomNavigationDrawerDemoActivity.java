@@ -86,40 +86,12 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
         new SimpleDrawerListener() {
           @Override
           public void onDrawerOpened(@NonNull View drawerView) {
-            currentDrawerView = drawerView;
-            sideContainerBackHelper = new MaterialSideContainerBackHelper(drawerView);
-
-            if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-              if (drawerOnBackAnimationCallback == null) {
-                drawerOnBackAnimationCallback = createOnBackAnimationCallback();
-              }
-              drawerLayout.post(
-                  () ->
-                      getOnBackInvokedDispatcher()
-                          .registerOnBackInvokedCallback(
-                              OnBackInvokedDispatcher.PRIORITY_OVERLAY,
-                              drawerOnBackAnimationCallback));
-            } else {
-              getOnBackPressedDispatcher()
-                  .addCallback(
-                      CustomNavigationDrawerDemoActivity.this, drawerOnBackPressedCallback);
-            }
+            registerBackCallback(drawerView);
           }
 
           @Override
           public void onDrawerClosed(@NonNull View drawerView) {
-            currentDrawerView = null;
-            sideContainerBackHelper = null;
-
-            if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
-              if (drawerOnBackAnimationCallback != null) {
-                getOnBackInvokedDispatcher()
-                    .unregisterOnBackInvokedCallback(drawerOnBackAnimationCallback);
-                drawerOnBackAnimationCallback = null;
-              }
-            } else {
-              drawerOnBackPressedCallback.remove();
-            }
+            unregisterBackCallback();
           }
         });
 
@@ -127,7 +99,49 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
     view.findViewById(R.id.show_end_drawer_gravity)
         .setOnClickListener(v -> drawerLayout.openDrawer(endDrawer));
 
+    drawerLayout.post(
+        () -> {
+          View startDrawer = view.findViewById(R.id.custom_drawer_start);
+          if (drawerLayout.isDrawerOpen(startDrawer)) {
+            registerBackCallback(startDrawer);
+          } else if (drawerLayout.isDrawerOpen(endDrawer)) {
+            registerBackCallback(endDrawer);
+          }
+        });
+
     return view;
+  }
+
+  private void registerBackCallback(@NonNull View drawerView) {
+    currentDrawerView = drawerView;
+    sideContainerBackHelper = new MaterialSideContainerBackHelper(drawerView);
+
+    if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      if (drawerOnBackAnimationCallback == null) {
+        drawerOnBackAnimationCallback = createOnBackAnimationCallback();
+      }
+      drawerLayout.post(
+          () ->
+              getOnBackInvokedDispatcher()
+                  .registerOnBackInvokedCallback(
+                      OnBackInvokedDispatcher.PRIORITY_OVERLAY, drawerOnBackAnimationCallback));
+    } else {
+      getOnBackPressedDispatcher().addCallback(this, drawerOnBackPressedCallback);
+    }
+  }
+
+  private void unregisterBackCallback() {
+    currentDrawerView = null;
+    sideContainerBackHelper = null;
+
+    if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      if (drawerOnBackAnimationCallback != null) {
+        getOnBackInvokedDispatcher().unregisterOnBackInvokedCallback(drawerOnBackAnimationCallback);
+        drawerOnBackAnimationCallback = null;
+      }
+    } else {
+      drawerOnBackPressedCallback.remove();
+    }
   }
 
   @Override
