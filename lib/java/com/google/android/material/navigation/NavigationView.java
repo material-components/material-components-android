@@ -448,6 +448,10 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
       // Make sure there's only ever one listener
       drawerLayout.removeDrawerListener(backDrawerListener);
       drawerLayout.addDrawerListener(backDrawerListener);
+
+      if (drawerLayout.isDrawerOpen(this)) {
+        backOrchestrator.startListeningForBackCallbacksWithPriorityOverlay();
+      }
     }
   }
 
