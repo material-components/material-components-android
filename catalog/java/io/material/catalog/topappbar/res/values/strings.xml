@@ -41,8 +41,10 @@
   <string name="cat_topappbar_main_demo_toolbar_title">Regular Title</string>
   <!-- Title for the scrolling toolbar demo [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_scrolling_demo_toolbar_title">Scrolling Title</string>
-  <!-- Title for the collpasing toolbar demo [CHAR_LIMIT=NONE] -->
-  <string name="cat_topappbar_collapsing_demo_toolbar_title">Collapsing Title</string>
+  <!-- Title for the medium collpasing toolbar demo [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_collapsing_demo_toolbar_medium_title">Collapsing Title Medium Size</string>
+  <!-- Title for the large collpasing toolbar demo [CHAR_LIMIT=NONE] -->
+  <string name="cat_topappbar_collapsing_demo_toolbar_large_title">Collapsing Title Large Size</string>
   <!-- Label for a button in the menu [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_edit_menu_item_title">Edit</string>
   <!-- Label for a button in the menu [CHAR_LIMIT=NONE] -->

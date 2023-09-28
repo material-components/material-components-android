@@ -22,6 +22,8 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
@@ -31,6 +33,13 @@ import io.material.catalog.feature.DemoFragment;
 
 /** A base fragment that displays a collapsing Top App Bar demo for the Catalog app. */
 public abstract class BaseTopAppBarCollapsingDemoFragment extends DemoFragment {
+
+  @Override
+  public void onCreate(@Nullable Bundle bundle) {
+    super.onCreate(bundle);
+
+    setHasOptionsMenu(true);
+  }
 
   @NonNull
   @Override
@@ -45,6 +54,13 @@ public abstract class BaseTopAppBarCollapsingDemoFragment extends DemoFragment {
     activity.setSupportActionBar(toolbar);
 
     return view;
+  }
+
+  @Override
+  public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+    super.onCreateOptionsMenu(menu, menuInflater);
+
+    menuInflater.inflate(R.menu.cat_topappbar_menu, menu);
   }
 
   @Override

@@ -1026,9 +1026,11 @@ public final class CollapsingTextHelper {
       // collapsed text size
       float scaledDownWidth = expandedWidth * textSizeRatio;
 
-      if (forceRecalculate) {
+      if (forceRecalculate || fadeModeEnabled) {
         // If we're forcing a recalculate during a measure pass, use the expanded width since the
         // collapsed width might not be ready yet
+        // Or if the fade mode is enabled, we can also just use the expanded width because when
+        // fading out/in there is not a continuous scale transition between expanded/collapsed text
         availableWidth = expandedWidth;
       } else {
         // If the scaled down size is larger than the actual collapsed width, we need to
