@@ -87,8 +87,13 @@
   </style>
 
   <style name="ThemeOverlay.Material3.BottomNavigationView" parent="">
-    <item name="badgeStyle">@style/Widget.Material3.Badge.AdjustToBounds</item>
+    <item name="badgeStyle">@style/Widget.Material3.BottomNavigation.Badge</item>
   </style>
+
+  <style name="Widget.Material3.BottomNavigation.Badge" parent="Widget.Material3.Badge.AdjustToBounds">
+    <item name="verticalOffsetWithText">@dimen/m3_nav_badge_with_text_vertical_offset</item>
+  </style>
+
 
   <style name="Widget.Material3.BottomNavigationView.ActiveIndicator" parent="">
     <item name="android:width">@dimen/m3_bottom_nav_item_active_indicator_width</item>
