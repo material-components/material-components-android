@@ -41,7 +41,7 @@ registering callbacks to handle back pressed on Android T and above. More
 details on this general back migration can be found at the
 [Framework & AndroidX Predictive Back developer guide](https://developer.android.com/guide/navigation/predictive-back-gesture).
 
-2. Upgrade to MDC-Android library version **1.10.0-alpha03** or above.
+2. Upgrade to MDC-Android library version **1.10.0** or above.
 
 Once completing these steps, you will get most of the predictive back animations
 within Material Components for free on Android U devices. See the section below
