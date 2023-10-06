@@ -115,6 +115,8 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
   @VisibleForTesting
   public void updateBackProgress(
       float progress, boolean leftSwipeEdge, float touchY, float collapsedCornerSize) {
+    progress = interpolateProgress(progress);
+
     float width = view.getWidth();
     float height = view.getHeight();
     if (width <= 0f || height <= 0f) {
