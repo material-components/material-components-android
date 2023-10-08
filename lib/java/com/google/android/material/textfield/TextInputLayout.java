@@ -57,6 +57,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStructure;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -197,7 +198,7 @@ import java.util.LinkedHashSet;
  * developer guidance</a> and <a href="https://material.io/components/text-fields/overview">design
  * guidelines</a>.
  */
-public class TextInputLayout extends LinearLayout {
+public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListener {
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_TextInputLayout;
 
@@ -451,6 +452,8 @@ public class TextInputLayout extends LinearLayout {
   private boolean inDrawableStateChanged;
 
   private boolean restoringSavedState;
+
+  private boolean globalLayoutListenerAdded = false;
 
   public TextInputLayout(@NonNull Context context) {
     this(context, null);
@@ -713,6 +716,21 @@ public class TextInputLayout extends LinearLayout {
     setCounterEnabled(counterEnabled);
 
     setHelperText(helperText);
+  }
+
+  @Override
+  public void onGlobalLayout() {
+    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN) {
+      endLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+    } else {
+      endLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+    }
+    globalLayoutListenerAdded = false;
+    boolean updatedHeight = updateEditTextHeightBasedOnIcon();
+    boolean updatedIcon = updateDummyDrawables();
+    if (updatedHeight || updatedIcon) {
+      editText.post(() -> editText.requestLayout());
+    }
   }
 
   @Override
@@ -3247,16 +3265,9 @@ public class TextInputLayout extends LinearLayout {
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-    boolean updatedHeight = updateEditTextHeightBasedOnIcon();
-    boolean updatedIcon = updateDummyDrawables();
-    if (updatedHeight || updatedIcon) {
-      editText.post(
-          new Runnable() {
-            @Override
-            public void run() {
-              editText.requestLayout();
-            }
-          });
+    if (!globalLayoutListenerAdded) {
+      endLayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
+      globalLayoutListenerAdded = true;
     }
     updatePlaceholderMeasurementsBasedOnEditText();
     endLayout.updateSuffixTextViewPadding();
