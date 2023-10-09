@@ -19,6 +19,7 @@ package com.google.android.material.carousel;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -70,6 +71,11 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
     if (maskXPercentage != NOT_SET) {
       updateMaskRectForMaskXPercentage();
     }
+  }
+
+  @Override
+  public void getFocusedRect(Rect r) {
+    r.set((int) maskRect.left, (int) maskRect.top, (int) maskRect.right, (int) maskRect.bottom);
   }
 
   @Override
@@ -133,10 +139,10 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
 
   private void updateMaskRectForMaskXPercentage() {
     if (maskXPercentage != NOT_SET) {
-    // Translate the percentage into an actual pixel value of how much of this view should be
-    // masked away.
-    float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
-    setMaskRectF(new RectF(maskWidth, 0F, (getWidth() - maskWidth), getHeight()));
+      // Translate the percentage into an actual pixel value of how much of this view should be
+      // masked away.
+      float maskWidth = AnimationUtils.lerp(0f, getWidth() / 2F, 0f, 1f, maskXPercentage);
+      setMaskRectF(new RectF(maskWidth, 0F, (getWidth() - maskWidth), getHeight()));
     }
   }
 
