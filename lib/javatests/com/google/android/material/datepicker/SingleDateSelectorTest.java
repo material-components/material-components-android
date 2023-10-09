@@ -231,13 +231,13 @@ public class SingleDateSelectorTest {
 
   @Test
   public void textFieldPlaceholder_usesCustomFormat() {
-    singleDateSelector.setTextInputFormat(new SimpleDateFormat("kk:mm:ss mm/dd/yyyy"));
+    singleDateSelector.setTextInputFormat(new SimpleDateFormat("kk:mm:ss MM/dd/yyyy"));
     View root = getRootView();
     ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
 
     TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_date);
 
-    assertThat(textInputLayout.getPlaceholderText().toString()).isEqualTo("kk:mm:ss mm/dd/yyyy");
+    assertThat(textInputLayout.getPlaceholderText().toString()).isEqualTo("kk:mm:ss MM/dd/yyyy");
   }
 
   @Test
