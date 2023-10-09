@@ -28,7 +28,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.carousel.CarouselLayoutManager;
 import com.google.android.material.carousel.CarouselSnapHelper;
-import com.google.android.material.carousel.MultiBrowseCarouselStrategy;
 import com.google.android.material.divider.MaterialDividerItemDecoration;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.Slider;
@@ -59,7 +58,6 @@ public class MultiBrowseCarouselDemoFragment extends DemoFragment {
             requireContext(), MaterialDividerItemDecoration.HORIZONTAL);
 
     MaterialSwitch debugSwitch = view.findViewById(R.id.debug_switch);
-    MaterialSwitch forceCompactSwitch = view.findViewById(R.id.force_compact_arrangement_switch);
     MaterialSwitch drawDividers = view.findViewById(R.id.draw_dividers_switch);
     MaterialSwitch snapSwitch = view.findViewById(R.id.snap_switch);
     AutoCompleteTextView itemCountDropdown = view.findViewById(R.id.item_count_dropdown);
@@ -81,11 +79,6 @@ public class MultiBrowseCarouselDemoFragment extends DemoFragment {
           multiBrowseStartCarouselLayoutManager.setDebuggingEnabled(
               multiBrowseStartRecyclerView, isChecked);
         });
-
-    forceCompactSwitch.setOnCheckedChangeListener(
-        (buttonView, isChecked) ->
-            multiBrowseStartCarouselLayoutManager.setCarouselStrategy(
-                new MultiBrowseCarouselStrategy(isChecked)));
 
     drawDividers.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {

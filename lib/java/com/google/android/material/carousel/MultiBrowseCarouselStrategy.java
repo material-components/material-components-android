@@ -28,8 +28,6 @@ import static java.lang.Math.min;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import android.view.View;
 import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 import androidx.core.math.MathUtils;
 
 /**
@@ -54,31 +52,6 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
 
   private static final int[] SMALL_COUNTS = new int[] {1};
   private static final int[] MEDIUM_COUNTS = new int[] {1, 0};
-  private static final int[] MEDIUM_COUNTS_COMPACT = new int[] {0};
-
-  // True if medium items should never be added and arrangements should consist of only large and
-  // small items. This will often result in a greater number of large items but more variability in
-  // large item size. This can be desirable when optimizing for the greatest number of fully
-  // unmasked items visible at once.
-  // TODO(b/274604170): Remove this option
-  private final boolean forceCompactArrangement;
-
-  public MultiBrowseCarouselStrategy() {
-    this(false);
-  }
-
-  /**
-   * Create a new instance of {@link MultiBrowseCarouselStrategy}.
-   *
-   * @param forceCompactArrangement true if items should be fit in a way that maximizes the number
-   *     of large, unmasked items. false if this strategy is free to determine an opinionated
-   *     balance between item sizes.
-   * @hide
-   */
-  @RestrictTo(Scope.LIBRARY_GROUP)
-  public MultiBrowseCarouselStrategy(boolean forceCompactArrangement) {
-    this.forceCompactArrangement = forceCompactArrangement;
-  }
 
   @Override
   @NonNull
@@ -125,7 +98,7 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
       smallCounts = new int[] { 0 };
     }
 
-    int[] mediumCounts = forceCompactArrangement ? MEDIUM_COUNTS_COMPACT : MEDIUM_COUNTS;
+    int[] mediumCounts = MEDIUM_COUNTS;
     if (carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER) {
       smallCounts = doubleCounts(smallCounts);
       mediumCounts = doubleCounts(mediumCounts);

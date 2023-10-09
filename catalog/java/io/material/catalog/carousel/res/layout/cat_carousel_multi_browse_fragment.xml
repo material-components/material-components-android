@@ -50,16 +50,6 @@
       android:text="@string/cat_carousel_debug_mode_label"/>
 
     <com.google.android.material.materialswitch.MaterialSwitch
-      android:id="@+id/force_compact_arrangement_switch"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:checked="false"
-      android:layout_marginHorizontal="16dp"
-      android:layout_marginVertical="8dp"
-      android:textAppearance="?attr/textAppearanceBodyLarge"
-      android:text="@string/cat_carousel_force_compact_arrangement_label"/>
-
-    <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/draw_dividers_switch"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

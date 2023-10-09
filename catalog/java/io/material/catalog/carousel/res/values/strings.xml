@@ -17,7 +17,6 @@
 
 <resources>
   <string name="cat_carousel_debug_mode_label" translatable="false">Debug mode</string>
-  <string name="cat_carousel_force_compact_arrangement_label" translatable="false">Force compact arrangement</string>
   <string name="cat_carousel_draw_dividers_label" translatable="false">Draw dividers</string>
   <string name="cat_carousel_enable_snap_label" description="The title of a switch to enable snapping to carousel items.[CHAR_LIMIT=NONE]">Enable Snap</string>
   <string name="cat_carousel_enable_fling_label" description="The title of a switch to enable the flinging gesture.[CHAR_LIMIT=NONE]">Enable fling</string>
