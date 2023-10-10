@@ -53,6 +53,10 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
   private static final int[] SMALL_COUNTS = new int[] {1};
   private static final int[] MEDIUM_COUNTS = new int[] {1, 0};
 
+  // Current count of number of keylines. We want to refresh the strategy if there are less items
+  // than this number.
+  private int keylineCount = 0;
+
   @Override
   @NonNull
   KeylineState onFirstChildMeasuredWithMargins(@NonNull Carousel carousel, @NonNull View child) {
@@ -128,11 +132,55 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
         targetLargeChildSize,
         largeCounts);
 
+    keylineCount = arrangement.getItemCount();
+
+    if (ensureArrangementFitsItemCount(arrangement, carousel.getItemCount())) {
+      // In case counts changed after ensuring the previous arrangement fit the item
+      // counts, we call `findLowestCostArrangement` again with the item counts set.
+      arrangement =
+          Arrangement.findLowestCostArrangement(
+              availableSpace,
+              targetSmallChildSize,
+              smallChildSizeMin,
+              smallChildSizeMax,
+              new int[] {arrangement.smallCount},
+              targetMediumChildSize,
+              new int[] {arrangement.mediumCount},
+              targetLargeChildSize,
+              new int[] {arrangement.largeCount});
+    }
+
     return createKeylineState(
         child.getContext(),
         childMargins,
         availableSpace,
         arrangement,
         carousel.getCarouselAlignment());
+  }
+
+  boolean ensureArrangementFitsItemCount(Arrangement arrangement, int carouselItemCount) {
+    int keylineSurplus = arrangement.getItemCount() - carouselItemCount;
+    boolean changed =
+        keylineSurplus > 0 && (arrangement.smallCount > 0 || arrangement.mediumCount > 1);
+
+    while (keylineSurplus > 0) {
+      if (arrangement.smallCount > 0) {
+        arrangement.smallCount -= 1;
+      } else if (arrangement.mediumCount > 1) {
+        // Keep at least 1 medium so the large items don't fill the entire carousel in new strategy.
+        arrangement.mediumCount -= 1;
+      }
+      // large items don't need to be removed even if they are a surplus because large items
+      // are already fully unmasked.
+      keylineSurplus -= 1;
+    }
+
+    return changed;
+  }
+
+  @Override
+  boolean shouldRefreshKeylineState(Carousel carousel, int oldItemCount) {
+    return (oldItemCount < keylineCount && carousel.getItemCount() >= keylineCount)
+        || (oldItemCount >= keylineCount && carousel.getItemCount() < keylineCount);
   }
 }

@@ -35,8 +35,8 @@ final class Arrangement {
 
   final int priority;
   float smallSize;
-  final int smallCount;
-  final int mediumCount;
+  int smallCount;
+  int mediumCount;
   float mediumSize;
   float largeSize;
   final int largeCount;
@@ -140,6 +140,8 @@ final class Arrangement {
       smallSize += max(delta / smallCount, minSmallSize - smallSize);
     }
 
+    // Zero out small size if there are no small items
+    smallSize = smallCount > 0 ? smallSize : 0F;
     largeSize =
         calculateLargeSize(availableSpace, smallCount, smallSize, mediumCount, largeCount);
     mediumSize = (largeSize + smallSize) / 2F;
@@ -277,5 +279,9 @@ final class Arrangement {
       }
     }
     return lowestCostArrangement;
+  }
+
+  int getItemCount() {
+    return smallCount + mediumCount + largeCount;
   }
 }

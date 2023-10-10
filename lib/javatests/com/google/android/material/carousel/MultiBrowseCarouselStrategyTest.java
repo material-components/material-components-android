@@ -18,6 +18,7 @@ package com.google.android.material.carousel;
 import com.google.android.material.test.R;
 
 import static com.google.android.material.carousel.CarouselHelper.createCarousel;
+import static com.google.android.material.carousel.CarouselHelper.createCarouselWithItemCount;
 import static com.google.android.material.carousel.CarouselHelper.createCarouselWithWidth;
 import static com.google.android.material.carousel.CarouselHelper.createViewWithSize;
 import static com.google.common.truth.Truth.assertThat;
@@ -237,5 +238,41 @@ public class MultiBrowseCarouselStrategyTest {
     for (int i = 0; i < keylines.size(); i++) {
       assertThat(keylines.get(i).locOffset).isEqualTo(locOffsets[i]);
     }
+  }
+
+  @Test
+  public void testLessItemsThanKeylines_updatesStrategy() {
+    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 200, 200);
+
+    // With a carousel of size 500 and large item size of 200, the keylines will be
+    // {xsmall, large, large, medium, small, xsmall}
+    Carousel carousel =
+        createCarouselWithItemCount(
+            /* size= */ 500, CarouselLayoutManager.ALIGNMENT_START, /* itemCount= */ 4);
+    KeylineState keylineState =
+        config.onFirstChildMeasuredWithMargins(carousel, view);
+
+    // An item count of 4 should not affect the keyline number.
+    assertThat(keylineState.getKeylines()).hasSize(6);
+
+    carousel =
+        createCarouselWithItemCount(
+            /* size= */ 500, CarouselLayoutManager.ALIGNMENT_START, /* itemCount= */ 3);
+    keylineState =
+        config.onFirstChildMeasuredWithMargins(carousel, view);
+
+    // An item count of 3 should change the keyline number to be 3: {xsmall, large, large, medium,
+    // xsmall}
+    assertThat(keylineState.getKeylines()).hasSize(5);
+
+    carousel = createCarouselWithItemCount(500, CarouselLayoutManager.ALIGNMENT_START, 2);
+    keylineState =
+        config.onFirstChildMeasuredWithMargins(carousel, view);
+
+    // An item count of 2 should have the keyline number to be 5:
+    // {xsmall, large, large, medium, xsmall} because even with only 2 items, we still want a medium
+    // keyline so the carousel is not just large items.
+    assertThat(keylineState.getKeylines()).hasSize(5);
   }
 }
