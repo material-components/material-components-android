@@ -49,7 +49,10 @@ public class HeroCarouselStrategy extends CarouselStrategy {
 
   private static final int[] SMALL_COUNTS = new int[] {1};
   private static final int[] MEDIUM_COUNTS = new int[] {0, 1};
-  private static final int MIN_ITEMS_FOR_CENTER_ALIGNMENT = 2;
+
+  // Current count of number of keylines. We want to refresh the strategy if there are less items
+  // than this number.
+  private int keylineCount = 0;
 
   @Override
   @NonNull
@@ -98,8 +101,7 @@ public class HeroCarouselStrategy extends CarouselStrategy {
       largeCounts[i] = largeCountMin + i;
     }
     boolean isCenterAligned =
-        carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER
-            && carousel.getItemCount() > MIN_ITEMS_FOR_CENTER_ALIGNMENT;
+        carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER;
     Arrangement arrangement =
         Arrangement.findLowestCostArrangement(
             availableSpace,
@@ -115,6 +117,25 @@ public class HeroCarouselStrategy extends CarouselStrategy {
                 : MEDIUM_COUNTS,
             targetLargeChildSize,
             largeCounts);
+
+    keylineCount = arrangement.getItemCount();
+
+    // If there's less items than keylines, force it to be start-aligned.
+    if (arrangement.getItemCount() > carousel.getItemCount()) {
+      isCenterAligned = false;
+      arrangement =
+          Arrangement.findLowestCostArrangement(
+              availableSpace,
+              targetSmallChildSize,
+              smallChildSizeMin,
+              smallChildSizeMax,
+              smallCounts,
+              targetMediumChildSize,
+              MEDIUM_COUNTS,
+              targetLargeChildSize,
+              largeCounts);
+    }
+
     return createKeylineState(
         child.getContext(),
         childMargins,
@@ -128,8 +149,8 @@ public class HeroCarouselStrategy extends CarouselStrategy {
   @Override
   boolean shouldRefreshKeylineState(@NonNull Carousel carousel, int oldItemCount) {
     return carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER
-        && (oldItemCount == MIN_ITEMS_FOR_CENTER_ALIGNMENT
-        || carousel.getItemCount() == MIN_ITEMS_FOR_CENTER_ALIGNMENT);
+        && ((oldItemCount < keylineCount && carousel.getItemCount() >= keylineCount)
+            || (oldItemCount >= keylineCount && carousel.getItemCount() < keylineCount));
   }
 }
 
