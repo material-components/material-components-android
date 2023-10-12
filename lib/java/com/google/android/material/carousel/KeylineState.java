@@ -101,6 +101,11 @@ final class KeylineState {
     return lastFocalKeylineIndex;
   }
 
+  /** Returns list of all the keylines that are focal. **/
+  List<Keyline> getFocalKeylines() {
+    return keylines.subList(firstFocalKeylineIndex, lastFocalKeylineIndex + 1);
+  }
+
   /** Returns the first keyline. */
   Keyline getFirstKeyline() {
     return keylines.get(0);

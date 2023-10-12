@@ -16,6 +16,7 @@
 
 package com.google.android.material.carousel;
 
+import androidx.annotation.NonNull;
 import androidx.core.math.MathUtils;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.carousel.KeylineState.Keyline;
@@ -55,7 +56,7 @@ class KeylineStateList {
   private final float endShiftRange;
 
   private KeylineStateList(
-      KeylineState defaultState,
+      @NonNull KeylineState defaultState,
       List<KeylineState> startStateSteps,
       List<KeylineState> endStateSteps) {
     this.defaultState = defaultState;

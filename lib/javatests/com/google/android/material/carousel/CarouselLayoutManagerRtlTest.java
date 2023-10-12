@@ -28,6 +28,7 @@ import static com.google.android.material.testing.RtlTestUtils.checkPlatformSupp
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.app.AppCompatActivity;
@@ -150,6 +151,20 @@ public class CarouselLayoutManagerRtlTest {
     scrollToPosition(recyclerView, layoutManager, 2);
 
     CarouselHelper.assertChildrenHaveValidOrder(layoutManager);
+  }
+
+  @Test
+  public void testRequestChildRectangleOnScreen_doesntScrollIfChildIsFocal() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    assertThat(layoutManager.scrollOffset).isEqualTo(0);
+
+    // Bring second child into focus
+    layoutManager.requestChildRectangleOnScreen(
+        recyclerView, recyclerView.getChildAt(1), new Rect(), /* immediate= */ true);
+
+    // Test Keyline state has 2 focal keylines at the start; default item with is 450 and
+    // focal keyline size is 450, so the scroll offset should be 0.
+    assertThat(layoutManager.scrollOffset).isEqualTo(0);
   }
 
   /**

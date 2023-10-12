@@ -287,6 +287,20 @@ public final class KeylineStateTest {
                 .build());
   }
 
+  @Test
+  public void testGetFocalKeylines() {
+    KeylineState keylineState =
+        new KeylineState.Builder(100F, 0)
+            .addKeyline(25F, .5F, 50F)
+            .addKeylineRange(100F, 0F, 100F, 2, true)
+            .addKeyline(275F, .5F, 50F)
+            .build();
+
+    List<Keyline> focalKeylines = keylineState.getFocalKeylines();
+
+    assertThat(focalKeylines).isEqualTo(keylineState.getKeylines().subList(1, 3));
+  }
+
   /**
    * Creates a {@link KeylineState.Builder} that has a centered focal range with three large items,
    * and one medium item, two small items, and one extra small item on each side of the focal range.

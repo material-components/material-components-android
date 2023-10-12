@@ -591,6 +591,20 @@ public class CarouselLayoutManagerTest {
     assertThat(layoutManager.computeScrollVectorForPosition(itemCount / 2).y).isEqualTo(0f);
   }
 
+  @Test
+  public void testRequestChildRectangleOnScreen_doesntScrollIfChildIsFocal() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    assertThat(layoutManager.scrollOffset).isEqualTo(0);
+
+    // Bring second child into focus
+    layoutManager.requestChildRectangleOnScreen(
+        recyclerView, recyclerView.getChildAt(1), new Rect(), /* immediate= */ true);
+
+    // Test Keyline state has 2 focal keylines at the start; default item with is 450 and
+    // focal keyline size is 450, so the scroll offset should be 0.
+    assertThat(layoutManager.scrollOffset).isEqualTo(0);
+  }
+
   /**
    * Assigns explicit sizes to fixtures being used to construct the testing environment.
    *
