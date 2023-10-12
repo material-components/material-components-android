@@ -147,10 +147,14 @@ public class DatePickerMainDemoFragment extends DemoFragment {
 
           if (positiveButtonChoice == R.id.cat_picker_positive_button_custom) {
             builder.setPositiveButtonText(R.string.cat_picker_positive_button_text);
+            builder.setPositiveButtonContentDescription(
+                R.string.cat_picker_positive_button_content_description);
           }
 
           if (negativeButtonChoice == R.id.cat_picker_negative_button_custom) {
             builder.setNegativeButtonText(R.string.cat_picker_negative_button_text);
+            builder.setNegativeButtonContentDescription(
+                R.string.cat_picker_negative_button_content_description);
           }
 
           setupDayViewDecorator(builder, dayViewDecoratorChoice);

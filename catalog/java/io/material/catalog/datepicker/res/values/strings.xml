@@ -137,8 +137,10 @@
 
   <!-- The custom positive button text -->
   <string name="cat_picker_positive_button_text">DONE</string>
+  <string name="cat_picker_positive_button_content_description">Finished</string>
   <!-- The custom negative button text -->
   <string name="cat_picker_negative_button_text">Negative</string>
+  <string name="cat_picker_negative_button_content_description">Negative</string>
 
   <!-- The custom dots day view decorator's content description [CHAR LIMIT=120] -->
   <string name="cat_picker_day_view_decorator_dots_content_description">%s Dotted</string>
