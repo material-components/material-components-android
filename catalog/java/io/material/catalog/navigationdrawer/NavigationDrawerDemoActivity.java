@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -96,6 +97,14 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
         (buttonView, isChecked) -> {
           navigationViewStart.setItemTextAppearanceActiveBoldEnabled(isChecked);
           navigationViewEnd.setItemTextAppearanceActiveBoldEnabled(isChecked);
+        });
+
+    drawerLayout.post(
+        () -> {
+          if (drawerLayout.isDrawerOpen(GravityCompat.START)
+              || drawerLayout.isDrawerOpen(GravityCompat.END)) {
+            drawerOnBackPressedCallback.setEnabled(true);
+          }
         });
 
     return view;
