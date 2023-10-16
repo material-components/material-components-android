@@ -254,7 +254,7 @@ public class CarouselLayoutManager extends LayoutManager
 
   @Override
   public void onLayoutChildren(Recycler recycler, State state) {
-    if (state.getItemCount() <= 0) {
+    if (state.getItemCount() <= 0 || getContainerSize() <= 0f) {
       removeAndRecycleAllViews(recycler);
       currentFillStartPosition = 0;
       return;
