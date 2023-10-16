@@ -22,8 +22,11 @@
   <public name="Theme.Material3.DayNight" type="style"/>
   <public name="Theme.Material3.DayNight.NoActionBar" type="style"/>
   <public name="Theme.Material3.DynamicColors.Light" type="style"/>
+  <public name="Theme.Material3.DynamicColors.Light.NoActionBar" type="style"/>
   <public name="Theme.Material3.DynamicColors.Dark" type="style"/>
+  <public name="Theme.Material3.DynamicColors.Dark.NoActionBar" type="style"/>
   <public name="Theme.Material3.DynamicColors.DayNight" type="style"/>
+  <public name="Theme.Material3.DynamicColors.DayNight.NoActionBar" type="style"/>
   <public name="Theme.Material3.Light.DialogWhenLarge" type="style"/>
   <public name="Theme.Material3.Dark.DialogWhenLarge" type="style"/>
   <public name="Theme.Material3.DayNight.DialogWhenLarge" type="style"/>

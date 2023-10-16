@@ -137,16 +137,22 @@ Here are the `Material3` themes you can use to get the latest component styles
 and theme-level attributes, as well as their `MaterialComponents` equivalents
 when applicable.
 
-`Material3`                            | `MaterialComponents`
--------------------------------------- | --------------------
-`Theme.Material3.Light`                | `Theme.MaterialComponents.Light`
-`Theme.Material3.Light.NoActionBar`    | `Theme.MaterialComponents.Light.NoActionBar`
-`Theme.Material3.Dark`                 | `Theme.MaterialComponents`
-`Theme.Material3.Dark.NoActionBar`     | `Theme.MaterialComponents.NoActionBar`
-`Theme.Material3.DayNight`             | `Theme.MaterialComponents.DayNight`
-`Theme.Material3.DayNight.NoActionBar` | `Theme.MaterialComponents.DayNight.NoActionBar`
-N/A                                    | `Theme.MaterialComponents.Light.DarkActionBar`
-N/A                                    | `Theme.MaterialComponents.DayNight.DarkActionBar`
+| `Material3`                                          | `MaterialComponents`                              |
+|------------------------------------------------------|---------------------------------------------------|
+| `Theme.Material3.Light`                              | `Theme.MaterialComponents.Light`                  |
+| `Theme.Material3.Light.NoActionBar`                  | `Theme.MaterialComponents.Light.NoActionBar`      |
+| `Theme.Material3.Dark`                               | `Theme.MaterialComponents`                        |
+| `Theme.Material3.Dark.NoActionBar`                   | `Theme.MaterialComponents.NoActionBar`            |
+| `Theme.Material3.DayNight`                           | `Theme.MaterialComponents.DayNight`               |
+| `Theme.Material3.DayNight.NoActionBar`               | `Theme.MaterialComponents.DayNight.NoActionBar`   |
+| `Theme.Material3.DynamicColors.Light`                | N/A                                               |
+| `Theme.Material3.DynamicColors.Light.NoActionBar`    | N/A                                               |
+| `Theme.Material3.DynamicColors.Dark`                 | N/A                                               |
+| `Theme.Material3.DynamicColors.Dark.NoActionBar`     | N/A                                               |
+| `Theme.Material3.DynamicColors.DayNight`             | N/A                                               |
+| `Theme.Material3.DynamicColors.DayNight.NoActionBar` | N/A                                               |
+| N/A                                                  | `Theme.MaterialComponents.Light.DarkActionBar`    |
+| N/A                                                  | `Theme.MaterialComponents.DayNight.DarkActionBar` |
 
 Update your app theme to inherit from one of these themes:
 
