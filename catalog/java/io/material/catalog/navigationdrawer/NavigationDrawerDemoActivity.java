@@ -24,26 +24,15 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.navigation.NavigationView;
 import io.material.catalog.feature.DemoActivity;
 
 /** A fragment that displays the main Navigation Drawer demo for the Catalog app. */
 public class NavigationDrawerDemoActivity extends DemoActivity {
-
-  private final OnBackPressedCallback drawerOnBackPressedCallback =
-      new OnBackPressedCallback(/* enabled= */ false) {
-        @Override
-        public void handleOnBackPressed() {
-          drawerLayout.closeDrawers();
-        }
-      };
 
   private DrawerLayout drawerLayout;
 
@@ -56,8 +45,6 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
     View view =
         layoutInflater.inflate(R.layout.cat_navigationdrawer, viewGroup, false /* attachToRoot */);
 
-    getOnBackPressedDispatcher().addCallback(this, drawerOnBackPressedCallback);
-
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
 
@@ -69,18 +56,6 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
             toolbar,
             R.string.cat_navigationdrawer_button_show_content_description,
             R.string.cat_navigationdrawer_button_hide_content_description));
-    drawerLayout.addDrawerListener(
-        new SimpleDrawerListener() {
-          @Override
-          public void onDrawerOpened(@NonNull View drawerView) {
-            drawerOnBackPressedCallback.setEnabled(true);
-          }
-
-          @Override
-          public void onDrawerClosed(@NonNull View drawerView) {
-            drawerOnBackPressedCallback.setEnabled(false);
-          }
-        });
 
     NavigationView navigationViewStart = view.findViewById(R.id.navigation_view_start);
     initNavigationView(navigationViewStart);
@@ -97,14 +72,6 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
         (buttonView, isChecked) -> {
           navigationViewStart.setItemTextAppearanceActiveBoldEnabled(isChecked);
           navigationViewEnd.setItemTextAppearanceActiveBoldEnabled(isChecked);
-        });
-
-    drawerLayout.post(
-        () -> {
-          if (drawerLayout.isDrawerOpen(GravityCompat.START)
-              || drawerLayout.isDrawerOpen(GravityCompat.END)) {
-            drawerOnBackPressedCallback.setEnabled(true);
-          }
         });
 
     return view;

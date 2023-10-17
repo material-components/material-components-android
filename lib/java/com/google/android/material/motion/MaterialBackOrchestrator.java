@@ -17,6 +17,7 @@ package com.google.android.material.motion;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.app.Activity;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.View;
@@ -25,11 +26,14 @@ import android.window.OnBackAnimationCallback;
 import android.window.OnBackInvokedCallback;
 import android.window.OnBackInvokedDispatcher;
 import androidx.activity.BackEventCompat;
+import androidx.activity.ComponentActivity;
+import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.DoNotInline;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
+import com.google.android.material.internal.ContextUtils;
 
 /**
  * Utility class for views that support back handling via {@link MaterialBackHandler} which helps
@@ -102,7 +106,7 @@ public final class MaterialBackOrchestrator {
     } else if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
       return new Api33BackCallbackDelegate();
     } else {
-      return null;
+      return new Api32BackCallbackDelegate();
     }
   }
 
@@ -196,6 +200,44 @@ public final class MaterialBackOrchestrator {
 
     OnBackInvokedCallback createOnBackInvokedCallback(@NonNull MaterialBackHandler backHandler) {
       return backHandler::handleBackInvoked;
+    }
+  }
+
+  private static class Api32BackCallbackDelegate implements BackCallbackDelegate {
+
+    @Nullable private OnBackPressedCallback onBackPressedCallback;
+
+    @DoNotInline
+    @Override
+    public void startListeningForBackCallbacks(
+        @NonNull MaterialBackHandler backHandler, @NonNull View view, boolean priorityOverlay) {
+      if (onBackPressedCallback != null) {
+        onBackPressedCallback.setEnabled(true);
+        return;
+      }
+      Activity activity = ContextUtils.getActivity(view.getContext());
+      if (activity instanceof ComponentActivity) {
+        ComponentActivity componentActivity = (ComponentActivity) activity;
+        onBackPressedCallback = createOnBackPressedCallback(backHandler);
+        componentActivity.getOnBackPressedDispatcher().addCallback(componentActivity, onBackPressedCallback);
+      }
+    }
+
+    @DoNotInline
+    @Override
+    public void stopListeningForBackCallbacks(@NonNull View view) {
+      if (onBackPressedCallback != null) {
+        onBackPressedCallback.setEnabled(false);
+      }
+    }
+
+    OnBackPressedCallback createOnBackPressedCallback(@NonNull MaterialBackHandler backHandler) {
+      return new OnBackPressedCallback(true) {
+        @Override
+        public void handleOnBackPressed() {
+          backHandler.handleBackInvoked();
+        }
+      };
     }
   }
 }
