@@ -58,6 +58,12 @@ animations:
 - [Side sheet](../components/SideSheet.md#predictive-back) (automatically for modal, standard and coplanar require integration)
 - [Navigation drawer](../components/NavigationDrawer.md#predictive-back) (automatically for `NavigationView` within `DrawerLayout`)
 
+**Note:** The Material Components above only automatically handle back on API
+Level 33+, and when the `android:enableOnBackInvokedCallback` manifest flag to
+`true`. This is to be consistent with the behavior of other AndroidX and
+Framework views, as well as to avoid taking precedence over any pre-existing
+back handling behavior that has already been implemented by apps.
+
 Future predictive back support is planned for the following Material Components:
 
 - Navigation bar / Bottom navigation view
