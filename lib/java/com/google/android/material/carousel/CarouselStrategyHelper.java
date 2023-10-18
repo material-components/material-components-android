@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import static com.google.android.material.carousel.CarouselStrategy.getChildMaskPercentage;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -71,7 +72,8 @@ final class CarouselStrategyHelper {
       float availableSpace,
       @NonNull Arrangement arrangement) {
 
-    float extraSmallChildWidth = getExtraSmallSize(context) + childHorizontalMargins;
+    float extraSmallChildWidth =
+        min(getExtraSmallSize(context) + childHorizontalMargins, arrangement.largeSize);
 
     float start = 0F;
     float extraSmallHeadCenterX = start - (extraSmallChildWidth / 2F);
@@ -133,7 +135,8 @@ final class CarouselStrategyHelper {
       float availableSpace,
       @NonNull Arrangement arrangement) {
 
-    float extraSmallChildWidth = getExtraSmallSize(context) + childHorizontalMargins;
+    float extraSmallChildWidth =
+        min(getExtraSmallSize(context) + childHorizontalMargins, arrangement.largeSize);
 
     float start = 0F;
     float extraSmallHeadCenterX = start - (extraSmallChildWidth / 2F);

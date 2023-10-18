@@ -156,6 +156,7 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
       float mediumSize,
       float xSmallSize,
       float remainingSpace) {
+    xSmallSize = min(xSmallSize, largeSize);
 
     float extraSmallMask = getChildMaskPercentage(xSmallSize, largeSize, childMargins);
     float mediumMask = getChildMaskPercentage(mediumSize, largeSize, childMargins);
@@ -195,6 +196,7 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
       float mediumSize,
       int mediumCount,
       float xSmallSize) {
+    xSmallSize = min(xSmallSize, largeSize);
 
     // Make the left anchor size half the cut off item size to make the motion at the left closer
     // to the right where the cut off is.
