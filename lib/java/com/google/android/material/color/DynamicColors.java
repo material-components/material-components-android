@@ -23,13 +23,11 @@ import android.app.Application;
 import android.app.Application.ActivityLifecycleCallbacks;
 import android.app.UiModeManager;
 import android.content.Context;
-import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
@@ -43,15 +41,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 /** Utility for applying dynamic colors to application/activities. */
 public class DynamicColors {
   private static final int[] DYNAMIC_COLOR_THEME_OVERLAY_ATTRIBUTE =
       new int[] {R.attr.dynamicColorThemeOverlay};
-
-  private static final int[] CONTRAST_COLOR_THEME_OVERLAY_ATTRIBUTE =
-      new int[] {R.attr.contrastColorThemeOverlay};
 
   private static final DeviceSupportCondition DEFAULT_DEVICE_SUPPORT_CONDITION =
       new DeviceSupportCondition() {
@@ -125,11 +119,6 @@ public class DynamicColors {
 
   private static final int USE_DEFAULT_THEME_OVERLAY = 0;
   private static final String TAG = DynamicColors.class.getSimpleName();
-
-  private static final String SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ENTRY_NAME =
-      "system_outline_variant_dark";
-
-  private static final int SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ID = 0x010600c1;
 
   private DynamicColors() {}
 
@@ -326,13 +315,6 @@ public class DynamicColors {
         }
       } else {
         ThemeUtils.applyThemeOverlay(activity, theme);
-        // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public
-        // release. Contrast ThemeOverlay is applied on top of Dynamic ThemeOverlay to keep client's
-        // custom Dynamic theme attributes.
-        if (isDynamicContrastAvailable(activity)) {
-          ThemeUtils.applyThemeOverlay(
-              activity, getDefaultThemeOverlay(activity, CONTRAST_COLOR_THEME_OVERLAY_ATTRIBUTE));
-        }
       }
       // Applies client's callback after content-based dynamic colors or just dynamic colors has
       // been applied.
@@ -409,16 +391,7 @@ public class DynamicColors {
             MaterialColorUtilitiesHelper.createColorResourcesIdsToColorValues(scheme));
       }
     }
-    Context dynamicContext = new ContextThemeWrapper(originalContext, theme);
-    // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public
-    // release. Contrast ThemeOverlay is applied on top of Dynamic ThemeOverlay to keep client's
-    // custom Dynamic theme attributes.
-    if (isDynamicContrastAvailable(originalContext)) {
-      return new ContextThemeWrapper(
-          dynamicContext,
-          getDefaultThemeOverlay(dynamicContext, CONTRAST_COLOR_THEME_OVERLAY_ATTRIBUTE));
-    }
-    return dynamicContext;
+    return new ContextThemeWrapper(originalContext, theme);
   }
 
   /** Returns {@code true} if dynamic colors are available on the current SDK level. */
@@ -510,27 +483,5 @@ public class DynamicColors {
     return (uiModeManager == null || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE)
         ? 0
         : uiModeManager.getContrast();
-  }
-
-  private static boolean isDynamicContrastAvailable(Context context) {
-    if (VERSION.SDK_INT >= VERSION_CODES.UPSIDE_DOWN_CAKE && areSystemColorRolesDefined(context)) {
-      return true;
-    }
-    return false;
-  }
-
-  // TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public release.
-  //
-  //  This is to check and make sure the last material resource defined in the android block of
-  // resources matches the resource name from app's context.
-  private static boolean areSystemColorRolesDefined(Context context) {
-    try {
-      return Objects.equals(
-          context.getResources().getResourceEntryName(SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ID),
-          SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ENTRY_NAME);
-    } catch (NotFoundException e) {
-      Log.i(TAG, SYSTEM_OUTLINE_VARIANT_DARK_RESOURCE_ENTRY_NAME + " resource not found.", e);
-    }
-    return false;
   }
 }

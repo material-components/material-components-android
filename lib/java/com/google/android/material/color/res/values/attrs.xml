@@ -168,10 +168,6 @@
   <!-- The default dynamic color theme overlay to use when applying dynamic colors. -->
   <attr name="dynamicColorThemeOverlay" format="reference"/>
 
-  <!-- The temporary contrast color theme overlay to use when applying contrast colors. -->
-  <!-- TODO(b/289112889): Remove workaround and roll forward cl/528599594 as soon as U public release. -->
-  <attr name="contrastColorThemeOverlay" format="reference"/>
-
   <!-- Deprecated. -->
 
   <!-- A tonal variation of the primary color. -->

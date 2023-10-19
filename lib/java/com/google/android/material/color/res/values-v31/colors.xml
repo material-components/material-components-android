@@ -90,4 +90,14 @@
   <color name="material_dynamic_neutral_variant95">@color/m3_ref_palette_dynamic_neutral_variant95</color>
   <color name="material_dynamic_neutral_variant99">@color/m3_ref_palette_dynamic_neutral_variant99</color>
   <color name="material_dynamic_neutral_variant100">@color/m3_ref_palette_dynamic_neutral_variant100</color>
+
+  <!-- Dynamic color resources - Error -->
+  <color name="material_dynamic_color_light_error">@color/m3_sys_color_light_error</color>
+  <color name="material_dynamic_color_light_on_error">@color/m3_sys_color_light_on_error</color>
+  <color name="material_dynamic_color_light_error_container">@color/m3_sys_color_light_error_container</color>
+  <color name="material_dynamic_color_light_on_error_container">@color/m3_sys_color_light_on_error_container</color>
+  <color name="material_dynamic_color_dark_error">@color/m3_sys_color_dark_error</color>
+  <color name="material_dynamic_color_dark_on_error">@color/m3_sys_color_dark_on_error</color>
+  <color name="material_dynamic_color_dark_error_container">@color/m3_sys_color_dark_error_container</color>
+  <color name="material_dynamic_color_dark_on_error_container">@color/m3_sys_color_dark_on_error_container</color>
 </resources>
