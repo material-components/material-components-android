@@ -846,8 +846,28 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
         || boxBackgroundMode == BOX_BACKGROUND_NONE) {
       return;
     }
-    ViewCompat.setBackground(editText, getEditTextBoxBackground());
+    updateEditTextBoxBackground();
     boxBackgroundApplied = true;
+  }
+
+  private void updateEditTextBoxBackground() {
+    Drawable editTextBoxBackground = getEditTextBoxBackground();
+
+    // On pre-Lollipop, setting a LayerDrawable as a background always replaces the original view
+    // paddings with its own, so we preserve the original paddings and restore them after setting
+    // a new background.
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
+        && editTextBoxBackground instanceof LayerDrawable) {
+      int paddingLeft = editText.getPaddingLeft();
+      int paddingTop = editText.getPaddingTop();
+      int paddingRight = editText.getPaddingRight();
+      int paddingBottom = editText.getPaddingBottom();
+
+      ViewCompat.setBackground(editText, editTextBoxBackground);
+      editText.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
+    } else {
+      ViewCompat.setBackground(editText, editTextBoxBackground);
+    }
   }
 
   @Nullable
