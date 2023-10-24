@@ -2593,11 +2593,20 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         // children inside the ABL.
         child.getDrawingRect(ghostRect);
         ghostRect.offset(0, (int) -offsetY);
+        // If the ghost rect is completely outside the bounds of the drawing rect, make this child
+        // invisible. Otherwise, on API <= 24 a ghost rect that is outside of the drawing rect will
+        // be ignored and the child would be drawn with no clipping.
+        if (offsetY >= ghostRect.height()) {
+          child.setVisibility(INVISIBLE);
+        } else {
+          child.setVisibility(VISIBLE);
+        }
         ViewCompat.setClipBounds(child, ghostRect);
       } else {
         // Reset both the clip bounds and translationY of this view
         ViewCompat.setClipBounds(child, null);
         child.setTranslationY(0);
+        child.setVisibility(VISIBLE);
       }
     }
   }
