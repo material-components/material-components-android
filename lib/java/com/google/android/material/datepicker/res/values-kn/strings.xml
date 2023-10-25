@@ -43,7 +43,7 @@
   <string name="mtrl_picker_a11y_next_month">ಮುಂದಿನ ತಿಂಗಳಿಗೆ ಬದಲಿಸಿ</string>
   <string name="mtrl_picker_toggle_to_year_selection">ವರ್ಷದ ವೀಕ್ಷಣೆಗೆ ಬದಲಾಯಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
   <string name="mtrl_picker_toggle_to_day_selection">Calendar ವೀಕ್ಷಣೆಗೆ ಬದಲಾಯಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
-  <string name="mtrl_picker_day_of_week_column_header">ದಿನಗಳ ಕಾಲಮ್: %1$s</string>
+  <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">ಪ್ರಸ್ತುತ ಆಯ್ಕೆ: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">ಪ್ರಾರಂಭ ದಿನಾಂಕದ ಆಯ್ಕೆ: %1$s – ಅಂತಿಮ ದಿನಾಂಕದ ಆಯ್ಕೆ: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">ಯಾವುದೂ ಇಲ್ಲ</string>

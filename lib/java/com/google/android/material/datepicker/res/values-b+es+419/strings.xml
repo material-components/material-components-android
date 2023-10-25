@@ -16,7 +16,7 @@
 -->
 <resources>
   <string name="mtrl_picker_range_header_title">Selecciona un período</string>
-  <string name="mtrl_picker_date_header_title">Seleccionar fecha</string>
+  <string name="mtrl_picker_date_header_title">Selecciona una fecha</string>
   <string name="mtrl_picker_range_header_unselected">Fecha de inicio - fecha de finalización</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s - fecha de finalización</string>
   <string name="mtrl_picker_range_header_only_end_selected">Fecha de inicio - %1$s</string>
@@ -43,7 +43,7 @@
   <string name="mtrl_picker_a11y_next_month">Cambiar al mes siguiente</string>
   <string name="mtrl_picker_toggle_to_year_selection">Presiona para cambiar a la vista de año</string>
   <string name="mtrl_picker_toggle_to_day_selection">Presiona para cambiar a la vista de Calendario</string>
-  <string name="mtrl_picker_day_of_week_column_header">Columna de días: %1$s</string>
+  <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Selección actual: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Selección de fecha de inicio: %1$s – Selección de fecha de finalización: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">nada</string>

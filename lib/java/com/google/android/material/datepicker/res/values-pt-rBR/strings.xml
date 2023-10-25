@@ -37,13 +37,13 @@
   <string name="mtrl_picker_invalid_format">Formato inválido.</string>
   <string name="mtrl_picker_invalid_format_use">Usar %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Exemplo: %1$s</string>
-  <string name="mtrl_picker_toggle_to_calendar_input_mode">Alternar para o modo de entrada da agenda</string>
-  <string name="mtrl_picker_toggle_to_text_input_mode">Alternar para o modo de entrada de texto</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">Mudar para o modo de entrada da agenda</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode">Mudar para o modo de entrada de texto</string>
   <string name="mtrl_picker_a11y_prev_month">Alterar para o mês anterior</string>
   <string name="mtrl_picker_a11y_next_month">Alterar para o próximo mês</string>
   <string name="mtrl_picker_toggle_to_year_selection">Toque para mudar para a visualização \"Ano\"</string>
   <string name="mtrl_picker_toggle_to_day_selection">Toque para mudar para a visualização de agenda</string>
-  <string name="mtrl_picker_day_of_week_column_header">Coluna de dias: %1$s</string>
+  <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Seleção atual: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Seleção da data de início: %1$s. Seleção da data de término: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">nenhuma</string>

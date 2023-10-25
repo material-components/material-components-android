@@ -43,7 +43,7 @@
   <string name="mtrl_picker_a11y_next_month">Pakeisti į kitą mėnesį</string>
   <string name="mtrl_picker_toggle_to_year_selection">Palieskite, kad perjungtumėte į metų rodinį</string>
   <string name="mtrl_picker_toggle_to_day_selection">Palieskite, kad perjungtumėte į Kalendoriaus rodinį</string>
-  <string name="mtrl_picker_day_of_week_column_header">Dienų stulpelis: %1$s</string>
+  <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Dabartinis pasirinkimas: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Pradžios datos pasirinkimas: %1$s – Pabaigos datos pasirinkimas: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">nėra</string>

@@ -43,7 +43,7 @@
   <string name="mtrl_picker_a11y_next_month">আগামী মাসে যান</string>
   <string name="mtrl_picker_toggle_to_year_selection">বার্ষিক ভিউতে পাল্টাতে ট্যাপ করুন</string>
   <string name="mtrl_picker_toggle_to_day_selection">Calendar ভিউতে পাল্টাতে ট্যাপ করুন</string>
-  <string name="mtrl_picker_day_of_week_column_header">সপ্তাহের দিনগুলির কলাম: %1$s</string>
+  <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">বর্তমান বাছাই: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">চালু হওয়ার তারিখ বাছুন: %1$s – শেষ হওয়ার তারিখ বাছুন: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">কোনওটিই নয়</string>

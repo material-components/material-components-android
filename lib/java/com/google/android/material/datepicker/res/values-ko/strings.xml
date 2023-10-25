@@ -35,7 +35,7 @@
   <string name="mtrl_picker_invalid_range">날짜 범위가 잘못되었습니다.</string>
   <string name="mtrl_picker_out_of_range">%1$s은 범위를 벗어난 날짜입니다.</string>
   <string name="mtrl_picker_invalid_format">형식이 잘못되었습니다.</string>
-  <string name="mtrl_picker_invalid_format_use">%1$s 사용</string>
+  <string name="mtrl_picker_invalid_format_use">올바른 형식: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">예: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">캘린더 입력 모드로 전환</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">텍스트 입력 모드로 전환</string>
@@ -43,7 +43,7 @@
   <string name="mtrl_picker_a11y_next_month">다음 달로 변경</string>
   <string name="mtrl_picker_toggle_to_year_selection">탭하여 연도 뷰로 전환</string>
   <string name="mtrl_picker_toggle_to_day_selection">탭하여 캘린더 뷰로 전환</string>
-  <string name="mtrl_picker_day_of_week_column_header">요일 열: %1$s</string>
+  <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">현재 %1$s 선택됨</string>
   <string name="mtrl_picker_announce_current_range_selection">시작일 선택: %1$s, 종료일 선택: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">없음</string>

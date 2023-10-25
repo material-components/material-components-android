@@ -20,7 +20,7 @@
   <string name="mtrl_picker_range_header_unselected">Alguskuupäev – lõppkuupäev</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – lõppkuupäev</string>
   <string name="mtrl_picker_range_header_only_end_selected">Alguskuupäev – %1$s</string>
-  <string name="mtrl_picker_range_header_selected">%1$s–%2$s</string>
+  <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
   <string name="mtrl_picker_date_header_unselected">Valitud kuupäev</string>
   <string name="mtrl_picker_date_header_selected">%1$s</string>
   <string name="mtrl_picker_confirm">OK</string>
@@ -43,7 +43,7 @@
   <string name="mtrl_picker_a11y_next_month">Vaheta järgmisele kuule</string>
   <string name="mtrl_picker_toggle_to_year_selection">Puudutage aastavaatele lülitumiseks</string>
   <string name="mtrl_picker_toggle_to_day_selection">Puudutage kalendrivaatele lülitumiseks</string>
-  <string name="mtrl_picker_day_of_week_column_header">Päevade veerg: %1$s</string>
+  <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Praegune valik: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Alguskuupäeva valik: %1$s. Lõppkuupäeva valik: %2$s.</string>
   <string name="mtrl_picker_announce_current_selection_none">puudub</string>

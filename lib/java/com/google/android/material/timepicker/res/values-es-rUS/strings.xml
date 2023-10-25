@@ -17,7 +17,7 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
   <string name="material_timepicker_pm">p.m.</string>
   <string name="material_timepicker_am">a.m.</string>
-  <string name="material_timepicker_select_time">Seleccionar la hora</string>
+  <string name="material_timepicker_select_time">Selecciona una hora</string>
   <string name="material_timepicker_minute">Minuto</string>
   <string name="material_timepicker_hour">Hora</string>
   <string name="material_hour_suffix">%1$s en punto</string>

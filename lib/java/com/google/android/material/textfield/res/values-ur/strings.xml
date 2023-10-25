@@ -19,6 +19,6 @@
   <string name="character_counter_overflowed_content_description">حروف کی تعداد کی حد %2$d سے %1$d پہنچ گئی</string>
   <string name="password_toggle_content_description">پاس ورڈ دکھائیں</string>
   <string name="clear_text_end_icon_content_description">ٹیکسٹ صاف کریں</string>
-  <string name="exposed_dropdown_menu_content_description">ڈراپ ڈاؤن مینو دکھائیں</string>
+  <string name="exposed_dropdown_menu_content_description">ڈراپ ڈاؤن مینیو دکھائیں</string>
   <string name="error_icon_content_description">خرابی</string>
 </resources>
