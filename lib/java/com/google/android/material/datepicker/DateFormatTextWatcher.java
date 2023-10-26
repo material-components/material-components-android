@@ -123,7 +123,7 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
     }
 
     char nextCharHint = formatHint.charAt(s.length());
-    if (!Character.isDigit(nextCharHint)) {
+    if (!Character.isLetterOrDigit(nextCharHint)) {
       s.append(nextCharHint);
     }
   }
