@@ -672,6 +672,14 @@ public final class CollapsingTextHelper {
       int textAlpha = (int) (calculateFadeModeTextAlpha(fraction) * originalAlpha);
 
       textPaint.setAlpha(textAlpha);
+      // Workaround for API 31(+). Applying the shadow color for the painted text.
+      if (VERSION.SDK_INT >= VERSION_CODES.S) {
+        textPaint.setShadowLayer(
+            currentShadowRadius,
+            currentShadowDx,
+            currentShadowDy,
+            MaterialColors.compositeARGBWithAlpha(currentShadowColor, textPaint.getAlpha()));
+      }
     }
 
     ViewCompat.postInvalidateOnAnimation(view);
