@@ -19,6 +19,7 @@
   <style name="Theme.Material3.DayNight" parent="Theme.Material3.Light"/>
   <style name="Theme.Material3.DayNight.NoActionBar" parent="Theme.Material3.Light.NoActionBar"/>
   <style name="Theme.Material3.DynamicColors.DayNight" parent="Theme.Material3.DynamicColors.Light"/>
+  <style name="Theme.Material3.DynamicColors.DayNight.NoActionBar" parent="Theme.Material3.DynamicColors.Light.NoActionBar"/>
   <style name="Theme.Material3.DayNight.DialogWhenLarge" parent="Theme.Material3.Light.DialogWhenLarge"/>
 
   <!-- Material themes (day/night versions) for activities. -->

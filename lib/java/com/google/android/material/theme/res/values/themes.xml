@@ -44,6 +44,16 @@
 
   <style name="Theme.Material3.DynamicColors.Dark" parent="Theme.Material3.Dark"/>
 
+  <style name="Theme.Material3.DynamicColors.Light.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="Theme.Material3.DynamicColors.Dark.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
   <style name="Theme.Material3.Light.DialogWhenLarge" parent="Base.Theme.Material3.Light.DialogWhenLarge"/>
 
   <style name="Theme.Material3.Dark.DialogWhenLarge" parent="Base.Theme.Material3.Dark.DialogWhenLarge"/>
