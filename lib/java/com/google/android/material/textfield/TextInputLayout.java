@@ -440,6 +440,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
   @ColorInt private int disabledColor;
 
+  int originalEditTextMinimumHeight;
+
   // Only used for testing
   private boolean hintExpanded;
 
@@ -1562,6 +1564,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
         Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
     collapsingTextHelper.setExpandedTextGravity(editTextGravity);
 
+    originalEditTextMinimumHeight = ViewCompat.getMinimumHeight(editText);
+
     // Add a TextWatcher so that we know when the text input has changed.
     this.editText.addTextChangedListener(
         new TextWatcher() {
@@ -1573,6 +1577,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
             }
             if (placeholderEnabled) {
               updatePlaceholderText(s);
+            }
+            if (ViewCompat.getMinimumHeight(editText) != originalEditTextMinimumHeight) {
+              editText.setMinimumHeight(originalEditTextMinimumHeight);
             }
           }
 
