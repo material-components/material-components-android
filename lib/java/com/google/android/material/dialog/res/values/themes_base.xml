@@ -266,9 +266,10 @@
     <item name="elevationOverlayEnabled">true</item>
     <item name="elevationOverlayColor">@macro/m3_sys_color_light_surface_tint</item>
 
-    <!-- Dialog themes. -->
+    <!-- Dialog themes and scrim. -->
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+    <item name="android:backgroundDimAmount">@dimen/m3_comp_scrim_container_opacity</item>
 
     <!-- Picker styles and themes. -->
     <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar</item>
@@ -527,9 +528,10 @@
     <item name="elevationOverlayEnabled">true</item>
     <item name="elevationOverlayColor">@macro/m3_sys_color_dark_surface_tint</item>
 
-    <!-- Dialog themes. -->
+    <!-- Dialog themes and scrim. -->
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3.MaterialAlertDialog</item>
+    <item name="android:backgroundDimAmount">@dimen/m3_comp_scrim_container_opacity</item>
 
     <!-- Picker styles and themes. -->
     <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar</item>

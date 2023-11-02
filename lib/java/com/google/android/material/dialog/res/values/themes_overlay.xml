@@ -35,7 +35,7 @@
     <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
     <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
     <item name="buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
-    <item name="android:backgroundDimAmount">0.32</item>
+    <item name="android:backgroundDimAmount">@dimen/m3_comp_scrim_container_opacity</item>
     <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.MaterialComponents.Body.Text</item>
   </style>
 
@@ -74,6 +74,7 @@
   <style name="Base.ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog">
     <item name="materialButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
     <item name="android:windowAnimationStyle">@style/MaterialAlertDialog.Material3.Animation</item>
+    <item name="android:backgroundDimAmount">@dimen/m3_comp_scrim_container_opacity</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.Material3.Dialog"/>

@@ -30,4 +30,7 @@
   <macro name="m3_comp_dialog_supporting_text_type">?attr/textAppearanceBodyMedium</macro>
   <macro name="m3_comp_dialog_supporting_text_color">?attr/colorOnSurfaceVariant</macro>
 
+  <!-- Generated from token set (md.comp.scrim) in context (platform=android, audience=3p). -->
+  <item name="m3_comp_scrim_container_opacity" format="float" type="dimen">0.32</item>
+
 </resources>
