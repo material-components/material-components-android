@@ -49,6 +49,9 @@ public class SliderLabelBehaviorDemoFragment extends DemoFragment {
     setUpSlider(view, R.id.switch_button_3, R.id.slider_3);
     setUpSlider(view, R.id.switch_button_4, R.id.slider_4);
 
+    RangeSlider rangeSlider = view.findViewById(R.id.slider_4);
+    rangeSlider.getViewTreeObserver().addOnScrollChangedListener(rangeSlider::invalidate);
+
     return view;
   }
 
