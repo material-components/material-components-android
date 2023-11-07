@@ -31,33 +31,33 @@ brand color:
 
 <!-- Auto-generated accent color table starts. Do not edit below or remove this comment. -->
 
-Color Role                 | Android Attribute            | Light Theme Baseline (Dynamic) Color | Dark Theme Baseline (Dynamic) Color
--------------------------- | ---------------------------- | ------------------------------------ | -----------------------------------
-Primary                    | colorPrimary                 | primary40</br>(system_accent1_600)   | primary80</br>(system_accent1_200)
-On Primary                 | colorOnPrimary               | white</br>(system_accent1_0)         | primary20</br>(system_accent1_800)
-Primary Container          | colorPrimaryContainer        | primary90</br>(system_accent1_100)   | primary30</br>(system_accent1_700)
-On Primary Container       | colorOnPrimaryContainer      | primary10</br>(system_accent1_900)   | primary90</br>(system_accent1_100)
-Inverse Primary            | colorPrimaryInverse          | primary80</br>(system_accent1_200)   | primary40</br>(system_accent1_600)
-Primary Fixed              | colorPrimaryFixed            | primary90</br>(system_accent1_100)   | primary90</br>(system_accent1_100)
-Primary Fixed Dim          | colorPrimaryFixedDim         | primary80</br>(system_accent1_200)   | primary80</br>(system_accent1_200)
-On Primary Fixed           | colorOnPrimaryFixed          | primary10</br>(system_accent1_900)   | primary10</br>(system_accent1_900)
-On Primary Fixed Variant   | colorOnPrimaryFixedVariant   | primary30</br>(system_accent1_700)   | primary30</br>(system_accent1_700)
-Secondary                  | colorSecondary               | secondary40</br>(system_accent2_600) | secondary80</br>(system_accent2_200)
-On Secondary               | colorOnSecondary             | white</br>(system_accent2_0)         | secondary20</br>(system_accent2_800)
-Secondary Container        | colorSecondaryContainer      | secondary90</br>(system_accent2_100) | secondary30</br>(system_accent2_700)
-On Secondary Container     | colorOnSecondaryContainer    | secondary10</br>(system_accent2_900) | secondary90</br>(system_accent2_100)
-Secondary Fixed            | colorSecondaryFixed          | secondary90</br>(system_accent2_100) | secondary90</br>(system_accent2_100)
-Secondary Fixed Dim        | colorSecondaryFixedDim       | secondary80</br>(system_accent2_200) | secondary80</br>(system_accent2_200)
-On Secondary Fixed         | colorOnSecondaryFixed        | secondary10</br>(system_accent2_900) | secondary10</br>(system_accent2_900)
-On Secondary Fixed Variant | colorOnSecondaryFixedVariant | secondary30</br>(system_accent2_700) | secondary30</br>(system_accent2_700)
-Tertiary                   | colorTertiary                | tertiary40</br>(system_accent3_600)  | tertiary80</br>(system_accent3_200)
-On Tertiary                | colorOnTertiary              | white</br>(system_accent3_0)         | tertiary20</br>(system_accent3_800)
-Tertiary Container         | colorTertiaryContainer       | tertiary90</br>(system_accent3_100)  | tertiary30</br>(system_accent3_700)
-On Tertiary Container      | colorOnTertiaryContainer     | tertiary10</br>(system_accent3_900)  | tertiary90</br>(system_accent3_100)
-Tertiary Fixed             | colorTertiaryFixed           | tertiary90</br>(system_accent3_100)  | tertiary90</br>(system_accent3_100)
-Tertiary Fixed Dim         | colorTertiaryFixedDim        | tertiary80</br>(system_accent3_200)  | tertiary80</br>(system_accent3_200)
-On Tertiary Fixed          | colorOnTertiaryFixed         | tertiary10</br>(system_accent3_900)  | tertiary10</br>(system_accent3_900)
-On Tertiary Fixed Variant  | colorOnTertiaryFixedVariant  | tertiary30</br>(system_accent3_700)  | tertiary30</br>(system_accent3_700)
+Color Role                 | Android Attribute            | Light Baseline | Light Dynamic 31-33 | Light Dynamic 34+                   | Dark Baseline | Dark Dynamic 31-33 | Dark Dynamic 34+
+-------------------------- | ---------------------------- | -------------- | ------------------- | ----------------------------------- | ------------- | ------------------ | ----------------
+Primary                    | colorPrimary                 | primary40      | system_accent1_600  | system_primary_light                | primary80     | system_accent1_200 | system_primary_dark
+On Primary                 | colorOnPrimary               | white          | system_accent1_0    | system_on_primary_light             | primary20     | system_accent1_800 | system_on_primary_dark
+Primary Container          | colorPrimaryContainer        | primary90      | system_accent1_100  | system_primary_container_light      | primary30     | system_accent1_700 | system_primary_container_dark
+On Primary Container       | colorOnPrimaryContainer      | primary10      | system_accent1_900  | system_on_primary_container_light   | primary90     | system_accent1_100 | system_on_primary_container_dark
+Inverse Primary            | colorPrimaryInverse          | primary80      | system_accent1_200  | system_primary_dark                 | primary40     | system_accent1_600 | system_primary_light
+Primary Fixed              | colorPrimaryFixed            | primary90      | system_accent1_100  | system_primary_fixed                | primary90     | system_accent1_100 | system_primary_fixed
+Primary Fixed Dim          | colorPrimaryFixedDim         | primary80      | system_accent1_200  | system_primary_fixed_dim            | primary80     | system_accent1_200 | system_primary_fixed_dim
+On Primary Fixed           | colorOnPrimaryFixed          | primary10      | system_accent1_900  | system_on_primary_fixed             | primary10     | system_accent1_900 | system_on_primary_fixed
+On Primary Fixed Variant   | colorOnPrimaryFixedVariant   | primary30      | system_accent1_700  | system_on_primary_fixed_variant     | primary30     | system_accent1_700 | system_on_primary_fixed_variant
+Secondary                  | colorSecondary               | secondary40    | system_accent2_600  | system_secondary_light              | secondary80   | system_accent2_200 | system_secondary_dark
+On Secondary               | colorOnSecondary             | white          | system_accent2_0    | system_on_secondary_light           | secondary20   | system_accent2_800 | system_on_secondary_dark
+Secondary Container        | colorSecondaryContainer      | secondary90    | system_accent2_100  | system_secondary_container_light    | secondary30   | system_accent2_700 | system_secondary_container_dark
+On Secondary Container     | colorOnSecondaryContainer    | secondary10    | system_accent2_900  | system_on_secondary_container_light | secondary90   | system_accent2_100 | system_on_secondary_container_dark
+Secondary Fixed            | colorSecondaryFixed          | secondary90    | system_accent2_100  | system_secondary_fixed              | secondary90   | system_accent2_100 | system_secondary_fixed
+Secondary Fixed Dim        | colorSecondaryFixedDim       | secondary80    | system_accent2_200  | system_secondary_fixed_dim          | secondary80   | system_accent2_200 | system_secondary_fixed_dim
+On Secondary Fixed         | colorOnSecondaryFixed        | secondary10    | system_accent2_900  | system_on_secondary_fixed           | secondary10   | system_accent2_900 | system_on_secondary_fixed
+On Secondary Fixed Variant | colorOnSecondaryFixedVariant | secondary30    | system_accent2_700  | system_on_secondary_fixed_variant   | secondary30   | system_accent2_700 | system_on_secondary_fixed_variant
+Tertiary                   | colorTertiary                | tertiary40     | system_accent3_600  | system_tertiary_light               | tertiary80    | system_accent3_200 | system_tertiary_dark
+On Tertiary                | colorOnTertiary              | white          | system_accent3_0    | system_on_tertiary_light            | tertiary20    | system_accent3_800 | system_on_tertiary_dark
+Tertiary Container         | colorTertiaryContainer       | tertiary90     | system_accent3_100  | system_tertiary_container_light     | tertiary30    | system_accent3_700 | system_tertiary_container_dark
+On Tertiary Container      | colorOnTertiaryContainer     | tertiary10     | system_accent3_900  | system_on_tertiary_container_light  | tertiary90    | system_accent3_100 | system_on_tertiary_container_dark
+Tertiary Fixed             | colorTertiaryFixed           | tertiary90     | system_accent3_100  | system_tertiary_fixed               | tertiary90    | system_accent3_100 | system_tertiary_fixed
+Tertiary Fixed Dim         | colorTertiaryFixedDim        | tertiary80     | system_accent3_200  | system_tertiary_fixed_dim           | tertiary80    | system_accent3_200 | system_tertiary_fixed_dim
+On Tertiary Fixed          | colorOnTertiaryFixed         | tertiary10     | system_accent3_900  | system_on_tertiary_fixed            | tertiary10    | system_accent3_900 | system_on_tertiary_fixed
+On Tertiary Fixed Variant  | colorOnTertiaryFixedVariant  | tertiary30     | system_accent3_700  | system_on_tertiary_fixed_variant    | tertiary30    | system_accent3_700 | system_on_tertiary_fixed_variant
 
 <!-- Auto-generated accent color table ends. Do not edit below or remove this comment. -->
 
@@ -70,29 +70,29 @@ combinations. These additional color attributes are as follows:
 
 <!-- Auto-generated additional color table starts. Do not edit below or remove this comment. -->
 
-Color Role                | Android Attribute            | Light Theme Baseline (Dynamic) Color                     | Dark Theme Baseline (Dynamic) Color
-------------------------- | ---------------------------- | -------------------------------------------------------- | -----------------------------------
-Error                     | colorError                   | error40</br>(Same)                                       | error80</br>(Same)
-On Error                  | colorOnError                 | white</br>(Same)                                         | error20</br>(Same)
-Error Container           | colorErrorContainer          | error90</br>(Same)                                       | error30</br>(Same)
-On Error Container        | colorOnErrorContainer        | error10</br>(Same)                                       | error90</br>(Same)
-Outline                   | colorOutline                 | neutral_variant50</br>(system_neutral2_500)              | neutral_variant60</br>(system_neutral2_400)
-Outline Variant           | colorOutlineVariant          | neutral_variant80</br>(system_neutral2_200)              | neutral_variant30</br>(system_neutral2_700)
-Background                | android:colorBackground      | neutral98</br>(m3_ref_palette_dynamic_neutral_variant98) | neutral6</br>(m3_ref_palette_dynamic_neutral_variant6)
-On Background             | colorOnBackground            | neutral10</br>(system_neutral1_900)                      | neutral90</br>(system_neutral1_100)
-Surface                   | colorSurface                 | neutral98</br>(m3_ref_palette_dynamic_neutral_variant98) | neutral6</br>(m3_ref_palette_dynamic_neutral_variant6)
-On Surface                | colorOnSurface               | neutral10</br>(system_neutral1_900)                      | neutral90</br>(system_neutral1_100)
-Surface Variant           | colorSurfaceVariant          | neutral_variant90</br>(system_neutral2_100)              | neutral_variant30</br>(system_neutral2_700)
-On Surface Variant        | colorOnSurfaceVariant        | neutral_variant30</br>(system_neutral2_700)              | neutral_variant80</br>(system_neutral2_200)
-Inverse Surface           | colorSurfaceInverse          | neutral20</br>(system_neutral1_800)                      | neutral90</br>(system_neutral1_100)
-Inverse On Surface        | colorOnSurfaceInverse        | neutral95</br>(system_neutral1_50)                       | neutral20</br>(system_neutral1_800)
-Surface Bright            | colorSurfaceBright           | neutral98</br>(m3_ref_palette_dynamic_neutral_variant98) | neutral24</br>(m3_ref_palette_dynamic_neutral_variant24)
-Surface Dim               | colorSurfaceDim              | neutral87</br>(m3_ref_palette_dynamic_neutral_variant87) | neutral6</br>(m3_ref_palette_dynamic_neutral_variant6)
-Surface Container         | colorSurfaceContainer        | neutral94</br>(m3_ref_palette_dynamic_neutral_variant94) | neutral12</br>(m3_ref_palette_dynamic_neutral_variant12)
-Surface Container Low     | colorSurfaceContainerLow     | neutral96</br>(m3_ref_palette_dynamic_neutral_variant96) | neutral10</br>(system_neutral2_900)
-Surface Container Lowest  | colorSurfaceContainerLowest  | white</br>(system_neutral2_0)                            | neutral4</br>(m3_ref_palette_dynamic_neutral_variant4)
-Surface Container High    | colorSurfaceContainerHigh    | neutral92</br>(m3_ref_palette_dynamic_neutral_variant92) | neutral17</br>(m3_ref_palette_dynamic_neutral_variant17)
-Surface Container Highest | colorSurfaceContainerHighest | neutral90</br>(system_neutral2_100)                      | neutral22</br>(m3_ref_palette_dynamic_neutral_variant22)
+Color Role                | Android Attribute            | Light Baseline    | Light Dynamic 31-33                      | Light Dynamic 34+                      | Dark Baseline     | Dark Dynamic 31-33                       | Dark Dynamic 34+
+------------------------- | ---------------------------- | ----------------- | ---------------------------------------- | -------------------------------------- | ----------------- | ---------------------------------------- | ----------------
+Error                     | colorError                   | error40           | error40                                  | system_error_light                     | error80           | error80                                  | system_error_dark
+On Error                  | colorOnError                 | white             | white                                    | system_on_error_light                  | error20           | error20                                  | system_on_error_dark
+Error Container           | colorErrorContainer          | error90           | error90                                  | system_error_container_light           | error30           | error30                                  | system_error_container_dark
+On Error Container        | colorOnErrorContainer        | error10           | error10                                  | system_on_error_container_light        | error90           | error90                                  | system_on_error_container_dark
+Outline                   | colorOutline                 | neutral_variant50 | system_neutral2_500                      | system_outline_light                   | neutral_variant60 | system_neutral2_400                      | system_outline_dark
+Outline Variant           | colorOutlineVariant          | neutral_variant80 | system_neutral2_200                      | system_outline_variant_light           | neutral_variant30 | system_neutral2_700                      | system_outline_variant_dark
+Background                | android:colorBackground      | neutral98         | m3_ref_palette_dynamic_neutral_variant98 | system_background_light                | neutral6          | m3_ref_palette_dynamic_neutral_variant6  | system_background_dark
+On Background             | colorOnBackground            | neutral10         | system_neutral1_900                      | system_on_background_light             | neutral90         | system_neutral1_100                      | system_on_background_dark
+Surface                   | colorSurface                 | neutral98         | m3_ref_palette_dynamic_neutral_variant98 | system_surface_light                   | neutral6          | m3_ref_palette_dynamic_neutral_variant6  | system_surface_dark
+On Surface                | colorOnSurface               | neutral10         | system_neutral1_900                      | system_on_surface_light                | neutral90         | system_neutral1_100                      | system_on_surface_dark
+Surface Variant           | colorSurfaceVariant          | neutral_variant90 | system_neutral2_100                      | system_surface_variant_light           | neutral_variant30 | system_neutral2_700                      | system_surface_variant_dark
+On Surface Variant        | colorOnSurfaceVariant        | neutral_variant30 | system_neutral2_700                      | system_on_surface_variant_light        | neutral_variant80 | system_neutral2_200                      | system_on_surface_variant_dark
+Inverse Surface           | colorSurfaceInverse          | neutral20         | system_neutral1_800                      | system_surface_dark                    | neutral90         | system_neutral1_100                      | system_surface_light
+Inverse On Surface        | colorOnSurfaceInverse        | neutral95         | system_neutral1_50                       | system_on_surface_dark                 | neutral20         | system_neutral1_800                      | system_on_surface_light
+Surface Bright            | colorSurfaceBright           | neutral98         | m3_ref_palette_dynamic_neutral_variant98 | system_surface_bright_light            | neutral24         | m3_ref_palette_dynamic_neutral_variant24 | system_surface_bright_dark
+Surface Dim               | colorSurfaceDim              | neutral87         | m3_ref_palette_dynamic_neutral_variant87 | system_surface_dim_light               | neutral6          | m3_ref_palette_dynamic_neutral_variant6  | system_surface_dim_dark
+Surface Container         | colorSurfaceContainer        | neutral94         | m3_ref_palette_dynamic_neutral_variant94 | system_surface_container_light         | neutral12         | m3_ref_palette_dynamic_neutral_variant12 | system_surface_container_dark
+Surface Container Low     | colorSurfaceContainerLow     | neutral96         | m3_ref_palette_dynamic_neutral_variant96 | system_surface_container_low_light     | neutral10         | system_neutral2_900                      | system_surface_container_low_dark
+Surface Container Lowest  | colorSurfaceContainerLowest  | white             | system_neutral2_0                        | system_surface_container_lowest_light  | neutral4          | m3_ref_palette_dynamic_neutral_variant4  | system_surface_container_lowest_dark
+Surface Container High    | colorSurfaceContainerHigh    | neutral92         | m3_ref_palette_dynamic_neutral_variant92 | system_surface_container_high_light    | neutral17         | m3_ref_palette_dynamic_neutral_variant17 | system_surface_container_high_dark
+Surface Container Highest | colorSurfaceContainerHighest | neutral90         | system_neutral2_100                      | system_surface_container_highest_light | neutral22         | m3_ref_palette_dynamic_neutral_variant22 | system_surface_container_highest_dark
 
 <!-- Auto-generated additional color table ends. Do not edit below or remove this comment. -->
 
