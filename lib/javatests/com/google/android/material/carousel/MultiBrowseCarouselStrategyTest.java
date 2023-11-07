@@ -38,7 +38,7 @@ public class MultiBrowseCarouselStrategyTest {
 
   @Test
   public void testOnFirstItemMeasuredWithMargins_createsKeylineStateWithCorrectItemSize() {
-    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy config = setupStrategy();
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 200, 200);
 
     KeylineState keylineState =
@@ -48,7 +48,7 @@ public class MultiBrowseCarouselStrategyTest {
 
   @Test
   public void testItemLargerThanContainer_resizesToFit() {
-    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy config = setupStrategy();
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 400, 400);
 
     KeylineState keylineState =
@@ -59,7 +59,7 @@ public class MultiBrowseCarouselStrategyTest {
   @Test
   public void testItemLargerThanContainerSize_defaultsToOneLargeOneSmall() {
     Carousel carousel = createCarouselWithWidth(100);
-    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy config = setupStrategy();
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 400, 400);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
@@ -88,7 +88,7 @@ public class MultiBrowseCarouselStrategyTest {
     int carouselWidth = (int) (minSmallItemSize * 1.5f);
     Carousel carousel = createCarouselWithWidth(carouselWidth);
 
-    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy config = setupStrategy();
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
 
     assertThat(keylineState.getKeylines()).hasSize(3);
@@ -99,7 +99,7 @@ public class MultiBrowseCarouselStrategyTest {
   public void testKnownArrangementWithMediumItem_correctlyCalculatesKeylineLocations() {
     float[] locOffsets = new float[] {-.5F, 100F, 300F, 464F, 556F, 584.5F};
 
-    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy config = setupStrategy();
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 200, 200);
 
     List<Keyline> keylines =
@@ -113,7 +113,7 @@ public class MultiBrowseCarouselStrategyTest {
   public void testKnownArrangementWithoutMediumItem_correctlyCalculatesKeylineLocations() {
     float[] locOffsets = new float[] {-.5F, 100F, 300F, 428F, 456.5F};
 
-    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy config = setupStrategy();
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 200, 200);
 
     List<Keyline> keylines =
@@ -133,7 +133,7 @@ public class MultiBrowseCarouselStrategyTest {
     // the medium item being able to flex to fit the space.
     int carouselSize = (int) (largeSize + mediumSize + smallSize + maxMediumAdjustment);
 
-    MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy strategy = setupStrategy();
     View view =
         createViewWithSize(
             ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
@@ -155,7 +155,7 @@ public class MultiBrowseCarouselStrategyTest {
     float maxMediumAdjustment = mediumSize * .1F;
     int carouselSize = (int) (largeSize + mediumSize + smallSize - maxMediumAdjustment);
 
-    MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy strategy = setupStrategy();
     View view =
         createViewWithSize(
             ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
@@ -181,7 +181,7 @@ public class MultiBrowseCarouselStrategyTest {
     float minSmallSize = view.getResources().getDimension(R.dimen.m3_carousel_small_item_size_min);
     int carouselSize = (int) (largeSize + mediumSize + minSmallSize);
 
-    MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy strategy = setupStrategy();
     KeylineState keylineState =
         strategy.onFirstChildMeasuredWithMargins(createCarouselWithWidth(carouselSize), view);
 
@@ -204,7 +204,7 @@ public class MultiBrowseCarouselStrategyTest {
         view.getResources().getDimension(R.dimen.m3_carousel_small_item_size_max);
     int carouselSize = (int) (largeSize + mediumSize + maxSmallSize);
 
-    MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy strategy = setupStrategy();
     KeylineState keylineState =
         strategy.onFirstChildMeasuredWithMargins(createCarouselWithWidth(carouselSize), view);
 
@@ -225,10 +225,11 @@ public class MultiBrowseCarouselStrategyTest {
             ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
     int carouselSize = (int) (largeSize + mediumSize * 2 + smallSize * 2);
 
-    MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy strategy = setupStrategy();
     List<Keyline> keylines =
         strategy.onFirstChildMeasuredWithMargins(
             createCarousel(
+                carouselSize,
                 carouselSize,
                 CarouselLayoutManager.HORIZONTAL,
                 CarouselLayoutManager.ALIGNMENT_CENTER), view).getKeylines();
@@ -242,7 +243,7 @@ public class MultiBrowseCarouselStrategyTest {
 
   @Test
   public void testLessItemsThanKeylines_updatesStrategy() {
-    MultiBrowseCarouselStrategy config = new MultiBrowseCarouselStrategy();
+    MultiBrowseCarouselStrategy config = setupStrategy();
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 200, 200);
 
     // With a carousel of size 500 and large item size of 200, the keylines will be
@@ -274,5 +275,35 @@ public class MultiBrowseCarouselStrategyTest {
     // {xsmall, large, large, medium, xsmall} because even with only 2 items, we still want a medium
     // keyline so the carousel is not just large items.
     assertThat(keylineState.getKeylines()).hasSize(5);
+  }
+
+  @Test
+  public void testSettingSmallRange_updatesSmallSize() {
+    View view =
+        createViewWithSize(
+            ApplicationProvider.getApplicationContext(), 100, 100);
+
+    MultiBrowseCarouselStrategy strategy = setupStrategy();
+    KeylineState keylineState =
+        strategy.onFirstChildMeasuredWithMargins(createCarouselWithWidth(400), view);
+
+    List<Keyline> keylines = keylineState.getKeylines();
+    float originalSmallSize = keylines.get(keylines.size() - 2).maskedItemSize;
+
+    strategy.setSmallItemSizeMin(20);
+    strategy.setSmallItemSizeMax(20);
+    keylineState =
+        strategy.onFirstChildMeasuredWithMargins(createCarouselWithWidth(400), view);
+    keylines = keylineState.getKeylines();
+
+    assertThat(originalSmallSize).isNotEqualTo(20f);
+    // Small items should be adjusted to the small size
+    assertThat(keylines.get(keylines.size() - 2).maskedItemSize).isEqualTo(20f);
+  }
+
+  private MultiBrowseCarouselStrategy setupStrategy() {
+    MultiBrowseCarouselStrategy strategy = new MultiBrowseCarouselStrategy();
+    strategy.initialize(ApplicationProvider.getApplicationContext());
+    return strategy;
   }
 }

@@ -17,8 +17,6 @@
 package com.google.android.material.carousel;
 
 import static com.google.android.material.carousel.CarouselStrategyHelper.createKeylineState;
-import static com.google.android.material.carousel.CarouselStrategyHelper.getSmallSizeMax;
-import static com.google.android.material.carousel.CarouselStrategyHelper.getSmallSizeMin;
 import static com.google.android.material.carousel.CarouselStrategyHelper.maxValue;
 import static java.lang.Math.ceil;
 import static java.lang.Math.floor;
@@ -74,8 +72,9 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
       measuredChildSize = child.getMeasuredWidth();
     }
 
-    float smallChildSizeMin = getSmallSizeMin(child.getContext()) + childMargins;
-    float smallChildSizeMax = getSmallSizeMax(child.getContext()) + childMargins;
+    float smallChildSizeMin = getSmallItemSizeMin() + childMargins;
+    float smallChildSizeMax = getSmallItemSizeMax() + childMargins;
+    smallChildSizeMax = max(smallChildSizeMax, smallChildSizeMin);
 
     float targetLargeChildSize = min(measuredChildSize + childMargins, availableSpace);
     // Ideally we would like to create a balanced arrangement where a small item is 1/3 the size of
@@ -85,8 +84,8 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
     float targetSmallChildSize =
         MathUtils.clamp(
             measuredChildSize / 3F + childMargins,
-            getSmallSizeMin(child.getContext()) + childMargins,
-            getSmallSizeMax(child.getContext()) + childMargins);
+            smallChildSizeMin + childMargins,
+            smallChildSizeMax + childMargins);
     float targetMediumChildSize = (targetLargeChildSize + targetSmallChildSize) / 2F;
 
     // Create arrays representing the possible count of small, medium, and large items. These are

@@ -16,6 +16,7 @@
 
 package com.google.android.material.carousel;
 
+import android.content.Context;
 import android.view.View;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
@@ -25,6 +26,17 @@ import androidx.annotation.NonNull;
  * along a scrolling axis.
  */
 public abstract class CarouselStrategy {
+
+  private float smallSizeMin;
+
+  private float smallSizeMax;
+
+  void initialize(Context context) {
+    smallSizeMin =
+        smallSizeMin > 0 ? smallSizeMin : CarouselStrategyHelper.getSmallSizeMin(context);
+    smallSizeMax =
+        smallSizeMax > 0 ? smallSizeMax : CarouselStrategyHelper.getSmallSizeMax(context);
+  }
 
   /**
    * Calculates a keyline arrangement and returns a constructed {@link KeylineState}.
@@ -138,5 +150,46 @@ public abstract class CarouselStrategy {
     // TODO: b/301332183 - Update existing strategies with logic on when to refresh keyline
     // state based on item count.
     return false;
+  }
+
+  /**
+   * Sets the minimum size for the small items.
+   *
+   * <p> This method is a no-op for strategies that do not have small items.
+   *
+   * <p> Note that setting this size may impact other sizes in the carousel
+   * in order to fit the carousel strategy configuration.
+   * @param minSmallItemSize size to set the small item to.
+   */
+  public void setSmallItemSizeMin(float minSmallItemSize) {
+    smallSizeMin = minSmallItemSize;
+  }
+
+  /**
+   * Sets the maximum size for the small items.
+   *
+   * <p> This method is a no-op for strategies that do not have small items.
+   *
+   * <p> Note that setting this size may impact other sizes in the carousel
+   * in order to fit the carousel strategy configuration.
+   * @param maxSmallItemSize size to set the small item to.
+   */
+  public void setSmallItemSizeMax(float maxSmallItemSize) {
+    smallSizeMax = maxSmallItemSize;
+  }
+
+  /**
+   * Returns the minimum small item size value.
+   */
+  public float getSmallItemSizeMin() {
+    return smallSizeMin;
+  }
+
+
+  /**
+   * Returns the maximum small item size value.
+   */
+  public float getSmallItemSizeMax() {
+    return smallSizeMax;
   }
 }

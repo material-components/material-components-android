@@ -40,7 +40,7 @@ public class HeroCarouselStrategyTest {
   @Test
   public void testItemSameAsContainerSize_showsOneLargeOneSmall() {
     Carousel carousel = createCarouselWithWidth(400);
-    HeroCarouselStrategy config = new HeroCarouselStrategy();
+    HeroCarouselStrategy config = setupStrategy();
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 400, 400);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
@@ -61,7 +61,7 @@ public class HeroCarouselStrategyTest {
   @Test
   public void testItemSmallerThanContainer_showsOneLargeOneSmall() {
     Carousel carousel = createCarouselWithWidth(400);
-    HeroCarouselStrategy config = new HeroCarouselStrategy();
+    HeroCarouselStrategy config = setupStrategy();
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 100, 400);
 
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
@@ -89,7 +89,7 @@ public class HeroCarouselStrategyTest {
     int carouselWidth = (int) (minSmallItemSize * 1.5f);
     Carousel carousel = createCarouselWithWidth(carouselWidth);
 
-    HeroCarouselStrategy config = new HeroCarouselStrategy();
+    HeroCarouselStrategy config = setupStrategy();
     KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
 
     assertThat(keylineState.getKeylines()).hasSize(3);
@@ -100,7 +100,7 @@ public class HeroCarouselStrategyTest {
   public void testKnownArrangement_correctlyCalculatesKeylineLocations() {
     View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 400, 200);
 
-    HeroCarouselStrategy config = new HeroCarouselStrategy();
+    HeroCarouselStrategy config = setupStrategy();
     float extraSmallSize =
         view.getResources().getDimension(R.dimen.m3_carousel_gone_size);
     float minSmallItemSize =
@@ -132,7 +132,7 @@ public class HeroCarouselStrategyTest {
     layoutParams.leftMargin += 50;
     layoutParams.rightMargin += 30;
 
-    HeroCarouselStrategy config = new HeroCarouselStrategy();
+    HeroCarouselStrategy config = setupStrategy();
     float extraSmallSize =
         view.getResources().getDimension(R.dimen.m3_carousel_gone_size);
     float minSmallItemSize =
@@ -167,13 +167,17 @@ public class HeroCarouselStrategyTest {
             ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
     int carouselSize = (int) (largeSize + smallSize * 2);
 
-    HeroCarouselStrategy strategy = new HeroCarouselStrategy();
+    HeroCarouselStrategy strategy = setupStrategy();
     List<Keyline> keylines =
-        strategy.onFirstChildMeasuredWithMargins(
-            createCarousel(
-                carouselSize,
-                CarouselLayoutManager.HORIZONTAL,
-                CarouselLayoutManager.ALIGNMENT_CENTER), view).getKeylines();
+        strategy
+            .onFirstChildMeasuredWithMargins(
+                createCarousel(
+                    carouselSize,
+                    carouselSize,
+                    CarouselLayoutManager.HORIZONTAL,
+                    CarouselLayoutManager.ALIGNMENT_CENTER),
+                view)
+            .getKeylines();
 
     float[] locOffsets = new float[] {-.5F, 20F, 100F, 180F, 200.5F};
 
@@ -192,7 +196,7 @@ public class HeroCarouselStrategyTest {
             ApplicationProvider.getApplicationContext(), (int) largeSize, (int) largeSize);
     int carouselSize = (int) (largeSize + smallSize * 2);
 
-    HeroCarouselStrategy strategy = new HeroCarouselStrategy();
+    HeroCarouselStrategy strategy = setupStrategy();
     List<Keyline> keylines =
         strategy
             .onFirstChildMeasuredWithMargins(
@@ -211,5 +215,54 @@ public class HeroCarouselStrategyTest {
     for (int i = 0; i < keylines.size(); i++) {
       assertThat(keylines.get(i).locOffset).isEqualTo(locOffsets[i]);
     }
+  }
+
+  @Test
+  public void testSettingSmallRange_setsToMinSize() {
+    Carousel carousel = createCarouselWithWidth(400);
+    HeroCarouselStrategy config = setupStrategy();
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 400, 400);
+
+    float minSmallItemSize = 20;
+    config.setSmallItemSizeMin(minSmallItemSize);
+    config.setSmallItemSizeMax(1234);
+    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
+
+    // A fullscreen layout should be [xSmall-large-small-xSmall] where the xSmall items are
+    // outside the bounds of the carousel container and the large center item takes up the
+    // containers full width.
+    assertThat(keylineState.getKeylines()).hasSize(4);
+    assertThat(keylineState.getKeylines().get(0).locOffset).isLessThan(0F);
+    assertThat(Iterables.getLast(keylineState.getKeylines()).locOffset)
+        .isGreaterThan((float) carousel.getContainerWidth());
+    assertThat(keylineState.getKeylines().get(1).mask).isEqualTo(0F);
+    assertThat(keylineState.getKeylines().get(2).maskedItemSize).isEqualTo(minSmallItemSize);
+  }
+
+  @Test
+  public void testLargeCarouselWidth_correctlyCalculatesKeylineLocations() {
+    int width = 400;
+    int height = 100;
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), width, height);
+
+    HeroCarouselStrategy config = setupStrategy();
+
+    List<Keyline> keylines =
+        config
+            .onFirstChildMeasuredWithMargins(
+                createCarousel(
+                    width,
+                    height,
+                    CarouselLayoutManager.HORIZONTAL,
+                    CarouselLayoutManager.ALIGNMENT_START),
+                view)
+            .getKeylines();
+    assertThat(keylines.get(1).maskedItemSize).isEqualTo(height * 2f);
+  }
+
+  private HeroCarouselStrategy setupStrategy() {
+    HeroCarouselStrategy strategy = new HeroCarouselStrategy();
+    strategy.initialize(ApplicationProvider.getApplicationContext());
+    return strategy;
   }
 }

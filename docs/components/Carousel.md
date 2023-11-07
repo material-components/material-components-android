@@ -197,16 +197,18 @@ the carousel size.
 
 Note that in order to use these attributes on the RecyclerView, CarouselLayoutManager must be set through the RecyclerView attribute `app:layoutManager`.
 
-Element         | Attribute               | Related method(s)      | Default value
---------------- | ----------------------- | ---------------------- | -------------
-**Orientation** | `android:orientation`   | `setOrientation`       | `vertical` (if layoutManager has been set through xml)
-**Alignment**   | `app:carouselAlignment` | `setCarouselAlignment` | `start`
+Element             | Attribute               | Related method(s)      | Default value
+------------------- |-------------------------|------------------------| -------------
+**Orientation**     | `android:orientation`   | `setOrientation`       | `vertical` (if layoutManager has been set through xml)
+**Alignment**       | `app:carouselAlignment` | `setCarouselAlignment` | `start`
 
 ## Customizing carousel
 
 ### Item size
 
 The main means of changing the look of carousel is by setting the height of your `RecyclerView` and width of your item's `MaskableFrameLayout`. The width set in the item layout is used by `CarouselLayoutManager` to determine the size items should be when they are fully unmasked. This width needs to be set to a specific dp value and cannot be set to `wrap_content`. `CarouselLayoutManager` tries to then use a size as close to your item layout's specified width as possible but may increase or decrease this size depending on the `RecyclerView`'s available space. This is needed to create a pleasing arrangement of items which fit within the `RecyclerView`'s bounds. Additionally, `CarouselLayoutManager` will only read and use the width set on the first list item. All remaining items will be laid out using this first item's width.
+
+The small item size range may be customized for strategies that have small items by calling `setSmallItemSizeMin`/`setSmallItemSizeMax`. Note that these strategies choose the small item size within the range that alters the fully unmasked item size as little as possible, and may not correspond with the width of the carousel. For strategies that do not use small items, these methods are a no-op.
 
 ### Item shape
 

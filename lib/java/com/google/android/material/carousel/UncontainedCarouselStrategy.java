@@ -17,7 +17,6 @@
 package com.google.android.material.carousel;
 
 import static com.google.android.material.carousel.CarouselStrategyHelper.getExtraSmallSize;
-import static com.google.android.material.carousel.CarouselStrategyHelper.getSmallSizeMin;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -78,7 +77,7 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
 
     if (isCenter) {
       remainingSpace /= 2F;
-      float smallChildSizeMin = getSmallSizeMin(child.getContext()) + childMargins;
+      float smallChildSizeMin = getSmallItemSizeMin() + childMargins;
       // Ideally we would like to choose a size 3x the remaining space such that 2/3 are cut off.
       // If this is bigger than the large child size however, we limit the child size to the large
       // child size.

@@ -242,6 +242,7 @@ public class CarouselLayoutManager extends LayoutManager
   @Override
   public void onAttachedToWindow(RecyclerView view) {
     super.onAttachedToWindow(view);
+    carouselStrategy.initialize(view.getContext());
     refreshKeylineState();
     view.addOnLayoutChangeListener(recyclerViewSizeChangeListener);
   }

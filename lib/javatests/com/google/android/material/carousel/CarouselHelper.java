@@ -236,17 +236,17 @@ class CarouselHelper {
    * Creates a {@link Carousel} with a specified {@code size} for both width and height and the
    * specified alignment and orientation.
    */
-  static Carousel createCarousel(int size, int orientation, int alignment) {
+  static Carousel createCarousel(int width, int height, int orientation, int alignment) {
     return new Carousel() {
 
       @Override
       public int getContainerWidth() {
-        return size;
+        return width;
       }
 
       @Override
       public int getContainerHeight() {
-        return size;
+        return height;
       }
 
       @Override
