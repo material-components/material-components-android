@@ -17,6 +17,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="io.material.catalog.feature.tests">
 
+  <uses-sdk android:minSdkVersion="19" />
+
   <application>
     <uses-library android:name="android.test.runner" />
   </application>
@@ -24,6 +26,4 @@
   <instrumentation
     android:name="androidx.test.runner.AndroidJUnitRunner"
     android:targetPackage="io.material.catalog" />
-
-  <uses-sdk android:minSdkVersion="14" />
 </manifest>

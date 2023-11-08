@@ -18,7 +18,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   package="io.material.catalog.color.tests">
 
-  <uses-sdk android:minSdkVersion="14" />
+  <uses-sdk android:minSdkVersion="19" />
 
   <application>
     <uses-library android:name="android.test.runner" />

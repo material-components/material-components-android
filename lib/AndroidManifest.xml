@@ -16,7 +16,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.google.android.material">
 
-  <uses-sdk android:minSdkVersion="14"/>
+  <uses-sdk android:minSdkVersion="19"/>
 
   <application/>
 </manifest>
