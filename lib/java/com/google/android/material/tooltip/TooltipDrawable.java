@@ -101,6 +101,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
   private int minWidth;
   private int minHeight;
   private int layoutMargin;
+  private boolean showMarker;
   private int arrowSize;
   private int locationOnScreenX;
 
@@ -153,8 +154,13 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
             context, attrs, R.styleable.Tooltip, defStyleAttr, defStyleRes);
 
     arrowSize = context.getResources().getDimensionPixelSize(R.dimen.mtrl_tooltip_arrowSize);
-    setShapeAppearanceModel(
-        getShapeAppearanceModel().toBuilder().setBottomEdge(createMarkerEdge()).build());
+    showMarker = a.getBoolean(R.styleable.Tooltip_showMarker, true);
+    if (showMarker) {
+      setShapeAppearanceModel(
+          getShapeAppearanceModel().toBuilder().setBottomEdge(createMarkerEdge()).build());
+    } else {
+      arrowSize = 0;
+    }
 
     setText(a.getText(R.styleable.Tooltip_android_text));
     TextAppearance textAppearance = MaterialResources.getTextAppearance(
@@ -443,8 +449,10 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
 
     // Update the marker edge since the location of the marker arrow can move depending on the the
     // bounds.
-    setShapeAppearanceModel(
-        getShapeAppearanceModel().toBuilder().setBottomEdge(createMarkerEdge()).build());
+    if (showMarker) {
+      setShapeAppearanceModel(
+          getShapeAppearanceModel().toBuilder().setBottomEdge(createMarkerEdge()).build());
+    }
   }
 
   @Override

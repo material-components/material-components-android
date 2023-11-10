@@ -23,9 +23,12 @@
   <public name="labelStyle" type="attr" />
   <public name="thumbColor" type="attr" />
   <public name="thumbElevation" type="attr" />
+  <public name="thumbHeight" type="attr" />
   <public name="thumbRadius" type="attr" />
   <public name="thumbStrokeColor" type="attr" />
   <public name="thumbStrokeWidth" type="attr" />
+  <public name="thumbTrackGapSize" type="attr" />
+  <public name="thumbWidth" type="attr" />
   <public name="tickColor" type="attr" />
   <public name="tickColorActive" type="attr" />
   <public name="tickColorInactive" type="attr" />
@@ -35,6 +38,8 @@
   <public name="trackColorActive" type="attr" />
   <public name="trackColorInactive" type="attr" />
   <public name="trackHeight" type="attr" />
+  <public name="trackInsideCornerSize" type="attr" />
+  <public name="trackStopIndicatorSize" type="attr" />
   <public name="values" type="attr" />
 
   <public name="Widget.MaterialComponents.Slider" type="style"/>

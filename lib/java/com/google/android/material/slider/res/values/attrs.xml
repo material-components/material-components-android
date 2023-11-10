@@ -43,12 +43,18 @@
     <attr name="thumbColor" format="color" />
     <!-- The elevation of the thumb. -->
     <attr name="thumbElevation" format="dimension" />
+    <!-- The width of the thumb. -->
+    <attr name="thumbWidth" format="dimension" />
+    <!-- The height of the thumb. -->
+    <attr name="thumbHeight" format="dimension" />
     <!-- The radius of the thumb. -->
     <attr name="thumbRadius" format="dimension" />
     <!-- The stroke color for the thumb. -->
     <attr name="thumbStrokeColor" format="color" />
     <!-- The stroke width for the thumb. -->
     <attr name="thumbStrokeWidth" format="dimension" />
+    <!-- The size of the gap between the thumb and the track. -->
+    <attr name="thumbTrackGapSize" format="dimension"/>
     <!-- The minimum size of the thumb's touch target. -->
     <attr name="minTouchTargetSize"/>
     <!-- The color of the slider's tick marks. Only used when the slider is in discrete mode. -->
@@ -73,6 +79,10 @@
     <attr name="trackColorInactive" format="color" />
     <!-- The height of the track. -->
     <attr name="trackHeight" format="dimension" />
+    <!-- The corner size on the inside of the track (visible with gap). -->
+    <attr name="trackInsideCornerSize" format="dimension" />
+    <!-- The size of the stop indicator at the edges of the track. -->
+    <attr name="trackStopIndicatorSize" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="RangeSlider">

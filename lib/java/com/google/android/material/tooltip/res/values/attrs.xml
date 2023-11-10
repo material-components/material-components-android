@@ -24,6 +24,7 @@
     <attr name="android:minHeight" />
     <attr name="android:padding" />
     <attr name="backgroundTint" format="color" />
+    <attr name="showMarker" format="boolean" />
   </declare-styleable>
 
   <!-- Style to use for Tooltip in this theme. -->
