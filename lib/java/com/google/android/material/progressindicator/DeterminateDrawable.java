@@ -18,7 +18,9 @@ package com.google.android.material.progressindicator;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
@@ -74,7 +76,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   @NonNull
   public static DeterminateDrawable<LinearProgressIndicatorSpec> createLinearDrawable(
       @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
-    return new DeterminateDrawable<>(context, /*baseSpec=*/ spec, new LinearDrawingDelegate(spec));
+    return new DeterminateDrawable<>(
+        context, /* baseSpec= */ spec, new LinearDrawingDelegate(spec));
   }
 
   /**
@@ -88,7 +91,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   public static DeterminateDrawable<CircularProgressIndicatorSpec> createCircularDrawable(
       @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
     return new DeterminateDrawable<>(
-        context, /*baseSpec=*/ spec, new CircularDrawingDelegate(spec));
+        context, /* baseSpec= */ spec, new CircularDrawingDelegate(spec));
   }
 
   public void addSpringAnimationEndListener(
@@ -197,12 +200,27 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     canvas.save();
     drawingDelegate.validateSpecAndAdjustCanvas(canvas, getBounds(), getGrowFraction());
 
-    // Draws the track.
-    drawingDelegate.fillTrack(canvas, paint);
-    // Draws the indicator.
     int indicatorColor =
         MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], getAlpha());
-    drawingDelegate.fillIndicator(canvas, paint, 0f, getIndicatorFraction(), indicatorColor);
+    if (baseSpec.indicatorTrackGapSize > 0) {
+      int trackColor = MaterialColors.compositeARGBWithAlpha(baseSpec.trackColor, getAlpha());
+      // Draws the full transparent track.
+      baseSpec.trackColor = Color.TRANSPARENT;
+      drawingDelegate.fillTrack(canvas, paint);
+      baseSpec.trackColor = trackColor;
+      // Draws the indicator and track.
+      int gapSize = baseSpec.indicatorTrackGapSize;
+      // TODO: workaround to maintain pixel-perfect compatibility with drawing logic
+      //  not using indicatorTrackGapSize.
+      //  See https://github.com/material-components/material-components-android/commit/0ce6ae4.
+      baseSpec.indicatorTrackGapSize = 0;
+      drawingDelegate.fillIndicator(canvas, paint, 0f, getIndicatorFraction(), indicatorColor);
+      baseSpec.indicatorTrackGapSize = gapSize;
+      drawingDelegate.fillIndicator(canvas, paint, getIndicatorFraction(), 1f, trackColor);
+    } else {
+      drawingDelegate.fillTrack(canvas, paint);
+      drawingDelegate.fillIndicator(canvas, paint, 0f, getIndicatorFraction(), indicatorColor);
+    }
     canvas.restore();
   }
 

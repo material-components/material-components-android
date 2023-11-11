@@ -25,6 +25,7 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.view.ViewCompat;
@@ -151,6 +152,34 @@ public class LinearProgressIndicator
     super.setTrackCornerRadius(trackCornerRadius);
     spec.validateSpec();
     invalidate();
+  }
+
+  /**
+   * Returns the size of the stop indicator at the end of the track in pixels.
+   *
+   * @see #setTrackStopIndicatorSize(int)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackStopIndicatorSize
+   */
+  @Px
+  public int getTrackStopIndicatorSize() {
+    return spec.trackStopIndicatorSize;
+  }
+
+  /**
+   * Sets the size of the stop indicator at the end of the track in pixels.
+   *
+   * @param trackStopIndicatorSize The new stop indicator size in pixels.
+   * @see #getTrackStopIndicatorSize()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackStopIndicatorSize
+   */
+  public void setTrackStopIndicatorSize(@Px int trackStopIndicatorSize) {
+    if (spec.trackStopIndicatorSize != trackStopIndicatorSize) {
+      spec.trackStopIndicatorSize = trackStopIndicatorSize;
+      spec.validateSpec();
+      invalidate();
+    }
   }
 
   /**

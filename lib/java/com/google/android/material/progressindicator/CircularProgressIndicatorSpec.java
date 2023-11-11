@@ -105,6 +105,13 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
     validateSpec();
   }
 
-  @Override
-  void validateSpec() {}
+  /** The size of the gap between the indicator and the rest of the track in degrees. */
+  int getIndicatorTrackGapSizeDegree() {
+    if (indicatorTrackGapSize == 0) {
+      return 0;
+    }
+    int diameter = indicatorSize - (indicatorInset * 2) - trackThickness;
+    double perimeter = Math.PI * diameter;
+    return (int) Math.round(360 / (perimeter / (indicatorTrackGapSize + trackCornerRadius)));
+  }
 }

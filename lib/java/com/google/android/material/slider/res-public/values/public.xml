@@ -39,7 +39,6 @@
   <public name="trackColorInactive" type="attr" />
   <public name="trackHeight" type="attr" />
   <public name="trackInsideCornerSize" type="attr" />
-  <public name="trackStopIndicatorSize" type="attr" />
   <public name="values" type="attr" />
 
   <public name="Widget.MaterialComponents.Slider" type="style"/>

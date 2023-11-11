@@ -15,6 +15,8 @@
  */
 package com.google.android.material.progressindicator;
 
+import static java.lang.Math.min;
+
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
@@ -150,12 +152,24 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
             ? (endFraction - startFraction) * 360 * arcDirectionFactor
             : (1 + endFraction - startFraction) * 360 * arcDirectionFactor;
 
+    // Draws the gaps if needed.
+    if (spec.indicatorTrackGapSize > 0) {
+      float gapSize =
+          min(spec.getIndicatorTrackGapSizeDegree(), Math.abs(startDegree)) * arcDirectionFactor;
+      // No need to draw if the indicator is shorter than gap.
+      if (Math.abs(arcDegree) <= Math.abs(gapSize) * 2) {
+        return;
+      }
+      startDegree += gapSize;
+      arcDegree -= gapSize * 2;
+    }
+
     // Draws the indicator arc without rounded corners.
     RectF arcBound = new RectF(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
     canvas.drawArc(arcBound, startDegree, arcDegree, false, paint);
 
     // Draws rounded corners if needed.
-    if (displayedCornerRadius > 0 && Math.abs(arcDegree) < 360) {
+    if (displayedCornerRadius > 0 && Math.abs(arcDegree) > 0 && Math.abs(arcDegree) < 360) {
       paint.setStyle(Style.FILL);
       drawRoundedEnd(canvas, paint, displayedTrackThickness, displayedCornerRadius, startDegree);
       drawRoundedEnd(

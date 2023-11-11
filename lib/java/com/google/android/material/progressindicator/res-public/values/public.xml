@@ -21,6 +21,7 @@
   <!-- Base attributes -->
   <public name="trackThickness" type="attr" />
   <public name="trackCornerRadius" type="attr" />
+  <public name="indicatorTrackGapSize" type="attr"/>
   <public name="indicatorColor" type="attr" />
   <public name="showAnimationBehavior" type="attr"/>
   <public name="hideAnimationBehavior" type="attr"/>

@@ -15,13 +15,17 @@
  */
 package com.google.android.material.progressindicator;
 
+import static com.google.android.material.progressindicator.LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS;
+
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
+import com.google.android.material.color.MaterialColors;
 
 /** This class draws the graphics for indeterminate mode. */
 public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
@@ -55,10 +59,9 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
       @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
     return new IndeterminateDrawable<>(
         context,
-        /*baseSpec=*/ spec,
+        /* baseSpec= */ spec,
         new LinearDrawingDelegate(spec),
-        spec.indeterminateAnimationType
-                == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS
+        spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS
             ? new LinearIndeterminateContiguousAnimatorDelegate(spec)
             : new LinearIndeterminateDisjointAnimatorDelegate(context, spec));
   }
@@ -75,7 +78,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
       @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
     return new IndeterminateDrawable<>(
         context,
-        /*baseSpec=*/ spec,
+        /* baseSpec= */ spec,
         new CircularDrawingDelegate(spec),
         new CircularIndeterminateAnimatorDelegate(spec));
   }
@@ -140,20 +143,66 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
     canvas.save();
     drawingDelegate.validateSpecAndAdjustCanvas(canvas, getBounds(), getGrowFraction());
 
-    // Draws the track.
-    drawingDelegate.fillTrack(canvas, paint);
-    // Draws the indicators.
+    if (baseSpec.indicatorTrackGapSize > 0) {
+      if (drawingDelegate instanceof LinearDrawingDelegate) {
+        ((LinearProgressIndicatorSpec) drawingDelegate.spec).trackStopIndicatorSize = 0;
+      } else if (drawingDelegate instanceof CircularDrawingDelegate) {
+        // TODO: workaround preventing exiting the indicatorTrackGapSize > 0 logic while keeping
+        //  the animation smooth.
+        baseSpec.indicatorTrackGapSize = 1;
+      }
+
+      // Draws the transparent track.
+      int trackColor = baseSpec.trackColor;
+      baseSpec.trackColor = Color.TRANSPARENT;
+      drawingDelegate.fillTrack(canvas, paint);
+      baseSpec.trackColor = trackColor;
+    } else {
+      drawingDelegate.fillTrack(canvas, paint);
+    }
+
     for (int segmentIndex = 0;
         segmentIndex < animatorDelegate.segmentColors.length;
         segmentIndex++) {
+
+      // Draws the actual indicators.
       drawingDelegate.fillIndicator(
           canvas,
           paint,
           animatorDelegate.segmentPositions[2 * segmentIndex],
           animatorDelegate.segmentPositions[2 * segmentIndex + 1],
           animatorDelegate.segmentColors[segmentIndex]);
+
+      if (drawingDelegate instanceof LinearDrawingDelegate && baseSpec.indicatorTrackGapSize > 0) {
+        // Draws the track using fake indicators around the current indicator.
+        drawTrackIndicators(canvas, segmentIndex);
+      }
     }
+
     canvas.restore();
+  }
+
+  private void drawTrackIndicators(@NonNull Canvas canvas, int segmentIndex) {
+    int trackColorWithAlpha =
+        MaterialColors.compositeARGBWithAlpha(baseSpec.trackColor, getAlpha());
+    float previousSegmentEndPosition =
+        segmentIndex == 0 ? 0f : animatorDelegate.segmentPositions[2 * segmentIndex - 1];
+    // Draws the fake indicators as the track to the left of the current indicator.
+    drawingDelegate.fillIndicator(
+        canvas,
+        paint,
+        previousSegmentEndPosition,
+        animatorDelegate.segmentPositions[2 * segmentIndex],
+        trackColorWithAlpha);
+    if (segmentIndex == animatorDelegate.segmentColors.length - 1) {
+      // Draws the fake indicator as the track to the right of the last indicator.
+      drawingDelegate.fillIndicator(
+          canvas,
+          paint,
+          animatorDelegate.segmentPositions[2 * segmentIndex + 1],
+          1f,
+          trackColorWithAlpha);
+    }
   }
 
   // ******************* Setter and getter *******************

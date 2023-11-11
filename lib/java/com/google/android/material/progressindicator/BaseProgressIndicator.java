@@ -76,6 +76,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   public static final int HIDE_NONE = 0;
   public static final int HIDE_OUTWARD = 1;
   public static final int HIDE_INWARD = 2;
+  public static final int HIDE_ESCAPE = 3;
 
   static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_ProgressIndicator;
 
@@ -637,6 +638,34 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   }
 
   /**
+   * Returns the size of the gap between the indicator and track in pixels.
+   *
+   * @see #setIndicatorTrackGapSize(int)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#BaseProgressIndicator_indicatorTrackGapSize
+   */
+  @Px
+  public int getIndicatorTrackGapSize() {
+    return spec.indicatorTrackGapSize;
+  }
+
+  /**
+   * Sets the size of the gap between the indicator and track in pixels.
+   *
+   * @param indicatorTrackGapSize The new gap size in pixels.
+   * @see #getIndicatorTrackGapSize()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#BaseProgressIndicator_indicatorTrackGapSize
+   */
+  public void setIndicatorTrackGapSize(@Px int indicatorTrackGapSize) {
+    if (spec.indicatorTrackGapSize != indicatorTrackGapSize) {
+      spec.indicatorTrackGapSize = indicatorTrackGapSize;
+      spec.validateSpec();
+      invalidate();
+    }
+  }
+
+  /**
    * Returns the show animation behavior used in this progress indicator.
    *
    * @see #setShowAnimationBehavior(int)
@@ -843,7 +872,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
 
   /** @hide */
   @RestrictTo(Scope.LIBRARY_GROUP)
-  @IntDef({HIDE_NONE, HIDE_OUTWARD, HIDE_INWARD})
+  @IntDef({HIDE_NONE, HIDE_OUTWARD, HIDE_INWARD, HIDE_ESCAPE})
   @Retention(RetentionPolicy.SOURCE)
   public @interface HideAnimationBehavior {}
 }

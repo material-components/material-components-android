@@ -15,7 +15,11 @@
  */
 package com.google.android.material.progressindicator;
 
+import static com.google.android.material.progressindicator.BaseProgressIndicator.HIDE_ESCAPE;
+import static com.google.android.material.progressindicator.BaseProgressIndicator.HIDE_INWARD;
+import static com.google.android.material.progressindicator.BaseProgressIndicator.SHOW_OUTWARD;
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -78,14 +82,19 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       canvas.scale(-1f, 1f);
     }
     // Flips canvas vertically if need to anchor to the bottom edge.
-    if ((drawable.isShowing() && spec.showAnimationBehavior == LinearProgressIndicator.SHOW_OUTWARD)
-        || (drawable.isHiding()
-            && spec.hideAnimationBehavior == LinearProgressIndicator.HIDE_INWARD)) {
+    if ((drawable.isShowing() && spec.showAnimationBehavior == SHOW_OUTWARD)
+        || (drawable.isHiding() && spec.hideAnimationBehavior == HIDE_INWARD)) {
       canvas.scale(1f, -1f);
     }
     // Offsets canvas vertically while showing or hiding.
-    if (drawable.isShowing() || drawable.isHiding()) {
+    if (drawable.isShowing()
+        || (drawable.isHiding() && spec.hideAnimationBehavior != HIDE_ESCAPE)) {
       canvas.translate(0f, spec.trackThickness * (trackThicknessFraction - 1) / 2f);
+    }
+    // Scales canvas while hiding with escape animation.
+    if (drawable.isHiding() && spec.hideAnimationBehavior == HIDE_ESCAPE) {
+      canvas.scale(
+          trackThicknessFraction, trackThicknessFraction, bounds.left + bounds.width() / 2f, 0);
     }
 
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can
@@ -122,10 +131,28 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
     float originX = -trackLength / 2;
 
-    // Adjusts start X and end X so when the progress indicator will start from 0 when
-    // startFraction == 0, and always retain the specified corner radius.
-    float adjustedStartX = originX + startFraction * trackLength - displayedCornerRadius * 2;
-    float adjustedEndX = originX + endFraction * trackLength;
+    // Adjusts start/end X so the progress indicator will start from 0 when startFraction == 0.
+    float startPx = startFraction * trackLength;
+    float endPx = endFraction * trackLength;
+    float gapSize = min(spec.indicatorTrackGapSize, startPx);
+
+    // No need to draw if the indicator starts at or after the stop indicator.
+    if (startPx + gapSize >= trackLength - spec.trackStopIndicatorSize) {
+      return;
+    }
+
+    float adjustedStartX = originX + startPx + gapSize;
+    // TODO: workaround to maintain pixel-perfect compatibility with drawing logic
+    //  not using indicatorTrackGapSize.
+    //  See https://github.com/material-components/material-components-android/commit/0ce6ae4.
+    if (spec.indicatorTrackGapSize == 0) {
+      adjustedStartX -= displayedCornerRadius * 2;
+    }
+    float adjustedEndX = originX + endPx;
+    // Prevents drawing over the stop indicator.
+    if (endPx == trackLength) {
+      adjustedEndX -= spec.trackStopIndicatorSize;
+    }
 
     // Sets up the paint.
     paint.setStyle(Style.FILL);
@@ -135,13 +162,13 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     canvas.save();
     // Avoid the indicator being drawn out of the track.
     canvas.clipPath(displayedTrackPath);
-    RectF indicatorBound =
+    RectF indicatorBounds =
         new RectF(
             adjustedStartX,
             -displayedTrackThickness / 2,
             adjustedEndX,
             displayedTrackThickness / 2);
-    canvas.drawRoundRect(indicatorBound, displayedCornerRadius, displayedCornerRadius, paint);
+    canvas.drawRoundRect(indicatorBounds, displayedCornerRadius, displayedCornerRadius, paint);
     canvas.restore();
   }
 
@@ -160,17 +187,22 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     paint.setAntiAlias(true);
     paint.setColor(trackColor);
 
+    float right = trackLength / 2;
+    float bottom = displayedTrackThickness / 2;
     displayedTrackPath = new Path();
     displayedTrackPath.addRoundRect(
-        new RectF(
-            -trackLength / 2,
-            -displayedTrackThickness / 2,
-            trackLength / 2,
-            displayedTrackThickness / 2),
+        new RectF(-right, -bottom, right, bottom),
         displayedCornerRadius,
         displayedCornerRadius,
-        Path.Direction.CCW
-    );
+        Path.Direction.CCW);
     canvas.drawPath(displayedTrackPath, paint);
+
+    if (spec.trackStopIndicatorSize > 0) {
+      int indicatorColor =
+          MaterialColors.compositeARGBWithAlpha(spec.indicatorColors[0], drawable.getAlpha());
+      paint.setColor(indicatorColor);
+      RectF stopBounds = new RectF(right - spec.trackStopIndicatorSize, -bottom, right, bottom);
+      canvas.drawRoundRect(stopBounds, displayedCornerRadius, displayedCornerRadius, paint);
+    }
   }
 }

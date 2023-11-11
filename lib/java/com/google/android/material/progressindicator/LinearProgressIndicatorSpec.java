@@ -24,6 +24,7 @@ import android.util.AttributeSet;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.progressindicator.LinearProgressIndicator.IndeterminateAnimationType;
@@ -43,6 +44,9 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
   @IndicatorDirection public int indicatorDirection;
 
   boolean drawHorizontallyInverse;
+
+  /** The size of the stop indicator at the end of the track. */
+  @Px public int trackStopIndicatorSize;
 
   /**
    * Instantiates the spec for {@link LinearProgressIndicator}.
@@ -86,6 +90,8 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
         a.getInt(
             R.styleable.LinearProgressIndicator_indicatorDirectionLinear,
             LinearProgressIndicator.INDICATOR_DIRECTION_LEFT_TO_RIGHT);
+    trackStopIndicatorSize =
+        a.getDimensionPixelSize(R.styleable.LinearProgressIndicator_trackStopIndicatorSize, 0);
     a.recycle();
 
     validateSpec();
@@ -96,6 +102,11 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
 
   @Override
   void validateSpec() {
+    super.validateSpec();
+    if (trackStopIndicatorSize < 0) {
+      // Throws an exception if trying to use a negative stop indicator size.
+      throw new IllegalArgumentException("Stop indicator size must be >= 0.");
+    }
     if (indeterminateAnimationType
         == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS) {
       if (trackCornerRadius > 0) {

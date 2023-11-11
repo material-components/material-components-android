@@ -26,6 +26,7 @@ import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import androidx.annotation.AttrRes;
+import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -57,8 +58,8 @@ public abstract class BaseProgressIndicatorSpec {
   @NonNull public int[] indicatorColors = new int[0];
 
   /**
-   * The color used in the track. If not defined, it will be set to the indicatorColors and
-   * apply the first disable alpha value from the theme.
+   * The color used in the track. If not defined, it will be set to the indicatorColors and apply
+   * the first disable alpha value from the theme.
    */
   @ColorInt public int trackColor;
 
@@ -67,6 +68,9 @@ public abstract class BaseProgressIndicatorSpec {
 
   /** The animation behavior to hide the indicator and track. */
   @HideAnimationBehavior public int hideAnimationBehavior;
+
+  /** The size of the gap between the indicator and the rest of the track. */
+  @Px public int indicatorTrackGapSize;
 
   /**
    * Instantiates BaseProgressIndicatorSpec.
@@ -103,6 +107,7 @@ public abstract class BaseProgressIndicatorSpec {
         a.getInt(
             R.styleable.BaseProgressIndicator_hideAnimationBehavior,
             BaseProgressIndicator.HIDE_NONE);
+    indicatorTrackGapSize = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_indicatorTrackGapSize, 0);
 
     loadIndicatorColors(context, a);
     loadTrackColor(context, a);
@@ -178,5 +183,11 @@ public abstract class BaseProgressIndicatorSpec {
     return hideAnimationBehavior != BaseProgressIndicator.HIDE_NONE;
   }
 
-  abstract void validateSpec();
+  @CallSuper
+  void validateSpec() {
+    if (indicatorTrackGapSize < 0) {
+      // Throws an exception if trying to use a negative gap size.
+      throw new IllegalArgumentException("indicatorTrackGapSize must be >= 0.");
+    }
+  }
 }

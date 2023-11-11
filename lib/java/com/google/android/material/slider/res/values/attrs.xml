@@ -82,7 +82,7 @@
     <!-- The corner size on the inside of the track (visible with gap). -->
     <attr name="trackInsideCornerSize" format="dimension" />
     <!-- The size of the stop indicator at the edges of the track. -->
-    <attr name="trackStopIndicatorSize" format="dimension"/>
+    <attr name="trackStopIndicatorSize" />
   </declare-styleable>
 
   <declare-styleable name="RangeSlider">
