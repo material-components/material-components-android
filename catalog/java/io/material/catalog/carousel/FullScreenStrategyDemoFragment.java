@@ -63,6 +63,12 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
   }
 
   @Override
+  public void onDestroyView() {
+    super.onDestroyView();
+    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+  }
+
+  @Override
   @SuppressWarnings("RestrictTo")
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
     super.onViewCreated(view, bundle);
