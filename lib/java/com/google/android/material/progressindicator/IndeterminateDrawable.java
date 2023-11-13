@@ -15,6 +15,8 @@
  */
 package com.google.android.material.progressindicator;
 
+import com.google.android.material.R;
+
 import static com.google.android.material.progressindicator.LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS;
 
 import android.animation.ObjectAnimator;
@@ -22,9 +24,17 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.util.Log;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import com.google.android.material.color.MaterialColors;
 
 /** This class draws the graphics for indeterminate mode. */
@@ -35,6 +45,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   private DrawingDelegate<S> drawingDelegate;
   // Animator delegate object.
   private IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate;
+
+  private Drawable staticDummyDrawable;
 
   IndeterminateDrawable(
       @NonNull Context context,
@@ -76,11 +88,15 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   @NonNull
   public static IndeterminateDrawable<CircularProgressIndicatorSpec> createCircularDrawable(
       @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
-    return new IndeterminateDrawable<>(
-        context,
-        /* baseSpec= */ spec,
-        new CircularDrawingDelegate(spec),
-        new CircularIndeterminateAnimatorDelegate(spec));
+    IndeterminateDrawable<CircularProgressIndicatorSpec> indeterminateDrawable =
+        new IndeterminateDrawable<>(
+            context,
+            /* baseSpec= */ spec,
+            new CircularDrawingDelegate(spec),
+            new CircularIndeterminateAnimatorDelegate(spec));
+    indeterminateDrawable.setStaticDummyDrawable(
+        VectorDrawableCompat.create(context.getResources(), R.drawable.indeterminate_static, null));
+    return indeterminateDrawable;
   }
 
   // ******************* Overridden methods *******************
@@ -101,17 +117,18 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   boolean setVisibleInternal(boolean visible, boolean restart, boolean animate) {
     boolean changed = super.setVisibleInternal(visible, restart, animate);
 
+    if (isSystemAnimatorDisabled() && staticDummyDrawable != null) {
+      return staticDummyDrawable.setVisible(visible, restart);
+    }
+
     // Unless it's showing or hiding, cancels the main animator.
     if (!isRunning()) {
       animatorDelegate.cancelAnimatorImmediately();
     }
     // Restarts the main animator if it's visible and needs to be animated.
-    float systemAnimatorDurationScale =
-        animatorDurationScaleProvider.getSystemAnimatorDurationScale(context.getContentResolver());
     if (visible
         && (animate
-            || (VERSION.SDK_INT <= VERSION_CODES.LOLLIPOP_MR1
-                && systemAnimatorDurationScale > 0))) {
+            || (VERSION.SDK_INT <= VERSION_CODES.LOLLIPOP_MR1 && !isSystemAnimatorDisabled()))) {
       animatorDelegate.startAnimator();
     }
 
@@ -137,6 +154,14 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
     if (getBounds().isEmpty() || !isVisible() || !canvas.getClipBounds(clipBounds)) {
       // Escape if bounds are empty, clip bounds are empty, or currently hidden.
+      return;
+    }
+
+    if (isSystemAnimatorDisabled() && staticDummyDrawable != null) {
+      staticDummyDrawable.setBounds(getBounds());
+      Log.d("ProgressIndicator", "bounds: " + staticDummyDrawable.getBounds());
+      DrawableCompat.setTint(staticDummyDrawable, baseSpec.indicatorColors[0]);
+      staticDummyDrawable.draw(canvas);
       return;
     }
 
@@ -205,7 +230,33 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
     }
   }
 
+  // ******************* Utility functions *******************
+
+  private boolean isSystemAnimatorDisabled() {
+    if (animatorDurationScaleProvider != null) {
+      float systemAnimatorDurationScale =
+          animatorDurationScaleProvider.getSystemAnimatorDurationScale(
+              context.getContentResolver());
+      return systemAnimatorDurationScale == 0;
+    }
+    return false;
+  }
+
   // ******************* Setter and getter *******************
+
+  /** @hide */
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  @Nullable
+  public Drawable getStaticDummyDrawable() {
+    return staticDummyDrawable;
+  }
+
+  /** @hide */
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  @VisibleForTesting
+  public void setStaticDummyDrawable(@Nullable Drawable staticDummyDrawable) {
+    this.staticDummyDrawable = staticDummyDrawable;
+  }
 
   @NonNull
   IndeterminateAnimatorDelegate<ObjectAnimator> getAnimatorDelegate() {
