@@ -50,10 +50,14 @@ public class BottomNavigationAnimatedDemoFragment extends DemoFragment {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = super.onCreateView(layoutInflater, viewGroup, bundle);
     CoordinatorLayout coordinatorLayout = view.findViewById(R.id.cat_demo_fragment_container);
+
     // For unknown reasons, setting this in the xml is cleared out but setting it here takes effect.
+    View container = coordinatorLayout.findViewById(R.id.cat_bottom_navs_animated_container);
     CoordinatorLayout.LayoutParams lp =
-        (LayoutParams) coordinatorLayout.getChildAt(0).getLayoutParams();
+        (LayoutParams) container.getLayoutParams();
+    lp.setBehavior(null);
     lp.gravity = Gravity.BOTTOM;
+
     ViewCompat.setOnApplyWindowInsetsListener(coordinatorLayout, (v, insets) -> insets);
     return view;
   }

@@ -15,7 +15,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<ScrollView
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,4 +27,4 @@
       android:padding="@dimen/cat_dialog_demo_padding"
       android:orientation="vertical">
   </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

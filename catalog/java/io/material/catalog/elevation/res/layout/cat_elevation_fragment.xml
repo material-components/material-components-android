@@ -54,7 +54,7 @@
         android:gravity="center" />
   </LinearLayout>
 
-  <ScrollView
+  <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_above="@id/buttons"
@@ -104,5 +104,5 @@
           android:layout_marginBottom="@dimen/cat_elevation_bottom_padding"
           android:minHeight="@dimen/cat_elevation_min_card_height" />
     </LinearLayout>
-  </ScrollView>
+  </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

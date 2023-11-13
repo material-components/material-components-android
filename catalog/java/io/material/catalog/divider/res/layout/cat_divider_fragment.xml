@@ -15,97 +15,93 @@
   limitations under the License.
   -->
 
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-  <ScrollView
+
+  <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="match_parent">
+      android:layout_height="wrap_content"
+      android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-      <!-- Full-bleed divider. -->
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_margin="16dp"
-          android:textAppearance="?attr/textAppearanceHeadlineLarge"
-          android:text="@string/cat_divider_title"/>
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="16dp"
-          android:layout_marginEnd="16dp"
-          android:layout_marginBottom="8dp"
-          android:text="@string/cat_divider_subtitle"/>
-      <com.google.android.material.divider.MaterialDivider
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"/>
-
-      <!-- Inset divider. -->
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_margin="16dp"
-          android:textAppearance="?attr/textAppearanceHeadlineLarge"
-          android:text="@string/cat_divider_inset_title"/>
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_marginStart="32dp"
-          android:layout_marginEnd="16dp"
-          android:layout_marginBottom="8dp"
-          android:text="@string/cat_divider_inset_subtitle"/>
-      <com.google.android.material.divider.MaterialDivider
-          android:layout_width="match_parent"
-          android:layout_height="wrap_content"
-          app:dividerInsetStart="32dp"/>
-
-      <!-- Middle divider. -->
-      <TextView
+    <!-- Full-bleed divider. -->
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:textAppearance="?attr/textAppearanceHeadlineLarge"
-        android:text="@string/cat_divider_middle_title"/>
-      <TextView
+        android:text="@string/cat_divider_title"/>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/cat_divider_middle_subtitle"/>
-      <com.google.android.material.divider.MaterialDivider
+        android:text="@string/cat_divider_subtitle"/>
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:dividerInsetStart="32dp"
-        app:dividerInsetEnd="32dp"
-        android:layout_gravity="center_vertical"/>
+        android:layout_height="wrap_content"/>
 
-      <!-- Heavy divider. -->
-      <TextView
+    <!-- Inset divider. -->
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:textAppearance="?attr/textAppearanceHeadlineLarge"
-        android:text="@string/cat_divider_heavy_title"/>
-      <TextView
+        android:text="@string/cat_divider_inset_title"/>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/cat_divider_heavy_subtitle"/>
-      <com.google.android.material.divider.MaterialDivider
-        style="?attr/materialDividerHeavyStyle"
+        android:text="@string/cat_divider_inset_subtitle"/>
+    <com.google.android.material.divider.MaterialDivider
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:dividerInsetStart="32dp"/>
 
-    </LinearLayout>
-  </ScrollView>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!-- Middle divider. -->
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:textAppearance="?attr/textAppearanceHeadlineLarge"
+      android:text="@string/cat_divider_middle_title"/>
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginBottom="8dp"
+      android:text="@string/cat_divider_middle_subtitle"/>
+    <com.google.android.material.divider.MaterialDivider
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:dividerInsetStart="32dp"
+      app:dividerInsetEnd="32dp"
+      android:layout_gravity="center_vertical"/>
+
+    <!-- Heavy divider. -->
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:textAppearance="?attr/textAppearanceHeadlineLarge"
+      android:text="@string/cat_divider_heavy_title"/>
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:layout_marginEnd="16dp"
+      android:layout_marginBottom="8dp"
+      android:text="@string/cat_divider_heavy_subtitle"/>
+    <com.google.android.material.divider.MaterialDivider
+      style="?attr/materialDividerHeavyStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content" />
+
+  </LinearLayout>
+</androidx.core.widget.NestedScrollView>

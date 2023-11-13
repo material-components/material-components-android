@@ -15,40 +15,36 @@
   limitations under the License.
   -->
 
-<ScrollView
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
-  <LinearLayout
-    android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:layout_margin="16dp"
+  android:orientation="vertical">
+
+  <!-- Horizontal orientation dividers. -->
+  <TextView
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    android:orientation="vertical">
+    android:layout_marginBottom="16dp"
+    android:textAppearance="?attr/textAppearanceTitleLarge"
+    android:text="@string/cat_divider_item_decoration_horizontal" />
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/divider_recyclerview_horizontal"
+    android:layout_marginBottom="16dp"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent" />
 
-    <!-- Horizontal orientation dividers. -->
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="16dp"
-      android:textAppearance="?attr/textAppearanceTitleLarge"
-      android:text="@string/cat_divider_item_decoration_horizontal"/>
-    <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/divider_recyclerview_horizontal"
-      android:layout_marginBottom="16dp"
-      android:layout_height="wrap_content"
-      android:layout_width="match_parent"/>
-
-    <!-- Vertical orientation dividers. -->
-    <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="16dp"
-      android:textAppearance="?attr/textAppearanceTitleLarge"
-      android:text="@string/cat_divider_item_decoration_vertical"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/divider_recyclerview_vertical"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_marginBottom="48dp"/>
-  </LinearLayout>
-</ScrollView>
+  <!-- Vertical orientation dividers. -->
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="16dp"
+    android:textAppearance="?attr/textAppearanceTitleLarge"
+    android:text="@string/cat_divider_item_decoration_vertical" />
+  <androidx.recyclerview.widget.RecyclerView
+    android:id="@+id/divider_recyclerview_vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:nestedScrollingEnabled="false"
+    android:layout_marginBottom="48dp" />
+</LinearLayout>

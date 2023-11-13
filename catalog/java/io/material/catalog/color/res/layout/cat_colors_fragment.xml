@@ -15,7 +15,7 @@
   limitations under the License.
   -->
 
-<ScrollView
+<androidx.core.widget.NestedScrollView
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -89,4 +89,4 @@
       android:padding="8dp"
       android:text="@string/cat_color_utility_note" />
   </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>
