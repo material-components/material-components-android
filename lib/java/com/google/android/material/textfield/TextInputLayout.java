@@ -1569,6 +1569,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     // Add a TextWatcher so that we know when the text input has changed.
     this.editText.addTextChangedListener(
         new TextWatcher() {
+          int previousLineCount = editText.getLineCount();
+
           @Override
           public void afterTextChanged(@NonNull Editable s) {
             updateLabelState(!restoringSavedState);
@@ -1578,8 +1580,13 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
             if (placeholderEnabled) {
               updatePlaceholderText(s);
             }
-            if (ViewCompat.getMinimumHeight(editText) != originalEditTextMinimumHeight) {
-              editText.setMinimumHeight(originalEditTextMinimumHeight);
+            int currentLineCount = editText.getLineCount();
+            if (currentLineCount != previousLineCount) {
+              if (currentLineCount < previousLineCount
+                  && ViewCompat.getMinimumHeight(editText) != originalEditTextMinimumHeight) {
+                editText.setMinimumHeight(originalEditTextMinimumHeight);
+              }
+              previousLineCount = currentLineCount;
             }
           }
 
