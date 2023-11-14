@@ -239,12 +239,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   static final int MSG_SHOW = 0;
   static final int MSG_DISMISS = 1;
 
-  // On JB/KK versions of the platform sometimes View.setTranslationY does not result in
-  // layout / draw pass, and CoordinatorLayout relies on a draw pass to happen to sync vertical
+  // On KK sometimes View.setTranslationY does not result in  layout / draw pass,
+  // and CoordinatorLayout relies on a draw pass to happen to sync vertical
   // positioning of all its child views
-  private static final boolean USE_OFFSET_API =
-      (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN)
-          && (Build.VERSION.SDK_INT <= VERSION_CODES.KITKAT);
+  private static final boolean USE_OFFSET_API = Build.VERSION.SDK_INT == VERSION_CODES.KITKAT;
 
   private static final int[] SNACKBAR_STYLE_ATTR = new int[] {R.attr.snackbarStyle};
 

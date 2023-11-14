@@ -1311,9 +1311,7 @@ public class Chip extends AppCompatCheckBox
     if (chipDrawable == null) {
       return;
     }
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-      super.setLayoutDirection(layoutDirection);
-    }
+    super.setLayoutDirection(layoutDirection);
   }
 
   @Override
@@ -2316,15 +2314,10 @@ public class Chip extends AppCompatCheckBox
         return true;
       }
     }
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-      if (getMinHeight() != minTargetPx) {
-        setMinHeight(minTargetPx);
-      }
-      if (getMinWidth() != minTargetPx) {
-        setMinWidth(minTargetPx);
-      }
-    } else {
+    if (getMinHeight() != minTargetPx) {
       setMinHeight(minTargetPx);
+    }
+    if (getMinWidth() != minTargetPx) {
       setMinWidth(minTargetPx);
     }
     insetChipBackgroundDrawable(deltaX, deltaY, deltaX, deltaY);

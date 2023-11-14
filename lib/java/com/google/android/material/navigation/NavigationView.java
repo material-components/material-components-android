@@ -33,7 +33,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -473,11 +472,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
 
-    if (Build.VERSION.SDK_INT < 16) {
-      getViewTreeObserver().removeGlobalOnLayoutListener(onGlobalLayoutListener);
-    } else {
-      getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
-    }
+    getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
 
     ViewParent parent = getParent();
     if (parent instanceof DrawerLayout) {

@@ -58,9 +58,7 @@ public class DraggableCardFragment extends DemoFragment {
             R.layout.cat_card_draggable_fragment, viewGroup, false /* attachToRoot */);
     DraggableCoordinatorLayout container = (DraggableCoordinatorLayout) view;
     LayoutTransition transition = ((CoordinatorLayout) view).getLayoutTransition();
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-      transition.enableTransitionType(LayoutTransition.CHANGING);
-    }
+    transition.enableTransitionType(LayoutTransition.CHANGING);
 
     card = view.findViewById(R.id.draggable_card);
     card.setAccessibilityDelegate(cardDelegate);

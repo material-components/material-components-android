@@ -24,8 +24,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.text.format.Formatter;
 import android.util.AttributeSet;
@@ -59,9 +57,7 @@ public final class MemoryView extends AppCompatTextView {
 
   public MemoryView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-      setGravity(TEXT_ALIGNMENT_CENTER);
-    }
+    setGravity(TEXT_ALIGNMENT_CENTER);
 
     paint.setStyle(Style.FILL_AND_STROKE);
     paint.setStrokeWidth(STROKE_WIDTH);

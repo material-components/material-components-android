@@ -29,7 +29,6 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
@@ -2273,7 +2272,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     CoordinatorLayout parent = (CoordinatorLayout) viewParent;
     final int childCount = parent.getChildCount();
-    if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) && expanded) {
+    if (expanded) {
       if (importantForAccessibilityMap == null) {
         importantForAccessibilityMap = new HashMap<>(childCount);
       } else {
@@ -2290,9 +2289,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
       if (expanded) {
         // Saves the important for accessibility value of the child view.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
-        }
+        importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
         if (updateImportantForAccessibilityOnSiblings) {
           ViewCompat.setImportantForAccessibility(
               child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);

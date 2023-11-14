@@ -126,10 +126,8 @@ public class CircularRevealHelper {
   static {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       STRATEGY = REVEAL_ANIMATOR;
-    } else if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
-      STRATEGY = CLIP_PATH;
     } else {
-      STRATEGY = BITMAP_SHADER;
+      STRATEGY = CLIP_PATH;
     }
   }
 

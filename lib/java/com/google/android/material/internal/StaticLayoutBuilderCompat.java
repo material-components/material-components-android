@@ -61,11 +61,6 @@ final class StaticLayoutBuilderCompat {
   static final float DEFAULT_LINE_SPACING_ADD = 0.0f;
   static final float DEFAULT_LINE_SPACING_MULTIPLIER = 1.0f;
 
-  private static final String TEXT_DIR_CLASS = "android.text.TextDirectionHeuristic";
-  private static final String TEXT_DIRS_CLASS = "android.text.TextDirectionHeuristics";
-  private static final String TEXT_DIR_CLASS_LTR = "LTR";
-  private static final String TEXT_DIR_CLASS_RTL = "RTL";
-
   private static boolean initialized;
 
   @Nullable private static Constructor<StaticLayout> constructor;
@@ -338,16 +333,8 @@ final class StaticLayoutBuilderCompat {
     try {
       final Class<?> textDirClass;
       boolean useRtl = isRtl && Build.VERSION.SDK_INT >= VERSION_CODES.M;
-      if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
-        textDirClass = TextDirectionHeuristic.class;
-        textDirection = useRtl ? TextDirectionHeuristics.RTL : TextDirectionHeuristics.LTR;
-      } else {
-        ClassLoader loader = StaticLayoutBuilderCompat.class.getClassLoader();
-        String textDirClassName = isRtl ? TEXT_DIR_CLASS_RTL : TEXT_DIR_CLASS_LTR;
-        textDirClass = loader.loadClass(TEXT_DIR_CLASS);
-        Class<?> textDirsClass = loader.loadClass(TEXT_DIRS_CLASS);
-        textDirection = textDirsClass.getField(textDirClassName).get(textDirsClass);
-      }
+      textDirClass = TextDirectionHeuristic.class;
+      textDirection = useRtl ? TextDirectionHeuristics.RTL : TextDirectionHeuristics.LTR;
 
       final Class<?>[] signature =
           new Class<?>[] {
