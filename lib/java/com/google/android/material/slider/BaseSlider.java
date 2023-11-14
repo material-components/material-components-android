@@ -57,7 +57,6 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.appcompat.content.res.AppCompatResources;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -66,7 +65,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.SeekBar;
@@ -339,22 +337,6 @@ abstract class BaseSlider<
 
   private float touchPosition;
   @SeparationUnit private int separationUnit = UNIT_PX;
-
-  @NonNull private final ViewTreeObserver.OnScrollChangedListener onScrollChangedListener = () -> {
-    if (shouldAlwaysShowLabel() && isEnabled()) {
-      Rect contentViewBounds = new Rect();
-      ViewUtils.getContentView(this).getHitRect(contentViewBounds);
-      boolean isSliderVisibleOnScreen = getLocalVisibleRect(contentViewBounds);
-      for (TooltipDrawable label : labels) {
-        positionLabel(label);
-        if (isSliderVisibleOnScreen) {
-          ViewUtils.getContentViewOverlay(this).add(label);
-        } else {
-          ViewUtils.getContentViewOverlay(this).remove(label);
-        }
-      }
-    }
-  };
 
   /**
    * Determines the behavior of the label which can be any of the following.
@@ -1883,7 +1865,6 @@ abstract class BaseSlider<
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
-    getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
     // The label is attached on the Overlay relative to the content.
     for (TooltipDrawable label : labels) {
       attachLabelToContentView(label);
@@ -1904,7 +1885,7 @@ abstract class BaseSlider<
     for (TooltipDrawable label : labels) {
       detachLabelFromContentView(label);
     }
-    getViewTreeObserver().removeOnScrollChangedListener(onScrollChangedListener);
+
     super.onDetachedFromWindow();
   }
 
@@ -2665,16 +2646,10 @@ abstract class BaseSlider<
 
   private void setValueForLabel(TooltipDrawable label, float value) {
     label.setText(formatValue(value));
-    positionLabel(label);
-    ViewUtils.getContentViewOverlay(this).add(label);
-  }
 
-  private void positionLabel(TooltipDrawable label) {
-    float labelValue = !TextUtils.isEmpty(label.getText())
-        ? Float.parseFloat(label.getText().toString()) : 0;
     int left =
         trackSidePadding
-            + (int) (normalizeValue(labelValue) * trackWidth)
+            + (int) (normalizeValue(value) * trackWidth)
             - label.getIntrinsicWidth() / 2;
     int top = calculateTrackCenter() - (labelPadding + thumbHeight / 2);
     label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
@@ -2684,6 +2659,8 @@ abstract class BaseSlider<
     Rect rect = new Rect(label.getBounds());
     DescendantOffsetUtils.offsetDescendantRect(ViewUtils.getContentView(this), this, rect);
     label.setBounds(rect);
+
+    ViewUtils.getContentViewOverlay(this).add(label);
   }
 
   private void invalidateTrack() {
