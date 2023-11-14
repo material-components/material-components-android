@@ -34,7 +34,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.Layout.Alignment;
@@ -71,9 +70,6 @@ import com.google.android.material.resources.TypefaceUtils;
 @RestrictTo(LIBRARY_GROUP)
 public final class CollapsingTextHelper {
 
-  // Pre-JB-MR2 doesn't support HW accelerated canvas scaled text so we will workaround it
-  // by using our own texture
-  private static final boolean USE_SCALING_TEXTURE = Build.VERSION.SDK_INT < 18;
   private static final String TAG = "CollapsingTextHelper";
   private static final String ELLIPSIS_NORMAL = "\u2026"; // HORIZONTAL ELLIPSIS (...)
 
@@ -132,9 +128,7 @@ public final class CollapsingTextHelper {
   private boolean isRtl;
   private boolean isRtlTextDirectionHeuristicsEnabled = true;
 
-  private boolean useTexture;
   @Nullable private Bitmap expandedTitleTexture;
-  private Paint texturePaint;
 
   private float scale;
   private float currentTextSize;
@@ -850,7 +844,6 @@ public final class CollapsingTextHelper {
       textPaint.setTextSize(currentTextSize);
       float x = currentDrawX;
       float y = currentDrawY;
-      final boolean drawTexture = useTexture && expandedTitleTexture != null;
 
       if (DEBUG_DRAW) {
         // Just a debug tool, which drawn a magenta rect in the text bounds
@@ -866,13 +859,6 @@ public final class CollapsingTextHelper {
         canvas.scale(scale, scale, x, y);
       }
 
-      if (drawTexture) {
-        // If we should use a texture, draw it instead of text
-        canvas.drawBitmap(expandedTitleTexture, x, y, texturePaint);
-        canvas.restoreToCount(saveCount);
-        return;
-      }
-
       if (shouldDrawMultiline()
           && (!fadeModeEnabled || expandedFraction > fadeModeThresholdFraction)) {
         drawMultilineTransition(canvas, currentDrawX - textLayout.getLineStart(0), y);
@@ -886,7 +872,7 @@ public final class CollapsingTextHelper {
   }
 
   private boolean shouldDrawMultiline() {
-    return maxLines > 1 && (!isRtl || fadeModeEnabled) && !useTexture;
+    return maxLines > 1 && (!isRtl || fadeModeEnabled);
   }
 
   private void drawMultilineTransition(@NonNull Canvas canvas, float currentExpandedX, float y) {
@@ -979,14 +965,6 @@ public final class CollapsingTextHelper {
 
   private void setInterpolatedTextSize(float fraction) {
     calculateUsingTextSize(fraction);
-
-    // Use our texture if the scale isn't 1.0
-    useTexture = USE_SCALING_TEXTURE && scale != 1f;
-
-    if (useTexture) {
-      // Make sure we have an expanded texture if needed
-      ensureExpandedTexture();
-    }
 
     ViewCompat.postInvalidateOnAnimation(view);
   }
@@ -1123,29 +1101,6 @@ public final class CollapsingTextHelper {
         return isRtl ? ALIGN_NORMAL : ALIGN_OPPOSITE;
       default:
         return isRtl ? ALIGN_OPPOSITE : ALIGN_NORMAL;
-    }
-  }
-
-  private void ensureExpandedTexture() {
-    if (expandedTitleTexture != null || expandedBounds.isEmpty() || TextUtils.isEmpty(textToDraw)) {
-      return;
-    }
-
-    calculateOffsets(0f);
-    int width = textLayout.getWidth();
-    int height = textLayout.getHeight();
-
-    if (width <= 0 || height <= 0) {
-      return;
-    }
-
-    expandedTitleTexture = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-    Canvas c = new Canvas(expandedTitleTexture);
-    textLayout.draw(c);
-
-    if (texturePaint == null) {
-      // Make sure we have a paint
-      texturePaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
     }
   }
 

@@ -57,7 +57,6 @@ import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
@@ -2656,11 +2655,6 @@ public class TabLayout extends HorizontalScrollView {
       final boolean changed = isSelected() != selected;
 
       super.setSelected(selected);
-
-      if (changed && selected && Build.VERSION.SDK_INT < 16) {
-        // Pre-JB we need to manually send the TYPE_VIEW_SELECTED event
-        sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
-      }
 
       // Always dispatch this to the child views, regardless of whether the value has
       // changed

@@ -343,9 +343,7 @@ public class SearchBar extends Toolbar {
   public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
     info.setClassName(EditText.class.getCanonicalName());
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
-      info.setEditable(isEnabled());
-    }
+    info.setEditable(isEnabled());
 
     CharSequence text = getText();
     boolean isTextEmpty = TextUtils.isEmpty(text);

@@ -159,7 +159,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
       return;
     }
 
-    if (VERSION.SDK_INT > 19 && !isLayoutDirectionResolved()) {
+    if (VERSION.SDK_INT > VERSION_CODES.KITKAT && !isLayoutDirectionResolved()) {
       return;
     }
 
@@ -167,7 +167,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
     // Update the super padding to be the combined `android:padding` and
     // `app:contentPadding`, keeping with ShapeableImageView's internal padding contract:
-    if (VERSION.SDK_INT >= 21 && (isPaddingRelative() || isContentPaddingRelative())) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && (isPaddingRelative() || isContentPaddingRelative())) {
       setPaddingRelative(
           super.getPaddingStart(),
           super.getPaddingTop(),
@@ -339,7 +339,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   }
 
   private boolean isRtl() {
-    return VERSION.SDK_INT >= 17 && getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+    return getLayoutDirection() == LAYOUT_DIRECTION_RTL;
   }
 
   /**
@@ -454,7 +454,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     }
     updateShapeMask(getWidth(), getHeight());
     invalidate();
-    if (VERSION.SDK_INT >= 21) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       invalidateOutline();
     }
   }

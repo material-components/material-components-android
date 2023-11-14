@@ -16,7 +16,6 @@
 
 package com.google.android.material.testing;
 
-import static android.os.Build.VERSION.SDK_INT;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.annotation.SuppressLint;
@@ -36,10 +35,6 @@ public final class RtlTestUtils {
     boolean supportsRtl = (info.flags & ApplicationInfo.FLAG_SUPPORTS_RTL) != 0;
     assertThat(supportsRtl).isTrue();
     assertThat(info.targetSdkVersion).isGreaterThan(16);
-  }
-
-  public static void checkPlatformSupportsRtl() {
-    assertThat(SDK_INT).isGreaterThan(16);
   }
 
   public static void applyRtlPseudoLocale() {

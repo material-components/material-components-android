@@ -25,7 +25,6 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.TextView;
@@ -77,9 +76,6 @@ public class CalendarStyleTest {
   @Test
   @TargetApi(VERSION_CODES.KITKAT)
   public void testShapeStyling() {
-    if (VERSION.SDK_INT < VERSION_CODES.KITKAT) {
-      return;
-    }
     calendarStyle.day.styleItem(textView);
     Drawable backgroundDrawable;
     InsetDrawable drawableWrapper = (InsetDrawable) textView.getBackground();

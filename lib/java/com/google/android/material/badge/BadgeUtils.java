@@ -47,7 +47,7 @@ import com.google.android.material.internal.ToolbarUtils;
 @ExperimentalBadgeUtils
 public class BadgeUtils {
 
-  public static final boolean USE_COMPAT_PARENT = VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2;
+  public static final boolean USE_COMPAT_PARENT = false;
 
   private static final String LOG_TAG = "BadgeUtils";
 

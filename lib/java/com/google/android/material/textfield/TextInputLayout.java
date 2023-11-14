@@ -722,11 +722,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
   @Override
   public void onGlobalLayout() {
-    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN) {
-      endLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-    } else {
-      endLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-    }
+    endLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
     globalLayoutListenerAdded = false;
     boolean updatedHeight = updateEditTextHeightBasedOnIcon();
     boolean updatedIcon = updateDummyDrawables();
@@ -2532,9 +2528,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       TransitionManager.beginDelayedTransition(inputFrame, placeholderFadeIn);
       placeholderTextView.setVisibility(VISIBLE);
       placeholderTextView.bringToFront();
-      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-        announceForAccessibility(placeholderText);
-      }
+      announceForAccessibility(placeholderText);
     }
   }
 
@@ -2989,8 +2983,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   private boolean isSingleLineFilledTextField() {
-    return boxBackgroundMode == BOX_BACKGROUND_FILLED
-        && (VERSION.SDK_INT < 16 || editText.getMinLines() <= 1);
+    return boxBackgroundMode == BOX_BACKGROUND_FILLED && editText.getMinLines() <= 1;
   }
 
   /*
@@ -4592,7 +4585,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       }
 
       if (!TextUtils.isEmpty(hint)) {
-        if (VERSION.SDK_INT >= 26) {
+        if (VERSION.SDK_INT >= VERSION_CODES.O) {
           info.setHintText(hint);
         } else {
           // Due to a TalkBack bug, setHintText has no effect in APIs < 26 so we append the hint to
@@ -4611,11 +4604,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
         info.setError(showingError ? errorText : counterOverflowDesc);
       }
 
-      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-        View helperTextView = layout.indicatorViewController.getHelperTextView();
-        if (helperTextView != null) {
-          info.setLabelFor(helperTextView);
-        }
+      View helperTextView = layout.indicatorViewController.getHelperTextView();
+      if (helperTextView != null) {
+        info.setLabelFor(helperTextView);
       }
 
       layout.endLayout.getEndIconDelegate().onInitializeAccessibilityNodeInfo(host, info);

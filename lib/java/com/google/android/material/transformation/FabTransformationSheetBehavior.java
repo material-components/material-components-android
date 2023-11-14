@@ -18,7 +18,6 @@ package com.google.android.material.transformation;
 import com.google.android.material.R;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -88,7 +87,7 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
 
     CoordinatorLayout parent = (CoordinatorLayout) viewParent;
     final int childCount = parent.getChildCount();
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && expanded) {
+    if (expanded) {
       importantForAccessibilityMap = new HashMap<>(childCount);
     }
 
@@ -112,9 +111,7 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
         }
       } else {
         // Saves the important for accessibility value of the child view.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
-        }
+        importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
 
         ViewCompat.setImportantForAccessibility(
             child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
