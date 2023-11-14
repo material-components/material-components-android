@@ -345,8 +345,9 @@ abstract class BaseSlider<
       Rect contentViewBounds = new Rect();
       ViewUtils.getContentView(this).getHitRect(contentViewBounds);
       boolean isSliderVisibleOnScreen = getLocalVisibleRect(contentViewBounds);
+      int i = 0;
       for (TooltipDrawable label : labels) {
-        positionLabel(label);
+        positionLabel(label, values.get(i++));
         if (isSliderVisibleOnScreen) {
           ViewUtils.getContentViewOverlay(this).add(label);
         } else {
@@ -2665,16 +2666,14 @@ abstract class BaseSlider<
 
   private void setValueForLabel(TooltipDrawable label, float value) {
     label.setText(formatValue(value));
-    positionLabel(label);
+    positionLabel(label, value);
     ViewUtils.getContentViewOverlay(this).add(label);
   }
 
-  private void positionLabel(TooltipDrawable label) {
-    float labelValue = !TextUtils.isEmpty(label.getText())
-        ? Float.parseFloat(label.getText().toString()) : 0;
+  private void positionLabel(TooltipDrawable label, float value) {
     int left =
         trackSidePadding
-            + (int) (normalizeValue(labelValue) * trackWidth)
+            + (int) (normalizeValue(value) * trackWidth)
             - label.getIntrinsicWidth() / 2;
     int top = calculateTrackCenter() - (labelPadding + thumbHeight / 2);
     label.setBounds(left, top - label.getIntrinsicHeight(), left + label.getIntrinsicWidth(), top);
