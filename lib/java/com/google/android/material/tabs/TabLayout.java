@@ -1442,7 +1442,7 @@ public class TabLayout extends HorizontalScrollView {
   /**
    * Sets the ripple color for this TabLayout.
    *
-   * <p>When running on devices with KitKat or below, we draw this color as a filled overlay rather
+   * <p>When running on devices with KitKat, we draw this color as a filled overlay rather
    * than a ripple.
    *
    * @param color color (or ColorStateList) to use for the ripple
@@ -1464,7 +1464,7 @@ public class TabLayout extends HorizontalScrollView {
   /**
    * Sets the ripple color resource for this TabLayout.
    *
-   * <p>When running on devices with KitKat or below, we draw this color as a filled overlay rather
+   * <p>When running on devices with KitKat, we draw this color as a filled overlay rather
    * than a ripple.
    *
    * @param tabRippleColorResourceId A color resource to use as ripple color.

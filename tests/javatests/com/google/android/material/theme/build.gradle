@@ -38,7 +38,7 @@ android {
     multiDexEnabled true
     testApplicationId "com.google.android.material.tests"
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    minSdkVersion 14
+    minSdkVersion 19
     targetSdkVersion 33
   }
 
