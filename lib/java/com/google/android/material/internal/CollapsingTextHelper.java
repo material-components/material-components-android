@@ -27,7 +27,6 @@ import static java.lang.Math.min;
 import android.animation.TimeInterpolator;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -127,8 +126,6 @@ public final class CollapsingTextHelper {
   @Nullable private CharSequence textToDraw;
   private boolean isRtl;
   private boolean isRtlTextDirectionHeuristicsEnabled = true;
-
-  @Nullable private Bitmap expandedTitleTexture;
 
   private float scale;
   private float currentTextSize;
@@ -803,8 +800,6 @@ public final class CollapsingTextHelper {
         break;
     }
 
-    // The bounds have changed so we need to clear the texture
-    clearTexture();
     // Now reset the text size back to the original
     setInterpolatedTextSize(expandedFraction);
   }
@@ -1126,7 +1121,6 @@ public final class CollapsingTextHelper {
     if (text == null || !TextUtils.equals(this.text, text)) {
       this.text = text;
       textToDraw = null;
-      clearTexture();
       recalculate();
     }
   }
@@ -1136,17 +1130,9 @@ public final class CollapsingTextHelper {
     return text;
   }
 
-  private void clearTexture() {
-    if (expandedTitleTexture != null) {
-      expandedTitleTexture.recycle();
-      expandedTitleTexture = null;
-    }
-  }
-
   public void setMaxLines(int maxLines) {
     if (maxLines != this.maxLines) {
       this.maxLines = maxLines;
-      clearTexture();
       recalculate();
     }
   }

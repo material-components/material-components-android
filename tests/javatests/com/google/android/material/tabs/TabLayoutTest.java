@@ -364,7 +364,6 @@ public class TabLayoutTest {
     testSetScrollPosition(true);
   }
 
-  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.JELLY_BEAN_MR1)
   @Test
   public void setScrollPositionRtl() throws Throwable {
     testSetScrollPosition(false);
