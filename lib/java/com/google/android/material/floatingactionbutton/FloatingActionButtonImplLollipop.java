@@ -45,7 +45,7 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(21)
+@RequiresApi(VERSION_CODES.LOLLIPOP)
 class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   @Nullable private StateListAnimator stateListAnimator;
 

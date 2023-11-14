@@ -604,7 +604,6 @@ public class Chip extends AppCompatCheckBox
     super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
   }
 
-  @RequiresApi(17)
   @Override
   public void setCompoundDrawablesRelative(
       @Nullable Drawable start,

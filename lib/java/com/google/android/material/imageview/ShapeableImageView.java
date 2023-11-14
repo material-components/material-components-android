@@ -47,7 +47,6 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -231,7 +230,6 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
    * @param end    the padding on the end of the image in pixels
    * @param bottom the padding on the bottom of the image in pixels
    */
-  @RequiresApi(17)
   public void setContentPaddingRelative(
       @Dimension int start, @Dimension int top, @Dimension int end, @Dimension int bottom) {
     // Super padding is equal to background padding + content padding. Adjust the content padding

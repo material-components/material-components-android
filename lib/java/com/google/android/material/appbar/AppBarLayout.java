@@ -1352,13 +1352,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       super(source);
     }
 
-    @RequiresApi(19)
     public LayoutParams(LinearLayout.LayoutParams source) {
       // The copy constructor called here only exists on API 19+.
       super(source);
     }
 
-    @RequiresApi(19)
     public LayoutParams(@NonNull LayoutParams source) {
       // The copy constructor called here only exists on API 19+.
       super(source);
