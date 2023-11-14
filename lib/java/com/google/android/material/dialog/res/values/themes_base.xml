@@ -207,7 +207,7 @@
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" tools:targetApi="21">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary" tools:targetApi="lollipop">?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
@@ -469,7 +469,7 @@
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" tools:targetApi="21">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary" tools:targetApi="lollipop">?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
