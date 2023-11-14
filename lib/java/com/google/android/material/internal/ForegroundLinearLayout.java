@@ -236,7 +236,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
     }
   }
 
-  @TargetApi(21)
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
   @Override
   public void drawableHotspotChanged(float x, float y) {
