@@ -16,7 +16,6 @@
 
 package com.google.android.material.textfield;
 
-import android.annotation.TargetApi;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.graphics.Region.Op;
@@ -82,7 +81,6 @@ class CutoutDrawable extends MaterialShapeDrawable {
     setCutout(0, 0, 0, 0);
   }
 
-  @TargetApi(VERSION_CODES.JELLY_BEAN_MR2)
   private static class ImplApi18 extends CutoutDrawable {
     ImplApi18(@NonNull CutoutDrawableState drawableState) {
       super(drawableState);

@@ -372,7 +372,6 @@ public class Chip extends AppCompatCheckBox
   }
 
   @Override
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
   public void onRtlPropertiesChanged(int layoutDirection) {
     super.onRtlPropertiesChanged(layoutDirection);
 
