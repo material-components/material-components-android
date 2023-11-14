@@ -27,6 +27,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import androidx.appcompat.widget.LinearLayoutCompat;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import androidx.annotation.NonNull;
@@ -236,7 +237,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
   }
 
   @TargetApi(21)
-  @RequiresApi(21)
+  @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
   @Override
   public void drawableHotspotChanged(float x, float y) {
     super.drawableHotspotChanged(x, y);

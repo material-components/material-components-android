@@ -57,7 +57,6 @@ public class WindowUtils {
     }
   }
 
-  @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
   private static class Api17Impl {
 
     @NonNull

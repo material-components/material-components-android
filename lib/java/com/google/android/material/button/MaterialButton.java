@@ -508,7 +508,6 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
   }
 
-  @RequiresApi(VERSION_CODES.JELLY_BEAN_MR1)
   @Override
   public void setTextAlignment(int textAlignment) {
     super.setTextAlignment(textAlignment);
