@@ -46,7 +46,8 @@
         android:id="@+id/cat_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/cat_searchbar_hint">
+        android:hint="@string/cat_searchbar_hint"
+        app:layout_scrollEffect="compress">
     </com.google.android.material.search.SearchBar>
   </com.google.android.material.appbar.AppBarLayout>
 
