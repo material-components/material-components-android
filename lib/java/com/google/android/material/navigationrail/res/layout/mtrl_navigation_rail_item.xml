@@ -52,6 +52,8 @@
         android:duplicateParentState="true"
         android:ellipsize="end"
         android:maxLines="1"
+        android:paddingStart="@dimen/m3_navigation_rail_label_padding_horizontal"
+        android:paddingEnd="@dimen/m3_navigation_rail_label_padding_horizontal"
         android:textSize="@dimen/mtrl_navigation_rail_text_size" />
     <TextView
         android:id="@id/navigation_bar_item_large_label_view"
@@ -61,6 +63,8 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textSize="@dimen/mtrl_navigation_rail_active_text_size"
+        android:paddingStart="@dimen/m3_navigation_rail_label_padding_horizontal"
+        android:paddingEnd="@dimen/m3_navigation_rail_label_padding_horizontal"
         android:visibility="invisible" />
   </com.google.android.material.internal.BaselineLayout>
 </merge>
