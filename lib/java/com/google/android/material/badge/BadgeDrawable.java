@@ -41,6 +41,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.OptIn;
 import androidx.annotation.PluralsRes;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
@@ -129,6 +130,7 @@ import java.util.Locale;
  * developer guidance</a> and <a href="https://material.io/components/badges/overview">design
  * guidelines</a>.
  */
+@OptIn(markerClass = com.google.android.material.badge.ExperimentalBadgeUtils.class)
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   private static final String TAG = "Badge";
