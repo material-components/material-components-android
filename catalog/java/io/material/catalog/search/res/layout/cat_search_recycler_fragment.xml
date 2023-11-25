@@ -21,48 +21,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <!-- Use AppBarLayout scrolling behavior instead of SearchBar
-       scrolling behavior since this demo uses an opaque AppBarLayout
-       and a non-floating SearchBar. -->
-  <androidx.recyclerview.widget.RecyclerView
-      android:id="@+id/recycler_view"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:paddingTop="8dp"
-      android:paddingBottom="8dp"
-      android:clipToPadding="false"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+      android:orientation="vertical">
 
-  <com.google.android.material.appbar.AppBarLayout
-      android:id="@+id/app_bar_layout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fitsSystemWindows="true"
-      app:liftOnScroll="false">
-
-    <com.google.android.material.search.SearchBar
-        android:id="@+id/open_search_bar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/cat_searchbar_hint"
-        app:layout_scrollFlags="enterAlways">
-    </com.google.android.material.search.SearchBar>
+        android:fitsSystemWindows="true">
 
-    <com.google.android.material.tabs.TabLayout
+      <com.google.android.material.search.SearchBar
+          android:id="@+id/open_search_bar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:hint="@string/cat_searchbar_hint">
+      </com.google.android.material.search.SearchBar>
+
+      <com.google.android.material.tabs.TabLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content">
+
+        <com.google.android.material.tabs.TabItem
+            android:text="@string/cat_searchbar_tabs_label_explore"
+            tools:ignore="RequiredSize"/>
+        <com.google.android.material.tabs.TabItem
+            android:text="@string/cat_searchbar_tabs_label_flights"
+            tools:ignore="RequiredSize"/>
+        <com.google.android.material.tabs.TabItem
+            android:text="@string/cat_searchbar_tabs_label_trips"
+            tools:ignore="RequiredSize"/>
+      </com.google.android.material.tabs.TabLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-      <com.google.android.material.tabs.TabItem
-          android:text="@string/cat_searchbar_tabs_label_explore"
-          tools:ignore="RequiredSize"/>
-      <com.google.android.material.tabs.TabItem
-          android:text="@string/cat_searchbar_tabs_label_flights"
-          tools:ignore="RequiredSize"/>
-      <com.google.android.material.tabs.TabItem
-          android:text="@string/cat_searchbar_tabs_label_trips"
-          tools:ignore="RequiredSize"/>
-    </com.google.android.material.tabs.TabLayout>
-  </com.google.android.material.appbar.AppBarLayout>
+        android:layout_height="match_parent"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:clipToPadding="false"/>
+  </LinearLayout>
 
   <!-- Elevation needs to be greater than AppBarLayout's elevation;
        otherwise for some reason when the AppBarLayout's background
