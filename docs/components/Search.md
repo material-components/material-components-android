@@ -285,9 +285,7 @@ Lastly, if you don't want the soft keyboard to show automatically when the
 
 To make sure that the `SearchBar` doesn't appear underneath the translucent
 status bar, you can wrap it in a `FrameLayout` which has the
-`android:fitsSystemWindows` attribute set to `true`. For an example of how to
-set this up in XML, take a look at the
-[Search Bar Maps demo][search-bar-usage-maps].
+`android:fitsSystemWindows` attribute set to `true`.
 
 Additionally, you should not set the `android:fitsSystemWindows` attribute on
 the `SearchView`. If you are using either `FLAG_TRANSLUCENT_STATUS`
