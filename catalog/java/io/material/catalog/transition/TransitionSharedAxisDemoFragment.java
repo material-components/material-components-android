@@ -20,13 +20,15 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.transition.Transition;
+import androidx.transition.TransitionListenerAdapter;
 import com.google.android.material.transition.MaterialSharedAxis;
 import io.material.catalog.feature.DemoFragment;
 
@@ -35,14 +37,6 @@ public class TransitionSharedAxisDemoFragment extends DemoFragment {
 
   private static final int LAYOUT_RES_ID_START = R.layout.cat_transition_shared_axis_start;
   private static final int LAYOUT_RES_ID_END = R.layout.cat_transition_shared_axis_end;
-
-  private final OnBackPressedCallback onBackPressedCallback =
-      new OnBackPressedCallback(/* enabled= */ false) {
-        @Override
-        public void handleOnBackPressed() {
-          replaceFragment(LAYOUT_RES_ID_START);
-        }
-      };
 
   private SharedAxisHelper sharedAxisHelper;
 
@@ -58,12 +52,18 @@ public class TransitionSharedAxisDemoFragment extends DemoFragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
     sharedAxisHelper = new SharedAxisHelper(view.findViewById(R.id.controls_layout));
-    requireActivity().getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
 
-    replaceFragment(LAYOUT_RES_ID_START);
+    Fragment fragment = TransitionSimpleLayoutFragment.newInstance(LAYOUT_RES_ID_START);
+
+    requireActivity()
+        .getSupportFragmentManager()
+        .beginTransaction()
+        .replace(R.id.fragment_container, fragment)
+        .commit();
 
     sharedAxisHelper.setBackButtonOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_START));
     sharedAxisHelper.setNextButtonOnClickListener(v -> replaceFragment(LAYOUT_RES_ID_END));
+    sharedAxisHelper.updateButtonsEnabled(true);
   }
 
   private void replaceFragment(@LayoutRes int layoutResId) {
@@ -73,14 +73,28 @@ public class TransitionSharedAxisDemoFragment extends DemoFragment {
     // Set the transition as the Fragment's enter transition. This will be used when the fragment
     // is added to the container and re-used when the fragment is removed from the container.
     fragment.setEnterTransition(createTransition(entering));
+    if (entering) {
+      fragment.setReturnTransition(createTransition(false));
+    } else {
+      // Pop the backstack if manually transitioning to the start fragment to remove the end
+      // fragment from the back stack without a back event.
+      requireActivity().getSupportFragmentManager().popBackStack();
+    }
 
-    getChildFragmentManager()
+    getFragmentTransaction(fragment, entering).commit();
+  }
+
+  private FragmentTransaction getFragmentTransaction(@NonNull Fragment fragment, boolean entering) {
+    return entering
+        ? getFragmentTransaction(fragment).addToBackStack(/* name= */ null)
+        : getFragmentTransaction(fragment);
+  }
+
+  private FragmentTransaction getFragmentTransaction(@NonNull Fragment fragment) {
+    return requireActivity()
+        .getSupportFragmentManager()
         .beginTransaction()
-        .replace(R.id.fragment_container, fragment)
-        .commit();
-
-    sharedAxisHelper.updateButtonsEnabled(!entering);
-    onBackPressedCallback.setEnabled(entering);
+        .replace(R.id.fragment_container, fragment);
   }
 
   private MaterialSharedAxis createTransition(boolean entering) {
@@ -92,6 +106,18 @@ public class TransitionSharedAxisDemoFragment extends DemoFragment {
     // Fragment's layout.
     transition.addTarget(R.id.start_root);
     transition.addTarget(R.id.end_root);
+    transition.addListener(
+        new TransitionListenerAdapter() {
+          @Override
+          public void onTransitionStart(@NonNull Transition transition) {
+            sharedAxisHelper.updateButtonsEnabled(!entering);
+          }
+
+          @Override
+          public void onTransitionCancel(@NonNull Transition transition) {
+            sharedAxisHelper.updateButtonsEnabled(entering);
+          }
+        });
 
     return transition;
   }
