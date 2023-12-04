@@ -240,7 +240,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     // TODO(b/256138189): Find better workaround, back gesture should call
     // AutoCompleteTextView.OnDismissListener.
     boolean invalidState =
-        event.getEventType() == AccessibilityEventCompat.TYPE_VIEW_ACCESSIBILITY_FOCUSED
+        (event.getEventType() == AccessibilityEventCompat.TYPE_VIEW_ACCESSIBILITY_FOCUSED
+                || event.getEventType() == AccessibilityEventCompat.CONTENT_CHANGE_TYPE_PANE_TITLE)
             && isEndIconChecked
             && !autoCompleteTextView.isPopupShowing();
     // If dropdown is non editable, layout click is what triggers showing/hiding the popup
