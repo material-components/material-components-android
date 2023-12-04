@@ -72,6 +72,9 @@ public class SliderMainDemoFragment extends DemoFragment {
     RangeSlider rangeSlider = view.findViewById(R.id.range_slider);
     rangeSlider.addOnSliderTouchListener(rangeSliderTouchListener);
 
+    RangeSlider rangeSliderMulti = view.findViewById(R.id.range_slider_multi);
+    rangeSliderMulti.addOnSliderTouchListener(rangeSliderTouchListener);
+
     Button button = view.findViewById(R.id.button);
     button.setOnClickListener(v -> slider.setValue(slider.getValueTo()));
 

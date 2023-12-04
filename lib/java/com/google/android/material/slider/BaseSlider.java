@@ -286,6 +286,7 @@ abstract class BaseSlider<
   private int defaultTrackHeight;
   private int defaultTickActiveRadius;
   private int defaultTickInactiveRadius;
+  private int minTickSpacing;
 
   @Px private int minTouchTargetSize;
 
@@ -339,25 +340,27 @@ abstract class BaseSlider<
   private float touchPosition;
   @SeparationUnit private int separationUnit = UNIT_PX;
 
-  @NonNull private final ViewTreeObserver.OnScrollChangedListener onScrollChangedListener = () -> {
-    if (shouldAlwaysShowLabel() && isEnabled()) {
-      Rect contentViewBounds = new Rect();
-      ViewUtils.getContentView(this).getHitRect(contentViewBounds);
-      boolean isSliderVisibleOnScreen = getLocalVisibleRect(contentViewBounds);
-      for (int i = 0; i < labels.size(); i++) {
-        TooltipDrawable label = labels.get(i);
-        // Get associated value for label
-        if (i < values.size()) {
-          positionLabel(label, values.get(i));
+  @NonNull
+  private final ViewTreeObserver.OnScrollChangedListener onScrollChangedListener =
+      () -> {
+        if (shouldAlwaysShowLabel() && isEnabled()) {
+          Rect contentViewBounds = new Rect();
+          ViewUtils.getContentView(this).getHitRect(contentViewBounds);
+          boolean isSliderVisibleOnScreen = getLocalVisibleRect(contentViewBounds);
+          for (int i = 0; i < labels.size(); i++) {
+            TooltipDrawable label = labels.get(i);
+            // Get associated value for label
+            if (i < values.size()) {
+              positionLabel(label, values.get(i));
+            }
+            if (isSliderVisibleOnScreen) {
+              ViewUtils.getContentViewOverlay(this).add(label);
+            } else {
+              ViewUtils.getContentViewOverlay(this).remove(label);
+            }
+          }
         }
-        if (isSliderVisibleOnScreen) {
-          ViewUtils.getContentViewOverlay(this).add(label);
-        } else {
-          ViewUtils.getContentViewOverlay(this).remove(label);
-        }
-      }
-    }
-  };
+      };
 
   /**
    * Determines the behavior of the label which can be any of the following.
@@ -447,6 +450,7 @@ abstract class BaseSlider<
 
     defaultTickActiveRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_tick_radius);
     defaultTickInactiveRadius = resources.getDimensionPixelSize(R.dimen.mtrl_slider_tick_radius);
+    minTickSpacing = resources.getDimensionPixelSize(R.dimen.mtrl_slider_tick_min_spacing);
 
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
   }
@@ -1946,7 +1950,7 @@ abstract class BaseSlider<
 
     int tickCount = (int) ((valueTo - valueFrom) / stepSize + 1);
     // Limit the tickCount if they will be too dense.
-    tickCount = min(tickCount, trackWidth / (trackHeight * 2) + 1);
+    tickCount = min(tickCount, trackWidth / minTickSpacing + 1);
     if (ticksCoordinates == null || ticksCoordinates.length != tickCount * 2) {
       ticksCoordinates = new float[tickCount * 2];
     }
@@ -2046,9 +2050,9 @@ abstract class BaseSlider<
       if (hasGapBetweenThumbAndTrack()) {
         trackRect.set(
             right + thumbTrackGapSize,
-            yCenter - trackHeight / 2,
-            trackSidePadding + width + trackHeight / 2,
-            yCenter + trackHeight / 2);
+            yCenter - trackHeight / 2f,
+            trackSidePadding + width + trackHeight / 2f,
+            yCenter + trackHeight / 2f);
         updateTrack(canvas, inactiveTrackPaint, trackRect, FullCornerDirection.RIGHT);
       } else {
         inactiveTrackPaint.setStyle(Style.STROKE);
@@ -2062,10 +2066,10 @@ abstract class BaseSlider<
     if (left > trackSidePadding + thumbTrackGapSize) {
       if (hasGapBetweenThumbAndTrack()) {
         trackRect.set(
-            trackSidePadding - trackHeight / 2,
-            yCenter - trackHeight / 2,
+            trackSidePadding - trackHeight / 2f,
+            yCenter - trackHeight / 2f,
             left - thumbTrackGapSize,
-            yCenter + trackHeight / 2);
+            yCenter + trackHeight / 2f);
         updateTrack(canvas, inactiveTrackPaint, trackRect, FullCornerDirection.LEFT);
       } else {
         inactiveTrackPaint.setStyle(Style.STROKE);
@@ -2093,38 +2097,53 @@ abstract class BaseSlider<
     float left = trackSidePadding + activeRange[0] * width;
 
     if (hasGapBetweenThumbAndTrack()) {
-      FullCornerDirection direction =
-          isRtl() ? FullCornerDirection.RIGHT : FullCornerDirection.LEFT;
-      if (values.size() > 1) { // Active track is in-between thumbs
-        direction = FullCornerDirection.NONE;
-      }
-      float fullCornerSize = trackHeight / 2f;
-      switch (direction) {
-        case BOTH:
-          left -= fullCornerSize;
-          right += fullCornerSize;
-          break;
-        case LEFT:
-          left -= fullCornerSize;
-          right -= thumbTrackGapSize;
-          break;
-        case RIGHT:
-          left += thumbTrackGapSize;
-          right += fullCornerSize;
-          break;
-        case NONE:
-          left += thumbTrackGapSize;
-          right -= thumbTrackGapSize;
-          break;
+      FullCornerDirection direction = FullCornerDirection.NONE;
+      if (values.size() == 1) { // Only 1 thumb
+        direction = isRtl() ? FullCornerDirection.RIGHT : FullCornerDirection.LEFT;
       }
 
-      // Active track is too small to be drawn
-      if (left + thumbTrackGapSize >= right) {
-        return;
-      }
+      for (int i = 0; i < values.size(); i++) {
+        if (values.size() > 1) {
+          if (i > 0) {
+            left = valueToX(values.get(i - 1));
+          }
+          right = valueToX(values.get(i));
+          if (isRtl()) { // Swap left right
+            float temp = left;
+            left = right;
+            right = temp;
+          }
+        }
 
-      trackRect.set(left, yCenter - trackHeight / 2, right, yCenter + trackHeight / 2);
-      updateTrack(canvas, activeTrackPaint, trackRect, direction);
+        float threshold = 0;
+        switch (direction) {
+          case NONE:
+            left += thumbTrackGapSize;
+            right -= thumbTrackGapSize;
+            threshold = trackInsideCornerSize * 2;
+            break;
+          case LEFT:
+            left -= trackHeight / 2f;
+            right -= thumbTrackGapSize;
+            threshold = trackInsideCornerSize + trackHeight / 2f + thumbTrackGapSize;
+            break;
+          case RIGHT:
+            left += thumbTrackGapSize;
+            right += trackHeight / 2f;
+            threshold = trackInsideCornerSize + trackHeight / 2f + thumbTrackGapSize;
+            break;
+          default:
+            // fall through
+        }
+
+        // Active track is too small to be drawn
+        if (right - left <= threshold) {
+          continue;
+        }
+
+        trackRect.set(left, yCenter - trackHeight / 2f, right, yCenter + trackHeight / 2f);
+        updateTrack(canvas, activeTrackPaint, trackRect, direction);
+      }
     } else {
       activeTrackPaint.setStyle(Style.STROKE);
       activeTrackPaint.setStrokeCap(Cap.ROUND);
@@ -2383,7 +2402,7 @@ abstract class BaseSlider<
    * @return Index of the closest tick coordinate.
    */
   private static int pivotIndex(float[] coordinates, float position) {
-    return Math.round(position * (coordinates.length / 2 - 1));
+    return Math.round(position * (coordinates.length / 2f - 1));
   }
 
   private double snapPosition(float position) {

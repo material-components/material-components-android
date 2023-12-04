@@ -19,4 +19,9 @@
     <item>2.0</item>
     <item>7.0</item>
   </array>
+  <array name="initial_slider_multi_values">
+    <item>2.0</item>
+    <item>7.0</item>
+    <item>9.0</item>
+  </array>
 </resources>
