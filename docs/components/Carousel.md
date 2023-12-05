@@ -116,6 +116,13 @@ container.
 You can use the multi-browse strategy by passing in no arguments to the
 CarouselLayoutManager constructor: `CarouselLayoutManager()`.
 
+With the multi-browse strategy, it is recommended to use the `CarouselSnapHelper` to snap to the nearest item like so:
+
+```kt
+val snapHelper = CarouselSnapHelper()
+snapHelper.attachToRecyclerView(carouselRecyclerView)
+```
+
 ## Hero strategy
 
 ![A contained, hero Carousel](assets/carousel/hero.png)
