@@ -32,8 +32,8 @@
   <dimen name="m3_navigation_rail_item_min_height">60dp</dimen>
   <dimen name="m3_navigation_rail_item_padding_top">4dp</dimen>
   <dimen name="m3_navigation_rail_item_padding_top_with_large_font">12dp</dimen>
-  <dimen name="m3_navigation_rail_item_padding_bottom_with_large_font">16dp</dimen>
-  <dimen name="m3_navigation_rail_item_padding_bottom">8dp</dimen>
+  <dimen name="m3_navigation_rail_item_padding_bottom_with_large_font">20dp</dimen>
+  <dimen name="m3_navigation_rail_item_padding_bottom">12dp</dimen>
   <dimen name="m3_navigation_rail_item_active_indicator_width">@dimen/m3_comp_navigation_rail_active_indicator_width</dimen>
   <dimen name="m3_navigation_rail_item_active_indicator_height">@dimen/m3_comp_navigation_rail_active_indicator_height</dimen>
   <dimen name="m3_navigation_rail_item_active_indicator_margin_horizontal">4dp</dimen>
