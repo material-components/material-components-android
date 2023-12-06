@@ -30,6 +30,7 @@ import android.os.Build.VERSION_CODES;
 import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
@@ -47,6 +48,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   private IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate;
 
   private Drawable staticDummyDrawable;
+  @Px private int tempIndicatorTrackGapSize;
 
   IndeterminateDrawable(
       @NonNull Context context,
@@ -55,8 +57,15 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
       @NonNull IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate) {
     super(context, baseSpec);
 
+    tempIndicatorTrackGapSize = baseSpec.indicatorTrackGapSize;
     setDrawingDelegate(drawingDelegate);
     setAnimatorDelegate(animatorDelegate);
+  }
+
+  @Override
+  public void invalidateSelf() {
+    tempIndicatorTrackGapSize = baseSpec.indicatorTrackGapSize;
+    super.invalidateSelf();
   }
 
   /**
@@ -168,13 +177,11 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
     canvas.save();
     drawingDelegate.validateSpecAndAdjustCanvas(canvas, getBounds(), getGrowFraction());
 
-    if (baseSpec.indicatorTrackGapSize > 0) {
+    if (tempIndicatorTrackGapSize > 0) {
       if (drawingDelegate instanceof LinearDrawingDelegate) {
         ((LinearProgressIndicatorSpec) drawingDelegate.spec).trackStopIndicatorSize = 0;
       } else if (drawingDelegate instanceof CircularDrawingDelegate) {
-        // TODO: workaround preventing exiting the indicatorTrackGapSize > 0 logic while keeping
-        //  the animation smooth.
-        baseSpec.indicatorTrackGapSize = 1;
+        baseSpec.indicatorTrackGapSize = 0;
       }
 
       // Draws the transparent track.

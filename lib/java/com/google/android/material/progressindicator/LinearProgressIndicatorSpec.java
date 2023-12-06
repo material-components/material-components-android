@@ -109,11 +109,11 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
     }
     if (indeterminateAnimationType
         == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS) {
-      if (trackCornerRadius > 0) {
+      if (trackCornerRadius > 0 && indicatorTrackGapSize == 0) {
         // Throws an exception if trying to use the cornered indicator/track with contiguous
-        // indeterminate animation type.
+        // indeterminate animation type without gap.
         throw new IllegalArgumentException(
-            "Rounded corners are not supported in contiguous indeterminate animation.");
+            "Rounded corners without gap are not supported in contiguous indeterminate animation.");
       }
       if (indicatorColors.length < 3) {
         // Throws an exception if trying to set contiguous indeterminate animation with less than 3

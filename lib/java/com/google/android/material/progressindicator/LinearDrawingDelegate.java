@@ -94,7 +94,10 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     // Scales canvas while hiding with escape animation.
     if (drawable.isHiding() && spec.hideAnimationBehavior == HIDE_ESCAPE) {
       canvas.scale(
-          trackThicknessFraction, trackThicknessFraction, bounds.left + bounds.width() / 2f, 0);
+          trackThicknessFraction,
+          trackThicknessFraction,
+          bounds.left + bounds.width() / 2f,
+          bounds.top + bounds.height() / 2f);
     }
 
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can
@@ -136,11 +139,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     float endPx = endFraction * trackLength;
     float gapSize = min(spec.indicatorTrackGapSize, startPx);
 
-    // No need to draw if the indicator starts at or after the stop indicator.
-    if (startPx + gapSize >= trackLength - spec.trackStopIndicatorSize) {
-      return;
-    }
-
     float adjustedStartX = originX + startPx + gapSize;
     // TODO: workaround to maintain pixel-perfect compatibility with drawing logic
     //  not using indicatorTrackGapSize.
@@ -149,10 +147,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       adjustedStartX -= displayedCornerRadius * 2;
     }
     float adjustedEndX = originX + endPx;
-    // Prevents drawing over the stop indicator.
-    if (endPx == trackLength) {
-      adjustedEndX -= spec.trackStopIndicatorSize;
-    }
 
     // Sets up the paint.
     paint.setStyle(Style.FILL);
@@ -169,7 +163,26 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
             adjustedEndX,
             displayedTrackThickness / 2);
     canvas.drawRoundRect(indicatorBounds, displayedCornerRadius, displayedCornerRadius, paint);
+
+    // Draw stop indicator
+    if (spec.trackStopIndicatorSize > 0) {
+      drawStopIndicator(canvas, paint);
+    }
     canvas.restore();
+  }
+
+  private void drawStopIndicator(@NonNull Canvas canvas, @NonNull Paint paint) {
+    int indicatorColor =
+        MaterialColors.compositeARGBWithAlpha(spec.indicatorColors[0], drawable.getAlpha());
+    paint.setColor(indicatorColor);
+    Rect trackBounds = canvas.getClipBounds();
+    RectF stopBounds =
+        new RectF(
+            trackBounds.right - spec.trackStopIndicatorSize,
+            -displayedTrackThickness / 2,
+            trackBounds.right,
+            displayedTrackThickness / 2);
+    canvas.drawRoundRect(stopBounds, displayedCornerRadius, displayedCornerRadius, paint);
   }
 
   /**
@@ -196,13 +209,5 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
         displayedCornerRadius,
         Path.Direction.CCW);
     canvas.drawPath(displayedTrackPath, paint);
-
-    if (spec.trackStopIndicatorSize > 0) {
-      int indicatorColor =
-          MaterialColors.compositeARGBWithAlpha(spec.indicatorColors[0], drawable.getAlpha());
-      paint.setColor(indicatorColor);
-      RectF stopBounds = new RectF(right - spec.trackStopIndicatorSize, -bottom, right, bottom);
-      canvas.drawRoundRect(stopBounds, displayedCornerRadius, displayedCornerRadius, paint);
-    }
   }
 }
