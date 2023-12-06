@@ -661,6 +661,9 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
     if (spec.indicatorTrackGapSize != indicatorTrackGapSize) {
       spec.indicatorTrackGapSize = indicatorTrackGapSize;
       spec.validateSpec();
+      if (getIndeterminateDrawable() != null) {
+        getIndeterminateDrawable().setInitialIndicatorTrackGapSize(indicatorTrackGapSize);
+      }
       invalidate();
     }
   }

@@ -48,7 +48,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   private IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate;
 
   private Drawable staticDummyDrawable;
-  @Px private int tempIndicatorTrackGapSize;
+  @Px private int initialIndicatorTrackGapSize;
 
   IndeterminateDrawable(
       @NonNull Context context,
@@ -57,15 +57,9 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
       @NonNull IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate) {
     super(context, baseSpec);
 
-    tempIndicatorTrackGapSize = baseSpec.indicatorTrackGapSize;
+    initialIndicatorTrackGapSize = baseSpec.indicatorTrackGapSize;
     setDrawingDelegate(drawingDelegate);
     setAnimatorDelegate(animatorDelegate);
-  }
-
-  @Override
-  public void invalidateSelf() {
-    tempIndicatorTrackGapSize = baseSpec.indicatorTrackGapSize;
-    super.invalidateSelf();
   }
 
   /**
@@ -177,7 +171,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
     canvas.save();
     drawingDelegate.validateSpecAndAdjustCanvas(canvas, getBounds(), getGrowFraction());
 
-    if (tempIndicatorTrackGapSize > 0) {
+    if (initialIndicatorTrackGapSize > 0) {
       if (drawingDelegate instanceof LinearDrawingDelegate) {
         ((LinearProgressIndicatorSpec) drawingDelegate.spec).trackStopIndicatorSize = 0;
       } else if (drawingDelegate instanceof CircularDrawingDelegate) {
@@ -284,5 +278,9 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   void setDrawingDelegate(@NonNull DrawingDelegate<S> drawingDelegate) {
     this.drawingDelegate = drawingDelegate;
     drawingDelegate.registerDrawable(this);
+  }
+
+  void setInitialIndicatorTrackGapSize(@Px int initialIndicatorTrackGapSize) {
+    this.initialIndicatorTrackGapSize = initialIndicatorTrackGapSize;
   }
 }
