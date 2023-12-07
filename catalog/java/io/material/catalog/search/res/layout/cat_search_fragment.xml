@@ -40,13 +40,15 @@
       android:id="@+id/app_bar_layout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:fitsSystemWindows="true">
+      android:fitsSystemWindows="true"
+      app:liftOnScroll="false">
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/cat_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/cat_searchbar_hint">
+        android:hint="@string/cat_searchbar_hint"
+        app:layout_scrollEffect="compress">
     </com.google.android.material.search.SearchBar>
   </com.google.android.material.appbar.AppBarLayout>
 
