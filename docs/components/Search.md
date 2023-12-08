@@ -133,7 +133,7 @@ To set up the scroll-away mode, use a top-level `CoordinatorLayout` and place
 the `SearchBar` within an `AppBarLayout`. Then, place the `AppBarLayout` below
 the scrolling view (usually a `RecyclerView` or `NestedScrollView`) in the
 `CoordinatorLayout`, and set
-`app:layout_behavior="@string/searchbar_scrolling_view_behavior"` on the
+`app:layout_behavior="@string/appbar_scrolling_view_behavior"` on the
 scrolling view. This scrolling behavior makes the `AppBarLayout` transparent and
 not elevated so there are no undesirable shadows. It also adjusts the scrolling
 child so that the `SearchBar` will overlap the rest of your content and appear
@@ -325,18 +325,21 @@ Putting it all together and using the scroll-away mode, the `SearchBar` and
   <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:layout_behavior="@string/searchbar_scrolling_view_behavior">
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <!-- Screen content goes here. -->
   </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:fitsSystemWindows="true"
+      app:liftOnScroll="false">
     <com.google.android.material.search.SearchBar
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/searchbar_hint" />
+        android:hint="@string/searchbar_hint"
+        app:layout_scrollEffect="compress" />
   </com.google.android.material.appbar.AppBarLayout>
 
   <com.google.android.material.search.SearchView
