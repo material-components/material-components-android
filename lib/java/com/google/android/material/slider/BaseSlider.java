@@ -361,6 +361,8 @@ abstract class BaseSlider<
           }
         }
       };
+  @NonNull
+  private final ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = onScrollChangedListener::onScrollChanged;
 
   /**
    * Determines the behavior of the label which can be any of the following.
@@ -1891,6 +1893,7 @@ abstract class BaseSlider<
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
+    getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
     // The label is attached on the Overlay relative to the content.
     for (TooltipDrawable label : labels) {
       attachLabelToContentView(label);
@@ -1912,6 +1915,7 @@ abstract class BaseSlider<
       detachLabelFromContentView(label);
     }
     getViewTreeObserver().removeOnScrollChangedListener(onScrollChangedListener);
+    getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
     super.onDetachedFromWindow();
   }
 
