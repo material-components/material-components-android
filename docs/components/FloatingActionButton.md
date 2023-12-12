@@ -28,7 +28,7 @@ represents the primary action of a screen.
 ## Design & API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/floating-action-button/overview)
-*   [API reference](https://developer.android.com/reference/com/google/android/material/fa/package-summary)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/package-summary)
 
 ## Using FABs
 
