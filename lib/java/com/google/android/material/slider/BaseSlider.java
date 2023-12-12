@@ -241,6 +241,7 @@ abstract class BaseSlider<
   private static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
   private static final int HALO_ALPHA = 63;
   private static final double THRESHOLD = .0001;
+  private static final float THUMB_WIDTH_PRESSED_RATIO = .5f;
 
   static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Slider;
   static final int UNIT_VALUE = 1;
@@ -299,6 +300,8 @@ abstract class BaseSlider<
   private int thumbHeight;
   private int haloRadius;
   private int thumbTrackGapSize;
+  private int defaultThumbWidth = -1;
+  private int defaultThumbTrackGapSize = -1;
   private int trackStopIndicatorSize;
   private int trackInsideCornerSize;
   private int labelPadding;
@@ -2339,6 +2342,15 @@ abstract class BaseSlider<
         thumbIsPressed = true;
         snapTouchPosition();
         updateHaloHotspot();
+        // Update the thumb width when pressed.
+        if (hasGapBetweenThumbAndTrack()) {
+          defaultThumbWidth = thumbWidth;
+          defaultThumbTrackGapSize = thumbTrackGapSize;
+          int pressedThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
+          int delta = thumbWidth - pressedThumbWidth;
+          setThumbWidth(pressedThumbWidth);
+          setThumbTrackGapSize(thumbTrackGapSize - delta / 2);
+        }
         invalidate();
         onStartTrackingTouch();
         break;
@@ -2378,6 +2390,13 @@ abstract class BaseSlider<
         if (activeThumbIdx != -1) {
           snapTouchPosition();
           updateHaloHotspot();
+          // Reset the thumb width.
+          if (hasGapBetweenThumbAndTrack()
+              && defaultThumbWidth != -1
+              && defaultThumbTrackGapSize != -1) {
+            setThumbWidth(defaultThumbWidth);
+            setThumbTrackGapSize(defaultThumbTrackGapSize);
+          }
           activeThumbIdx = -1;
           onStopTrackingTouch();
         }
