@@ -270,7 +270,9 @@ public final class TabLayoutMediator {
 
     @Override
     public void onTabSelected(@NonNull TabLayout.Tab tab) {
-      viewPager.setCurrentItem(tab.getPosition(), smoothScroll);
+      if (viewPager.getCurrentItem() != tab.getPosition()) {
+        viewPager.setCurrentItem(tab.getPosition(), smoothScroll);
+      }
     }
 
     @Override
