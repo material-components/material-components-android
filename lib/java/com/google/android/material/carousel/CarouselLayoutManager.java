@@ -307,6 +307,11 @@ public class CarouselLayoutManager extends LayoutManager
     lastItemCount = getItemCount();
   }
 
+  @Override
+  public boolean isAutoMeasureEnabled() {
+    return true;
+  }
+
   private void recalculateKeylineStateList(Recycler recycler) {
     View firstChild = recycler.getViewForPosition(0);
     measureChildWithMargins(firstChild, 0, 0);

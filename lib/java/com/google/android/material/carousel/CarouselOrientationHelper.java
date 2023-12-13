@@ -83,6 +83,16 @@ abstract class CarouselOrientationHelper {
   /** Returns the y-coordinate of the bottom edge of the parent recycler view. */
   abstract int getParentBottom();
 
+
+  /**
+   * Returns the space occupied by this View in the cross (non-scrolling) axis including
+   * decorations and margins.
+   *
+   * @param child The view element to check
+   * @return total space occupied by this view in the perpendicular orientation to current one
+   */
+  abstract int getDecoratedCrossAxisMeasurement(View child);
+
   /**
    * Helper method that calls {@link CarouselLayoutManager#layoutDecoratedWithMargins(View, int,
    * int, int, int)} with the correct coordinates according to the orientation.
@@ -183,12 +193,22 @@ abstract class CarouselOrientationHelper {
       }
 
       @Override
+      int getDecoratedCrossAxisMeasurement(View child) {
+        final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
+            child.getLayoutParams();
+        return carouselLayoutManager.getDecoratedMeasuredWidth(child) + params.leftMargin
+            + params.rightMargin;
+      }
+
+      @Override
       public void layoutDecoratedWithMargins(View child, int head, int tail) {
+        int left = getParentLeft();
+        int right = left + getDecoratedCrossAxisMeasurement(child);
         carouselLayoutManager.layoutDecoratedWithMargins(
             child,
-            /* left= */ getParentLeft(),
+            /* left= */ left,
             /* top= */ head,
-            /* right= */ getParentRight(),
+            /* right= */ right,
             /* bottom= */ tail);
       }
 
@@ -277,13 +297,23 @@ abstract class CarouselOrientationHelper {
       }
 
       @Override
+      int getDecoratedCrossAxisMeasurement(View child) {
+        final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams)
+            child.getLayoutParams();
+        return carouselLayoutManager.getDecoratedMeasuredHeight(child) + params.topMargin
+            + params.bottomMargin;
+      }
+
+      @Override
       public void layoutDecoratedWithMargins(View child, int head, int tail) {
+        int top = getParentTop();
+        int bottom = top + getDecoratedCrossAxisMeasurement(child);
         carouselLayoutManager.layoutDecoratedWithMargins(
             child,
             /* left= */ head,
-            /* top= */ getParentTop(),
+            /* top= */ top,
             /* right= */ tail,
-            /* bottom= */ getParentBottom());
+            /* bottom= */ bottom);
       }
 
       @Override
