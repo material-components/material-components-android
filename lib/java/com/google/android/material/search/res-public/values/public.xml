@@ -37,4 +37,5 @@
   <public name="ThemeOverlay.Material3.Search" type="style"/>
   <public name="Widget.Material3.Search.ActionButton.Overflow" type="style"/>
   <public name="Widget.Material3.Search.Toolbar.Button.Navigation" type="style"/>
+  <public name="searchbar_scrolling_view_behavior" type="string"/>
 </resources>
