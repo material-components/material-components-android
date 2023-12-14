@@ -777,8 +777,8 @@ API and source code:
 *   `CheckBox`
     *   [Class description](https://developer.android.com/reference/android/widget/CheckBox)
 
-**Note** The `CheckBox` API is just one of several inputs that can implement the
-icon button. See other
+**Note:** The `CheckBox` API is just one of several inputs that can implement
+the icon button. See other
 [selection controls](https://material.io/components/selection-controls/) for
 more details.
 
@@ -845,6 +845,14 @@ information.
 *   Ensure the meaning of the icon is unambiguous.
 *   Ensure that the tooltip describes the button’s action, rather than
     the icon.
+
+**Note:** The examples below show how to create an icon button using `Button`
+which will be inflated to `MaterialButton` when using a Material theme. There is
+a known performance issue where `MaterialButton` takes longer to initialize when
+compared to `ImageButton` or `AppCompatImageButton`, in large part because
+`MaterialButton` extends from `AppCompatButton` which supports more than just
+icon buttons. Consider using those pure icon button alternatives if the extra
+latency causes a noticeable issue for your app.
 
 #### Icon button examples
 
