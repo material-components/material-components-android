@@ -24,14 +24,16 @@
       android:id="@+id/nested_scroll_view"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+      app:layout_behavior="@string/searchbar_scrolling_view_behavior">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:layout_marginTop="88dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:fitsSystemWindows="true"
         android:lineSpacingMultiplier="1.2"
         android:text="@string/cat_searchbar_lorem_ipsum"/>
   </androidx.core.widget.NestedScrollView>
@@ -41,14 +43,13 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:fitsSystemWindows="true"
-      app:liftOnScroll="false">
+      app:statusBarForeground="?attr/colorSurface">
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/cat_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/cat_searchbar_hint"
-        app:layout_scrollEffect="compress">
+        android:hint="@string/cat_searchbar_hint">
     </com.google.android.material.search.SearchBar>
   </com.google.android.material.appbar.AppBarLayout>
 

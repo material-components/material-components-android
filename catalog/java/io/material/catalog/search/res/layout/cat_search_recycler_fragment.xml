@@ -38,14 +38,14 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:fitsSystemWindows="true"
-      app:liftOnScroll="false">
+      app:liftOnScroll="false"
+      app:statusBarForeground="?attr/colorSurface">
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/open_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/cat_searchbar_hint"
-        app:layout_scrollEffect="compress">
+        android:hint="@string/cat_searchbar_hint">
     </com.google.android.material.search.SearchBar>
 
     <com.google.android.material.tabs.TabLayout

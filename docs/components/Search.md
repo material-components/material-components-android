@@ -124,8 +124,9 @@ The `SearchBar` can either be used as a fixed or scroll-away search field.
 #### Fixed Mode
 
 To set up the fixed mode, simply position the `SearchBar` on top of the rest of
-your layout's contents and do not set up any scrolling behaviors. It will remain
-in place as the content is scrolled beneath it.
+your layout's contents and do not set up any scrolling behaviors or
+AppBarLayout. The `SearchBar` will remain fixed in place as the content is
+scrolled beneath it.
 
 #### Scroll-away Mode
 
@@ -139,6 +140,10 @@ not elevated so there are no undesirable shadows. It also adjusts the scrolling
 child so that the `SearchBar` will overlap the rest of your content and appear
 to be floating above it. See the [XML usage](#usage) section below for an
 example of how to set up this behavior.
+
+Additionally, if your app is going edge-to-edge, consider adding
+`app:statusBarForeground="?attr/colorSurface"` to your `AppBarLayout` in order
+to avoid overlap between the `SearchBar` and status bar content on scroll.
 
 ### Toolbar Transitions
 
