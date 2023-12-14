@@ -41,8 +41,6 @@
     <FrameLayout
         android:id="@+id/m3_side_sheet"
         style="?attr/sideSheetModalStyle"
-        android:layout_width="@dimen/m3_side_sheet_width"
-        android:layout_height="match_parent"
         app:layout_behavior="@string/side_sheet_behavior"/>
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>

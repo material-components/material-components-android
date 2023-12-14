@@ -40,6 +40,11 @@
 
   <!-- Style for the M3 Modal Side Sheet. -->
   <style name="Widget.Material3.SideSheet.Modal">
+    <!-- Layout_* attributes break when set via a default style, but it's ok to
+         set layout_* attributes from this style, because this style is set
+         explicitly on the modal side sheet View. -->
+    <item name="android:layout_width">@dimen/m3_side_sheet_width</item>
+    <item name="android:layout_height">match_parent</item>
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_side_sheet_modal_elevation</item>
     <item name="backgroundTint">@macro/m3_comp_sheet_side_docked_modal_container_color</item>
     <item name="shapeAppearance">@macro/m3_comp_sheet_side_docked_modal_container_shape</item>
