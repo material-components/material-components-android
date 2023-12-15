@@ -55,6 +55,11 @@ public class NavigationRailDemoControlsFragment extends NavigationRailDemoFragme
     return R.layout.cat_navigation_demo_controls;
   }
 
+  @Override
+  public int getLiftOnScrollTargetViewId() {
+    return R.id.cat_navigation_rail_nested_scroll_view;
+  }
+
   private void initAddRemoveHeaderViewButtons(View view) {
     final Button addHeaderViewButton = view.findViewById(R.id.add_header_view_button);
     final Button removeHeaderViewButton = view.findViewById(R.id.remove_header_view_button);

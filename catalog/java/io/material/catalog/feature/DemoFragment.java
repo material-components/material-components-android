@@ -31,10 +31,12 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.AppBarLayout.ScrollingViewBehavior;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -94,6 +96,12 @@ public abstract class DemoFragment extends Fragment
     ((CoordinatorLayout.LayoutParams) demoView.getLayoutParams())
         .setBehavior(new ScrollingViewBehavior());
 
+    int liftOnScrollTargetViewId = getLiftOnScrollTargetViewId();
+    if (liftOnScrollTargetViewId != View.NO_ID) {
+      AppBarLayout appBarLayout = view.findViewById(R.id.cat_demo_fragment_appbar);
+      appBarLayout.setLiftOnScrollTargetViewId(liftOnScrollTargetViewId);
+    }
+
     ViewGroup children = (ViewGroup) demoContainer.getChildAt(0);
     DemoUtils.addBottomSpaceInsetsIfNeeded(children, demoContainer);
     return view;
@@ -111,6 +119,11 @@ public abstract class DemoFragment extends Fragment
   @Override
   public boolean shouldShowDefaultDemoActionBar() {
     return true;
+  }
+
+  @IdRes
+  public int getLiftOnScrollTargetViewId() {
+    return View.NO_ID;
   }
 
   @Override

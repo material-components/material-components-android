@@ -30,6 +30,7 @@
     android:fitsSystemWindows="false"/>
 
   <androidx.core.widget.NestedScrollView
+      android:id="@+id/cat_navigation_rail_nested_scroll_view"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:layout_weight="1"
