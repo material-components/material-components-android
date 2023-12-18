@@ -27,5 +27,6 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
+      android:importantForAutofill="no"
       android:text="@string/cat_chip_edit_text"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

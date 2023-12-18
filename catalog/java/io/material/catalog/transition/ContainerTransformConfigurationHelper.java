@@ -19,7 +19,6 @@ package io.material.catalog.transition;
 import io.material.catalog.R;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.DialogInterface.OnDismissListener;
 import android.os.Build.VERSION_CODES;
@@ -54,7 +53,6 @@ import com.google.android.material.transition.MaterialContainerTransform;
  * A helper class which manages all configuration UI presented in {@link
  * TransitionContainerTransformDemoFragment}.
  */
-@TargetApi(VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ContainerTransformConfigurationHelper {
 
   private static final String CUBIC_CONTROL_FORMAT = "%.3f";
