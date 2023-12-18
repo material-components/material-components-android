@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2020 The Android Open Source Project
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-      http://www.apache.org/licenses/LICENSE-2.0
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
+  ~ Copyright (C) 2020 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
   -->
 <resources>
   <string name="cat_progress_indicator_title"
@@ -25,7 +28,7 @@
     Determinate Progress Indicator Demo
   </string>
   <string name="cat_progress_indicator_demo_standalone_title"
-    description="Title of demo for other components using progress indicator standalone drawables [CHAR LIMIT=NONE]">
+      description="Title of demo for other components using progress indicator standalone drawables [CHAR LIMIT=NONE]">
     Standalone Drawable Progress Indicator Demo
   </string>
   <string name="cat_progress_indicator_description"
@@ -41,7 +44,22 @@
   </string>
 
   <!-- Strings for controlling the demos -->
-
+  <string name="cat_progress_indicator_track_thickness" translatable="false"
+      description="Text label above a slider for adjusting indicators' track thickness [CHAR LIMIT=NONE]">
+    Track Thickness (1-15) dp
+  </string>
+  <string name="cat_progress_indicator_corner_size" translatable="false"
+      description="Text label above a slider for adjusting indicators' corner size [CHAR LIMIT=NONE]">
+    Corner Size (0-5) dp
+  </string>
+  <string name="cat_progress_indicator_reverse_direction" translatable="false"
+      description="Switch label for reversing indicators' direction [CHAR LIMIT=NONE]">
+    Inverse Direction
+  </string>
+  <string name="cat_progress_indicator_circular_indicator_size" translatable="false"
+      description="Text label above a slider for adjusting circular indicator's size [CHAR LIMIT=NONE]">
+    Circular Indicator Size (20-200) dp
+  </string>
   <string name="cat_progress_indicator_hide"
       description="Button label to hide progress indicators [CHAR LIMIT=NONE]">
     Hide
@@ -50,21 +68,17 @@
       description="Button label to show progress indicators [CHAR LIMIT=NONE]">
     Show
   </string>
-  <string name="cat_progress_indicator_update"
-      description="Button label to update progress value on the progress indicators [CHAR LIMIT=NONE]">
-    Update
-  </string>
-  <string name="cat_progress_indicator_determinate_progress_prompt"
-      description="Prompt for a text field that will take a number between 0 and 100 and apply that as the progress for progress indicators [CHAR LIMIT=NONE]">
-    Enter an integer value from 0 to 100 to change progress in determinate mode:
-  </string>
-  <string name="cat_progress_indicator_deteriminate_progress_hint"
-      description="Hint for a text field that will take a number between 0 and 100 and apply that as the progress for progress indicators [CHAR LIMIT=NONE]">
+  <string name="cat_progress_indicator_determinate_progress" translatable="false"
+      description="Text label above a slider for changing indicators' progress [CHAR LIMIT=NONE]">
     Progress (0-100)
   </string>
   <string name="cat_progress_indicator_set_to_determinate_mode"
-    description="Set the displayed progress indicators to the determinate mode. [CHAR LIMIT=NONE]">
+      description="Set the displayed progress indicators to the determinate mode. [CHAR LIMIT=NONE]">
     Determinate Mode
+  </string>
+  <string name="cat_progress_indicator_update"
+      description="Button label to update progress value on the progress indicators [CHAR LIMIT=NONE]">
+    Update
   </string>
 
   <!-- Descriptions of various examples of progress indicators -->
@@ -100,32 +114,32 @@
   </string>
 
   <string name="cat_progress_indicator_clockwise_circular_single_color"
-    description="A clockwise circular progress indicator with a single color [CHAR LIMIT=NONE]">
+      description="A clockwise circular progress indicator with a single color [CHAR LIMIT=NONE]">
     Single color clockwise circular
   </string>
   <string name="cat_progress_indicator_rounded_counterclockwise_circular_single_color"
-    description="A counterclockwise circular progress indicator with rounded corners and a single color [CHAR LIMIT=NONE]">
+      description="A counterclockwise circular progress indicator with rounded corners and a single color [CHAR LIMIT=NONE]">
     Single color counter-clockwise circular with rounded corners
   </string>
   <string name="cat_progress_indicator_clockwise_circular_multiple_colors_anchored_outer"
-    description="A clockwise circular progress indicator with multiple colors anchoring at the outer edge [CHAR LIMIT=NONE]">
+      description="A clockwise circular progress indicator with multiple colors anchoring at the outer edge [CHAR LIMIT=NONE]">
     Multiple color clockwise circular, anchoring at the outer edge
   </string>
   <string name="cat_progress_indicator_clockwise_circular_multiple_colors_anchored_inner"
-    description="A clockwise circular progress indicator with multiple colors anchoring at the inner edge [CHAR LIMIT=NONE]">
+      description="A clockwise circular progress indicator with multiple colors anchoring at the inner edge [CHAR LIMIT=NONE]">
     Multiple color clockwise circular, anchoring at the inner edge
   </string>
 
   <string name="cat_progress_indicator_standalone_indeterminate_chip"
-    description="An example of using progress indicator drawable as chip icon [CHAR LIMIT=NONE]">
+      description="An example of using progress indicator drawable as chip icon [CHAR LIMIT=NONE]">
     Indeterminate Chip
   </string>
   <string name="cat_progress_indicator_standalone_indeterminate_button"
-    description="An example of using progress indicator drawable as button icon [CHAR LIMIT=NONE]">
+      description="An example of using progress indicator drawable as button icon [CHAR LIMIT=NONE]">
     Indeterminate Button
   </string>
   <string name="cat_progress_indicator_standalone_switch_label"
-    description="A material switch to toggle progress indicator drawable on chip [CHAR LIMIT=NONE]">
+      description="A material switch to toggle progress indicator drawable on chip [CHAR LIMIT=NONE]">
     Show Icon
   </string>
 </resources>
