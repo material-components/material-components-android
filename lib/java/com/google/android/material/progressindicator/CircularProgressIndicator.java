@@ -163,6 +163,7 @@ public class CircularProgressIndicator
     if (spec.indicatorSize != indicatorSize) {
       spec.indicatorSize = indicatorSize;
       spec.validateSpec();
+      requestLayout();
       invalidate();
     }
   }
