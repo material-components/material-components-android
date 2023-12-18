@@ -23,6 +23,10 @@
       description="Title of demo for the progress indicators with different visibility change behaviors [CHAR LIMIT=NONE]">
     Progress Indicator Visibility Demo
   </string>
+  <string name="cat_progress_indicator_multi_color_demo_title" translatable="false"
+      description="Title of demo for the progress indicators with multi indicator colors [CHAR LIMIT=NONE]">
+    Progress Indicator Multicolored Demo
+  </string>
   <string name="cat_progress_indicator_demo_indeterminate_title"
       description="Title of demo for the progress indicators in indeterminate mode [CHAR LIMIT=NONE]">
     Indeterminate Progress Indicator Demo
@@ -106,6 +110,18 @@
   <string name="cat_progress_indicator_circular" translatable="false"
       description="A circular progress progress indicator [CHAR LIMIT=NONE]">
     Circular type
+  </string>
+  <string name="cat_progress_indicator_linear_multicolor_disjoint" translatable="false"
+      description="A linear progress indicator with multiple indicator colors and disjoint indeterminate animation [CHAR LIMIT=NONE]">
+    Linear type with multiple indicator colors and disjoint animations.
+  </string>
+  <string name="cat_progress_indicator_linear_multicolor_contiguous" translate="false"
+      description="A linear progress indicator with multiple indicator colors and contiguous indeterminate animation [CHAR LIMIT=NONE]">
+    Linear type with multiple indicator colors and contiguous animations.
+  </string>
+  <string name="cat_progress_indicator_circular_multicolor" translatable="false"
+      description="A circular progress indicator with multiple indicator colors [CHAR LIMIT=NONE]">
+    Circular type with multiple indicator colors.
   </string>
 
   <string name="cat_progress_indicator_start_to_end_linear_single_color"

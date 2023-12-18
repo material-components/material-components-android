@@ -73,6 +73,14 @@ public class ProgressIndicatorFragment extends DemoLandingFragment {
   public List<Demo> getAdditionalDemos() {
     List<Demo> additionalDemos = getSharedAdditionalDemos();
     additionalDemos.add(
+        new Demo(R.string.cat_progress_indicator_multi_color_demo_title) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new ProgressIndicatorMultiColorDemoFragment();
+          }
+        });
+    additionalDemos.add(
         new Demo(R.string.cat_progress_indicator_demo_indeterminate_title) {
           @Override
           public Fragment createFragment() {
