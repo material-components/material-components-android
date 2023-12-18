@@ -19,6 +19,7 @@ import io.material.catalog.R;
 
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -53,10 +54,24 @@ public class ProgressIndicatorFragment extends DemoLandingFragment {
     };
   }
 
+  @NonNull
+  public List<Demo> getSharedAdditionalDemos() {
+    List<Demo> additionalDemos = new ArrayList<>();
+    additionalDemos.add(
+        new Demo(R.string.cat_progress_indicator_visibility_demo_title) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new ProgressIndicatorVisibilityDemoFragment();
+          }
+        });
+    return additionalDemos;
+  }
+
   @Override
   @NonNull
   public List<Demo> getAdditionalDemos() {
-    List<Demo> additionalDemos = new ArrayList<>();
+    List<Demo> additionalDemos = getSharedAdditionalDemos();
     additionalDemos.add(
         new Demo(R.string.cat_progress_indicator_demo_indeterminate_title) {
           @Override

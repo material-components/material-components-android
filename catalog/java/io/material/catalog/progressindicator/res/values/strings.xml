@@ -19,6 +19,10 @@
       description="Title for the screen that showcases demonstrative usages of the MaterialProgressIndicator widget [CHAR LIMIT=NONE]">
     Progress Indicator
   </string>
+  <string name="cat_progress_indicator_visibility_demo_title" translatable="false"
+      description="Title of demo for the progress indicators with different visibility change behaviors [CHAR LIMIT=NONE]">
+    Progress Indicator Visibility Demo
+  </string>
   <string name="cat_progress_indicator_demo_indeterminate_title"
       description="Title of demo for the progress indicators in indeterminate mode [CHAR LIMIT=NONE]">
     Indeterminate Progress Indicator Demo
@@ -60,11 +64,23 @@
       description="Text label above a slider for adjusting circular indicator's size [CHAR LIMIT=NONE]">
     Circular Indicator Size (20-200) dp
   </string>
-  <string name="cat_progress_indicator_hide"
+  <string name="cat_progress_indicator_hide_behavior" translatable="false"
+      description="Hint label of a dropdown to select hide behavior [CHAR LIMIT=NONE]">
+    Hide Behavior
+  </string>
+  <string name="cat_progress_indicator_show_behavior" translatable="false"
+      description="Hint label of a dropdown to select show behavior [CHAR LIMIT=NONE]">
+    Show Behavior
+  </string>
+  <string name="cat_progress_indicator_initial_behavior" translatable="false"
+      description="Show/hide behavior preset in the dropdown fields [CHAR LIMIT=NONE]">
+    None
+  </string>
+  <string name="cat_progress_indicator_hide" translatable="false"
       description="Button label to hide progress indicators [CHAR LIMIT=NONE]">
     Hide
   </string>
-  <string name="cat_progress_indicator_show"
+  <string name="cat_progress_indicator_show" translatable="false"
       description="Button label to show progress indicators [CHAR LIMIT=NONE]">
     Show
   </string>
@@ -72,7 +88,7 @@
       description="Text label above a slider for changing indicators' progress [CHAR LIMIT=NONE]">
     Progress (0-100)
   </string>
-  <string name="cat_progress_indicator_set_to_determinate_mode"
+  <string name="cat_progress_indicator_set_to_determinate_mode" translatable="false"
       description="Set the displayed progress indicators to the determinate mode. [CHAR LIMIT=NONE]">
     Determinate Mode
   </string>
@@ -83,11 +99,11 @@
 
   <!-- Descriptions of various examples of progress indicators -->
 
-  <string name="cat_progress_indicator_linear"
+  <string name="cat_progress_indicator_linear" translatable="false"
       description="A linear progress progress indicator [CHAR LIMIT=NONE]">
     Linear type
   </string>
-  <string name="cat_progress_indicator_circular"
+  <string name="cat_progress_indicator_circular" translatable="false"
       description="A circular progress progress indicator [CHAR LIMIT=NONE]">
     Circular type
   </string>
@@ -142,4 +158,16 @@
       description="A material switch to toggle progress indicator drawable on chip [CHAR LIMIT=NONE]">
     Show Icon
   </string>
+
+  <string-array name="show_behaviors_array" translatable="false">
+    <item>Inward</item>
+    <item>Outward</item>
+    <item>None</item>
+  </string-array>
+  <string-array name="hide_behaviors_array" translatable="false">
+    <item>Inward</item>
+    <item>Outward</item>
+    <item>Escape</item>
+    <item>None</item>
+  </string-array>
 </resources>
