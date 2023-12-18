@@ -176,12 +176,14 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
         MaterialColors.compositeARGBWithAlpha(spec.indicatorColors[0], drawable.getAlpha());
     paint.setColor(indicatorColor);
     Rect trackBounds = canvas.getClipBounds();
+    // Maintain proper ratio when stop is smaller than track height and offset from edges.
+    float offset = max(0, displayedTrackThickness - spec.trackStopIndicatorSize);
     RectF stopBounds =
         new RectF(
-            trackBounds.right - spec.trackStopIndicatorSize,
-            -displayedTrackThickness / 2,
-            trackBounds.right,
-            displayedTrackThickness / 2);
+            trackBounds.right - displayedTrackThickness + offset / 2,
+            -(displayedTrackThickness - offset) / 2,
+            trackBounds.right - offset / 2,
+            (displayedTrackThickness - offset) / 2);
     canvas.drawRoundRect(stopBounds, displayedCornerRadius, displayedCornerRadius, paint);
   }
 

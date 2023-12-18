@@ -47,19 +47,54 @@
     <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_extra_small</item>
   </style>
 
-  <!-- M3 LinearProgressIndicator style -->
-  <style name="Widget.Material3.LinearProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
+  <!-- M3 LinearProgressIndicator Legacy style -->
+  <style name="Widget.Material3.LinearProgressIndicator.Legacy" parent="Widget.MaterialComponents.LinearProgressIndicator">
     <item name="trackThickness">@dimen/m3_comp_linear_progress_indicator_active_indicator_height</item>
     <item name="trackColor">@macro/m3_comp_linear_progress_indicator_track_color</item>
     <item name="indicatorColor">@macro/m3_comp_linear_progress_indicator_active_indicator_color</item>
   </style>
 
-  <!-- M3 CircularProgressIndicator styles -->
-  <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+  <!-- M3 CircularProgressIndicator Legacy styles -->
+  <style name="Widget.Material3.CircularProgressIndicator.Legacy" parent="Widget.MaterialComponents.CircularProgressIndicator">
     <item name="trackThickness">@dimen/m3_comp_circular_progress_indicator_active_indicator_width</item>
     <item name="indicatorColor">@macro/m3_comp_circular_progress_indicator_active_indicator_color</item>
   </style>
-  <style name="Widget.Material3.CircularProgressIndicator.Medium" parent="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
-  <style name="Widget.Material3.CircularProgressIndicator.Small" parent="Widget.MaterialComponents.CircularProgressIndicator.Small"/>
-  <style name="Widget.Material3.CircularProgressIndicator.ExtraSmall" parent="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"/>
+  <style name="Widget.Material3.CircularProgressIndicator.Legacy.Medium" parent="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
+  <style name="Widget.Material3.CircularProgressIndicator.Legacy.Small" parent="Widget.MaterialComponents.CircularProgressIndicator.Small"/>
+  <style name="Widget.Material3.CircularProgressIndicator.Legacy.ExtraSmall" parent="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"/>
+
+  <!-- M3 LinearProgressIndicator style -->
+  <style name="Widget.Material3.LinearProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
+    <item name="trackThickness">@dimen/m3_comp_linear_progress_indicator_active_indicator_height</item>
+    <item name="trackColor">?attr/colorPrimaryContainer</item>
+    <item name="indicatorColor">@macro/m3_comp_linear_progress_indicator_active_indicator_color</item>
+    <item name="trackCornerRadius">2dp</item>
+    <item name="indicatorTrackGapSize">4dp</item>
+    <item name="trackStopIndicatorSize">4dp</item>
+  </style>
+
+  <!-- M3 CircularProgressIndicator style -->
+  <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+    <item name="trackThickness">@dimen/m3_comp_circular_progress_indicator_active_indicator_width</item>
+    <item name="indicatorColor">@macro/m3_comp_circular_progress_indicator_active_indicator_color</item>
+    <item name="trackColor">?attr/colorPrimaryContainer</item>
+    <item name="trackCornerRadius">2dp</item>
+    <item name="indicatorTrackGapSize">4dp</item>
+  </style>
+  <style name="Widget.Material3.CircularProgressIndicator.Medium"/>
+  <style name="Widget.Material3.CircularProgressIndicator.Small">
+    <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_small</item>
+    <item name="indicatorSize">@dimen/mtrl_progress_circular_size_small</item>
+    <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_small</item>
+    <item name="trackCornerRadius">1.5dp</item>
+    <item name="indicatorTrackGapSize">3dp</item>
+  </style>
+  <style name="Widget.Material3.CircularProgressIndicator.ExtraSmall">
+    <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_extra_small</item>
+    <item name="indicatorSize">@dimen/mtrl_progress_circular_size_extra_small</item>
+    <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_extra_small</item>
+    <item name="trackCornerRadius">1.25dp</item>
+    <item name="indicatorTrackGapSize">2dp</item>
+  </style>
+
 </resources>
