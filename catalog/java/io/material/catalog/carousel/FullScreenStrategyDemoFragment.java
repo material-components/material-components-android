@@ -78,17 +78,13 @@ public class FullScreenStrategyDemoFragment extends DemoFragment {
     // Opt in to perform swipe to dismiss animation when dismissing bottom sheet dialog.
     bottomSheetDialog.setDismissWithAnimation(true);
 
-    new WindowPreferencesManager(requireContext())
-        .applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
     verticalDivider =
         new MaterialDividerItemDecoration(requireContext(), MaterialDividerItemDecoration.VERTICAL);
 
     Button showBottomSheetButton = view.findViewById(R.id.show_bottomsheet_button);
-    showBottomSheetButton.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        bottomSheetDialog.show();
-      }
+    showBottomSheetButton.setOnClickListener(v -> {
+      new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
+      bottomSheetDialog.show();
     });
 
     MaterialSwitch debugSwitch = bottomSheetDialog.findViewById(R.id.debug_switch);
