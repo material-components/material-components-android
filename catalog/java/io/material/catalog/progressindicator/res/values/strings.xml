@@ -27,14 +27,6 @@
       description="Title of demo for the progress indicators with multi indicator colors [CHAR LIMIT=NONE]">
     Progress Indicator Multicolored Demo
   </string>
-  <string name="cat_progress_indicator_demo_indeterminate_title"
-      description="Title of demo for the progress indicators in indeterminate mode [CHAR LIMIT=NONE]">
-    Indeterminate Progress Indicator Demo
-  </string>
-  <string name="cat_progress_indicator_demo_determinate_title"
-      description="Title of demo for the progress indicators in determinate mode [CHAR LIMIT=NONE]">
-    Determinate Progress Indicator Demo
-  </string>
   <string name="cat_progress_indicator_demo_standalone_title"
       description="Title of demo for other components using progress indicator standalone drawables [CHAR LIMIT=NONE]">
     Standalone Drawable Progress Indicator Demo
@@ -44,14 +36,9 @@
     ProgressIndicator shows the progress of an undergoing process.
     It can represent a determinate or indeterminate process in linear or circular form.
   </string>
-  <string name="cat_progress_indicator_indeterminate_to_determinate_explanation"
-      description="Body text describing how progress indicators can go from indeterminate to determinate [CHAR LIMIT=NONE]">
-    As more information about a process becomes available, a progress indicator can switch from an
-    indeterminate to a determinate state. Update the progress below to see an example of this.
-    (Re-show the progress indicator to return to indeterminate mode.)
-  </string>
 
   <!-- Strings for controlling the demos -->
+
   <string name="cat_progress_indicator_track_thickness" translatable="false"
       description="Text label above a slider for adjusting indicators' track thickness [CHAR LIMIT=NONE]">
     Track Thickness (1-15) dp
@@ -96,10 +83,6 @@
       description="Set the displayed progress indicators to the determinate mode. [CHAR LIMIT=NONE]">
     Determinate Mode
   </string>
-  <string name="cat_progress_indicator_update"
-      description="Button label to update progress value on the progress indicators [CHAR LIMIT=NONE]">
-    Update
-  </string>
 
   <!-- Descriptions of various examples of progress indicators -->
 
@@ -123,45 +106,6 @@
       description="A circular progress indicator with multiple indicator colors [CHAR LIMIT=NONE]">
     Circular type with multiple indicator colors.
   </string>
-
-  <string name="cat_progress_indicator_start_to_end_linear_single_color"
-      description="A start-to-end linear progress indicator with a single color [CHAR LIMIT=NONE]">
-    Single color start-to-end linear
-  </string>
-  <string name="cat_progress_indicator_rounded_end_to_start_linear_single_color"
-      description="An end-to-start linear progress indicator with rounded corners and a single color [CHAR LIMIT=NONE]">
-    Single color end-to-start linear with rounded corners
-  </string>
-  <string name="cat_progress_indicator_left_to_right_linear_multiple_colors_anchored_top"
-      description="A left-to-right linear progress indicator anchoring at the top edge with multiple colors [CHAR LIMIT=NONE]">
-    Multiple color left-to-right linear, anchoring at the top edge
-  </string>
-  <string name="cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom"
-      description="A right-to-left linear progress indicator anchoring at the bottom edge with multiple colors [CHAR LIMIT=NONE]">
-    Multiple color right-to-left linear, anchoring at the bottom edge
-  </string>
-  <string name="cat_progress_indicator_right_to_left_linear_multiple_colors_anchored_bottom_contiguous_animation"
-      description="A right-to-left linear progress indicator anchoring at the bottom edge with multiple colors and contiguous animation [CHAR LIMIT=NONE]">
-    Multiple color right-to-left linear with contiguous animation, anchoring at the bottom edge
-  </string>
-
-  <string name="cat_progress_indicator_clockwise_circular_single_color"
-      description="A clockwise circular progress indicator with a single color [CHAR LIMIT=NONE]">
-    Single color clockwise circular
-  </string>
-  <string name="cat_progress_indicator_rounded_counterclockwise_circular_single_color"
-      description="A counterclockwise circular progress indicator with rounded corners and a single color [CHAR LIMIT=NONE]">
-    Single color counter-clockwise circular with rounded corners
-  </string>
-  <string name="cat_progress_indicator_clockwise_circular_multiple_colors_anchored_outer"
-      description="A clockwise circular progress indicator with multiple colors anchoring at the outer edge [CHAR LIMIT=NONE]">
-    Multiple color clockwise circular, anchoring at the outer edge
-  </string>
-  <string name="cat_progress_indicator_clockwise_circular_multiple_colors_anchored_inner"
-      description="A clockwise circular progress indicator with multiple colors anchoring at the inner edge [CHAR LIMIT=NONE]">
-    Multiple color clockwise circular, anchoring at the inner edge
-  </string>
-
   <string name="cat_progress_indicator_standalone_indeterminate_chip"
       description="An example of using progress indicator drawable as chip icon [CHAR LIMIT=NONE]">
     Indeterminate Chip

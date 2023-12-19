@@ -65,6 +65,13 @@ public class ProgressIndicatorFragment extends DemoLandingFragment {
             return new ProgressIndicatorVisibilityDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_progress_indicator_demo_standalone_title) {
+          @Override
+          public Fragment createFragment() {
+            return new ProgressIndicatorStandaloneDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 
@@ -80,29 +87,9 @@ public class ProgressIndicatorFragment extends DemoLandingFragment {
             return new ProgressIndicatorMultiColorDemoFragment();
           }
         });
-    additionalDemos.add(
-        new Demo(R.string.cat_progress_indicator_demo_indeterminate_title) {
-          @Override
-          public Fragment createFragment() {
-            return new ProgressIndicatorIndeterminateDemoFragment();
-          }
-        });
-    additionalDemos.add(
-        new Demo(R.string.cat_progress_indicator_demo_determinate_title) {
-          @Override
-          public Fragment createFragment() {
-            return new ProgressIndicatorDeterminateDemoFragment();
-          }
-        });
-    additionalDemos.add(
-        new Demo(R.string.cat_progress_indicator_demo_standalone_title) {
-          @Override
-          public Fragment createFragment() {
-            return new ProgressIndicatorStandaloneDemoFragment();
-          }
-        });
     return additionalDemos;
   }
+
   /** The Dagger module for {@link ProgressIndicatorFragment} dependencies. */
   @dagger.Module
   public abstract static class Module {
