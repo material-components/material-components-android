@@ -9,7 +9,7 @@ dependencies {
   annotationProcessor 'com.google.dagger:dagger-compiler:2.48.1'
 
   api 'com.google.dagger:dagger-android:2.48'
-  api 'com.google.dagger:dagger-android-support:2.48.1'
+  api 'com.google.dagger:dagger-android-support:2.50'
   annotationProcessor 'com.google.dagger:dagger-android-processor:2.48.1'
 
   api 'androidx.multidex:multidex:2.0.1'
