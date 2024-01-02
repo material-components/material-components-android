@@ -140,6 +140,17 @@ final class KeylineState {
     return null;
   }
 
+  /** Returns how many non-anchor keylines. */
+  int getNumberOfNonAnchorKeylines() {
+    int anchorKeylines = 0;
+    for (Keyline keyline : keylines) {
+      if (keyline.isAnchor) {
+        anchorKeylines += 1;
+      }
+    }
+    return keylines.size() - anchorKeylines;
+  }
+
   /**
    * Linearly interpolate between two {@link KeylineState}s.
    *
@@ -337,7 +348,9 @@ final class KeylineState {
         float maskedItemSize,
         boolean isFocal,
         boolean isAnchor,
-        float cutoff) {
+        float cutoff,
+        float leftOrTopPaddingShift,
+        float rightOrBottomPaddingShift) {
       if (maskedItemSize <= 0F) {
         return this;
       }
@@ -353,7 +366,8 @@ final class KeylineState {
       }
 
       Keyline tmpKeyline =
-          new Keyline(UNKNOWN_LOC, offsetLoc, mask, maskedItemSize, isAnchor, cutoff);
+          new Keyline(UNKNOWN_LOC, offsetLoc, mask, maskedItemSize, isAnchor, cutoff,
+              leftOrTopPaddingShift, rightOrBottomPaddingShift);
       if (isFocal) {
         if (tmpFirstFocalKeyline == null) {
           tmpFirstFocalKeyline = tmpKeyline;
@@ -386,6 +400,44 @@ final class KeylineState {
       lastKeylineMaskedSize = tmpKeyline.maskedItemSize;
       tmpKeylines.add(tmpKeyline);
       return this;
+    }
+
+    /**
+     * Adds a keyline along the scrolling axis where an object should be masked by the given {@code
+     * mask} and positioned at {@code offsetLoc}.
+     *
+     * <p>Note that calls to {@link #addKeyline(float, float, float, boolean, boolean)} and {@link
+     * #addKeylineRange(float, float, float, int)} are added in order. Typically, this means
+     * keylines should be added in order of ascending {@code offsetLoc}. The first and last keylines
+     * added are 'anchor' keylines that mark the start and ends of the keylines. These keylines do
+     * not shift when scrolled.
+     *
+     * <p>Note also that {@code isFocal} and {@code isAnchor} cannot be true at the same time as
+     * anchor keylines refer to keylines offscreen that dictate the ends of the keylines.
+     *
+     * @param offsetLoc The location of this keyline along the scrolling axis. An offsetLoc of 0
+     *     will be at the start of the scroll container.
+     * @param mask The percentage of a child's full size that it should be masked by when its center
+     *     is at {@code offsetLoc}. 0 is fully unmasked and 1 is fully masked.
+     * @param maskedItemSize The total size of this item when masked. This might differ from {@code
+     *     itemSize - (itemSize * mask)} depending on how margins are included in the {@code mask}.
+     * @param isFocal Whether this keyline is considered part of the focal range. Typically, this is
+     *     when {@code mask} is equal to 0.
+     * @param isAnchor Whether this keyline is an anchor keyline. Anchor keylines do not shift when
+     *     keylines are shifted.
+     * @param cutoff How much the keyline item is out the bounds of the available space.
+     */
+    @NonNull
+    @CanIgnoreReturnValue
+    Builder addKeyline(
+        float offsetLoc,
+        @FloatRange(from = 0.0F, to = 1.0F) float mask,
+        float maskedItemSize,
+        boolean isFocal,
+        boolean isAnchor,
+        float cutoff) {
+      return addKeyline(offsetLoc, mask, maskedItemSize, isFocal, isAnchor, cutoff,
+          0, 0);
     }
 
     /**
@@ -537,7 +589,9 @@ final class KeylineState {
                 tmpKeyline.mask,
                 tmpKeyline.maskedItemSize,
                 tmpKeyline.isAnchor,
-                tmpKeyline.cutoff);
+                tmpKeyline.cutoff,
+                tmpKeyline.leftOrTopPaddingShift,
+                tmpKeyline.rightOrBottomPaddingShift);
         keylines.add(keyline);
       }
 
@@ -574,6 +628,8 @@ final class KeylineState {
     final float maskedItemSize;
     final boolean isAnchor;
     final float cutoff;
+    final float leftOrTopPaddingShift;
+    final float rightOrBottomPaddingShift;
 
     /**
      * Creates a non-anchor keyline along a scroll axis.
@@ -587,7 +643,8 @@ final class KeylineState {
      * @param maskedItemSize The size of this item when masked.
      */
     Keyline(float loc, float locOffset, float mask, float maskedItemSize) {
-      this(loc, locOffset, mask, maskedItemSize, /* isAnchor= */ false, 0);
+      this(loc, locOffset, mask, maskedItemSize, /* isAnchor= */ false, 0,
+          0, 0);
     }
 
     /**
@@ -603,6 +660,10 @@ final class KeylineState {
      * @param isAnchor Whether or not the keyline is an anchor keyline (keylines at the end that do
      *     not shift).
      * @param cutoff The amount by which the keyline item is cut off by the bounds of the carousel.
+     * @param leftOrTopPaddingShift The amount by which this keyline was shifted to account for left
+     *     or top padding
+     * @param rightOrBottomPaddingShift The amount by which this keyline was shifted to account for
+     *     right or bottom padding
      */
     Keyline(
         float loc,
@@ -610,13 +671,17 @@ final class KeylineState {
         float mask,
         float maskedItemSize,
         boolean isAnchor,
-        float cutoff) {
+        float cutoff,
+        float leftOrTopPaddingShift,
+        float rightOrBottomPaddingShift) {
       this.loc = loc;
       this.locOffset = locOffset;
       this.mask = mask;
       this.maskedItemSize = maskedItemSize;
       this.isAnchor = isAnchor;
       this.cutoff = cutoff;
+      this.leftOrTopPaddingShift = leftOrTopPaddingShift;
+      this.rightOrBottomPaddingShift = rightOrBottomPaddingShift;
     }
 
     /** Linearly interpolates between two keylines and returns the interpolated object. */

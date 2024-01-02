@@ -134,7 +134,7 @@ public class CarouselSnapHelperTest {
     // original snap distance if keylines stayed the same) minus the difference in focal keyline
     // location between keyline states.
     KeylineStateList stateList =
-        KeylineStateList.from(layoutManager, getTestCenteredKeylineState());
+        KeylineStateList.from(layoutManager, getTestCenteredKeylineState(), 0, 0, 0);
     KeylineState target1 =
         stateList.getShiftedState(
             horizontalScrollBefore,

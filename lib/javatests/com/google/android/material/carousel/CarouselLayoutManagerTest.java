@@ -173,7 +173,8 @@ public class CarouselLayoutManagerTest {
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollToPosition(recyclerView, layoutManager, 200);
 
-    KeylineState endState = KeylineStateList.from(layoutManager, keylineState).getEndState();
+    KeylineState endState =
+        KeylineStateList.from(layoutManager, keylineState, 0, 0, 0).getEndState();
 
     MaskableFrameLayout child =
         (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 1);
@@ -217,7 +218,8 @@ public class CarouselLayoutManagerTest {
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollToPosition(recyclerView, layoutManager, 200);
 
-    KeylineState endState = KeylineStateList.from(layoutManager, keylineState).getEndState();
+    KeylineState endState =
+        KeylineStateList.from(layoutManager, keylineState, 0, 0, 0).getEndState();
 
     MaskableFrameLayout child =
         (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 1);

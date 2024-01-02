@@ -99,7 +99,8 @@ public class CarouselLayoutManagerRtlTest {
 
     KeylineState leftState =
         KeylineStateList.from(
-                layoutManager, KeylineState.reverse(keylineState, DEFAULT_RECYCLER_VIEW_WIDTH))
+                layoutManager, KeylineState.reverse(keylineState, DEFAULT_RECYCLER_VIEW_WIDTH),
+                0, 0, 0)
             .getStartState();
 
     MaskableFrameLayout child =

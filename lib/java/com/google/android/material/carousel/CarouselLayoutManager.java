@@ -224,6 +224,32 @@ public class CarouselLayoutManager extends LayoutManager
     return carouselAlignment;
   }
 
+  private int getLeftOrTopPaddingForKeylineShift() {
+    // TODO(b/316969331): Fix keyline shifting by decreasing carousel size when carousel is clipped
+    // to padding.
+    // TODO(b/316968490): Fix keyline shifting by adjusting cutoffs if strategy is not contained.
+    if (getClipToPadding() || !carouselStrategy.isContained()) {
+      return 0;
+    }
+    if (getOrientation() == VERTICAL) {
+      return getPaddingTop();
+    }
+    return getPaddingLeft();
+  }
+
+  private int getRightOrBottomPaddingForKeylineShift() {
+    // TODO(b/316969331): Fix keyline shifting by decreasing carousel size when carousel is clipped
+    // to padding.
+    // TODO(b/316968490): Fix keyline shifting by adjusting cutoffs if strategy is not contained.
+    if (getClipToPadding() || !carouselStrategy.isContained()) {
+      return 0;
+    }
+    if (getOrientation() == VERTICAL) {
+      return getPaddingBottom();
+    }
+    return getPaddingRight();
+  }
+
   @Override
   public LayoutParams generateDefaultLayoutParams() {
     return new LayoutParams(
@@ -319,7 +345,21 @@ public class CarouselLayoutManager extends LayoutManager
     keylineStateList =
         KeylineStateList.from(
             this,
-            isLayoutRtl() ? KeylineState.reverse(keylineState, getContainerSize()) : keylineState);
+            isLayoutRtl() ? KeylineState.reverse(keylineState, getContainerSize()) : keylineState,
+            getItemMargins(),
+            getLeftOrTopPaddingForKeylineShift(),
+            getRightOrBottomPaddingForKeylineShift());
+  }
+
+  private int getItemMargins() {
+    if (getChildCount() > 0) {
+      LayoutParams lp = (LayoutParams) getChildAt(0).getLayoutParams();
+      if (orientationHelper.orientation == HORIZONTAL) {
+        return lp.leftMargin + lp.rightMargin;
+      }
+      return lp.topMargin + lp.bottomMargin;
+    }
+    return 0;
   }
 
   /**
@@ -795,9 +835,9 @@ public class CarouselLayoutManager extends LayoutManager
     KeylineState startState = isRtl ? stateList.getEndState() : stateList.getStartState();
     Keyline startFocalKeyline =
         isRtl ? startState.getLastFocalKeyline() : startState.getFirstFocalKeyline();
-    float firstItemDistanceFromStart = getPaddingStart() * (isRtl ? 1 : -1);
     float firstItemStart = addStart(startFocalKeyline.loc, startState.getItemSize() / 2F);
-    return (int) (firstItemDistanceFromStart + getParentStart() - firstItemStart);
+    // This value already includes any padding since startFocalKeyline.loc is already adjusted
+    return (int) (getParentStart() - firstItemStart);
   }
 
   /**
@@ -811,9 +851,10 @@ public class CarouselLayoutManager extends LayoutManager
         isRtl ? endState.getFirstFocalKeyline() : endState.getLastFocalKeyline();
     // Get the total distance from the first item to the last item in the end-to-end model
     float lastItemDistanceFromFirstItem =
-        (((state.getItemCount() - 1) * endState.getItemSize()) + getPaddingEnd())
-            * (isRtl ? -1F : 1F);
+        ((state.getItemCount() - 1) * endState.getItemSize()) * (isRtl ? -1F : 1F);
 
+    float endPadding =
+        isRtl ? -endFocalKeyline.leftOrTopPaddingShift : endFocalKeyline.rightOrBottomPaddingShift;
     float endFocalLocDistanceFromStart = endFocalKeyline.loc - getParentStart();
     float endFocalLocDistanceFromEnd = getParentEnd() - endFocalKeyline.loc;
 
@@ -824,7 +865,10 @@ public class CarouselLayoutManager extends LayoutManager
         (int)
             (lastItemDistanceFromFirstItem
                 - endFocalLocDistanceFromStart
-                + endFocalLocDistanceFromEnd);
+                + endFocalLocDistanceFromEnd
+                // If there is padding, adjust for the extra padding offset since offset is
+                // implicitly added from both endFocalLocDistance calculations.
+                + endPadding);
 
     return isRtl ? min(0, endScroll) : max(0, endScroll);
   }
