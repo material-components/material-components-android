@@ -121,8 +121,11 @@ public class LinearProgressIndicator
   // ******************** Initialization **********************
 
   private void initializeDrawables() {
-    setIndeterminateDrawable(IndeterminateDrawable.createLinearDrawable(getContext(), spec));
-    setProgressDrawable(DeterminateDrawable.createLinearDrawable(getContext(), spec));
+    LinearDrawingDelegate drawingDelegate = new LinearDrawingDelegate(spec);
+    setIndeterminateDrawable(
+        IndeterminateDrawable.createLinearDrawable(getContext(), spec, drawingDelegate));
+    setProgressDrawable(
+        DeterminateDrawable.createLinearDrawable(getContext(), spec, drawingDelegate));
   }
 
   // **************** Getters and setters ****************

@@ -26,7 +26,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
-import com.google.android.material.color.MaterialColors;
 import java.util.Arrays;
 
 /**
@@ -134,9 +133,7 @@ final class LinearIndeterminateContiguousAnimatorDelegate
     if (dirtyColors && segmentPositions[3] < 1f) {
       segmentColors[2] = segmentColors[1];
       segmentColors[1] = segmentColors[0];
-      segmentColors[0] =
-          MaterialColors.compositeARGBWithAlpha(
-              baseSpec.indicatorColors[newIndicatorColorIndex], drawable.getAlpha());
+      segmentColors[0] = baseSpec.indicatorColors[newIndicatorColorIndex];
       dirtyColors = false;
     }
   }
@@ -145,9 +142,7 @@ final class LinearIndeterminateContiguousAnimatorDelegate
   void resetPropertiesForNewStart() {
     dirtyColors = true;
     newIndicatorColorIndex = 1;
-    Arrays.fill(
-        segmentColors,
-        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], drawable.getAlpha()));
+    Arrays.fill(segmentColors, baseSpec.indicatorColors[0]);
   }
 
   // ******************* Getters and setters *******************

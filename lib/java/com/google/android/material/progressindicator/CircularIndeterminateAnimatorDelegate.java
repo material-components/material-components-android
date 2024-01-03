@@ -25,7 +25,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.animation.ArgbEvaluatorCompat;
-import com.google.android.material.color.MaterialColors;
 
 /**
  * This is the implementation class for drawing progress indicator in the circular indeterminate
@@ -188,12 +187,8 @@ final class CircularIndeterminateAnimatorDelegate
         int startColorIndex =
             (cycleIndex + indicatorColorIndexOffset) % baseSpec.indicatorColors.length;
         int endColorIndex = (startColorIndex + 1) % baseSpec.indicatorColors.length;
-        int startColor =
-            MaterialColors.compositeARGBWithAlpha(
-                baseSpec.indicatorColors[startColorIndex], drawable.getAlpha());
-        int endColor =
-            MaterialColors.compositeARGBWithAlpha(
-                baseSpec.indicatorColors[endColorIndex], drawable.getAlpha());
+        int startColor = baseSpec.indicatorColors[startColorIndex];
+        int endColor = baseSpec.indicatorColors[endColorIndex];
         float colorFraction = interpolator.getInterpolation(timeFraction);
         segmentColors[0] =
             ArgbEvaluatorCompat.getInstance().evaluate(colorFraction, startColor, endColor);
@@ -205,8 +200,7 @@ final class CircularIndeterminateAnimatorDelegate
   @VisibleForTesting
   void resetPropertiesForNewStart() {
     indicatorColorIndexOffset = 0;
-    segmentColors[0] =
-        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], drawable.getAlpha());
+    segmentColors[0] = baseSpec.indicatorColors[0];
     completeEndFraction = 0f;
   }
 

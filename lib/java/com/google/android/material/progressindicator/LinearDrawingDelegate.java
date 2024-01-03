@@ -29,6 +29,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import com.google.android.material.color.MaterialColors;
 
@@ -61,14 +62,19 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
    * it's inverted. It flips the canvas vertically if outgoing grow mode is applied.
    *
    * @param canvas Canvas to draw.
+   * @param bounds Bounds that the drawable is supposed to be drawn within
    * @param trackThicknessFraction A fraction representing how much portion of the track thickness
-   *     should be used in the drawing.
+   *     should be used in the drawing
+   * @param isShowing Whether the drawable is currently animating to show
+   * @param isHiding Whether the drawable is currently animating to hide
    */
   @Override
   public void adjustCanvas(
       @NonNull Canvas canvas,
       @NonNull Rect bounds,
-      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
+      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction,
+      boolean isShowing,
+      boolean isHiding) {
     trackLength = bounds.width();
     float trackSize = spec.trackThickness;
 
@@ -82,17 +88,16 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       canvas.scale(-1f, 1f);
     }
     // Flips canvas vertically if need to anchor to the bottom edge.
-    if ((drawable.isShowing() && spec.showAnimationBehavior == SHOW_OUTWARD)
-        || (drawable.isHiding() && spec.hideAnimationBehavior == HIDE_INWARD)) {
+    if ((isShowing && spec.showAnimationBehavior == SHOW_OUTWARD)
+        || (isHiding && spec.hideAnimationBehavior == HIDE_INWARD)) {
       canvas.scale(1f, -1f);
     }
     // Offsets canvas vertically while showing or hiding.
-    if (drawable.isShowing()
-        || (drawable.isHiding() && spec.hideAnimationBehavior != HIDE_ESCAPE)) {
+    if (isShowing || (isHiding && spec.hideAnimationBehavior != HIDE_ESCAPE)) {
       canvas.translate(0f, spec.trackThickness * (trackThicknessFraction - 1) / 2f);
     }
     // Scales canvas while hiding with escape animation.
-    if (drawable.isHiding() && spec.hideAnimationBehavior == HIDE_ESCAPE) {
+    if (isHiding && spec.hideAnimationBehavior == HIDE_ESCAPE) {
       canvas.scale(
           trackThicknessFraction,
           trackThicknessFraction,
@@ -119,6 +124,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
    * @param startFraction A fraction representing where to start the drawing along the track.
    * @param endFraction A fraction representing where to end the drawing along the track.
    * @param color The color used to draw the indicator.
+   * @param drawableAlpha The alpha [0, 255] from the caller drawable.
    */
   @Override
   public void fillIndicator(
@@ -126,11 +132,13 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       @NonNull Paint paint,
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      @ColorInt int color) {
+      @ColorInt int color,
+      @IntRange(from = 0, to = 255) int drawableAlpha) {
     // No need to draw if startFraction and endFraction are same.
     if (startFraction == endFraction) {
       return;
     }
+    color = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
 
     float originX = -trackLength / 2;
 
@@ -166,14 +174,17 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
     // Draw stop indicator
     if (spec.trackStopIndicatorSize > 0) {
-      drawStopIndicator(canvas, paint);
+      drawStopIndicator(canvas, paint, drawableAlpha);
     }
     canvas.restore();
   }
 
-  private void drawStopIndicator(@NonNull Canvas canvas, @NonNull Paint paint) {
+  private void drawStopIndicator(
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @IntRange(from = 0, to = 255) int drawableAlpha) {
     int indicatorColor =
-        MaterialColors.compositeARGBWithAlpha(spec.indicatorColors[0], drawable.getAlpha());
+        MaterialColors.compositeARGBWithAlpha(spec.indicatorColors[0], drawableAlpha);
     paint.setColor(indicatorColor);
     Rect trackBounds = canvas.getClipBounds();
     // Maintain proper ratio when stop is smaller than track height and offset from edges.
@@ -192,10 +203,14 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
    *
    * @param canvas Canvas to draw.
    * @param paint Paint used to draw.
+   * @param drawableAlpha The alpha [0, 255] from the caller drawable.
    */
   @Override
-  void fillTrack(@NonNull Canvas canvas, @NonNull Paint paint) {
-    int trackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, drawable.getAlpha());
+  void fillTrack(
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @IntRange(from = 0, to = 255) int drawableAlpha) {
+    int trackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, drawableAlpha);
 
     // Sets up the paint.
     paint.setStyle(Style.FILL);

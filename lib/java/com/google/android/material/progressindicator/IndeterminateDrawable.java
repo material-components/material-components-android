@@ -36,7 +36,6 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
-import com.google.android.material.color.MaterialColors;
 
 /** This class draws the graphics for indeterminate mode. */
 public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
@@ -72,10 +71,26 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   @NonNull
   public static IndeterminateDrawable<LinearProgressIndicatorSpec> createLinearDrawable(
       @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
+    return createLinearDrawable(context, spec, new LinearDrawingDelegate(spec));
+  }
+
+  /**
+   * Creates an instance of {@link IndeterminateDrawable} for {@link LinearProgressIndicator} with
+   * {@link LinearProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the linear indicator.
+   * @param drawingDelegate The LinearDrawingDelegate object.
+   */
+  @NonNull
+  static IndeterminateDrawable<LinearProgressIndicatorSpec> createLinearDrawable(
+      @NonNull Context context,
+      @NonNull LinearProgressIndicatorSpec spec,
+      @NonNull LinearDrawingDelegate drawingDelegate) {
     return new IndeterminateDrawable<>(
         context,
         /* baseSpec= */ spec,
-        new LinearDrawingDelegate(spec),
+        drawingDelegate,
         spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS
             ? new LinearIndeterminateContiguousAnimatorDelegate(spec)
             : new LinearIndeterminateDisjointAnimatorDelegate(context, spec));
@@ -91,11 +106,27 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   @NonNull
   public static IndeterminateDrawable<CircularProgressIndicatorSpec> createCircularDrawable(
       @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
+    return createCircularDrawable(context, spec, new CircularDrawingDelegate(spec));
+  }
+
+  /**
+   * Creates an instance of {@link IndeterminateDrawable} for {@link CircularProgressIndicator} with
+   * {@link CircularProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the circular indicator.
+   * @param drawingDelegate The CircularDrawingDelegate object.
+   */
+  @NonNull
+  static IndeterminateDrawable<CircularProgressIndicatorSpec> createCircularDrawable(
+      @NonNull Context context,
+      @NonNull CircularProgressIndicatorSpec spec,
+      @NonNull CircularDrawingDelegate drawingDelegate) {
     IndeterminateDrawable<CircularProgressIndicatorSpec> indeterminateDrawable =
         new IndeterminateDrawable<>(
             context,
             /* baseSpec= */ spec,
-            new CircularDrawingDelegate(spec),
+            drawingDelegate,
             new CircularIndeterminateAnimatorDelegate(spec));
     indeterminateDrawable.setStaticDummyDrawable(
         VectorDrawableCompat.create(context.getResources(), R.drawable.indeterminate_static, null));
@@ -169,7 +200,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
     }
 
     canvas.save();
-    drawingDelegate.validateSpecAndAdjustCanvas(canvas, getBounds(), getGrowFraction());
+    drawingDelegate.validateSpecAndAdjustCanvas(
+        canvas, getBounds(), getGrowFraction(), isShowing(), isHiding());
 
     if (initialIndicatorTrackGapSize > 0) {
       if (drawingDelegate instanceof LinearDrawingDelegate) {
@@ -181,10 +213,10 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
       // Draws the transparent track.
       int trackColor = baseSpec.trackColor;
       baseSpec.trackColor = Color.TRANSPARENT;
-      drawingDelegate.fillTrack(canvas, paint);
+      drawingDelegate.fillTrack(canvas, paint, getAlpha());
       baseSpec.trackColor = trackColor;
     } else {
-      drawingDelegate.fillTrack(canvas, paint);
+      drawingDelegate.fillTrack(canvas, paint, getAlpha());
     }
 
     for (int segmentIndex = 0;
@@ -197,7 +229,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
           paint,
           animatorDelegate.segmentPositions[2 * segmentIndex],
           animatorDelegate.segmentPositions[2 * segmentIndex + 1],
-          animatorDelegate.segmentColors[segmentIndex]);
+          animatorDelegate.segmentColors[segmentIndex],
+          getAlpha());
 
       if (drawingDelegate instanceof LinearDrawingDelegate && baseSpec.indicatorTrackGapSize > 0) {
         // Draws the track using fake indicators around the current indicator.
@@ -209,8 +242,6 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   }
 
   private void drawTrackIndicators(@NonNull Canvas canvas, int segmentIndex) {
-    int trackColorWithAlpha =
-        MaterialColors.compositeARGBWithAlpha(baseSpec.trackColor, getAlpha());
     float previousSegmentEndPosition =
         segmentIndex == 0 ? 0f : animatorDelegate.segmentPositions[2 * segmentIndex - 1];
     // Draws the fake indicators as the track to the left of the current indicator.
@@ -219,7 +250,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
         paint,
         previousSegmentEndPosition,
         animatorDelegate.segmentPositions[2 * segmentIndex],
-        trackColorWithAlpha);
+        baseSpec.trackColor,
+        getAlpha());
     if (segmentIndex == animatorDelegate.segmentColors.length - 1) {
       // Draws the fake indicator as the track to the right of the last indicator.
       drawingDelegate.fillIndicator(
@@ -227,7 +259,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
           paint,
           animatorDelegate.segmentPositions[2 * segmentIndex + 1],
           1f,
-          trackColorWithAlpha);
+          baseSpec.trackColor,
+          getAlpha());
     }
   }
 
@@ -277,7 +310,6 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
   void setDrawingDelegate(@NonNull DrawingDelegate<S> drawingDelegate) {
     this.drawingDelegate = drawingDelegate;
-    drawingDelegate.registerDrawable(this);
   }
 
   void setInitialIndicatorTrackGapSize(@Px int initialIndicatorTrackGapSize) {

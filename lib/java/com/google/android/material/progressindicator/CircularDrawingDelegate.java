@@ -25,6 +25,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import com.google.android.material.color.MaterialColors;
 
@@ -60,14 +61,19 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
    * current track thickness.
    *
    * @param canvas Canvas to draw.
+   * @param bounds Bounds that the drawable is supposed to be drawn within
    * @param trackThicknessFraction A fraction representing how much portion of the track thickness
-   *     should be used in the drawing.
+   *     should be used in the drawing
+   * @param isShowing Whether the drawable is currently animating to show
+   * @param isHiding Whether the drawable is currently animating to hide
    */
   @Override
   public void adjustCanvas(
       @NonNull Canvas canvas,
       @NonNull Rect bounds,
-      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
+      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction,
+      boolean isShowing,
+      boolean isHiding) {
     // Scales the actual drawing by the ratio of the given bounds to the preferred size.
     float scaleX = (float) bounds.width() / getPreferredWidth();
     float scaleY = (float) bounds.height() / getPreferredHeight();
@@ -96,18 +102,14 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius = spec.trackCornerRadius * trackThicknessFraction;
     adjustedRadius = (spec.indicatorSize - spec.trackThickness) / 2f;
-    if ((drawable.isShowing()
-            && spec.showAnimationBehavior == CircularProgressIndicator.SHOW_INWARD)
-        || (drawable.isHiding()
-            && spec.hideAnimationBehavior == CircularProgressIndicator.HIDE_OUTWARD)) {
+    if ((isShowing && spec.showAnimationBehavior == CircularProgressIndicator.SHOW_INWARD)
+        || (isHiding && spec.hideAnimationBehavior == CircularProgressIndicator.HIDE_OUTWARD)) {
       // Increases the radius by half of the full thickness, then reduces it half way of the
       // displayed thickness to match the outer edges of the displayed indicator and the full
       // indicator.
       adjustedRadius += (1 - trackThicknessFraction) * spec.trackThickness / 2;
-    } else if ((drawable.isShowing()
-            && spec.showAnimationBehavior == CircularProgressIndicator.SHOW_OUTWARD)
-        || (drawable.isHiding()
-            && spec.hideAnimationBehavior == CircularProgressIndicator.HIDE_INWARD)) {
+    } else if ((isShowing && spec.showAnimationBehavior == CircularProgressIndicator.SHOW_OUTWARD)
+        || (isHiding && spec.hideAnimationBehavior == CircularProgressIndicator.HIDE_INWARD)) {
       // Decreases the radius by half of the full thickness, then raises it half way of the
       // displayed thickness to match the inner edges of the displayed indicator and the full
       // indicator.
@@ -125,6 +127,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
    * @param startFraction A fraction representing where to start the drawing along the track.
    * @param endFraction A fraction representing where to end the drawing along the track.
    * @param color The color used to draw the indicator.
+   * @param drawableAlpha The alpha [0, 255] from the caller drawable.
    */
   @Override
   void fillIndicator(
@@ -132,11 +135,13 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       @NonNull Paint paint,
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      @ColorInt int color) {
+      @ColorInt int color,
+      @IntRange(from = 0, to = 255) int drawableAlpha) {
     // No need to draw if startFraction and endFraction are same.
     if (startFraction == endFraction) {
       return;
     }
+    color = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
 
     // Sets up the paint.
     paint.setStyle(Style.STROKE);
@@ -182,10 +187,14 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
    *
    * @param canvas Canvas to draw.
    * @param paint Paint used to draw.
+   * @param drawableAlpha The alpha [0, 255] from the caller drawable.
    */
   @Override
-  void fillTrack(@NonNull Canvas canvas, @NonNull Paint paint) {
-    int trackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, drawable.getAlpha());
+  void fillTrack(
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @IntRange(from = 0, to = 255) int drawableAlpha) {
+    int trackColor = MaterialColors.compositeARGBWithAlpha(spec.trackColor, drawableAlpha);
 
     // Sets up the paint.
     paint.setStyle(Style.STROKE);

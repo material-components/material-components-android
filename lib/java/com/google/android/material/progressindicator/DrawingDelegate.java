@@ -21,6 +21,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 
 /** A delegate abstract class for drawing the graphics in different drawable classes. */
@@ -31,8 +32,6 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
   public DrawingDelegate(S spec) {
     this.spec = spec;
   }
-
-  protected DrawableWithAnimatedVisibilityChange drawable;
 
   /**
    * Returns the preferred width, in pixels, of the drawable based on the drawing type. Returns a
@@ -54,11 +53,15 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
    * @param bounds Bounds that the drawable is supposed to be drawn within
    * @param trackThicknessFraction A fraction representing how much portion of the track thickness
    *     should be used in the drawing
+   * @param isShowing Whether the drawable is currently animating to show
+   * @param isHiding Whether the drawable is currently animating to hide
    */
   abstract void adjustCanvas(
       @NonNull Canvas canvas,
       @NonNull Rect bounds,
-      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction);
+      @FloatRange(from = -1.0, to = 1.0) float trackThicknessFraction,
+      boolean isShowing,
+      boolean isHiding);
 
   /**
    * Fills a part of the track with the designated indicator color. The filling part is defined with
@@ -69,31 +72,35 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
    * @param startFraction A fraction representing where to start the drawing along the track.
    * @param endFraction A fraction representing where to end the drawing along the track.
    * @param color The color used to draw the indicator.
+   * @param drawableAlpha The alpha [0, 255] from the caller drawable.
    */
   abstract void fillIndicator(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
       @FloatRange(from = 0.0, to = 1.0) float startFraction,
       @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      @ColorInt int color);
+      @ColorInt int color,
+      @IntRange(from = 0, to = 255) int drawableAlpha);
 
   /**
    * Fills the whole track with track color.
    *
    * @param canvas Canvas to draw.
    * @param paint Paint used to draw.
+   * @param drawableAlpha The alpha [0, 255] from the caller drawable.
    */
-  abstract void fillTrack(@NonNull Canvas canvas, @NonNull Paint paint);
-
-  protected void registerDrawable(@NonNull DrawableWithAnimatedVisibilityChange drawable) {
-    this.drawable = drawable;
-  }
+  abstract void fillTrack(
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @IntRange(from = 0, to = 255) int drawableAlpha);
 
   void validateSpecAndAdjustCanvas(
       @NonNull Canvas canvas,
       @NonNull Rect bounds,
-      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction) {
+      @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction,
+      boolean isShowing,
+      boolean isHiding) {
     spec.validateSpec();
-    adjustCanvas(canvas, bounds, trackThicknessFraction);
+    adjustCanvas(canvas, bounds, trackThicknessFraction, isShowing, isHiding);
   }
 }

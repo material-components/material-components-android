@@ -26,7 +26,6 @@ import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
-import com.google.android.material.color.MaterialColors;
 
 /** This class draws the graphics for determinate mode. */
 public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
@@ -76,8 +75,23 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   @NonNull
   public static DeterminateDrawable<LinearProgressIndicatorSpec> createLinearDrawable(
       @NonNull Context context, @NonNull LinearProgressIndicatorSpec spec) {
-    return new DeterminateDrawable<>(
-        context, /* baseSpec= */ spec, new LinearDrawingDelegate(spec));
+    return createLinearDrawable(context, spec, new LinearDrawingDelegate(spec));
+  }
+
+  /**
+   * Creates an instance of {@link DeterminateDrawable} for {@link LinearProgressIndicator} with
+   * {@link LinearProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the linear indicator.
+   * @param drawingDelegate The LinearDrawingDelegate object.
+   */
+  @NonNull
+  static DeterminateDrawable<LinearProgressIndicatorSpec> createLinearDrawable(
+      @NonNull Context context,
+      @NonNull LinearProgressIndicatorSpec spec,
+      @NonNull LinearDrawingDelegate drawingDelegate) {
+    return new DeterminateDrawable<>(context, /* baseSpec= */ spec, drawingDelegate);
   }
 
   /**
@@ -90,8 +104,23 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   @NonNull
   public static DeterminateDrawable<CircularProgressIndicatorSpec> createCircularDrawable(
       @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
-    return new DeterminateDrawable<>(
-        context, /* baseSpec= */ spec, new CircularDrawingDelegate(spec));
+    return createCircularDrawable(context, spec, new CircularDrawingDelegate(spec));
+  }
+
+  /**
+   * Creates an instance of {@link DeterminateDrawable} for {@link CircularProgressIndicator} with
+   * {@link CircularProgressIndicatorSpec}.
+   *
+   * @param context The current context.
+   * @param spec The spec for the circular indicator.
+   * @param drawingDelegate The CircularDrawingDelegate object.
+   */
+  @NonNull
+  static DeterminateDrawable<CircularProgressIndicatorSpec> createCircularDrawable(
+      @NonNull Context context,
+      @NonNull CircularProgressIndicatorSpec spec,
+      @NonNull CircularDrawingDelegate drawingDelegate) {
+    return new DeterminateDrawable<>(context, /* baseSpec= */ spec, drawingDelegate);
   }
 
   public void addSpringAnimationEndListener(
@@ -198,15 +227,15 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     }
 
     canvas.save();
-    drawingDelegate.validateSpecAndAdjustCanvas(canvas, getBounds(), getGrowFraction());
+    drawingDelegate.validateSpecAndAdjustCanvas(
+        canvas, getBounds(), getGrowFraction(), isShowing(), isHiding());
 
-    int indicatorColor =
-        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], getAlpha());
+    int indicatorColor = baseSpec.indicatorColors[0];
     if (baseSpec.indicatorTrackGapSize > 0) {
-      int trackColor = MaterialColors.compositeARGBWithAlpha(baseSpec.trackColor, getAlpha());
+      int trackColor = baseSpec.trackColor;
       // Draws the full transparent track.
       baseSpec.trackColor = Color.TRANSPARENT;
-      drawingDelegate.fillTrack(canvas, paint);
+      drawingDelegate.fillTrack(canvas, paint, getAlpha());
       baseSpec.trackColor = trackColor;
       // Draws the indicator and track.
       int gapSize = baseSpec.indicatorTrackGapSize;
@@ -214,12 +243,15 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
       //  not using indicatorTrackGapSize.
       //  See https://github.com/material-components/material-components-android/commit/0ce6ae4.
       baseSpec.indicatorTrackGapSize = 0;
-      drawingDelegate.fillIndicator(canvas, paint, 0f, getIndicatorFraction(), indicatorColor);
+      drawingDelegate.fillIndicator(
+          canvas, paint, 0f, getIndicatorFraction(), indicatorColor, getAlpha());
       baseSpec.indicatorTrackGapSize = gapSize;
-      drawingDelegate.fillIndicator(canvas, paint, getIndicatorFraction(), 1f, trackColor);
+      drawingDelegate.fillIndicator(
+          canvas, paint, getIndicatorFraction(), 1f, trackColor, getAlpha());
     } else {
-      drawingDelegate.fillTrack(canvas, paint);
-      drawingDelegate.fillIndicator(canvas, paint, 0f, getIndicatorFraction(), indicatorColor);
+      drawingDelegate.fillTrack(canvas, paint, getAlpha());
+      drawingDelegate.fillIndicator(
+          canvas, paint, 0f, getIndicatorFraction(), indicatorColor, getAlpha());
     }
     canvas.restore();
   }
@@ -242,7 +274,6 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
   void setDrawingDelegate(@NonNull DrawingDelegate<S> drawingDelegate) {
     this.drawingDelegate = drawingDelegate;
-    drawingDelegate.registerDrawable(this);
   }
 
   // ******************* Properties *******************

@@ -90,8 +90,11 @@ public class CircularProgressIndicator
   // ******************** Initialization **********************
 
   private void initializeDrawables() {
-    setIndeterminateDrawable(IndeterminateDrawable.createCircularDrawable(getContext(), spec));
-    setProgressDrawable(DeterminateDrawable.createCircularDrawable(getContext(), spec));
+    CircularDrawingDelegate drawingDelegate = new CircularDrawingDelegate(spec);
+    setIndeterminateDrawable(
+        IndeterminateDrawable.createCircularDrawable(getContext(), spec, drawingDelegate));
+    setProgressDrawable(
+        DeterminateDrawable.createCircularDrawable(getContext(), spec, drawingDelegate));
   }
 
   // **************** Getters and setters ****************

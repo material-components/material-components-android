@@ -32,7 +32,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import androidx.vectordrawable.graphics.drawable.AnimationUtilsCompat;
-import com.google.android.material.color.MaterialColors;
 import java.util.Arrays;
 
 /**
@@ -178,10 +177,7 @@ final class LinearIndeterminateDisjointAnimatorDelegate
   /** Updates the segment color array based on the updated color index. */
   private void maybeUpdateSegmentColors() {
     if (dirtyColors) {
-      Arrays.fill(
-          segmentColors,
-          MaterialColors.compositeARGBWithAlpha(
-              baseSpec.indicatorColors[indicatorColorIndex], drawable.getAlpha()));
+      Arrays.fill(segmentColors, baseSpec.indicatorColors[indicatorColorIndex]);
       dirtyColors = false;
     }
   }
@@ -189,8 +185,7 @@ final class LinearIndeterminateDisjointAnimatorDelegate
   @VisibleForTesting
   void resetPropertiesForNewStart() {
     indicatorColorIndex = 0;
-    int indicatorColor =
-        MaterialColors.compositeARGBWithAlpha(baseSpec.indicatorColors[0], drawable.getAlpha());
+    int indicatorColor = baseSpec.indicatorColors[0];
     segmentColors[0] = indicatorColor;
     segmentColors[1] = indicatorColor;
   }
