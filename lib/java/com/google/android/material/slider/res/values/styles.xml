@@ -35,22 +35,51 @@
 
   <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider"/>
 
-  <style name="Widget.Material3.Slider" parent="Widget.MaterialComponents.Slider">
-    <item name="haloColor">@color/m3_slider_halo_color</item>  <!-- TODO(b/246836765): Check with designer regarding the new style -->
-    <item name="labelStyle">@style/Widget.Material3.Slider.Label</item>
-    <item name="thumbColor">@color/m3_slider_thumb_color</item>
-    <item name="tickColorActive">@color/m3_slider_inactive_track_color</item> <!-- TODO(b/246836765): Update to the new style -->
-    <item name="tickColorInactive">@color/m3_slider_active_track_color</item> <!-- TODO(b/246836765): Update to the new style -->
-    <item name="trackColorActive">@color/m3_slider_active_track_color</item>
-    <item name="trackColorInactive">@color/m3_slider_inactive_track_color</item>
-    <item name="trackHeight">@dimen/m3_slider_inactive_track_height</item> <!-- TODO(b/246836765): Update to the new style -->
+  <style name="Widget.Material3.Slider.Legacy" parent="Widget.MaterialComponents.Slider">
+    <item name="haloColor">@color/m3_slider_halo_color_legacy</item>
+    <item name="labelStyle">@style/Widget.Material3.Slider.Legacy.Label</item>
+    <item name="thumbColor">@color/m3_slider_thumb_color_legacy</item>
+    <item name="tickColorActive">@color/m3_slider_inactive_track_color_legacy</item>
+    <item name="tickColorInactive">@color/m3_slider_active_track_color_legacy</item>
+    <item name="trackColorActive">@color/m3_slider_active_track_color_legacy</item>
+    <item name="trackColorInactive">@color/m3_slider_inactive_track_color_legacy</item>
+    <item name="trackHeight">@dimen/m3_slider_inactive_track_height</item>
     <item name="thumbElevation">@dimen/m3_slider_thumb_elevation</item>
+    <item name="trackInsideCornerSize">0dp</item>
+    <item name="thumbWidth">@null</item>
+    <item name="thumbHeight">@null</item>
+    <item name="thumbTrackGapSize">0dp</item>
+    <item name="trackStopIndicatorSize">0dp</item>
   </style>
 
-  <!-- TODO(b/246836765): Update to the new style -->
-  <style name="Widget.Material3.Slider.Label" parent="Widget.Material3.Tooltip">
+  <style name="Widget.Material3.Slider.Legacy.Label" parent="Widget.Material3.Tooltip">
     <item name="android:textColor">@macro/m3_comp_slider_label_label_text_color</item>
     <item name="backgroundTint">@macro/m3_comp_slider_label_container_color</item>
+  </style>
+
+  <style name="Widget.Material3.Slider" parent="Widget.MaterialComponents.Slider">
+    <item name="haloColor">@android:color/transparent</item>
+    <item name="labelStyle">@style/Widget.Material3.Slider.Label</item>
+    <item name="thumbColor">@color/m3_slider_thumb_color</item>
+    <item name="tickColorActive">@color/m3_slider_inactive_track_color</item>
+    <item name="tickColorInactive">@color/m3_slider_active_track_color</item>
+    <item name="trackColorActive">@color/m3_slider_active_track_color</item>
+    <item name="trackColorInactive">@color/m3_slider_inactive_track_color</item>
+    <item name="trackHeight">16dp</item>
+    <item name="thumbElevation">0dp</item>
+    <item name="trackInsideCornerSize">2dp</item>
+    <item name="thumbWidth">4dp</item>
+    <item name="thumbHeight">44dp</item>
+    <item name="thumbTrackGapSize">6dp</item>
+    <item name="trackStopIndicatorSize">4dp</item>
+  </style>
+
+  <style name="Widget.Material3.Slider.Label" parent="Widget.Material3.Tooltip">
+    <item name="android:textColor">?attr/colorOnSurfaceInverse</item>
+    <item name="backgroundTint">?attr/colorSurfaceInverse</item>
+    <item name="showMarker">false</item>
+    <item name="android:padding">10dp</item>
+    <item name="android:minHeight">32dp</item>
   </style>
 
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2023 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,6 +15,11 @@
   ~ limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="?attr/colorSecondaryContainer" android:state_enabled="true" />
-  <item android:color="?attr/colorSurfaceVariant" />
+  <!-- Disabled -->
+  <item android:alpha="@dimen/m3_comp_slider_disabled_handle_opacity"
+      android:color="@macro/m3_comp_slider_disabled_handle_color"
+      android:state_enabled="false"/>
+
+  <!-- Normal -->
+  <item android:color="@macro/m3_comp_slider_handle_color"/>
 </selector>

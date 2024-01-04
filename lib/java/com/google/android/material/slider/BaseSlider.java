@@ -44,6 +44,8 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
+import android.graphics.Path.Direction;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -334,6 +336,7 @@ abstract class BaseSlider<
   @NonNull private ColorStateList trackColorActive;
   @NonNull private ColorStateList trackColorInactive;
 
+  @NonNull private final Path trackPath = new Path();
   @NonNull private final RectF trackRect = new RectF();
   @NonNull private final RectF cornerRect = new RectF();
   @NonNull private final MaterialShapeDrawable defaultThumbDrawable = new MaterialShapeDrawable();
@@ -2187,29 +2190,26 @@ abstract class BaseSlider<
     bounds.left += leftCornerSize;
     bounds.right -= rightCornerSize;
 
-    // Draw the left and right corners as round rect.
+    // Build track path with rounded corners.
+    trackPath.reset();
+    trackPath.addRect(bounds, Direction.CW);
+    addRoundedCorners(trackPath, bounds, leftCornerSize, rightCornerSize);
+
+    // Draw the track.
     paint.setStyle(Style.FILL);
     paint.setStrokeCap(Cap.BUTT);
-    drawRoundedCorners(canvas, paint, bounds, leftCornerSize, rightCornerSize);
-
-    // Draw the track overlapping the corners.
-    paint.setXfermode(new PorterDuffXfermode(Mode.SRC));
-    canvas.drawRect(bounds, paint);
-    paint.setXfermode(null);
+    paint.setAntiAlias(true);
+    canvas.drawPath(trackPath, paint);
   }
 
-  private void drawRoundedCorners(
-      Canvas canvas, Paint paint, RectF bounds, float leftCornerSize, float rightCornerSize) {
-    canvas.save();
-
+  private void addRoundedCorners(
+      Path path, RectF bounds, float leftCornerSize, float rightCornerSize) {
     cornerRect.set(
         bounds.left - leftCornerSize, bounds.top, bounds.left + leftCornerSize, bounds.bottom);
-    canvas.drawRoundRect(cornerRect, leftCornerSize, leftCornerSize, paint);
+    path.addRoundRect(cornerRect, leftCornerSize, leftCornerSize, Direction.CW);
     cornerRect.set(
-        bounds.right + rightCornerSize, bounds.top, bounds.right - rightCornerSize, bounds.bottom);
-    canvas.drawRoundRect(cornerRect, rightCornerSize, rightCornerSize, paint);
-
-    canvas.restore();
+        bounds.right - rightCornerSize, bounds.top, bounds.right + rightCornerSize, bounds.bottom);
+    path.addRoundRect(cornerRect, rightCornerSize, rightCornerSize, Direction.CW);
   }
 
   private void maybeDrawTicks(@NonNull Canvas canvas) {
