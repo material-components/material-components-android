@@ -52,12 +52,18 @@
     <item name="trackThickness">@dimen/m3_comp_linear_progress_indicator_active_indicator_height</item>
     <item name="trackColor">@macro/m3_comp_linear_progress_indicator_track_color</item>
     <item name="indicatorColor">@macro/m3_comp_linear_progress_indicator_active_indicator_color</item>
+    <item name="trackCornerRadius">0dp</item>
+    <item name="indicatorTrackGapSize">0dp</item>
+    <item name="trackStopIndicatorSize">0dp</item>
   </style>
 
   <!-- M3 CircularProgressIndicator Legacy styles -->
   <style name="Widget.Material3.CircularProgressIndicator.Legacy" parent="Widget.MaterialComponents.CircularProgressIndicator">
     <item name="trackThickness">@dimen/m3_comp_circular_progress_indicator_active_indicator_width</item>
     <item name="indicatorColor">@macro/m3_comp_circular_progress_indicator_active_indicator_color</item>
+    <item name="trackColor">@android:color/transparent</item>
+    <item name="trackCornerRadius">0dp</item>
+    <item name="indicatorTrackGapSize">0dp</item>
   </style>
   <style name="Widget.Material3.CircularProgressIndicator.Legacy.Medium" parent="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
   <style name="Widget.Material3.CircularProgressIndicator.Legacy.Small" parent="Widget.MaterialComponents.CircularProgressIndicator.Small"/>

@@ -47,6 +47,14 @@
       description="Text label above a slider for adjusting indicators' corner size [CHAR LIMIT=NONE]">
     Corner Size (0-5) dp
   </string>
+  <string name="cat_progress_indicator_gap_size" translatable="false"
+    description="Text label above a slider for adjusting indicators' gap size [CHAR LIMIT=NONE]">
+    Gap Size (0-10) dp
+  </string>
+  <string name="cat_progress_indicator_stop_size" translatable="false"
+    description="Text label above a slider for adjusting indicators' stop size [CHAR LIMIT=NONE]">
+    Stop Size (0-10) dp
+  </string>
   <string name="cat_progress_indicator_reverse_direction" translatable="false"
       description="Switch label for reversing indicators' direction [CHAR LIMIT=NONE]">
     Inverse Direction

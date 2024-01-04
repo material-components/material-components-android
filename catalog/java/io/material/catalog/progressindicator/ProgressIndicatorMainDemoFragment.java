@@ -61,6 +61,8 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
     CircularProgressIndicator circularIndicator = view.findViewById(R.id.circular_indicator);
     Slider progressSlider = view.findViewById(R.id.progress_slider);
     MaterialSwitch determinateSwitch = view.findViewById(R.id.determinate_mode_switch);
+    Slider gapSlider = view.findViewById(R.id.gapSlider);
+    Slider stopSlider = view.findViewById(R.id.stopSlider);
 
     progressSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
@@ -108,6 +110,25 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
           }
           if (circularIndicator.getTrackCornerRadius() != newCornerRadius) {
             circularIndicator.setTrackCornerRadius(newCornerRadius);
+          }
+        });
+
+    gapSlider.addOnChangeListener(
+        (slider, value, fromUser) -> {
+          int newGapSize = (int) (value * pixelsInDp);
+          if (linearIndicator.getIndicatorTrackGapSize() != newGapSize) {
+            linearIndicator.setIndicatorTrackGapSize(newGapSize);
+          }
+          if (circularIndicator.getIndicatorTrackGapSize() != newGapSize) {
+            circularIndicator.setIndicatorTrackGapSize(newGapSize);
+          }
+        });
+
+    stopSlider.addOnChangeListener(
+        (slider, value, fromUser) -> {
+          int newStopSize = (int) (value * pixelsInDp);
+          if (linearIndicator.getTrackStopIndicatorSize() != newStopSize) {
+            linearIndicator.setTrackStopIndicatorSize(newStopSize);
           }
         });
 

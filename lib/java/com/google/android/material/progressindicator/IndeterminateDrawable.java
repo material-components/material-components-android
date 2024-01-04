@@ -47,7 +47,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   private IndeterminateAnimatorDelegate<ObjectAnimator> animatorDelegate;
 
   private Drawable staticDummyDrawable;
-  @Px private int initialIndicatorTrackGapSize;
+  @Px int initialIndicatorTrackGapSize;
+  @Px int initialTrackStopIndicatorSize;
 
   IndeterminateDrawable(
       @NonNull Context context,
@@ -57,6 +58,10 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
     super(context, baseSpec);
 
     initialIndicatorTrackGapSize = baseSpec.indicatorTrackGapSize;
+    if (baseSpec instanceof LinearProgressIndicatorSpec) {
+      initialTrackStopIndicatorSize =
+          ((LinearProgressIndicatorSpec) baseSpec).trackStopIndicatorSize;
+    }
     setDrawingDelegate(drawingDelegate);
     setAnimatorDelegate(animatorDelegate);
   }
@@ -314,5 +319,9 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
   void setInitialIndicatorTrackGapSize(@Px int initialIndicatorTrackGapSize) {
     this.initialIndicatorTrackGapSize = initialIndicatorTrackGapSize;
+  }
+
+  public void setInitialTrackStopIndicatorSize(int initialTrackStopIndicatorSize) {
+    this.initialTrackStopIndicatorSize = initialTrackStopIndicatorSize;
   }
 }
