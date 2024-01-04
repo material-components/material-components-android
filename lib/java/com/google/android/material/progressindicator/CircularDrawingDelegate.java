@@ -15,6 +15,8 @@
  */
 package com.google.android.material.progressindicator;
 
+import static com.google.android.material.math.MathUtils.lerp;
+import static com.google.android.material.progressindicator.BaseProgressIndicator.HIDE_ESCAPE;
 import static java.lang.Math.min;
 
 import android.graphics.Canvas;
@@ -38,6 +40,11 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
   private float displayedTrackThickness;
   private float displayedCornerRadius;
   private float adjustedRadius;
+
+  // This will be used in the ESCAPE hide animation. The start and end fraction in track will be
+  // scaled by this fraction with a pivot of 1.0f.
+  @FloatRange(from = 0.0f, to = 1.0f)
+  private float totalTrackLengthFraction;
 
   /** Instantiates CircularDrawingDelegate with the current spec. */
   public CircularDrawingDelegate(@NonNull CircularProgressIndicatorSpec spec) {
@@ -115,6 +122,12 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       // indicator.
       adjustedRadius -= (1 - trackThicknessFraction) * spec.trackThickness / 2;
     }
+    // Sets the total track length fraction if ESCAPE hide animation is used.
+    if (isHiding && spec.hideAnimationBehavior == HIDE_ESCAPE) {
+      totalTrackLengthFraction = trackThicknessFraction;
+    } else {
+      totalTrackLengthFraction = 1f;
+    }
   }
 
   /**
@@ -150,12 +163,23 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     paint.setColor(color);
     paint.setStrokeWidth(displayedTrackThickness);
 
+    float arcFraction =
+        endFraction >= startFraction
+            ? (endFraction - startFraction)
+            : (1 + endFraction - startFraction);
+    startFraction %= 1;
+    if (totalTrackLengthFraction < 1 && startFraction + arcFraction > 1) {
+      // Breaks the arc at 0 degree for ESCAPE animation.
+      fillIndicator(canvas, paint, startFraction, 1, color, drawableAlpha);
+      fillIndicator(canvas, paint, 1, startFraction + arcFraction, color, drawableAlpha);
+      return;
+    }
+    // Scale start and arc fraction for ESCAPE animation.
+    startFraction = lerp(1 - totalTrackLengthFraction, 1f, startFraction);
+    arcFraction = lerp(0f, totalTrackLengthFraction, arcFraction);
     // Calculates the start and end in degrees.
     float startDegree = startFraction * 360 * arcDirectionFactor;
-    float arcDegree =
-        endFraction >= startFraction
-            ? (endFraction - startFraction) * 360 * arcDirectionFactor
-            : (1 + endFraction - startFraction) * 360 * arcDirectionFactor;
+    float arcDegree = arcFraction * 360 * arcDirectionFactor;
 
     // Draws the gaps if needed.
     if (spec.indicatorTrackGapSize > 0) {
