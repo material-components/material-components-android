@@ -75,6 +75,7 @@ import androidx.customview.view.AbsSavedState;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.DrawerListener;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ContextUtils;
 import com.google.android.material.internal.NavigationMenu;
@@ -146,6 +147,8 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   private boolean bottomInsetScrimEnabled = true;
 
   @Px private int drawerLayoutCornerSize = 0;
+  private final boolean drawerLayoutCornerSizeBackAnimationEnabled;
+  @Px private final int drawerLayoutCornerSizeBackAnimationMax;
   private final ShapeableDelegate shapeableDelegate = ShapeableDelegate.create(this);
 
   private final MaterialSideContainerBackHelper sideContainerBackHelper =
@@ -166,6 +169,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
         public void onDrawerClosed(@NonNull View drawerView) {
           if (drawerView == NavigationView.this) {
             backOrchestrator.stopListeningForBackCallbacks();
+            maybeClearCornerSizeAnimationForDrawerLayout();
           }
         }
       };
@@ -199,6 +203,9 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     // placed inside a drawer layout.
     drawerLayoutCornerSize =
         a.getDimensionPixelSize(R.styleable.NavigationView_drawerLayoutCornerSize, 0);
+    drawerLayoutCornerSizeBackAnimationEnabled = drawerLayoutCornerSize == 0;
+    drawerLayoutCornerSizeBackAnimationMax =
+        getResources().getDimensionPixelSize(R.dimen.m3_navigation_drawer_layout_corner_size);
 
     // Set the background to a MaterialShapeDrawable if it hasn't been set or if it can be converted
     // to a MaterialShapeDrawable.
@@ -400,7 +407,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   private void maybeUpdateCornerSizeForDrawerLayout(@Px int width, @Px int height) {
     if (getParent() instanceof DrawerLayout
         && getLayoutParams() instanceof DrawerLayout.LayoutParams
-        && drawerLayoutCornerSize > 0
+        && (drawerLayoutCornerSize > 0 || drawerLayoutCornerSizeBackAnimationEnabled)
         && getBackground() instanceof MaterialShapeDrawable) {
       int layoutGravity = ((DrawerLayout.LayoutParams) getLayoutParams()).gravity;
       boolean isAbsGravityLeft =
@@ -429,6 +436,13 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
       // Let shapeableDelegate offset the bounds of the edge with zeroed corners so
       // ViewOutlineProvider can use a symmetrical shape on API 22-32.
       shapeableDelegate.setOffsetZeroCornerEdgeBoundsEnabled(this, true);
+    }
+  }
+
+  private void maybeClearCornerSizeAnimationForDrawerLayout() {
+    if (drawerLayoutCornerSizeBackAnimationEnabled && drawerLayoutCornerSize != 0) {
+      drawerLayoutCornerSize = 0;
+      maybeUpdateCornerSizeForDrawerLayout(getWidth(), getHeight());
     }
   }
 
@@ -983,6 +997,13 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   public void updateBackProgress(@NonNull BackEventCompat backEvent) {
     Pair<DrawerLayout, DrawerLayout.LayoutParams> drawerLayoutPair = requireDrawerLayoutParent();
     sideContainerBackHelper.updateBackProgress(backEvent, drawerLayoutPair.second.gravity);
+
+    if (drawerLayoutCornerSizeBackAnimationEnabled) {
+      float progress = sideContainerBackHelper.interpolateProgress(backEvent.getProgress());
+      drawerLayoutCornerSize =
+          AnimationUtils.lerp(0, drawerLayoutCornerSizeBackAnimationMax, progress);
+      maybeUpdateCornerSizeForDrawerLayout(getWidth(), getHeight());
+    }
   }
 
   @Override
@@ -1009,6 +1030,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   public void cancelBackProgress() {
     requireDrawerLayoutParent();
     sideContainerBackHelper.cancelBackProgress();
+    maybeClearCornerSizeAnimationForDrawerLayout();
   }
 
   @CanIgnoreReturnValue

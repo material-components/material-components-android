@@ -71,7 +71,7 @@ public abstract class MaterialBackAnimationHelper<V extends View> {
             context, R.attr.motionDurationShort2, CANCEL_DURATION_DEFAULT);
   }
 
-  protected float interpolateProgress(float progress) {
+  public float interpolateProgress(float progress) {
     return progressInterpolator.getInterpolation(progress);
   }
 
