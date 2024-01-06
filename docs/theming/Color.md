@@ -110,6 +110,9 @@ which involved blending the Surface and Primary colors):
 -   `colorSurfaceDim`
 -   `colorSurfaceBright`
 
+**Note:** When resolving these tonal surface colors above, please use
+`MaterialColors.getColor()` to avoid resolving unexpected colors.
+
 These color roles are used as the default container/background color in the
 components below. Please check the
 [Surface colors guidelines](https://m3.material.io/styles/color/the-color-system/color-roles#0abbf8b7-61e1-49ee-9f97-4967beb1e4fe)
