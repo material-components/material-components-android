@@ -613,7 +613,7 @@ abstract class BaseSlider<
   }
 
   private boolean isMultipleOfStepSize(float value) {
-    return isMultipleOfStepSizeByBigDecimal(new BigDecimal(value));
+    return isMultipleOfStepSizeByBigDecimal(new BigDecimal(Float.toString(value)));
   }
 
   private boolean isMultipleOfStepSizeByBigDecimal(BigDecimal bigDecimal) {
