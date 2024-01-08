@@ -605,21 +605,22 @@ abstract class BaseSlider<
   }
 
   private boolean valueLandsOnTick(float value) {
-    // BigDecimal was used here to avoid floating point rounding errors.
-    float valueInternal = new BigDecimal(value)
-        .subtract(new BigDecimal(valueFrom), MathContext.DECIMAL64)
-        .floatValue();
-
     // Check that the value is a multiple of stepSize given the offset of valueFrom.
-    return isMultipleOfStepSize(valueInternal);
+    BigDecimal bigDecimal =
+        new BigDecimal(Float.toString(value))
+            .subtract(new BigDecimal(Float.toString(valueFrom)), MathContext.DECIMAL64);
+    return isMultipleOfStepSizeByBigDecimal(bigDecimal);
   }
 
   private boolean isMultipleOfStepSize(float value) {
+    return isMultipleOfStepSizeByBigDecimal(new BigDecimal(value));
+  }
+
+  private boolean isMultipleOfStepSizeByBigDecimal(BigDecimal bigDecimal) {
     // We're using BigDecimal here to avoid floating point rounding errors.
-    double result =
-        new BigDecimal(Float.toString(value))
-            .divide(new BigDecimal(Float.toString(stepSize)), MathContext.DECIMAL64)
-            .doubleValue();
+    double result = bigDecimal
+        .divide(new BigDecimal(Float.toString(stepSize)), MathContext.DECIMAL64)
+        .doubleValue();
 
     // If the result is a whole number, it means the value is a multiple of stepSize.
     return Math.abs(Math.round(result) - result) < THRESHOLD;
