@@ -605,8 +605,13 @@ abstract class BaseSlider<
   }
 
   private boolean valueLandsOnTick(float value) {
+    // BigDecimal was used here to avoid floating point rounding errors.
+    float valueInternal = new BigDecimal(value)
+        .subtract(new BigDecimal(valueFrom), MathContext.DECIMAL64)
+        .floatValue();
+
     // Check that the value is a multiple of stepSize given the offset of valueFrom.
-    return isMultipleOfStepSize(value - valueFrom);
+    return isMultipleOfStepSize(valueInternal);
   }
 
   private boolean isMultipleOfStepSize(float value) {
