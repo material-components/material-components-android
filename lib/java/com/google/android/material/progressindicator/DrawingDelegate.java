@@ -64,22 +64,17 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
       boolean isHiding);
 
   /**
-   * Fills a part of the track with the designated indicator color. The filling part is defined with
-   * two fractions normalized to [0, 1] representing the start and the end of the track.
+   * Fills a part of the track as an active indicator.
    *
    * @param canvas Canvas to draw.
    * @param paint Paint used to draw.
-   * @param startFraction A fraction representing where to start the drawing along the track.
-   * @param endFraction A fraction representing where to end the drawing along the track.
-   * @param color The color used to draw the indicator.
+   * @param activeIndicator The ActiveIndicator object of the current active indicator being drawn.
    * @param drawableAlpha The alpha [0, 255] from the caller drawable.
    */
   abstract void fillIndicator(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
-      @FloatRange(from = 0.0, to = 1.0) float startFraction,
-      @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      @ColorInt int color,
+      @NonNull ActiveIndicator activeIndicator,
       @IntRange(from = 0, to = 255) int drawableAlpha);
 
   /**
@@ -102,5 +97,18 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
       boolean isHiding) {
     spec.validateSpec();
     adjustCanvas(canvas, bounds, trackThicknessFraction, isShowing, isHiding);
+  }
+
+  protected static class ActiveIndicator {
+    // The fraction [0, 1] of the start position on the full track.
+    @FloatRange(from = 0.0, to = 1.0)
+    float startFraction;
+
+    // The fraction [0, 1] of the end position on the full track.
+    @FloatRange(from = 0.0, to = 1.0)
+    float endFraction;
+
+    // The color of the indicator without applying the drawable's alpha.
+    @ColorInt int color;
   }
 }
