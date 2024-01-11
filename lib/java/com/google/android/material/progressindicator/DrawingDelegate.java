@@ -89,6 +89,20 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
       @NonNull Paint paint,
       @IntRange(from = 0, to = 255) int drawableAlpha);
 
+  /**
+   * Draws the stop indicator on the track. Only implemented in linear type.
+   *
+   * @param canvas Canvas to draw.
+   * @param paint Paint used to draw.
+   * @param color The color used to draw the part without applying the alpha from drawable.
+   * @param drawableAlpha The alpha [0, 255] from the caller drawable.
+   */
+  abstract void drawStopIndicator(
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @ColorInt int color,
+      @IntRange(from = 0, to = 255) int drawableAlpha);
+
   void validateSpecAndAdjustCanvas(
       @NonNull Canvas canvas,
       @NonNull Rect bounds,

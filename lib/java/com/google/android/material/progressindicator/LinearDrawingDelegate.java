@@ -23,11 +23,13 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -165,31 +167,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
             adjustedEndX,
             displayedTrackThickness / 2);
     canvas.drawRoundRect(indicatorBounds, displayedCornerRadius, displayedCornerRadius, paint);
-
-    // Draw stop indicator
-    if (spec.trackStopIndicatorSize > 0) {
-      drawStopIndicator(canvas, paint, drawableAlpha);
-    }
     canvas.restore();
-  }
-
-  private void drawStopIndicator(
-      @NonNull Canvas canvas,
-      @NonNull Paint paint,
-      @IntRange(from = 0, to = 255) int drawableAlpha) {
-    int indicatorColor =
-        MaterialColors.compositeARGBWithAlpha(spec.indicatorColors[0], drawableAlpha);
-    paint.setColor(indicatorColor);
-    Rect trackBounds = canvas.getClipBounds();
-    // Maintain proper ratio when stop is smaller than track height and offset from edges.
-    float offset = max(0, displayedTrackThickness - spec.trackStopIndicatorSize);
-    RectF stopBounds =
-        new RectF(
-            trackBounds.right - displayedTrackThickness + offset / 2,
-            -(displayedTrackThickness - offset) / 2,
-            trackBounds.right - offset / 2,
-            (displayedTrackThickness - offset) / 2);
-    canvas.drawRoundRect(stopBounds, displayedCornerRadius, displayedCornerRadius, paint);
   }
 
   @Override
@@ -214,5 +192,33 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
         displayedCornerRadius,
         Path.Direction.CCW);
     canvas.drawPath(displayedTrackPath, paint);
+  }
+
+  @Override
+  void drawStopIndicator(
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @ColorInt int color,
+      @IntRange(from = 0, to = 255) int drawableAlpha) {
+    int paintColor = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
+    if (spec.trackStopIndicatorSize > 0 && paintColor != Color.TRANSPARENT) {
+      // Draws the stop indicator at the end of the track if needed.
+      paint.setStyle(Style.FILL);
+      paint.setAntiAlias(true);
+      paint.setColor(paintColor);
+      canvas.save();
+      // Avoid the indicator being drawn out of the track.
+      canvas.clipPath(displayedTrackPath);
+      Rect trackBounds = canvas.getClipBounds();
+      float offset = max(0, displayedTrackThickness - spec.trackStopIndicatorSize);
+      RectF stopBounds =
+          new RectF(
+              trackBounds.right - displayedTrackThickness + offset / 2,
+              -(displayedTrackThickness - offset) / 2,
+              trackBounds.right - offset / 2,
+              (displayedTrackThickness - offset) / 2);
+      canvas.drawRoundRect(stopBounds, displayedCornerRadius, displayedCornerRadius, paint);
+      canvas.restore();
+    }
   }
 }
