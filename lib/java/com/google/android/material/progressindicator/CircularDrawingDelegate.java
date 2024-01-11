@@ -25,6 +25,7 @@ import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -217,6 +218,15 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
 
     RectF arcBound = new RectF(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
     canvas.drawArc(arcBound, 0, 360, false, paint);
+  }
+
+  @Override
+  void drawStopIndicator(
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @ColorInt int color,
+      @IntRange(from = 0, to = 255) int drawableAlpha) {
+    // No stop indicator is used in circular type.
   }
 
   private int getSize() {

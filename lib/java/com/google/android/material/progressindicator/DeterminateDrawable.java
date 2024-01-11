@@ -252,6 +252,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
       drawingDelegate.fillTrack(canvas, paint, getAlpha());
       drawingDelegate.fillIndicator(canvas, paint, activeIndicator, getAlpha());
     }
+    drawingDelegate.drawStopIndicator(canvas, paint, baseSpec.indicatorColors[0], getAlpha());
     canvas.restore();
   }
 
