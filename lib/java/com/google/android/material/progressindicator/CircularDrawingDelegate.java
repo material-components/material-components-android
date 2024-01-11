@@ -34,9 +34,6 @@ import com.google.android.material.color.MaterialColors;
 /** A delegate class to help draw the graphics for {@link CircularProgressIndicator}. */
 final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndicatorSpec> {
 
-  // This is a factor effecting the positive direction to draw the arc. +1 for clockwise; -1 for
-  // counter-clockwise.
-  private int arcDirectionFactor = 1;
   private float displayedTrackThickness;
   private float displayedCornerRadius;
   private float adjustedRadius;
@@ -94,9 +91,13 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     canvas.translate(
         scaledOuterRadiusWithInsetX + bounds.left, scaledOuterRadiusWithInsetY + bounds.top);
 
-    canvas.scale(scaleX, scaleY);
     // Rotates canvas so that arc starts at top.
     canvas.rotate(-90f);
+    // Flips canvas in Y axis (horizontal after rotation) if rotate counterclockwise.
+    canvas.scale(scaleX, scaleY);
+    if (spec.indicatorDirection != CircularProgressIndicator.INDICATOR_DIRECTION_CLOCKWISE) {
+      canvas.scale(1, -1);
+    }
 
     // Clip all drawing to the designated area, so it doesn't draw outside of its bounds (which can
     // happen in certain configuration of clipToPadding and clipChildren)
@@ -104,8 +105,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         -outerRadiusWithInset, -outerRadiusWithInset, outerRadiusWithInset, outerRadiusWithInset);
 
     // These are used when drawing the indicator and track.
-    arcDirectionFactor =
-        spec.indicatorDirection == CircularProgressIndicator.INDICATOR_DIRECTION_CLOCKWISE ? 1 : -1;
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius = spec.trackCornerRadius * trackThicknessFraction;
     adjustedRadius = (spec.indicatorSize - spec.trackThickness) / 2f;
@@ -174,13 +173,12 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     startFraction = lerp(1 - totalTrackLengthFraction, 1f, startFraction);
     arcFraction = lerp(0f, totalTrackLengthFraction, arcFraction);
     // Calculates the start and end in degrees.
-    float startDegree = startFraction * 360 * arcDirectionFactor;
-    float arcDegree = arcFraction * 360 * arcDirectionFactor;
+    float startDegree = startFraction * 360;
+    float arcDegree = arcFraction * 360;
 
     // Draws the gaps if needed.
     if (spec.indicatorTrackGapSize > 0) {
-      float gapSize =
-          min(spec.getIndicatorTrackGapSizeDegree(), Math.abs(startDegree)) * arcDirectionFactor;
+      float gapSize = min(spec.getIndicatorTrackGapSizeDegree(), Math.abs(startDegree));
       // No need to draw if the indicator is shorter than gap.
       if (Math.abs(arcDegree) <= Math.abs(gapSize) * 2) {
         return;
