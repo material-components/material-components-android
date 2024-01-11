@@ -42,7 +42,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   private float trackLength = 300f;
   private float displayedTrackThickness;
   private float displayedCornerRadius;
-  private final Path displayedTrackPath;
+  private Path displayedTrackPath;
 
   // This will be used in the ESCAPE hide animation. The start and end fraction in track will be
   // scaled by this fraction with a pivot of 1.0f.
@@ -52,8 +52,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   /** Instantiates LinearDrawingDelegate with the current spec. */
   LinearDrawingDelegate(@NonNull LinearProgressIndicatorSpec spec) {
     super(spec);
-
-    displayedTrackPath = new Path();
   }
 
   @Override
@@ -85,6 +83,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       boolean isShowing,
       boolean isHiding) {
     trackLength = bounds.width();
+    float trackSize = spec.trackThickness;
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
@@ -111,23 +110,13 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       totalTrackLengthFraction = 1f;
     }
 
-    // These are set for the drawing the indicator and track.
-    displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
-    displayedCornerRadius =
-        min(spec.trackThickness / 2, spec.trackCornerRadius) * trackThicknessFraction;
-
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can
     // happen in certain configurations of clipToPadding and clipChildren)
-    float right = trackLength / 2;
-    float left = right - trackLength * totalTrackLengthFraction;
-    float bottom = displayedTrackThickness / 2;
-    displayedTrackPath.rewind();
-    displayedTrackPath.addRoundRect(
-        new RectF(left, -bottom, right, bottom),
-        displayedCornerRadius,
-        displayedCornerRadius,
-        Path.Direction.CCW);
-    canvas.clipPath(displayedTrackPath);
+    canvas.clipRect(-trackLength / 2, -trackSize / 2, trackLength / 2, trackSize / 2);
+
+    // These are set for the drawing the indicator and track.
+    displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
+    displayedCornerRadius = spec.trackCornerRadius * trackThicknessFraction;
   }
 
   @Override
@@ -170,6 +159,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
     canvas.save();
     // Avoid the indicator being drawn out of the track.
+    canvas.clipPath(displayedTrackPath);
     RectF indicatorBounds =
         new RectF(
             adjustedStartX,
@@ -192,6 +182,15 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     paint.setAntiAlias(true);
     paint.setColor(trackColor);
 
+    float right = trackLength / 2;
+    float left = right - trackLength * totalTrackLengthFraction;
+    float bottom = displayedTrackThickness / 2;
+    displayedTrackPath = new Path();
+    displayedTrackPath.addRoundRect(
+        new RectF(left, -bottom, right, bottom),
+        displayedCornerRadius,
+        displayedCornerRadius,
+        Path.Direction.CCW);
     canvas.drawPath(displayedTrackPath, paint);
   }
 
@@ -209,6 +208,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       paint.setColor(paintColor);
       canvas.save();
       // Avoid the indicator being drawn out of the track.
+      canvas.clipPath(displayedTrackPath);
       Rect trackBounds = canvas.getClipBounds();
       float offset = max(0, displayedTrackThickness - spec.trackStopIndicatorSize);
       RectF stopBounds =
