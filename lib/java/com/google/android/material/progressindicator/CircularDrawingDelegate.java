@@ -25,7 +25,6 @@ import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
@@ -47,17 +46,17 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
   private float totalTrackLengthFraction;
 
   /** Instantiates CircularDrawingDelegate with the current spec. */
-  public CircularDrawingDelegate(@NonNull CircularProgressIndicatorSpec spec) {
+  CircularDrawingDelegate(@NonNull CircularProgressIndicatorSpec spec) {
     super(spec);
   }
 
   @Override
-  public int getPreferredWidth() {
+  int getPreferredWidth() {
     return getSize();
   }
 
   @Override
-  public int getPreferredHeight() {
+  int getPreferredHeight() {
     return getSize();
   }
 
@@ -75,7 +74,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
    * @param isHiding Whether the drawable is currently animating to hide
    */
   @Override
-  public void adjustCanvas(
+  void adjustCanvas(
       @NonNull Canvas canvas,
       @NonNull Rect bounds,
       @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction,
@@ -130,31 +129,19 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     }
   }
 
-  /**
-   * Fills a part of the track with the designated indicator color. The filling part is defined with
-   * two fractions normalized to [0, 1] representing the start degree and the end degree from 0 deg
-   * (top). If start fraction is larger than the end fraction, it will draw the arc across 0 deg.
-   *
-   * @param canvas Canvas to draw.
-   * @param paint Paint used to draw.
-   * @param startFraction A fraction representing where to start the drawing along the track.
-   * @param endFraction A fraction representing where to end the drawing along the track.
-   * @param color The color used to draw the indicator.
-   * @param drawableAlpha The alpha [0, 255] from the caller drawable.
-   */
   @Override
   void fillIndicator(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
-      @FloatRange(from = 0.0, to = 1.0) float startFraction,
-      @FloatRange(from = 0.0, to = 1.0) float endFraction,
-      @ColorInt int color,
+      @NonNull ActiveIndicator activeIndicator,
       @IntRange(from = 0, to = 255) int drawableAlpha) {
+    float startFraction = activeIndicator.startFraction;
+    float endFraction = activeIndicator.endFraction;
     // No need to draw if startFraction and endFraction are same.
     if (startFraction == endFraction) {
       return;
     }
-    color = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
+    int color = MaterialColors.compositeARGBWithAlpha(activeIndicator.color, drawableAlpha);
 
     // Sets up the paint.
     paint.setStyle(Style.STROKE);
@@ -170,8 +157,16 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     startFraction %= 1;
     if (totalTrackLengthFraction < 1 && startFraction + arcFraction > 1) {
       // Breaks the arc at 0 degree for ESCAPE animation.
-      fillIndicator(canvas, paint, startFraction, 1, color, drawableAlpha);
-      fillIndicator(canvas, paint, 1, startFraction + arcFraction, color, drawableAlpha);
+      ActiveIndicator firstPart = new ActiveIndicator();
+      firstPart.startFraction = startFraction;
+      firstPart.endFraction = 1f;
+      firstPart.color = color;
+      fillIndicator(canvas, paint, firstPart, drawableAlpha);
+      ActiveIndicator secondPart = new ActiveIndicator();
+      secondPart.startFraction = 1f;
+      secondPart.endFraction = startFraction + arcFraction;
+      secondPart.color = color;
+      fillIndicator(canvas, paint, secondPart, drawableAlpha);
       return;
     }
     // Scale start and arc fraction for ESCAPE animation.
@@ -206,13 +201,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     }
   }
 
-  /**
-   * Fills the whole track with track color.
-   *
-   * @param canvas Canvas to draw.
-   * @param paint Paint used to draw.
-   * @param drawableAlpha The alpha [0, 255] from the caller drawable.
-   */
   @Override
   void fillTrack(
       @NonNull Canvas canvas,

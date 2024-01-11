@@ -25,6 +25,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.animation.ArgbEvaluatorCompat;
+import com.google.android.material.progressindicator.DrawingDelegate.ActiveIndicator;
 
 /**
  * This is the implementation class for drawing progress indicator in the circular indeterminate
@@ -63,7 +64,7 @@ final class CircularIndeterminateAnimatorDelegate
   AnimationCallback animatorCompleteCallback = null;
 
   public CircularIndeterminateAnimatorDelegate(@NonNull CircularProgressIndicatorSpec spec) {
-    super(/*segmentCount=*/ 1);
+    super(/* indicatorCount= */ 1);
 
     baseSpec = spec;
 
@@ -156,26 +157,31 @@ final class CircularIndeterminateAnimatorDelegate
 
   /** Updates the segment position array based on current playtime. */
   private void updateSegmentPositions(int playtime) {
+    ActiveIndicator activeIndicator = activeIndicators.get(0);
     // Adds constant rotation to segment positions.
-    segmentPositions[0] = CONSTANT_ROTATION_DEGREES * animationFraction + TAIL_DEGREES_OFFSET;
-    segmentPositions[1] = CONSTANT_ROTATION_DEGREES * animationFraction;
+    activeIndicator.startFraction =
+        CONSTANT_ROTATION_DEGREES * animationFraction + TAIL_DEGREES_OFFSET;
+    activeIndicator.endFraction = CONSTANT_ROTATION_DEGREES * animationFraction;
     // Adds cycle specific rotation to segment positions.
     for (int cycleIndex = 0; cycleIndex < TOTAL_CYCLES; cycleIndex++) {
       // While expanding.
       float fraction =
           getFractionInRange(playtime, DELAY_TO_EXPAND_IN_MS[cycleIndex], DURATION_TO_EXPAND_IN_MS);
-      segmentPositions[1] += interpolator.getInterpolation(fraction) * EXTRA_DEGREES_PER_CYCLE;
+      activeIndicator.endFraction +=
+          interpolator.getInterpolation(fraction) * EXTRA_DEGREES_PER_CYCLE;
       // While collapsing.
       fraction =
           getFractionInRange(
               playtime, DELAY_TO_COLLAPSE_IN_MS[cycleIndex], DURATION_TO_COLLAPSE_IN_MS);
-      segmentPositions[0] += interpolator.getInterpolation(fraction) * EXTRA_DEGREES_PER_CYCLE;
+      activeIndicator.startFraction +=
+          interpolator.getInterpolation(fraction) * EXTRA_DEGREES_PER_CYCLE;
     }
     // Closes the gap between head and tail for complete end.
-    segmentPositions[0] += (segmentPositions[1] - segmentPositions[0]) * completeEndFraction;
+    activeIndicator.startFraction +=
+        (activeIndicator.endFraction - activeIndicator.startFraction) * completeEndFraction;
 
-    segmentPositions[0] /= 360;
-    segmentPositions[1] /= 360;
+    activeIndicator.startFraction = activeIndicator.startFraction / 360f;
+    activeIndicator.endFraction = activeIndicator.endFraction / 360f;
   }
 
   /** Updates the segment color array based on current playtime. */
@@ -190,7 +196,7 @@ final class CircularIndeterminateAnimatorDelegate
         int startColor = baseSpec.indicatorColors[startColorIndex];
         int endColor = baseSpec.indicatorColors[endColorIndex];
         float colorFraction = interpolator.getInterpolation(timeFraction);
-        segmentColors[0] =
+        activeIndicators.get(0).color =
             ArgbEvaluatorCompat.getInstance().evaluate(colorFraction, startColor, endColor);
         break;
       }
@@ -200,7 +206,7 @@ final class CircularIndeterminateAnimatorDelegate
   @VisibleForTesting
   void resetPropertiesForNewStart() {
     indicatorColorIndexOffset = 0;
-    segmentColors[0] = baseSpec.indicatorColors[0];
+    activeIndicators.get(0).color = baseSpec.indicatorColors[0];
     completeEndFraction = 0f;
   }
 

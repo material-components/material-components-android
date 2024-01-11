@@ -18,7 +18,6 @@ package com.google.android.material.progressindicator;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
@@ -26,6 +25,7 @@ import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import com.google.android.material.progressindicator.DrawingDelegate.ActiveIndicator;
 
 /** This class draws the graphics for determinate mode. */
 public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
@@ -41,8 +41,9 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   // Animation.
   private final SpringForce springForce;
   private final SpringAnimation springAnimation;
-  // Fraction of displayed indicator in the total width.
-  private float indicatorFraction;
+  // Active indicator for the progress.
+  private final ActiveIndicator activeIndicator;
+  private final ActiveIndicator partialTrack;
   // Whether to skip the spring animation on level change event.
   private boolean skipAnimationOnLevelChange = false;
 
@@ -53,6 +54,9 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     super(context, baseSpec);
 
     setDrawingDelegate(drawingDelegate);
+    activeIndicator = new ActiveIndicator();
+    partialTrack = new ActiveIndicator();
+    partialTrack.endFraction = 1f;
 
     springForce = new SpringForce();
 
@@ -230,28 +234,23 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     drawingDelegate.validateSpecAndAdjustCanvas(
         canvas, getBounds(), getGrowFraction(), isShowing(), isHiding());
 
-    int indicatorColor = baseSpec.indicatorColors[0];
+    activeIndicator.color = baseSpec.indicatorColors[0];
     if (baseSpec.indicatorTrackGapSize > 0) {
-      int trackColor = baseSpec.trackColor;
+      partialTrack.color = baseSpec.trackColor;
       // Draws the full transparent track.
-      baseSpec.trackColor = Color.TRANSPARENT;
-      drawingDelegate.fillTrack(canvas, paint, getAlpha());
-      baseSpec.trackColor = trackColor;
+      drawingDelegate.fillTrack(canvas, paint, /* drawableAlpha= */ 0);
       // Draws the indicator and track.
       int gapSize = baseSpec.indicatorTrackGapSize;
       // TODO: workaround to maintain pixel-perfect compatibility with drawing logic
       //  not using indicatorTrackGapSize.
       //  See https://github.com/material-components/material-components-android/commit/0ce6ae4.
       baseSpec.indicatorTrackGapSize = 0;
-      drawingDelegate.fillIndicator(
-          canvas, paint, 0f, getIndicatorFraction(), indicatorColor, getAlpha());
+      drawingDelegate.fillIndicator(canvas, paint, activeIndicator, getAlpha());
       baseSpec.indicatorTrackGapSize = gapSize;
-      drawingDelegate.fillIndicator(
-          canvas, paint, getIndicatorFraction(), 1f, trackColor, getAlpha());
+      drawingDelegate.fillIndicator(canvas, paint, partialTrack, getAlpha());
     } else {
       drawingDelegate.fillTrack(canvas, paint, getAlpha());
-      drawingDelegate.fillIndicator(
-          canvas, paint, 0f, getIndicatorFraction(), indicatorColor, getAlpha());
+      drawingDelegate.fillIndicator(canvas, paint, activeIndicator, getAlpha());
     }
     canvas.restore();
   }
@@ -259,11 +258,12 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   // ******************* Getters and setters *******************
 
   private float getIndicatorFraction() {
-    return indicatorFraction;
+    return activeIndicator.endFraction;
   }
 
   private void setIndicatorFraction(float indicatorFraction) {
-    this.indicatorFraction = indicatorFraction;
+    activeIndicator.endFraction = indicatorFraction;
+    partialTrack.startFraction = indicatorFraction;
     invalidateSelf();
   }
 
