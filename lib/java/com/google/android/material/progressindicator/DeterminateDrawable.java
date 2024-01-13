@@ -237,8 +237,6 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     activeIndicator.color = baseSpec.indicatorColors[0];
     if (baseSpec.indicatorTrackGapSize > 0) {
       partialTrack.color = baseSpec.trackColor;
-      // Draws the full transparent track.
-      drawingDelegate.fillTrack(canvas, paint, /* drawableAlpha= */ 0);
       // Draws the indicator and track.
       int gapSize = baseSpec.indicatorTrackGapSize;
       // TODO: workaround to maintain pixel-perfect compatibility with drawing logic
