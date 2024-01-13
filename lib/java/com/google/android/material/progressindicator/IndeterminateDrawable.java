@@ -22,7 +22,6 @@ import static com.google.android.material.progressindicator.LinearProgressIndica
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
@@ -209,20 +208,12 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
     drawingDelegate.validateSpecAndAdjustCanvas(
         canvas, getBounds(), getGrowFraction(), isShowing(), isHiding());
 
-    if (initialIndicatorTrackGapSize > 0) {
-      if (drawingDelegate instanceof LinearDrawingDelegate) {
-        ((LinearProgressIndicatorSpec) drawingDelegate.spec).trackStopIndicatorSize = 0;
-      } else if (drawingDelegate instanceof CircularDrawingDelegate) {
-        baseSpec.indicatorTrackGapSize = 0;
-      }
-
-      // Draws the transparent track.
-      int trackColor = baseSpec.trackColor;
-      baseSpec.trackColor = Color.TRANSPARENT;
+    if (initialIndicatorTrackGapSize == 0) {
       drawingDelegate.fillTrack(canvas, paint, getAlpha());
-      baseSpec.trackColor = trackColor;
-    } else {
-      drawingDelegate.fillTrack(canvas, paint, getAlpha());
+    } else if (drawingDelegate instanceof LinearDrawingDelegate) {
+      ((LinearProgressIndicatorSpec) drawingDelegate.spec).trackStopIndicatorSize = 0;
+    } else if (drawingDelegate instanceof CircularDrawingDelegate) {
+      baseSpec.indicatorTrackGapSize = 0;
     }
 
     for (int indicatorIndex = 0;
