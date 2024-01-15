@@ -89,12 +89,9 @@ public class SliderConfigTest {
         new Object[] {
           /* valueFrom = */ 10f,
           /* valueTo = */ 3f,
-          /* stepValue = */ 2f,
+          /* stepValue = */ 0f,
           /* value = */ 10f,
           IllegalStateException.class,
-        },
-        new Object[] {
-          /* valueFrom = */ 0f, /* valueTo = */ 1f, /* stepValue = */ 0, /* value = */ 0f, null,
         },
         new Object[] {
           /* valueFrom = */ 10f,
@@ -102,6 +99,9 @@ public class SliderConfigTest {
           /* stepValue = */ 2f,
           /* value = */ 10f,
           IllegalStateException.class,
+        },
+        new Object[] {
+          /* valueFrom = */ 0f, /* valueTo = */ 1f, /* stepValue = */ 0, /* value = */ 0f, null,
         },
         new Object[] {
           /* valueFrom = */ 0f,
