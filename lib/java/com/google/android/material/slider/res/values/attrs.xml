@@ -70,8 +70,22 @@
     <attr name="tickRadiusActive" format="dimension" />
     <!-- The radius of the inactive tick. Only used when the slider is in discrete mode.-->
     <attr name="tickRadiusInactive" format="dimension" />
-    <!-- Whether to show the tick marks. Only used when the slider is in discrete mode. -->
+    <!-- Whether to show the tick marks. Only used when the slider is in discrete mode.
+         {@deprecated Use tickVisibilityMode instead.} -->
     <attr name="tickVisible" format="boolean" />
+    <!-- Mode to specify the visibility of tick marks. Only used when the slider is in
+         discrete mode. -->
+    <attr name="tickVisibilityMode" format="enum">
+      <!-- All tick marks will be drawn if they are not spaced too densely. Otherwise,
+           the maximum allowed number of tick marks will be drawn.
+           Note that in this case the drawn ticks may not match the actual snap values. -->
+      <enum name="autoLimit" value="0" />
+      <!-- All tick marks will be drawn if they are not spaced too densely. Otherwise,
+           the tick marks will not be drawn. -->
+      <enum name="autoHide" value="1" />
+      <!-- Tick marks will not be drawn. -->
+      <enum name="hidden" value="2" />
+    </attr>
     <!-- The color of the track. -->
     <attr name="trackColor" />
     <!-- The color of active portion of the track. -->
