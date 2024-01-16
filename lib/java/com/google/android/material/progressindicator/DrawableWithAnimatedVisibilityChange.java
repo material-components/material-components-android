@@ -278,7 +278,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       return super.setVisible(visible, DEFAULT_DRAWABLE_RESTART);
     }
 
-    if (animate && animatorInAction.isRunning()) {
+    if (animatorInAction.isRunning()) {
       // Show/hide animation should not be replayed while playing.
       return false;
     }
