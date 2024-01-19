@@ -548,6 +548,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   public void setTrackThickness(@Px int trackThickness) {
     if (spec.trackThickness != trackThickness) {
       spec.trackThickness = trackThickness;
+      spec.trackCornerRadius = min(spec.trackCornerRadius, spec.trackThickness / 2);
       requestLayout();
     }
   }
