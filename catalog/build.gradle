@@ -5,12 +5,12 @@ dependencies {
   // Align kotlin versions
   implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
 
-  api 'com.google.dagger:dagger:2.48'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.48.1'
+  api 'com.google.dagger:dagger:2.50'
+  annotationProcessor 'com.google.dagger:dagger-compiler:2.50'
 
-  api 'com.google.dagger:dagger-android:2.48'
-  api 'com.google.dagger:dagger-android-support:2.48.1'
-  annotationProcessor 'com.google.dagger:dagger-android-processor:2.48.1'
+  api 'com.google.dagger:dagger-android:2.50'
+  api 'com.google.dagger:dagger-android-support:2.50'
+  annotationProcessor 'com.google.dagger:dagger-android-processor:2.50'
 
   api 'androidx.multidex:multidex:2.0.1'
   api 'androidx.constraintlayout:constraintlayout:2.1.0'
