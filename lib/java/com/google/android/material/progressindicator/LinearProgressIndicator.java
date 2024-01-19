@@ -18,6 +18,8 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static java.lang.Math.min;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -179,7 +181,7 @@ public class LinearProgressIndicator
    */
   public void setTrackStopIndicatorSize(@Px int trackStopIndicatorSize) {
     if (spec.trackStopIndicatorSize != trackStopIndicatorSize) {
-      spec.trackStopIndicatorSize = trackStopIndicatorSize;
+      spec.trackStopIndicatorSize = min(trackStopIndicatorSize, spec.trackThickness);
       spec.validateSpec();
       if (getIndeterminateDrawable() != null) {
         getIndeterminateDrawable().setInitialTrackStopIndicatorSize(trackStopIndicatorSize);

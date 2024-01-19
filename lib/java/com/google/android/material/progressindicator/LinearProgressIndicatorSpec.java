@@ -18,6 +18,8 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static java.lang.Math.min;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -91,7 +93,9 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
             R.styleable.LinearProgressIndicator_indicatorDirectionLinear,
             LinearProgressIndicator.INDICATOR_DIRECTION_LEFT_TO_RIGHT);
     trackStopIndicatorSize =
-        a.getDimensionPixelSize(R.styleable.LinearProgressIndicator_trackStopIndicatorSize, 0);
+        min(
+            a.getDimensionPixelSize(R.styleable.LinearProgressIndicator_trackStopIndicatorSize, 0),
+            trackThickness);
     a.recycle();
 
     validateSpec();
