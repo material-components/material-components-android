@@ -37,6 +37,8 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
   private float displayedTrackThickness;
   private float displayedCornerRadius;
   private float adjustedRadius;
+  // For full round ends, the stroke ROUND cap is used to prevent artifacts like (b/319309456).
+  private boolean useStrokeCap;
 
   // This will be used in the ESCAPE hide animation. The start and end fraction in track will be
   // scaled by this fraction with a pivot of 1.0f.
@@ -105,6 +107,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         -outerRadiusWithInset, -outerRadiusWithInset, outerRadiusWithInset, outerRadiusWithInset);
 
     // These are used when drawing the indicator and track.
+    useStrokeCap = spec.trackThickness / 2 <= spec.trackCornerRadius;
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius = spec.trackCornerRadius * trackThicknessFraction;
     adjustedRadius = (spec.indicatorSize - spec.trackThickness) / 2f;
@@ -145,7 +148,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
 
     // Sets up the paint.
     paint.setStyle(Style.STROKE);
-    paint.setStrokeCap(Cap.BUTT);
     paint.setAntiAlias(true);
     paint.setColor(color);
     paint.setStrokeWidth(displayedTrackThickness);
@@ -189,10 +191,14 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
 
     // Draws the indicator arc without rounded corners.
     RectF arcBound = new RectF(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
+    paint.setStrokeCap(useStrokeCap ? Cap.ROUND : Cap.BUTT);
     canvas.drawArc(arcBound, startDegree, arcDegree, false, paint);
 
     // Draws rounded corners if needed.
-    if (displayedCornerRadius > 0 && Math.abs(arcDegree) > 0 && Math.abs(arcDegree) < 360) {
+    if (!useStrokeCap
+        && displayedCornerRadius > 0
+        && Math.abs(arcDegree) > 0
+        && Math.abs(arcDegree) < 360) {
       paint.setStyle(Style.FILL);
       drawRoundedEnd(canvas, paint, displayedTrackThickness, displayedCornerRadius, startDegree);
       drawRoundedEnd(
