@@ -2388,6 +2388,7 @@ abstract class BaseSlider<
         }
 
         if (activeThumbIdx != -1) {
+          thumbIsPressed = true;
           snapTouchPosition();
           updateHaloHotspot();
           // Reset the thumb width.
@@ -2397,8 +2398,16 @@ abstract class BaseSlider<
             setThumbWidth(defaultThumbWidth);
             setThumbTrackGapSize(defaultThumbTrackGapSize);
           }
-          activeThumbIdx = -1;
           onStopTrackingTouch();
+          postDelayed(() -> {
+            thumbIsPressed = false;
+            activeThumbIdx = -1;
+            invalidate();
+            setPressed(thumbIsPressed);
+          }, MotionUtils.resolveThemeDuration(
+              getContext(),
+              LABEL_ANIMATION_EXIT_DURATION_ATTR,
+              DEFAULT_LABEL_ANIMATION_EXIT_DURATION));
         }
         invalidate();
         break;
