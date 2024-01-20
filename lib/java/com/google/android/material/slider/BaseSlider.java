@@ -346,27 +346,30 @@ abstract class BaseSlider<
   private float touchPosition;
   @SeparationUnit private int separationUnit = UNIT_PX;
 
-  @NonNull
-  private final ViewTreeObserver.OnScrollChangedListener onScrollChangedListener =
-      () -> {
-        if (shouldAlwaysShowLabel() && isEnabled()) {
-          Rect contentViewBounds = new Rect();
-          ViewUtils.getContentView(this).getHitRect(contentViewBounds);
-          boolean isSliderVisibleOnScreen = getLocalVisibleRect(contentViewBounds);
-          for (int i = 0; i < labels.size(); i++) {
-            TooltipDrawable label = labels.get(i);
-            // Get associated value for label
-            if (i < values.size()) {
-              positionLabel(label, values.get(i));
-            }
-            if (isSliderVisibleOnScreen) {
-              ViewUtils.getContentViewOverlay(this).add(label);
-            } else {
-              ViewUtils.getContentViewOverlay(this).remove(label);
-            }
-          }
+  private void updateLabel() {
+    if (shouldAlwaysShowLabel() && isEnabled()) {
+      Rect contentViewBounds = new Rect();
+      ViewUtils.getContentView(this).getHitRect(contentViewBounds);
+      boolean isSliderVisibleOnScreen = getLocalVisibleRect(contentViewBounds);
+      for (int i = 0; i < labels.size(); i++) {
+        TooltipDrawable label = labels.get(i);
+        // Get associated value for label
+        if (i < values.size()) {
+          positionLabel(label, values.get(i));
         }
-      };
+        if (isSliderVisibleOnScreen) {
+          ViewUtils.getContentViewOverlay(this).add(label);
+        } else {
+          ViewUtils.getContentViewOverlay(this).remove(label);
+        }
+      }
+    }
+  }
+
+  @NonNull
+  private final ViewTreeObserver.OnScrollChangedListener onScrollChangedListener = this::updateLabel;
+  @NonNull
+  private final ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = this::updateLabel;
 
   /**
    * Determines the behavior of the label which can be any of the following.
@@ -1897,6 +1900,7 @@ abstract class BaseSlider<
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
+    getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
     // The label is attached on the Overlay relative to the content.
     for (TooltipDrawable label : labels) {
       attachLabelToContentView(label);
@@ -1918,6 +1922,7 @@ abstract class BaseSlider<
       detachLabelFromContentView(label);
     }
     getViewTreeObserver().removeOnScrollChangedListener(onScrollChangedListener);
+    getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
     super.onDetachedFromWindow();
   }
 
