@@ -306,13 +306,13 @@ optionally specify an `OnAppliedCallback` function, which will be called after
 dynamic colors have been applied:
 
 ```java
-DynamicColorsOptions dynamicColorOptions =
+DynamicColorsOptions dynamicColorsOptions =
     new DynamicColorsOptions.Builder()
         .setThemeOverlay(themeOverlay)
         .setPrecondition(precondition)
         .setOnAppliedCallback(onAppliedCallback)
         .build()
-DynamicColors.applyToActivitiesIfAvailable(application, dynamicColorOptions);
+DynamicColors.applyToActivitiesIfAvailable(application, dynamicColorsOptions);
 ```
 
 ##### Apply dynamic colors to a specific activity using `DynamicColorsOptions`
@@ -321,13 +321,13 @@ You can also apply dynamic colors to a specific activity in the app by passing
 in the specific activity and a `DynamicColorsOptions` object:
 
 ```java
-DynamicColorsOptions dynamicColorOptions =
+DynamicColorsOptions dynamicColorsOptions =
     new DynamicColorsOptions.Builder()
         .setThemeOverlay(themeOverlay)
         .setPrecondition(precondition)
         .setOnAppliedCallback(onAppliedCallback)
         .build()
-DynamicColors.applyToActivityIfAvailable(activity, dynamicColorOptions);
+DynamicColors.applyToActivityIfAvailable(activity, dynamicColorsOptions);
 ```
 
 ##### Apply dynamic colors to a specific fragment/view
@@ -599,7 +599,7 @@ suggested default when applying dynamic colors, is to harmonize M3 Error colors
 in the callback when constructing `DynamicColorsOptions`:
 
 ```java
-DynamicColorsOptions dynamicColorOptions =
+DynamicColorsOptions dynamicColorsOptions =
     new DynamicColorsOptions.Builder(activity)
         ...
         .setOnAppliedCallback(
@@ -608,7 +608,7 @@ DynamicColorsOptions dynamicColorOptions =
                     activity,
                     HarmonizedColorsOptions.createMaterialDefaults()))
         .build()
-DynamicColors.applyToActivityIfAvailable(activity, dynamicColorOptions);
+DynamicColors.applyToActivityIfAvailable(activity, dynamicColorsOptions);
 ```
 
 For color ressources harmonization in a fragment/view, you would use the context
