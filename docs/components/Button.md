@@ -876,6 +876,8 @@ In the layout:
     android:id="@+id/iconButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:contentDescription="@string/standard_icon_btn_desc"
+    app:icon="@drawable/ic_icon_24dp"
 />
 ```
 
@@ -901,6 +903,8 @@ In the layout:
     android:id="@+id/iconButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:contentDescription="@string/filled_icon_btn_desc"
+    app:icon="@drawable/ic_icon_24dp"
 />
 ```
 
@@ -918,6 +922,8 @@ In the layout:
     android:id="@+id/iconButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:contentDescription="@string/filled_tonal_icon_btn_desc"
+    app:icon="@drawable/ic_icon_24dp"
 />
 ```
 
@@ -935,6 +941,8 @@ In the layout:
     android:id="@+id/iconButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:contentDescription="@string/outlined_icon_btn_desc"
+    app:icon="@drawable/ic_icon_24dp"
 />
 ```
 
