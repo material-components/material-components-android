@@ -330,7 +330,10 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
         // Take into consideration any translationY added to the view.
         int bottom = tempRect.bottom + Math.round(child.getTranslationY());
         int top = bottom - thickness;
+        int alpha = Math.round(child.getAlpha() * 255);
+        
         dividerDrawable.setBounds(left, top, right, bottom);
+        dividerDrawable.setAlpha(alpha);
         dividerDrawable.draw(canvas);
       }
     }
@@ -375,8 +378,10 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
           right = tempRect.right + translationX;
           left = right - thickness;
         }
+        int alpha = Math.round(child.getAlpha() * 255);
 
         dividerDrawable.setBounds(left, top, right, bottom);
+        dividerDrawable.setAlpha(alpha);
         dividerDrawable.draw(canvas);
       }
     }
