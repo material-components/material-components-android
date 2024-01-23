@@ -2678,12 +2678,10 @@ public class TabLayout extends HorizontalScrollView {
     @Override
     public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
       super.onInitializeAccessibilityNodeInfo(info);
-      if (badgeDrawable != null && badgeDrawable.isVisible()) {
-        CharSequence customContentDescription = getContentDescription();
-        info.setContentDescription(
-            customContentDescription + ", " + badgeDrawable.getContentDescription());
-      }
       AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+      if (badgeDrawable != null && badgeDrawable.isVisible()) {
+        infoCompat.setContentDescription(badgeDrawable.getContentDescription());
+      }
       infoCompat.setCollectionItemInfo(
           CollectionItemInfoCompat.obtain(
               /* rowIndex= */ 0,
