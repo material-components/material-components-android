@@ -529,7 +529,7 @@ public class TabLayout extends HorizontalScrollView {
 
   android.graphics.PorterDuff.Mode tabIconTintMode;
   float tabTextSize;
-  //float selectedTabTextSize;
+// float selectedTabTextSize;
   float tabTextMultiLineSize;
 
   final int tabBackgroundResId;
@@ -686,7 +686,7 @@ public class TabLayout extends HorizontalScrollView {
     // Text colors/sizes come from the text appearance first
     final TypedArray ta =
         context.obtainStyledAttributes(
-            tabTextAppearance, R.styleable.TextAppearance);
+            tabTextAppearance, androidx.appcompat.R.styleable.TextAppearance);
     try {
       //Sesl
       mSubTabTextSize =
