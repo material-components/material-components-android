@@ -16,12 +16,11 @@ access to destinations in your app.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using navigation drawers](#using-navigation-drawers)
 *   [Anatomy](#anatomy)
 *   [Standard navigation drawer](#standard-navigation-drawer)
 *   [Modal navigation drawer](#modal-navigation-drawer)
-*   [Bottom navigation drawer](#bottom-navigation-drawer)
 *   [Predictive Back](#predictive-back)
 *   [Theming](#theming)
 
@@ -344,10 +343,9 @@ Default style theme attribute: `?attr/drawerLayoutStyle`
 
 ### Types
 
-There are three types of navigation drawers: 1\.
-[Standard navigation drawer](#standard-navigation-drawer), 2\.
-[Modal navigation drawer](#modal-navigation-drawer), 3\.
-[Bottom navigation drawer](#bottom-navigation-drawer)
+There are two types of navigation drawers:
+- [Standard navigation drawer](#standard-navigation-drawer)
+- [Modal navigation drawer](#modal-navigation-drawer)
 
 ## Standard navigation drawer
 

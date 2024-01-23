@@ -16,7 +16,7 @@ and make choices, with a single tap.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using buttons](#using-buttons)
 *   [Elevated button](#elevated-button)
 *   [Filled button](#filled-button)

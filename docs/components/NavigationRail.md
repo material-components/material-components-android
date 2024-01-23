@@ -16,7 +16,7 @@ access to primary destinations in your app on tablet and desktop screens.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using navigation rail](#using-navigation-rail)
 *   [Navigation rail example](#navigation-rail-example)
 *   [Theming](#theming-a-navigation-rail)

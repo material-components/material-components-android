@@ -15,7 +15,7 @@ path: /catalog/time-pickers/
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using time pickers](#using-time-pickers)
 *   [Time pickers](#time-pickers)
 *   [Theming time pickers](#theming-time-pickers)
