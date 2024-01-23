@@ -18,7 +18,7 @@ button.](assets/snackbar/snackbar_hero.png)
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using snackbars](#using-snackbars)
 *   [Snackbar](#snackbar)
 *   [Theming snackbars](#theming-snackbars)

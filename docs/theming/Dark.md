@@ -22,7 +22,7 @@ Starting with [Android Q][dark-theme-dac-docs], users are now able to switch
 their device to a dark theme via a new system setting, which applies to both the
 Android system UI and apps running on the device.
 
-## Design & API documentation
+## Design & API Documentation
 
 -   [Material Design guidelines: Dark Theme][dark-theme-mdc-spec]
 -   [Android Q Dark Theme Documentation][dark-theme-dac-docs]

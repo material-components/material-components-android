@@ -23,7 +23,7 @@ Use radio buttons to:
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using radio buttons](#using-radio-buttons)
 *   [Radio button](#radio-button)
 *   [Theming radio buttons](#theming-radio-buttons)

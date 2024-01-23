@@ -16,7 +16,7 @@ containing supplementary content that are anchored to the bottom of the screen.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using bottom sheets](#using-bottom-sheets)
 *   [Standard bottom sheet](#standard-bottom-sheet)
 *   [Modal bottom sheet](#modal-bottom-sheet)

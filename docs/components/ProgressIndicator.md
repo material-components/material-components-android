@@ -16,7 +16,7 @@ express an unspecified wait time or display the length of a process.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using progress indicators](#using-progress-indicators)
 *   [Linear progress indicators](#linear-progress-indicators)
 *   [Circular progress indicators](#circular-progress-indicators)

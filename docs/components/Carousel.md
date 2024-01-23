@@ -15,7 +15,7 @@ Carousels contain a collection of items that can move into or out of view
 
 **Contents**
 
-*   [Design & API documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using carousel](#using-carousel)
 *   [Multi-browse strategy](#multi-browse-strategy)
 *   [Hero strategy](#hero-strategy)

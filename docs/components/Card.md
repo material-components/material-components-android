@@ -16,7 +16,7 @@ a single subject.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using cards](#using-cards)
 *   [Card](#card)
 *   [Theming](#theming-cards)

@@ -16,7 +16,7 @@ edit text.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using text fields](#using-text-fields)
 *   [Filled text field](#filled-text-field)
 *   [Outlined text field](#outlined-text-field)

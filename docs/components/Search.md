@@ -16,7 +16,7 @@ surface that allows product-specific branding and additional navigation icons.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using search components](#using-search-components)
 *   [Search Bar](#search-bar)
 *   [Search View](#search-view)
@@ -138,8 +138,7 @@ the scrolling view (usually a `RecyclerView` or `NestedScrollView`) in the
 scrolling view. This scrolling behavior makes the `AppBarLayout` transparent and
 not elevated so there are no undesirable shadows. It also adjusts the scrolling
 child so that the `SearchBar` will overlap the rest of your content and appear
-to be floating above it. See the [XML usage](#usage) section below for an
-example of how to set up this behavior.
+to be floating above it.
 
 Additionally, if your app is going edge-to-edge, consider adding
 `app:statusBarForeground="?attr/colorSurface"` to your `AppBarLayout` in order

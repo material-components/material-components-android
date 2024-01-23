@@ -17,7 +17,7 @@ See [Bottom Sheet documentation](BottomSheet.md) for documentation about
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using side sheets](#using-side-sheets)
 *   [Standard side sheet](#standard-side-sheet)
 *   [Modal side sheet](#modal-side-sheet)

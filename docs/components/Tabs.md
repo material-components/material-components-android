@@ -16,7 +16,7 @@ screens, data sets, and other interactions.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using tabs](#using-tabs)
 *   [Fixed tabs](#fixed-tabs)
 *   [Scrollable tabs](#scrollable-tabs)

@@ -16,7 +16,7 @@ date or range of dates.
 
 **Contents**
 
-*   [Design & API documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using date pickers](#using-date-pickers)
 *   [Calendar date picker](#calendar-date-picker)
 *   [Theming date pickers](#theming-date-pickers)

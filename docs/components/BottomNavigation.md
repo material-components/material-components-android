@@ -16,7 +16,7 @@ allow movement between primary destinations in an app.
 
 **Contents**
 
-*   [Design & API documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using bottom navigation](#using-bottom-navigation)
 *   [Bottom navigation bar](#bottom-navigation-bar)
 *   [Theming](#theming-a-bottom-navigation-bar)

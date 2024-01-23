@@ -16,7 +16,7 @@ represent an input, attribute, or action.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using chips](#using-chips)
 *   [Assist chip](#assist-chip)
 *   [Filter chip](#filter-chip)

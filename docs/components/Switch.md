@@ -21,7 +21,7 @@ as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using switches](#using-switches)
 *   [Switch](#switch)
 *   [Theming switches](#theming-switches)

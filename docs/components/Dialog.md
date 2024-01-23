@@ -16,7 +16,7 @@ can contain critical information, require decisions, or involve multiple tasks.
 
 **Contents**
 
-*   [Design & API documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using dialogs](#using-dialogs)
 *   [Basic dialog](#basic-dialog)
 *   [Full-screen dialog](#full-screen-dialog)
