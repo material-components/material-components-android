@@ -109,7 +109,8 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     // These are used when drawing the indicator and track.
     useStrokeCap = spec.trackThickness / 2 <= spec.trackCornerRadius;
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
-    displayedCornerRadius = spec.trackCornerRadius * trackThicknessFraction;
+    displayedCornerRadius =
+        min(spec.trackThickness / 2, spec.trackCornerRadius) * trackThicknessFraction;
     adjustedRadius = (spec.indicatorSize - spec.trackThickness) / 2f;
     if ((isShowing && spec.showAnimationBehavior == CircularProgressIndicator.SHOW_INWARD)
         || (isHiding && spec.hideAnimationBehavior == CircularProgressIndicator.HIDE_OUTWARD)) {
