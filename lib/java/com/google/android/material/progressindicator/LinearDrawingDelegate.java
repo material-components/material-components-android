@@ -113,7 +113,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
     // These are set for the drawing the indicator and track.
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
-    displayedCornerRadius = spec.trackCornerRadius * trackThicknessFraction;
+    displayedCornerRadius =
+        min(spec.trackThickness / 2, spec.trackCornerRadius) * trackThicknessFraction;
 
     // Clips all drawing to the track area, so it doesn't draw outside of its bounds (which can
     // happen in certain configurations of clipToPadding and clipChildren)
