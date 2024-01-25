@@ -496,6 +496,8 @@ In the layout:
 
             <com.google.android.material.appbar.MaterialToolbar
                 ...
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -533,6 +535,8 @@ In the layout:
             android:layout_height="?attr/collapsingToolbarLayoutLargeSize">
 
             <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 ...
                 android:elevation="0dp" />
 
@@ -580,6 +584,8 @@ In the layout:
                 android:contentDescription="@string/content_description_media" />
 
             <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 ...
                 android:background="@android:color/transparent" />
 
@@ -623,6 +629,7 @@ In the layout:
 
             <com.google.android.material.appbar.MaterialToolbar
                 ...
+                android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 />
 
