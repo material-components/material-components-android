@@ -27,6 +27,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.util.Property;
 import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -75,6 +76,8 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   private float growFraction;
 
   final Paint paint = new Paint();
+
+  @IntRange(from = 0, to = 255)
   private int totalAlpha;
 
   // ******************* Constructor *******************
@@ -324,7 +327,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   // ******************* Getters and setters *******************
 
   @Override
-  public void setAlpha(int alpha) {
+  public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
     totalAlpha = alpha;
     invalidateSelf();
   }

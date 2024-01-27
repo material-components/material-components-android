@@ -23,6 +23,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Px;
 
 /** A delegate abstract class for drawing the graphics in different drawable classes. */
 abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
@@ -78,16 +79,24 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
       @IntRange(from = 0, to = 255) int drawableAlpha);
 
   /**
-   * Fills the whole track with track color.
+   * Fills a part of the track with specified parameters.
    *
    * @param canvas Canvas to draw.
    * @param paint Paint used to draw.
+   * @param startFraction A fraction representing where to start the drawing along the track.
+   * @param endFraction A fraction representing where to end the drawing along the track.
+   * @param color The color used to draw the part without applying the alpha from drawable.
    * @param drawableAlpha The alpha [0, 255] from the caller drawable.
+   * @param gapSize The size of the gap applied on the ends of the drawn part.
    */
   abstract void fillTrack(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
-      @IntRange(from = 0, to = 255) int drawableAlpha);
+      @FloatRange(from = 0.0, to = 1.0) float startFraction,
+      @FloatRange(from = 0.0, to = 1.0) float endFraction,
+      @ColorInt int color,
+      @IntRange(from = 0, to = 255) int drawableAlpha,
+      @Px int gapSize);
 
   /**
    * Draws the stop indicator on the track. Only implemented in linear type.
@@ -124,5 +133,10 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
 
     // The color of the indicator without applying the drawable's alpha.
     @ColorInt int color;
+
+    // Additional gap size around active indicator. Usually we don't need to consider gaps around
+    // active indicator. But for linear contiguous indeterminate mode, the indicators are connecting
+    // to each other. Gaps are needed in this case.
+    @Px int gapSize;
   }
 }

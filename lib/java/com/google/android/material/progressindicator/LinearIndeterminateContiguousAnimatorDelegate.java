@@ -146,6 +146,9 @@ final class LinearIndeterminateContiguousAnimatorDelegate
     newIndicatorColorIndex = 1;
     for (ActiveIndicator indicator : activeIndicators) {
       indicator.color = baseSpec.indicatorColors[0];
+      // No track is drawn in this type of animation. Half gap is used to maintain the gap between
+      // active indicators.
+      indicator.gapSize = baseSpec.indicatorTrackGapSize / 2;
     }
   }
 
