@@ -196,15 +196,6 @@ public class CircularProgressIndicator
     invalidate();
   }
 
-  @Override
-  public synchronized void setIndeterminate(boolean indeterminate) {
-    super.setIndeterminate(indeterminate);
-
-    if (!indeterminate && getIndeterminateDrawable() != null) {
-      setIndicatorTrackGapSize(getIndeterminateDrawable().initialIndicatorTrackGapSize);
-    }
-  }
-
   // **************** Interface ****************
 
   /** @hide */

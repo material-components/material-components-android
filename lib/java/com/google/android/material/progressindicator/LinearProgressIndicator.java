@@ -183,9 +183,6 @@ public class LinearProgressIndicator
     if (spec.trackStopIndicatorSize != trackStopIndicatorSize) {
       spec.trackStopIndicatorSize = min(trackStopIndicatorSize, spec.trackThickness);
       spec.validateSpec();
-      if (getIndeterminateDrawable() != null) {
-        getIndeterminateDrawable().setInitialTrackStopIndicatorSize(trackStopIndicatorSize);
-      }
       invalidate();
     }
   }
@@ -281,15 +278,6 @@ public class LinearProgressIndicator
       return;
     }
     super.setProgressCompat(progress, animated);
-  }
-
-  @Override
-  public synchronized void setIndeterminate(boolean indeterminate) {
-    super.setIndeterminate(indeterminate);
-
-    if (!indeterminate && getIndeterminateDrawable() != null) {
-      setTrackStopIndicatorSize(getIndeterminateDrawable().initialTrackStopIndicatorSize);
-    }
   }
 
   // **************** Interface ****************
