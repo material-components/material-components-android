@@ -61,8 +61,6 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
     CircularProgressIndicator circularIndicator = view.findViewById(R.id.circular_indicator);
     Slider progressSlider = view.findViewById(R.id.progress_slider);
     MaterialSwitch determinateSwitch = view.findViewById(R.id.determinate_mode_switch);
-    Slider gapSlider = view.findViewById(R.id.gapSlider);
-    Slider stopSlider = view.findViewById(R.id.stopSlider);
 
     progressSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
@@ -113,6 +111,7 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
           }
         });
 
+    Slider gapSlider = view.findViewById(R.id.gapSlider);
     gapSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
           int newGapSize = (int) (value * pixelsInDp);
@@ -124,14 +123,6 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
           }
         });
 
-    stopSlider.addOnChangeListener(
-        (slider, value, fromUser) -> {
-          int newStopSize = (int) (value * pixelsInDp);
-          if (linearIndicator.getTrackStopIndicatorSize() != newStopSize) {
-            linearIndicator.setTrackStopIndicatorSize(newStopSize);
-          }
-        });
-
     MaterialSwitch reverseSwitch = view.findViewById(R.id.reverseSwitch);
     reverseSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
@@ -139,6 +130,15 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
               isChecked ? INDICATOR_DIRECTION_RIGHT_TO_LEFT : INDICATOR_DIRECTION_LEFT_TO_RIGHT);
           circularIndicator.setIndicatorDirection(
               isChecked ? INDICATOR_DIRECTION_COUNTERCLOCKWISE : INDICATOR_DIRECTION_CLOCKWISE);
+        });
+
+    Slider linearStopIndicatorSlider = view.findViewById(R.id.linearStopIndicatorSizeSlider);
+    linearStopIndicatorSlider.addOnChangeListener(
+        (slider, value, fromUser) -> {
+          int newStopIndicatorSize = (int) (value * pixelsInDp);
+          if (linearIndicator.getTrackStopIndicatorSize() != newStopIndicatorSize) {
+            linearIndicator.setTrackStopIndicatorSize(newStopIndicatorSize);
+          }
         });
 
     Slider circularSizeSlider = view.findViewById(R.id.circularSizeSlider);
