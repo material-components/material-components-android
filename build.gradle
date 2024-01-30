@@ -2,9 +2,11 @@ buildscript {
   repositories {
     google()
     mavenCentral()
+    mavenLocal()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:7.4.2'
+    //needs to be compatible with sesl.androidx
+    classpath 'com.android.tools.build:gradle:8.1.2'
   }
 }
 
@@ -24,22 +26,22 @@ ext {
   androidXVersions = [
     activity                     : '1.8.0',
     annotation                   : '1.2.0',
-    appCompat                    : '1.6.1',
+    appCompat                    : '1.7.0-alpha03+1.0.28-sesl6+rev0',
     cardView                     : '1.0.0',
     constraintlayout             : '2.0.1',
-    coordinatorlayout            : '1.1.0',
-    core                         : '1.6.0',
-    drawerlayout                 : '1.1.1',
+    coordinatorlayout            : '1.3.0-alpha02+1.0.0-sesl6+rev0',
+    core                         : '1.13.0-alpha04+1.0.7-sesl6+rev0',
+    drawerlayout                 : '1.2.0+1.0.1-sesl6+rev0',
     experimental                 : '1.0.0',
-    fragment                     : '1.2.5',
+    fragment                     : '1.7.0-alpha09+1.0.0-sesl6+rev0',
     lifecycle                    : '2.0.0',
-    recyclerView                 : '1.0.0',
+    recyclerView                 : '1.4.0-alpha01+1.0.13-sesl6+rev0',
     recyclerViewSelection        : '1.0.0',
     resourceInspectionAnnotation : '1.0.1',
     resourceInspectionProcessor  : '1.0.1',
     transition                   : '1.5.0-alpha04',
     vectorDrawable               : '1.1.0',
-    viewpager2                   : '1.0.0',
+    viewpager2                   : '1.1.0-beta02+1.0.0-sesl6+rev0',
     dynamicanimation             : '1.0.0',
   ]
 
@@ -58,7 +60,7 @@ ext {
     ? project.property('mavenRepoUrl') : '/tmp/myRepo/')
 
   // Current version of the library (could be in-development/unreleased).
-  mdcLibraryVersion = '1.12.0-alpha03'
+  mdcLibraryVersion = '1.12.0-alpha03+1.0.18-sesl6+rev0'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
 }
@@ -92,25 +94,25 @@ def compatibility(name) {
     case "annotation":
       return "androidx.annotation:annotation:${androidXVersions.annotation}"
     case "appcompat":
-      return "androidx.appcompat:appcompat:${androidXVersions.appCompat}"
+      return "sesl.androidx.appcompat:appcompat:${androidXVersions.appCompat}"
     case "cardview":
       return "androidx.cardview:cardview:${androidXVersions.cardView}"
     case "constraintlayout":
       return "androidx.constraintlayout:constraintlayout:${androidXVersions.constraintlayout}"
     case "coordinatorlayout":
-      return "androidx.coordinatorlayout:coordinatorlayout:${androidXVersions.coordinatorlayout}"
+      return "sesl.androidx.coordinatorlayout:coordinatorlayout:${androidXVersions.coordinatorlayout}"
     case "core":
-      return "androidx.core:core:${androidXVersions.core}"
+      return "sesl.androidx.core:core:${androidXVersions.core}"
     case "drawerlayout":
-      return "androidx.drawerlayout:drawerlayout:${androidXVersions.drawerlayout}"
+      return "sesl.androidx.drawerlayout:drawerlayout:${androidXVersions.drawerlayout}"
     case "dynamicanimation":
       return "androidx.dynamicanimation:dynamicanimation:${androidXVersions.dynamicanimation}"
     case "fragment":
-      return "androidx.fragment:fragment:${androidXVersions.fragment}"
+      return "sesl.androidx.fragment:fragment:${androidXVersions.fragment}"
     case "lifecycleRuntime":
       return "androidx.lifecycle:lifecycle-runtime:${androidXVersions.lifecycle}"
     case "recyclerview":
-      return "androidx.recyclerview:recyclerview:${androidXVersions.recyclerView}"
+      return "sesl.androidx.recyclerview:recyclerview:${androidXVersions.recyclerView}"
     case "transition":
       return "androidx.transition:transition:${androidXVersions.transition}"
     case "vectordrawable":
@@ -122,7 +124,7 @@ def compatibility(name) {
     case "resourceInspectionProcessor":
       return "androidx.resourceinspection:resourceinspection-processor:${androidXVersions.resourceInspectionProcessor}"
     case "viewpager2":
-      return "androidx.viewpager2:viewpager2:${androidXVersions.viewpager2}"
+      return "sesl.androidx.viewpager2:viewpager2:${androidXVersions.viewpager2}"
     case "experimental":
       return "androidx.annotation:annotation-experimental:${androidXVersions.experimental}"
     default:
@@ -168,7 +170,7 @@ subprojects {
 
 subprojects {
   version = rootProject.ext.mdcLibraryVersion
-  group = 'com.google.android.material'
+  group = 'sesl.com.google.android.material'
 
   // Disable strict dependency resolution version constraints for test projects
   if (project.name.contains("tests")) {
@@ -216,6 +218,7 @@ subprojects {
         }
 
         if (isAndroidLibrary) {
+          namespace = "com.google.android.material"
           def JAVA_RESOURCES_TEMP_DIR = "$buildDir/javaResources"
 
           task writeVersionFile() {
@@ -231,6 +234,13 @@ subprojects {
           }
 
           project.android.sourceSets.main.resources.srcDir JAVA_RESOURCES_TEMP_DIR
+
+          publishing {
+            singleVariant("release"){
+              withSourcesJar()
+              withJavadocJar()
+            }
+          }
         }
       }
 

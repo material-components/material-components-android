@@ -27,16 +27,16 @@ dependencies {
   annotationProcessor compatibility("resourceInspectionProcessor")
 
   // Align kotlin versions
-  implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
+  implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.9.22"))
 
   implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
 
-  testImplementation "androidx.test:core:${testRunnerVersion}"
-  testImplementation "androidx.test:runner:${testRunnerVersion}"
-  testImplementation "junit:junit:4.13.2"
-  testImplementation "com.google.truth:truth:${truthVersion}"
-  testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
-  testImplementation "org.robolectric:robolectric:${robolectricVersion}"
+//  testImplementation "androidx.test:core:${testRunnerVersion}"
+//  testImplementation "androidx.test:runner:${testRunnerVersion}"
+//  testImplementation "junit:junit:4.13.2"
+//  testImplementation "com.google.truth:truth:${truthVersion}"
+//  testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
+//  testImplementation "org.robolectric:robolectric:${robolectricVersion}"
 }
 
 def srcDirs = [
@@ -122,6 +122,7 @@ android {
   defaultConfig {
     minSdkVersion 19
   }
+
 }
 
 task generateJavadocs(type: Javadoc) {
@@ -267,21 +268,24 @@ afterEvaluate {
 
     publications {
       release(MavenPublication) {
-        from components.release
+        afterEvaluate {
+          from components.release
+        }
 
-        artifact androidSourcesJar
+        //artifact androidSourcesJar
 
-        groupId = 'com.google.android.material'
+        groupId = 'sesl.com.google.android.material'
         artifactId = 'material'
         version project.version
         pom {
-          name = 'Material Components for Android'
-          description = 'Material Components for Android is a static library ' +
+          name = 'SESL Material Components for Android'
+          description = 'SESL variant  of Material Components for Android library. ' +
+            'Material Components for Android is a static library ' +
             'that you can add to your Android application in order to use ' +
             'APIs that provide implementations of the Material Design specification. ' +
             'Compatible on devices running API 14 or later.'
-          url = 'https://github.com/material-components/material-components-android'
-          inceptionYear = '2015'
+          url = 'https://github.com/tribalfs/sesl-material-components-android'
+          inceptionYear = '2024'
           licenses {
             license {
               name = 'The Apache Software License, Version 2.0'
@@ -291,15 +295,24 @@ afterEvaluate {
           }
           developers {
             developer {
-              name = 'The Android Open Source Project'
+              name = 'Tribalfs'
             }
           }
           scm {
-            connection = 'scm:git:https://github.com/material-components/material-components-android.git'
-            url = 'https://github.com/material-components/material-components-android'
+            connection = 'scm:git:https://github.com/tribalfs/sesl-material-components-android.git'
+            url = 'https://github.com/tribalfs/sesl-material-components-android'
           }
         }
       }
     }
   }
+}
+
+configurations.all {
+  exclude group:"androidx.appcompat", module:"appcompat"
+  exclude group:"androidx.core",  module:"core"
+  exclude group:"androidx.core",  module:"core-ktx"
+  exclude group:"androidx.customview",  module:"customview"
+  exclude group:"androidx.fragment", module:"fragment"
+  exclude group:"androidx.coordinatorlayout",  module:"coordinatorlayout"
 }
