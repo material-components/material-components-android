@@ -14,7 +14,10 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
+
+<!--SESL Variant-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Design.TabLayout" parent="Base.Widget.Design.TabLayout">
     <item name="tabGravity">fill</item>
@@ -25,48 +28,80 @@
   <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
     <item name="android:background">@null</item>
     <item name="tabIconTint">@null</item>
-    <item name="tabMaxWidth">@dimen/design_tab_max_width</item>
+    <item name="tabMaxWidth">@dimen/sesl_tab_max_width</item><!--sesl-->
     <item name="tabIndicatorAnimationDuration">@integer/design_tab_indicator_anim_duration_ms</item>
-    <item name="tabIndicatorColor">?attr/colorAccent</item>
+    <item name="tabIndicatorColor">@color/sesl_tablayout_selected_indicator_color_dark</item><!--sesl-->
     <item name="tabIndicatorGravity">bottom</item>
     <item name="tabIndicatorAnimationMode">linear</item>
-    <item name="tabIndicator">@drawable/mtrl_tabs_default_indicator</item>
-    <item name="tabPaddingStart">12dp</item>
-    <item name="tabPaddingEnd">12dp</item>
+    <item name="tabIndicator">@drawable/sesl_tabs_default_indicator</item><!--sesl-->
+    <item name="tabPaddingStart">10dp<!--sesl--></item>
+    <item name="tabPaddingEnd">10dp<!--sesl--></item>
     <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
     <item name="tabTextColor">@null</item>
-    <item name="tabRippleColor">?attr/colorControlHighlight</item>
+    <item name="tabRippleColor">@null<!--sesl--></item>
     <item name="tabUnboundedRipple">false</item>
+    <item name="tabIndicatorHeight">2dp</item><!--sesl-->
+    <item name="tabBackground">@null</item><!--sesl-->
+    <item name="tabPaddingTop">0dp</item><!--sesl-->
+    <item name="tabPaddingBottom">0dp</item><!--sesl-->
+    <item name="seslTabSubTextAppearance">@style/TextAppearance.Design.Tab.SubText</item><!--sesl-->
+    <item name="tabSelectedTextColor">@color/sesl_tablayout_selected_text_color_dark</item><!--sesl-->
   </style>
 
   <style name="TextAppearance.Design.Tab" parent="TextAppearance.AppCompat.Button">
-    <item name="android:textSize">@dimen/design_tab_text_size</item>
-    <item name="android:textColor">@color/mtrl_tabs_legacy_text_color_selector</item>
-    <item name="textAllCaps">true</item>
+    <item name="android:textSize">@dimen/sesl_tab_text_size<!--sesl--></item>
+    <item name="android:textColor">@color/sesl_tablayout_text_color_dark<!--sesl--></item>
+    <item name="textAllCaps">false<!--sesl--></item>
+    <item name="android:fontFamily">sec</item><!--sesl-->
+    <item name="android:textFontWeight" tools:targetApi="p">600</item><!--sesl-->
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout" parent="Widget.Design.TabLayout">
     <item name="enforceMaterialTheme">true</item>
     <item name="enforceTextAppearance">true</item>
     <item name="android:background">?attr/colorSurface</item>
-    <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
+    <item name="tabIconTint">@color/sesl_tabs_icon_color_selector<!--sesl--></item>
     <item name="tabIndicatorAnimationDuration">@integer/mtrl_tab_indicator_anim_duration_ms</item>
     <item name="tabIndicatorColor">?attr/colorPrimary</item>
     <item name="tabTextAppearance">?attr/textAppearanceButton</item>
-    <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector</item>
-    <item name="tabRippleColor">@color/mtrl_tabs_ripple_color</item>
+    <item name="tabTextColor">@color/sesl_tabs_icon_color_selector<!--sesl--></item>
+    <item name="tabRippleColor">@color/sesl_tabs_ripple_color<!--sesl--></item>
     <item name="tabUnboundedRipple">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout.Colored">
     <item name="android:background">?attr/colorPrimary</item>
-    <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector_colored</item>
+    <item name="tabIconTint">@color/sesl_tabs_icon_color_selector_colored</item>
     <item name="tabIndicatorColor">?attr/colorOnPrimary</item>
-    <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_colored</item>
-    <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
+    <item name="tabTextColor">@color/sesl_tabs_icon_color_selector_colored</item>
+    <item name="tabRippleColor">@color/sesl_tabs_colored_ripple_color</item>
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout.PrimarySurface" parent="Widget.MaterialComponents.TabLayout.Colored"/>
+
+  <!--Sesl-->
+  <style name="Widget.Design.TabLayout.Light" parent="Widget.Design.TabLayout">
+    <item name="tabIndicatorColor">@color/sesl_tablayout_selected_indicator_color</item>
+    <item name="tabSelectedTextColor">@color/sesl_tablayout_selected_text_color</item>
+    <item name="tabTextAppearance">@style/TextAppearance.Design.Tab.Light</item>
+    <item name="seslTabSubTextAppearance">@style/TextAppearance.Design.Tab.SubText.Light</item>
+  </style>
+
+  <style name="TextAppearance.Design.Tab.Light" parent="@style/TextAppearance.Design.Tab">
+    <item name="android:textColor">@color/sesl_tablayout_text_color</item>
+  </style>
+
+  <style name="TextAppearance.Design.Tab.SubText" parent="@style/TextAppearance.Design.Tab">
+    <item name="android:textSize">@dimen/sesl_tab_sub_text_size</item>
+    <item name="android:textColor">@color/sesl_tablayout_subtab_sub_text_color_dark</item>
+    <item name="android:fontFamily">sec</item>
+    <item name="android:textFontWeight" tools:targetApi="p">400</item>
+  </style>
+
+  <style name="TextAppearance.Design.Tab.SubText.Light" parent="@style/TextAppearance.Design.Tab.SubText">
+    <item name="android:textColor">@color/sesl_tablayout_subtab_sub_text_color_light</item>
+  </style>
+  <!--sesl-->
 
   <!-- Styles for M3 Tabs -->
   <style name="Base.Widget.Material3.TabLayout" parent="Widget.MaterialComponents.TabLayout">

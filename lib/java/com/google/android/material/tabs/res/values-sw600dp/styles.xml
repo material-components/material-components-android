@@ -17,8 +17,9 @@
 <resources>
 
   <style name="Widget.Design.TabLayout" parent="Base.Widget.Design.TabLayout">
-    <item name="tabGravity">center</item>
+    <item name="tabGravity">fill<!--sesl--></item>
     <item name="tabMode">fixed</item>
+    <item name="tabIndicatorFullWidth">true</item><!--sesl-->
   </style>
 
 </resources>
