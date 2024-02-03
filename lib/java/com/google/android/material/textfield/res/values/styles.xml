@@ -14,6 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
+<!--SESL Variant-->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Design.TextInputLayout" parent="android:Widget">
@@ -71,8 +74,8 @@
     <item name="boxStrokeWidth">@dimen/mtrl_textinput_box_stroke_width_default</item>
     <item name="boxStrokeWidthFocused">@dimen/mtrl_textinput_box_stroke_width_focused</item>
     <!-- By default the cursor color is controlled via ?attr/colorControlActivated. -->
-    <item name="cursorColor">@null</item>
-    <item name="cursorErrorColor">@color/mtrl_error</item>
+    <item name="cursorColor">@null</item><!--Todo(none is sesl)-->
+    <item name="cursorErrorColor">@color/mtrl_error</item><!--Todo(none is sesl)-->
 
     <item name="counterTextAppearance">?attr/textAppearanceCaption</item>
     <item name="counterOverflowTextAppearance">?attr/textAppearanceCaption</item>
@@ -245,7 +248,9 @@
 
   <!-- Set of ThemeOverlays to be used internally in the TextInputLayout styles to automatically
        apply the correct TextInputEditText style to the TextInputEditText. -->
-  <style name="ThemeOverlay.Design.TextInputEditText" parent=""/>
+  <style name="ThemeOverlay.Design.TextInputEditText" parent="">
+    <item name="android:textColorHint">@color/sesl_text_input_layout_hint_text_color</item><!--sesl-->
+  </style>
 
   <style name="ThemeOverlay.MaterialComponents.TextInputEditText" parent="ThemeOverlay.Design.TextInputEditText">
     <item name="colorControlActivated">?attr/colorPrimary</item>
