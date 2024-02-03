@@ -15,8 +15,15 @@
   ~ limitations under the License.
 -->
 
+<!--SESL variant-->
+
 <resources>
 
   <color name="design_snackbar_background_color">#323232</color>
 
+  <!--Sesl-->
+  <color name="sesl_design_snackbar_action_text_color">#ff3e91ff</color>
+  <color name="sesl_design_snackbar_text_color">#fffafafa</color>
+  <color name="sesl_snackbar_action_ripple_color">#4d000000</color>
+  <!--sesl-->
 </resources>
