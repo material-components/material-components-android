@@ -14,8 +14,18 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
+<!--Sesl Variant-->
+
 <resources>
 
   <item name="view_offset_helper" type="id"/>
 
+  <!--Sesl-->
+  <item name="bottom_bar_overlay" type="id"/>
+  <item name="collapsing_appbar_title_layout_parent" type="id"/>
+  <item name="collapsing_appbar_title_layout" type="id"/>
+  <item name="collapsing_appbar_extended_title" type="id"/>
+  <item name="collapsing_appbar_extended_subtitle" type="id"/>
+  <!--sesl-->
 </resources>
