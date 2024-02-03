@@ -14,6 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
+<!--SESL variant-->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance">
@@ -24,13 +27,14 @@
   <style name="Widget.Design.Snackbar" parent="android:Widget">
     <item name="android:minWidth">@dimen/design_snackbar_min_width</item>
     <item name="android:maxWidth">@dimen/design_snackbar_max_width</item>
-    <item name="android:background">@drawable/design_snackbar_background</item>
+    <item name="android:background">@drawable/sem_snackbar_frame_mtrl<!--sesl--></item>
     <item name="android:paddingLeft">@dimen/design_snackbar_padding_horizontal</item>
     <item name="android:paddingRight">@dimen/design_snackbar_padding_horizontal</item>
     <item name="elevation">@dimen/design_snackbar_elevation</item>
     <item name="maxActionInlineWidth">@dimen/design_snackbar_action_inline_max_width</item>
-    <item name="animationMode">slide</item>
+    <item name="animationMode">fade<!--sesl--></item>
     <item name="actionTextColorAlpha">@dimen/design_snackbar_action_text_color_alpha</item>
+    <item name="android:colorControlActivated" tools:targetApi="lollipop">@color/sesl_design_snackbar_action_text_color</item><!--sesl-->
   </style>
 
   <style name="Base.Widget.MaterialComponents.Snackbar" parent="Widget.Design.Snackbar">
