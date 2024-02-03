@@ -16,6 +16,9 @@
 
 package com.google.android.material.appbar;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import androidx.annotation.RestrictTo;
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -31,6 +34,8 @@ import androidx.core.math.MathUtils;
 import androidx.core.view.ViewCompat;
 
 /**
+ * <p><b>SESL Variant</b></p><br>
+ *
  * The {@link Behavior} for a view that sits vertically above scrolling a view. See {@link
  * HeaderScrollingViewBehavior}.
  */
@@ -47,6 +52,12 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
   private int touchSlop = -1;
   @Nullable private VelocityTracker velocityTracker;
 
+  //Sesl
+  int mLastInterceptTouchEvent;
+  int mLastTouchEvent;
+  private boolean mHasNoSnapFlag;
+  //sesl
+
   public HeaderBehavior() {}
 
   public HeaderBehavior(Context context, AttributeSet attrs) {
@@ -59,6 +70,8 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
     if (touchSlop < 0) {
       touchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
     }
+
+    mLastInterceptTouchEvent = ev.getAction();//sesl
 
     // Shortcut since we're being dragged
     if (ev.getActionMasked() == MotionEvent.ACTION_MOVE && isBeingDragged) {
@@ -108,7 +121,8 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
   @Override
   public boolean onTouchEvent(
       @NonNull CoordinatorLayout parent, @NonNull V child, @NonNull MotionEvent ev) {
-    boolean consumeUp = false;
+    mLastTouchEvent = ev.getAction();//sesl
+   //boolean consumeUp = false;
     switch (ev.getActionMasked()) {
       case MotionEvent.ACTION_MOVE:
         final int activePointerIndex = ev.findPointerIndex(activePointerId);
@@ -128,8 +142,8 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
         lastMotionY = (int) (ev.getY(newIndex) + 0.5f);
         break;
       case MotionEvent.ACTION_UP:
-        if (velocityTracker != null) {
-          consumeUp = true;
+        if (mHasNoSnapFlag/*sesl*/ && velocityTracker != null) {
+          //consumeUp = true;
           velocityTracker.addMovement(ev);
           velocityTracker.computeCurrentVelocity(1000);
           float yvel = velocityTracker.getYVelocity(activePointerId);
@@ -151,7 +165,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
       velocityTracker.addMovement(ev);
     }
 
-    return isBeingDragged || consumeUp;
+    return isBeingDragged/* || consumeUp*/;
   }
 
   int setHeaderTopBottomOffset(CoordinatorLayout parent, V header, int newOffset) {
@@ -278,4 +292,23 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
       }
     }
   }
+
+  //Sesl
+  boolean isFlingRunnable() {
+    return flingRunnable != null;
+  }
+
+  public int getLastInterceptTouchEventEvent() {
+    return mLastInterceptTouchEvent;
+  }
+
+  public int getLastTouchEventEvent() {
+    return mLastTouchEvent;
+  }
+
+  @RestrictTo(LIBRARY_GROUP)
+  public void seslHasNoSnapFlag(boolean noSnapFlag) {
+    mHasNoSnapFlag = noSnapFlag;
+  }
+  //sesl
 }
