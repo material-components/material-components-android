@@ -27,7 +27,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.navigation.NavigationBarItemView;
 
-/** @hide For internal use only. */
+/**
+ * <b>SESL Variant</b><br><br>
+ *
+ * @hide For internal use only
+ * */
 @RestrictTo(LIBRARY_GROUP)
 public class BottomNavigationItemView extends NavigationBarItemView {
   public BottomNavigationItemView(@NonNull Context context) {
@@ -37,12 +41,12 @@ public class BottomNavigationItemView extends NavigationBarItemView {
   @Override
   @LayoutRes
   protected int getItemLayoutResId() {
-    return R.layout.design_bottom_navigation_item;
+    return R.layout.sesl_bottom_navigation_item;//sesl
   }
 
   @Override
   @DimenRes
   protected int getItemDefaultMarginResId() {
-    return R.dimen.design_bottom_navigation_margin;
+    return R.dimen.sesl_bottom_navigation_icon_inset;//sesl
   }
 }
