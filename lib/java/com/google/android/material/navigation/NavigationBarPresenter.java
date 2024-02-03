@@ -34,14 +34,50 @@ import androidx.annotation.RestrictTo;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.internal.ParcelableSparseArray;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.view.Gravity;
+import android.view.View;
+import android.view.animation.PathInterpolator;
+import androidx.appcompat.view.menu.BaseMenuPresenter;
+import androidx.appcompat.view.menu.MenuPopupHelper;
 
 /**
+ * <b>SESL variant</b><br><br>
+ *
  * For internal use only.
  *
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-public class NavigationBarPresenter implements MenuPresenter {
+public class NavigationBarPresenter extends BaseMenuPresenter {//sesl
+  //Sesl
+  private static final int ANIM_UPDATE_DURATION = 400;
+  private static final int ANIM_UPDATE_DELAY = 180;
+  private static final int MSG_UPDATE_ANIMATION = 100;
+  private Context mContext;
+  private OverflowPopup mOverflowPopup;
+  private OpenOverflowRunnable mPostedOpenRunnable;
+  private boolean mSetAnim = false;
+  private Handler mAnimationHandler = new Handler(Looper.getMainLooper()) {
+    @Override
+    public void handleMessage(Message msg) {
+      if (msg.what == MSG_UPDATE_ANIMATION) {
+        updateMenuViewWithAnimate();
+      }
+    }
+  };
+  private final PopupPresenterCallback mPopupPresenterCallback = new PopupPresenterCallback();
+
+  NavigationBarPresenter(Context context) {
+    super(context, androidx.appcompat.R.layout.sesl_action_menu_layout, androidx.appcompat.R.layout.sesl_action_menu_item_layout);
+  }
+  //sesl
+
   private MenuBuilder menu;
   private NavigationBarMenuView menuView;
   private boolean updateSuspended = false;
@@ -55,6 +91,7 @@ public class NavigationBarPresenter implements MenuPresenter {
   public void initForMenu(@NonNull Context context, @NonNull MenuBuilder menu) {
     this.menu = menu;
     menuView.initialize(this.menu);
+    mContext = context;//sesl
   }
 
   @Override
@@ -68,11 +105,29 @@ public class NavigationBarPresenter implements MenuPresenter {
     if (updateSuspended) {
       return;
     }
-    if (cleared) {
-      menuView.buildMenuView();
+    //Sesl
+    if (mSetAnim) {
+      if (cleared) {
+        if (mAnimationHandler.hasMessages(MSG_UPDATE_ANIMATION)) {
+          mAnimationHandler.removeMessages(MSG_UPDATE_ANIMATION);
+        }
+        mAnimationHandler.sendEmptyMessage(MSG_UPDATE_ANIMATION);
+      } else {
+        menuView.postDelayed(new Runnable() {
+          @Override
+          public void run() {
+            menuView.updateMenuView();
+          }
+        }, ANIM_UPDATE_DELAY);
+      }
     } else {
-      menuView.updateMenuView();
+      if (cleared) {
+        menuView.buildMenuView();
+      } else {
+        menuView.updateMenuView();
+      }
     }
+    //sesl
   }
 
   @Override
@@ -127,7 +182,7 @@ public class NavigationBarPresenter implements MenuPresenter {
       SparseArray<BadgeDrawable> badgeDrawables =
           BadgeUtils.createBadgeDrawablesFromSavedStates(
               menuView.getContext(), ((SavedState) state).badgeSavedStates);
-      menuView.restoreBadgeDrawables(badgeDrawables);
+      menuView.setBadgeDrawables(badgeDrawables);//sesl
     }
   }
 
@@ -172,4 +227,145 @@ public class NavigationBarPresenter implements MenuPresenter {
           }
         };
   }
+
+  //Sesl
+  @Override
+  public void bindItemView(MenuItemImpl item, MenuView.ItemView itemView) {
+  }
+
+  void setAnimationEnable(boolean enabled) {
+    mSetAnim = enabled;
+  }
+
+  private void updateMenuViewWithAnimate() {
+    if (menuView != null) {
+      final PathInterpolator SINE_IN_OUT_90
+          = new PathInterpolator(0.33f, 0.0f, 0.1f, 1.0f);
+
+      ObjectAnimator anim = ObjectAnimator
+          .ofFloat(menuView, "y", menuView.getHeight());
+      anim.setDuration(ANIM_UPDATE_DURATION);
+      anim.setInterpolator(SINE_IN_OUT_90);
+      anim.start();
+
+      anim.addListener(new AnimatorListenerAdapter() {
+        @Override
+        public void onAnimationEnd(Animator animation) {
+          menuView.buildMenuView();
+
+          ObjectAnimator anim = ObjectAnimator.ofFloat(menuView, "y", 0.0f);
+          anim.setDuration(ANIM_UPDATE_DURATION);
+          anim.setInterpolator(SINE_IN_OUT_90);
+          anim.start();
+
+          super.onAnimationEnd(animation);
+        }
+      });
+    }
+  }
+
+  boolean showOverflowMenu(MenuBuilder menu) {
+    if (isOverflowMenuShowing()) {
+      return false;
+    }
+
+    if (menu != null && menuView != null) {
+      if (mPostedOpenRunnable == null && !menu.getNonActionItems().isEmpty()) {
+        mOverflowPopup
+                = new OverflowPopup(mContext, menu, menuView.mOverflowButton, true);
+        mPostedOpenRunnable = new OpenOverflowRunnable(mOverflowPopup);
+        menuView.post(mPostedOpenRunnable);
+        super.onSubMenuSelected(null);
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  boolean isOverflowMenuShowing() {
+    return mOverflowPopup != null && mOverflowPopup.isShowing();
+  }
+
+  private class OverflowPopup extends MenuPopupHelper {
+    private OverflowPopup(Context context, MenuBuilder builder,
+                          View anchorView, boolean overflowOnly) {
+      super(context, builder, anchorView, overflowOnly, androidx.appcompat.R.attr.actionOverflowBottomMenuStyle);
+      setGravity(Gravity.END);
+      setPresenterCallback(mPopupPresenterCallback);
+      setAnchorView(anchorView);
+      seslSetOverlapAnchor(false);
+      seslForceShowUpper(true);
+    }
+
+    protected void onDismiss() {
+      if (menu != null) {
+        menu.close();
+      }
+      mOverflowPopup = null;
+      super.onDismiss();
+    }
+  }
+
+  boolean hideOverflowMenu() {
+    if (mPostedOpenRunnable == null || mMenuView == null) {
+      if (mOverflowPopup == null) {
+        return false;
+      }
+      mOverflowPopup.dismiss();
+      return true;
+    } else {
+      ((ViewGroup) mMenuView).removeCallbacks(mPostedOpenRunnable);
+      mPostedOpenRunnable = null;
+      return true;
+    }
+  }
+
+  private class PopupPresenterCallback implements MenuPresenter.Callback {
+    @Override
+    public boolean onOpenSubMenu(MenuBuilder subMenu) {
+      if (subMenu == null) {
+        return false;
+      }
+
+      final int itemId = ((SubMenuBuilder) subMenu).getItem().getItemId();
+      MenuPresenter.Callback callback = getCallback();
+      return callback != null && callback.onOpenSubMenu(subMenu);
+    }
+
+    @Override
+    public void onCloseMenu(MenuBuilder menu, boolean allMenusAreClosing) {
+      if (menu instanceof SubMenuBuilder) {
+        menu.getRootMenu().close(false);
+      }
+      MenuPresenter.Callback callback = getCallback();
+      if (callback != null) {
+        callback.onCloseMenu(menu, allMenusAreClosing);
+      }
+    }
+  }
+
+  private class OpenOverflowRunnable implements Runnable {
+    private OverflowPopup mPopup;
+
+    private OpenOverflowRunnable(OverflowPopup popup) {
+      mPopup = popup;
+    }
+
+    @Override
+    public void run() {
+      if (menu != null) {
+        menu.changeMenuMode();
+      }
+
+      if (menuView != null) {
+        if (menuView.getWindowToken() != null && mPopup.tryShow(0, 0)) {
+          mOverflowPopup = mPopup;
+        }
+      }
+
+      mPostedOpenRunnable = null;
+    }
+  }
+  //sesl
 }
