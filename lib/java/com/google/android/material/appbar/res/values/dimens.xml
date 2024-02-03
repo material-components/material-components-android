@@ -14,6 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
+<!--SESL Variant-->
+
 <resources>
 
   <dimen name="design_appbar_elevation">4dp</dimen>
@@ -31,4 +34,17 @@
   <dimen name="m3_appbar_scrim_height_trigger_medium">112dp</dimen>
   <dimen name="m3_appbar_scrim_height_trigger_large">112dp</dimen>
   <dimen name="m3_toolbar_text_size_title">20dp</dimen>
+
+  <!-- Sesl-->
+  <dimen name="sesl_extended_appbar_bottom_padding">0.0dip</dimen>
+  <item type="dimen" name="sesl_immersive_height_proportion">0.0</item>
+  <dimen name="sesl_appbar_bottom_padding">0dp</dimen>
+  <dimen name="sesl_appbar_elevation">0dp</dimen>
+  <dimen name="sesl_appbar_extended_subtitle_text_size">15dp</dimen>
+  <dimen name="sesl_appbar_extended_title_extra_line_space">-3dp</dimen>
+  <dimen name="sesl_appbar_extended_title_padding">24dp</dimen>
+  <dimen name="sesl_appbar_extended_title_text_size">34sp</dimen>
+  <dimen name="sesl_appbar_extended_title_text_size_with_subtitle">34dp</dimen>
+  <dimen name="sesl_appbar_extended_title_text_view_height">105dp</dimen>
+  <item type="dimen" name="sesl_appbar_height_proportion">0.0</item>
 </resources>
