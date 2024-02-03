@@ -15,6 +15,8 @@
   ~ limitations under the License.
   -->
 
+<!-- SESL variant. -->
+
 <resources>
 
   <!-- Style to use for TabLayout in the theme. -->
@@ -125,6 +127,11 @@
     <!-- Whether to use unbounded ripple effect for tabs, or if ripple should instead be bound to
          tab item bounds. -->
     <attr name="tabUnboundedRipple" format="boolean"/>
+    <!--Sesl-->
+    <attr name="seslTabSubTextAppearance" format="reference" />
+    <attr name="seslTabSubTextColor" format="color" />
+    <attr name="seslTabSelectedSubTextColor" format="color" />
+    <!--sesl-->
   </declare-styleable>
 
   <declare-styleable name="TabItem">
