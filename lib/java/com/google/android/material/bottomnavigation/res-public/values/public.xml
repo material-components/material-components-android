@@ -14,6 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<!-- SESL variant -->
 
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
@@ -27,4 +28,10 @@
   <public name="Widget.Material3.BottomNavigationView" type="style"/>
   <public name="Widget.Material3.BottomNavigationView.ActiveIndicator" type="style"/>
   <public name="compatShadowEnabled" type="attr"/>
+
+  <!--sesl-->
+  <public name="seslBottomBarHasIcon" type="attr"/>
+  <public name="Widget.Design.Light.BottomNavigationView" type="style"/>
+  <public name="Widget.Design.BottomNavigationView.Text" type="style"/>
+  <public name="Widget.Design.Light.BottomNavigationView.Text" type="style"/>
 </resources>
