@@ -19,6 +19,9 @@ package com.google.android.material.bottomnavigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.navigation.NavigationBarView.SESL_TYPE_LABEL_ONLY;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -35,16 +38,25 @@ import com.google.android.material.navigation.NavigationBarMenuView;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @hide For internal use only. */
+/**
+ * <b>SESL Variant</b><br><br>
+ *
+ * @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
 public class BottomNavigationMenuView extends NavigationBarMenuView {
   private final int inactiveItemMaxWidth;
   private final int inactiveItemMinWidth;
-  private final int activeItemMaxWidth;
+  private int activeItemMaxWidth;
   private final int activeItemMinWidth;
 
   private boolean itemHorizontalTranslationEnabled;
   private final List<Integer> tempChildWidths = new ArrayList<>();
+
+  //Sesl
+  private int itemHeight;
+  private boolean mHasIcon;
+  private float mWidthPercent;
+  //sesl
 
   public BottomNavigationMenuView(@NonNull Context context) {
     super(context);
@@ -57,14 +69,18 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
 
     final Resources res = getResources();
     inactiveItemMaxWidth =
-        res.getDimensionPixelSize(R.dimen.design_bottom_navigation_item_max_width);
+        res.getDimensionPixelSize(R.dimen.sesl_bottom_navigation_item_max_width/*sesl*/);
     inactiveItemMinWidth =
-        res.getDimensionPixelSize(R.dimen.design_bottom_navigation_item_min_width);
+        res.getDimensionPixelSize(R.dimen.sesl_bottom_navigation_item_min_width/*sesl*/);
+    TypedValue outValue = new TypedValue();
+    res.getValue(R.dimen.sesl_bottom_navigation_width_proportion, outValue, true);
+    mWidthPercent = outValue.getFloat();
     activeItemMaxWidth =
-        res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_max_width);
+        /*sesl*/(int) (getResources().getDisplayMetrics().widthPixels * mWidthPercent);
     activeItemMinWidth =
-        res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_min_width);
-
+        res.getDimensionPixelSize(R.dimen.sesl_bottom_navigation_active_item_min_width);//sesl
+    itemHeight = res.getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_mode_height);//sesl
+    mUseItemPool = false;//sesl
   }
 
   @Override
@@ -76,11 +92,21 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
     // Use total item counts to measure children
     final int totalCount = getChildCount();
     tempChildWidths.clear();
+    //Sesl
+    DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+    mWidthPercent = width / displayMetrics.density < 590.0F ? 1.0F : 0.75F;
+    activeItemMaxWidth = (int)(displayMetrics.widthPixels * mWidthPercent);
+    final int maxWidth = (int)(width * mWidthPercent);
+    mHasIcon = getViewType() != SESL_TYPE_LABEL_ONLY;
+    final int parentHeight = getResources().getDimensionPixelSize(
+        mHasIcon ? R.dimen.sesl_bottom_navigation_icon_mode_height : R.dimen.sesl_bottom_navigation_text_mode_height
+    );
+    itemHeight = parentHeight;
+    //sesl
 
-    int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
     final int heightSpec = MeasureSpec.makeMeasureSpec(parentHeight, MeasureSpec.EXACTLY);
 
-    if (isShifting(getLabelVisibilityMode(), visibleCount)
+    if (isShifting(getLabelVisibilityMode(), totalCount/*sesl*/)
         && isItemHorizontalTranslationEnabled()) {
       final View activeChild = getChildAt(getSelectedItemPosition());
       int activeItemWidth = activeItemMinWidth;
@@ -91,14 +117,14 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
             MeasureSpec.makeMeasureSpec(activeItemMaxWidth, MeasureSpec.AT_MOST), heightSpec);
         activeItemWidth = Math.max(activeItemWidth, activeChild.getMeasuredWidth());
       }
-      final int inactiveCount = visibleCount - (activeChild.getVisibility() != View.GONE ? 1 : 0);
-      final int activeMaxAvailable = width - inactiveCount * inactiveItemMinWidth;
+      final int inactiveCount = totalCount/*sesl*/ - (activeChild.getVisibility() != View.GONE ? 1 : 0);
+      final int activeMaxAvailable = maxWidth/*sesl*/ - inactiveCount * inactiveItemMinWidth;
       final int activeWidth =
           Math.min(activeMaxAvailable, Math.min(activeItemWidth, activeItemMaxWidth));
       final int inactiveMaxAvailable =
-          (width - activeWidth) / (inactiveCount == 0 ? 1 : inactiveCount);
+          (maxWidth/*sesl*/ - activeWidth) / (inactiveCount == 0 ? 1 : inactiveCount);
       final int inactiveWidth = Math.min(inactiveMaxAvailable, inactiveItemMaxWidth);
-      int extra = width - activeWidth - inactiveWidth * inactiveCount;
+      int extra = maxWidth/*sesl*/ - activeWidth - inactiveWidth * inactiveCount;
 
       for (int i = 0; i < totalCount; i++) {
         int tempChildWidth = 0;
@@ -115,9 +141,9 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
         tempChildWidths.add(tempChildWidth);
       }
     } else {
-      final int maxAvailable = width / (visibleCount == 0 ? 1 : visibleCount);
-      final int childWidth = Math.min(maxAvailable, activeItemMaxWidth);
-      int extra = width - childWidth * visibleCount;
+      final int maxAvailable = maxWidth/*sesl*/ / (visibleCount == 0 ? 1 : visibleCount);
+      final int childWidth = (visibleCount == 2) ? maxAvailable/*sesl*/: Math.min(maxAvailable, activeItemMaxWidth);
+      int extra = maxWidth/*sesl*/ - childWidth * visibleCount;
       for (int i = 0; i < totalCount; i++) {
         int tempChildWidth = 0;
         if (getChildAt(i).getVisibility() != View.GONE) {
@@ -134,7 +160,7 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
     int totalWidth = 0;
     for (int i = 0; i < totalCount; i++) {
       final View child = getChildAt(i);
-      if (child.getVisibility() == GONE) {
+      if (child == null/*sesl*/ || child.getVisibility() == GONE) {
         continue;
       }
       child.measure(
@@ -143,8 +169,10 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
       params.width = child.getMeasuredWidth();
       totalWidth += child.getMeasuredWidth();
     }
-
-    setMeasuredDimension(totalWidth, parentHeight);
+    setMeasuredDimension(
+        View.resolveSizeAndState(totalWidth, MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY), 0),
+        View.resolveSizeAndState(parentHeight, heightSpec, 0)
+    );//sesl
   }
 
   @Override
@@ -152,6 +180,18 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
     final int count = getChildCount();
     final int width = right - left;
     final int height = bottom - top;
+    //Sesl
+    final int padding;
+    if (!mHasIcon) {
+      padding = 0;
+    } else if (getViewVisibleItemCount() == 5) {
+      padding = getResources()
+              .getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_mode_min_padding_horizontal);
+    } else {
+      padding = getResources()
+              .getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_mode_padding_horizontal);
+    }
+    //sesl
     int used = 0;
     for (int i = 0; i < count; i++) {
       final View child = getChildAt(i);
@@ -159,12 +199,13 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
         continue;
       }
       if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-        child.layout(width - used - child.getMeasuredWidth(), 0, width - used, height);
+        child.layout(width - used - child.getMeasuredWidth() + padding/*sesl*/, 0, width - used - padding, height);
       } else {
-        child.layout(used, 0, child.getMeasuredWidth() + used, height);
+        child.layout(used + padding/*sesl*/, 0, child.getMeasuredWidth() + used - padding, height);
       }
       used += child.getMeasuredWidth();
     }
+    updateBadgeIfNeeded();//sesl
   }
 
   /**
