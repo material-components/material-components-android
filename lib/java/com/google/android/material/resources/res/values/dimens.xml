@@ -35,4 +35,9 @@
   <dimen name="m3_ripple_hovered_alpha">@dimen/m3_sys_state_hover_state_layer_opacity</dimen>
   <dimen name="m3_ripple_default_alpha">@dimen/m3_sys_state_dragged_state_layer_opacity</dimen>
   <dimen name="m3_ripple_selectable_pressed_alpha">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
+
+  <!--Sesl-->
+  <dimen name="action_bar_size">16.0dip</dimen>
+  <dimen name="mtrl_large_touch_target">100.0dip</dimen>
+  <!--sesl-->
 </resources>
