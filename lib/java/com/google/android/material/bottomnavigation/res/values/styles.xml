@@ -14,54 +14,119 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
+<!--SESL variant-->
+
 <resources>
 
   <style name="Widget.Design.BottomNavigationView" parent="">
-    <item name="compatShadowEnabled">true</item>
-    <item name="elevation">@dimen/design_bottom_navigation_elevation</item>
+    <!--<item name="compatShadowEnabled">true</item>
+    <item name="elevation">@dimen/design_bottom_navigation_elevation</item>-->
     <item name="enforceTextAppearance">false</item>
     <item name="enforceMaterialTheme">false</item>
-    <item name="itemBackground">?attr/selectableItemBackgroundBorderless</item>
+    <item name="itemBackground">@drawable/sesl_bottom_navigation_background_dark<!--sesl--></item>
     <item name="itemHorizontalTranslationEnabled">true</item>
-    <item name="itemIconSize">@dimen/design_bottom_navigation_icon_size</item>
+    <item name="itemIconSize">@dimen/sesl_bottom_navigation_icon_size<!--sesl--></item>
     <item name="labelVisibilityMode">auto</item>
-    <item name="itemPaddingTop">@dimen/design_bottom_navigation_margin</item>
-    <item name="itemPaddingBottom">@dimen/design_bottom_navigation_label_padding</item>
-    <item name="itemActiveIndicatorStyle">@null</item>
-    <item name="android:minHeight">@dimen/design_bottom_navigation_height</item>
+    <!--Sesl-->
+    <item name="android:background">@color/sesl_bottom_navigation_background_dark</item>
+    <item name="android:elevation">@dimen/sesl_bottom_navigation_elevation</item>
+    <item name="android:paddingStart">@dimen/sesl_bottom_navigation_icon_mode_padding_horizontal</item>
+    <item name="android:paddingEnd">@dimen/sesl_bottom_navigation_icon_mode_padding_horizontal</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_icon_color_dark</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_color_dark</item>
+    <item name="seslBottomBarHasIcon">true</item>
+    <item name="seslLabelTextAppearance">@style/TextAppearance.Design.Widget.BottomNavigationView</item>
+    <item name="seslViewType">IconLabel</item>
+    <!--sesl-->
   </style>
 
   <!-- Default style for BottomNavigationViews.
-       Use the default style to get the default bottom navigation bar with a colorSurface background and
-       colorPrimary for the icon and text colors. -->
+      Use the default style to get the default bottom navigation bar with a colorSurface background and
+      colorPrimary for the icon and text colors. -->
   <style name="Widget.MaterialComponents.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
     <item name="enforceTextAppearance">true</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="android:background">?attr/colorSurface</item>
     <item name="itemBackground">@null</item>
     <item name="itemHorizontalTranslationEnabled">false</item>
-    <item name="itemIconTint">@color/mtrl_navigation_bar_item_tint</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_icon_color_dark<!--sesl--></item>
     <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
     <item name="itemTextAppearanceActive">?attr/textAppearanceCaption</item>
-    <item name="itemTextColor">@color/mtrl_navigation_bar_item_tint</item>
-    <item name="itemRippleColor">@color/mtrl_navigation_bar_ripple_color</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_icon_color_dark<!--sesl--></item>
+    <item name="itemRippleColor">@color/sesl_bottom_nav_ripple_color<!--sesl--></item>
+    <item name="seslLabelTextAppearance">?textAppearanceCaption</item><!--sesl-->
+    <item name="seslViewType">IconLabel</item><!--sesl-->
   </style>
 
   <!-- Colored style for Bottom NavigationViews.
-       Use the colored style to get a bottom navigation bar with a colorPrimary background and
-       percentages of colorOnPrimary for the icon and text colors. -->
+     Use the colored style to get a bottom navigation bar with a colorPrimary background and
+     percentages of colorOnPrimary for the icon and text colors. -->
   <style name="Widget.MaterialComponents.BottomNavigationView.Colored">
     <item name="enforceTextAppearance">true</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="android:background">?attr/colorPrimary</item>
-    <item name="itemIconTint">@color/mtrl_navigation_bar_colored_item_tint</item>
-    <item name="itemRippleColor">@color/mtrl_navigation_bar_colored_ripple_color</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_colored_item_tint<!--sesl--></item>
+    <item name="itemRippleColor">@color/sesl_bottom_nav_colored_ripple_color<!--sesl--></item>
     <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
     <item name="itemTextAppearanceActive">?attr/textAppearanceCaption</item>
-    <item name="itemTextColor">@color/mtrl_navigation_bar_colored_item_tint</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_colored_item_tint<!--sesl--></item>
   </style>
 
   <style name="Widget.MaterialComponents.BottomNavigationView.PrimarySurface" parent="Widget.MaterialComponents.BottomNavigationView.Colored"/>
+
+  <!--Sesl-->
+  <style name="Widget.Design.Light.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+    <item name="android:background">@color/sesl_bottom_navigation_background_light</item>
+    <item name="itemBackground">@drawable/sesl_bottom_navigation_background_light</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_icon_color_light</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_color_light</item>
+    <item name="seslLabelTextAppearance">@style/TextAppearance.Design.Widget.BottomNavigationView.Inverse</item>
+  </style>
+
+  <style name="Widget.Design.BottomNavigationView.Text" parent="Widget.Design.BottomNavigationView">
+    <item name="android:background">@color/sesl_bottom_navigation_background_dark</item>
+    <item name="android:paddingStart">@dimen/sesl_bottom_navigation_text_mode_padding_horizontal</item>
+    <item name="android:paddingEnd">@dimen/sesl_bottom_navigation_text_mode_padding_horizontal</item>
+    <item name="android:elevation">@dimen/sesl_bottom_navigation_elevation</item>
+    <item name="itemBackground">@drawable/sesl_bottom_navigation_background_text_dark</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_text_color_dark</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_text_color_dark</item>
+    <item name="seslBottomBarHasIcon">false</item>
+    <item name="seslLabelTextAppearance">@style/TextAppearance.Design.Widget.BottomNavigationView.Text</item>
+    <item name="seslViewType">labelOnly</item>
+  </style>
+
+  <style name="Widget.Design.Light.BottomNavigationView.Text" parent="Widget.Design.BottomNavigationView.Text">
+    <item name="android:background">@color/sesl_bottom_navigation_background_light</item>
+    <item name="itemBackground">@drawable/sesl_bottom_navigation_background_text_light</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_text_color_light</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_text_color_light</item>
+    <item name="seslLabelTextAppearance">@style/TextAppearance.Design.Widget.BottomNavigationView.Text.Inverse</item>
+  </style>
+
+  <style name="TextAppearance.Design.Widget.BottomNavigationView" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
+    <item name="android:textSize">@dimen/sesl_bottom_navigation_icon_mode_text_size</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textColor">@color/sesl_bottom_navigation_text_dark</item>
+    <item name="fontFamily">sec-roboto-light</item>
+    <item name="textAllCaps">false</item>
+  </style>
+
+  <style name="TextAppearance.Design.Widget.BottomNavigationView.Inverse" parent="TextAppearance.Design.Widget.BottomNavigationView">
+    <item name="android:textColor">@color/sesl_bottom_navigation_text_light</item>
+  </style>
+
+  <style name="TextAppearance.Design.Widget.BottomNavigationView.Text" parent="TextAppearance.Design.Widget.BottomNavigationView">
+    <item name="android:textSize">@dimen/sesl_bottom_navigation_text_mode_text_size</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/sesl_bottom_nav_text_color_dark</item>
+  </style>
+
+  <style name="TextAppearance.Design.Widget.BottomNavigationView.Text.Inverse" parent="TextAppearance.Design.Widget.BottomNavigationView.Text">
+    <item name="android:textColor">@color/sesl_bottom_nav_text_color_light</item>
+  </style>
+  <!--sesl-->
 
   <!-- Style for Material 3 Bottom Navigation View. -->
   <style name="Base.Widget.Material3.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
