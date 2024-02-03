@@ -28,4 +28,16 @@
   <dimen name="m3_chip_elevated_elevation">1dp</dimen>
   <dimen name="m3_chip_icon_size">18dp</dimen>
 
+
+  <!--Sesl-->
+  <dimen name="chip_height">32dp</dimen>
+  <dimen name="chip_start_width">32dp</dimen>
+  <dimen name="chip_text_size">14sp</dimen>
+
+  <dimen name="expansion_button_elevation">5dp</dimen>
+  <dimen name="expansion_button_margin_right">24dp</dimen>
+  <dimen name="expansion_button_margin_top">10dp</dimen>
+  <dimen name="expansion_button_size">36dp</dimen>
+  <dimen name="padding_view_width">44dp</dimen>
+  <!--Sesl-->
 </resources>
