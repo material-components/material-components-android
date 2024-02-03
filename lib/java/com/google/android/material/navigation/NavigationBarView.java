@@ -21,11 +21,12 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,16 +57,19 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.ripple.RippleUtils;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
+ * <b>SESL Varaint</b><br><br>
+ *
  * Provides an abstract implementation of a navigation bar that can be used to implementation such
  * as <a href="https://material.io/components/bottom-navigation">Bottom Navigation</a> or <a
  * href="https://material.io/components/navigation-rail">Navigation rail</a>.
@@ -78,6 +83,12 @@ import java.lang.annotation.RetentionPolicy;
  * {@code MenuItem#setChecked(true)}
  */
 public abstract class NavigationBarView extends FrameLayout {
+
+  //Sesl
+  public static final int SESL_TYPE_ICON_LABEL = 1;
+  public static final int SESL_TYPE_ICON_ONLY = 2;
+  public static final int SESL_TYPE_LABEL_ONLY = 3;
+  //sesl
 
   /**
    * Label behaves as "labeled" when there are 3 items or less, or "selected" when there are 4 items
@@ -124,11 +135,29 @@ public abstract class NavigationBarView extends FrameLayout {
 
   @NonNull private final NavigationBarMenu menu;
   @NonNull private final NavigationBarMenuView menuView;
-  @NonNull private final NavigationBarPresenter presenter = new NavigationBarPresenter();
+  @NonNull private final NavigationBarPresenter presenter;//sesl
   private MenuInflater menuInflater;
 
   private OnItemSelectedListener selectedListener;
   private OnItemReselectedListener reselectedListener;
+
+  //Sesl
+  @Nullable private ColorStateList itemRippleColor;
+  private int mMaxItemCount;
+  MenuBuilder.Callback mSelectedCallback = new MenuBuilder.Callback() {
+    @Override
+    public boolean onMenuItemSelected(@NonNull MenuBuilder menu, @NonNull MenuItem item) {
+      if (reselectedListener != null && item.getItemId() == getSelectedItemId()) {
+        reselectedListener.onNavigationItemReselected(item);
+        return true; // item is already selected
+      }
+      return selectedListener != null && !selectedListener.onNavigationItemSelected(item);
+    }
+
+    @Override
+    public void onMenuModeChange(@NonNull MenuBuilder menu) { }
+  };
+  //sesl
 
   public NavigationBarView(
       @NonNull Context context,
@@ -157,6 +186,19 @@ public abstract class NavigationBarView extends FrameLayout {
     // Create the menu view.
     menuView = createNavigationBarMenuView(context);
 
+    //Sesl
+    presenter = new NavigationBarPresenter(context);
+    mMaxItemCount = getMaxItemCount();
+    setMaxItemCount(mMaxItemCount);
+    FrameLayout.LayoutParams lp = new FrameLayout.LayoutParams(
+            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+    lp.gravity = Gravity.CENTER;
+    menuView.setLayoutParams(lp);
+    final int viewType
+            = attributes.getInteger(R.styleable.NavigationBarView_seslViewType, SESL_TYPE_LABEL_ONLY);
+    seslSetViewType(viewType);
+    //sesl
+
     presenter.setMenuView(menuView);
     presenter.setId(MENU_PRESENTER_ID);
     menuView.setPresenter(presenter);
@@ -175,11 +217,16 @@ public abstract class NavigationBarView extends FrameLayout {
         attributes.getDimensionPixelSize(
             R.styleable.NavigationBarView_itemIconSize,
             getResources()
-                .getDimensionPixelSize(R.dimen.mtrl_navigation_bar_item_default_icon_size)));
+                .getDimensionPixelSize(R.dimen.sesl_navigation_bar_icon_size)));//sesl
 
     if (attributes.hasValue(R.styleable.NavigationBarView_itemTextAppearanceInactive)) {
       setItemTextAppearanceInactive(
           attributes.getResourceId(R.styleable.NavigationBarView_itemTextAppearanceInactive, 0));
+    }
+
+    if (attributes.hasValue(R.styleable.NavigationBarView_seslLabelTextAppearance)) {//sesl
+      seslSetLabelTextAppearance(
+              attributes.getResourceId(R.styleable.NavigationBarView_seslLabelTextAppearance, 0));
     }
 
     if (attributes.hasValue(R.styleable.NavigationBarView_itemTextAppearanceActive)) {
@@ -187,30 +234,28 @@ public abstract class NavigationBarView extends FrameLayout {
           attributes.getResourceId(R.styleable.NavigationBarView_itemTextAppearanceActive, 0));
     }
 
-    boolean isBold =
-        attributes.getBoolean(R.styleable.NavigationBarView_itemTextAppearanceActiveBoldEnabled, true);
-    setItemTextAppearanceActiveBoldEnabled(isBold);
-
     if (attributes.hasValue(R.styleable.NavigationBarView_itemTextColor)) {
       setItemTextColor(attributes.getColorStateList(R.styleable.NavigationBarView_itemTextColor));
     }
 
     // Add a MaterialShapeDrawable as background that supports tinting in every API level.
     Drawable background = getBackground();
-    ColorStateList backgroundColorStateList = DrawableUtils.getColorStateListOrNull(background);
+    //Sesl
+    if (background instanceof ColorDrawable) {
+      menuView.setBackgroundColorDrawable((ColorDrawable) background);
+    }
 
-    if (background == null || backgroundColorStateList != null) {
-      ShapeAppearanceModel shapeAppearanceModel =
-          ShapeAppearanceModel.builder(context, attrs, defStyleAttr, defStyleRes).build();
-      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-      if (backgroundColorStateList != null) {
-        // Setting fill color with a transparent CSL will disable the tint list.
-        materialShapeDrawable.setFillColor(backgroundColorStateList);
+    if (getBackground() == null || getBackground() instanceof ColorDrawable) {
+      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+      Drawable originalBackground = getBackground();
+      if (originalBackground instanceof ColorDrawable) {
+        materialShapeDrawable.setFillColor(
+            ColorStateList.valueOf(((ColorDrawable) originalBackground).getColor()));
       }
       materialShapeDrawable.initializeElevationOverlay(context);
       ViewCompat.setBackground(this, materialShapeDrawable);
     }
-
+    //sesl
     if (attributes.hasValue(R.styleable.NavigationBarView_itemPaddingTop)) {
       setItemPaddingTop(
           attributes.getDimensionPixelSize(R.styleable.NavigationBarView_itemPaddingTop, 0));
@@ -249,49 +294,6 @@ public abstract class NavigationBarView extends FrameLayout {
               context, attributes, R.styleable.NavigationBarView_itemRippleColor));
     }
 
-    int activeIndicatorStyleResId =
-        attributes.getResourceId(R.styleable.NavigationBarView_itemActiveIndicatorStyle, 0);
-
-    if (activeIndicatorStyleResId != 0) {
-      setItemActiveIndicatorEnabled(true);
-
-      @SuppressLint("CustomViewStyleable")
-      TypedArray activeIndicatorAttributes =
-          context.obtainStyledAttributes(
-              activeIndicatorStyleResId, R.styleable.NavigationBarActiveIndicator);
-
-      int itemActiveIndicatorWidth =
-          activeIndicatorAttributes.getDimensionPixelSize(
-              R.styleable.NavigationBarActiveIndicator_android_width, 0);
-      setItemActiveIndicatorWidth(itemActiveIndicatorWidth);
-
-      int itemActiveIndicatorHeight =
-          activeIndicatorAttributes.getDimensionPixelSize(
-              R.styleable.NavigationBarActiveIndicator_android_height, 0);
-      setItemActiveIndicatorHeight(itemActiveIndicatorHeight);
-
-      int itemActiveIndicatorMarginHorizontal =
-          activeIndicatorAttributes.getDimensionPixelOffset(
-              R.styleable.NavigationBarActiveIndicator_marginHorizontal, 0);
-      setItemActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
-
-      ColorStateList itemActiveIndicatorColor =
-          MaterialResources.getColorStateList(
-              context,
-              activeIndicatorAttributes,
-              R.styleable.NavigationBarActiveIndicator_android_color);
-      setItemActiveIndicatorColor(itemActiveIndicatorColor);
-
-      int shapeAppearanceResId =
-          activeIndicatorAttributes.getResourceId(
-              R.styleable.NavigationBarActiveIndicator_shapeAppearance, 0);
-      ShapeAppearanceModel itemActiveIndicatorShapeAppearance =
-          ShapeAppearanceModel.builder(context, shapeAppearanceResId, 0).build();
-      setItemActiveIndicatorShapeAppearance(itemActiveIndicatorShapeAppearance);
-
-      activeIndicatorAttributes.recycle();
-    }
-
     if (attributes.hasValue(R.styleable.NavigationBarView_menu)) {
       inflateMenu(attributes.getResourceId(R.styleable.NavigationBarView_menu, 0));
     }
@@ -300,20 +302,19 @@ public abstract class NavigationBarView extends FrameLayout {
 
     addView(menuView);
 
-    this.menu.setCallback(
-        new MenuBuilder.Callback() {
-          @Override
-          public boolean onMenuItemSelected(MenuBuilder menu, @NonNull MenuItem item) {
-            if (reselectedListener != null && item.getItemId() == getSelectedItemId()) {
-              reselectedListener.onNavigationItemReselected(item);
-              return true; // item is already selected
-            }
-            return selectedListener != null && !selectedListener.onNavigationItemSelected(item);
-          }
+    this.menu.setCallback(mSelectedCallback);
+    menuView.setOverflowSelectedCallback(mSelectedCallback);
 
-          @Override
-          public void onMenuModeChange(MenuBuilder menu) {}
-        });
+    final int visibleItemCount = menuView.getVisibleItemCount();
+    if (viewType == SESL_TYPE_LABEL_ONLY || visibleItemCount != mMaxItemCount) {
+      final int padding
+              = getResources().getDimensionPixelSize(R.dimen.sesl_navigation_bar_icon_mode_padding_horizontal);
+      setPadding(padding, getPaddingTop(), padding, getPaddingBottom());
+    } else {
+      final int padding
+              = getResources().getDimensionPixelSize(R.dimen.sesl_navigation_bar_icon_mode_min_padding_horizontal);
+      setPadding(padding, getPaddingTop(), padding, getPaddingBottom());
+    }
   }
 
   @Override
@@ -494,6 +495,7 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemBackgroundResource(@DrawableRes int resId) {
     menuView.setItemBackgroundRes(resId);
+    itemRippleColor = null;//sesl
   }
 
   /**
@@ -518,6 +520,7 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemBackground(@Nullable Drawable background) {
     menuView.setItemBackground(background);
+    itemRippleColor = null;
   }
 
   /**
@@ -529,7 +532,7 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   @Nullable
   public ColorStateList getItemRippleColor() {
-    return menuView.getItemRippleColor();
+    return itemRippleColor;
   }
 
   /**
@@ -541,7 +544,33 @@ public abstract class NavigationBarView extends FrameLayout {
    * @attr ref R.styleable#BottomNavigationView_itemRippleColor
    */
   public void setItemRippleColor(@Nullable ColorStateList itemRippleColor) {
-    menuView.setItemRippleColor(itemRippleColor);
+    if (this.itemRippleColor == itemRippleColor) {
+      // Clear the item background when setItemRippleColor(null) is called for consistency.
+      if (itemRippleColor == null && menuView.getItemBackground() != null) {
+        menuView.setItemBackground(null);
+      }
+      return;
+    }
+
+    this.itemRippleColor = itemRippleColor;
+    if (itemRippleColor == null) {
+      menuView.setItemBackground(null);
+    } else {
+      ColorStateList rippleDrawableColor =
+          RippleUtils.convertToRippleDrawableColor(itemRippleColor);
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        menuView.setItemBackground(new RippleDrawable(rippleDrawableColor, null, null));
+      } else {
+        GradientDrawable rippleDrawable = new GradientDrawable();
+        // TODO: Find a workaround for this. Currently on certain devices/versions, LayerDrawable
+        // will draw a black background underneath any layer with a non-opaque color,
+        // (e.g. ripple) unless we set the shape to be something that's not a perfect rectangle.
+        rippleDrawable.setCornerRadius(0.00001F);
+        Drawable rippleDrawableCompat = DrawableCompat.wrap(rippleDrawable);
+        DrawableCompat.setTintList(rippleDrawableCompat, rippleDrawableColor);
+        menuView.setItemBackground(rippleDrawableCompat);
+      }
+    }
   }
 
   /**
@@ -792,14 +821,14 @@ public abstract class NavigationBarView extends FrameLayout {
     menuView.setItemTextAppearanceActive(textAppearanceRes);
   }
 
-  /**
-   * Sets whether the active menu item labels are bold.
-   *
-   * @param isBold whether the active menu item labels are bold
-   */
-  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
-    menuView.setItemTextAppearanceActiveBoldEnabled(isBold);
-  }
+//  /**
+//   * Sets whether the active menu item labels are bold.
+//   *
+//   * @param isBold whether the active menu item labels are bold
+//   */
+//  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+//    menuView.setItemTextAppearanceActiveBoldEnabled(isBold);
+//  }
 
   /**
    * Returns the text appearance used for the active menu item label.
@@ -978,4 +1007,58 @@ public abstract class NavigationBarView extends FrameLayout {
           }
         };
   }
+
+  //Sesl
+  @Deprecated
+  public void seslSetHasIcon(boolean hasIcon) {
+    menuView.setViewType(hasIcon ? SESL_TYPE_ICON_LABEL : SESL_TYPE_LABEL_ONLY);
+  }
+
+  void setMaxItemCount(int maxItemCount) {
+    menuView.setMaxItemCount(maxItemCount);
+  }
+
+  public void seslSetViewType(int viewType) {
+    menuView.setViewType(viewType);
+  }
+
+  public boolean seslHasOverflowButton() {
+    return menuView.hasOverflowButton();
+  }
+
+  public void seslShowOverflowMenu() {
+    if (seslHasOverflowButton()) {
+      menuView.showOverflowMenu();
+    }
+  }
+
+  public boolean seslIsOverflowShowing() {
+    return presenter.isOverflowMenuShowing();
+  }
+
+  public void seslHideOverflowMenu() {
+    presenter.hideOverflowMenu();
+  }
+
+  public MenuBuilder seslGetOverflowMenu() {
+    return menuView.getOverflowMenu();
+  }
+
+  public void seslSetUpdateAnimation(boolean enabled) {
+    presenter.setAnimationEnable(enabled);
+  }
+
+  public void seslSetLabelTextAppearance(@StyleRes int textAppearanceRes) {
+    menuView.seslSetLabelTextAppearance(textAppearanceRes);
+  }
+
+  @StyleRes
+  public int seslGetLabelTextAppearance() {
+    return menuView.seslGetLabelTextAppearance();
+  }
+
+  public void seslSetGroupDividerEnabled(boolean enabled) {
+    menuView.setGroupDividerEnabled(enabled);
+  }
+  //sesl
 }
