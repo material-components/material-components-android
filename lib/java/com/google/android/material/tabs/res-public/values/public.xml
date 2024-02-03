@@ -14,6 +14,8 @@
      limitations under the License.
 -->
 
+<!--SESL variant-->
+
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="tabBackground" type="attr"/>
@@ -50,4 +52,11 @@
   <public name="Widget.Material3.TabLayout" type="style"/>
   <public name="Widget.Material3.TabLayout.OnSurface" type="style"/>
   <public name="Widget.Material3.TabLayout.Secondary" type="style"/>
+
+  <!--Sesl-->
+  <public name="seslTabSubTextAppearance" type="attr"/>
+  <public name="seslTabSubTextColor" type="attr"/>
+  <public name="seslTabSelectedSubTextColor" type="attr"/>
+  <public name="Widget.Design.TabLayout.Light" type="style"/>
+  <!--sesl-->
 </resources>
