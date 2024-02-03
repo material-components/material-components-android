@@ -14,6 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
+<!--SESL variant-->
+
 <resources>
 
   <dimen name="design_snackbar_min_width">-1px</dimen>
@@ -31,7 +34,7 @@
        the Snackbar will change to vertical stacking -->
   <dimen name="design_snackbar_action_inline_max_width">128dp</dimen>
 
-  <dimen name="design_snackbar_text_size">14sp</dimen>
+  <dimen name="design_snackbar_text_size">16sp<!--sesl--></dimen>
 
   <dimen name="design_snackbar_padding_vertical">14dp</dimen>
   <dimen name="design_snackbar_padding_vertical_2lines">16dp</dimen>
@@ -46,4 +49,15 @@
   <dimen name="m3_snackbar_margin">8dp</dimen>
   <item name="m3_snackbar_action_text_color_alpha" format="float" type="dimen">1.0</item>
 
+  <!--Sesl-->
+  <item type="dimen" name="sesl_config_prefSnackWidth">84.0%</item>
+  <dimen name="sesl_design_snackbar_action_padding_left">20.0dip</dimen>
+  <dimen name="sesl_design_snackbar_action_padding_right">20.0dip</dimen>
+  <dimen name="sesl_design_snackbar_action_padding_top">2.0dip</dimen>
+  <dimen name="sesl_design_snackbar_action_text_size">18.0sp</dimen>
+  <dimen name="sesl_design_snackbar_layout_padding_bottom">55.0dip</dimen>
+  <dimen name="sesl_design_snackbar_layout_sip_padding_bottom">3.0dip</dimen>
+  <dimen name="sesl_design_snackbar_text_padding_left">20.0dip</dimen>
+  <dimen name="sesl_design_snackbar_text_padding_right">20.0dip</dimen>
+  <!--sesl-->
 </resources>
