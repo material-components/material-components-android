@@ -18,6 +18,8 @@ package com.google.android.material.navigation;
 
 import com.google.android.material.R;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -26,6 +28,8 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -35,7 +39,9 @@ import android.os.Build.VERSION_CODES;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.TooltipCompat;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -44,6 +50,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -72,6 +79,8 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 
 /**
+ * <b>------SESL variant------</b><br><br>
+ *
  * Provides a view that will be used to render destination items inside a {@link
  * NavigationBarMenuView}.
  *
@@ -79,6 +88,21 @@ import com.google.android.material.ripple.RippleUtils;
  */
 @RestrictTo(LIBRARY_GROUP)
 public abstract class NavigationBarItemView extends FrameLayout implements MenuView.ItemView {
+  // Sesl
+  private String TAG = "NavigationBarItemView";
+  private static final float MAX_FONT_SCALE = 1.3f;
+  static final int BADGE_TYPE_OVERFLOW = 0;
+  static final int BADGE_TYPE_DOT = 1;
+  static final int BADGE_TYPE_N = 2;
+  private SpannableStringBuilder mLabelImgSpan;
+  private int mBadgeType = BADGE_TYPE_DOT;
+  private int mLargeLabelAppearance;
+  private int mSmallLabelAppearance;
+  private int mViewType;
+  private boolean mIsBadgeNumberless;
+  private int defaultMargin;
+  // Sesl
+
   private static final int INVALID_ITEM_POSITION = -1;
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
@@ -133,7 +157,23 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   @Nullable private BadgeDrawable badgeDrawable;
 
   public NavigationBarItemView(@NonNull Context context) {
-    super(context);
+    this(context, null, NavigationBarView.SESL_TYPE_ICON_LABEL);
+  }
+
+  public NavigationBarItemView(@NonNull Context context, int defStyleAttr) {
+    this(context, null, defStyleAttr);
+  }
+
+  public NavigationBarItemView(@NonNull Context context,
+                               @Nullable AttributeSet attrs, int viewType) {
+    this(context, attrs, 0, viewType);
+  }
+
+  public NavigationBarItemView(@NonNull Context context,
+                               @Nullable AttributeSet attrs, int defStyleAttr, int viewType) {
+    super(context, attrs, defStyleAttr);
+
+    mViewType = viewType;//sesl
 
     LayoutInflater.from(context).inflate(getItemLayoutResId(), this, true);
     iconContainer = findViewById(R.id.navigation_bar_item_icon_container);
@@ -192,7 +232,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   protected int getSuggestedMinimumHeight() {
     LayoutParams labelGroupParams = (LayoutParams) labelGroup.getLayoutParams();
     return getSuggestedIconHeight()
-        + (labelGroup.getVisibility() == VISIBLE ? activeIndicatorLabelPadding : 0)
+        + (labelGroup.getVisibility() == VISIBLE ? activeIndicatorLabelPadding : 0)//none in sesl
         + labelGroupParams.topMargin
         + labelGroup.getMeasuredHeight()
         + labelGroupParams.bottomMargin;
@@ -221,6 +261,16 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       TooltipCompat.setTooltipText(this, tooltipText);
     }
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
+
+    //Sesl
+    String badgeText = itemData.getBadgeText();
+    int badgeType = BADGE_TYPE_DOT;
+    if (badgeText != null && !badgeText.isEmpty()) {
+      badgeType = itemData.getItemId() == R.id.bottom_overflow ? BADGE_TYPE_OVERFLOW : BADGE_TYPE_N;
+    }
+    setBadgeType(badgeType);
+    //sesl
+
     this.initialized = true;
   }
 
@@ -284,6 +334,10 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   public void setTitle(@Nullable CharSequence title) {
     smallLabel.setText(title);
     largeLabel.setText(title);
+    if (TextUtils.isEmpty(title)) {
+      smallLabel.setVisibility(View.GONE);//sesl
+      largeLabel.setVisibility(View.GONE);//sesl
+    }
     if (itemData == null || TextUtils.isEmpty(itemData.getContentDescription())) {
       setContentDescription(title);
     }
@@ -400,8 +454,11 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     smallLabel.setPivotX(smallLabel.getWidth() / 2);
     smallLabel.setPivotY(smallLabel.getBaseline());
 
-    float newIndicatorProgress = checked ? 1F : 0F;
-    maybeAnimateActiveIndicatorToProgress(newIndicatorProgress);
+    //Sesl
+    if (getViewType() != NavigationBarView.SESL_TYPE_LABEL_ONLY) {
+      defaultMargin = getResources().getDimensionPixelSize(R.dimen.sesl_navigation_bar_icon_inset);
+    }
+    //sesl
 
     switch (labelVisibilityMode) {
       case NavigationBarView.LABEL_VISIBILITY_AUTO:
@@ -412,11 +469,13 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
                 getIconOrContainer(), itemPaddingTop, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
             updateViewPaddingBottom(labelGroup, itemPaddingBottom);
             largeLabel.setVisibility(VISIBLE);
+            setViewScaleValues(largeLabel, 1.0f, 1.0f, VISIBLE);//sesl
           } else {
             // Show icon
             setViewTopMarginAndGravity(getIconOrContainer(), itemPaddingTop, Gravity.CENTER);
             updateViewPaddingBottom(labelGroup, 0);
             largeLabel.setVisibility(INVISIBLE);
+            setViewScaleValues(largeLabel, 0.5f, 0.5f, INVISIBLE);//sesl
           }
           smallLabel.setVisibility(INVISIBLE);
         } else {
@@ -427,8 +486,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
                 getIconOrContainer(),
                 (int) (itemPaddingTop + shiftAmount),
                 Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            setViewScaleValues(largeLabel, 1f, 1f, VISIBLE);
-            setViewScaleValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
+            setViewScaleValues(largeLabel, 1f, 1f, INVISIBLE/*sesl*/);
+            setViewScaleValues(smallLabel, scaleUpFactor, scaleUpFactor, VISIBLE/*sesl*/);
           } else {
             // Show icon and small label
             setViewTopMarginAndGravity(
@@ -446,11 +505,13 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
               getIconOrContainer(), itemPaddingTop, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
           updateViewPaddingBottom(labelGroup, itemPaddingBottom);
           largeLabel.setVisibility(VISIBLE);
+          setViewScaleValues(this.largeLabel, 1.0f, 1.0f, VISIBLE);//sesl
         } else {
           // Show icon only
           setViewTopMarginAndGravity(getIconOrContainer(), itemPaddingTop, Gravity.CENTER);
           updateViewPaddingBottom(labelGroup, 0);
           largeLabel.setVisibility(INVISIBLE);
+          setViewScaleValues(this.largeLabel, 0.5f, 0.5f, INVISIBLE);//sesl
         }
         smallLabel.setVisibility(INVISIBLE);
         break;
@@ -495,7 +556,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   @Override
   public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
-    if (badgeDrawable != null && badgeDrawable.isVisible()) {
+    if (itemData != null/*sesl*/ && badgeDrawable != null && badgeDrawable.isVisible()) {
       CharSequence customContentDescription = itemData.getTitle();
       if (!TextUtils.isEmpty(itemData.getContentDescription())) {
         customContentDescription = itemData.getContentDescription();
@@ -503,6 +564,39 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       info.setContentDescription(
           customContentDescription + ", " + badgeDrawable.getContentDescription());
     }
+    //Sesl
+    final TextView notifBadge = findViewById(R.id.notifications_badge);
+    if (itemData != null && notifBadge != null &&
+        notifBadge.getVisibility() == VISIBLE && notifBadge.getWidth() > 0) {
+      String notifBadgeDescription;
+      if (TextUtils.isEmpty(itemData.getContentDescription())) {
+        notifBadgeDescription = itemData.getTitle().toString();
+        if (mBadgeType == BADGE_TYPE_OVERFLOW) {
+          notifBadgeDescription = notifBadgeDescription + " , " + getResources().getString(R.string.sesl_material_badge_description);
+        } else if (mBadgeType ==BADGE_TYPE_DOT) {
+          notifBadgeDescription = notifBadgeDescription + " , " + getResources().getString(R.string.mtrl_badge_numberless_content_description);
+        } else if (mBadgeType == BADGE_TYPE_N) {
+          String badgeText = notifBadge.getText().toString();
+          if (isNumericValue(badgeText)) {
+            final int parseInt = Integer.parseInt(badgeText);
+            notifBadgeDescription = notifBadgeDescription + " , " + getResources()
+                .getQuantityString(R.plurals.mtrl_badge_content_description, parseInt, parseInt);
+          } else {
+            if (mIsBadgeNumberless) {
+              notifBadgeDescription = notifBadgeDescription + " , " + getResources()
+                  .getString(R.string.mtrl_exceed_max_badge_number_content_description, 999);
+            } else {
+              notifBadgeDescription = notifBadgeDescription + " , " + getResources()
+                  .getString(R.string.sesl_material_badge_description);
+            }
+          }
+        }
+      } else {
+        notifBadgeDescription = itemData.getContentDescription().toString();
+      }
+      info.setContentDescription(notifBadgeDescription);
+    }
+    //sesl
     AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
     infoCompat.setCollectionItemInfo(
         CollectionItemInfoCompat.obtain(
@@ -516,7 +610,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       infoCompat.setClickable(false);
       infoCompat.removeAction(AccessibilityActionCompat.ACTION_CLICK);
     }
-    infoCompat.setRoleDescription(getResources().getString(R.string.item_view_role_description));
+    //infoCompat.setRoleDescription(getResources().getString(R.string.item_view_role_description));
+    info.setClassName(Button.class.getName());//sesl
   }
 
   /**
@@ -675,9 +770,28 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   }
 
   private void calculateTextScaleFactors(float smallLabelSize, float largeLabelSize) {
-    shiftAmount = smallLabelSize - largeLabelSize;
-    scaleUpFactor = 1f * largeLabelSize / smallLabelSize;
-    scaleDownFactor = 1f * smallLabelSize / largeLabelSize;
+    //Sesl
+    if (largeLabelSize == 0f || smallLabelSize == 0f) {
+      Log.e(TAG, "LabelSize is invalid");
+      scaleUpFactor = 1f;
+      scaleDownFactor = 1f;
+      shiftAmount = 0f;
+    } else {
+      shiftAmount = smallLabelSize - largeLabelSize;
+      scaleUpFactor = 1f * largeLabelSize / smallLabelSize;
+      scaleDownFactor = 1f * smallLabelSize / largeLabelSize;
+      if (scaleUpFactor >= Float.MAX_VALUE || scaleUpFactor <= -Float.MAX_VALUE) {
+        Log.e(TAG, "scaleUpFactor is invalid");
+        scaleUpFactor = 1f;
+        shiftAmount = 0f;
+      }
+      if (scaleDownFactor >= Float.MAX_VALUE || scaleDownFactor <= -Float.MAX_VALUE) {
+        Log.e(TAG, "scaleDownFactor is invalid");
+        scaleDownFactor = 1f;
+        shiftAmount = 0f;
+      }
+    }
+    //sesl
   }
 
   public void setItemBackground(int background) {
@@ -993,10 +1107,13 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
         + max(badgeWidth, iconContainerParams.rightMargin);
   }
 
-  private int getSuggestedIconHeight() {
-    LayoutParams iconContainerParams = (LayoutParams) getIconOrContainer().getLayoutParams();
-    return iconContainerParams.topMargin
-        + getIconOrContainer().getMeasuredHeight();
+  private int getSuggestedIconHeight() {//sesl
+    // Account for the fact that the badge may fit within the top margin. Bottom margin is ignored
+    // because the icon view will be aligned to the baseline of the label group. But give space for
+    // the badge at the bottom as well, so that icon does not move if badge gravity is changed.
+    LayoutParams iconParams = (FrameLayout.LayoutParams) getIconOrContainer().getLayoutParams();
+    final int badgeHeight = badgeDrawable != null ? badgeDrawable.getMinimumHeight() / 2 : 0;//sesl
+    return max(badgeHeight, iconParams.topMargin) + icon.getMeasuredWidth() + badgeHeight;//sesl
   }
 
   /**
@@ -1105,4 +1222,104 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       return calculateScaleX(progress, targetValue);
     }
   }
+
+  //Sesl
+  private boolean isNumericValue(String value) {
+    if (value == null) {
+      return false;
+    }
+    try {
+      Integer.parseInt(value);
+      return true;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
+
+  @RestrictTo(LIBRARY)
+  public int getViewType() {
+    return mViewType;
+  }
+
+  @Override
+  protected void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    setLargeTextSize(mLargeLabelAppearance, largeLabel);
+    setLargeTextSize(mSmallLabelAppearance, smallLabel);
+  }
+
+  @RestrictTo(LIBRARY_GROUP_PREFIX)
+  void setShowButtonShape(int textColor, ColorStateList bgColor) {
+    Drawable background = getResources()
+        .getDrawable(R.drawable.sesl_bottom_nav_show_button_shapes_background);
+    if (VERSION.SDK_INT >= 28) {
+      smallLabel.setTextColor(textColor);
+      largeLabel.setTextColor(textColor);
+      smallLabel.setBackground(background);
+      largeLabel.setBackground(background);
+      smallLabel.setBackgroundTintList(bgColor);
+      largeLabel.setBackgroundTintList(bgColor);
+    } else {
+      ViewCompat.setBackground(this, background);
+    }
+  }
+
+  void setBadgeType(int type) {
+    mBadgeType = type;
+  }
+
+  int getBadgeType() {
+    return mBadgeType;
+  }
+
+  TextView getLabel() {
+    return smallLabel != null ? smallLabel : largeLabel;
+  }
+
+  void setLabelImageSpan(SpannableStringBuilder span) {
+    mLabelImgSpan = span;
+    smallLabel.setText(span);
+    largeLabel.setText(span);
+  }
+
+  SpannableStringBuilder getLabelImageSpan() {
+    return mLabelImgSpan;
+  }
+
+  public void setBadgeNumberless(boolean isNumberless) {
+    mIsBadgeNumberless = isNumberless;
+  }
+
+  public void seslSetLabelTextAppearance(@StyleRes int labelTextAppearance) {
+    mLargeLabelAppearance = labelTextAppearance;
+    mSmallLabelAppearance = labelTextAppearance;
+    TextViewCompat.setTextAppearance(smallLabel, labelTextAppearance);
+    calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
+    setLargeTextSize(mLargeLabelAppearance, largeLabel);
+    setLargeTextSize(mSmallLabelAppearance, smallLabel);
+  }
+
+  private void setLargeTextSize(int resId, TextView textView) {
+    if (textView != null) {
+      TypedArray a = getContext().obtainStyledAttributes(resId, androidx.appcompat.R.styleable.TextAppearance);
+      TypedValue outValue = a.peekValue(androidx.appcompat.R.styleable.TextAppearance_android_textSize);
+      a.recycle();
+      textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP,
+          TypedValue.complexToFloat(outValue.data)
+              * Math.min(getResources().getConfiguration().fontScale, MAX_FONT_SCALE));
+    }
+  }
+
+  public void updateLabelGroupTopMargin(int i) {
+    if (labelGroup == null) {
+      return;
+    }
+    defaultMargin = getResources().getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_inset);
+    ViewGroup.MarginLayoutParams lp = (ViewGroup.MarginLayoutParams) labelGroup.getLayoutParams();
+    if (lp != null) {
+      lp.topMargin = i + defaultMargin;
+      labelGroup.setLayoutParams(lp);
+    }
+  }
+  //sesl
 }
