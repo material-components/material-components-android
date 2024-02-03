@@ -15,11 +15,36 @@
   ~ limitations under the License.
   -->
 
+<!--SESL variant-->
+
 <resources>
 
   <dimen name="design_tab_scrollable_min_width">72dp</dimen>
   <dimen name="design_tab_max_width">264dp</dimen>
   <dimen name="design_tab_text_size">14sp</dimen>
   <dimen name="design_tab_text_size_2line">12sp</dimen>
+
+  <!--Sesl-->
+  <dimen name="sesl_tab_badge_dot_size">6dp</dimen>
+  <dimen name="sesl_tab_badge_number_height">17dp</dimen>
+  <dimen name="sesl_tab_badge_number_min_width">17dp</dimen>
+  <dimen name="sesl_tab_badge_number_text_size">11sp</dimen>
+  <dimen name="sesl_tab_badge_offset_y">6dp</dimen>
+  <dimen name="sesl_tab_icon_size">24dp</dimen>
+  <dimen name="sesl_tab_max_width">0dp</dimen>
+  <dimen name="sesl_tab_min_side_space">10dp</dimen>
+  <dimen name="sesl_tab_scrollable_min_width">72dp</dimen>
+  <dimen name="sesl_tab_sub_text_size">12sp</dimen>
+  <dimen name="sesl_tab_text_size">15sp</dimen>
+  <dimen name="sesl_tab_text_size_2line">12sp</dimen>
+  <item type="dimen" name="sesl_tablayout_over_screen_max_width_rate">0.75</item>
+  <dimen name="sesl_tablayout_subtab_dot_badge_offset_x">4dp</dimen>
+  <dimen name="sesl_tablayout_subtab_indicator_2nd_height">50dp</dimen>
+  <dimen name="sesl_tablayout_subtab_indicator_height">36dp</dimen>
+  <dimen name="sesl_tablayout_subtab_indicator_radius">23dp</dimen>
+  <dimen name="sesl_tablayout_subtab_indicator_stroke_width">1dp</dimen>
+  <dimen name="sesl_tablayout_subtab_n_badge_xoffset">3dp</dimen>
+  <dimen name="sesl_tablayout_subtab_side_space">12dp</dimen>
+  <!--sesl-->
 
 </resources>
