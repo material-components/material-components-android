@@ -14,8 +14,28 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<!-- SESL variant. -->
 
 <resources>
   <!-- Color for the bottom nav's compat shadow/elevation. -->
   <color name="design_bottom_navigation_shadow_color">#14000000</color>
+   <!--Sesl-->
+    <color name="sesl_bottom_navigation_background_dark">#ff010101</color>
+    <color name="sesl_bottom_navigation_background_light">#fff6f6f6</color>
+
+    <color name="sesl_bottom_navigation_icon_dark">#ffcccccc</color>
+    <color name="sesl_bottom_navigation_icon_light">#ff454545</color>
+
+    <color name="sesl_bottom_navigation_ripple_dark">#33ffffff</color>
+    <color name="sesl_bottom_navigation_ripple_light">#1a000000</color>
+
+    <color name="sesl_bottom_navigation_shadow_color">#14000000</color>
+
+    <color name="sesl_bottom_navigation_text_dark">#ffa9a9a9</color>
+    <color name="sesl_bottom_navigation_text_disable_dark">#66fafafa</color>
+    <color name="sesl_bottom_navigation_text_disable_light">#66010101</color>
+    <color name="sesl_bottom_navigation_text_light">#ff636363</color>
+    <color name="sesl_bottom_navigation_text_text_dark">#fffafafa</color>
+    <color name="sesl_bottom_navigation_text_text_light">#ff010101</color>
+    <!--sesl-->
 </resources>
