@@ -14,16 +14,20 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
+<!--SESL Variant-->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- AppBarLayout styles -->
   <style name="Widget.Design.AppBarLayout" parent="android:Widget">
-    <item name="android:background">?attr/colorPrimary</item>
+    <!-- <item name="android:background">?attr/colorPrimary</item>--><!--non in sesl-->
     <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/design_appbar_state_list_animator
+      @animator/sesl_appbar_state_list_animator<!--sesl-->
     </item>
     <item name="android:keyboardNavigationCluster" tools:ignore="NewApi">true</item>
-    <item name="android:touchscreenBlocksFocus" tools:ignore="NewApi">true</item>
+    <item name="android:touchscreenBlocksFocus" tools:ignore="NewApi">false<!--sesl--></item>
+    <item name="android:paddingBottom">@dimen/sesl_extended_appbar_bottom_padding</item><!--sesl-->
   </style>
 
   <style name="Widget.MaterialComponents.AppBarLayout.Primary" parent="Widget.Design.AppBarLayout"/>
@@ -36,15 +40,49 @@
 
   <!-- CollapsingToolbarLayout styles -->
   <style name="Widget.Design.CollapsingToolbar" parent="android:Widget">
-    <item name="expandedTitleMargin">32dp</item>
+    <!--<item name="expandedTitleMargin">32dp</item>--><!--none in sesl-->
     <item name="statusBarScrim">?attr/colorPrimaryDark</item>
+    <item name="android:background">@color/sesl_action_bar_background_color_dark</item><!--sesl-->
+    <item name="android:minHeight">?attr/actionBarSize</item><!--sesl-->
+    <item name="collapsedTitleTextAppearance">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item><!--sesl-->
+    <item name="extendedSubtitleTextAppearance">@style/TextAppearance.Design.CollapsingToolbar.Expanded.Subtitle</item><!--sesl-->
+    <item name="extendedTitleTextAppearance">@style/TextAppearance.Design.CollapsingToolbar.Expanded</item><!--sesl-->
   </style>
 
-  <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="TextAppearance.AppCompat.Display1">
-    <item name="android:textColor">?android:attr/textColorPrimary</item>
+  <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="TextAppearance.AppCompat.Widget.ActionBar.Title"><!--sesl-->
+    <!--<item name="android:textColor">?android:attr/textColorPrimary</item>--><!--none in sesl-->
+    <item name="android:textSize">@dimen/sesl_appbar_extended_title_text_size</item><!--sesl-->
+    <item name="android:textStyle">normal</item><!--sesl-->
+    <item name="android:fontFamily">@string/sesl_font_family_regular</item><!--sesl-->
   </style>
 
   <style name="Widget.MaterialComponents.CollapsingToolbar" parent="Widget.Design.CollapsingToolbar"/>
+
+  <!--Sesl-->
+  <style name="Widget.Design.Light.CollapsingToolbar" parent="Widget.Design.CollapsingToolbar">
+    <item name="android:background">@color/sesl_action_bar_background_color_light</item>
+    <item name="collapsedTitleTextAppearance">@style/TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse</item>
+    <item name="extendedSubtitleTextAppearance">@style/TextAppearance.Design.CollapsingToolbar.Expanded.Subtitle.Inverse</item>
+    <item name="extendedTitleTextAppearance">@style/TextAppearance.Design.CollapsingToolbar.Expanded.Inverse</item>
+    <item name="statusBarScrim">@android:color/transparent</item>
+  </style>
+
+  <style name="TextAppearance.Design.CollapsingToolbar.Expanded.Inverse" parent="TextAppearance.AppCompat.Widget.ActionBar.Title.Inverse">
+    <item name="android:textSize">@dimen/sesl_appbar_extended_title_text_size</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:fontFamily">@string/sesl_font_family_regular</item>
+  </style>
+
+  <style name="TextAppearance.Design.CollapsingToolbar.Expanded.Subtitle" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle">
+    <item name="android:textSize">@dimen/sesl_appbar_extended_subtitle_text_size</item>
+    <item name="android:textColor">@color/sesl_extended_appbar_subtitle_dark</item>
+  </style>
+
+  <style name="TextAppearance.Design.CollapsingToolbar.Expanded.Subtitle.Inverse" parent="TextAppearance.AppCompat.Widget.ActionBar.Subtitle.Inverse">
+    <item name="android:textSize">@dimen/sesl_appbar_extended_subtitle_text_size</item>
+    <item name="android:textColor">@color/sesl_extended_appbar_subtitle_light</item>
+  </style>
+  <!--sesl-->
 
   <!-- Toolbar styles -->
   <style name="Widget.MaterialComponents.Toolbar" parent="Widget.AppCompat.Toolbar">
@@ -53,12 +91,12 @@
     <item name="subtitleTextAppearance">?attr/textAppearanceSubtitle1</item>
     <item name="subtitleTextColor">?android:attr/textColorSecondary</item>
     <!-- Overrides minimum height in landscape to avoid headline6 and subtitle1 height concerns. -->
-    <item name="android:minHeight">@dimen/mtrl_toolbar_default_height</item>
-    <item name="maxButtonHeight">@dimen/mtrl_toolbar_default_height</item>
+    <item name="android:minHeight">@dimen/sesl_action_bar_default_height<!--sesl--></item>
+    <item name="maxButtonHeight">@dimen/sesl_action_bar_default_height<!--sesl--></item>
   </style>
 
   <style name="Widget.MaterialComponents.Toolbar.Primary">
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/design_appbar_elevation</item>
+    <item name="android:elevation" tools:ignore="NewApi">@dimen/sesl_appbar_elevation<!--sesl--></item>
     <item name="android:background">?attr/colorPrimary</item>
     <item name="titleTextColor">?attr/colorOnPrimary</item>
     <item name="subtitleTextColor">@color/material_on_primary_emphasis_medium</item>
@@ -86,31 +124,34 @@
     <item name="colorControlNormal">?attr/colorOnSurface</item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="">
+  <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface">
     <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
     <item name="actionMenuTextColor">@color/material_on_surface_emphasis_medium</item>
   </style>
+
+  <style name="ThemeOverlay.MaterialComponents.Toolbar"/>
+  <style name="ThemeOverlay.MaterialComponents.Toolbar.Popup"/>
 
   <!-- ActionBar styles -->
   <style name="Widget.MaterialComponents.ActionBar.Solid" parent="Widget.AppCompat.ActionBar.Solid">
     <item name="titleTextStyle">?attr/textAppearanceHeadline6</item>
     <item name="subtitleTextStyle">?attr/textAppearanceSubtitle1</item>
     <!-- Overrides minimum height in landscape to avoid headline6 and subtitle1 height concerns. -->
-    <item name="android:minHeight">@dimen/mtrl_toolbar_default_height</item>
-    <item name="maxButtonHeight">@dimen/mtrl_toolbar_default_height</item>
+    <item name="maxButtonHeight">@dimen/sesl_action_bar_default_height<!--sesl--></item>
+    <item name="android:minHeight">@dimen/sesl_action_bar_default_height<!--sesl--></item>
   </style>
 
   <style name="Widget.MaterialComponents.Light.ActionBar.Solid" parent="Widget.AppCompat.Light.ActionBar.Solid">
     <item name="titleTextStyle">?attr/textAppearanceHeadline6</item>
     <item name="subtitleTextStyle">?attr/textAppearanceSubtitle1</item>
     <!-- Overrides minimum height in landscape to avoid headline6 and subtitle1 height concerns. -->
-    <item name="android:minHeight">@dimen/mtrl_toolbar_default_height</item>
-    <item name="maxButtonHeight">@dimen/mtrl_toolbar_default_height</item>
+    <item name="android:minHeight">@dimen/sesl_action_bar_default_height<!--sesl--></item>
+    <item name="maxButtonHeight">@dimen/sesl_action_bar_default_height<!--sesl--></item>
   </style>
 
   <style name="Widget.MaterialComponents.ActionBar.Primary" parent="Widget.AppCompat.ActionBar.Solid">
     <item name="background">?attr/colorPrimary</item>
-    <item name="elevation">@dimen/design_appbar_elevation</item>
+    <item name="elevation">@dimen/sesl_appbar_elevation<!--sesl--></item>
   </style>
 
   <style name="Widget.MaterialComponents.ActionBar.Surface" parent="Widget.AppCompat.Light.ActionBar.Solid">
