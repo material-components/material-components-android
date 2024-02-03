@@ -19,22 +19,27 @@ package com.google.android.material.bottomnavigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static java.lang.Math.min;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Build.VERSION;
+
+import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.SeslTouchTargetDelegate;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
@@ -44,6 +49,8 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.shape.MaterialShapeDrawable;
 
 /**
+ * <b>SESL variant</b><br><br>
+ *
  * Represents a standard bottom navigation bar for application. It is an implementation of <a
  * href="https://material.google.com/components/bottom-navigation.html">material design bottom
  * navigation</a>.
@@ -93,7 +100,8 @@ import com.google.android.material.shape.MaterialShapeDrawable;
  * href="https://material.io/components/navigation-bar/overview">design guidelines</a>.
  */
 public class BottomNavigationView extends NavigationBarView {
-  private static final int MAX_ITEM_COUNT = 5;
+  static final int MAX_ITEM_COUNT = 5;
+  private ViewTreeObserver.OnGlobalLayoutListener mOnGlobalLayoutListenerForTD;
 
   public BottomNavigationView(@NonNull Context context) {
     this(context, null);
@@ -136,6 +144,19 @@ public class BottomNavigationView extends NavigationBarView {
 
     attributes.recycle();
 
+    //Sesl
+    if (Build.VERSION.SDK_INT >= 21) {
+      MenuView menuView = getMenuView();
+      if (menuView instanceof NavigationBarMenuView) {
+        if (((NavigationBarMenuView) menuView).getViewType() == NavigationBarView.SESL_TYPE_LABEL_ONLY) {
+          final int padding
+                  = getResources().getDimensionPixelSize(R.dimen.sesl_navigation_bar_text_mode_padding_horizontal);
+          setPadding(padding, getPaddingTop(), padding, getPaddingBottom());
+        }
+      }
+    }
+    //sesl
+
     applyWindowInsets();
   }
 
@@ -164,23 +185,23 @@ public class BottomNavigationView extends NavigationBarView {
         });
   }
 
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    int minHeightSpec = makeMinHeightSpec(heightMeasureSpec);
-    super.onMeasure(widthMeasureSpec, minHeightSpec);
-  }
-
-  private int makeMinHeightSpec(int measureSpec) {
-    int minHeight = getSuggestedMinimumHeight();
-    if (MeasureSpec.getMode(measureSpec) != MeasureSpec.EXACTLY && minHeight > 0) {
-      minHeight += getPaddingTop() + getPaddingBottom();
-
-      return MeasureSpec.makeMeasureSpec(
-          min(MeasureSpec.getSize(measureSpec), minHeight), MeasureSpec.EXACTLY);
-    }
-
-    return measureSpec;
-  }
+//  @Override
+//  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//    int minHeightSpec = makeMinHeightSpec(heightMeasureSpec);
+//    super.onMeasure(widthMeasureSpec, minHeightSpec);
+//  }
+//
+//  private int makeMinHeightSpec(int measureSpec) {
+//    int minHeight = getSuggestedMinimumHeight();
+//    if (MeasureSpec.getMode(measureSpec) != MeasureSpec.EXACTLY && minHeight > 0) {
+//      minHeight += getPaddingTop() + getPaddingBottom();
+//
+//      return MeasureSpec.makeMeasureSpec(
+//          min(MeasureSpec.getSize(measureSpec), minHeight), MeasureSpec.EXACTLY);
+//    }
+//
+//    return measureSpec;
+//  }
 
   /**
    * Sets whether the menu items horizontally translate on selection when the combined item widths
@@ -237,11 +258,11 @@ public class BottomNavigationView extends NavigationBarView {
   private void addCompatibilityTopDivider(@NonNull Context context) {
     View divider = new View(context);
     divider.setBackgroundColor(
-        ContextCompat.getColor(context, R.color.design_bottom_navigation_shadow_color));
+        ContextCompat.getColor(context, R.color.sesl_bottom_navigation_shadow_color));//sesl
     FrameLayout.LayoutParams dividerParams =
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.MATCH_PARENT,
-            getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_shadow_height));
+            getResources().getDimensionPixelSize(R.dimen.sesl_bottom_navigation_shadow_height));//sesl
     divider.setLayoutParams(dividerParams);
     addView(divider);
   }
@@ -292,4 +313,86 @@ public class BottomNavigationView extends NavigationBarView {
    */
   @Deprecated
   public interface OnNavigationItemReselectedListener extends OnItemReselectedListener {}
+
+  //Sesl
+  @Override
+  protected void onWindowVisibilityChanged(int visibility) {
+    super.onWindowVisibilityChanged(visibility);
+    if (visibility == VISIBLE) {
+      seslSetTouchDelegateForBottomBar();
+    } else {
+      seslRemoveListenerForTouchDelegate();
+    }
+  }
+
+  @Override
+  public void seslSetGroupDividerEnabled(boolean enabled) {
+    super.seslSetGroupDividerEnabled(enabled);
+  }
+
+  private void seslSetTouchDelegateForBottomBar() {
+    final ViewTreeObserver vto = getViewTreeObserver();
+    if (vto == null || mOnGlobalLayoutListenerForTD == null) return;
+
+    final BottomNavigationView bottomNavigationView = BottomNavigationView.this;
+    mOnGlobalLayoutListenerForTD = () -> {;
+      bottomNavigationView.post(() -> {
+        SeslTouchTargetDelegate touchTargetDelegate = new SeslTouchTargetDelegate(bottomNavigationView);
+        int childCount = bottomNavigationView.getChildCount();
+
+        int index = 0;
+        View bottomNavMenuView;
+        while(true) {
+          if (index >= childCount) {
+            bottomNavMenuView = null;
+            break;
+          }
+
+          bottomNavMenuView = bottomNavigationView.getChildAt(index);
+          if (bottomNavMenuView instanceof BottomNavigationMenuView) {
+            break;
+          }
+          ++index;
+        }
+
+        boolean shouldDelegate = false;
+        if (bottomNavMenuView != null && bottomNavMenuView.getVisibility() == 0) {
+          ViewGroup bottomNavMenuViewGroup = (ViewGroup) bottomNavMenuView;
+          int subChildCount = bottomNavMenuViewGroup.getChildCount();
+          int nmvIndex = 0;
+          while (nmvIndex < subChildCount) {
+            View nmvChild = bottomNavMenuViewGroup.getChildAt(nmvIndex);
+            if (nmvChild.getVisibility() == VISIBLE) {
+              int midHeight = nmvChild.getMeasuredHeight() / 2;
+              touchTargetDelegate.addTouchDelegate(
+                  nmvChild,
+                  SeslTouchTargetDelegate.ExtraInsets.of(
+                      nmvIndex == 0 ? midHeight : 0,
+                      midHeight,
+                      nmvIndex == subChildCount + (-1) ? midHeight : 0,
+                      midHeight
+                  )
+              );
+              shouldDelegate = true;
+            }
+            nmvIndex++;
+          }
+        }
+        if (shouldDelegate) {
+          bottomNavigationView.setTouchDelegate(touchTargetDelegate);
+        }
+      });
+    };
+    vto.addOnGlobalLayoutListener(mOnGlobalLayoutListenerForTD);
+
+  }
+
+  private void seslRemoveListenerForTouchDelegate() {
+    if (mOnGlobalLayoutListenerForTD != null) {
+      getViewTreeObserver().removeOnGlobalLayoutListener(mOnGlobalLayoutListenerForTD);
+      mOnGlobalLayoutListenerForTD = null;
+    }
+  }
+  //sesl
+
 }
