@@ -164,4 +164,9 @@
 
   </declare-styleable>
 
+  <!--Sesl-->
+  <attr name="state_expansion_button_expanded" format="boolean"/>
+  <attr name="state_expansion_button_floated" format="boolean"/>
+  <!--sesl-->
+
 </resources>
