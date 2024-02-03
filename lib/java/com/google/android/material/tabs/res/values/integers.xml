@@ -15,9 +15,14 @@
     limitations under the License.
 -->
 
+<!--SESL variant-->
+
+
 <resources>
 
   <integer name="design_tab_indicator_anim_duration_ms">300</integer>
   <integer name="mtrl_tab_indicator_anim_duration_ms">250</integer>
+
+  <integer name="sesl_tablayout_over_screen_width_dp">480</integer><!--sesl-->
 
 </resources>
