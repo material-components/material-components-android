@@ -25,6 +25,8 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
+ * <p><b>SESL variant</b></p><br>
+ *
  * TabItem is a special 'view' which allows you to declare tab items for a {@link TabLayout} within
  * a layout. This view is not actually added to TabLayout, it is just a dummy which allows setting
  * of a tab items's text, icon and custom layout. See TabLayout for more information on how to use
@@ -43,6 +45,7 @@ public class TabItem extends View {
   public final Drawable icon;
   //TODO(b/76413401): make package private after the widget migration
   public final int customLayout;
+  public CharSequence mSubText;//sesl
 
   public TabItem(Context context) {
     this(context, null);
