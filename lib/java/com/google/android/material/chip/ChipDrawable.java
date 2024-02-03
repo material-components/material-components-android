@@ -85,6 +85,8 @@ import java.lang.ref.WeakReference;
 import java.util.Arrays;
 
 /**
+ * <b>SESL variant</b><br><br>
+ *
  * ChipDrawable contains all the layout and draw logic for {@link Chip}.
  *
  * <p>You can use ChipDrawable directly in contexts that require a Drawable. For example, an
@@ -274,6 +276,11 @@ public class ChipDrawable extends MaterialShapeDrawable
   private boolean shouldDrawText;
   private int maxWidth;
   private boolean isShapeThemingEnabled;
+
+  //Sesl
+  public boolean isSeslFullText;
+  public float seslFinalWidth;
+  //sesl
 
   /** Returns a ChipDrawable from the given attributes. */
   @NonNull
@@ -894,7 +901,7 @@ public class ChipDrawable extends MaterialShapeDrawable
 
     if (text != null) {
       float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
-      float offsetFromEnd = chipEndPadding + calculateCloseIconWidth() + textEndPadding;
+      float offsetFromEnd = getOffsetFromEnd(calculateCloseIconWidth());//sesl
 
       if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
         outBounds.left = bounds.left + offsetFromStart;
@@ -911,6 +918,26 @@ public class ChipDrawable extends MaterialShapeDrawable
     }
   }
 
+  //Sesl
+  private float getOffsetFromEnd(float calculateCloseIconWidth) {
+    float offsetFromEnd = chipEndPadding + calculateCloseIconWidth + textEndPadding;
+    //Sesl
+    if (isSeslFullText) {
+      offsetFromEnd -= calculateCloseIconWidth;
+      float offset = 0.0f;
+      if (this.seslFinalWidth > 0.0f) {
+        Rect rect = getBounds();
+        float closeX = calculateCloseIconWidth - (seslFinalWidth - (rect.right - rect.left));
+        if (isCloseIconVisible() && closeX > 0.0f) {
+          offset = closeX;
+        }
+        offsetFromEnd += offset;
+      }
+    }
+    return offsetFromEnd;
+  }
+  //sesl
+
   /**
    * Calculates the close icon's ChipDrawable-absolute bounds (top-left is <code>
    * [ChipDrawable.getBounds().left, ChipDrawable.getBounds().top]</code>).
@@ -920,6 +947,11 @@ public class ChipDrawable extends MaterialShapeDrawable
 
     if (showsCloseIcon()) {
       float offsetFromEnd = chipEndPadding + closeIconEndPadding;
+
+      if (isSeslFullText) {//sesl
+        Rect rect = getBounds();
+        offsetFromEnd -= seslFinalWidth - (rect.right - rect.left);
+      }
 
       if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
         outBounds.right = bounds.right - offsetFromEnd;
