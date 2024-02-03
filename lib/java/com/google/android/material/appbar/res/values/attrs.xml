@@ -14,6 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
+<!--SESL Variant-->
+
 <resources>
 
   <!-- Style to use for AppBarLayouts in this theme. -->
@@ -64,6 +67,12 @@
     <!-- The drawable to display in front of the layout's content, but behind the status bar.
          Only works on Lollipop when used together with android:fitSystemWindows="true". -->
     <attr name="statusBarForeground" format="color"/>
+    <!--Sesl-->
+    <attr name="android:paddingBottom" />
+    <attr name="seslHeightProportion" format="float" />
+    <attr name="seslUseCustomHeight" format="boolean" />
+    <attr name="seslUseCustomPadding" format="boolean" />
+    <!--sesl-->
   </declare-styleable>
 
   <declare-styleable name="AppBarLayoutStates">
@@ -112,6 +121,10 @@
       <!-- An additional flag to be used with 'snap'. If set, the view will be snapped to its
            top and bottom margins, as opposed to the edges of the view itself. -->
       <flag name="snapMargins" value="0x20"/>
+      <!--Sesl-->
+      <flag name="noSnap" value="0x1000" />
+      <flag name="noScrollHold" value="0x10000" />
+      <!--sesl-->
     </attr>
 
     <attr name="layout_scrollEffect" format="enum">
@@ -254,8 +267,14 @@
     <attr name="extraMultilineHeightEnabled" format="boolean" />
 
     <!-- The interpolator to use when animating the title position from collapsed to expanded and
-         vice versa. -->
+     vice versa. -->
     <attr name="titlePositionInterpolator" format="reference"/>
+    <!--Sesl-->
+    <attr name="subtitle" format="string" />
+    <attr name="extendedTitleEnabled" format="boolean" />
+    <attr name="extendedTitleTextAppearance" format="reference" />
+    <attr name="extendedSubtitleTextAppearance" format="reference" />
+    <!--sesl-->
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">
@@ -272,6 +291,7 @@
     <!-- The multiplier used when layout_collapseMode is set to 'parallax'. The value should
          be between 0.0 and 1.0. -->
     <attr name="layout_collapseParallaxMultiplier" format="float"/>
+    <attr name="isCustomTitle" format="boolean" /><!--sesl-->
   </declare-styleable>
 
   <declare-styleable name="MaterialToolbar">
