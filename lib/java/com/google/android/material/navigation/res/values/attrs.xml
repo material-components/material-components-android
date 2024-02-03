@@ -14,6 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
+<!--SESL Variant-->
+
 <resources>
   <attr name="itemRippleColor" format="color"/>
   <attr name="navigationViewStyle" format="reference"/>
@@ -80,6 +83,14 @@
 
     <!-- The elevation to use for the navigation bar view -->
     <attr name="elevation"/>
+    <!--Sesl-->
+    <attr name="seslLabelTextAppearance" format="reference" />
+    <attr name="seslViewType">
+      <enum name="IconLabel" value="1" />
+      <enum name="IconOnly" value="2" />
+      <enum name="labelOnly" value="3" />
+    </attr>
+    <!--sesl-->
   </declare-styleable>
 
   <declare-styleable name="NavigationBarActiveIndicator">
