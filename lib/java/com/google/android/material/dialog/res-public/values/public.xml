@@ -94,5 +94,7 @@
   <public name="MaterialAlertDialog.Material3.Title.Text.CenterStacked" type="style"/>
   <public name="MaterialAlertDialog.Material3.Body.Text.CenterStacked" type="style"/>
 
+  <public name="ThemeOverlay.MaterialComponents.Dialog.Alert.Centered" type="style"/>  <!--sesl-->
+
 </resources>
 
