@@ -19,4 +19,10 @@
   <integer name="mtrl_chip_anim_duration">100</integer>
   <integer name="m3_chip_anim_duration">100</integer>
 
+  <!--Sesl-->
+  <integer name="sesl_chip_default_anim_duration">450</integer>
+  <integer name="expansion_button_duration">1200</integer>
+  <integer name="expansion_button_fade_anim_duration">150</integer>
+  <integer name="expansion_button_rotate_anim_duration">300</integer>
+  <!--sesl-->
 </resources>
