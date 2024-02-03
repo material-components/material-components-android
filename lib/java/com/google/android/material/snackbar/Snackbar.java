@@ -23,12 +23,14 @@ import static android.view.accessibility.AccessibilityManager.FLAG_CONTENT_ICONS
 import static android.view.accessibility.AccessibilityManager.FLAG_CONTENT_TEXT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -47,8 +49,11 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import androidx.reflect.widget.SeslTextViewReflector;
 
 /**
+ * <b>SESL variant</b><br><br>
+ *
  * Snackbars provide lightweight feedback about an operation. They show a brief message at the
  * bottom of the screen on mobile and lower left on larger devices. Snackbars appear above all other
  * elements on screen and only one can be displayed at a time.
@@ -306,7 +311,10 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   @NonNull
   @CanIgnoreReturnValue
   public Snackbar setText(@NonNull CharSequence message) {
-    getMessageView().setText(message);
+    final TextView tv = getMessageView();
+    tv.setText(message);
+    semCheckMaxFontScale(tv, getContext().getResources()
+        .getDimensionPixelSize(R.dimen.design_snackbar_text_size));//sesl
     return this;
   }
 
@@ -343,6 +351,8 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   @CanIgnoreReturnValue
   public Snackbar setAction(
       @Nullable CharSequence text, @Nullable final View.OnClickListener listener) {
+    getContentLayout().setBackground(view.getResources()
+        .getDrawable(R.drawable.sem_snackbar_action_frame_mtrl));//sesl
     final TextView tv = getActionView();
     if (TextUtils.isEmpty(text) || listener == null) {
       tv.setVisibility(View.GONE);
@@ -352,12 +362,15 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
       hasAction = true;
       tv.setVisibility(View.VISIBLE);
       tv.setText(text);
+      SeslTextViewReflector.semSetButtonShapeEnabled(tv, isShowButtonBackgroundEnabled());//sesl
       tv.setOnClickListener(
           view -> {
             listener.onClick(view);
             // Now dismiss the Snackbar
             dispatchDismiss(BaseCallback.DISMISS_EVENT_ACTION);
           });
+      semCheckMaxFontScale(tv, getContext().getResources()
+          .getDimensionPixelSize(R.dimen.sesl_design_snackbar_action_text_size));//sesl
     }
     return this;
   }
@@ -507,10 +520,12 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public static final class SnackbarLayout extends BaseTransientBottomBar.SnackbarBaseLayout {
     public SnackbarLayout(Context context) {
       super(context);
+      setBackgroundColor(android.R.color.transparent);//sesl
     }
 
     public SnackbarLayout(Context context, AttributeSet attrs) {
       super(context, attrs);
+      setBackgroundColor(android.R.color.transparent);//sesl
     }
 
     @Override
@@ -529,6 +544,15 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
               MeasureSpec.makeMeasureSpec(availableWidth, MeasureSpec.EXACTLY),
               MeasureSpec.makeMeasureSpec(child.getMeasuredHeight(), MeasureSpec.EXACTLY));
         }
+        //Sesl
+        if (child.getLayoutParams().height == ViewGroup.LayoutParams.WRAP_CONTENT) {
+          MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+          if (child.getHeight() + lp.topMargin + lp.bottomMargin
+              > getMeasuredHeight() - getPaddingBottom() - getPaddingTop()) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+          }
+        }
+        //sesl
       }
     }
   }
@@ -544,4 +568,19 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   private SnackbarContentLayout getContentLayout() {
     return (SnackbarContentLayout) view.getChildAt(0);
   }
+
+  //Sesl
+  private void semCheckMaxFontScale(TextView textView, int size) {
+    final float currentFontScale = getContext().getResources().getConfiguration().fontScale;
+    if (currentFontScale > 1.2f) {
+      textView.setTextSize(0, (size / currentFontScale) * 1.2f);
+    }
+  }
+
+  private boolean isShowButtonBackgroundEnabled() {
+    ContentResolver contentResolver = getContext().getContentResolver();
+    return contentResolver != null
+        && Settings.System.getInt(contentResolver, "show_button_background", 0) == 1;
+  }
+
 }
