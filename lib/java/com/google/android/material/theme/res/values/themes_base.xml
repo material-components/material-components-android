@@ -14,6 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
+<!--SESL Variant-->
+
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- All new attributes should be set in the following four Base.V14 themes. -->
@@ -568,7 +571,7 @@
     <item name="colorError">@color/design_dark_default_color_error</item>
 
     <!-- Action bar -->
-    <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+    <item name="actionBarSize">@dimen/sesl_action_bar_default_height</item><!--sesl-->
     <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Dark</item>
     <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Surface</item>
     <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.ActionBar.Surface</item>
@@ -632,7 +635,7 @@
     <item name="colorError">@color/design_default_color_error</item>
 
     <!-- Action bar -->
-    <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+    <item name="actionBarSize">@dimen/sesl_action_bar_default_height</item><!--sesl-->
     <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
     <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>
     <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
@@ -700,7 +703,7 @@
     <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
 
     <!-- Panel attributes -->
-    <item name="listChoiceBackgroundIndicator">@drawable/abc_list_selector_holo_dark</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/sesl_list_selector_dark</item><!--sesl-->
 
     <item name="colorPrimaryDark">@color/primary_dark_material_dark</item>
     <item name="colorPrimary">@color/primary_material_dark</item>
