@@ -14,6 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
+<!-- SESL Variant -->
+
 <resources>
 
   <!-- Default style for NavigationRailViews.
@@ -39,6 +42,7 @@
     <item name="labelVisibilityMode">auto</item>
     <item name="menuGravity">top</item>
     <item name="android:fitsSystemWindows">true</item>
+    <item name="seslLabelTextAppearance">@style/TextAppearance.Design.Widget.NavigationRailView</item><!--sesl-->
   </style>
 
   <style name="Widget.MaterialComponents.NavigationRailView.Compact">
@@ -63,6 +67,78 @@
 
   <style name="Widget.MaterialComponents.NavigationRailView.PrimarySurface"
          parent="Widget.MaterialComponents.NavigationRailView.Colored"/>
+
+  <!--Sesl-->
+  <style name="Widget.Design.NavigationRailView" parent="">
+    <item name="enforceTextAppearance">false</item>
+    <item name="enforceMaterialTheme">false</item>
+    <item name="android:background">@color/sesl_navigation_bar_background_dark</item>
+    <item name="android:paddingStart">@dimen/sesl_navigation_bar_icon_mode_padding_horizontal</item>
+    <item name="android:paddingEnd">@dimen/sesl_navigation_bar_icon_mode_padding_horizontal</item>
+    <item name="android:elevation">@dimen/sesl_navigation_bar_elevation</item>
+    <item name="itemBackground">@drawable/sesl_navbar_background_dark</item>
+    <item name="itemHorizontalTranslationEnabled">true</item>
+    <item name="itemIconSize">@dimen/sesl_navigation_bar_icon_size</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_icon_color_dark</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_color_dark</item>
+    <item name="labelVisibilityMode">auto</item>
+    <item name="menuGravity">top</item>
+    <item name="seslBottomBarHasIcon">true</item>
+    <item name="seslLabelTextAppearance">@style/TextAppearance.Design.Widget.NavigationRailView</item>
+    <item name="seslViewType">IconLabel</item>
+  </style>
+
+  <style name="Widget.Design.Light.NavigationRailView" parent="Widget.Design.NavigationRailView">
+    <item name="android:background">@color/sesl_navigation_bar_background_light</item>
+    <item name="itemBackground">@drawable/sesl_navbar_background_light</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_icon_color_light</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_color_light</item>
+    <item name="seslLabelTextAppearance">@style/TextAppearance.Design.Widget.NavigationRailView.Inverse</item>
+  </style>
+
+  <style name="Widget.Design.NavigationRailView.Text" parent="Widget.Design.NavigationRailView">
+    <item name="android:background">@color/sesl_navigation_bar_background_dark</item>
+    <item name="android:paddingStart">@dimen/sesl_navigation_bar_text_mode_padding_horizontal</item>
+    <item name="android:paddingEnd">@dimen/sesl_navigation_bar_text_mode_padding_horizontal</item>
+    <item name="android:elevation">@dimen/sesl_navigation_bar_elevation</item>
+    <item name="itemBackground">@drawable/sesl_navbar_background_text_dark</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_text_color_dark</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_text_color_dark</item>
+    <item name="seslBottomBarHasIcon">false</item>
+    <item name="seslLabelTextAppearance">@style/TextAppearance.Design.Widget.NavigationRailView.Text</item>
+    <item name="seslViewType">labelOnly</item>
+  </style>
+
+  <style name="Widget.Design.Light.NavigationRailView.Text" parent="Widget.Design.NavigationRailView.Text">
+    <item name="android:background">@color/sesl_navigation_bar_background_light</item>
+    <item name="itemBackground">@drawable/sesl_navbar_background_text_light</item>
+    <item name="itemIconTint">@color/sesl_bottom_nav_text_color_light</item>
+    <item name="itemTextColor">@color/sesl_bottom_nav_text_color_light</item>
+    <item name="seslLabelTextAppearance">@style/TextAppearance.Design.Widget.NavigationRailView.Text.Inverse</item>
+  </style>
+
+  <style name="TextAppearance.Design.Widget.NavigationRailView" parent="TextAppearance.AppCompat.Widget.ActionBar.Menu">
+    <item name="android:textSize">@dimen/sesl_navigation_bar_icon_mode_text_size</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textColor">@color/sesl_navigation_bar_text_dark</item>
+    <item name="fontFamily">sec-roboto-light</item>
+    <item name="textAllCaps">false</item>
+  </style>
+
+  <style name="TextAppearance.Design.Widget.NavigationRailView.Inverse" parent="TextAppearance.Design.Widget.NavigationRailView">
+    <item name="android:textColor">@color/sesl_navigation_bar_text_light</item>
+  </style>
+
+  <style name="TextAppearance.Design.Widget.NavigationRailView.Text" parent="TextAppearance.Design.Widget.NavigationRailView">
+    <item name="android:textSize">@dimen/sesl_navigation_bar_text_mode_text_size</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textColor">@color/sesl_bottom_nav_text_color_dark</item>
+  </style>
+
+  <style name="TextAppearance.Design.Widget.NavigationRailView.Text.Inverse" parent="TextAppearance.Design.Widget.NavigationRailView.Text">
+    <item name="android:textColor">@color/sesl_bottom_nav_text_color_light</item>
+  </style>
+  <!--sesl-->
 
   <!-- Styles for Material3 NavigationRailView. -->
   <style name="Widget.Material3.NavigationRailView" parent="Widget.MaterialComponents.NavigationRailView">
