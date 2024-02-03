@@ -14,6 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<!-- SESL variant -->
 <resources>
 
   <!-- Style to use for BottomNavigationViews in the theme. -->
@@ -31,6 +32,12 @@
     <!-- Shape appearance overlay style reference for BottomNavigationView. To be used to augment
          attributes declared in the shapeAppearance. Attribute declaration is in the Shape package. -->
     <attr name="shapeAppearanceOverlay"/>
+    <!--Sesl-->
+    <attr name="android:background" />
+    <attr name="android:paddingStart" />
+    <attr name="android:paddingEnd" />
+    <attr name="seslBottomBarHasIcon" format="boolean" />
+    <!--sesl-->
   </declare-styleable>
 
 </resources>
