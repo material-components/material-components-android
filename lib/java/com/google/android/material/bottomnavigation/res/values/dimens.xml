@@ -14,6 +14,9 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+
+<!--SESL variant-->
+
 <resources>
 
   <dimen name="design_bottom_navigation_elevation">8dp</dimen>
@@ -37,4 +40,33 @@
   <dimen name="m3_bottom_nav_item_active_indicator_height">@dimen/m3_comp_navigation_bar_active_indicator_height</dimen>
   <dimen name="m3_bottom_nav_item_active_indicator_margin_horizontal">4dp</dimen>
 
+  <!--Sesl-->
+  <dimen name="sesl_bottom_navigation_N_badge_start_margin">3.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_N_badge_top_margin">6.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_active_item_min_width">96.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_active_item_max_width">810.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_baseline_margin_top">30.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_dot_badge_size">6.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_elevation">0.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_icon_inset">5.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_icon_mode_height">60.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_icon_mode_min_padding_horizontal">2.5dip</dimen>
+  <dimen name="sesl_bottom_navigation_icon_mode_padding_horizontal">5.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_icon_mode_text_size">12.0sp</dimen>
+  <dimen name="sesl_bottom_navigation_icon_size">24.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_item_min_width">56.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_item_max_width">96.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_label_padding_bottom">1.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_label_padding_horizontal">6.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_label_padding_vertical">4.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_margin">8.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_shadow_height">0.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_show_button_shapes_inset_vertical">2.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_show_button_shapes_padding_horizontal">11.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_text_mode_height">56.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_text_mode_padding_horizontal">24.0dip</dimen>
+  <dimen name="sesl_bottom_navigation_text_mode_text_size">18.0sp</dimen>
+  <item type="dimen" name="sesl_bottom_navigation_disabled_color_alpha">0.4</item>
+  <item type="dimen" name="sesl_bottom_navigation_width_proportion">1.0</item>
+  <!--sesl-->
 </resources>
