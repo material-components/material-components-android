@@ -17,4 +17,9 @@
 <resources>
   <!-- The class name for the ScrollingChildBehavior required for AppBarLayout -->
   <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
+
+  <string name="sesl_blur_header_behavior" translatable="false">com.google.android.material.appbar.SeslBlurHeaderBehavior</string>
+  <string name="sesl_blur_scroll1ing_behavior" translatable="false">com.google.android.material.appbar.SeslBlurScrollingBehavior</string>
+  <string name="sesl_immersive_scrolling_behavior" translatable="false">com.google.android.material.appbar.SeslImmersiveScrollBehavior</string>
+
 </resources>
