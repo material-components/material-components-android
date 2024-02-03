@@ -14,6 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<!-- SESL variant -->
 <resources>
 
   <!-- Color for the text field's disabled state: 12% black -->
@@ -26,5 +27,6 @@
   <color name="mtrl_textinput_focused_box_stroke_color">#00000000</color>
   <!-- Color for the text field's default box background: 4% black -->
   <color name="mtrl_textinput_filled_box_default_background_color">#0A000000</color>
+  <color name="sesl_text_input_layout_hint_text_color">#ff8c8c8c</color><!--sesl-->
 
 </resources>
