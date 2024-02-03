@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2024 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<!-- Original code by Samsung, all rights reserved to the original author. -->
+<resources>
+
+    <color name="sesl_navigation_bar_background_dark">#ff010101</color>
+    <color name="sesl_navigation_bar_background_light">#fff2f2f2</color>
+
+    <color name="sesl_navigation_bar_icon_dark">#ffcccccc</color>
+    <color name="sesl_navigation_bar_icon_light">#ff454545</color>
+
+    <color name="sesl_navigation_bar_ripple_light">#08000000</color>
+
+    <color name="sesl_navigation_bar_text_dark">#ff9c9c9c</color>
+    <color name="sesl_navigation_bar_text_disable_dark">#663e91ff</color>
+    <color name="sesl_navigation_bar_text_disable_light">#660072de</color>
+    <color name="sesl_navigation_bar_text_light">#ff636363</color>
+    <color name="sesl_navigation_bar_text_text_dark">#ff3e91ff</color>
+    <color name="sesl_navigation_bar_text_text_light">#ff0072de</color>
+
+</resources>
