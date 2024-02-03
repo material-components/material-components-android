@@ -19,18 +19,27 @@ package com.google.android.material.navigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP_PREFIX;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.view.menu.MenuItemImpl;
-import androidx.appcompat.view.menu.MenuView;
+import android.content.res.Configuration;
+import android.content.ContentResolver;
+import android.content.res.Resources;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
+import android.provider.Settings;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ImageSpan;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
-import android.view.Menu;
+import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,25 +53,58 @@ import androidx.annotation.StyleRes;
 import androidx.core.util.Pools;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
-import com.google.android.material.animation.AnimationUtils;
+
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.internal.TextScale;
-import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.HashSet;
+import android.widget.TextView;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.util.SeslMisc;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.view.menu.MenuView;
+import androidx.appcompat.view.menu.SeslMenuItem;
 
 /**
+ * <b>SESL variant</b><br><br>
+ *
  * Provides a view that will be use to render a menu view inside a {@link NavigationBarView}.
  *
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
 public abstract class NavigationBarMenuView extends ViewGroup implements MenuView {
+  // Sesl
+  private static final String TAG = "NavigationBarMenuView";
+  static final int BADGE_TYPE_OVERFLOW = 0;
+  static final int BADGE_TYPE_DOT = 1;
+  static final int BADGE_TYPE_N = 2;
+  private ContentResolver mContentResolver;
+  MenuBuilder mDummyMenu;
+  private InternalBtnInfo mInvisibleBtns = null;
+  NavigationBarItemView mOverflowButton = null;
+  private MenuBuilder mOverflowMenu = null;
+  private ColorDrawable mSBBTextColorDrawable;
+  private MenuBuilder.Callback mSelectedCallback;
+  private InternalBtnInfo mVisibleBtns = null;
+  private int mMaxItemCount = 0;
+  @StyleRes
+  private int mSeslLabelTextAppearance;
+  private int mViewType = NavigationBarView.SESL_TYPE_ICON_LABEL;
+  private int mViewVisibleItemCount = 0;
+  private int mVisibleItemCount = 0;
+
+  private boolean mHasGroupDivider;
+  private boolean mHasOverflowMenu = false;
+  protected boolean mUseItemPool = true;
+  private static final long ACTIVE_ANIMATION_DURATION_MS = 0;
+  // Sesl
+
   private static final int ITEM_POOL_SIZE = 5;
   private static final int NO_PADDING = -1;
 
@@ -89,11 +131,11 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   @Nullable private final ColorStateList itemTextColorDefault;
   @StyleRes private int itemTextAppearanceInactive;
   @StyleRes private int itemTextAppearanceActive;
-  private boolean itemTextAppearanceActiveBoldEnabled;
+  //private boolean itemTextAppearanceActiveBoldEnabled;
   private Drawable itemBackground;
   @Nullable private ColorStateList itemRippleColor;
   private int itemBackgroundRes;
-  @NonNull private final SparseArray<BadgeDrawable> badgeDrawables =
+  @NonNull private SparseArray<BadgeDrawable> badgeDrawables =
       new SparseArray<>(ITEM_POOL_SIZE);
   private int itemPaddingTop = NO_PADDING;
   private int itemPaddingBottom = NO_PADDING;
@@ -119,16 +161,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     } else {
       set = new AutoTransition();
       set.setOrdering(TransitionSet.ORDERING_TOGETHER);
-      set.setDuration(
-          MotionUtils.resolveThemeDuration(
-              getContext(),
-              R.attr.motionDurationMedium4,
-              getResources().getInteger(R.integer.material_motion_duration_long_1)));
-      set.setInterpolator(
-          MotionUtils.resolveThemeInterpolator(
-              getContext(),
-              R.attr.motionEasingStandard,
-              AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+      set.setDuration(ACTIVE_ANIMATION_DURATION_MS);//sesl
       set.addTransition(new TextScale());
     }
 
@@ -143,6 +176,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
             }
           }
         };
+
+    mContentResolver = context.getContentResolver();//sesl
 
     ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
@@ -162,11 +197,11 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     super.onInitializeAccessibilityNodeInfo(info);
     AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
     infoCompat.setCollectionInfo(
-        CollectionInfoCompat.obtain(
+        AccessibilityNodeInfoCompat.CollectionInfoCompat.obtain(
             /* rowCount= */ 1,
             /* columnCount= */ menu.getVisibleItems().size(),
             /* hierarchical= */ false,
-            /* selectionMode = */ CollectionInfoCompat.SELECTION_MODE_SINGLE));
+            /* selectionMode = */ AccessibilityNodeInfoCompat.CollectionInfoCompat.SELECTION_MODE_SINGLE));
   }
 
   /**
@@ -178,8 +213,12 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     itemIconTint = tint;
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
+        if (item == null) break;//sesl
         item.setIconTintList(tint);
       }
+    }
+    if (mOverflowButton != null) {
+      mOverflowButton.setIconTintList(tint);//sesl
     }
   }
 
@@ -204,8 +243,12 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     this.itemIconSize = iconSize;
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
+        if (item == null) break;//sesl
         item.setIconSize(iconSize);
       }
+    }
+    if (mOverflowButton != null) {
+      mOverflowButton.setIconSize(iconSize);
     }
   }
 
@@ -224,8 +267,13 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     itemTextColorFromUser = color;
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
+        if (item == null) break;//sesl
         item.setTextColor(color);
       }
+    }
+    if (mOverflowButton != null) {
+      mOverflowButton.setTextColor(color);//sesl
+      setOverflowSpanColor(0, true);//sesl
     }
   }
 
@@ -248,6 +296,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     this.itemTextAppearanceInactive = textAppearanceRes;
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
+        if (item == null) break;//sesl
         item.setTextAppearanceInactive(textAppearanceRes);
         // Set the text color if the user has set it, since itemTextColorFromUser takes precedence
         // over a color set in the text appearance.
@@ -256,6 +305,14 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         }
       }
     }
+    //Sesl
+    if (mOverflowButton != null) {
+      mOverflowButton.setTextAppearanceInactive(textAppearanceRes);
+      if (itemTextColorFromUser != null) {
+        mOverflowButton.setTextColor(itemTextColorFromUser);
+      }
+    }
+    //sesl
   }
 
   /**
@@ -277,6 +334,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     this.itemTextAppearanceActive = textAppearanceRes;
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
+        if (item == null) break;//sesl
         item.setTextAppearanceActive(textAppearanceRes);
         // Set the text color if the user has set it, since itemTextColorFromUser takes precedence
         // over a color set in the text appearance.
@@ -285,21 +343,28 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         }
       }
     }
+    //Sesl
+    if (mOverflowButton != null && itemTextColorFromUser != null) {
+      mOverflowButton.setTextAppearanceActive(textAppearanceRes);
+      mOverflowButton.setTextColor(itemTextColorFromUser);
+    }
+    //sesl
   }
 
-  /**
-   * Sets whether the active menu item label is bold.
-   *
-   * @param isBold whether the active menu item label is bold
-   */
-  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
-    this.itemTextAppearanceActiveBoldEnabled = isBold;
-    if (buttons != null) {
-      for (NavigationBarItemView item : buttons) {
-        item.setTextAppearanceActiveBoldEnabled(isBold);
-      }
-    }
-  }
+
+//  /**
+//   * Sets whether the active menu item label is bold.
+//   *
+//   * @param isBold whether the active menu item label is bold
+//   */
+//  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+//    this.itemTextAppearanceActiveBoldEnabled = isBold;
+//    if (buttons != null) {
+//      for (NavigationBarItemView item : buttons) {
+//        item.setTextAppearanceActiveBoldEnabled(isBold);
+//      }
+//    }
+//  }
 
   /**
    * Returns the text appearance used for the active menu item label.
@@ -320,10 +385,15 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     itemBackgroundRes = background;
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
+        if (item == null) break;//sesl
         item.setItemBackground(background);
       }
     }
+    if (mOverflowButton != null) {
+      mOverflowButton.setItemBackground(background);//sesl
+    }
   }
+
 
   /**
    * Get the distance from the top of an item's icon/active indicator to the top of the navigation
@@ -594,35 +664,15 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     itemBackground = background;
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
+        if (item == null) {
+          break;
+        }
         item.setItemBackground(background);
       }
     }
-  }
-
-  /**
-   * Sets the color of the item's ripple.
-   *
-   * This will only be used if there is not a custom background set on the item.
-   *
-   * @param itemRippleColor the color of the ripple
-   */
-  public void setItemRippleColor(@Nullable ColorStateList itemRippleColor) {
-    this.itemRippleColor = itemRippleColor;
-    if (buttons != null) {
-      for (NavigationBarItemView item : buttons) {
-        item.setItemRippleColor(itemRippleColor);
-      }
+    if (mOverflowButton != null) {
+      mOverflowButton.setItemBackground(background);
     }
-  }
-
-  /**
-   * Returns the color to be used for the items ripple.
-   *
-   * @return the color for the items ripple
-   */
-  @Nullable
-  public ColorStateList getItemRippleColor() {
-    return itemRippleColor;
   }
 
   /**
@@ -680,6 +730,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     }
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
+        if (item == null) return;//sesl
         if (item.getItemData().getItemId() == menuItemId) {
           item.setOnTouchListener(onTouchListener);
         }
@@ -696,7 +747,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     ColorStateList baseColor = AppCompatResources.getColorStateList(getContext(), value.resourceId);
     if (!getContext()
         .getTheme()
-        .resolveAttribute(androidx.appcompat.R.attr.colorPrimary, value, true)) {
+        .resolveAttribute(R.attr.colorPrimary, value, true)) {
       return null;
     }
     int colorPrimary = value.data;
@@ -704,7 +755,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     return new ColorStateList(
         new int[][] {DISABLED_STATE_SET, CHECKED_STATE_SET, EMPTY_STATE_SET},
         new int[] {
-          baseColor.getColorForState(DISABLED_STATE_SET, defaultColor), colorPrimary, defaultColor
+            baseColor.getColorForState(DISABLED_STATE_SET, defaultColor), colorPrimary, defaultColor
         });
   }
 
@@ -714,112 +765,281 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
   @SuppressLint("ClickableViewAccessibility")
   public void buildMenuView() {
-    removeAllViews();
-    if (buttons != null) {
-      for (NavigationBarItemView item : buttons) {
-        if (item != null) {
-          itemPool.release(item);
-          item.clear();
+    this.removeAllViews();
+    TransitionManager.beginDelayedTransition(this, this.set);
+    NavigationBarItemView[] var1 = this.buttons;
+    byte var2 = 0;
+    int var3;
+    int var4;
+    if (var1 != null && this.mUseItemPool) {
+      var3 = var1.length;
+
+      for(var4 = 0; var4 < var3; ++var4) {
+        NavigationBarItemView var5 = var1[var4];
+        if (var5 != null) {
+          this.itemPool.release(var5);
+          var5.removeBadge();
+          this.seslRemoveBadge(var5.getId());
         }
       }
     }
 
-    if (menu.size() == 0) {
-      selectedItemId = 0;
-      selectedItemPosition = 0;
-      buttons = null;
-      return;
+    if (this.mOverflowButton != null) {
+      this.seslRemoveBadge(R.id.bottom_overflow);
     }
-    removeUnusedBadges();
 
-    buttons = new NavigationBarItemView[menu.size()];
-    boolean shifting = isShifting(labelVisibilityMode, menu.getVisibleItems().size());
-    for (int i = 0; i < menu.size(); i++) {
-      presenter.setUpdateSuspended(true);
-      menu.getItem(i).setCheckable(true);
-      presenter.setUpdateSuspended(false);
-      NavigationBarItemView child = getNewItem();
-      buttons[i] = child;
-      child.setIconTintList(itemIconTint);
-      child.setIconSize(itemIconSize);
-      // Set the text color the default, then look for another text color in order of precedence.
-      child.setTextColor(itemTextColorDefault);
-      child.setTextAppearanceInactive(itemTextAppearanceInactive);
-      child.setTextAppearanceActive(itemTextAppearanceActive);
-      child.setTextAppearanceActiveBoldEnabled(itemTextAppearanceActiveBoldEnabled);
-      child.setTextColor(itemTextColorFromUser);
-      if (itemPaddingTop != NO_PADDING) {
-        child.setItemPaddingTop(itemPaddingTop);
+    int var6 = this.menu.size();
+    if (var6 == 0) {
+      this.selectedItemId = 0;
+      this.selectedItemPosition = 0;
+      this.buttons = null;
+      this.mVisibleItemCount = 0;
+      this.mOverflowButton = null;
+      this.mOverflowMenu = null;
+      this.mVisibleBtns = null;
+      this.mInvisibleBtns = null;
+    } else {
+      this.removeUnusedBadges();
+      boolean var7 = this.isShifting(this.labelVisibilityMode, this.menu.getVisibleItems().size());
+      this.buttons = new NavigationBarItemView[this.menu.size()];
+      this.mVisibleBtns = new InternalBtnInfo(var6);
+      this.mInvisibleBtns = new InternalBtnInfo(var6);
+      this.mOverflowMenu = new MenuBuilder(this.getContext());
+      this.mVisibleBtns.cnt = 0;
+      this.mInvisibleBtns.cnt = 0;
+      byte var8 = 0;
+      var3 = var8;
+      int var9 = var8;
+
+      int var10;
+      int[] var11;
+      com.google.android.material.navigation.NavigationBarMenuView.InternalBtnInfo var14;
+      for(var4 = var8; var4 < var6; var3 = var10) {
+        this.presenter.setUpdateSuspended(true);
+        this.menu.getItem(var4).setCheckable(true);
+        this.presenter.setUpdateSuspended(false);
+        int var16;
+        if (((MenuItemImpl)this.menu.getItem(var4)).requiresOverflow()) {
+          var11 = this.mInvisibleBtns.originPos;
+          var14 = this.mInvisibleBtns;
+          var16 = var14.cnt++;
+          var11[var16] = var4;
+          var16 = var9;
+          var10 = var3;
+          if (!this.menu.getItem(var4).isVisible()) {
+            var16 = var9 + 1;
+            var10 = var3;
+          }
+        } else {
+          var11 = this.mVisibleBtns.originPos;
+          var14 = this.mVisibleBtns;
+          var16 = var14.cnt++;
+          var11[var16] = var4;
+          var16 = var9;
+          var10 = var3;
+          if (this.menu.getItem(var4).isVisible()) {
+            var10 = var3 + 1;
+            var16 = var9;
+          }
+        }
+
+        ++var4;
+        var9 = var16;
       }
-      if (itemPaddingBottom != NO_PADDING) {
-        child.setItemPaddingBottom(itemPaddingBottom);
-      }
-      if (itemActiveIndicatorLabelPadding != NO_PADDING) {
-        child.setActiveIndicatorLabelPadding(itemActiveIndicatorLabelPadding);
-      }
-      child.setActiveIndicatorWidth(itemActiveIndicatorWidth);
-      child.setActiveIndicatorHeight(itemActiveIndicatorHeight);
-      child.setActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
-      child.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
-      child.setActiveIndicatorResizeable(itemActiveIndicatorResizeable);
-      child.setActiveIndicatorEnabled(itemActiveIndicatorEnabled);
-      if (itemBackground != null) {
-        child.setItemBackground(itemBackground);
+
+      byte var18;
+      if (this.mInvisibleBtns.cnt - var9 > 0) {
+        var18 = 1;
       } else {
-        child.setItemBackground(itemBackgroundRes);
+        var18 = 0;
       }
-      child.setItemRippleColor(itemRippleColor);
-      child.setShifting(shifting);
-      child.setLabelVisibilityMode(labelVisibilityMode);
-      MenuItemImpl item = (MenuItemImpl) menu.getItem(i);
-      child.initialize(item, 0);
-      child.setItemPosition(i);
-      int itemId = item.getItemId();
-      child.setOnTouchListener(onTouchListeners.get(itemId));
-      child.setOnClickListener(onClickListener);
-      if (selectedItemId != Menu.NONE && itemId == selectedItemId) {
-        selectedItemPosition = i;
+
+      this.mHasOverflowMenu = var18 == 1;
+      var3 += var18;
+      var4 = this.mMaxItemCount;
+      if (var3 > var4) {
+        var3 -= var4 - 1;
+        var4 = var3;
+        if (var18 != 0) {
+          var4 = var3 - 1;
+        }
+
+        var9 = this.mVisibleBtns.cnt - 1;
+        var3 = var4;
+
+        for(var4 = var9; var4 >= 0; --var4) {
+          if (!this.menu.getItem(this.mVisibleBtns.originPos[var4]).isVisible()) {
+            var11 = this.mInvisibleBtns.originPos;
+            var14 = this.mInvisibleBtns;
+            var9 = var14.cnt++;
+            var11[var9] = this.mVisibleBtns.originPos[var4];
+            var14 = this.mVisibleBtns;
+            --var14.cnt;
+          } else {
+            var11 = this.mInvisibleBtns.originPos;
+            var14 = this.mInvisibleBtns;
+            var9 = var14.cnt++;
+            var11[var9] = this.mVisibleBtns.originPos[var4];
+            var14 = this.mVisibleBtns;
+            --var14.cnt;
+            var9 = var3 - 1;
+            var3 = var9;
+            if (var9 == 0) {
+              break;
+            }
+          }
+        }
       }
-      setBadgeIfNeeded(child);
-      addView(child);
+
+      this.mVisibleItemCount = 0;
+      this.mViewVisibleItemCount = 0;
+
+      for(var4 = 0; var4 < this.mVisibleBtns.cnt; ++var4) {
+        this.buildInternalMenu(var7, this.mVisibleBtns.originPos[var4]);
+      }
+
+      NavigationBarItemView[] var17;
+      if (this.mInvisibleBtns.cnt > 0) {
+        var9 = 0;
+
+        for(var4 = var9; var9 < this.mInvisibleBtns.cnt; var4 = var3) {
+          MenuItemImpl var12 = (MenuItemImpl)this.menu.getItem(this.mInvisibleBtns.originPos[var9]);
+          var3 = var4;
+          if (var12 != null) {
+            CharSequence var15;
+            if (var12.getTitle() == null) {
+              var15 = var12.getContentDescription();
+            } else {
+              var15 = var12.getTitle();
+            }
+
+            this.mOverflowMenu.add(var12.getGroupId(), var12.getItemId(), var12.getOrder(), var15).setVisible(var12.isVisible()).setEnabled(var12.isEnabled());
+            this.mOverflowMenu.setGroupDividerEnabled(this.mHasGroupDivider);
+            var12.setBadgeText(var12.getBadgeText());
+            var3 = var4;
+            if (!var12.isVisible()) {
+              var3 = var4 + 1;
+            }
+          }
+
+          ++var9;
+        }
+
+        if (this.mInvisibleBtns.cnt - var4 > 0) {
+          this.mOverflowButton = this.ensureOverflowButton(var7);
+          var17 = this.buttons;
+          var4 = this.mVisibleBtns.cnt;
+          NavigationBarItemView var13 = this.mOverflowButton;
+          var17[var4] = var13;
+          ++this.mVisibleItemCount;
+          ++this.mViewVisibleItemCount;
+          var13.setVisibility(View.VISIBLE);
+        }
+      }
+
+      var4 = var2;
+      if (this.mViewVisibleItemCount > this.mMaxItemCount) {
+        Log.i(TAG, "Maximum number of visible items supported by BottomNavigationView is " + this.mMaxItemCount + ". Current visible count is " + this.mViewVisibleItemCount);
+        var4 = this.mMaxItemCount;
+        this.mVisibleItemCount = var4;
+        this.mViewVisibleItemCount = var4;
+        var4 = var2;
+      }
+
+      while(true) {
+        var17 = this.buttons;
+        if (var4 >= var17.length) {
+          var4 = Math.min(this.mMaxItemCount - 1, this.selectedItemPosition);
+          this.selectedItemPosition = var4;
+          this.menu.getItem(var4).setChecked(true);
+          return;
+        }
+
+        this.setShowButtonShape(var17[var4]);
+        ++var4;
+      }
     }
-    selectedItemPosition = Math.min(menu.size() - 1, selectedItemPosition);
-    menu.getItem(selectedItemPosition).setChecked(true);
   }
 
+  //sesl
   public void updateMenuView() {
-    if (menu == null || buttons == null) {
-      return;
-    }
-
-    final int menuSize = menu.size();
-    if (menuSize != buttons.length) {
-      // The size has changed. Rebuild menu view from scratch.
-      buildMenuView();
-      return;
-    }
-
-    int previousSelectedId = selectedItemId;
-
-    for (int i = 0; i < menuSize; i++) {
-      MenuItem item = menu.getItem(i);
-      if (item.isChecked()) {
-        selectedItemId = item.getItemId();
-        selectedItemPosition = i;
+    MenuBuilder var1 = this.menu;
+    if (var1 != null && this.buttons != null && this.mVisibleBtns != null && this.mInvisibleBtns != null) {
+      int var2 = var1.size();
+      this.hideOverflowMenu();
+      if (var2 != this.mVisibleBtns.cnt + this.mInvisibleBtns.cnt) {
+        this.buildMenuView();
+        return;
       }
-    }
-    if (previousSelectedId != selectedItemId && set != null) {
-      // Note: this has to be called before NavigationBarItemView#initialize().
-      TransitionManager.beginDelayedTransition(this, set);
-    }
 
-    boolean shifting = isShifting(labelVisibilityMode, menu.getVisibleItems().size());
-    for (int i = 0; i < menuSize; i++) {
-      presenter.setUpdateSuspended(true);
-      buttons[i].setLabelVisibilityMode(labelVisibilityMode);
-      buttons[i].setShifting(shifting);
-      buttons[i].initialize((MenuItemImpl) menu.getItem(i), 0);
-      presenter.setUpdateSuspended(false);
+      int var3 = this.selectedItemId;
+
+      for(var2 = 0; var2 < this.mVisibleBtns.cnt; ++var2) {
+        MenuItem var8 = this.menu.getItem(this.mVisibleBtns.originPos[var2]);
+        if (var8.isChecked()) {
+          this.selectedItemId = var8.getItemId();
+          this.selectedItemPosition = var2;
+        }
+
+        if (var8 instanceof SeslMenuItem) {
+          SeslMenuItem var4 = (SeslMenuItem)var8;
+          this.seslRemoveBadge(var8.getItemId());
+          if (var4.getBadgeText() != null) {
+            this.seslAddBadge(var4.getBadgeText(), var8.getItemId());
+          }
+        }
+      }
+
+      if (var3 != this.selectedItemId) {
+        TransitionManager.beginDelayedTransition(this, this.set);
+      }
+
+      boolean var5 = this.isShifting(this.labelVisibilityMode, this.menu.getVisibleItems().size());
+
+      for(var2 = 0; var2 < this.mVisibleBtns.cnt; ++var2) {
+        this.presenter.setUpdateSuspended(true);
+        this.buttons[var2].setLabelVisibilityMode(this.labelVisibilityMode);
+        this.buttons[var2].setShifting(var5);
+        this.buttons[var2].initialize((MenuItemImpl)this.menu.getItem(this.mVisibleBtns.originPos[var2]), 0);
+        this.presenter.setUpdateSuspended(false);
+      }
+
+      var3 = 0;
+
+      int var6;
+      for(var2 = var3; var3 < this.mInvisibleBtns.cnt; var2 = var6) {
+        MenuItem var10 = this.menu.getItem(this.mInvisibleBtns.originPos[var3]);
+        var6 = var2;
+        if (var10 instanceof SeslMenuItem) {
+          MenuBuilder var7 = this.mOverflowMenu;
+          var6 = var2;
+          if (var7 != null) {
+            SeslMenuItem var9 = (SeslMenuItem)var10;
+            MenuItem var12 = var7.findItem(var10.getItemId());
+            if (var12 instanceof SeslMenuItem) {
+              var12.setTitle(var10.getTitle());
+              ((SeslMenuItem)var12).setBadgeText(var9.getBadgeText());
+            }
+
+            byte var11;
+            if (var9.getBadgeText() != null) {
+              var11 = 1;
+            } else {
+              var11 = 0;
+            }
+
+            var6 = var2 | var11;
+          }
+        }
+
+        ++var3;
+      }
+
+      if (var2 != 0) {
+        this.seslAddBadge(this.getContext().getResources().getString(R.string.sesl_material_overflow_badge_text_n), R.id.bottom_overflow);
+      } else {
+        this.seslRemoveBadge(R.id.bottom_overflow);
+      }
     }
   }
 
@@ -837,9 +1057,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
   protected boolean isShifting(
       @NavigationBarView.LabelVisibility int labelVisibilityMode, int childCount) {
-    return labelVisibilityMode == NavigationBarView.LABEL_VISIBILITY_AUTO
-        ? childCount > 3
-        : labelVisibilityMode == NavigationBarView.LABEL_VISIBILITY_SELECTED;
+    return labelVisibilityMode == NavigationBarView.LABEL_VISIBILITY_SELECTED;//sesl
   }
 
   void tryRestoreSelectedItemId(int itemId) {
@@ -859,19 +1077,15 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     return badgeDrawables;
   }
 
-  void restoreBadgeDrawables(SparseArray<BadgeDrawable> badgeDrawables) {
-    for (int i = 0; i < badgeDrawables.size(); i++) {
-      int key = badgeDrawables.keyAt(i);
-      if (this.badgeDrawables.indexOfKey(key) < 0) {
-        // badge doesn't exist yet, restore it
-        this.badgeDrawables.append(key, badgeDrawables.get(key));
-      }
-    }
+  //sesl
+  void setBadgeDrawables(SparseArray<BadgeDrawable> badgeDrawables) {
+    this.badgeDrawables = badgeDrawables;
     if (buttons != null) {
       for (NavigationBarItemView itemView : buttons) {
-        BadgeDrawable badge = this.badgeDrawables.get(itemView.getId());
-        if (badge != null) {
-          itemView.setBadge(badge);
+        if (itemView != null) {
+          itemView.setBadge(badgeDrawables.get(itemView.getId()));
+        } else {
+          return;
         }
       }
     }
@@ -906,11 +1120,14 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
   void removeBadge(int menuItemId) {
     validateMenuItemId(menuItemId);
+    BadgeDrawable badgeDrawable = badgeDrawables.get(menuItemId);//sesl
     NavigationBarItemView itemView = findItemView(menuItemId);
     if (itemView != null) {
       itemView.removeBadge();
     }
-    badgeDrawables.put(menuItemId, null);
+    if (badgeDrawable != null) {//sesl
+      badgeDrawables.remove(menuItemId);//sesl
+    }
   }
 
   private void setBadgeIfNeeded(@NonNull NavigationBarItemView child) {
@@ -946,6 +1163,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     validateMenuItemId(menuItemId);
     if (buttons != null) {
       for (NavigationBarItemView itemView : buttons) {
+        if (itemView == null) return null;//sesl
         if (itemView.getId() == menuItemId) {
           return itemView;
         }
@@ -976,4 +1194,504 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       throw new IllegalArgumentException(viewId + " is not a valid view id");
     }
   }
+
+
+  protected void setOverflowSelectedCallback(MenuBuilder.Callback callback) {
+    mSelectedCallback = callback;
+  }
+
+  boolean hasOverflowButton() {
+    return mHasOverflowMenu;
+  }
+
+  MenuBuilder getOverflowMenu() {
+    return mOverflowMenu;
+  }
+
+  void showOverflowMenu() {
+    if (hasOverflowButton() && presenter != null) {
+      presenter.showOverflowMenu(mOverflowMenu);
+    }
+  }
+
+  void hideOverflowMenu() {
+    if (hasOverflowButton() && presenter != null) {
+      if (presenter.isOverflowMenuShowing()) {
+        presenter.hideOverflowMenu();
+      }
+    }
+  }
+
+  void setMaxItemCount(int maxItemCount) {
+    mMaxItemCount = maxItemCount;
+  }
+
+  private void setShowButtonShape(NavigationBarItemView itemView) {
+    if (itemView != null) {
+      ColorStateList itemTextColor = getItemTextColor();
+      if (isShowButtonShapesEnabled()) {
+        if (Build.VERSION.SDK_INT > 26) {
+          final int color;
+          if (mSBBTextColorDrawable != null) {
+            color = mSBBTextColorDrawable.getColor();
+          } else {
+            color = getResources()
+                .getColor(SeslMisc.isLightTheme(getContext()) ?
+                    R.color.sesl_bottom_navigation_background_light
+                    : R.color.sesl_bottom_navigation_background_dark, null);
+          }
+          itemView.setShowButtonShape(color, itemTextColor);
+
+          if (mOverflowButton != null) {
+            MenuItemImpl item = itemView.getItemData();
+            if (item != null && mDummyMenu != null) {
+              if (item.getItemId() == mDummyMenu.getItem(0).getItemId()) {
+                setOverflowSpanColor(color, false);
+              }
+            }
+          }
+        } else {
+          itemView.setShowButtonShape(0, itemTextColor);
+        }
+      }
+    }
+  }
+
+  private NavigationBarItemView getNewItem(final int viewType) {
+    NavigationBarItemView item = itemPool.acquire();
+    if (item == null) {
+      item = new NavigationBarItemView(getContext(), viewType) {
+        @Override
+        protected int getItemLayoutResId() {
+          switch (viewType) {
+            case NavigationBarView.SESL_TYPE_ICON_LABEL:
+              return R.layout.sesl_bottom_navigation_item;
+            case NavigationBarView.SESL_TYPE_ICON_ONLY:
+              return R.layout.sesl_bottom_navigation_item;
+            case NavigationBarView.SESL_TYPE_LABEL_ONLY:
+              return R.layout.sesl_bottom_navigation_item_text;
+            default:
+              return R.layout.sesl_bottom_navigation_item;
+          }
+        }
+      };
+    }
+    return item;
+  }
+
+
+  private void buildInternalMenu(boolean shifting, int index) {
+    if (buttons != null) {
+      NavigationBarItemView child = getNewItem(getViewType());
+      buttons[mVisibleItemCount] = child;
+      child.setVisibility(menu.getItem(index).isVisible() ? View.VISIBLE : View.GONE);
+      child.setIconTintList(itemIconTint);
+      child.setIconSize(itemIconSize);
+      child.setTextColor(itemTextColorDefault);
+      child.seslSetLabelTextAppearance(mSeslLabelTextAppearance);
+      child.setTextAppearanceInactive(itemTextAppearanceInactive);
+      child.setTextAppearanceActive(itemTextAppearanceActive);
+      child.setTextColor(itemTextColorFromUser);
+      if (itemBackground != null) {
+        child.setItemBackground(itemBackground);
+      } else {
+        child.setItemBackground(itemBackgroundRes);
+      }
+      child.setShifting(shifting);
+      child.setLabelVisibilityMode(labelVisibilityMode);
+      child.initialize((MenuItemImpl) menu.getItem(index), 0);
+      child.setItemPosition(mVisibleItemCount);
+      child.setOnClickListener(onClickListener);
+
+      if (selectedItemId != 0 && menu.getItem(index).getItemId() == selectedItemId) {
+        selectedItemPosition = mVisibleItemCount;
+      }
+
+      MenuItemImpl item = (MenuItemImpl) menu.getItem(index);
+      String badgeText = item.getBadgeText();
+      if (badgeText != null) {
+        seslAddBadge(badgeText, item.getItemId());
+      } else {
+        seslRemoveBadge(item.getItemId());
+      }
+      setBadgeIfNeeded(child);
+
+      if (child.getParent() instanceof ViewGroup) {
+        ((ViewGroup) child.getParent()).removeView(child);
+      }
+      addView(child);
+
+      mVisibleItemCount++;
+      if (child.getVisibility() == View.VISIBLE) {
+        mViewVisibleItemCount++;
+      }
+    }
+  }
+
+  private NavigationBarItemView ensureOverflowButton(boolean shifting) {
+    mHasOverflowMenu = true;
+    mDummyMenu = new MenuBuilder(getContext());
+
+    MenuInflater inflater = new MenuInflater(getContext());
+    inflater.inflate(R.menu.nv_dummy_overflow_menu_icon, mDummyMenu);
+
+    if (mDummyMenu.getItem(0) instanceof MenuItemImpl) {
+      MenuItemImpl item = (MenuItemImpl) mDummyMenu.getItem(0);
+      if (getViewType() == NavigationBarView.SESL_TYPE_ICON_LABEL) {
+        item.setTooltipText(null);
+      } else {
+        item.setTooltipText(getResources().getString(R.string.sesl_more_item_label));
+      }
+    }
+
+    NavigationBarItemView child = getNewItem(getViewType());
+    child.setIconTintList(itemIconTint);
+    child.setIconSize(itemIconSize);
+    child.setTextColor(itemTextColorDefault);
+    child.seslSetLabelTextAppearance(mSeslLabelTextAppearance);
+    child.setTextAppearanceInactive(itemTextAppearanceInactive);
+    child.setTextAppearanceActive(itemTextAppearanceActive);
+    child.setTextColor(itemTextColorFromUser);
+    if (itemBackground != null) {
+      child.setItemBackground(itemBackground);
+    } else {
+      child.setItemBackground(itemBackgroundRes);
+    }
+    child.setShifting(shifting);
+    child.setLabelVisibilityMode(labelVisibilityMode);
+    child.initialize((MenuItemImpl) mDummyMenu.getItem(0), 0);
+    child.setBadgeType(BADGE_TYPE_OVERFLOW);
+    child.setItemPosition(mVisibleItemCount);
+    child.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        mOverflowMenu.setCallback(mSelectedCallback);
+        presenter.showOverflowMenu(mOverflowMenu);
+      }
+    });
+    child.setContentDescription(getResources()
+        .getString(R.string.sesl_action_menu_overflow_description));
+    if (getViewType() == NavigationBarView.SESL_TYPE_LABEL_ONLY) {
+      initOverflowSpan(child);
+    }
+    if (child.getParent() instanceof ViewGroup) {
+      ((ViewGroup) child.getParent()).removeView(child);
+    }
+    addView(child);
+    return child;
+  }
+
+
+
+  protected void updateBadgeIfNeeded() {
+    if (buttons != null) {
+      for (NavigationBarItemView itemView : buttons) {
+        if (itemView != null) {
+          updateBadge(itemView);
+        } else {
+          return;
+        }
+      }
+    }
+  }
+
+  // TODO rework this method
+  // kang
+  private void updateBadge(NavigationBarItemView var1) {
+    /* var1 = itemView */
+    if (var1 != null) {
+      TextView var2 = (TextView)var1.findViewById(R.id.notifications_badge);
+      if (var2 != null) {
+        Resources var3 = this.getResources();
+        int var4 = var1.getBadgeType();
+        int var5 = var3.getDimensionPixelOffset(R.dimen.sesl_bottom_navigation_dot_badge_size);
+        int var6;
+        if (this.mVisibleItemCount == this.mMaxItemCount) {
+          var6 = var3.getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_mode_min_padding_horizontal);
+        } else {
+          var6 = var3.getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_mode_padding_horizontal);
+        }
+
+        int var7 = var3.getDimensionPixelSize(R.dimen.sesl_bottom_navigation_N_badge_top_margin);
+        int var8 = var3.getDimensionPixelSize(R.dimen.sesl_bottom_navigation_N_badge_start_margin);
+        TextView var9 = var1.getLabel();
+        int var10;
+        if (var9 == null) {
+          var10 = 1;
+        } else {
+          var10 = var9.getWidth();
+        }
+
+        int var11;
+        if (var9 == null) {
+          var11 = 1;
+        } else {
+          var11 = var9.getHeight();
+        }
+
+        int var13;
+        int var14;
+        if (var4 == 1) {
+          ViewCompat.setBackground(var2, var3.getDrawable(R.drawable.sesl_dot_badge));
+          var13 = var5;
+          var14 = var5;
+        } else {
+          ViewCompat.setBackground(var2, var3.getDrawable(R.drawable.sesl_tab_n_badge));
+          var2.measure(0, 0);
+          var14 = var2.getMeasuredWidth();
+          var13 = var2.getMeasuredHeight();
+        }
+
+        int var12;
+        if (this.getViewType() != 3) {
+          if (var4 == 1) {
+            var6 = this.getItemIconSize() / 2;
+            var12 = var5;
+            var5 = var6;
+          } else {
+            var6 = var2.getMeasuredWidth() / 2 - var6;
+            var12 = var5 / 2;
+            var5 = var6;
+          }
+        } else if (var4 == 1) {
+          var5 = (var10 + var2.getMeasuredWidth()) / 2;
+          var12 = (var1.getHeight() - var11) / 2;
+        } else if (var4 == 0) {
+          var5 = (var10 - var2.getMeasuredWidth() - var8) / 2;
+          var12 = (var1.getHeight() - var11) / 2 - var7;
+        } else {
+          var10 = (var10 + var2.getMeasuredWidth()) / 2;
+          var6 = (var1.getHeight() - var11) / 2 - var7;
+          var5 = var10;
+          var12 = var6;
+          if (var1.getWidth() / 2 + var10 + var2.getMeasuredWidth() / 2 > var1.getWidth()) {
+            var5 = var10 + (var1.getWidth() - (var1.getWidth() / 2 + var10 + var2.getMeasuredWidth() / 2));
+            var12 = var6;
+          }
+        }
+
+        MarginLayoutParams var15 = (MarginLayoutParams) var2.getLayoutParams();
+        var6 = var15.width;
+        var11 = var15.leftMargin;
+        if (var6 != var14 || var11 != var5) {
+          var15.width = var14;
+          var15.height = var13;
+          var15.topMargin = var12;
+          var15.setMarginStart(var5);
+          var2.setLayoutParams(var15);
+        }
+
+      }
+    }
+  }
+  // kang
+
+  void seslAddBadge(String text, int menuItemId) {
+    TextView badgeTextView;
+
+    NavigationBarItemView itemView = findItemView(menuItemId);
+    if (itemView != null) {
+      View badgeContainer = itemView.findViewById(R.id.notifications_badge_container);
+      if (badgeContainer != null) {
+        badgeTextView = badgeContainer.findViewById(R.id.notifications_badge);
+      } else {
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        badgeContainer = inflater.inflate(R.layout.sesl_navigation_bar_badge_layout,
+            this, false);
+        badgeTextView = badgeContainer.findViewById(R.id.notifications_badge);
+        itemView.addView(badgeContainer);
+      }
+
+      if (!isNumericValue(text)) {
+        itemView.setBadgeNumberless(false);
+      } else if (Integer.parseInt(text) > 999) {
+        itemView.setBadgeNumberless(true);
+        text = "999+";
+      } else {
+        itemView.setBadgeNumberless(false);
+      }
+    } else {
+      badgeTextView = null;
+    }
+
+    if (badgeTextView != null) {
+      badgeTextView.setText(text);
+    }
+
+    updateBadge(itemView);
+  }
+
+  void seslRemoveBadge(int menuItemId) {
+    NavigationBarItemView itemView = findItemView(menuItemId);
+    if (itemView != null) {
+      View badgeContainer = itemView.findViewById(R.id.notifications_badge_container);
+      if (badgeContainer != null) {
+        itemView.removeView(badgeContainer);
+      }
+    }
+  }
+
+  private boolean isNumericValue(String value) {
+    if (value == null) {
+      return false;
+    }
+    try {
+      Integer.parseInt(value);
+      return true;
+    } catch (NumberFormatException e) {
+      return false;
+    }
+  }
+
+  @Override
+  protected void onConfigurationChanged(Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    if (getViewType() != NavigationBarView.SESL_TYPE_LABEL_ONLY) {
+      setItemIconSize(getResources().getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_size));
+      if (buttons != null) {
+        for (NavigationBarItemView itemView : buttons) {
+          if (itemView == null) {
+            break;
+          }
+          itemView.updateLabelGroupTopMargin(
+              getResources().getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_size));
+        }
+      }
+    }
+    hideOverflowMenu();
+  }
+
+  class InternalBtnInfo {
+    int cnt = 0;
+    int[] originPos;
+
+    InternalBtnInfo(int size) {
+      originPos = new int[size];
+    }
+  }
+
+  @RestrictTo(LIBRARY)
+  public int getVisibleItemCount() {
+    return mVisibleItemCount;
+  }
+
+  @RestrictTo(LIBRARY)
+  public int getViewVisibleItemCount() {
+    return mViewVisibleItemCount;
+  }
+
+  private boolean isShowButtonShapesEnabled() {
+    return Settings.System.getInt(mContentResolver, "show_button_background", 0) == 1;
+  }
+
+  @RestrictTo(LIBRARY_GROUP_PREFIX)
+  public void setBackgroundColorDrawable(ColorDrawable d) {
+    mSBBTextColorDrawable = d;
+  }
+
+  @RestrictTo(LIBRARY_GROUP_PREFIX)
+  public ColorDrawable getBackgroundColorDrawable() {
+    return mSBBTextColorDrawable;
+  }
+
+  void setViewType(int viewType) {
+    mViewType = viewType;
+  }
+
+  @RestrictTo(LIBRARY)
+  public int getViewType() {
+    return mViewType;
+  }
+
+  private void setOverflowSpanColor(int color, boolean fromUser) {
+    if (mOverflowButton != null) {
+      SpannableStringBuilder labelImageSpan = mOverflowButton.getLabelImageSpan();
+      if (labelImageSpan != null) {
+        Drawable d = getContext().getDrawable(R.drawable.sesl_ic_menu_overflow_dark);
+
+        ImageSpan[] spans = labelImageSpan
+            .getSpans(0, labelImageSpan.length(), ImageSpan.class);
+        if (spans != null) {
+          for (ImageSpan span : spans) {
+            labelImageSpan.removeSpan(span);
+          }
+        }
+
+        ImageSpan imageSpan = new ImageSpan(d);
+        d.setState(
+            new int[]{
+                android.R.attr.state_enabled,
+                -android.R.attr.state_enabled
+            }
+        );
+        if (fromUser) {
+          d.setTintList(itemTextColorFromUser);
+        } else {
+          d.setTint(color);
+        }
+        d.setBounds(0, 0,
+            getResources().getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_size),
+            getResources().getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_size));
+        labelImageSpan.setSpan(imageSpan, 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
+        mOverflowButton.setLabelImageSpan(labelImageSpan);
+      }
+    }
+  }
+
+  private void initOverflowSpan(NavigationBarItemView itemView) {
+    Drawable d = getContext().getDrawable(R.drawable.sesl_ic_menu_overflow_dark);
+
+    SpannableStringBuilder span = new SpannableStringBuilder(" ");
+    ImageSpan imageSpan = new ImageSpan(d);
+    d.setState(
+        new int[]{
+            android.R.attr.state_enabled,
+            -android.R.attr.state_enabled
+        }
+    );
+    d.setTintList(itemTextColorFromUser);
+    d.setBounds(0, 0,
+        getResources().getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_size),
+        getResources().getDimensionPixelSize(R.dimen.sesl_bottom_navigation_icon_size));
+    span.setSpan(imageSpan, 0, 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+
+    itemView.setLabelImageSpan(span);
+  }
+
+  public void seslSetLabelTextAppearance(@StyleRes int textAppearanceRes) {
+    mSeslLabelTextAppearance = textAppearanceRes;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        if (item == null) {
+          break;
+        }
+        item.setTextAppearanceInactive(textAppearanceRes);
+        if (itemTextColorFromUser != null) {
+          item.setTextColor(itemTextColorFromUser);
+        }
+      }
+    }
+    if (mOverflowButton != null) {
+      mOverflowButton.setTextAppearanceInactive(textAppearanceRes);
+      if (itemTextColorFromUser != null) {
+        mOverflowButton.setTextColor(itemTextColorFromUser);
+      }
+    }
+  }
+
+  @StyleRes
+  public int seslGetLabelTextAppearance() {
+    return mSeslLabelTextAppearance;
+  }
+
+  void setGroupDividerEnabled(boolean enabled) {
+    mHasGroupDivider = enabled;
+    if (mOverflowMenu != null) {
+      mOverflowMenu.setGroupDividerEnabled(enabled);
+    } else {
+      updateMenuView();
+    }
+  }
+
 }
