@@ -15,8 +15,11 @@
   ~ limitations under the License.
 -->
 
+<!--SESL Variant-->
+
 <view
   xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/snackbar_layout"
   class="com.google.android.material.snackbar.SnackbarContentLayout"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
