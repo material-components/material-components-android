@@ -141,7 +141,11 @@ public class HeroCarouselDemoFragment extends DemoFragment {
         v -> heroStartCarouselLayoutManager.setCarouselAlignment(ALIGNMENT_CENTER));
 
     heroStartRecyclerView.setAdapter(adapter);
-    adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));
+    itemCountDropdown.post(() -> {
+      adapter.submitList(
+          CarouselData.createItems().subList(0, Integer.parseInt(itemCountDropdown.getText().toString())),
+          updateSliderRange(positionSlider, adapter));
+    });
   }
 
   private static Runnable updateSliderRange(Slider slider, CarouselAdapter adapter) {

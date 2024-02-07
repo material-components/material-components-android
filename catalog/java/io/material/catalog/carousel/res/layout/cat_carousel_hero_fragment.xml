@@ -103,6 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="none"
+        android:text="10"
         android:hint="@string/cat_carousel_adapter_item_count_hint_label"
         app:simpleItems="@array/cat_carousel_adapter_count_content"/>
 
