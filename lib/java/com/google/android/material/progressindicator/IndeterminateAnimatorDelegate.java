@@ -19,6 +19,7 @@ package com.google.android.material.progressindicator;
 import android.animation.Animator;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.progressindicator.DrawingDelegate.ActiveIndicator;
 import java.util.ArrayList;
@@ -83,4 +84,10 @@ abstract class IndeterminateAnimatorDelegate<T extends Animator> {
    * animation cycle.
    */
   public abstract void unregisterAnimatorsCompleteCallback();
+
+  @VisibleForTesting
+  abstract void setAnimationFraction(float fraction);
+
+  @VisibleForTesting
+  abstract void resetPropertiesForNewStart();
 }

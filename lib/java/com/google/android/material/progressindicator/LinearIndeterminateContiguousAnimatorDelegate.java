@@ -141,6 +141,7 @@ final class LinearIndeterminateContiguousAnimatorDelegate
   }
 
   @VisibleForTesting
+  @Override
   void resetPropertiesForNewStart() {
     dirtyColors = true;
     newIndicatorColorIndex = 1;
@@ -159,6 +160,7 @@ final class LinearIndeterminateContiguousAnimatorDelegate
   }
 
   @VisibleForTesting
+  @Override
   void setAnimationFraction(float value) {
     animationFraction = value;
     int playtime = (int) (animationFraction * DURATION_PER_CYCLE_IN_MS);
