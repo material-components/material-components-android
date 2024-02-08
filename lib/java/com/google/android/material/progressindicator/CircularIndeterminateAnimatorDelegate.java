@@ -204,6 +204,7 @@ final class CircularIndeterminateAnimatorDelegate
   }
 
   @VisibleForTesting
+  @Override
   void resetPropertiesForNewStart() {
     indicatorColorIndexOffset = 0;
     activeIndicators.get(0).color = baseSpec.indicatorColors[0];
@@ -217,6 +218,7 @@ final class CircularIndeterminateAnimatorDelegate
   }
 
   @VisibleForTesting
+  @Override
   void setAnimationFraction(float fraction) {
     animationFraction = fraction;
     int playtime = (int) (animationFraction * TOTAL_DURATION_IN_MS);
