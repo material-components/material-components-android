@@ -38,6 +38,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -68,8 +69,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewCompat.NestedScrollType;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
-import androidx.core.view.accessibility.AccessibilityViewCommand;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.appbar.AppBarLayout.BaseBehavior.SavedState;
@@ -1516,8 +1515,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     @Nullable private WeakReference<View> lastNestedScrollingChildRef;
     private BaseDragCallback onDragCallback;
 
-    private boolean coordinatorLayoutA11yScrollable;
-
     public BaseBehavior() {}
 
     public BaseBehavior(Context context, AttributeSet attrs) {
@@ -1610,7 +1607,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       if (dyUnconsumed == 0) {
         // The scrolling view may scroll to the top of its content without updating the actions, so
         // update here.
-        updateAccessibilityActions(coordinatorLayout, child);
+        addAccessibilityDelegateIfNeeded(coordinatorLayout, child);
       }
     }
 
@@ -1870,30 +1867,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       // Make sure we dispatch the offset update
       abl.onOffsetChanged(getTopAndBottomOffset());
 
-      updateAccessibilityActions(parent, abl);
+      addAccessibilityDelegateIfNeeded(parent, abl);
       return handled;
     }
 
-    private void updateAccessibilityActions(
+    private void addAccessibilityDelegateIfNeeded(
         CoordinatorLayout coordinatorLayout, @NonNull T appBarLayout) {
-      ViewCompat.removeAccessibilityAction(coordinatorLayout, ACTION_SCROLL_FORWARD.getId());
-      ViewCompat.removeAccessibilityAction(coordinatorLayout, ACTION_SCROLL_BACKWARD.getId());
-      // Don't add a11y actions if the abl has no scroll range.
-      if (appBarLayout.getTotalScrollRange() == 0) {
-        return;
-      }
-      // Don't add actions if a child view doesn't have the behavior that will cause the abl to
-      // scroll.
-      View scrollingView = getChildWithScrollingBehavior(coordinatorLayout);
-      if (scrollingView == null) {
-        return;
-      }
-
-      // Don't add actions if the children do not have scrolling flags.
-      if (!childrenHaveScrollFlags(appBarLayout)) {
-        return;
-      }
-
       if (!ViewCompat.hasAccessibilityDelegate(coordinatorLayout)) {
         ViewCompat.setAccessibilityDelegate(
             coordinatorLayout,
@@ -1902,14 +1881,87 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
               public void onInitializeAccessibilityNodeInfo(
                   View host, @NonNull AccessibilityNodeInfoCompat info) {
                 super.onInitializeAccessibilityNodeInfo(host, info);
-                info.setScrollable(coordinatorLayoutA11yScrollable);
                 info.setClassName(ScrollView.class.getName());
+                if (appBarLayout.getTotalScrollRange() == 0) {
+                  return;
+                }
+                View scrollingView = getChildWithScrollingBehavior(coordinatorLayout);
+                // Don't add actions if a child view doesn't have the behavior that will cause the
+                // ABL to scroll.
+                if (scrollingView == null) {
+                  return;
+                }
+
+                // Don't add actions if the children do not have scrolling flags.
+                if (!childrenHaveScrollFlags(appBarLayout)) {
+                  return;
+                }
+
+                if (getTopBottomOffsetForScrollingSibling()
+                    != -appBarLayout.getTotalScrollRange()) {
+                  // Add a collapsing action/forward if the view offset isn't the ABL scroll range.
+                  // (The same offset means the view is completely collapsed).
+                  info.addAction(ACTION_SCROLL_FORWARD);
+                  info.setScrollable(true);
+                }
+
+                // Don't add an expanding action if the sibling offset is 0, which would mean the
+                // ABL is completely expanded.
+                if (getTopBottomOffsetForScrollingSibling() != 0) {
+                  if (scrollingView.canScrollVertically(-1)) {
+                    final int dy = -appBarLayout.getDownNestedPreScrollRange();
+                    // Offset by non-zero.
+                    if (dy != 0) {
+                      info.addAction(ACTION_SCROLL_BACKWARD);
+                      info.setScrollable(true);
+                    }
+                  } else {
+                    info.addAction(ACTION_SCROLL_BACKWARD);
+                    info.setScrollable(true);
+                  }
+                }
+              }
+
+              @Override
+              public boolean performAccessibilityAction(View host, int action, Bundle args) {
+
+                if (action == AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD) {
+                  appBarLayout.setExpanded(false);
+                  return true;
+                } else if (action == AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD) {
+                  if (getTopBottomOffsetForScrollingSibling() != 0) {
+                    View scrollingView = getChildWithScrollingBehavior(coordinatorLayout);
+                    if (scrollingView.canScrollVertically(-1)) {
+                      // Expanding action. If the view can scroll down, expand the app bar
+                      // reflecting the logic
+                      // in onNestedPreScroll.
+                      final int dy = -appBarLayout.getDownNestedPreScrollRange();
+                      // Offset by non-zero.
+                      if (dy != 0) {
+                        onNestedPreScroll(
+                            coordinatorLayout,
+                            appBarLayout,
+                            scrollingView,
+                            0,
+                            dy,
+                            new int[] {0, 0},
+                            ViewCompat.TYPE_NON_TOUCH);
+                        return true;
+                      }
+                    } else {
+                      // If the view can't scroll down, we are probably at the top of the
+                      // scrolling content so expand completely.
+                      appBarLayout.setExpanded(true);
+                      return true;
+                    }
+                  }
+                } else {
+                  return super.performAccessibilityAction(host, action, args);
+                }
+                return false;
               }
             });
       }
-
-      coordinatorLayoutA11yScrollable =
-          addAccessibilityScrollActions(coordinatorLayout, appBarLayout, scrollingView);
     }
 
     @Nullable
@@ -1939,74 +1991,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         }
       }
       return false;
-    }
-
-    private boolean addAccessibilityScrollActions(
-        final CoordinatorLayout coordinatorLayout,
-        @NonNull final T appBarLayout,
-        @NonNull final View scrollingView) {
-      boolean a11yScrollable = false;
-      if (getTopBottomOffsetForScrollingSibling() != -appBarLayout.getTotalScrollRange()) {
-        // Add a collapsing action if the view offset isn't the abl scroll range.
-        // (The same offset means the view is completely collapsed). Collapse to minimum height.
-        addActionToExpand(coordinatorLayout, appBarLayout, ACTION_SCROLL_FORWARD, false);
-        a11yScrollable = true;
-      }
-      // Don't add an expanding action if the sibling offset is 0, which would mean the abl is
-      // completely expanded.
-      if (getTopBottomOffsetForScrollingSibling() != 0) {
-        if (scrollingView.canScrollVertically(-1)) {
-          // Expanding action. If the view can scroll down, expand the app bar reflecting the logic
-          // in onNestedPreScroll.
-          final int dy = -appBarLayout.getDownNestedPreScrollRange();
-          // Offset by non-zero.
-          if (dy != 0) {
-            ViewCompat.replaceAccessibilityAction(
-                coordinatorLayout,
-                ACTION_SCROLL_BACKWARD,
-                null,
-                new AccessibilityViewCommand() {
-                  @Override
-                  public boolean perform(@NonNull View view, @Nullable CommandArguments arguments) {
-                    onNestedPreScroll(
-                        coordinatorLayout,
-                        appBarLayout,
-                        scrollingView,
-                        0,
-                        dy,
-                        new int[] {0, 0},
-                        ViewCompat.TYPE_NON_TOUCH);
-                    return true;
-                  }
-                });
-            a11yScrollable = true;
-          }
-        } else {
-          // If the view can't scroll down, we are probably at the top of the scrolling content so
-          // expand completely.
-          addActionToExpand(coordinatorLayout, appBarLayout, ACTION_SCROLL_BACKWARD, true);
-          a11yScrollable = true;
-        }
-      }
-      return a11yScrollable;
-    }
-
-    private void addActionToExpand(
-        CoordinatorLayout parent,
-        @NonNull final T appBarLayout,
-        @NonNull AccessibilityActionCompat action,
-        final boolean expand) {
-      ViewCompat.replaceAccessibilityAction(
-          parent,
-          action,
-          null,
-          new AccessibilityViewCommand() {
-            @Override
-            public boolean perform(@NonNull View view, @Nullable CommandArguments arguments) {
-              appBarLayout.setExpanded(expand);
-              return true;
-            }
-          });
     }
 
     @Override
@@ -2112,7 +2096,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         offsetDelta = 0;
       }
 
-      updateAccessibilityActions(coordinatorLayout, appBarLayout);
+      addAccessibilityDelegateIfNeeded(coordinatorLayout, appBarLayout);
       return consumed;
     }
 
@@ -2410,8 +2394,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     public void onDependentViewRemoved(
         @NonNull CoordinatorLayout parent, @NonNull View child, @NonNull View dependency) {
       if (dependency instanceof AppBarLayout) {
-        ViewCompat.removeAccessibilityAction(parent, ACTION_SCROLL_FORWARD.getId());
-        ViewCompat.removeAccessibilityAction(parent, ACTION_SCROLL_BACKWARD.getId());
         ViewCompat.setAccessibilityDelegate(parent, null);
       }
     }
