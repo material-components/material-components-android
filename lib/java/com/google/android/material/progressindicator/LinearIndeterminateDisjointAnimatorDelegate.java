@@ -191,6 +191,7 @@ final class LinearIndeterminateDisjointAnimatorDelegate
   }
 
   @VisibleForTesting
+  @Override
   void resetPropertiesForNewStart() {
     indicatorColorIndex = 0;
     for (ActiveIndicator indicator : activeIndicators) {
@@ -205,6 +206,7 @@ final class LinearIndeterminateDisjointAnimatorDelegate
   }
 
   @VisibleForTesting
+  @Override
   void setAnimationFraction(float fraction) {
     animationFraction = fraction;
     int playtime = (int) (animationFraction * TOTAL_DURATION_IN_MS);
