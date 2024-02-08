@@ -25,11 +25,8 @@ import static com.google.android.material.testutils.SwipeUtils.swipeDown;
 import static com.google.android.material.testutils.SwipeUtils.swipeUp;
 import static com.google.android.material.testutils.TestUtilsActions.setText;
 import static com.google.android.material.testutils.TestUtilsActions.setTitle;
-import static org.hamcrest.CoreMatchers.equalTo;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
 
 import android.graphics.Color;
 import android.os.Build;
@@ -135,29 +132,31 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
 
   protected void assertAccessibilityHasScrollForwardAction(boolean hasScrollForward) {
     if (VERSION.SDK_INT >= 21) {
+      AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
+      ViewCompat.onInitializeAccessibilityNodeInfo(mCoordinatorLayout, info);
       assertThat(
-          AccessibilityUtils.hasAction(
-              mCoordinatorLayout, AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD),
-          equalTo(hasScrollForward));
+              AccessibilityUtils.hasAction(
+                  info,
+                  AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD))
+          .isEqualTo(hasScrollForward);
     }
   }
 
   protected void assertAccessibilityHasScrollBackwardAction(boolean hasScrollBackward) {
     if (VERSION.SDK_INT >= 21) {
+      AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
+      ViewCompat.onInitializeAccessibilityNodeInfo(mCoordinatorLayout, info);
       assertThat(
-          AccessibilityUtils.hasAction(
-              mCoordinatorLayout, AccessibilityNodeInfoCompat.ACTION_SCROLL_BACKWARD),
-          equalTo(hasScrollBackward));
+              AccessibilityUtils.hasAction(
+                  info,
+                  AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD))
+          .isEqualTo(hasScrollBackward);
     }
   }
 
   protected void assertAccessibilityScrollable(boolean isScrollable) {
     AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
     ViewCompat.onInitializeAccessibilityNodeInfo(mCoordinatorLayout, info);
-    if (isScrollable) {
-      assertTrue(info.isScrollable());
-    } else {
-      assertFalse(info.isScrollable());
-    }
+    assertThat(info.isScrollable()).isEqualTo(isScrollable);
   }
 }
