@@ -19,23 +19,24 @@
 
 <resources>
 
-  <!-- Generated from token set (md.sys.color) in context (theme=dark, platform=android, audience=3p, scheme=dynamic). -->
-  <!-- Primary colors -->
+  <!-- Generated from token set (md.sys.color) in context (theme=dark, platform=android, audience=3p,
+       scheme=dynamic). -->
+  <!-- Group: Primary colors -->
   <color name="m3_sys_color_dynamic_dark_primary">@color/m3_ref_palette_dynamic_primary80</color>
   <color name="m3_sys_color_dynamic_dark_on_primary">@color/m3_ref_palette_dynamic_primary20</color>
   <color name="m3_sys_color_dynamic_dark_primary_container">@color/m3_ref_palette_dynamic_primary30</color>
   <color name="m3_sys_color_dynamic_dark_on_primary_container">@color/m3_ref_palette_dynamic_primary90</color>
-  <!-- Secondary colors -->
+  <!-- Group: Secondary colors -->
   <color name="m3_sys_color_dynamic_dark_secondary">@color/m3_ref_palette_dynamic_secondary80</color>
   <color name="m3_sys_color_dynamic_dark_on_secondary">@color/m3_ref_palette_dynamic_secondary20</color>
   <color name="m3_sys_color_dynamic_dark_secondary_container">@color/m3_ref_palette_dynamic_secondary30</color>
   <color name="m3_sys_color_dynamic_dark_on_secondary_container">@color/m3_ref_palette_dynamic_secondary90</color>
-  <!-- Tertiary colors -->
+  <!-- Group: Tertiary colors -->
   <color name="m3_sys_color_dynamic_dark_tertiary">@color/m3_ref_palette_dynamic_tertiary80</color>
   <color name="m3_sys_color_dynamic_dark_on_tertiary">@color/m3_ref_palette_dynamic_tertiary20</color>
   <color name="m3_sys_color_dynamic_dark_tertiary_container">@color/m3_ref_palette_dynamic_tertiary30</color>
   <color name="m3_sys_color_dynamic_dark_on_tertiary_container">@color/m3_ref_palette_dynamic_tertiary90</color>
-  <!-- Surface colors -->
+  <!-- Group: Surface colors -->
   <!-- The resource value @color/m3_ref_palette_dynamic_neutral6 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface">@color/m3_ref_palette_dynamic_neutral_variant6</color>
   <color name="m3_sys_color_dynamic_dark_on_surface">@color/m3_ref_palette_dynamic_neutral90</color>
@@ -53,12 +54,12 @@
   <color name="m3_sys_color_dynamic_dark_surface_container_lowest">@color/m3_ref_palette_dynamic_neutral_variant4</color>
   <color name="m3_sys_color_dynamic_dark_inverse_surface">@color/m3_ref_palette_dynamic_neutral90</color>
   <color name="m3_sys_color_dynamic_dark_inverse_on_surface">@color/m3_ref_palette_dynamic_neutral20</color>
-  <!-- Outline colors -->
+  <!-- Group: Outline colors -->
   <color name="m3_sys_color_dynamic_dark_outline">@color/m3_ref_palette_dynamic_neutral_variant60</color>
   <color name="m3_sys_color_dynamic_dark_outline_variant">@color/m3_ref_palette_dynamic_neutral_variant30</color>
-  <!-- Add-ons - Add-on primary colors -->
+  <!-- Group: Add-ons - Add-on primary colors -->
   <color name="m3_sys_color_dynamic_dark_inverse_primary">@color/m3_ref_palette_dynamic_primary40</color>
-  <!-- Add-ons - Add-on surface colors -->
+  <!-- Group: Add-ons - Add-on surface colors -->
   <!-- The resource value @color/m3_ref_palette_dynamic_neutral6 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_background">@color/m3_ref_palette_dynamic_neutral_variant6</color>
   <color name="m3_sys_color_dynamic_dark_on_background">@color/m3_ref_palette_dynamic_neutral90</color>
@@ -67,23 +68,24 @@
   <!-- The resource value @color/m3_ref_palette_dynamic_neutral6 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_dark_surface_dim">@color/m3_ref_palette_dynamic_neutral_variant6</color>
 
-  <!-- Generated from token set (md.sys.color) in context (theme=light, platform=android, audience=3p, scheme=dynamic). -->
-  <!-- Primary colors -->
+  <!-- Generated from token set (md.sys.color) in context (theme=light, platform=android, audience=3p,
+       scheme=dynamic). -->
+  <!-- Group: Primary colors -->
   <color name="m3_sys_color_dynamic_light_primary">@color/m3_ref_palette_dynamic_primary40</color>
   <color name="m3_sys_color_dynamic_light_on_primary">@color/m3_ref_palette_dynamic_primary100</color>
   <color name="m3_sys_color_dynamic_light_primary_container">@color/m3_ref_palette_dynamic_primary90</color>
   <color name="m3_sys_color_dynamic_light_on_primary_container">@color/m3_ref_palette_dynamic_primary10</color>
-  <!-- Secondary colors -->
+  <!-- Group: Secondary colors -->
   <color name="m3_sys_color_dynamic_light_secondary">@color/m3_ref_palette_dynamic_secondary40</color>
   <color name="m3_sys_color_dynamic_light_on_secondary">@color/m3_ref_palette_dynamic_secondary100</color>
   <color name="m3_sys_color_dynamic_light_secondary_container">@color/m3_ref_palette_dynamic_secondary90</color>
   <color name="m3_sys_color_dynamic_light_on_secondary_container">@color/m3_ref_palette_dynamic_secondary10</color>
-  <!-- Tertiary colors -->
+  <!-- Group: Tertiary colors -->
   <color name="m3_sys_color_dynamic_light_tertiary">@color/m3_ref_palette_dynamic_tertiary40</color>
   <color name="m3_sys_color_dynamic_light_on_tertiary">@color/m3_ref_palette_dynamic_tertiary100</color>
   <color name="m3_sys_color_dynamic_light_tertiary_container">@color/m3_ref_palette_dynamic_tertiary90</color>
   <color name="m3_sys_color_dynamic_light_on_tertiary_container">@color/m3_ref_palette_dynamic_tertiary10</color>
-  <!-- Surface colors -->
+  <!-- Group: Surface colors -->
   <!-- The resource value @color/m3_ref_palette_dynamic_neutral98 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_surface">@color/m3_ref_palette_dynamic_neutral_variant98</color>
   <color name="m3_sys_color_dynamic_light_on_surface">@color/m3_ref_palette_dynamic_neutral10</color>
@@ -101,26 +103,26 @@
   <color name="m3_sys_color_dynamic_light_surface_container_lowest">@color/m3_ref_palette_dynamic_neutral_variant100</color>
   <color name="m3_sys_color_dynamic_light_inverse_surface">@color/m3_ref_palette_dynamic_neutral20</color>
   <color name="m3_sys_color_dynamic_light_inverse_on_surface">@color/m3_ref_palette_dynamic_neutral95</color>
-  <!-- Outline colors -->
+  <!-- Group: Outline colors -->
   <color name="m3_sys_color_dynamic_light_outline">@color/m3_ref_palette_dynamic_neutral_variant50</color>
   <color name="m3_sys_color_dynamic_light_outline_variant">@color/m3_ref_palette_dynamic_neutral_variant80</color>
-  <!-- Add-ons - Add-on primary colors -->
+  <!-- Group: Add-ons - Add-on primary colors -->
   <color name="m3_sys_color_dynamic_primary_fixed">@color/m3_ref_palette_dynamic_primary90</color>
   <color name="m3_sys_color_dynamic_on_primary_fixed">@color/m3_ref_palette_dynamic_primary10</color>
   <color name="m3_sys_color_dynamic_primary_fixed_dim">@color/m3_ref_palette_dynamic_primary80</color>
   <color name="m3_sys_color_dynamic_on_primary_fixed_variant">@color/m3_ref_palette_dynamic_primary30</color>
   <color name="m3_sys_color_dynamic_light_inverse_primary">@color/m3_ref_palette_dynamic_primary80</color>
-  <!-- Add-ons - Add-on secondary colors -->
+  <!-- Group: Add-ons - Add-on secondary colors -->
   <color name="m3_sys_color_dynamic_secondary_fixed">@color/m3_ref_palette_dynamic_secondary90</color>
   <color name="m3_sys_color_dynamic_on_secondary_fixed">@color/m3_ref_palette_dynamic_secondary10</color>
   <color name="m3_sys_color_dynamic_on_secondary_fixed_variant">@color/m3_ref_palette_dynamic_secondary30</color>
   <color name="m3_sys_color_dynamic_secondary_fixed_dim">@color/m3_ref_palette_dynamic_secondary80</color>
-  <!-- Add-ons - Add-on tertiary colors -->
+  <!-- Group: Add-ons - Add-on tertiary colors -->
   <color name="m3_sys_color_dynamic_tertiary_fixed">@color/m3_ref_palette_dynamic_tertiary90</color>
   <color name="m3_sys_color_dynamic_on_tertiary_fixed">@color/m3_ref_palette_dynamic_tertiary10</color>
   <color name="m3_sys_color_dynamic_on_tertiary_fixed_variant">@color/m3_ref_palette_dynamic_tertiary30</color>
   <color name="m3_sys_color_dynamic_tertiary_fixed_dim">@color/m3_ref_palette_dynamic_tertiary80</color>
-  <!-- Add-ons - Add-on surface colors -->
+  <!-- Group: Add-ons - Add-on surface colors -->
   <!-- The resource value @color/m3_ref_palette_dynamic_neutral98 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_background">@color/m3_ref_palette_dynamic_neutral_variant98</color>
   <color name="m3_sys_color_dynamic_light_on_background">@color/m3_ref_palette_dynamic_neutral10</color>
@@ -130,7 +132,7 @@
   <color name="m3_sys_color_dynamic_light_surface_dim">@color/m3_ref_palette_dynamic_neutral_variant87</color>
 
   <!-- Generated from token set (md.ref.palette) in context (platform=android, audience=3p). -->
-  <!-- Baseline palette – Primary -->
+  <!-- Group: Baseline palette – Primary -->
   <color name="m3_ref_palette_dynamic_primary100">@android:color/system_accent1_0</color>
   <color name="m3_ref_palette_dynamic_primary99">@android:color/system_accent1_10</color>
   <color name="m3_ref_palette_dynamic_primary95">@android:color/system_accent1_50</color>
@@ -144,7 +146,7 @@
   <color name="m3_ref_palette_dynamic_primary20">@android:color/system_accent1_800</color>
   <color name="m3_ref_palette_dynamic_primary10">@android:color/system_accent1_900</color>
   <color name="m3_ref_palette_dynamic_primary0">@android:color/system_accent1_1000</color>
-  <!-- Baseline palette – Secondary -->
+  <!-- Group: Baseline palette – Secondary -->
   <color name="m3_ref_palette_dynamic_secondary100">@android:color/system_accent2_0</color>
   <color name="m3_ref_palette_dynamic_secondary99">@android:color/system_accent2_10</color>
   <color name="m3_ref_palette_dynamic_secondary95">@android:color/system_accent2_50</color>
@@ -158,7 +160,7 @@
   <color name="m3_ref_palette_dynamic_secondary20">@android:color/system_accent2_800</color>
   <color name="m3_ref_palette_dynamic_secondary10">@android:color/system_accent2_900</color>
   <color name="m3_ref_palette_dynamic_secondary0">@android:color/system_accent2_1000</color>
-  <!-- Baseline palette – Tertiary -->
+  <!-- Group: Baseline palette – Tertiary -->
   <color name="m3_ref_palette_dynamic_tertiary100">@android:color/system_accent3_0</color>
   <color name="m3_ref_palette_dynamic_tertiary99">@android:color/system_accent3_10</color>
   <color name="m3_ref_palette_dynamic_tertiary95">@android:color/system_accent3_50</color>
@@ -172,7 +174,7 @@
   <color name="m3_ref_palette_dynamic_tertiary20">@android:color/system_accent3_800</color>
   <color name="m3_ref_palette_dynamic_tertiary10">@android:color/system_accent3_900</color>
   <color name="m3_ref_palette_dynamic_tertiary0">@android:color/system_accent3_1000</color>
-  <!-- Baseline palette – Neutral -->
+  <!-- Group: Baseline palette – Neutral -->
   <color name="m3_ref_palette_dynamic_neutral100">@android:color/system_neutral1_0</color>
   <color name="m3_ref_palette_dynamic_neutral99">@android:color/system_neutral1_10</color>
   <color name="m3_ref_palette_dynamic_neutral95">@android:color/system_neutral1_50</color>
@@ -186,7 +188,7 @@
   <color name="m3_ref_palette_dynamic_neutral20">@android:color/system_neutral1_800</color>
   <color name="m3_ref_palette_dynamic_neutral10">@android:color/system_neutral1_900</color>
   <color name="m3_ref_palette_dynamic_neutral0">@android:color/system_neutral1_1000</color>
-  <!-- Baseline palette – Neutral variant -->
+  <!-- Group: Baseline palette – Neutral variant -->
   <color name="m3_ref_palette_dynamic_neutral_variant100">@android:color/system_neutral2_0</color>
   <color name="m3_ref_palette_dynamic_neutral_variant99">@android:color/system_neutral2_10</color>
   <color name="m3_ref_palette_dynamic_neutral_variant95">@android:color/system_neutral2_50</color>

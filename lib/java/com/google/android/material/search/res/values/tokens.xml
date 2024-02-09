@@ -20,53 +20,53 @@
 <resources>
 
   <!-- Generated from token set (md.comp.search-bar) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Avatar -->
+  <!-- Group: Enabled - Avatar -->
   <style name="ShapeAppearance.M3.Comp.SearchBar.Avatar.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
   <dimen name="m3_comp_search_bar_avatar_size">30dp</dimen>
-  <!-- Enabled - Container -->
+  <!-- Group: Enabled - Container -->
   <macro name="m3_comp_search_bar_container_color">?attr/colorSurfaceContainerHigh</macro>
   <dimen name="m3_comp_search_bar_container_elevation">@dimen/m3_sys_elevation_level3</dimen>
   <style name="ShapeAppearance.M3.Comp.SearchBar.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
   <dimen name="m3_comp_search_bar_container_height">56dp</dimen>
-  <!-- Enabled - Leading icon -->
+  <!-- Group: Enabled - Leading icon -->
   <macro name="m3_comp_search_bar_leading_icon_color">?attr/colorOnSurface</macro>
-  <!-- Enabled - Trailing icon -->
+  <!-- Group: Enabled - Trailing icon -->
   <macro name="m3_comp_search_bar_trailing_icon_color">?attr/colorOnSurfaceVariant</macro>
-  <!-- Enabled - Supporting text -->
+  <!-- Group: Enabled - Supporting text -->
   <macro name="m3_comp_search_bar_supporting_text_color">?attr/colorOnSurfaceVariant</macro>
   <macro name="m3_comp_search_bar_supporting_text_type">?attr/textAppearanceBodyLarge</macro>
-  <!-- Enabled - Input text -->
+  <!-- Group: Enabled - Input text -->
   <macro name="m3_comp_search_bar_input_text_color">?attr/colorOnSurface</macro>
   <macro name="m3_comp_search_bar_input_text_type">?attr/textAppearanceBodyLarge</macro>
-  <!-- Hovered - State layer -->
+  <!-- Group: Hovered - State layer -->
   <macro name="m3_comp_search_bar_hover_state_layer_color">?attr/colorOnSurface</macro>
   <dimen name="m3_comp_search_bar_hover_state_layer_opacity">@dimen/m3_sys_state_hover_state_layer_opacity</dimen>
-  <!-- Hovered - Supporting text -->
+  <!-- Group: Hovered - Supporting text -->
   <macro name="m3_comp_search_bar_hover_supporting_text_color">?attr/colorOnSurfaceVariant</macro>
-  <!-- Pressed (ripple) - State layer -->
+  <!-- Group: Pressed (ripple) - State layer -->
   <macro name="m3_comp_search_bar_pressed_state_layer_color">?attr/colorOnSurface</macro>
   <dimen name="m3_comp_search_bar_pressed_state_layer_opacity">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
-  <!-- Pressed (ripple) - Supporting text -->
+  <!-- Group: Pressed (ripple) - Supporting text -->
   <macro name="m3_comp_search_bar_pressed_supporting_text_color">?attr/colorOnSurfaceVariant</macro>
 
   <!-- Generated from token set (md.comp.search-view) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Container -->
+  <!-- Group: Enabled - Container -->
   <macro name="m3_comp_search_view_container_color">?attr/colorSurfaceContainerHigh</macro>
   <style name="ShapeAppearance.M3.Comp.SearchView.FullScreen.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.None"/>
   <macro name="m3_comp_search_view_docked_container_shape">?attr/shapeAppearanceCornerExtraLarge</macro>
   <dimen name="m3_comp_search_view_container_elevation">@dimen/m3_sys_elevation_level3</dimen>
   <dimen name="m3_comp_search_view_full_screen_header_container_height">72dp</dimen>
   <dimen name="m3_comp_search_view_docked_header_container_height">56dp</dimen>
-  <!-- Enabled - Leading icon -->
+  <!-- Group: Enabled - Leading icon -->
   <macro name="m3_comp_search_view_header_leading_icon_color">?attr/colorOnSurface</macro>
-  <!-- Enabled - Trailing icon -->
+  <!-- Group: Enabled - Trailing icon -->
   <macro name="m3_comp_search_view_header_trailing_icon_color">?attr/colorOnSurfaceVariant</macro>
-  <!-- Enabled - Divider -->
+  <!-- Group: Enabled - Divider -->
   <macro name="m3_comp_search_view_divider_color">?attr/colorOutline</macro>
-  <!-- Enabled - Supporting text -->
+  <!-- Group: Enabled - Supporting text -->
   <macro name="m3_comp_search_view_header_supporting_text_color">?attr/colorOnSurfaceVariant</macro>
   <macro name="m3_comp_search_view_header_supporting_text_type">?attr/textAppearanceBodyLarge</macro>
-  <!-- Enabled - Input text -->
+  <!-- Group: Enabled - Input text -->
   <macro name="m3_comp_search_view_header_input_text_color">?attr/colorOnSurface</macro>
   <macro name="m3_comp_search_view_header_input_text_type">?attr/textAppearanceBodyLarge</macro>
 
