@@ -20,41 +20,41 @@
 <resources>
 
   <!-- Generated from token set (md.comp.switch) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Icon -->
+  <!-- Group: Enabled - Icon -->
   <macro name="m3_comp_switch_selected_icon_color">?attr/colorOnPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_icon_color">?attr/colorSurfaceContainerHighest</macro>
-  <!-- Enabled - Track -->
+  <!-- Group: Enabled - Track -->
   <dimen name="m3_comp_switch_track_height">32dp</dimen>
   <dimen name="m3_comp_switch_track_width">52dp</dimen>
   <macro name="m3_comp_switch_unselected_track_outline_color">?attr/colorOutline</macro>
   <style name="ShapeAppearance.M3.Comp.Switch.Track.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
   <macro name="m3_comp_switch_selected_track_color">?attr/colorPrimary</macro>
   <macro name="m3_comp_switch_unselected_track_color">?attr/colorSurfaceContainerHighest</macro>
-  <!-- Enabled - Handle -->
+  <!-- Group: Enabled - Handle -->
   <style name="ShapeAppearance.M3.Comp.Switch.Handle.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
   <macro name="m3_comp_switch_selected_handle_color">?attr/colorOnPrimary</macro>
   <macro name="m3_comp_switch_unselected_handle_color">?attr/colorOutline</macro>
-  <!-- Enabled - State layer -->
+  <!-- Group: Enabled - State layer -->
   <style name="ShapeAppearance.M3.Comp.Switch.StateLayer.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
-  <!-- Disabled - Icon -->
+  <!-- Group: Disabled - Icon -->
   <macro name="m3_comp_switch_disabled_selected_icon_color">?attr/colorOnSurface</macro>
   <item name="m3_comp_switch_disabled_selected_icon_opacity" format="float" type="dimen">0.38</item>
   <macro name="m3_comp_switch_disabled_unselected_icon_color">?attr/colorSurfaceContainerHighest</macro>
   <item name="m3_comp_switch_disabled_unselected_icon_opacity" format="float" type="dimen">0.38</item>
-  <!-- Disabled - Track -->
+  <!-- Group: Disabled - Track -->
   <item name="m3_comp_switch_disabled_track_opacity" format="float" type="dimen">0.12</item>
   <macro name="m3_comp_switch_disabled_selected_track_color">?attr/colorOnSurface</macro>
   <macro name="m3_comp_switch_disabled_unselected_track_color">?attr/colorSurfaceContainerHighest</macro>
   <macro name="m3_comp_switch_disabled_unselected_track_outline_color">?attr/colorOnSurface</macro>
-  <!-- Disabled - Handle -->
+  <!-- Group: Disabled - Handle -->
   <item name="m3_comp_switch_disabled_unselected_handle_opacity" format="float" type="dimen">0.38</item>
   <item name="m3_comp_switch_disabled_selected_handle_opacity" format="float" type="dimen">1</item>
   <macro name="m3_comp_switch_disabled_selected_handle_color">?attr/colorSurface</macro>
   <macro name="m3_comp_switch_disabled_unselected_handle_color">?attr/colorOnSurface</macro>
-  <!-- Hovered - Icon -->
+  <!-- Group: Hovered - Icon -->
   <macro name="m3_comp_switch_selected_hover_icon_color">?attr/colorOnPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_hover_icon_color">?attr/colorSurfaceContainerHighest</macro>
-  <!-- Hovered - Track -->
+  <!-- Group: Hovered - Track -->
   <macro name="m3_comp_switch_selected_hover_track_color">?attr/colorPrimary</macro>
   <macro name="m3_comp_switch_selected_hover_state_layer_color">?attr/colorPrimary</macro>
   <dimen name="m3_comp_switch_selected_hover_state_layer_opacity">@dimen/m3_sys_state_hover_state_layer_opacity</dimen>
@@ -62,13 +62,13 @@
   <macro name="m3_comp_switch_unselected_hover_track_outline_color">?attr/colorOutline</macro>
   <macro name="m3_comp_switch_unselected_hover_state_layer_color">?attr/colorOnSurface</macro>
   <dimen name="m3_comp_switch_unselected_hover_state_layer_opacity">@dimen/m3_sys_state_hover_state_layer_opacity</dimen>
-  <!-- Hovered - Handle -->
+  <!-- Group: Hovered - Handle -->
   <macro name="m3_comp_switch_selected_hover_handle_color">?attr/colorPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_hover_handle_color">?attr/colorOnSurfaceVariant</macro>
-  <!-- Focused - Icon -->
+  <!-- Group: Focused - Icon -->
   <macro name="m3_comp_switch_selected_focus_icon_color">?attr/colorOnPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_focus_icon_color">?attr/colorSurfaceContainerHighest</macro>
-  <!-- Focused - Track -->
+  <!-- Group: Focused - Track -->
   <macro name="m3_comp_switch_selected_focus_track_color">?attr/colorPrimary</macro>
   <macro name="m3_comp_switch_selected_focus_state_layer_color">?attr/colorPrimary</macro>
   <dimen name="m3_comp_switch_selected_focus_state_layer_opacity">@dimen/m3_sys_state_focus_state_layer_opacity</dimen>
@@ -76,13 +76,13 @@
   <macro name="m3_comp_switch_unselected_focus_track_outline_color">?attr/colorOutline</macro>
   <macro name="m3_comp_switch_unselected_focus_state_layer_color">?attr/colorOnSurface</macro>
   <dimen name="m3_comp_switch_unselected_focus_state_layer_opacity">@dimen/m3_sys_state_focus_state_layer_opacity</dimen>
-  <!-- Focused - Handle -->
+  <!-- Group: Focused - Handle -->
   <macro name="m3_comp_switch_selected_focus_handle_color">?attr/colorPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_focus_handle_color">?attr/colorOnSurfaceVariant</macro>
-  <!-- Pressed (ripple) - Icon -->
+  <!-- Group: Pressed (ripple) - Icon -->
   <macro name="m3_comp_switch_selected_pressed_icon_color">?attr/colorOnPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_pressed_icon_color">?attr/colorSurfaceContainerHighest</macro>
-  <!-- Pressed (ripple) - Track -->
+  <!-- Group: Pressed (ripple) - Track -->
   <macro name="m3_comp_switch_selected_pressed_track_color">?attr/colorPrimary</macro>
   <macro name="m3_comp_switch_selected_pressed_state_layer_color">?attr/colorPrimary</macro>
   <dimen name="m3_comp_switch_selected_pressed_state_layer_opacity">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
@@ -90,7 +90,7 @@
   <macro name="m3_comp_switch_unselected_pressed_track_outline_color">?attr/colorOutline</macro>
   <macro name="m3_comp_switch_unselected_pressed_state_layer_color">?attr/colorOnSurface</macro>
   <dimen name="m3_comp_switch_unselected_pressed_state_layer_opacity">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
-  <!-- Pressed (ripple) - Handle -->
+  <!-- Group: Pressed (ripple) - Handle -->
   <macro name="m3_comp_switch_selected_pressed_handle_color">?attr/colorPrimaryContainer</macro>
   <macro name="m3_comp_switch_unselected_pressed_handle_color">?attr/colorOnSurfaceVariant</macro>
 

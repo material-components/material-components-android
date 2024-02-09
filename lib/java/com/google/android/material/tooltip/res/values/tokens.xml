@@ -20,7 +20,7 @@
 <resources>
 
   <!-- Generated from token set (md.comp.plain-tooltip) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Supporting text -->
+  <!-- Group: Enabled - Supporting text -->
   <macro name="m3_comp_plain_tooltip_supporting_text_type">?attr/textAppearanceBodySmall</macro>
 
 </resources>

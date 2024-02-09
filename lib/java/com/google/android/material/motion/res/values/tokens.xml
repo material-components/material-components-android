@@ -20,7 +20,7 @@
 <resources>
 
   <!-- Generated from token set (md.sys.motion) in context (platform=android, audience=3p). -->
-  <!-- Easing -->
+  <!-- Group: Easing -->
   <!-- Easing string used in Material's MotionUtils class. -->
   <string name="m3_sys_motion_easing_emphasized" translatable="false">path(M 0,0 C 0.05, 0, 0.133333, 0.06, 0.166666, 0.4 C 0.208333, 0.82, 0.25, 1, 1, 1)</string>
   <!-- Vector path used in <pathInterpolator> resources. -->
@@ -88,7 +88,7 @@
   <item name="m3_sys_motion_easing_linear_control_y1" format="float" type="dimen">0</item>
   <item name="m3_sys_motion_easing_linear_control_x2" format="float" type="dimen">1</item>
   <item name="m3_sys_motion_easing_linear_control_y2" format="float" type="dimen">1</item>
-  <!-- Duration -->
+  <!-- Group: Duration -->
   <integer name="m3_sys_motion_duration_short1">50</integer>
   <integer name="m3_sys_motion_duration_short2">100</integer>
   <integer name="m3_sys_motion_duration_short3">150</integer>
@@ -105,7 +105,7 @@
   <integer name="m3_sys_motion_duration_extra_long2">800</integer>
   <integer name="m3_sys_motion_duration_extra_long3">900</integer>
   <integer name="m3_sys_motion_duration_extra_long4">1000</integer>
-  <!-- Style -->
+  <!-- Group: Style -->
   <!-- Linear motion path. -->
   <integer name="m3_sys_motion_path">0</integer>
 

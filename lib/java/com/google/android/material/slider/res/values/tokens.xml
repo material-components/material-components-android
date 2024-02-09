@@ -20,26 +20,26 @@
 <resources>
 
   <!-- Generated from token set (md.comp.slider) in context (platform=android, audience=3p). -->
-  <!-- Disabled - Track -->
+  <!-- Group: Disabled - Track -->
   <macro name="m3_comp_slider_disabled_active_track_color">?attr/colorOnSurface</macro>
   <item name="m3_comp_slider_disabled_active_track_opacity" format="float" type="dimen">0.38</item>
   <macro name="m3_comp_slider_disabled_inactive_track_color">?attr/colorSurfaceVariant</macro>
   <item name="m3_comp_slider_disabled_inactive_track_opacity" format="float" type="dimen">0.12</item>
-  <!-- Disabled - Handle -->
+  <!-- Group: Disabled - Handle -->
   <macro name="m3_comp_slider_disabled_handle_color">?attr/colorOnSurface</macro>
   <item name="m3_comp_slider_disabled_handle_opacity" format="float" type="dimen">0.38</item>
-  <!-- Enabled - Stop indicator -->
+  <!-- Group: Enabled - Stop indicator -->
   <dimen name="m3_comp_slider_stop_indicator_radius">4dp</dimen>
-  <!-- Enabled - Container -->
+  <!-- Group: Enabled - Container -->
   <macro name="m3_comp_slider_label_container_color">?attr/colorPrimary</macro>
-  <!-- Enabled - Label text -->
+  <!-- Group: Enabled - Label text -->
   <macro name="m3_comp_slider_label_label_text_color">?attr/colorOnPrimary</macro>
-  <!-- Enabled - Track -->
+  <!-- Group: Enabled - Track -->
   <dimen name="m3_comp_slider_inactive_track_height">16dp</dimen>
   <macro name="m3_comp_slider_active_track_color">?attr/colorPrimary</macro>
   <!-- The resource value ?attr/colorPrimaryContainer has been overridden by the config. -->
   <macro name="m3_comp_slider_inactive_track_color">?attr/colorSecondaryContainer</macro>
-  <!-- Enabled - Handle -->
+  <!-- Group: Enabled - Handle -->
   <macro name="m3_comp_slider_handle_color">?attr/colorPrimary</macro>
   <dimen name="m3_comp_slider_active_handle_height">44dp</dimen>
   <dimen name="m3_comp_slider_active_handle_width">4dp</dimen>

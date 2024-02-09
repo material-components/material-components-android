@@ -20,53 +20,53 @@
 <resources>
 
   <!-- Generated from token set (md.comp.navigation-drawer) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Container -->
+  <!-- Group: Enabled - Container -->
   <macro name="m3_comp_navigation_drawer_modal_container_color">?attr/colorSurfaceContainerLow</macro>
   <dimen name="m3_comp_navigation_drawer_modal_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
   <dimen name="m3_comp_navigation_drawer_standard_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
   <dimen name="m3_comp_navigation_drawer_container_width">360dp</dimen>
-  <!-- Enabled - Label text -->
+  <!-- Group: Enabled - Label text -->
   <macro name="m3_comp_navigation_drawer_active_label_text_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_label_text_color">?attr/colorOnSurfaceVariant</macro>
   <macro name="m3_comp_navigation_drawer_label_text_type">?attr/textAppearanceLabelLarge</macro>
-  <!-- Enabled - Icon -->
+  <!-- Group: Enabled - Icon -->
   <macro name="m3_comp_navigation_drawer_active_icon_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_icon_color">?attr/colorOnSurfaceVariant</macro>
   <dimen name="m3_comp_navigation_drawer_icon_size">24dp</dimen>
-  <!-- Enabled - Headline -->
+  <!-- Group: Enabled - Headline -->
   <macro name="m3_comp_navigation_drawer_headline_color">?attr/colorOnSurfaceVariant</macro>
   <macro name="m3_comp_navigation_drawer_headline_type">?attr/textAppearanceTitleSmall</macro>
-  <!-- Enabled - Active indicator -->
+  <!-- Group: Enabled - Active indicator -->
   <macro name="m3_comp_navigation_drawer_active_indicator_color">?attr/colorSecondaryContainer</macro>
   <style name="ShapeAppearance.M3.Comp.NavigationDrawer.ActiveIndicator.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
-  <!-- Hovered - Label text -->
+  <!-- Group: Hovered - Label text -->
   <macro name="m3_comp_navigation_drawer_active_hover_label_text_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_hover_label_text_color">?attr/colorOnSurface</macro>
-  <!-- Hovered - State layer -->
+  <!-- Group: Hovered - State layer -->
   <macro name="m3_comp_navigation_drawer_active_hover_state_layer_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_hover_state_layer_color">?attr/colorOnSurface</macro>
   <dimen name="m3_comp_navigation_drawer_hover_state_layer_opacity">@dimen/m3_sys_state_hover_state_layer_opacity</dimen>
-  <!-- Hovered - Icon -->
+  <!-- Group: Hovered - Icon -->
   <macro name="m3_comp_navigation_drawer_active_hover_icon_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_hover_icon_color">?attr/colorOnSurface</macro>
-  <!-- Focused - Label text -->
+  <!-- Group: Focused - Label text -->
   <macro name="m3_comp_navigation_drawer_active_focus_label_text_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_focus_label_text_color">?attr/colorOnSurface</macro>
-  <!-- Focused - State layer -->
+  <!-- Group: Focused - State layer -->
   <macro name="m3_comp_navigation_drawer_active_focus_state_layer_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_focus_state_layer_color">?attr/colorOnSurface</macro>
   <dimen name="m3_comp_navigation_drawer_focus_state_layer_opacity">@dimen/m3_sys_state_focus_state_layer_opacity</dimen>
-  <!-- Focused - Icon -->
+  <!-- Group: Focused - Icon -->
   <macro name="m3_comp_navigation_drawer_active_focus_icon_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_focus_icon_color">?attr/colorOnSurface</macro>
-  <!-- Pressed (ripple) - Label text -->
+  <!-- Group: Pressed (ripple) - Label text -->
   <macro name="m3_comp_navigation_drawer_active_pressed_label_text_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_pressed_label_text_color">?attr/colorOnSurface</macro>
-  <!-- Pressed (ripple) - State layer -->
+  <!-- Group: Pressed (ripple) - State layer -->
   <macro name="m3_comp_navigation_drawer_active_pressed_state_layer_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_pressed_state_layer_color">?attr/colorOnSecondaryContainer</macro>
   <dimen name="m3_comp_navigation_drawer_pressed_state_layer_opacity">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
-  <!-- Pressed (ripple) - Icon -->
+  <!-- Group: Pressed (ripple) - Icon -->
   <macro name="m3_comp_navigation_drawer_active_pressed_icon_color">?attr/colorOnSecondaryContainer</macro>
   <macro name="m3_comp_navigation_drawer_inactive_pressed_icon_color">?attr/colorOnSurface</macro>
 
