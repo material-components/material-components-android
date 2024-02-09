@@ -20,14 +20,14 @@
 <resources>
 
   <!-- Generated from token set (md.comp.progress-indicator) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Active Indicator -->
+  <!-- Group: Enabled - Active Indicator -->
   <macro name="m3_comp_progress_indicator_active_indicator_color">?attr/colorPrimary</macro>
-  <!-- Enabled - Track -->
+  <!-- Group: Enabled - Track -->
   <dimen name="m3_comp_progress_indicator_track_thickness">4dp</dimen>
   <macro name="m3_comp_progress_indicator_track_color">?attr/colorPrimaryContainer</macro>
-  <!-- Enabled - Stop indicator -->
+  <!-- Group: Enabled - Stop indicator -->
   <dimen name="m3_comp_progress_indicator_stop_indicator_size">4dp</dimen>
-  <!-- Enabled - Spacing -->
+  <!-- Group: Enabled - Spacing -->
   <dimen name="m3_comp_progress_indicator_active_indicator_track_space">4dp</dimen>
 
 </resources>

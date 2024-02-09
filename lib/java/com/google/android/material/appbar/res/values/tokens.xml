@@ -20,32 +20,32 @@
 <resources>
 
   <!-- Generated from token set (md.comp.top-app-bar.small) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Container -->
+  <!-- Group: Enabled - Container -->
   <macro name="m3_comp_top_app_bar_small_container_color">?attr/colorSurface</macro>
   <macro name="m3_comp_top_app_bar_small_on_scroll_container_color">?attr/colorSurfaceContainer</macro>
   <dimen name="m3_comp_top_app_bar_small_container_height">64dp</dimen>
   <dimen name="m3_comp_top_app_bar_small_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
-  <!-- Enabled - Leading icon -->
+  <!-- Group: Enabled - Leading icon -->
   <macro name="m3_comp_top_app_bar_small_leading_icon_color">?attr/colorOnSurface</macro>
-  <!-- Enabled - Trailing icon -->
+  <!-- Group: Enabled - Trailing icon -->
   <macro name="m3_comp_top_app_bar_small_trailing_icon_color">?attr/colorOnSurfaceVariant</macro>
-  <!-- Enabled - Headline -->
+  <!-- Group: Enabled - Headline -->
   <macro name="m3_comp_top_app_bar_small_headline_type">?attr/textAppearanceTitleLarge</macro>
   <macro name="m3_comp_top_app_bar_small_headline_color">?attr/colorOnSurface</macro>
-  <!-- Enabled - On scroll -->
+  <!-- Group: Enabled - On scroll -->
   <dimen name="m3_comp_top_app_bar_small_on_scroll_container_elevation">@dimen/m3_sys_elevation_level2</dimen>
 
   <!-- Generated from token set (md.comp.top-app-bar.medium) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Container -->
+  <!-- Group: Enabled - Container -->
   <dimen name="m3_comp_top_app_bar_medium_container_height">112dp</dimen>
-  <!-- Enabled - Headline -->
+  <!-- Group: Enabled - Headline -->
   <macro name="m3_comp_top_app_bar_medium_headline_type">?attr/textAppearanceHeadlineSmall</macro>
   <macro name="m3_comp_top_app_bar_medium_headline_color">?attr/colorOnSurface</macro>
 
   <!-- Generated from token set (md.comp.top-app-bar.large) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Container -->
+  <!-- Group: Enabled - Container -->
   <dimen name="m3_comp_top_app_bar_large_container_height">152dp</dimen>
-  <!-- Enabled - Headline -->
+  <!-- Group: Enabled - Headline -->
   <macro name="m3_comp_top_app_bar_large_headline_type">?attr/textAppearanceHeadlineMedium</macro>
   <macro name="m3_comp_top_app_bar_large_headline_color">?attr/colorOnSurface</macro>
 

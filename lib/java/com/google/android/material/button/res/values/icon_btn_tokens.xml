@@ -20,26 +20,27 @@
 <resources>
 
   <!-- Generated from token set (md.comp.icon-button) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Icon -->
+  <!-- Group: Enabled - Icon -->
   <macro name="m3_comp_icon_button_unselected_icon_color">?attr/colorOnSurfaceVariant</macro>
   <macro name="m3_comp_icon_button_selected_icon_color">?attr/colorPrimary</macro>
 
   <!-- Generated from token set (md.comp.filled-icon-button) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Container -->
+  <!-- Group: Enabled - Container -->
   <macro name="m3_comp_filled_icon_button_container_color">?attr/colorPrimary</macro>
-  <!-- Enabled - Icon -->
+  <!-- Group: Enabled - Icon -->
   <macro name="m3_comp_filled_icon_button_toggle_unselected_icon_color">?attr/colorPrimary</macro>
   <macro name="m3_comp_filled_icon_button_toggle_selected_icon_color">?attr/colorOnPrimary</macro>
 
-  <!-- Generated from token set (md.comp.filled-tonal-icon-button) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Container -->
+  <!-- Generated from token set (md.comp.filled-tonal-icon-button) in context (platform=android,
+       audience=3p). -->
+  <!-- Group: Enabled - Container -->
   <macro name="m3_comp_filled_tonal_icon_button_container_color">?attr/colorSecondaryContainer</macro>
-  <!-- Enabled - Icon -->
+  <!-- Group: Enabled - Icon -->
   <macro name="m3_comp_filled_tonal_icon_button_toggle_unselected_icon_color">?attr/colorOnSurfaceVariant</macro>
   <macro name="m3_comp_filled_tonal_icon_button_toggle_selected_icon_color">?attr/colorOnSecondaryContainer</macro>
 
   <!-- Generated from token set (md.comp.outlined-icon-button) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Outline -->
+  <!-- Group: Enabled - Outline -->
   <dimen name="m3_comp_outlined_icon_button_unselected_outline_width">1dp</dimen>
 
 </resources>

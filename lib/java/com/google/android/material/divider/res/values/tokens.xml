@@ -20,7 +20,7 @@
 <resources>
 
   <!-- Generated from token set (md.comp.divider) in context (platform=android, audience=3p). -->
-  <!-- Enabled - Container -->
+  <!-- Group: Enabled - Container -->
   <dimen name="m3_comp_divider_thickness">1dp</dimen>
   <macro name="m3_comp_divider_color">?attr/colorOutlineVariant</macro>
 
