@@ -16,6 +16,8 @@
 
 package com.google.android.material.drawable;
 
+import com.google.android.material.R;
+
 import static java.lang.Math.max;
 
 import android.annotation.SuppressLint;
@@ -41,9 +43,11 @@ import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.Gravity;
 import androidx.annotation.ColorInt;
+import androidx.annotation.DoNotInline;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.XmlRes;
@@ -359,18 +363,18 @@ public final class DrawableUtils {
   /** Sets the Outline to a {@link android.graphics.Path path}, if possible. */
   public static void setOutlineToPath(@NonNull final Outline outline, @NonNull final Path path) {
     if (VERSION.SDK_INT >= VERSION_CODES.R) {
-      outline.setPath(path);
+      OutlineCompatR.setPath(outline, path);
     } else if (VERSION.SDK_INT >= VERSION_CODES.Q) {
       try {
         // As of Android Q, the restriction that the path must be convex is removed, but the API is
         // misnamed until the introduction of setPath() in R, so we have to use setConvexPath for Q.
-        outline.setConvexPath(path);
+        OutlineCompatL.setConvexPath(outline, path);
       } catch (IllegalArgumentException ignored) {
         // The change to support concave paths was done late in the release cycle. People
         // using pre-releases of Q would experience a crash here.
       }
     } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && path.isConvex()) {
-      outline.setConvexPath(path);
+      OutlineCompatL.setConvexPath(outline, path);
     }
   }
 
@@ -400,5 +404,23 @@ public final class DrawableUtils {
     }
 
     return null;
+  }
+
+  @RequiresApi(VERSION_CODES.R)
+  private static class OutlineCompatR {
+    // Avoid class verification failures on older Android versions.
+    @DoNotInline
+    static void setPath(@NonNull Outline outline, @NonNull Path path) {
+      outline.setPath(path);
+    }
+  }
+
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
+  private static class OutlineCompatL {
+    // Avoid class verification failures on older Android versions.
+    @DoNotInline
+    static void setConvexPath(@NonNull Outline outline, @NonNull Path path) {
+      outline.setConvexPath(path);
+    }
   }
 }
