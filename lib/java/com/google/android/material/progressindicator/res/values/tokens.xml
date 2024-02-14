@@ -24,7 +24,8 @@
   <macro name="m3_comp_progress_indicator_active_indicator_color">?attr/colorPrimary</macro>
   <!-- Group: Enabled - Track -->
   <dimen name="m3_comp_progress_indicator_track_thickness">4dp</dimen>
-  <macro name="m3_comp_progress_indicator_track_color">?attr/colorPrimaryContainer</macro>
+  <!-- The resource value ?attr/colorPrimaryContainer has been overridden by the config. -->
+  <macro name="m3_comp_progress_indicator_track_color">?attr/colorSecondaryContainer</macro>
   <!-- Group: Enabled - Stop indicator -->
   <dimen name="m3_comp_progress_indicator_stop_indicator_size">4dp</dimen>
   <!-- Group: Enabled - Spacing -->
