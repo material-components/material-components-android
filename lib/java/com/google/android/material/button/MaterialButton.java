@@ -65,7 +65,7 @@ import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
-import androidx.resourceinspection.annotation.Attribute;
+import com.google.android.material.resourceinspection.Attribute;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
