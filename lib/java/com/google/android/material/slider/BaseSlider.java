@@ -2205,11 +2205,28 @@ abstract class BaseSlider<
   private void addRoundedCorners(
       Path path, RectF bounds, float leftCornerSize, float rightCornerSize) {
     cornerRect.set(
-        bounds.left - leftCornerSize, bounds.top, bounds.left + leftCornerSize, bounds.bottom);
-    path.addRoundRect(cornerRect, leftCornerSize, leftCornerSize, Direction.CW);
+        bounds.left - leftCornerSize,
+        bounds.top,
+        bounds.left + trackInsideCornerSize,
+        bounds.bottom);
+    float[] leftCornerRadii = getCornerRadii(leftCornerSize, trackInsideCornerSize);
+    path.addRoundRect(cornerRect, leftCornerRadii, Direction.CW);
     cornerRect.set(
-        bounds.right - rightCornerSize, bounds.top, bounds.right + rightCornerSize, bounds.bottom);
-    path.addRoundRect(cornerRect, rightCornerSize, rightCornerSize, Direction.CW);
+        bounds.right - trackInsideCornerSize,
+        bounds.top,
+        bounds.right + rightCornerSize,
+        bounds.bottom);
+    float[] rightCornerRadii = getCornerRadii(trackInsideCornerSize, rightCornerSize);
+    path.addRoundRect(cornerRect, rightCornerRadii, Direction.CW);
+  }
+
+  private float[] getCornerRadii(float leftSide, float rightSide) {
+    return new float[] {
+        leftSide, leftSide,
+        rightSide, rightSide,
+        rightSide, rightSide,
+        leftSide, leftSide
+    };
   }
 
   private void maybeDrawTicks(@NonNull Canvas canvas) {
