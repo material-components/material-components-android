@@ -1,0 +1,6 @@
+# Text proto format: devtools_piper.OwnersMetadataFile (go/owners_metadata)
+# See go/silos-lite for details on how to use this file for read access control.
+open_access_to_restricted_users {
+  allowed_ganpati_groups: "job-brandstudiostaffaugmentation-offshoredeveloper"
+  allowed_ganpati_groups: "job-brandstudiostaffaugmentation-embeddedagencydeveloper"
+}
