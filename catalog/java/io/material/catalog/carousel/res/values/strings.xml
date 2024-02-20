@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2022 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+  <string name="cat_carousel_debug_mode_label" translatable="false">Debug mode</string>
+  <string name="cat_carousel_draw_dividers_label" translatable="false">Draw dividers</string>
+  <string name="cat_carousel_enable_snap_label" description="The title of a switch to enable snapping to carousel items.[CHAR_LIMIT=NONE]">Enable Snap</string>
+  <string name="cat_carousel_enable_fling_label" description="The title of a switch to enable the flinging gesture.[CHAR_LIMIT=NONE]">Enable fling</string>
+  <string name="cat_carousel_start_align_label" description="The title of a button to make the carousel start-aligned.[CHAR_LIMIT=NONE]">Start align</string>
+  <string name="cat_carousel_center_align_label" description="The title of a button to make the carousel center-aligned.[CHAR_LIMIT=NONE]">Center align</string>
+
+  <string name="cat_carousel_show_debug_options" description="The title of the button that shows carousel debug options.[CHAR_LIMIT=NONE]">Show debug options</string>
+
+  <string name="cat_carousel_adapter_item_count_hint_label" translatable="false">Item count</string>
+  <string name="cat_carousel_position_slider_label" translatable="false">Scroll position</string>
+  <string name="cat_carousel_snap_switch_description" description="Content description of a switch to enable snapping.[CHAR_LIMIT=NONE]">Enable snapping to carousel items</string>
+  <string name="cat_carousel_position_slider_content_description" translatable="false">Scroll position slider</string>
+
+  <string-array name="cat_carousel_adapter_count_content" translatable="false">
+    <item>0</item>
+    <item>1</item>
+    <item>2</item>
+    <item>3</item>
+    <item>4</item>
+    <item>5</item>
+    <item>6</item>
+    <item>7</item>
+    <item>8</item>
+    <item>9</item>
+    <item>10</item>
+  </string-array>
+
+
+  <string name="cat_carousel_title" translatable="false">Carousel</string>
+  <string name="cat_carousel_description" translatable="false">Carousels are stylized versions of lists that provide a unique viewing and behavior that suit large imagery and other visually rich content.</string>
+
+  <string name="cat_carousel_multi_browse_demo_title" translatable="false">Multi-browse Carousel</string>
+  <string name="cat_carousel_hero_demo_title" description="Name of the hero variant demo. [CHAR_LIMIT=NONE]">Hero Carousel</string>
+  <string name="cat_carousel_fullscreen_demo_title" translatable="false">Fullscreen Carousel</string>
+  <string name="cat_carousel_uncontained_demo_title" description="Name of the uncontained variant demo. [CHAR_LIMIT=NONE]">Uncontained Carousel</string>
+
+  <string name="cat_carousel_multi_browse_title" translatable="false">Multi-browse</string>
+  <string name="cat_carousel_multi_browse_desc" translatable="false">Multi-browse carousels allow quick browsing of many small items, like a photo thumbnail gallery.</string>
+
+  <string name="cat_carousel_hero_title" description="Title of the hero variant demo. [CHAR_LIMIT=NONE]">Hero</string>
+  <string name="cat_carousel_hero_desc" description="Description of the hero variant demo.[CHAR_LIMIT=NONE]">Hero carousels allow browsing with a focus on one main item at a time.</string>
+
+  <string name="cat_carousel_fullscreen_title" description="Title of the fullscreen variant demo. [CHAR_LIMIT=NONE]">Fullscreen</string>
+  <string name="cat_carousel_fullscreen_desc" description="Title of the fullscreen variant demo. [CHAR_LIMIT=NONE]">Fullscreen carousels allow browsing with a focus on one item at a time.</string>
+
+  <string name="cat_carousel_uncontained_title" description="Title of the uncontained variant demo. [CHAR_LIMIT=NONE]">Uncontained</string>
+  <string name="cat_carousel_uncontained_desc" description="Title of the uncontained variant demo. [CHAR_LIMIT=NONE]">Uncontained carousels show items at their original sizes, with items getting smaller as they reach the edges of the screen and are cut off in the direction they scroll.</string>
+
+  <string name="cat_carousel_image_1_content_desc" translatable="false">A daisy at sunset</string>
+  <string name="cat_carousel_image_2_content_desc" translatable="false">Portrait of a person with hair covering their face</string>
+  <string name="cat_carousel_image_3_content_desc" translatable="false">Fungus on a tree</string>
+  <string name="cat_carousel_image_4_content_desc" translatable="false">A train station in Japan</string>
+  <string name="cat_carousel_image_5_content_desc" translatable="false">A beekeeper at work</string>
+  <string name="cat_carousel_image_6_content_desc" translatable="false">A person hiking wearing a backpack</string>
+  <string name="cat_carousel_image_7_content_desc" translatable="false">Three mushrooms growing on a log</string>
+  <string name="cat_carousel_image_8_content_desc" translatable="false">Poke bowls</string>
+  <string name="cat_carousel_image_9_content_desc" translatable="false">Bento box</string>
+  <string name="cat_carousel_image_10_content_desc" translatable="false">White metal patio chairs</string>
+</resources>
