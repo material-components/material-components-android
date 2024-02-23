@@ -2052,7 +2052,7 @@ abstract class BaseSlider<
   private void drawInactiveTrack(@NonNull Canvas canvas, int width, int yCenter) {
     float[] activeRange = getActiveRange();
     float right = trackSidePadding + activeRange[1] * width;
-    if (right < trackSidePadding + width - thumbTrackGapSize) {
+    if (right < trackSidePadding + width - thumbTrackGapSize - trackInsideCornerSize) {
       if (hasGapBetweenThumbAndTrack()) {
         trackRect.set(
             right + thumbTrackGapSize,
@@ -2069,7 +2069,7 @@ abstract class BaseSlider<
 
     // Also draw inactive track to the left if there is any
     float left = trackSidePadding + activeRange[0] * width;
-    if (left > trackSidePadding + thumbTrackGapSize) {
+    if (left > trackSidePadding + thumbTrackGapSize + trackInsideCornerSize) {
       if (hasGapBetweenThumbAndTrack()) {
         trackRect.set(
             trackSidePadding - trackHeight / 2f,
@@ -2131,12 +2131,12 @@ abstract class BaseSlider<
           case LEFT:
             left -= trackHeight / 2f;
             right -= thumbTrackGapSize;
-            threshold = trackInsideCornerSize + trackHeight / 2f + thumbTrackGapSize;
+            threshold = trackInsideCornerSize + trackHeight / 2f;
             break;
           case RIGHT:
             left += thumbTrackGapSize;
             right += trackHeight / 2f;
-            threshold = trackInsideCornerSize + trackHeight / 2f + thumbTrackGapSize;
+            threshold = trackInsideCornerSize + trackHeight / 2f;
             break;
           default:
             // fall through
