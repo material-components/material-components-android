@@ -71,7 +71,7 @@
     <item name="thumbWidth">@dimen/m3_comp_slider_active_handle_width</item>
     <item name="thumbHeight">@dimen/m3_comp_slider_active_handle_height</item>
     <item name="thumbTrackGapSize">@dimen/m3_comp_slider_active_handle_leading_space</item>
-    <item name="trackStopIndicatorSize">@dimen/m3_comp_slider_stop_indicator_radius</item>
+    <item name="trackStopIndicatorSize">@dimen/m3_comp_slider_stop_indicator_size</item>
   </style>
 
   <style name="Widget.Material3.Slider.Label" parent="Widget.Material3.Tooltip">
