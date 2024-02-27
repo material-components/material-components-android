@@ -2052,7 +2052,7 @@ abstract class BaseSlider<
   private void drawInactiveTrack(@NonNull Canvas canvas, int width, int yCenter) {
     float[] activeRange = getActiveRange();
     float right = trackSidePadding + activeRange[1] * width;
-    if (right < trackSidePadding + width - thumbTrackGapSize) {
+    if (right < trackSidePadding + width) {
       if (hasGapBetweenThumbAndTrack()) {
         trackRect.set(
             right + thumbTrackGapSize,
@@ -2069,7 +2069,7 @@ abstract class BaseSlider<
 
     // Also draw inactive track to the left if there is any
     float left = trackSidePadding + activeRange[0] * width;
-    if (left > trackSidePadding + thumbTrackGapSize) {
+    if (left > trackSidePadding) {
       if (hasGapBetweenThumbAndTrack()) {
         trackRect.set(
             trackSidePadding - trackHeight / 2f,
@@ -2121,29 +2121,25 @@ abstract class BaseSlider<
           }
         }
 
-        float threshold = 0;
         switch (direction) {
           case NONE:
             left += thumbTrackGapSize;
             right -= thumbTrackGapSize;
-            threshold = trackInsideCornerSize * 2;
             break;
           case LEFT:
             left -= trackHeight / 2f;
             right -= thumbTrackGapSize;
-            threshold = trackInsideCornerSize + trackHeight / 2f + thumbTrackGapSize;
             break;
           case RIGHT:
             left += thumbTrackGapSize;
             right += trackHeight / 2f;
-            threshold = trackInsideCornerSize + trackHeight / 2f + thumbTrackGapSize;
             break;
           default:
             // fall through
         }
 
-        // Active track is too small to be drawn
-        if (right - left <= threshold) {
+        // Nothing to draw if left is bigger than right.
+        if (left >= right) {
           continue;
         }
 
@@ -2187,29 +2183,52 @@ abstract class BaseSlider<
         rightCornerSize = trackInsideCornerSize;
         break;
     }
-    bounds.left += leftCornerSize;
-    bounds.right -= rightCornerSize;
 
-    // Build track path with rounded corners.
-    trackPath.reset();
-    trackPath.addRect(bounds, Direction.CW);
-    addRoundedCorners(trackPath, bounds, leftCornerSize, rightCornerSize);
-
-    // Draw the track.
     paint.setStyle(Style.FILL);
     paint.setStrokeCap(Cap.BUTT);
     paint.setAntiAlias(true);
-    canvas.drawPath(trackPath, paint);
+
+    // Draws track path with rounded corners.
+    trackPath.reset();
+    if (bounds.width() >= leftCornerSize + rightCornerSize) {
+      // Fills one rounded rectangle.
+      trackPath.addRoundRect(bounds, getCornerRadii(leftCornerSize, rightCornerSize), Direction.CW);
+      canvas.drawPath(trackPath, paint);
+    } else {
+      // Clips the canvas and draws the fully rounded track.
+      float minCornerSize = min(leftCornerSize, rightCornerSize);
+      float maxCornerSize = max(leftCornerSize, rightCornerSize);
+      canvas.save();
+      // Clips the canvas using the current bounds with the smaller corner size.
+      trackPath.addRoundRect(bounds, minCornerSize, minCornerSize, Direction.CW);
+      canvas.clipPath(trackPath);
+      // Then draws a rectangle with the minimum width for full corners.
+      switch (direction) {
+        case LEFT:
+          cornerRect.set(bounds.left, bounds.top, bounds.left + 2 * maxCornerSize, bounds.bottom);
+          break;
+        case RIGHT:
+          cornerRect.set(bounds.right - 2 * maxCornerSize, bounds.top, bounds.right, bounds.bottom);
+          break;
+        default:
+          cornerRect.set(
+              bounds.centerX() - maxCornerSize,
+              bounds.top,
+              bounds.centerX() + maxCornerSize,
+              bounds.bottom);
+      }
+      canvas.drawRoundRect(cornerRect, maxCornerSize, maxCornerSize, paint);
+      canvas.restore();
+    }
   }
 
-  private void addRoundedCorners(
-      Path path, RectF bounds, float leftCornerSize, float rightCornerSize) {
-    cornerRect.set(
-        bounds.left - leftCornerSize, bounds.top, bounds.left + leftCornerSize, bounds.bottom);
-    path.addRoundRect(cornerRect, leftCornerSize, leftCornerSize, Direction.CW);
-    cornerRect.set(
-        bounds.right - rightCornerSize, bounds.top, bounds.right + rightCornerSize, bounds.bottom);
-    path.addRoundRect(cornerRect, rightCornerSize, rightCornerSize, Direction.CW);
+  private float[] getCornerRadii(float leftSide, float rightSide) {
+    return new float[] {
+      leftSide, leftSide,
+      rightSide, rightSide,
+      rightSide, rightSide,
+      leftSide, leftSide
+    };
   }
 
   private void maybeDrawTicks(@NonNull Canvas canvas) {
