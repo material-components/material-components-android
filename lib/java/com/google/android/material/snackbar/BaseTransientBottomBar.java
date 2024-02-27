@@ -1036,7 +1036,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           public void onAnimationUpdate(@NonNull ValueAnimator animator) {
             int currentAnimatedIntValue = (int) animator.getAnimatedValue();
             if (USE_OFFSET_API) {
-              // On JB/KK versions of the platform sometimes View.setTranslationY does not
+              // On KitKat versions of the platform sometimes View.setTranslationY does not
               // result in layout / draw pass
               ViewCompat.offsetTopAndBottom(
                   view, currentAnimatedIntValue - previousAnimatedIntValue);
@@ -1074,7 +1074,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           public void onAnimationUpdate(@NonNull ValueAnimator animator) {
             int currentAnimatedIntValue = (int) animator.getAnimatedValue();
             if (USE_OFFSET_API) {
-              // On JB/KK versions of the platform sometimes View.setTranslationY does not
+              // On KitKat versions of the platform sometimes View.setTranslationY does not
               // result in layout / draw pass
               ViewCompat.offsetTopAndBottom(
                   view, currentAnimatedIntValue - previousAnimatedIntValue);
