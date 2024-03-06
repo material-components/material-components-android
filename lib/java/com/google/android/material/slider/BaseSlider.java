@@ -30,6 +30,7 @@ import static java.lang.Float.compare;
 import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.math.MathContext.DECIMAL64;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -101,7 +102,6 @@ import com.google.android.material.tooltip.TooltipDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -606,14 +606,18 @@ abstract class BaseSlider<
 
   private boolean valueLandsOnTick(float value) {
     // Check that the value is a multiple of stepSize given the offset of valueFrom.
-    return isMultipleOfStepSize(value - valueFrom);
-  }
-
-  private boolean isMultipleOfStepSize(float value) {
-    // We're using BigDecimal here to avoid floating point rounding errors.
     double result =
         new BigDecimal(Float.toString(value))
-            .divide(new BigDecimal(Float.toString(stepSize)), MathContext.DECIMAL64)
+            .subtract(new BigDecimal(Float.toString(valueFrom)), DECIMAL64)
+            .doubleValue();
+    return isMultipleOfStepSize(result);
+  }
+
+  private boolean isMultipleOfStepSize(double value) {
+    // We're using BigDecimal here to avoid floating point rounding errors.
+    double result =
+        new BigDecimal(Double.toString(value))
+            .divide(new BigDecimal(Float.toString(stepSize)), DECIMAL64)
             .doubleValue();
 
     // If the result is a whole number, it means the value is a multiple of stepSize.
