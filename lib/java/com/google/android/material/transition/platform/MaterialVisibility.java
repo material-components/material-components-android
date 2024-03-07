@@ -182,9 +182,9 @@ abstract class MaterialVisibility<P extends VisibilityAnimatorProvider> extends 
     return AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
   }
 
-  // STRIP-FROM-PLATFORM-TRANSITIONS-PACKAGE
-  @Override // STRIP-FROM-PLATFORM-TRANSITIONS-PACKAGE
-  public boolean isSeekingSupported() { // STRIP-FROM-PLATFORM-TRANSITIONS-PACKAGE
-    return true; // STRIP-FROM-PLATFORM-TRANSITIONS-PACKAGE
-  } // STRIP-FROM-PLATFORM-TRANSITIONS-PACKAGE
+
+
+
+
+
 }

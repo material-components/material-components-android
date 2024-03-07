@@ -29,7 +29,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import androidx.appcompat.graphics.drawable.DrawableWrapper;
+import androidx.appcompat.graphics.drawable.DrawableWrapperCompat;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
@@ -40,7 +40,7 @@ import androidx.core.content.ContextCompat;
  * @deprecated Use {@link com.google.android.material.shape.MaterialShapeDrawable} instead.
  */
 @Deprecated
-public class ShadowDrawableWrapper extends DrawableWrapper {
+public class ShadowDrawableWrapper extends DrawableWrapperCompat {
   // used to calculate content padding
   static final double COS_45 = Math.cos(Math.toRadians(45));
 
@@ -365,7 +365,7 @@ public class ShadowDrawableWrapper extends DrawableWrapper {
         bounds.right - rawMaxShadowSize,
         bounds.bottom - verticalOffset);
 
-    getWrappedDrawable()
+    getDrawable()
         .setBounds(
             (int) contentBounds.left,
             (int) contentBounds.top,
