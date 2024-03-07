@@ -22,7 +22,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 import androidx.recyclerview.widget.RecyclerView.SmoothScroller;
-import android.support.v7.widget.SnapHelper;
+import androidx.recyclerview.widget.SnapHelper;
 import android.util.DisplayMetrics;
 import android.view.View;
 import androidx.annotation.NonNull;
