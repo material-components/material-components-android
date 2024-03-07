@@ -23,7 +23,7 @@ import static com.google.android.material.carousel.CarouselLayoutManager.ALIGNME
 
 import android.os.Bundle;
 import androidx.recyclerview.widget.RecyclerView;
-import android.support.v7.widget.SnapHelper;
+import androidx.recyclerview.widget.SnapHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
