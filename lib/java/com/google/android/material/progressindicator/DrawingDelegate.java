@@ -16,8 +16,15 @@
 
 package com.google.android.material.progressindicator;
 
+import static java.lang.Math.atan2;
+import static java.lang.Math.toDegrees;
+import static java.lang.System.arraycopy;
+
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
@@ -27,11 +34,29 @@ import androidx.annotation.Px;
 
 /** A delegate abstract class for drawing the graphics in different drawable classes. */
 abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
+  // The length of the control handles of the cubic bezier curve simulating y = A cos(PI*x),
+  // where 0 <= x <= 1 (half cycle).
+  static final float SINE_WAVE_FORM_SMOOTHNESS = 0.364f;
 
   S spec;
 
+  final Path cachedActivePath;
+  final Path displayedActivePath;
+  final Path cachedInactivePath;
+  final Path displayedInactivePath;
+
+  final PathMeasure activePathMeasure;
+  final PathMeasure inactivePathMeasure;
+
   public DrawingDelegate(S spec) {
     this.spec = spec;
+
+    cachedActivePath = new Path();
+    displayedActivePath = new Path();
+    cachedInactivePath = new Path();
+    displayedInactivePath = new Path();
+    activePathMeasure = new PathMeasure(cachedActivePath, /* forceClosed= */ false);
+    inactivePathMeasure = new PathMeasure(cachedInactivePath, /* forceClosed= */ false);
   }
 
   /**
@@ -122,6 +147,14 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
     adjustCanvas(canvas, bounds, trackThicknessFraction, isShowing, isHiding);
   }
 
+  /** Recreate cached paths based on existing spec. */
+  abstract void invalidateCachedPaths();
+
+  /** Return the degrees to rotate the canvas, so that x+ aligns with the vector. */
+  float vectorToCanvasRotation(float[] vector) {
+    return (float) toDegrees(atan2(vector[1], vector[0]));
+  }
+
   protected static class ActiveIndicator {
     // The fraction [0, 1] of the start position on the full track.
     @FloatRange(from = 0.0, to = 1.0)
@@ -138,5 +171,46 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
     // active indicator. But for linear contiguous indeterminate mode, the indicators are connecting
     // to each other. Gaps are needed in this case.
     @Px int gapSize;
+  }
+
+  /** An entity class for a point on a path, with the support of fundamental operations. */
+  protected class PathPoint {
+    // The vector to the position of the point.
+    float[] posVec = new float[2];
+    // The tangent vector of this point on a path. The length is not guaranteed.
+    float[] tanVec = new float[2];
+
+    public PathPoint() {}
+
+    public PathPoint(PathPoint other) {
+      this(other.posVec, other.tanVec);
+    }
+
+    public PathPoint(float[] pos, float[] tan) {
+      arraycopy(pos, 0, this.posVec, 0, 2);
+      arraycopy(tan, 0, this.tanVec, 0, 2);
+    }
+
+    /** Moves this point by (x, y). */
+    void translate(float x, float y) {
+      posVec[0] += x;
+      posVec[1] += y;
+    }
+
+    /** Updates the coordinates by scaling the path at (0, 0). */
+    void scale(float x, float y) {
+      posVec[0] *= x;
+      posVec[1] *= y;
+      tanVec[0] *= x;
+      tanVec[1] *= y;
+    }
+
+    /** Rotates the coordinates by the given degrees around (0, 0). */
+    public void rotate(float rotationDegrees) {
+      Matrix transform = new Matrix();
+      transform.setRotate(rotationDegrees);
+      transform.mapPoints(posVec);
+      transform.mapPoints(tanVec);
+    }
   }
 }

@@ -325,4 +325,9 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     canvas.drawRoundRect(roundedBlock, markCornerSize, markCornerSize, paint);
     canvas.restore();
   }
+
+  @Override
+  void invalidateCachedPaths() {
+    // Not implemented for Circular yet.
+  }
 }

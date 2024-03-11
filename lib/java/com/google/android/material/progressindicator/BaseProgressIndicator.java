@@ -353,6 +353,12 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
 
   // ******************** Helper methods **********************
 
+  @Override
+  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    super.onLayout(changed, left, top, right, bottom);
+    getCurrentDrawingDelegate().invalidateCachedPaths();
+  }
+
   /** Returns the corresponding drawable based on current indeterminate state. */
   @Override
   @Nullable
@@ -663,6 +669,55 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
       spec.indicatorTrackGapSize = indicatorTrackGapSize;
       spec.validateSpec();
       invalidate();
+    }
+  }
+
+  /**
+   * Returns the amplitude of the indicator's amplitude in pixels.
+   *
+   * @see #setAmplitude(int)
+   */
+  @Px
+  public int getAmplitude() {
+    return spec.amplitude;
+  }
+
+  /**
+   * Sets the amplitude of the indicator's amplitude in pixels.
+   *
+   * @param amplitude The new amplitude in pixels.
+   * @see #getAmplitude()
+   */
+  public void setAmplitude(@Px int amplitude) {
+    if (spec.amplitude != amplitude) {
+      spec.amplitude = amplitude;
+      requestLayout();
+    }
+  }
+
+  /**
+   * Returns the wavelength of the indicator's waveform in pixels.
+   *
+   * @see #setWavelength(int)
+   */
+  @Px
+  public int getWavelength() {
+    return spec.wavelength;
+  }
+
+  /**
+   * Sets the wavelength of the indicator's waveform in pixels.
+   *
+   * @param wavelength The new wavelength in pixels. No-op, if it equals to 0.
+   * @see #getWavelength()
+   */
+  public void setWavelength(@Px int wavelength) {
+    if (wavelength == 0) {
+      throw new IllegalArgumentException("Cannot set 0 wavelength.");
+    }
+    if (spec.wavelength != wavelength) {
+      spec.wavelength = wavelength;
+      requestLayout();
     }
   }
 

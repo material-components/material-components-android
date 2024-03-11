@@ -89,6 +89,14 @@
       The size of the gap between the progress indicator and track.
     -->
     <attr name="indicatorTrackGapSize" format="dimension"/>
+    <!--
+      Defines the wavelength (in dp) of the wave effect.
+    -->
+    <attr name="wavelength" format="dimension"/>
+    <!--
+      Defines the amplitude (in dp) of the wave effect.
+    -->
+    <attr name="amplitude" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="LinearProgressIndicator">

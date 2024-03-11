@@ -26,14 +26,16 @@ import static java.lang.Math.min;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
-import android.graphics.PointF;
+import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Pair;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
@@ -50,6 +52,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   private float trackLength = 300f;
   private float displayedTrackThickness;
   private float displayedCornerRadius;
+  private float displayedAmplitude;
+  private float adjustedWavelength;
   private boolean useStrokeCap;
 
   // This will be used in the ESCAPE hide animation. The start and end fraction in track will be
@@ -69,7 +73,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
   @Override
   int getPreferredHeight() {
-    return spec.trackThickness;
+    return spec.trackThickness + spec.amplitude * 2;
   }
 
   /**
@@ -90,8 +94,11 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       @FloatRange(from = 0.0, to = 1.0) float trackThicknessFraction,
       boolean isShowing,
       boolean isHiding) {
-    trackLength = bounds.width();
-    float trackSize = spec.trackThickness;
+    if (trackLength != bounds.width()) {
+      trackLength = bounds.width();
+      invalidateCachedPaths();
+    }
+    float trackSize = getPreferredHeight();
 
     // Positions canvas to center of the clip bounds.
     canvas.translate(
@@ -114,6 +121,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius =
         min(spec.trackThickness / 2, spec.trackCornerRadius) * trackThicknessFraction;
+    displayedAmplitude = spec.amplitude * trackThicknessFraction;
 
     // Further adjusts the canvas for animated visibility change.
     if (isShowing || isHiding) {
@@ -149,7 +157,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
         activeIndicator.endFraction,
         color,
         activeIndicator.gapSize,
-        activeIndicator.gapSize);
+        activeIndicator.gapSize,
+        /* drawingActiveIndicator= */ true);
   }
 
   @Override
@@ -162,7 +171,15 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       int drawableAlpha,
       @Px int gapSize) {
     color = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
-    drawLine(canvas, paint, startFraction, endFraction, color, gapSize, gapSize);
+    drawLine(
+        canvas,
+        paint,
+        startFraction,
+        endFraction,
+        color,
+        gapSize,
+        gapSize,
+        /* drawingActiveIndicator= */ false);
   }
 
   /**
@@ -175,6 +192,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
    * @param paintColor The color used to draw the indicator.
    * @param startGapSize The gap size applied to the start (left) of the drawing part.
    * @param endGapSize The gap size applied to the end (right) of the drawing part.
+   * @param drawingActiveIndicator Whether this part should be drawn as an active indicator.
    */
   private void drawLine(
       @NonNull Canvas canvas,
@@ -183,7 +201,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       float endFraction,
       @ColorInt int paintColor,
       @Px int startGapSize,
-      @Px int endGapSize) {
+      @Px int endGapSize,
+      boolean drawingActiveIndicator) {
     startFraction = clamp(startFraction, 0f, 1f);
     endFraction = clamp(endFraction, 0f, 1f);
     // Scale start and end fraction if ESCAPE animation is used.
@@ -210,7 +229,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     // No need to draw on track if start and end are out of visible range.
     if (startPx <= endPx) {
       // The track part will be drawn as three parts: 1) start rounded block (a rounded rectangle),
-      // 2) end rounded block (a rounded rectangle), and 3) a rectangle in between, if needed.
+      // 2) end rounded block (a rounded rectangle), and 3) a path in between, if needed.
       float startBlockCenterX = startPx + displayedCornerRadius;
       float endBlockCenterX = endPx - displayedCornerRadius;
       float blockWidth = displayedCornerRadius * 2;
@@ -224,37 +243,34 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
         drawRoundedBlock(
             canvas,
             paint,
-            new PointF(startBlockCenterX + originX, 0),
-            new PointF(endBlockCenterX + originX, 0),
+            new PathPoint(new float[] {startBlockCenterX + originX, 0}, new float[] {1, 0}),
+            new PathPoint(new float[] {endBlockCenterX + originX, 0}, new float[] {1, 0}),
             blockWidth,
             displayedTrackThickness);
       } else {
-        // If start rounded block is on the left of end rounded block, draws the rectangle in
-        // between and unions with the start rounded block.
+        // If start rounded block is on the left of end rounded block, draws the path with the start
+        // and end rounded blocks.
+        PathMeasure pathMeasure = drawingActiveIndicator ? activePathMeasure : inactivePathMeasure;
+        Path displayedPath = drawingActiveIndicator ? displayedActivePath : displayedInactivePath;
+        Pair<PathPoint, PathPoint> endPoints =
+            getDisplayedPath(
+                pathMeasure,
+                displayedPath,
+                startBlockCenterX / trackLength,
+                endBlockCenterX / trackLength);
         paint.setStyle(Style.STROKE);
-        // Draws the rectangle as a segment with ROUND cap if the corner radius is half of the track
+        // Draws the path with ROUND cap if the corner radius is half of the track
         // thickness.
         paint.setStrokeCap(useStrokeCap ? Cap.ROUND : Cap.BUTT);
-        canvas.drawLine(startBlockCenterX + originX, 0, endBlockCenterX + originX, 0, paint);
+        canvas.drawPath(displayedPath, paint);
         if (!useStrokeCap && displayedCornerRadius > 0) {
-          paint.setStyle(Style.FILL);
           if (startBlockCenterX > 0) {
             // Draws the start rounded block.
-            drawRoundedBlock(
-                canvas,
-                paint,
-                new PointF(startBlockCenterX + originX, 0),
-                blockWidth,
-                displayedTrackThickness);
+            drawRoundedBlock(canvas, paint, endPoints.first, blockWidth, displayedTrackThickness);
           }
           if (endBlockCenterX < trackLength) {
             // Draws the end rounded block.
-            drawRoundedBlock(
-                canvas,
-                paint,
-                new PointF(endBlockCenterX + originX, 0),
-                blockWidth,
-                displayedTrackThickness);
+            drawRoundedBlock(canvas, paint, endPoints.second, blockWidth, displayedTrackThickness);
           }
         }
       }
@@ -275,7 +291,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       drawRoundedBlock(
           canvas,
           paint,
-          new PointF(trackLength / 2 - displayedTrackThickness / 2, 0),
+          new PathPoint(
+              new float[] {trackLength / 2 - displayedTrackThickness / 2, 0}, new float[] {1, 0}),
           spec.trackStopIndicatorSize,
           spec.trackStopIndicatorSize);
     }
@@ -284,17 +301,17 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   private void drawRoundedBlock(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
-      @NonNull PointF center,
+      @NonNull PathPoint drawCenter,
       float markWidth,
       float markHeight) {
-    drawRoundedBlock(canvas, paint, center, null, markWidth, markHeight);
+    drawRoundedBlock(canvas, paint, drawCenter, null, markWidth, markHeight);
   }
 
   private void drawRoundedBlock(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
-      @NonNull PointF drawCenter,
-      @Nullable PointF clipCenter,
+      @NonNull PathPoint drawCenter,
+      @Nullable PathPoint clipCenter,
       float markWidth,
       float markHeight) {
     markHeight = min(markHeight, displayedTrackThickness);
@@ -306,14 +323,73 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     canvas.save();
     if (clipCenter != null) {
       // Clipping!
-      canvas.translate(clipCenter.x, clipCenter.y);
+      canvas.translate(clipCenter.posVec[0], clipCenter.posVec[1]);
+      canvas.rotate(vectorToCanvasRotation(clipCenter.tanVec));
       Path clipPath = new Path();
       clipPath.addRoundRect(roundedBlock, markCornerSize, markCornerSize, Direction.CCW);
       canvas.clipPath(clipPath);
-      canvas.translate(-clipCenter.x, -clipCenter.y);
+      canvas.rotate(-vectorToCanvasRotation(clipCenter.tanVec));
+      canvas.translate(-clipCenter.posVec[0], -clipCenter.posVec[1]);
     }
-    canvas.translate(drawCenter.x, drawCenter.y);
+    canvas.translate(drawCenter.posVec[0], drawCenter.posVec[1]);
+    canvas.rotate(vectorToCanvasRotation(drawCenter.tanVec));
     canvas.drawRoundRect(roundedBlock, markCornerSize, markCornerSize, paint);
     canvas.restore();
+  }
+
+  @Override
+  void invalidateCachedPaths() {
+    cachedActivePath.rewind();
+    cachedInactivePath.rewind();
+    if (spec.hasWavyEffect()) {
+      int cycleCount = (int) (trackLength / spec.wavelength);
+      adjustedWavelength = trackLength / cycleCount;
+      float smoothness = SINE_WAVE_FORM_SMOOTHNESS;
+      for (int i = 0; i < cycleCount; i++) {
+        cachedActivePath.cubicTo(2 * i + smoothness, 0, 2 * i + 1 - smoothness, 1, 2 * i + 1, 1);
+        cachedActivePath.cubicTo(
+            2 * i + 1 + smoothness, 1, 2 * i + 2 - smoothness, 0, 2 * i + 2, 0);
+      }
+      cachedInactivePath.lineTo(trackLength, 0);
+      // Transforms the wavy path from y = -1/2 * cos(PI * x) + 1/2, as calculated above,
+      // to y = cos(2 * PI * x / wavelength), as required in spec.
+      Matrix transformMatrix = new Matrix();
+      transformMatrix.setScale(adjustedWavelength / 2, -2);
+      transformMatrix.postTranslate(0, 1);
+      cachedActivePath.transform(transformMatrix);
+    } else {
+      cachedActivePath.lineTo(trackLength, 0);
+      cachedInactivePath.lineTo(trackLength, 0);
+    }
+    activePathMeasure.setPath(cachedActivePath, /* forceNewPath= */ false);
+    inactivePathMeasure.setPath(cachedInactivePath, /* forceNewPath= */ false);
+  }
+
+  @NonNull
+  private Pair<PathPoint, PathPoint> getDisplayedPath(
+      @NonNull PathMeasure pathMeasure, @NonNull Path displayedPath, float start, float end) {
+    displayedPath.rewind();
+    float resultTranslationX = -trackLength / 2;
+    float startDistance = start * pathMeasure.getLength();
+    float endDistance = end * pathMeasure.getLength();
+    pathMeasure.getSegment(startDistance, endDistance, displayedPath, true);
+    // Gathers the position and tangent of the start and end.
+    PathPoint startPoint = new PathPoint();
+    pathMeasure.getPosTan(startDistance, startPoint.posVec, startPoint.tanVec);
+    PathPoint endPoint = new PathPoint();
+    pathMeasure.getPosTan(endDistance, endPoint.posVec, endPoint.tanVec);
+    // Transforms the result path to match the canvas.
+    Matrix transform = new Matrix();
+    transform.setTranslate(resultTranslationX, 0);
+    startPoint.translate(resultTranslationX, 0);
+    endPoint.translate(resultTranslationX, 0);
+    if (spec.hasWavyEffect()) {
+      float scaleY = displayedAmplitude;
+      transform.postScale(1, scaleY);
+      startPoint.scale(1, scaleY);
+      endPoint.scale(1, scaleY);
+    }
+    displayedPath.transform(transform);
+    return new Pair<>(startPoint, endPoint);
   }
 }
