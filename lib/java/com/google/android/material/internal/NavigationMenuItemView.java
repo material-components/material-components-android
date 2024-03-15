@@ -34,6 +34,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
@@ -172,6 +173,10 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
         actionArea =
             (FrameLayout)
                 ((ViewStub) findViewById(R.id.design_menu_item_action_area_stub)).inflate();
+      }
+      // Make sure to remove the existing parent if the View is reused
+      if (actionView.getParent() != null) {
+        ((ViewGroup) actionView.getParent()).removeView(actionView);
       }
       actionArea.removeAllViews();
       actionArea.addView(actionView);

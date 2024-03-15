@@ -35,6 +35,7 @@
     Open End Drawer
   </string>
   <string name="cat_navigationdrawer_label_active_bold" translatable="false">Bold active label</string>
+  <string name="cat_navigationdrawer_label_auto_close" translatable="false">Close drawer on selection</string>
   <string name="cat_navigationdrawer_header_mail">Mail</string>
   <string name="cat_navigationdrawer_header_labels">Labels</string>
   <string name="cat_navigationdrawer_label">Label</string>
