@@ -2218,25 +2218,41 @@ abstract class BaseSlider<
     }
 
     float[] activeRange = getActiveRange();
-    int leftPivotIndex = pivotIndex(ticksCoordinates, activeRange[0]);
-    int rightPivotIndex = pivotIndex(ticksCoordinates, activeRange[1]);
 
-    // Draw inactive ticks to the left of the smallest thumb.
-    canvas.drawPoints(ticksCoordinates, 0, leftPivotIndex * 2, inactiveTicksPaint);
+    // Calculate the index of the left tick of the active track.
+    final int leftActiveTickIndex =
+        (int) Math.ceil(activeRange[0] * (ticksCoordinates.length / 2f - 1));
 
-    // Draw active ticks between the thumbs.
-    canvas.drawPoints(
-        ticksCoordinates,
-        leftPivotIndex * 2,
-        rightPivotIndex * 2 - leftPivotIndex * 2,
-        activeTicksPaint);
+    // Calculate the index of the right tick of the active track.
+    final int rightActiveTickIndex =
+        (int) Math.floor(activeRange[1] * (ticksCoordinates.length / 2f - 1));
 
-    // Draw inactive ticks to the right of the largest thumb.
-    canvas.drawPoints(
-        ticksCoordinates,
-        rightPivotIndex * 2,
-        ticksCoordinates.length - rightPivotIndex * 2,
-        inactiveTicksPaint);
+    // Draw ticks on the left inactive track (if any).
+    if (leftActiveTickIndex > 0) {
+      canvas.drawPoints(
+          ticksCoordinates,
+          0,
+          leftActiveTickIndex * 2,
+          inactiveTicksPaint);
+    }
+
+    // Draw ticks on the active track (if any).
+    if (leftActiveTickIndex <= rightActiveTickIndex) {
+      canvas.drawPoints(
+          ticksCoordinates,
+          leftActiveTickIndex * 2,
+          (rightActiveTickIndex - leftActiveTickIndex + 1) * 2,
+          activeTicksPaint);
+    }
+
+    // Draw ticks on the right inactive track (if any).
+    if ((rightActiveTickIndex + 1) * 2 < ticksCoordinates.length) {
+      canvas.drawPoints(
+          ticksCoordinates,
+          (rightActiveTickIndex + 1) * 2,
+          ticksCoordinates.length - (rightActiveTickIndex + 1) * 2,
+          inactiveTicksPaint);
+    }
   }
 
   private void maybeDrawStopIndicator(@NonNull Canvas canvas, int yCenter) {
@@ -2411,17 +2427,6 @@ abstract class BaseSlider<
 
     lastEvent = MotionEvent.obtain(event);
     return true;
-  }
-
-  /**
-   * Calculates the index the closest tick coordinates that the thumb should snap to.
-   *
-   * @param coordinates Tick coordinates defined in {@code #setTicksCoordinates()}.
-   * @param position Actual thumb position.
-   * @return Index of the closest tick coordinate.
-   */
-  private static int pivotIndex(float[] coordinates, float position) {
-    return Math.round(position * (coordinates.length / 2f - 1));
   }
 
   private double snapPosition(float position) {
