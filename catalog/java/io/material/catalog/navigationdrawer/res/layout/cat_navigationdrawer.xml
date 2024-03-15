@@ -80,6 +80,25 @@
           android:id="@+id/bold_text_switch"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
+          android:checked="true"
+          android:layout_marginStart="12dp" />
+      </LinearLayout>
+
+      <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="end|center_vertical"
+          android:labelFor="@+id/auto_close_switch"
+          android:text="@string/cat_navigationdrawer_label_auto_close" />
+        <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@+id/auto_close_switch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checked="true"
           android:layout_marginStart="12dp" />
       </LinearLayout>
 

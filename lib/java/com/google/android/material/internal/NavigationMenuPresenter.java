@@ -105,6 +105,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   /** Padding for separators between items */
   int paddingSeparator;
+
   private int overScrollMode = -1;
 
   @Override
@@ -125,6 +126,9 @@ public class NavigationMenuPresenter implements MenuPresenter {
           new NavigationMenuViewAccessibilityDelegate(menuView));
       if (adapter == null) {
         adapter = new NavigationMenuAdapter();
+        // Prevent recreating all the Views when notifyDataSetChanged() is called causing issues
+        // with the a11y reader (see b/112931425)
+        adapter.setHasStableIds(true);
       }
       if (overScrollMode != -1) {
         menuView.setOverScrollMode(overScrollMode);
@@ -375,7 +379,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
     return this.subheaderInsetEnd;
   }
 
-  public void setSubheaderInsetEnd(@Px int subheaderInsetEnd)  {
+  public void setSubheaderInsetEnd(@Px int subheaderInsetEnd) {
     this.subheaderInsetEnd = subheaderInsetEnd;
     updateMenuView(false);
   }
