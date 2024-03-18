@@ -42,21 +42,15 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
 
   final Path cachedActivePath;
   final Path displayedActivePath;
-  final Path cachedInactivePath;
-  final Path displayedInactivePath;
 
   final PathMeasure activePathMeasure;
-  final PathMeasure inactivePathMeasure;
 
   public DrawingDelegate(S spec) {
     this.spec = spec;
 
     cachedActivePath = new Path();
     displayedActivePath = new Path();
-    cachedInactivePath = new Path();
-    displayedInactivePath = new Path();
     activePathMeasure = new PathMeasure(cachedActivePath, /* forceClosed= */ false);
-    inactivePathMeasure = new PathMeasure(cachedInactivePath, /* forceClosed= */ false);
   }
 
   /**
@@ -180,7 +174,9 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
     // The tangent vector of this point on a path. The length is not guaranteed.
     float[] tanVec = new float[2];
 
-    public PathPoint() {}
+    public PathPoint() {
+      tanVec[0] = 1;
+    }
 
     public PathPoint(PathPoint other) {
       this(other.posVec, other.tanVec);

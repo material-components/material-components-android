@@ -226,6 +226,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     // Adjusts start/end X so the progress indicator will start from 0 when startFraction == 0.
     float originX = -trackLength / 2;
 
+    boolean drawWavyPath = spec.hasWavyEffect() && drawingActiveIndicator;
+
     // No need to draw on track if start and end are out of visible range.
     if (startPx <= endPx) {
       // The track part will be drawn as three parts: 1) start rounded block (a rounded rectangle),
@@ -238,31 +240,39 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       paint.setAntiAlias(true);
       paint.setStrokeWidth(displayedTrackThickness);
 
+      Pair<PathPoint, PathPoint> endPoints = new Pair<>(new PathPoint(), new PathPoint());
+      endPoints.first.translate(startBlockCenterX + originX, 0);
+      endPoints.second.translate(endBlockCenterX + originX, 0);
       if (startBlockCenterX >= endBlockCenterX) {
         // Draws the start rounded block clipped by the end rounded block.
         drawRoundedBlock(
-            canvas,
-            paint,
-            new PathPoint(new float[] {startBlockCenterX + originX, 0}, new float[] {1, 0}),
-            new PathPoint(new float[] {endBlockCenterX + originX, 0}, new float[] {1, 0}),
-            blockWidth,
-            displayedTrackThickness);
+            canvas, paint, endPoints.first, endPoints.second, blockWidth, displayedTrackThickness);
       } else {
-        // If start rounded block is on the left of end rounded block, draws the path with the start
-        // and end rounded blocks.
-        PathMeasure pathMeasure = drawingActiveIndicator ? activePathMeasure : inactivePathMeasure;
-        Path displayedPath = drawingActiveIndicator ? displayedActivePath : displayedInactivePath;
-        Pair<PathPoint, PathPoint> endPoints =
-            getDisplayedPath(
-                pathMeasure,
-                displayedPath,
-                startBlockCenterX / trackLength,
-                endBlockCenterX / trackLength);
-        paint.setStyle(Style.STROKE);
         // Draws the path with ROUND cap if the corner radius is half of the track
         // thickness.
+        paint.setStyle(Style.STROKE);
         paint.setStrokeCap(useStrokeCap ? Cap.ROUND : Cap.BUTT);
-        canvas.drawPath(displayedPath, paint);
+
+        // If start rounded block is on the left of end rounded block, draws the path with the
+        // start and end rounded blocks.
+        if (!drawWavyPath) {
+          // Draws a straight line directly.
+          canvas.drawLine(
+              endPoints.first.posVec[0],
+              endPoints.first.posVec[1],
+              endPoints.second.posVec[0],
+              endPoints.second.posVec[1],
+              paint);
+        } else {
+          // Draws a portion of the cached wavy path.
+          endPoints =
+              getDisplayedPath(
+                  activePathMeasure,
+                  displayedActivePath,
+                  startBlockCenterX / trackLength,
+                  endBlockCenterX / trackLength);
+          canvas.drawPath(displayedActivePath, paint);
+        }
         if (!useStrokeCap && displayedCornerRadius > 0) {
           if (startBlockCenterX > 0) {
             // Draws the start rounded block.
@@ -340,7 +350,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   @Override
   void invalidateCachedPaths() {
     cachedActivePath.rewind();
-    cachedInactivePath.rewind();
     if (spec.hasWavyEffect()) {
       int cycleCount = (int) (trackLength / spec.wavelength);
       adjustedWavelength = trackLength / cycleCount;
@@ -350,7 +359,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
         cachedActivePath.cubicTo(
             2 * i + 1 + smoothness, 1, 2 * i + 2 - smoothness, 0, 2 * i + 2, 0);
       }
-      cachedInactivePath.lineTo(trackLength, 0);
       // Transforms the wavy path from y = -1/2 * cos(PI * x) + 1/2, as calculated above,
       // to y = cos(2 * PI * x / wavelength), as required in spec.
       Matrix transformMatrix = new Matrix();
@@ -359,10 +367,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       cachedActivePath.transform(transformMatrix);
     } else {
       cachedActivePath.lineTo(trackLength, 0);
-      cachedInactivePath.lineTo(trackLength, 0);
     }
     activePathMeasure.setPath(cachedActivePath, /* forceNewPath= */ false);
-    inactivePathMeasure.setPath(cachedInactivePath, /* forceNewPath= */ false);
   }
 
   @NonNull
