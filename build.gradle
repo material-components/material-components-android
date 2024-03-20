@@ -37,7 +37,7 @@ ext {
     recyclerViewSelection        : '1.0.0',
     resourceInspectionAnnotation : '1.0.1',
     resourceInspectionProcessor  : '1.0.1',
-    transition                   : '1.5.0-alpha04',
+    transition                   : '1.5.0-beta01',
     vectorDrawable               : '1.1.0',
     viewpager2                   : '1.0.0',
     dynamicanimation             : '1.0.0',
