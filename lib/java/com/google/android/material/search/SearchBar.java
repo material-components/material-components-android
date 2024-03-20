@@ -420,6 +420,8 @@ public class SearchBar extends Toolbar {
     // that, and restore the original background when the icon becomes clickable.
     navigationIconButton.setBackgroundDrawable(
         decorative ? null : originalNavigationIconBackground);
+
+    setHandwritingBoundsInsets();
   }
 
   @Override
@@ -448,6 +450,7 @@ public class SearchBar extends Toolbar {
     super.onLayout(changed, left, top, right, bottom);
 
     layoutCenterView();
+    setHandwritingBoundsInsets();
   }
 
   @Override
@@ -557,6 +560,32 @@ public class SearchBar extends Toolbar {
     } else {
       child.layout(left, top, right, bottom);
     }
+  }
+
+  private void setHandwritingBoundsInsets() {
+    if (VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      return;
+    }
+
+    boolean isRtl = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+
+    // If the navigation icon is non-decorative, exclude it from the handwriting bounds.
+    int startInset = 0;
+    View navigationIconButton = ToolbarUtils.getNavigationIconButton(this);
+    if (navigationIconButton != null && navigationIconButton.isClickable()) {
+      startInset =
+          isRtl ? (getWidth() - navigationIconButton.getLeft()) : navigationIconButton.getRight();
+    }
+
+    // Exclude the menu items from the handwriting bounds.
+    int endInset = 0;
+    View actionMenuView = ToolbarUtils.getActionMenuView(this);
+    if (actionMenuView != null) {
+      endInset = isRtl ? actionMenuView.getRight() : (getWidth() -  actionMenuView.getLeft());
+    }
+
+    setHandwritingBoundsOffsets(
+        -(isRtl ? endInset : startInset), 0, -(isRtl ? startInset : endInset), 0);
   }
 
   /** Returns the optional centered child view of this {@link SearchBar} */
