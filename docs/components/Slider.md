@@ -311,6 +311,9 @@ slider also has tick marks.
 `app:trackColorInative`. It's a shorthand for setting both values to the same
 thing.
 
+**Note:** `app:trackStopIndicatorSize` takes precedence over
+`app:tickRadiusActive` and `app:tickRadiusInactive`.
+
 #### Thumb attributes
 
 | Element          | Attribute               | Related method(s)                                                                 | Default value                |
@@ -346,8 +349,8 @@ Element       | Attribute           | Related method(s)                         
 | **Color**                           | `app:tickColor`          | `setTickTintList`<br/>`getTickTintList`                 | `null`                               |
 | **Color for tick's active part**    | `app:tickColorActive`    | `setTickActiveTintList`<br/>`getTickActiveTintList`     | `?attr/colorSurfaceContainerHighest` |
 | **Color for tick's inactive part**  | `app:tickColorInactive`  | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary`                 |
-| **Radius for tick's active part**   | `app:tickRadiusActive`   | `setTickActiveRadius`<br/>`getTickActiveRadius`         | `1dp`                                |
-| **Radius for tick's inactive part** | `app:tickRadiusInactive` | `setTickInactiveRadius`<br/>`getTickInactiveRadius`     | `1dp`                                |
+| **Radius for tick's active part**   | `app:tickRadiusActive`   | `setTickActiveRadius`<br/>`getTickActiveRadius`         | `null` (1/2 trackStopIndicatorSize)  |
+| **Radius for tick's inactive part** | `app:tickRadiusInactive` | `setTickInactiveRadius`<br/>`getTickInactiveRadius`     | `null` (1/2 trackStopIndicatorSize)  |
 | **Tick visible**                    | `app:tickVisible`        | `setTickVisible`<br/>`isTickVisible()`                  | `true`                               |
 
 **Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
