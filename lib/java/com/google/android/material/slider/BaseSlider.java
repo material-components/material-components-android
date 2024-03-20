@@ -538,9 +538,10 @@ abstract class BaseSlider<
 
     setTrackHeight(a.getDimensionPixelSize(R.styleable.Slider_trackHeight, 0));
 
-    setTickActiveRadius(a.getDimensionPixelSize(R.styleable.Slider_tickRadiusActive, 0));
-
-    setTickInactiveRadius(a.getDimensionPixelSize(R.styleable.Slider_tickRadiusInactive, 0));
+    setTickActiveRadius(
+        a.getDimensionPixelSize(R.styleable.Slider_tickRadiusActive, trackStopIndicatorSize / 2));
+    setTickInactiveRadius(
+        a.getDimensionPixelSize(R.styleable.Slider_tickRadiusInactive, trackStopIndicatorSize / 2));
 
     setLabelBehavior(a.getInt(R.styleable.Slider_labelBehavior, LABEL_FLOATING));
 
