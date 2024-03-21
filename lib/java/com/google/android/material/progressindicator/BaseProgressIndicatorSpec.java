@@ -20,7 +20,6 @@ import com.google.android.material.R;
 
 import static com.google.android.material.resources.MaterialResources.getDimensionPixelSize;
 import static java.lang.Math.abs;
-import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.content.Context;
@@ -115,14 +114,10 @@ public abstract class BaseProgressIndicatorSpec {
         a.getInt(
             R.styleable.BaseProgressIndicator_hideAnimationBehavior,
             BaseProgressIndicator.HIDE_NONE);
-    indicatorTrackGapSize = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_indicatorTrackGapSize, 0);
+    indicatorTrackGapSize =
+        a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_indicatorTrackGapSize, 0);
 
-    wavelength =
-        max(
-            abs(
-                a.getDimensionPixelSize(
-                    R.styleable.BaseProgressIndicator_wavelength, Integer.MAX_VALUE)),
-            1);
+    wavelength = abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_wavelength, 0));
     amplitude = abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_amplitude, 0));
 
     loadIndicatorColors(context, a);
@@ -200,7 +195,7 @@ public abstract class BaseProgressIndicatorSpec {
   }
 
   public boolean hasWavyEffect() {
-    return amplitude > 0 && wavelength < Integer.MAX_VALUE;
+    return amplitude > 0 && wavelength > 0;
   }
 
   @CallSuper

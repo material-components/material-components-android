@@ -19,6 +19,7 @@ package com.google.android.material.progressindicator;
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
 import android.content.Context;
@@ -82,6 +83,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
 
   static final float DEFAULT_OPACITY = 0.2f;
   static final int MAX_ALPHA = 255;
+
   /**
    * The maximum time, in milliseconds, that the requested hide action is allowed to wait once
    * {@link #show()} is called.
@@ -93,6 +95,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
 
   /** A temp place to hold new progress while switching from indeterminate to determinate mode. */
   private int storedProgress;
+
   /**
    * A temp place to hold whether use animator to update the new progress after switching from
    * indeterminate to determinate mode.
@@ -236,7 +239,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
       delayedHide.run();
       return;
     }
-    postDelayed(delayedHide, /*delayMillis=*/ minHideDelay - timeElapsedSinceShowStart);
+    postDelayed(delayedHide, /* delayMillis= */ minHideDelay - timeElapsedSinceShowStart);
   }
 
   /**
@@ -248,7 +251,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   private void internalHide() {
     ((DrawableWithAnimatedVisibilityChange) getCurrentDrawable())
-        .setVisible(/*visible=*/ false, /*restart=*/ false, /*animate=*/ true);
+        .setVisible(/* visible= */ false, /* restart= */ false, /* animate= */ true);
 
     if (isNoLongerNeedToBeVisible()) {
       setVisibility(INVISIBLE);
@@ -258,13 +261,13 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   @Override
   protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
     super.onVisibilityChanged(changedView, visibility);
-    applyNewVisibility(/*animate=*/ visibility == VISIBLE);
+    applyNewVisibility(/* animate= */ visibility == VISIBLE);
   }
 
   @Override
   protected void onWindowVisibilityChanged(int visibility) {
     super.onWindowVisibilityChanged(visibility);
-    applyNewVisibility(/*animate=*/ false);
+    applyNewVisibility(/* animate= */ false);
   }
 
   /**
@@ -279,7 +282,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
     }
 
     ((DrawableWithAnimatedVisibilityChange) getCurrentDrawable())
-        .setVisible(visibleToUser(), /*restart=*/ false, animate);
+        .setVisible(visibleToUser(), /* restart= */ false, animate);
   }
 
   @Override
@@ -521,7 +524,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
     DrawableWithAnimatedVisibilityChange newDrawable =
         (DrawableWithAnimatedVisibilityChange) getCurrentDrawable();
     if (newDrawable != null) {
-      newDrawable.setVisible(visibleToUser(), /*restart=*/ false, /*animate=*/ false);
+      newDrawable.setVisible(visibleToUser(), /* restart= */ false, /* animate= */ false);
     }
     if (newDrawable instanceof IndeterminateDrawable && visibleToUser()) {
       ((IndeterminateDrawable) newDrawable).getAnimatorDelegate().startAnimator();
@@ -690,7 +693,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   public void setAmplitude(@Px int amplitude) {
     if (spec.amplitude != amplitude) {
-      spec.amplitude = amplitude;
+      spec.amplitude = abs(amplitude);
       requestLayout();
     }
   }
@@ -708,15 +711,13 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   /**
    * Sets the wavelength of the indicator's waveform in pixels.
    *
-   * @param wavelength The new wavelength in pixels. No-op, if it equals to 0.
+   * @param wavelength The new wavelength in pixels. No waves are drawn, if it equals to 0 with a
+   *     non-zero amplitude.
    * @see #getWavelength()
    */
   public void setWavelength(@Px int wavelength) {
-    if (wavelength == 0) {
-      throw new IllegalArgumentException("Cannot set 0 wavelength.");
-    }
     if (spec.wavelength != wavelength) {
-      spec.wavelength = wavelength;
+      spec.wavelength = abs(wavelength);
       requestLayout();
     }
   }
