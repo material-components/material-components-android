@@ -38,9 +38,11 @@ import org.robolectric.shadows.ShadowCanvas;
 import org.robolectric.shadows.ShadowPath;
 import org.robolectric.shadows.ShadowPath.Point;
 
-/** Tests for {@link MemoryView}. */
+/**
+ * Tests for {@link MemoryView}.
+ */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 21)
+@Config(sdk = 19)
 public class MemoryViewTest {
 
   private static final int BYTES_IN_MB = 1024 * 1024;
