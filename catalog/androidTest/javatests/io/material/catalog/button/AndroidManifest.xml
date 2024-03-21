@@ -17,7 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="io.material.catalog.button.tests">
 
-  <uses-sdk android:minSdkVersion="19" />
+  <uses-sdk android:minSdkVersion="21" />
 
   <application>
     <uses-library android:name="android.test.runner" />
