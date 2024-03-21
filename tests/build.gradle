@@ -4,6 +4,7 @@ dependencies {
   implementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   implementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
   implementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
+  implementation "androidx.test.espresso:espresso-accessibility:${project.rootProject.ext.espressoVersion}"
   implementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
   implementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
   implementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
