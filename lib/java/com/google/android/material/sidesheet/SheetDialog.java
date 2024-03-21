@@ -173,25 +173,19 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
     }
   }
 
-  /**
-   * This function can be called from a few different use cases, including swiping the dialog away
-   * or calling `dismiss()` from a `SideSheetDialogFragment`, tapping outside a dialog, etc...
-   *
-   * <p>The default animation to dismiss this dialog is a fade-out transition through a
-   * windowAnimation. Set {@link #setDismissWithSheetAnimationEnabled(boolean)} to true if you want
-   * to utilize the sheet animation instead.
-   *
-   * <p>If this function is called from a swipe interaction, or dismissWithAnimation is false, then
-   * keep the default behavior.
-   */
   @Override
   public void cancel() {
+    hideSheetIfNeededThenRun(super::cancel);
+  }
+
+  void hideSheetIfNeededThenRun(Runnable action) {
     Sheet<C> behavior = getBehavior();
 
-    if (!dismissWithAnimation || behavior.getState() == Sheet.STATE_HIDDEN) {
-      super.cancel();
-    } else {
+    if (behavior.getState() != Sheet.STATE_HIDDEN && dismissWithAnimation) {
+      setOneShotOnHideSheetAction(action);
       behavior.setState(Sheet.STATE_HIDDEN);
+    } else {
+      action.run();
     }
   }
 
@@ -242,12 +236,12 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
       container = (FrameLayout) View.inflate(getContext(), getLayoutResId(), null);
       sheet = container.findViewById(getDialogId());
       behavior = getBehaviorFromSheet(sheet);
-      addSheetCancelOnHideCallback(behavior);
+      setDefaultOnHideSheetAction(this::cancel);
       backOrchestrator = new MaterialBackOrchestrator(behavior, sheet);
     }
   }
 
-  abstract void addSheetCancelOnHideCallback(Sheet<C> behavior);
+
 
   @NonNull
   private FrameLayout getContainer() {
@@ -410,4 +404,19 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
 
   @StableSheetState
   abstract int getStateOnStart();
+
+  /**
+   * Sets the default {@code action} to be executed whenever the sheet goes into the
+   * {@code STATE_HIDDEN} state.
+   */
+  abstract void setDefaultOnHideSheetAction(@NonNull Runnable action);
+
+  /**
+   * Sets the {@code action} to be executed once when the sheet goes into the {@code STATE_HIDDEN}
+   * state.
+   *
+   * <p>The method replaces the current active "on-hide-sheet" action with the specified one,
+   * and after it's executed, sets the default action as the active one.
+   */
+  abstract void setOneShotOnHideSheetAction(@NonNull Runnable action);
 }
