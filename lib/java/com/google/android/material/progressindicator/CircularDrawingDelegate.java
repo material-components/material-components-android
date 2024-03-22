@@ -15,35 +15,46 @@
  */
 package com.google.android.material.progressindicator;
 
+import static androidx.core.math.MathUtils.clamp;
 import static com.google.android.material.math.MathUtils.lerp;
 import static com.google.android.material.progressindicator.BaseProgressIndicator.HIDE_ESCAPE;
-import static java.lang.Math.cos;
+import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
-import static java.lang.Math.toRadians;
 
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
+import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.util.Pair;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Px;
 import com.google.android.material.color.MaterialColors;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A delegate class to help draw the graphics for {@link CircularProgressIndicator}. */
 final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndicatorSpec> {
   // When the progress is bigger than 99%, the arc will overshoot to hide the round caps.
   private static final float ROUND_CAP_RAMP_DOWN_THRESHHOLD = 0.01f;
+  // Constant for approximating a quarter circle with cubic bezier.
+  private static final float QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH = 0.5522848f;
 
   private float displayedTrackThickness;
   private float displayedCornerRadius;
+  private float displayedAmplitude;
   private float adjustedRadius;
+  private float adjustedWavelength;
+  private float cachedAmplitude;
+  private float cachedRadius;
   // For full round ends, the stroke ROUND cap is used to prevent artifacts like (b/319309456).
   private boolean useStrokeCap;
 
@@ -118,22 +129,24 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius =
         min(spec.trackThickness / 2, spec.trackCornerRadius) * trackThicknessFraction;
-    adjustedRadius = (spec.indicatorSize - spec.trackThickness) / 2f;
+    displayedAmplitude = spec.amplitude * trackThicknessFraction;
 
     // Further adjusts the radius for animated visibility change.
+    adjustedRadius = (spec.indicatorSize - spec.trackThickness) / 2f;
     if (isShowing || isHiding) {
+      // This is the delta of the radius between the track matching the central line and the
+      // track matching the inner/outer edge with the full width track.
+      float deltaRadius = (1 - trackThicknessFraction) * spec.trackThickness / 2;
       if ((isShowing && spec.showAnimationBehavior == CircularProgressIndicator.SHOW_INWARD)
           || (isHiding && spec.hideAnimationBehavior == CircularProgressIndicator.HIDE_OUTWARD)) {
-        // Increases the radius by half of the full thickness, then reduces it half way of the
-        // displayed thickness to match the outer edges of the displayed indicator and the full
-        // indicator.
-        adjustedRadius += (1 - trackThicknessFraction) * spec.trackThickness / 2;
+        // Increases the radius by the radius delta to match the outer edges of the displayed
+        // track and the full width track.
+        adjustedRadius += deltaRadius;
       } else if ((isShowing && spec.showAnimationBehavior == CircularProgressIndicator.SHOW_OUTWARD)
           || (isHiding && spec.hideAnimationBehavior == CircularProgressIndicator.HIDE_INWARD)) {
-        // Decreases the radius by half of the full thickness, then raises it half way of the
-        // displayed thickness to match the inner edges of the displayed indicator and the full
-        // indicator.
-        adjustedRadius -= (1 - trackThicknessFraction) * spec.trackThickness / 2;
+        // Decreases the radius by the radius delta to match the inner edges of the displayed
+        // track and the full width track.
+        adjustedRadius -= deltaRadius;
       }
     }
     // Sets the total track length fraction if ESCAPE hide animation is used.
@@ -158,7 +171,8 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         activeIndicator.endFraction,
         color,
         activeIndicator.gapSize,
-        activeIndicator.gapSize);
+        activeIndicator.gapSize,
+        /* shouldDrawActiveIndicator= */ true);
   }
 
   @Override
@@ -171,7 +185,15 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       @IntRange(from = 0, to = 255) int drawableAlpha,
       int gapSize) {
     color = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
-    drawArc(canvas, paint, startFraction, endFraction, color, gapSize, gapSize);
+    drawArc(
+        canvas,
+        paint,
+        startFraction,
+        endFraction,
+        color,
+        gapSize,
+        gapSize,
+        /* shouldDrawActiveIndicator= */ false);
   }
 
   /**
@@ -185,6 +207,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
    * @param paintColor The color used to draw the indicator.
    * @param startGapSize The gap size applied to the start (rotating behind) of the drawing part.
    * @param endGapSize The gap size applied to the end (rotating ahead) of the drawing part.
+   * @param shouldDrawActiveIndicator Whether this part should be drawn as an active indicator.
    */
   private void drawArc(
       @NonNull Canvas canvas,
@@ -193,17 +216,37 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       float endFraction,
       @ColorInt int paintColor,
       @Px int startGapSize,
-      @Px int endGapSize) {
+      @Px int endGapSize,
+      boolean shouldDrawActiveIndicator) {
     float arcFraction =
         endFraction >= startFraction
             ? (endFraction - startFraction)
             : (1 + endFraction - startFraction);
     startFraction %= 1;
+    if (startFraction < 0) {
+      startFraction += 1f;
+    }
 
     if (totalTrackLengthFraction < 1 && startFraction + arcFraction > 1) {
       // Breaks the arc at 0 degree for ESCAPE animation.
-      drawArc(canvas, paint, startFraction, 1, paintColor, startGapSize, 0);
-      drawArc(canvas, paint, 1, startFraction + arcFraction, paintColor, 0, endGapSize);
+      drawArc(
+          canvas,
+          paint,
+          startFraction,
+          /* endFraction= */ 1f,
+          paintColor,
+          startGapSize,
+          /* endGapSize= */ 0,
+          shouldDrawActiveIndicator);
+      drawArc(
+          canvas,
+          paint,
+          /* startFraction= */ 1f,
+          startFraction + arcFraction,
+          paintColor,
+          /* startGapSize= */ 0,
+          endGapSize,
+          shouldDrawActiveIndicator);
       return;
     }
 
@@ -232,6 +275,8 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       return;
     }
 
+    boolean shouldDrawWavyPath = spec.hasWavyEffect() && shouldDrawActiveIndicator;
+
     // Sets up the paint.
     paint.setAntiAlias(true);
     paint.setColor(paintColor);
@@ -240,45 +285,52 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     // The arc will be drawn as three parts: 1) start rounded block (a rounded rectangle or a round
     // cap), 2) end rounded block (a rounded rectangle or a round cap), and 3) a arc in between, if
     // needed.
+    float blockWidth = displayedCornerRadius * 2;
     if (arcDegree < displayedCornerRadiusInDegree * 2) {
       // Draws a scaled round rectangle, if the start and end are too close to draw the arc.
       float shrinkRatio = arcDegree / (displayedCornerRadiusInDegree * 2);
+      float centerDegree = startDegree + displayedCornerRadiusInDegree * shrinkRatio;
+      PathPoint center = new PathPoint();
+      if (!shouldDrawWavyPath) {
+        center.rotate(centerDegree + 90);
+        center.moveAcross(-adjustedRadius);
+      } else {
+        float centerDistance = centerDegree / 360 * activePathMeasure.getLength() / 2;
+        activePathMeasure.getPosTan(centerDistance, center.posVec, center.tanVec);
+      }
       paint.setStyle(Style.FILL);
-      drawRoundedBlock(
-          canvas,
-          paint,
-          startDegree + displayedCornerRadiusInDegree * shrinkRatio,
-          displayedCornerRadius * 2,
-          displayedTrackThickness,
-          shrinkRatio);
+      drawRoundedBlock(canvas, paint, center, blockWidth, displayedTrackThickness, shrinkRatio);
     } else {
-      // Draws the arc without rounded corners.
-      RectF arcBound = new RectF(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
-      paint.setStyle(Style.STROKE);
       // Draws the arc with ROUND cap if the corner radius is half of the track thickness.
+      paint.setStyle(Style.STROKE);
       paint.setStrokeCap(useStrokeCap ? Cap.ROUND : Cap.BUTT);
-      canvas.drawArc(
-          arcBound,
-          startDegree + displayedCornerRadiusInDegree,
-          arcDegree - displayedCornerRadiusInDegree * 2,
-          false,
-          paint);
+      // Draws the arc without rounded corners.
+      float startDegreeWithoutCorners = startDegree + displayedCornerRadiusInDegree;
+      float arcDegreeWithoutCorners = arcDegree - displayedCornerRadiusInDegree * 2;
+      Pair<PathPoint, PathPoint> endPoints = new Pair<>(new PathPoint(), new PathPoint());
+      if (!shouldDrawWavyPath) {
+        endPoints.first.rotate(startDegreeWithoutCorners + 90);
+        endPoints.first.moveAcross(-adjustedRadius);
+        endPoints.second.rotate(startDegreeWithoutCorners + arcDegreeWithoutCorners + 90);
+        endPoints.second.moveAcross(-adjustedRadius);
+        RectF arcBound =
+            new RectF(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
+        canvas.drawArc(arcBound, startDegreeWithoutCorners, arcDegreeWithoutCorners, false, paint);
+      } else {
+        endPoints =
+            getDisplayedPath(
+                activePathMeasure,
+                displayedActivePath,
+                startDegreeWithoutCorners / 360,
+                arcDegreeWithoutCorners / 360);
+        canvas.drawPath(displayedActivePath, paint);
+      }
 
       // Draws rounded rectangles if ROUND cap is not used and the corner radius is bigger than 0.
       if (!useStrokeCap && displayedCornerRadius > 0) {
         paint.setStyle(Style.FILL);
-        drawRoundedBlock(
-            canvas,
-            paint,
-            startDegree + displayedCornerRadiusInDegree,
-            displayedCornerRadius * 2,
-            displayedTrackThickness);
-        drawRoundedBlock(
-            canvas,
-            paint,
-            startDegree + arcDegree - displayedCornerRadiusInDegree,
-            displayedCornerRadius * 2,
-            displayedTrackThickness);
+        drawRoundedBlock(canvas, paint, endPoints.first, blockWidth, displayedTrackThickness);
+        drawRoundedBlock(canvas, paint, endPoints.second, blockWidth, displayedTrackThickness);
       }
     }
   }
@@ -299,28 +351,27 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
   private void drawRoundedBlock(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
-      float positionInDeg,
+      @NonNull PathPoint center,
       float markWidth,
       float markHeight) {
-    drawRoundedBlock(canvas, paint, positionInDeg, markWidth, markHeight, 1);
+    drawRoundedBlock(canvas, paint, center, markWidth, markHeight, 1);
   }
 
   private void drawRoundedBlock(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
-      float positionInDeg,
+      @NonNull PathPoint center,
       float markWidth,
       float markHeight,
       float scale) {
-    markHeight = (int) min(markHeight, displayedTrackThickness);
+    markHeight = min(markHeight, displayedTrackThickness);
     float markCornerSize = markHeight * displayedCornerRadius / displayedTrackThickness;
     markCornerSize = min(markWidth / 2, markCornerSize);
-    RectF roundedBlock = new RectF(-markHeight / 2, -markWidth / 2, markHeight / 2, markWidth / 2);
+    RectF roundedBlock =
+        new RectF(-markWidth / 2f, -markHeight / 2f, markWidth / 2f, markHeight / 2f);
     canvas.save();
-    canvas.translate(
-        (float) (adjustedRadius * cos(toRadians(positionInDeg))),
-        (float) (adjustedRadius * sin(toRadians(positionInDeg))));
-    canvas.rotate(positionInDeg);
+    canvas.translate(center.posVec[0], center.posVec[1]);
+    canvas.rotate(vectorToCanvasRotation(center.tanVec));
     canvas.scale(scale, scale);
     canvas.drawRoundRect(roundedBlock, markCornerSize, markCornerSize, paint);
     canvas.restore();
@@ -328,6 +379,123 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
 
   @Override
   void invalidateCachedPaths() {
-    // Not implemented for Circular yet.
+    cachedActivePath.rewind();
+    // Generates base path as two circles (two copies of the exact same circle without closing the
+    // path). Two circles are needed for drawing an arc starting from an arbitrary position on the
+    // circle. The start point will be always reduced to fall into the first circle. The arc can
+    // never (not necessarily) be longer than a full circle. So the end point will always fall on
+    // the second circle.
+    cachedActivePath.moveTo(1, 0);
+    for (int i = 0; i < 2; i++) {
+      cachedActivePath.cubicTo(
+          1, QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH, QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH, 1, 0, 1);
+      cachedActivePath.cubicTo(
+          -QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH,
+          1,
+          -1,
+          QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH,
+          -1,
+          0);
+      cachedActivePath.cubicTo(
+          -1,
+          -QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH,
+          -QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH,
+          -1,
+          0,
+          -1);
+      cachedActivePath.cubicTo(
+          QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH, -1, 1, -QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH, 1, 0);
+    }
+    // Scales the circle to its radius.
+    Matrix transform = new Matrix();
+    transform.setScale(adjustedRadius, adjustedRadius);
+    cachedActivePath.transform(transform);
+    if (spec.hasWavyEffect()) {
+      activePathMeasure.setPath(cachedActivePath, false);
+      createWavyPath(activePathMeasure, cachedActivePath, displayedAmplitude);
+    }
+    activePathMeasure.setPath(cachedActivePath, false);
+  }
+
+  private void createWavyPath(
+      @NonNull PathMeasure basePathMeasure, @NonNull Path outPath, float amplitude) {
+    outPath.rewind();
+    // Calculates anchor points.
+    float basePathLength = basePathMeasure.getLength();
+    int cycleCountInPath = 2 * max(3, (int) (basePathLength / spec.wavelength / 2));
+    adjustedWavelength = basePathLength / cycleCountInPath;
+    // For each cycle, there will be 2 cubic beziers, which need 3 anchors (startAnchor and
+    // midAnchor for the 1st cubic bezier; midAnchor and startAnchor of the next cycle for the 2nd
+    // cubic bezier). We'll need the coordinates and tangents for each anchor. This List will also
+    // save the first anchor at the end in favor of the ease of calculation.
+    List<PathPoint> anchors = new ArrayList<>();
+    for (int i = 0; i < cycleCountInPath; i++) {
+      PathPoint startAnchor = new PathPoint();
+      basePathMeasure.getPosTan(adjustedWavelength * i, startAnchor.posVec, startAnchor.tanVec);
+      PathPoint midAnchor = new PathPoint();
+      basePathMeasure.getPosTan(
+          adjustedWavelength * i + adjustedWavelength / 2, midAnchor.posVec, midAnchor.tanVec);
+      anchors.add(startAnchor);
+      // Shifts anchors to create amplitude (inward).
+      midAnchor.moveAcross(amplitude * 2);
+      anchors.add(midAnchor);
+    }
+    // There are (2 * cycleCount + 1) anchors in total. The last is the same as the first for the
+    // sake of cubic bezier calculation.
+    anchors.add(anchors.get(0));
+    // Calculates the controls cubic beziers.
+    PathPoint startAnchor = anchors.get(0);
+    outPath.moveTo(startAnchor.posVec[0], startAnchor.posVec[1]);
+    for (int i = 1; i < anchors.size(); i++) {
+      PathPoint endAnchor = anchors.get(i);
+      appendCubicPerHalfCycle(outPath, startAnchor, endAnchor);
+      startAnchor = endAnchor;
+    }
+  }
+
+  private void appendCubicPerHalfCycle(
+      @NonNull Path outPath, @NonNull PathPoint anchor1, @NonNull PathPoint anchor2) {
+    float controlLength = adjustedWavelength / 2 * SINE_WAVE_FORM_SMOOTHNESS;
+    PathPoint control1 = new PathPoint(anchor1);
+    PathPoint control2 = new PathPoint(anchor2);
+    control1.moveAlong(controlLength);
+    control2.moveAlong(-controlLength);
+    outPath.cubicTo(
+        control1.posVec[0],
+        control1.posVec[1],
+        control2.posVec[0],
+        control2.posVec[1],
+        anchor2.posVec[0],
+        anchor2.posVec[1]);
+  }
+
+  @NonNull
+  private Pair<PathPoint, PathPoint> getDisplayedPath(
+      @NonNull PathMeasure pathMeasure, @NonNull Path displayedPath, float start, float span) {
+    if (adjustedRadius != cachedRadius
+        || (pathMeasure == activePathMeasure && displayedAmplitude != cachedAmplitude)) {
+      cachedAmplitude = displayedAmplitude;
+      cachedRadius = adjustedRadius;
+      invalidateCachedPaths();
+    }
+    displayedPath.rewind();
+    span = clamp(span, 0, 1);
+    float resultRotation = 0;
+    start %= 1;
+    float startDistance = start * pathMeasure.getLength() / 2;
+    float endDistance = (start + span) * pathMeasure.getLength() / 2;
+    pathMeasure.getSegment(startDistance, endDistance, displayedPath, true);
+    // Gathers the position and tangent of the start and end.
+    PathPoint startPoint = new PathPoint();
+    pathMeasure.getPosTan(startDistance, startPoint.posVec, startPoint.tanVec);
+    PathPoint endPoint = new PathPoint();
+    pathMeasure.getPosTan(endDistance, endPoint.posVec, endPoint.tanVec);
+    // Transforms the result path to match the canvas.
+    Matrix transform = new Matrix();
+    transform.setRotate(resultRotation);
+    startPoint.rotate(resultRotation);
+    endPoint.rotate(resultRotation);
+    displayedPath.transform(transform);
+    return new Pair<>(startPoint, endPoint);
   }
 }

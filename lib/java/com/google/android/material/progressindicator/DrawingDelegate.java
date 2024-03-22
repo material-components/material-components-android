@@ -16,7 +16,10 @@
 
 package com.google.android.material.progressindicator;
 
+import static java.lang.Math.PI;
 import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
 import static java.lang.System.arraycopy;
 
@@ -199,6 +202,29 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
       posVec[1] *= y;
       tanVec[0] *= x;
       tanVec[1] *= y;
+    }
+
+    /** Returns the distance between this point and the other. */
+    float distance(PathPoint other) {
+      return (float) Math.hypot(other.posVec[0] - posVec[0], other.posVec[1] - posVec[1]);
+    }
+
+    /** Updates the coordinates by moving the point along tangent vector by the given distance. */
+    void moveAlong(float distance) {
+      float angle = (float) atan2(tanVec[1], tanVec[0]);
+      posVec[0] = (float) (posVec[0] + distance * cos(angle));
+      posVec[1] = (float) (posVec[1] + distance * sin(angle));
+    }
+
+    /**
+     * Updates the coordinates by moving the point across the tangent vector by the given distance.
+     * If the given distance is positive, the point is moved to the right side by facing towards the
+     * tangent vector; otherwise, to the left side.
+     */
+    void moveAcross(float distance) {
+      float angle = (float) (atan2(tanVec[1], tanVec[0]) + PI / 2);
+      posVec[0] = (float) (posVec[0] + distance * cos(angle));
+      posVec[1] = (float) (posVec[1] + distance * sin(angle));
     }
 
     /** Rotates the coordinates by the given degrees around (0, 0). */
