@@ -1571,4 +1571,9 @@ public final class MaterialContainerTransform extends Transition {
       this.shapeMask = shapeMask;
     }
   }
+
+  @Override
+  public boolean isSeekingSupported() {
+    return true;
+  }
 }
