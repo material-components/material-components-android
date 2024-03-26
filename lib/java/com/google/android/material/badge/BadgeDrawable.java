@@ -48,7 +48,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.XmlRes;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
@@ -1307,7 +1306,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       case BOTTOM_START:
       case TOP_START:
         badgeCenterX =
-            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
+            anchorView.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR
                 ? anchorRect.left - halfBadgeWidth + totalHorizontalOffset
                 : anchorRect.right + halfBadgeWidth - totalHorizontalOffset;
         break;
@@ -1315,7 +1314,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       case TOP_END:
       default:
         badgeCenterX =
-            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
+            anchorView.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR
                 ? anchorRect.right + halfBadgeWidth - totalHorizontalOffset
                 : anchorRect.left - halfBadgeWidth + totalHorizontalOffset;
         break;

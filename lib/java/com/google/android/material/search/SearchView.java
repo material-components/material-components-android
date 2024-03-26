@@ -977,8 +977,7 @@ public class SearchView extends FrameLayout
         if (childImportantForAccessibilityMap != null
             && childImportantForAccessibilityMap.containsKey(child)) {
           // Restores the original important for accessibility value of the child view.
-          ViewCompat.setImportantForAccessibility(
-              child, childImportantForAccessibilityMap.get(child));
+          child.setImportantForAccessibility(childImportantForAccessibilityMap.get(child));
         }
       } else {
         // Saves the important for accessibility value of the child view.
@@ -986,8 +985,7 @@ public class SearchView extends FrameLayout
           childImportantForAccessibilityMap.put(child, child.getImportantForAccessibility());
         }
 
-        ViewCompat.setImportantForAccessibility(
-            child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        child.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
       }
     }
   }

@@ -321,8 +321,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     }
 
     headerSelectionText = root.findViewById(R.id.mtrl_picker_header_selection_text);
-    ViewCompat.setAccessibilityLiveRegion(
-        headerSelectionText, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+    headerSelectionText.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
     headerToggleButton = root.findViewById(R.id.mtrl_picker_header_toggle);
     headerTitleTextView = root.findViewById(R.id.mtrl_picker_title_text);
     initHeaderToggle(context);

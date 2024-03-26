@@ -30,8 +30,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.core.view.ViewCompat;
 
 /**
  * Horizontally lay out children until the row is filled and then moved to the next line. Call
@@ -194,7 +192,7 @@ public class FlowLayout extends ViewGroup {
     }
     rowCount = 1;
 
-    boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    boolean isRtl = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
     int paddingStart = isRtl ? getPaddingRight() : getPaddingLeft();
     int paddingEnd = isRtl ? getPaddingLeft() : getPaddingRight();
     int childStart = paddingStart;
@@ -217,8 +215,8 @@ public class FlowLayout extends ViewGroup {
       int endMargin = 0;
       if (lp instanceof MarginLayoutParams) {
         MarginLayoutParams marginLp = (MarginLayoutParams) lp;
-        startMargin = MarginLayoutParamsCompat.getMarginStart(marginLp);
-        endMargin = MarginLayoutParamsCompat.getMarginEnd(marginLp);
+        startMargin = marginLp.getMarginStart();
+        endMargin = marginLp.getMarginEnd();
       }
 
       childEnd = childStart + startMargin + child.getMeasuredWidth();

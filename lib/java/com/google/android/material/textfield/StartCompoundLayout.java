@@ -47,8 +47,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
-import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.widget.TextViewCompat;
 import com.google.android.material.internal.CheckableImageButton;
@@ -109,7 +107,7 @@ class StartCompoundLayout extends LinearLayout {
     if (MaterialResources.isFontScaleAtLeast1_3(getContext())) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) startIconView.getLayoutParams();
-      MarginLayoutParamsCompat.setMarginEnd(lp, 0);
+      lp.setMarginEnd(0);
     }
     setStartIconOnClickListener(null);
     setStartIconOnLongClickListener(null);
@@ -150,8 +148,7 @@ class StartCompoundLayout extends LinearLayout {
     prefixTextView.setId(R.id.textinput_prefix_text);
     prefixTextView.setLayoutParams(
         new LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-    ViewCompat.setAccessibilityLiveRegion(
-        prefixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+    prefixTextView.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
 
     setPrefixTextAppearance(a.getResourceId(R.styleable.TextInputLayout_prefixTextAppearance, 0));
     if (a.hasValue(R.styleable.TextInputLayout_prefixTextColor)) {
@@ -317,9 +314,8 @@ class StartCompoundLayout extends LinearLayout {
     if (editText == null) {
       return;
     }
-    int startPadding = isStartIconVisible() ? 0 : ViewCompat.getPaddingStart(editText);
-    ViewCompat.setPaddingRelative(
-        prefixTextView,
+    int startPadding = isStartIconVisible() ? 0 : editText.getPaddingStart();
+    prefixTextView.setPaddingRelative(
         startPadding,
         editText.getCompoundPaddingTop(),
         getContext()
@@ -333,13 +329,12 @@ class StartCompoundLayout extends LinearLayout {
     if (isStartIconVisible()) {
       startIconOffset =
           startIconView.getMeasuredWidth()
-              + MarginLayoutParamsCompat.getMarginEnd(
-                  (MarginLayoutParams) startIconView.getLayoutParams());
+              + ((MarginLayoutParams) startIconView.getLayoutParams()).getMarginEnd();
     } else {
       startIconOffset = 0;
     }
-    return ViewCompat.getPaddingStart(this)
-        + ViewCompat.getPaddingStart(prefixTextView)
+    return getPaddingStart()
+        + prefixTextView.getPaddingStart()
         + startIconOffset;
   }
 

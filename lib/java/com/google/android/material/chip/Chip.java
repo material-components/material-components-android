@@ -256,7 +256,7 @@ public class Chip extends AppCompatCheckBox
     if (shouldEnsureMinTouchTargetSize()) {
       setMinHeight(minTouchTargetSize);
     }
-    lastLayoutDirection = ViewCompat.getLayoutDirection(this);
+    lastLayoutDirection = getLayoutDirection();
 
     super.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
@@ -367,8 +367,7 @@ public class Chip extends AppCompatCheckBox
       paddingEnd += padding.right;
     }
 
-    ViewCompat.setPaddingRelative(
-        this, paddingStart, getPaddingTop(), paddingEnd, getPaddingBottom());
+    setPaddingRelative(paddingStart, getPaddingTop(), paddingEnd, getPaddingBottom());
   }
 
   @Override
@@ -457,7 +456,7 @@ public class Chip extends AppCompatCheckBox
       updateFrameworkRippleBackground();
     } else {
       chipDrawable.setUseCompatRipple(true);
-      ViewCompat.setBackground(this, getBackgroundDrawable());
+      setBackground(getBackgroundDrawable());
       updatePaddingInternal();
       ensureChipDrawableHasCallback();
     }
@@ -488,7 +487,7 @@ public class Chip extends AppCompatCheckBox
             null);
     chipDrawable.setUseCompatRipple(false);
     //noinspection NewApi
-    ViewCompat.setBackground(this, ripple);
+    setBackground(ripple);
     updatePaddingInternal();
   }
 

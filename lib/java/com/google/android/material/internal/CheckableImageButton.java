@@ -79,7 +79,7 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
     if (checkable && this.checked != checked) {
       this.checked = checked;
       refreshDrawableState();
-      sendAccessibilityEvent(AccessibilityEventCompat.TYPE_WINDOW_CONTENT_CHANGED);
+      sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
     }
   }
 

@@ -35,7 +35,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -209,7 +208,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    ViewCompat.performAccessibilityAction(dragHandleView, ACTION_EXPAND.getId(), /* args= */ null);
+    dragHandleView.performAccessibilityAction(ACTION_EXPAND.getId(), /* args= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -226,8 +225,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    ViewCompat.performAccessibilityAction(
-        dragHandleView, getHalfExpandActionId(), /* args= */ null);
+    dragHandleView.performAccessibilityAction(getHalfExpandActionId(), /* args= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -243,8 +241,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    ViewCompat.performAccessibilityAction(
-        dragHandleView, ACTION_COLLAPSE.getId(), /* args= */ null);
+    dragHandleView.performAccessibilityAction(ACTION_COLLAPSE.getId(), /* args= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -261,7 +258,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    ViewCompat.performAccessibilityAction(dragHandleView, ACTION_DISMISS.getId(), /* args= */ null);
+    dragHandleView.performAccessibilityAction(ACTION_DISMISS.getId(), /* args= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -337,11 +334,11 @@ public class BottomSheetDragHandleTest {
 
   private void assertImportantForAccessibility(boolean important) {
     if (important) {
-      assertThat(ViewCompat.getImportantForAccessibility(dragHandleView))
-          .isEqualTo(ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+      assertThat(dragHandleView.getImportantForAccessibility())
+          .isEqualTo(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
     } else {
-      assertThat(ViewCompat.getImportantForAccessibility(dragHandleView))
-          .isEqualTo(ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+      assertThat(dragHandleView.getImportantForAccessibility())
+          .isEqualTo(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
   }
 

@@ -388,11 +388,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
     view.addView(content);
 
-    ViewCompat.setAccessibilityLiveRegion(view, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-    ViewCompat.setImportantForAccessibility(view, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    view.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+    view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
     // Make sure that we fit system windows and have a listener to apply any insets
-    ViewCompat.setFitsSystemWindows(view, true);
+    view.setFitsSystemWindows(true);
     ViewCompat.setOnApplyWindowInsetsListener(
         view,
         new OnApplyWindowInsetsListener() {
@@ -788,7 +788,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       view.setVisibility(View.INVISIBLE);
     }
 
-    if (ViewCompat.isLaidOut(this.view)) {
+    if (view.isLaidOut()) {
       showViewImpl();
       return;
     }
@@ -1215,7 +1215,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       setFocusable(true);
 
       if (getBackground() == null) {
-        ViewCompat.setBackground(this, createThemedBackground());
+        setBackground(createThemedBackground());
       }
     }
 
@@ -1473,7 +1473,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     static Anchor anchor(
         @NonNull BaseTransientBottomBar transientBottomBar, @NonNull View anchorView) {
       Anchor anchor = new Anchor(transientBottomBar, anchorView);
-      if (ViewCompat.isAttachedToWindow(anchorView)) {
+      if (anchorView.isAttachedToWindow()) {
         ViewUtils.addOnGlobalLayoutListener(anchorView, anchor);
       }
       anchorView.addOnAttachStateChangeListener(anchor);

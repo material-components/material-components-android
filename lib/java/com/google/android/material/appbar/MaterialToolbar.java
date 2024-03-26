@@ -387,7 +387,7 @@ public class MaterialToolbar extends Toolbar {
       materialShapeDrawable.setFillColor(backgroundColorStateList);
       materialShapeDrawable.initializeElevationOverlay(context);
       materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
-      ViewCompat.setBackground(this, materialShapeDrawable);
+      setBackground(materialShapeDrawable);
     }
   }
 

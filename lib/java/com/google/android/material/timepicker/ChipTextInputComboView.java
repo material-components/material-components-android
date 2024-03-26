@@ -31,6 +31,7 @@ import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -81,8 +82,8 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     addView(chip);
     addView(textInputLayout);
     label = findViewById(R.id.material_label);
-    editText.setId(ViewCompat.generateViewId());
-    ViewCompat.setLabelFor(label, editText.getId());
+    editText.setId(View.generateViewId());
+    label.setLabelFor(editText.getId());
     editText.setSaveEnabled(false);
     editText.setLongClickable(false);
   }

@@ -40,7 +40,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.motion.MaterialBackOrchestrator;
@@ -315,7 +314,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
       throw new IllegalStateException(
           "Sheet view reference is null; sheet edge cannot be changed if the sheet view is null.");
     }
-    if (ViewCompat.isLaidOut(sheet)) {
+    if (sheet.isLaidOut()) {
       throw new IllegalStateException(
           "Sheet view has been laid out; sheet edge cannot be changed once the sheet has been laid"
               + " out.");
@@ -335,8 +334,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
       CoordinatorLayout.LayoutParams layoutParams =
           (CoordinatorLayout.LayoutParams) sheet.getLayoutParams();
       int absoluteGravity =
-          GravityCompat.getAbsoluteGravity(
-              layoutParams.gravity, ViewCompat.getLayoutDirection(sheet));
+          Gravity.getAbsoluteGravity(layoutParams.gravity, sheet.getLayoutDirection());
       window.setWindowAnimations(
           absoluteGravity == Gravity.LEFT
               ? R.style.Animation_Material3_SideSheetDialog_Left

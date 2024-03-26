@@ -26,7 +26,6 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -74,7 +73,7 @@ public class BottomSheetScrollableContentDemoFragment extends DemoFragment {
         // Add the inset in the inner NestedScrollView instead to make the edge-to-edge behavior
         // consistent - i.e., the extra padding will only show at the bottom of all content, i.e.,
         // only when you can no longer scroll down to show more content.
-        ViewCompat.setPaddingRelative(bottomSheetContent,
+        bottomSheetContent.setPaddingRelative(
             initialPadding.start,
             initialPadding.top,
             initialPadding.end,

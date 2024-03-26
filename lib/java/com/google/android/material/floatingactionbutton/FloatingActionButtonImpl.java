@@ -47,7 +47,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Preconditions;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.ImageMatrixProperty;
@@ -921,7 +920,7 @@ class FloatingActionButtonImpl {
   }
 
   private boolean shouldAnimateVisibilityChange() {
-    return ViewCompat.isLaidOut(view) && !view.isInEditMode();
+    return view.isLaidOut() && !view.isInEditMode();
   }
 
   void updateFromViewRotation() {

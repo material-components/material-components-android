@@ -375,7 +375,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     materialShapeDrawable.initializeElevationOverlay(context);
     setElevation(elevation);
     DrawableCompat.setTintList(materialShapeDrawable, backgroundTint);
-    ViewCompat.setBackground(this, materialShapeDrawable);
+    setBackground(materialShapeDrawable);
 
     ViewUtils.doOnApplyWindowInsets(
         this,
@@ -820,7 +820,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   private void maybeAnimateModeChange(@FabAlignmentMode int targetMode) {
-    if (fabAlignmentMode == targetMode || !ViewCompat.isLaidOut(this)) {
+    if (fabAlignmentMode == targetMode || !isLaidOut()) {
       return;
     }
 
@@ -944,7 +944,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   private void maybeAnimateMenuView(@FabAlignmentMode int targetMode, boolean newFabAttached) {
-    if (!ViewCompat.isLaidOut(this)) {
+    if (!isLaidOut()) {
       menuAnimatingWithFabAlignmentMode = false;
       // If this method is called before the BottomAppBar is laid out and able to animate, make sure
       // the desired menu is still set even if the animation is skipped.
@@ -1201,7 +1201,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       // If the BAB layout has changed, we should alert the fab so that it can
       // adjust its margins accordingly.
       View dependentView = findDependentView();
-      if (dependentView != null && ViewCompat.isLaidOut(dependentView)) {
+      if (dependentView != null && dependentView.isLaidOut()) {
         dependentView.post(() -> dependentView.requestLayout());
       }
     }
@@ -1413,7 +1413,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       viewRef = new WeakReference<>(child);
 
       View dependentView = child.findDependentView();
-      if (dependentView != null && !ViewCompat.isLaidOut(dependentView)) {
+      if (dependentView != null && !dependentView.isLaidOut()) {
         // Set the initial position of the FloatingActionButton with the BottomAppBar vertical
         // offset.
         updateFabAnchorGravity(child, dependentView);

@@ -30,7 +30,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.motion.MotionUtils;
@@ -136,12 +135,11 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
 
   private static void updateTopBottomPadding(
       @NonNull View view, int topPadding, int bottomPadding) {
-    if (ViewCompat.isPaddingRelative(view)) {
-      ViewCompat.setPaddingRelative(
-          view,
-          ViewCompat.getPaddingStart(view),
+    if (view.isPaddingRelative()) {
+      view.setPaddingRelative(
+          view.getPaddingStart(),
           topPadding,
-          ViewCompat.getPaddingEnd(view),
+          view.getPaddingEnd(),
           bottomPadding);
     } else {
       view.setPadding(view.getPaddingLeft(), topPadding, view.getPaddingRight(), bottomPadding);

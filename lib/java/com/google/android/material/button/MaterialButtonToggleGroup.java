@@ -38,7 +38,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -211,7 +210,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     setEnabled(attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_android_enabled, true));
     attributes.recycle();
 
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
 
   @Override
@@ -533,13 +532,13 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
       LayoutParams params = buildLayoutParams(currentButton);
       if (getOrientation() == HORIZONTAL) {
-        MarginLayoutParamsCompat.setMarginEnd(params, 0);
-        MarginLayoutParamsCompat.setMarginStart(params, -smallestStrokeWidth);
+        params.setMarginEnd(0);
+        params.setMarginStart(-smallestStrokeWidth);
         params.topMargin = 0;
       } else {
         params.bottomMargin = 0;
         params.topMargin = -smallestStrokeWidth;
-        MarginLayoutParamsCompat.setMarginStart(params, 0);
+        params.setMarginStart(0);
       }
 
       currentButton.setLayoutParams(params);
@@ -565,8 +564,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       return;
     }
 
-    MarginLayoutParamsCompat.setMarginEnd(params, 0);
-    MarginLayoutParamsCompat.setMarginStart(params, 0);
+    params.setMarginEnd(0);
+    params.setMarginStart(0);
     params.leftMargin = 0;
     params.rightMargin = 0;
   }
@@ -725,7 +724,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private void setGeneratedIdIfNeeded(@NonNull MaterialButton materialButton) {
     // Generates an ID if none is set, for relative positioning purposes
     if (materialButton.getId() == View.NO_ID) {
-      materialButton.setId(ViewCompat.generateViewId());
+      materialButton.setId(View.generateViewId());
     }
   }
 

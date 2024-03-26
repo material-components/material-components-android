@@ -224,11 +224,9 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
 
   private void updateSelection(Chip chip, boolean isSelected) {
     chip.setChecked(isSelected);
-    ViewCompat.setAccessibilityLiveRegion(
-        chip,
-        isSelected
-            ? ViewCompat.ACCESSIBILITY_LIVE_REGION_ASSERTIVE
-            : ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
+    chip.setAccessibilityLiveRegion(isSelected
+        ? View.ACCESSIBILITY_LIVE_REGION_ASSERTIVE
+        : View.ACCESSIBILITY_LIVE_REGION_NONE);
   }
 
   public void addOnRotateListener(OnRotateListener onRotateListener) {
