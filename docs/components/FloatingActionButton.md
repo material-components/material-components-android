@@ -17,7 +17,7 @@ represents the primary action of a screen.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using FABs](#using-fabs)
 *   [FABs](#fabs)
 *   [Small FABs](#small-fabs)

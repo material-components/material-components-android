@@ -16,7 +16,7 @@ groups.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using dividers](#using-dividers)
 *   [Divider's key properties](#key-properties)
 *   [Theming dividers](#theming-dividers)

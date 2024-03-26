@@ -16,7 +16,7 @@ information and actions related to the current screen.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using top app bars](#using-top-app-bars)
 *   [Regular top app bars](#regular-top-app-bars)
 *   [Collapsing top app bar](#collapsing-top-app-bars)

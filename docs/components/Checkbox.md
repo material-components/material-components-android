@@ -24,7 +24,7 @@ checked](assets/checkbox/checkbox_hero.png)
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using checkboxes](#using-checkboxes)
 *   [Checkbox](#checkbox)
 *   [Theming checkboxes](#theming-checkboxes)

@@ -20,7 +20,7 @@ revert back to the previous style.
 
 **Contents**
 
-*   [Design & API documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using bottom app bars](#using-bottom-app-bars)
 *   [Bottom app bar](#bottom-app-bar)
 *   [Theming bottom app bars](#theming-bottom-app-bars)
@@ -73,8 +73,8 @@ in the menu:
 
 ## Bottom app bar
 
-Bottom app bars provide access to a bottom navigation drawer and up to four
-actions, including the floating action button.
+Bottom app bars provide access to up to four actions, including the
+[floating action button](FloatingActionButton.md) (FAB).
 
 ### Bottom app bar examples
 

@@ -16,7 +16,7 @@ temporary surfaces.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design & API Documentation](#design--api-documentation)
 *   [Using menus](#using-menus)
 *   [Dropdown menus](#dropdown-menus)
 *   [Exposed dropdown menus](#exposed-dropdown-menus)
