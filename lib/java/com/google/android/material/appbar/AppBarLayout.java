@@ -2579,16 +2579,16 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         // invisible. Otherwise, on API <= 24 a ghost rect that is outside of the drawing rect will
         // be ignored and the child would be drawn with no clipping.
         if (offsetY >= ghostRect.height()) {
-          child.setVisibility(INVISIBLE);
+          child.setAlpha(0f);
         } else {
-          child.setVisibility(VISIBLE);
+          child.setAlpha(1f);
         }
         ViewCompat.setClipBounds(child, ghostRect);
       } else {
         // Reset both the clip bounds and translationY of this view
         ViewCompat.setClipBounds(child, null);
         child.setTranslationY(0);
-        child.setVisibility(VISIBLE);
+        child.setAlpha(1f);
       }
     }
   }

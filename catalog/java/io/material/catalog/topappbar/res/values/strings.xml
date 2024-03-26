@@ -106,6 +106,8 @@
   <string name="cat_topappbar_compress_toolbar_title">Compress Title</string>
   <string name="cat_topappbar_compress_show_tabs_toggle_label">Show tabs</string>
   <string name="cat_topappbar_compress_hide_tabs_toggle_label">Hide tabs</string>
+  <string name="cat_topappbar_compress_show_toolbar_toggle_label">Show toolbar</string>
+  <string name="cat_topappbar_compress_hide_toolbar_toggle_label">Hide toolbar</string>
 
   <string name="cat_topappbar_tabs_label_all">All</string>
   <string name="cat_topappbar_tabs_label_shopping">Shopping</string>

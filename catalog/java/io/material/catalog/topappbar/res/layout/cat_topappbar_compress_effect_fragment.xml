@@ -108,6 +108,16 @@
           android:textOn="@string/cat_topappbar_compress_hide_tabs_toggle_label"
           android:textOff="@string/cat_topappbar_compress_show_tabs_toggle_label" />
 
+      <ToggleButton
+        android:id="@+id/show_hide_toolbar_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:checked="true"
+        android:textOn="@string/cat_topappbar_compress_hide_toolbar_toggle_label"
+        android:textOff="@string/cat_topappbar_compress_show_toolbar_toggle_label" />
+
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
