@@ -72,8 +72,7 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
           if (ViewCompat.getFitsSystemWindows(header)) {
             final WindowInsetsCompat parentInsets = parent.getLastWindowInsets();
             if (parentInsets != null) {
-              availableHeight += parentInsets.getSystemWindowInsetTop()
-                  + parentInsets.getSystemWindowInsetBottom();
+              availableHeight += parentInsets.getSystemWindowInsetTop();
             }
           }
         } else {
