@@ -37,8 +37,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -48,6 +46,8 @@ import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -159,7 +159,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
       return;
     }
 
-    if (VERSION.SDK_INT > 19 && !isLayoutDirectionResolved()) {
+    if (VERSION.SDK_INT >= 19 && !isLayoutDirectionResolved()) {
       return;
     }
 
@@ -167,7 +167,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
     // Update the super padding to be the combined `android:padding` and
     // `app:contentPadding`, keeping with ShapeableImageView's internal padding contract:
-    if (VERSION.SDK_INT >= 21 && (isPaddingRelative() || isContentPaddingRelative())) {
+    if (VERSION.SDK_INT >= 17 && (isPaddingRelative() || isContentPaddingRelative())) {
       setPaddingRelative(
           super.getPaddingStart(),
           super.getPaddingTop(),
@@ -209,13 +209,17 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     startContentPadding = UNDEFINED_PADDING;
     endContentPadding = UNDEFINED_PADDING;
 
-    // Super padding is equal to background padding + content padding. Adjust the content padding
-    //  portion of the super padding here:
-    super.setPadding(
-        super.getPaddingLeft() - leftContentPadding + left,
-        super.getPaddingTop() - topContentPadding + top,
-        super.getPaddingRight() - rightContentPadding + right,
-        super.getPaddingBottom() - bottomContentPadding + bottom);
+    // If onMeasure hasn't adjusted padding yet, wait for it to be set to avoid double-applying the
+    //  content padding in onMeasure:
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      // Super padding is equal to background padding + content padding. Adjust the content padding
+      //  portion of the super padding here:
+      super.setPadding(
+          super.getPaddingLeft() - leftContentPadding + left,
+          super.getPaddingTop() - topContentPadding + top,
+          super.getPaddingRight() - rightContentPadding + right,
+          super.getPaddingBottom() - bottomContentPadding + bottom);
+    }
 
     leftContentPadding = left;
     topContentPadding = top;
@@ -234,14 +238,20 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @RequiresApi(17)
   public void setContentPaddingRelative(
       @Dimension int start, @Dimension int top, @Dimension int end, @Dimension int bottom) {
-    // Super padding is equal to background padding + content padding. Adjust the content padding
-    //  portion of the super padding here:
-    super.setPaddingRelative(
-        super.getPaddingStart() - getContentPaddingStart() + start,
-        super.getPaddingTop() - topContentPadding + top,
-        super.getPaddingEnd() - getContentPaddingEnd() + end,
-        super.getPaddingBottom() - bottomContentPadding + bottom);
+    // If onMeasure hasn't adjusted padding yet, wait for it to be set to avoid double-applying the
+    //  content padding in onMeasure:
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      // Super padding is equal to background padding + content padding. Adjust the content padding
+      //  portion of the super padding here:
+      super.setPaddingRelative(
+          super.getPaddingStart() - getContentPaddingStart() + start,
+          super.getPaddingTop() - topContentPadding + top,
+          super.getPaddingEnd() - getContentPaddingEnd() + end,
+          super.getPaddingBottom() - bottomContentPadding + bottom);
+    }
 
+    startContentPadding = start;
+    endContentPadding = end;
     leftContentPadding = isRtl() ? end : start;
     topContentPadding = top;
     rightContentPadding = isRtl() ? start : end;
@@ -354,11 +364,15 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   public void setPadding(
       @Dimension int left, @Dimension int top, @Dimension int right, @Dimension int bottom) {
-    super.setPadding(
-        left + getContentPaddingLeft(),
-        top + getContentPaddingTop(),
-        right + getContentPaddingRight(),
-        bottom + getContentPaddingBottom());
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      super.setPadding(
+          left + getContentPaddingLeft(),
+          top + getContentPaddingTop(),
+          right + getContentPaddingRight(),
+          bottom + getContentPaddingBottom());
+    } else {
+      super.setPadding(left, top, right, bottom);
+    }
   }
 
   /**
@@ -373,11 +387,15 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   public void setPaddingRelative(
       @Dimension int start, @Dimension int top, @Dimension int end, @Dimension int bottom) {
-    super.setPaddingRelative(
-        start + getContentPaddingStart(),
-        top + getContentPaddingTop(),
-        end + getContentPaddingEnd(),
-        bottom + getContentPaddingBottom());
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      super.setPaddingRelative(
+          start + getContentPaddingStart(),
+          top + getContentPaddingTop(),
+          end + getContentPaddingEnd(),
+          bottom + getContentPaddingBottom());
+    } else {
+      super.setPaddingRelative(start, top, end, bottom);
+    }
   }
 
   /**
@@ -388,7 +406,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   @Dimension
   public int getPaddingBottom() {
-    return super.getPaddingBottom() - getContentPaddingBottom();
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      return super.getPaddingBottom() - getContentPaddingBottom();
+    } else {
+      return super.getPaddingBottom();
+    }
   }
 
   /**
@@ -399,7 +421,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   @Dimension
   public int getPaddingEnd() {
-    return super.getPaddingEnd() - getContentPaddingEnd();
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      return super.getPaddingEnd() - getContentPaddingEnd();
+    } else {
+      return super.getPaddingEnd();
+    }
   }
 
   /**
@@ -410,7 +436,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   @Dimension
   public int getPaddingLeft() {
-    return super.getPaddingLeft() - getContentPaddingLeft();
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      return super.getPaddingLeft() - getContentPaddingLeft();
+    } else {
+      return super.getPaddingLeft();
+    }
   }
 
   /**
@@ -421,7 +451,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   @Dimension
   public int getPaddingRight() {
-    return super.getPaddingRight() - getContentPaddingRight();
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      return super.getPaddingRight() - getContentPaddingRight();
+    } else {
+      return super.getPaddingRight();
+    }
   }
 
   /**
@@ -432,7 +466,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   @Dimension
   public int getPaddingStart() {
-    return super.getPaddingStart() - getContentPaddingStart();
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      return super.getPaddingStart() - getContentPaddingStart();
+    } else {
+      return super.getPaddingStart();
+    }
   }
 
   /**
@@ -443,7 +481,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   @Override
   @Dimension
   public int getPaddingTop() {
-    return super.getPaddingTop() - getContentPaddingTop();
+    if (hasAdjustedPaddingAfterLayoutDirectionResolved) {
+      return super.getPaddingTop() - getContentPaddingTop();
+    } else {
+      return super.getPaddingTop();
+    }
   }
 
   @Override
