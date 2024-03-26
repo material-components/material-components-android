@@ -395,6 +395,19 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     }
   }
 
+  public void clearSelection() {
+    if (dateSelector != null) {
+      // Clear the selection then call 'selection changed' listeners, if any
+      dateSelector.clearSelection();
+      for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
+        listener.onSelectionChanged(dateSelector.getSelection());
+      }
+
+      // Update the gridview
+      recyclerView.getAdapter().notifyDataSetChanged();
+    }
+  }
+
   void toggleVisibleSelector() {
     if (calendarSelector == CalendarSelector.YEAR) {
       setSelector(CalendarSelector.DAY);
