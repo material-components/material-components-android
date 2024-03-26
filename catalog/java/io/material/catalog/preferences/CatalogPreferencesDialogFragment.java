@@ -29,7 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -124,7 +123,7 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
     MaterialButton button =
         (MaterialButton) layoutInflater.inflate(
             R.layout.mtrl_preferences_dialog_option_button, rootView, false);
-    int buttonId = ViewCompat.generateViewId();
+    int buttonId = View.generateViewId();
     buttonIdToOptionId.append(buttonId, option.id);
     button.setId(buttonId);
     button.setIconResource(option.icon);

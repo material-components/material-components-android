@@ -16,8 +16,6 @@
 
 package com.google.android.material.drawable;
 
-import com.google.android.material.R;
-
 import static java.lang.Math.max;
 
 import android.annotation.SuppressLint;

@@ -49,7 +49,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.card.MaterialCardView.CheckedIconGravity;
 import com.google.android.material.color.MaterialColors;
@@ -501,7 +500,7 @@ class MaterialCardViewHelper {
               ? measuredHeight - checkedIconMargin - checkedIconSize - verticalPaddingAdjustment
               : checkedIconMargin;
 
-      if (ViewCompat.getLayoutDirection(materialCardView) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      if (materialCardView.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
         // swap left and right
         int tmp = right;
         right = left;

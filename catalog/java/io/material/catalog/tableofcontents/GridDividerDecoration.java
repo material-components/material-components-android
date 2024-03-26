@@ -26,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Px;
-import androidx.core.view.ViewCompat;
 
 /**
  * An {@link ItemDecoration} that adds Material-style dividers between grid items. This is meant to
@@ -72,8 +71,7 @@ public final class GridDividerDecoration extends RecyclerView.ItemDecoration {
 
   private void drawVertical(Canvas canvas, RecyclerView parent) {
     final int childCount = parent.getChildCount();
-    final boolean isRTL =
-        ViewCompat.getLayoutDirection(parent) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    final boolean isRTL = parent.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
     for (int i = 0; i < childCount; i++) {
       final View child = parent.getChildAt(i);
 

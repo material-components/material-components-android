@@ -53,8 +53,6 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.math.MathUtils;
 import androidx.core.text.TextDirectionHeuristicsCompat;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.StaticLayoutBuilderCompat.StaticLayoutBuilderCompatException;
@@ -682,7 +680,7 @@ public final class CollapsingTextHelper {
       }
     }
 
-    ViewCompat.postInvalidateOnAnimation(view);
+    view.postInvalidateOnAnimation();
   }
 
   private float calculateFadeModeTextAlpha(@FloatRange(from = 0.0, to = 1.0) float fraction) {
@@ -737,9 +735,9 @@ public final class CollapsingTextHelper {
       collapsedTextWidth = 0;
     }
     final int collapsedAbsGravity =
-        GravityCompat.getAbsoluteGravity(
+        Gravity.getAbsoluteGravity(
             collapsedTextGravity,
-            isRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
+            isRtl ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
 
     switch (collapsedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
@@ -755,7 +753,7 @@ public final class CollapsingTextHelper {
         break;
     }
 
-    switch (collapsedAbsGravity & GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK) {
+    switch (collapsedAbsGravity & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK) {
       case Gravity.CENTER_HORIZONTAL:
         collapsedDrawX = collapsedBounds.centerX() - (collapsedTextWidth / 2);
         break;
@@ -779,9 +777,9 @@ public final class CollapsingTextHelper {
     expandedLineCount = textLayout != null ? textLayout.getLineCount() : 0;
 
     final int expandedAbsGravity =
-        GravityCompat.getAbsoluteGravity(
+        Gravity.getAbsoluteGravity(
             expandedTextGravity,
-            isRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
+            isRtl ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
     switch (expandedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
         expandedDrawY = expandedBounds.bottom - expandedTextHeight + textPaint.descent();
@@ -796,7 +794,7 @@ public final class CollapsingTextHelper {
         break;
     }
 
-    switch (expandedAbsGravity & GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK) {
+    switch (expandedAbsGravity & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK) {
       case Gravity.CENTER_HORIZONTAL:
         expandedDrawX = expandedBounds.centerX() - (expandedTextWidth / 2);
         break;
@@ -835,12 +833,12 @@ public final class CollapsingTextHelper {
 
   private void setCollapsedTextBlend(float blend) {
     collapsedTextBlend = blend;
-    ViewCompat.postInvalidateOnAnimation(view);
+    view.postInvalidateOnAnimation();
   }
 
   private void setExpandedTextBlend(float blend) {
     expandedTextBlend = blend;
-    ViewCompat.postInvalidateOnAnimation(view);
+    view.postInvalidateOnAnimation();
   }
 
   public void draw(@NonNull Canvas canvas) {
@@ -967,7 +965,7 @@ public final class CollapsingTextHelper {
   }
 
   private boolean isDefaultIsRtl() {
-    return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    return view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
   }
 
   private boolean isTextDirectionHeuristicsIsRtl(@NonNull CharSequence text, boolean defaultIsRtl) {
@@ -988,7 +986,7 @@ public final class CollapsingTextHelper {
       ensureExpandedTexture();
     }
 
-    ViewCompat.postInvalidateOnAnimation(view);
+    view.postInvalidateOnAnimation();
   }
 
   private void calculateUsingTextSize(final float fraction) {
@@ -1113,9 +1111,9 @@ public final class CollapsingTextHelper {
 
   private Alignment getMultilineTextLayoutAlignment() {
     int absoluteGravity =
-        GravityCompat.getAbsoluteGravity(
+        Gravity.getAbsoluteGravity(
             expandedTextGravity,
-            isRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
+            isRtl ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
     switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
       case Gravity.CENTER_HORIZONTAL:
         return ALIGN_CENTER;

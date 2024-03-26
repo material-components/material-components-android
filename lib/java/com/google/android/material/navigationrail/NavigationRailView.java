@@ -36,7 +36,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -228,7 +227,7 @@ public class NavigationRailView extends NavigationBarView {
    * fitsSystemWindow will be used.
    */
   private boolean shouldApplyWindowInsetPadding(Boolean paddingInsetFlag) {
-    return paddingInsetFlag != null ? paddingInsetFlag : ViewCompat.getFitsSystemWindows(this);
+    return paddingInsetFlag != null ? paddingInsetFlag : getFitsSystemWindows();
   }
 
   @Override

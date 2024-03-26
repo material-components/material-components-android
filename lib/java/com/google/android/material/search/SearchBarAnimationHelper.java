@@ -354,7 +354,7 @@ class SearchBarAnimationHelper {
 
     return valueAnimator -> {
       expandedViewBackground.setInterpolation(1 - valueAnimator.getAnimatedFraction());
-      ViewCompat.setBackground(expandedView, expandedViewBackground);
+      expandedView.setBackground(expandedViewBackground);
 
       // Ensures that the expanded view is visible, in the case where ActionMode is used.
       expandedView.setAlpha(1);

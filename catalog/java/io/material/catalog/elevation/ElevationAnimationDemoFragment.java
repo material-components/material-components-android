@@ -51,7 +51,7 @@ public class ElevationAnimationDemoFragment extends DemoFragment {
 
     MaterialShapeDrawable materialShapeDrawable =
         MaterialShapeDrawable.createWithElevationOverlay(view.getContext());
-    ViewCompat.setBackground(view, materialShapeDrawable);
+    view.setBackground(materialShapeDrawable);
     setTranslationZ(view, materialShapeDrawable, maxTranslationZ);
     startTranslationZAnimation(view, materialShapeDrawable, maxTranslationZ);
 

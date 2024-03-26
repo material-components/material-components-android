@@ -29,7 +29,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,7 +64,7 @@ public class SideSheetCallbackTest {
           @Override
           public void onStateChanged(@NonNull View sheet, int newState) {
             if (newState == SideSheetBehavior.STATE_EXPANDED) {
-              ViewCompat.setBackground(sideSheet, new ColorDrawable(RED));
+              sideSheet.setBackground(new ColorDrawable(RED));
             }
           }
 
@@ -85,7 +84,7 @@ public class SideSheetCallbackTest {
   public void test_removeCallback_callbackIsRemoved() {
     SideSheetCallback sideSheetCallback = createExpandedRedSideSheetCallback();
     // Ensure that side sheet doesn't already have a background.
-    ViewCompat.setBackground(sideSheet, null);
+    sideSheet.setBackground(null);
 
     sideSheetBehavior.addCallback(sideSheetCallback);
     sideSheetBehavior.removeCallback(sideSheetCallback);
@@ -102,7 +101,7 @@ public class SideSheetCallbackTest {
       @Override
       public void onStateChanged(@NonNull View sheet, int newState) {
         if (newState == SideSheetBehavior.STATE_EXPANDED) {
-          ViewCompat.setBackground(sideSheet, new ColorDrawable(RED));
+          sideSheet.setBackground(new ColorDrawable(RED));
         }
       }
 

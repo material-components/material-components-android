@@ -42,7 +42,6 @@ import androidx.annotation.Dimension;
 import androidx.annotation.FloatRange;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.math.MathUtils;
@@ -132,7 +131,7 @@ class ClockHandView extends View {
     setHandRotation(0);
 
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     a.recycle();
   }
 

@@ -31,7 +31,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Preconditions;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -162,8 +161,7 @@ final class CalendarItemStyle {
     } else {
       d = backgroundDrawable;
     }
-    ViewCompat.setBackground(
-        item, new InsetDrawable(d, insets.left, insets.top, insets.right, insets.bottom));
+    item.setBackground(new InsetDrawable(d, insets.left, insets.top, insets.right, insets.bottom));
   }
 
   int getLeftInset() {

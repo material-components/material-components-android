@@ -33,7 +33,6 @@ import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.core.os.BuildCompat;
 import com.google.android.material.color.utilities.Hct;
 import com.google.android.material.color.utilities.SchemeContent;
 import java.lang.reflect.Method;
@@ -401,7 +400,7 @@ public class DynamicColors {
     if (VERSION.SDK_INT < VERSION_CODES.S) {
       return false;
     }
-    if (BuildCompat.isAtLeastT()) {
+    if (VERSION.SDK_INT >= VERSION_CODES.TIRAMISU) {
       return true;
     }
     DeviceSupportCondition deviceSupportCondition =
