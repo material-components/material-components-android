@@ -17,6 +17,7 @@
 package io.material.catalog.transition;
 
 import io.material.catalog.R;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -88,6 +89,7 @@ public class ContainerTransformConfigurationHelper {
     bottomSheetDialog.setContentView(
         createConfigurationBottomSheetView(context, bottomSheetDialog));
     bottomSheetDialog.setOnDismissListener(onDismissListener);
+    new WindowPreferencesManager(context).applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
     bottomSheetDialog.show();
   }
 
