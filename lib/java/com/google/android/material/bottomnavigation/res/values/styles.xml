@@ -29,6 +29,7 @@
     <item name="itemPaddingBottom">@dimen/design_bottom_navigation_label_padding</item>
     <item name="itemActiveIndicatorStyle">@null</item>
     <item name="android:minHeight">@dimen/design_bottom_navigation_height</item>
+    <item name="android:fitsSystemWindows">true</item>
   </style>
 
   <!-- Default style for BottomNavigationViews.
