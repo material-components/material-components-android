@@ -43,6 +43,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
@@ -60,7 +61,6 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -581,10 +581,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
       int availableWidth = buttonWidth
           - getTextLayoutWidth()
-          - ViewCompat.getPaddingEnd(this)
+          - getPaddingEnd()
           - localIconSize
           - iconPadding
-          - ViewCompat.getPaddingStart(this);
+          - getPaddingStart();
       int newIconLeft =
           textAlignment == Alignment.ALIGN_CENTER ? availableWidth / 2 : availableWidth;
 
@@ -653,7 +653,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   private boolean isLayoutRTL() {
-    return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    return getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
   }
 
   /**

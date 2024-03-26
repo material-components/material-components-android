@@ -181,7 +181,7 @@ public class ViewUtils {
   }
 
   public static boolean isLayoutRtl(View view) {
-    return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    return view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
   }
 
   public static float dpToPx(@NonNull Context context, @Dimension(unit = Dimension.DP) int dp) {
@@ -230,7 +230,7 @@ public class ViewUtils {
 
     /** Applies this relative padding to the view. */
     public void applyToView(View view) {
-      ViewCompat.setPaddingRelative(view, start, top, end, bottom);
+      view.setPaddingRelative(start, top, end, bottom);
     }
   }
 
@@ -310,9 +310,9 @@ public class ViewUtils {
     // Create a snapshot of the view's padding state.
     final RelativePadding initialPadding =
         new RelativePadding(
-            ViewCompat.getPaddingStart(view),
+            view.getPaddingStart(),
             view.getPaddingTop(),
-            ViewCompat.getPaddingEnd(view),
+            view.getPaddingEnd(),
             view.getPaddingBottom());
     // Set an actual OnApplyWindowInsetsListener which proxies to the given callback, also passing
     // in the original padding state.
@@ -330,7 +330,7 @@ public class ViewUtils {
 
   /** Requests that insets should be applied to this view once it is attached. */
   public static void requestApplyInsetsWhenAttached(@NonNull View view) {
-    if (ViewCompat.isAttachedToWindow(view)) {
+    if (view.isAttachedToWindow()) {
       // We're already attached, just request as normal.
       ViewCompat.requestApplyInsets(view);
     } else {

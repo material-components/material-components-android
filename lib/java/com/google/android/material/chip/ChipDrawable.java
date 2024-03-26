@@ -67,7 +67,6 @@ import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.core.text.BidiFormatter;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.canvas.CanvasCompat;
 import com.google.android.material.color.MaterialColors;
@@ -831,7 +830,7 @@ public class ChipDrawable extends MaterialShapeDrawable
       float offsetFromStart = chipStartPadding + iconStartPadding;
       float chipWidth = getCurrentChipIconWidth();
 
-      if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         outBounds.left = bounds.left + offsetFromStart;
         outBounds.right = outBounds.left + chipWidth;
       } else {
@@ -854,7 +853,7 @@ public class ChipDrawable extends MaterialShapeDrawable
     if (text != null) {
       float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
 
-      if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         pointF.x = bounds.left + offsetFromStart;
         align = Align.LEFT;
       } else {
@@ -896,7 +895,7 @@ public class ChipDrawable extends MaterialShapeDrawable
       float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
       float offsetFromEnd = chipEndPadding + calculateCloseIconWidth() + textEndPadding;
 
-      if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         outBounds.left = bounds.left + offsetFromStart;
         outBounds.right = bounds.right - offsetFromEnd;
       } else {
@@ -921,7 +920,7 @@ public class ChipDrawable extends MaterialShapeDrawable
     if (showsCloseIcon()) {
       float offsetFromEnd = chipEndPadding + closeIconEndPadding;
 
-      if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         outBounds.right = bounds.right - offsetFromEnd;
         outBounds.left = outBounds.right - closeIconSize;
       } else {
@@ -945,7 +944,7 @@ public class ChipDrawable extends MaterialShapeDrawable
               + closeIconStartPadding
               + textEndPadding;
 
-      if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         outBounds.right = bounds.right - offsetFromEnd;
       } else {
         outBounds.left = bounds.left + offsetFromEnd;
@@ -964,7 +963,7 @@ public class ChipDrawable extends MaterialShapeDrawable
               + closeIconStartPadding
               + textEndPadding;
 
-      if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         outBounds.right = bounds.right;
         outBounds.left = outBounds.right - offsetFromEnd;
       } else {

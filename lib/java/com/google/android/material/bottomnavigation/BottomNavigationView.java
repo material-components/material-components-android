@@ -34,7 +34,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -154,7 +153,7 @@ public class BottomNavigationView extends NavigationBarView {
             // to dodge the system navigation bar
             initialPadding.bottom += insets.getSystemWindowInsetBottom();
 
-            boolean isRtl = ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+            boolean isRtl = view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
             int systemWindowInsetLeft = insets.getSystemWindowInsetLeft();
             int systemWindowInsetRight = insets.getSystemWindowInsetRight();
             initialPadding.start += isRtl ? systemWindowInsetRight : systemWindowInsetLeft;

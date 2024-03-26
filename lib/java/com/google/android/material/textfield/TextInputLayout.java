@@ -83,8 +83,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.text.BidiFormatter;
 import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.widget.TextViewCompat;
@@ -480,7 +478,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
     collapsingTextHelper.setPositionInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
-    collapsingTextHelper.setCollapsedTextGravity(Gravity.TOP | GravityCompat.START);
+    collapsingTextHelper.setCollapsedTextGravity(Gravity.TOP | Gravity.START);
 
     final TintTypedArray a =
         ThemeEnforcement.obtainTintedStyledAttributes(
@@ -695,12 +693,12 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
     // For accessibility, consider TextInputLayout itself to be a simple container for an EditText,
     // and do not expose it to accessibility services.
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 
     // For autofill to work as intended, TextInputLayout needs to pass the hint text to the nested
     // EditText so marking it as IMPORTANT_FOR_AUTOFILL_YES.
     if (VERSION.SDK_INT >= VERSION_CODES.O) {
-      ViewCompat.setImportantForAutofill(this, View.IMPORTANT_FOR_AUTOFILL_YES);
+      setImportantForAutofill(View.IMPORTANT_FOR_AUTOFILL_YES);
     }
 
     inputFrame.addView(startLayout);
@@ -861,10 +859,10 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       int paddingRight = editText.getPaddingRight();
       int paddingBottom = editText.getPaddingBottom();
 
-      ViewCompat.setBackground(editText, editTextBoxBackground);
+      editText.setBackground(editTextBoxBackground);
       editText.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
     } else {
-      ViewCompat.setBackground(editText, editTextBoxBackground);
+      editText.setBackground(editTextBoxBackground);
     }
   }
 
@@ -1025,21 +1023,19 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     }
     // Both dense and default styles end up with the same vertical padding.
     if (MaterialResources.isFontScaleAtLeast2_0(getContext())) {
-      ViewCompat.setPaddingRelative(
-          editText,
-          ViewCompat.getPaddingStart(editText),
+      editText.setPaddingRelative(
+          editText.getPaddingStart(),
           getResources()
               .getDimensionPixelSize(R.dimen.material_filled_edittext_font_2_0_padding_top),
-          ViewCompat.getPaddingEnd(editText),
+          editText.getPaddingEnd(),
           getResources()
               .getDimensionPixelSize(R.dimen.material_filled_edittext_font_2_0_padding_bottom));
     } else if (MaterialResources.isFontScaleAtLeast1_3(getContext())) {
-      ViewCompat.setPaddingRelative(
-          editText,
-          ViewCompat.getPaddingStart(editText),
+      editText.setPaddingRelative(
+          editText.getPaddingStart(),
           getResources()
               .getDimensionPixelSize(R.dimen.material_filled_edittext_font_1_3_padding_top),
-          ViewCompat.getPaddingEnd(editText),
+          editText.getPaddingEnd(),
           getResources()
               .getDimensionPixelSize(R.dimen.material_filled_edittext_font_1_3_padding_bottom));
     }
@@ -1560,7 +1556,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
         Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
     collapsingTextHelper.setExpandedTextGravity(editTextGravity);
 
-    originalEditTextMinimumHeight = ViewCompat.getMinimumHeight(editText);
+    originalEditTextMinimumHeight = editText.getMinimumHeight();
 
     // Add a TextWatcher so that we know when the text input has changed.
     this.editText.addTextChangedListener(
@@ -1579,7 +1575,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
             int currentLineCount = editText.getLineCount();
             if (currentLineCount != previousLineCount) {
               if (currentLineCount < previousLineCount
-                  && ViewCompat.getMinimumHeight(editText) != originalEditTextMinimumHeight) {
+                  && editText.getMinimumHeight() != originalEditTextMinimumHeight) {
                 editText.setMinimumHeight(originalEditTextMinimumHeight);
               }
               previousLineCount = currentLineCount;
@@ -2261,8 +2257,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
         }
         counterView.setMaxLines(1);
         indicatorViewController.addIndicator(counterView, COUNTER_INDEX);
-        MarginLayoutParamsCompat.setMarginStart(
-            (MarginLayoutParams) counterView.getLayoutParams(),
+        ((MarginLayoutParams) counterView.getLayoutParams()).setMarginStart(
             getResources().getDimensionPixelOffset(R.dimen.mtrl_textinput_counter_margin_start));
         updateCounterTextAppearanceAndColor();
         updateCounter();
@@ -2449,8 +2444,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     if (placeholderTextView == null) {
       placeholderTextView = new AppCompatTextView(getContext());
       placeholderTextView.setId(R.id.textinput_placeholder);
-      ViewCompat.setImportantForAccessibility(
-          placeholderTextView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+      placeholderTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 
       placeholderFadeIn = createPlaceholderFadeTransition();
       placeholderFadeIn.setStartDelay(PLACEHOLDER_START_DELAY);
@@ -3252,7 +3246,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   @Override
   public void onRtlPropertiesChanged(int layoutDirection) {
     super.onRtlPropertiesChanged(layoutDirection);
-    boolean isLayoutDirectionRtl = layoutDirection == ViewCompat.LAYOUT_DIRECTION_RTL;
+    boolean isLayoutDirectionRtl = layoutDirection == View.LAYOUT_DIRECTION_RTL;
    if (isLayoutDirectionRtl != areCornerRadiiRtl) {
       // Switch corner radius values from LTR to RTL or vice versa.
       float boxCornerRadiusTopLeft =
@@ -4125,8 +4119,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
         right =
             right
                 + iconView.getMeasuredWidth()
-                + MarginLayoutParamsCompat.getMarginStart(
-                    ((MarginLayoutParams) iconView.getLayoutParams()));
+                + ((MarginLayoutParams) iconView.getLayoutParams()).getMarginStart();
       }
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
       if (endDummyDrawable != null && endDummyDrawableWidth != right) {
@@ -4349,7 +4342,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
     // Drawable state has changed so see if we need to update the label
     if (editText != null) {
-      updateLabelState(ViewCompat.isLaidOut(this) && isEnabled());
+      updateLabelState(isLaidOut() && isEnabled());
     }
     updateEditTextBackground();
     updateTextInputBoxState();

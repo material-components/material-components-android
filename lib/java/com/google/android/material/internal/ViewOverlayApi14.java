@@ -171,7 +171,7 @@ class ViewOverlayApi14 implements ViewOverlayImpl {
         ViewGroup parent = (ViewGroup) child.getParent();
         if (parent != hostView
             && parent.getParent() != null
-            && ViewCompat.isAttachedToWindow(parent)) {
+            && parent.isAttachedToWindow()) {
           // Moving to different container; figure out how to position child such that
           // it is in the same location on the screen
           int[] parentLocation = new int[2];

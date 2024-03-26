@@ -35,7 +35,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.RelativeCornerSize;
 import java.lang.annotation.Retention;
@@ -80,7 +79,7 @@ class RadialViewGroup extends ConstraintLayout {
   public RadialViewGroup(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     LayoutInflater.from(context).inflate(R.layout.material_radial_view_group, this);
-    ViewCompat.setBackground(this, createBackground());
+    setBackground(createBackground());
 
     TypedArray a =
         context.obtainStyledAttributes(attrs, R.styleable.RadialViewGroup, defStyleAttr, 0);
@@ -106,7 +105,7 @@ class RadialViewGroup extends ConstraintLayout {
   public void addView(View child, int index, ViewGroup.LayoutParams params) {
     super.addView(child, index, params);
     if (child.getId() == NO_ID) {
-      child.setId(ViewCompat.generateViewId());
+      child.setId(View.generateViewId());
     }
     updateLayoutParamsAsync();
   }

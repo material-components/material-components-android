@@ -62,8 +62,6 @@ import androidx.annotation.Px;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityManagerCompat;
 import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.widget.TextViewCompat;
@@ -210,7 +208,7 @@ class EndCompoundLayout extends LinearLayout {
     if (MaterialResources.isFontScaleAtLeast1_3(getContext())) {
       ViewGroup.MarginLayoutParams lp =
           (ViewGroup.MarginLayoutParams) iconView.getLayoutParams();
-      MarginLayoutParamsCompat.setMarginStart(lp, 0);
+      lp.setMarginStart(0);
     }
     return iconView;
   }
@@ -231,8 +229,7 @@ class EndCompoundLayout extends LinearLayout {
     }
     errorIconView.setContentDescription(
         getResources().getText(R.string.error_icon_content_description));
-    ViewCompat.setImportantForAccessibility(
-        errorIconView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    errorIconView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     errorIconView.setClickable(false);
     errorIconView.setPressable(false);
     errorIconView.setFocusable(false);
@@ -299,8 +296,7 @@ class EndCompoundLayout extends LinearLayout {
             ViewGroup.LayoutParams.WRAP_CONTENT,
             ViewGroup.LayoutParams.WRAP_CONTENT,
             Gravity.BOTTOM));
-    ViewCompat.setAccessibilityLiveRegion(
-        suffixTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+    suffixTextView.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
 
     setSuffixTextAppearance(
         a.getResourceId(R.styleable.TextInputLayout_suffixTextAppearance, 0));
@@ -425,7 +421,7 @@ class EndCompoundLayout extends LinearLayout {
   private void addTouchExplorationStateChangeListenerIfNeeded() {
     if (touchExplorationStateChangeListener != null
         && accessibilityManager != null
-        && ViewCompat.isAttachedToWindow(this)) {
+        && isAttachedToWindow()) {
       AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
           accessibilityManager, touchExplorationStateChangeListener);
     }
@@ -725,10 +721,8 @@ class EndCompoundLayout extends LinearLayout {
       return;
     }
     int endPadding =
-        (isEndIconVisible() || isErrorIconVisible())
-            ? 0 : ViewCompat.getPaddingEnd(textInputLayout.editText);
-    ViewCompat.setPaddingRelative(
-        suffixTextView,
+        (isEndIconVisible() || isErrorIconVisible()) ? 0 : textInputLayout.editText.getPaddingEnd();
+    suffixTextView.setPaddingRelative(
         getContext()
             .getResources()
             .getDimensionPixelSize(R.dimen.material_input_text_to_prefix_suffix_padding),
@@ -742,13 +736,12 @@ class EndCompoundLayout extends LinearLayout {
     if (isEndIconVisible() || isErrorIconVisible()) {
       endIconOffset =
           endIconView.getMeasuredWidth()
-              + MarginLayoutParamsCompat.getMarginStart(
-              (MarginLayoutParams) endIconView.getLayoutParams());
+              + ((MarginLayoutParams) endIconView.getLayoutParams()).getMarginStart();
     } else {
       endIconOffset = 0;
     }
-    return ViewCompat.getPaddingEnd(this)
-        + ViewCompat.getPaddingEnd(suffixTextView)
+    return getPaddingEnd()
+        + suffixTextView.getPaddingEnd()
         + endIconOffset;
   }
 

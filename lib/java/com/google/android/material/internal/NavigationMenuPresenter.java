@@ -136,8 +136,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
       headerLayout =
           (LinearLayout)
               layoutInflater.inflate(R.layout.design_navigation_item_header, menuView, false);
-      ViewCompat.setImportantForAccessibility(
-          headerLayout, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+      headerLayout.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
       menuView.setAdapter(adapter);
     }
     return menuView;
@@ -593,8 +592,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
             if (textColor != null) {
               itemView.setTextColor(textColor);
             }
-            ViewCompat.setBackground(
-                itemView,
+            itemView.setBackground(
                 itemBackground != null ? itemBackground.getConstantState().newDrawable() : null);
             if (itemForeground != null) {
               itemView.setForeground(itemForeground.getConstantState().newDrawable());

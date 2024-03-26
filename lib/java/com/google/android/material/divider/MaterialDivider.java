@@ -33,7 +33,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -110,7 +109,7 @@ public class MaterialDivider extends View {
   protected void onDraw(@NonNull Canvas canvas) {
     super.onDraw(canvas);
     // Apply the insets.
-    boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    boolean isRtl = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
     int left = isRtl ? insetEnd : insetStart;
     int right = isRtl ? getWidth() - insetStart : getWidth() - insetEnd;
     dividerDrawable.setBounds(left, 0, right, getBottom() - getTop());
