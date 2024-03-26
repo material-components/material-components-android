@@ -107,7 +107,6 @@ public final class CollapsingTextHelper {
   private float collapsedTextSize = 15;
   private ColorStateList expandedTextColor;
   private ColorStateList collapsedTextColor;
-  private int expandedLineCount;
 
   private float expandedDrawY;
   private float collapsedDrawY;
@@ -539,7 +538,6 @@ public final class CollapsingTextHelper {
           collapsedTypefaceBold != null ? collapsedTypefaceBold : collapsedTypefaceDefault;
       expandedTypeface =
           expandedTypefaceBold != null ? expandedTypefaceBold : expandedTypefaceDefault;
-      recalculate(/* forceRecalculate= */ true);
     }
   }
 
@@ -724,9 +722,9 @@ public final class CollapsingTextHelper {
     return colorStateList.getDefaultColor();
   }
 
-  private void calculateBaseOffsets(boolean forceRecalculate) {
+  private void calculateBaseOffsets() {
     // We then calculate the collapsed text size, using the same logic
-    calculateUsingTextSize(/* fraction= */ 1, forceRecalculate);
+    calculateUsingTextSize(/* fraction= */ 1);
     if (textToDraw != null && textLayout != null) {
       textToDrawCollapsed =
           TextUtils.ellipsize(textToDraw, textPaint, textLayout.getWidth(), titleTextEllipsize);
@@ -768,7 +766,7 @@ public final class CollapsingTextHelper {
         break;
     }
 
-    calculateUsingTextSize(/* fraction= */ 0, forceRecalculate);
+    calculateUsingTextSize(/* fraction= */ 0);
     float expandedTextHeight = textLayout != null ? textLayout.getHeight() : 0;
     float expandedTextWidth = 0;
     if (textLayout != null && maxLines > 1) {
@@ -776,7 +774,6 @@ public final class CollapsingTextHelper {
     } else if (textToDraw != null) {
       expandedTextWidth = measureTextWidth(textPaint, textToDraw);
     }
-    expandedLineCount = textLayout != null ? textLayout.getLineCount() : 0;
 
     final int expandedAbsGravity =
         GravityCompat.getAbsoluteGravity(
@@ -991,12 +988,8 @@ public final class CollapsingTextHelper {
     ViewCompat.postInvalidateOnAnimation(view);
   }
 
-  private void calculateUsingTextSize(final float fraction) {
-    calculateUsingTextSize(fraction, /* forceRecalculate= */ false);
-  }
-
   @SuppressWarnings("ReferenceEquality") // Matches the Typeface comparison in TextView
-  private void calculateUsingTextSize(final float fraction, boolean forceRecalculate) {
+  private void calculateUsingTextSize(final float fraction) {
     if (text == null) {
       return;
     }
@@ -1034,10 +1027,8 @@ public final class CollapsingTextHelper {
       // collapsed text size
       float scaledDownWidth = expandedWidth * textSizeRatio;
 
-      if (forceRecalculate || fadeModeEnabled) {
-        // If we're forcing a recalculate during a measure pass, use the expanded width since the
-        // collapsed width might not be ready yet
-        // Or if the fade mode is enabled, we can also just use the expanded width because when
+      if (fadeModeEnabled) {
+        // If the fade mode is enabled, we can use the expanded width because when
         // fading out/in there is not a continuous scale transition between expanded/collapsed text
         availableWidth = expandedWidth;
       } else {
@@ -1045,7 +1036,6 @@ public final class CollapsingTextHelper {
         // cap the available width so that when the expanded text scales down, it matches
         // the collapsed width
         // Otherwise we'll just use the expanded width
-
         availableWidth =
             scaledDownWidth > collapsedWidth
                 ? min(collapsedWidth / textSizeRatio, expandedWidth)
@@ -1083,16 +1073,26 @@ public final class CollapsingTextHelper {
       }
 
       isRtl = calculateIsRtl(text);
-      textLayout = createStaticLayout(shouldDrawMultiline() ? maxLines : 1, availableWidth, isRtl);
+      textLayout = createStaticLayout(textPaint, availableWidth);
       textToDraw = textLayout.getText();
     }
   }
 
-  private StaticLayout createStaticLayout(int maxLines, float availableWidth, boolean isRtl) {
+  public int calculateExpandedTextLineCount(final int width) {
+    getTextPaintExpanded(tmpPaint);
+
+    final StaticLayout staticLayout = createStaticLayout(tmpPaint, width);
+    return staticLayout.getLineCount();
+  }
+
+  private StaticLayout createStaticLayout(@NonNull TextPaint textPaint, float availableWidth) {
     StaticLayout textLayout = null;
     try {
       // In multiline mode, the text alignment should be controlled by the static layout.
-      Alignment textAlignment = maxLines == 1 ? ALIGN_NORMAL : getMultilineTextLayoutAlignment();
+      Alignment textAlignment = shouldDrawMultiline()
+          ? getMultilineTextLayoutAlignment()
+          : ALIGN_NORMAL;
+
       textLayout =
           StaticLayoutBuilderCompat.obtain(text, textPaint, (int) availableWidth)
               .setEllipsize(titleTextEllipsize)
@@ -1150,14 +1150,10 @@ public final class CollapsingTextHelper {
   }
 
   public void recalculate() {
-    recalculate(/* forceRecalculate= */ false);
-  }
-
-  public void recalculate(boolean forceRecalculate) {
-    if ((view.getHeight() > 0 && view.getWidth() > 0) || forceRecalculate) {
+    if (view.getHeight() > 0 && view.getWidth() > 0) {
       // If we've already been laid out, calculate everything now otherwise we'll wait
       // until a layout
-      calculateBaseOffsets(forceRecalculate);
+      calculateBaseOffsets();
       calculateCurrentOffsets();
     }
   }
@@ -1209,15 +1205,6 @@ public final class CollapsingTextHelper {
     return textLayout != null ? textLayout.getLineCount() : 0;
   }
 
-  /**
-   * Returns the expanded text line count.
-   *
-   * @return The expanded text line count.
-   */
-  public int getExpandedLineCount() {
-    return expandedLineCount;
-  }
-
   @RequiresApi(VERSION_CODES.M)
   public void setLineSpacingAdd(float spacingAdd) {
     this.lineSpacingAdd = spacingAdd;
@@ -1253,7 +1240,7 @@ public final class CollapsingTextHelper {
       @Nullable StaticLayoutBuilderConfigurer staticLayoutBuilderConfigurer) {
     if (this.staticLayoutBuilderConfigurer != staticLayoutBuilderConfigurer) {
       this.staticLayoutBuilderConfigurer = staticLayoutBuilderConfigurer;
-      recalculate(/* forceRecalculate= */ true);
+      recalculate();
     }
   }
 
