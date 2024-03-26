@@ -19,11 +19,11 @@
       description="Title for the screen that showcases demonstrative usages of the MaterialProgressIndicator widget [CHAR LIMIT=NONE]">
     Progress Indicator
   </string>
-  <string name="cat_progress_indicator_visibility_demo_title" translatable="false"
+  <string name="cat_progress_indicator_visibility_demo_title"
       description="Title of demo for the progress indicators with different visibility change behaviors [CHAR LIMIT=NONE]">
     Progress Indicator Visibility Demo
   </string>
-  <string name="cat_progress_indicator_multi_color_demo_title" translatable="false"
+  <string name="cat_progress_indicator_multi_color_demo_title"
       description="Title of demo for the progress indicators with multi indicator colors [CHAR LIMIT=NONE]">
     Progress Indicator Multicolored Demo
   </string>
@@ -39,78 +39,78 @@
 
   <!-- Strings for controlling the demos -->
 
-  <string name="cat_progress_indicator_track_thickness" translatable="false"
+  <string name="cat_progress_indicator_track_thickness"
       description="Text label above a slider for adjusting indicators' track thickness [CHAR LIMIT=NONE]">
     Track Thickness (1-15) dp
   </string>
-  <string name="cat_progress_indicator_corner_size" translatable="false"
+  <string name="cat_progress_indicator_corner_size"
       description="Text label above a slider for adjusting indicators' corner size [CHAR LIMIT=NONE]">
     Corner Size (0-5) dp
   </string>
-  <string name="cat_progress_indicator_gap_size" translatable="false"
+  <string name="cat_progress_indicator_gap_size"
       description="Text label above a slider for adjusting indicators' gap size [CHAR LIMIT=NONE]">
     Gap Size (0-10) dp
   </string>
-  <string name="cat_progress_indicator_reverse_direction" translatable="false"
+  <string name="cat_progress_indicator_reverse_direction"
       description="Switch label for reversing indicators' direction [CHAR LIMIT=NONE]">
     Inverse Direction
   </string>
-  <string name="cat_progress_indicator_linear_stop_indicator_size" translatable="false"
+  <string name="cat_progress_indicator_linear_stop_indicator_size"
       description="Text label above a slider for adjusting stop indicator size in linear progress indicator [CHAR LIMIT=NONE]">
     Linear Stop Indicator Size (0-10) dp
   </string>
-  <string name="cat_progress_indicator_circular_indicator_size" translatable="false"
+  <string name="cat_progress_indicator_circular_indicator_size"
       description="Text label above a slider for adjusting circular indicator's size [CHAR LIMIT=NONE]">
     Circular Indicator Size (20-200) dp
   </string>
-  <string name="cat_progress_indicator_hide_behavior" translatable="false"
+  <string name="cat_progress_indicator_hide_behavior"
       description="Hint label of a dropdown to select hide behavior [CHAR LIMIT=NONE]">
     Hide Behavior
   </string>
-  <string name="cat_progress_indicator_show_behavior" translatable="false"
+  <string name="cat_progress_indicator_show_behavior"
       description="Hint label of a dropdown to select show behavior [CHAR LIMIT=NONE]">
     Show Behavior
   </string>
-  <string name="cat_progress_indicator_initial_behavior" translatable="false"
+  <string name="cat_progress_indicator_initial_behavior"
       description="Show/hide behavior preset in the dropdown fields [CHAR LIMIT=NONE]">
     None
   </string>
-  <string name="cat_progress_indicator_hide" translatable="false"
+  <string name="cat_progress_indicator_hide"
       description="Button label to hide progress indicators [CHAR LIMIT=NONE]">
     Hide
   </string>
-  <string name="cat_progress_indicator_show" translatable="false"
+  <string name="cat_progress_indicator_show"
       description="Button label to show progress indicators [CHAR LIMIT=NONE]">
     Show
   </string>
-  <string name="cat_progress_indicator_determinate_progress" translatable="false"
+  <string name="cat_progress_indicator_determinate_progress"
       description="Text label above a slider for changing indicators' progress [CHAR LIMIT=NONE]">
     Progress (0-100)
   </string>
-  <string name="cat_progress_indicator_set_to_determinate_mode" translatable="false"
+  <string name="cat_progress_indicator_set_to_determinate_mode"
       description="Set the displayed progress indicators to the determinate mode. [CHAR LIMIT=NONE]">
     Determinate Mode
   </string>
 
   <!-- Descriptions of various examples of progress indicators -->
 
-  <string name="cat_progress_indicator_linear" translatable="false"
+  <string name="cat_progress_indicator_linear"
       description="A linear progress progress indicator [CHAR LIMIT=NONE]">
     Linear type
   </string>
-  <string name="cat_progress_indicator_circular" translatable="false"
+  <string name="cat_progress_indicator_circular"
       description="A circular progress progress indicator [CHAR LIMIT=NONE]">
     Circular type
   </string>
-  <string name="cat_progress_indicator_linear_multicolor_disjoint" translatable="false"
+  <string name="cat_progress_indicator_linear_multicolor_disjoint"
       description="A linear progress indicator with multiple indicator colors and disjoint indeterminate animation [CHAR LIMIT=NONE]">
     Linear type with multiple indicator colors and disjoint animations.
   </string>
-  <string name="cat_progress_indicator_linear_multicolor_contiguous" translate="false"
+  <string name="cat_progress_indicator_linear_multicolor_contiguous"
       description="A linear progress indicator with multiple indicator colors and contiguous indeterminate animation [CHAR LIMIT=NONE]">
     Linear type with multiple indicator colors and contiguous animations.
   </string>
-  <string name="cat_progress_indicator_circular_multicolor" translatable="false"
+  <string name="cat_progress_indicator_circular_multicolor"
       description="A circular progress indicator with multiple indicator colors [CHAR LIMIT=NONE]">
     Circular type with multiple indicator colors.
   </string>
