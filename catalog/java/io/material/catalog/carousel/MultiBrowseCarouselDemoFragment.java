@@ -120,7 +120,11 @@ public class MultiBrowseCarouselDemoFragment extends DemoFragment {
         CarouselDemoUtils.createScrollToPositionSliderTouchListener(multiBrowseStartRecyclerView));
 
     multiBrowseStartRecyclerView.setAdapter(adapter);
-    adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));
+    itemCountDropdown.post(() -> {
+      adapter.submitList(
+          CarouselData.createItems().subList(0, Integer.parseInt(itemCountDropdown.getText().toString())),
+          updateSliderRange(positionSlider, adapter));
+    });
   }
 
   private static Runnable updateSliderRange(Slider slider, CarouselAdapter adapter) {
