@@ -29,14 +29,14 @@
 
   <style name="Theme.TranslucentStatus"
     parent="Theme.AppCompat.Light.NoActionBar"
-    tools:targetApi="21">
+    tools:targetApi="lollipop">
     <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     <item name="android:statusBarColor">@android:color/transparent</item>
   </style>
 
   <style name="Theme.TranslucentNavBar"
     parent="Theme.AppCompat.Light.NoActionBar"
-    tools:targetApi="21">
+    tools:targetApi="lollipop">
     <item name="android:windowDrawsSystemBarBackgrounds">true</item>
   </style>
 

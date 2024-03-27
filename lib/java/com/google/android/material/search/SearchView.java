@@ -937,7 +937,7 @@ public class SearchView extends FrameLayout
   public void setModalForAccessibility(boolean isSearchViewModal) {
     ViewGroup rootView = (ViewGroup) this.getRootView();
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && isSearchViewModal) {
+    if (isSearchViewModal) {
       childImportantForAccessibilityMap = new HashMap<>(rootView.getChildCount());
     }
     updateChildImportantForAccessibility(rootView, isSearchViewModal);
@@ -982,9 +982,7 @@ public class SearchView extends FrameLayout
         }
       } else {
         // Saves the important for accessibility value of the child view.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          childImportantForAccessibilityMap.put(child, child.getImportantForAccessibility());
-        }
+        childImportantForAccessibilityMap.put(child, child.getImportantForAccessibility());
 
         ViewCompat.setImportantForAccessibility(
             child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);

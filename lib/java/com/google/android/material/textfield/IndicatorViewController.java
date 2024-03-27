@@ -29,8 +29,6 @@ import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.View;
@@ -493,9 +491,7 @@ final class IndicatorViewController {
     if (enabled) {
       errorView = new AppCompatTextView(context);
       errorView.setId(R.id.textinput_error);
-      if (VERSION.SDK_INT >= 17) {
-        errorView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-      }
+      errorView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
       if (typeface != null) {
         errorView.setTypeface(typeface);
       }
@@ -535,9 +531,7 @@ final class IndicatorViewController {
     if (enabled) {
       helperTextView = new AppCompatTextView(context);
       helperTextView.setId(R.id.textinput_helper_text);
-      if (VERSION.SDK_INT >= 17) {
-        helperTextView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
-      }
+      helperTextView.setTextAlignment(View.TEXT_ALIGNMENT_VIEW_START);
       if (typeface != null) {
         helperTextView.setTypeface(typeface);
       }
@@ -547,20 +541,18 @@ final class IndicatorViewController {
       setHelperTextAppearance(helperTextTextAppearance);
       setHelperTextViewTextColor(helperTextViewTextColor);
       addIndicator(helperTextView, HELPER_INDEX);
-      if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-        helperTextView.setAccessibilityDelegate(
-            new AccessibilityDelegate() {
-              @Override
-              public void onInitializeAccessibilityNodeInfo(
-                  View view, AccessibilityNodeInfo accessibilityNodeInfo) {
-                super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfo);
-                View editText = textInputView.getEditText();
-                if (editText != null) {
-                  accessibilityNodeInfo.setLabeledBy(editText);
-                }
+      helperTextView.setAccessibilityDelegate(
+          new AccessibilityDelegate() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                View view, AccessibilityNodeInfo accessibilityNodeInfo) {
+              super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfo);
+              View editText = textInputView.getEditText();
+              if (editText != null) {
+                accessibilityNodeInfo.setLabeledBy(editText);
               }
-            });
-      }
+            }
+          });
     } else {
       hideHelperText();
       removeIndicator(helperTextView, HELPER_INDEX);

@@ -16,12 +16,9 @@
 package com.google.android.material.animation;
 
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.util.Property;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import java.util.WeakHashMap;
 
 /**
  * Compat property for {@link Drawable#getAlpha()} and {@link Drawable#setAlpha(int)} for pre-K
@@ -36,8 +33,6 @@ public class DrawableAlphaProperty extends Property<Drawable, Integer> {
   public static final Property<Drawable, Integer> DRAWABLE_ALPHA_COMPAT =
       new DrawableAlphaProperty();
 
-  private final WeakHashMap<Drawable, Integer> alphaCache = new WeakHashMap<>();
-
   private DrawableAlphaProperty() {
     super(Integer.class, "drawableAlphaCompat");
   }
@@ -45,21 +40,11 @@ public class DrawableAlphaProperty extends Property<Drawable, Integer> {
   @Nullable
   @Override
   public Integer get(@NonNull Drawable object) {
-    if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
-      return object.getAlpha();
-    }
-    if (alphaCache.containsKey(object)) {
-      return alphaCache.get(object);
-    }
-    return 0xFF;
+    return object.getAlpha();
   }
 
   @Override
   public void set(@NonNull Drawable object, @NonNull Integer value) {
-    if (VERSION.SDK_INT < VERSION_CODES.KITKAT) {
-      alphaCache.put(object, value);
-    }
-
     object.setAlpha(value);
   }
 }

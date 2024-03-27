@@ -24,11 +24,8 @@ import android.graphics.Path.Direction;
 import android.graphics.Path.Op;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.UiThread;
 
@@ -139,7 +136,7 @@ public class ShapeAppearancePathProvider {
     overlappedEdgePath.close();
 
     // Union with the edge paths that had an intersection to handle overlaps.
-    if (VERSION.SDK_INT >= VERSION_CODES.KITKAT && !overlappedEdgePath.isEmpty()) {
+    if (!overlappedEdgePath.isEmpty()) {
       path.op(overlappedEdgePath, Op.UNION);
     }
   }
@@ -202,7 +199,6 @@ public class ShapeAppearancePathProvider {
     shapePath.applyToPath(edgeTransforms[index], edgePath);
 
     if (edgeIntersectionCheckEnabled
-        && VERSION.SDK_INT >= VERSION_CODES.KITKAT
         && (edgeTreatment.forceIntersection()
             || pathOverlapsCorner(edgePath, index)
             || pathOverlapsCorner(edgePath, nextIndex))) {
@@ -229,7 +225,6 @@ public class ShapeAppearancePathProvider {
     }
   }
 
-  @RequiresApi(VERSION_CODES.KITKAT)
   private boolean pathOverlapsCorner(Path edgePath, int index) {
     cornerPath.reset();
     cornerPaths[index].applyToPath(cornerTransforms[index], cornerPath);

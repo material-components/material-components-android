@@ -26,7 +26,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.TintTypedArray;
@@ -69,15 +68,6 @@ public class MaterialResources {
       }
     }
 
-    // Reading a single color with getColorStateList() on API 15 and below doesn't always correctly
-    // read the value. Instead we'll first try to read the color directly here.
-    if (VERSION.SDK_INT <= VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-      int color = attributes.getColor(index, -1);
-      if (color != -1) {
-        return ColorStateList.valueOf(color);
-      }
-    }
-
     return attributes.getColorStateList(index);
   }
 
@@ -95,15 +85,6 @@ public class MaterialResources {
         if (value != null) {
           return value;
         }
-      }
-    }
-
-    // Reading a single color with getColorStateList() on API 15 and below doesn't always correctly
-    // read the value. Instead we'll first try to read the color directly here.
-    if (VERSION.SDK_INT <= VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-      int color = attributes.getColor(index, -1);
-      if (color != -1) {
-        return ColorStateList.valueOf(color);
       }
     }
 

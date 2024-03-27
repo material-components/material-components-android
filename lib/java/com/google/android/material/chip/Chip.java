@@ -372,7 +372,6 @@ public class Chip extends AppCompatCheckBox
   }
 
   @Override
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
   public void onRtlPropertiesChanged(int layoutDirection) {
     super.onRtlPropertiesChanged(layoutDirection);
 
@@ -604,7 +603,6 @@ public class Chip extends AppCompatCheckBox
     super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
   }
 
-  @RequiresApi(17)
   @Override
   public void setCompoundDrawablesRelative(
       @Nullable Drawable start,
@@ -1311,9 +1309,7 @@ public class Chip extends AppCompatCheckBox
     if (chipDrawable == null) {
       return;
     }
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-      super.setLayoutDirection(layoutDirection);
-    }
+    super.setLayoutDirection(layoutDirection);
   }
 
   @Override
@@ -2316,15 +2312,10 @@ public class Chip extends AppCompatCheckBox
         return true;
       }
     }
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-      if (getMinHeight() != minTargetPx) {
-        setMinHeight(minTargetPx);
-      }
-      if (getMinWidth() != minTargetPx) {
-        setMinWidth(minTargetPx);
-      }
-    } else {
+    if (getMinHeight() != minTargetPx) {
       setMinHeight(minTargetPx);
+    }
+    if (getMinWidth() != minTargetPx) {
       setMinWidth(minTargetPx);
     }
     insetChipBackgroundDrawable(deltaX, deltaY, deltaX, deltaY);

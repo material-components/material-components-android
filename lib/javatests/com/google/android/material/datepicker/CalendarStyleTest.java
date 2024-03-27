@@ -19,14 +19,11 @@ import com.google.android.material.test.R;
 
 import static org.junit.Assert.assertEquals;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.TextView;
 import androidx.test.core.app.ApplicationProvider;
@@ -75,11 +72,7 @@ public class CalendarStyleTest {
   }
 
   @Test
-  @TargetApi(VERSION_CODES.KITKAT)
   public void testShapeStyling() {
-    if (VERSION.SDK_INT < VERSION_CODES.KITKAT) {
-      return;
-    }
     calendarStyle.day.styleItem(textView);
     Drawable backgroundDrawable;
     InsetDrawable drawableWrapper = (InsetDrawable) textView.getBackground();

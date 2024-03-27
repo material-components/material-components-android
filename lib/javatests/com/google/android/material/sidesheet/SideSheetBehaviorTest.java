@@ -24,9 +24,6 @@ import static com.google.android.material.sidesheet.Sheet.STATE_SETTLING;
 import static com.google.common.truth.Truth.assertThat;
 import static org.robolectric.Shadows.shadowOf;
 
-import android.annotation.TargetApi;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
@@ -153,12 +150,8 @@ public class SideSheetBehaviorTest {
     assertThat(sideSheet.getVisibility()).isEqualTo(View.VISIBLE);
   }
 
-  @TargetApi(VERSION_CODES.KITKAT)
   @Test
   public void setAccessibilityPaneTitle_ofDefaultSheet_customTitleIsUsed() {
-    if (VERSION.SDK_INT < VERSION_CODES.KITKAT) {
-      return;
-    }
     String defaultAccessibilityPaneTitle =
         String.valueOf(ViewCompat.getAccessibilityPaneTitle(sideSheet));
     shadowOf(Looper.getMainLooper()).idle();

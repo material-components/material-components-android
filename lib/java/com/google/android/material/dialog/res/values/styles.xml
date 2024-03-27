@@ -54,7 +54,7 @@
     <item name="android:scaleType">fitCenter</item>
     <item name="android:src">@null</item>
     <item name="android:contentDescription">@null</item>
-    <item name="android:importantForAccessibility" tools:targetApi="jelly_bean">no</item>
+    <item name="android:importantForAccessibility">no</item>
   </style>
 
   <style name="Base.MaterialAlertDialog.MaterialComponents.Title.Text" parent="RtlOverlay.DialogWindowTitle.AppCompat">

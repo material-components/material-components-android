@@ -22,14 +22,11 @@ import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build;
-import android.util.Log;
 import android.view.Display;
 import android.view.WindowManager;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 /**
  * A util class for window operations.
@@ -39,8 +36,6 @@ import java.lang.reflect.Method;
 @RestrictTo(LIBRARY_GROUP)
 public class WindowUtils {
 
-  private static final String TAG = WindowUtils.class.getSimpleName();
-
   private WindowUtils() {}
 
   @NonNull
@@ -48,10 +43,8 @@ public class WindowUtils {
     WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
       return Api30Impl.getCurrentWindowBounds(windowManager);
-    } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      return Api17Impl.getCurrentWindowBounds(windowManager);
     } else {
-      return Api14Impl.getCurrentWindowBounds(windowManager);
+      return Api17Impl.getCurrentWindowBounds(windowManager);
     }
   }
 
@@ -64,7 +57,6 @@ public class WindowUtils {
     }
   }
 
-  @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
   private static class Api17Impl {
 
     @NonNull
@@ -79,41 +71,6 @@ public class WindowUtils {
       bounds.bottom = defaultDisplaySize.y;
 
       return bounds;
-    }
-  }
-
-  private static class Api14Impl {
-
-    @NonNull
-    static Rect getCurrentWindowBounds(@NonNull WindowManager windowManager) {
-      Display defaultDisplay = windowManager.getDefaultDisplay();
-      Point defaultDisplaySize = getRealSizeForDisplay(defaultDisplay);
-
-      Rect bounds = new Rect();
-      if (defaultDisplaySize.x == 0 || defaultDisplaySize.y == 0) {
-        defaultDisplay.getRectSize(bounds);
-      } else {
-        bounds.right = defaultDisplaySize.x;
-        bounds.bottom = defaultDisplaySize.y;
-      }
-
-      return bounds;
-    }
-
-    private static Point getRealSizeForDisplay(Display display) {
-      Point size = new Point();
-      try {
-        Method getRealSizeMethod = Display.class.getDeclaredMethod("getRealSize", Point.class);
-        getRealSizeMethod.setAccessible(true);
-        getRealSizeMethod.invoke(display, size);
-      } catch (NoSuchMethodException e) {
-        Log.w(TAG, e);
-      } catch (IllegalAccessException e) {
-        Log.w(TAG, e);
-      } catch (InvocationTargetException e) {
-        Log.w(TAG, e);
-      }
-      return size;
     }
   }
 }
