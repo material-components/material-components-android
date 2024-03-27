@@ -16,7 +16,7 @@
   -->
 <resources>
   <string name="cat_progress_indicator_title"
-      description="Title for the screen that showcases demonstrative usages of the MaterialProgressIndicator widget [CHAR LIMIT=NONE]">
+      description="Title for the screen that showcases demonstrative usages of the Progress Indicator widget [CHAR LIMIT=NONE]">
     Progress Indicator
   </string>
   <string name="cat_progress_indicator_visibility_demo_title"
