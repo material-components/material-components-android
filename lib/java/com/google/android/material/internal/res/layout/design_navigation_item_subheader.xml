@@ -19,7 +19,8 @@
     android:layout_height="?attr/listPreferredItemHeightSmall"
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
     android:paddingRight="?attr/listPreferredItemPaddingRight"
-    android:gravity="center_vertical|start"
+    android:gravity="center_vertical"
     android:maxLines="1"
+    android:textAlignment="viewStart"
     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
     android:textColor="?android:textColorSecondary"/>
