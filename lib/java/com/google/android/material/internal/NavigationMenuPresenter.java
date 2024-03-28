@@ -621,7 +621,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
             NavigationMenuTextItem item = (NavigationMenuTextItem) items.get(position);
             subHeader.setText(item.getMenuItem().getTitle());
             TextViewCompat.setTextAppearance(subHeader, subheaderTextAppearance);
-            subHeader.setPadding(
+            subHeader.setPaddingRelative(
                 subheaderInsetStart,
                 subHeader.getPaddingTop(),
                 subheaderInsetEnd,
@@ -636,7 +636,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
         case VIEW_TYPE_SEPARATOR:
           {
             NavigationMenuSeparatorItem item = (NavigationMenuSeparatorItem) items.get(position);
-            holder.itemView.setPadding(
+            holder.itemView.setPaddingRelative(
                 dividerInsetStart,
                 item.getPaddingTop(),
                 dividerInsetEnd,
