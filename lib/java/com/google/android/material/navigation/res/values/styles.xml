@@ -23,8 +23,8 @@
     <item name="android:background">?android:attr/windowBackground</item>
     <item name="android:fitsSystemWindows">true</item>
     <item name="android:maxWidth">@dimen/design_navigation_max_width</item>
-    <item name="subheaderInsetStart">?attr/listPreferredItemPaddingLeft</item>
-    <item name="subheaderInsetEnd">?attr/listPreferredItemPaddingRight</item>
+    <item name="subheaderInsetStart">?attr/listPreferredItemPaddingStart</item>
+    <item name="subheaderInsetEnd">?attr/listPreferredItemPaddingEnd</item>
     <item name="drawerLayoutCornerSize">0dp</item>
   </style>
 
