@@ -158,7 +158,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
         color,
         activeIndicator.gapSize,
         activeIndicator.gapSize,
-        activeIndicator.amplitudeFraction,
         activeIndicator.phaseFraction,
         /* drawingActiveIndicator= */ true);
   }
@@ -181,7 +180,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
         color,
         gapSize,
         gapSize,
-        /* amplitudeFraction= */ 0f,
         /* phaseFraction= */ 0f,
         /* drawingActiveIndicator= */ false);
   }
@@ -196,7 +194,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
    * @param paintColor The color used to draw the indicator.
    * @param startGapSize The gap size applied to the start (left) of the drawing part.
    * @param endGapSize The gap size applied to the end (right) of the drawing part.
-   * @param amplitudeFraction The fraction [0, 1] of amplitude applied to the part.
    * @param phaseFraction The fraction [0, 1] of initial phase in one cycle.
    * @param drawingActiveIndicator Whether this part should be drawn as an active indicator.
    */
@@ -208,7 +205,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       @ColorInt int paintColor,
       @Px int startGapSize,
       @Px int endGapSize,
-      float amplitudeFraction,
       float phaseFraction,
       boolean drawingActiveIndicator) {
     startFraction = clamp(startFraction, 0f, 1f);
@@ -234,7 +230,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     // Adjusts start/end X so the progress indicator will start from 0 when startFraction == 0.
     float originX = -trackLength / 2;
 
-    boolean drawWavyPath = spec.hasWavyEffect() && drawingActiveIndicator && amplitudeFraction > 0f;
+    boolean drawWavyPath = spec.hasWavyEffect() && drawingActiveIndicator;
 
     // No need to draw on track if start and end are out of visible range.
     if (startPx <= endPx) {
@@ -279,7 +275,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
                   displayedActivePath,
                   startBlockCenterX / trackLength,
                   endBlockCenterX / trackLength,
-                  amplitudeFraction,
                   phaseFraction);
           canvas.drawPath(displayedActivePath, paint);
         }
@@ -387,7 +382,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       @NonNull Path displayedPath,
       float start,
       float end,
-      float amplitudeFraction,
       float phaseFraction) {
     displayedPath.rewind();
     float resultTranslationX = -trackLength / 2;
@@ -413,7 +407,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     startPoint.translate(resultTranslationX, 0);
     endPoint.translate(resultTranslationX, 0);
     if (spec.hasWavyEffect()) {
-      float scaleY = displayedAmplitude * amplitudeFraction;
+      float scaleY = displayedAmplitude;
       transform.postScale(1, scaleY);
       startPoint.scale(1, scaleY);
       endPoint.scale(1, scaleY);

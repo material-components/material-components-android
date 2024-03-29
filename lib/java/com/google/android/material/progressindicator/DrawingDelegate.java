@@ -169,10 +169,6 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
     // to each other. Gaps are needed in this case.
     @Px int gapSize;
 
-    // The fraction [0, 1] of the amplitude on indicator.
-    @FloatRange(from = 0.0, to = 1.0)
-    float amplitudeFraction = 1;
-
     // The fraction [0, 1] of the initial phase [0, 2 * PI] on indicator.
     @FloatRange(from = 0.0, to = 1.0)
     float phaseFraction;
