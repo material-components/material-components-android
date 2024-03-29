@@ -22,43 +22,31 @@ import static com.google.android.material.progressindicator.CircularProgressIndi
 import static com.google.android.material.progressindicator.LinearProgressIndicator.INDICATOR_DIRECTION_LEFT_TO_RIGHT;
 import static com.google.android.material.progressindicator.LinearProgressIndicator.INDICATOR_DIRECTION_RIGHT_TO_LEFT;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.slider.Slider;
-import io.material.catalog.feature.DemoFragment;
 
 /**
  * This is the fragment to demo simple use cases of {@link LinearProgressIndicator} and {@link
  * CircularProgressIndicator}.
  */
-public class ProgressIndicatorMainDemoFragment extends DemoFragment {
+public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFragment {
+
+  @NonNull private LinearProgressIndicator linearIndicator;
+  @NonNull private CircularProgressIndicator circularIndicator;
 
   @Override
-  @NonNull
-  public View onCreateDemoView(
-      @NonNull LayoutInflater layoutInflater,
-      @Nullable ViewGroup viewGroup,
-      @Nullable Bundle bundle) {
-
-    View view =
-        layoutInflater.inflate(
-            R.layout.cat_progress_indicator_main_fragment, viewGroup, false /* attachToRoot */);
-
-    initialize(view);
-
-    return view;
+  public void initDemoContents(@NonNull View view) {
+    linearIndicator = view.findViewById(R.id.linear_indicator);
+    circularIndicator = view.findViewById(R.id.circular_indicator);
   }
 
-  public void initialize(@NonNull View view) {
-    LinearProgressIndicator linearIndicator = view.findViewById(R.id.linear_indicator);
-    CircularProgressIndicator circularIndicator = view.findViewById(R.id.circular_indicator);
+  @Override
+  public void initDemoControls(@NonNull View view) {
     Slider progressSlider = view.findViewById(R.id.progress_slider);
     MaterialSwitch determinateSwitch = view.findViewById(R.id.determinate_mode_switch);
 
@@ -149,5 +137,17 @@ public class ProgressIndicatorMainDemoFragment extends DemoFragment {
             circularIndicator.setIndicatorSize(newCornerRadius);
           }
         });
+  }
+
+  @Override
+  @LayoutRes
+  public int getProgressIndicatorContentLayout() {
+    return R.layout.cat_progress_indicator_main_content;
+  }
+
+  @Override
+  @LayoutRes
+  public int getProgressIndicatorDemoControlLayout() {
+    return R.layout.cat_progress_indicator_basic_controls;
   }
 }

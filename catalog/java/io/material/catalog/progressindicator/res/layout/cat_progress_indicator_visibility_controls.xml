@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -24,31 +24,12 @@
     android:padding="16dp"
     android:showDividers="middle"
     android:divider="@drawable/layout_divider">
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_linear" />
-  <com.google.android.material.progressindicator.LinearProgressIndicator
-      android:id="@+id/linear_indicator"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:indeterminate="true"/>
-
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:text="@string/cat_progress_indicator_circular" />
-  <com.google.android.material.progressindicator.CircularProgressIndicator
-      android:id="@+id/circular_indicator"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:indeterminate="true"/>
 
   <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/determinate_mode_switch"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:checked="true"
       android:text="@string/cat_progress_indicator_set_to_determinate_mode"/>
   <TextView
       android:layout_width="wrap_content"
