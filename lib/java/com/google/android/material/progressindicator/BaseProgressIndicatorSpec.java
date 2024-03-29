@@ -79,6 +79,9 @@ public abstract class BaseProgressIndicatorSpec {
   /** The size of the amplitude, if a wave effect is configured. */
   @Px public int amplitude;
 
+  /** The speed of the waveform, if a wave effect is configured. */
+  @Px public int speed;
+
   /**
    * Instantiates BaseProgressIndicatorSpec.
    *
@@ -119,6 +122,7 @@ public abstract class BaseProgressIndicatorSpec {
 
     wavelength = abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_wavelength, 0));
     amplitude = abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_amplitude, 0));
+    speed = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_speed, 0);
 
     loadIndicatorColors(context, a);
     loadTrackColor(context, a);
