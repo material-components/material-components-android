@@ -31,6 +31,10 @@
       description="Title of demo for other components using progress indicator standalone drawables [CHAR LIMIT=NONE]">
     Standalone Drawable Progress Indicator Demo
   </string>
+  <string name="cat_progress_indicator_wave_demo_title"
+    description="Title of demo for applying wave effects on progress indicators [CHAR LIMIT=NONE]">
+    Wavy Progress Indicator Demo
+  </string>
   <string name="cat_progress_indicator_description"
       description="Body text describing the MaterialProgressIndicator widget within the design system [CHAR LIMIT=NONE]">
     ProgressIndicator shows the progress of an undergoing process.
@@ -41,15 +45,15 @@
 
   <string name="cat_progress_indicator_track_thickness"
       description="Text label above a slider for adjusting indicators' track thickness [CHAR LIMIT=NONE]">
-    Track Thickness (1-15) dp
+    Track Thickness (1 - 15) dp
   </string>
   <string name="cat_progress_indicator_corner_size"
       description="Text label above a slider for adjusting indicators' corner size [CHAR LIMIT=NONE]">
-    Corner Size (0-5) dp
+    Corner Size (0 - 5) dp
   </string>
   <string name="cat_progress_indicator_gap_size"
       description="Text label above a slider for adjusting indicators' gap size [CHAR LIMIT=NONE]">
-    Gap Size (0-10) dp
+    Gap Size (0 - 10) dp
   </string>
   <string name="cat_progress_indicator_reverse_direction"
       description="Switch label for reversing indicators' direction [CHAR LIMIT=NONE]">
@@ -57,11 +61,11 @@
   </string>
   <string name="cat_progress_indicator_linear_stop_indicator_size"
       description="Text label above a slider for adjusting stop indicator size in linear progress indicator [CHAR LIMIT=NONE]">
-    Linear Stop Indicator Size (0-10) dp
+    Linear Stop Indicator Size (0 - 10) dp
   </string>
   <string name="cat_progress_indicator_circular_indicator_size"
       description="Text label above a slider for adjusting circular indicator's size [CHAR LIMIT=NONE]">
-    Circular Indicator Size (20-200) dp
+    Circular Indicator Size (20 - 200) dp
   </string>
   <string name="cat_progress_indicator_hide_behavior"
       description="Hint label of a dropdown to select hide behavior [CHAR LIMIT=NONE]">
@@ -85,11 +89,19 @@
   </string>
   <string name="cat_progress_indicator_determinate_progress"
       description="Text label above a slider for changing indicators' progress [CHAR LIMIT=NONE]">
-    Progress (0-100)
+    Progress (0 - 100)
   </string>
   <string name="cat_progress_indicator_set_to_determinate_mode"
       description="Set the displayed progress indicators to the determinate mode. [CHAR LIMIT=NONE]">
     Determinate Mode
+  </string>
+  <string name="cat_progress_indicator_wave_amplitude"
+      description="Text label above a slider for changing indicators' amplitude [CHAR LIMIT=NONE]">
+    Amplitude (0 - 30) dp
+  </string>
+  <string name="cat_progress_indicator_wave_length"
+      description="Text label above a slider for changing indicators' wavelength [CHAR LIMIT=NONE]">
+    Wave length (0 - 100) dp
   </string>
 
   <!-- Descriptions of various examples of progress indicators -->
