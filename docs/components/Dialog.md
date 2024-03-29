@@ -188,10 +188,10 @@ Element        | **Attribute**                 | **Related methods** | **Default
 
 #### Theme overlays
 
-Element                    | **Theme overlay**
--------------------------- | -----------------
-**Default theme overlay**  | `ThemeOverlay.Material3.MaterialAlertDialog`
-**Centered theme overlay** | `ThemeOverlay.Material3.MaterialAlertDialog.Centered`
+Element                    | **Theme overlay**                                      | Description
+-------------------------- | ------------------------------------------------------ | -------------
+**Default theme overlay**  | `ThemeOverlay.Material3.MaterialAlertDialog`           | Dialogs have start-aligned icons and titles with end-aligned buttons
+**Centered theme overlay** | `ThemeOverlay.Material3.MaterialAlertDialog.Centered`  | Dialogs have center-aligned icons and titles with end-aligned buttons
 
 Default theme overlay attribute: `?attr/materialAlertDialogTheme`
 
