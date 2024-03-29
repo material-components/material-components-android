@@ -168,10 +168,6 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
     // active indicator. But for linear contiguous indeterminate mode, the indicators are connecting
     // to each other. Gaps are needed in this case.
     @Px int gapSize;
-
-    // The fraction [0, 1] of the initial phase [0, 2 * PI] on indicator.
-    @FloatRange(from = 0.0, to = 1.0)
-    float phaseFraction;
   }
 
   /** An entity class for a point on a path, with the support of fundamental operations. */

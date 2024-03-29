@@ -18,7 +18,6 @@ package com.google.android.material.progressindicator;
 import static androidx.core.math.MathUtils.clamp;
 import static com.google.android.material.math.MathUtils.lerp;
 import static com.google.android.material.progressindicator.BaseProgressIndicator.HIDE_ESCAPE;
-import static java.lang.Math.PI;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 import static java.lang.Math.toDegrees;
@@ -173,7 +172,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         color,
         activeIndicator.gapSize,
         activeIndicator.gapSize,
-        activeIndicator.phaseFraction,
         /* shouldDrawActiveIndicator= */ true);
   }
 
@@ -195,7 +193,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         color,
         gapSize,
         gapSize,
-        /* phaseFraction= */ 0f,
         /* shouldDrawActiveIndicator= */ false);
   }
 
@@ -210,7 +207,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
    * @param paintColor The color used to draw the indicator.
    * @param startGapSize The gap size applied to the start (rotating behind) of the drawing part.
    * @param endGapSize The gap size applied to the end (rotating ahead) of the drawing part.
-   * @param phaseFraction The fraction [0, 1] of initial phase in one cycle.
    * @param shouldDrawActiveIndicator Whether this part should be drawn as an active indicator.
    */
   private void drawArc(
@@ -221,7 +217,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       @ColorInt int paintColor,
       @Px int startGapSize,
       @Px int endGapSize,
-      float phaseFraction,
       boolean shouldDrawActiveIndicator) {
     float arcFraction =
         endFraction >= startFraction
@@ -242,7 +237,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
           paintColor,
           startGapSize,
           /* endGapSize= */ 0,
-          phaseFraction,
           shouldDrawActiveIndicator);
       drawArc(
           canvas,
@@ -252,7 +246,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
           paintColor,
           /* startGapSize= */ 0,
           endGapSize,
-          phaseFraction,
           shouldDrawActiveIndicator);
       return;
     }
@@ -329,8 +322,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
                 activePathMeasure,
                 displayedActivePath,
                 startDegreeWithoutCorners / 360,
-                arcDegreeWithoutCorners / 360,
-                phaseFraction);
+                arcDegreeWithoutCorners / 360);
         canvas.drawPath(displayedActivePath, paint);
       }
 
@@ -479,11 +471,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
 
   @NonNull
   private Pair<PathPoint, PathPoint> getDisplayedPath(
-      @NonNull PathMeasure pathMeasure,
-      @NonNull Path displayedPath,
-      float start,
-      float span,
-      float phaseFraction) {
+      @NonNull PathMeasure pathMeasure, @NonNull Path displayedPath, float start, float span) {
     if (adjustedRadius != cachedRadius
         || (pathMeasure == activePathMeasure && displayedAmplitude != cachedAmplitude)) {
       cachedAmplitude = displayedAmplitude;
@@ -493,12 +481,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     displayedPath.rewind();
     span = clamp(span, 0, 1);
     float resultRotation = 0;
-    if (spec.hasWavyEffect()) {
-      float cycleCount = (float) (2 * PI * adjustedRadius / adjustedWavelength);
-      float phaseFractionInOneCycle = phaseFraction / cycleCount;
-      start += phaseFractionInOneCycle;
-      resultRotation -= phaseFractionInOneCycle * 360;
-    }
     start %= 1;
     float startDistance = start * pathMeasure.getLength() / 2;
     float endDistance = (start + span) * pathMeasure.getLength() / 2;

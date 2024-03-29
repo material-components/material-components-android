@@ -250,7 +250,6 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
         indicatorIndex < animatorDelegate.activeIndicators.size();
         indicatorIndex++) {
       ActiveIndicator curIndicator = animatorDelegate.activeIndicators.get(indicatorIndex);
-      curIndicator.phaseFraction = getPhaseFraction();
       // Draws indicators.
       drawingDelegate.fillIndicator(canvas, paint, curIndicator, getAlpha());
 
