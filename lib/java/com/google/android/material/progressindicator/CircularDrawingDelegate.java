@@ -173,6 +173,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         color,
         activeIndicator.gapSize,
         activeIndicator.gapSize,
+        activeIndicator.amplitudeFraction,
         activeIndicator.phaseFraction,
         /* shouldDrawActiveIndicator= */ true);
   }
@@ -195,6 +196,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         color,
         gapSize,
         gapSize,
+        /* amplitudeFraction= */ 0f,
         /* phaseFraction= */ 0f,
         /* shouldDrawActiveIndicator= */ false);
   }
@@ -210,6 +212,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
    * @param paintColor The color used to draw the indicator.
    * @param startGapSize The gap size applied to the start (rotating behind) of the drawing part.
    * @param endGapSize The gap size applied to the end (rotating ahead) of the drawing part.
+   * @param amplitudeFraction The fraction [0, 1] of amplitude applied to the part.
    * @param phaseFraction The fraction [0, 1] of initial phase in one cycle.
    * @param shouldDrawActiveIndicator Whether this part should be drawn as an active indicator.
    */
@@ -221,6 +224,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       @ColorInt int paintColor,
       @Px int startGapSize,
       @Px int endGapSize,
+      float amplitudeFraction,
       float phaseFraction,
       boolean shouldDrawActiveIndicator) {
     float arcFraction =
@@ -242,6 +246,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
           paintColor,
           startGapSize,
           /* endGapSize= */ 0,
+          amplitudeFraction,
           phaseFraction,
           shouldDrawActiveIndicator);
       drawArc(
@@ -252,6 +257,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
           paintColor,
           /* startGapSize= */ 0,
           endGapSize,
+          amplitudeFraction,
           phaseFraction,
           shouldDrawActiveIndicator);
       return;
@@ -282,7 +288,8 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       return;
     }
 
-    boolean shouldDrawWavyPath = spec.hasWavyEffect() && shouldDrawActiveIndicator;
+    boolean shouldDrawWavyPath =
+        spec.hasWavyEffect() && shouldDrawActiveIndicator && amplitudeFraction > 0f;
 
     // Sets up the paint.
     paint.setAntiAlias(true);
@@ -330,6 +337,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
                 displayedActivePath,
                 startDegreeWithoutCorners / 360,
                 arcDegreeWithoutCorners / 360,
+                amplitudeFraction,
                 phaseFraction);
         canvas.drawPath(displayedActivePath, paint);
       }
@@ -420,7 +428,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     cachedActivePath.transform(transform);
     if (spec.hasWavyEffect()) {
       activePathMeasure.setPath(cachedActivePath, false);
-      createWavyPath(activePathMeasure, cachedActivePath, displayedAmplitude);
+      createWavyPath(activePathMeasure, cachedActivePath, cachedAmplitude);
     }
     activePathMeasure.setPath(cachedActivePath, false);
   }
@@ -483,10 +491,12 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       @NonNull Path displayedPath,
       float start,
       float span,
+      float amplitudeFraction,
       float phaseFraction) {
     if (adjustedRadius != cachedRadius
-        || (pathMeasure == activePathMeasure && displayedAmplitude != cachedAmplitude)) {
-      cachedAmplitude = displayedAmplitude;
+        || (pathMeasure == activePathMeasure
+            && displayedAmplitude * amplitudeFraction != cachedAmplitude)) {
+      cachedAmplitude = displayedAmplitude * amplitudeFraction;
       cachedRadius = adjustedRadius;
       invalidateCachedPaths();
     }

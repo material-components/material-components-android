@@ -16,6 +16,9 @@
 
 package com.google.android.material.progressindicator;
 
+import com.google.android.material.R;
+
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
@@ -28,6 +31,8 @@ import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.progressindicator.DrawingDelegate.ActiveIndicator;
 
 /** This class draws the graphics for determinate mode. */
@@ -35,6 +40,10 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     extends DrawableWithAnimatedVisibilityChange {
   // Constants for drawing progress.
   private static final int MAX_DRAWABLE_LEVEL = 10000;
+  // Constants for amplitude animation.
+  private static final float FULL_AMPLITUDE_FRACTION_MIN = 0.1f;
+  private static final float FULL_AMPLITUDE_FRACTION_MAX = 0.9f;
+
   // The constant for spring force stiffness.
   private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
   // If the progress is less than 1%, the gap will be proportional to the progress. So that, it
@@ -42,6 +51,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   static final float GAP_RAMP_DOWN_THRESHOLD = 0.01f;
   // The duration of repeated initial phase animation in ms. It can be any positive values.
   private static final int PHASE_ANIMATION_DURATION_MS = 1000;
+  // The duration of amplitude ramping animation in ms.
+  private static final int AMPLITUDE_ANIMATION_DURATION_MS = 500;
 
   // Drawing delegate object.
   private DrawingDelegate<S> drawingDelegate;
@@ -51,10 +62,16 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   private final SpringAnimation springAnimation;
   // Active indicator for the progress.
   private final ActiveIndicator activeIndicator;
+  // Fraction of displayed amplitude.
+  private float targetAmplitudeFraction;
   // Whether to skip the spring animation on level change event.
   private boolean skipAnimationOnLevelChange = false;
 
   @NonNull private final ValueAnimator phaseAnimator;
+  @NonNull private final ValueAnimator amplitudeAnimator;
+  private TimeInterpolator amplitudeInterpolator;
+  @NonNull private final TimeInterpolator amplitudeOnInterpolator;
+  @NonNull private final TimeInterpolator amplitudeOffInterpolator;
 
   DeterminateDrawable(
       @NonNull Context context,
@@ -86,6 +103,25 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
           }
         });
     phaseAnimator.start();
+
+    // Initializes a linear animator to turn on/off wave amplitude.
+    amplitudeOnInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, R.attr.motionEasingStandardInterpolator, AnimationUtils.LINEAR_INTERPOLATOR);
+    amplitudeOffInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context,
+            R.attr.motionEasingEmphasizedAccelerateInterpolator,
+            AnimationUtils.LINEAR_INTERPOLATOR);
+    amplitudeAnimator = new ValueAnimator();
+    amplitudeAnimator.setDuration(AMPLITUDE_ANIMATION_DURATION_MS);
+    amplitudeAnimator.setFloatValues(0, 1);
+    amplitudeAnimator.setInterpolator(null);
+    amplitudeAnimator.addUpdateListener(
+        animation -> {
+          activeIndicator.amplitudeFraction =
+              amplitudeInterpolator.getInterpolation(amplitudeAnimator.getAnimatedFraction());
+        });
 
     setGrowFraction(1f);
   }
@@ -209,9 +245,11 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
    */
   @Override
   protected boolean onLevelChange(int level) {
+    float nextAmplitudeFraction = getAmplitudeFractionFromLevel(level);
     if (skipAnimationOnLevelChange) {
       springAnimation.skipToEnd();
       setIndicatorFraction((float) level / MAX_DRAWABLE_LEVEL);
+      setAmplitudeFraction(nextAmplitudeFraction);
     } else {
       springAnimation.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
       springAnimation.animateToFinalPosition(level);
@@ -238,6 +276,30 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
    */
   void setLevelByFraction(float fraction) {
     setLevel((int) (MAX_DRAWABLE_LEVEL * fraction));
+  }
+
+  private float getAmplitudeFractionFromLevel(int level) {
+    return level >= FULL_AMPLITUDE_FRACTION_MIN * MAX_DRAWABLE_LEVEL
+            && level <= FULL_AMPLITUDE_FRACTION_MAX * MAX_DRAWABLE_LEVEL
+        ? 1f
+        : 0f;
+  }
+
+  private void maybeStartAmplitudeAnimator(int level) {
+    float newAmplitudeFraction = getAmplitudeFractionFromLevel(level);
+    if (newAmplitudeFraction != targetAmplitudeFraction) {
+      if (amplitudeAnimator.isRunning()) {
+        amplitudeAnimator.cancel();
+      }
+      targetAmplitudeFraction = newAmplitudeFraction;
+      if (targetAmplitudeFraction == 1f) {
+        amplitudeInterpolator = amplitudeOnInterpolator;
+        amplitudeAnimator.start();
+      } else {
+        amplitudeInterpolator = amplitudeOffInterpolator;
+        amplitudeAnimator.reverse();
+      }
+    }
   }
 
   // ******************* Drawing methods *******************
@@ -306,6 +368,11 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     invalidateSelf();
   }
 
+  private void setAmplitudeFraction(float amplitudeFraction) {
+    this.activeIndicator.amplitudeFraction = amplitudeFraction;
+    invalidateSelf();
+  }
+
   @NonNull
   DrawingDelegate<S> getDrawingDelegate() {
     return drawingDelegate;
@@ -327,6 +394,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
         @Override
         public void setValue(DeterminateDrawable<?> drawable, float value) {
           drawable.setIndicatorFraction(value / MAX_DRAWABLE_LEVEL);
+          drawable.maybeStartAmplitudeAnimator((int) value);
         }
       };
 }
