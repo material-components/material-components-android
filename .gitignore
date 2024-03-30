@@ -8,3 +8,6 @@
 build/
 /captures
 .externalNativeBuild
+github.properties
+/github.properties
+../sesl-androidx/github.properties
