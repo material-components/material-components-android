@@ -6,6 +6,6 @@ This fork hosts modified versions of the [Material Components libraries](https:/
 - [sesl.com.google.android.material.material](https://github.com/tribalfs/sesl-material-components-android/packages/2110054)
 
 ## Usage
-Check usage instructions provided in [SESL(OneUI) Android Jetpack](https://github.com/tribalfs/sesl-androidx).
+Check usage instructions provided in [SESL(OneUI) Android Jetpack](https://github.com/tribalfs/sesl-androidx#usage).
 
 
