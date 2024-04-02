@@ -723,6 +723,27 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   }
 
   /**
+   * Returns the speed of the indicator's waveform in pixels.
+   *
+   * @see #setSpeed(int)
+   */
+  @Px
+  public int getSpeed() {
+    return spec.speed;
+  }
+
+  /**
+   * Sets the speed of the indicator's waveform in pixels.
+   *
+   * @param speed The new speed in pixels.
+   * @see #getSpeed()
+   */
+  public void setSpeed(@Px int speed) {
+    spec.speed = speed;
+    getProgressDrawable().setEnforcedDrawing(spec.speed != 0);
+  }
+
+  /**
    * Returns the show animation behavior used in this progress indicator.
    *
    * @see #setShowAnimationBehavior(int)

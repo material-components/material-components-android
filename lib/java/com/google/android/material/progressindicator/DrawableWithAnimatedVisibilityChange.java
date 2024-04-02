@@ -42,6 +42,9 @@ import java.util.List;
  */
 abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements Animatable2Compat {
 
+  // Constant for mock values used in testing.
+  private static final float DEFAULT_MOCK_PHASE_FRACTION = -1f;
+
   // Argument restart used in Drawable setVisible() doesn't matter in implementation.
   private static final boolean DEFAULT_DRAWABLE_RESTART = false;
 
@@ -64,6 +67,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   private boolean mockShowAnimationRunning;
   private boolean mockHideAnimationRunning;
   private float mockGrowFraction;
+  private float mockPhaseFraction = DEFAULT_MOCK_PHASE_FRACTION;
 
   // List of AnimationCallback to be called at the end of show/hide animation.
   private List<AnimationCallback> animationCallbacks;
@@ -437,6 +441,29 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       boolean running, @FloatRange(from = 0.0, to = 1.0) float fraction) {
     mockHideAnimationRunning = running;
     mockGrowFraction = fraction;
+  }
+
+  @VisibleForTesting
+  void setMockPhaseFraction(@FloatRange(from = 0.0, to = 1.0) float fraction) {
+    mockPhaseFraction = fraction;
+  }
+
+  float getPhaseFraction() {
+    if (mockPhaseFraction > 0) {
+      return mockPhaseFraction;
+    }
+    float phaseFraction = 0f;
+    if (baseSpec.speed != 0) {
+      float durationScale =
+          animatorDurationScaleProvider.getSystemAnimatorDurationScale(
+              context.getContentResolver());
+      int cycleInMs = (int) (1000f * baseSpec.wavelength / baseSpec.speed * durationScale);
+      phaseFraction = (float) (System.currentTimeMillis() % cycleInMs) / cycleInMs;
+      if (phaseFraction < 0f) {
+        phaseFraction = (phaseFraction % 1) + 1f;
+      }
+    }
+    return phaseFraction;
   }
 
   // ******************* Properties *******************

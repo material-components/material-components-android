@@ -16,6 +16,7 @@
 
 package com.google.android.material.progressindicator;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint.Style;
@@ -39,6 +40,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   // If the progress is less than 1%, the gap will be proportional to the progress. So that, it
   // draws a full track at 0%.
   static final float GAP_RAMP_DOWN_THRESHOLD = 0.01f;
+  // The duration of repeated initial phase animation in ms. It can be any positive values.
+  private static final int PHASE_ANIMATION_DURATION_MS = 1000;
 
   // Drawing delegate object.
   private DrawingDelegate<S> drawingDelegate;
@@ -51,6 +54,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   // Whether to skip the spring animation on level change event.
   private boolean skipAnimationOnLevelChange = false;
 
+  @NonNull private final ValueAnimator phaseAnimator;
+
   DeterminateDrawable(
       @NonNull Context context,
       @NonNull BaseProgressIndicatorSpec baseSpec,
@@ -60,6 +65,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     setDrawingDelegate(drawingDelegate);
     activeIndicator = new ActiveIndicator();
 
+    // Initializes a spring animator for progress animation.
     springForce = new SpringForce();
 
     springForce.setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY);
@@ -67,6 +73,21 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
     springAnimation = new SpringAnimation(this, INDICATOR_LENGTH_IN_LEVEL);
     springAnimation.setSpring(springForce);
+
+    // Initializes a linear animator to enforce phase animation when progress is unchanged.
+    phaseAnimator = new ValueAnimator();
+    phaseAnimator.setDuration(PHASE_ANIMATION_DURATION_MS);
+    phaseAnimator.setFloatValues(0, 1);
+    phaseAnimator.setRepeatCount(ValueAnimator.INFINITE);
+    phaseAnimator.addUpdateListener(
+        animation -> {
+          if (baseSpec.hasWavyEffect() && baseSpec.speed != 0 && isVisible()) {
+            invalidateSelf();
+          }
+        });
+    if (baseSpec.hasWavyEffect() && baseSpec.speed != 0) {
+      phaseAnimator.start();
+    }
 
     setGrowFraction(1f);
   }
@@ -236,6 +257,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     drawingDelegate.validateSpecAndAdjustCanvas(
         canvas, getBounds(), getGrowFraction(), isShowing(), isHiding());
 
+    activeIndicator.phaseFraction = getPhaseFraction();
+
     paint.setStyle(Style.FILL);
     paint.setAntiAlias(true);
 
@@ -292,6 +315,14 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
   void setDrawingDelegate(@NonNull DrawingDelegate<S> drawingDelegate) {
     this.drawingDelegate = drawingDelegate;
+  }
+
+  void setEnforcedDrawing(boolean enforced) {
+    if (enforced && !phaseAnimator.isRunning()) {
+      phaseAnimator.start();
+    } else if (!enforced && phaseAnimator.isRunning()) {
+      phaseAnimator.cancel();
+    }
   }
 
   // ******************* Properties *******************
