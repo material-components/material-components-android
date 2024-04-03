@@ -265,14 +265,20 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     }
 
     float displayedCornerRadiusInDegree = (float) toDegrees(displayedCornerRadius / adjustedRadius);
-
-    if (startFraction == 0 && arcFraction >= 1 - ROUND_CAP_RAMP_DOWN_THRESHHOLD) {
+    float arcFractionOverRoundCapThreshold = arcFraction - (1 - ROUND_CAP_RAMP_DOWN_THRESHHOLD);
+    if (arcFractionOverRoundCapThreshold >= 0) {
       // Increases the arc length to hide the round cap at the ends when the active indicator is
       // forming a full circle.
-      arcFraction +=
-          (arcFraction - (1 - ROUND_CAP_RAMP_DOWN_THRESHHOLD))
-              * (2 * displayedCornerRadiusInDegree / 360)
+      float increasedArcFraction =
+          arcFractionOverRoundCapThreshold
+              * displayedCornerRadiusInDegree
+              / 180
               / ROUND_CAP_RAMP_DOWN_THRESHHOLD;
+      arcFraction += increasedArcFraction;
+      // Offsets the start fraction to make the inactive track's ends connect at 0%.
+      if (!shouldDrawActiveIndicator) {
+        startFraction -= increasedArcFraction / 2;
+      }
     }
 
     // Scale start and arc fraction for ESCAPE animation.
