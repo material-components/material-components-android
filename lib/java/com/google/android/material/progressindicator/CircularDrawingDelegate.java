@@ -32,6 +32,8 @@ import android.graphics.Path;
 import android.graphics.PathMeasure;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.util.Pair;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
@@ -118,6 +120,11 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     canvas.scale(scaleX, scaleY);
     if (spec.indicatorDirection != CircularProgressIndicator.INDICATOR_DIRECTION_CLOCKWISE) {
       canvas.scale(1, -1);
+      if (VERSION.SDK_INT == VERSION_CODES.Q) {
+        // There's some issue to rotate and flip the canvas on API 29. The workaround is to rotate
+        // the canvas an extra 0.1 degree.
+        canvas.rotate(0.1f);
+      }
     }
 
     // Clip all drawing to the designated area, so it doesn't draw outside of its bounds (which can
