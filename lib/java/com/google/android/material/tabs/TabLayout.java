@@ -48,6 +48,8 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -115,6 +117,7 @@ import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -2822,40 +2825,40 @@ public class TabLayout extends HorizontalScrollView {
       if (mMainTabTouchBackground != null) {
         ViewCompat.setBackgroundTintList(mMainTabTouchBackground,tabRippleColorStateList);
       }
-//
-//      Drawable background;
-//      Drawable contentDrawable = new GradientDrawable();
-//      ((GradientDrawable) contentDrawable).setColor(Color.TRANSPARENT);
-//
-//      if (tabRippleColorStateList != null) {
-//        GradientDrawable maskDrawable = new GradientDrawable();
-//        // TODO: Find a workaround for this. Currently on certain devices/versions,
-//        // LayerDrawable will draw a black background underneath any layer with a non-opaque color,
-//        // (e.g. ripple) unless we set the shape to be something that's not a perfect rectangle.
-//        maskDrawable.setCornerRadius(0.00001F);
-//        maskDrawable.setColor(Color.WHITE);
-//
-//        ColorStateList rippleColor =
-//            RippleUtils.convertToRippleDrawableColor(tabRippleColorStateList);
-//
-//        // TODO: Add support to RippleUtils.compositeRippleColorStateList for different ripple color
-//        // for selected items vs non-selected items
-//        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-//          background =
-//              new RippleDrawable(
-//                  rippleColor,
-//                  unboundedRipple ? null : contentDrawable,
-//                  unboundedRipple ? null : maskDrawable);
-//        } else {
-//          Drawable rippleDrawable = DrawableCompat.wrap(maskDrawable);
-//          DrawableCompat.setTintList(rippleDrawable, rippleColor);
-//          background = new LayerDrawable(new Drawable[] {contentDrawable, rippleDrawable});
-//        }
-//      } else {
-//        background = contentDrawable;
-//      }
-//      ViewCompat.setBackground(this, background);
-//      TabLayout.this.invalidate();
+
+      Drawable background;
+      Drawable contentDrawable = new GradientDrawable();
+      ((GradientDrawable) contentDrawable).setColor(Color.TRANSPARENT);
+
+      if (tabRippleColorStateList != null) {
+        GradientDrawable maskDrawable = new GradientDrawable();
+        // TODO: Find a workaround for this. Currently on certain devices/versions,
+        // LayerDrawable will draw a black background underneath any layer with a non-opaque color,
+        // (e.g. ripple) unless we set the shape to be something that's not a perfect rectangle.
+        maskDrawable.setCornerRadius(0.00001F);
+        maskDrawable.setColor(Color.WHITE);
+
+        ColorStateList rippleColor =
+            RippleUtils.convertToRippleDrawableColor(tabRippleColorStateList);
+
+        // TODO: Add support to RippleUtils.compositeRippleColorStateList for different ripple color
+        // for selected items vs non-selected items
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+          background =
+              new RippleDrawable(
+                  rippleColor,
+                  unboundedRipple ? null : contentDrawable,
+                  unboundedRipple ? null : maskDrawable);
+        } else {
+          Drawable rippleDrawable = DrawableCompat.wrap(maskDrawable);
+          DrawableCompat.setTintList(rippleDrawable, rippleColor);
+          background = new LayerDrawable(new Drawable[] {contentDrawable, rippleDrawable});
+        }
+      } else {
+        background = contentDrawable;
+      }
+      ViewCompat.setBackground(this, background);
+      TabLayout.this.invalidate();
     }
 
     /**
@@ -2878,16 +2881,16 @@ public class TabLayout extends HorizontalScrollView {
     @Override
     protected void drawableStateChanged() {
       super.drawableStateChanged();
-//      boolean changed = false;
+      boolean changed = false;
       int[] state = getDrawableState();
       if (baseBackgroundDrawable != null && baseBackgroundDrawable.isStateful()) {
-        /*changed |= */baseBackgroundDrawable.setState(state);
+        changed |= baseBackgroundDrawable.setState(state);
       }
 
-//      if (changed) {
-//        invalidate();
-//        TabLayout.this.invalidate(); // Invalidate TabLayout, which draws mBaseBackgroundDrawable
-//      }
+      if (changed) {
+        invalidate();
+        TabLayout.this.invalidate(); // Invalidate TabLayout, which draws mBaseBackgroundDrawable
+      }
     }
 
     @Override
