@@ -92,6 +92,17 @@ public class ProgressIndicatorWaveDemoFragment extends ProgressIndicatorDemoFrag
             circularIndicator.setWavelength(newWaveLength);
           }
         });
+    Slider speedSlider = view.findViewById(R.id.speed_slider);
+    speedSlider.addOnChangeListener(
+        (slider, value, fromUser) -> {
+          int newSpeed = (int) (value * pixelsInDp);
+          if (linearIndicator.getSpeed() != newSpeed) {
+            linearIndicator.setSpeed(newSpeed);
+          }
+          if (circularIndicator.getSpeed() != newSpeed) {
+            circularIndicator.setSpeed(newSpeed);
+          }
+        });
 
     Slider circularSizeSlider = view.findViewById(R.id.circularSizeSlider);
     circularSizeSlider.addOnChangeListener(

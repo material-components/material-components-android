@@ -32,7 +32,7 @@
     Standalone Drawable Progress Indicator Demo
   </string>
   <string name="cat_progress_indicator_wave_demo_title"
-    description="Title of demo for applying wave effects on progress indicators [CHAR LIMIT=NONE]">
+      description="Title of demo for applying wave effects on progress indicators [CHAR LIMIT=NONE]">
     Wavy Progress Indicator Demo
   </string>
   <string name="cat_progress_indicator_description"
@@ -102,6 +102,10 @@
   <string name="cat_progress_indicator_wave_length"
       description="Text label above a slider for changing indicators' wavelength [CHAR LIMIT=NONE]">
     Wave length (0 - 100) dp
+  </string>
+  <string name="cat_progress_indicator_wave_speed"
+      description="Text label above a slider for changing indicators' speed [CHAR LIMIT=NONE]">
+    Wave speed (-50 - 50) dp/s
   </string>
 
   <!-- Descriptions of various examples of progress indicators -->
