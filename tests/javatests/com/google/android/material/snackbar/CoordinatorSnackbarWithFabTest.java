@@ -24,7 +24,6 @@ import static com.google.android.material.testutils.DesignViewActions.setVisibil
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import android.os.Build;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -86,19 +85,17 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
    * Helper method that verifies that the passed view is above the snackbar in the activity window.
    */
   private static void verifySnackbarViewStacking(View view, int extraBottomMargin) {
-    if (Build.VERSION.SDK_INT >= 11) {
-      // Get location of snackbar in window
-      final int[] snackbarOnScreenXY = getSnackbarLocationOnScreen();
-      // Get location of passed view in window
-      final int[] viewOnScreenXY = new int[2];
-      view.getLocationOnScreen(viewOnScreenXY);
+    // Get location of snackbar in window
+    final int[] snackbarOnScreenXY = getSnackbarLocationOnScreen();
+    // Get location of passed view in window
+    final int[] viewOnScreenXY = new int[2];
+    view.getLocationOnScreen(viewOnScreenXY);
 
-      // Compute the bottom visible edge of the view
-      int viewBottom = viewOnScreenXY[1] + view.getHeight() - extraBottomMargin;
-      int snackbarTop = snackbarOnScreenXY[1];
-      // and verify that our view is above the snackbar
-      assertTrue(viewBottom <= snackbarTop);
-    }
+    // Compute the bottom visible edge of the view
+    int viewBottom = viewOnScreenXY[1] + view.getHeight() - extraBottomMargin;
+    int snackbarTop = snackbarOnScreenXY[1];
+    // and verify that our view is above the snackbar
+    assertTrue(viewBottom <= snackbarTop);
   }
 
   @Test
