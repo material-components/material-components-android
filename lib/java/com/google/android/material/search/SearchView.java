@@ -465,6 +465,8 @@ public class SearchView extends FrameLayout
       if (toolbar.getNavigationIconTint() != null) {
         DrawableCompat.setTint(navigationIconDrawable, toolbar.getNavigationIconTint());
       }
+      DrawableCompat.setLayoutDirection(
+          navigationIconDrawable, ViewCompat.getLayoutDirection(this));
       toolbar.setNavigationIcon(
           new FadeThroughDrawable(searchBar.getNavigationIcon(), navigationIconDrawable));
       updateNavigationIconProgressIfNeeded();
