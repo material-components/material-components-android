@@ -68,10 +68,10 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   private boolean skipAnimationOnLevelChange = false;
 
   @NonNull private final ValueAnimator phaseAnimator;
-  @NonNull private final ValueAnimator amplitudeAnimator;
+  @NonNull private ValueAnimator amplitudeAnimator;
   private TimeInterpolator amplitudeInterpolator;
-  @NonNull private final TimeInterpolator amplitudeOnInterpolator;
-  @NonNull private final TimeInterpolator amplitudeOffInterpolator;
+  @NonNull private TimeInterpolator amplitudeOnInterpolator;
+  @NonNull private TimeInterpolator amplitudeOffInterpolator;
 
   DeterminateDrawable(
       @NonNull Context context,
@@ -106,6 +106,13 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
       phaseAnimator.start();
     }
 
+    setGrowFraction(1f);
+  }
+
+  private void maybeInitializeAmplitudeAnimator() {
+    if (amplitudeAnimator != null) {
+      return;
+    }
     // Initializes a linear animator to turn on/off wave amplitude.
     amplitudeOnInterpolator =
         MotionUtils.resolveThemeInterpolator(
@@ -124,8 +131,6 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
           activeIndicator.amplitudeFraction =
               amplitudeInterpolator.getInterpolation(amplitudeAnimator.getAnimatedFraction());
         });
-
-    setGrowFraction(1f);
   }
 
   /**
@@ -288,8 +293,12 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   }
 
   private void maybeStartAmplitudeAnimator(int level) {
+    if (!baseSpec.hasWavyEffect()) {
+      return;
+    }
     float newAmplitudeFraction = getAmplitudeFractionFromLevel(level);
     if (newAmplitudeFraction != targetAmplitudeFraction) {
+      maybeInitializeAmplitudeAnimator();
       if (amplitudeAnimator.isRunning()) {
         amplitudeAnimator.cancel();
       }
