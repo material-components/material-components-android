@@ -1533,7 +1533,9 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       // or we can scroll the children.
       final boolean started =
           (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0
-              && (child.isLiftOnScroll() || canScrollChildren(parent, child, directTargetChild));
+              && (child.isLiftOnScroll()
+                  || child.isLifted()
+                  || canScrollChildren(parent, child, directTargetChild));
 
       if (started && offsetAnimator != null) {
         // Cancel any offset animation
