@@ -439,6 +439,7 @@ Behavior                                    | Related method(s)                 
 `app:behavior_skipCollapsed`                | `setSkipCollapsed`<br/>`getSkipCollapsed`                                 | `false`
 `app:behavior_fitToContents`                | `setFitToContents`<br/>`isFitToContents`                                  | `true`
 `app:behavior_draggable`                    | `setDraggable`<br/>`isDraggable`                                          | `true`
+`app:behavior_draggableOnNestedScroll`      | `setDraggableOnNestedScroll`<br/>`isDraggableOnNestedScroll`              | `true`
 `app:behavior_halfExpandedRatio`            | `setHalfExpandedRatio`<br/>`getHalfExpandedRatio`                         | `0.5`
 `app:behavior_expandedOffset`               | `setExpandedOffset`<br/>`getExpandedOffset`                               | `0dp`
 `app:behavior_significantVelocityThreshold` | `setSignificantVelocityThreshold` <br/> `getSignificantVelocityThreshold` | `500 pixels/s`

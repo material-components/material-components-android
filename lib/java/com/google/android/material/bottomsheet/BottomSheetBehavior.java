@@ -306,6 +306,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private boolean draggable = true;
 
+  private boolean draggableOnNestedScroll = true;
+
   @State int state = STATE_COLLAPSED;
 
   @State int lastStableState = STATE_COLLAPSED;
@@ -398,6 +400,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     setSkipCollapsed(
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
     setDraggable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_draggable, true));
+    setDraggableOnNestedScroll(
+        a.getBoolean(
+            R.styleable.BottomSheetBehavior_Layout_behavior_draggableOnNestedScroll, true));
     setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
     setHalfExpandedRatio(
         a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
@@ -739,6 +744,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (isNestedScrollingCheckEnabled() && target != scrollingChild) {
       return;
     }
+    if (!draggableOnNestedScroll && target == scrollingChild) {
+      return;
+    }
     int currentTop = child.getTop();
     int newTop = currentTop - dy;
     if (dy > 0) { // Upward
@@ -877,7 +885,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     if (isNestedScrollingCheckEnabled() && nestedScrollingChildRef != null) {
       return target == nestedScrollingChildRef.get()
-          && (state != STATE_EXPANDED
+          && ((state != STATE_EXPANDED && draggableOnNestedScroll)
               || super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY));
     } else {
       return false;
@@ -1170,7 +1178,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
-   * Sets whether this bottom sheet is can be collapsed/expanded by dragging. Note: When disabling
+   * Sets whether this bottom sheet can be collapsed/expanded by dragging. Note: When disabling
    * dragging, an app will require to implement a custom way to expand/collapse the bottom sheet
    *
    * @param draggable {@code false} to prevent dragging the sheet to collapse and expand
@@ -1182,6 +1190,22 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   public boolean isDraggable() {
     return draggable;
+  }
+
+  /**
+   * Sets whether this bottom sheet can be collapsed/expanded by dragging on the nested scrolling
+   * child view. Default is true.
+   *
+   * @param draggableOnNestedScroll {@code false} to prevent dragging the nested scrolling child
+   * view to collapse and expand the sheet
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_draggableOnNestedScroll
+   */
+  public void setDraggableOnNestedScroll(boolean draggableOnNestedScroll) {
+    this.draggableOnNestedScroll = draggableOnNestedScroll;
+  }
+
+  public boolean isDraggableOnNestedScroll() {
+    return draggableOnNestedScroll;
   }
 
   /*
