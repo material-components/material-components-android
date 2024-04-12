@@ -307,6 +307,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private boolean draggable = true;
 
   private boolean draggableOnNestedScroll = true;
+  private boolean draggableOnNestedScrollLastDragIgnored;
 
   @State int state = STATE_COLLAPSED;
 
@@ -744,12 +745,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (isNestedScrollingCheckEnabled() && target != scrollingChild) {
       return;
     }
-    if (!draggableOnNestedScroll && target == scrollingChild) {
-      return;
-    }
     int currentTop = child.getTop();
     int newTop = currentTop - dy;
-    if (dy > 0) { // Upward
+    if (dy > 0) { // Upward swipe
+      if (!draggableOnNestedScroll && target == scrollingChild && target.canScrollVertically(1)) {
+        // Prevent dragging if draggableOnNestedScroll=false and we can scroll the scrolling child.
+        draggableOnNestedScrollLastDragIgnored = true;
+        return;
+      }
       if (newTop < getExpandedOffset()) {
         consumed[1] = currentTop - getExpandedOffset();
         ViewCompat.offsetTopAndBottom(child, -consumed[1]);
@@ -764,8 +767,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         ViewCompat.offsetTopAndBottom(child, -dy);
         setStateInternal(STATE_DRAGGING);
       }
-    } else if (dy < 0) { // Downward
-      if (!target.canScrollVertically(-1)) {
+    } else if (dy < 0) { // Downward swipe
+      boolean canScrollUp = target.canScrollVertically(-1);
+      if (!draggableOnNestedScroll && target == scrollingChild && canScrollUp) {
+        // Prevent dragging if draggableOnNestedScroll=false and we can scroll the scrolling child.
+        draggableOnNestedScrollLastDragIgnored = true;
+        return;
+      }
+      if (!canScrollUp) {
         if (newTop <= collapsedOffset || canBeHiddenByDragging()) {
           if (!draggable) {
             // Prevent dragging
@@ -785,6 +794,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     dispatchOnSlide(child.getTop());
     lastNestedScrollDy = dy;
     nestedScrolled = true;
+    draggableOnNestedScrollLastDragIgnored = false;
   }
 
   @Override
@@ -885,7 +895,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     if (isNestedScrollingCheckEnabled() && nestedScrollingChildRef != null) {
       return target == nestedScrollingChildRef.get()
-          && ((state != STATE_EXPANDED && draggableOnNestedScroll)
+          && ((state != STATE_EXPANDED && !draggableOnNestedScrollLastDragIgnored)
               || super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY));
     } else {
       return false;
