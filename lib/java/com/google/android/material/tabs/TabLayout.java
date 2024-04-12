@@ -222,6 +222,7 @@ public class TabLayout extends HorizontalScrollView {
   private static final int BADGE_N_TEXT_SIZE = 11;
   private Typeface mBoldTypeface;
   private Typeface mNormalTypeface;
+  ColorStateList mSubTabTextColors;
   ColorStateList mSubTabSubTextColors;
   private int mBadgeColor = Color.WHITE;
   private int mBadgeTextColor = Color.WHITE;
@@ -694,7 +695,7 @@ public class TabLayout extends HorizontalScrollView {
       //Sesl
       mSubTabTextSize =
           ta.getDimensionPixelSize(R.styleable.TextAppearance_android_textSize, 0);
-      mSubTabSubTextColors =
+      mSubTabTextColors = mSubTabSubTextColors =
           MaterialResources.getColorStateList(context, ta, R.styleable.TextAppearance_android_textColor);
       //sesl
     } finally {
@@ -703,6 +704,9 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     //Sesl
+    if (a.hasValue(R.styleable.TabLayout_subTabTextColor)) {
+      mSubTabTextColors = MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_subTabTextColor);
+    }
     if (a.hasValue(R.styleable.TabLayout_seslTabSubTextColor)) {
       mSubTabSubTextColors =
               MaterialResources.getColorStateList(context,
@@ -4438,10 +4442,12 @@ public class TabLayout extends HorizontalScrollView {
     if (mDepthStyle == DEPTH_TYPE_MAIN) {
       mDepthStyle = DEPTH_TYPE_SUB;
 
-      tabTextColors = getResources()
-              .getColorStateList(SeslMisc.isLightTheme(getContext())
-                      ? R.color.sesl_tablayout_subtab_text_color_light
-                      : R.color.sesl_tablayout_subtab_text_color_dark);
+//      tabTextColors = getResources()
+//              .getColorStateList(SeslMisc.isLightTheme(getContext())
+//                      ? R.color.sesl_tablayout_subtab_text_color_light
+//                      : R.color.sesl_tablayout_subtab_text_color_dark);
+
+      tabTextColors = mSubTabTextColors;
 
       if (tabs.size() > 0) {
         int selectedTab = getSelectedTabPosition();

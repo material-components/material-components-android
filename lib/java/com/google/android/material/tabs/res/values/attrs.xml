@@ -132,6 +132,9 @@
     <attr name="seslTabSubTextColor" format="color" />
     <attr name="seslTabSelectedSubTextColor" format="color" />
     <!--sesl-->
+
+    <attr name="subTabTextColor" format="color"/><!--custom-->
+
   </declare-styleable>
 
   <declare-styleable name="TabItem">
