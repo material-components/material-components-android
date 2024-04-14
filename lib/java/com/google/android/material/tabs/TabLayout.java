@@ -2319,7 +2319,7 @@ public class TabLayout extends HorizontalScrollView {
       case GRAVITY_FILL:
         Log.w(
             LOG_TAG,
-            "MODE_SCROLLABLE + GRAVITY_FILL is not supported, GRAVITY_START will be used"
+            "MODE_SCROLLABLE/SESL_MODE_FIXED_AUTO/SESL_MODE_WEIGHT_AUTO + GRAVITY_FILL is not supported, GRAVITY_START will be used"
                 + " instead");
         // Fall through
       case GRAVITY_START:
