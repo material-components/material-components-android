@@ -21,6 +21,7 @@ import static com.google.android.material.carousel.CarouselHelper.createCarousel
 import static com.google.android.material.carousel.CarouselHelper.getKeylineMaskPercentage;
 import static com.google.common.truth.Truth.assertThat;
 
+import com.google.android.material.carousel.CarouselStrategy.StrategyType;
 import com.google.android.material.carousel.KeylineState.Keyline;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +52,7 @@ public class KeylineStateListTest {
             .addKeyline(135F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(140), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(140), state, 0, 0, 0, StrategyType.CONTAINED);
     float[] scrollSteps = new float[] {50F, 20F, 0F};
     float minScroll = 0F;
     float maxScroll = 5 * 40F;
@@ -81,7 +82,7 @@ public class KeylineStateListTest {
             .addKeyline(135F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(140), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(140), state, 0, 0, 0, StrategyType.CONTAINED);
     float[] scrollOffsets = new float[] {35F, 10F};
     float minScroll = 0F;
     float maxScroll = 5 * 40F;
@@ -113,7 +114,7 @@ public class KeylineStateListTest {
             .addKeyline(135F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(140), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(140), state, 0, 0, 0, StrategyType.CONTAINED);
     float[] scrollSteps = new float[] {50F, 20F, 0F};
     float minScroll = 0F;
     float maxScroll = 5 * 40F;
@@ -137,7 +138,7 @@ public class KeylineStateListTest {
             .addKeyline(135F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(140), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(140), state, 0, 0, 0, StrategyType.CONTAINED);
 
     float minScroll = 0F;
     float maxScroll = 5 * 40F;
@@ -153,7 +154,8 @@ public class KeylineStateListTest {
             .addKeyline(50F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(65F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
-    KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(70), state, 0, 0, 0);
+    KeylineStateList stateList =
+        KeylineStateList.from(createCarouselWithWidth(70), state, 0, 0, 0, StrategyType.CONTAINED);
 
     float[] locOffsets = new float[] {20F, 50F, 65F};
 
@@ -178,7 +180,8 @@ public class KeylineStateListTest {
             .addKeyline(50F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(65F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
-    KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(70), state, 0, 0, 0);
+    KeylineStateList stateList =
+        KeylineStateList.from(createCarouselWithWidth(70), state, 0, 0, 0, StrategyType.CONTAINED);
     float[] scrollSteps = new float[] {50F, 20F, 0F};
     float minScroll = 0F;
     float maxScroll = 2 * 40F;
@@ -207,7 +210,8 @@ public class KeylineStateListTest {
             .addKeyline(70F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(90F, getKeylineMaskPercentage(20F, 40F), 20F)
             .build();
-    KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(90), state, 0, 0, 0);
+    KeylineStateList stateList =
+        KeylineStateList.from(createCarouselWithWidth(90), state, 0, 0, 0, StrategyType.CONTAINED);
 
     float[] scrollSteps = new float[] {20F, 0F};
     float minScroll = 0F;
@@ -242,7 +246,7 @@ public class KeylineStateListTest {
             .addKeyline(130F, getKeylineMaskPercentage(20F, 40F), 20F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(100), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(100), state, 0, 0, 0, StrategyType.CONTAINED);
 
     float[] scrollSteps = new float[] {40F, 20F, 0F};
     float minScroll = 0F;
@@ -271,7 +275,8 @@ public class KeylineStateListTest {
             .addKeyline(20F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(50F, 0F, 40F, true)
             .build();
-    KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(70), state, 0, 0, 0);
+    KeylineStateList stateList =
+        KeylineStateList.from(createCarouselWithWidth(70), state, 0, 0, 0, StrategyType.CONTAINED);
     float[] scrollSteps = new float[] {50F, 20F, 0F};
     float minScroll = 0F;
     float maxScroll = 5 * 40F;
@@ -292,7 +297,8 @@ public class KeylineStateListTest {
             .addKeyline(20F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(50F, 0F, 40F, true)
             .build();
-    KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(70), state, 0, 0, 0);
+    KeylineStateList stateList =
+        KeylineStateList.from(createCarouselWithWidth(70), state, 0, 0, 0, StrategyType.CONTAINED);
     float minScroll = 0F;
     float maxScroll = 5 * 40F;
 
@@ -310,7 +316,8 @@ public class KeylineStateListTest {
             .addKeyline(20F, 0F, 40F, true)
             .addAnchorKeyline(45F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
-    KeylineStateList stateList = KeylineStateList.from(createCarouselWithWidth(40), state, 0, 0, 0);
+    KeylineStateList stateList =
+        KeylineStateList.from(createCarouselWithWidth(40), state, 0, 0, 0, StrategyType.CONTAINED);
 
     List<Keyline> startStep = stateList.getStartState().getKeylines();
     List<Keyline> endStep = stateList.getEndState().getKeylines();
@@ -329,7 +336,7 @@ public class KeylineStateListTest {
             .addKeyline(475F, .5F, 50F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(500), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(500), state, 0, 0, 0, StrategyType.CONTAINED);
 
     assertThat(stateList.getStartState().getFirstFocalKeylineIndex()).isEqualTo(0);
     assertThat(stateList.getStartState().getLastFocalKeylineIndex()).isEqualTo(3);
@@ -344,7 +351,7 @@ public class KeylineStateListTest {
             .addKeyline(475F, .5F, 50F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(500), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(500), state, 0, 0, 0, StrategyType.CONTAINED);
     int itemCount = 10;
     Map<Integer, KeylineState> positionMap =
         stateList.getKeylineStateForPositionMap(itemCount, 0, 1000, false);
@@ -373,7 +380,7 @@ public class KeylineStateListTest {
             .addKeyline(475F, .5F, 50F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(500), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(500), state, 0, 0, 0, StrategyType.CONTAINED);
     int itemCount = 10;
     Map<Integer, KeylineState> positionMap =
         stateList.getKeylineStateForPositionMap(
@@ -402,8 +409,14 @@ public class KeylineStateListTest {
             .addKeylineRange(100F, 0F, 100F, 4, true)
             .addKeyline(475F, .5F, 50F)
             .build();
-    KeylineStateList stateList = KeylineStateList.from(
-        createCarouselWithSizeAndOrientation(500, CarouselLayoutManager.VERTICAL), state, 0, 0, 0);
+    KeylineStateList stateList =
+        KeylineStateList.from(
+            createCarouselWithSizeAndOrientation(500, CarouselLayoutManager.VERTICAL),
+            state,
+            0,
+            0,
+            0,
+            StrategyType.CONTAINED);
     int itemCount = 10;
     Map<Integer, KeylineState> positionMap = stateList.getKeylineStateForPositionMap(
         itemCount, 0, 1000, false);
@@ -443,7 +456,7 @@ public class KeylineStateListTest {
             .addAnchorKeyline(125F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(100), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(100), state, 0, 0, 0, StrategyType.CONTAINED);
 
     float[] scrollSteps = new float[] {40F, 0F};
     float minScroll = 0F;
@@ -477,7 +490,7 @@ public class KeylineStateListTest {
             .addAnchorKeyline(105F, getKeylineMaskPercentage(10F, 40F), 10F)
             .build();
     KeylineStateList stateList =
-        KeylineStateList.from(createCarouselWithWidth(100), state, 0, 0, 0);
+        KeylineStateList.from(createCarouselWithWidth(100), state, 0, 0, 0, StrategyType.CONTAINED);
 
     float[] scrollSteps = new float[] {40F, 0F};
     float minScroll = 0F;
@@ -492,7 +505,7 @@ public class KeylineStateListTest {
   }
 
   @Test
-  public void testStartPadding_shiftsStartState() {
+  public void testStartPadding_shiftsContainedStartState() {
     // Default state: [small, large, small] where small is 20F and large is 60F
     KeylineState state =
         new KeylineState.Builder(60F, 100)
@@ -509,7 +522,8 @@ public class KeylineStateListTest {
             state,
             /* itemMargins= */ 0,
             /* leftOrTopPadding= */ 12,
-            /* rightOrBottomPadding= */20);
+            /* rightOrBottomPadding= */20,
+            /* strategyType= */ StrategyType.CONTAINED);
 
     // Normally start state is expected to have locOffests of [30F, 70F, 90F] but with a start
     // padding of 12, it should be evenly decreased from all items. So the first item should start
@@ -523,7 +537,7 @@ public class KeylineStateListTest {
   }
 
   @Test
-  public void testEndPadding_shiftsEndState() {
+  public void testEndPadding_shiftsContainedEndState() {
     // Default state: [small, large, small] where small is 20F and large is 60F
     KeylineState state =
         new KeylineState.Builder(60F, 100)
@@ -540,7 +554,8 @@ public class KeylineStateListTest {
             state,
             /* itemMargins= */ 0,
             /* leftOrTopPadding= */ 12,
-            /* rightOrBottomPadding= */24);
+            /* rightOrBottomPadding= */ 24,
+            /* strategyType= */ StrategyType.CONTAINED);
 
     // Normally start state is expected to have locOffests of [10F, 30F, 70F] but with an end
     // padding of 24, it should be evenly decreased from all items.
@@ -549,6 +564,71 @@ public class KeylineStateListTest {
     List<Keyline> actual = stateList.getEndState().getKeylines();
     for (int i = 0; i < actual.size(); i++) {
       assertThat(actual.get(i).locOffset).isEqualTo(locOffsets[i]);
+    }
+  }
+
+  @Test
+  public void testStartPadding_shiftsUncontainedStartState() {
+    // Default state: [small, large, small] where small is 20F and large is 60F
+    KeylineState state =
+        new KeylineState.Builder(60F, 100)
+            .addAnchorKeyline(-5F, getKeylineMaskPercentage(10F, 60F), 10F)
+            .addKeyline(10F, getKeylineMaskPercentage(20F, 60F), 20F)
+            .addKeyline(50F, 0F, 60F, true)
+            .addKeyline(90F, getKeylineMaskPercentage(20F, 60F), 20F)
+            .addAnchorKeyline(105F, getKeylineMaskPercentage(10F, 60F), 10F)
+            .build();
+    Carousel carousel = createCarouselWithWidth(100);
+    KeylineStateList stateList =
+        KeylineStateList.from(
+            carousel,
+            state,
+            /* itemMargins= */ 0,
+            /* leftOrTopPadding= */ 12,
+            /* rightOrBottomPadding= */20,
+            /* strategyType= */ StrategyType.UNCONTAINED);
+
+    // Normally start state is expected to have locOffests of [30F, 70F, 90F]. Shift by left padding
+    float[] locOffsets = new float[] {-5F, 42F, 82F, 102F, 117F};
+    float[] cutoffs = new float[] {10F, 0F, 0F, 12F, 22F};
+
+    List<Keyline> actual = stateList.getStartState().getKeylines();
+    for (int i = 0; i < actual.size(); i++) {
+      assertThat(actual.get(i).locOffset).isEqualTo(locOffsets[i]);
+      assertThat(actual.get(i).cutoff).isEqualTo(cutoffs[i]);
+    }
+  }
+
+  @Test
+  public void testEndPadding_shiftsUncontainedEndState() {
+    // Default state: [small, large, small] where small is 20F and large is 60F
+    KeylineState state =
+        new KeylineState.Builder(60F, 100)
+            .addAnchorKeyline(-5F, getKeylineMaskPercentage(10F, 60F), 10F)
+            .addKeyline(10F, getKeylineMaskPercentage(20F, 60F), 20F)
+            .addKeyline(50F, 0F, 60F, true)
+            .addKeyline(90F, getKeylineMaskPercentage(20F, 60F), 20F)
+            .addAnchorKeyline(105F, getKeylineMaskPercentage(10F, 60F), 10F)
+            .build();
+    Carousel carousel = createCarouselWithWidth(100);
+    KeylineStateList stateList =
+        KeylineStateList.from(
+            carousel,
+            state,
+            /* itemMargins= */ 0,
+            /* leftOrTopPadding= */ 12,
+            /* rightOrBottomPadding= */ 24,
+            /* strategyType= */ StrategyType.UNCONTAINED);
+
+    // Normally end state is expected to have locOffsets of [10F, 30F, 70F]. Shift by right
+    // padding
+    float[] locOffsets = new float[] {-29F, -14F, 6F, 46F, 105F};
+    float[] cutoffs = new float[] {34F, 24F, 4F, 0F, 10F};
+
+    List<Keyline> actual = stateList.getEndState().getKeylines();
+    for (int i = 0; i < actual.size(); i++) {
+      assertThat(actual.get(i).locOffset).isEqualTo(locOffsets[i]);
+      assertThat(actual.get(i).cutoff).isEqualTo(cutoffs[i]);
     }
   }
 }

@@ -237,7 +237,7 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
   }
 
   @Override
-  boolean isContained() {
-    return false;
+  StrategyType getStrategyType() {
+    return StrategyType.UNCONTAINED;
   }
 }

@@ -31,6 +31,15 @@ public abstract class CarouselStrategy {
 
   private float smallSizeMax;
 
+  /**
+   * Enum that defines whether or not the strategy is contained or uncontained. Contained strategies
+   * will always have all of its items within bounds of the carousel width.
+   */
+  enum StrategyType {
+    CONTAINED,
+    UNCONTAINED
+  }
+
   void initialize(Context context) {
     smallSizeMin =
         smallSizeMin > 0 ? smallSizeMin : CarouselStrategyHelper.getSmallSizeMin(context);
@@ -130,14 +139,16 @@ public abstract class CarouselStrategy {
   }
 
   /**
-   * Gets whether this carousel should mask items against the edges of the carousel container.
+   * Gets the strategy type of this strategy. Contained strategies should mask items against the
+   * edges of the carousel container.
    *
-   * @return true if items in the carousel should mask/squash against the edges of the carousel
-   *     container. false if the carousel should allow items to bleed past the edges of the
-   *     container and be clipped.
+   * @return the {@link StrategyType} of this strategy. A value of {@link StrategyType#CONTAINED}
+   * means items in the carousel should mask/squash against the edges of the carousel container.
+   * {@link StrategyType#UNCONTAINED} means the carousel should allow items to bleed past the edges
+   * of the container and be clipped.
    */
-  boolean isContained() {
-    return true;
+  StrategyType getStrategyType() {
+    return StrategyType.CONTAINED;
   }
 
   /**

@@ -16,6 +16,9 @@
 
 package com.google.android.material.carousel;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 import androidx.annotation.NonNull;
 import androidx.core.math.MathUtils;
 import com.google.android.material.animation.AnimationUtils;
@@ -82,11 +85,17 @@ class KeylineStateList {
   }
 
   /** Creates a new {@link KeylineStateList} from a {@link KeylineState}. */
-  static KeylineStateList from(Carousel carousel, KeylineState state, float itemMargins,
-      float leftOrTopPadding, float rightOrBottomPadding) {
+  static KeylineStateList from(
+      Carousel carousel,
+      KeylineState state,
+      float itemMargins,
+      float leftOrTopPadding,
+      float rightOrBottomPadding,
+      CarouselStrategy.StrategyType strategyType) {
     return new KeylineStateList(
-        state, getStateStepsStart(carousel, state, itemMargins, leftOrTopPadding),
-        getStateStepsEnd(carousel, state, itemMargins, rightOrBottomPadding));
+        state,
+        getStateStepsStart(carousel, state, itemMargins, leftOrTopPadding, strategyType),
+        getStateStepsEnd(carousel, state, itemMargins, rightOrBottomPadding, strategyType));
   }
 
   /** Returns the default state for this state list. */
@@ -155,14 +164,17 @@ class KeylineStateList {
     float startShiftOffset = minScrollOffset + startShiftRange;
     float endShiftOffset = maxScrollOffset - endShiftRange;
     float startPaddingShift = getStartState().getFirstFocalKeyline().leftOrTopPaddingShift;
-    float endPaddingShift = getEndState().getLastFocalKeyline().rightOrBottomPaddingShift;
+    float endPaddingShift = getEndState().getFirstFocalKeyline().rightOrBottomPaddingShift;
 
     // Normally we calculate the interpolation such that by scrollShiftOffset, we are always at the
-    // default state but in this case, we want to start shifting earlier/increase startShiftOffset
-    // so that the interpolation will choose the start state instead of the default state when the
-    // scroll offset is equal to startPaddingShift. This is so we are always at the start state
-    // at the beginning of the carousel, instead of getting to a state where the start state is only
+    // default state. In the case where the start state is equal to the default state but with
+    // padding, we want to start shifting earlier/increase startShiftOffset so that the
+    // interpolation will choose the start state instead of the default state when the scroll offset
+    // is equal to startPaddingShift. This is so we are always at the start state with padding at
+    // the beginning of the carousel, instead of getting to a state where the start state is only
     // when scrollOffset <= startPaddingShift.
+    // We know that the start state is equal to the default state with padding if the start shift
+    // range is equal to the padding.
     if (startShiftRange == startPaddingShift) {
       startShiftOffset += startPaddingShift;
     }
@@ -362,7 +374,56 @@ class KeylineStateList {
         && state.getLastFocalKeyline() == state.getLastNonAnchorKeyline();
   }
 
+  @NonNull
   private static KeylineState shiftKeylineStateForPadding(
+      @NonNull KeylineState keylineState, float padding, float carouselSize, boolean leftShift,
+      float childMargins, CarouselStrategy.StrategyType strategyType) {
+    switch (strategyType) {
+      case CONTAINED:
+        return shiftKeylineStateForPaddingContained(
+            keylineState, padding, carouselSize, leftShift, childMargins);
+      default:
+        return shiftKeylineStateForPaddingUncontained(
+            keylineState, padding, carouselSize, leftShift);
+    }
+  }
+
+  @NonNull
+  private static KeylineState shiftKeylineStateForPaddingUncontained(
+      @NonNull KeylineState keylineState, float padding, float carouselSize, boolean leftShift) {
+    List<Keyline> tmpKeylines = new ArrayList<>(keylineState.getKeylines());
+    KeylineState.Builder builder =
+        new KeylineState.Builder(keylineState.getItemSize(), carouselSize);
+    int unchangingAnchorPosition = leftShift ? 0 : tmpKeylines.size() - 1;
+    for (int j = 0; j < tmpKeylines.size(); j++) {
+      Keyline k = tmpKeylines.get(j);
+      if (k.isAnchor && j == unchangingAnchorPosition) {
+        builder.addKeyline(k.locOffset, k.mask, k.maskedItemSize, false, true, k.cutoff);
+        continue;
+      }
+      float newOffset = leftShift ? k.locOffset + padding : k.locOffset - padding;
+      float leftOrTopPadding = leftShift ? padding : 0;
+      float rightOrBottomPadding = leftShift ? 0 : padding;
+      boolean isFocal =
+          j >= keylineState.getFirstFocalKeylineIndex()
+              && j <= keylineState.getLastFocalKeylineIndex();
+      builder.addKeyline(
+          newOffset,
+          k.mask,
+          k.maskedItemSize,
+          isFocal,
+          k.isAnchor,
+          Math.abs(
+              leftShift
+                  ? max(0, newOffset + k.maskedItemSize / 2 - carouselSize)
+                  : min(0, newOffset - k.maskedItemSize / 2)),
+          leftOrTopPadding,
+          rightOrBottomPadding);
+    }
+    return builder.build();
+  }
+
+  private static KeylineState shiftKeylineStateForPaddingContained(
       KeylineState keylineState, float padding, float carouselSize, boolean leftShift,
       float childMargins) {
 
@@ -400,7 +461,7 @@ class KeylineStateList {
               maskedItemSize, keylineState.getItemSize(), childMargins);
       float locOffset = nextOffset + maskedItemSize / 2F;
 
-      float actualPaddingShift = locOffset - k.locOffset;
+      float actualPaddingShift = Math.abs(locOffset - k.locOffset);
 
       builder.addKeyline(
           locOffset,
@@ -434,7 +495,7 @@ class KeylineStateList {
    */
   private static List<KeylineState> getStateStepsStart(
       Carousel carousel, KeylineState defaultState, float itemMargins,
-      float leftOrTopPaddingForKeylineShift) {
+      float leftOrTopPaddingForKeylineShift, CarouselStrategy.StrategyType strategyType) {
     List<KeylineState> steps = new ArrayList<>();
     steps.add(defaultState);
     int firstNonAnchorKeylineIndex = findFirstNonAnchorKeylineIndex(defaultState);
@@ -453,7 +514,8 @@ class KeylineStateList {
                 leftOrTopPaddingForKeylineShift,
                 carouselSize,
                 true,
-                itemMargins));
+                itemMargins,
+                strategyType));
       }
       return steps;
     }
@@ -471,8 +533,10 @@ class KeylineStateList {
       // view.
       float cutoffs = defaultState.getFirstFocalKeyline().cutoff;
       steps.add(
-          shiftKeylinesAndCreateKeylineState(defaultState, originalStart + cutoffs, carouselSize));
-      // TODO(b/316968490): If there is padding, this should affect keylines and the cutoffs
+          shiftKeylinesAndCreateKeylineState(
+              defaultState,
+              originalStart + cutoffs + leftOrTopPaddingForKeylineShift,
+              carouselSize));
       return steps;
     }
 
@@ -512,7 +576,8 @@ class KeylineStateList {
             leftOrTopPaddingForKeylineShift,
             carouselSize,
             true,
-            itemMargins);
+            itemMargins,
+            strategyType);
       }
       steps.add(shifted);
     }
@@ -536,7 +601,8 @@ class KeylineStateList {
    * carousel.
    */
   private static List<KeylineState> getStateStepsEnd(Carousel carousel, KeylineState defaultState,
-      float itemMargins, float rightOrBottomPaddingForKeylineShift) {
+      float itemMargins, float rightOrBottomPaddingForKeylineShift,
+      CarouselStrategy.StrategyType strategyType) {
     List<KeylineState> steps = new ArrayList<>();
     steps.add(defaultState);
     int lastNonAnchorKeylineIndex = findLastNonAnchorKeylineIndex(defaultState);
@@ -556,7 +622,8 @@ class KeylineStateList {
                 rightOrBottomPaddingForKeylineShift,
                 carouselSize,
                 false,
-                itemMargins));
+                itemMargins,
+                strategyType));
       }
       return steps;
     }
@@ -573,9 +640,8 @@ class KeylineStateList {
       // view. Add a step that shifts all the keylines over to bring the last focal item into full
       // view.
       float cutoffs = defaultState.getLastFocalKeyline().cutoff;
-      steps.add(
-          shiftKeylinesAndCreateKeylineState(defaultState, originalStart - cutoffs, carouselSize));
-      // TODO(b/316968490): If there is padding, this should affect keylines and the cutoffs
+      steps.add(shiftKeylinesAndCreateKeylineState(defaultState,
+          originalStart - cutoffs - rightOrBottomPaddingForKeylineShift, carouselSize));
       return steps;
     }
 
@@ -614,7 +680,8 @@ class KeylineStateList {
             rightOrBottomPaddingForKeylineShift,
             carouselSize,
             false,
-            itemMargins);
+            itemMargins,
+            strategyType);
       }
       steps.add(shifted);
     }

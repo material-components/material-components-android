@@ -40,6 +40,7 @@ import androidx.annotation.RequiresApi;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.carousel.CarouselHelper.CarouselTestAdapter;
 import com.google.android.material.carousel.CarouselHelper.WrappedCarouselLayoutManager;
+import com.google.android.material.carousel.CarouselStrategy.StrategyType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -100,7 +101,7 @@ public class CarouselLayoutManagerRtlTest {
     KeylineState leftState =
         KeylineStateList.from(
                 layoutManager, KeylineState.reverse(keylineState, DEFAULT_RECYCLER_VIEW_WIDTH),
-                0, 0, 0)
+                0, 0, 0, StrategyType.CONTAINED)
             .getStartState();
 
     MaskableFrameLayout child =

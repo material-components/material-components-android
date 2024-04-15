@@ -55,6 +55,7 @@ import androidx.core.graphics.ColorUtils;
 import androidx.core.math.MathUtils;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
+import com.google.android.material.carousel.CarouselStrategy.StrategyType;
 import com.google.android.material.carousel.KeylineState.Keyline;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -98,6 +99,7 @@ public class CarouselLayoutManager extends LayoutManager
   private boolean isDebuggingEnabled = false;
   private final DebugItemDecoration debugItemDecoration = new DebugItemDecoration();
   @NonNull private CarouselStrategy carouselStrategy;
+
   @Nullable private KeylineStateList keylineStateList;
   // A KeylineState shifted for any current scroll offset.
   @Nullable private KeylineState currentKeylineState;
@@ -227,8 +229,7 @@ public class CarouselLayoutManager extends LayoutManager
   private int getLeftOrTopPaddingForKeylineShift() {
     // TODO(b/316969331): Fix keyline shifting by decreasing carousel size when carousel is clipped
     // to padding.
-    // TODO(b/316968490): Fix keyline shifting by adjusting cutoffs if strategy is not contained.
-    if (getClipToPadding() || !carouselStrategy.isContained()) {
+    if (getClipToPadding()) {
       return 0;
     }
     if (getOrientation() == VERTICAL) {
@@ -240,8 +241,7 @@ public class CarouselLayoutManager extends LayoutManager
   private int getRightOrBottomPaddingForKeylineShift() {
     // TODO(b/316969331): Fix keyline shifting by decreasing carousel size when carousel is clipped
     // to padding.
-    // TODO(b/316968490): Fix keyline shifting by adjusting cutoffs if strategy is not contained.
-    if (getClipToPadding() || !carouselStrategy.isContained()) {
+    if (getClipToPadding()) {
       return 0;
     }
     if (getOrientation() == VERTICAL) {
@@ -348,7 +348,8 @@ public class CarouselLayoutManager extends LayoutManager
             isLayoutRtl() ? KeylineState.reverse(keylineState, getContainerSize()) : keylineState,
             getItemMargins(),
             getLeftOrTopPaddingForKeylineShift(),
-            getRightOrBottomPaddingForKeylineShift());
+            getRightOrBottomPaddingForKeylineShift(),
+            carouselStrategy.getStrategyType());
   }
 
   private int getItemMargins() {
@@ -853,10 +854,7 @@ public class CarouselLayoutManager extends LayoutManager
     float lastItemDistanceFromFirstItem =
         ((state.getItemCount() - 1) * endState.getItemSize()) * (isRtl ? -1F : 1F);
 
-    float endPadding =
-        isRtl ? -endFocalKeyline.leftOrTopPaddingShift : endFocalKeyline.rightOrBottomPaddingShift;
     float endFocalLocDistanceFromStart = endFocalKeyline.loc - getParentStart();
-    float endFocalLocDistanceFromEnd = getParentEnd() - endFocalKeyline.loc;
 
     // We want the last item in the list to only be able to scroll to the end of the list. Subtract
     // the distance to the end focal keyline and then add the distance needed to let the last
@@ -865,11 +863,7 @@ public class CarouselLayoutManager extends LayoutManager
         (int)
             (lastItemDistanceFromFirstItem
                 - endFocalLocDistanceFromStart
-                + endFocalLocDistanceFromEnd
-                // If there is padding, adjust for the extra padding offset since offset is
-                // implicitly added from both endFocalLocDistance calculations.
-                + endPadding);
-
+                + (isRtl ? -1 : 1) * endFocalKeyline.maskedItemSize / 2F);
     return isRtl ? min(0, endScroll) : max(0, endScroll);
   }
 
@@ -994,7 +988,7 @@ public class CarouselLayoutManager extends LayoutManager
     // container instead of bleeding and being clipped by the RecyclerView's bounds.
     // Only do this if there is only one side of the mask that is out of bounds; if
     // both sides are out of bounds on the same side, then the whole mask is out of view.
-    if (carouselStrategy.isContained()) {
+    if (carouselStrategy.getStrategyType() == StrategyType.CONTAINED) {
       orientationHelper.containMaskWithinBounds(maskRect, offsetMaskRect, parentBoundsRect);
     }
 
@@ -1058,10 +1052,6 @@ public class CarouselLayoutManager extends LayoutManager
 
   private int getParentRight() {
     return orientationHelper.getParentRight();
-  }
-
-  private int getParentEnd() {
-    return orientationHelper.getParentEnd();
   }
 
   private int getParentTop() {
