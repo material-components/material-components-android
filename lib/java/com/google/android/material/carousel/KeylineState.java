@@ -52,6 +52,7 @@ import java.util.List;
 final class KeylineState {
 
   private final float itemSize;
+  private int totalVisibleFocalItems;
   private final List<Keyline> keylines;
   private final int firstFocalKeylineIndex;
   private final int lastFocalKeylineIndex;
@@ -65,6 +66,11 @@ final class KeylineState {
     this.keylines = Collections.unmodifiableList(keylines);
     this.firstFocalKeylineIndex = firstFocalKeylineIndex;
     this.lastFocalKeylineIndex = lastFocalKeylineIndex;
+    for (int i = firstFocalKeylineIndex; i <= lastFocalKeylineIndex; i++) {
+      if (keylines.get(i).cutoff == 0) {
+        this.totalVisibleFocalItems += 1;
+      }
+    }
   }
 
   /**
@@ -79,6 +85,11 @@ final class KeylineState {
   /** Returns list of keylines that should be positioned along the scroll axis. */
   List<Keyline> getKeylines() {
     return keylines;
+  }
+
+  /** Returns the number of focal items in the keyline state. */
+  int getTotalVisibleFocalItems() {
+    return totalVisibleFocalItems;
   }
 
   /** Returns the first focal keyline in the list. */

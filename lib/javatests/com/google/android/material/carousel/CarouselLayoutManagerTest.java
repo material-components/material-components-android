@@ -614,6 +614,18 @@ public class CarouselLayoutManagerTest {
     assertThat(layoutManager.scrollOffset).isEqualTo(0);
   }
 
+  @Test
+  public void testSingleItem_shouldNotScrollWithPadding() throws Throwable {
+    recyclerView.setPadding(50, 0, 50, 0);
+    recyclerView.setClipToPadding(false);
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(1));
+    int originalLeft = recyclerView.getChildAt(0).getLeft();
+
+    scrollHorizontallyBy(recyclerView, layoutManager, 100);
+
+    assertThat(recyclerView.getChildAt(0).getLeft()).isEqualTo(originalLeft);
+  }
+
   /**
    * Assigns explicit sizes to fixtures being used to construct the testing environment.
    *

@@ -784,6 +784,10 @@ public class CarouselLayoutManager extends LayoutManager
         keylines.get(startMinDistanceIndex), keylines.get(endMinDistanceIndex));
   }
 
+  private KeylineState getKeylineStartingState(KeylineStateList keylineStateList) {
+    return isLayoutRtl() ? keylineStateList.getEndState() : keylineStateList.getStartState();
+  }
+
   /**
    * Update the current keyline state by shifting it in response to any change in scroll offset.
    *
@@ -794,8 +798,7 @@ public class CarouselLayoutManager extends LayoutManager
     if (maxScroll <= minScroll) {
       // We don't have enough items in the list to scroll and we should use the keyline state
       // that aligns items to the start of the container.
-      this.currentKeylineState =
-          isLayoutRtl() ? keylineStateList.getEndState() : keylineStateList.getStartState();
+      this.currentKeylineState = getKeylineStartingState(keylineStateList);
     } else {
       this.currentKeylineState =
           keylineStateList.getShiftedState(scrollOffset, minScroll, maxScroll);
@@ -1452,6 +1455,12 @@ public class CarouselLayoutManager extends LayoutManager
 
     if (keylineStateList == null) {
       recalculateKeylineStateList(recycler);
+    }
+
+    // If the number of items is equal or less than the number of focal items, we should not be able
+    // to scroll.
+    if (getItemCount() <= getKeylineStartingState(keylineStateList).getTotalVisibleFocalItems()) {
+      return 0;
     }
 
     // Calculate how much the carousel should scroll and update the scroll offset.
