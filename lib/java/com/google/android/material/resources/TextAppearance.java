@@ -18,6 +18,7 @@ package com.google.android.material.resources;
 
 import com.google.android.material.R;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -27,7 +28,9 @@ import android.graphics.Typeface;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.TextPaint;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Xml;
 import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,6 +41,7 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.content.res.ResourcesCompat.FontCallback;
 import androidx.core.provider.FontsContractCompat.FontRequestCallback;
+import org.xmlpull.v1.XmlPullParser;
 
 /**
  * Utility class that contains the data from parsing a TextAppearance style resource.
@@ -75,6 +79,7 @@ public class TextAppearance {
   @FontRes private final int fontFamilyResourceId;
 
   private boolean fontResolved = false;
+  private boolean systemFontLoadAttempted = false;
   private Typeface font;
 
   /** Parses the given TextAppearance style resource. */
@@ -169,9 +174,7 @@ public class TextAppearance {
    */
   public void getFontAsync(
       @NonNull Context context, @NonNull final TextAppearanceFontCallback callback) {
-    if (shouldLoadFontSynchronously(context)) {
-      getFont(context);
-    } else {
+    if (!maybeLoadFontSynchronously(context)) {
       // No-op if font already resolved.
       createFallbackFont();
     }
@@ -325,8 +328,8 @@ public class TextAppearance {
       @NonNull Context context,
       @NonNull TextPaint textPaint,
       @NonNull TextAppearanceFontCallback callback) {
-    if (shouldLoadFontSynchronously(context)) {
-      updateTextPaintMeasureState(context, textPaint, getFont(context));
+    if (maybeLoadFontSynchronously(context) && fontResolved && font != null) {
+      updateTextPaintMeasureState(context, textPaint, font);
     } else {
       getFontAsync(context, textPaint, callback);
     }
@@ -375,14 +378,81 @@ public class TextAppearance {
     this.textSize = textSize;
   }
 
-  private boolean shouldLoadFontSynchronously(Context context) {
+  private boolean maybeLoadFontSynchronously(Context context) {
     if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
+      getFont(context);
       return true;
     }
-    Typeface typeface =
-        (fontFamilyResourceId != 0)
-            ? ResourcesCompat.getCachedFont(context, fontFamilyResourceId)
-            : null;
-    return (typeface != null);
+    if (fontResolved) {
+      return true;
+    }
+    if (fontFamilyResourceId == 0) {
+      return false;
+    }
+    Typeface cachedFont = ResourcesCompat.getCachedFont(context, fontFamilyResourceId);
+    if (cachedFont != null) {
+      font = cachedFont;
+      fontResolved = true;
+      return true;
+    }
+    Typeface systemFont = getSystemTypeface(context);
+    if (systemFont != null) {
+      font = systemFont;
+      fontResolved = true;
+      return true;
+    }
+    return false;
+  }
+
+  @Nullable
+  private Typeface getSystemTypeface(Context context) {
+    if (systemFontLoadAttempted) {
+      // Only attempt to load the system font once.
+      return null;
+    }
+    systemFontLoadAttempted = true;
+
+    String systemFontFamily = readFontProviderSystemFontFamily(context, fontFamilyResourceId);
+    if (systemFontFamily == null) {
+      return null;
+    }
+
+    Typeface regularSystemTypeface = Typeface.create(systemFontFamily, Typeface.NORMAL);
+    if (regularSystemTypeface == Typeface.DEFAULT) {
+      // If Typeface#create returned Typeface.DEFAULT then systemFontFamily is not present on the
+      // device as a system font, so we will have to load the font asynchronously.
+      return null;
+    }
+
+    return Typeface.create(regularSystemTypeface, textStyle);
+  }
+
+  @SuppressLint("ResourceType")
+  @Nullable
+  private static String readFontProviderSystemFontFamily(
+      Context context, @FontRes int fontFamilyResourceId) {
+    Resources resources = context.getResources();
+    if (fontFamilyResourceId == 0
+        || !resources.getResourceTypeName(fontFamilyResourceId).equals("font")) {
+      return null;
+    }
+
+    try {
+      XmlPullParser xpp = resources.getXml(fontFamilyResourceId);
+      while (xpp.getEventType() != XmlPullParser.END_DOCUMENT) {
+        if (xpp.getEventType() == XmlPullParser.START_TAG && xpp.getName().equals("font-family")) {
+          AttributeSet attrs = Xml.asAttributeSet(xpp);
+          TypedArray a = resources.obtainAttributes(attrs, androidx.core.R.styleable.FontFamily);
+          String systemFontFamily =
+              a.getString(androidx.core.R.styleable.FontFamily_fontProviderSystemFontFamily);
+          a.recycle();
+          return systemFontFamily;
+        }
+        xpp.next();
+      }
+    } catch (Throwable t) {
+      // Fail silently if we can't find fontProviderSystemFontFamily for any reason.
+    }
+    return null;
   }
 }
