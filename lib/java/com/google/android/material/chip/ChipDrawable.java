@@ -961,8 +961,7 @@ public class ChipDrawable extends MaterialShapeDrawable
           chipEndPadding
               + closeIconEndPadding
               + closeIconSize
-              + closeIconStartPadding
-              + textEndPadding;
+              + closeIconStartPadding;
 
       if (DrawableCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR) {
         outBounds.right = bounds.right;
