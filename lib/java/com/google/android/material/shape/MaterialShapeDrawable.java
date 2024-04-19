@@ -19,6 +19,7 @@ package com.google.android.material.shape;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.math.MathUtils.lerp;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -80,6 +81,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
 
   private static final float SHADOW_OFFSET_MULTIPLIER = .25f;
+
+  static final ShapeAppearanceModel DEFAULT_INTERPOLATION_START_SHAPE_APPEARANCE_MODEL =
+      ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, 0).build();
 
   /**
    * Try to draw native elevation shadows if possible, otherwise use fake shadows. This is best for
@@ -291,6 +295,35 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Override
   public ShapeAppearanceModel getShapeAppearanceModel() {
     return drawableState.shapeAppearanceModel;
+  }
+
+  /**
+   * Set the shape appearance when interpolation is 0.
+   *
+   * @param startShape the ShapeAppearanceModel for the shape when interpolation is 0. The edge
+   * treatments within it are ignored.
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setInterpolationStartShapeAppearanceModel(@NonNull ShapeAppearanceModel startShape) {
+    if (drawableState.interpolationStartShapeAppearanceModel != startShape) {
+      drawableState.interpolationStartShapeAppearanceModel = startShape;
+      pathDirty = true;
+      invalidateSelf();
+    }
+  }
+
+  /**
+   * Get the {@link ShapeAppearanceModel} containing the path that should be rendered at the
+   * beginning of interpolation (when interpolation=0).
+   *
+   * @return the starting model.
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @NonNull
+  public ShapeAppearanceModel getInterpolationStartShapeAppearanceModel() {
+    return drawableState.interpolationStartShapeAppearanceModel;
   }
 
   /**
@@ -1071,10 +1104,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       @NonNull ShapeAppearanceModel shapeAppearanceModel,
       @NonNull RectF bounds) {
     if (shapeAppearanceModel.isRoundRect(bounds)) {
-      float cornerSize =
-          shapeAppearanceModel.getTopRightCornerSize().getCornerSize(bounds)
-              * drawableState.interpolation;
-      canvas.drawRoundRect(bounds, cornerSize, cornerSize, paint);
+      float endRadius = shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds);
+      shapeAppearanceModel = drawableState.interpolationStartShapeAppearanceModel;
+      float startRadius = shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds);
+      float radius = lerp(startRadius, endRadius, drawableState.interpolation);
+      canvas.drawRoundRect(bounds, radius, radius, paint);
     } else {
       canvas.drawPath(path, paint);
     }
@@ -1183,6 +1217,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   protected final void calculatePathForSize(@NonNull RectF bounds, @NonNull Path path) {
     pathProvider.calculatePath(
         drawableState.shapeAppearanceModel,
+        drawableState.interpolationStartShapeAppearanceModel,
         drawableState.interpolation,
         bounds,
         pathShadowListener,
@@ -1211,8 +1246,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     pathProvider.calculatePath(
         strokeShapeAppearance,
+        drawableState.interpolationStartShapeAppearanceModel,
         drawableState.interpolation,
         getBoundsInsetByStroke(),
+        null,
         pathInsetByStroke);
   }
 
@@ -1225,11 +1262,16 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     if (isRoundRect()) {
-      float radius = getTopLeftCornerResolvedSize() * drawableState.interpolation;
+      float startRadius =
+          drawableState
+              .interpolationStartShapeAppearanceModel
+              .getTopLeftCornerSize()
+              .getCornerSize(getBoundsAsRectF());
+      float endRadius = getTopLeftCornerResolvedSize();
+      float radius = lerp(startRadius, endRadius, drawableState.interpolation);
       outline.setRoundRect(getBounds(), radius);
       return;
     }
-
     calculatePath(getBoundsAsRectF(), path);
     DrawableUtils.setOutlineToPath(outline, path);
   }
@@ -1409,7 +1451,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    */
   @RestrictTo(LIBRARY_GROUP)
   public boolean isRoundRect() {
-    return drawableState.shapeAppearanceModel.isRoundRect(getBoundsAsRectF());
+    return drawableState.shapeAppearanceModel.isRoundRect(getBoundsAsRectF())
+        && drawableState.interpolationStartShapeAppearanceModel.isRoundRect(getBoundsAsRectF());
   }
 
   /**
@@ -1421,6 +1464,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   protected static class MaterialShapeDrawableState extends ConstantState {
 
     @NonNull ShapeAppearanceModel shapeAppearanceModel;
+    // The shape appearance when interpolation is 0. Edge treatments are ignored.
+    @NonNull ShapeAppearanceModel interpolationStartShapeAppearanceModel;
     @Nullable ElevationOverlayProvider elevationOverlayProvider;
 
     @Nullable ColorFilter colorFilter;
@@ -1453,10 +1498,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         @Nullable ElevationOverlayProvider elevationOverlayProvider) {
       this.shapeAppearanceModel = shapeAppearanceModel;
       this.elevationOverlayProvider = elevationOverlayProvider;
+      this.interpolationStartShapeAppearanceModel =
+          DEFAULT_INTERPOLATION_START_SHAPE_APPEARANCE_MODEL;
     }
 
     public MaterialShapeDrawableState(@NonNull MaterialShapeDrawableState orig) {
       shapeAppearanceModel = orig.shapeAppearanceModel;
+      interpolationStartShapeAppearanceModel = orig.interpolationStartShapeAppearanceModel;
       elevationOverlayProvider = orig.elevationOverlayProvider;
       strokeWidth = orig.strokeWidth;
       colorFilter = orig.colorFilter;
