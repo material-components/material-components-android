@@ -2357,8 +2357,7 @@ abstract class BaseSlider<
 
         requestFocus();
         thumbIsPressed = true;
-        snapTouchPosition();
-        updateHaloHotspot();
+
         // Update the thumb width when pressed.
         if (hasGapBetweenThumbAndTrack()) {
           defaultThumbWidth = thumbWidth;
@@ -2368,8 +2367,11 @@ abstract class BaseSlider<
           setThumbWidth(pressedThumbWidth);
           setThumbTrackGapSize(thumbTrackGapSize - delta / 2);
         }
-        invalidate();
         onStartTrackingTouch();
+
+        snapTouchPosition();
+        updateHaloHotspot();
+        invalidate();
         break;
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
@@ -2378,15 +2380,26 @@ abstract class BaseSlider<
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
+
+          if (!pickActiveThumb()) {
+            // Couldn't determine the active thumb yet.
+            break;
+          }
+
+          thumbIsPressed = true;
+
+          // Update the thumb width when pressed.
+          if (hasGapBetweenThumbAndTrack()) {
+            defaultThumbWidth = thumbWidth;
+            defaultThumbTrackGapSize = thumbTrackGapSize;
+            int pressedThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
+            int delta = thumbWidth - pressedThumbWidth;
+            setThumbWidth(pressedThumbWidth);
+            setThumbTrackGapSize(thumbTrackGapSize - delta / 2);
+          }
           onStartTrackingTouch();
         }
 
-        if (!pickActiveThumb()) {
-          // Couldn't determine the active thumb yet.
-          break;
-        }
-
-        thumbIsPressed = true;
         snapTouchPosition();
         updateHaloHotspot();
         invalidate();
