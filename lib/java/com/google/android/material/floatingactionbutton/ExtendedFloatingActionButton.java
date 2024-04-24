@@ -690,6 +690,23 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     performMotion(EXTEND, callback);
   }
 
+/*
+* @param Let the user hide an object
+*/
+
+public boolean isHide() {
+   return getVisibility() == GONE ? true : false;
+}
+
+
+/*
+* @param Let represent the usage of an object
+*/
+  
+public boolean isShow() {
+   return getVisibility() == VISIBLE ? true : false;
+ }
+
 
   /**
    * Shrinks the FAB to show just the icon.
