@@ -61,7 +61,16 @@ public class LinearProgressIndicator
     extends BaseProgressIndicator<LinearProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_LinearProgressIndicator;
 
+  /**
+   * Used in the indeterminate animation type setter for contiguous animation, which animates the
+   * connecting active segment(s) occupying the full track.
+   */
   public static final int INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS = 0;
+
+  /**
+   * Used in the indeterminate animation type setter for disjoint animation, which animates the
+   * active segment(s) with noticeable gaps.
+   */
   public static final int INDETERMINATE_ANIMATION_TYPE_DISJOINT = 1;
 
   public static final int INDICATOR_DIRECTION_LEFT_TO_RIGHT = 0;
@@ -194,6 +203,7 @@ public class LinearProgressIndicator
    * @attr ref
    *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_indeterminateAnimationType
    */
+  @IndeterminateAnimationType
   public int getIndeterminateAnimationType() {
     return spec.indeterminateAnimationType;
   }
@@ -225,6 +235,7 @@ public class LinearProgressIndicator
       getIndeterminateDrawable()
           .setAnimatorDelegate(new LinearIndeterminateDisjointAnimatorDelegate(getContext(), spec));
     }
+    registerSwitchIndeterminateModeCallback();
     invalidate();
   }
 
@@ -271,7 +282,7 @@ public class LinearProgressIndicator
    */
   @Override
   public void setProgressCompat(int progress, boolean animated) {
-    // Doesn't support to switching into determinate mode while disjoint animation is used.
+    // Doesn't support to switching into determinate mode while contiguous animation is used.
     if (spec != null
         && spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS
         && isIndeterminate()) {

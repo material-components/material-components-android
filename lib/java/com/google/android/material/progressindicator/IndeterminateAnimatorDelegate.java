@@ -16,6 +16,8 @@
 
 package com.google.android.material.progressindicator;
 
+import static androidx.core.math.MathUtils.clamp;
+
 import android.animation.Animator;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
@@ -50,7 +52,8 @@ abstract class IndeterminateAnimatorDelegate<T extends Animator> {
   }
 
   protected float getFractionInRange(int playtime, int start, int duration) {
-    return (float) (playtime - start) / duration;
+    float fraction = (float) (playtime - start) / duration;
+    return clamp(fraction, 0f, 1f);
   }
 
   /** Starts the animator. */

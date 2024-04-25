@@ -43,17 +43,13 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
 
   S spec;
 
-  final Path cachedActivePath;
-  final Path displayedActivePath;
+  final Path cachedActivePath = new Path();
+  final Path displayedActivePath = new Path();
 
-  final PathMeasure activePathMeasure;
+  final PathMeasure activePathMeasure = new PathMeasure(cachedActivePath, /* forceClosed= */ false);
 
   public DrawingDelegate(S spec) {
     this.spec = spec;
-
-    cachedActivePath = new Path();
-    displayedActivePath = new Path();
-    activePathMeasure = new PathMeasure(cachedActivePath, /* forceClosed= */ false);
   }
 
   /**
@@ -176,6 +172,12 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
     // The fraction [0, 1] of the initial phase [0, 2 * PI] on indicator.
     @FloatRange(from = 0.0, to = 1.0)
     float phaseFraction;
+
+    // Initial rotation applied on the indicator in degrees.
+    float rotationDegree;
+
+    // Whether the indicator is for determinate mode.
+    boolean isDeterminate;
   }
 
   /** An entity class for a point on a path, with the support of fundamental operations. */

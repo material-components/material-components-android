@@ -81,6 +81,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
     setDrawingDelegate(drawingDelegate);
     activeIndicator = new ActiveIndicator();
+    activeIndicator.isDeterminate = true;
 
     // Initializes a spring animator for progress animation.
     springForce = new SpringForce();

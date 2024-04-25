@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,44 +15,57 @@
  */
 package com.google.android.material.progressindicator;
 
+import com.google.android.material.R;
+
+import static com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
+import static com.google.android.material.math.MathUtils.lerp;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.util.Property;
 import androidx.annotation.NonNull;
 import androidx.annotation.VisibleForTesting;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.animation.ArgbEvaluatorCompat;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.progressindicator.DrawingDelegate.ActiveIndicator;
 
 /**
  * This is the implementation class for drawing progress indicator in the circular indeterminate
- * mode.
+ * mode with an animation that grows and shrinks the active segment by modifying the end point.
  */
-final class CircularIndeterminateAnimatorDelegate
+final class CircularIndeterminateRetreatAnimatorDelegate
     extends IndeterminateAnimatorDelegate<ObjectAnimator> {
+  private static final TimeInterpolator DEFAULT_INTERPOLATOR = FAST_OUT_SLOW_IN_INTERPOLATOR;
 
   // Constants for animation timing.
-  private static final int TOTAL_CYCLES = 4;
-  private static final int TOTAL_DURATION_IN_MS = 5400;
-  private static final int DURATION_TO_EXPAND_IN_MS = 667;
-  private static final int DURATION_TO_COLLAPSE_IN_MS = 667;
-  private static final int DURATION_TO_FADE_IN_MS = 333;
-  private static final int DURATION_TO_COMPLETE_END_IN_MS = 333;
-  private static final int[] DELAY_TO_EXPAND_IN_MS = {0, 1350, 2700, 4050};
-  private static final int[] DELAY_TO_COLLAPSE_IN_MS = {667, 2017, 3367, 4717};
-  private static final int[] DELAY_TO_FADE_IN_MS = {1000, 2350, 3700, 5050};
+  private static final int TOTAL_DURATION_IN_MS = 6000;
+  private static final int DURATION_SPIN_IN_MS = 500;
+  private static final int DURATION_GROW_ACTIVE_IN_MS = 3000;
+  private static final int DURATION_SHRINK_ACTIVE_IN_MS = 3000;
+  private static final int[] DELAY_SPINS_IN_MS = new int[] {0, 1500, 3000, 4500};
+  private static final int DELAY_GROW_ACTIVE_IN_MS = 0;
+  private static final int DELAY_SHRINK_ACTIVE_IN_MS = 3000;
+  private static final int DURATION_TO_COMPLETE_END_IN_MS = 500;
+  private static final int DURATION_TO_FADE_IN_MS = 100;
 
   // Constants for animation values.
-  private static final int TAIL_DEGREES_OFFSET = -20;
-  private static final int EXTRA_DEGREES_PER_CYCLE = 250;
-  private static final int CONSTANT_ROTATION_DEGREES = 1520;
+
+  // The total degrees that a constant rotation goes by.
+  private static final int CONSTANT_ROTATION_DEGREES = 1080;
+  // Despite of the constant rotation, there are also 5 extra rotations the entire animation. The
+  // total degrees that each extra rotation goes by.
+  private static final int SPIN_ROTATION_DEGREES = 90;
+  private static final float START_FRACTION = 0f;
+  private static final float[] END_FRACTION_RANGE = new float[] {0.10f, 0.87f};
 
   private ObjectAnimator animator;
   private ObjectAnimator completeEndAnimator;
-  private final FastOutSlowInInterpolator interpolator;
+  private final TimeInterpolator standardInterpolator;
 
   // The base spec.
   private final BaseProgressIndicatorSpec baseSpec;
@@ -63,12 +76,15 @@ final class CircularIndeterminateAnimatorDelegate
   private float completeEndFraction;
   AnimationCallback animatorCompleteCallback = null;
 
-  public CircularIndeterminateAnimatorDelegate(@NonNull CircularProgressIndicatorSpec spec) {
+  public CircularIndeterminateRetreatAnimatorDelegate(
+      @NonNull Context context, @NonNull CircularProgressIndicatorSpec spec) {
     super(/* indicatorCount= */ 1);
 
     baseSpec = spec;
 
-    interpolator = new FastOutSlowInInterpolator();
+    standardInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, R.attr.motionEasingStandardInterpolator, DEFAULT_INTERPOLATOR);
   }
 
   // ******************* Animation control *******************
@@ -94,7 +110,8 @@ final class CircularIndeterminateAnimatorDelegate
             public void onAnimationRepeat(Animator animation) {
               super.onAnimationRepeat(animation);
               indicatorColorIndexOffset =
-                  (indicatorColorIndexOffset + TOTAL_CYCLES) % baseSpec.indicatorColors.length;
+                  (indicatorColorIndexOffset + DELAY_SPINS_IN_MS.length)
+                      % baseSpec.indicatorColors.length;
             }
           });
     }
@@ -102,7 +119,6 @@ final class CircularIndeterminateAnimatorDelegate
     if (completeEndAnimator == null) {
       completeEndAnimator = ObjectAnimator.ofFloat(this, COMPLETE_END_FRACTION, 0, 1);
       completeEndAnimator.setDuration(DURATION_TO_COMPLETE_END_IN_MS);
-      completeEndAnimator.setInterpolator(interpolator);
       completeEndAnimator.addListener(
           new AnimatorListenerAdapter() {
             @Override
@@ -156,46 +172,48 @@ final class CircularIndeterminateAnimatorDelegate
   // ******************* Helper methods *******************
 
   /** Updates the segment position array based on current playtime. */
-  private void updateSegmentPositions(int playtime) {
-    ActiveIndicator activeIndicator = activeIndicators.get(0);
-    // Adds constant rotation to segment positions.
-    activeIndicator.startFraction =
-        CONSTANT_ROTATION_DEGREES * animationFraction + TAIL_DEGREES_OFFSET;
-    activeIndicator.endFraction = CONSTANT_ROTATION_DEGREES * animationFraction;
-    // Adds cycle specific rotation to segment positions.
-    for (int cycleIndex = 0; cycleIndex < TOTAL_CYCLES; cycleIndex++) {
-      // While expanding.
-      float fraction =
-          getFractionInRange(playtime, DELAY_TO_EXPAND_IN_MS[cycleIndex], DURATION_TO_EXPAND_IN_MS);
-      activeIndicator.endFraction +=
-          interpolator.getInterpolation(fraction) * EXTRA_DEGREES_PER_CYCLE;
-      // While collapsing.
-      fraction =
-          getFractionInRange(
-              playtime, DELAY_TO_COLLAPSE_IN_MS[cycleIndex], DURATION_TO_COLLAPSE_IN_MS);
-      activeIndicator.startFraction +=
-          interpolator.getInterpolation(fraction) * EXTRA_DEGREES_PER_CYCLE;
+  private void updateSegmentPositions(int playtimeInMs) {
+    ActiveIndicator indicator = activeIndicators.get(0);
+    // Constant rotation.
+    float constantRotation = CONSTANT_ROTATION_DEGREES * animationFraction;
+    // Extra rotation for the faster spinning.
+    float spinRotation = 0;
+    for (int spinDelay : DELAY_SPINS_IN_MS) {
+      spinRotation +=
+          standardInterpolator.getInterpolation(
+                  getFractionInRange(playtimeInMs, spinDelay, DURATION_SPIN_IN_MS))
+              * SPIN_ROTATION_DEGREES;
     }
-    // Closes the gap between head and tail for complete end.
-    activeIndicator.startFraction +=
-        (activeIndicator.endFraction - activeIndicator.startFraction) * completeEndFraction;
+    indicator.rotationDegree = constantRotation + spinRotation;
+    // Grow active indicator.
+    float fraction =
+        standardInterpolator.getInterpolation(
+            getFractionInRange(playtimeInMs, DELAY_GROW_ACTIVE_IN_MS, DURATION_GROW_ACTIVE_IN_MS));
+    fraction -=
+        standardInterpolator.getInterpolation(
+            getFractionInRange(
+                playtimeInMs, DELAY_SHRINK_ACTIVE_IN_MS, DURATION_SHRINK_ACTIVE_IN_MS));
+    indicator.startFraction = START_FRACTION;
+    indicator.endFraction = lerp(END_FRACTION_RANGE[0], END_FRACTION_RANGE[1], fraction);
 
-    activeIndicator.startFraction = activeIndicator.startFraction / 360f;
-    activeIndicator.endFraction = activeIndicator.endFraction / 360f;
+    // Completing animation.
+    if (completeEndFraction > 0) {
+      indicator.endFraction *= 1 - completeEndFraction;
+    }
   }
 
   /** Updates the segment color array based on current playtime. */
-  private void maybeUpdateSegmentColors(int playtime) {
-    for (int cycleIndex = 0; cycleIndex < TOTAL_CYCLES; cycleIndex++) {
+  private void maybeUpdateSegmentColors(int playtimeInMs) {
+    for (int cycleIndex = 0; cycleIndex < DELAY_SPINS_IN_MS.length; cycleIndex++) {
       float timeFraction =
-          getFractionInRange(playtime, DELAY_TO_FADE_IN_MS[cycleIndex], DURATION_TO_FADE_IN_MS);
+          getFractionInRange(playtimeInMs, DELAY_SPINS_IN_MS[cycleIndex], DURATION_TO_FADE_IN_MS);
       if (timeFraction >= 0 && timeFraction <= 1) {
         int startColorIndex =
             (cycleIndex + indicatorColorIndexOffset) % baseSpec.indicatorColors.length;
         int endColorIndex = (startColorIndex + 1) % baseSpec.indicatorColors.length;
         int startColor = baseSpec.indicatorColors[startColorIndex];
         int endColor = baseSpec.indicatorColors[endColorIndex];
-        float colorFraction = interpolator.getInterpolation(timeFraction);
+        float colorFraction = standardInterpolator.getInterpolation(timeFraction);
         activeIndicators.get(0).color =
             ArgbEvaluatorCompat.getInstance().evaluate(colorFraction, startColor, endColor);
         break;
@@ -221,9 +239,9 @@ final class CircularIndeterminateAnimatorDelegate
   @Override
   void setAnimationFraction(float fraction) {
     animationFraction = fraction;
-    int playtime = (int) (animationFraction * TOTAL_DURATION_IN_MS);
-    updateSegmentPositions(playtime);
-    maybeUpdateSegmentColors(playtime);
+    int playtimeInMs = (int) (animationFraction * TOTAL_DURATION_IN_MS);
+    updateSegmentPositions(playtimeInMs);
+    maybeUpdateSegmentColors(playtimeInMs);
     drawable.invalidateSelf();
   }
 
@@ -237,30 +255,32 @@ final class CircularIndeterminateAnimatorDelegate
 
   // ******************* Properties *******************
 
-  private static final Property<CircularIndeterminateAnimatorDelegate, Float> ANIMATION_FRACTION =
-      new Property<CircularIndeterminateAnimatorDelegate, Float>(Float.class, "animationFraction") {
-        @Override
-        public Float get(CircularIndeterminateAnimatorDelegate delegate) {
-          return delegate.getAnimationFraction();
-        }
+  private static final Property<CircularIndeterminateRetreatAnimatorDelegate, Float>
+      ANIMATION_FRACTION =
+          new Property<CircularIndeterminateRetreatAnimatorDelegate, Float>(
+              Float.class, "animationFraction") {
+            @Override
+            public Float get(CircularIndeterminateRetreatAnimatorDelegate delegate) {
+              return delegate.getAnimationFraction();
+            }
 
-        @Override
-        public void set(CircularIndeterminateAnimatorDelegate delegate, Float value) {
-          delegate.setAnimationFraction(value);
-        }
-      };
+            @Override
+            public void set(CircularIndeterminateRetreatAnimatorDelegate delegate, Float value) {
+              delegate.setAnimationFraction(value);
+            }
+          };
 
-  private static final Property<CircularIndeterminateAnimatorDelegate, Float>
+  private static final Property<CircularIndeterminateRetreatAnimatorDelegate, Float>
       COMPLETE_END_FRACTION =
-          new Property<CircularIndeterminateAnimatorDelegate, Float>(
+          new Property<CircularIndeterminateRetreatAnimatorDelegate, Float>(
               Float.class, "completeEndFraction") {
             @Override
-            public Float get(CircularIndeterminateAnimatorDelegate delegate) {
+            public Float get(CircularIndeterminateRetreatAnimatorDelegate delegate) {
               return delegate.getCompleteEndFraction();
             }
 
             @Override
-            public void set(CircularIndeterminateAnimatorDelegate delegate, Float value) {
+            public void set(CircularIndeterminateRetreatAnimatorDelegate delegate, Float value) {
               delegate.setCompleteEndFraction(value);
             }
           };

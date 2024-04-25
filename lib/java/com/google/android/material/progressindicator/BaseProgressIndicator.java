@@ -164,13 +164,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   // ******************** Initialization **********************
 
   private void registerAnimationCallbacks() {
-    if (getProgressDrawable() != null && getIndeterminateDrawable() != null) {
-      // Registers the animation callback to switch indeterminate mode at the end of indeterminate
-      // animation.
-      getIndeterminateDrawable()
-          .getAnimatorDelegate()
-          .registerAnimatorsCompleteCallback(switchIndeterminateModeCallback);
-    }
+    registerSwitchIndeterminateModeCallback();
 
     // Registers the hide animation callback to determinate drawable.
     if (getProgressDrawable() != null) {
@@ -179,6 +173,16 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
     // Registers the hide animation callback to indeterminate drawable.
     if (getIndeterminateDrawable() != null) {
       getIndeterminateDrawable().registerAnimationCallback(hideAnimationCallback);
+    }
+  }
+
+  void registerSwitchIndeterminateModeCallback() {
+    if (getProgressDrawable() != null && getIndeterminateDrawable() != null) {
+      // Registers the animation callback to switch indeterminate mode at the end of indeterminate
+      // animation.
+      getIndeterminateDrawable()
+          .getAnimatorDelegate()
+          .registerAnimatorsCompleteCallback(switchIndeterminateModeCallback);
     }
   }
 

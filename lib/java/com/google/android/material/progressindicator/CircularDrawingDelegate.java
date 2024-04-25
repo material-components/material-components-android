@@ -172,6 +172,8 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       @NonNull ActiveIndicator activeIndicator,
       @IntRange(from = 0, to = 255) int drawableAlpha) {
     int color = MaterialColors.compositeARGBWithAlpha(activeIndicator.color, drawableAlpha);
+    canvas.save();
+    canvas.rotate(activeIndicator.rotationDegree);
     drawArc(
         canvas,
         paint,
@@ -183,6 +185,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         activeIndicator.amplitudeFraction,
         activeIndicator.phaseFraction,
         /* shouldDrawActiveIndicator= */ true);
+    canvas.restore();
   }
 
   @Override

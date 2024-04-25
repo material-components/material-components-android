@@ -145,6 +145,13 @@
   </declare-styleable>
 
   <declare-styleable name="CircularProgressIndicator">
+    <!-- The animation style of the indeterminate mode. -->
+    <attr name="indeterminateAnimationTypeCircular">
+      <!-- The active track will grow on the end point and shrink on the start point. -->
+      <enum name="advance" value="0"/>
+      <!-- The active track will grow and shrink on the end point. -->
+      <enum name="retreat" value="1"/>
+    </attr>
     <!--
       Defines the size (outer diameter) of the circular progress indicator.
     -->
