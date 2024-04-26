@@ -569,9 +569,10 @@ public class ShapeAppearanceModel {
     }
   }
 
+  @RestrictTo(LIBRARY_GROUP)
   @NonNull
-  private static CornerSize getCornerSize(
-      TypedArray a, int index, @NonNull CornerSize defaultValue) {
+  public static CornerSize getCornerSize(
+      @NonNull TypedArray a, int index, @NonNull CornerSize defaultValue) {
     TypedValue value = a.peekValue(index);
     if (value == null) {
       return defaultValue;

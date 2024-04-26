@@ -19,6 +19,7 @@ package com.google.android.material.button;
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.min;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -36,6 +37,7 @@ import androidx.annotation.BoolRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.MarginLayoutParamsCompat;
@@ -48,6 +50,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.CornerSize;
+import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -107,9 +110,9 @@ import java.util.TreeMap;
  *
  * <p>Any {@link MaterialButton}s added to this view group are automatically marked as {@code
  * checkable}, and by default multiple buttons within the same group can be checked. To enforce that
- * only one button can be checked at a time, set the {@code
- * app:singleSelection} attribute to {@code true} on the MaterialButtonToggleGroup or call {@link
- * #setSingleSelection(boolean) setSingleSelection(true)}.
+ * only one button can be checked at a time, set the {@code app:singleSelection} attribute to {@code
+ * true} on the MaterialButtonToggleGroup or call {@link #setSingleSelection(boolean)
+ * setSingleSelection(true)}.
  *
  * <p>MaterialButtonToggleGroup is a {@link LinearLayout}. Using {@code
  * android:layout_width="MATCH_PARENT"} and removing {@code android:insetBottom} {@code
@@ -179,8 +182,10 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private boolean singleSelection;
   private boolean selectionRequired;
 
-  @IdRes
-  private final int defaultCheckId;
+  @NonNull private CornerSize insideCornerSize;
+  @Px private int spacing;
+
+  @IdRes private final int defaultCheckId;
   private Set<Integer> checkedIds = new HashSet<>();
 
   public MaterialButtonToggleGroup(@NonNull Context context) {
@@ -203,10 +208,16 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     setSingleSelection(
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_singleSelection, false));
     defaultCheckId =
-        attributes.getResourceId(
-            R.styleable.MaterialButtonToggleGroup_checkedButton, View.NO_ID);
+        attributes.getResourceId(R.styleable.MaterialButtonToggleGroup_checkedButton, View.NO_ID);
     selectionRequired =
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_selectionRequired, false);
+    insideCornerSize =
+        ShapeAppearanceModel.getCornerSize(
+            attributes,
+            R.styleable.MaterialButtonToggleGroup_insideCornerSize,
+            new AbsoluteCornerSize(0));
+    spacing =
+        attributes.getDimensionPixelSize(R.styleable.MaterialButtonToggleGroup_android_spacing, 0);
     setChildrenDrawingOrderEnabled(true);
     setEnabled(attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_android_enabled, true));
     attributes.recycle();
@@ -313,7 +324,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
             /* rowCount= */ 1,
             /* columnCount= */ getVisibleButtonCount(),
             /* hierarchical= */ false,
-            /* selectionMode = */ isSingleSelection()
+            /* selectionMode= */ isSingleSelection()
                 ? CollectionInfoCompat.SELECTION_MODE_SINGLE
                 : CollectionInfoCompat.SELECTION_MODE_MULTIPLE));
   }
@@ -496,6 +507,29 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     setSingleSelection(getResources().getBoolean(id));
   }
 
+  @Px
+  public int getSpacing() {
+    return spacing;
+  }
+
+  public void setSpacing(@Px int spacing) {
+    this.spacing = spacing;
+    invalidate();
+    requestLayout();
+  }
+
+  public void setInsideCornerSizeInPx(@Px int px) {
+    insideCornerSize = new AbsoluteCornerSize(px);
+    updateChildShapes();
+    invalidate();
+  }
+
+  public void setInsideCornerSizeInFraction(float fraction) {
+    insideCornerSize = new RelativeCornerSize(fraction);
+    updateChildShapes();
+    invalidate();
+  }
+
   private void setCheckedStateForView(@IdRes int viewId, boolean checked) {
     View checkedView = findViewById(viewId);
     if (checkedView instanceof MaterialButton) {
@@ -528,18 +562,20 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       MaterialButton previousButton = getChildButton(i - 1);
 
       // Calculates the margin adjustment to be the smaller of the two adjacent stroke widths
-      int smallestStrokeWidth =
-          Math.min(currentButton.getStrokeWidth(), previousButton.getStrokeWidth());
+      int smallestStrokeWidth = 0;
+      if (spacing <= 0) {
+        smallestStrokeWidth = min(currentButton.getStrokeWidth(), previousButton.getStrokeWidth());
+      }
 
       LayoutParams params = buildLayoutParams(currentButton);
       if (getOrientation() == HORIZONTAL) {
         MarginLayoutParamsCompat.setMarginEnd(params, 0);
-        MarginLayoutParamsCompat.setMarginStart(params, -smallestStrokeWidth);
+        MarginLayoutParamsCompat.setMarginStart(params, spacing - smallestStrokeWidth);
         params.topMargin = 0;
       } else {
         params.bottomMargin = 0;
-        params.topMargin = -smallestStrokeWidth;
-        MarginLayoutParamsCompat.setMarginStart(params, 0);
+        params.topMargin = spacing - smallestStrokeWidth;
+        MarginLayoutParamsCompat.setMarginEnd(params, 0);
       }
 
       currentButton.setLayoutParams(params);
@@ -648,6 +684,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private CornerData getNewCornerData(
       int index, int firstVisibleChildIndex, int lastVisibleChildIndex) {
     CornerData cornerData = originalCornerData.get(index);
+    CornerData insideCornerData = new CornerData(insideCornerSize);
 
     // If only one (visible) child exists, use its original corners
     if (firstVisibleChildIndex == lastVisibleChildIndex) {
@@ -656,14 +693,18 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
     boolean isHorizontal = getOrientation() == HORIZONTAL;
     if (index == firstVisibleChildIndex) {
-      return isHorizontal ? CornerData.start(cornerData, this) : CornerData.top(cornerData);
+      return isHorizontal
+          ? CornerData.start(cornerData, insideCornerData, this)
+          : CornerData.top(cornerData, insideCornerData);
     }
 
     if (index == lastVisibleChildIndex) {
-      return isHorizontal ? CornerData.end(cornerData, this) : CornerData.bottom(cornerData);
+      return isHorizontal
+          ? CornerData.end(cornerData, insideCornerData, this)
+          : CornerData.bottom(cornerData, insideCornerData);
     }
 
-    return null;
+    return insideCornerData;
   }
 
   private static void updateBuilderWithCornerData(
@@ -782,11 +823,11 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   }
 
   void onButtonCheckedStateChanged(@NonNull MaterialButton button, boolean isChecked) {
-      // Checked state change is triggered by the button group, do not update checked ids again.
-      if (skipCheckedStateTracker) {
-        return;
-      }
-      checkInternal(button.getId(), isChecked);
+    // Checked state change is triggered by the button group, do not update checked ids again.
+    if (skipCheckedStateTracker) {
+      return;
+    }
+    checkInternal(button.getId(), isChecked);
   }
 
   /**
@@ -814,15 +855,20 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
   private static class CornerData {
 
-    private static final CornerSize noCorner = new AbsoluteCornerSize(0);
+    @NonNull CornerSize topLeft;
+    @NonNull CornerSize topRight;
+    @NonNull CornerSize bottomRight;
+    @NonNull CornerSize bottomLeft;
 
-    CornerSize topLeft;
-    CornerSize topRight;
-    CornerSize bottomRight;
-    CornerSize bottomLeft;
+    CornerData(@NonNull CornerSize cornerSize) {
+      this(cornerSize, cornerSize, cornerSize, cornerSize);
+    }
 
     CornerData(
-        CornerSize topLeft, CornerSize bottomLeft, CornerSize topRight, CornerSize bottomRight) {
+        @NonNull CornerSize topLeft,
+        @NonNull CornerSize bottomLeft,
+        @NonNull CornerSize topRight,
+        @NonNull CornerSize bottomRight) {
       this.topLeft = topLeft;
       this.topRight = topRight;
       this.bottomRight = bottomRight;
@@ -830,33 +876,35 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     }
 
     /** Keep the start side of the corner original data */
-    public static CornerData start(CornerData orig, View view) {
-      return ViewUtils.isLayoutRtl(view) ? right(orig) : left(orig);
+    public static CornerData start(
+        @NonNull CornerData orig, @NonNull CornerData other, @NonNull View view) {
+      return ViewUtils.isLayoutRtl(view) ? right(orig, other) : left(orig, other);
     }
 
     /** Keep the end side of the corner original data */
-    public static CornerData end(CornerData orig, View view) {
-      return ViewUtils.isLayoutRtl(view) ? left(orig) : right(orig);
+    public static CornerData end(
+        @NonNull CornerData orig, @NonNull CornerData other, @NonNull View view) {
+      return ViewUtils.isLayoutRtl(view) ? left(orig, other) : right(orig, other);
     }
 
     /** Keep the left side of the corner original data */
-    public static CornerData left(CornerData orig) {
-      return new CornerData(orig.topLeft, orig.bottomLeft, noCorner, noCorner);
+    public static CornerData left(@NonNull CornerData orig, @NonNull CornerData other) {
+      return new CornerData(orig.topLeft, orig.bottomLeft, other.topRight, other.bottomRight);
     }
 
     /** Keep the right side of the corner original data */
-    public static CornerData right(CornerData orig) {
-      return new CornerData(noCorner, noCorner, orig.topRight, orig.bottomRight);
+    public static CornerData right(@NonNull CornerData orig, @NonNull CornerData other) {
+      return new CornerData(other.topLeft, other.bottomLeft, orig.topRight, orig.bottomRight);
     }
 
     /** Keep the top side of the corner original data */
-    public static CornerData top(CornerData orig) {
-      return new CornerData(orig.topLeft, noCorner, orig.topRight, noCorner);
+    public static CornerData top(@NonNull CornerData orig, @NonNull CornerData other) {
+      return new CornerData(orig.topLeft, other.bottomLeft, orig.topRight, other.bottomRight);
     }
 
     /** Keep the bottom side of the corner original data */
-    public static CornerData bottom(CornerData orig) {
-      return new CornerData(noCorner, orig.bottomLeft, noCorner, orig.bottomRight);
+    public static CornerData bottom(@NonNull CornerData orig, @NonNull CornerData other) {
+      return new CornerData(other.topLeft, orig.bottomLeft, other.topRight, orig.bottomRight);
     }
   }
 }

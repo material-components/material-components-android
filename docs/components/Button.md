@@ -746,11 +746,13 @@ A toggle button has a shared stroked container, icons and/or text labels.
 
 #### Selection attributes
 
-Element                             | Attribute               | Related method(s)                                | Default value
------------------------------------ | ----------------------- | ------------------------------------------------ | -------------
-**Single selection**                | `app:singleSelection`   | `setSingleSelection`<br/>`isSingleSelection`     | `false`
-**Selection required**              | `app:selectionRequired` | `setSelectionRequired`<br/>`isSelectionRequired` | `false`
-**Enable the group and all children | `android:enabled`       | `setEnabled`<br/>`isEnabled`                     | `true`
+Element                               | Attribute               | Related method(s)                                                                       | Default value
+------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------- | -------------
+**Single selection**                  | `app:singleSelection`   | `setSingleSelection`<br/>`isSingleSelection`                                            | `false`
+**Selection required**                | `app:selectionRequired` | `setSelectionRequired`<br/>`isSelectionRequired`                                        | `false`
+**Enable the group and all children** | `android:enabled`       | `setEnabled`<br/>`isEnabled`                                                            | `true`
+**Radius of inside corners**          | `app:insideCornerSize`  | `setInsideCornerSizeByPx`<br/>`setInsideCornerSizeByFraction`<br/>`getInsideCornerSize` | `0dp`
+**Spacing between buttons**           | `android:spacing`       | `setSpacing`<br/>`getSpacing`                                                           | `0dp`
 
 #### Styles
 

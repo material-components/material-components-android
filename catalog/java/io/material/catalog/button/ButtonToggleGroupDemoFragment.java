@@ -30,8 +30,8 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
@@ -92,15 +92,28 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
 
     for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
       toggleGroup.addOnButtonCheckedListener(
-          new OnButtonCheckedListener() {
-            @Override
-            public void onButtonChecked(
-                MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-              String message = "button" + (isChecked ? " checked" : " unchecked");
-              Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
-            }
+          (group, checkedId, isChecked) -> {
+            String message = "button" + (isChecked ? " checked" : " unchecked");
+            Snackbar.make(view, message, Snackbar.LENGTH_SHORT).show();
           });
     }
+
+    Slider insideCornerSizeSlider = view.findViewById(R.id.insideCornerSizeSlider);
+    insideCornerSizeSlider.addOnChangeListener(
+        (slider, value, fromUser) -> {
+          for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
+            toggleGroup.setInsideCornerSizeInFraction(value / 100f);
+          }
+        });
+
+    Slider spacingSlider = view.findViewById(R.id.spacingSlider);
+    spacingSlider.addOnChangeListener(
+        (slider, value, fromUser) -> {
+          float pixelsInDp = view.getResources().getDisplayMetrics().density;
+          for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
+            toggleGroup.setSpacing((int) (value * pixelsInDp));
+          }
+        });
     return view;
   }
 
@@ -109,9 +122,8 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
   }
 
   private static void adjustParams(LayoutParams layoutParams, int orientation) {
-    layoutParams.width = orientation == VERTICAL
-        ? LayoutParams.MATCH_PARENT
-        : LayoutParams.WRAP_CONTENT;
+    layoutParams.width =
+        orientation == VERTICAL ? LayoutParams.MATCH_PARENT : LayoutParams.WRAP_CONTENT;
   }
 
   @LayoutRes
