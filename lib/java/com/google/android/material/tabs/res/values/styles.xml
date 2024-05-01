@@ -85,7 +85,7 @@
   </style>
 
   <style name="ThemeOverlay.Material3.TabLayout" parent="">
-    <item name="badgeStyle">@style/Widget.Material3.Badge.AdjustToBounds</item>
+    <item name="badgeStyle">@style/Widget.Material3.Badge</item>
   </style>
 
   <style name="Widget.Material3.TabLayout" parent="Base.Widget.Material3.TabLayout"/>

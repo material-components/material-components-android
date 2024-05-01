@@ -34,6 +34,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import androidx.annotation.AttrRes;
@@ -1323,46 +1324,64 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     if (state.isAutoAdjustedToGrandparentBounds()) {
       autoAdjustWithinGrandparentBounds(anchorView);
+    } else {
+      autoAdjustWithinViewBounds(anchorView, null);
     }
   }
 
-  /** Adjust the badge placement so it is within its anchor's grandparent view. */
-  private void autoAdjustWithinGrandparentBounds(@NonNull View anchorView) {
-    // The top of the badge may be cut off by the anchor view's parent's parent
-    // (eg. in the case of the bottom navigation bar). If that is the case,
-    // we should adjust the position of the badge.
+  /**
+   * Adjust the badge placement so it is within the specified ancestor view. If {@code ancestorView}
+   * is null, it will default to adjusting to the first ancestor of {@code anchorView} that clips
+   * its children.
+   */
+  private void autoAdjustWithinViewBounds(@NonNull View anchorView, @Nullable View ancestorView) {
+    // The top of the badge may be cut off by the anchor view's ancestor view if clipChildren is
+    // false (eg. in the case of the bottom navigation bar). If that is the case, we should adjust
+    // the position of the badge.
 
-    float anchorYOffset;
-    float anchorXOffset;
-    View anchorParent;
+    float totalAnchorYOffset;
+    float totalAnchorXOffset;
+    ViewParent anchorParent;
     // If there is a custom badge parent, we should use its coordinates instead of the anchor
     // view's parent.
-    View customAnchorParent = getCustomBadgeParent();
+    ViewParent customAnchorParent = getCustomBadgeParent();
     if (customAnchorParent == null) {
-      if (!(anchorView.getParent() instanceof View)) {
-        return;
-      }
-      anchorYOffset = anchorView.getY();
-      anchorXOffset = anchorView.getX();
-
-      anchorParent = (View) anchorView.getParent();
+      totalAnchorYOffset = anchorView.getY();
+      totalAnchorXOffset = anchorView.getX();
+      anchorParent = anchorView.getParent();
     } else if (isAnchorViewWrappedInCompatParent()) {
-      if (!(customAnchorParent.getParent() instanceof  View)) {
-        return;
-      }
-      anchorYOffset = customAnchorParent.getY();
-      anchorXOffset = customAnchorParent.getX();
-      anchorParent = (View) customAnchorParent.getParent();
+      totalAnchorYOffset = ((View) customAnchorParent).getY();
+      totalAnchorXOffset = ((View) customAnchorParent).getX();
+      anchorParent = customAnchorParent.getParent();
     } else {
-      anchorYOffset = 0;
-      anchorXOffset = 0;
+      totalAnchorYOffset = 0;
+      totalAnchorXOffset = 0;
       anchorParent = customAnchorParent;
     }
 
-    float topCutOff = getTopCutOff(anchorParent, anchorYOffset);
-    float leftCutOff = getLeftCutOff(anchorParent, anchorXOffset);
-    float bottomCutOff = getBottomCutOff(anchorParent, anchorYOffset);
-    float rightCutOff = getRightCutoff(anchorParent, anchorXOffset);
+    ViewParent currentViewParent = anchorParent;
+    while (currentViewParent instanceof View && currentViewParent != ancestorView) {
+      ViewParent viewGrandparent = currentViewParent.getParent();
+      if (!(viewGrandparent instanceof ViewGroup)
+          || ((ViewGroup) viewGrandparent).getClipChildren()) {
+        break;
+      }
+      View currentViewGroup = (View) currentViewParent;
+      totalAnchorYOffset += currentViewGroup.getY();
+      totalAnchorXOffset += currentViewGroup.getX();
+      currentViewParent = currentViewParent.getParent();
+    }
+
+    // If currentViewParent is not a View, all ancestor Views did not clip their children
+    if (!(currentViewParent instanceof View)) {
+      return;
+    }
+
+    float topCutOff = getTopCutOff(totalAnchorYOffset);
+    float leftCutOff = getLeftCutOff(totalAnchorXOffset);
+    float bottomCutOff =
+        getBottomCutOff(((View) currentViewParent).getHeight(), totalAnchorYOffset);
+    float rightCutOff = getRightCutoff(((View) currentViewParent).getWidth(), totalAnchorXOffset);
 
     // If there's any part of the badge that is cut off, we move the badge accordingly.
     if (topCutOff < 0) {
@@ -1379,50 +1398,68 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
   }
 
-  /* Returns where the badge is relative to the top bound of the anchor's grandparent view.
-   * If the value is negative, it is beyond the bounds of the anchor's grandparent view.
-   */
-  private float getTopCutOff(View anchorParent, float anchorViewOffset) {
-    return badgeCenterY - halfBadgeHeight + anchorParent.getY() + anchorViewOffset;
-  }
-
-  /* Returns where the badge is relative to the left bound of the anchor's grandparent view.
-   * If the value is negative, it is beyond the bounds of the anchor's grandparent view.
-   */
-  private float getLeftCutOff(View anchorParent, float anchorViewOffset) {
-    return badgeCenterX - halfBadgeWidth + anchorParent.getX() + anchorViewOffset;
-  }
-
-  /* Returns where the badge is relative to the bottom bound of the anchor's grandparent view.
-   * If the value is positive, it is beyond the bounds of the anchor's grandparent view.
-   */
-  private float getBottomCutOff(View anchorParent, float anchorViewOffset) {
-    float bottomCutOff = 0f;
-    if (anchorParent.getParent() instanceof View) {
-      View anchorGrandparent = (View) anchorParent.getParent();
-      bottomCutOff =
-          badgeCenterY
-              + halfBadgeHeight
-              - (anchorGrandparent.getHeight() - anchorParent.getY())
-              + anchorViewOffset;
+  /** Adjust the badge placement so it is within its anchor's grandparent view. */
+  private void autoAdjustWithinGrandparentBounds(@NonNull View anchorView) {
+    // If there is a custom badge parent, we should use its coordinates instead of the anchor
+    // view's parent.
+    ViewParent customAnchor = getCustomBadgeParent();
+    ViewParent anchorParent = null;
+    if (customAnchor == null) {
+      anchorParent = anchorView.getParent();
+    } else if (isAnchorViewWrappedInCompatParent()) {
+      anchorParent = customAnchor.getParent();
+    } else {
+      anchorParent = customAnchor;
     }
-    return bottomCutOff;
+    if (anchorParent instanceof View && anchorParent.getParent() instanceof View) {
+      autoAdjustWithinViewBounds(anchorView, (View) anchorParent.getParent());
+    }
   }
 
-  /* Returns where the badge is relative to the right bound of the anchor's grandparent view.
-   * If the value is positive, it is beyond the bounds of the anchor's grandparent view.
+  /**
+   * Returns where the badge is relative to the top bound of the anchor's ancestor view. If the
+   * value is negative, it is beyond the bounds of the anchor's ancestor view.
+   *
+   * @param totalAnchorYOffset the total X offset of the anchor in relation to the ancestor view it
+   *     is adjusting its bounds to
    */
-  private float getRightCutoff(View anchorParent, float anchorViewOffset) {
-    float rightCutOff = 0f;
-    if (anchorParent.getParent() instanceof View) {
-      View anchorGrandparent = (View) anchorParent.getParent();
-      rightCutOff =
-          badgeCenterX
-              + halfBadgeWidth
-              - (anchorGrandparent.getWidth() - anchorParent.getX())
-              + anchorViewOffset;
-    }
-    return rightCutOff;
+  private float getTopCutOff(float totalAnchorYOffset) {
+    return badgeCenterY - halfBadgeHeight + totalAnchorYOffset;
+  }
+
+  /**
+   * Returns where the badge is relative to the left bound of the anchor's ancestor view. If the
+   * value is negative, it is beyond the bounds of the anchor's ancestor view.
+   *
+   * @param totalAnchorXOffset the total X offset of the anchor in relation to the ancestor view it
+   *     is adjusting its bounds to
+   */
+  private float getLeftCutOff(float totalAnchorXOffset) {
+    return badgeCenterX - halfBadgeWidth + totalAnchorXOffset;
+  }
+
+  /**
+   * Returns where the badge is relative to the bottom bound of the anchor's ancestor view. If the
+   * value is positive, it is beyond the bounds of the anchor's ancestor view.
+   *
+   * @param ancestorHeight the height of the ancestor view
+   * @param totalAnchorYOffset the total Y offset of the anchor in relation to the ancestor view it
+   *     is adjusting its bounds to
+   */
+  private float getBottomCutOff(float ancestorHeight, float totalAnchorYOffset) {
+    return badgeCenterY + halfBadgeHeight - ancestorHeight + totalAnchorYOffset;
+  }
+
+  /**
+   * Returns where the badge is relative to the right bound of the anchor's ancestor view. If the
+   * value is positive, it is beyond the bounds of the anchor's ancestor view.
+   *
+   * @param ancestorWidth the width of the ancestor view
+   * @param totalAnchorXOffset the total X offset of the anchor in relation to the ancestor view it
+   *     is adjusting its bounds to
+   */
+  private float getRightCutoff(float ancestorWidth, float totalAnchorXOffset) {
+    return badgeCenterX + halfBadgeWidth - ancestorWidth + totalAnchorXOffset;
   }
 
   private void drawBadgeContent(Canvas canvas) {

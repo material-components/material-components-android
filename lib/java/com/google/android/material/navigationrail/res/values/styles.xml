@@ -96,7 +96,7 @@
     <item name="badgeStyle">@style/Widget.Material3.NavigationRailView.Badge</item>
   </style>
 
-  <style name="Widget.Material3.NavigationRailView.Badge" parent="Widget.Material3.Badge.AdjustToBounds">
+  <style name="Widget.Material3.NavigationRailView.Badge" parent="Widget.Material3.Badge">
     <item name="largeFontVerticalOffsetAdjustment">@dimen/m3_large_text_vertical_offset_adjustment</item>
     <item name="verticalOffsetWithText">@dimen/m3_nav_badge_with_text_vertical_offset</item>
   </style>
