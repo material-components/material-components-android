@@ -51,6 +51,9 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
   /** The direction in which the indicator will rotate and grow to. */
   @IndicatorDirection public int indicatorDirection;
 
+  /** Whether to show the track in the indeterminate mode. */
+  public boolean indeterminateTrackVisible;
+
   /**
    * Instantiates the spec for {@link CircularProgressIndicator}.
    *
@@ -107,6 +110,8 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
         a.getInt(
             R.styleable.CircularProgressIndicator_indicatorDirectionCircular,
             CircularProgressIndicator.INDICATOR_DIRECTION_CLOCKWISE);
+    indeterminateTrackVisible =
+        a.getBoolean(R.styleable.CircularProgressIndicator_indeterminateTrackVisible, true);
     a.recycle();
 
     validateSpec();

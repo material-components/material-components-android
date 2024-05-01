@@ -34,6 +34,7 @@
     <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_medium</item>
     <item name="trackColor">@android:color/transparent</item>
     <item name="indicatorDirectionCircular">clockwise</item>
+    <item name="indeterminateTrackVisible">true</item>
   </style>
   <style name="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
   <style name="Widget.MaterialComponents.CircularProgressIndicator.Small">
@@ -65,9 +66,18 @@
     <item name="trackCornerRadius">0dp</item>
     <item name="indicatorTrackGapSize">0dp</item>
   </style>
-  <style name="Widget.Material3.CircularProgressIndicator.Legacy.Medium" parent="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
-  <style name="Widget.Material3.CircularProgressIndicator.Legacy.Small" parent="Widget.MaterialComponents.CircularProgressIndicator.Small"/>
-  <style name="Widget.Material3.CircularProgressIndicator.Legacy.ExtraSmall" parent="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall"/>
+  <style name="Widget.Material3.CircularProgressIndicator.Legacy.Medium" parent="Widget.MaterialComponents.CircularProgressIndicator.Medium">
+    <item name="trackCornerRadius">0dp</item>
+    <item name="indicatorTrackGapSize">0dp</item>
+  </style>
+  <style name="Widget.Material3.CircularProgressIndicator.Legacy.Small" parent="Widget.MaterialComponents.CircularProgressIndicator.Small">
+    <item name="trackCornerRadius">0dp</item>
+    <item name="indicatorTrackGapSize">0dp</item>
+  </style>
+  <style name="Widget.Material3.CircularProgressIndicator.Legacy.ExtraSmall" parent="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall">
+    <item name="trackCornerRadius">0dp</item>
+    <item name="indicatorTrackGapSize">0dp</item>
+  </style>
 
   <!-- M3 LinearProgressIndicator style -->
   <style name="Widget.Material3.LinearProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
@@ -86,6 +96,7 @@
     <item name="trackColor">@macro/m3_comp_progress_indicator_track_color</item>
     <item name="trackCornerRadius">2dp</item>
     <item name="indicatorTrackGapSize">@dimen/m3_comp_progress_indicator_active_indicator_track_space</item>
+    <item name="indeterminateTrackVisible">false</item>
   </style>
   <style name="Widget.Material3.CircularProgressIndicator.Medium"/>
   <style name="Widget.Material3.CircularProgressIndicator.Small">

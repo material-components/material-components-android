@@ -203,7 +203,11 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
     int gapSize = baseSpec.indicatorTrackGapSize;
     int trackAlpha = getAlpha();
-    boolean drawFullTrack = gapSize == 0 && !baseSpec.hasWavyEffect();
+    boolean drawTrack =
+        baseSpec instanceof LinearProgressIndicatorSpec
+            || (baseSpec instanceof CircularProgressIndicatorSpec
+                && ((CircularProgressIndicatorSpec) baseSpec).indeterminateTrackVisible);
+    boolean drawFullTrack = drawTrack && gapSize == 0 && !baseSpec.hasWavyEffect();
 
     if (drawFullTrack) {
       drawingDelegate.fillTrack(
@@ -214,7 +218,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
           baseSpec.trackColor,
           trackAlpha,
           /* gapSize= */ 0);
-    } else {
+    } else if (drawTrack) {
+      // Draws the track with partial length.
       ActiveIndicator firstIndicator = animatorDelegate.activeIndicators.get(0);
       ActiveIndicator lastIndicator =
           animatorDelegate.activeIndicators.get(animatorDelegate.activeIndicators.size() - 1);
@@ -235,8 +240,19 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
             baseSpec.trackColor,
             trackAlpha,
             gapSize);
+      } else {
+        canvas.save();
+        canvas.rotate(lastIndicator.rotationDegree);
+        drawingDelegate.fillTrack(
+            canvas,
+            paint,
+            lastIndicator.endFraction,
+            firstIndicator.startFraction + 1f,
+            baseSpec.trackColor,
+            trackAlpha,
+            gapSize);
+        canvas.restore();
       }
-      // No inactive track is drawn in circular indeterminate mode.
     }
 
     // Draws indicators and tracks in between.
@@ -249,7 +265,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
       drawingDelegate.fillIndicator(canvas, paint, curIndicator, getAlpha());
 
       // Draws tracks between indicators.
-      if (indicatorIndex > 0 && !drawFullTrack) {
+      if (indicatorIndex > 0 && !drawFullTrack && drawTrack) {
         ActiveIndicator prevIndicator = animatorDelegate.activeIndicators.get(indicatorIndex - 1);
         drawingDelegate.fillTrack(
             canvas,
