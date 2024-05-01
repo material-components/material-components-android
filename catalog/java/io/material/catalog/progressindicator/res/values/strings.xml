@@ -107,6 +107,18 @@
       description="Text label above a slider for changing indicators' speed [CHAR LIMIT=NONE]">
     Wave speed (-50 - 50) dp/s
   </string>
+  <string name="cat_progress_indicator_circular_animation_mode"
+    description="The label to the button group on right for selecting circular indeterminate animation mode [CHAR LIMIT=NONE]">
+    Circular Indeterminate Animation
+  </string>
+  <string name="cat_progress_indicator_circular_advance_animation_label"
+    description="Select the Advance indeterminate motion for circular progress indicator [CHAR LIMIT=NONE]">
+    Advance
+  </string>
+  <string name="cat_progress_indicator_circular_retreat_animation_label"
+    description="Select the Retreat indeterminate motion for circular progress indicator [CHAR LIMIT=NONE]">
+    Retreat
+  </string>
 
   <!-- Descriptions of various examples of progress indicators -->
 

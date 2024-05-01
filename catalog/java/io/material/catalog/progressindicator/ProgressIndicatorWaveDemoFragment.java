@@ -17,9 +17,13 @@ package io.material.catalog.progressindicator;
 
 import io.material.catalog.R;
 
+import static com.google.android.material.progressindicator.CircularProgressIndicator.INDETERMINATE_ANIMATION_TYPE_ADVANCE;
+import static com.google.android.material.progressindicator.CircularProgressIndicator.INDETERMINATE_ANIMATION_TYPE_RETREAT;
+
 import android.view.View;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
@@ -44,6 +48,8 @@ public class ProgressIndicatorWaveDemoFragment extends ProgressIndicatorDemoFrag
   public void initDemoControls(@NonNull View view) {
     Slider progressSlider = view.findViewById(R.id.progress_slider);
     MaterialSwitch determinateSwitch = view.findViewById(R.id.determinate_mode_switch);
+    MaterialButtonToggleGroup circularAnimationMode =
+        view.findViewById(R.id.circular_animation_mode);
 
     progressSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
@@ -66,6 +72,7 @@ public class ProgressIndicatorWaveDemoFragment extends ProgressIndicatorDemoFrag
             linearIndicator.setIndeterminate(true);
             circularIndicator.setIndeterminate(true);
           }
+          circularAnimationMode.setEnabled(isChecked);
         });
 
     float pixelsInDp = view.getResources().getDisplayMetrics().density;
@@ -104,12 +111,24 @@ public class ProgressIndicatorWaveDemoFragment extends ProgressIndicatorDemoFrag
           }
         });
 
-    Slider circularSizeSlider = view.findViewById(R.id.circularSizeSlider);
+    Slider circularSizeSlider = view.findViewById(R.id.circular_size_slider);
     circularSizeSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
           int newCornerRadius = (int) (value * pixelsInDp);
           if (circularIndicator.getIndicatorSize() != newCornerRadius) {
             circularIndicator.setIndicatorSize(newCornerRadius);
+          }
+        });
+
+    circularAnimationMode.addOnButtonCheckedListener(
+        (group, checkedId, isChecked) -> {
+          if (!isChecked) {
+            return;
+          }
+          if (checkedId == R.id.circular_advance_animation) {
+            circularIndicator.setIndeterminateAnimationType(INDETERMINATE_ANIMATION_TYPE_ADVANCE);
+          } else {
+            circularIndicator.setIndeterminateAnimationType(INDETERMINATE_ANIMATION_TYPE_RETREAT);
           }
         });
   }

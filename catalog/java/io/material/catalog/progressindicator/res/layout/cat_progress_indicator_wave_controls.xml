@@ -15,14 +15,15 @@
   ~ limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:showDividers="middle"
-    android:divider="@drawable/layout_divider">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:orientation="vertical"
+  android:padding="16dp"
+  android:showDividers="middle"
+  android:divider="@drawable/layout_divider">
 
   <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/determinate_mode_switch"
@@ -85,11 +86,36 @@
       android:layout_height="wrap_content"
       android:text="@string/cat_progress_indicator_circular_indicator_size"/>
   <com.google.android.material.slider.Slider
-      android:id="@+id/circularSizeSlider"
+      android:id="@+id/circular_size_slider"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:value="40"
       android:valueFrom="20"
       android:valueTo="200"
       android:stepSize="5"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_circular_animation_mode"/>
+  <com.google.android.material.button.MaterialButtonToggleGroup
+      android:id="@+id/circular_animation_mode"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:singleSelection="true"
+      app:selectionRequired="true"
+      app:checkedButton="@id/circular_advance_animation">
+    <Button
+        android:id="@+id/circular_advance_animation"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_progress_indicator_circular_advance_animation_label"/>
+    <Button
+        android:id="@+id/circular_retreat_animation"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_progress_indicator_circular_retreat_animation_label"/>
+  </com.google.android.material.button.MaterialButtonToggleGroup>
 </LinearLayout>
