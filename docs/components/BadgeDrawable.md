@@ -79,7 +79,7 @@ Option 2: If you do not want `BadgeDrawable` to modify your view hierarchy, you
 can specify a `FrameLayout` to display the badge instead.
 
 ```java
-* BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
+BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
 ```
 
 ### `BadgeDrawable` Gravity Modes
@@ -90,12 +90,16 @@ of the anchor (with some offsets). Alternatively, you can use `TOP_START` to
 align the badge with the top and start edges of the anchor. Note that
 `BOTTOM_START` and `BOTTOM_END` are deprecated and not recommended for use.
 
-### `BadgeDrawable` center offsets
+### `BadgeDrawable` placement and offsets
 
 By default, `BadgeDrawable` is aligned with the top and end edges of its anchor
 view (with some offsets if `offsetAlignmentMode` is `legacy`). Call `setBadgeGravity(int)` to change it to one of the
 other supported modes. To adjust the badge's offsets relative to the anchor's
 center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
+
+Regardless of offsets, badges are automatically moved to within the bounds of
+its first ancestor view that does not clip its children, to ensure that the
+badge is not clipped if there is enough space.
 
 ### `BadgeDrawable` Attributes
 
@@ -114,7 +118,6 @@ center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
 | Horizontal Padding        | `app:badgeWidePadding`                                                                                                                                   |
 | Vertical Padding          | `app:badgeVerticalPadding`                                                                                                                               |
 | Large Font Vertical Offset| `app:largeFontVerticalOffsetAdjustment`                                                                                                                  |
-| Auto Adjust               | `app:autoAdjustToWithinGrandparentBounds`                                                                                                                |
 
 **Note:** If both `app:badgeText` and `app:number` are specified, the badge label will be `app:badgeText`.
 

@@ -1078,12 +1078,15 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /**
-   * Sets whether or not to auto adjust the badge placement to within the badge anchor's
-   * grandparent view.
+   * Sets whether or not to auto adjust the badge placement to within the badge anchor's grandparent
+   * view.
    *
-   * @param autoAdjustToWithinGrandparentBounds whether or not to auto adjust to within
-   * the anchor's grandparent view.
+   * @param autoAdjustToWithinGrandparentBounds whether or not to auto adjust to within the anchor's
+   * grandparent view.
+   * @deprecated Badges now automatically adjust their bounds within the first ancestor view that *
+   * clips its children.
    */
+  @Deprecated
   public void setAutoAdjustToWithinGrandparentBounds(boolean autoAdjustToWithinGrandparentBounds) {
     if (state.isAutoAdjustedToGrandparentBounds() == autoAdjustToWithinGrandparentBounds) {
       return;
