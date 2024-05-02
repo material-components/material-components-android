@@ -112,6 +112,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public @interface CompatibilityShadowMode {}
 
   private static final Paint clearPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
   static {
     clearPaint.setColor(Color.WHITE);
     clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
@@ -134,6 +135,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final Region transparentRegion = new Region();
   private final Region scratchRegion = new Region();
   private ShapeAppearanceModel strokeShapeAppearance;
+  private ShapeAppearanceModel strokeInterpolationStartShapeAppearance;
 
   private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -226,9 +228,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     this(new MaterialShapeDrawableState(shapeAppearanceModel, null));
   }
 
-  /**
-   * @hide
-   */
+  /** @hide */
   @RestrictTo(LIBRARY_GROUP)
   protected MaterialShapeDrawable(@NonNull MaterialShapeDrawableState drawableState) {
     this.drawableState = drawableState;
@@ -301,7 +301,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Set the shape appearance when interpolation is 0.
    *
    * @param startShape the ShapeAppearanceModel for the shape when interpolation is 0. The edge
-   * treatments within it are ignored.
+   *     treatments within it are ignored.
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
@@ -492,9 +492,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     invalidateSelf();
   }
 
-  /**
-   * Get the tint color factoring in any other runtime modifications such as elevation overlays.
-   */
+  /** Get the tint color factoring in any other runtime modifications such as elevation overlays. */
   @ColorInt
   public int getResolvedTintColor() {
     return resolvedTintColor;
@@ -1093,7 +1091,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @RestrictTo(LIBRARY_GROUP)
   protected void drawShape(
       @NonNull Canvas canvas, @NonNull Paint paint, @NonNull Path path, @NonNull RectF bounds) {
-    drawShape(canvas, paint, path, drawableState.shapeAppearanceModel, bounds);
+    drawShape(
+        canvas,
+        paint,
+        path,
+        drawableState.shapeAppearanceModel,
+        drawableState.interpolationStartShapeAppearanceModel,
+        bounds);
   }
 
   /** Draw the path or try to draw a round rect if possible. */
@@ -1102,11 +1106,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       @NonNull Paint paint,
       @NonNull Path path,
       @NonNull ShapeAppearanceModel shapeAppearanceModel,
+      @NonNull ShapeAppearanceModel interpolationStartShapeAppearanceModel,
       @NonNull RectF bounds) {
     if (shapeAppearanceModel.isRoundRect(bounds)) {
       float endRadius = shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds);
-      shapeAppearanceModel = drawableState.interpolationStartShapeAppearanceModel;
-      float startRadius = shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds);
+      float startRadius =
+          interpolationStartShapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds);
       float radius = lerp(startRadius, endRadius, drawableState.interpolation);
       canvas.drawRoundRect(bounds, radius, radius, paint);
     } else {
@@ -1115,7 +1120,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   private void drawFillShape(@NonNull Canvas canvas) {
-    drawShape(canvas, fillPaint, path, drawableState.shapeAppearanceModel, getBoundsAsRectF());
+    drawShape(
+        canvas,
+        fillPaint,
+        path,
+        drawableState.shapeAppearanceModel,
+        drawableState.interpolationStartShapeAppearanceModel,
+        getBoundsAsRectF());
   }
 
   /**
@@ -1129,7 +1140,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @RestrictTo(LIBRARY_GROUP)
   protected void drawStrokeShape(@NonNull Canvas canvas) {
     drawShape(
-        canvas, strokePaint, pathInsetByStroke, strokeShapeAppearance, getBoundsInsetByStroke());
+        canvas,
+        strokePaint,
+        pathInsetByStroke,
+        strokeShapeAppearance,
+        strokeInterpolationStartShapeAppearance,
+        getBoundsInsetByStroke());
   }
 
   private void prepareCanvasForShadow(@NonNull Canvas canvas) {
@@ -1202,7 +1218,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
             * Math.cos(Math.toRadians(drawableState.shadowCompatRotation)));
   }
 
-  /** @deprecated see {@link ShapeAppearancePathProvider} */
+  /**
+   * @deprecated see {@link ShapeAppearancePathProvider}
+   */
   @Deprecated
   public void getPathForSize(int width, int height, @NonNull Path path) {
     calculatePathForSize(new RectF(0, 0, width, height), path);
@@ -1226,6 +1244,18 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /** Calculates the path that can be used to draw the stroke entirely inside the shape */
   private void calculateStrokePath() {
+    updateStrokeShapeAppearanceModels();
+
+    pathProvider.calculatePath(
+        strokeShapeAppearance,
+        strokeInterpolationStartShapeAppearance,
+        drawableState.interpolation,
+        getBoundsInsetByStroke(),
+        null,
+        pathInsetByStroke);
+  }
+
+  private void updateStrokeShapeAppearanceModels() {
     // Adjust corner radius in order to draw the stroke so that the corners of the background are
     // drawn on top of the edges.
     final float strokeInsetLength = -getStrokeInsetLength();
@@ -1244,13 +1274,20 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
                   }
                 });
 
-    pathProvider.calculatePath(
-        strokeShapeAppearance,
-        drawableState.interpolationStartShapeAppearanceModel,
-        drawableState.interpolation,
-        getBoundsInsetByStroke(),
-        null,
-        pathInsetByStroke);
+    strokeInterpolationStartShapeAppearance =
+        getInterpolationStartShapeAppearanceModel()
+            .withTransformedCornerSizes(
+                new CornerSizeUnaryOperator() {
+                  @NonNull
+                  @Override
+                  public CornerSize apply(@NonNull CornerSize cornerSize) {
+                    // Don't adjust for relative corners they will change by themselves when the
+                    // bounds change.
+                    return cornerSize instanceof RelativeCornerSize
+                        ? cornerSize
+                        : new AdjustedCornerSize(strokeInsetLength, cornerSize);
+                  }
+                });
   }
 
   @TargetApi(VERSION_CODES.LOLLIPOP)
