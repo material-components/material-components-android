@@ -117,8 +117,8 @@ import java.util.List;
  * </ul>
  *
  * <p>You can register a listener on the main chip with {@link #setOnClickListener(OnClickListener)}
- * or {@link #setOnCheckedChangeListener(AppCompatCheckBox.OnCheckedChangeListener)}. You can
- * register a listener on the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
+ * or {@link #setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener)}. You can register
+ * a listener on the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
  *
  * <p>For proper rendering of the ancestor TextView in RTL mode, call {@link
  * #setLayoutDirection(int)} with <code>View.LAYOUT_DIRECTION_LOCALE</code>. By default, TextView's
