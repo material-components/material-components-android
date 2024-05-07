@@ -16,9 +16,13 @@
 
 package com.google.android.material.drawable;
 
+import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION_CODES;
 import androidx.appcompat.graphics.drawable.DrawableWrapperCompat;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 
@@ -28,22 +32,103 @@ import androidx.annotation.RestrictTo.Scope;
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class ScaledDrawableWrapper extends DrawableWrapperCompat {
-  private final int width;
-  private final int height;
+  private ScaledDrawableWrapperState state;
+  private boolean mutated;
 
   public ScaledDrawableWrapper(@NonNull Drawable drawable, int width, int height) {
     super(drawable);
-    this.width = width;
-    this.height = height;
+    state = new ScaledDrawableWrapperState(getConstantStateFrom(drawable), width, height);
+  }
+
+  @Nullable
+  private ConstantState getConstantStateFrom(@Nullable Drawable drawable) {
+    return drawable != null ? drawable.getConstantState() : null;
   }
 
   @Override
   public int getIntrinsicWidth() {
-    return width;
+    return state.width;
   }
 
   @Override
   public int getIntrinsicHeight() {
-    return height;
+    return state.height;
+  }
+
+  @Override
+  public void setDrawable(@Nullable Drawable drawable) {
+    super.setDrawable(drawable);
+
+    if (state != null) {
+      state.wrappedDrawableState = getConstantStateFrom(drawable);
+      mutated = false;
+    }
+  }
+
+  @Nullable
+  @Override
+  public ConstantState getConstantState() {
+    return state.canConstantState() ? state : null;
+  }
+
+  @NonNull
+  @Override
+  public Drawable mutate() {
+    if (!mutated && super.mutate() == this) {
+      Drawable drawable = getDrawable();
+      if (drawable != null) {
+        drawable.mutate();
+      }
+
+      state =
+          new ScaledDrawableWrapperState(getConstantStateFrom(drawable), state.width, state.height);
+      mutated = true;
+    }
+
+    return this;
+  }
+
+  private static final class ScaledDrawableWrapperState extends ConstantState {
+    private ConstantState wrappedDrawableState;
+    private final int width;
+    private final int height;
+
+    ScaledDrawableWrapperState(
+        @Nullable ConstantState wrappedDrawableState, int width, int height) {
+      this.wrappedDrawableState = wrappedDrawableState;
+      this.width = width;
+      this.height = height;
+    }
+
+    @NonNull
+    @Override
+    public Drawable newDrawable() {
+      Drawable newWrappedDrawable = wrappedDrawableState.newDrawable();
+      return new ScaledDrawableWrapper(newWrappedDrawable, width, height);
+    }
+
+    @NonNull
+    @Override
+    public Drawable newDrawable(@Nullable Resources res) {
+      Drawable newWrappedDrawable = wrappedDrawableState.newDrawable(res);
+      return new ScaledDrawableWrapper(newWrappedDrawable, width, height);
+    }
+
+    @RequiresApi(VERSION_CODES.LOLLIPOP)
+    @NonNull
+    @Override
+    public Drawable newDrawable(@Nullable Resources res, @Nullable Resources.Theme theme) {
+      Drawable newWrappedDrawable = wrappedDrawableState.newDrawable(res, theme);
+      return new ScaledDrawableWrapper(newWrappedDrawable, width, height);
+    }
+
+    @Override
+    public int getChangingConfigurations() {
+      return wrappedDrawableState != null ? wrappedDrawableState.getChangingConfigurations() : 0;
+    }
+
+    boolean canConstantState() {
+      return wrappedDrawableState != null;
+    }
   }
 }
