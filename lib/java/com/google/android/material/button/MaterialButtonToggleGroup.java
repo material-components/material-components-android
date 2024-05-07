@@ -569,13 +569,13 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
       LayoutParams params = buildLayoutParams(currentButton);
       if (getOrientation() == HORIZONTAL) {
-        MarginLayoutParamsCompat.setMarginEnd(params, 0);
-        MarginLayoutParamsCompat.setMarginStart(params, spacing - smallestStrokeWidth);
+        params.setMarginEnd(0);
+        params.setMarginStart(spacing - smallestStrokeWidth);
         params.topMargin = 0;
       } else {
         params.bottomMargin = 0;
         params.topMargin = spacing - smallestStrokeWidth;
-        MarginLayoutParamsCompat.setMarginEnd(params, 0);
+        params.setMarginStart(0);
       }
 
       currentButton.setLayoutParams(params);
