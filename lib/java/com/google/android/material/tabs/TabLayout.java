@@ -2721,6 +2721,9 @@ public class TabLayout extends HorizontalScrollView {
       // We need to switch the text size based on whether the text is spanning 2 lines or not
       if (textView != null) {
         float textSize = tabTextSize;
+        if (isSelected() && selectedTabTextAppearance != -1) {
+          textSize = selectedTabTextSize;
+        }
         int maxLines = defaultMaxLines;
 
         if (iconView != null && iconView.getVisibility() == VISIBLE) {
