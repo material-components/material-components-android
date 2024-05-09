@@ -239,12 +239,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   static final int MSG_SHOW = 0;
   static final int MSG_DISMISS = 1;
 
-  // On JB/KK versions of the platform sometimes View.setTranslationY does not result in
-  // layout / draw pass, and CoordinatorLayout relies on a draw pass to happen to sync vertical
-  // positioning of all its child views
-  private static final boolean USE_OFFSET_API =
-      (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN)
-          && (Build.VERSION.SDK_INT <= VERSION_CODES.KITKAT);
+  // On KitKat sometimes View.setTranslationY does not result in layout / draw pass, and
+  // CoordinatorLayout relies on a draw pass to happen to sync vertical positioning of all its
+  // child views.
+  private static final boolean USE_OFFSET_API = Build.VERSION.SDK_INT == VERSION_CODES.KITKAT;
 
   private static final int[] SNACKBAR_STYLE_ATTR = new int[] {R.attr.snackbarStyle};
 
@@ -1038,8 +1036,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           public void onAnimationUpdate(@NonNull ValueAnimator animator) {
             int currentAnimatedIntValue = (int) animator.getAnimatedValue();
             if (USE_OFFSET_API) {
-              // On JB/KK versions of the platform sometimes View.setTranslationY does not
-              // result in layout / draw pass
+              // On KitKat sometimes View.setTranslationY does not result in layout / draw pass.
               ViewCompat.offsetTopAndBottom(
                   view, currentAnimatedIntValue - previousAnimatedIntValue);
             } else {
@@ -1076,8 +1073,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           public void onAnimationUpdate(@NonNull ValueAnimator animator) {
             int currentAnimatedIntValue = (int) animator.getAnimatedValue();
             if (USE_OFFSET_API) {
-              // On JB/KK versions of the platform sometimes View.setTranslationY does not
-              // result in layout / draw pass
+              // On KitKat sometimes View.setTranslationY does not result in layout / draw pass.
               ViewCompat.offsetTopAndBottom(
                   view, currentAnimatedIntValue - previousAnimatedIntValue);
             } else {

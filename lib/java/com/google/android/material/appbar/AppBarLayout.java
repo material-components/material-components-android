@@ -238,7 +238,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     context = getContext();
     setOrientation(VERTICAL);
 
-    if (VERSION.SDK_INT >= 21) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       // Use the bounds view outline provider so that we cast a shadow, even without a
       // background
       if (getOutlineProvider() == ViewOutlineProvider.BACKGROUND) {
@@ -287,7 +287,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           /* force= */ false);
     }
 
-    if (VERSION.SDK_INT >= 21 && a.hasValue(R.styleable.AppBarLayout_elevation)) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
+        && a.hasValue(R.styleable.AppBarLayout_elevation)) {
       ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(
           this, a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0));
     }
@@ -748,7 +749,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
   @Override
   protected LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
-    if (Build.VERSION.SDK_INT >= 19 && p instanceof LinearLayout.LayoutParams) {
+    if (p instanceof LinearLayout.LayoutParams) {
       return new LayoutParams((LinearLayout.LayoutParams) p);
     } else if (p instanceof MarginLayoutParams) {
       return new LayoutParams((MarginLayoutParams) p);
@@ -1155,7 +1156,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
    */
   @Deprecated
   public void setTargetElevation(float elevation) {
-    if (Build.VERSION.SDK_INT >= 21) {
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(this, elevation);
     }
   }
@@ -1352,13 +1353,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       super(source);
     }
 
-    @RequiresApi(19)
     public LayoutParams(LinearLayout.LayoutParams source) {
       // The copy constructor called here only exists on API 19+.
       super(source);
     }
 
-    @RequiresApi(19)
     public LayoutParams(@NonNull LayoutParams source) {
       // The copy constructor called here only exists on API 19+.
       super(source);

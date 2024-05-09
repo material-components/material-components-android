@@ -23,6 +23,7 @@ import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -30,7 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import com.google.android.material.internal.ThemeEnforcement;
 
-@RequiresApi(21)
+@RequiresApi(VERSION_CODES.LOLLIPOP)
 class ViewUtilsLollipop {
 
   private static final int[] STATE_LIST_ANIM_ATTRS = new int[] {android.R.attr.stateListAnimator};

@@ -831,7 +831,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     if (buttonTintList != null) {
       return buttonTintList;
     }
-    if (VERSION.SDK_INT >= 21 && super.getButtonTintList() != null) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && super.getButtonTintList() != null) {
       return super.getButtonTintList();
     }
     return ((TintableCompoundButton) this).getSupportButtonTintList();
@@ -841,7 +841,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     int buttonResourceId = attributes.getResourceId(R.styleable.MaterialCheckBox_android_button, 0);
     int buttonCompatResourceId =
         attributes.getResourceId(R.styleable.MaterialCheckBox_buttonCompat, 0);
-    if (VERSION.SDK_INT < 21) {
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
       return buttonResourceId == R.drawable.abc_btn_check_material
           && buttonCompatResourceId == R.drawable.abc_btn_check_material_anim;
     } else {

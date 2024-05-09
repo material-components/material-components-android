@@ -82,8 +82,7 @@ public class CircularRevealHelper {
   public static final int BITMAP_SHADER = 0;
   /**
    * Specify that this view should use {@link Canvas#clipPath(Path)} to create the circular reveal
-   * effect. clipPath() is only hardware accelerated on {@link VERSION_CODES#JELLY_BEAN_MR2} and
-   * above.
+   * effect.
    */
   public static final int CLIP_PATH = 1;
   /**
@@ -126,10 +125,8 @@ public class CircularRevealHelper {
   static {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       STRATEGY = REVEAL_ANIMATOR;
-    } else if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
-      STRATEGY = CLIP_PATH;
     } else {
-      STRATEGY = BITMAP_SHADER;
+      STRATEGY = CLIP_PATH;
     }
   }
 

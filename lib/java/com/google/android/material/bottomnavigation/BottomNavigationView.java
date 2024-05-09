@@ -23,6 +23,7 @@ import static java.lang.Math.min;
 
 import android.content.Context;
 import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.view.View;
@@ -226,7 +227,8 @@ public class BottomNavigationView extends NavigationBarView {
    * legacy backgrounds.
    */
   private boolean shouldDrawCompatibilityTopDivider() {
-    return VERSION.SDK_INT < 21 && !(getBackground() instanceof MaterialShapeDrawable);
+    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
+        && !(getBackground() instanceof MaterialShapeDrawable);
   }
 
   /**

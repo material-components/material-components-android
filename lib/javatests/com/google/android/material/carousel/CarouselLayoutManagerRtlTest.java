@@ -24,19 +24,16 @@ import static com.google.android.material.carousel.CarouselHelper.setAdapterItem
 import static com.google.android.material.carousel.CarouselHelper.setViewSize;
 import static com.google.android.material.testing.RtlTestUtils.applyRtlPseudoLocale;
 import static com.google.android.material.testing.RtlTestUtils.checkAppSupportsRtl;
-import static com.google.android.material.testing.RtlTestUtils.checkPlatformSupportsRtl;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.carousel.CarouselHelper.CarouselTestAdapter;
 import com.google.android.material.carousel.CarouselHelper.WrappedCarouselLayoutManager;
@@ -64,10 +61,8 @@ public class CarouselLayoutManagerRtlTest {
   WrappedCarouselLayoutManager layoutManager;
   CarouselTestAdapter adapter;
 
-  @RequiresApi(api = VERSION_CODES.JELLY_BEAN_MR1)
   @Before
   public void setUp() {
-    checkPlatformSupportsRtl();
     checkAppSupportsRtl();
     applyRtlPseudoLocale();
     createAndSetFixtures(DEFAULT_RECYCLER_VIEW_WIDTH, DEFAULT_ITEM_WIDTH);

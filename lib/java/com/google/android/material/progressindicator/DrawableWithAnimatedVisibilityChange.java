@@ -24,7 +24,6 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
 import android.util.Property;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
@@ -301,7 +300,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       return changed;
     }
 
-    if (restart || VERSION.SDK_INT < 19 || !animatorInAction.isPaused()) {
+    if (restart || !animatorInAction.isPaused()) {
       // Starts/restarts the animator if requested or not eligible to resume.
       animatorInAction.start();
     } else {
