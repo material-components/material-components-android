@@ -118,6 +118,8 @@ badge is not clipped if there is enough space.
 | Horizontal Padding        | `app:badgeWidePadding`                                                                                                                                   |
 | Vertical Padding          | `app:badgeVerticalPadding`                                                                                                                               |
 | Large Font Vertical Offset| `app:largeFontVerticalOffsetAdjustment`                                                                                                                  |
+| Badge Fixed Edge          | `app:badgeFixedEdge`                                                                                                                                     |
+
 
 **Note:** If both `app:badgeText` and `app:number` are specified, the badge label will be `app:badgeText`.
 

@@ -37,6 +37,7 @@
   <public name="badgeShapeAppearance" type="attr"/>
   <public name="badgeWithTextShapeAppearance" type="attr"/>
   <public name="badgeShapeAppearanceOverlay" type="attr"/>
+  <public name="badgeFixedEdge" type="attr"/>
   <!-- Deprecated. Badges are automatically moved to within first ancestor
    that clips its children. -->
   <public name="autoAdjustToWithinGrandparentBounds" type="attr"/>

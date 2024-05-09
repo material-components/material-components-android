@@ -49,7 +49,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.XmlRes;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
@@ -204,6 +203,25 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   @Retention(RetentionPolicy.SOURCE)
   @interface OffsetAlignmentMode {}
 
+  /**
+   * The badge's edge is fixed at the start and grows towards the end.
+   */
+  public static final int BADGE_FIXED_EDGE_START = 0;
+
+  /**
+   * The badge's edge is fixed at the end and grows towards the start.
+   */
+  public static final int BADGE_FIXED_EDGE_END = 1;
+
+  /**
+   * Determines which edge of the badge is fixed, and which direction it grows towards.
+   *
+   * @hide
+   */
+  @IntDef({BADGE_FIXED_EDGE_START, BADGE_FIXED_EDGE_END})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface BadgeFixedEdge {}
+
   /** A value to indicate that a badge radius has not been specified. */
   static final int BADGE_RADIUS_NOT_SPECIFIED = -1;
 
@@ -282,6 +300,19 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     // pass to remove this badge from its foreground.
     if (BadgeUtils.USE_COMPAT_PARENT && getCustomBadgeParent() != null && !visible) {
       ((ViewGroup) getCustomBadgeParent().getParent()).invalidate();
+    }
+  }
+
+  /**
+   * Sets this badge's fixed edge. The badge does not grow in the direction of the fixed edge.
+   *
+   * @param fixedEdge Constant representing a {@link BadgeFixedEdge} value. The two options are
+   *     {@link #BADGE_FIXED_EDGE_START} and {@link #BADGE_FIXED_EDGE_END}.
+   */
+  public void setBadgeFixedEdge(@BadgeFixedEdge int fixedEdge) {
+    if (state.badgeFixedEdge != fixedEdge) {
+      state.badgeFixedEdge = fixedEdge;
+      updateCenterAndBounds();
     }
   }
 
@@ -1310,18 +1341,24 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     switch (state.getBadgeGravity()) {
       case BOTTOM_START:
       case TOP_START:
-        badgeCenterX =
-            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
+        badgeCenterX = state.badgeFixedEdge == BADGE_FIXED_EDGE_START
+            ? (anchorView.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR
+              ? anchorRect.left + halfBadgeWidth - (halfBadgeHeight * 2 - totalHorizontalOffset)
+              : anchorRect.right - halfBadgeWidth + (halfBadgeHeight * 2 - totalHorizontalOffset))
+            : (anchorView.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR
                 ? anchorRect.left - halfBadgeWidth + totalHorizontalOffset
-                : anchorRect.right + halfBadgeWidth - totalHorizontalOffset;
+                : anchorRect.right + halfBadgeWidth - totalHorizontalOffset);
         break;
       case BOTTOM_END:
       case TOP_END:
       default:
-        badgeCenterX =
-            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
+        badgeCenterX = state.badgeFixedEdge == BADGE_FIXED_EDGE_START
+            ? (anchorView.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR
                 ? anchorRect.right + halfBadgeWidth - totalHorizontalOffset
-                : anchorRect.left - halfBadgeWidth + totalHorizontalOffset;
+                : anchorRect.left - halfBadgeWidth + totalHorizontalOffset)
+            : (anchorView.getLayoutDirection() == View.LAYOUT_DIRECTION_LTR
+                ? anchorRect.right - halfBadgeWidth + (halfBadgeHeight * 2 - totalHorizontalOffset)
+                : anchorRect.left + halfBadgeWidth - (halfBadgeHeight * 2 - totalHorizontalOffset));
         break;
     }
 
