@@ -230,8 +230,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     extendStrategyType =
         a.getInt(
             R.styleable.ExtendedFloatingActionButton_extendStrategy, EXTEND_STRATEGY_WRAP_CONTENT);
-    extendedPaddingStart = ViewCompat.getPaddingStart(this);
-    extendedPaddingEnd = ViewCompat.getPaddingEnd(this);
+    extendedPaddingStart = getPaddingStart();
+    extendedPaddingEnd = getPaddingEnd();
 
     AnimatorTracker changeSizeTracker = new AnimatorTracker();
     extendStrategy =
@@ -527,8 +527,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   public void setPadding(int left, int top, int right, int bottom) {
     super.setPadding(left, top, right, bottom);
     if (isExtended && !isTransforming) {
-      extendedPaddingStart = ViewCompat.getPaddingStart(this);
-      extendedPaddingEnd = ViewCompat.getPaddingEnd(this);
+      extendedPaddingStart = getPaddingStart();
+      extendedPaddingEnd = getPaddingEnd();
     }
   }
 
@@ -911,8 +911,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   }
 
   private boolean shouldAnimateVisibilityChange() {
-    return (ViewCompat.isLaidOut(this) || (!isOrWillBeShown() && animateShowBeforeLayout))
-        && !isInEditMode();
+    return (isLaidOut() || (!isOrWillBeShown() && animateShowBeforeLayout)) && !isInEditMode();
   }
 
   /**
@@ -969,18 +968,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       new Property<View, Float>(Float.class, "paddingStart") {
         @Override
         public void set(@NonNull View object, @NonNull Float value) {
-          ViewCompat.setPaddingRelative(
-              object,
+          object.setPaddingRelative(
               value.intValue(),
               object.getPaddingTop(),
-              ViewCompat.getPaddingEnd(object),
+              object.getPaddingEnd(),
               object.getPaddingBottom());
         }
 
         @NonNull
         @Override
         public Float get(@NonNull View object) {
-          return (float) ViewCompat.getPaddingStart(object);
+          return (float) object.getPaddingStart();
         }
       };
 
@@ -992,9 +990,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       new Property<View, Float>(Float.class, "paddingEnd") {
         @Override
         public void set(@NonNull View object, @NonNull Float value) {
-          ViewCompat.setPaddingRelative(
-              object,
-              ViewCompat.getPaddingStart(object),
+          object.setPaddingRelative(
+              object.getPaddingStart(),
               object.getPaddingTop(),
               value.intValue(),
               object.getPaddingBottom());
@@ -1003,7 +1000,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
         @NonNull
         @Override
         public Float get(@NonNull View object) {
-          return (float) ViewCompat.getPaddingEnd(object);
+          return (float) object.getPaddingEnd();
         }
       };
 
@@ -1014,7 +1011,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @VisibleForTesting
   int getCollapsedSize() {
     return collapsedSize < 0
-        ? min(ViewCompat.getPaddingStart(this), ViewCompat.getPaddingEnd(this)) * 2 + getIconSize()
+        ? min(getPaddingStart(), getPaddingEnd()) * 2 + getIconSize()
         : collapsedSize;
   }
 
@@ -1330,8 +1327,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       }
       layoutParams.width = size.getLayoutParams().width;
       layoutParams.height = size.getLayoutParams().height;
-      ViewCompat.setPaddingRelative(
-          ExtendedFloatingActionButton.this,
+      setPaddingRelative(
           size.getPaddingStart(),
           getPaddingTop(),
           size.getPaddingEnd(),
@@ -1377,15 +1373,13 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
       if (spec.hasPropertyValues("paddingStart")) {
         PropertyValuesHolder[] paddingValues = spec.getPropertyValues("paddingStart");
-        paddingValues[0].setFloatValues(
-            ViewCompat.getPaddingStart(ExtendedFloatingActionButton.this), size.getPaddingStart());
+        paddingValues[0].setFloatValues(getPaddingStart(), size.getPaddingStart());
         spec.setPropertyValues("paddingStart", paddingValues);
       }
 
       if (spec.hasPropertyValues("paddingEnd")) {
         PropertyValuesHolder[] paddingValues = spec.getPropertyValues("paddingEnd");
-        paddingValues[0].setFloatValues(
-            ViewCompat.getPaddingEnd(ExtendedFloatingActionButton.this), size.getPaddingEnd());
+        paddingValues[0].setFloatValues(getPaddingEnd(), size.getPaddingEnd());
         spec.setPropertyValues("paddingEnd", paddingValues);
       }
 

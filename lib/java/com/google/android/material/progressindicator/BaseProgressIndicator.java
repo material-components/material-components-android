@@ -41,7 +41,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.view.ViewCompat;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -448,7 +447,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    * attached to a window and whether it and its ancestors are visible.
    */
   boolean visibleToUser() {
-    return ViewCompat.isAttachedToWindow(this)
+    return isAttachedToWindow()
         && getWindowVisibility() == View.VISIBLE
         && isEffectivelyVisible();
   }

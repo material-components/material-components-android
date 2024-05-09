@@ -40,7 +40,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -601,8 +600,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       return;
     }
 
-    MarginLayoutParamsCompat.setMarginEnd(params, 0);
-    MarginLayoutParamsCompat.setMarginStart(params, 0);
+    params.setMarginEnd(0);
+    params.setMarginStart(0);
     params.leftMargin = 0;
     params.rightMargin = 0;
   }

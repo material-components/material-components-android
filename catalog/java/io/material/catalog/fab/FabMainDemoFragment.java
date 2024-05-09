@@ -26,7 +26,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
@@ -81,7 +80,7 @@ public class FabMainDemoFragment extends DemoFragment {
 
           for (FloatingActionButton fab : fabs) {
             fab.setRotation(0);
-            ViewCompat.animate(fab)
+            fab.animate()
                 .rotation(360)
                 .withLayer()
                 .setDuration(1000)

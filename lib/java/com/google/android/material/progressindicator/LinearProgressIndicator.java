@@ -23,6 +23,7 @@ import static java.lang.Math.min;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.view.View;
 import androidx.annotation.AttrRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -30,7 +31,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.core.view.ViewCompat;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -109,9 +109,9 @@ public class LinearProgressIndicator
     // In case that layout direction is changed, update the spec.
     spec.drawHorizontallyInverse =
         spec.indicatorDirection == INDICATOR_DIRECTION_RIGHT_TO_LEFT
-            || (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL
+            || (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL
                 && spec.indicatorDirection == INDICATOR_DIRECTION_START_TO_END)
-            || (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR
+            || (getLayoutDirection() == View.LAYOUT_DIRECTION_LTR
                 && spec.indicatorDirection == INDICATOR_DIRECTION_END_TO_START);
   }
 
@@ -263,9 +263,9 @@ public class LinearProgressIndicator
     spec.indicatorDirection = indicatorDirection;
     spec.drawHorizontallyInverse =
         indicatorDirection == INDICATOR_DIRECTION_RIGHT_TO_LEFT
-            || (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL
+            || (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL
                 && spec.indicatorDirection == INDICATOR_DIRECTION_START_TO_END)
-            || (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR
+            || (getLayoutDirection() == View.LAYOUT_DIRECTION_LTR
                 && indicatorDirection == INDICATOR_DIRECTION_END_TO_START);
     invalidate();
   }

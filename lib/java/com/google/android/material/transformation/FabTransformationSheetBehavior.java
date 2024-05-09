@@ -27,7 +27,6 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.animation.Positioning;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -107,14 +106,13 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
         if (importantForAccessibilityMap != null
             && importantForAccessibilityMap.containsKey(child)) {
           // Restores the original important for accessibility value of the child view.
-          ViewCompat.setImportantForAccessibility(child, importantForAccessibilityMap.get(child));
+          child.setImportantForAccessibility(importantForAccessibilityMap.get(child));
         }
       } else {
         // Saves the important for accessibility value of the child view.
         importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
 
-        ViewCompat.setImportantForAccessibility(
-            child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        child.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
       }
     }
 

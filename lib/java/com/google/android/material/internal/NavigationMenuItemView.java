@@ -36,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 import androidx.annotation.Dimension;
@@ -46,7 +47,6 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityEventCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.widget.TextViewCompat;
 
@@ -116,7 +116,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     setVisibility(itemData.isVisible() ? VISIBLE : GONE);
 
     if (getBackground() == null) {
-      ViewCompat.setBackground(this, createDefaultBackground());
+      setBackground(createDefaultBackground());
     }
 
     setCheckable(itemData.isCheckable());
@@ -213,7 +213,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     if (this.checkable != checkable) {
       this.checkable = checkable;
       accessibilityDelegate.sendAccessibilityEvent(
-          textView, AccessibilityEventCompat.TYPE_WINDOW_CONTENT_CHANGED);
+          textView, AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
     }
   }
 

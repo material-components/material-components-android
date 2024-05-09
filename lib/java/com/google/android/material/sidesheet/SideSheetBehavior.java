@@ -52,7 +52,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.math.MathUtils;
-import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -169,7 +168,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
   private void setSheetEdge(@NonNull V view, int layoutDirection) {
     LayoutParams params = (LayoutParams) view.getLayoutParams();
-    int sheetGravity = GravityCompat.getAbsoluteGravity(params.gravity, layoutDirection);
+    int sheetGravity = Gravity.getAbsoluteGravity(params.gravity, layoutDirection);
 
     setSheetEdge(sheetGravity == Gravity.LEFT ? EDGE_LEFT : EDGE_RIGHT);
   }
@@ -351,7 +350,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
   @Override
   public boolean onLayoutChild(
       @NonNull CoordinatorLayout parent, @NonNull final V child, int layoutDirection) {
-    if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
+    if (parent.getFitsSystemWindows() && !child.getFitsSystemWindows()) {
       child.setFitsSystemWindows(true);
     }
 
@@ -364,7 +363,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
       // default to android:background declared in styles or layout.
       if (materialShapeDrawable != null) {
-        ViewCompat.setBackground(child, materialShapeDrawable);
+        child.setBackground(materialShapeDrawable);
         // Use elevation attr if set on side sheet; otherwise, use elevation of child view.
         materialShapeDrawable.setElevation(
             elevation == -1 ? ViewCompat.getElevation(child) : elevation);
@@ -374,9 +373,8 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       updateSheetVisibility(child);
 
       updateAccessibilityActions();
-      if (ViewCompat.getImportantForAccessibility(child)
-          == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
-        ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+      if (child.getImportantForAccessibility() == View.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+        child.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
       }
       ensureAccessibilityPaneTitleIsSet(child);
     }
@@ -666,7 +664,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
   private boolean isLayingOut(@NonNull V child) {
     ViewParent parent = child.getParent();
-    return parent != null && parent.isLayoutRequested() && ViewCompat.isAttachedToWindow(child);
+    return parent != null && parent.isLayoutRequested() && child.isAttachedToWindow();
   }
 
   /**
@@ -915,7 +913,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
     // Request layout to find the view and trigger a layout pass.
     if (viewRef != null) {
       View view = viewRef.get();
-      if (coplanarSiblingViewId != View.NO_ID && ViewCompat.isLaidOut(view)) {
+      if (coplanarSiblingViewId != View.NO_ID && view.isLaidOut()) {
         view.requestLayout();
       }
     }
@@ -937,7 +935,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       // Request layout to make the new view take effect.
       if (viewRef != null) {
         View view = viewRef.get();
-        if (ViewCompat.isLaidOut(view)) {
+        if (view.isLaidOut()) {
           view.requestLayout();
         }
       }
@@ -1105,7 +1103,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       }
       this.targetState = targetState;
       if (!isContinueSettlingRunnablePosted) {
-        ViewCompat.postOnAnimation(viewRef.get(), continueSettlingRunnable);
+        viewRef.get().postOnAnimation(continueSettlingRunnable);
         isContinueSettlingRunnablePosted = true;
       }
     }

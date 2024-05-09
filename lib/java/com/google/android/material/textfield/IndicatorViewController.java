@@ -46,7 +46,6 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
@@ -222,7 +221,7 @@ final class IndicatorViewController {
    */
   private boolean shouldAnimateCaptionView(
       @Nullable TextView captionView, @NonNull final CharSequence captionText) {
-    return ViewCompat.isLaidOut(textInputView)
+    return textInputView.isLaidOut()
         && textInputView.isEnabled()
         && (captionToShow != captionDisplayed
             || captionView == null
@@ -400,12 +399,11 @@ final class IndicatorViewController {
     if (canAdjustIndicatorPadding()) {
       EditText editText = textInputView.getEditText();
       boolean isFontScaleLarge = MaterialResources.isFontScaleAtLeast1_3(context);
-      ViewCompat.setPaddingRelative(
-          indicatorArea,
+      indicatorArea.setPaddingRelative(
           getIndicatorPadding(
               isFontScaleLarge,
               R.dimen.material_helper_text_font_1_3_padding_horizontal,
-              ViewCompat.getPaddingStart(editText)),
+              editText.getPaddingStart()),
           getIndicatorPadding(
               isFontScaleLarge,
               R.dimen.material_helper_text_font_1_3_padding_top,
@@ -415,7 +413,7 @@ final class IndicatorViewController {
           getIndicatorPadding(
               isFontScaleLarge,
               R.dimen.material_helper_text_font_1_3_padding_horizontal,
-              ViewCompat.getPaddingEnd(editText)),
+              editText.getPaddingEnd()),
           0);
     }
   }
@@ -536,8 +534,7 @@ final class IndicatorViewController {
         helperTextView.setTypeface(typeface);
       }
       helperTextView.setVisibility(View.INVISIBLE);
-      ViewCompat.setAccessibilityLiveRegion(
-          helperTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+      helperTextView.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
       setHelperTextAppearance(helperTextTextAppearance);
       setHelperTextViewTextColor(helperTextViewTextColor);
       addIndicator(helperTextView, HELPER_INDEX);
@@ -654,7 +651,7 @@ final class IndicatorViewController {
   void setErrorAccessibilityLiveRegion(final int accessibilityLiveRegion) {
     this.errorViewAccessibilityLiveRegion = accessibilityLiveRegion;
     if (errorView != null) {
-      ViewCompat.setAccessibilityLiveRegion(errorView, accessibilityLiveRegion);
+      errorView.setAccessibilityLiveRegion(accessibilityLiveRegion);
     }
   }
 

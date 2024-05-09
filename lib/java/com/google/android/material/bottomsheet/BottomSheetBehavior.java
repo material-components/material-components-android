@@ -544,7 +544,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @Override
   public boolean onLayoutChild(
       @NonNull CoordinatorLayout parent, @NonNull final V child, int layoutDirection) {
-    if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
+    if (parent.getFitsSystemWindows() && !child.getFitsSystemWindows()) {
       child.setFitsSystemWindows(true);
     }
 
@@ -559,7 +559,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
       // default to android:background declared in styles or layout.
       if (materialShapeDrawable != null) {
-        ViewCompat.setBackground(child, materialShapeDrawable);
+        child.setBackground(materialShapeDrawable);
         // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
         materialShapeDrawable.setElevation(
             elevation == -1 ? ViewCompat.getElevation(child) : elevation);
@@ -567,9 +567,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         ViewCompat.setBackgroundTintList(child, backgroundTint);
       }
       updateAccessibilityActions();
-      if (ViewCompat.getImportantForAccessibility(child)
-          == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
-        ViewCompat.setImportantForAccessibility(child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+      if (child.getImportantForAccessibility() == View.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
+        child.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
       }
     }
     if (viewDragHelper == null) {
@@ -1381,7 +1380,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private boolean isLayouting(V child) {
     ViewParent parent = child.getParent();
-    return parent != null && parent.isLayoutRequested() && ViewCompat.isAttachedToWindow(child);
+    return parent != null && parent.isLayoutRequested() && child.isAttachedToWindow();
   }
 
   /**
@@ -2181,7 +2180,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       }
       this.targetState = targetState;
       if (!isContinueSettlingRunnablePosted) {
-        ViewCompat.postOnAnimation(viewRef.get(), continueSettlingRunnable);
+        viewRef.get().postOnAnimation(continueSettlingRunnable);
         isContinueSettlingRunnablePosted = true;
       }
     }
@@ -2328,15 +2327,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         // Saves the important for accessibility value of the child view.
         importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
         if (updateImportantForAccessibilityOnSiblings) {
-          ViewCompat.setImportantForAccessibility(
-              child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+          child.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
         }
       } else {
         if (updateImportantForAccessibilityOnSiblings
             && importantForAccessibilityMap != null
             && importantForAccessibilityMap.containsKey(child)) {
           // Restores the original important for accessibility value of the child view.
-          ViewCompat.setImportantForAccessibility(child, importantForAccessibilityMap.get(child));
+          child.setImportantForAccessibility(importantForAccessibilityMap.get(child));
         }
       }
     }

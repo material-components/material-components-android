@@ -567,7 +567,7 @@ abstract class BaseSlider<
       return false;
     }
     trackSidePadding = newTrackSidePadding;
-    if (ViewCompat.isLaidOut(this)) {
+    if (isLaidOut()) {
       updateTrackWidth(getWidth());
     }
     return true;
@@ -807,7 +807,7 @@ abstract class BaseSlider<
     if (labels.size() > values.size()) {
       List<TooltipDrawable> tooltipDrawables = labels.subList(values.size(), labels.size());
       for (TooltipDrawable label : tooltipDrawables) {
-        if (ViewCompat.isAttachedToWindow(this)) {
+        if (isAttachedToWindow()) {
           detachLabelFromContentView(label);
         }
       }
@@ -821,7 +821,7 @@ abstract class BaseSlider<
       TooltipDrawable tooltipDrawable =
           TooltipDrawable.createFromAttributes(getContext(), null, 0, labelStyle);
       labels.add(tooltipDrawable);
-      if (ViewCompat.isAttachedToWindow(this)) {
+      if (isAttachedToWindow()) {
         attachLabelToContentView(tooltipDrawable);
       }
     }
@@ -2637,7 +2637,7 @@ abstract class BaseSlider<
               label.setRevealFraction(fraction);
             }
             // Ensure the labels are redrawn even if the slider has stopped moving
-            ViewCompat.postInvalidateOnAnimation(BaseSlider.this);
+            postInvalidateOnAnimation();
           }
         });
     return animator;
@@ -2947,7 +2947,7 @@ abstract class BaseSlider<
   }
 
   final boolean isRtl() {
-    return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    return getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
   }
 
   /**

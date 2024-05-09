@@ -831,7 +831,7 @@ public final class MaterialContainerTransform extends Transition {
     }
     View view = transitionValues.view;
 
-    if (ViewCompat.isLaidOut(view) || view.getWidth() != 0 || view.getHeight() != 0) {
+    if (view.isLaidOut() || view.getWidth() != 0 || view.getHeight() != 0) {
       // Capture location in screen co-ordinates
       RectF bounds = view.getParent() == null ? getRelativeBounds(view) : getLocationInWindow(view);
       transitionValues.values.put(PROP_BOUNDS, bounds);

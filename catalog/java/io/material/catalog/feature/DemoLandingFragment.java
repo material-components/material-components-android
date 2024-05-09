@@ -44,7 +44,6 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.button.MaterialButton;
@@ -296,7 +295,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   private void setMarginStart(View view, @DimenRes int marginResId) {
     int margin = getResources().getDimensionPixelOffset(marginResId);
     MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
-    MarginLayoutParamsCompat.setMarginStart(layoutParams, margin);
+    layoutParams.setMarginStart(margin);
   }
 
   @Override

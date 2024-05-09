@@ -57,7 +57,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
 import androidx.core.util.ObjectsCompat;
-import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.animation.AnimationUtils;
@@ -226,11 +225,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
     collapsingTextHelper.setExpandedTextGravity(
         a.getInt(
             R.styleable.CollapsingToolbarLayout_expandedTitleGravity,
-            GravityCompat.START | Gravity.BOTTOM));
+            Gravity.START | Gravity.BOTTOM));
     collapsingTextHelper.setCollapsedTextGravity(
         a.getInt(
             R.styleable.CollapsingToolbarLayout_collapsedTitleGravity,
-            GravityCompat.START | Gravity.CENTER_VERTICAL));
+            Gravity.START | Gravity.CENTER_VERTICAL));
 
     expandedMarginStart =
         expandedMarginTop =
@@ -363,7 +362,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       disableLiftOnScrollIfNeeded(appBarLayout);
 
       // Copy over from the ABL whether we should fit system windows
-      ViewCompat.setFitsSystemWindows(this, ViewCompat.getFitsSystemWindows(appBarLayout));
+      setFitsSystemWindows(appBarLayout.getFitsSystemWindows());
 
       if (onOffsetChangedListener == null) {
         onOffsetChangedListener = new OffsetUpdateListener();
@@ -389,7 +388,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   WindowInsetsCompat onWindowInsetChanged(@NonNull final WindowInsetsCompat insets) {
     WindowInsetsCompat newInsets = null;
 
-    if (ViewCompat.getFitsSystemWindows(this)) {
+    if (getFitsSystemWindows()) {
       // If we're set to fit system windows, keep the insets
       newInsets = insets;
     }
@@ -629,7 +628,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       final int insetTop = lastInsets.getSystemWindowInsetTop();
       for (int i = 0, z = getChildCount(); i < z; i++) {
         final View child = getChildAt(i);
-        if (!ViewCompat.getFitsSystemWindows(child)) {
+        if (!child.getFitsSystemWindows()) {
           if (child.getTop() < insetTop) {
             // If the child isn't set to fit system windows but is drawing within
             // the inset offset it down
@@ -662,12 +661,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
     if (collapsingTitleEnabled && dummyView != null) {
       // We only draw the title if the dummy view is being displayed (Toolbar removes
       // views if there is no space)
-      drawCollapsingTitle =
-          ViewCompat.isAttachedToWindow(dummyView) && dummyView.getVisibility() == VISIBLE;
+      drawCollapsingTitle = dummyView.isAttachedToWindow() && dummyView.getVisibility() == VISIBLE;
 
       if (drawCollapsingTitle || forceRecalculate) {
-        final boolean isRtl =
-            ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+        final boolean isRtl = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
 
         // Update the collapsed bounds
         updateCollapsedBounds(isRtl);
@@ -898,7 +895,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    * @see #getContentScrim()
    */
   public void setScrimsShown(boolean shown) {
-    setScrimsShown(shown, ViewCompat.isLaidOut(this) && !isInEditMode());
+    setScrimsShown(shown, isLaidOut() && !isInEditMode());
   }
 
   /**
@@ -949,10 +946,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
     if (alpha != scrimAlpha) {
       final Drawable contentScrim = this.contentScrim;
       if (contentScrim != null && toolbar != null) {
-        ViewCompat.postInvalidateOnAnimation(toolbar);
+        toolbar.postInvalidateOnAnimation();
       }
       scrimAlpha = alpha;
-      ViewCompat.postInvalidateOnAnimation(CollapsingToolbarLayout.this);
+      postInvalidateOnAnimation();
     }
   }
 
@@ -979,7 +976,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         contentScrim.setCallback(this);
         contentScrim.setAlpha(scrimAlpha);
       }
-      ViewCompat.postInvalidateOnAnimation(this);
+      postInvalidateOnAnimation();
     }
   }
 
@@ -1036,12 +1033,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
         if (statusBarScrim.isStateful()) {
           statusBarScrim.setState(getDrawableState());
         }
-        DrawableCompat.setLayoutDirection(statusBarScrim, ViewCompat.getLayoutDirection(this));
+        DrawableCompat.setLayoutDirection(statusBarScrim, getLayoutDirection());
         statusBarScrim.setVisible(getVisibility() == VISIBLE, false);
         statusBarScrim.setCallback(this);
         statusBarScrim.setAlpha(scrimAlpha);
       }
-      ViewCompat.postInvalidateOnAnimation(this);
+      postInvalidateOnAnimation();
     }
   }
 
@@ -1564,7 +1561,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     // Otherwise we'll use the default computed value
     final int insetTop = lastInsets != null ? lastInsets.getSystemWindowInsetTop() : 0;
 
-    final int minHeight = ViewCompat.getMinimumHeight(this);
+    final int minHeight = getMinimumHeight();
     if (minHeight > 0) {
       // If we have a minHeight set, lets use 2 * minHeight (capped at our height)
       return Math.min((minHeight * 2) + insetTop, getHeight());
@@ -1794,13 +1791,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
       updateScrimVisibility();
 
       if (statusBarScrim != null && insetTop > 0) {
-        ViewCompat.postInvalidateOnAnimation(CollapsingToolbarLayout.this);
+        postInvalidateOnAnimation();
       }
 
       // Update the collapsing text's fraction
       int height = getHeight();
-      final int expandRange =
-          height - ViewCompat.getMinimumHeight(CollapsingToolbarLayout.this) - insetTop;
+      final int expandRange = height - getMinimumHeight() - insetTop;
       final int scrimRange = height - getScrimVisibleHeightTrigger();
       collapsingTextHelper.setFadeModeStartFraction(
           Math.min(1, (float) scrimRange / (float) expandRange));

@@ -54,7 +54,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.math.MathUtils;
 import androidx.core.util.Preconditions;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.carousel.CarouselStrategy.StrategyType;
 import com.google.android.material.carousel.KeylineState.Keyline;
 import java.lang.annotation.Retention;
@@ -1087,7 +1086,7 @@ public class CarouselLayoutManager extends LayoutManager
   }
 
   boolean isLayoutRtl() {
-    return isHorizontal() && getLayoutDirection() == ViewCompat.LAYOUT_DIRECTION_RTL;
+    return isHorizontal() && getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
   }
 
   /** Moves {@code value} towards the start of the container by {@code amount}. */

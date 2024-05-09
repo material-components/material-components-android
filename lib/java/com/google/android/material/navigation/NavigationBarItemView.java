@@ -151,8 +151,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
 
     // The labels used aren't always visible, so they are unreliable for accessibility. Instead,
     // the content description of the NavigationBarItemView should be used for accessibility.
-    ViewCompat.setImportantForAccessibility(smallLabel, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
-    ViewCompat.setImportantForAccessibility(largeLabel, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    smallLabel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    largeLabel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     setFocusable(true);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
 
@@ -337,7 +337,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       @FloatRange(from = 0F, to = 1F) final float newProgress) {
     // If the active indicator is disabled or this view is in the process of being initialized,
     // jump the active indicator to it's final state.
-    if (!activeIndicatorEnabled || !initialized || !ViewCompat.isAttachedToWindow(this)) {
+    if (!activeIndicatorEnabled || !initialized || !isAttachedToWindow()) {
       setActiveIndicatorProgress(newProgress, newProgress);
       return;
     }
@@ -722,7 +722,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     // Remove any padding to avoid the active indicator from from being clipped
     iconContainer.setPadding(0, 0, 0, 0);
     iconContainer.setForeground(iconContainerRippleDrawable);
-    ViewCompat.setBackground(this, itemBackgroundDrawable);
+    setBackground(itemBackgroundDrawable);
     if (VERSION.SDK_INT >= VERSION_CODES.O) {
       setDefaultFocusHighlightEnabled(defaultHighlightEnabled);
     }

@@ -87,7 +87,7 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
                 insets.getSystemWindowInsetBottom());
             onInsetsChanged(insets);
             setWillNotDraw(!insets.hasSystemWindowInsets() || insetForeground == null);
-            ViewCompat.postInvalidateOnAnimation(ScrimInsetsFrameLayout.this);
+            postInvalidateOnAnimation();
             return insets.consumeSystemWindowInsets();
           }
         });

@@ -254,7 +254,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.AppBarLayout, defStyleAttr, DEF_STYLE_RES);
 
-    ViewCompat.setBackground(this, a.getDrawable(R.styleable.AppBarLayout_android_background));
+    setBackground(a.getDrawable(R.styleable.AppBarLayout_android_background));
 
     ColorStateList liftOnScrollColor =
         MaterialResources.getColorStateList(context, a, R.styleable.AppBarLayout_liftOnScrollColor);
@@ -354,7 +354,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             }
           }
         };
-    ViewCompat.setBackground(this, background);
+
+    setBackground(background);
   }
 
   private void initializeLiftOnScrollWithElevation(
@@ -370,7 +371,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         liftOnScrollListener.onUpdate(elevation, background.getResolvedTintColor());
       }
     };
-    ViewCompat.setBackground(this, background);
+
+    setBackground(background);
   }
 
   /**
@@ -452,12 +454,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         if (statusBarForeground.isStateful()) {
           statusBarForeground.setState(getDrawableState());
         }
-        DrawableCompat.setLayoutDirection(statusBarForeground, ViewCompat.getLayoutDirection(this));
+        DrawableCompat.setLayoutDirection(statusBarForeground, getLayoutDirection());
         statusBarForeground.setVisible(getVisibility() == VISIBLE, false);
         statusBarForeground.setCallback(this);
       }
       updateWillNotDraw();
-      ViewCompat.postInvalidateOnAnimation(this);
+      postInvalidateOnAnimation();
     }
   }
 
@@ -558,9 +560,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     // If we're set to handle system windows but our first child is not, we need to add some
     // height to ourselves to pad the first child down below the status bar
     final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-    if (heightMode != MeasureSpec.EXACTLY
-        && ViewCompat.getFitsSystemWindows(this)
-        && shouldOffsetFirstChild()) {
+    if (heightMode != MeasureSpec.EXACTLY && getFitsSystemWindows() && shouldOffsetFirstChild()) {
       int newHeight = getMeasuredHeight();
       switch (heightMode) {
         case MeasureSpec.AT_MOST:
@@ -586,7 +586,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
     super.onLayout(changed, l, t, r, b);
 
-    if (ViewCompat.getFitsSystemWindows(this) && shouldOffsetFirstChild()) {
+    if (getFitsSystemWindows() && shouldOffsetFirstChild()) {
       // If we need to offset the first child, we need to offset all of them to make space
       final int topInset = getTopInset();
       for (int z = getChildCount() - 1; z >= 0; z--) {
@@ -706,7 +706,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
    * @attr ref com.google.android.material.R.styleable#AppBarLayout_expanded
    */
   public void setExpanded(boolean expanded) {
-    setExpanded(expanded, ViewCompat.isLaidOut(this));
+    setExpanded(expanded, isLaidOut());
   }
 
   /**
@@ -793,7 +793,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         // We're set to scroll so add the child's height
         range += childHeight + lp.topMargin + lp.bottomMargin;
 
-        if (i == 0 && ViewCompat.getFitsSystemWindows(child)) {
+        if (i == 0 && child.getFitsSystemWindows()) {
           // If this is the first child and it wants to handle system windows, we need to make
           // sure we don't scroll it past the inset
           range -= getTopInset();
@@ -802,7 +802,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           // For a collapsing scroll, we to take the collapsed height into account.
           // We also break straight away since later views can't scroll beneath
           // us
-          range -= ViewCompat.getMinimumHeight(child);
+          range -= child.getMinimumHeight();
           break;
         }
       } else {
@@ -847,15 +847,15 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         // The view has the quick return flag combination...
         if ((flags & LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED) != 0) {
           // If they're set to enter collapsed, use the minimum height
-          childRange += ViewCompat.getMinimumHeight(child);
+          childRange += child.getMinimumHeight();
         } else if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
           // Only enter by the amount of the collapsed height
-          childRange += childHeight - ViewCompat.getMinimumHeight(child);
+          childRange += childHeight - child.getMinimumHeight();
         } else {
           // Else use the full height
           childRange += childHeight;
         }
-        if (i == 0 && ViewCompat.getFitsSystemWindows(child)) {
+        if (i == 0 && child.getFitsSystemWindows()) {
           // If this is the first child and it wants to handle system windows, we need to make
           // sure we don't scroll past the inset
           childRange = Math.min(childRange, childHeight - getTopInset());
@@ -898,7 +898,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           // For a collapsing exit scroll, we to take the collapsed height into account.
           // We also break the range straight away since later views can't scroll
           // beneath us
-          range -= ViewCompat.getMinimumHeight(child);
+          range -= child.getMinimumHeight();
           break;
         }
       } else {
@@ -914,7 +914,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     currentOffset = offset;
 
     if (!willNotDraw()) {
-      ViewCompat.postInvalidateOnAnimation(this);
+      postInvalidateOnAnimation();
     }
 
     // Iterate backwards through the list so that most recently added listeners
@@ -931,7 +931,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
   public final int getMinimumHeightForVisibleOverlappingContent() {
     final int topInset = getTopInset();
-    final int minHeight = ViewCompat.getMinimumHeight(this);
+    final int minHeight = getMinimumHeight();
     if (minHeight != 0) {
       // If this layout has a min height, use it (doubled)
       return (minHeight * 2) + topInset;
@@ -940,7 +940,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     // Otherwise, we'll use twice the min height of our last child
     final int childCount = getChildCount();
     final int lastChildMinHeight =
-        childCount >= 1 ? ViewCompat.getMinimumHeight(getChildAt(childCount - 1)) : 0;
+        childCount >= 1 ? getChildAt(childCount - 1).getMinimumHeight() : 0;
     if (lastChildMinHeight != 0) {
       return (lastChildMinHeight * 2) + topInset;
     }
@@ -1190,7 +1190,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   private boolean shouldOffsetFirstChild() {
     if (getChildCount() > 0) {
       final View firstChild = getChildAt(0);
-      return firstChild.getVisibility() != GONE && !ViewCompat.getFitsSystemWindows(firstChild);
+      return firstChild.getVisibility() != GONE && !firstChild.getFitsSystemWindows();
     }
     return false;
   }
@@ -1198,7 +1198,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
     WindowInsetsCompat newInsets = null;
 
-    if (ViewCompat.getFitsSystemWindows(this)) {
+    if (getFitsSystemWindows()) {
       // If we're set to fit system windows, keep the insets
       newInsets = insets;
     }
@@ -1732,19 +1732,19 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           // If the child is set to fit system windows, its top will include the inset area, we need
           // to minus the inset from snapTop to make the calculation consistent.
           if (offsetChildIndex == 0
-              && ViewCompat.getFitsSystemWindows(abl)
-              && ViewCompat.getFitsSystemWindows(offsetChild)) {
+              && abl.getFitsSystemWindows()
+              && offsetChild.getFitsSystemWindows()) {
             snapTop -= abl.getTopInset();
           }
 
           if (checkFlag(flags, LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)) {
             // If the view is set only exit until it is collapsed, we'll abide by that
-            snapBottom += ViewCompat.getMinimumHeight(offsetChild);
+            snapBottom += offsetChild.getMinimumHeight();
           } else if (checkFlag(
               flags, LayoutParams.FLAG_QUICK_RETURN | LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)) {
             // If it's set to always enter collapsed, it actually has two states. We
             // select the state and then snap within the state
-            final int seam = snapBottom + ViewCompat.getMinimumHeight(offsetChild);
+            final int seam = snapBottom + offsetChild.getMinimumHeight();
             if (offset < seam) {
               snapTop = seam;
             } else {
@@ -1826,7 +1826,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           View child = abl.getChildAt(savedState.firstVisibleChildIndex);
           int offset = -child.getBottom();
           if (savedState.firstVisibleChildAtMinimumHeight) {
-            offset += ViewCompat.getMinimumHeight(child) + abl.getTopInset();
+            offset += child.getMinimumHeight() + abl.getTopInset();
           } else {
             offset += Math.round(child.getHeight() * savedState.firstVisibleChildPercentageShown);
           }
@@ -2125,11 +2125,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
               if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
                 // For a collapsing scroll, we to take the collapsed height
                 // into account.
-                childScrollableHeight -= ViewCompat.getMinimumHeight(child);
+                childScrollableHeight -= child.getMinimumHeight();
               }
             }
 
-            if (ViewCompat.getFitsSystemWindows(child)) {
+            if (child.getFitsSystemWindows()) {
               childScrollableHeight -= layout.getTopInset();
             }
 
@@ -2167,7 +2167,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         final int flags = childLp.getScrollFlags();
 
         if ((flags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
-          final int minHeight = ViewCompat.getMinimumHeight(child);
+          final int minHeight = child.getMinimumHeight();
 
           if (direction > 0
               && (flags
@@ -2291,7 +2291,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           ss.fullyScrolled = !ss.fullyExpanded && -offset >= abl.getTotalScrollRange();
           ss.firstVisibleChildIndex = i;
           ss.firstVisibleChildAtMinimumHeight =
-              visBottom == (ViewCompat.getMinimumHeight(child) + abl.getTopInset());
+              visBottom == (child.getMinimumHeight() + abl.getTopInset());
           ss.firstVisibleChildPercentageShown = visBottom / (float) child.getHeight();
           return ss;
         }
@@ -2584,10 +2584,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         } else {
           child.setAlpha(1f);
         }
-        ViewCompat.setClipBounds(child, ghostRect);
+        child.setClipBounds(ghostRect);
       } else {
         // Reset both the clip bounds and translationY of this view
-        ViewCompat.setClipBounds(child, null);
+        child.setClipBounds(null);
         child.setTranslationY(0);
         child.setAlpha(1f);
       }

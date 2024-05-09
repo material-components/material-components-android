@@ -29,7 +29,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenuView;
 import java.util.ArrayList;
@@ -158,7 +157,7 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
       if (child.getVisibility() == GONE) {
         continue;
       }
-      if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      if (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
         child.layout(width - used - child.getMeasuredWidth(), 0, width - used, height);
       } else {
         child.layout(used, 0, child.getMeasuredWidth() + used, height);

@@ -54,7 +54,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -547,7 +546,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
       if (view instanceof TextView) {
         TextView textView = (TextView) view;
         boolean isSelectedItem = getText().toString().contentEquals(textView.getText());
-        ViewCompat.setBackground(textView, isSelectedItem ? getSelectedItemDrawable() : null);
+        textView.setBackground(isSelectedItem ? getSelectedItemDrawable() : null);
       }
 
       return view;

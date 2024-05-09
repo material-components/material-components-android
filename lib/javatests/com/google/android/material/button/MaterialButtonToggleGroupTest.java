@@ -27,14 +27,11 @@ import static org.junit.Assert.assertTrue;
 import android.content.Context;
 import android.graphics.RectF;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -202,19 +199,19 @@ public class MaterialButtonToggleGroupTest {
   @Test
   @Config(sdk = 23)
   public void onInitializeAccessibilityNodeInfo() {
-    AccessibilityNodeInfoCompat groupInfoCompat = AccessibilityNodeInfoCompat.obtain();
-    ViewCompat.onInitializeAccessibilityNodeInfo(toggleGroup, groupInfoCompat);
+    AccessibilityNodeInfo groupInfo = AccessibilityNodeInfo.obtain();
+    toggleGroup.onInitializeAccessibilityNodeInfo(groupInfo);
 
-    CollectionInfoCompat collectionInfo = groupInfoCompat.getCollectionInfo();
+    AccessibilityNodeInfo.CollectionInfo collectionInfo = groupInfo.getCollectionInfo();
     assertEquals(3, collectionInfo.getColumnCount());
     assertEquals(1, collectionInfo.getRowCount());
 
     MaterialButton secondChild = (MaterialButton) toggleGroup.getChildAt(1);
     secondChild.setChecked(true);
-    AccessibilityNodeInfoCompat buttonInfoCompat = AccessibilityNodeInfoCompat.obtain();
-    ViewCompat.onInitializeAccessibilityNodeInfo(secondChild, buttonInfoCompat);
+    AccessibilityNodeInfo buttonInfo = AccessibilityNodeInfo.obtain();
+    secondChild.onInitializeAccessibilityNodeInfo(buttonInfo);
 
-    CollectionItemInfoCompat itemInfo = buttonInfoCompat.getCollectionItemInfo();
+    AccessibilityNodeInfo.CollectionItemInfo itemInfo = buttonInfo.getCollectionItemInfo();
     assertEquals(1, itemInfo.getColumnIndex());
     assertEquals(0, itemInfo.getRowIndex());
     assertTrue(itemInfo.isSelected());
@@ -262,11 +259,11 @@ public class MaterialButtonToggleGroupTest {
     toggleGroup.setSingleSelection(true);
 
     View button1 = toggleGroup.getChildAt(0);
-    int id1 = ViewCompat.generateViewId();
+    int id1 = View.generateViewId();
     button1.setId(id1);
 
     View button2 = toggleGroup.getChildAt(1);
-    int id2 = ViewCompat.generateViewId();
+    int id2 = View.generateViewId();
     button2.setId(id2);
 
     toggleGroup.check(id1);
@@ -281,11 +278,11 @@ public class MaterialButtonToggleGroupTest {
     toggleGroup.setSingleSelection(false);
 
     View button1 = toggleGroup.getChildAt(0);
-    int id1 = ViewCompat.generateViewId();
+    int id1 = View.generateViewId();
     button1.setId(id1);
 
     View button2 = toggleGroup.getChildAt(1);
-    int id2 = ViewCompat.generateViewId();
+    int id2 = View.generateViewId();
     button2.setId(id2);
 
     toggleGroup.check(id1);
@@ -330,7 +327,7 @@ public class MaterialButtonToggleGroupTest {
     toggleGroup.setSelectionRequired(true);
 
     View child = toggleGroup.getChildAt(1);
-    int id = ViewCompat.generateViewId();
+    int id = View.generateViewId();
     child.setId(id);
     return id;
   }

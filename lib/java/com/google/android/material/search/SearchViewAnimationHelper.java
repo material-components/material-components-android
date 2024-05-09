@@ -42,8 +42,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ClippableRoundedCornerLayout;
 import com.google.android.material.internal.FadeThroughDrawable;
@@ -566,17 +564,15 @@ class SearchViewAnimationHelper {
   }
 
   private int getFromTranslationXStart(View view) {
-    int marginStart =
-        MarginLayoutParamsCompat.getMarginStart((MarginLayoutParams) view.getLayoutParams());
-    int paddingStart = ViewCompat.getPaddingStart(searchBar);
+    int marginStart = ((MarginLayoutParams) view.getLayoutParams()).getMarginStart();
+    int paddingStart = searchBar.getPaddingStart();
     return ViewUtils.isLayoutRtl(searchBar)
         ? searchBar.getWidth() - searchBar.getRight() + marginStart - paddingStart
         : searchBar.getLeft() - marginStart + paddingStart;
   }
 
   private int getFromTranslationXEnd(View view) {
-    int marginEnd =
-        MarginLayoutParamsCompat.getMarginEnd((MarginLayoutParams) view.getLayoutParams());
+    int marginEnd = ((MarginLayoutParams) view.getLayoutParams()).getMarginEnd();
     return ViewUtils.isLayoutRtl(searchBar)
         ? searchBar.getLeft() - marginEnd
         : searchBar.getRight() - searchView.getWidth() + marginEnd;
