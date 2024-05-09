@@ -20,17 +20,19 @@
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="16dp"
+      android:paddingTop="@dimen/mtrl_calendar_text_input_padding_top"
       android:paddingBottom="16dp"
       android:paddingLeft="@dimen/mtrl_calendar_content_padding"
       android:paddingRight="@dimen/mtrl_calendar_content_padding"
-      android:orientation="horizontal">
+      android:orientation="vertical">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/mtrl_picker_text_input_range_start"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:minWidth="@dimen/material_textinput_min_width_with_label"
+        android:maxWidth="@dimen/material_textinput_max_width"
+        android:layout_gravity="center_horizontal">
 
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
@@ -41,14 +43,16 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Space
-        android:layout_width="8dp"
-        android:layout_height="0dp"/>
+        android:layout_width="0dp"
+        android:layout_height="8dp"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/mtrl_picker_text_input_range_end"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:minWidth="@dimen/material_textinput_min_width_with_label"
+        android:maxWidth="@dimen/material_textinput_max_width"
+        android:layout_gravity="center_horizontal">
 
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
