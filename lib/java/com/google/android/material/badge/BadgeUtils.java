@@ -47,8 +47,6 @@ import com.google.android.material.internal.ToolbarUtils;
 @ExperimentalBadgeUtils
 public class BadgeUtils {
 
-  public static final boolean USE_COMPAT_PARENT = VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2;
-
   private static final String LOG_TAG = "BadgeUtils";
 
   private BadgeUtils() {
@@ -93,11 +91,7 @@ public class BadgeUtils {
     if (badgeDrawable.getCustomBadgeParent() != null) {
       badgeDrawable.getCustomBadgeParent().setForeground(badgeDrawable);
     } else {
-      if (USE_COMPAT_PARENT) {
-        throw new IllegalArgumentException("Trying to reference null customBadgeParent");
-      } else {
-        anchor.getOverlay().add(badgeDrawable);
-      }
+      anchor.getOverlay().add(badgeDrawable);
     }
   }
 
@@ -182,7 +176,7 @@ public class BadgeUtils {
     if (badgeDrawable == null) {
       return;
     }
-    if (USE_COMPAT_PARENT || badgeDrawable.getCustomBadgeParent() != null) {
+    if (badgeDrawable.getCustomBadgeParent() != null) {
       badgeDrawable.getCustomBadgeParent().setForeground(null);
     } else {
       anchor.getOverlay().remove(badgeDrawable);

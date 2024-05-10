@@ -944,9 +944,6 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
 
   @Nullable
   private FrameLayout getCustomParentForBadge(View anchorView) {
-    if (anchorView == icon) {
-      return BadgeUtils.USE_COMPAT_PARENT ? ((FrameLayout) icon.getParent()) : null;
-    }
     // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
     return null;
   }
