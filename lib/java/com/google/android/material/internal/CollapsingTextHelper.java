@@ -728,9 +728,7 @@ public final class CollapsingTextHelper {
       collapsedTextWidth = 0;
     }
     final int collapsedAbsGravity =
-        GravityCompat.getAbsoluteGravity(
-            collapsedTextGravity,
-            isRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
+        GravityCompat.getAbsoluteGravity(collapsedTextGravity, ViewCompat.getLayoutDirection(view));
 
     switch (collapsedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
@@ -770,9 +768,7 @@ public final class CollapsingTextHelper {
     expandedLineCount = textLayout != null ? textLayout.getLineCount() : 0;
 
     final int expandedAbsGravity =
-        GravityCompat.getAbsoluteGravity(
-            expandedTextGravity,
-            isRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
+        GravityCompat.getAbsoluteGravity(expandedTextGravity, ViewCompat.getLayoutDirection(view));
     switch (expandedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
         expandedDrawY = expandedBounds.bottom - expandedTextHeight + textPaint.descent();
@@ -1086,9 +1082,7 @@ public final class CollapsingTextHelper {
 
   private Alignment getMultilineTextLayoutAlignment() {
     int absoluteGravity =
-        GravityCompat.getAbsoluteGravity(
-            expandedTextGravity,
-            isRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
+        GravityCompat.getAbsoluteGravity(expandedTextGravity, ViewCompat.getLayoutDirection(view));
     switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
       case Gravity.CENTER_HORIZONTAL:
         return ALIGN_CENTER;
