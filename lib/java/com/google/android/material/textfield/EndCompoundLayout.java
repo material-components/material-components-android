@@ -49,6 +49,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView.ScaleType;
@@ -62,8 +63,6 @@ import androidx.annotation.Px;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.widget.TextViewCompat;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.internal.TextWatcherAdapter;
@@ -422,15 +421,15 @@ class EndCompoundLayout extends LinearLayout {
     if (touchExplorationStateChangeListener != null
         && accessibilityManager != null
         && isAttachedToWindow()) {
-      AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
-          accessibilityManager, touchExplorationStateChangeListener);
+      accessibilityManager.addTouchExplorationStateChangeListener(
+          touchExplorationStateChangeListener);
     }
   }
 
   private void removeTouchExplorationStateChangeListenerIfNeeded() {
     if (touchExplorationStateChangeListener != null && accessibilityManager != null) {
-      AccessibilityManagerCompat.removeTouchExplorationStateChangeListener(
-          accessibilityManager, touchExplorationStateChangeListener);
+      accessibilityManager.removeTouchExplorationStateChangeListener(
+          touchExplorationStateChangeListener);
     }
   }
 

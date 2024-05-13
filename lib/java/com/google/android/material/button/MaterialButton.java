@@ -61,7 +61,6 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
@@ -858,7 +857,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
 
     // Otherwise only update if the icon or the position has changed
-    Drawable[] existingDrawables = TextViewCompat.getCompoundDrawablesRelative(this);
+    Drawable[] existingDrawables = getCompoundDrawablesRelative();
     Drawable drawableStart = existingDrawables[0];
     Drawable drawableTop = existingDrawables[1];
     Drawable drawableEnd = existingDrawables[2];
@@ -874,11 +873,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private void resetIconDrawable() {
     if (isIconStart()) {
-      TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
+      setCompoundDrawablesRelative(icon, null, null, null);
     } else if (isIconEnd()) {
-      TextViewCompat.setCompoundDrawablesRelative(this, null, null, icon, null);
+      setCompoundDrawablesRelative(null, null, icon, null);
     } else if (isIconTop()) {
-      TextViewCompat.setCompoundDrawablesRelative(this, null, icon, null, null);
+      setCompoundDrawablesRelative(null, icon, null, null);
     }
   }
 
