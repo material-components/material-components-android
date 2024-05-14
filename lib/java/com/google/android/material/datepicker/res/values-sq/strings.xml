@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">Zgjidh gamën</string>
   <string name="mtrl_picker_date_header_title">Zgjidh datën</string>
-  <string name="mtrl_picker_range_header_unselected">Data e fillimit - data e përfundimit</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s – data e përfundimit</string>
+  <string name="mtrl_picker_range_header_unselected">Data e fillimit - Data e përfundimit</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Data e përfundimit</string>
   <string name="mtrl_picker_range_header_only_end_selected">Data e fillimit – %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s - %2$s</string>
   <string name="mtrl_picker_date_header_unselected">Data e zgjedhur</string>

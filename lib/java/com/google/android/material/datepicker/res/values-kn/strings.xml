@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@
   <string name="mtrl_picker_text_input_year_abbr">ವ</string>
   <string name="mtrl_picker_text_input_month_abbr">ತಿ</string>
   <string name="mtrl_picker_text_input_day_abbr">ದಿ</string>
-  <string name="mtrl_picker_save">ಉಳಿಸಿ</string>
+  <string name="mtrl_picker_save">ಸೇವ್ ಮಾಡಿ</string>
   <string name="mtrl_picker_invalid_range">ಅಮಾನ್ಯ ಶ್ರೇಣಿ.</string>
   <string name="mtrl_picker_out_of_range">ವ್ಯಾಪ್ತಿಯ ಹೊರಗಿದೆ: %1$s</string>
   <string name="mtrl_picker_invalid_format">ಅಮಾನ್ಯವಾದ ಫಾರ್ಮ್ಯಾಟ್.</string>
@@ -45,7 +45,7 @@
   <string name="mtrl_picker_toggle_to_day_selection">Calendar ವೀಕ್ಷಣೆಗೆ ಬದಲಾಯಿಸಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">ಪ್ರಸ್ತುತ ಆಯ್ಕೆ: %1$s</string>
-  <string name="mtrl_picker_announce_current_range_selection">ಪ್ರಾರಂಭ ದಿನಾಂಕದ ಆಯ್ಕೆ: %1$s – ಅಂತಿಮ ದಿನಾಂಕದ ಆಯ್ಕೆ: %2$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">ಪ್ರಾರಂಭ ದಿನಾಂಕದ ಆಯ್ಕೆ: %1$s – ಮುಕ್ತಾಯ ದಿನಾಂಕದ ಆಯ್ಕೆ: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">ಯಾವುದೂ ಇಲ್ಲ</string>
   <string name="mtrl_picker_navigate_to_year_description">%1$d ವರ್ಷಕ್ಕೆ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಿ</string>
   <string name="mtrl_picker_navigate_to_current_year_description">ಪ್ರಸ್ತುತ ವರ್ಷ %1$d ಕ್ಕೆ ನ್ಯಾವಿಗೇಟ್ ಮಾಡಿ</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">Виберіть діапазон дат</string>
   <string name="mtrl_picker_date_header_title">Виберіть дату</string>
-  <string name="mtrl_picker_range_header_unselected">Дата початку – дата завершення</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s – дата завершення</string>
+  <string name="mtrl_picker_range_header_unselected">Дата початку – Дата завершення</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Дата завершення</string>
   <string name="mtrl_picker_range_header_only_end_selected">Дата початку – %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
   <string name="mtrl_picker_date_header_unselected">Вибрана дата</string>
@@ -45,7 +45,7 @@
   <string name="mtrl_picker_toggle_to_day_selection">Натисніть, щоб перейти до перегляду календаря</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Поточний вибір: %1$s</string>
-  <string name="mtrl_picker_announce_current_range_selection">Вибрана дата початку – %1$s; вибрана дата завершення – %2$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Вибрана дата початку – %1$s. Вибрана дата завершення – %2$s.</string>
   <string name="mtrl_picker_announce_current_selection_none">немає</string>
   <string name="mtrl_picker_navigate_to_year_description">Перейти до %1$d року</string>
   <string name="mtrl_picker_navigate_to_current_year_description">Перейти до поточного року: %1$d</string>

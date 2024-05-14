@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@
   <string name="mtrl_picker_toggle_to_day_selection">Gusa ili ubadilishe kwenda mwonekano wa Kalenda</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Uteuzi wa sasa: %1$s</string>
-  <string name="mtrl_picker_announce_current_range_selection">Uteuzi wa tarehe ya kuanza: %1$s - Uteuzi wa tarehe ya mwisho: %2$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Uteuzi wa tarehe ya kuanza: %1$s – Uteuzi wa tarehe ya mwisho: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">hakuna</string>
   <string name="mtrl_picker_navigate_to_year_description">Sogeza kwenye mwaka wa %1$d</string>
   <string name="mtrl_picker_navigate_to_current_year_description">Sogeza kwenye mwaka huu %1$d</string>

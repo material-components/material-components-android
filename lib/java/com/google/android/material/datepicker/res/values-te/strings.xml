@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">పరిధిని ఎంచుకోండి</string>
   <string name="mtrl_picker_date_header_title">తేదీని ఎంచుకోండి</string>
-  <string name="mtrl_picker_range_header_unselected">ప్రారంభ తేది - ముగింపు తేది</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s – ముగింపు తేది</string>
+  <string name="mtrl_picker_range_header_unselected">ప్రారంభ తేదీ - ముగింపు తేదీ</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – ముగింపు తేదీ</string>
   <string name="mtrl_picker_range_header_only_end_selected">ప్రారంభ తేదీ – %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
   <string name="mtrl_picker_date_header_unselected">ఎంచుకున్న తేది</string>
