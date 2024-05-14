@@ -410,12 +410,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     invalidateSelf();
   }
 
-  private boolean isAnchorViewWrappedInCompatParent() {
-    View customBadgeAnchorParent = getCustomBadgeParent();
-    return customBadgeAnchorParent != null
-        && customBadgeAnchorParent.getId() == R.id.mtrl_anchor_parent;
-  }
-
   /** Returns a {@link FrameLayout} that will set this {@code BadgeDrawable} as its foreground. */
   @Nullable
   public FrameLayout getCustomBadgeParent() {
@@ -1328,10 +1322,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       totalAnchorYOffset = anchorView.getY();
       totalAnchorXOffset = anchorView.getX();
       anchorParent = anchorView.getParent();
-    } else if (isAnchorViewWrappedInCompatParent()) {
-      totalAnchorYOffset = ((View) customAnchorParent).getY();
-      totalAnchorXOffset = ((View) customAnchorParent).getX();
-      anchorParent = customAnchorParent.getParent();
     } else {
       totalAnchorYOffset = 0;
       totalAnchorXOffset = 0;
@@ -1385,8 +1375,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     ViewParent anchorParent = null;
     if (customAnchor == null) {
       anchorParent = anchorView.getParent();
-    } else if (isAnchorViewWrappedInCompatParent()) {
-      anchorParent = customAnchor.getParent();
     } else {
       anchorParent = customAnchor;
     }
