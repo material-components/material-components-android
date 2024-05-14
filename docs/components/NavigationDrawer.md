@@ -16,7 +16,7 @@ access to destinations in your app.
 
 **Contents**
 
-*   [Design & API Documentation](#design--api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using navigation drawers](#using-navigation-drawers)
 *   [Anatomy](#anatomy)
 *   [Standard navigation drawer](#standard-navigation-drawer)
@@ -24,7 +24,7 @@ access to destinations in your app.
 *   [Predictive Back](#predictive-back)
 *   [Theming](#theming)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/navigation-drawer/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/navigation/package-summary)

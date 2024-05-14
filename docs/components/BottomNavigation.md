@@ -16,12 +16,12 @@ allow movement between primary destinations in an app.
 
 **Contents**
 
-*   [Design & API Documentation](#design--api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using bottom navigation](#using-bottom-navigation)
 *   [Bottom navigation bar](#bottom-navigation-bar)
 *   [Theming](#theming-a-bottom-navigation-bar)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/navigation-bar/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/bottomnavigation/package-summary)

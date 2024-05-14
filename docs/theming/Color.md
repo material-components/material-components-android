@@ -16,7 +16,7 @@ The Material 3 color theming system uses an organized approach to apply colors
 to your UI. Material components use theme colors and their variations to style
 backgrounds, text, and more.
 
-## Design & API Documentation
+## Design and API Documentation
 
 -   [Material Design guidelines: Color](https://m3.material.io/styles/color/overview/)
 

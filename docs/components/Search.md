@@ -16,14 +16,14 @@ surface that allows product-specific branding and additional navigation icons.
 
 **Contents**
 
-*   [Design & API Documentation](#design--api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using search components](#using-search-components)
 *   [Search Bar](#search-bar)
 *   [Search View](#search-view)
 *   [Putting it all together](#putting-it-all-together)
 *   [Predictive Back](#predictive-back)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/search/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/search/package-summary)

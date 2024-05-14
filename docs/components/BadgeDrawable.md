@@ -9,7 +9,7 @@ path: /catalog/badging/
 
 # `BadgeDrawable`
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/badges/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/badge/package-summary)
