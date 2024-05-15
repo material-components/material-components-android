@@ -266,6 +266,13 @@ public class SearchView extends FrameLayout
   }
 
   @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+
+    backOrchestrator.stopListeningForBackCallbacks();
+  }
+
+  @Override
   @NonNull
   public CoordinatorLayout.Behavior<SearchView> getBehavior() {
     return new SearchView.Behavior();

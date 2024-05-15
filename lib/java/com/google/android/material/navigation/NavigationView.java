@@ -476,6 +476,8 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
       DrawerLayout drawerLayout = (DrawerLayout) parent;
       drawerLayout.removeDrawerListener(backDrawerListener);
     }
+
+    backOrchestrator.stopListeningForBackCallbacks();
   }
 
   @Override

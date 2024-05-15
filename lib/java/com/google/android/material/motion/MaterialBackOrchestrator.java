@@ -186,6 +186,9 @@ public final class MaterialBackOrchestrator {
     @DoNotInline
     @Override
     public void stopListeningForBackCallbacks(@NonNull View view) {
+      if (onBackInvokedCallback == null) {
+        return;
+      }
       OnBackInvokedDispatcher onBackInvokedDispatcher = view.findOnBackInvokedDispatcher();
       if (onBackInvokedDispatcher == null) {
         return;
