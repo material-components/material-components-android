@@ -16,14 +16,14 @@ information and actions related to the current screen.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using top app bars](#using-top-app-bars)
 *   [Regular top app bars](#regular-top-app-bars)
 *   [Collapsing top app bar](#collapsing-top-app-bars)
 *   [Contextual action bar](#contextual-action-bar)
 *   [Theming](#theming-the-top-app-bar)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/top-app-bar/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/appbar/package-summary)

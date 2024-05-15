@@ -16,14 +16,14 @@ express an unspecified wait time or display the length of a process.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using progress indicators](#using-progress-indicators)
 *   [Linear progress indicators](#linear-progress-indicators)
 *   [Circular progress indicators](#circular-progress-indicators)
 *   [Anatomy and key properties](#anatomy-and-key-properties)
 *   [Theming progress indicators](#theming-progress-indicators)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/progress-indicators/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/progressindicator/package-summary)

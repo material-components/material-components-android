@@ -22,7 +22,7 @@ With Android 14 (U / API level 34), the OS adds support for in-app predictive
 back, which apps can take advantage of to show the user previous destinations
 when swiping back within the app itself.
 
-## Design & API documentation
+## Design and API Documentation
 
 -   [Material Design guidelines: Predictive Back](https://m3.material.io/foundations/interaction/gestures#22462fb2-fbe8-4e0c-b3e7-9278bd18ea0d)
 -   [Android design guidelines](https://developer.android.com/design/ui/mobile/guides/patterns/predictive-back)

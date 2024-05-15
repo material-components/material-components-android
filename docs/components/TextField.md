@@ -16,13 +16,13 @@ edit text.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using text fields](#using-text-fields)
 *   [Filled text field](#filled-text-field)
 *   [Outlined text field](#outlined-text-field)
 *   [Theming](#theming-text-fields)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/text-fields/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/textfield/package-summary)

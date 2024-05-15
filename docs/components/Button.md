@@ -16,7 +16,7 @@ and make choices, with a single tap.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using buttons](#using-buttons)
 *   [Elevated button](#elevated-button)
 *   [Filled button](#filled-button)
@@ -27,7 +27,7 @@ and make choices, with a single tap.
 *   [Icon button](#icon-button)
 *   [Theming](#theming-buttons)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/buttons/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/button/package-summary)
@@ -948,7 +948,7 @@ In the layout:
 />
 ```
 
-#### Styles & Theme attributes
+#### Styles and Theme attributes
 
 Element                      | Style                                             | Theme Attribute
 ---------------------------- | ------------------------------------------------- | ---------------

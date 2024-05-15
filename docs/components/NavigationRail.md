@@ -16,12 +16,12 @@ access to primary destinations in your app on tablet and desktop screens.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using navigation rail](#using-navigation-rail)
 *   [Navigation rail example](#navigation-rail-example)
 *   [Theming](#theming-a-navigation-rail)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/navigation-rail/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/navigationrail/package-summary)

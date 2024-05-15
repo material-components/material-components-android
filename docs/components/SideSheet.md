@@ -17,7 +17,7 @@ See [Bottom Sheet documentation](BottomSheet.md) for documentation about
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using side sheets](#using-side-sheets)
 *   [Standard side sheet](#standard-side-sheet)
 *   [Modal side sheet](#modal-side-sheet)
@@ -26,7 +26,7 @@ See [Bottom Sheet documentation](BottomSheet.md) for documentation about
 *   [Predictive Back](#predictive-back)
 *   [Theming](#theming-side-sheets)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/side-sheets/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/sidesheet/package-summary)

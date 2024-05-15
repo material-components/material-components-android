@@ -15,7 +15,7 @@ Carousels contain a collection of items that can move into or out of view
 
 **Contents**
 
-*   [Design & API documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using carousel](#using-carousel)
 *   [Multi-browse strategy](#multi-browse-strategy)
 *   [Hero strategy](#hero-strategy)
@@ -23,7 +23,7 @@ Carousels contain a collection of items that can move into or out of view
 *   [Attributes](#attributes)
 *   [Customizing carousel](#customizing-carousel)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/carousel/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/carousel/package-summary)
