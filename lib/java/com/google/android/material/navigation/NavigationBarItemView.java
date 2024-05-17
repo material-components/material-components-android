@@ -910,8 +910,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     if (!hasBadge()) {
       return;
     }
-    BadgeUtils.setBadgeDrawableBounds(
-        badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
+    BadgeUtils.setBadgeDrawableBounds(badgeDrawable, anchorView, null);
   }
 
   private void tryAttachBadgeToAnchor(@Nullable View anchorView) {
@@ -923,8 +922,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       setClipChildren(false);
       setClipToPadding(false);
 
-      BadgeUtils.attachBadgeDrawable(
-          badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
+      BadgeUtils.attachBadgeDrawable(badgeDrawable, anchorView);
     }
   }
 
@@ -940,15 +938,6 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       BadgeUtils.detachBadgeDrawable(badgeDrawable, anchorView);
     }
     badgeDrawable = null;
-  }
-
-  @Nullable
-  private FrameLayout getCustomParentForBadge(View anchorView) {
-    if (anchorView == icon) {
-      return BadgeUtils.USE_COMPAT_PARENT ? ((FrameLayout) icon.getParent()) : null;
-    }
-    // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
-    return null;
   }
 
   private int getSuggestedIconWidth() {

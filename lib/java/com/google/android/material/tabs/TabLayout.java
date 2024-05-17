@@ -58,7 +58,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -2311,12 +2310,6 @@ public class TabLayout extends HorizontalScrollView {
         parent.updateTabViews(true);
       }
       updateView();
-      if (BadgeUtils.USE_COMPAT_PARENT
-          && view.hasBadgeDrawable()
-          && view.badgeDrawable.isVisible()) {
-        // Invalidate the TabView if icon visibility has changed and a badge is displayed.
-        view.invalidate();
-      }
       return this;
     }
 
@@ -2421,12 +2414,6 @@ public class TabLayout extends HorizontalScrollView {
         parent.updateTabViews(true);
       }
       this.updateView();
-      if (BadgeUtils.USE_COMPAT_PARENT
-          && view.hasBadgeDrawable()
-          && view.badgeDrawable.isVisible()) {
-        // Invalidate the TabView if label visibility has changed and a badge is displayed.
-        view.invalidate();
-      }
       return this;
     }
 
@@ -2851,39 +2838,19 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     private void inflateAndAddDefaultIconView() {
-      ViewGroup iconViewParent = this;
-      if (BadgeUtils.USE_COMPAT_PARENT) {
-        iconViewParent = createPreApi18BadgeAnchorRoot();
-        addView(iconViewParent, 0);
-      }
       this.iconView =
           (ImageView)
               LayoutInflater.from(getContext())
-                  .inflate(R.layout.design_layout_tab_icon, iconViewParent, false);
-      iconViewParent.addView(iconView, 0);
+                  .inflate(R.layout.design_layout_tab_icon, this, false);
+      addView(iconView, 0);
     }
 
     private void inflateAndAddDefaultTextView() {
-      ViewGroup textViewParent = this;
-      if (BadgeUtils.USE_COMPAT_PARENT) {
-        textViewParent = createPreApi18BadgeAnchorRoot();
-        addView(textViewParent);
-      }
       this.textView =
           (TextView)
               LayoutInflater.from(getContext())
-                  .inflate(R.layout.design_layout_tab_text, textViewParent, false);
-      textViewParent.addView(textView);
-    }
-
-    @NonNull
-    private FrameLayout createPreApi18BadgeAnchorRoot() {
-      FrameLayout frameLayout = new FrameLayout(getContext());
-      FrameLayout.LayoutParams layoutparams =
-          new FrameLayout.LayoutParams(
-              ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-      frameLayout.setLayoutParams(layoutparams);
-      return frameLayout;
+                  .inflate(R.layout.design_layout_tab_text, this, false);
+      addView(textView);
     }
 
     /**
@@ -2979,8 +2946,7 @@ public class TabLayout extends HorizontalScrollView {
       }
       if (anchorView != null) {
         clipViewToPaddingForBadge(false);
-        BadgeUtils.attachBadgeDrawable(
-            badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
+        BadgeUtils.attachBadgeDrawable(badgeDrawable, anchorView, null);
         badgeAnchorView = anchorView;
       }
     }
@@ -3095,20 +3061,12 @@ public class TabLayout extends HorizontalScrollView {
     private void tryUpdateBadgeDrawableBounds(@NonNull View anchor) {
       // Check that this view is the badge's current anchor view.
       if (hasBadgeDrawable() && anchor == badgeAnchorView) {
-        BadgeUtils.setBadgeDrawableBounds(badgeDrawable, anchor, getCustomParentForBadge(anchor));
+        BadgeUtils.setBadgeDrawableBounds(badgeDrawable, anchor, null);
       }
     }
 
     private boolean hasBadgeDrawable() {
       return badgeDrawable != null;
-    }
-
-    @Nullable
-    private FrameLayout getCustomParentForBadge(@NonNull View anchor) {
-      if (anchor != iconView && anchor != textView) {
-        return null;
-      }
-      return BadgeUtils.USE_COMPAT_PARENT ? ((FrameLayout) anchor.getParent()) : null;
     }
 
     /**

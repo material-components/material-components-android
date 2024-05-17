@@ -36,7 +36,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
-import android.widget.FrameLayout.LayoutParams;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
@@ -296,11 +295,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private void onVisibilityUpdated() {
     boolean visible = state.isVisible();
     setVisible(visible, /* restart= */ false);
-    // When hiding a badge in pre-API 18, invalidate the custom parent in order to trigger a draw
-    // pass to remove this badge from its foreground.
-    if (BadgeUtils.USE_COMPAT_PARENT && getCustomBadgeParent() != null && !visible) {
-      ((ViewGroup) getCustomBadgeParent().getParent()).invalidate();
-    }
   }
 
   /**
@@ -386,11 +380,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * also updates this {@code BadgeDrawable BadgeDrawable's} bounds, because they are dependent on
    * the center coordinates.
    *
-   * <p>For pre API-18, optionally wrap the anchor in a {@code FrameLayout} (if it's not done
-   * already) that will be inserted into the anchor's view hierarchy and calculate the badge's
-   * coordinates the parent {@code FrameLayout} because the {@code BadgeDrawable} will be set as the
-   * parent's foreground.
-   *
    * @param anchorView This badge's anchor.
    */
   public void updateBadgeCoordinates(@NonNull View anchorView) {
@@ -402,11 +391,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * also updates this {@code BadgeDrawable BadgeDrawable's} bounds, because they are dependent on
    * the center coordinates.
    *
-   * <p>For pre API-18, if no {@code customBadgeParent} is specified, optionally wrap the anchor in
-   * a {@code FrameLayout} (if it's not done already) that will be inserted into the anchor's view
-   * hierarchy and calculate the badge's coordinates the parent {@code FrameLayout} because the
-   * {@code BadgeDrawable} will be set as the parent's foreground.
-   *
    * @param anchorView This badge's anchor.
    * @param customBadgeParent An optional parent view that will set this {@code BadgeDrawable} as
    *     its foreground.
@@ -414,71 +398,17 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   public void updateBadgeCoordinates(
       @NonNull View anchorView, @Nullable FrameLayout customBadgeParent) {
     this.anchorViewRef = new WeakReference<>(anchorView);
+    this.customBadgeParentRef = new WeakReference<>(customBadgeParent);
 
-    if (BadgeUtils.USE_COMPAT_PARENT && customBadgeParent == null) {
-      tryWrapAnchorInCompatParent(anchorView);
-    } else {
-      this.customBadgeParentRef = new WeakReference<>(customBadgeParent);
-    }
-    if (!BadgeUtils.USE_COMPAT_PARENT) {
-      updateAnchorParentToNotClip(anchorView);
-    }
+    updateAnchorParentToNotClip(anchorView);
     updateCenterAndBounds();
     invalidateSelf();
-  }
-
-  private boolean isAnchorViewWrappedInCompatParent() {
-    View customBadgeAnchorParent = getCustomBadgeParent();
-    return customBadgeAnchorParent != null
-        && customBadgeAnchorParent.getId() == R.id.mtrl_anchor_parent;
   }
 
   /** Returns a {@link FrameLayout} that will set this {@code BadgeDrawable} as its foreground. */
   @Nullable
   public FrameLayout getCustomBadgeParent() {
     return customBadgeParentRef != null ? customBadgeParentRef.get() : null;
-  }
-
-  /**
-   * ViewOverlay is not supported below api 18, wrap the anchor view in a {@code FrameLayout} in
-   * order to support scrolling.
-   */
-  private void tryWrapAnchorInCompatParent(final View anchorView) {
-    ViewGroup anchorViewParent = (ViewGroup) anchorView.getParent();
-    if ((anchorViewParent != null && anchorViewParent.getId() == R.id.mtrl_anchor_parent)
-        || (customBadgeParentRef != null && customBadgeParentRef.get() == anchorViewParent)) {
-      return;
-    }
-    // Must call this before wrapping the anchor in a FrameLayout.
-    updateAnchorParentToNotClip(anchorView);
-
-    // Create FrameLayout and configure it to wrap the anchor.
-    final FrameLayout frameLayout = new FrameLayout(anchorView.getContext());
-    frameLayout.setId(R.id.mtrl_anchor_parent);
-    frameLayout.setClipChildren(false);
-    frameLayout.setClipToPadding(false);
-    frameLayout.setLayoutParams(anchorView.getLayoutParams());
-    frameLayout.setMinimumWidth(anchorView.getWidth());
-    frameLayout.setMinimumHeight(anchorView.getHeight());
-
-    int anchorIndex = anchorViewParent.indexOfChild(anchorView);
-    anchorViewParent.removeViewAt(anchorIndex);
-    anchorView.setLayoutParams(
-        new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
-    frameLayout.addView(anchorView);
-    anchorViewParent.addView(frameLayout, anchorIndex);
-    customBadgeParentRef = new WeakReference<>(frameLayout);
-
-    // Update the badge's coordinates after the FrameLayout has been added to the view hierarchy and
-    // has a size.
-    frameLayout.post(
-        new Runnable() {
-          @Override
-          public void run() {
-            updateBadgeCoordinates(anchorView, frameLayout);
-          }
-        });
   }
 
   private static void updateAnchorParentToNotClip(View anchorView) {
@@ -1230,11 +1160,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     anchorView.getDrawingRect(anchorRect);
 
     ViewGroup customBadgeParent = customBadgeParentRef != null ? customBadgeParentRef.get() : null;
-    if (customBadgeParent != null || BadgeUtils.USE_COMPAT_PARENT) {
+    if (customBadgeParent != null) {
       // Calculates coordinates relative to the parent.
-      ViewGroup viewGroup =
-          customBadgeParent == null ? (ViewGroup) anchorView.getParent() : customBadgeParent;
-      viewGroup.offsetDescendantRectToMyCoords(anchorView, anchorRect);
+      customBadgeParent.offsetDescendantRectToMyCoords(anchorView, anchorRect);
     }
 
     calculateCenterAndBounds(anchorRect, anchorView);
@@ -1389,10 +1317,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       totalAnchorYOffset = anchorView.getY();
       totalAnchorXOffset = anchorView.getX();
       anchorParent = anchorView.getParent();
-    } else if (isAnchorViewWrappedInCompatParent()) {
-      totalAnchorYOffset = ((View) customAnchorParent).getY();
-      totalAnchorXOffset = ((View) customAnchorParent).getX();
-      anchorParent = customAnchorParent.getParent();
     } else {
       totalAnchorYOffset = 0;
       totalAnchorXOffset = 0;
@@ -1446,8 +1370,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     ViewParent anchorParent = null;
     if (customAnchor == null) {
       anchorParent = anchorView.getParent();
-    } else if (isAnchorViewWrappedInCompatParent()) {
-      anchorParent = customAnchor.getParent();
     } else {
       anchorParent = customAnchor;
     }
