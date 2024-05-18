@@ -46,7 +46,7 @@
     <item name="tabPaddingBottom">0dp</item><!--sesl-->
     <item name="seslTabSubTextAppearance">@style/TextAppearance.Design.Tab.SubText</item><!--sesl-->
     <item name="tabSelectedTextColor">@color/sesl_tablayout_selected_text_color_dark</item><!--sesl-->
-    <item name="subTabTextColor">@color/sesl_tablayout_subtab_text_color_dark</item>
+    <item name="seslSubTabTextColor">@color/sesl_tablayout_subtab_text_color_dark</item>
   </style>
 
   <style name="TextAppearance.Design.Tab" parent="TextAppearance.AppCompat.Button">
@@ -86,7 +86,7 @@
     <item name="tabSelectedTextColor">@color/sesl_tablayout_selected_text_color</item>
     <item name="tabTextAppearance">@style/TextAppearance.Design.Tab.Light</item>
     <item name="seslTabSubTextAppearance">@style/TextAppearance.Design.Tab.SubText.Light</item>
-    <item name="subTabTextColor">@color/sesl_tablayout_subtab_text_color_light</item>
+    <item name="seslSubTabTextColor">@color/sesl_tablayout_subtab_text_color_light</item>
   </style>
 
   <style name="TextAppearance.Design.Tab.Light" parent="@style/TextAppearance.Design.Tab">

@@ -59,4 +59,9 @@
   <public name="seslTabSelectedSubTextColor" type="attr"/>
   <public name="Widget.Design.TabLayout.Light" type="style"/>
   <!--sesl-->
+
+  <!--custom-->
+  <public name="subTabTextColor" type="attr"/>
+  <public name="seslSubTabSelectedIndicatorColor" type="attr"/>
+
 </resources>

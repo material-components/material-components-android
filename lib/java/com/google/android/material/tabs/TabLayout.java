@@ -19,7 +19,6 @@ package com.google.android.material.tabs;
 import com.google.android.material.R;
 
 import static android.view.View.MeasureSpec.UNSPECIFIED;
-import static android.view.View.VISIBLE;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static android.widget.RelativeLayout.ABOVE;
@@ -67,7 +66,6 @@ import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewDebug;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
@@ -236,7 +234,7 @@ public class TabLayout extends HorizontalScrollView {
   private int mRequestedTabWidth = -1;
   private int mSubTabIndicator2ndHeight = 1;
   private int mSubTabIndicatorHeight = 1;
-  private int mSubTabSelectedIndicatorColor = Color.WHITE;
+  private int mSubTabSelectedIndicatorColor;
   int mSubTabSubTextAppearance;
   int mSubTabTextSize;
   private int mTabMinSideSpace;
@@ -704,8 +702,8 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     //Sesl
-    if (a.hasValue(R.styleable.TabLayout_subTabTextColor)) {
-      mSubTabTextColors = MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_subTabTextColor);
+    if (a.hasValue(R.styleable.TabLayout_seslSubTabTextColor)) {
+      mSubTabTextColors = MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_seslSubTabTextColor);
     }
     if (a.hasValue(R.styleable.TabLayout_seslTabSubTextColor)) {
       mSubTabSubTextColors =
@@ -718,6 +716,8 @@ public class TabLayout extends HorizontalScrollView {
               mSubTabSubTextColors.getDefaultColor(),
               a.getColor(R.styleable.TabLayout_seslTabSelectedSubTextColor, Color.TRANSPARENT));
     }
+    mSubTabSelectedIndicatorColor = a.getColor(R.styleable.TabLayout_seslSubTabSelectedIndicatorColor, Color.WHITE);
+
     //sesl
 
     if (a.hasValue(R.styleable.TabLayout_tabTextColor)) {
@@ -3189,7 +3189,7 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         if (mDepthStyle == DEPTH_TYPE_SUB) {
-          if (mIndicatorView != null && mSubTabSelectedIndicatorColor != -1) {
+          if (mIndicatorView != null && mSubTabSelectedIndicatorColor != Color.WHITE) {
             mIndicatorView.setSelectedIndicatorColor(mSubTabSelectedIndicatorColor);
           }
         } else {
