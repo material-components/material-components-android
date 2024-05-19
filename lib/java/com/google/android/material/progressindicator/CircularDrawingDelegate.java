@@ -133,10 +133,10 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         -outerRadiusWithInset, -outerRadiusWithInset, outerRadiusWithInset, outerRadiusWithInset);
 
     // These are used when drawing the indicator and track.
-    useStrokeCap = spec.trackThickness / 2 <= spec.trackCornerRadius;
+    useStrokeCap = spec.trackThickness / 2f <= spec.trackCornerRadius;
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius =
-        min(spec.trackThickness / 2, spec.trackCornerRadius) * trackThicknessFraction;
+        min(spec.trackThickness / 2f, spec.trackCornerRadius) * trackThicknessFraction;
     displayedAmplitude = spec.amplitude * trackThicknessFraction;
 
     // Further adjusts the radius for animated visibility change.
