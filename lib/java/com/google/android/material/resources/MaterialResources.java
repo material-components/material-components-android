@@ -223,6 +223,37 @@ public class MaterialResources {
         v.data, context.getResources().getDisplayMetrics());
   }
 
+  public static int getUnscaledLineHeight(
+      @NonNull Context context, @StyleRes int textAppearance, int defValue) {
+    if (textAppearance == 0) {
+      return defValue;
+    }
+
+    TypedArray a = context.obtainStyledAttributes(textAppearance,
+        R.styleable.MaterialTextAppearance);
+    TypedValue v = new TypedValue();
+    boolean available = a.getValue(R.styleable.MaterialTextAppearance_lineHeight, v);
+    if (!available) {
+      available = a.getValue(R.styleable.MaterialTextAppearance_android_lineHeight, v);
+    }
+    a.recycle();
+
+    if (!available) {
+      return defValue;
+    }
+
+    if (getComplexUnit(v) == TypedValue.COMPLEX_UNIT_SP) {
+      // Get the raw value. If the line height is set to 14sp in the dimen file, this will return
+      // 14. Scale the raw value using density and round to avoid truncating.
+      return Math.round(
+          TypedValue.complexToFloat(v.data) * context.getResources().getDisplayMetrics().density);
+    }
+
+    // If the resource is not is sp, return with regular resource system scaling.
+    return TypedValue.complexToDimensionPixelSize(
+        v.data, context.getResources().getDisplayMetrics());
+  }
+
   /**
    * Return the complex unit type for the given value.
    *

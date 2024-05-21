@@ -77,7 +77,7 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
     tempChildWidths.clear();
 
     int parentHeight = MeasureSpec.getSize(heightMeasureSpec);
-    final int heightSpec = MeasureSpec.makeMeasureSpec(parentHeight, MeasureSpec.EXACTLY);
+    final int heightSpec = MeasureSpec.makeMeasureSpec(parentHeight, MeasureSpec.AT_MOST);
 
     if (isShifting(getLabelVisibilityMode(), visibleCount)
         && isItemHorizontalTranslationEnabled()) {
@@ -131,6 +131,7 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
     }
 
     int totalWidth = 0;
+    int maxHeight = 0;
     for (int i = 0; i < totalCount; i++) {
       final View child = getChildAt(i);
       if (child.getVisibility() == GONE) {
@@ -141,9 +142,10 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
       ViewGroup.LayoutParams params = child.getLayoutParams();
       params.width = child.getMeasuredWidth();
       totalWidth += child.getMeasuredWidth();
+      maxHeight = Math.max(maxHeight, child.getMeasuredHeight());
     }
 
-    setMeasuredDimension(totalWidth, parentHeight);
+    setMeasuredDimension(totalWidth, Math.max(maxHeight, getSuggestedMinimumHeight()));
   }
 
   @Override

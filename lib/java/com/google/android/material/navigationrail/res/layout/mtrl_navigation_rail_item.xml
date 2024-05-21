@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?><!--
+<?xml version="1.0" encoding="utf-8"?>
+<!--
   ~ Copyright (C) 2021 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,38 +15,47 @@
   ~ limitations under the License.
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-
-  <FrameLayout
-    android:id="@+id/navigation_bar_item_icon_container"
+  <LinearLayout
+    android:id="@id/navigation_bar_item_content_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
+    android:layout_gravity="top|center_horizontal"
+    android:clipChildren="false"
+    android:orientation="vertical"
+    android:gravity="center"
     android:layout_marginTop="@dimen/mtrl_navigation_rail_margin"
-    android:layout_marginBottom="@dimen/mtrl_navigation_rail_text_bottom_margin"
     android:duplicateParentState="true">
-    <View
-      android:id="@+id/navigation_bar_item_active_indicator_view"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_gravity="center"/>
-    <ImageView
-      android:id="@id/navigation_bar_item_icon_view"
-      android:layout_width="@dimen/mtrl_navigation_rail_icon_size"
-      android:layout_height="@dimen/mtrl_navigation_rail_icon_size"
+
+    <FrameLayout
+      android:id="@id/navigation_bar_item_icon_container"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:contentDescription="@null"
-      android:duplicateParentState="true" />
-  </FrameLayout>
-  <com.google.android.material.internal.BaselineLayout
+      android:duplicateParentState="true">
+      <View
+        android:id="@id/navigation_bar_item_active_indicator_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center" />
+      <ImageView
+        android:id="@id/navigation_bar_item_icon_view"
+        android:layout_width="@dimen/mtrl_navigation_rail_icon_size"
+        android:layout_height="@dimen/mtrl_navigation_rail_icon_size"
+        android:layout_gravity="center"
+        android:contentDescription="@null"
+        android:duplicateParentState="true" />
+    </FrameLayout>
+    <com.google.android.material.internal.BaselineLayout
       android:id="@id/navigation_bar_item_labels_group"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginTop="@dimen/m3_navigation_rail_icon_label_padding"
       android:paddingBottom="@dimen/mtrl_navigation_rail_text_bottom_margin"
-      android:layout_gravity="bottom|center_horizontal"
       android:clipChildren="false"
       android:clipToPadding="false"
+      android:layout_gravity="center"
       android:duplicateParentState="true">
-    <TextView
+      <TextView
         android:id="@id/navigation_bar_item_small_label_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -55,7 +65,7 @@
         android:paddingStart="@dimen/m3_navigation_rail_label_padding_horizontal"
         android:paddingEnd="@dimen/m3_navigation_rail_label_padding_horizontal"
         android:textSize="@dimen/mtrl_navigation_rail_text_size" />
-    <TextView
+      <TextView
         android:id="@id/navigation_bar_item_large_label_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -66,5 +76,6 @@
         android:paddingStart="@dimen/m3_navigation_rail_label_padding_horizontal"
         android:paddingEnd="@dimen/m3_navigation_rail_label_padding_horizontal"
         android:visibility="invisible" />
-  </com.google.android.material.internal.BaselineLayout>
+    </com.google.android.material.internal.BaselineLayout>
+  </LinearLayout>
 </merge>

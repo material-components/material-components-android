@@ -155,6 +155,7 @@ public abstract class NavigationBarView extends FrameLayout {
 
     // Create the menu view.
     menuView = createNavigationBarMenuView(context);
+    menuView.setMinimumHeight(getSuggestedMinimumHeight());
 
     presenter.setMenuView(menuView);
     presenter.setId(MENU_PRESENTER_ID);

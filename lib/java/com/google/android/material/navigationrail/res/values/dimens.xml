@@ -38,5 +38,6 @@
   <dimen name="m3_navigation_rail_item_active_indicator_height">@dimen/m3_comp_navigation_rail_active_indicator_height</dimen>
   <dimen name="m3_navigation_rail_item_active_indicator_margin_horizontal">4dp</dimen>
   <dimen name="m3_navigation_rail_label_padding_horizontal">2dp</dimen>
+  <dimen name="m3_navigation_rail_icon_label_padding">4dp</dimen>
 
 </resources>

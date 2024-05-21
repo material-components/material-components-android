@@ -82,6 +82,7 @@
     <item name="itemTextAppearanceInactive">@macro/m3_comp_navigation_rail_label_text_type</item>
     <item name="itemTextAppearanceActive">@macro/m3_comp_navigation_rail_label_text_type</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.NavigationRailView</item>
+    <item name="activeIndicatorLabelPadding">@dimen/m3_navigation_rail_icon_label_padding</item>
   </style>
 
   <style name="Widget.Material3.NavigationRailView.ActiveIndicator" parent="">
