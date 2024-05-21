@@ -2357,19 +2357,12 @@ abstract class BaseSlider<
 
         requestFocus();
         thumbIsPressed = true;
+        updateThumbWidthWhenPressed();
+        onStartTrackingTouch();
+
         snapTouchPosition();
         updateHaloHotspot();
-        // Update the thumb width when pressed.
-        if (hasGapBetweenThumbAndTrack()) {
-          defaultThumbWidth = thumbWidth;
-          defaultThumbTrackGapSize = thumbTrackGapSize;
-          int pressedThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
-          int delta = thumbWidth - pressedThumbWidth;
-          setThumbWidth(pressedThumbWidth);
-          setThumbTrackGapSize(thumbTrackGapSize - delta / 2);
-        }
         invalidate();
-        onStartTrackingTouch();
         break;
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
@@ -2378,15 +2371,17 @@ abstract class BaseSlider<
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
+
+          if (!pickActiveThumb()) {
+            // Couldn't determine the active thumb yet.
+            break;
+          }
+
+          thumbIsPressed = true;
+          updateThumbWidthWhenPressed();
           onStartTrackingTouch();
         }
 
-        if (!pickActiveThumb()) {
-          // Couldn't determine the active thumb yet.
-          break;
-        }
-
-        thumbIsPressed = true;
         snapTouchPosition();
         updateHaloHotspot();
         invalidate();
@@ -2428,6 +2423,18 @@ abstract class BaseSlider<
 
     lastEvent = MotionEvent.obtain(event);
     return true;
+  }
+
+  private void updateThumbWidthWhenPressed() {
+    // Update thumb width and track gap size when pressed.
+    if (hasGapBetweenThumbAndTrack()) {
+      defaultThumbWidth = thumbWidth;
+      defaultThumbTrackGapSize = thumbTrackGapSize;
+      int pressedThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
+      int delta = thumbWidth - pressedThumbWidth;
+      setThumbWidth(pressedThumbWidth);
+      setThumbTrackGapSize(thumbTrackGapSize - delta / 2);
+    }
   }
 
   private double snapPosition(float position) {
