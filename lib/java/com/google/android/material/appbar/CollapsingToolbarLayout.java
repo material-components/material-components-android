@@ -599,13 +599,15 @@ public class CollapsingToolbarLayout extends FrameLayout {
       updateTextBounds(0, 0, getMeasuredWidth(), getMeasuredHeight(), /* forceRecalculate= */ true);
 
       int lineCount = collapsingTextHelper.getExpandedLineCount();
-      if (lineCount > 1) {
+      if (lineCount > 1 && collapsingTextHelper.getExpansionFraction() == 0f) {
         // Add extra height based on the amount of height beyond the first line of title text.
         int expandedTextHeight = Math.round(collapsingTextHelper.getExpandedTextFullHeight());
         extraMultilineHeight = expandedTextHeight * (lineCount - 1);
         int newHeight = getMeasuredHeight() + extraMultilineHeight;
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      } else {
+        extraMultilineHeight = 0;
       }
     }
 
