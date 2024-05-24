@@ -201,5 +201,15 @@
         android:enabled="true"
         android:text="@string/cat_button_enable" />
 
+    <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/switch_morph_corner"
+      android:paddingTop="16dp"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="center"
+      android:checked="false"
+      android:enabled="true"
+      android:text="@string/cat_button_morph_corner" />
+
   </LinearLayout>
 </ScrollView>

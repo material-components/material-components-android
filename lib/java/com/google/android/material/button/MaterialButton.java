@@ -19,6 +19,7 @@ package com.google.android.material.button;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.math.MathUtils.lerp;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.ceil;
 import static java.lang.Math.max;
@@ -31,6 +32,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -61,8 +63,10 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
+import androidx.dynamicanimation.animation.FloatPropertyCompat;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import androidx.resourceinspection.annotation.Attribute;
@@ -189,22 +193,39 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   /** Positions the icon can be set to. */
   @IntDef({
-      ICON_GRAVITY_START,
-      ICON_GRAVITY_TEXT_START,
-      ICON_GRAVITY_END,
-      ICON_GRAVITY_TEXT_END,
-      ICON_GRAVITY_TOP,
-      ICON_GRAVITY_TEXT_TOP
+    ICON_GRAVITY_START,
+    ICON_GRAVITY_TEXT_START,
+    ICON_GRAVITY_END,
+    ICON_GRAVITY_TEXT_END,
+    ICON_GRAVITY_TOP,
+    ICON_GRAVITY_TEXT_TOP
   })
   @Retention(RetentionPolicy.SOURCE)
   public @interface IconGravity {}
+
+  /** Corner animation that does nothing. */
+  public static final int CORNER_ANIMATION_MODE_NONE = 0x0;
+
+  /** Corner animation that increase corners to full size when checked. */
+  public static final int CORNER_ANIMATION_MODE_GROW_ON_CHECK = 0x1;
+
+  /** Corner animation that decrease corners to half size when pressed. */
+  public static final int CORNER_ANIMATION_MODE_SHRINK_ON_PRESS = 0x10;
 
   private static final String LOG_TAG = "MaterialButton";
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
+  private static final float DECREASED_PRESSED_CORNER_INTERPOLATION_TO_MIN = 0.5f;
+  private static final float FULL_CHECKED_CORNER_INTERPOLATION_TO_MAX = 0f;
+  private static final float TOGGLE_BUTTON_SPRING_DAMPING = 0.8f;
+  private static final float DEFAULT_BUTTON_CORNER_SPRING_DAMPING = 0.5f;
+  private static final float DEFAULT_BUTTON_SPRING_STIFFNESS = 800;
+
   @NonNull private final MaterialButtonHelper materialButtonHelper;
-  @NonNull private final LinkedHashSet<OnCheckedChangeListener> onCheckedChangeListeners =
+
+  @NonNull
+  private final LinkedHashSet<OnCheckedChangeListener> onCheckedChangeListeners =
       new LinkedHashSet<>();
 
   @Nullable private OnPressedChangeListener onPressedChangeListenerInternal;
@@ -221,6 +242,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   private boolean checked = false;
   private boolean broadcasting = false;
   @IconGravity private int iconGravity;
+
+  // Fields for corner morphing.
+  private float defaultCornerSize;
+  private float minCornerSize;
+  private float maxCornerSize;
+  private float morphCornerSize;
+
+  private int cornerAnimationMode;
+  @Nullable private SpringAnimation shapeSpringAnimation;
+
+  private float originalWidth;
+  private float originalHeight;
+  @NonNull private final RectF bounds = new RectF();
 
   public MaterialButton(@NonNull Context context) {
     this(context, null /* attrs */);
@@ -254,6 +288,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     ShapeAppearanceModel shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
 
+    cornerAnimationMode =
+        attributes.getInteger(
+            R.styleable.MaterialButton_cornerAnimationMode, CORNER_ANIMATION_MODE_NONE);
+
     // Loads and sets background drawable attributes
     materialButtonHelper = new MaterialButtonHelper(this, shapeAppearanceModel);
     materialButtonHelper.loadFromAttributes(attributes);
@@ -261,7 +299,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     attributes.recycle();
 
     setCompoundDrawablePadding(iconPadding);
-    updateIcon(/*needsIconReset=*/icon != null);
+    updateIcon(/* needsIconReset= */ icon != null);
+    if (cornerAnimationMode != CORNER_ANIMATION_MODE_NONE) {
+      initializeShapeAnimation();
+    }
+  }
+
+  private void initializeShapeAnimation() {
+    shapeSpringAnimation = new SpringAnimation(this, MORPH_CORNER_SIZE);
+    shapeSpringAnimation.setSpring(
+        new SpringForce()
+            .setDampingRatio(
+                isCheckable() ? TOGGLE_BUTTON_SPRING_DAMPING : DEFAULT_BUTTON_CORNER_SPRING_DAMPING)
+            .setStiffness(DEFAULT_BUTTON_SPRING_STIFFNESS));
   }
 
   @NonNull
@@ -467,6 +517,14 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       materialButtonHelper.updateMaskBounds(bottom - top, right - left);
     }
     updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
+    if (originalWidth != right - left || originalHeight != bottom - top) {
+      originalWidth = right - left;
+      originalHeight = bottom - top;
+      bounds.set(left, top, right, bottom);
+      maxCornerSize = min(originalWidth, originalHeight) / 2;
+      defaultCornerSize = materialButtonHelper.getDefaultCornerSize(bounds);
+      maybeAnimateCorners();
+    }
   }
 
   @Override
@@ -537,8 +595,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   /**
    * This method and {@link #getGravityTextAlignment()} is modified from Android framework
-   * TextView's private method getLayoutAlignment(). Please note that the logic here assumes
-   * the actual text direction is the same as the layout direction, which is not always the case,
+   * TextView's private method getLayoutAlignment(). Please note that the logic here assumes the
+   * actual text direction is the same as the layout direction, which is not always the case,
    * especially when the text mixes different languages. However, this is probably the best we can
    * do for now, unless we have a good way to detect the final text direction being used by
    * TextView.
@@ -574,17 +632,18 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
           || (iconGravity == ICON_GRAVITY_TEXT_START && textAlignment == Alignment.ALIGN_NORMAL)
           || (iconGravity == ICON_GRAVITY_TEXT_END && textAlignment == Alignment.ALIGN_OPPOSITE)) {
         iconLeft = 0;
-        updateIcon(/* needsIconReset = */ false);
+        updateIcon(/* needsIconReset= */ false);
         return;
       }
 
       int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
-      int availableWidth = buttonWidth
-          - getTextLayoutWidth()
-          - getPaddingEnd()
-          - localIconSize
-          - iconPadding
-          - getPaddingStart();
+      int availableWidth =
+          buttonWidth
+              - getTextLayoutWidth()
+              - getPaddingEnd()
+              - localIconSize
+              - iconPadding
+              - getPaddingStart();
       int newIconLeft =
           textAlignment == Alignment.ALIGN_CENTER ? availableWidth / 2 : availableWidth;
 
@@ -595,13 +654,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
       if (iconLeft != newIconLeft) {
         iconLeft = newIconLeft;
-        updateIcon(/* needsIconReset = */ false);
+        updateIcon(/* needsIconReset= */ false);
       }
     } else if (isIconTop()) {
       iconLeft = 0;
       if (iconGravity == ICON_GRAVITY_TOP) {
         iconTop = 0;
-        updateIcon(/* needsIconReset = */ false);
+        updateIcon(/* needsIconReset= */ false);
         return;
       }
 
@@ -619,7 +678,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
       if (iconTop != newIconTop) {
         iconTop = newIconTop;
-        updateIcon(/* needsIconReset = */ false);
+        updateIcon(/* needsIconReset= */ false);
       }
     }
   }
@@ -708,7 +767,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     if (this.iconSize != iconSize) {
       this.iconSize = iconSize;
-      updateIcon(/* needsIconReset = */ true);
+      updateIcon(/* needsIconReset= */ true);
     }
   }
 
@@ -736,10 +795,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIcon(@Nullable Drawable icon) {
     if (this.icon != icon) {
       this.icon = icon;
-      updateIcon(/* needsIconReset = */ true);
+      updateIcon(/* needsIconReset= */ true);
       updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
     }
   }
+
   /**
    * Sets the icon drawable resource to show for this button. By default, this icon will be shown on
    * the left side of the button.
@@ -780,7 +840,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIconTint(@Nullable ColorStateList iconTint) {
     if (this.iconTint != iconTint) {
       this.iconTint = iconTint;
-      updateIcon(/* needsIconReset = */ false);
+      updateIcon(/* needsIconReset= */ false);
     }
   }
 
@@ -818,7 +878,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIconTintMode(Mode iconTintMode) {
     if (this.iconTintMode != iconTintMode) {
       this.iconTintMode = iconTintMode;
-      updateIcon(/* needsIconReset = */ false);
+      updateIcon(/* needsIconReset= */ false);
     }
   }
 
@@ -835,6 +895,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   /**
    * Updates the icon, icon tint, and icon tint mode for this button.
+   *
    * @param needsIconReset Whether to force the drawable to be set
    */
   private void updateIcon(boolean needsIconReset) {
@@ -858,7 +919,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
 
     // Otherwise only update if the icon or the position has changed
-    Drawable[] existingDrawables = TextViewCompat.getCompoundDrawablesRelative(this);
+    Drawable[] existingDrawables = getCompoundDrawablesRelative();
     Drawable drawableStart = existingDrawables[0];
     Drawable drawableTop = existingDrawables[1];
     Drawable drawableEnd = existingDrawables[2];
@@ -874,11 +935,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private void resetIconDrawable() {
     if (isIconStart()) {
-      TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
+      setCompoundDrawablesRelative(icon, null, null, null);
     } else if (isIconEnd()) {
-      TextViewCompat.setCompoundDrawablesRelative(this, null, null, icon, null);
+      setCompoundDrawablesRelative(null, null, icon, null);
     } else if (isIconTop()) {
-      TextViewCompat.setCompoundDrawablesRelative(this, null, icon, null, null);
+      setCompoundDrawablesRelative(null, icon, null, null);
     }
   }
 
@@ -1031,6 +1092,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setCornerRadius(@Px int cornerRadius) {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setCornerRadius(cornerRadius);
+      defaultCornerSize = materialButtonHelper.getDefaultCornerSize(bounds);
     }
   }
 
@@ -1107,6 +1169,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public int getInsetBottom() {
     return materialButtonHelper.getInsetBottom();
   }
+
   /**
    * Sets the button top inset
    *
@@ -1175,6 +1238,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setChecked(boolean checked) {
     if (isCheckable() && isEnabled() && this.checked != checked) {
       this.checked = checked;
+      maybeAnimateCorners();
+
       refreshDrawableState();
 
       // Report checked state change to the parent toggle group, if there is one
@@ -1254,6 +1319,12 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setCheckable(checkable);
     }
+    if (shapeSpringAnimation != null) {
+      shapeSpringAnimation
+          .getSpring()
+          .setDampingRatio(
+              isCheckable() ? TOGGLE_BUTTON_SPRING_DAMPING : DEFAULT_BUTTON_CORNER_SPRING_DAMPING);
+    }
   }
 
   /**
@@ -1265,6 +1336,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setShapeAppearanceModel(shapeAppearanceModel);
+      defaultCornerSize = materialButtonHelper.getDefaultCornerSize(bounds);
+      maybeAnimateCorners(/* skipAnimation= */ true);
     } else {
       throw new IllegalStateException(
           "Attempted to set ShapeAppearanceModel on a MaterialButton which has an overwritten"
@@ -1273,7 +1346,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   /**
-   * Returns the {@link ShapeAppearanceModel} used for this MaterialButton's shape definition.
+   * Returns the {@link ShapeAppearanceModel} used for this {@link MaterialButton}'s shape
+   * definition.
    *
    * <p>This {@link ShapeAppearanceModel} can be modified to change the component's shape.
    *
@@ -1292,6 +1366,34 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   /**
+   * Sets the {@link ShapeAppearanceModel} with minimum corner sizes used for this {@link
+   * MaterialButton}'s corner morph. This contains the lower bound of the corner size in the
+   * animation. It defaults to the absolute corner size of 0dp.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setMinShapeAppearanceModel(@NonNull ShapeAppearanceModel minShape) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setMinShapeAppearanceModel(minShape);
+    }
+  }
+
+  /**
+   * Sets the {@link ShapeAppearanceModel} with maximum corner sizes used for this {@link
+   * MaterialButton}'s corner morph. This contains the upper bound of the corner size in the
+   * animation. It defaults to the relative corner size of 50%.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setMaxShapeAppearanceModel(@NonNull ShapeAppearanceModel maxShape) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setMaxShapeAppearanceModel(maxShape);
+    }
+  }
+
+  /**
    * Register a callback to be invoked when the pressed state of this button changes. This callback
    * is used for internal purpose only.
    */
@@ -1305,6 +1407,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       onPressedChangeListenerInternal.onPressedChanged(this, pressed);
     }
     super.setPressed(pressed);
+    maybeAnimateCorners();
   }
 
   private boolean isUsingOriginalBackground() {
@@ -1316,6 +1419,104 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       materialButtonHelper.setShouldDrawSurfaceColorStroke(shouldDrawSurfaceColorStroke);
     }
   }
+
+  /**
+   * Sets the corner animation mode for this button.
+   *
+   * @param cornerAnimationMode The corner animation mode to use.
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_cornerAnimationMode
+   * @see #getCornerAnimationMode()
+   */
+  public void setCornerAnimationMode(int cornerAnimationMode) {
+    if (this.cornerAnimationMode != cornerAnimationMode) {
+      this.cornerAnimationMode = cornerAnimationMode;
+      maybeAnimateCorners(/* skipAnimation= */ true);
+      invalidate();
+    }
+  }
+
+  /**
+   * Gets the corner animation mode for this button.
+   *
+   * @return The corner animation mode to use.
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_cornerAnimationMode
+   * @see #setCornerAnimationMode(int)
+   */
+  public int getCornerAnimationMode() {
+    return this.cornerAnimationMode;
+  }
+
+  private void maybeAnimateCorners() {
+    maybeAnimateCorners(false);
+  }
+
+  private void maybeAnimateCorners(boolean skipAnimation) {
+    if (shapeSpringAnimation == null) {
+      if (cornerAnimationMode == CORNER_ANIMATION_MODE_NONE) {
+        return;
+      }
+      initializeShapeAnimation();
+    }
+    shapeSpringAnimation.animateToFinalPosition(getCornerSizeInCurrentState());
+    if (skipAnimation) {
+      shapeSpringAnimation.skipToEnd();
+    }
+  }
+
+  private float getCornerSizeInCurrentState() {
+    if (isPressed() && containsFlag(cornerAnimationMode, CORNER_ANIMATION_MODE_SHRINK_ON_PRESS)) {
+      return lerp(minCornerSize, defaultCornerSize, DECREASED_PRESSED_CORNER_INTERPOLATION_TO_MIN);
+    }
+    if (isCheckable()
+        && isChecked()
+        && containsFlag(cornerAnimationMode, CORNER_ANIMATION_MODE_GROW_ON_CHECK)) {
+      return lerp(maxCornerSize, defaultCornerSize, FULL_CHECKED_CORNER_INTERPOLATION_TO_MAX);
+    }
+    return defaultCornerSize;
+  }
+
+  private boolean containsFlag(int flagSet, int flag) {
+    return (flagSet | flag) == flagSet;
+  }
+
+  private float getMorphCornerSize() {
+    return morphCornerSize;
+  }
+
+  private void setMorphCornerSize(float morphCornerSize) {
+    if (this.morphCornerSize != morphCornerSize) {
+      this.morphCornerSize = morphCornerSize;
+      if (morphCornerSize < defaultCornerSize) {
+        float interpolation =
+            defaultCornerSize == minCornerSize
+                ? 1f
+                : (morphCornerSize - minCornerSize) / (defaultCornerSize - minCornerSize);
+        materialButtonHelper.interpolateCornerToMin(interpolation);
+      } else {
+        float interpolation =
+            defaultCornerSize == maxCornerSize
+                ? 1f
+                : (morphCornerSize - maxCornerSize) / (defaultCornerSize - maxCornerSize);
+        materialButtonHelper.interpolateCornerToMax(interpolation);
+      }
+      invalidate();
+    }
+  }
+
+  // ******************* Properties *******************
+
+  private static final FloatPropertyCompat<MaterialButton> MORPH_CORNER_SIZE =
+      new FloatPropertyCompat<MaterialButton>("morphCornerSize") {
+        @Override
+        public float getValue(MaterialButton button) {
+          return button.getMorphCornerSize();
+        }
+
+        @Override
+        public void setValue(MaterialButton button, float value) {
+          button.setMorphCornerSize(value);
+        }
+      };
 
   static class SavedState extends AbsSavedState {
 

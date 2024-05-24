@@ -114,6 +114,17 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
             toggleGroup.setSpacing((int) (value * pixelsInDp));
           }
         });
+    MaterialSwitch morphCornerSwitch = view.findViewById(R.id.switch_morph_corner);
+    morphCornerSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
+            toggleGroup.setCornerAnimationMode(
+                isChecked
+                    ? MaterialButton.CORNER_ANIMATION_MODE_SHRINK_ON_PRESS
+                        | MaterialButton.CORNER_ANIMATION_MODE_GROW_ON_CHECK
+                    : MaterialButton.CORNER_ANIMATION_MODE_NONE);
+          }
+        });
     return view;
   }
 

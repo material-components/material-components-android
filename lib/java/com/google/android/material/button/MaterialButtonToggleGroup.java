@@ -19,6 +19,7 @@ package com.google.android.material.button;
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
 import android.content.Context;
@@ -181,8 +182,10 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private boolean singleSelection;
   private boolean selectionRequired;
 
+  @Px private int displayedWidth;
   @NonNull private CornerSize insideCornerSize;
   @Px private int spacing;
+  private int cornerAnimationModeInChildren;
 
   @IdRes private final int defaultCheckId;
   private Set<Integer> checkedIds = new HashSet<>();
@@ -217,6 +220,12 @@ public class MaterialButtonToggleGroup extends LinearLayout {
             new AbsoluteCornerSize(0));
     spacing =
         attributes.getDimensionPixelSize(R.styleable.MaterialButtonToggleGroup_android_spacing, 0);
+    cornerAnimationModeInChildren =
+        attributes.getInteger(
+            R.styleable.MaterialButtonToggleGroup_cornerAnimationMode,
+            MaterialButton.CORNER_ANIMATION_MODE_NONE);
+
+    setCornerAnimationMode(cornerAnimationModeInChildren);
     setChildrenDrawingOrderEnabled(true);
     setEnabled(attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_android_enabled, true));
     attributes.recycle();
@@ -308,10 +317,18 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    updateChildShapes();
     adjustChildMarginsAndUpdateLayout();
-
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+  }
+
+  @Override
+  protected void onLayout(boolean changed, int l, int t, int r, int b) {
+    super.onLayout(changed, l, t, r, b);
+    int width = r - l;
+    if (abs(displayedWidth - width) > 1) {
+      displayedWidth = width;
+      updateChildShapes();
+    }
   }
 
   @Override
@@ -619,10 +636,14 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       }
 
       ShapeAppearanceModel.Builder builder = button.getShapeAppearanceModel().toBuilder();
+
       CornerData newCornerData = getNewCornerData(i, firstVisibleChildIndex, lastVisibleChildIndex);
       updateBuilderWithCornerData(builder, newCornerData);
-
       button.setShapeAppearanceModel(builder.build());
+
+      CornerData minCornerData = getMinCornerData(i, firstVisibleChildIndex, lastVisibleChildIndex);
+      updateBuilderWithCornerData(builder, minCornerData);
+      button.setMinShapeAppearanceModel(builder.build());
     }
   }
 
@@ -679,11 +700,38 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     return -1;
   }
 
-  @Nullable
+  @NonNull
   private CornerData getNewCornerData(
       int index, int firstVisibleChildIndex, int lastVisibleChildIndex) {
     CornerData cornerData = originalCornerData.get(index);
     CornerData insideCornerData = new CornerData(insideCornerSize);
+
+    // If only one (visible) child exists, use its original corners
+    if (firstVisibleChildIndex == lastVisibleChildIndex) {
+      return cornerData;
+    }
+
+    boolean isHorizontal = getOrientation() == HORIZONTAL;
+    if (index == firstVisibleChildIndex) {
+      return isHorizontal
+          ? CornerData.start(cornerData, insideCornerData, this)
+          : CornerData.top(cornerData, insideCornerData);
+    }
+
+    if (index == lastVisibleChildIndex) {
+      return isHorizontal
+          ? CornerData.end(cornerData, insideCornerData, this)
+          : CornerData.bottom(cornerData, insideCornerData);
+    }
+
+    return insideCornerData;
+  }
+
+  @NonNull
+  private CornerData getMinCornerData(
+      int index, int firstVisibleChildIndex, int lastVisibleChildIndex) {
+    CornerData cornerData = originalCornerData.get(index);
+    CornerData insideCornerData = new CornerData();
 
     // If only one (visible) child exists, use its original corners
     if (firstVisibleChildIndex == lastVisibleChildIndex) {
@@ -844,6 +892,26 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     }
   }
 
+  /**
+   * Sets the child buttons' corner animation mode.
+   *
+   * @param cornerAnimationMode New corner animation mode applying on all child buttons.
+   */
+  public void setCornerAnimationMode(int cornerAnimationMode) {
+    if (cornerAnimationModeInChildren != cornerAnimationMode) {
+      cornerAnimationModeInChildren = cornerAnimationMode;
+      for (int i = 0; i < getChildCount(); i++) {
+        MaterialButton childButton = getChildButton(i);
+        childButton.setCornerAnimationMode(cornerAnimationModeInChildren);
+      }
+    }
+  }
+
+  /** Returns the child buttons' corner animation mode. */
+  public int getCornerAnimationMode() {
+    return cornerAnimationModeInChildren;
+  }
+
   private class PressedStateTracker implements OnPressedChangeListener {
 
     @Override
@@ -858,6 +926,10 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     @NonNull CornerSize topRight;
     @NonNull CornerSize bottomRight;
     @NonNull CornerSize bottomLeft;
+
+    CornerData() {
+      this(new AbsoluteCornerSize(0));
+    }
 
     CornerData(@NonNull CornerSize cornerSize) {
       this(cornerSize, cornerSize, cornerSize, cornerSize);
