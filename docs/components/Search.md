@@ -186,7 +186,12 @@ searchView.setOnMenuItemClickListener(
     });
 ```
 
-Additionally, here is an example of how you can carry over the search text to
+Additionally, `SearchView` exposes its main `EditText` via a `getEditText()`
+method, so you can use any of the traditional
+[EditText APIs](https://developer.android.com/reference/android/widget/EditText)
+to configure the search field (`setText()`, `addTextChangedListener()`, etc.).
+
+Here is an example of how you can carry over the search text to
 the `SearchBar`, as well as hide the `SearchView` when the user finishes typing
 and presses enter:
 
@@ -317,6 +322,27 @@ Additionally, with this pattern it is common to hide the back button to reduce
 clutter, as navigation can be handled outside of the search view. This can be
 accomplished by setting `app:hideNavigationIcon="true"` on your `SearchView`.
 
+## Search History, Suggestions, and Results
+
+`SearchView` is a view group component, meaning you can nest content inside of
+it such as:
+
+- Search history when the `SearchView` is first expanded
+- Search suggestions when the user is typing
+- Search results once the user submits the search
+
+```xml
+  <com.google.android.material.search.SearchView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:hint="@string/searchbar_hint"
+      app:layout_anchor="@id/search_bar">
+
+    <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+
+  </com.google.android.material.search.SearchView>
+```
+
 ## Putting it all together
 
 Putting it all together and using the scroll-away mode, the `SearchBar` and
@@ -350,7 +376,9 @@ Putting it all together and using the scroll-away mode, the `SearchBar` and
       android:layout_height="match_parent"
       android:hint="@string/searchbar_hint"
       app:layout_anchor="@id/search_bar">
+
     <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+
   </com.google.android.material.search.SearchView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
