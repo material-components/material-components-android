@@ -19,7 +19,6 @@ package com.google.android.material.shape;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static androidx.core.math.MathUtils.clamp;
 import static com.google.android.material.math.MathUtils.lerp;
 
 import android.annotation.TargetApi;
@@ -695,7 +694,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @param interpolation the desired interpolation.
    */
   public void setInterpolation(float interpolation) {
-    interpolation = clamp(interpolation, 0f, 1f);
     if (drawableState.interpolation != interpolation) {
       drawableState.interpolation = interpolation;
       pathDirty = true;

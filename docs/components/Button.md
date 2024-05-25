@@ -141,15 +141,14 @@ Element        | Attribute                | Related method(s)                 | 
 
 #### Container attributes
 
-Element                   | Attribute                 | Related method(s)                                                            | Default value
-------------------------- | ------------------------- | ---------------------------------------------------------------------------- | -------------
-**Color**                 | `app:backgroundTint`      | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorSurfaceContainerLow` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
-**Stroke color**          | `app:strokeColor`         | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
-**Stroke width**          | `app:strokeWidth`         | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
-**Shape**                 | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
-**Elevation**             | `app:elevation`           | `setElevation`<br/>`getElevation`                                            | `1dp`
-**Ripple color**          | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
-**Corner Animation Mode** | `app:cornerAnimationMode` | `setCornerAnimationMode`</br>`getCornerAnimationMode`                        | `none`
+Element          | Attribute             | Related method(s)                                                            | Default value
+---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
+**Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorSurfaceContainerLow` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
+**Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
+**Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `1dp`
+**Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
 
 #### Icon attributes
 
@@ -255,15 +254,14 @@ Element        | Attribute                | Related method(s)                 | 
 
 #### Container attributes
 
-Element                   | Attribute                 | Related method(s)                                                            | Default value
-------------------------- | ------------------------- | ---------------------------------------------------------------------------- | -------------
-**Color**                 | `app:backgroundTint`      | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
-**Stroke color**          | `app:strokeColor`         | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
-**Stroke width**          | `app:strokeWidth`         | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
-**Shape**                 | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
-**Elevation**             | `app:elevation`           | `setElevation`<br/>`getElevation`                                            | `2dp`
-**Ripple color**          | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnPrimary` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_ripple_color_selector.xml))
-**Corner Animation Mode** | `app:cornerAnimationMode` | `setCornerAnimationMode`</br>`getCornerAnimationMode`                        | `none`
+Element          | Attribute             | Related method(s)                                                            | Default value
+---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
+**Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
+**Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
+**Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `2dp`
+**Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnPrimary` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_ripple_color_selector.xml))
 
 #### Icon attributes
 
@@ -371,15 +369,14 @@ Element        | Attribute                | Related method(s)                 | 
 
 #### Container attributes
 
-Element                   | Attribute                 | Related method(s)                                                            | Default value
-------------------------- | ------------------------- | ---------------------------------------------------------------------------- | -------------
-**Color**                 | `app:backgroundTint`      | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorSecondaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
-**Stroke color**          | `app:strokeColor`         | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
-**Stroke width**          | `app:strokeWidth`         | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
-**Shape**                 | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
-**Elevation**             | `app:elevation`           | `setElevation`<br/>`getElevation`                                            | `2dp`
-**Ripple color**          | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSecondaryContainer` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_tonal_button_ripple_color_selector.xml))
-**Corner Animation Mode** | `app:cornerAnimationMode` | `setCornerAnimationMode`</br>`getCornerAnimationMode`                        | `none`
+Element          | Attribute             | Related method(s)                                                            | Default value
+---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
+**Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorSecondaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
+**Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
+**Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `2dp`
+**Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSecondaryContainer` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_tonal_button_ripple_color_selector.xml))
 
 #### Icon attributes
 
@@ -481,15 +478,14 @@ Element        | Attribute                | Related method(s)                 | 
 
 #### Container attributes
 
-Element                   | Attribute                 | Related method(s)                                                            | Default value
-------------------------- | ------------------------- | ---------------------------------------------------------------------------- | -------------
-**Color**                 | `app:backgroundTint`      | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
-**Stroke color**          | `app:strokeColor`         | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `?attr/colorOnSurface` at 12% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_button_outline_color_selector.xml))
-**Stroke width**          | `app:strokeWidth`         | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `1dp`
-**Shape**                 | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
-**Elevation**             | `app:elevation`           | `setElevation`<br/>`getElevation`                                            | `0dp`
-**Ripple color**          | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
-**Corner Animation Mode** | `app:cornerAnimationMode` | `setCornerAnimationMode`</br>`getCornerAnimationMode`                        | `none`
+Element          | Attribute             | Related method(s)                                                            | Default value
+---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
+**Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
+**Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `?attr/colorOnSurface` at 12% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_button_outline_color_selector.xml))
+**Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `1dp`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `0dp`
+**Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
 
 #### Icon attributes
 
@@ -589,15 +585,14 @@ Element        | Attribute                | Related method(s)                 | 
 
 #### Container attributes
 
-Element                   | Attribute                 | Related method(s)                                                            | Default value
-------------------------- | ------------------------- | ---------------------------------------------------------------------------- | -------------
-**Color**                 | `app:backgroundTint`      | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
-**Stroke color**          | `app:strokeColor`         | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
-**Stroke width**          | `app:strokeWidth`         | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
-**Shape**                 | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
-**Elevation**             | `app:elevation`           | `setElevation`<br/>`getElevation`                                            | `0dp`
-**Ripple color**          | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
-**Corner Animation Mode** | `app:cornerAnimationMode` | `setCornerAnimationMode`</br>`getCornerAnimationMode`                        | `none`
+Element          | Attribute             | Related method(s)                                                            | Default value
+---------------- | --------------------- | ---------------------------------------------------------------------------- | -------------
+**Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
+**Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
+**Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `0dp`
+**Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
 
 #### Icon attributes
 
@@ -751,19 +746,13 @@ A toggle button has a shared stroked container, icons and/or text labels.
 
 #### Selection attributes
 
-Element                               | Attribute               | Related method(s)                                | Default value
-------------------------------------- | ----------------------- | ------------------------------------------------ | -------------
-**Single selection**                  | `app:singleSelection`   | `setSingleSelection`<br/>`isSingleSelection`     | `false`
-**Selection required**                | `app:selectionRequired` | `setSelectionRequired`<br/>`isSelectionRequired` | `false`
-**Enable the group and all children** | `android:enabled`       | `setEnabled`<br/>`isEnabled`                     | `true`
-
-#### Container attributes
-
-Element                      | Attribute                 | Related method(s)                                                                       | Default value
----------------------------- | ------------------------- | --------------------------------------------------------------------------------------- | -------------
-**Radius of inside corners** | `app:insideCornerSize`    | `setInsideCornerSizeByPx`<br/>`setInsideCornerSizeByFraction`<br/>`getInsideCornerSize` | `0dp`
-**Spacing between buttons**  | `android:spacing`         | `setSpacing`<br/>`getSpacing`                                                           | `0dp`
-**Corner Animation Mode**    | `app:cornerAnimationMode` | `setCornerAnimationMode`</br>`getCornerAnimationMode`                                   | `none`
+Element                               | Attribute               | Related method(s)                                                                       | Default value
+------------------------------------- | ----------------------- | --------------------------------------------------------------------------------------- | -------------
+**Single selection**                  | `app:singleSelection`   | `setSingleSelection`<br/>`isSingleSelection`                                            | `false`
+**Selection required**                | `app:selectionRequired` | `setSelectionRequired`<br/>`isSelectionRequired`                                        | `false`
+**Enable the group and all children** | `android:enabled`       | `setEnabled`<br/>`isEnabled`                                                            | `true`
+**Radius of inside corners**          | `app:insideCornerSize`  | `setInsideCornerSizeByPx`<br/>`setInsideCornerSizeByFraction`<br/>`getInsideCornerSize` | `0dp`
+**Spacing between buttons**           | `android:spacing`       | `setSpacing`<br/>`getSpacing`                                                           | `0dp`
 
 #### Styles
 

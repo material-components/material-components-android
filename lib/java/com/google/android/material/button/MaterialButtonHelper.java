@@ -25,7 +25,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -44,7 +43,6 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleDrawableCompat;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
 
@@ -59,14 +57,6 @@ class MaterialButtonHelper {
       VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && VERSION.SDK_INT <= VERSION_CODES.LOLLIPOP_MR1;
   private final MaterialButton materialButton;
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
-
-  @NonNull
-  private ShapeAppearanceModel minShapeAppearanceModel =
-      ShapeAppearanceModel.builder().setAllCornerSizes(0).build();
-
-  @NonNull
-  private ShapeAppearanceModel maxShapeAppearanceModel =
-      ShapeAppearanceModel.builder().setAllCornerSizes(new RelativeCornerSize(0.5f)).build();
 
   private int insetLeft;
   private int insetRight;
@@ -387,9 +377,9 @@ class MaterialButtonHelper {
     return getMaterialShapeDrawable(true);
   }
 
-  private void updateButtonShape() {
-    // There seems to be a bug to drawables that is affecting Lollipop, since invalidation is not
-    // changing an existing drawable shape. This is a fallback.
+  private void updateButtonShape(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+      // There seems to be a bug to drawables that is affecting Lollipop, since invalidation is not
+      // changing an existing drawable shape. This is a fallback.
     if (IS_LOLLIPOP && !backgroundOverwritten) {
       // Store padding before setting background, since background overwrites padding values
       int paddingStart = materialButton.getPaddingStart();
@@ -428,83 +418,7 @@ class MaterialButtonHelper {
 
   void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
-    updateButtonShape();
-  }
-
-  void setMinShapeAppearanceModel(@NonNull ShapeAppearanceModel minShapeAppearanceModel) {
-    this.minShapeAppearanceModel = minShapeAppearanceModel;
-    updateButtonShape();
-  }
-
-  void setMaxShapeAppearanceModel(@NonNull ShapeAppearanceModel maxShapeAppearanceModel) {
-    this.maxShapeAppearanceModel = maxShapeAppearanceModel;
-    updateButtonShape();
-  }
-
-  /**
-   * Returns the average corner size in the default state of all corners that will morph between
-   * states. That is, when some corners are the same size between minShapeAppearanceModel and
-   * maxShapeAppearanceModel, they are not included in the average.
-   */
-  float getDefaultCornerSize(@NonNull RectF bounds) {
-    float defaultSize = 0;
-    int count = 0;
-    if (minShapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds)
-        != maxShapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds)) {
-      count++;
-      defaultSize += shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds);
-    }
-    if (minShapeAppearanceModel.getTopRightCornerSize().getCornerSize(bounds)
-        != maxShapeAppearanceModel.getTopRightCornerSize().getCornerSize(bounds)) {
-      count++;
-      defaultSize += shapeAppearanceModel.getTopRightCornerSize().getCornerSize(bounds);
-    }
-    if (minShapeAppearanceModel.getBottomLeftCornerSize().getCornerSize(bounds)
-        != maxShapeAppearanceModel.getBottomLeftCornerSize().getCornerSize(bounds)) {
-      count++;
-      defaultSize += shapeAppearanceModel.getBottomLeftCornerSize().getCornerSize(bounds);
-    }
-    if (minShapeAppearanceModel.getBottomRightCornerSize().getCornerSize(bounds)
-        != maxShapeAppearanceModel.getBottomRightCornerSize().getCornerSize(bounds)) {
-      count++;
-      defaultSize += shapeAppearanceModel.getBottomRightCornerSize().getCornerSize(bounds);
-    }
-    return count == 0 ? 0 : defaultSize / count;
-  }
-
-  void interpolateCorner(
-      @NonNull MaterialShapeDrawable materialShapeDrawable,
-      @NonNull ShapeAppearanceModel interpolateStartShapeAppearanceModel,
-      float interpolation) {
-    materialShapeDrawable.setInterpolationStartShapeAppearanceModel(
-        interpolateStartShapeAppearanceModel);
-    materialShapeDrawable.setInterpolation(interpolation);
-  }
-
-  void interpolateCornerToMin(float interpolation) {
-    if (getMaterialShapeDrawable() != null) {
-      interpolateCorner(getMaterialShapeDrawable(), minShapeAppearanceModel, interpolation);
-    }
-    if (getSurfaceColorStrokeDrawable() != null) {
-      interpolateCorner(getSurfaceColorStrokeDrawable(), minShapeAppearanceModel, interpolation);
-    }
-    if (getMaskDrawable() instanceof MaterialShapeDrawable) {
-      interpolateCorner(
-          (MaterialShapeDrawable) getMaskDrawable(), minShapeAppearanceModel, interpolation);
-    }
-  }
-
-  void interpolateCornerToMax(float interpolation) {
-    if (getMaterialShapeDrawable() != null) {
-      interpolateCorner(getMaterialShapeDrawable(), maxShapeAppearanceModel, interpolation);
-    }
-    if (getSurfaceColorStrokeDrawable() != null) {
-      interpolateCorner(getSurfaceColorStrokeDrawable(), maxShapeAppearanceModel, interpolation);
-    }
-    if (getMaskDrawable() instanceof MaterialShapeDrawable) {
-      interpolateCorner(
-          (MaterialShapeDrawable) getMaskDrawable(), maxShapeAppearanceModel, interpolation);
-    }
+    updateButtonShape(shapeAppearanceModel);
   }
 
   @NonNull

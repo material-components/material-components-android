@@ -99,15 +99,6 @@
     <attr name="rippleColor"/>
     <!-- Whether the button toggles the checked state when clicked. -->
     <attr name="toggleCheckedStateOnClick" format="boolean"/>
-    <!-- The mode of corners animation. -->
-    <attr name="cornerAnimationMode">
-      <!-- No corners animation. -->
-      <flag name="none" value="0x0"/>
-      <!-- Corners grow to full size when the button is checked. -->
-      <flag name="growOnCheck" value="0x1"/>
-      <!-- Corners shrink to half size when the button is pressed. -->
-      <flag name="shrinkOnPress" value="0x10"/>
-    </attr>
   </declare-styleable>
 
   <declare-styleable name="MaterialButtonToggleGroup">
@@ -127,8 +118,6 @@
     <attr name="insideCornerSize" format="dimension|fraction"/>
     <!-- The spacing between inclusive buttons. Outlines will overlap, when set to zero or negative. -->
     <attr name="android:spacing"/>
-    <!-- The mode of corners animation in all child buttons. -->
-    <attr name="cornerAnimationMode"/>
   </declare-styleable>
 
 </resources>
