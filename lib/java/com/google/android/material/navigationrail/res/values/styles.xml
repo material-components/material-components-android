@@ -39,6 +39,8 @@
     <item name="labelVisibilityMode">auto</item>
     <item name="menuGravity">top</item>
     <item name="android:fitsSystemWindows">true</item>
+    <item name="contentMarginTop">@dimen/mtrl_navigation_rail_margin</item>
+    <item name="headerMarginBottom">@dimen/mtrl_navigation_rail_margin</item>
   </style>
 
   <style name="Widget.MaterialComponents.NavigationRailView.Compact">

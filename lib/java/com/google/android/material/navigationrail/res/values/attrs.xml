@@ -24,6 +24,10 @@
     <attr name="itemMinHeight" format="dimension"/>
     <!-- Specifies the layout that will be used to create the header view, if any -->
     <attr name="headerLayout"/>
+    <!-- The bottom margin of the header -->
+    <attr name="headerMarginBottom" format="dimension"/>
+    <!-- The top margin of the content of the navigation rail. -->
+    <attr name="contentMarginTop" format="dimension"/>
    <!-- Specifies how the navigation rail destinations should be aligned as a group. -->
     <attr name="menuGravity">
       <!-- Navigation rail destinations will be aligned as a group at the top. This is the default behavior. -->

@@ -297,13 +297,21 @@ The following is an anatomy diagram for the navigation rail:
 
 #### Header attributes
 
-**Element**     | **Attribute**      | **Related methods**                                        | **Default value**
---------------- | ------------------ | ---------------------------------------------------------- | -----------------
-**Header view** | `app:headerLayout` | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
+**Element**              | **Attribute**            | **Related methods**                                        | **Default value**
+------------------------ | ------------------------ | ---------------------------------------------------------- | -----------------
+**Header view**          | `app:headerLayout`       | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
+**Header bottom margin** | `app:headerMarginBottom` | N/A                                                        | `8dp`
 
 See the
 [FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)
 for more attributes.
+
+#### Navigation Menu attributes
+
+**Element**      | **Attribute**          | **Related methods**                   | **Default value**
+---------------- | ---------------------- | ------------------------------------- | -----------------
+**Menu gravity** | `app:menuGravity`      | `setMenuGravity`<br/>`getMenuGravity` | `TOP\|CENTER_HORIZONTAL`
+**Top margin**   | `app:contentMarginTop` | N/A                                   | N/A
 
 #### Navigation item attributes
 
