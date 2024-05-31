@@ -41,6 +41,7 @@
     <item name="android:fitsSystemWindows">true</item>
     <item name="contentMarginTop">@dimen/mtrl_navigation_rail_margin</item>
     <item name="headerMarginBottom">@dimen/mtrl_navigation_rail_margin</item>
+    <item name="itemIconGravity">top</item>
   </style>
 
   <style name="Widget.MaterialComponents.NavigationRailView.Compact">

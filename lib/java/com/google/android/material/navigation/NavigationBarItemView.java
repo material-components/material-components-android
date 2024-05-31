@@ -19,6 +19,8 @@ package com.google.android.material.navigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.navigation.NavigationBarView.ITEM_ICON_GRAVITY_START;
+import static com.google.android.material.navigation.NavigationBarView.ITEM_ICON_GRAVITY_TOP;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -70,6 +72,7 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.internal.BaselineLayout;
 import com.google.android.material.motion.MotionUtils;
+import com.google.android.material.navigation.NavigationBarView.ItemIconGravity;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 
@@ -98,8 +101,10 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   private boolean isShifting;
 
   @NonNull private final LinearLayout contentContainer;
-  @NonNull private final FrameLayout iconContainer;
+  @NonNull private final LinearLayout innerContentContainer;
   @NonNull private final View activeIndicatorView;
+  @NonNull private final FrameLayout iconContainer;
+
   private final ImageView icon;
   private final BaselineLayout labelGroup;
   private final TextView smallLabel;
@@ -135,13 +140,18 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
 
   @Nullable private BadgeDrawable badgeDrawable;
 
+  @ItemIconGravity private int itemIconGravity;
+  private int badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_START;
+
   public NavigationBarItemView(@NonNull Context context) {
     super(context);
 
     LayoutInflater.from(context).inflate(getItemLayoutResId(), this, true);
-    iconContainer = findViewById(R.id.navigation_bar_item_icon_container);
     contentContainer = findViewById(R.id.navigation_bar_item_content_container);
+    innerContentContainer = findViewById(R.id.navigation_bar_item_inner_content_container);
+
     activeIndicatorView = findViewById(R.id.navigation_bar_item_active_indicator_view);
+    iconContainer = findViewById(R.id.navigation_bar_item_icon_container);
     icon = findViewById(R.id.navigation_bar_item_icon_view);
     labelGroup = findViewById(R.id.navigation_bar_item_labels_group);
     smallLabel = findViewById(R.id.navigation_bar_item_small_label_view);
@@ -161,30 +171,37 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
 
     // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
-    if (icon != null) {
-      icon.addOnLayoutChangeListener(
-          new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(
-                View v,
-                int left,
-                int top,
-                int right,
-                int bottom,
-                int oldLeft,
-                int oldTop,
-                int oldRight,
-                int oldBottom) {
-              if (icon.getVisibility() == VISIBLE) {
-                tryUpdateBadgeBounds(icon);
-              }
-            }
-          });
-    }
+    innerContentContainer.addOnLayoutChangeListener(
+        (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+          if (icon.getVisibility() == VISIBLE) {
+            tryUpdateBadgeBounds(icon);
+          }
+          // If item icon gravity is start, we want to update the active indicator width in a layout
+          // change listener to keep the active indicator size up to date with the content width.
+          if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
+            LayoutParams lp = (LayoutParams) innerContentContainer.getLayoutParams();
+            int newWidth = right - left + lp.rightMargin + lp.leftMargin;
+            LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();
+            int minWidth =
+                min(
+                    activeIndicatorDesiredWidth,
+                    getMeasuredWidth() - (activeIndicatorMarginHorizontal * 2));
+            indicatorParams.width = max(newWidth, minWidth);
+            activeIndicatorView.setLayoutParams(indicatorParams);
+          }
+        });
   }
 
   @Override
   protected int getSuggestedMinimumWidth() {
+    if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
+      // Badge widths are not included for the start icon gravity config as we only want to measure
+      // the core content.
+      LayoutParams innerContentParams = (LayoutParams) innerContentContainer.getLayoutParams();
+      return innerContentContainer.getMeasuredWidth()
+          + innerContentParams.leftMargin
+          + innerContentParams.rightMargin;
+    }
     LinearLayout.LayoutParams labelGroupParams =
         (LinearLayout.LayoutParams) labelGroup.getLayoutParams();
     int labelWidth =
@@ -263,6 +280,55 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       updateActiveIndicatorTransform();
       updateActiveIndicatorLayoutParams(getWidth());
       refreshChecked();
+    }
+  }
+
+  private void updateItemIconGravity() {
+    int gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+    int sideMargin = 0;
+    int labelGroupTopMargin = activeIndicatorLabelPadding;
+    int labelGroupSideMargin = 0;
+    int sidePadding = 0;
+    badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_START;
+    if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
+      gravity = Gravity.CENTER;
+      sideMargin =
+          getResources()
+              .getDimensionPixelSize(R.dimen.m3_expressive_navigation_item_leading_trailing_space);
+      labelGroupTopMargin = 0;
+      labelGroupSideMargin = activeIndicatorLabelPadding;
+      badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_END;
+      sidePadding = activeIndicatorMarginHorizontal;
+      if (labelGroup.getParent() != innerContentContainer) {
+        contentContainer.removeView(labelGroup);
+        innerContentContainer.addView(labelGroup);
+      }
+    } else if (labelGroup.getParent() != contentContainer) {
+      innerContentContainer.removeView(labelGroup);
+      contentContainer.addView(labelGroup);
+    }
+    FrameLayout.LayoutParams contentContainerLp = (LayoutParams) contentContainer.getLayoutParams();
+    contentContainerLp.gravity = gravity;
+    FrameLayout.LayoutParams innerContentLp =
+        (LayoutParams) innerContentContainer.getLayoutParams();
+    innerContentLp.leftMargin = sideMargin;
+    innerContentLp.rightMargin = sideMargin;
+    LinearLayout.LayoutParams labelGroupLp =
+        (LinearLayout.LayoutParams) labelGroup.getLayoutParams();
+    labelGroupLp.rightMargin =
+        getLayoutDirection() == LAYOUT_DIRECTION_RTL ? labelGroupSideMargin : 0;
+    labelGroupLp.leftMargin =
+        getLayoutDirection() == LAYOUT_DIRECTION_RTL ? 0 : labelGroupSideMargin;
+    labelGroupLp.topMargin = labelGroupTopMargin;
+    setPadding(sidePadding, 0, sidePadding, 0);
+    updateActiveIndicatorLayoutParams(getWidth());
+  }
+
+  public void setItemIconGravity(@ItemIconGravity int iconGravity) {
+    if (itemIconGravity != iconGravity) {
+      itemIconGravity = iconGravity;
+      updateItemIconGravity();
+      refreshItemBackground();
     }
   }
 
@@ -375,12 +441,34 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    * Refresh the state of this item if it has been initialized.
    *
    * <p>This is useful if parameters calculated based on this item's checked state (label
-   * visibility, indicator state, iconContainer position) have changed and should be recalculated.
+   * visibility, indicator state, icon position) have changed and should be recalculated.
    */
   private void refreshChecked() {
     if (itemData != null) {
       setChecked(itemData.isChecked());
     }
+  }
+
+  private void setLayoutConfigurationIconAndLabel(
+      View visibleLabel, View invisibleLabel, float scaleFactor, float topMarginShift) {
+    setViewMarginAndGravity(
+        contentContainer,
+        itemIconGravity == ITEM_ICON_GRAVITY_TOP ? (int) (itemPaddingTop + topMarginShift) : 0,
+        0,
+        itemIconGravity == ITEM_ICON_GRAVITY_TOP
+            ? Gravity.CENTER_HORIZONTAL | Gravity.TOP
+            : Gravity.CENTER);
+    updateViewPaddingBottom(
+        labelGroup, itemIconGravity == ITEM_ICON_GRAVITY_TOP ? itemPaddingBottom : 0);
+    labelGroup.setVisibility(VISIBLE);
+    setViewScaleValues(visibleLabel, 1f, 1f, VISIBLE);
+    setViewScaleValues(invisibleLabel, scaleFactor, scaleFactor, INVISIBLE);
+  }
+
+  private void setLayoutConfigurationIconOnly() {
+    setViewMarginAndGravity(contentContainer, itemPaddingTop, itemPaddingTop, Gravity.CENTER);
+    updateViewPaddingBottom(labelGroup, 0);
+    labelGroup.setVisibility(GONE);
   }
 
   @Override
@@ -397,85 +485,38 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       case NavigationBarView.LABEL_VISIBILITY_AUTO:
         if (isShifting) {
           if (checked) {
-            // Show icon and large label
-            setViewMarginAndGravity(
-                contentContainer, itemPaddingTop, 0, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            updateViewPaddingBottom(labelGroup, itemPaddingBottom);
-            labelGroup.setVisibility(VISIBLE);
-            largeLabel.setVisibility(VISIBLE);
-            smallLabel.setVisibility(INVISIBLE);
+            setLayoutConfigurationIconAndLabel(largeLabel, smallLabel, scaleUpFactor, 0);
           } else {
-            // Show icon
-            setViewMarginAndGravity(
-                contentContainer, itemPaddingTop, itemPaddingTop, Gravity.CENTER);
-            updateViewPaddingBottom(labelGroup, 0);
-            labelGroup.setVisibility(GONE);
+            setLayoutConfigurationIconOnly();
           }
         } else {
-          labelGroup.setVisibility(VISIBLE);
-          updateViewPaddingBottom(labelGroup, itemPaddingBottom);
           if (checked) {
-            // Show icon and large label
-            setViewMarginAndGravity(
-                contentContainer,
-                (int) (itemPaddingTop + shiftAmount),
-                0,
-                Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            setViewScaleValues(largeLabel, 1f, 1f, VISIBLE);
-            setViewScaleValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
+            setLayoutConfigurationIconAndLabel(largeLabel, smallLabel, scaleUpFactor, shiftAmount);
           } else {
-            // Show icon and small label
-            setViewMarginAndGravity(
-                contentContainer, itemPaddingTop, 0, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            setViewScaleValues(largeLabel, scaleDownFactor, scaleDownFactor, INVISIBLE);
-            setViewScaleValues(smallLabel, 1f, 1f, VISIBLE);
+            setLayoutConfigurationIconAndLabel(smallLabel, largeLabel, scaleDownFactor, 0);
           }
         }
         break;
 
       case NavigationBarView.LABEL_VISIBILITY_SELECTED:
         if (checked) {
-          // Show icon and large label
-          setViewMarginAndGravity(
-              contentContainer, itemPaddingTop, 0, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          updateViewPaddingBottom(labelGroup, itemPaddingBottom);
-          labelGroup.setVisibility(VISIBLE);
-          largeLabel.setVisibility(VISIBLE);
-          smallLabel.setVisibility(INVISIBLE);
+          setLayoutConfigurationIconAndLabel(largeLabel, smallLabel, scaleUpFactor, 0);
         } else {
           // Show icon only
-          setViewMarginAndGravity(contentContainer, itemPaddingTop, itemPaddingTop, Gravity.CENTER);
-          updateViewPaddingBottom(labelGroup, 0);
-          labelGroup.setVisibility(GONE);
+          setLayoutConfigurationIconOnly();
         }
         break;
 
       case NavigationBarView.LABEL_VISIBILITY_LABELED:
-        labelGroup.setVisibility(VISIBLE);
-        updateViewPaddingBottom(labelGroup, itemPaddingBottom);
         if (checked) {
-          // Show icon and large label
-          setViewMarginAndGravity(
-              contentContainer,
-              (int) (itemPaddingTop + shiftAmount),
-              0,
-              Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          setViewScaleValues(largeLabel, 1f, 1f, VISIBLE);
-          setViewScaleValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
+          setLayoutConfigurationIconAndLabel(largeLabel, smallLabel, scaleUpFactor, shiftAmount);
         } else {
-          // Show icon and small label
-          setViewMarginAndGravity(
-              contentContainer, itemPaddingTop, 0, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          setViewScaleValues(largeLabel, scaleDownFactor, scaleDownFactor, INVISIBLE);
-          setViewScaleValues(smallLabel, 1f, 1f, VISIBLE);
+          setLayoutConfigurationIconAndLabel(smallLabel, largeLabel, scaleDownFactor, 0);
         }
         break;
 
       case NavigationBarView.LABEL_VISIBILITY_UNLABELED:
-        // Show icon only
-        setViewMarginAndGravity(contentContainer, itemPaddingTop, itemPaddingTop, Gravity.CENTER);
-        updateViewPaddingBottom(labelGroup, 0);
-        labelGroup.setVisibility(GONE);
+        setLayoutConfigurationIconOnly();
         break;
 
       default:
@@ -623,7 +664,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   }
 
   public void setIconSize(int iconSize) {
-    LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
+    LinearLayout.LayoutParams iconParams = (LinearLayout.LayoutParams) icon.getLayoutParams();
     iconParams.width = iconSize;
     iconParams.height = iconSize;
     icon.setLayoutParams(iconParams);
@@ -837,11 +878,17 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
 
     int newWidth =
         min(activeIndicatorDesiredWidth, availableWidth - (activeIndicatorMarginHorizontal * 2));
-
+    int newHeight = activeIndicatorDesiredHeight;
+    if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
+      newWidth = max(contentContainer.getMeasuredWidth(), newWidth);
+      newHeight =
+          getResources()
+              .getDimensionPixelSize(R.dimen.m3_expressive_horizontal_item_active_indicator_height);
+    }
     LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();
-    // If the label visibility is unlabeled, make the active indicator's height equal to it's width.
-    indicatorParams.height =
-        isActiveIndicatorResizeableAndUnlabeled() ? newWidth : activeIndicatorDesiredHeight;
+    // If the label visibility is unlabeled, make the active indicator's height equal to its
+    // width.
+    indicatorParams.height = isActiveIndicatorResizeableAndUnlabeled() ? newWidth : newHeight;
     indicatorParams.width = newWidth;
     activeIndicatorView.setLayoutParams(indicatorParams);
   }
@@ -872,6 +919,9 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    */
   public void setActiveIndicatorMarginHorizontal(@Px int marginHorizontal) {
     this.activeIndicatorMarginHorizontal = marginHorizontal;
+    if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
+      setPadding(marginHorizontal, 0, marginHorizontal, 0);
+    }
     updateActiveIndicatorLayoutParams(getWidth());
   }
 
@@ -881,15 +931,19 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     return activeIndicatorView.getBackground();
   }
 
-  /** Set the drawable to be used as the active indicator. */
+  /**
+   * Set the drawable to be used as the active indicator that contains the icon in the {@link
+   * ItemIconGravity#ITEM_ICON_GRAVITY_TOP} configuration.
+   */
   public void setActiveIndicatorDrawable(@Nullable Drawable activeIndicatorDrawable) {
-    activeIndicatorView.setBackgroundDrawable(activeIndicatorDrawable);
+    activeIndicatorView.setBackground(activeIndicatorDrawable);
     refreshItemBackground();
   }
 
   @Override
   public boolean dispatchTouchEvent(MotionEvent ev) {
-    // Pass touch events through to the icon container so the active indicator ripple can be shown.
+    // Pass touch events through to the icon container so the active indicator
+    // ripple can be shown.
     if (activeIndicatorEnabled) {
       iconContainer.dispatchTouchEvent(ev);
     }
@@ -910,6 +964,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       tryRemoveBadgeFromAnchor(icon);
     }
     this.badgeDrawable = badgeDrawable;
+    badgeDrawable.setBadgeFixedEdge(badgeFixedEdge);
     if (icon != null) {
       tryAttachBadgeToAnchor(icon);
     }

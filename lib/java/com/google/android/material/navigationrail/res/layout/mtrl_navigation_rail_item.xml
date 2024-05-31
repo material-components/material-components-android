@@ -15,21 +15,22 @@
   ~ limitations under the License.
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
+
   <LinearLayout
     android:id="@id/navigation_bar_item_content_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="top|center_horizontal"
-    android:clipChildren="false"
-    android:orientation="vertical"
-    android:gravity="center"
     android:layout_marginTop="@dimen/mtrl_navigation_rail_margin"
-    android:duplicateParentState="true">
+    android:clipChildren="false"
+    android:duplicateParentState="true"
+    android:orientation="vertical">
 
     <FrameLayout
       android:id="@id/navigation_bar_item_icon_container"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:clipChildren="false"
       android:layout_gravity="center"
       android:duplicateParentState="true">
       <View
@@ -37,13 +38,23 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_gravity="center" />
-      <ImageView
-        android:id="@id/navigation_bar_item_icon_view"
-        android:layout_width="@dimen/mtrl_navigation_rail_icon_size"
-        android:layout_height="@dimen/mtrl_navigation_rail_icon_size"
+      <LinearLayout
+        android:id="@id/navigation_bar_item_inner_content_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:contentDescription="@null"
-        android:duplicateParentState="true" />
+        android:clipChildren="false"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:duplicateParentState="true">
+        <ImageView
+          android:id="@id/navigation_bar_item_icon_view"
+          android:layout_width="@dimen/mtrl_navigation_rail_icon_size"
+          android:layout_height="@dimen/mtrl_navigation_rail_icon_size"
+          android:layout_gravity="center"
+          android:contentDescription="@null"
+          android:duplicateParentState="true" />
+      </LinearLayout>
     </FrameLayout>
     <com.google.android.material.internal.BaselineLayout
       android:id="@id/navigation_bar_item_labels_group"

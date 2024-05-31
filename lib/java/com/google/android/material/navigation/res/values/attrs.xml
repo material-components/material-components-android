@@ -80,6 +80,13 @@
 
     <!-- The elevation to use for the navigation bar view -->
     <attr name="elevation"/>
+
+    <!-- The item's icon gravity which determines the layout configuration of
+    the navigation item. -->
+    <attr name="itemIconGravity">
+      <enum name="top" value="0"/>
+      <enum name="start" value="1"/>
+    </attr>
   </declare-styleable>
 
   <declare-styleable name="NavigationBarActiveIndicator">

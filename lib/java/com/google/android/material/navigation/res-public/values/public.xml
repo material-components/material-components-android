@@ -55,6 +55,7 @@
   <public name="itemPaddingTop" type="attr"/>
   <public name="itemPaddingBottom" type="attr"/>
   <public name="itemActiveIndicatorStyle" type="attr"/>
+  <public name="itemIconGravity" type="attr"/>
   <public name="marginHorizontal" type="attr"/>
   <public name="ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" type="style"/>
 </resources>

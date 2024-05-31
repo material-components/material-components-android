@@ -119,6 +119,31 @@ public abstract class NavigationBarView extends FrameLayout {
   @Retention(RetentionPolicy.SOURCE)
   public @interface LabelVisibility {}
 
+  /** Icon is placed at the top of the item */
+  public static final int ITEM_ICON_GRAVITY_TOP = 0;
+
+  /** Icon is placed at the top of the item */
+  public static final int ITEM_ICON_GRAVITY_START = 1;
+
+  /**
+   * Navigation Bar Item icon gravity enum to control which item configuration to display.
+   *
+   * <p>There are 2 item configurations. {@link NavigationBarView#ITEM_ICON_GRAVITY_START} shows the
+   * icon at the start of the item in a horizontal configuration, and {@link
+   * NavigationBarView#ITEM_ICON_GRAVITY_TOP} shows the icon at the top of the item in a vertical
+   * configuration.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef(
+      value = {
+        ITEM_ICON_GRAVITY_TOP,
+        ITEM_ICON_GRAVITY_START,
+      })
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface ItemIconGravity {}
+
   private static final int MENU_PRESENTER_ID = 1;
 
   @NonNull private final NavigationBarMenu menu;
@@ -239,6 +264,10 @@ public abstract class NavigationBarView extends FrameLayout {
         attributes.getInteger(
             R.styleable.NavigationBarView_labelVisibilityMode,
             NavigationBarView.LABEL_VISIBILITY_AUTO));
+    setItemIconGravity(
+        attributes.getInteger(
+            R.styleable.NavigationBarView_itemIconGravity,
+            NavigationBarView.ITEM_ICON_GRAVITY_TOP));
 
     int itemBackground = attributes.getResourceId(R.styleable.NavigationBarView_itemBackground, 0);
     if (itemBackground != 0) {
@@ -762,6 +791,30 @@ public abstract class NavigationBarView extends FrameLayout {
   @NavigationBarView.LabelVisibility
   public int getLabelVisibilityMode() {
     return menuView.getLabelVisibilityMode();
+  }
+
+  /**
+   * Sets the navigation items' icon gravity.
+   *
+   * @param itemIconGravity the placement of the icon in the nav item one of {@link
+   *     NavigationBarView#ITEM_ICON_GRAVITY_TOP}, or {@link
+   *     NavigationBarView#ITEM_ICON_GRAVITY_START}
+   * @see #getItemIconGravity()
+   */
+  public void setItemIconGravity(@ItemIconGravity int itemIconGravity) {
+    if (menuView.getItemIconGravity() != itemIconGravity) {
+      menuView.setItemIconGravity(itemIconGravity);
+      presenter.updateMenuView(false);
+    }
+  }
+
+  /**
+   * Returns the current item icon gravity.
+   *
+   * @see #setItemIconGravity(int)
+   */
+  public int getItemIconGravity() {
+    return menuView.getItemIconGravity();
   }
 
   /**
