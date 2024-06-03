@@ -28,7 +28,10 @@
     <attr name="headerMarginBottom" format="dimension"/>
     <!-- The top margin of the content of the navigation rail. -->
     <attr name="contentMarginTop" format="dimension"/>
-   <!-- Specifies how the navigation rail destinations should be aligned as a group. -->
+    <!-- The spacing between the navigation rail items. -->
+    <attr name="itemSpacing" format="dimension"/>
+
+    <!-- Specifies how the navigation rail destinations should be aligned as a group. -->
     <attr name="menuGravity">
       <!-- Navigation rail destinations will be aligned as a group at the top. This is the default behavior. -->
       <!-- Gravity.TOP | Gravity.CENTER_HORIZONTAL-->

@@ -70,7 +70,7 @@ public class FlowLayout extends ViewGroup {
     final TypedArray array =
         context.getTheme().obtainStyledAttributes(attrs, R.styleable.FlowLayout, 0, 0);
     lineSpacing = array.getDimensionPixelSize(R.styleable.FlowLayout_lineSpacing, 0);
-    itemSpacing = array.getDimensionPixelSize(R.styleable.FlowLayout_itemSpacing, 0);
+    itemSpacing = array.getDimensionPixelSize(R.styleable.FlowLayout_horizontalItemSpacing, 0);
     array.recycle();
   }
 

@@ -47,7 +47,7 @@
     <!-- Do not expose publicly, FlowLayout (private class) that is the parent for ChipGroup (public), which has its own public spacing attributes.  -->
   <declare-styleable name="FlowLayout">
     <!-- Horizontal spacing between two items being laid out. -->
-    <attr name="itemSpacing" format="dimension"/>
+    <attr name="horizontalItemSpacing" format="dimension"/>
     <!-- Vertical Spacing between two lines of items being laid out. -->
     <attr name="lineSpacing" format="dimension"/>
   </declare-styleable>

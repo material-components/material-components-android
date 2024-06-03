@@ -322,6 +322,9 @@ for more attributes.
 **Ripple (active)**       | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
 **Label visibility mode** | `app:labelVisibilityMode` | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode` | `LABEL_VISIBILITY_AUTO`
 **Item minimum height**   | `app:itemMinHeight`       | `setItemMinimumHeight`<br/>`getItemMinimumHeight`     | `NO_ITEM_MINIMUM_HEIGHT`
+**Item spacing**          | `app:itemSpacing`         | `setItemSpacing`<br/>`getItemSpacing`                 | `0dp`
+
+**Note:** If there's not enough room, `itemMinHeight` and `itemSpacing` may not be respected in order to fit the items.
 
 #### Active indicator attributes
 

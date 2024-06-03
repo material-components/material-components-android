@@ -189,6 +189,8 @@ public class NavigationRailView extends NavigationBarView {
         AnimationUtils.lerp(getItemPaddingBottom(), largeFontBottomPadding, progress);
     setItemPaddingTop(Math.round(topPadding));
     setItemPaddingBottom(Math.round(bottomPadding));
+    setItemSpacing(
+        attributes.getDimensionPixelSize(R.styleable.NavigationRailView_itemSpacing, 0));
 
     attributes.recycle();
 
@@ -356,6 +358,20 @@ public class NavigationRailView extends NavigationBarView {
   public void setItemMinimumHeight(@Px int minHeight) {
     NavigationRailMenuView menuView = (NavigationRailMenuView) getMenuView();
     menuView.setItemMinimumHeight(minHeight);
+  }
+
+  /**
+   * Set the padding in between the navigation rail menu items.
+   */
+  public void setItemSpacing(@Px int itemSpacing) {
+    getNavigationRailMenuView().setItemSpacing(itemSpacing);
+  }
+
+  /**
+   * Get the padding in between the navigation rail menu items.
+   */
+  public int getItemSpacing() {
+    return getNavigationRailMenuView().getItemSpacing();
   }
 
   @Override

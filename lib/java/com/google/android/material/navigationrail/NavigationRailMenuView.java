@@ -39,6 +39,7 @@ import com.google.android.material.navigation.NavigationBarMenuView;
 public class NavigationRailMenuView extends NavigationBarMenuView {
 
   @Px private int itemMinimumHeight = NO_ITEM_MINIMUM_HEIGHT;
+  @Px private int itemSpacing = 0;
   private final FrameLayout.LayoutParams layoutParams =
       new FrameLayout.LayoutParams(MATCH_PARENT, WRAP_CONTENT);
 
@@ -72,13 +73,26 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     final int count = getChildCount();
     final int width = right - left;
+    int visibleCount = 0;
+    int childrenHeight = 0;
+    for (int i = 0; i < count; i++) {
+      final View child = getChildAt(i);
+      if (child.getVisibility() != GONE) {
+        childrenHeight += child.getMeasuredHeight();
+        visibleCount += 1;
+      }
+    }
+    int spacing =
+        visibleCount <= 1
+            ? 0
+            : max(0, min((getMeasuredHeight() - childrenHeight) / (visibleCount - 1), itemSpacing));
     int used = 0;
     for (int i = 0; i < count; i++) {
       final View child = getChildAt(i);
       if (child.getVisibility() != GONE) {
         int childHeight = child.getMeasuredHeight();
         child.layout(/* l= */ 0, used, width, childHeight + used);
-        used += childHeight;
+        used += childHeight + spacing;
       }
     }
   }
@@ -129,15 +143,19 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
     }
 
     int childCount = getChildCount();
+    int visibleChildCount = 0;
     int totalHeight = 0;
     for (int i = 0; i < childCount; i++) {
       final View child = getChildAt(i);
+      if (child.getVisibility() == VISIBLE) {
+        visibleChildCount += 1;
+      }
       if (child != selectedView) {
         totalHeight += measureChildHeight(child, widthMeasureSpec, childHeightSpec);
       }
     }
 
-    return totalHeight;
+    return totalHeight + max(0, visibleChildCount - 1) * itemSpacing;
   }
 
   private int measureChildHeight(View child, int widthMeasureSpec, int heightMeasureSpec) {
@@ -170,6 +188,18 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
   @Px
   public int getItemMinimumHeight() {
     return this.itemMinimumHeight;
+  }
+
+  public void setItemSpacing(@Px int spacing) {
+    if (this.itemSpacing != spacing) {
+      this.itemSpacing = spacing;
+      requestLayout();
+    }
+  }
+
+  @Px
+  public int getItemSpacing() {
+    return this.itemSpacing;
   }
 
   boolean isTopGravity() {
