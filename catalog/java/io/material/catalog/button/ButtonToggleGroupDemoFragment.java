@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
@@ -98,11 +99,11 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
           });
     }
 
-    Slider insideCornerSizeSlider = view.findViewById(R.id.insideCornerSizeSlider);
-    insideCornerSizeSlider.addOnChangeListener(
+    Slider innerCornerSizeSlider = view.findViewById(R.id.innerCornerSizeSlider);
+    innerCornerSizeSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
           for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
-            toggleGroup.setInsideCornerSizeInFraction(value / 100f);
+            toggleGroup.setInnerCornerSize(new RelativeCornerSize(value / 100f));
           }
         });
 

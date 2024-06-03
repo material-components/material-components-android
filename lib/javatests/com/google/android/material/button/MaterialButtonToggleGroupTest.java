@@ -34,6 +34,7 @@ import android.widget.RadioButton;
 import android.widget.ToggleButton;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
+import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.List;
 import org.junit.Before;
@@ -84,13 +85,12 @@ public class MaterialButtonToggleGroupTest {
   }
 
   @Test
-  public void correctShapeAppearances_inToggle_afterAdding_withInsideCorner() {
+  public void correctShapeAppearances_inToggle_afterAdding_withInnerCorner() {
     MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
     MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
     MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
 
-    toggleGroup.setInsideCornerSizeInPx(5);
-    toggleGroup.updateChildShapes();
+    toggleGroup.setInnerCornerSize(new AbsoluteCornerSize(5));
     assertShapeAppearance(firstChild.getShapeAppearanceModel(), CORNER_SIZE, CORNER_SIZE, 5, 5);
     assertShapeAppearance(middleChild.getShapeAppearanceModel(), 5, 5, 5, 5);
     assertShapeAppearance(lastChild.getShapeAppearanceModel(), 5, 5, CORNER_SIZE, CORNER_SIZE);
@@ -110,14 +110,13 @@ public class MaterialButtonToggleGroupTest {
   }
 
   @Test
-  public void correctShapeAppearances_inToggle_afterAddingInVertical_withInsideCorner() {
+  public void correctShapeAppearances_inToggle_afterAddingInVertical_withInnerCorner() {
     toggleGroup.setOrientation(LinearLayout.VERTICAL);
     MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
     MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
     MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
 
-    toggleGroup.setInsideCornerSizeInPx(5);
-    toggleGroup.updateChildShapes();
+    toggleGroup.setInnerCornerSize(new AbsoluteCornerSize(5));
     assertShapeAppearance(firstChild.getShapeAppearanceModel(), CORNER_SIZE, 5, CORNER_SIZE, 5);
     assertShapeAppearance(middleChild.getShapeAppearanceModel(), 5, 5, 5, 5);
     assertShapeAppearance(lastChild.getShapeAppearanceModel(), 5, CORNER_SIZE, 5, CORNER_SIZE);
@@ -139,15 +138,14 @@ public class MaterialButtonToggleGroupTest {
   }
 
   @Test
-  public void correctShapeAppearances_inToggle_afterSettingViewToGone_withInsideCorner() {
+  public void correctShapeAppearances_inToggle_afterSettingViewToGone_withInnerCorner() {
     toggleGroup.setOrientation(LinearLayout.VERTICAL);
     MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
     MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
     MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
 
     firstChild.setVisibility(GONE);
-    toggleGroup.setInsideCornerSizeInPx(5);
-    toggleGroup.updateChildShapes();
+    toggleGroup.setInnerCornerSize(new AbsoluteCornerSize(5));
 
     // Now middle and end child has rounded corners.
     assertShapeAppearance(middleChild.getShapeAppearanceModel(), CORNER_SIZE, 5, CORNER_SIZE, 5);
@@ -169,15 +167,14 @@ public class MaterialButtonToggleGroupTest {
   }
 
   @Test
-  public void correctShapeAppearances_inToggle_whenOneVisibleButton_withInsideCorner() {
+  public void correctShapeAppearances_inToggle_whenOneVisibleButton_withInnerCorner() {
     MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
     MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
     MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
 
     firstChild.setVisibility(GONE);
     middleChild.setVisibility(GONE);
-    toggleGroup.setInsideCornerSizeInPx(5);
-    toggleGroup.updateChildShapes();
+    toggleGroup.setInnerCornerSize(new AbsoluteCornerSize(5));
     // Last child has default shape appearance.
     assertShapeAppearance(
         lastChild.getShapeAppearanceModel(), CORNER_SIZE, CORNER_SIZE, CORNER_SIZE, CORNER_SIZE);

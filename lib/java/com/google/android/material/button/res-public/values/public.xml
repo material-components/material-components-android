@@ -24,7 +24,7 @@
   <public name="iconTint" type="attr"/>
   <public name="iconTintMode" type="attr"/>
   <public name="toggleCheckedStateOnClick" type="attr"/>
-  <public name="insideCornerSize" type="attr"/>
+  <public name="innerCornerSize" type="attr"/>
   <public name="materialButtonStyle" type="attr"/>
   <public name="materialIconButtonStyle" type="attr"/>
   <public name="materialIconButtonFilledStyle" type="attr"/>

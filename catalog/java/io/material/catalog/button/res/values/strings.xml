@@ -60,8 +60,8 @@
   <string name="cat_icon_only">Icon only</string>
   <string description="A label for a spacing slider [CHAR LIMIT=NONE]"
       name="cat_spacing_label">Spacing (dp)</string>
-  <string description="A label for an inside corner size slider [CHAR LIMIT=NONE]"
-      name="cat_inside_corner_size_label">Inside corners size (0 – 50%)</string>
+  <string description="A label for an inner corner size slider [CHAR LIMIT=NONE]"
+      name="cat_inner_corner_size_label">Inner corners size (0 – 50%)</string>
   <string name="cat_button_label_private">Private</string>
   <string name="cat_button_label_team">Team</string>
   <string name="cat_button_label_everyone">Everyone</string>

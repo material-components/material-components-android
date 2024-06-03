@@ -114,8 +114,8 @@
     <attr name="checkedButton" format="reference"/>
     <!-- Whether this MaterialButtonToggleGroup and all its children are enabled -->
     <attr name="android:enabled" />
-    <!-- The radius of all inside corners between inclusive buttons. -->
-    <attr name="insideCornerSize" format="dimension|fraction"/>
+    <!-- The radius of all inner corners between inclusive buttons. -->
+    <attr name="innerCornerSize" format="dimension|fraction"/>
     <!-- The spacing between inclusive buttons. Outlines will overlap, when set to zero or negative. -->
     <attr name="android:spacing"/>
   </declare-styleable>

@@ -150,10 +150,10 @@
     <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/cat_inside_corner_size_label"/>
+      android:text="@string/cat_inner_corner_size_label"/>
 
     <com.google.android.material.slider.Slider
-      android:id="@+id/insideCornerSizeSlider"
+      android:id="@+id/innerCornerSizeSlider"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:valueFrom="0"
