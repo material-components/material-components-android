@@ -33,8 +33,6 @@ import com.google.android.material.navigation.NavigationBarItemView;
 final class NavigationRailItemView extends NavigationBarItemView {
   public NavigationRailItemView(@NonNull Context context) {
     super(context);
-    // TODO(b/338647654): Measure Navigation Rail from the bottom of the textview, not baseline
-    setMeasureBottomPaddingFromLabelBaseline(true);
   }
 
   @Override

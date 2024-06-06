@@ -42,6 +42,7 @@
     <item name="contentMarginTop">@dimen/mtrl_navigation_rail_margin</item>
     <item name="headerMarginBottom">@dimen/mtrl_navigation_rail_margin</item>
     <item name="itemIconGravity">top</item>
+    <item name="measureBottomPaddingFromLabelBaseline">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.NavigationRailView.Compact">

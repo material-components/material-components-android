@@ -31,6 +31,7 @@
     <item name="itemActiveIndicatorStyle">@null</item>
     <item name="android:minHeight">@dimen/design_bottom_navigation_height</item>
     <item name="itemIconGravity">top</item>
+    <item name="measureBottomPaddingFromLabelBaseline">false</item>
   </style>
 
   <!-- Default style for BottomNavigationViews.

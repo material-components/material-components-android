@@ -673,6 +673,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   // TODO(b/338647654): We can remove this once navigation rail is updated
   public void setMeasureBottomPaddingFromLabelBaseline(boolean measurePaddingFromBaseline) {
     labelGroup.setMeasurePaddingFromBaseline(measurePaddingFromBaseline);
+    smallLabel.setIncludeFontPadding(measurePaddingFromBaseline);
+    largeLabel.setIncludeFontPadding(measurePaddingFromBaseline);
     requestLayout();
   }
 

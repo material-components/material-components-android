@@ -110,6 +110,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
   private NavigationBarPresenter presenter;
   private MenuBuilder menu;
+  private boolean measurePaddingFromLabelBaseline;
 
   public NavigationBarMenuView(@NonNull Context context) {
     super(context);
@@ -365,6 +366,15 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
         item.setItemPaddingBottom(paddingBottom);
+      }
+    }
+  }
+
+  public void setMeasurePaddingFromLabelBaseline(boolean measurePaddingFromLabelBaseline) {
+    this.measurePaddingFromLabelBaseline = measurePaddingFromLabelBaseline;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setMeasureBottomPaddingFromLabelBaseline(measurePaddingFromLabelBaseline);
       }
     }
   }
@@ -778,6 +788,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       if (itemPaddingBottom != NO_PADDING) {
         child.setItemPaddingBottom(itemPaddingBottom);
       }
+      child.setMeasureBottomPaddingFromLabelBaseline(measurePaddingFromLabelBaseline);
       if (itemActiveIndicatorLabelPadding != NO_PADDING) {
         child.setActiveIndicatorLabelPadding(itemActiveIndicatorLabelPadding);
       }

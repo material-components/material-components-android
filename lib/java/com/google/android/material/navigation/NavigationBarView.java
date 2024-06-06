@@ -278,6 +278,9 @@ public abstract class NavigationBarView extends FrameLayout {
               context, attributes, R.styleable.NavigationBarView_itemRippleColor));
     }
 
+    setMeasureBottomPaddingFromLabelBaseline(attributes.getBoolean(
+        R.styleable.NavigationBarView_measureBottomPaddingFromLabelBaseline, true));
+
     int activeIndicatorStyleResId =
         attributes.getResourceId(R.styleable.NavigationBarView_itemActiveIndicatorStyle, 0);
 
@@ -603,6 +606,10 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemPaddingBottom(@Px int paddingBottom) {
     menuView.setItemPaddingBottom(paddingBottom);
+  }
+
+  private void setMeasureBottomPaddingFromLabelBaseline(boolean measurePaddingFromBaseline) {
+    menuView.setMeasurePaddingFromLabelBaseline(measurePaddingFromBaseline);
   }
 
   /**

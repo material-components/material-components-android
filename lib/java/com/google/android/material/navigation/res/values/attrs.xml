@@ -87,6 +87,10 @@
       <enum name="top" value="0"/>
       <enum name="start" value="1"/>
     </attr>
+
+    <!-- Measure the item's bottom padding from the baseline of the label, not the bottom of its
+         view. -->
+    <attr name="measureBottomPaddingFromLabelBaseline" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="NavigationBarActiveIndicator">
