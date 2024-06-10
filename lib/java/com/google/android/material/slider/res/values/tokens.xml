@@ -30,8 +30,6 @@
   <item name="m3_comp_slider_disabled_handle_opacity" format="float" type="dimen">0.38</item>
   <!-- Group: Enabled - Stop indicator -->
   <dimen name="m3_comp_slider_stop_indicator_size">4dp</dimen>
-  <!-- Group: Enabled - Container -->
-  <macro name="m3_comp_slider_label_container_color">?attr/colorSurfaceInverse</macro>
   <!-- Group: Enabled - Label text -->
   <macro name="m3_comp_slider_label_label_text_color">?attr/colorOnSurfaceInverse</macro>
   <!-- Group: Enabled - Track -->
@@ -43,5 +41,9 @@
   <dimen name="m3_comp_slider_active_handle_height">44dp</dimen>
   <dimen name="m3_comp_slider_active_handle_width">4dp</dimen>
   <dimen name="m3_comp_slider_active_handle_leading_space">6dp</dimen>
+  <!-- Group: Pressed (ripple) - Value indicator -->
+  <macro name="m3_comp_slider_value_indicator_container_color">?attr/colorSurfaceInverse</macro>
+  <macro name="m3_comp_slider_value_indicator_label_label_text_color">?attr/colorOnSurfaceInverse</macro>
+  <dimen name="m3_comp_slider_value_indicator_active_bottom_space">12dp</dimen>
 
 </resources>

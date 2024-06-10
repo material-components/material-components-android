@@ -77,10 +77,13 @@
   </style>
 
   <style name="Widget.Material3.Slider.Label" parent="Widget.Material3.Tooltip">
-    <item name="android:textColor">@macro/m3_comp_slider_label_label_text_color</item>
-    <item name="backgroundTint">@macro/m3_comp_slider_label_container_color</item>
+    <item name="android:textColor">@macro/m3_comp_slider_value_indicator_label_label_text_color</item>
+    <item name="backgroundTint">@macro/m3_comp_slider_value_indicator_container_color</item>
     <item name="showMarker">false</item>
-    <item name="android:padding">10dp</item>
+    <item name="android:paddingStart">10dp</item>
+    <item name="android:paddingEnd">10dp</item>
+    <item name="android:paddingTop">@dimen/m3_comp_slider_value_indicator_active_bottom_space</item>
+    <item name="android:paddingBottom">@dimen/m3_comp_slider_value_indicator_active_bottom_space</item>
     <item name="android:minHeight">32dp</item>
   </style>
 
