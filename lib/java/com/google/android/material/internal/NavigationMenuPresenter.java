@@ -729,8 +729,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
                 if (subMenuItem.isCheckable()) {
                   subMenuItem.setExclusiveCheckable(false);
                 }
-                if (item.isChecked()) {
-                  setCheckedItem(item);
+                if (subMenuItem.isChecked()) {
+                  setCheckedItem(subMenuItem);
                 }
                 items.add(new NavigationMenuTextItem(subMenuItem));
               }
