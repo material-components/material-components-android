@@ -263,12 +263,16 @@ public class SearchView extends FrameLayout
     super.onAttachedToWindow();
 
     MaterialShapeUtils.setParentAbsoluteElevation(this);
+    TransitionState state = getCurrentTransitionState();
+    updateModalForAccessibility(state);
+    updateListeningForBackCallbacks(state);
   }
 
   @Override
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
 
+    setModalForAccessibility(/* isSearchViewModal= */ false);
     backOrchestrator.stopListeningForBackCallbacks();
   }
 
@@ -810,11 +814,7 @@ public class SearchView extends FrameLayout
     }
 
     if (updateModalForAccessibility) {
-      if (state == TransitionState.SHOWN) {
-        setModalForAccessibility(true);
-      } else if (state == TransitionState.HIDDEN) {
-        setModalForAccessibility(false);
-      }
+      updateModalForAccessibility(state);
     }
 
     TransitionState previousState = currentTransitionState;
@@ -825,6 +825,14 @@ public class SearchView extends FrameLayout
     }
 
     updateListeningForBackCallbacks(state);
+  }
+
+  private void updateModalForAccessibility(@NonNull TransitionState state) {
+    if (state == TransitionState.SHOWN) {
+      setModalForAccessibility(true);
+    } else if (state == TransitionState.HIDDEN) {
+      setModalForAccessibility(false);
+    }
   }
 
   private void updateListeningForBackCallbacks(@NonNull TransitionState state) {
