@@ -74,16 +74,19 @@
   <color name="m3_sys_color_dynamic_light_primary">@color/m3_ref_palette_dynamic_primary40</color>
   <color name="m3_sys_color_dynamic_light_on_primary">@color/m3_ref_palette_dynamic_primary100</color>
   <color name="m3_sys_color_dynamic_light_primary_container">@color/m3_ref_palette_dynamic_primary90</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_primary10 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_on_primary_container">@color/m3_ref_palette_dynamic_primary10</color>
   <!-- Group: Secondary colors -->
   <color name="m3_sys_color_dynamic_light_secondary">@color/m3_ref_palette_dynamic_secondary40</color>
   <color name="m3_sys_color_dynamic_light_on_secondary">@color/m3_ref_palette_dynamic_secondary100</color>
   <color name="m3_sys_color_dynamic_light_secondary_container">@color/m3_ref_palette_dynamic_secondary90</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_secondary10 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_on_secondary_container">@color/m3_ref_palette_dynamic_secondary10</color>
   <!-- Group: Tertiary colors -->
   <color name="m3_sys_color_dynamic_light_tertiary">@color/m3_ref_palette_dynamic_tertiary40</color>
   <color name="m3_sys_color_dynamic_light_on_tertiary">@color/m3_ref_palette_dynamic_tertiary100</color>
   <color name="m3_sys_color_dynamic_light_tertiary_container">@color/m3_ref_palette_dynamic_tertiary90</color>
+  <!-- The resource value @color/m3_ref_palette_dynamic_tertiary10 has been overridden by the config. -->
   <color name="m3_sys_color_dynamic_light_on_tertiary_container">@color/m3_ref_palette_dynamic_tertiary10</color>
   <!-- Group: Surface colors -->
   <!-- The resource value @color/m3_ref_palette_dynamic_neutral98 has been overridden by the config. -->
