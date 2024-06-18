@@ -19,7 +19,7 @@
     package="com.google.android.libraries.material.testing">
 
   <uses-sdk
-      android:minSdkVersion="19"
+      android:minSdkVersion="21"
     />
 
   <application/>

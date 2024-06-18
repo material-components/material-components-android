@@ -33,7 +33,7 @@ android {
     main.java.includes = [ '*.java' ]
   }
   defaultConfig {
-    minSdkVersion 19
+    minSdkVersion 21
     targetSdkVersion 33
   }
 }
