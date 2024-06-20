@@ -186,6 +186,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
   int currentOffset;
 
+  private int screenOrientation;
+
   @TitleCollapseMode private int titleCollapseMode;
 
   @Nullable WindowInsetsCompat lastInsets;
@@ -207,6 +209,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
+
+    screenOrientation = getResources().getConfiguration().orientation;
 
     collapsingTextHelper = new CollapsingTextHelper(this);
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
@@ -449,6 +453,25 @@ public class CollapsingToolbarLayout extends FrameLayout {
   protected void onConfigurationChanged(@NonNull Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
     collapsingTextHelper.maybeUpdateFontWeightAdjustment(newConfig);
+
+    // When the orientation changes with extra multiline height enabled and when collapsed, there
+    // can be an issue where the offset/scroll state is invalid due to the number of lines of text
+    // changing which causes a different height for the collapsing toolbar. We can use a pending
+    // action of collapsed to make sure that the collapsing toolbar stays fully collapsed if it was
+    // fully collapsed prior to screen rotation.
+    if (screenOrientation != newConfig.orientation
+        && extraMultilineHeightEnabled
+        && collapsingTextHelper.getExpansionFraction() == 1f) {
+      ViewParent parent = getParent();
+      if (parent instanceof AppBarLayout) {
+        AppBarLayout appBarLayout = (AppBarLayout) parent;
+        if (appBarLayout.getPendingAction() == AppBarLayout.PENDING_ACTION_NONE) {
+          appBarLayout.setPendingAction(AppBarLayout.PENDING_ACTION_COLLAPSED);
+        }
+      }
+    }
+
+    screenOrientation = newConfig.orientation;
   }
 
   @Override
@@ -599,7 +622,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       updateTextBounds(0, 0, getMeasuredWidth(), getMeasuredHeight(), /* forceRecalculate= */ true);
 
       int lineCount = collapsingTextHelper.getExpandedLineCount();
-      if (lineCount > 1 && collapsingTextHelper.getExpansionFraction() == 0f) {
+      if (lineCount > 1) {
         // Add extra height based on the amount of height beyond the first line of title text.
         int expandedTextHeight = Math.round(collapsingTextHelper.getExpandedTextFullHeight());
         extraMultilineHeight = expandedTextHeight * (lineCount - 1);

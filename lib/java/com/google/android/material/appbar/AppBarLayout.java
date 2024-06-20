@@ -1174,6 +1174,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     return pendingAction;
   }
 
+  void setPendingAction(int pendingAction) {
+    this.pendingAction = pendingAction;
+  }
+
   void resetPendingAction() {
     pendingAction = PENDING_ACTION_NONE;
   }
