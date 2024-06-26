@@ -108,7 +108,7 @@ public abstract class BaseProgressIndicatorSpec {
         min(
             getDimensionPixelSize(
                 context, a, R.styleable.BaseProgressIndicator_trackCornerRadius, 0),
-            trackThickness / 2);
+            Math.round(trackThickness / 2f));
     showAnimationBehavior =
         a.getInt(
             R.styleable.BaseProgressIndicator_showAnimationBehavior,
