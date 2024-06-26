@@ -121,7 +121,6 @@ public class BottomSheetDialog extends AppCompatDialog {
 
   @Override
   public void setContentView(@LayoutRes int layoutResId) {
-    initializeViewTreeOwners();
     super.setContentView(wrapInBottomSheet(layoutResId, null, null));
   }
 
@@ -148,20 +147,12 @@ public class BottomSheetDialog extends AppCompatDialog {
 
   @Override
   public void setContentView(View view) {
-    initializeViewTreeOwners();
     super.setContentView(wrapInBottomSheet(0, view, null));
   }
 
   @Override
   public void setContentView(View view, ViewGroup.LayoutParams params) {
-    initializeViewTreeOwners();
     super.setContentView(wrapInBottomSheet(0, view, params));
-  }
-
-  @Override
-  public void addContentView(@NonNull View view, ViewGroup.LayoutParams params) {
-    initializeViewTreeOwners();
-    super.addContentView(view, params);
   }
 
   @Override
