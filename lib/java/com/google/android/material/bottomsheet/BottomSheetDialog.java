@@ -156,6 +156,12 @@ public class BottomSheetDialog extends AppCompatDialog {
   }
 
   @Override
+  public void addContentView(@NonNull View view, ViewGroup.LayoutParams params) {
+    initializeViewTreeOwners();
+    super.addContentView(view, params);
+  }
+
+  @Override
   public void setCancelable(boolean cancelable) {
     super.setCancelable(cancelable);
     if (this.cancelable != cancelable) {
