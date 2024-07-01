@@ -33,6 +33,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /** A base class for Shape Theming demos in the Catalog app. */
 public abstract class ShapeThemingDemoFragment extends DemoFragment {
@@ -91,7 +92,10 @@ public abstract class ShapeThemingDemoFragment extends DemoFragment {
     View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
     BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(300);
     MaterialButton button = container.findViewById(R.id.material_button_2);
-    button.setOnClickListener(v -> bottomSheetDialog.show());
+    button.setOnClickListener(v -> {
+      new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
+      bottomSheetDialog.show();
+    });
 
     return view;
   }
