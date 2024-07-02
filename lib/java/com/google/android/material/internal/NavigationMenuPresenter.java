@@ -142,6 +142,24 @@ public class NavigationMenuPresenter implements MenuPresenter {
     return menuView;
   }
 
+  private void updateAllTextMenuItems() {
+    if (adapter != null) {
+      adapter.updateAllTextMenuItems();
+    }
+  }
+
+  private void updateAllSubHeaderMenuItems() {
+    if (adapter != null) {
+      adapter.updateAllSubHeaderMenuItems();
+    }
+  }
+
+  private void updateAllDividerMenuItems() {
+    if (adapter != null) {
+      adapter.updateAllDividerMenuItems();
+    }
+  }
+
   @Override
   public void updateMenuView(boolean cleared) {
     if (adapter != null) {
@@ -271,12 +289,12 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setSubheaderColor(@Nullable ColorStateList subheaderColor) {
     this.subheaderColor = subheaderColor;
-    updateMenuView(false);
+    updateAllSubHeaderMenuItems();
   }
 
   public void setSubheaderTextAppearance(@StyleRes int resId) {
     subheaderTextAppearance = resId;
-    updateMenuView(false);
+    updateAllSubHeaderMenuItems();
   }
 
   @Nullable
@@ -286,7 +304,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemIconTintList(@Nullable ColorStateList tint) {
     iconTintList = tint;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   @Nullable
@@ -296,17 +314,17 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemTextColor(@Nullable ColorStateList textColor) {
     this.textColor = textColor;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public void setItemTextAppearance(@StyleRes int resId) {
     textAppearance = resId;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
     textAppearanceActiveBoldEnabled = isBold;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   @Nullable
@@ -316,12 +334,12 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemBackground(@Nullable Drawable itemBackground) {
     this.itemBackground = itemBackground;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public void setItemForeground(@Nullable RippleDrawable itemForeground) {
     this.itemForeground = itemForeground;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public int getItemHorizontalPadding() {
@@ -330,7 +348,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemHorizontalPadding(int itemHorizontalPadding) {
     this.itemHorizontalPadding = itemHorizontalPadding;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   @Px
@@ -340,7 +358,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemVerticalPadding(@Px int itemVerticalPadding) {
     this.itemVerticalPadding = itemVerticalPadding;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   @Px
@@ -350,7 +368,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setDividerInsetStart(@Px int dividerInsetStart) {
     this.dividerInsetStart = dividerInsetStart;
-    updateMenuView(false);
+    updateAllDividerMenuItems();
   }
 
   @Px
@@ -360,7 +378,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setDividerInsetEnd(@Px int dividerInsetEnd) {
     this.dividerInsetEnd = dividerInsetEnd;
-    updateMenuView(false);
+    updateAllDividerMenuItems();
   }
 
   @Px
@@ -370,7 +388,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setSubheaderInsetStart(@Px int subheaderInsetStart) {
     this.subheaderInsetStart = subheaderInsetStart;
-    updateMenuView(false);
+    updateAllSubHeaderMenuItems();
   }
 
   @Px
@@ -380,7 +398,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setSubheaderInsetEnd(@Px int subheaderInsetEnd) {
     this.subheaderInsetEnd = subheaderInsetEnd;
-    updateMenuView(false);
+    updateAllSubHeaderMenuItems();
   }
 
   public int getItemIconPadding() {
@@ -389,12 +407,12 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemIconPadding(int itemIconPadding) {
     this.itemIconPadding = itemIconPadding;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public void setItemMaxLines(int itemMaxLines) {
     this.itemMaxLines = itemMaxLines;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public int getItemMaxLines() {
@@ -405,7 +423,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
     if (this.itemIconSize != itemIconSize) {
       this.itemIconSize = itemIconSize;
       hasCustomItemIconSize = true;
-      updateMenuView(false);
+      updateAllTextMenuItems();
     }
   }
 
@@ -684,8 +702,13 @@ public class NavigationMenuPresenter implements MenuPresenter {
     }
 
     public void update() {
+      int prevItemSize = items.size();
       prepareMenuItems();
       notifyDataSetChanged();
+      // If there were no structural changes, update the items due to the adapter having stable ids.
+      if (prevItemSize == items.size()) {
+        notifyItemRangeChanged(0, items.size());
+      }
     }
 
     /**
@@ -864,6 +887,32 @@ public class NavigationMenuPresenter implements MenuPresenter {
         }
       }
       return itemCount;
+    }
+
+    private void updateAllTextMenuItems() {
+      for (int i = 0; i < items.size(); i++) {
+        if (items.get(i) instanceof NavigationMenuTextItem
+            && getItemViewType(i) == VIEW_TYPE_NORMAL) {
+          notifyItemChanged(i);
+        }
+      }
+    }
+
+    private void updateAllSubHeaderMenuItems() {
+      for (int i = 0; i < items.size(); i++) {
+        if (items.get(i) instanceof NavigationMenuTextItem
+            && getItemViewType(i) == VIEW_TYPE_SUBHEADER) {
+          notifyItemChanged(i);
+        }
+      }
+    }
+
+    private void updateAllDividerMenuItems() {
+      for (int i = 0; i < items.size(); i++) {
+        if (items.get(i) instanceof NavigationMenuSeparatorItem) {
+          notifyItemChanged(i);
+        }
+      }
     }
   }
 

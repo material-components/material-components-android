@@ -102,7 +102,6 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     LayoutInflater.from(context).inflate(R.layout.design_navigation_menu_item, this, true);
     setIconSize(context.getResources().getDimensionPixelSize(R.dimen.design_navigation_icon_size));
     textView = findViewById(R.id.design_menu_item_text);
-    textView.setDuplicateParentStateEnabled(true);
     ViewCompat.setAccessibilityDelegate(textView, accessibilityDelegate);
   }
 
