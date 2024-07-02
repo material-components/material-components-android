@@ -326,6 +326,12 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         center.moveAcross(-adjustedRadius);
       } else {
         float centerDistance = centerDegree / 360 * activePathMeasure.getLength() / 2;
+        float amplitude = displayedAmplitude * amplitudeFraction;
+        if (adjustedRadius != cachedRadius || amplitude != cachedAmplitude) {
+          cachedAmplitude = amplitude;
+          cachedRadius = adjustedRadius;
+          invalidateCachedPaths();
+        }
         activePathMeasure.getPosTan(centerDistance, center.posVec, center.tanVec);
       }
       paint.setStyle(Style.FILL);
@@ -509,10 +515,10 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       float span,
       float amplitudeFraction,
       float phaseFraction) {
+    float amplitude = displayedAmplitude * amplitudeFraction;
     if (adjustedRadius != cachedRadius
-        || (pathMeasure == activePathMeasure
-            && displayedAmplitude * amplitudeFraction != cachedAmplitude)) {
-      cachedAmplitude = displayedAmplitude * amplitudeFraction;
+        || (pathMeasure == activePathMeasure && amplitude != cachedAmplitude)) {
+      cachedAmplitude = amplitude;
       cachedRadius = adjustedRadius;
       invalidateCachedPaths();
     }

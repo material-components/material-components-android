@@ -297,9 +297,9 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     if (!baseSpec.hasWavyEffect()) {
       return;
     }
+    maybeInitializeAmplitudeAnimator();
     float newAmplitudeFraction = getAmplitudeFractionFromLevel(level);
     if (newAmplitudeFraction != targetAmplitudeFraction) {
-      maybeInitializeAmplitudeAnimator();
       if (amplitudeAnimator.isRunning()) {
         amplitudeAnimator.cancel();
       }
@@ -311,6 +311,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
         amplitudeInterpolator = amplitudeOffInterpolator;
         amplitudeAnimator.reverse();
       }
+    } else if (!amplitudeAnimator.isRunning()) {
+      setAmplitudeFraction(newAmplitudeFraction);
     }
   }
 
