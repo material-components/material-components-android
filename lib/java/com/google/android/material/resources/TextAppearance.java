@@ -34,6 +34,7 @@ import android.util.Xml;
 import androidx.annotation.FontRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
@@ -62,6 +63,7 @@ public class TextAppearance {
   @Nullable public final ColorStateList textColorLink;
   @Nullable public final ColorStateList shadowColor;
   @Nullable public final String fontFamily;
+  @Nullable public String fontVariationSettings;
 
   public final int textStyle;
   public final int typeface;
@@ -119,6 +121,13 @@ public class TextAppearance {
       a = context.obtainStyledAttributes(id, R.styleable.MaterialTextAppearance);
       hasLetterSpacing = a.hasValue(R.styleable.MaterialTextAppearance_android_letterSpacing);
       letterSpacing = a.getFloat(R.styleable.MaterialTextAppearance_android_letterSpacing, 0);
+      if (VERSION.SDK_INT >= VERSION_CODES.O) {
+        int fontVariationSettingsIndex = MaterialResources.getIndexWithValue(
+            a,
+            R.styleable.MaterialTextAppearance_fontVariationSettings,
+            R.styleable.MaterialTextAppearance_android_fontVariationSettings);
+        fontVariationSettings = a.getString(fontVariationSettingsIndex);
+      }
       a.recycle();
     } else {
       hasLetterSpacing = false;
@@ -354,6 +363,10 @@ public class TextAppearance {
 
     textPaint.setTextSize(textSize);
 
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+      textPaint.setFontVariationSettings(fontVariationSettings);
+    }
+
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       if (hasLetterSpacing) {
         textPaint.setLetterSpacing(letterSpacing);
@@ -376,6 +389,17 @@ public class TextAppearance {
 
   public void setTextSize(float textSize) {
     this.textSize = textSize;
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Nullable
+  public String getFontVariationSettings() {
+    return fontVariationSettings;
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  public void setFontVariationSettings(@Nullable String fontVariationSettings) {
+    this.fontVariationSettings = fontVariationSettings;
   }
 
   private boolean maybeLoadFontSynchronously(Context context) {

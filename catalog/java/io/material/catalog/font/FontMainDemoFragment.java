@@ -20,6 +20,8 @@ import io.material.catalog.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -100,6 +102,16 @@ public class FontMainDemoFragment extends DemoFragment {
         return "Medium";
       default:
         return fontFamily;
+    }
+  }
+
+  @NonNull
+  protected String maybeGetFontVariationSettingsDescription(
+      @Nullable String fontVariationSettings) {
+    if (VERSION.SDK_INT < VERSION_CODES.O || fontVariationSettings == null) {
+      return "";
+    } else {
+      return " " + fontVariationSettings;
     }
   }
 
@@ -191,7 +203,8 @@ public class FontMainDemoFragment extends DemoFragment {
           + convertFontFamilyToDescription(textAppearance.fontFamily)
           + " "
           + pxToSp(textAppearance.getTextSize())
-          + "sp";
+          + "sp"
+          + maybeGetFontVariationSettingsDescription(textAppearance.fontVariationSettings);
     }
 
     private int pxToSp(float px) {

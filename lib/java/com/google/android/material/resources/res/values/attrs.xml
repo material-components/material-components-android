@@ -43,6 +43,8 @@
     <attr name="android:lineHeight"/>
     <attr name="lineHeight" format="dimension"/>
     <attr name="android:letterSpacing"/>
+    <attr name="android:fontVariationSettings"/>
+    <attr name="fontVariationSettings" format="string"/>
   </declare-styleable>
 
 </resources>

@@ -15,17 +15,19 @@
   limitations under the License.
   -->
 
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
   <LinearLayout
-      android:layout_width="match_parent"
+      android:layout_width="0dp"
       android:layout_height="wrap_content"
       android:paddingTop="8dp"
       android:paddingBottom="8dp"
+      android:layout_weight="1"
       android:orientation="vertical">
     <TextView
         android:id="@+id/description"
@@ -36,8 +38,7 @@
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="1"/>
+        android:layout_height="wrap_content" />
   </LinearLayout>
 
   <ImageView
@@ -49,5 +50,5 @@
       android:background="?attr/selectableItemBackgroundBorderless"
       android:contentDescription="Information"
       app:srcCompat="@drawable/ic_info_outline_24px"
-      app:tint="?attr/colorControlNormal"/>
-</FrameLayout>
+      app:tint="?attr/colorControlNormal" />
+</LinearLayout>
