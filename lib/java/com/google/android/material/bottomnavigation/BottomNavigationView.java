@@ -92,7 +92,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
  * href="https://material.io/components/navigation-bar/overview">design guidelines</a>.
  */
 public class BottomNavigationView extends NavigationBarView {
-  private static final int MAX_ITEM_COUNT = 5;
+  private static final int MAX_ITEM_COUNT = 6;
 
   public BottomNavigationView(@NonNull Context context) {
     this(context, null);

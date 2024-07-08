@@ -63,7 +63,7 @@ import java.util.HashSet;
  */
 @RestrictTo(LIBRARY_GROUP)
 public abstract class NavigationBarMenuView extends ViewGroup implements MenuView {
-  private static final int ITEM_POOL_SIZE = 5;
+  private static final int ITEM_POOL_SIZE = 7;
   private static final int NO_PADDING = -1;
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
