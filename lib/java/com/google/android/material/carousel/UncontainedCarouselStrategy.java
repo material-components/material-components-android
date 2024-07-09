@@ -24,16 +24,14 @@ import android.content.Context;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import android.view.View;
 import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 
 /**
  * A {@link CarouselStrategy} that does not resize the original item width and fits as many as it
  * can into the container, cutting off the rest. Cut off items may be resized in order to show an
  * effect of items getting smaller at the ends.
  *
- * Note that this strategy does not adjust the size of large items. Item widths are taken
- * from the {@link androidx.recyclerview.widget.RecyclerView} item width.
+ * <p>Note that this strategy does not adjust the size of large items. Item widths are taken from
+ * the {@link androidx.recyclerview.widget.RecyclerView} item width.
  *
  * <p>This class will automatically be reversed by {@link CarouselLayoutManager} if being laid out
  * right-to-left and does not need to make any account for layout direction itself.
@@ -46,10 +44,6 @@ import androidx.annotation.RestrictTo.Scope;
 public final class UncontainedCarouselStrategy extends CarouselStrategy {
 
   private static final float MEDIUM_LARGE_ITEM_PERCENTAGE_THRESHOLD = 0.85F;
-
-  @RestrictTo(Scope.LIBRARY_GROUP)
-  public UncontainedCarouselStrategy() {
-  }
 
   @Override
   @NonNull
