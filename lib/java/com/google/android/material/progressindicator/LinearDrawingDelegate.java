@@ -363,7 +363,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     if (spec.hasWavyEffect()) {
       int cycleCount = (int) (trackLength / spec.wavelength);
       adjustedWavelength = trackLength / cycleCount;
-      float smoothness = SINE_WAVE_FORM_SMOOTHNESS;
+      float smoothness = WAVE_SMOOTHNESS;
       for (int i = 0; i <= cycleCount; i++) {
         cachedActivePath.cubicTo(2 * i + smoothness, 0, 2 * i + 1 - smoothness, 1, 2 * i + 1, 1);
         cachedActivePath.cubicTo(

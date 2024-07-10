@@ -493,7 +493,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
 
   private void appendCubicPerHalfCycle(
       @NonNull Path outPath, @NonNull PathPoint anchor1, @NonNull PathPoint anchor2) {
-    float controlLength = adjustedWavelength / 2 * SINE_WAVE_FORM_SMOOTHNESS;
+    float controlLength = adjustedWavelength / 2 * WAVE_SMOOTHNESS;
     PathPoint control1 = new PathPoint(anchor1);
     PathPoint control2 = new PathPoint(anchor2);
     control1.moveAlong(controlLength);

@@ -37,9 +37,9 @@ import androidx.annotation.Px;
 
 /** A delegate abstract class for drawing the graphics in different drawable classes. */
 abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
-  // The length of the control handles of the cubic bezier curve simulating y = A cos(PI*x),
-  // where 0 <= x <= 1 (half cycle).
-  static final float SINE_WAVE_FORM_SMOOTHNESS = 0.364f;
+  // The length of the control handles of the cubic bezier curve simulating half cycle (from peak to
+  // trough) with wavelength = 2.
+  static final float WAVE_SMOOTHNESS = 0.48f;
 
   S spec;
 
