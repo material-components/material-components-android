@@ -166,6 +166,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  @NonNull private ShapeAppearanceModel strokeShapeAppearanceModel;
 
   private final ShadowRenderer shadowRenderer = new ShadowRenderer();
   @NonNull private final PathListener pathShadowListener;
@@ -1228,7 +1229,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         canvas,
         strokePaint,
         pathInsetByStroke,
-        drawableState.strokeShapeAppearanceModel,
+        strokeShapeAppearanceModel,
         springAnimatedStrokeCornerSizes,
         getBoundsInsetByStroke());
   }
@@ -1332,7 +1333,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     updateStrokeShapeAppearanceModels();
     RectF boundsInsetByStroke = getBoundsInsetByStroke();
     pathProvider.calculatePath(
-        drawableState.strokeShapeAppearanceModel,
+        strokeShapeAppearanceModel,
         springAnimatedStrokeCornerSizes,
         drawableState.interpolation,
         boundsInsetByStroke,
@@ -1343,7 +1344,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private void updateStrokeShapeAppearanceModels() {
     // Adjust corner radius in order to draw the stroke so that the corners of the background are
     // drawn on top of the edges.
-    drawableState.strokeShapeAppearanceModel =
+    strokeShapeAppearanceModel =
         getShapeAppearanceModel().withTransformedCornerSizes(strokeInsetCornerSizeUnaryOperator);
     // Adjust spring animated corner sizes, when springs are controlling the corner sizes, in order
     // to draw the stroke so that the corners of the background are drawn on top of the edges.
@@ -1653,7 +1654,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     @NonNull ShapeAppearanceModel shapeAppearanceModel;
     @Nullable StateListShapeAppearanceModel stateListShapeAppearanceModel;
-    @NonNull ShapeAppearanceModel strokeShapeAppearanceModel;
     @Nullable ElevationOverlayProvider elevationOverlayProvider;
 
     @Nullable ColorFilter colorFilter;
@@ -1691,7 +1691,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     public MaterialShapeDrawableState(@NonNull MaterialShapeDrawableState orig) {
       shapeAppearanceModel = orig.shapeAppearanceModel;
       stateListShapeAppearanceModel = orig.stateListShapeAppearanceModel;
-      strokeShapeAppearanceModel = orig.strokeShapeAppearanceModel;
       elevationOverlayProvider = orig.elevationOverlayProvider;
       strokeWidth = orig.strokeWidth;
       colorFilter = orig.colorFilter;
