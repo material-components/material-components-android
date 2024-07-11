@@ -431,19 +431,26 @@ public class CarouselLayoutManager extends LayoutManager
   private void addViewsStart(Recycler recycler, int startPosition) {
     float start = calculateChildStartForFill(startPosition);
     for (int i = startPosition; i >= 0; i--) {
-      ChildCalculations calculations = makeChildCalculations(recycler, start, i);
-      if (isLocOffsetOutOfFillBoundsStart(calculations.offsetCenter, calculations.range)) {
+      float center = addEnd(start, currentKeylineState.getItemSize() / 2F);
+      KeylineRange range =
+          getSurroundingKeylineRange(currentKeylineState.getKeylines(), center, false);
+
+      float offsetCenter = calculateChildOffsetCenterForLocation(center, range);
+      if (isLocOffsetOutOfFillBoundsStart(offsetCenter, range)) {
         break;
       }
       start = addStart(start, currentKeylineState.getItemSize());
 
       // If this child's start is beyond the end of the container, don't add the child but continue
       // to loop so we can eventually get to children that are within bounds.
-      if (isLocOffsetOutOfFillBoundsEnd(calculations.offsetCenter, calculations.range)) {
+      if (isLocOffsetOutOfFillBoundsEnd(offsetCenter, range)) {
         continue;
       }
+      View child = recycler.getViewForPosition(i);
+      measureChildWithMargins(child, 0, 0);
       // Add this child to the first index of the RecyclerView.
-      addAndLayoutView(calculations.child, /* index= */ 0, calculations);
+      addAndLayoutView(
+          child, /* index= */ 0, new ChildCalculations(child, center, offsetCenter, range));
     }
   }
 
@@ -476,19 +483,26 @@ public class CarouselLayoutManager extends LayoutManager
   private void addViewsEnd(Recycler recycler, State state, int startPosition) {
     float start = calculateChildStartForFill(startPosition);
     for (int i = startPosition; i < state.getItemCount(); i++) {
-      ChildCalculations calculations = makeChildCalculations(recycler, start, i);
-      if (isLocOffsetOutOfFillBoundsEnd(calculations.offsetCenter, calculations.range)) {
+      float center = addEnd(start, currentKeylineState.getItemSize() / 2F);
+      KeylineRange range =
+          getSurroundingKeylineRange(currentKeylineState.getKeylines(), center, false);
+
+      float offsetCenter = calculateChildOffsetCenterForLocation(center, range);
+      if (isLocOffsetOutOfFillBoundsEnd(offsetCenter, range)) {
         break;
       }
       start = addEnd(start, currentKeylineState.getItemSize());
 
       // If this child's end is beyond the start of the container, don't add the child but continue
       // to loop so we can eventually get to children that are within bounds.
-      if (isLocOffsetOutOfFillBoundsStart(calculations.offsetCenter, calculations.range)) {
+      if (isLocOffsetOutOfFillBoundsStart(offsetCenter, range)) {
         continue;
       }
+      View child = recycler.getViewForPosition(i);
+      measureChildWithMargins(child, 0, 0);
       // Add this child to the last index of the RecyclerView
-      addAndLayoutView(calculations.child, /* index= */ -1, calculations);
+      addAndLayoutView(
+          child, /* index= */ -1, new ChildCalculations(child, center, offsetCenter, range));
     }
   }
 
@@ -562,7 +576,7 @@ public class CarouselLayoutManager extends LayoutManager
     KeylineRange range =
         getSurroundingKeylineRange(currentKeylineState.getKeylines(), center, false);
 
-    float offsetCenter = calculateChildOffsetCenterForLocation(child, center, range);
+    float offsetCenter = calculateChildOffsetCenterForLocation(center, range);
     return new ChildCalculations(child, center, offsetCenter, range);
   }
 
@@ -889,13 +903,12 @@ public class CarouselLayoutManager extends LayoutManager
   /**
    * Remaps and returns the child's offset center from the end-to-end layout model.
    *
-   * @param child the child to calculate the offset for
    * @param childCenterLocation the center of the child in the end-to-end layout model
    * @param range the keyline range that the child is currently between
    * @return the location along the scroll axis where the child should be located
    */
   private float calculateChildOffsetCenterForLocation(
-      View child, float childCenterLocation, KeylineRange range) {
+      float childCenterLocation, KeylineRange range) {
     float offsetCenter =
         lerp(
             range.leftOrTop.locOffset,
@@ -915,11 +928,9 @@ public class CarouselLayoutManager extends LayoutManager
       // Calculate how far past the nearest keyline (either the first or last keyline) this item
       // has scrolled in the end-to-end layout. Then use that value calculate what would be a
       // Keyline#locOffset.
-      LayoutParams lp = (LayoutParams) child.getLayoutParams();
-      float marginMask = orientationHelper.getMaskMargins(lp) / currentKeylineState.getItemSize();
       float outOfBoundOffset =
           (childCenterLocation - range.rightOrBottom.loc)
-              * (1F - range.rightOrBottom.mask + marginMask);
+              * (1F - range.rightOrBottom.mask);
       offsetCenter += outOfBoundOffset;
     }
 
@@ -977,7 +988,7 @@ public class CarouselLayoutManager extends LayoutManager
 
     RectF maskRect = orientationHelper.getMaskRect(childHeight, childWidth, maskHeight, maskWidth);
 
-    float offsetCenter = calculateChildOffsetCenterForLocation(child, childCenterLocation, range);
+    float offsetCenter = calculateChildOffsetCenterForLocation(childCenterLocation, range);
     float maskedTop = offsetCenter - (maskRect.height() / 2F);
     float maskedBottom = offsetCenter + (maskRect.height() / 2F);
     float maskedLeft = offsetCenter - (maskRect.width() / 2F);
@@ -1508,7 +1519,7 @@ public class CarouselLayoutManager extends LayoutManager
     float center = addEnd(startOffset, halfItemSize);
     KeylineRange range =
         getSurroundingKeylineRange(currentKeylineState.getKeylines(), center, false);
-    float offsetCenter = calculateChildOffsetCenterForLocation(child, center, range);
+    float offsetCenter = calculateChildOffsetCenterForLocation(center, range);
 
     // Offset the child so its center is at offsetCenter
     super.getDecoratedBoundsWithMargins(child, boundsRect);
