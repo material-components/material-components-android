@@ -681,69 +681,109 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   /**
    * Returns the amplitude of the indicator's amplitude in pixels.
    *
-   * @see #setAmplitude(int)
+   * @see #setWaveAmplitude(int)
    */
   @Px
-  public int getAmplitude() {
-    return spec.amplitude;
+  public int getWaveAmplitude() {
+    return spec.waveAmplitude;
   }
 
   /**
    * Sets the amplitude of the indicator's amplitude in pixels.
    *
-   * @param amplitude The new amplitude in pixels.
-   * @see #getAmplitude()
+   * @param waveAmplitude The new amplitude in pixels.
+   * @see #getWaveAmplitude()
    */
-  public void setAmplitude(@Px int amplitude) {
-    if (spec.amplitude != amplitude) {
-      spec.amplitude = abs(amplitude);
+  public void setWaveAmplitude(@Px int waveAmplitude) {
+    if (spec.waveAmplitude != waveAmplitude) {
+      spec.waveAmplitude = abs(waveAmplitude);
       requestLayout();
     }
   }
 
   /**
-   * Returns the wavelength of the indicator's waveform in pixels.
+   * Returns the wavelength, in pixels, of the indicator's waveform in determinate mode.
    *
+   * @see #setWavelengthDeterminate(int)
    * @see #setWavelength(int)
    */
   @Px
-  public int getWavelength() {
-    return spec.wavelength;
+  public int getWavelengthDeterminate() {
+    return spec.wavelengthDeterminate;
   }
 
   /**
-   * Sets the wavelength of the indicator's waveform in pixels.
+   * Sets the wavelength, in pixels, of the indicator's waveform in indeterminate mode.
    *
-   * @param wavelength The new wavelength in pixels. No waves are drawn, if it equals to 0 with a
-   *     non-zero amplitude.
-   * @see #getWavelength()
+   * @param wavelength The new wavelength in pixels. No waves are drawn when wavelength is zero.
+   * @see #getWavelengthDeterminate()
+   */
+  public void setWavelengthDeterminate(@Px int wavelength) {
+    if (spec.wavelengthDeterminate != wavelength) {
+      spec.wavelengthDeterminate = abs(wavelength);
+      if (!isIndeterminate()) {
+        requestLayout();
+      }
+    }
+  }
+
+  /**
+   * Returns the wavelength, in pixels, of the indicator's waveform in indeterminate mode.
+   *
+   * @see #setWavelengthIndeterminate(int)
+   * @see #setWavelength(int)
+   */
+  @Px
+  public int getWavelengthIndeterminate() {
+    return spec.wavelengthIndeterminate;
+  }
+
+  /**
+   * Sets the wavelength, in pixels, of the indicator's waveform in indeterminate mode.
+   *
+   * @param wavelength The new wavelength in pixels. No waves are drawn when wavelength is zero.
+   * @see #getWavelengthIndeterminate()
+   */
+  public void setWavelengthIndeterminate(@Px int wavelength) {
+    if (spec.wavelengthIndeterminate != wavelength) {
+      spec.wavelengthIndeterminate = abs(wavelength);
+      if (isIndeterminate()) {
+        requestLayout();
+      }
+    }
+  }
+
+  /**
+   * Sets the wavelength of the indicator's determinate and indeterminate waveform in pixels.
+   *
+   * @param wavelength The new wavelength in pixels. No waves are drawn, if it equals to 0.
+   * @see #getWavelengthDeterminate()
+   * @see #getWavelengthIndeterminate()
    */
   public void setWavelength(@Px int wavelength) {
-    if (spec.wavelength != wavelength) {
-      spec.wavelength = abs(wavelength);
-      requestLayout();
-    }
+    setWavelengthDeterminate(wavelength);
+    setWavelengthIndeterminate(wavelength);
   }
 
   /**
    * Returns the speed of the indicator's waveform in pixels.
    *
-   * @see #setSpeed(int)
+   * @see #setWaveSpeed(int)
    */
   @Px
-  public int getSpeed() {
-    return spec.speed;
+  public int getWaveSpeed() {
+    return spec.waveSpeed;
   }
 
   /**
    * Sets the speed of the indicator's waveform in pixels.
    *
-   * @param speed The new speed in pixels.
-   * @see #getSpeed()
+   * @param waveSpeed The new speed in pixels.
+   * @see #getWaveSpeed()
    */
-  public void setSpeed(@Px int speed) {
-    spec.speed = speed;
-    getProgressDrawable().setEnforcedDrawing(spec.speed != 0);
+  public void setWaveSpeed(@Px int waveSpeed) {
+    spec.waveSpeed = waveSpeed;
+    getProgressDrawable().setEnforcedDrawing(spec.waveSpeed != 0);
   }
 
   /**

@@ -54,7 +54,9 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   private float displayedCornerRadius;
   private float displayedAmplitude;
   private float adjustedWavelength;
+  private int cachedWavelength;
   private boolean useStrokeCap;
+  private boolean drawingDeterminateIndicator;
 
   // This will be used in the ESCAPE hide animation. The start and end fraction in track will be
   // scaled by this fraction with a pivot of 1.0f.
@@ -73,7 +75,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
 
   @Override
   int getPreferredHeight() {
-    return spec.trackThickness + spec.amplitude * 2;
+    return spec.trackThickness + spec.waveAmplitude * 2;
   }
 
   /**
@@ -121,7 +123,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius =
         min(spec.trackThickness / 2, spec.trackCornerRadius) * trackThicknessFraction;
-    displayedAmplitude = spec.amplitude * trackThicknessFraction;
+    displayedAmplitude = spec.waveAmplitude * trackThicknessFraction;
 
     // Further adjusts the canvas for animated visibility change.
     if (isShowing || isHiding) {
@@ -150,6 +152,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       @NonNull ActiveIndicator activeIndicator,
       int drawableAlpha) {
     int color = MaterialColors.compositeARGBWithAlpha(activeIndicator.color, drawableAlpha);
+    drawingDeterminateIndicator = activeIndicator.isDeterminate;
     drawLine(
         canvas,
         paint,
@@ -173,6 +176,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       int drawableAlpha,
       @Px int gapSize) {
     color = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
+    drawingDeterminateIndicator = false;
     drawLine(
         canvas,
         paint,
@@ -234,7 +238,10 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     // Adjusts start/end X so the progress indicator will start from 0 when startFraction == 0.
     float originX = -trackLength / 2;
 
-    boolean drawWavyPath = spec.hasWavyEffect() && drawingActiveIndicator && amplitudeFraction > 0f;
+    boolean drawWavyPath =
+        spec.hasWavyEffect(drawingDeterminateIndicator)
+            && drawingActiveIndicator
+            && amplitudeFraction > 0f;
 
     // No need to draw on track if start and end are out of visible range.
     if (startPx <= endPx) {
@@ -304,6 +311,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       @ColorInt int color,
       @IntRange(from = 0, to = 255) int drawableAlpha) {
     int paintColor = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
+    drawingDeterminateIndicator = false;
     if (spec.trackStopIndicatorSize > 0 && paintColor != Color.TRANSPARENT) {
       // Draws the stop indicator at the end of the track if needed.
       paint.setStyle(Style.FILL);
@@ -360,8 +368,10 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   @Override
   void invalidateCachedPaths() {
     cachedActivePath.rewind();
-    if (spec.hasWavyEffect()) {
-      int cycleCount = (int) (trackLength / spec.wavelength);
+    if (spec.hasWavyEffect(drawingDeterminateIndicator)) {
+      int wavelength =
+          drawingDeterminateIndicator ? spec.wavelengthDeterminate : spec.wavelengthIndeterminate;
+      int cycleCount = (int) (trackLength / wavelength);
       adjustedWavelength = trackLength / cycleCount;
       float smoothness = WAVE_SMOOTHNESS;
       for (int i = 0; i <= cycleCount; i++) {
@@ -389,9 +399,16 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       float end,
       float amplitudeFraction,
       float phaseFraction) {
+    int wavelength =
+        drawingDeterminateIndicator ? spec.wavelengthDeterminate : spec.wavelengthIndeterminate;
+    if (pathMeasure == activePathMeasure && wavelength != cachedWavelength) {
+      cachedWavelength = wavelength;
+      invalidateCachedPaths();
+    }
     displayedPath.rewind();
     float resultTranslationX = -trackLength / 2;
-    if (spec.hasWavyEffect()) {
+    boolean hasWavyEffect = spec.hasWavyEffect(drawingDeterminateIndicator);
+    if (hasWavyEffect) {
       float cycleCount = trackLength / adjustedWavelength;
       float phaseFractionInPath = phaseFraction / cycleCount;
       float ratio = cycleCount / (cycleCount + 1);
@@ -412,7 +429,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     transform.setTranslate(resultTranslationX, 0);
     startPoint.translate(resultTranslationX, 0);
     endPoint.translate(resultTranslationX, 0);
-    if (spec.hasWavyEffect()) {
+    if (hasWavyEffect) {
       float scaleY = displayedAmplitude * amplitudeFraction;
       transform.postScale(1, scaleY);
       startPoint.scale(1, scaleY);

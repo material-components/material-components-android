@@ -57,9 +57,11 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
   private float adjustedRadius;
   private float adjustedWavelength;
   private float cachedAmplitude;
+  private int cachedWavelength;
   private float cachedRadius;
   // For full round ends, the stroke ROUND cap is used to prevent artifacts like (b/319309456).
   private boolean useStrokeCap;
+  private boolean drawingDeterminateIndicator;
 
   // This will be used in the ESCAPE hide animation. The start and end fraction in track will be
   // scaled by this fraction with a pivot of 1.0f.
@@ -137,7 +139,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius =
         min(spec.trackThickness / 2, spec.trackCornerRadius) * trackThicknessFraction;
-    displayedAmplitude = spec.amplitude * trackThicknessFraction;
+    displayedAmplitude = spec.waveAmplitude * trackThicknessFraction;
 
     // Further adjusts the radius for animated visibility change.
     adjustedRadius = (spec.indicatorSize - spec.trackThickness) / 2f;
@@ -174,6 +176,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     int color = MaterialColors.compositeARGBWithAlpha(activeIndicator.color, drawableAlpha);
     canvas.save();
     canvas.rotate(activeIndicator.rotationDegree);
+    drawingDeterminateIndicator = activeIndicator.isDeterminate;
     drawArc(
         canvas,
         paint,
@@ -198,6 +201,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       @IntRange(from = 0, to = 255) int drawableAlpha,
       int gapSize) {
     color = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
+    drawingDeterminateIndicator = false;
     drawArc(
         canvas,
         paint,
@@ -212,7 +216,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
   }
 
   /**
-   * Draws a part of the full circle track with the designated details.
+   * Draws a part of the full circle (or wavy circle) track with the designated details.
    *
    * @param canvas Canvas to draw.
    * @param paint Paint used to draw.
@@ -305,7 +309,9 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     }
 
     boolean shouldDrawWavyPath =
-        spec.hasWavyEffect() && shouldDrawActiveIndicator && amplitudeFraction > 0f;
+        spec.hasWavyEffect(drawingDeterminateIndicator)
+            && shouldDrawActiveIndicator
+            && amplitudeFraction > 0f;
 
     // Sets up the paint.
     paint.setAntiAlias(true);
@@ -448,7 +454,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     Matrix transform = new Matrix();
     transform.setScale(adjustedRadius, adjustedRadius);
     cachedActivePath.transform(transform);
-    if (spec.hasWavyEffect()) {
+    if (spec.hasWavyEffect(drawingDeterminateIndicator)) {
       activePathMeasure.setPath(cachedActivePath, false);
       createWavyPath(activePathMeasure, cachedActivePath, cachedAmplitude);
     }
@@ -460,7 +466,9 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     outPath.rewind();
     // Calculates anchor points.
     float basePathLength = basePathMeasure.getLength();
-    int cycleCountInPath = 2 * max(3, (int) (basePathLength / spec.wavelength / 2));
+    int wavelength =
+        drawingDeterminateIndicator ? spec.wavelengthDeterminate : spec.wavelengthIndeterminate;
+    int cycleCountInPath = 2 * max(3, (int) (basePathLength / wavelength / 2));
     adjustedWavelength = basePathLength / cycleCountInPath;
     // For each cycle, there will be 2 cubic beziers, which need 3 anchors (startAnchor and
     // midAnchor for the 1st cubic bezier; midAnchor and startAnchor of the next cycle for the 2nd
@@ -516,16 +524,20 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       float amplitudeFraction,
       float phaseFraction) {
     float amplitude = displayedAmplitude * amplitudeFraction;
+    int wavelength =
+        drawingDeterminateIndicator ? spec.wavelengthDeterminate : spec.wavelengthIndeterminate;
     if (adjustedRadius != cachedRadius
-        || (pathMeasure == activePathMeasure && amplitude != cachedAmplitude)) {
+        || (pathMeasure == activePathMeasure
+            && (amplitude != cachedAmplitude || wavelength != cachedWavelength))) {
       cachedAmplitude = amplitude;
+      cachedWavelength = wavelength;
       cachedRadius = adjustedRadius;
       invalidateCachedPaths();
     }
     displayedPath.rewind();
     span = clamp(span, 0, 1);
     float resultRotation = 0;
-    if (spec.hasWavyEffect()) {
+    if (spec.hasWavyEffect(drawingDeterminateIndicator)) {
       float cycleCount = (float) (2 * PI * adjustedRadius / adjustedWavelength);
       float phaseFractionInOneCycle = phaseFraction / cycleCount;
       start += phaseFractionInOneCycle;

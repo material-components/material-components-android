@@ -94,14 +94,24 @@
     -->
     <attr name="wavelength" format="dimension" />
     <!--
+      Defines the wavelength (in dp) of the wave effect in determinate mode.
+      If not specified, the value in wavelength attribute will be used by default.
+    -->
+    <attr name="wavelengthDeterminate" format="dimension" />
+    <!--
+      Defines the wavelength (in dp) of the wave effect in indeterminate mode.
+      If not specified, the value in wavelength attribute will be used by default.
+    -->
+    <attr name="wavelengthIndeterminate" format="dimension" />
+    <!--
       Defines the amplitude (in dp) of the wave effect.
     -->
-    <attr name="amplitude" format="dimension" />
+    <attr name="waveAmplitude" format="dimension" />
     <!--
-      Defines the wave speed (in dp/s) of the wavy effect. If positive, wave moves towards 100%; if
-      negative, wave moves towards 0%.
+      Defines the wave speed (in dp/s) of the wavy effect.
+      If positive, wave moves towards 100%; if negative, wave moves towards 0%.
     -->
-    <attr name="speed" format="dimension" />
+    <attr name="waveSpeed" format="dimension" />
   </declare-styleable>
 
   <declare-styleable name="LinearProgressIndicator">
@@ -109,8 +119,7 @@
     <attr name="indeterminateAnimationType">
       <!--
         The track will be filled with three adjacent segments in iterative different colors.
-        This type is only available when there are three or more indicator
-        colors.
+        This type is only available when there are three or more indicator colors.
       -->
       <enum name="contiguous" value="0" />
       <!--

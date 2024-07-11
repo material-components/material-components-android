@@ -207,7 +207,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
         baseSpec instanceof LinearProgressIndicatorSpec
             || (baseSpec instanceof CircularProgressIndicatorSpec
                 && ((CircularProgressIndicatorSpec) baseSpec).indeterminateTrackVisible);
-    boolean drawFullTrack = drawTrack && gapSize == 0 && !baseSpec.hasWavyEffect();
+    boolean drawFullTrack =
+        drawTrack && gapSize == 0 && !baseSpec.hasWavyEffect(/* isDeterminate= */ false);
 
     if (drawFullTrack) {
       drawingDelegate.fillTrack(

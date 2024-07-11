@@ -73,14 +73,17 @@ public abstract class BaseProgressIndicatorSpec {
   /** The size of the gap between the indicator and the rest of the track. */
   @Px public int indicatorTrackGapSize;
 
-  /** The size of the wavelength, if a wave effect is configured. */
-  @Px public int wavelength;
+  /** The size of the wavelength in determinate mode, if a wave effect is configured. */
+  @Px public int wavelengthDeterminate;
+
+  /** The size of the wavelength in indeterminate mode, if a wave effect is configured. */
+  @Px public int wavelengthIndeterminate;
 
   /** The size of the amplitude, if a wave effect is configured. */
-  @Px public int amplitude;
+  @Px public int waveAmplitude;
 
   /** The speed of the waveform, if a wave effect is configured. */
-  @Px public int speed;
+  @Px public int waveSpeed;
 
   /**
    * Instantiates BaseProgressIndicatorSpec.
@@ -120,9 +123,18 @@ public abstract class BaseProgressIndicatorSpec {
     indicatorTrackGapSize =
         a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_indicatorTrackGapSize, 0);
 
-    wavelength = abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_wavelength, 0));
-    amplitude = abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_amplitude, 0));
-    speed = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_speed, 0);
+    int wavelength = abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_wavelength, 0));
+    wavelengthDeterminate =
+        abs(
+            a.getDimensionPixelSize(
+                R.styleable.BaseProgressIndicator_wavelengthDeterminate, wavelength));
+    wavelengthIndeterminate =
+        abs(
+            a.getDimensionPixelSize(
+                R.styleable.BaseProgressIndicator_wavelengthIndeterminate, wavelength));
+    waveAmplitude =
+        abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_waveAmplitude, 0));
+    waveSpeed = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_waveSpeed, 0);
 
     loadIndicatorColors(context, a);
     loadTrackColor(context, a);
@@ -198,8 +210,10 @@ public abstract class BaseProgressIndicatorSpec {
     return hideAnimationBehavior != BaseProgressIndicator.HIDE_NONE;
   }
 
-  public boolean hasWavyEffect() {
-    return amplitude > 0 && wavelength > 0;
+  public boolean hasWavyEffect(boolean isDeterminate) {
+    return waveAmplitude > 0
+        && ((!isDeterminate && wavelengthIndeterminate > 0)
+            || (isDeterminate && wavelengthDeterminate > 0));
   }
 
   @CallSuper

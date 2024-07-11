@@ -220,12 +220,12 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   /** Hides the drawable immediately without triggering animation callbacks. */
   public boolean hideNow() {
-    return setVisible(/*visible=*/ false, /*restart=*/ false, /*animate=*/ false);
+    return setVisible(/* visible= */ false, /* restart= */ false, /* animate= */ false);
   }
 
   @Override
   public boolean setVisible(boolean visible, boolean restart) {
-    return setVisible(visible, restart, /*animate=*/ true);
+    return setVisible(visible, restart, /* animate= */ true);
   }
 
   /**
@@ -453,12 +453,16 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
     }
 
     float phaseFraction = 0f;
-    if (baseSpec.hasWavyEffect() && baseSpec.speed != 0) {
+    if (baseSpec.hasWavyEffect(isDeterminateDrawable()) && baseSpec.waveSpeed != 0) {
       float durationScale =
           animatorDurationScaleProvider.getSystemAnimatorDurationScale(
               context.getContentResolver());
       if (durationScale > 0f) {
-        int cycleInMs = (int) (1000f * baseSpec.wavelength / baseSpec.speed * durationScale);
+        int wavelength =
+            isDeterminateDrawable()
+                ? baseSpec.wavelengthDeterminate
+                : baseSpec.wavelengthIndeterminate;
+        int cycleInMs = (int) (1000f * wavelength / baseSpec.waveSpeed * durationScale);
         phaseFraction = (float) (System.currentTimeMillis() % cycleInMs) / cycleInMs;
         if (phaseFraction < 0f) {
           phaseFraction = (phaseFraction % 1) + 1f;
@@ -466,6 +470,10 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       }
     }
     return phaseFraction;
+  }
+
+  private boolean isDeterminateDrawable() {
+    return this instanceof DeterminateDrawable;
   }
 
   // ******************* Properties *******************

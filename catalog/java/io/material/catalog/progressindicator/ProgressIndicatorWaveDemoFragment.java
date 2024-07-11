@@ -81,33 +81,29 @@ public class ProgressIndicatorWaveDemoFragment extends ProgressIndicatorDemoFrag
     amplitudeSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
           int newAmplitude = (int) (value * pixelsInDp);
-          if (linearIndicator.getAmplitude() != newAmplitude) {
-            linearIndicator.setAmplitude(newAmplitude);
+          if (linearIndicator.getWaveAmplitude() != newAmplitude) {
+            linearIndicator.setWaveAmplitude(newAmplitude);
           }
-          if (circularIndicator.getAmplitude() != newAmplitude) {
-            circularIndicator.setAmplitude((int) (value * pixelsInDp));
+          if (circularIndicator.getWaveAmplitude() != newAmplitude) {
+            circularIndicator.setWaveAmplitude((int) (value * pixelsInDp));
           }
         });
     Slider waveLengthSlider = view.findViewById(R.id.wavelength_slider);
     waveLengthSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
           int newWaveLength = (int) (value * pixelsInDp);
-          if (linearIndicator.getWavelength() != newWaveLength) {
-            linearIndicator.setWavelength(newWaveLength);
-          }
-          if (circularIndicator.getWavelength() != newWaveLength) {
-            circularIndicator.setWavelength(newWaveLength);
-          }
+          linearIndicator.setWavelength(newWaveLength);
+          circularIndicator.setWavelength(newWaveLength);
         });
     Slider speedSlider = view.findViewById(R.id.speed_slider);
     speedSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
           int newSpeed = (int) (value * pixelsInDp);
-          if (linearIndicator.getSpeed() != newSpeed) {
-            linearIndicator.setSpeed(newSpeed);
+          if (linearIndicator.getWaveSpeed() != newSpeed) {
+            linearIndicator.setWaveSpeed(newSpeed);
           }
-          if (circularIndicator.getSpeed() != newSpeed) {
-            circularIndicator.setSpeed(newSpeed);
+          if (circularIndicator.getWaveSpeed() != newSpeed) {
+            circularIndicator.setWaveSpeed(newSpeed);
           }
         });
 
