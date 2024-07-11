@@ -123,7 +123,7 @@ public class MaterialTextView extends AppCompatTextView {
     if (canApplyLineHeight) {
       applyLineHeightFromViewAppearance(appearance);
     }
-    if (canForceRefreshFontVariationSettings) {
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
       maybeForceApplyFontVariationSettingsFromViewAppearance(appearance);
     }
     appearance.recycle();
@@ -150,7 +150,7 @@ public class MaterialTextView extends AppCompatTextView {
     if (canApplyLineHeight) {
       applyLineHeightFromViewAppearance(appearance);
     }
-    if (canForceRefreshFontVariationSettings) {
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
       maybeForceApplyFontVariationSettingsFromViewAppearance(appearance);
     }
     appearance.recycle();
