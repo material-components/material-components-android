@@ -17,7 +17,6 @@
 package com.google.android.material.shape;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static com.google.android.material.shape.ShapeAppearanceModel.NUM_CORNERS;
 
 import android.graphics.Matrix;
 import android.graphics.Path;
@@ -32,11 +31,6 @@ import androidx.annotation.UiThread;
 
 /** A class to convert a {@link ShapeAppearanceModel} to a {@link android.graphics.Path}. */
 public class ShapeAppearancePathProvider {
-
-  protected static final int TOP_RIGHT_CORNER_INDEX = 0;
-  protected static final int BOTTOM_RIGHT_CORNER_INDEX = 1;
-  protected static final int BOTTOM_LEFT_CORNER_INDEX = 2;
-  protected static final int TOP_LEFT_CORNER_INDEX = 3;
 
   private static class Lazy {
     static final ShapeAppearancePathProvider INSTANCE = new ShapeAppearancePathProvider();
@@ -57,9 +51,9 @@ public class ShapeAppearancePathProvider {
 
   // Inter-method state. This class works under the assumption that there is only one exposed
   // method, the method is responsible for correctly reset state.
-  private final ShapePath[] cornerPaths = new ShapePath[NUM_CORNERS];
-  private final Matrix[] cornerTransforms = new Matrix[NUM_CORNERS];
-  private final Matrix[] edgeTransforms = new Matrix[NUM_CORNERS];
+  private final ShapePath[] cornerPaths = new ShapePath[4];
+  private final Matrix[] cornerTransforms = new Matrix[4];
+  private final Matrix[] edgeTransforms = new Matrix[4];
 
   // Pre-allocated objects that are re-used several times during path computation and rendering.
   private final PointF pointF = new PointF();
@@ -74,7 +68,7 @@ public class ShapeAppearancePathProvider {
   private boolean edgeIntersectionCheckEnabled = true;
 
   public ShapeAppearancePathProvider() {
-    for (int i = 0; i < NUM_CORNERS; i++) {
+    for (int i = 0; i < 4; i++) {
       cornerPaths[i] = new ShapePath();
       cornerTransforms[i] = new Matrix();
       edgeTransforms[i] = new Matrix();
@@ -113,6 +107,7 @@ public class ShapeAppearancePathProvider {
    * @param bounds the desired bounds for the path.
    * @param pathListener the path
    * @param path the returned path out-var.
+   *
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
@@ -124,7 +119,7 @@ public class ShapeAppearancePathProvider {
       @NonNull Path path) {
     calculatePath(
         shapeAppearanceModel,
-        /* cornerSizeOverrides= */ null,
+        MaterialShapeDrawable.DEFAULT_INTERPOLATION_START_SHAPE_APPEARANCE_MODEL,
         interpolation,
         bounds,
         pathListener,
@@ -135,17 +130,19 @@ public class ShapeAppearancePathProvider {
    * Writes the given {@link ShapeAppearanceModel} to {@code path}
    *
    * @param shapeAppearanceModel The shape to be applied in the path.
-   * @param cornerSizeOverrides the corner sizes to overload the ones from shapeAppearanceModel.
+   * @param interpolationStartShapeAppearanceModel The shape to be applied in the path when
+   *     interpolation is 0.
    * @param interpolation the desired interpolation.
    * @param bounds the desired bounds for the path.
    * @param pathListener the path
    * @param path the returned path out-var.
+   *
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
   public void calculatePath(
-      @NonNull ShapeAppearanceModel shapeAppearanceModel,
-      @Nullable float[] cornerSizeOverrides,
+      ShapeAppearanceModel shapeAppearanceModel,
+      @NonNull ShapeAppearanceModel interpolationStartShapeAppearanceModel,
       float interpolation,
       RectF bounds,
       PathListener pathListener,
@@ -156,16 +153,21 @@ public class ShapeAppearancePathProvider {
     boundsPath.addRect(bounds, Direction.CW);
     ShapeAppearancePathSpec spec =
         new ShapeAppearancePathSpec(
-            shapeAppearanceModel, interpolation, bounds, pathListener, path);
+            shapeAppearanceModel,
+            interpolationStartShapeAppearanceModel,
+            interpolation,
+            bounds,
+            pathListener,
+            path);
 
     // Calculate the transformations (rotations and translations) necessary for each edge and
     // corner treatment.
-    for (int index = 0; index < NUM_CORNERS; index++) {
-      setCornerPathAndTransform(spec, index, cornerSizeOverrides);
+    for (int index = 0; index < 4; index++) {
+      setCornerPathAndTransform(spec, index);
       setEdgePathAndTransform(index);
     }
 
-    for (int index = 0; index < NUM_CORNERS; index++) {
+    for (int index = 0; index < 4; index++) {
       appendCornerPath(spec, index);
       appendEdgePath(spec, index);
     }
@@ -179,14 +181,12 @@ public class ShapeAppearancePathProvider {
     }
   }
 
-  private void setCornerPathAndTransform(
-      @NonNull ShapeAppearancePathSpec spec, int index, @Nullable float[] cornerSizes) {
-    CornerSize cornerSize =
-        cornerSizes == null
-            ? getCornerSizeForIndex(index, spec.shapeAppearanceModel)
-            : new ClampedCornerSize(cornerSizes[index]);
+  private void setCornerPathAndTransform(@NonNull ShapeAppearancePathSpec spec, int index) {
+    CornerSize size = getCornerSizeForIndex(index, spec.shapeAppearanceModel);
+    CornerSize startSize =
+        getCornerSizeForIndex(index, spec.interpolationStartShapeAppearanceModel);
     getCornerTreatmentForIndex(index, spec.shapeAppearanceModel)
-        .getCornerPath(cornerPaths[index], 90, spec.interpolation, spec.bounds, cornerSize);
+        .getCornerPath(cornerPaths[index], 90, spec.interpolation, spec.bounds, startSize, size);
 
     float edgeAngle = angleOfEdge(index);
     cornerTransforms[index].reset();
@@ -272,10 +272,10 @@ public class ShapeAppearancePathProvider {
     cornerPaths[index].applyToPath(cornerTransforms[index], cornerPath);
 
     RectF bounds = new RectF();
-    edgePath.computeBounds(bounds, /* exact= */ true);
-    cornerPath.computeBounds(bounds, /* exact= */ true);
+    edgePath.computeBounds(bounds, /* exact = */ true);
+    cornerPath.computeBounds(bounds, /* exact = */ true);
     edgePath.op(cornerPath, Op.INTERSECT);
-    edgePath.computeBounds(bounds, /* exact= */ true);
+    edgePath.computeBounds(bounds, /* exact = */ true);
 
     return !bounds.isEmpty() || (bounds.width() > 1 && bounds.height() > 1);
   }
@@ -310,7 +310,8 @@ public class ShapeAppearancePathProvider {
     }
   }
 
-  CornerSize getCornerSizeForIndex(int index, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
+  private CornerSize getCornerSizeForIndex(
+      int index, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
     switch (index) {
       case 1:
         return shapeAppearanceModel.getBottomRightCornerSize();
@@ -369,6 +370,7 @@ public class ShapeAppearancePathProvider {
   static final class ShapeAppearancePathSpec {
 
     @NonNull public final ShapeAppearanceModel shapeAppearanceModel;
+    @NonNull public final ShapeAppearanceModel interpolationStartShapeAppearanceModel;
     @NonNull public final Path path;
     @NonNull public final RectF bounds;
 
@@ -378,12 +380,14 @@ public class ShapeAppearancePathProvider {
 
     ShapeAppearancePathSpec(
         @NonNull ShapeAppearanceModel shapeAppearanceModel,
+        @NonNull ShapeAppearanceModel interpolationStartShapeAppearanceModel,
         float interpolation,
         RectF bounds,
         @Nullable PathListener pathListener,
         Path path) {
       this.pathListener = pathListener;
       this.shapeAppearanceModel = shapeAppearanceModel;
+      this.interpolationStartShapeAppearanceModel = interpolationStartShapeAppearanceModel;
       this.interpolation = interpolation;
       this.bounds = bounds;
       this.path = path;

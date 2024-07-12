@@ -15,8 +15,6 @@
  */
 package com.google.android.material.math;
 
-import androidx.annotation.NonNull;
-
 /** A class that contains utility methods related to numbers. */
 public final class MathUtils {
 
@@ -100,18 +98,5 @@ public final class MathUtils {
       r--;
     }
     return x - r * y;
-  }
-
-  public static boolean areAllElementsEqual(@NonNull float[] array) {
-    if (array.length <= 1) {
-      return true;
-    }
-    float sample = array[0];
-    for (int i = 1; i < array.length; i++) {
-      if (array[i] != sample) {
-        return false;
-      }
-    }
-    return true;
   }
 }

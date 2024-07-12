@@ -87,9 +87,4 @@ public final class RelativeCornerSize implements CornerSize {
     Object[] hashedFields = {percent};
     return Arrays.hashCode(hashedFields);
   }
-
-  @Override
-  public String toString() {
-    return (int) (getRelativePercent() * 100) + "%";
-  }
 }
