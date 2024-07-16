@@ -61,8 +61,8 @@
     <item name="haloColor">#00FFFFFF</item>
     <item name="labelStyle">@style/Widget.Material3.Slider.Label</item>
     <item name="thumbColor">@color/m3_slider_thumb_color</item>
-    <item name="tickColorActive">@color/m3_slider_inactive_track_color</item>
-    <item name="tickColorInactive">@color/m3_slider_active_track_color</item>
+    <item name="tickColorActive">@color/m3_slider_active_tick_marks_color</item>
+    <item name="tickColorInactive">@color/m3_slider_inactive_tick_marks_color</item>
     <item name="tickRadiusActive">@null</item>
     <item name="tickRadiusInactive">@null</item>
     <item name="trackColorActive">@color/m3_slider_active_track_color</item>

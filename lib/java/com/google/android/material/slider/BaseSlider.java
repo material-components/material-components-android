@@ -1750,7 +1750,6 @@ abstract class BaseSlider<
     }
     trackColorActive = trackColor;
     activeTrackPaint.setColor(getColorForState(trackColorActive));
-    stopIndicatorPaint.setColor(getColorForState(trackColorActive));
     invalidate();
   }
 
@@ -2838,7 +2837,7 @@ abstract class BaseSlider<
     activeTrackPaint.setColor(getColorForState(trackColorActive));
     inactiveTicksPaint.setColor(getColorForState(tickColorInactive));
     activeTicksPaint.setColor(getColorForState(tickColorActive));
-    stopIndicatorPaint.setColor(getColorForState(trackColorActive));
+    stopIndicatorPaint.setColor(getColorForState(tickColorInactive));
     for (TooltipDrawable label : labels) {
       if (label.isStateful()) {
         label.setState(getDrawableState());
