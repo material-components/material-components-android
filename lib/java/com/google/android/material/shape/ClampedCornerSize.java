@@ -17,6 +17,7 @@
 package com.google.android.material.shape;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.math.MathUtils.clamp;
 import static java.lang.Math.min;
 
 import android.graphics.RectF;
@@ -57,7 +58,7 @@ public final class ClampedCornerSize implements CornerSize {
 
   @Override
   public float getCornerSize(@NonNull RectF bounds) {
-    return min(target, getMaxCornerSize(bounds));
+    return clamp(target, 0, getMaxCornerSize(bounds));
   }
 
   @Override

@@ -71,32 +71,6 @@ public class CornerTreatment {
   }
 
   /**
-   * Generates a {@link ShapePath} using start and end radius values for this corner treatment.
-   *
-   * <p>CornerTreatments are assumed to have an origin of (0, 0) (i.e. they represent the top-left
-   * corner), and are automatically rotated and scaled as necessary when applied to other corners.
-   *
-   * @param shapePath the {@link ShapePath} that this treatment should write to.
-   * @param angle the angle of the corner, typically 90 degrees.
-   * @param interpolation the interpolation of the corner treatment. Ranges between 0 (none) and 1
-   *     (fully) interpolated. Custom corner treatments can implement interpolation to support shape
-   *     transition between two arbitrary states. Typically, a value of 0 indicates that the custom
-   *     corner treatment is not rendered (i.e. that it is a 90 degree angle), and a value of 1
-   *     indicates that the treatment is fully rendered. Animation between these two values can
-   *     "heal" or "reveal" a corner treatment.
-   * @param startRadius the starting radius or size of this corner before interpolation.
-   * @param endRadius the ending radius or size of this corner after interpolation.
-   */
-  public void getCornerPath(
-      @NonNull ShapePath shapePath,
-      float angle,
-      float interpolation,
-      float startRadius,
-      float endRadius) {
-    getCornerPath(shapePath, angle, interpolation, endRadius);
-  }
-
-  /**
    * Generates a {@link ShapePath} for this corner treatment.
    *
    * <p>CornerTreatments are assumed to have an origin of (0, 0) (i.e. they represent the top-left
@@ -122,41 +96,5 @@ public class CornerTreatment {
       @NonNull RectF bounds,
       @NonNull CornerSize size) {
     getCornerPath(shapePath, angle, interpolation, size.getCornerSize(bounds));
-  }
-
-  /**
-   * Generates a {@link ShapePath} using start and end {@link CornerSize} values for this corner
-   * treatment.
-   *
-   * <p>CornerTreatments are assumed to have an origin of (0, 0) (i.e. they represent the top-left
-   * corner), and are automatically rotated and scaled as necessary when applied to other corners.
-   *
-   * @param shapePath the {@link ShapePath} that this treatment should write to.
-   * @param angle the angle of the corner, typically 90 degrees.
-   * @param interpolation the interpolation of the corner treatment. Ranges between 0 (none) and 1
-   *     (fully) interpolated. Custom corner treatments can implement interpolation to support shape
-   *     transition between two arbitrary states. Typically, a value of 0 indicates that the custom
-   *     corner treatment is not rendered (i.e. that it is a 90 degree angle), and a value of 1
-   *     indicates that the treatment is fully rendered. Animation between these two values can
-   *     "heal" or "reveal" a corner treatment.
-   * @param bounds the bounds of the full shape that will be drawn. This could be used change the
-   *     behavior of the CornerTreatment depending on how much space is available for the full
-   *     shape.
-   * @param startSize the starting {@link CornerSize} used for this corner before interpolation
-   * @param endSize the ending {@link CornerSize} used for this corner after interpolation
-   */
-  public void getCornerPath(
-      @NonNull ShapePath shapePath,
-      float angle,
-      float interpolation,
-      @NonNull RectF bounds,
-      @NonNull CornerSize startSize,
-      @NonNull CornerSize endSize) {
-    getCornerPath(
-        shapePath,
-        angle,
-        interpolation,
-        startSize.getCornerSize(bounds),
-        endSize.getCornerSize(bounds));
   }
 }

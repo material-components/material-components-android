@@ -17,7 +17,6 @@ package com.google.android.material.shape;
 
 import com.google.android.material.test.R;
 
-import static com.google.android.material.shape.CornerFamily.ROUNDED;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
@@ -33,7 +32,6 @@ import org.robolectric.RobolectricTestRunner;
 public class MaterialShapeDrawableTest {
 
   private static final float ELEVATION = 4;
-  private static final float DEFAULT_SIZE = 50;
   private static final float TRANSLATION_Z = 2;
   private static final float Z = ELEVATION + TRANSLATION_Z;
   private static final int ALPHA = 127;
@@ -141,15 +139,5 @@ public class MaterialShapeDrawableTest {
     materialShapeDrawable.setAlpha(ALPHA);
 
     assertThat(materialShapeDrawable.getAlpha()).isEqualTo(ALPHA);
-  }
-
-  @Test
-  public void roundRect_withInterpolationAndStartShape() throws Exception {
-    ShapeAppearanceModel startingShape =
-        ShapeAppearanceModel.builder().setAllCorners(ROUNDED, DEFAULT_SIZE).build();
-
-    materialShapeDrawable.setInterpolationStartShapeAppearanceModel(startingShape);
-    assertThat(materialShapeDrawable.getInterpolationStartShapeAppearanceModel())
-        .isEqualTo(startingShape);
   }
 }

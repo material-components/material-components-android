@@ -40,6 +40,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  * MaterialShapeDrawable} to generate and render the shape for a view's background.
  */
 public class ShapeAppearanceModel {
+  public static final int NUM_CORNERS = 4;
 
   /** Builder to create instances of {@link ShapeAppearanceModel}s. */
   public static final class Builder {
@@ -830,12 +831,33 @@ public class ShapeAppearanceModel {
             && bottomLeftCornerSize.getCornerSize(bounds) == cornerSize
             && bottomRightCornerSize.getCornerSize(bounds) == cornerSize;
 
-    boolean hasRoundedCorners =
-        topRightCorner instanceof RoundedCornerTreatment
-            && topLeftCorner instanceof RoundedCornerTreatment
-            && bottomRightCorner instanceof RoundedCornerTreatment
-            && bottomLeftCorner instanceof RoundedCornerTreatment;
+    return hasDefaultEdges && cornersHaveSameSize && hasRoundedCorners();
+  }
 
-    return hasDefaultEdges && cornersHaveSameSize && hasRoundedCorners;
+  /**
+   * Checks if all corners are rounded corners.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean hasRoundedCorners() {
+    return topRightCorner instanceof RoundedCornerTreatment
+        && topLeftCorner instanceof RoundedCornerTreatment
+        && bottomRightCorner instanceof RoundedCornerTreatment
+        && bottomLeftCorner instanceof RoundedCornerTreatment;
+  }
+
+  @NonNull
+  @Override
+  public String toString() {
+    return "["
+        + getTopLeftCornerSize()
+        + ", "
+        + getTopRightCornerSize()
+        + ", "
+        + getBottomRightCornerSize()
+        + ", "
+        + getBottomLeftCornerSize()
+        + "]";
   }
 }

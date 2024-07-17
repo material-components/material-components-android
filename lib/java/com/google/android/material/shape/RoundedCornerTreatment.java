@@ -16,7 +16,6 @@
 
 package com.google.android.material.shape;
 
-import static com.google.android.material.math.MathUtils.lerp;
 
 import androidx.annotation.NonNull;
 
@@ -42,17 +41,7 @@ public class RoundedCornerTreatment extends CornerTreatment {
   @Override
   public void getCornerPath(
       @NonNull ShapePath shapePath, float angle, float interpolation, float radius) {
-    getCornerPath(shapePath, angle, interpolation, 0, radius);
-  }
-
-  @Override
-  public void getCornerPath(
-      @NonNull ShapePath shapePath,
-      float angle,
-      float interpolation,
-      float startRadius,
-      float endRadius) {
-    float radius = lerp(startRadius, endRadius, interpolation);
+    radius *= interpolation;
     shapePath.reset(0, radius, ShapePath.ANGLE_LEFT, 180 - angle);
     shapePath.addArc(0, 0, 2 * radius, 2 * radius, 180, angle);
   }
