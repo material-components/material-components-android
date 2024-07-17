@@ -645,7 +645,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   public void setTrackCornerRadius(@Px int trackCornerRadius) {
     if (spec.trackCornerRadius != trackCornerRadius) {
-      spec.trackCornerRadius = min(trackCornerRadius, spec.trackThickness / 2);
+      spec.trackCornerRadius = Math.round(min(trackCornerRadius, spec.trackThickness / 2f));
       invalidate();
     }
   }

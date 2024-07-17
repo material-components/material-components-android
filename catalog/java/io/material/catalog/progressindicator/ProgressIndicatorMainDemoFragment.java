@@ -78,7 +78,7 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider thicknessSlider = view.findViewById(R.id.thicknessSlider);
     thicknessSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newThickness = (int) (value * pixelsInDp);
+          int newThickness = Math.round(value * pixelsInDp);
           if (linearIndicator.getTrackThickness() != newThickness) {
             linearIndicator.setTrackThickness(newThickness);
           }
@@ -90,7 +90,7 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider cornerSlider = view.findViewById(R.id.cornerSlider);
     cornerSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newCornerRadius = (int) (value * pixelsInDp);
+          int newCornerRadius = Math.round(value * pixelsInDp);
           if (linearIndicator.getTrackCornerRadius() != newCornerRadius) {
             linearIndicator.setTrackCornerRadius(newCornerRadius);
           }
@@ -102,7 +102,7 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider gapSlider = view.findViewById(R.id.gapSlider);
     gapSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newGapSize = (int) (value * pixelsInDp);
+          int newGapSize = Math.round(value * pixelsInDp);
           if (linearIndicator.getIndicatorTrackGapSize() != newGapSize) {
             linearIndicator.setIndicatorTrackGapSize(newGapSize);
           }
@@ -123,7 +123,7 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider linearStopIndicatorSlider = view.findViewById(R.id.linearStopIndicatorSizeSlider);
     linearStopIndicatorSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newStopIndicatorSize = (int) (value * pixelsInDp);
+          int newStopIndicatorSize = Math.round(value * pixelsInDp);
           if (linearIndicator.getTrackStopIndicatorSize() != newStopIndicatorSize) {
             linearIndicator.setTrackStopIndicatorSize(newStopIndicatorSize);
           }
@@ -132,7 +132,7 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider circularSizeSlider = view.findViewById(R.id.circularSizeSlider);
     circularSizeSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newCornerRadius = (int) (value * pixelsInDp);
+          int newCornerRadius = Math.round(value * pixelsInDp);
           if (circularIndicator.getIndicatorSize() != newCornerRadius) {
             circularIndicator.setIndicatorSize(newCornerRadius);
           }

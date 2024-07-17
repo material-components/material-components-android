@@ -119,10 +119,10 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     canvas.clipRect(-halfTrackLength, -halfTrackSize, halfTrackLength, halfTrackSize);
 
     // These are set for the drawing the indicator and track.
-    useStrokeCap = spec.trackThickness / 2 == spec.trackCornerRadius;
+    useStrokeCap = spec.trackThickness / 2f <= spec.trackCornerRadius;
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius =
-        min(spec.trackThickness / 2, spec.trackCornerRadius) * trackThicknessFraction;
+        min(spec.trackThickness / 2f, spec.trackCornerRadius) * trackThicknessFraction;
     displayedAmplitude = spec.waveAmplitude * trackThicknessFraction;
 
     // Further adjusts the canvas for animated visibility change.
