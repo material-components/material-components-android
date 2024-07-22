@@ -26,6 +26,7 @@ import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
@@ -82,6 +83,10 @@ import com.google.android.material.resources.MaterialResources;
  */
 public class MaterialTextView extends AppCompatTextView {
 
+  @ChecksSdkIntAtLeast(api = VERSION_CODES.O)
+  private static final boolean CAN_FORCE_REFRESH_FONT_VARIATION_SETTINGS =
+      VERSION.SDK_INT >= VERSION_CODES.O;
+
   public MaterialTextView(@NonNull Context context) {
     this(context, null /* attrs */);
   }
@@ -113,8 +118,7 @@ public class MaterialTextView extends AppCompatTextView {
     super.setTextAppearance(context, resId);
 
     boolean canApplyLineHeight = canApplyTextAppearanceLineHeight(context);
-    boolean canForceRefreshFontVariationSettings = VERSION.SDK_INT >= VERSION_CODES.O;
-    if (!canApplyLineHeight && !canForceRefreshFontVariationSettings) {
+    if (!canApplyLineHeight && !CAN_FORCE_REFRESH_FONT_VARIATION_SETTINGS) {
       return;
     }
 
@@ -123,7 +127,7 @@ public class MaterialTextView extends AppCompatTextView {
     if (canApplyLineHeight) {
       applyLineHeightFromViewAppearance(appearance);
     }
-    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+    if (CAN_FORCE_REFRESH_FONT_VARIATION_SETTINGS) {
       maybeForceApplyFontVariationSettingsFromViewAppearance(appearance);
     }
     appearance.recycle();
@@ -135,8 +139,7 @@ public class MaterialTextView extends AppCompatTextView {
     final Resources.Theme theme = context.getTheme();
     boolean canApplyLineHeight = canApplyTextAppearanceLineHeight(context)
         && !viewAttrsHasLineHeight(context, theme, attrs, defStyleAttr, defStyleRes);
-    boolean canForceRefreshFontVariationSettings = VERSION.SDK_INT >= VERSION_CODES.O;
-    if (!canApplyLineHeight && !canForceRefreshFontVariationSettings) {
+    if (!canApplyLineHeight && !CAN_FORCE_REFRESH_FONT_VARIATION_SETTINGS) {
       return;
     }
 
@@ -150,7 +153,7 @@ public class MaterialTextView extends AppCompatTextView {
     if (canApplyLineHeight) {
       applyLineHeightFromViewAppearance(appearance);
     }
-    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+    if (CAN_FORCE_REFRESH_FONT_VARIATION_SETTINGS) {
       maybeForceApplyFontVariationSettingsFromViewAppearance(appearance);
     }
     appearance.recycle();
