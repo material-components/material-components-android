@@ -1394,20 +1394,22 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       return;
     }
 
-    if (pathDirty) {
-      calculatePath(getBoundsAsRectF(), path);
-      pathDirty = false;
+    RectF bounds = getBoundsAsRectF();
+    if (bounds.isEmpty()) {
+      // Don't set the outline if the bounds are empty.
+      return;
     }
-
     // Calculates the radius of a round rect, if the stroke shape can be drawn as a round rect.
     float roundRectRadius =
         calculateRoundRectCornerSize(
-            getBoundsInsetByStroke(),
-            drawableState.shapeAppearanceModel,
-            springAnimatedCornerSizes);
+            bounds, drawableState.shapeAppearanceModel, springAnimatedCornerSizes);
     if (roundRectRadius >= 0) {
       outline.setRoundRect(getBounds(), roundRectRadius * drawableState.interpolation);
     } else {
+      if (pathDirty) {
+        calculatePath(bounds, path);
+        pathDirty = false;
+      }
       DrawableUtils.setOutlineToPath(outline, path);
     }
   }
