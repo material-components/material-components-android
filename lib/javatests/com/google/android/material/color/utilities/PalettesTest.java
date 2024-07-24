@@ -105,4 +105,45 @@ public final class PalettesTest {
     assertThat(core.a2.tone(10)).isEqualTo(0xff14173f);
     assertThat(core.a2.tone(0)).isEqualTo(0xff000000);
   }
+
+  @Test
+  public void keyColor_exactChromaAvailable() {
+    // Requested chroma is exactly achievable at a certain tone.
+    TonalPalette palette = TonalPalette.fromHueAndChroma(50.0, 60.0);
+    Hct result = palette.getKeyColor();
+
+    assertThat(result.getHue()).isWithin(10.0).of(50.0);
+    assertThat(result.getChroma()).isWithin(0.5).of(60.0);
+    // Tone might vary, but should be within the range from 0 to 100.
+    assertThat(result.getTone()).isGreaterThan(0.0);
+    assertThat(result.getTone()).isLessThan(100.0);
+  }
+
+  @Test
+  public void keyColor_unusuallyHighChroma() {
+    // Requested chroma is above what is achievable. For Hue 149, chroma peak is 89.6 at Tone 87.9.
+    // The result key color's chroma should be close to the chroma peak.
+    TonalPalette palette = TonalPalette.fromHueAndChroma(149.0, 200.0);
+    Hct result = palette.getKeyColor();
+
+    assertThat(result.getHue()).isWithin(10.0).of(149.0);
+    assertThat(result.getChroma()).isGreaterThan(89.0);
+    // Tone might vary, but should be within the range from 0 to 100.
+    assertThat(result.getTone()).isGreaterThan(0.0);
+    assertThat(result.getTone()).isLessThan(100.0);
+  }
+
+  @Test
+  public void keyColor_unusuallyLowChroma() {
+    // By definition, the key color should be the first tone, starting from Tone 50, matching the
+    // given hue and chroma. When requesting a very low chroma, the result should be close to Tone
+    // 50, since most tones can produce a low chroma.
+    TonalPalette palette = TonalPalette.fromHueAndChroma(50.0, 3.0);
+    Hct result = palette.getKeyColor();
+
+    // Higher error tolerance for hue when the requested chroma is unusually low.
+    assertThat(result.getHue()).isWithin(10.0).of(50.0);
+    assertThat(result.getChroma()).isWithin(0.5).of(3.0);
+    assertThat(result.getTone()).isWithin(0.5).of(50.0);
+  }
 }

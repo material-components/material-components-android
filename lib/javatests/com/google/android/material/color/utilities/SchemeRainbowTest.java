@@ -34,9 +34,9 @@ public final class SchemeRainbowTest {
     assertThat(dynamicColors.primaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff696FC4);
     assertThat(dynamicColors.secondaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff75758B);
     assertThat(dynamicColors.tertiaryPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff936B84);
-    assertThat(dynamicColors.neutralPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff070707);
+    assertThat(dynamicColors.neutralPaletteKeyColor().getArgb(scheme)).isSameColorAs(0xff777777);
     assertThat(dynamicColors.neutralVariantPaletteKeyColor().getArgb(scheme))
-        .isSameColorAs(0xff070707);
+        .isSameColorAs(0xff777777);
   }
 
   @Test
@@ -54,7 +54,7 @@ public final class SchemeRainbowTest {
   @Test
   public void lightTheme_maxContrast_primary() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff0F136A);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff1b2074);
   }
 
   @Test
@@ -72,7 +72,7 @@ public final class SchemeRainbowTest {
   @Test
   public void lightTheme_maxContrast_primaryContainer() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff34398B);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff3a4092);
   }
 
   @Test
@@ -90,19 +90,19 @@ public final class SchemeRainbowTest {
   @Test
   public void lightTheme_maxContrast_tertiaryContainer() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xff5A384E);
+    assertThat(dynamicColors.tertiaryContainer().getArgb(scheme)).isSameColorAs(0xff613e55);
   }
 
   @Test
   public void lightTheme_minContrast_onPrimaryContainer() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff5056a9);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff6c72c7);
   }
 
   @Test
   public void lightTheme_standardContrast_onPrimaryContainer() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff050865);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff383e8f);
   }
 
   @Test
@@ -156,7 +156,7 @@ public final class SchemeRainbowTest {
   @Test
   public void darkTheme_maxContrast_primary() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xfffdf9ff);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xfff0eeff);
   }
 
   @Test
@@ -174,13 +174,13 @@ public final class SchemeRainbowTest {
   @Test
   public void darkTheme_maxContrast_primaryContainer() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffc4c6ff);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffbabdff);
   }
 
   @Test
   public void darkTheme_minContrast_onPrimaryContainer() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff969cf5);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff767cd2);
   }
 
   @Test
@@ -192,13 +192,13 @@ public final class SchemeRainbowTest {
   @Test
   public void darkTheme_maxContrast_onPrimaryContainer() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff00003d);
   }
 
   @Test
   public void darkTheme_minContrast_onTertiaryContainer() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xffc397b2);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xffa17891);
   }
 
   @Test
@@ -210,7 +210,7 @@ public final class SchemeRainbowTest {
   @Test
   public void darkTheme_maxContrast_onTertiaryContainer() {
     SchemeRainbow scheme = new SchemeRainbow(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff1b0315);
   }
 
   @Test

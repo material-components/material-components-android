@@ -68,10 +68,10 @@ public final class DynamicColorTest {
   public void respectsContrast() {
     final Hct[] seedColors =
         new Hct[] {
-            Hct.fromInt(0xFFFF0000),
-            Hct.fromInt(0xFFFFFF00),
-            Hct.fromInt(0xFF00FF00),
-            Hct.fromInt(0xFF0000FF)
+          Hct.fromInt(0xffff0000),
+          Hct.fromInt(0xffffff00),
+          Hct.fromInt(0xff00ff00),
+          Hct.fromInt(0xff0000ff)
         };
 
     final double[] contrastLevels = {-1.0, -0.5, 0.0, 0.5, 1.0};
@@ -81,10 +81,10 @@ public final class DynamicColorTest {
         for (boolean isDark : new boolean[] {false, true}) {
           final DynamicScheme[] schemes =
               new DynamicScheme[] {
-                  new SchemeContent(seedColor, isDark, contrastLevel),
-                  new SchemeMonochrome(seedColor, isDark, contrastLevel),
-                  new SchemeTonalSpot(seedColor, isDark, contrastLevel),
-                  new SchemeFidelity(seedColor, isDark, contrastLevel)
+                new SchemeContent(seedColor, isDark, contrastLevel),
+                new SchemeMonochrome(seedColor, isDark, contrastLevel),
+                new SchemeTonalSpot(seedColor, isDark, contrastLevel),
+                new SchemeFidelity(seedColor, isDark, contrastLevel)
               };
           for (final DynamicScheme scheme : schemes) {
             assertTrue(
@@ -148,7 +148,7 @@ public final class DynamicColorTest {
             dynamicColors
                 .onTertiaryContainer()
                 .getArgb(new SchemeContent(Hct.fromInt(0xFFFFFF00), true, -0.5)))
-        .isSameColorAs(0xffbac040);
+        .isSameColorAs(0xFF959b1a);
     assertThat(
             dynamicColors
                 .inverseSurface()
@@ -164,6 +164,110 @@ public final class DynamicColorTest {
                 .outlineVariant()
                 .getArgb(new SchemeContent(Hct.fromInt(0xFFFFFF00), true, 0.0)))
         .isSameColorAs(0xFF484831);
+  }
+
+  @Test
+  public void fidelityValuesAreCorrect() {
+    final MaterialDynamicColors fidelityColors = new MaterialDynamicColors(true);
+
+    assertThat(
+            dynamicColors
+                .onPrimaryContainer()
+                .getArgb(new SchemeTonalSpot(Hct.fromInt(0xffff0000), false, 0.5)))
+        .isSameColorAs(0xffffffff);
+    assertThat(
+            fidelityColors
+                .onPrimaryContainer()
+                .getArgb(new SchemeTonalSpot(Hct.fromInt(0xffff0000), false, 0.5)))
+        .isSameColorAs(0xffffffff);
+
+    assertThat(
+            dynamicColors
+                .onSecondaryContainer()
+                .getArgb(new SchemeVibrant(Hct.fromInt(0xff0000ff), false, 0.5)))
+        .isSameColorAs(0xffffffff);
+    assertThat(
+            fidelityColors
+                .onSecondaryContainer()
+                .getArgb(new SchemeVibrant(Hct.fromInt(0xff0000ff), false, 0.5)))
+        .isSameColorAs(0xffffffff);
+
+    assertThat(
+            dynamicColors
+                .onTertiaryContainer()
+                .getArgb(new SchemeExpressive(Hct.fromInt(0xffffff00), true, 0.5)))
+        .isSameColorAs(0xff000000);
+    assertThat(
+            fidelityColors
+                .onTertiaryContainer()
+                .getArgb(new SchemeExpressive(Hct.fromInt(0xffffff00), true, 0.5)))
+        .isSameColorAs(0xff394e1d);
+
+    assertThat(
+            dynamicColors
+                .inverseSurface()
+                .getArgb(new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0)))
+        .isSameColorAs(0xff303036);
+    assertThat(
+            fidelityColors
+                .inverseSurface()
+                .getArgb(new SchemeTonalSpot(Hct.fromInt(0xff0000ff), false, 0.0)))
+        .isSameColorAs(0xff303036);
+
+    assertThat(
+            dynamicColors
+                .inversePrimary()
+                .getArgb(new SchemeVibrant(Hct.fromInt(0xffff0000), false, 0.5)))
+        .isSameColorAs(0xffffb4a8);
+    assertThat(
+            fidelityColors
+                .inversePrimary()
+                .getArgb(new SchemeVibrant(Hct.fromInt(0xffff0000), false, 0.5)))
+        .isSameColorAs(0xffffb4a8);
+
+    assertThat(
+            dynamicColors
+                .outlineVariant()
+                .getArgb(new SchemeExpressive(Hct.fromInt(0xffffff00), true, 0.0)))
+        .isSameColorAs(0xff444937);
+    assertThat(
+            fidelityColors
+                .outlineVariant()
+                .getArgb(new SchemeExpressive(Hct.fromInt(0xffffff00), true, 0.0)))
+        .isSameColorAs(0xff444937);
+
+    assertThat(
+            dynamicColors
+                .secondaryContainer()
+                .getArgb(new SchemeTonalSpot(Hct.fromInt(0xfffa2bec), true, 0.0)))
+        .isSameColorAs(0xff554050);
+    assertThat(
+            fidelityColors
+                .secondaryContainer()
+                .getArgb(new SchemeTonalSpot(Hct.fromInt(0xfffa2bec), true, 0.0)))
+        .isSameColorAs(0xff554050);
+
+    assertThat(
+            dynamicColors
+                .secondaryContainer()
+                .getArgb(new SchemeVibrant(Hct.fromInt(0xfffa2bec), true, 0.0)))
+        .isSameColorAs(0xff603b4f);
+    assertThat(
+            fidelityColors
+                .secondaryContainer()
+                .getArgb(new SchemeVibrant(Hct.fromInt(0xfffa2bec), true, 0.0)))
+        .isSameColorAs(0xff603b4f);
+
+    assertThat(
+            dynamicColors
+                .secondaryContainer()
+                .getArgb(new SchemeExpressive(Hct.fromInt(0xfffa2bec), true, 0.0)))
+        .isSameColorAs(0xff663b38);
+    assertThat(
+            fidelityColors
+                .secondaryContainer()
+                .getArgb(new SchemeExpressive(Hct.fromInt(0xfffa2bec), true, 0.0)))
+        .isSameColorAs(0xff693d3a);
   }
 
   private boolean pairSatisfiesContrast(DynamicScheme scheme, DynamicColor fg, DynamicColor bg) {

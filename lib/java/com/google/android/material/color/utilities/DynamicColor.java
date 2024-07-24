@@ -120,6 +120,36 @@ public final class DynamicColor {
     this.opacity = null;
   }
 
+  /**
+   * A constructor for DynamicColor.
+   *
+   * <p>_Strongly_ prefer using one of the convenience constructors. This class is arguably too
+   * flexible to ensure it can support any scenario. Functional arguments allow overriding without
+   * risks that come with subclasses.
+   *
+   * <p>For example, the default behavior of adjust tone at max contrast to be at a 7.0 ratio with
+   * its background is principled and matches accessibility guidance. That does not mean it's the
+   * desired approach for _every_ design system, and every color pairing, always, in every case.
+   *
+   * <p>For opaque colors (colors with alpha = 100%).
+   *
+   * @param name The name of the dynamic color.
+   * @param palette Function that provides a TonalPalette given DynamicScheme. A TonalPalette is
+   *     defined by a hue and chroma, so this replaces the need to specify hue/chroma. By providing
+   *     a tonal palette, when contrast adjustments are made, intended chroma can be preserved.
+   * @param tone Function that provides a tone, given a DynamicScheme.
+   * @param isBackground Whether this dynamic color is a background, with some other color as the
+   *     foreground.
+   * @param background The background of the dynamic color (as a function of a `DynamicScheme`), if
+   *     it exists.
+   * @param secondBackground A second background of the dynamic color (as a function of a
+   *     `DynamicScheme`), if it exists.
+   * @param contrastCurve A `ContrastCurve` object specifying how its contrast against its
+   *     background should behave in various contrast levels options.
+   * @param toneDeltaPair A `ToneDeltaPair` object specifying a tone delta constraint between two
+   *     colors. One of them must be the color being constructed.
+   * @param opacity A function returning the opacity of a color, as a number between 0 and 1.
+   */
   public DynamicColor(
       @NonNull String name,
       @NonNull Function<DynamicScheme, TonalPalette> palette,
@@ -304,8 +334,8 @@ public final class DynamicColor {
       double expansionDir = scheme.isDark ? 1 : -1;
 
       // 1st round: solve to min, each
-      double nContrast = nearer.contrastCurve.getContrast(scheme.contrastLevel);
-      double fContrast = farther.contrastCurve.getContrast(scheme.contrastLevel);
+      double nContrast = nearer.contrastCurve.get(scheme.contrastLevel);
+      double fContrast = farther.contrastCurve.get(scheme.contrastLevel);
 
       // If a color is good enough, it is not adjusted.
       // Initial and adjusted tones for `nearer`
@@ -385,7 +415,7 @@ public final class DynamicColor {
 
       double bgTone = background.apply(scheme).getTone(scheme);
 
-      double desiredRatio = contrastCurve.getContrast(scheme.contrastLevel);
+      double desiredRatio = contrastCurve.get(scheme.contrastLevel);
 
       if (Contrast.ratioOfTones(bgTone, answer) >= desiredRatio) {
         // Don't "improve" what's good enough.
