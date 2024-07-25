@@ -4096,17 +4096,16 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
         startDummyDrawableWidth = right;
         startDummyDrawable.setBounds(0, 0, startDummyDrawableWidth, 1);
       }
-      final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
+      final Drawable[] compounds = editText.getCompoundDrawablesRelative();
       if (compounds[0] != startDummyDrawable) {
-        TextViewCompat.setCompoundDrawablesRelative(
-            editText, startDummyDrawable, compounds[1], compounds[2], compounds[3]);
+        editText.setCompoundDrawablesRelative(
+            startDummyDrawable, compounds[1], compounds[2], compounds[3]);
         updatedIcon = true;
       }
     } else if (startDummyDrawable != null) {
       // Remove the dummy start compound drawable if it exists and clear it.
-      final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
-      TextViewCompat.setCompoundDrawablesRelative(
-          editText, null, compounds[1], compounds[2], compounds[3]);
+      final Drawable[] compounds = editText.getCompoundDrawablesRelative();
+      editText.setCompoundDrawablesRelative(null, compounds[1], compounds[2], compounds[3]);
       startDummyDrawable = null;
       updatedIcon = true;
     }
@@ -4121,14 +4120,14 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
                 + iconView.getMeasuredWidth()
                 + ((MarginLayoutParams) iconView.getLayoutParams()).getMarginStart();
       }
-      final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
+      final Drawable[] compounds = editText.getCompoundDrawablesRelative();
       if (endDummyDrawable != null && endDummyDrawableWidth != right) {
         // If endLayout only changed width, update dummy drawable here so that we don't override
         // the currently saved originalEditTextEndDrawable.
         endDummyDrawableWidth = right;
         endDummyDrawable.setBounds(0, 0, endDummyDrawableWidth, 1);
-        TextViewCompat.setCompoundDrawablesRelative(
-            editText, compounds[0], compounds[1], endDummyDrawable, compounds[3]);
+        editText.setCompoundDrawablesRelative(
+            compounds[0], compounds[1], endDummyDrawable, compounds[3]);
         updatedIcon = true;
       } else {
         if (endDummyDrawable == null) {
@@ -4139,17 +4138,17 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
         // Store the user defined end compound drawable so that we can restore it later.
         if (compounds[2] != endDummyDrawable) {
           originalEditTextEndDrawable = compounds[2];
-          TextViewCompat.setCompoundDrawablesRelative(
-              editText, compounds[0], compounds[1], endDummyDrawable, compounds[3]);
+          editText.setCompoundDrawablesRelative(
+              compounds[0], compounds[1], endDummyDrawable, compounds[3]);
           updatedIcon = true;
         }
       }
     } else if (endDummyDrawable != null) {
       // Remove the dummy end compound drawable if it exists and clear it.
-      final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
+      final Drawable[] compounds = editText.getCompoundDrawablesRelative();
       if (compounds[2] == endDummyDrawable) {
-        TextViewCompat.setCompoundDrawablesRelative(
-            editText, compounds[0], compounds[1], originalEditTextEndDrawable, compounds[3]);
+        editText.setCompoundDrawablesRelative(
+            compounds[0], compounds[1], originalEditTextEndDrawable, compounds[3]);
         updatedIcon = true;
       }
       endDummyDrawable = null;

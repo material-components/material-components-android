@@ -221,7 +221,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     setEnabled(attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_android_enabled, true));
     attributes.recycle();
 
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
 
   @Override
@@ -782,7 +782,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private void setGeneratedIdIfNeeded(@NonNull MaterialButton materialButton) {
     // Generates an ID if none is set, for relative positioning purposes
     if (materialButton.getId() == View.NO_ID) {
-      materialButton.setId(ViewCompat.generateViewId());
+      materialButton.setId(View.generateViewId());
     }
   }
 

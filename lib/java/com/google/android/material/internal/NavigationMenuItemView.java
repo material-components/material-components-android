@@ -248,7 +248,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
       }
       icon = emptyDrawable;
     }
-    TextViewCompat.setCompoundDrawablesRelative(textView, icon, null, null, null);
+    textView.setCompoundDrawablesRelative(icon, null, null, null);
   }
 
   public void setIconSize(@Dimension int iconSize) {

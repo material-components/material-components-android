@@ -45,6 +45,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -63,8 +64,6 @@ import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.appbar.AppBarLayout;
@@ -229,14 +228,14 @@ public class SearchBar extends Toolbar {
           new OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View ignored) {
-              AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
-                  accessibilityManager, touchExplorationStateChangeListener);
+              accessibilityManager.addTouchExplorationStateChangeListener(
+                  touchExplorationStateChangeListener);
             }
 
             @Override
             public void onViewDetachedFromWindow(View ignored) {
-              AccessibilityManagerCompat.removeTouchExplorationStateChangeListener(
-                  accessibilityManager, touchExplorationStateChangeListener);
+              accessibilityManager.removeTouchExplorationStateChangeListener(
+                  touchExplorationStateChangeListener);
             }
           });
     }
