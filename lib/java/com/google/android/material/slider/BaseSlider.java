@@ -329,6 +329,7 @@ abstract class BaseSlider<
   private boolean forceDrawCompatHalo;
   private boolean isLongPress = false;
   private boolean dirtyConfig;
+  private int tooltipStrokeWidth;
 
   @NonNull private ColorStateList haloColor;
   @NonNull private ColorStateList tickColorActive;
@@ -827,10 +828,16 @@ abstract class BaseSlider<
     }
 
     // Add a stroke if there is more than one label for when they overlap.
-    int strokeWidth = labels.size() == 1 ? 0 : 1;
+    int strokeWidth = tooltipStrokeWidth;
     for (TooltipDrawable label : labels) {
       label.setStrokeWidth(strokeWidth);
     }
+  }
+  public void setOverlapTooptipStrokeWidth(int strokeWidth){
+    tooltipStrokeWidth = strokeWidth
+  }
+  public int getOverlapTooptipStrokeWidth(){
+    return tooltipStrokeWidth;
   }
 
   /**
