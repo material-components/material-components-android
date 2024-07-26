@@ -44,7 +44,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 
 /**
  * Represents a standard bottom navigation bar for application. It is an implementation of <a
- * href="https://material.google.com/components/bottom-navigation.html">material design bottom
+ * href="https://m3.material.io/components/navigation-bar/overview">material design bottom
  * navigation</a>.
  *
  * <p>Bottom navigation bars make it easy for users to explore and switch between top-level views in
