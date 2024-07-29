@@ -105,5 +105,6 @@
     <item name="marginHorizontal">@dimen/m3_bottom_nav_item_active_indicator_margin_horizontal</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationBar.ActiveIndicator.Shape</item>
     <item name="android:color">@macro/m3_comp_navigation_bar_active_indicator_color</item>
+    <item name="expandedHeight">@dimen/m3_expressive_item_expanded_active_indicator_height</item>
   </style>
 </resources>

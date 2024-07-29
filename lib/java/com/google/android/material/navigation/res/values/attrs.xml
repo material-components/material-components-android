@@ -96,14 +96,28 @@
   <declare-styleable name="NavigationBarActiveIndicator">
     <!--The color to be used for the navigation item's active indicator. -->
     <attr name="android:color"/>
-    <!--The shape appearance style to be used for the navigation items' active indicator. -->
+    <!--The desired width of the navigation items' active indicator. -->
     <attr name="android:width"/>
     <!--The desired height of the navigation items' active indicator. -->
     <attr name="android:height"/>
-    <!--The start and end margin used by the navigation items' active indicator. -->
+    <!--The shape appearance style to be used for the navigation items' active indicator. -->
     <attr name="shapeAppearance"/>
-    <!--The desired width of the navigation items' active indicator. -->
+    <!--The start and end margin used by the navigation items' active indicator. -->
     <attr name="marginHorizontal" format="dimension"/>
+    <!--The desired width of the navigation items' active indicator when it is
+    expanded to wrap the item content. -->
+    <attr name="expandedWidth" format="dimension">
+      <!-- The active indicator fills the width of the available space -->
+      <enum name="match_parent" value="-1" />
+      <!-- The active indicator wraps the content -->
+      <enum name="wrap_content" value="-2" />
+    </attr>
+    <!--The desired height of the navigation items' active indicator when it is
+    expanded to wrap the item content. -->
+    <attr name="expandedHeight" format="dimension"/>
+    <!--The start and end margin used by the navigation items' active indicator
+    when it is expanded to wrap the item content. -->
+    <attr name="expandedMarginHorizontal" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="NavigationView">

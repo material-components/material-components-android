@@ -57,5 +57,8 @@
   <public name="itemActiveIndicatorStyle" type="attr"/>
   <public name="itemIconGravity" type="attr"/>
   <public name="marginHorizontal" type="attr"/>
+  <public name="expandedWidth" type="attr"/>
+  <public name="expandedHeight" type="attr"/>
+  <public name="expandedMarginHorizontal" type="attr"/>
   <public name="ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" type="style"/>
 </resources>

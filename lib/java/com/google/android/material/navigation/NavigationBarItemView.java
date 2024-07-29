@@ -19,6 +19,8 @@ package com.google.android.material.navigation;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.navigation.NavigationBarView.ACTIVE_INDICATOR_WIDTH_MATCH_PARENT;
+import static com.google.android.material.navigation.NavigationBarView.ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT;
 import static com.google.android.material.navigation.NavigationBarView.ITEM_ICON_GRAVITY_START;
 import static com.google.android.material.navigation.NavigationBarView.ITEM_ICON_GRAVITY_TOP;
 import static java.lang.Math.max;
@@ -132,11 +134,14 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   // desired width.
   private int activeIndicatorDesiredWidth = 0;
   private int activeIndicatorDesiredHeight = 0;
+  private int activeIndicatorExpandedDesiredWidth = ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT;
+  private int activeIndicatorExpandedDesiredHeight = 0;
   private boolean activeIndicatorResizeable = false;
   // The margin from the start and end of this view which the active indicator should respect. If
   // the indicator width is greater than the total width minus the horizontal margins, the active
   // indicator will assume the max width of the view's total width minus horizontal margins.
   private int activeIndicatorMarginHorizontal = 0;
+  private int activeIndicatorExpandedMarginHorizontal = 0;
 
   @Nullable private BadgeDrawable badgeDrawable;
 
@@ -169,6 +174,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     largeLabel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     setFocusable(true);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
+    activeIndicatorExpandedDesiredHeight = getResources().getDimensionPixelSize(
+        R.dimen.m3_expressive_item_expanded_active_indicator_height_default);
 
     // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
     innerContentContainer.addOnLayoutChangeListener(
@@ -178,7 +185,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
           }
           // If item icon gravity is start, we want to update the active indicator width in a layout
           // change listener to keep the active indicator size up to date with the content width.
-          if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
+          if (itemIconGravity == ITEM_ICON_GRAVITY_START
+              && activeIndicatorExpandedDesiredWidth == ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT) {
             LayoutParams lp = (LayoutParams) innerContentContainer.getLayoutParams();
             int newWidth = right - left + lp.rightMargin + lp.leftMargin;
             LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();
@@ -289,16 +297,18 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     int labelGroupTopMargin = activeIndicatorLabelPadding;
     int labelGroupSideMargin = 0;
     int sidePadding = 0;
+    int contentGravity = Gravity.CENTER;
     badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_START;
     if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
       gravity = Gravity.CENTER;
+      contentGravity = Gravity.START | Gravity.CENTER_VERTICAL;
       sideMargin =
           getResources()
               .getDimensionPixelSize(R.dimen.m3_expressive_navigation_item_leading_trailing_space);
       labelGroupTopMargin = 0;
       labelGroupSideMargin = activeIndicatorLabelPadding;
       badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_END;
-      sidePadding = activeIndicatorMarginHorizontal;
+      sidePadding = activeIndicatorExpandedMarginHorizontal;
       if (labelGroup.getParent() != innerContentContainer) {
         contentContainer.removeView(labelGroup);
         innerContentContainer.addView(labelGroup);
@@ -313,6 +323,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
         (LayoutParams) innerContentContainer.getLayoutParams();
     innerContentLp.leftMargin = sideMargin;
     innerContentLp.rightMargin = sideMargin;
+    innerContentLp.gravity = contentGravity;
     LinearLayout.LayoutParams labelGroupLp =
         (LinearLayout.LayoutParams) labelGroup.getLayoutParams();
     labelGroupLp.rightMargin =
@@ -458,6 +469,13 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
         itemIconGravity == ITEM_ICON_GRAVITY_TOP
             ? Gravity.CENTER_HORIZONTAL | Gravity.TOP
             : Gravity.CENTER);
+    setViewMarginAndGravity(
+        innerContentContainer,
+        0,
+        0,
+        itemIconGravity == ITEM_ICON_GRAVITY_TOP
+            ? Gravity.CENTER
+            : Gravity.START | Gravity.CENTER_VERTICAL);
     updateViewPaddingBottom(
         labelGroup, itemIconGravity == ITEM_ICON_GRAVITY_TOP ? itemPaddingBottom : 0);
     labelGroup.setVisibility(VISIBLE);
@@ -467,6 +485,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
 
   private void setLayoutConfigurationIconOnly() {
     setViewMarginAndGravity(contentContainer, itemPaddingTop, itemPaddingTop, Gravity.CENTER);
+    setViewMarginAndGravity(innerContentContainer, 0, 0, Gravity.CENTER);
     updateViewPaddingBottom(labelGroup, 0);
     labelGroup.setVisibility(GONE);
   }
@@ -866,6 +885,28 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   }
 
   /**
+   * Set the height of the active indicator when it is expanded, ie. the item icon width is set to
+   * {@link ItemIconGravity#ITEM_ICON_GRAVITY_START}.
+   *
+   * @param width The width of the active indicator.
+   */
+  public void setActiveIndicatorExpandedWidth(int width) {
+    this.activeIndicatorExpandedDesiredWidth = width;
+    updateActiveIndicatorLayoutParams(getWidth());
+  }
+
+  /**
+   * Set the height of the active indicator when it is expanded, ie. the item icon width is set to *
+   * {@link ItemIconGravity#ITEM_ICON_GRAVITY_START}.
+   *
+   * @param height The height of the active indicator.
+   */
+  public void setActiveIndicatorExpandedHeight(int height) {
+    this.activeIndicatorExpandedDesiredHeight = height;
+    updateActiveIndicatorLayoutParams(getWidth());
+  }
+
+  /**
    * Update the active indicators width and height for the available width and label visibility
    * mode.
    *
@@ -882,10 +923,15 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
         min(activeIndicatorDesiredWidth, availableWidth - (activeIndicatorMarginHorizontal * 2));
     int newHeight = activeIndicatorDesiredHeight;
     if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
-      newWidth = max(contentContainer.getMeasuredWidth(), newWidth);
-      newHeight =
-          getResources()
-              .getDimensionPixelSize(R.dimen.m3_expressive_horizontal_item_active_indicator_height);
+      int adjustedAvailableWidth = availableWidth - (activeIndicatorExpandedMarginHorizontal * 2);
+      if (activeIndicatorExpandedDesiredWidth == ACTIVE_INDICATOR_WIDTH_MATCH_PARENT) {
+        newWidth = adjustedAvailableWidth;
+      } else if (activeIndicatorExpandedDesiredWidth == ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT) {
+        newWidth = contentContainer.getMeasuredWidth();
+      } else {
+        newWidth = min(activeIndicatorExpandedDesiredWidth, adjustedAvailableWidth);
+      }
+      newHeight = activeIndicatorExpandedDesiredHeight;
     }
     LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();
     // If the label visibility is unlabeled, make the active indicator's height equal to its
@@ -921,6 +967,19 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    */
   public void setActiveIndicatorMarginHorizontal(@Px int marginHorizontal) {
     this.activeIndicatorMarginHorizontal = marginHorizontal;
+    updateActiveIndicatorLayoutParams(getWidth());
+  }
+
+  /**
+   * Set the horizontal margin that will be maintained at the start and end of the expanded active
+   * indicator, making sure the indicator remains the given distance from the edge of this item
+   * view.
+   *
+   * @see #updateActiveIndicatorLayoutParams(int)
+   * @param marginHorizontal The horizontal margin, in pixels.
+   */
+  public void setActiveIndicatorExpandedMarginHorizontal(@Px int marginHorizontal) {
+    this.activeIndicatorExpandedMarginHorizontal = marginHorizontal;
     if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
       setPadding(marginHorizontal, 0, marginHorizontal, 0);
     }

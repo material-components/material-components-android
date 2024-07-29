@@ -277,6 +277,25 @@ The following is an anatomy diagram for the bottom navigation bar:
 **Ripple (active)**       | "                         | "                                                     | Variations of `?attr/colorPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/res/color/m3_navigation_bar_ripple_color_selector.xml))
 **Label visibility mode** | `app:labelVisibilityMode` | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode` | `LABEL_VISIBILITY_AUTO`
 
+
+#### Active indicator attributes
+
+**Element**                             | **Attribute**                     | **Related methods**                                                                                   | **Default value**
+--------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------- | -----------------
+**Color**                               | `android:color`                   | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                                       | `?attr/colorSecondaryContainer`
+**Width**                               | `android:width`                   | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                                       | `56dp`
+**Height**                              | `android:height`                  | `setItemActiveIndicatorHeight`<br/>`getItemActiveIndicatorHeight`                                     | `32dp`
+**Shape**                               | `app:shapeAppearance`             | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`                   | `50% rounded`
+**Margin horizontal**                   | `app:marginHorizontal`            | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal`                 | `4dp`
+**Padding between indicator and label** | `app:activeIndicatorLabelPadding` | `setActiveIndicatorLabelPadding` <br/> `getActiveIndicatorLabelPadding`                               | `4dp`
+**Expanded Width**                      | `expandedWidth`                   | `setItemExpandedActiveIndicatorWidth`<br/>`getItemExpandedActiveIndicatorWidth`                       | `HUG`
+**Expanded Height**                     | `expandedHeight`                  | `setItemExpandedActiveIndicatorHeight`<br/>`getItemExpandedActiveIndicatorHeight`                     | `56dp`
+**Expanded Margin horizontal**          | `app:expandedMarginHorizontal`    | `setItemExpandedActiveIndicatorMarginHorizontal`<br/>`getItemExpandedActiveIndicatorMarginHorizontal` | `20dp`
+
+**Note:** The expanded active indicator refers to the active indicator that
+expands to wrap the content of the Bottom Navigation item when the
+`itemIconGravity` value is equal to `START`.
+
 #### Icon attributes
 
 **Element**          | **Attribute**                         | **Related methods**                                              | **Default value**

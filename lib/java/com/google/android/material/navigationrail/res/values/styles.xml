@@ -95,6 +95,9 @@
     <item name="marginHorizontal">@dimen/m3_navigation_rail_item_active_indicator_margin_horizontal</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationRail.ActiveIndicator.Shape</item>
     <item name="android:color">@macro/m3_comp_navigation_rail_active_indicator_color</item>
+    <item name="expandedWidth">wrap_content</item>
+    <item name="expandedHeight">@dimen/m3_navigation_rail_expanded_active_indicator_height</item>
+    <item name="expandedMarginHorizontal">@dimen/m3_navigation_rail_expanded_leading_trailing_space</item>
   </style>
 
   <style name="ThemeOverlay.Material3.NavigationRailView" parent="">
