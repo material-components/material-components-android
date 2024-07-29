@@ -62,6 +62,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.customview.view.AbsSavedState;
+import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import androidx.resourceinspection.annotation.Attribute;
@@ -69,6 +70,7 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
+import com.google.android.material.shape.StateListShapeAppearanceModel;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
@@ -188,12 +190,12 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   /** Positions the icon can be set to. */
   @IntDef({
-      ICON_GRAVITY_START,
-      ICON_GRAVITY_TEXT_START,
-      ICON_GRAVITY_END,
-      ICON_GRAVITY_TEXT_END,
-      ICON_GRAVITY_TOP,
-      ICON_GRAVITY_TEXT_TOP
+    ICON_GRAVITY_START,
+    ICON_GRAVITY_TEXT_START,
+    ICON_GRAVITY_END,
+    ICON_GRAVITY_TEXT_END,
+    ICON_GRAVITY_TOP,
+    ICON_GRAVITY_TEXT_TOP
   })
   @Retention(RetentionPolicy.SOURCE)
   public @interface IconGravity {}
@@ -202,8 +204,14 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
+  private static final float TOGGLE_BUTTON_SPRING_DAMPING = 0.8f;
+  private static final float DEFAULT_BUTTON_CORNER_SPRING_DAMPING = 0.5f;
+  private static final float DEFAULT_BUTTON_SPRING_STIFFNESS = 800;
+
   @NonNull private final MaterialButtonHelper materialButtonHelper;
-  @NonNull private final LinkedHashSet<OnCheckedChangeListener> onCheckedChangeListeners =
+
+  @NonNull
+  private final LinkedHashSet<OnCheckedChangeListener> onCheckedChangeListeners =
       new LinkedHashSet<>();
 
   @Nullable private OnPressedChangeListener onPressedChangeListenerInternal;
@@ -250,17 +258,34 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     iconGravity = attributes.getInteger(R.styleable.MaterialButton_iconGravity, ICON_GRAVITY_START);
 
     iconSize = attributes.getDimensionPixelSize(R.styleable.MaterialButton_iconSize, 0);
+    StateListShapeAppearanceModel stateListShapeAppearanceModel =
+        StateListShapeAppearanceModel.create(
+            context, attributes, R.styleable.MaterialButton_shapeAppearance);
     ShapeAppearanceModel shapeAppearanceModel =
-        ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
+        stateListShapeAppearanceModel != null
+            ? stateListShapeAppearanceModel.getDefaultShape(/* withCornerSizeOverrides= */ true)
+            : ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
 
     // Loads and sets background drawable attributes
     materialButtonHelper = new MaterialButtonHelper(this, shapeAppearanceModel);
     materialButtonHelper.loadFromAttributes(attributes);
 
+    if (stateListShapeAppearanceModel != null) {
+      materialButtonHelper.setCornerSpringForce(createSpringForce());
+      materialButtonHelper.setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
+    }
+
     attributes.recycle();
 
     setCompoundDrawablePadding(iconPadding);
-    updateIcon(/*needsIconReset=*/icon != null);
+    updateIcon(/* needsIconReset= */ icon != null);
+  }
+
+  private SpringForce createSpringForce() {
+    return new SpringForce()
+        .setDampingRatio(
+            isCheckable() ? TOGGLE_BUTTON_SPRING_DAMPING : DEFAULT_BUTTON_CORNER_SPRING_DAMPING)
+        .setStiffness(DEFAULT_BUTTON_SPRING_STIFFNESS);
   }
 
   @NonNull
@@ -536,8 +561,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   /**
    * This method and {@link #getGravityTextAlignment()} is modified from Android framework
-   * TextView's private method getLayoutAlignment(). Please note that the logic here assumes
-   * the actual text direction is the same as the layout direction, which is not always the case,
+   * TextView's private method getLayoutAlignment(). Please note that the logic here assumes the
+   * actual text direction is the same as the layout direction, which is not always the case,
    * especially when the text mixes different languages. However, this is probably the best we can
    * do for now, unless we have a good way to detect the final text direction being used by
    * TextView.
@@ -573,17 +598,18 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
           || (iconGravity == ICON_GRAVITY_TEXT_START && textAlignment == Alignment.ALIGN_NORMAL)
           || (iconGravity == ICON_GRAVITY_TEXT_END && textAlignment == Alignment.ALIGN_OPPOSITE)) {
         iconLeft = 0;
-        updateIcon(/* needsIconReset = */ false);
+        updateIcon(/* needsIconReset= */ false);
         return;
       }
 
       int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
-      int availableWidth = buttonWidth
-          - getTextLayoutWidth()
-          - getPaddingEnd()
-          - localIconSize
-          - iconPadding
-          - getPaddingStart();
+      int availableWidth =
+          buttonWidth
+              - getTextLayoutWidth()
+              - getPaddingEnd()
+              - localIconSize
+              - iconPadding
+              - getPaddingStart();
       int newIconLeft =
           textAlignment == Alignment.ALIGN_CENTER ? availableWidth / 2 : availableWidth;
 
@@ -594,13 +620,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
       if (iconLeft != newIconLeft) {
         iconLeft = newIconLeft;
-        updateIcon(/* needsIconReset = */ false);
+        updateIcon(/* needsIconReset= */ false);
       }
     } else if (isIconTop()) {
       iconLeft = 0;
       if (iconGravity == ICON_GRAVITY_TOP) {
         iconTop = 0;
-        updateIcon(/* needsIconReset = */ false);
+        updateIcon(/* needsIconReset= */ false);
         return;
       }
 
@@ -618,7 +644,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
       if (iconTop != newIconTop) {
         iconTop = newIconTop;
-        updateIcon(/* needsIconReset = */ false);
+        updateIcon(/* needsIconReset= */ false);
       }
     }
   }
@@ -707,7 +733,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     if (this.iconSize != iconSize) {
       this.iconSize = iconSize;
-      updateIcon(/* needsIconReset = */ true);
+      updateIcon(/* needsIconReset= */ true);
     }
   }
 
@@ -735,10 +761,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIcon(@Nullable Drawable icon) {
     if (this.icon != icon) {
       this.icon = icon;
-      updateIcon(/* needsIconReset = */ true);
+      updateIcon(/* needsIconReset= */ true);
       updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
     }
   }
+
   /**
    * Sets the icon drawable resource to show for this button. By default, this icon will be shown on
    * the left side of the button.
@@ -779,7 +806,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIconTint(@Nullable ColorStateList iconTint) {
     if (this.iconTint != iconTint) {
       this.iconTint = iconTint;
-      updateIcon(/* needsIconReset = */ false);
+      updateIcon(/* needsIconReset= */ false);
     }
   }
 
@@ -817,7 +844,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setIconTintMode(Mode iconTintMode) {
     if (this.iconTintMode != iconTintMode) {
       this.iconTintMode = iconTintMode;
-      updateIcon(/* needsIconReset = */ false);
+      updateIcon(/* needsIconReset= */ false);
     }
   }
 
@@ -834,6 +861,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   /**
    * Updates the icon, icon tint, and icon tint mode for this button.
+   *
    * @param needsIconReset Whether to force the drawable to be set
    */
   private void updateIcon(boolean needsIconReset) {
@@ -1106,6 +1134,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public int getInsetBottom() {
     return materialButtonHelper.getInsetBottom();
   }
+
   /**
    * Sets the button top inset
    *
@@ -1174,6 +1203,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setChecked(boolean checked) {
     if (isCheckable() && isEnabled() && this.checked != checked) {
       this.checked = checked;
+
       refreshDrawableState();
 
       // Report checked state change to the parent toggle group, if there is one
@@ -1256,7 +1286,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   /**
-   * {@inheritDoc}
+   * Sets the {@link ShapeAppearanceModel} used for this {@link MaterialButton}'s original
+   * drawables.
    *
    * @throws IllegalStateException if the MaterialButton's background has been overwritten.
    */
@@ -1272,7 +1303,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   /**
-   * Returns the {@link ShapeAppearanceModel} used for this MaterialButton's shape definition.
+   * Returns the {@link ShapeAppearanceModel} used for this {@link MaterialButton}'s original
+   * drawables.
    *
    * <p>This {@link ShapeAppearanceModel} can be modified to change the component's shape.
    *
@@ -1288,6 +1320,72 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
           "Attempted to get ShapeAppearanceModel from a MaterialButton which has an overwritten"
               + " background.");
     }
+  }
+
+  /**
+   * Sets the {@link StateListShapeAppearanceModel} used for this {@link MaterialButton}'s original
+   * drawables.
+   *
+   * @throws IllegalStateException if the MaterialButton's background has been overwritten.
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setStateListShapeAppearanceModel(
+      @NonNull StateListShapeAppearanceModel stateListShapeAppearanceModel) {
+    if (isUsingOriginalBackground()) {
+      if (materialButtonHelper.getCornerSpringForce() == null
+          && stateListShapeAppearanceModel.isStateful()) {
+        materialButtonHelper.setCornerSpringForce(createSpringForce());
+      }
+      materialButtonHelper.setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
+    } else {
+      throw new IllegalStateException(
+          "Attempted to set StateListShapeAppearanceModel on a MaterialButton which has an"
+              + " overwritten background.");
+    }
+  }
+
+  /**
+   * Returns the {@link StateListShapeAppearanceModel} used for this {@link MaterialButton}'s
+   * original drawables.
+   *
+   * <p>This {@link StateListShapeAppearanceModel} can be modified to change the component's shape.
+   *
+   * @throws IllegalStateException if the MaterialButton's background has been overwritten.
+   * @hide
+   */
+  @Nullable
+  @RestrictTo(LIBRARY_GROUP)
+  public StateListShapeAppearanceModel getStateListShapeAppearanceModel() {
+    if (isUsingOriginalBackground()) {
+      return materialButtonHelper.getStateListShapeAppearanceModel();
+    } else {
+      throw new IllegalStateException(
+          "Attempted to get StateListShapeAppearanceModel from a MaterialButton which has an"
+              + " overwritten background.");
+    }
+  }
+
+  /**
+   * Sets the corner spring force for this {@link MaterialButton}.
+   *
+   * @param springForce The new {@link SpringForce} object.
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setCornerSpringForce(@NonNull SpringForce springForce) {
+    materialButtonHelper.setCornerSpringForce(springForce);
+  }
+
+  /**
+   * Returns the corner spring force for this {@link MaterialButton}.
+   *
+   * @hide
+   */
+  @Nullable
+  @RestrictTo(LIBRARY_GROUP)
+  public SpringForce getCornerSpringForce() {
+    return materialButtonHelper.getCornerSpringForce();
   }
 
   /**

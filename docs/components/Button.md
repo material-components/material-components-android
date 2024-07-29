@@ -751,8 +751,14 @@ Element                               | Attribute               | Related method
 **Single selection**                  | `app:singleSelection`   | `setSingleSelection`<br/>`isSingleSelection`     | `false`
 **Selection required**                | `app:selectionRequired` | `setSelectionRequired`<br/>`isSelectionRequired` | `false`
 **Enable the group and all children** | `android:enabled`       | `setEnabled`<br/>`isEnabled`                     | `true`
-**Size of inner corners**             | `app:innerCornerSize`   | `setInnerCornerSize`<br/>`getInnerCornerSize`    | `0dp`
-**Spacing between buttons**           | `android:spacing`       | `setSpacing`<br/>`getSpacing`                    | `0dp`
+
+#### Container attributes
+
+Element                         | Attribute             | Related method(s)                             | Default value
+------------------------------- | --------------------- | --------------------------------------------- | -------------
+**Size of inner corners**       | `app:innerCornerSize` | `setInnerCornerSize`<br/>`getInnerCornerSize` | `0dp`
+**Spacing between buttons**     | `android:spacing`     | `setSpacing`<br/>`getSpacing`                 | `0dp`
+**Group shape (outer corners)** | `app:shapeAppearance` | `setShapeAppearance`</br>`getShapeAppearance` | `none`
 
 #### Styles
 

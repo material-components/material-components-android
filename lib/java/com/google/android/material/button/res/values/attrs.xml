@@ -18,106 +18,115 @@
 <resources>
 
   <!-- Style to use for MaterialButtons in this theme. -->
-  <attr name="materialButtonStyle" format="reference"/>
+  <attr name="materialButtonStyle" format="reference" />
   <!-- Style to use for Material Icon Only Buttons in this theme. -->
-  <attr name="materialIconButtonStyle" format="reference"/>
+  <attr name="materialIconButtonStyle" format="reference" />
   <!-- Style to use for Filled Material Icon Only Buttons in this theme. -->
-  <attr name="materialIconButtonFilledStyle" format="reference"/>
+  <attr name="materialIconButtonFilledStyle" format="reference" />
   <!-- Style to use for Filled Tonal Material Icon Only Buttons in this theme. -->
-  <attr name="materialIconButtonFilledTonalStyle" format="reference"/>
+  <attr name="materialIconButtonFilledTonalStyle" format="reference" />
   <!-- Style to use for Outlined Material Icon Only Buttons in this theme. -->
-  <attr name="materialIconButtonOutlinedStyle" format="reference"/>
+  <attr name="materialIconButtonOutlinedStyle" format="reference" />
   <!-- Style to use for Material Outlined Buttons in this theme. -->
-  <attr name="materialButtonOutlinedStyle" format="reference"/>
+  <attr name="materialButtonOutlinedStyle" format="reference" />
   <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
-  <attr name="materialButtonToggleGroupStyle" format="reference"/>
+  <attr name="materialButtonToggleGroupStyle" format="reference" />
 
   <declare-styleable name="MaterialButton">
     <!-- Whether the button can be checked. -->
-    <attr name="android:checkable"/>
-    <attr name="android:insetLeft"/>
-    <attr name="android:insetRight"/>
-    <attr name="android:insetTop"/>
-    <attr name="android:insetBottom"/>
+    <attr name="android:checkable" />
+    <attr name="android:insetLeft" />
+    <attr name="android:insetRight" />
+    <attr name="android:insetTop" />
+    <attr name="android:insetBottom" />
     <!-- Background for the MaterialButton. If this is set to a drawable or color, MaterialButton
          will respect this background and not create its own MaterialShapeDrawable for the
          background. This means that the insets, shape appearance, and stroke will be ignored.
          If this attribute is not set or is @empty or @null, a MaterialShapeDrawable will be used
          for the background based on the insets, shape appearance, and stroke. -->
-    <attr name="android:background"/>
-    <attr name="backgroundTint"/>
-    <attr name="backgroundTintMode"/>
+    <attr name="android:background" />
+    <attr name="backgroundTint" />
+    <attr name="backgroundTintMode" />
     <!-- Elevation for the MaterialButton. -->
-    <attr name="elevation"/>
+    <attr name="elevation" />
     <!-- Icon drawable to display at the start of this view. -->
-    <attr name="icon" format="reference"/>
+    <attr name="icon" format="reference" />
     <!-- Specifies the width and height to use for the icon drawable. -->
-    <attr name="iconSize" format="dimension"/>
+    <attr name="iconSize" format="dimension" />
     <!-- Padding between icon and button text. -->
-    <attr name="iconPadding" format="dimension"/>
+    <attr name="iconPadding" format="dimension" />
     <!-- Specifies how the icon should be positioned on the X axis. -->
     <attr name="iconGravity">
       <!-- Push icon to the start of the button. -->
-      <flag name="start" value="0x1"/>
+      <flag name="start" value="0x1" />
       <!-- Push the icon to the start of the text keeping a distance equal to
            {@code iconPadding} from the text. -->
-      <flag name="textStart" value="0x2"/>
+      <flag name="textStart" value="0x2" />
       <!-- Push icon to the end of the button. -->
-      <flag name="end" value="0x3"/>
+      <flag name="end" value="0x3" />
       <!-- Push the icon to the end of the text keeping a distance equal to
            {@code iconPadding} from the text. -->
-      <flag name="textEnd" value="0x4"/>
+      <flag name="textEnd" value="0x4" />
       <!-- Push the icon to the top of the button. -->
-      <flag name="top" value="0x10"/>
+      <flag name="top" value="0x10" />
       <!-- Push the icon to the top of the text keeping a distance equal to
            {@code iconPadding} from the text. -->
-      <flag name="textTop" value="0x20"/>
+      <flag name="textTop" value="0x20" />
     </attr>
     <!-- Tint for icon drawable to display. -->
-    <attr name="iconTint" format="color"/>
+    <attr name="iconTint" format="color" />
     <!-- Tint mode for icon drawable to display. -->
-    <attr name="iconTintMode"/>
+    <attr name="iconTintMode" />
     <!-- Shape appearance style reference for MaterialButton. Attribute declaration is in the Shape
      package. -->
-    <attr name="shapeAppearance"/>
+    <attr name="shapeAppearance" />
     <!-- Shape appearance overlay style reference for MaterialButton. To be used to augment
          attributes declared in the shapeAppearance. Attribute declaration is in the Shape package.
     -->
-    <attr name="shapeAppearanceOverlay"/>
+    <attr name="shapeAppearanceOverlay" />
+
     <!-- Specifies the color used to draw the path outline of the button. Attribute type definition
          is in resources package. -->
-    <attr name="strokeColor"/>
+    <attr name="strokeColor" />
     <!-- Width of the stroke path of the button. Default is 0. Attribute type definition is in
          resources package. -->
-    <attr name="strokeWidth"/>
+    <attr name="strokeWidth" />
     <!--
         Specifies the radius for the corners of the button. Default is 0, for non-rounded corners.
     -->
-    <attr name="cornerRadius" format="dimension"/>
+    <attr name="cornerRadius" format="dimension" />
     <!-- Ripple color for the button. This may be a color state list, if the desired ripple color
          should be stateful. Attribute type definition is in resources package. -->
-    <attr name="rippleColor"/>
+    <attr name="rippleColor" />
     <!-- Whether the button toggles the checked state when clicked. -->
-    <attr name="toggleCheckedStateOnClick" format="boolean"/>
+    <attr name="toggleCheckedStateOnClick" format="boolean" />
   </declare-styleable>
 
   <declare-styleable name="MaterialButtonToggleGroup">
     <!-- Whether only a single button in this group is allowed to be checked at any time. By
          default, this is false and multiple buttons in this group are allowed to be checked at
          once. -->
-    <attr name="singleSelection"/>
+    <attr name="singleSelection" />
 
     <!-- Whether we prevent all child buttons from being deselected.
          It's false by default. -->
-    <attr name="selectionRequired"/>
+    <attr name="selectionRequired" />
     <!-- The id of the child button that should be checked by default within this button group. -->
-    <attr name="checkedButton" format="reference"/>
+    <attr name="checkedButton" format="reference" />
     <!-- Whether this MaterialButtonToggleGroup and all its children are enabled -->
     <attr name="android:enabled" />
-    <!-- The radius of all inner corners between inclusive buttons. -->
-    <attr name="innerCornerSize" format="dimension|fraction"/>
-    <!-- The spacing between inclusive buttons. Outlines will overlap, when set to zero or negative. -->
-    <attr name="android:spacing"/>
+    <!-- The corner size of inner corners, which are adjacent to neighbor buttons.
+         Can be a dp value as the absolute corner size; a fraction value as the relative
+         corner size; or a reference to a state list corner size. -->
+    <attr name="innerCornerSize" format="dimension|fraction|reference" />
+    <!-- The shape appearance of the group. -->
+    <attr name="shapeAppearance" />
+    <!-- The shape appearance overlay of the group. -->
+    <attr name="shapeAppearanceOverlay" />
+    <!-- The spacing between inclusive buttons. Outlines will overlap, when set to zero
+         or negative. -->
+    <attr name="android:spacing" />
+
   </declare-styleable>
 
 </resources>

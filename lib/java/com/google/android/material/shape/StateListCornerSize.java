@@ -18,6 +18,7 @@ package com.google.android.material.shape;
 
 import com.google.android.material.R;
 
+import static android.content.res.Resources.ID_NULL;
 import static com.google.android.material.shape.ShapeAppearanceModel.getCornerSize;
 
 import android.content.Context;
@@ -32,7 +33,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.annotation.XmlRes;
+import androidx.annotation.StyleableRes;
 import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOperator;
 import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
@@ -52,9 +53,38 @@ public class StateListCornerSize {
   @NonNull int[][] stateSpecs = new int[INITIAL_CAPACITY][];
   @NonNull CornerSize[] cornerSizes = new CornerSize[INITIAL_CAPACITY];
 
-  @Nullable
-  public static StateListCornerSize create(@NonNull Context context, @XmlRes int index) {
-    try (XmlResourceParser parser = context.getResources().getXml(index)) {
+  /**
+   * Creates a {@link StateListCornerSize} from a styleable attribute.
+   *
+   * <p>If the attribute refers to an xml resource, the resource is parsed and the corner sizes are
+   * extracted from the items. If the attribute refers to a {@code dimen} or {@code fraction}
+   * resource, the resource is resolved as a {@link CornerSize} and set as the default corner size.
+   * If the attribute is not set or refers to a resource that cannot be resolved, the {@code
+   * defaultCornerSize} is set.
+   *
+   * @param context the context
+   * @param attributes the typed array in context
+   * @param index the index of the styleable attribute
+   * @param defaultCornerSize the default corner size, when attribute is not set or cannot be
+   *     resolved.
+   * @return the {@link StateListCornerSize}
+   */
+  @NonNull
+  public static StateListCornerSize create(
+      @NonNull Context context,
+      @NonNull TypedArray attributes,
+      @StyleableRes int index,
+      @NonNull CornerSize defaultCornerSize) {
+    int resourceId = attributes.getResourceId(index, 0);
+    if (resourceId == ID_NULL) {
+      return create(defaultCornerSize);
+    }
+    String typeName = context.getResources().getResourceTypeName(resourceId);
+    if (!typeName.equals("xml")) {
+      return StateListCornerSize.create(
+          ShapeAppearanceModel.getCornerSize(attributes, index, defaultCornerSize));
+    }
+    try (XmlResourceParser parser = context.getResources().getXml(resourceId)) {
       StateListCornerSize stateListCornerSize = new StateListCornerSize();
       AttributeSet attrs = Xml.asAttributeSet(parser);
       int type;
@@ -72,7 +102,7 @@ public class StateListCornerSize {
       }
       return stateListCornerSize;
     } catch (XmlPullParserException | IOException | Resources.NotFoundException e) {
-      return null;
+      return create(defaultCornerSize);
     }
   }
 
@@ -101,12 +131,12 @@ public class StateListCornerSize {
   }
 
   @NonNull
-  protected CornerSize getDefaultCornerSize() {
+  public CornerSize getDefaultCornerSize() {
     return defaultCornerSize;
   }
 
   @NonNull
-  protected CornerSize getCornerSizeForState(@NonNull int[] stateSet) {
+  public CornerSize getCornerSizeForState(@NonNull int[] stateSet) {
     int idx = indexOfStateSet(stateSet);
     if (idx < 0) {
       idx = indexOfStateSet(StateSet.WILD_CARD);

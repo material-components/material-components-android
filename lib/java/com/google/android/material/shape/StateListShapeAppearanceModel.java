@@ -18,6 +18,8 @@ package com.google.android.material.shape;
 
 import com.google.android.material.R;
 
+import static android.content.res.Resources.ID_NULL;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
@@ -30,10 +32,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.StyleableRes;
 import androidx.annotation.XmlRes;
 import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOperator;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.IOException;
+import java.util.Objects;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -78,7 +82,12 @@ public class StateListShapeAppearanceModel {
       this.bottomRightCornerSizeOverride = other.bottomRightCornerSizeOverride;
     }
 
-    public Builder(@NonNull Context context, @XmlRes int index) {
+    public Builder(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+      initialize();
+      addStateShapeAppearanceModel(StateSet.WILD_CARD, shapeAppearanceModel);
+    }
+
+    private Builder(@NonNull Context context, @XmlRes int index) {
       initialize();
       try (XmlResourceParser parser = context.getResources().getXml(index)) {
         AttributeSet attrs = Xml.asAttributeSet(parser);
@@ -99,11 +108,6 @@ public class StateListShapeAppearanceModel {
         // Re-initializes the fields if failed.
         initialize();
       }
-    }
-
-    public Builder(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-      initialize();
-      addStateShapeAppearanceModel(StateSet.WILD_CARD, shapeAppearanceModel);
     }
 
     private void initialize() {
@@ -189,6 +193,20 @@ public class StateListShapeAppearanceModel {
     public StateListShapeAppearanceModel build() {
       return stateCount == 0 ? null : new StateListShapeAppearanceModel(this);
     }
+  }
+
+  @Nullable
+  public static StateListShapeAppearanceModel create(
+      @NonNull Context context, @NonNull TypedArray attributes, @StyleableRes int index) {
+    int resourceId = attributes.getResourceId(index, 0);
+    if (resourceId == ID_NULL) {
+      return null;
+    }
+    String typeName = context.getResources().getResourceTypeName(resourceId);
+    if (!Objects.equals(typeName, "xml")) {
+      return null;
+    }
+    return new Builder(context, resourceId).build();
   }
 
   private static void loadShapeAppearanceModelsFromItems(
@@ -347,5 +365,11 @@ public class StateListShapeAppearanceModel {
         || (topRightCornerSizeOverride != null && topRightCornerSizeOverride.isStateful())
         || (bottomLeftCornerSizeOverride != null && bottomLeftCornerSizeOverride.isStateful())
         || (bottomRightCornerSizeOverride != null && bottomRightCornerSizeOverride.isStateful());
+  }
+
+  public static int swapCornerPositionRtl(int flagSet) {
+    int leftFlagSet = flagSet & (CORNER_TOP_LEFT | CORNER_BOTTOM_LEFT);
+    int rightFlagSet = flagSet & (CORNER_TOP_RIGHT | CORNER_BOTTOM_RIGHT);
+    return leftFlagSet << 1 | rightFlagSet >> 1;
   }
 }
