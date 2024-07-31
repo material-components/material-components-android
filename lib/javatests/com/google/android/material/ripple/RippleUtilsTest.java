@@ -56,14 +56,6 @@ public class RippleUtilsTest {
   }
 
   @Test
-  @Config(sdk = VERSION_CODES.KITKAT)
-  public void testValidateColor_transparentDefaultColor_returnsSelf_kitkat_noWarning() {
-    ColorStateList rippleColor = createTransparentDefaultColor();
-    assertThat(RippleUtils.sanitizeRippleDrawableColor(rippleColor)).isEqualTo(rippleColor);
-    assertThat(ShadowLog.getLogsForTag(RippleUtils.LOG_TAG)).isEmpty();
-  }
-
-  @Test
   @Config(sdk = VERSION_CODES.LOLLIPOP)
   public void testValidateColor_transparentDefaultColor_returnsSelf_lollipop_noWarning() {
     ColorStateList rippleColor = createTransparentDefaultColor();

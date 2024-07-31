@@ -117,8 +117,8 @@ import java.util.List;
  * </ul>
  *
  * <p>You can register a listener on the main chip with {@link #setOnClickListener(OnClickListener)}
- * or {@link #setOnCheckedChangeListener(AppCompatCheckBox.OnCheckedChangeListener)}. You can
- * register a listener on the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
+ * or {@link #setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener)}. You can register
+ * a listener on the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
  *
  * <p>For proper rendering of the ancestor TextView in RTL mode, call {@link
  * #setLayoutDirection(int)} with <code>View.LAYOUT_DIRECTION_LOCALE</code>. By default, TextView's
@@ -256,7 +256,7 @@ public class Chip extends AppCompatCheckBox
     if (shouldEnsureMinTouchTargetSize()) {
       setMinHeight(minTouchTargetSize);
     }
-    lastLayoutDirection = ViewCompat.getLayoutDirection(this);
+    lastLayoutDirection = getLayoutDirection();
 
     super.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
@@ -367,12 +367,10 @@ public class Chip extends AppCompatCheckBox
       paddingEnd += padding.right;
     }
 
-    ViewCompat.setPaddingRelative(
-        this, paddingStart, getPaddingTop(), paddingEnd, getPaddingBottom());
+    setPaddingRelative(paddingStart, getPaddingTop(), paddingEnd, getPaddingBottom());
   }
 
   @Override
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
   public void onRtlPropertiesChanged(int layoutDirection) {
     super.onRtlPropertiesChanged(layoutDirection);
 
@@ -457,7 +455,7 @@ public class Chip extends AppCompatCheckBox
       updateFrameworkRippleBackground();
     } else {
       chipDrawable.setUseCompatRipple(true);
-      ViewCompat.setBackground(this, getBackgroundDrawable());
+      setBackground(getBackgroundDrawable());
       updatePaddingInternal();
       ensureChipDrawableHasCallback();
     }
@@ -488,7 +486,7 @@ public class Chip extends AppCompatCheckBox
             null);
     chipDrawable.setUseCompatRipple(false);
     //noinspection NewApi
-    ViewCompat.setBackground(this, ripple);
+    setBackground(ripple);
     updatePaddingInternal();
   }
 
@@ -604,7 +602,6 @@ public class Chip extends AppCompatCheckBox
     super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
   }
 
-  @RequiresApi(17)
   @Override
   public void setCompoundDrawablesRelative(
       @Nullable Drawable start,
@@ -1311,9 +1308,7 @@ public class Chip extends AppCompatCheckBox
     if (chipDrawable == null) {
       return;
     }
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-      super.setLayoutDirection(layoutDirection);
-    }
+    super.setLayoutDirection(layoutDirection);
   }
 
   @Override
@@ -2316,15 +2311,10 @@ public class Chip extends AppCompatCheckBox
         return true;
       }
     }
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-      if (getMinHeight() != minTargetPx) {
-        setMinHeight(minTargetPx);
-      }
-      if (getMinWidth() != minTargetPx) {
-        setMinWidth(minTargetPx);
-      }
-    } else {
+    if (getMinHeight() != minTargetPx) {
       setMinHeight(minTargetPx);
+    }
+    if (getMinWidth() != minTargetPx) {
       setMinWidth(minTargetPx);
     }
     insetChipBackgroundDrawable(deltaX, deltaY, deltaX, deltaY);

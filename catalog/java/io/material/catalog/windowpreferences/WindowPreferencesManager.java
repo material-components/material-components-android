@@ -18,7 +18,6 @@ package io.material.catalog.windowpreferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.Window;
@@ -40,23 +39,14 @@ public class WindowPreferencesManager {
     this.context = context;
     this.listener =
         (v, insets) -> {
-          if (v.getResources().getConfiguration().orientation
-              != Configuration.ORIENTATION_LANDSCAPE) {
-            return insets;
-          }
+          int leftInset = insets.getStableInsetLeft();
+          int rightInset = insets.getStableInsetRight();
           if (VERSION.SDK_INT >= VERSION_CODES.R) {
-            v.setPadding(
-                insets.getInsets(WindowInsets.Type.systemBars()).left,
-                0,
-                insets.getInsets(WindowInsets.Type.systemBars()).right,
-                insets.getInsets(WindowInsets.Type.systemBars()).bottom);
-          } else {
-            v.setPadding(
-                insets.getStableInsetLeft(),
-                0,
-                insets.getStableInsetRight(),
-                insets.getStableInsetBottom());
+            leftInset = insets.getInsets(WindowInsets.Type.systemBars()).left;
+            rightInset = insets.getInsets(WindowInsets.Type.systemBars()).right;
           }
+
+          v.setPadding(leftInset, 0, rightInset, 0);
           return insets;
         };
   }

@@ -16,12 +16,12 @@ access to primary destinations in your app on tablet and desktop screens.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using navigation rail](#using-navigation-rail)
 *   [Navigation rail example](#navigation-rail-example)
 *   [Theming](#theming-a-navigation-rail)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/navigation-rail/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/navigationrail/package-summary)
@@ -297,13 +297,21 @@ The following is an anatomy diagram for the navigation rail:
 
 #### Header attributes
 
-**Element**     | **Attribute**      | **Related methods**                                        | **Default value**
---------------- | ------------------ | ---------------------------------------------------------- | -----------------
-**Header view** | `app:headerLayout` | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
+**Element**              | **Attribute**            | **Related methods**                                        | **Default value**
+------------------------ | ------------------------ | ---------------------------------------------------------- | -----------------
+**Header view**          | `app:headerLayout`       | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
+**Header bottom margin** | `app:headerMarginBottom` | N/A                                                        | `8dp`
 
 See the
 [FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)
 for more attributes.
+
+#### Navigation Menu attributes
+
+**Element**      | **Attribute**          | **Related methods**                   | **Default value**
+---------------- | ---------------------- | ------------------------------------- | -----------------
+**Menu gravity** | `app:menuGravity`      | `setMenuGravity`<br/>`getMenuGravity` | `TOP\|CENTER_HORIZONTAL`
+**Top margin**   | `app:contentMarginTop` | N/A                                   | N/A
 
 #### Navigation item attributes
 
@@ -314,17 +322,27 @@ for more attributes.
 **Ripple (active)**       | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
 **Label visibility mode** | `app:labelVisibilityMode` | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode` | `LABEL_VISIBILITY_AUTO`
 **Item minimum height**   | `app:itemMinHeight`       | `setItemMinimumHeight`<br/>`getItemMinimumHeight`     | `NO_ITEM_MINIMUM_HEIGHT`
+**Item spacing**          | `app:itemSpacing`         | `setItemSpacing`<br/>`getItemSpacing`                 | `0dp`
+
+**Note:** If there's not enough room, `itemMinHeight` and `itemSpacing` may not be respected in order to fit the items.
 
 #### Active indicator attributes
 
-**Element**                             | **Attribute**                     | **Related methods**                                                                   | **Default value**
---------------------------------------- | --------------------------------- | ------------------------------------------------------------------------------------- | -----------------
-**Color**                               | `android:color`                   | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                       | `?attr/colorSecondaryContainer`
-**Width**                               | `android:width`                   | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                       | `56dp`
-**Height**                              | `android:height`                  | `setItemActiveIndicatorHeight`<br/>`setItemActiveIndicatorHeight`                     | `32dp`
-**Shape**                               | `app:shapeAppearance`             | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`   | `50% rounded`
-**Margin horizontal**                   | `app:marginHorizontal`            | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal` | `4dp`
-**Padding between indicator and label** | `app:activeIndicatorLabelPadding` | `setActiveIndicatorLabelPadding` <br/> `setActiveIndicatorLabelPadding`               | `4dp`
+**Element**                             | **Attribute**                     | **Related methods**                                                                                   | **Default value**
+--------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------- | -----------------
+**Color**                               | `android:color`                   | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                                       | `?attr/colorSecondaryContainer`
+**Width**                               | `android:width`                   | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                                       | `56dp`
+**Height**                              | `android:height`                  | `setItemActiveIndicatorHeight`<br/>`getItemActiveIndicatorHeight`                                     | `32dp`
+**Shape**                               | `app:shapeAppearance`             | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`                   | `50% rounded`
+**Margin horizontal**                   | `app:marginHorizontal`            | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal`                 | `4dp`
+**Padding between indicator and label** | `app:activeIndicatorLabelPadding` | `setActiveIndicatorLabelPadding` <br/> `getActiveIndicatorLabelPadding`                               | `4dp`
+**Expanded Width**                      | `expandedWidth`                   | `setItemExpandedActiveIndicatorWidth`<br/>`getItemExpandedActiveIndicatorWidth`                       | `HUG`
+**Expanded Height**                     | `expandedHeight`                  | `setItemExpandedActiveIndicatorHeight`<br/>`getItemExpandedActiveIndicatorHeight`                     | `56dp`
+**Expanded Margin horizontal**          | `app:expandedMarginHorizontal`    | `setItemExpandedActiveIndicatorMarginHorizontal`<br/>`getItemExpandedActiveIndicatorMarginHorizontal` | `20dp`
+
+**Note:** The expanded active indicator refers to the active indicator that
+expands to wrap the content of the Navigation Rail item when the
+`itemIconGravity` value is equal to `START`.
 
 #### Icon attributes
 
@@ -334,6 +352,7 @@ for more attributes.
 **Size**             | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize` | `24dp`
 **Color (inactive)** | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSurfaceVariant`
 **Color (active)**   | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSecondaryContainer`
+**Gravity**          | `app:itemIconGravity`                 | `setItemIconGravity`<br/>`getItemIconGravity`                    | `TOP`
 
 #### Text label attributes
 

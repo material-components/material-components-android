@@ -16,12 +16,12 @@ date or range of dates.
 
 **Contents**
 
-*   [Design & API documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using date pickers](#using-date-pickers)
 *   [Calendar date picker](#calendar-date-picker)
 *   [Theming date pickers](#theming-date-pickers)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/date-pickers/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/datepicker/package-summary)

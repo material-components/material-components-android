@@ -27,6 +27,7 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 /**
  * Facilitates a fade out and then a fade in of the two input drawables.
@@ -45,6 +46,10 @@ public class FadeThroughDrawable extends Drawable {
   public FadeThroughDrawable(@NonNull Drawable fadeOutDrawable, @NonNull Drawable fadeInDrawable) {
     this.fadeOutDrawable = fadeOutDrawable.getConstantState().newDrawable().mutate();
     this.fadeInDrawable = fadeInDrawable.getConstantState().newDrawable().mutate();
+    DrawableCompat.setLayoutDirection(
+        this.fadeOutDrawable, DrawableCompat.getLayoutDirection(fadeOutDrawable));
+    DrawableCompat.setLayoutDirection(
+        this.fadeInDrawable, DrawableCompat.getLayoutDirection(fadeInDrawable));
     this.fadeInDrawable.setAlpha(0);
     this.alphas = new float[2];
   }

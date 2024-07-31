@@ -20,6 +20,9 @@
   <public name="itemMinHeight" type="attr"/>
   <public name="navigationRailStyle" type="attr"/>
   <public name="menuGravity" type="attr"/>
+  <public name="contentMarginTop" type="attr"/>
+  <public name="headerMarginBottom" type="attr"/>
+  <public name="itemSpacing" type="attr"/>
   <public name="Widget.MaterialComponents.NavigationRailView" type="style"/>
   <public name="Widget.MaterialComponents.NavigationRailView.Compact" type="style"/>
   <public name="Widget.MaterialComponents.NavigationRailView.Colored" type="style"/>

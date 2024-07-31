@@ -22,14 +22,12 @@ import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
-import android.os.Build;
-import android.os.Build.VERSION_CODES;
+import android.view.View;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.ThemeEnforcement;
 
 /**
@@ -92,15 +90,12 @@ public class MaterialDialogs {
 
     attributes.recycle();
 
-    int backgroundInsetLeft = backgroundInsetStart;
-    int backgroundInsetRight = backgroundInsetEnd;
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
-      int layoutDirection = context.getResources().getConfiguration().getLayoutDirection();
-      if (layoutDirection == ViewCompat.LAYOUT_DIRECTION_RTL) {
-        backgroundInsetLeft = backgroundInsetEnd;
-        backgroundInsetRight = backgroundInsetStart;
-      }
-    }
+    int layoutDirection = context.getResources().getConfiguration().getLayoutDirection();
+    int backgroundInsetLeft =
+        layoutDirection == View.LAYOUT_DIRECTION_RTL ? backgroundInsetEnd : backgroundInsetStart;
+
+    int backgroundInsetRight =
+        layoutDirection == View.LAYOUT_DIRECTION_RTL ? backgroundInsetStart : backgroundInsetEnd;
 
     return new Rect(
         backgroundInsetLeft, backgroundInsetTop, backgroundInsetRight, backgroundInsetBottom);

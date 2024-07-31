@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.progressindicator.CircularProgressIndicator.IndeterminateAnimationType;
 import com.google.android.material.progressindicator.CircularProgressIndicator.IndicatorDirection;
 
 /**
@@ -39,6 +40,8 @@ import com.google.android.material.progressindicator.CircularProgressIndicator.I
  */
 public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSpec {
 
+  @IndeterminateAnimationType public int indeterminateAnimationType;
+
   /** The size (outer diameter) of the spinner. */
   @Px public int indicatorSize;
 
@@ -47,6 +50,9 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
 
   /** The direction in which the indicator will rotate and grow to. */
   @IndicatorDirection public int indicatorDirection;
+
+  /** Whether to show the track in the indeterminate mode. */
+  public boolean indeterminateTrackVisible;
 
   /**
    * Instantiates the spec for {@link CircularProgressIndicator}.
@@ -82,6 +88,10 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.CircularProgressIndicator, defStyleAttr, defStyleRes);
+    indeterminateAnimationType =
+        a.getInt(
+            R.styleable.CircularProgressIndicator_indeterminateAnimationTypeCircular,
+            CircularProgressIndicator.INDETERMINATE_ANIMATION_TYPE_ADVANCE);
     indicatorSize =
         max(
             getDimensionPixelSize(
@@ -100,18 +110,10 @@ public final class CircularProgressIndicatorSpec extends BaseProgressIndicatorSp
         a.getInt(
             R.styleable.CircularProgressIndicator_indicatorDirectionCircular,
             CircularProgressIndicator.INDICATOR_DIRECTION_CLOCKWISE);
+    indeterminateTrackVisible =
+        a.getBoolean(R.styleable.CircularProgressIndicator_indeterminateTrackVisible, true);
     a.recycle();
 
     validateSpec();
-  }
-
-  /** The size of the gap between the indicator and the rest of the track in degrees. */
-  int getIndicatorTrackGapSizeDegree() {
-    if (indicatorTrackGapSize == 0) {
-      return 0;
-    }
-    int diameter = indicatorSize - (indicatorInset * 2) - trackThickness;
-    double perimeter = Math.PI * diameter;
-    return (int) Math.round(360 / (perimeter / (indicatorTrackGapSize + trackCornerRadius)));
   }
 }

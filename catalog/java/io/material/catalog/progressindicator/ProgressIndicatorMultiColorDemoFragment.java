@@ -17,30 +17,17 @@ package io.material.catalog.progressindicator;
 
 import io.material.catalog.R;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.progressindicator.CircularProgressIndicator;
-import com.google.android.material.progressindicator.LinearProgressIndicator;
-import io.material.catalog.feature.DemoFragment;
+import androidx.annotation.LayoutRes;
 
 /**
  * This is the fragment to demo using multiple indicator colors in {@link LinearProgressIndicator}
  * and {@link CircularProgressIndicator}.
  */
-public class ProgressIndicatorMultiColorDemoFragment extends DemoFragment {
+public class ProgressIndicatorMultiColorDemoFragment extends ProgressIndicatorDemoFragment {
 
   @Override
-  @NonNull
-  public View onCreateDemoView(
-      @NonNull LayoutInflater layoutInflater,
-      @Nullable ViewGroup viewGroup,
-      @Nullable Bundle bundle) {
-
-    return layoutInflater.inflate(
-        R.layout.cat_progress_indicator_multi_color_fragment, viewGroup, false /* attachToRoot */);
+  @LayoutRes
+  public int getProgressIndicatorContentLayout() {
+    return R.layout.cat_progress_indicator_multi_color_content;
   }
 }

@@ -16,13 +16,13 @@ temporary surfaces.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using menus](#using-menus)
 *   [Dropdown menus](#dropdown-menus)
 *   [Exposed dropdown menus](#exposed-dropdown-menus)
 *   [Theming](#theming-menus)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/menus/overview)
 *   [API reference](https://developer.android.com/reference/android/view/Menu)

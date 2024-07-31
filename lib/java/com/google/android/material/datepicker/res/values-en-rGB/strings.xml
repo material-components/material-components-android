@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@
   <string name="mtrl_picker_toggle_to_day_selection">Tap to switch to calendar view</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Current selection: %1$s</string>
-  <string name="mtrl_picker_announce_current_range_selection">Start date selection: %1$s – end date selection: %2$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Start date selection: %1$s – End date selection: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">none</string>
   <string name="mtrl_picker_navigate_to_year_description">Navigate to year %1$d</string>
   <string name="mtrl_picker_navigate_to_current_year_description">Navigate to current year %1$d</string>

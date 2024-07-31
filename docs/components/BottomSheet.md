@@ -16,7 +16,7 @@ containing supplementary content that are anchored to the bottom of the screen.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using bottom sheets](#using-bottom-sheets)
 *   [Standard bottom sheet](#standard-bottom-sheet)
 *   [Modal bottom sheet](#modal-bottom-sheet)
@@ -24,7 +24,7 @@ containing supplementary content that are anchored to the bottom of the screen.
 *   [Predictive Back](#predictive-back)
 *   [Theming](#theming-bottom-sheets)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/bottom-sheets/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/bottomsheet/package-summary)
@@ -439,6 +439,7 @@ Behavior                                    | Related method(s)                 
 `app:behavior_skipCollapsed`                | `setSkipCollapsed`<br/>`getSkipCollapsed`                                 | `false`
 `app:behavior_fitToContents`                | `setFitToContents`<br/>`isFitToContents`                                  | `true`
 `app:behavior_draggable`                    | `setDraggable`<br/>`isDraggable`                                          | `true`
+`app:behavior_draggableOnNestedScroll`      | `setDraggableOnNestedScroll`<br/>`isDraggableOnNestedScroll`              | `true`
 `app:behavior_halfExpandedRatio`            | `setHalfExpandedRatio`<br/>`getHalfExpandedRatio`                         | `0.5`
 `app:behavior_expandedOffset`               | `setExpandedOffset`<br/>`getExpandedOffset`                               | `0dp`
 `app:behavior_significantVelocityThreshold` | `setSignificantVelocityThreshold` <br/> `getSignificantVelocityThreshold` | `500 pixels/s`

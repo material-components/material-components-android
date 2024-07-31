@@ -122,6 +122,17 @@ public class TimePickerTextInputKeyControllerTest {
   }
 
   @Test
+  public void controller_clearPrefilledText_shouldNotClearWhenNotDigit() {
+    EditText editText = hourInput.getTextInput().getEditText();
+    editText.setText("0");
+    editText.setSelection(0);
+    pressKeys(editText, KeyEvent.KEYCODE_DPAD_RIGHT);
+    shadowOf(getMainLooper()).idle();
+
+    assertThat(editText.getText().length()).isEqualTo(1);
+  }
+
+  @Test
   public void afterTextChanged_validHourInput_formatsText() {
     EditText editText = hourInput.getTextInput().getEditText();
     editText.setText("1");

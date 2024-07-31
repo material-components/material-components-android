@@ -29,9 +29,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.ColorStateListDrawable;
-import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -45,7 +42,6 @@ import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -64,7 +60,6 @@ public class ViewUtils {
 
   private ViewUtils() {}
 
-  @RequiresApi(VERSION_CODES.JELLY_BEAN)
   public static final int EDGE_TO_EDGE_FLAGS =
       View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
 
@@ -186,7 +181,7 @@ public class ViewUtils {
   }
 
   public static boolean isLayoutRtl(View view) {
-    return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    return view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
   }
 
   public static float dpToPx(@NonNull Context context, @Dimension(unit = Dimension.DP) int dp) {
@@ -235,7 +230,7 @@ public class ViewUtils {
 
     /** Applies this relative padding to the view. */
     public void applyToView(View view) {
-      ViewCompat.setPaddingRelative(view, start, top, end, bottom);
+      view.setPaddingRelative(start, top, end, bottom);
     }
   }
 
@@ -315,9 +310,9 @@ public class ViewUtils {
     // Create a snapshot of the view's padding state.
     final RelativePadding initialPadding =
         new RelativePadding(
-            ViewCompat.getPaddingStart(view),
+            view.getPaddingStart(),
             view.getPaddingTop(),
-            ViewCompat.getPaddingEnd(view),
+            view.getPaddingEnd(),
             view.getPaddingBottom());
     // Set an actual OnApplyWindowInsetsListener which proxies to the given callback, also passing
     // in the original padding state.
@@ -335,7 +330,7 @@ public class ViewUtils {
 
   /** Requests that insets should be applied to this view once it is attached. */
   public static void requestApplyInsetsWhenAttached(@NonNull View view) {
-    if (ViewCompat.isAttachedToWindow(view)) {
+    if (view.isAttachedToWindow()) {
       // We're already attached, just request as normal.
       ViewCompat.requestApplyInsets(view);
     } else {
@@ -377,10 +372,7 @@ public class ViewUtils {
     if (view == null) {
       return null;
     }
-    if (Build.VERSION.SDK_INT >= 18) {
-      return new ViewOverlayApi18(view);
-    }
-    return ViewOverlayApi14.createFrom(view);
+    return new ViewOverlayApi18(view);
   }
 
   /** Returns the content view that is the parent of the provided view. */
@@ -431,11 +423,7 @@ public class ViewUtils {
 
   public static void removeOnGlobalLayoutListener(
       @NonNull ViewTreeObserver viewTreeObserver, @NonNull OnGlobalLayoutListener victim) {
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-      viewTreeObserver.removeOnGlobalLayoutListener(victim);
-    } else {
-      viewTreeObserver.removeGlobalOnLayoutListener(victim);
-    }
+    viewTreeObserver.removeOnGlobalLayoutListener(victim);
   }
 
   /**

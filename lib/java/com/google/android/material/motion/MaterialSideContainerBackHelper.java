@@ -37,8 +37,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.google.android.material.animation.AnimationUtils;
 
@@ -179,8 +177,7 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
   }
 
   private boolean checkAbsoluteGravity(@GravityInt int gravity, @GravityInt int checkFor) {
-    int absoluteGravity =
-        GravityCompat.getAbsoluteGravity(gravity, ViewCompat.getLayoutDirection(view));
+    int absoluteGravity = Gravity.getAbsoluteGravity(gravity, view.getLayoutDirection());
     return (absoluteGravity & checkFor) == checkFor;
   }
 

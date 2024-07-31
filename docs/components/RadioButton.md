@@ -23,12 +23,12 @@ Use radio buttons to:
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using radio buttons](#using-radio-buttons)
 *   [Radio button](#radio-button)
 *   [Theming radio buttons](#theming-radio-buttons)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/radio-button/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/radiobutton/package-summary)

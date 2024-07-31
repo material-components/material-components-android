@@ -16,7 +16,7 @@ and make choices, with a single tap.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using buttons](#using-buttons)
 *   [Elevated button](#elevated-button)
 *   [Filled button](#filled-button)
@@ -27,7 +27,7 @@ and make choices, with a single tap.
 *   [Icon button](#icon-button)
 *   [Theming](#theming-buttons)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/buttons/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/button/package-summary)
@@ -746,11 +746,19 @@ A toggle button has a shared stroked container, icons and/or text labels.
 
 #### Selection attributes
 
-Element                             | Attribute               | Related method(s)                                | Default value
------------------------------------ | ----------------------- | ------------------------------------------------ | -------------
-**Single selection**                | `app:singleSelection`   | `setSingleSelection`<br/>`isSingleSelection`     | `false`
-**Selection required**              | `app:selectionRequired` | `setSelectionRequired`<br/>`isSelectionRequired` | `false`
-**Enable the group and all children | `android:enabled`       | `setEnabled`<br/>`isEnabled`                     | `true`
+Element                               | Attribute               | Related method(s)                                | Default value
+------------------------------------- | ----------------------- | ------------------------------------------------ | -------------
+**Single selection**                  | `app:singleSelection`   | `setSingleSelection`<br/>`isSingleSelection`     | `false`
+**Selection required**                | `app:selectionRequired` | `setSelectionRequired`<br/>`isSelectionRequired` | `false`
+**Enable the group and all children** | `android:enabled`       | `setEnabled`<br/>`isEnabled`                     | `true`
+
+#### Container attributes
+
+Element                         | Attribute             | Related method(s)                             | Default value
+------------------------------- | --------------------- | --------------------------------------------- | -------------
+**Size of inner corners**       | `app:innerCornerSize` | `setInnerCornerSize`<br/>`getInnerCornerSize` | `0dp`
+**Spacing between buttons**     | `android:spacing`     | `setSpacing`<br/>`getSpacing`                 | `0dp`
+**Group shape (outer corners)** | `app:shapeAppearance` | `setShapeAppearance`</br>`getShapeAppearance` | `none`
 
 #### Styles
 
@@ -946,7 +954,7 @@ In the layout:
 />
 ```
 
-#### Styles & Theme attributes
+#### Styles and Theme attributes
 
 Element                      | Style                                             | Theme Attribute
 ---------------------------- | ------------------------------------------------- | ---------------

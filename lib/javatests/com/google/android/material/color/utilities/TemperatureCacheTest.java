@@ -17,7 +17,7 @@
 package com.google.android.material.color.utilities;
 
 import static com.google.android.material.color.utilities.ArgbSubject.assertThat;
-import static org.junit.Assert.assertEquals;
+import static com.google.common.truth.Truth.assertThat;
 
 import java.util.List;
 import org.junit.Test;
@@ -31,23 +31,23 @@ public final class TemperatureCacheTest {
   public void testRawTemperature() {
     final Hct blueHct = Hct.fromInt(0xff0000ff);
     final double blueTemp = TemperatureCache.rawTemperature(blueHct);
-    assertEquals(-1.393, blueTemp, 0.001);
+    assertThat(blueTemp).isWithin(0.001).of(-1.393);
 
     final Hct redHct = Hct.fromInt(0xffff0000);
     final double redTemp = TemperatureCache.rawTemperature(redHct);
-    assertEquals(2.351, redTemp, 0.001);
+    assertThat(redTemp).isWithin(0.001).of(2.351);
 
     final Hct greenHct = Hct.fromInt(0xff00ff00);
     final double greenTemp = TemperatureCache.rawTemperature(greenHct);
-    assertEquals(-0.267, greenTemp, 0.001);
+    assertThat(greenTemp).isWithin(0.001).of(-0.267);
 
     final Hct whiteHct = Hct.fromInt(0xffffffff);
     final double whiteTemp = TemperatureCache.rawTemperature(whiteHct);
-    assertEquals(-0.5, whiteTemp, 0.001);
+    assertThat(whiteTemp).isWithin(0.001).of(-0.5);
 
     final Hct blackHct = Hct.fromInt(0xff000000);
     final double blackTemp = TemperatureCache.rawTemperature(blackHct);
-    assertEquals(-0.5, blackTemp, 0.001);
+    assertThat(blackTemp).isWithin(0.001).of(-0.5);
   }
 
   @Test

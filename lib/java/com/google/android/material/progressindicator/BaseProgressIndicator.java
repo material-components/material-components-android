@@ -19,6 +19,7 @@ package com.google.android.material.progressindicator;
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.abs;
 import static java.lang.Math.min;
 
 import android.content.Context;
@@ -40,7 +41,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.view.ViewCompat;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -82,6 +82,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
 
   static final float DEFAULT_OPACITY = 0.2f;
   static final int MAX_ALPHA = 255;
+
   /**
    * The maximum time, in milliseconds, that the requested hide action is allowed to wait once
    * {@link #show()} is called.
@@ -93,6 +94,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
 
   /** A temp place to hold new progress while switching from indeterminate to determinate mode. */
   private int storedProgress;
+
   /**
    * A temp place to hold whether use animator to update the new progress after switching from
    * indeterminate to determinate mode.
@@ -161,13 +163,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   // ******************** Initialization **********************
 
   private void registerAnimationCallbacks() {
-    if (getProgressDrawable() != null && getIndeterminateDrawable() != null) {
-      // Registers the animation callback to switch indeterminate mode at the end of indeterminate
-      // animation.
-      getIndeterminateDrawable()
-          .getAnimatorDelegate()
-          .registerAnimatorsCompleteCallback(switchIndeterminateModeCallback);
-    }
+    registerSwitchIndeterminateModeCallback();
 
     // Registers the hide animation callback to determinate drawable.
     if (getProgressDrawable() != null) {
@@ -176,6 +172,16 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
     // Registers the hide animation callback to indeterminate drawable.
     if (getIndeterminateDrawable() != null) {
       getIndeterminateDrawable().registerAnimationCallback(hideAnimationCallback);
+    }
+  }
+
+  void registerSwitchIndeterminateModeCallback() {
+    if (getProgressDrawable() != null && getIndeterminateDrawable() != null) {
+      // Registers the animation callback to switch indeterminate mode at the end of indeterminate
+      // animation.
+      getIndeterminateDrawable()
+          .getAnimatorDelegate()
+          .registerAnimatorsCompleteCallback(switchIndeterminateModeCallback);
     }
   }
 
@@ -236,7 +242,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
       delayedHide.run();
       return;
     }
-    postDelayed(delayedHide, /*delayMillis=*/ minHideDelay - timeElapsedSinceShowStart);
+    postDelayed(delayedHide, /* delayMillis= */ minHideDelay - timeElapsedSinceShowStart);
   }
 
   /**
@@ -248,7 +254,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   private void internalHide() {
     ((DrawableWithAnimatedVisibilityChange) getCurrentDrawable())
-        .setVisible(/*visible=*/ false, /*restart=*/ false, /*animate=*/ true);
+        .setVisible(/* visible= */ false, /* restart= */ false, /* animate= */ true);
 
     if (isNoLongerNeedToBeVisible()) {
       setVisibility(INVISIBLE);
@@ -258,13 +264,13 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   @Override
   protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
     super.onVisibilityChanged(changedView, visibility);
-    applyNewVisibility(/*animate=*/ visibility == VISIBLE);
+    applyNewVisibility(/* animate= */ visibility == VISIBLE);
   }
 
   @Override
   protected void onWindowVisibilityChanged(int visibility) {
     super.onWindowVisibilityChanged(visibility);
-    applyNewVisibility(/*animate=*/ false);
+    applyNewVisibility(/* animate= */ false);
   }
 
   /**
@@ -279,7 +285,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
     }
 
     ((DrawableWithAnimatedVisibilityChange) getCurrentDrawable())
-        .setVisible(visibleToUser(), /*restart=*/ false, animate);
+        .setVisible(visibleToUser(), /* restart= */ false, animate);
   }
 
   @Override
@@ -441,7 +447,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    * attached to a window and whether it and its ancestors are visible.
    */
   boolean visibleToUser() {
-    return ViewCompat.isAttachedToWindow(this)
+    return isAttachedToWindow()
         && getWindowVisibility() == View.VISIBLE
         && isEffectivelyVisible();
   }
@@ -521,7 +527,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
     DrawableWithAnimatedVisibilityChange newDrawable =
         (DrawableWithAnimatedVisibilityChange) getCurrentDrawable();
     if (newDrawable != null) {
-      newDrawable.setVisible(visibleToUser(), /*restart=*/ false, /*animate=*/ false);
+      newDrawable.setVisible(visibleToUser(), /* restart= */ false, /* animate= */ false);
     }
     if (newDrawable instanceof IndeterminateDrawable && visibleToUser()) {
       ((IndeterminateDrawable) newDrawable).getAnimatorDelegate().startAnimator();
@@ -639,7 +645,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   public void setTrackCornerRadius(@Px int trackCornerRadius) {
     if (spec.trackCornerRadius != trackCornerRadius) {
-      spec.trackCornerRadius = min(trackCornerRadius, spec.trackThickness / 2);
+      spec.trackCornerRadius = Math.round(min(trackCornerRadius, spec.trackThickness / 2f));
       invalidate();
     }
   }
@@ -675,50 +681,109 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   /**
    * Returns the amplitude of the indicator's amplitude in pixels.
    *
-   * @see #setAmplitude(int)
+   * @see #setWaveAmplitude(int)
    */
   @Px
-  public int getAmplitude() {
-    return spec.amplitude;
+  public int getWaveAmplitude() {
+    return spec.waveAmplitude;
   }
 
   /**
    * Sets the amplitude of the indicator's amplitude in pixels.
    *
-   * @param amplitude The new amplitude in pixels.
-   * @see #getAmplitude()
+   * @param waveAmplitude The new amplitude in pixels.
+   * @see #getWaveAmplitude()
    */
-  public void setAmplitude(@Px int amplitude) {
-    if (spec.amplitude != amplitude) {
-      spec.amplitude = amplitude;
+  public void setWaveAmplitude(@Px int waveAmplitude) {
+    if (spec.waveAmplitude != waveAmplitude) {
+      spec.waveAmplitude = abs(waveAmplitude);
       requestLayout();
     }
   }
 
   /**
-   * Returns the wavelength of the indicator's waveform in pixels.
+   * Returns the wavelength, in pixels, of the indicator's waveform in determinate mode.
    *
+   * @see #setWavelengthDeterminate(int)
    * @see #setWavelength(int)
    */
   @Px
-  public int getWavelength() {
-    return spec.wavelength;
+  public int getWavelengthDeterminate() {
+    return spec.wavelengthDeterminate;
   }
 
   /**
-   * Sets the wavelength of the indicator's waveform in pixels.
+   * Sets the wavelength, in pixels, of the indicator's waveform in indeterminate mode.
    *
-   * @param wavelength The new wavelength in pixels. No-op, if it equals to 0.
-   * @see #getWavelength()
+   * @param wavelength The new wavelength in pixels. No waves are drawn when wavelength is zero.
+   * @see #getWavelengthDeterminate()
+   */
+  public void setWavelengthDeterminate(@Px int wavelength) {
+    if (spec.wavelengthDeterminate != wavelength) {
+      spec.wavelengthDeterminate = abs(wavelength);
+      if (!isIndeterminate()) {
+        requestLayout();
+      }
+    }
+  }
+
+  /**
+   * Returns the wavelength, in pixels, of the indicator's waveform in indeterminate mode.
+   *
+   * @see #setWavelengthIndeterminate(int)
+   * @see #setWavelength(int)
+   */
+  @Px
+  public int getWavelengthIndeterminate() {
+    return spec.wavelengthIndeterminate;
+  }
+
+  /**
+   * Sets the wavelength, in pixels, of the indicator's waveform in indeterminate mode.
+   *
+   * @param wavelength The new wavelength in pixels. No waves are drawn when wavelength is zero.
+   * @see #getWavelengthIndeterminate()
+   */
+  public void setWavelengthIndeterminate(@Px int wavelength) {
+    if (spec.wavelengthIndeterminate != wavelength) {
+      spec.wavelengthIndeterminate = abs(wavelength);
+      if (isIndeterminate()) {
+        requestLayout();
+      }
+    }
+  }
+
+  /**
+   * Sets the wavelength of the indicator's determinate and indeterminate waveform in pixels.
+   *
+   * @param wavelength The new wavelength in pixels. No waves are drawn, if it equals to 0.
+   * @see #getWavelengthDeterminate()
+   * @see #getWavelengthIndeterminate()
    */
   public void setWavelength(@Px int wavelength) {
-    if (wavelength == 0) {
-      throw new IllegalArgumentException("Cannot set 0 wavelength.");
-    }
-    if (spec.wavelength != wavelength) {
-      spec.wavelength = wavelength;
-      requestLayout();
-    }
+    setWavelengthDeterminate(wavelength);
+    setWavelengthIndeterminate(wavelength);
+  }
+
+  /**
+   * Returns the speed of the indicator's waveform in pixels.
+   *
+   * @see #setWaveSpeed(int)
+   */
+  @Px
+  public int getWaveSpeed() {
+    return spec.waveSpeed;
+  }
+
+  /**
+   * Sets the speed of the indicator's waveform in pixels.
+   *
+   * @param waveSpeed The new speed in pixels.
+   * @see #getWaveSpeed()
+   */
+  public void setWaveSpeed(@Px int waveSpeed) {
+    spec.waveSpeed = waveSpeed;
+    getProgressDrawable().setEnforcedDrawing(spec.waveSpeed != 0);
   }
 
   /**

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">Selecione o intervalo</string>
   <string name="mtrl_picker_date_header_title">Selecione a data</string>
-  <string name="mtrl_picker_range_header_unselected">Data de início – Data de conclusão</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Data de conclusão</string>
+  <string name="mtrl_picker_range_header_unselected">Data de início – Data de fim</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Data de fim</string>
   <string name="mtrl_picker_range_header_only_end_selected">Data de início – %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
   <string name="mtrl_picker_date_header_unselected">Data selecionada</string>
@@ -27,7 +27,7 @@
   <string name="mtrl_picker_cancel">Cancelar</string>
   <string name="mtrl_picker_text_input_date_hint">Data</string>
   <string name="mtrl_picker_text_input_date_range_start_hint">Data de início</string>
-  <string name="mtrl_picker_text_input_date_range_end_hint">Data de conclusão</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint">Data de fim</string>
   <string name="mtrl_picker_text_input_year_abbr">a</string>
   <string name="mtrl_picker_text_input_month_abbr">m</string>
   <string name="mtrl_picker_text_input_day_abbr">d</string>
@@ -45,7 +45,7 @@
   <string name="mtrl_picker_toggle_to_day_selection">Toque para mudar para a vista do Calendário</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Seleção atual: %1$s</string>
-  <string name="mtrl_picker_announce_current_range_selection">Seleção da data de início: %1$s – Seleção da data de fim: %2$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Seleção da data de início: %1$s – Seleção da data de conclusão: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">nenhuma</string>
   <string name="mtrl_picker_navigate_to_year_description">Navegue para o ano %1$d</string>
   <string name="mtrl_picker_navigate_to_current_year_description">Navegar para o ano atual %1$d</string>

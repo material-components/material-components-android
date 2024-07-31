@@ -45,6 +45,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -62,10 +63,7 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.appbar.AppBarLayout;
@@ -230,14 +228,14 @@ public class SearchBar extends Toolbar {
           new OnAttachStateChangeListener() {
             @Override
             public void onViewAttachedToWindow(View ignored) {
-              AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
-                  accessibilityManager, touchExplorationStateChangeListener);
+              accessibilityManager.addTouchExplorationStateChangeListener(
+                  touchExplorationStateChangeListener);
             }
 
             @Override
             public void onViewDetachedFromWindow(View ignored) {
-              AccessibilityManagerCompat.removeTouchExplorationStateChangeListener(
-                  accessibilityManager, touchExplorationStateChangeListener);
+              accessibilityManager.removeTouchExplorationStateChangeListener(
+                  touchExplorationStateChangeListener);
             }
           });
     }
@@ -274,10 +272,8 @@ public class SearchBar extends Toolbar {
     setText(text);
     setHint(hint);
     if (getNavigationIcon() == null) {
-      MarginLayoutParamsCompat.setMarginStart(
-          (MarginLayoutParams) textView.getLayoutParams(),
-          getResources()
-              .getDimensionPixelSize(R.dimen.m3_searchbar_text_margin_start_no_navigation_icon));
+      ((MarginLayoutParams) textView.getLayoutParams()).setMarginStart(getResources()
+          .getDimensionPixelSize(R.dimen.m3_searchbar_text_margin_start_no_navigation_icon));
     }
   }
 
@@ -305,7 +301,7 @@ public class SearchBar extends Toolbar {
       background = backgroundShape;
     }
 
-    ViewCompat.setBackground(this, background);
+    setBackground(background);
   }
 
   private ColorStateList getCompatBackgroundColorStateList(
@@ -343,9 +339,7 @@ public class SearchBar extends Toolbar {
   public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
     info.setClassName(EditText.class.getCanonicalName());
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
-      info.setEditable(isEnabled());
-    }
+    info.setEditable(isEnabled());
 
     CharSequence text = getText();
     boolean isTextEmpty = TextUtils.isEmpty(text);
@@ -555,7 +549,7 @@ public class SearchBar extends Toolbar {
   }
 
   private void layoutChild(View child, int left, int top, int right, int bottom) {
-    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
       child.layout(getMeasuredWidth() - right, top, getMeasuredWidth() - left, bottom);
     } else {
       child.layout(left, top, right, bottom);

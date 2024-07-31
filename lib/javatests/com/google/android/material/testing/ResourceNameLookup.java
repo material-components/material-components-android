@@ -17,6 +17,7 @@
 package com.google.android.material.testing;
 
 import android.annotation.TargetApi;
+import android.os.Build.VERSION_CODES;
 import com.google.common.collect.ImmutableMap;
 import java.lang.reflect.Field;
 
@@ -32,7 +33,7 @@ public final class ResourceNameLookup {
   private ResourceNameLookup() {}
 
   @SuppressWarnings("AndroidJdkLibsChecker")
-  @TargetApi(24)
+  @TargetApi(VERSION_CODES.N)
   public static ImmutableMap<Integer, String> createResourceNameMap(Class<?>... resourceClasses) {
     ImmutableMap.Builder<Integer, String> resNameMapBuilder =
         ImmutableMap.<Integer, String>builder();

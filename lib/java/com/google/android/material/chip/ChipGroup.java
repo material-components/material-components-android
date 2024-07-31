@@ -33,7 +33,6 @@ import androidx.annotation.Dimension;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import com.google.android.material.internal.CheckableGroup;
@@ -171,7 +170,7 @@ public class ChipGroup extends FlowLayout {
         });
     super.setOnHierarchyChangeListener(passThroughListener);
 
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
 
   @Override
@@ -524,7 +523,7 @@ public class ChipGroup extends FlowLayout {
         int id = child.getId();
         // generates an id if it's missing
         if (id == View.NO_ID) {
-          id = ViewCompat.generateViewId();
+          id = View.generateViewId();
           child.setId(id);
         }
         checkableGroup.addCheckable((Chip) child);

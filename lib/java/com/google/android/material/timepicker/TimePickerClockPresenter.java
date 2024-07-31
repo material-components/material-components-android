@@ -47,16 +47,18 @@ class TimePickerClockPresenter
         OnActionUpListener,
         TimePickerPresenter {
 
-  private static final String[] HOUR_CLOCK_VALUES =
-      {"12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+  private static final String[] HOUR_CLOCK_VALUES = {
+    "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
+  };
 
   private static final String[] HOUR_CLOCK_24_VALUES = {
     "00", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16",
     "17", "18", "19", "20", "21", "22", "23"
   };
 
-  private static final  String[] MINUTE_CLOCK_VALUES =
-      {"00", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"};
+  private static final String[] MINUTE_CLOCK_VALUES = {
+    "00", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"
+  };
 
   private static final int DEGREES_PER_HOUR = 30;
   private static final int DEGREES_PER_MINUTE = 6;
@@ -112,7 +114,8 @@ class TimePickerClockPresenter
 
   @Override
   public void onRotate(float rotation, boolean animating) {
-    if (broadcasting) {
+    // Do not update the displayed and actual time during an animation
+    if (broadcasting || animating) {
       return;
     }
 
@@ -138,11 +141,8 @@ class TimePickerClockPresenter
       hourRotation = getHourRotation();
     }
 
-    // Do not update the display during an animation
-    if (!animating) {
-      updateTime();
-      performHapticFeedback(prevHour, prevMinute);
-    }
+    updateTime();
+    performHapticFeedback(prevHour, prevMinute);
   }
 
   private void performHapticFeedback(int prevHour, int prevMinute) {

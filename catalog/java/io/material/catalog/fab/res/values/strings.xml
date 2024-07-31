@@ -42,19 +42,19 @@
   <string name="m3_theme_fab_label" translatable="false">Theme (default, small, large)</string>
 
   <!-- Content descriptions for demo FABs. -->
-  <string name="m3_primary_fab_content_desc" translatable="false">Primary FAB</string>
+  <string name="m3_primary_fab_content_desc" translatable="false">Primary default FAB</string>
   <string name="m3_primary_small_fab_content_desc" translatable="false">Primary small FAB</string>
   <string name="m3_primary_large_fab_content_desc" translatable="false">Primary large FAB</string>
-  <string name="m3_secondary_fab_content_desc" translatable="false">Secondary FAB</string>
+  <string name="m3_secondary_fab_content_desc" translatable="false">Secondary default FAB</string>
   <string name="m3_secondary_small_fab_content_desc" translatable="false">Secondary small FAB</string>
   <string name="m3_secondary_large_fab_content_desc" translatable="false">Secondary large FAB</string>
-  <string name="m3_tertiary_fab_content_desc" translatable="false">Tertiary FAB</string>
+  <string name="m3_tertiary_fab_content_desc" translatable="false">Tertiary default FAB</string>
   <string name="m3_tertiary_small_fab_content_desc" translatable="false">Tertiary small FAB</string>
   <string name="m3_tertiary_large_fab_content_desc" translatable="false">Tertiary large FAB</string>
-  <string name="m3_surface_fab_content_desc" translatable="false">Surface FAB</string>
+  <string name="m3_surface_fab_content_desc" translatable="false">Surface default FAB</string>
   <string name="m3_surface_small_fab_content_desc" translatable="false">Surface small FAB</string>
   <string name="m3_surface_large_fab_content_desc" translatable="false">Surface large FAB</string>
-  <string name="m3_theme_fab_content_desc" translatable="false">Theme FAB</string>
+  <string name="m3_theme_fab_content_desc" translatable="false">Theme default FAB</string>
   <string name="m3_theme_small_fab_content_desc" translatable="false">Theme small FAB</string>
   <string name="m3_theme_large_fab_content_desc" translatable="false">Theme large FAB</string>
 

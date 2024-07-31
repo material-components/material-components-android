@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">აირჩიეთ დიაპაზონი</string>
   <string name="mtrl_picker_date_header_title">აირჩიეთ თარიღი</string>
-  <string name="mtrl_picker_range_header_unselected">დაწყების თარიღი - დასრულების თარიღი</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s - დასრულების თარიღი</string>
+  <string name="mtrl_picker_range_header_unselected">დაწყების თარიღი — დასრულების თარიღი</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s — დასრულების თარიღი</string>
   <string name="mtrl_picker_range_header_only_end_selected">დაწყების თარიღი - %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s - %2$s</string>
   <string name="mtrl_picker_date_header_unselected">არჩეული თარიღი</string>
@@ -45,7 +45,7 @@
   <string name="mtrl_picker_toggle_to_day_selection">შეეხეთ კალენდრის ხედზე გადასართავად</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">ამჟამინდელი არჩევანი: %1$s</string>
-  <string name="mtrl_picker_announce_current_range_selection">დაწყების თარიღის შერჩევა: %1$s – დასრულების თარიღის შერჩევა: %2$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">დაწყების თარიღის შერჩევა: %1$s — დასრულების თარიღის შერჩევა: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">არცერთი</string>
   <string name="mtrl_picker_navigate_to_year_description">%1$d წელზე ნავიგაცია</string>
   <string name="mtrl_picker_navigate_to_current_year_description">ნავიგაცია მიმდინარე წელზე (%1$d)</string>

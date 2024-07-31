@@ -16,7 +16,10 @@
 
 package com.google.android.material.progressindicator;
 
+import static java.lang.Math.PI;
 import static java.lang.Math.atan2;
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
 import static java.lang.Math.toDegrees;
 import static java.lang.System.arraycopy;
 
@@ -34,23 +37,19 @@ import androidx.annotation.Px;
 
 /** A delegate abstract class for drawing the graphics in different drawable classes. */
 abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
-  // The length of the control handles of the cubic bezier curve simulating y = A cos(PI*x),
-  // where 0 <= x <= 1 (half cycle).
-  static final float SINE_WAVE_FORM_SMOOTHNESS = 0.364f;
+  // The length of the control handles of the cubic bezier curve simulating half cycle (from peak to
+  // trough) with wavelength = 2.
+  static final float WAVE_SMOOTHNESS = 0.48f;
 
   S spec;
 
-  final Path cachedActivePath;
-  final Path displayedActivePath;
+  final Path cachedActivePath = new Path();
+  final Path displayedActivePath = new Path();
 
-  final PathMeasure activePathMeasure;
+  final PathMeasure activePathMeasure = new PathMeasure(cachedActivePath, /* forceClosed= */ false);
 
   public DrawingDelegate(S spec) {
     this.spec = spec;
-
-    cachedActivePath = new Path();
-    displayedActivePath = new Path();
-    activePathMeasure = new PathMeasure(cachedActivePath, /* forceClosed= */ false);
   }
 
   /**
@@ -165,6 +164,20 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
     // active indicator. But for linear contiguous indeterminate mode, the indicators are connecting
     // to each other. Gaps are needed in this case.
     @Px int gapSize;
+
+    // The fraction [0, 1] of the amplitude on indicator.
+    @FloatRange(from = 0.0, to = 1.0)
+    float amplitudeFraction = 1;
+
+    // The fraction [0, 1] of the initial phase [0, 2 * PI] on indicator.
+    @FloatRange(from = 0.0, to = 1.0)
+    float phaseFraction;
+
+    // Initial rotation applied on the indicator in degrees.
+    float rotationDegree;
+
+    // Whether the indicator is for determinate mode.
+    boolean isDeterminate;
   }
 
   /** An entity class for a point on a path, with the support of fundamental operations. */
@@ -199,6 +212,29 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
       posVec[1] *= y;
       tanVec[0] *= x;
       tanVec[1] *= y;
+    }
+
+    /** Returns the distance between this point and the other. */
+    float distance(PathPoint other) {
+      return (float) Math.hypot(other.posVec[0] - posVec[0], other.posVec[1] - posVec[1]);
+    }
+
+    /** Updates the coordinates by moving the point along tangent vector by the given distance. */
+    void moveAlong(float distance) {
+      float angle = (float) atan2(tanVec[1], tanVec[0]);
+      posVec[0] = (float) (posVec[0] + distance * cos(angle));
+      posVec[1] = (float) (posVec[1] + distance * sin(angle));
+    }
+
+    /**
+     * Updates the coordinates by moving the point across the tangent vector by the given distance.
+     * If the given distance is positive, the point is moved to the right side by facing towards the
+     * tangent vector; otherwise, to the left side.
+     */
+    void moveAcross(float distance) {
+      float angle = (float) (atan2(tanVec[1], tanVec[0]) + PI / 2);
+      posVec[0] = (float) (posVec[0] + distance * cos(angle));
+      posVec[1] = (float) (posVec[1] + distance * sin(angle));
     }
 
     /** Rotates the coordinates by the given degrees around (0, 0). */

@@ -40,6 +40,7 @@ import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.carousel.CarouselHelper.CarouselTestAdapter;
 import com.google.android.material.carousel.CarouselHelper.TestItem;
 import com.google.android.material.carousel.CarouselHelper.WrappedCarouselLayoutManager;
+import com.google.android.material.carousel.CarouselStrategy.StrategyType;
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
@@ -174,7 +175,8 @@ public class CarouselLayoutManagerTest {
     scrollToPosition(recyclerView, layoutManager, 200);
 
     KeylineState endState =
-        KeylineStateList.from(layoutManager, keylineState, 0, 0, 0).getEndState();
+        KeylineStateList.from(layoutManager, keylineState, 0, 0, 0, StrategyType.CONTAINED)
+            .getEndState();
 
     MaskableFrameLayout child =
         (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 1);
@@ -219,7 +221,8 @@ public class CarouselLayoutManagerTest {
     scrollToPosition(recyclerView, layoutManager, 200);
 
     KeylineState endState =
-        KeylineStateList.from(layoutManager, keylineState, 0, 0, 0).getEndState();
+        KeylineStateList.from(layoutManager, keylineState, 0, 0, 0, StrategyType.CONTAINED)
+            .getEndState();
 
     MaskableFrameLayout child =
         (MaskableFrameLayout) recyclerView.getChildAt(recyclerView.getChildCount() - 1);
@@ -370,7 +373,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testContainedLayout_doesNotAllowFirstItemToBleed() throws Throwable {
-    layoutManager.setCarouselStrategy(new TestContainmentCarouselStrategy(/* isContained= */ true));
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.CONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollHorizontallyBy(recyclerView, layoutManager, 900);
 
@@ -380,7 +384,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testContainedLayoutVertical_doesNotAllowFirstItemToBleed() throws Throwable {
-    layoutManager.setCarouselStrategy(new TestContainmentCarouselStrategy(/* isContained= */ true));
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.CONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     setVerticalOrientation(recyclerView, layoutManager);
     scrollVerticallyBy(recyclerView, layoutManager, 900);
@@ -392,7 +397,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testContainedLayout_doesNotAllowLastItemToBleed() throws Throwable {
-    layoutManager.setCarouselStrategy(new TestContainmentCarouselStrategy(/* isContained= */ true));
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.CONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollToPosition(recyclerView, layoutManager, 5);
     scrollHorizontallyBy(recyclerView, layoutManager, -165);
@@ -403,7 +409,8 @@ public class CarouselLayoutManagerTest {
 
   @Test
   public void testContainedLayoutVertical_doesNotAllowLastItemToBleed() throws Throwable {
-    layoutManager.setCarouselStrategy(new TestContainmentCarouselStrategy(/* isContained= */ true));
+    layoutManager.setCarouselStrategy(
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.CONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollToPosition(recyclerView, layoutManager, 5);
     setVerticalOrientation(recyclerView, layoutManager);
@@ -416,7 +423,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testUncontainedLayout_allowsFistItemToBleed() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollHorizontallyBy(recyclerView, layoutManager, 900);
 
@@ -427,7 +434,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testUncontainedLayoutVertical_allowsFirstItemToBleed() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     setVerticalOrientation(recyclerView, layoutManager);
     scrollVerticallyBy(recyclerView, layoutManager, 30);
@@ -440,7 +447,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testUncontainedLayout_allowsLastItemToBleed() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollHorizontallyBy(recyclerView, layoutManager, 900);
 
@@ -451,7 +458,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testUncontainedLayoutVertical_allowsLastItemToBleed() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     setVerticalOrientation(recyclerView, layoutManager);
     scrollVerticallyBy(recyclerView, layoutManager, 900);
@@ -464,7 +471,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testMasksLeftOfParent_areRoundedDown() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollHorizontallyBy(recyclerView, layoutManager, 900);
 
@@ -478,7 +485,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testMaskOnLeftParentEdge_areRoundedDown() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     // Scroll to end
     scrollToPosition(recyclerView, layoutManager, 9);
@@ -495,7 +502,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testMasksTopOfParent_areRoundedDown() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setVerticalOrientation(recyclerView, layoutManager);
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     scrollVerticallyBy(recyclerView, layoutManager, 900);
@@ -510,7 +517,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testMaskOnTopParentEdge_areRoundedDown() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setVerticalOrientation(recyclerView, layoutManager);
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
     // Scroll to end
@@ -541,7 +548,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testMaskOnRightParentEdge_areRoundedUp() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
 
     // Carousel strategy is {large, small}. First child will be large item, second child will
@@ -556,7 +563,7 @@ public class CarouselLayoutManagerTest {
   @Test
   public void testMaskOnBottomParentEdge_areRoundedUp() throws Throwable {
     layoutManager.setCarouselStrategy(
-        new TestContainmentCarouselStrategy(/* isContained= */ false));
+        new TestContainmentCarouselStrategy(/* strategyType= */ StrategyType.UNCONTAINED));
     setVerticalOrientation(recyclerView, layoutManager);
     setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
 
@@ -605,6 +612,18 @@ public class CarouselLayoutManagerTest {
     // Test Keyline state has 2 focal keylines at the start; default item with is 450 and
     // focal keyline size is 450, so the scroll offset should be 0.
     assertThat(layoutManager.scrollOffset).isEqualTo(0);
+  }
+
+  @Test
+  public void testSingleItem_shouldNotScrollWithPadding() throws Throwable {
+    recyclerView.setPadding(50, 0, 50, 0);
+    recyclerView.setClipToPadding(false);
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(1));
+    int originalLeft = recyclerView.getChildAt(0).getLeft();
+
+    scrollHorizontallyBy(recyclerView, layoutManager, 100);
+
+    assertThat(recyclerView.getChildAt(0).getLeft()).isEqualTo(originalLeft);
   }
 
   /**
@@ -683,10 +702,10 @@ public class CarouselLayoutManagerTest {
    */
   private static class TestContainmentCarouselStrategy extends CarouselStrategy {
 
-    private final boolean isContained;
+    private final StrategyType strategyType;
 
-    TestContainmentCarouselStrategy(boolean isContained) {
-      this.isContained = isContained;
+    TestContainmentCarouselStrategy(StrategyType strategyType) {
+      this.strategyType = strategyType;
     }
 
     @Override
@@ -713,8 +732,8 @@ public class CarouselLayoutManagerTest {
     }
 
     @Override
-    boolean isContained() {
-      return isContained;
+    StrategyType getStrategyType() {
+      return strategyType;
     }
   }
 }

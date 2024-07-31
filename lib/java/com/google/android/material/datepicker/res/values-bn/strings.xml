@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@
   <string name="mtrl_picker_toggle_to_day_selection">Calendar ভিউতে পাল্টাতে ট্যাপ করুন</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">বর্তমান বাছাই: %1$s</string>
-  <string name="mtrl_picker_announce_current_range_selection">চালু হওয়ার তারিখ বাছুন: %1$s – শেষ হওয়ার তারিখ বাছুন: %2$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">শুরুর তারিখ বাছুন: %1$s – সমাপ্তির তারিখ বাছুন: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">কোনওটিই নয়</string>
   <string name="mtrl_picker_navigate_to_year_description">নেভিগেট করে %1$d সালে যান</string>
   <string name="mtrl_picker_navigate_to_current_year_description">বর্তমান বছর %1$d-এ নেভিগেট করুন</string>

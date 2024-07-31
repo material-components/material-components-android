@@ -27,19 +27,28 @@
   <public name="hideAnimationBehavior" type="attr"/>
   <public name="showDelay" type="attr"/>
   <public name="minHideDelay" type="attr"/>
+  <public name="wavelength" type="attr"/>
+  <public name="wavelengthDeterminate" type="attr"/>
+  <public name="wavelengthIndeterminate" type="attr"/>
+  <public name="waveAmplitude" type="attr"/>
+  <public name="waveSpeed" type="attr"/>
+
   <!-- LinearProgressIndicator attributes -->
   <public name="indeterminateAnimationType" type="attr"/>
   <public name="indicatorDirectionLinear" type="attr"/>
+
   <!-- CircularProgressIndicator attributes -->
   <public name="indicatorSize" type="attr"/>
   <public name="indicatorInset" type="attr"/>
   <public name="indicatorDirectionCircular" type="attr"/>
+  <public name="indeterminateAnimationTypeCircular" type="attr"/>
 
+  <!-- M2 styles -->
   <public name="Widget.MaterialComponents.LinearProgressIndicator" type="style"/>
   <public name="Widget.MaterialComponents.CircularProgressIndicator" type="style"/>
 
+  <!-- M3 styles -->
   <public name="Widget.Material3.LinearProgressIndicator" type="style"/>
-
   <public name="Widget.Material3.CircularProgressIndicator" type="style"/>
   <public name="Widget.Material3.CircularProgressIndicator.Medium" type="style"/>
   <public name="Widget.Material3.CircularProgressIndicator.Small" type="style"/>

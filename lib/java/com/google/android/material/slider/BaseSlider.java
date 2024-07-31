@@ -567,7 +567,7 @@ abstract class BaseSlider<
       return false;
     }
     trackSidePadding = newTrackSidePadding;
-    if (ViewCompat.isLaidOut(this)) {
+    if (isLaidOut()) {
       updateTrackWidth(getWidth());
     }
     return true;
@@ -807,7 +807,7 @@ abstract class BaseSlider<
     if (labels.size() > values.size()) {
       List<TooltipDrawable> tooltipDrawables = labels.subList(values.size(), labels.size());
       for (TooltipDrawable label : tooltipDrawables) {
-        if (ViewCompat.isAttachedToWindow(this)) {
+        if (isAttachedToWindow()) {
           detachLabelFromContentView(label);
         }
       }
@@ -821,7 +821,7 @@ abstract class BaseSlider<
       TooltipDrawable tooltipDrawable =
           TooltipDrawable.createFromAttributes(getContext(), null, 0, labelStyle);
       labels.add(tooltipDrawable);
-      if (ViewCompat.isAttachedToWindow(this)) {
+      if (isAttachedToWindow()) {
         attachLabelToContentView(tooltipDrawable);
       }
     }
@@ -1750,7 +1750,6 @@ abstract class BaseSlider<
     }
     trackColorActive = trackColor;
     activeTrackPaint.setColor(getColorForState(trackColorActive));
-    stopIndicatorPaint.setColor(getColorForState(trackColorActive));
     invalidate();
   }
 
@@ -2357,19 +2356,12 @@ abstract class BaseSlider<
 
         requestFocus();
         thumbIsPressed = true;
+        updateThumbWidthWhenPressed();
+        onStartTrackingTouch();
+
         snapTouchPosition();
         updateHaloHotspot();
-        // Update the thumb width when pressed.
-        if (hasGapBetweenThumbAndTrack()) {
-          defaultThumbWidth = thumbWidth;
-          defaultThumbTrackGapSize = thumbTrackGapSize;
-          int pressedThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
-          int delta = thumbWidth - pressedThumbWidth;
-          setThumbWidth(pressedThumbWidth);
-          setThumbTrackGapSize(thumbTrackGapSize - delta / 2);
-        }
         invalidate();
-        onStartTrackingTouch();
         break;
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
@@ -2378,15 +2370,17 @@ abstract class BaseSlider<
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
+
+          if (!pickActiveThumb()) {
+            // Couldn't determine the active thumb yet.
+            break;
+          }
+
+          thumbIsPressed = true;
+          updateThumbWidthWhenPressed();
           onStartTrackingTouch();
         }
 
-        if (!pickActiveThumb()) {
-          // Couldn't determine the active thumb yet.
-          break;
-        }
-
-        thumbIsPressed = true;
         snapTouchPosition();
         updateHaloHotspot();
         invalidate();
@@ -2428,6 +2422,18 @@ abstract class BaseSlider<
 
     lastEvent = MotionEvent.obtain(event);
     return true;
+  }
+
+  private void updateThumbWidthWhenPressed() {
+    // Update thumb width and track gap size when pressed.
+    if (hasGapBetweenThumbAndTrack()) {
+      defaultThumbWidth = thumbWidth;
+      defaultThumbTrackGapSize = thumbTrackGapSize;
+      int pressedThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
+      int delta = thumbWidth - pressedThumbWidth;
+      setThumbWidth(pressedThumbWidth);
+      setThumbTrackGapSize(thumbTrackGapSize - delta / 2);
+    }
   }
 
   private double snapPosition(float position) {
@@ -2637,7 +2643,7 @@ abstract class BaseSlider<
               label.setRevealFraction(fraction);
             }
             // Ensure the labels are redrawn even if the slider has stopped moving
-            ViewCompat.postInvalidateOnAnimation(BaseSlider.this);
+            postInvalidateOnAnimation();
           }
         });
     return animator;
@@ -2831,7 +2837,7 @@ abstract class BaseSlider<
     activeTrackPaint.setColor(getColorForState(trackColorActive));
     inactiveTicksPaint.setColor(getColorForState(tickColorInactive));
     activeTicksPaint.setColor(getColorForState(tickColorActive));
-    stopIndicatorPaint.setColor(getColorForState(trackColorActive));
+    stopIndicatorPaint.setColor(getColorForState(tickColorInactive));
     for (TooltipDrawable label : labels) {
       if (label.isStateful()) {
         label.setState(getDrawableState());
@@ -2947,7 +2953,7 @@ abstract class BaseSlider<
   }
 
   final boolean isRtl() {
-    return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    return getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
   }
 
   /**

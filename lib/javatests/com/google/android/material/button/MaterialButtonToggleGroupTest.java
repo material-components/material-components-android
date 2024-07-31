@@ -27,16 +27,14 @@ import static org.junit.Assert.assertTrue;
 import android.content.Context;
 import android.graphics.RectF;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener;
+import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.List;
 import org.junit.Before;
@@ -87,6 +85,18 @@ public class MaterialButtonToggleGroupTest {
   }
 
   @Test
+  public void correctShapeAppearances_inToggle_afterAdding_withInnerCorner() {
+    MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
+    MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
+
+    toggleGroup.setInnerCornerSize(new AbsoluteCornerSize(5));
+    assertShapeAppearance(firstChild.getShapeAppearanceModel(), CORNER_SIZE, CORNER_SIZE, 5, 5);
+    assertShapeAppearance(middleChild.getShapeAppearanceModel(), 5, 5, 5, 5);
+    assertShapeAppearance(lastChild.getShapeAppearanceModel(), 5, 5, CORNER_SIZE, CORNER_SIZE);
+  }
+
+  @Test
   public void correctShapeAppearances_inToggle_afterAddingInVertical() {
     toggleGroup.setOrientation(LinearLayout.VERTICAL);
     MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
@@ -97,6 +107,19 @@ public class MaterialButtonToggleGroupTest {
     assertShapeAppearance(firstChild.getShapeAppearanceModel(), CORNER_SIZE, 0, CORNER_SIZE, 0);
     assertShapeAppearance(middleChild.getShapeAppearanceModel(), 0, 0, 0, 0);
     assertShapeAppearance(lastChild.getShapeAppearanceModel(), 0, CORNER_SIZE, 0, CORNER_SIZE);
+  }
+
+  @Test
+  public void correctShapeAppearances_inToggle_afterAddingInVertical_withInnerCorner() {
+    toggleGroup.setOrientation(LinearLayout.VERTICAL);
+    MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
+    MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
+
+    toggleGroup.setInnerCornerSize(new AbsoluteCornerSize(5));
+    assertShapeAppearance(firstChild.getShapeAppearanceModel(), CORNER_SIZE, 5, CORNER_SIZE, 5);
+    assertShapeAppearance(middleChild.getShapeAppearanceModel(), 5, 5, 5, 5);
+    assertShapeAppearance(lastChild.getShapeAppearanceModel(), 5, CORNER_SIZE, 5, CORNER_SIZE);
   }
 
   @Test
@@ -115,6 +138,21 @@ public class MaterialButtonToggleGroupTest {
   }
 
   @Test
+  public void correctShapeAppearances_inToggle_afterSettingViewToGone_withInnerCorner() {
+    toggleGroup.setOrientation(LinearLayout.VERTICAL);
+    MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
+    MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
+
+    firstChild.setVisibility(GONE);
+    toggleGroup.setInnerCornerSize(new AbsoluteCornerSize(5));
+
+    // Now middle and end child has rounded corners.
+    assertShapeAppearance(middleChild.getShapeAppearanceModel(), CORNER_SIZE, 5, CORNER_SIZE, 5);
+    assertShapeAppearance(lastChild.getShapeAppearanceModel(), 5, CORNER_SIZE, 5, CORNER_SIZE);
+  }
+
+  @Test
   public void correctShapeAppearances_inToggle_whenOneVisibleButton() {
     MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
     MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
@@ -123,6 +161,20 @@ public class MaterialButtonToggleGroupTest {
     firstChild.setVisibility(GONE);
     middleChild.setVisibility(GONE);
     toggleGroup.updateChildShapes();
+    // Last child has default shape appearance.
+    assertShapeAppearance(
+        lastChild.getShapeAppearanceModel(), CORNER_SIZE, CORNER_SIZE, CORNER_SIZE, CORNER_SIZE);
+  }
+
+  @Test
+  public void correctShapeAppearances_inToggle_whenOneVisibleButton_withInnerCorner() {
+    MaterialButton firstChild = (MaterialButton) toggleGroup.getChildAt(0);
+    MaterialButton middleChild = (MaterialButton) toggleGroup.getChildAt(1);
+    MaterialButton lastChild = (MaterialButton) toggleGroup.getChildAt(2);
+
+    firstChild.setVisibility(GONE);
+    middleChild.setVisibility(GONE);
+    toggleGroup.setInnerCornerSize(new AbsoluteCornerSize(5));
     // Last child has default shape appearance.
     assertShapeAppearance(
         lastChild.getShapeAppearanceModel(), CORNER_SIZE, CORNER_SIZE, CORNER_SIZE, CORNER_SIZE);
@@ -144,19 +196,19 @@ public class MaterialButtonToggleGroupTest {
   @Test
   @Config(sdk = 23)
   public void onInitializeAccessibilityNodeInfo() {
-    AccessibilityNodeInfoCompat groupInfoCompat = AccessibilityNodeInfoCompat.obtain();
-    ViewCompat.onInitializeAccessibilityNodeInfo(toggleGroup, groupInfoCompat);
+    AccessibilityNodeInfo groupInfo = AccessibilityNodeInfo.obtain();
+    toggleGroup.onInitializeAccessibilityNodeInfo(groupInfo);
 
-    CollectionInfoCompat collectionInfo = groupInfoCompat.getCollectionInfo();
+    AccessibilityNodeInfo.CollectionInfo collectionInfo = groupInfo.getCollectionInfo();
     assertEquals(3, collectionInfo.getColumnCount());
     assertEquals(1, collectionInfo.getRowCount());
 
     MaterialButton secondChild = (MaterialButton) toggleGroup.getChildAt(1);
     secondChild.setChecked(true);
-    AccessibilityNodeInfoCompat buttonInfoCompat = AccessibilityNodeInfoCompat.obtain();
-    ViewCompat.onInitializeAccessibilityNodeInfo(secondChild, buttonInfoCompat);
+    AccessibilityNodeInfo buttonInfo = AccessibilityNodeInfo.obtain();
+    secondChild.onInitializeAccessibilityNodeInfo(buttonInfo);
 
-    CollectionItemInfoCompat itemInfo = buttonInfoCompat.getCollectionItemInfo();
+    AccessibilityNodeInfo.CollectionItemInfo itemInfo = buttonInfo.getCollectionItemInfo();
     assertEquals(1, itemInfo.getColumnIndex());
     assertEquals(0, itemInfo.getRowIndex());
     assertTrue(itemInfo.isSelected());
@@ -204,11 +256,11 @@ public class MaterialButtonToggleGroupTest {
     toggleGroup.setSingleSelection(true);
 
     View button1 = toggleGroup.getChildAt(0);
-    int id1 = ViewCompat.generateViewId();
+    int id1 = View.generateViewId();
     button1.setId(id1);
 
     View button2 = toggleGroup.getChildAt(1);
-    int id2 = ViewCompat.generateViewId();
+    int id2 = View.generateViewId();
     button2.setId(id2);
 
     toggleGroup.check(id1);
@@ -223,11 +275,11 @@ public class MaterialButtonToggleGroupTest {
     toggleGroup.setSingleSelection(false);
 
     View button1 = toggleGroup.getChildAt(0);
-    int id1 = ViewCompat.generateViewId();
+    int id1 = View.generateViewId();
     button1.setId(id1);
 
     View button2 = toggleGroup.getChildAt(1);
-    int id2 = ViewCompat.generateViewId();
+    int id2 = View.generateViewId();
     button2.setId(id2);
 
     toggleGroup.check(id1);
@@ -272,7 +324,7 @@ public class MaterialButtonToggleGroupTest {
     toggleGroup.setSelectionRequired(true);
 
     View child = toggleGroup.getChildAt(1);
-    int id = ViewCompat.generateViewId();
+    int id = View.generateViewId();
     child.setId(id);
     return id;
   }

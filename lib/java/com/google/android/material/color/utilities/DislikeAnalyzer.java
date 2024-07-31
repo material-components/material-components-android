@@ -24,7 +24,7 @@ import androidx.annotation.RestrictTo;
  * Check and/or fix universally disliked colors.
  *
  * <p>Color science studies of color preference indicate universal distaste for dark yellow-greens,
- * and also show this is correlated to distate for biological waste and rotting food.
+ * and also show this is correlated to distaste for biological waste and rotting food.
  *
  * <p>See Palmer and Schloss, 2010 or Schloss and Palmer's Chapter 21 in Handbook of Color
  * Psychology (2015).

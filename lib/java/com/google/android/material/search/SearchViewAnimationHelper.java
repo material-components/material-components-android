@@ -42,8 +42,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ClippableRoundedCornerLayout;
 import com.google.android.material.internal.FadeThroughDrawable;
@@ -68,6 +66,7 @@ class SearchViewAnimationHelper {
   private static final long SHOW_CONTENT_ALPHA_DURATION_MS = 150;
   private static final long SHOW_CONTENT_ALPHA_START_DELAY_MS = 75;
   private static final long SHOW_CONTENT_SCALE_DURATION_MS = SHOW_DURATION_MS;
+  private static final long SHOW_SCRIM_ALPHA_DURATION_MS = 100;
 
   // Constants for hide collapse animation
   private static final long HIDE_DURATION_MS = 250;
@@ -328,6 +327,7 @@ class SearchViewAnimationHelper {
 
     ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
     animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+    animator.setStartDelay(show ? SHOW_SCRIM_ALPHA_DURATION_MS : 0);
     animator.setInterpolator(ReversableAnimatedValueInterpolator.of(show, interpolator));
     animator.addUpdateListener(MultiViewUpdateListener.alphaListener(scrim));
     return animator;
@@ -564,17 +564,15 @@ class SearchViewAnimationHelper {
   }
 
   private int getFromTranslationXStart(View view) {
-    int marginStart =
-        MarginLayoutParamsCompat.getMarginStart((MarginLayoutParams) view.getLayoutParams());
-    int paddingStart = ViewCompat.getPaddingStart(searchBar);
+    int marginStart = ((MarginLayoutParams) view.getLayoutParams()).getMarginStart();
+    int paddingStart = searchBar.getPaddingStart();
     return ViewUtils.isLayoutRtl(searchBar)
         ? searchBar.getWidth() - searchBar.getRight() + marginStart - paddingStart
         : searchBar.getLeft() - marginStart + paddingStart;
   }
 
   private int getFromTranslationXEnd(View view) {
-    int marginEnd =
-        MarginLayoutParamsCompat.getMarginEnd((MarginLayoutParams) view.getLayoutParams());
+    int marginEnd = ((MarginLayoutParams) view.getLayoutParams()).getMarginEnd();
     return ViewUtils.isLayoutRtl(searchBar)
         ? searchBar.getLeft() - marginEnd
         : searchBar.getRight() - searchView.getWidth() + marginEnd;

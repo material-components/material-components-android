@@ -16,13 +16,13 @@ screens, data sets, and other interactions.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using tabs](#using-tabs)
 *   [Fixed tabs](#fixed-tabs)
 *   [Scrollable tabs](#scrollable-tabs)
 *   [Theming tabs](#theming-tabs)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/tabs/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/tabs/package-summary)

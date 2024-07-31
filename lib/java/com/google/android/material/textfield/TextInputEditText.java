@@ -25,6 +25,7 @@ import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -210,7 +211,7 @@ public class TextInputEditText extends AppCompatEditText {
 
     // In APIs < 23, some things set in the parent TextInputLayout's AccessibilityDelegate get
     // overwritten, so we set them here so that announcements are as expected.
-    if (VERSION.SDK_INT < 23 && layout != null) {
+    if (VERSION.SDK_INT < VERSION_CODES.M && layout != null) {
       info.setText(getAccessibilityNodeInfoText(layout));
     }
   }

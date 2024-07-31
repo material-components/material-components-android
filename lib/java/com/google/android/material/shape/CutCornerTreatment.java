@@ -16,6 +16,7 @@
 
 package com.google.android.material.shape;
 
+
 import androidx.annotation.NonNull;
 
 /** A corner treatment which cuts or clips the original corner of a shape with a straight line. */
@@ -44,11 +45,12 @@ public class CutCornerTreatment extends CornerTreatment {
   @Override
   public void getCornerPath(
       @NonNull ShapePath shapePath, float angle, float interpolation, float radius) {
-    shapePath.reset(0, radius * interpolation, ShapePath.ANGLE_LEFT, 180 - angle);
+    radius *= interpolation;
+    shapePath.reset(0, radius, ShapePath.ANGLE_LEFT, 180 - angle);
     shapePath.lineTo(
-        (float) (Math.sin(Math.toRadians(angle)) * radius * interpolation),
+        (float) (Math.sin(Math.toRadians(angle)) * radius),
         // Something about using cos() is causing rounding which prevents the path from being convex
         // on api levels 21 and 22. Using sin() with 90 - angle is helping for now.
-        (float) (Math.sin(Math.toRadians(90 - angle)) * radius * interpolation));
+        (float) (Math.sin(Math.toRadians(90 - angle)) * radius));
   }
 }

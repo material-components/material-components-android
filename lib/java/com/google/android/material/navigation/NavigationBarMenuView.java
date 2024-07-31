@@ -42,7 +42,6 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Pools;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.transition.AutoTransition;
@@ -52,6 +51,7 @@ import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.internal.TextScale;
 import com.google.android.material.motion.MotionUtils;
+import com.google.android.material.navigation.NavigationBarView.ItemIconGravity;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.HashSet;
@@ -63,7 +63,7 @@ import java.util.HashSet;
  */
 @RestrictTo(LIBRARY_GROUP)
 public abstract class NavigationBarMenuView extends ViewGroup implements MenuView {
-  private static final int ITEM_POOL_SIZE = 5;
+  private static final int ITEM_POOL_SIZE = 7;
   private static final int NO_PADDING = -1;
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
@@ -78,6 +78,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private final SparseArray<OnTouchListener> onTouchListeners = new SparseArray<>(ITEM_POOL_SIZE);
 
   @NavigationBarView.LabelVisibility private int labelVisibilityMode;
+
+  @ItemIconGravity private int itemIconGravity;
 
   @Nullable private NavigationBarItemView[] buttons;
   private int selectedItemId = 0;
@@ -101,13 +103,19 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private boolean itemActiveIndicatorEnabled;
   private int itemActiveIndicatorWidth;
   private int itemActiveIndicatorHeight;
+  private int itemActiveIndicatorExpandedWidth;
+
+  private int itemActiveIndicatorExpandedHeight;
+
   private int itemActiveIndicatorMarginHorizontal;
+  private int itemActiveIndicatorExpandedMarginHorizontal;
   private ShapeAppearanceModel itemActiveIndicatorShapeAppearance;
   private boolean itemActiveIndicatorResizeable = false;
   private ColorStateList itemActiveIndicatorColor;
 
   private NavigationBarPresenter presenter;
   private MenuBuilder menu;
+  private boolean measurePaddingFromLabelBaseline;
 
   public NavigationBarMenuView(@NonNull Context context) {
     super(context);
@@ -144,7 +152,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
           }
         };
 
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
 
   @Override
@@ -367,6 +375,15 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     }
   }
 
+  public void setMeasurePaddingFromLabelBaseline(boolean measurePaddingFromLabelBaseline) {
+    this.measurePaddingFromLabelBaseline = measurePaddingFromLabelBaseline;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setMeasureBottomPaddingFromLabelBaseline(measurePaddingFromLabelBaseline);
+      }
+    }
+  }
+
   /**
    * Get the distance between the item's active indicator container and the label.
    */
@@ -459,6 +476,58 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   }
 
   /**
+   * Get the width of the selected item's active indicator when expanded.
+   *
+   * @return The width, in pixels, of the active indicator when expanded.
+   */
+  @Px
+  public int getItemActiveIndicatorExpandedWidth() {
+    return itemActiveIndicatorExpandedWidth;
+  }
+
+  /**
+   * Set the width to be used for the selected item's active indicator when it is expanded, ie. set
+   * to an item gravity of {@link ItemIconGravity#ITEM_ICON_GRAVITY_START}.
+   *
+   * @param width The width, in pixels, of the menu item's expanded active indicator. The width may
+   * also be set as {@link NavigationBarView#ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT} or
+   * {@link NavigationBarView#ACTIVE_INDICATOR_WIDTH_MATCH_PARENT}.
+   */
+  public void setItemActiveIndicatorExpandedWidth(@Px int width) {
+    this.itemActiveIndicatorExpandedWidth = width;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorExpandedWidth(width);
+      }
+    }
+  }
+
+  /**
+   * Get the height of the selected item's active indicator when expanded.
+   *
+   * @return The height, in pixels, of the active indicator when expanded.
+   */
+  @Px
+  public int getItemActiveIndicatorExpandedHeight() {
+    return itemActiveIndicatorExpandedHeight;
+  }
+
+  /**
+   * Set the height to be used for the selected item's active indicator when set to an item gravity
+   * of {@link ItemIconGravity#ITEM_ICON_GRAVITY_START}.
+   *
+   * @param height The height, in pixels, of the active indicator.
+   */
+  public void setItemActiveIndicatorExpandedHeight(@Px int height) {
+    this.itemActiveIndicatorExpandedHeight = height;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorExpandedHeight(height);
+      }
+    }
+  }
+
+  /**
    * Get the margin that will be maintained at the start and end of the active indicator away from
    * the edges of its parent container.
    *
@@ -480,6 +549,33 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
         item.setActiveIndicatorMarginHorizontal(marginHorizontal);
+      }
+    }
+  }
+
+  /**
+   * Get the margin that will be maintained at the start and end of the expanded active indicator
+   * away from the edges of its parent container.
+   *
+   * @return The horizontal margin, in pixels.
+   */
+  @Px
+  public int getItemActiveIndicatorExpandedMarginHorizontal() {
+    return itemActiveIndicatorExpandedMarginHorizontal;
+  }
+
+  /**
+   * Set the horizontal margin that will be maintained at the start and end of the expanded active
+   * indicator, making sure the indicator remains the given distance from the edge of its parent
+   * container.
+   *
+   * @param marginHorizontal The horizontal margin, in pixels.
+   */
+  public void setItemActiveIndicatorExpandedMarginHorizontal(@Px int marginHorizontal) {
+    itemActiveIndicatorExpandedMarginHorizontal = marginHorizontal;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setActiveIndicatorExpandedMarginHorizontal(marginHorizontal);
       }
     }
   }
@@ -668,6 +764,33 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   }
 
   /**
+   * Sets the navigation items' icon gravity.
+   *
+   * @param itemIconGravity the placement of the icon in the nav item one of {@link
+   *     NavigationBarView#ITEM_ICON_GRAVITY_TOP}, or {@link
+   *     NavigationBarView#ITEM_ICON_GRAVITY_START}
+   * @see #getItemIconGravity()
+   */
+  public void setItemIconGravity(@ItemIconGravity int itemIconGravity) {
+    this.itemIconGravity = itemIconGravity;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setItemIconGravity(itemIconGravity);
+      }
+    }
+  }
+
+  /**
+   * Returns the current item icon gravity.
+   *
+   * @see #setItemIconGravity(int)
+   */
+  @ItemIconGravity
+  public int getItemIconGravity() {
+    return itemIconGravity;
+  }
+
+  /**
    * Sets an {@link android.view.View.OnTouchListener} for the item view associated with the
    * provided {@code menuItemId}.
    */
@@ -754,12 +877,16 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       if (itemPaddingBottom != NO_PADDING) {
         child.setItemPaddingBottom(itemPaddingBottom);
       }
+      child.setMeasureBottomPaddingFromLabelBaseline(measurePaddingFromLabelBaseline);
       if (itemActiveIndicatorLabelPadding != NO_PADDING) {
         child.setActiveIndicatorLabelPadding(itemActiveIndicatorLabelPadding);
       }
       child.setActiveIndicatorWidth(itemActiveIndicatorWidth);
       child.setActiveIndicatorHeight(itemActiveIndicatorHeight);
+      child.setActiveIndicatorExpandedWidth(itemActiveIndicatorExpandedWidth);
+      child.setActiveIndicatorExpandedHeight(itemActiveIndicatorExpandedHeight);
       child.setActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
+      child.setActiveIndicatorExpandedMarginHorizontal(itemActiveIndicatorExpandedMarginHorizontal);
       child.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
       child.setActiveIndicatorResizeable(itemActiveIndicatorResizeable);
       child.setActiveIndicatorEnabled(itemActiveIndicatorEnabled);
@@ -771,6 +898,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setItemRippleColor(itemRippleColor);
       child.setShifting(shifting);
       child.setLabelVisibilityMode(labelVisibilityMode);
+      child.setItemIconGravity(itemIconGravity);
       MenuItemImpl item = (MenuItemImpl) menu.getItem(i);
       child.initialize(item, 0);
       child.setItemPosition(i);
@@ -817,6 +945,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     for (int i = 0; i < menuSize; i++) {
       presenter.setUpdateSuspended(true);
       buttons[i].setLabelVisibilityMode(labelVisibilityMode);
+      buttons[i].setItemIconGravity(itemIconGravity);
       buttons[i].setShifting(shifting);
       buttons[i].initialize((MenuItemImpl) menu.getItem(i), 0);
       presenter.setUpdateSuspended(false);

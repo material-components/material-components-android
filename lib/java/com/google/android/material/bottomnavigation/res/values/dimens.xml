@@ -37,4 +37,5 @@
   <dimen name="m3_bottom_nav_item_active_indicator_height">@dimen/m3_comp_navigation_bar_active_indicator_height</dimen>
   <dimen name="m3_bottom_nav_item_active_indicator_margin_horizontal">4dp</dimen>
 
+  <dimen name="m3_expressive_item_expanded_active_indicator_height">40dp</dimen>
 </resources>

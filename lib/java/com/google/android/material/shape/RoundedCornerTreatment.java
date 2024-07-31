@@ -16,6 +16,7 @@
 
 package com.google.android.material.shape;
 
+
 import androidx.annotation.NonNull;
 
 /** A corner treatment which rounds a corner of a shape. */
@@ -40,7 +41,8 @@ public class RoundedCornerTreatment extends CornerTreatment {
   @Override
   public void getCornerPath(
       @NonNull ShapePath shapePath, float angle, float interpolation, float radius) {
-    shapePath.reset(0, radius * interpolation, ShapePath.ANGLE_LEFT, 180 - angle);
-    shapePath.addArc(0, 0, 2 * radius * interpolation, 2 * radius * interpolation, 180, angle);
+    radius *= interpolation;
+    shapePath.reset(0, radius, ShapePath.ANGLE_LEFT, 180 - angle);
+    shapePath.addArc(0, 0, 2 * radius, 2 * radius, 180, angle);
   }
 }

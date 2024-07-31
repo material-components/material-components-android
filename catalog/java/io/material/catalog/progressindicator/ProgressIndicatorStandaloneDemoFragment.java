@@ -17,40 +17,25 @@ package io.material.catalog.progressindicator;
 
 import io.material.catalog.R;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.progressindicator.CircularProgressIndicatorSpec;
 import com.google.android.material.progressindicator.IndeterminateDrawable;
-import io.material.catalog.feature.DemoFragment;
 
 /**
  * The fragment demos progress indicator drawables used as standalone drawables in other components.
  */
-public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
+public class ProgressIndicatorStandaloneDemoFragment extends ProgressIndicatorDemoFragment {
 
-  @SuppressWarnings("RestrictTo")
   @Override
-  @NonNull
-  public View onCreateDemoView(
-      @NonNull LayoutInflater layoutInflater,
-      @Nullable ViewGroup viewGroup,
-      @Nullable Bundle bundle) {
-    View view =
-        layoutInflater.inflate(
-            R.layout.cat_progress_indicator_standalone_fragment,
-            viewGroup,
-            /*attachToRoot=*/ false);
-
+  public void initDemoContents(@NonNull View view) {
     CircularProgressIndicatorSpec spec =
-        new CircularProgressIndicatorSpec(getContext(), /*attrs=*/ null, 0, getSpecStyleResId());
+        new CircularProgressIndicatorSpec(getContext(), /* attrs= */ null, 0, getSpecStyleResId());
     Chip chip = view.findViewById(R.id.cat_progress_indicator_chip);
     chip.setChipIcon(IndeterminateDrawable.createCircularDrawable(getContext(), spec));
 
@@ -66,7 +51,12 @@ public class ProgressIndicatorStandaloneDemoFragment extends DemoFragment {
           chip.setChipIconVisible(isChecked);
           button.setIcon(isChecked ? progressIndicatorDrawable : null);
         });
-    return view;
+  }
+
+  @Override
+  @LayoutRes
+  public int getProgressIndicatorContentLayout() {
+    return R.layout.cat_progress_indicator_standalone_content;
   }
 
   @StyleRes

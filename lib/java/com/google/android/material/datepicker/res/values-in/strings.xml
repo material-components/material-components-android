@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@
   <string name="mtrl_picker_toggle_to_day_selection">Ketuk untuk beralih ke tampilan Kalender</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Pilihan saat ini: %1$s</string>
-  <string name="mtrl_picker_announce_current_range_selection">Pemilihan tanggal mulai: %1$s – Pemilihan tanggal akhir: %2$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">Pilihan tanggal mulai: %1$s – Pilihan tanggal akhir: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">tidak ada</string>
   <string name="mtrl_picker_navigate_to_year_description">Buka tahun %1$d</string>
   <string name="mtrl_picker_navigate_to_current_year_description">Pilih tahun ini %1$d</string>

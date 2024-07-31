@@ -28,7 +28,6 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.core.math.MathUtils;
-import androidx.core.view.ViewCompat;
 
 /**
  * The {@link Behavior} for a view that sits vertically above scrolling a view. See {@link
@@ -220,7 +219,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
 
     if (scroller.computeScrollOffset()) {
       flingRunnable = new FlingRunnable(coordinatorLayout, layout);
-      ViewCompat.postOnAnimation(layout, flingRunnable);
+      layout.postOnAnimation(flingRunnable);
       return true;
     } else {
       onFlingFinished(coordinatorLayout, layout);
@@ -271,7 +270,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
         if (scroller.computeScrollOffset()) {
           setHeaderTopBottomOffset(parent, layout, scroller.getCurrY());
           // Post ourselves so that we run on the next animation
-          ViewCompat.postOnAnimation(layout, this);
+          layout.postOnAnimation(this);
         } else {
           onFlingFinished(parent, layout);
         }

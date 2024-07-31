@@ -16,7 +16,7 @@ represent an input, attribute, or action.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using chips](#using-chips)
 *   [Assist chip](#assist-chip)
 *   [Filter chip](#filter-chip)
@@ -24,7 +24,7 @@ represent an input, attribute, or action.
 *   [Suggestion chip](#suggestion-chip)
 *   [Theming chips](#theming-chips)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/chips/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/chip/package-summary)

@@ -239,12 +239,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   static final int MSG_SHOW = 0;
   static final int MSG_DISMISS = 1;
 
-  // On JB/KK versions of the platform sometimes View.setTranslationY does not result in
-  // layout / draw pass, and CoordinatorLayout relies on a draw pass to happen to sync vertical
-  // positioning of all its child views
-  private static final boolean USE_OFFSET_API =
-      (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN)
-          && (Build.VERSION.SDK_INT <= VERSION_CODES.KITKAT);
+  // On KitKat sometimes View.setTranslationY does not result in layout / draw pass, and
+  // CoordinatorLayout relies on a draw pass to happen to sync vertical positioning of all its
+  // child views.
+  private static final boolean USE_OFFSET_API = Build.VERSION.SDK_INT == VERSION_CODES.KITKAT;
 
   private static final int[] SNACKBAR_STYLE_ATTR = new int[] {R.attr.snackbarStyle};
 
@@ -388,11 +386,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
     view.addView(content);
 
-    ViewCompat.setAccessibilityLiveRegion(view, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-    ViewCompat.setImportantForAccessibility(view, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    view.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+    view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    ViewCompat.setAccessibilityPaneTitle(
+        view, getContext().getString(R.string.snackbar_accessibility_pane_title));
 
     // Make sure that we fit system windows and have a listener to apply any insets
-    ViewCompat.setFitsSystemWindows(view, true);
+    view.setFitsSystemWindows(true);
     ViewCompat.setOnApplyWindowInsetsListener(
         view,
         new OnApplyWindowInsetsListener() {
@@ -788,7 +788,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       view.setVisibility(View.INVISIBLE);
     }
 
-    if (ViewCompat.isLaidOut(this.view)) {
+    if (view.isLaidOut()) {
       showViewImpl();
       return;
     }
@@ -1038,8 +1038,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           public void onAnimationUpdate(@NonNull ValueAnimator animator) {
             int currentAnimatedIntValue = (int) animator.getAnimatedValue();
             if (USE_OFFSET_API) {
-              // On JB/KK versions of the platform sometimes View.setTranslationY does not
-              // result in layout / draw pass
+              // On KitKat sometimes View.setTranslationY does not result in layout / draw pass.
               ViewCompat.offsetTopAndBottom(
                   view, currentAnimatedIntValue - previousAnimatedIntValue);
             } else {
@@ -1076,8 +1075,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           public void onAnimationUpdate(@NonNull ValueAnimator animator) {
             int currentAnimatedIntValue = (int) animator.getAnimatedValue();
             if (USE_OFFSET_API) {
-              // On JB/KK versions of the platform sometimes View.setTranslationY does not
-              // result in layout / draw pass
+              // On KitKat sometimes View.setTranslationY does not result in layout / draw pass.
               ViewCompat.offsetTopAndBottom(
                   view, currentAnimatedIntValue - previousAnimatedIntValue);
             } else {
@@ -1215,7 +1213,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       setFocusable(true);
 
       if (getBackground() == null) {
-        ViewCompat.setBackground(this, createThemedBackground());
+        setBackground(createThemedBackground());
       }
     }
 
@@ -1473,7 +1471,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     static Anchor anchor(
         @NonNull BaseTransientBottomBar transientBottomBar, @NonNull View anchorView) {
       Anchor anchor = new Anchor(transientBottomBar, anchorView);
-      if (ViewCompat.isAttachedToWindow(anchorView)) {
+      if (anchorView.isAttachedToWindow()) {
         ViewUtils.addOnGlobalLayoutListener(anchorView, anchor);
       }
       anchorView.addOnAttachStateChangeListener(anchor);

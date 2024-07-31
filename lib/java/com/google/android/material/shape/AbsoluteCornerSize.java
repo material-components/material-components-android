@@ -58,4 +58,9 @@ public final class AbsoluteCornerSize implements CornerSize {
     Object[] hashedFields = {size};
     return Arrays.hashCode(hashedFields);
   }
+
+  @Override
+  public String toString() {
+    return getCornerSize() + "px";
+  }
 }

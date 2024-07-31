@@ -16,13 +16,13 @@ selections from a range of values.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using sliders](#using-sliders)
 *   [Continuous slider](#continuous-slider)
 *   [Discrete slider](#discrete-slider)
 *   [Theming sliders](#theming-sliders)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/sliders/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/slider/package-summary)

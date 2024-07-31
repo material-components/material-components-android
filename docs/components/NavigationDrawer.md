@@ -16,16 +16,15 @@ access to destinations in your app.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using navigation drawers](#using-navigation-drawers)
 *   [Anatomy](#anatomy)
 *   [Standard navigation drawer](#standard-navigation-drawer)
 *   [Modal navigation drawer](#modal-navigation-drawer)
-*   [Bottom navigation drawer](#bottom-navigation-drawer)
 *   [Predictive Back](#predictive-back)
 *   [Theming](#theming)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/navigation-drawer/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/navigation/package-summary)
@@ -344,10 +343,9 @@ Default style theme attribute: `?attr/drawerLayoutStyle`
 
 ### Types
 
-There are three types of navigation drawers: 1\.
+There are two types of navigation drawers: 1\.
 [Standard navigation drawer](#standard-navigation-drawer), 2\.
-[Modal navigation drawer](#modal-navigation-drawer), 3\.
-[Bottom navigation drawer](#bottom-navigation-drawer)
+[Modal navigation drawer](#modal-navigation-drawer)
 
 ## Standard navigation drawer
 

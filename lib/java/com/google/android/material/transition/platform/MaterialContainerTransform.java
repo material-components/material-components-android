@@ -30,7 +30,7 @@ import static com.google.android.material.transition.platform.TransitionUtils.cr
 import static com.google.android.material.transition.platform.TransitionUtils.defaultIfNull;
 import static com.google.android.material.transition.platform.TransitionUtils.findAncestorById;
 import static com.google.android.material.transition.platform.TransitionUtils.findDescendantOrAncestorById;
-import static com.google.android.material.transition.platform.TransitionUtils.getLocationOnScreen;
+import static com.google.android.material.transition.platform.TransitionUtils.getLocationInWindow;
 import static com.google.android.material.transition.platform.TransitionUtils.getRelativeBounds;
 import static com.google.android.material.transition.platform.TransitionUtils.lerp;
 import static com.google.android.material.transition.platform.TransitionUtils.transform;
@@ -831,9 +831,9 @@ public final class MaterialContainerTransform extends Transition {
     }
     View view = transitionValues.view;
 
-    if (ViewCompat.isLaidOut(view) || view.getWidth() != 0 || view.getHeight() != 0) {
+    if (view.isLaidOut() || view.getWidth() != 0 || view.getHeight() != 0) {
       // Capture location in screen co-ordinates
-      RectF bounds = view.getParent() == null ? getRelativeBounds(view) : getLocationOnScreen(view);
+      RectF bounds = view.getParent() == null ? getRelativeBounds(view) : getLocationInWindow(view);
       transitionValues.values.put(PROP_BOUNDS, bounds);
       transitionValues.values.put(
           PROP_SHAPE_APPEARANCE,
@@ -924,7 +924,7 @@ public final class MaterialContainerTransform extends Transition {
     }
 
     // Calculate drawable bounds and offset start/end bounds as needed
-    RectF drawingViewBounds = getLocationOnScreen(drawingView);
+    RectF drawingViewBounds = getLocationInWindow(drawingView);
     float offsetX = -drawingViewBounds.left;
     float offsetY = -drawingViewBounds.top;
     RectF drawableBounds = calculateDrawableBounds(drawingView, boundingView, offsetX, offsetY);
@@ -1028,7 +1028,7 @@ public final class MaterialContainerTransform extends Transition {
   private static RectF calculateDrawableBounds(
       View drawingView, @Nullable View boundingView, float offsetX, float offsetY) {
     if (boundingView != null) {
-      RectF drawableBounds = getLocationOnScreen(boundingView);
+      RectF drawableBounds = getLocationInWindow(boundingView);
       drawableBounds.offset(offsetX, offsetY);
       return drawableBounds;
     } else {

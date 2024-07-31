@@ -136,11 +136,28 @@ public class NavigationMenuPresenter implements MenuPresenter {
       headerLayout =
           (LinearLayout)
               layoutInflater.inflate(R.layout.design_navigation_item_header, menuView, false);
-      ViewCompat.setImportantForAccessibility(
-          headerLayout, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+      headerLayout.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
       menuView.setAdapter(adapter);
     }
     return menuView;
+  }
+
+  private void updateAllTextMenuItems() {
+    if (adapter != null) {
+      adapter.updateAllTextMenuItems();
+    }
+  }
+
+  private void updateAllSubHeaderMenuItems() {
+    if (adapter != null) {
+      adapter.updateAllSubHeaderMenuItems();
+    }
+  }
+
+  private void updateAllDividerMenuItems() {
+    if (adapter != null) {
+      adapter.updateAllDividerMenuItems();
+    }
   }
 
   @Override
@@ -272,12 +289,12 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setSubheaderColor(@Nullable ColorStateList subheaderColor) {
     this.subheaderColor = subheaderColor;
-    updateMenuView(false);
+    updateAllSubHeaderMenuItems();
   }
 
   public void setSubheaderTextAppearance(@StyleRes int resId) {
     subheaderTextAppearance = resId;
-    updateMenuView(false);
+    updateAllSubHeaderMenuItems();
   }
 
   @Nullable
@@ -287,7 +304,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemIconTintList(@Nullable ColorStateList tint) {
     iconTintList = tint;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   @Nullable
@@ -297,17 +314,17 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemTextColor(@Nullable ColorStateList textColor) {
     this.textColor = textColor;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public void setItemTextAppearance(@StyleRes int resId) {
     textAppearance = resId;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
     textAppearanceActiveBoldEnabled = isBold;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   @Nullable
@@ -317,12 +334,12 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemBackground(@Nullable Drawable itemBackground) {
     this.itemBackground = itemBackground;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public void setItemForeground(@Nullable RippleDrawable itemForeground) {
     this.itemForeground = itemForeground;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public int getItemHorizontalPadding() {
@@ -331,7 +348,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemHorizontalPadding(int itemHorizontalPadding) {
     this.itemHorizontalPadding = itemHorizontalPadding;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   @Px
@@ -341,7 +358,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemVerticalPadding(@Px int itemVerticalPadding) {
     this.itemVerticalPadding = itemVerticalPadding;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   @Px
@@ -351,7 +368,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setDividerInsetStart(@Px int dividerInsetStart) {
     this.dividerInsetStart = dividerInsetStart;
-    updateMenuView(false);
+    updateAllDividerMenuItems();
   }
 
   @Px
@@ -361,7 +378,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setDividerInsetEnd(@Px int dividerInsetEnd) {
     this.dividerInsetEnd = dividerInsetEnd;
-    updateMenuView(false);
+    updateAllDividerMenuItems();
   }
 
   @Px
@@ -371,7 +388,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setSubheaderInsetStart(@Px int subheaderInsetStart) {
     this.subheaderInsetStart = subheaderInsetStart;
-    updateMenuView(false);
+    updateAllSubHeaderMenuItems();
   }
 
   @Px
@@ -381,7 +398,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setSubheaderInsetEnd(@Px int subheaderInsetEnd) {
     this.subheaderInsetEnd = subheaderInsetEnd;
-    updateMenuView(false);
+    updateAllSubHeaderMenuItems();
   }
 
   public int getItemIconPadding() {
@@ -390,12 +407,12 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   public void setItemIconPadding(int itemIconPadding) {
     this.itemIconPadding = itemIconPadding;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public void setItemMaxLines(int itemMaxLines) {
     this.itemMaxLines = itemMaxLines;
-    updateMenuView(false);
+    updateAllTextMenuItems();
   }
 
   public int getItemMaxLines() {
@@ -406,7 +423,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
     if (this.itemIconSize != itemIconSize) {
       this.itemIconSize = itemIconSize;
       hasCustomItemIconSize = true;
-      updateMenuView(false);
+      updateAllTextMenuItems();
     }
   }
 
@@ -593,8 +610,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
             if (textColor != null) {
               itemView.setTextColor(textColor);
             }
-            ViewCompat.setBackground(
-                itemView,
+            itemView.setBackground(
                 itemBackground != null ? itemBackground.getConstantState().newDrawable() : null);
             if (itemForeground != null) {
               itemView.setForeground(itemForeground.getConstantState().newDrawable());
@@ -621,7 +637,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
             NavigationMenuTextItem item = (NavigationMenuTextItem) items.get(position);
             subHeader.setText(item.getMenuItem().getTitle());
             TextViewCompat.setTextAppearance(subHeader, subheaderTextAppearance);
-            subHeader.setPadding(
+            subHeader.setPaddingRelative(
                 subheaderInsetStart,
                 subHeader.getPaddingTop(),
                 subheaderInsetEnd,
@@ -636,7 +652,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
         case VIEW_TYPE_SEPARATOR:
           {
             NavigationMenuSeparatorItem item = (NavigationMenuSeparatorItem) items.get(position);
-            holder.itemView.setPadding(
+            holder.itemView.setPaddingRelative(
                 dividerInsetStart,
                 item.getPaddingTop(),
                 dividerInsetEnd,
@@ -686,8 +702,13 @@ public class NavigationMenuPresenter implements MenuPresenter {
     }
 
     public void update() {
+      int prevItemSize = items.size();
       prepareMenuItems();
       notifyDataSetChanged();
+      // If there were no structural changes, update the items due to the adapter having stable ids.
+      if (prevItemSize == items.size()) {
+        notifyItemRangeChanged(0, items.size());
+      }
     }
 
     /**
@@ -731,8 +752,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
                 if (subMenuItem.isCheckable()) {
                   subMenuItem.setExclusiveCheckable(false);
                 }
-                if (item.isChecked()) {
-                  setCheckedItem(item);
+                if (subMenuItem.isChecked()) {
+                  setCheckedItem(subMenuItem);
                 }
                 items.add(new NavigationMenuTextItem(subMenuItem));
               }
@@ -866,6 +887,32 @@ public class NavigationMenuPresenter implements MenuPresenter {
         }
       }
       return itemCount;
+    }
+
+    private void updateAllTextMenuItems() {
+      for (int i = 0; i < items.size(); i++) {
+        if (items.get(i) instanceof NavigationMenuTextItem
+            && getItemViewType(i) == VIEW_TYPE_NORMAL) {
+          notifyItemChanged(i);
+        }
+      }
+    }
+
+    private void updateAllSubHeaderMenuItems() {
+      for (int i = 0; i < items.size(); i++) {
+        if (items.get(i) instanceof NavigationMenuTextItem
+            && getItemViewType(i) == VIEW_TYPE_SUBHEADER) {
+          notifyItemChanged(i);
+        }
+      }
+    }
+
+    private void updateAllDividerMenuItems() {
+      for (int i = 0; i < items.size(); i++) {
+        if (items.get(i) instanceof NavigationMenuSeparatorItem) {
+          notifyItemChanged(i);
+        }
+      }
     }
   }
 

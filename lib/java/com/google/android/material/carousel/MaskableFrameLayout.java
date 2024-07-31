@@ -24,6 +24,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +46,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
 
   private float maskXPercentage = NOT_SET;
   private final RectF maskRect = new RectF();
+  private final Rect screenBoundsRect = new Rect();
   @Nullable private OnMaskChangedListener onMaskChangedListener;
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
   private final ShapeableDelegate shapeableDelegate = ShapeableDelegate.create(this);
@@ -217,5 +219,26 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   @Override
   protected void dispatchDraw(Canvas canvas) {
     shapeableDelegate.maybeClip(canvas, super::dispatchDraw);
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    // Note: This is a workaround until b/273752775 is resolved. A11y bounds should be set by the
+    // a11y framework.
+    info.getBoundsInScreen(screenBoundsRect);
+
+    // If the child starts from a negative x, the screen bounds are already cut off at the
+    // parent so there is no need to reduce the screen bound's left bound. Similarly for negative y.
+    if (getX() > 0) {
+      screenBoundsRect.left = (int) (screenBoundsRect.left + maskRect.left);
+    }
+    if (getY() > 0) {
+      screenBoundsRect.top = (int) (screenBoundsRect.top + maskRect.top);
+    }
+    screenBoundsRect.right = screenBoundsRect.left + Math.round(maskRect.width());
+    screenBoundsRect.bottom = screenBoundsRect.top + Math.round(maskRect.height());
+
+    info.setBoundsInScreen(screenBoundsRect);
   }
 }

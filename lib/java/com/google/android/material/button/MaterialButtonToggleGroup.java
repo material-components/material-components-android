@@ -19,6 +19,7 @@ package com.google.android.material.button;
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.min;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -36,9 +37,11 @@ import androidx.annotation.BoolRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
@@ -48,7 +51,10 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.CornerSize;
+import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.StateListCornerSize;
+import com.google.android.material.shape.StateListShapeAppearanceModel;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -107,9 +113,9 @@ import java.util.TreeMap;
  *
  * <p>Any {@link MaterialButton}s added to this view group are automatically marked as {@code
  * checkable}, and by default multiple buttons within the same group can be checked. To enforce that
- * only one button can be checked at a time, set the {@code
- * app:singleSelection} attribute to {@code true} on the MaterialButtonToggleGroup or call {@link
- * #setSingleSelection(boolean) setSingleSelection(true)}.
+ * only one button can be checked at a time, set the {@code app:singleSelection} attribute to {@code
+ * true} on the MaterialButtonToggleGroup or call {@link #setSingleSelection(boolean)
+ * setSingleSelection(true)}.
  *
  * <p>MaterialButtonToggleGroup is a {@link LinearLayout}. Using {@code
  * android:layout_width="MATCH_PARENT"} and removing {@code android:insetBottom} {@code
@@ -150,28 +156,27 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_MaterialButtonToggleGroup;
 
-  private final List<CornerData> originalCornerData = new ArrayList<>();
+  private final List<ShapeAppearanceModel> originalChildShapeAppearanceModels = new ArrayList<>();
+  private final List<StateListShapeAppearanceModel> originalChildStateListShapeAppearanceModels =
+      new ArrayList<>();
 
   private final PressedStateTracker pressedStateTracker = new PressedStateTracker();
   private final LinkedHashSet<OnButtonCheckedListener> onButtonCheckedListeners =
       new LinkedHashSet<>();
   private final Comparator<MaterialButton> childOrderComparator =
-      new Comparator<MaterialButton>() {
-        @Override
-        public int compare(MaterialButton v1, MaterialButton v2) {
-          int checked = Boolean.valueOf(v1.isChecked()).compareTo(v2.isChecked());
-          if (checked != 0) {
-            return checked;
-          }
-
-          int stateful = Boolean.valueOf(v1.isPressed()).compareTo(v2.isPressed());
-          if (stateful != 0) {
-            return stateful;
-          }
-
-          // don't return 0s
-          return Integer.valueOf(indexOfChild(v1)).compareTo(indexOfChild(v2));
+      (v1, v2) -> {
+        int checked = Boolean.valueOf(v1.isChecked()).compareTo(v2.isChecked());
+        if (checked != 0) {
+          return checked;
         }
+
+        int stateful = Boolean.valueOf(v1.isPressed()).compareTo(v2.isPressed());
+        if (stateful != 0) {
+          return stateful;
+        }
+
+        // don't return 0s
+        return Integer.compare(indexOfChild(v1), indexOfChild(v2));
       };
 
   private Integer[] childOrder;
@@ -179,8 +184,11 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private boolean singleSelection;
   private boolean selectionRequired;
 
-  @IdRes
-  private final int defaultCheckId;
+  @NonNull private StateListCornerSize innerCornerSize;
+  @Nullable private StateListShapeAppearanceModel groupStateListShapeAppearance;
+  @Px private int spacing;
+
+  @IdRes private final int defaultCheckId;
   private Set<Integer> checkedIds = new HashSet<>();
 
   public MaterialButtonToggleGroup(@NonNull Context context) {
@@ -203,15 +211,42 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     setSingleSelection(
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_singleSelection, false));
     defaultCheckId =
-        attributes.getResourceId(
-            R.styleable.MaterialButtonToggleGroup_checkedButton, View.NO_ID);
+        attributes.getResourceId(R.styleable.MaterialButtonToggleGroup_checkedButton, View.NO_ID);
     selectionRequired =
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_selectionRequired, false);
+
+    if (attributes.hasValue(R.styleable.MaterialButtonToggleGroup_shapeAppearance)) {
+      groupStateListShapeAppearance =
+          StateListShapeAppearanceModel.create(
+              context, attributes, R.styleable.MaterialButtonToggleGroup_shapeAppearance);
+      if (groupStateListShapeAppearance == null) {
+        groupStateListShapeAppearance =
+            new StateListShapeAppearanceModel.Builder(
+                    ShapeAppearanceModel.builder(
+                            context,
+                            attributes.getResourceId(
+                                R.styleable.MaterialButtonToggleGroup_shapeAppearance, 0),
+                            attributes.getResourceId(
+                                R.styleable.MaterialButtonToggleGroup_shapeAppearanceOverlay, 0))
+                        .build())
+                .build();
+      }
+    }
+    innerCornerSize =
+        StateListCornerSize.create(
+            context,
+            attributes,
+            R.styleable.MaterialButtonToggleGroup_innerCornerSize,
+            new AbsoluteCornerSize(0));
+
+    spacing =
+        attributes.getDimensionPixelSize(R.styleable.MaterialButtonToggleGroup_android_spacing, 0);
+
     setChildrenDrawingOrderEnabled(true);
     setEnabled(attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_android_enabled, true));
     attributes.recycle();
 
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
 
   @Override
@@ -248,14 +283,9 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     // Update button group's checked states
     checkInternal(buttonChild.getId(), buttonChild.isChecked());
 
-    // Saves original corner data
-    ShapeAppearanceModel shapeAppearanceModel = buttonChild.getShapeAppearanceModel();
-    originalCornerData.add(
-        new CornerData(
-            shapeAppearanceModel.getTopLeftCornerSize(),
-            shapeAppearanceModel.getBottomLeftCornerSize(),
-            shapeAppearanceModel.getTopRightCornerSize(),
-            shapeAppearanceModel.getBottomRightCornerSize()));
+    // Saves original child shape appearance.
+    originalChildShapeAppearanceModels.add(buttonChild.getShapeAppearanceModel());
+    originalChildStateListShapeAppearanceModels.add(buttonChild.getStateListShapeAppearanceModel());
 
     // Enable children based on the MaterialButtonToggleGroup own isEnabled
     buttonChild.setEnabled(isEnabled());
@@ -289,7 +319,8 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
     int indexOfChild = indexOfChild(child);
     if (indexOfChild >= 0) {
-      originalCornerData.remove(indexOfChild);
+      originalChildShapeAppearanceModels.remove(indexOfChild);
+      originalChildStateListShapeAppearanceModels.remove(indexOfChild);
     }
 
     updateChildShapes();
@@ -300,7 +331,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     updateChildShapes();
     adjustChildMarginsAndUpdateLayout();
-
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 
@@ -313,7 +343,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
             /* rowCount= */ 1,
             /* columnCount= */ getVisibleButtonCount(),
             /* hierarchical= */ false,
-            /* selectionMode = */ isSingleSelection()
+            /* selectionMode= */ isSingleSelection()
                 ? CollectionInfoCompat.SELECTION_MODE_SINGLE
                 : CollectionInfoCompat.SELECTION_MODE_MULTIPLE));
   }
@@ -496,6 +526,117 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     setSingleSelection(getResources().getBoolean(id));
   }
 
+  /** Returns the spacing (in pixels) between each button in the group. */
+  @Px
+  public int getSpacing() {
+    return spacing;
+  }
+
+  /**
+   * Sets the spacing between each button in the group.
+   *
+   * @param spacing the spacing (in pixels) between each button in the group
+   */
+  public void setSpacing(@Px int spacing) {
+    this.spacing = spacing;
+    invalidate();
+    requestLayout();
+  }
+
+  /** Returns the inner corner size of the group. */
+  @NonNull
+  public CornerSize getInnerCornerSize() {
+    return innerCornerSize.getDefaultCornerSize();
+  }
+
+  /**
+   * Sets the inner corner size of the group.
+   *
+   * <p>Can set as an {@link AbsoluteCornerSize} or {@link RelativeCornerSize}. Don't set relative
+   * corner size larger than 50% or absolute corner size larger than half height to avoid corner
+   * overlapping.
+   *
+   * @param cornerSize the inner corner size of the group
+   */
+  public void setInnerCornerSize(@NonNull CornerSize cornerSize) {
+    innerCornerSize = StateListCornerSize.create(cornerSize);
+    updateChildShapes();
+    invalidate();
+  }
+
+  /**
+   * Returns the inner corner size state list of the group.
+   *
+   * @hide
+   */
+  @NonNull
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public StateListCornerSize getInnerCornerSizeStateList() {
+    return innerCornerSize;
+  }
+
+  /**
+   * Sets the inner corner size state list of the group.
+   *
+   * <p>Can set as an {@link StateListCornerSize}. Don't set relative corner size larger than 50% or
+   * absolute corner size larger than half height to the corner size in any state to avoid corner
+   * overlapping.
+   *
+   * @param cornerSizeStateList the inner corner size state list of the group
+   * @hide
+   */
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public void setInnerCornerSizeStateList(@NonNull StateListCornerSize cornerSizeStateList) {
+    innerCornerSize = cornerSizeStateList;
+    updateChildShapes();
+    invalidate();
+  }
+
+  /** Returns the {@link ShapeAppearanceModel} of the group. */
+  @Nullable
+  public ShapeAppearanceModel getShapeAppearance() {
+    return groupStateListShapeAppearance == null
+        ? null
+        : groupStateListShapeAppearance.getDefaultShape(/* withCornerSizeOverrides= */ true);
+  }
+
+  /**
+   * Sets the {@link ShapeAppearanceModel} of the group.
+   *
+   * @param shapeAppearance The new {@link ShapeAppearanceModel} of the group.
+   */
+  public void setShapeAppearance(@Nullable ShapeAppearanceModel shapeAppearance) {
+    groupStateListShapeAppearance =
+        new StateListShapeAppearanceModel.Builder(shapeAppearance).build();
+    updateChildShapes();
+    invalidate();
+  }
+
+  /**
+   * Returns the {@link StateListShapeAppearanceModel} of the group.
+   *
+   * @hide
+   */
+  @Nullable
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public StateListShapeAppearanceModel getStateListShapeAppearance() {
+    return groupStateListShapeAppearance;
+  }
+
+  /**
+   * Sets the {@link StateListShapeAppearanceModel} of the group.
+   *
+   * @param stateListShapeAppearance The new {@link StateListShapeAppearanceModel} of the group.
+   * @hide
+   */
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public void setStateListShapeAppearance(
+      @Nullable StateListShapeAppearanceModel stateListShapeAppearance) {
+    groupStateListShapeAppearance = stateListShapeAppearance;
+    updateChildShapes();
+    invalidate();
+  }
+
   private void setCheckedStateForView(@IdRes int viewId, boolean checked) {
     View checkedView = findViewById(viewId);
     if (checkedView instanceof MaterialButton) {
@@ -528,18 +669,20 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       MaterialButton previousButton = getChildButton(i - 1);
 
       // Calculates the margin adjustment to be the smaller of the two adjacent stroke widths
-      int smallestStrokeWidth =
-          Math.min(currentButton.getStrokeWidth(), previousButton.getStrokeWidth());
+      int smallestStrokeWidth = 0;
+      if (spacing <= 0) {
+        smallestStrokeWidth = min(currentButton.getStrokeWidth(), previousButton.getStrokeWidth());
+      }
 
       LayoutParams params = buildLayoutParams(currentButton);
       if (getOrientation() == HORIZONTAL) {
-        MarginLayoutParamsCompat.setMarginEnd(params, 0);
-        MarginLayoutParamsCompat.setMarginStart(params, -smallestStrokeWidth);
+        params.setMarginEnd(0);
+        params.setMarginStart(spacing - smallestStrokeWidth);
         params.topMargin = 0;
       } else {
         params.bottomMargin = 0;
-        params.topMargin = -smallestStrokeWidth;
-        MarginLayoutParamsCompat.setMarginStart(params, 0);
+        params.topMargin = spacing - smallestStrokeWidth;
+        params.setMarginStart(0);
       }
 
       currentButton.setLayoutParams(params);
@@ -548,6 +691,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     resetChildMargins(firstVisibleChildIndex);
   }
 
+  @NonNull
   private MaterialButton getChildButton(int index) {
     return (MaterialButton) getChildAt(index);
   }
@@ -565,13 +709,15 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       return;
     }
 
-    MarginLayoutParamsCompat.setMarginEnd(params, 0);
-    MarginLayoutParamsCompat.setMarginStart(params, 0);
+    params.setMarginEnd(0);
+    params.setMarginStart(0);
     params.leftMargin = 0;
     params.rightMargin = 0;
   }
 
-  /** Sets all corner radii to 0 except for leftmost and rightmost corners. */
+  /**
+   * Sets all corner radii override to inner corner size except for leftmost and rightmost corners.
+   */
   @VisibleForTesting
   void updateChildShapes() {
     int childCount = getChildCount();
@@ -582,13 +728,85 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       if (button.getVisibility() == GONE) {
         continue;
       }
+      boolean isFirstVisible = i == firstVisibleChildIndex;
+      boolean isLastVisible = i == lastVisibleChildIndex;
 
-      ShapeAppearanceModel.Builder builder = button.getShapeAppearanceModel().toBuilder();
-      CornerData newCornerData = getNewCornerData(i, firstVisibleChildIndex, lastVisibleChildIndex);
-      updateBuilderWithCornerData(builder, newCornerData);
-
-      button.setShapeAppearanceModel(builder.build());
+      StateListShapeAppearanceModel.Builder originalStateListShapeBuilder =
+          getOriginalStateListShapeBuilder(isFirstVisible, isLastVisible, i);
+      // Determines which corners of the original shape should be kept.
+      boolean isHorizontal = getOrientation() == HORIZONTAL;
+      boolean isRtl = ViewUtils.isLayoutRtl(this);
+      int cornerPositionBitsToKeep = 0;
+      if (isHorizontal) {
+        // When horizontal (ltr), keeps the left two original corners for the first button.
+        if (isFirstVisible) {
+          cornerPositionBitsToKeep |=
+              StateListShapeAppearanceModel.CORNER_TOP_LEFT
+                  | StateListShapeAppearanceModel.CORNER_BOTTOM_LEFT;
+        }
+        // When horizontal (ltr), keeps the right two original corners for the last button.
+        if (isLastVisible) {
+          cornerPositionBitsToKeep |=
+              StateListShapeAppearanceModel.CORNER_TOP_RIGHT
+                  | StateListShapeAppearanceModel.CORNER_BOTTOM_RIGHT;
+        }
+        // If rtl, swap the position bits of left corners and right corners.
+        if (isRtl) {
+          cornerPositionBitsToKeep =
+              StateListShapeAppearanceModel.swapCornerPositionRtl(cornerPositionBitsToKeep);
+        }
+      } else {
+        // When vertical, keeps the top two original corners for the first button.
+        if (isFirstVisible) {
+          cornerPositionBitsToKeep |=
+              StateListShapeAppearanceModel.CORNER_TOP_LEFT
+                  | StateListShapeAppearanceModel.CORNER_TOP_RIGHT;
+        }
+        // When vertical, keeps the bottom two original corners for the last button.
+        if (isLastVisible) {
+          cornerPositionBitsToKeep |=
+              StateListShapeAppearanceModel.CORNER_BOTTOM_LEFT
+                  | StateListShapeAppearanceModel.CORNER_BOTTOM_RIGHT;
+        }
+      }
+      // Overrides the corners that don't need to keep with unary operator.
+      int cornerPositionBitsToOverride = ~cornerPositionBitsToKeep;
+      StateListShapeAppearanceModel newStateListShape =
+          originalStateListShapeBuilder
+              .setCornerSizeOverride(innerCornerSize, cornerPositionBitsToOverride)
+              .build();
+      if (newStateListShape.isStateful()) {
+        button.setStateListShapeAppearanceModel(newStateListShape);
+      } else {
+        button.setShapeAppearanceModel(
+            newStateListShape.getDefaultShape(/* withCornerSizeOverrides= */ true));
+      }
     }
+  }
+
+  /**
+   * Returns a {@link StateListShapeAppearanceModel.Builder} as the original shape of a child
+   * button.
+   *
+   * <p>It takes the group shape, if specified, as the original state list shape for the first and
+   * last buttons. Otherwise, it takes the state list shape (or build one from the shape appearance
+   * model, if state list shape is not specified) in the child button.
+   *
+   * @param isFirstVisible Whether this is the first visible child button regardless its index.
+   * @param isLastVisible Whether this is the last visible child button regardless its index.
+   * @param index The index of the child button.
+   */
+  @NonNull
+  private StateListShapeAppearanceModel.Builder getOriginalStateListShapeBuilder(
+      boolean isFirstVisible, boolean isLastVisible, int index) {
+    StateListShapeAppearanceModel originalStateList =
+        groupStateListShapeAppearance != null && (isFirstVisible || isLastVisible)
+            ? groupStateListShapeAppearance
+            : originalChildStateListShapeAppearanceModels.get(index);
+    // If the state list shape is not specified, creates one from the shape appearance model.
+    return originalStateList == null
+        ? new StateListShapeAppearanceModel.Builder(originalChildShapeAppearanceModels.get(index))
+        : originalStateList.toBuilder();
   }
 
   private int getFirstVisibleChildIndex() {
@@ -644,42 +862,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     return -1;
   }
 
-  @Nullable
-  private CornerData getNewCornerData(
-      int index, int firstVisibleChildIndex, int lastVisibleChildIndex) {
-    CornerData cornerData = originalCornerData.get(index);
-
-    // If only one (visible) child exists, use its original corners
-    if (firstVisibleChildIndex == lastVisibleChildIndex) {
-      return cornerData;
-    }
-
-    boolean isHorizontal = getOrientation() == HORIZONTAL;
-    if (index == firstVisibleChildIndex) {
-      return isHorizontal ? CornerData.start(cornerData, this) : CornerData.top(cornerData);
-    }
-
-    if (index == lastVisibleChildIndex) {
-      return isHorizontal ? CornerData.end(cornerData, this) : CornerData.bottom(cornerData);
-    }
-
-    return null;
-  }
-
-  private static void updateBuilderWithCornerData(
-      ShapeAppearanceModel.Builder shapeAppearanceModelBuilder, @Nullable CornerData cornerData) {
-    if (cornerData == null) {
-      shapeAppearanceModelBuilder.setAllCornerSizes(0);
-      return;
-    }
-
-    shapeAppearanceModelBuilder
-        .setTopLeftCornerSize(cornerData.topLeft)
-        .setBottomLeftCornerSize(cornerData.bottomLeft)
-        .setTopRightCornerSize(cornerData.topRight)
-        .setBottomRightCornerSize(cornerData.bottomRight);
-  }
-
   private void checkInternal(@IdRes int buttonId, boolean checked) {
     if (buttonId == View.NO_ID) {
       Log.e(LOG_TAG, "Button ID is not valid: " + buttonId);
@@ -725,7 +907,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private void setGeneratedIdIfNeeded(@NonNull MaterialButton materialButton) {
     // Generates an ID if none is set, for relative positioning purposes
     if (materialButton.getId() == View.NO_ID) {
-      materialButton.setId(ViewCompat.generateViewId());
+      materialButton.setId(View.generateViewId());
     }
   }
 
@@ -782,11 +964,11 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   }
 
   void onButtonCheckedStateChanged(@NonNull MaterialButton button, boolean isChecked) {
-      // Checked state change is triggered by the button group, do not update checked ids again.
-      if (skipCheckedStateTracker) {
-        return;
-      }
-      checkInternal(button.getId(), isChecked);
+    // Checked state change is triggered by the button group, do not update checked ids again.
+    if (skipCheckedStateTracker) {
+      return;
+    }
+    checkInternal(button.getId(), isChecked);
   }
 
   /**
@@ -809,54 +991,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     @Override
     public void onPressedChanged(@NonNull MaterialButton button, boolean isPressed) {
       invalidate();
-    }
-  }
-
-  private static class CornerData {
-
-    private static final CornerSize noCorner = new AbsoluteCornerSize(0);
-
-    CornerSize topLeft;
-    CornerSize topRight;
-    CornerSize bottomRight;
-    CornerSize bottomLeft;
-
-    CornerData(
-        CornerSize topLeft, CornerSize bottomLeft, CornerSize topRight, CornerSize bottomRight) {
-      this.topLeft = topLeft;
-      this.topRight = topRight;
-      this.bottomRight = bottomRight;
-      this.bottomLeft = bottomLeft;
-    }
-
-    /** Keep the start side of the corner original data */
-    public static CornerData start(CornerData orig, View view) {
-      return ViewUtils.isLayoutRtl(view) ? right(orig) : left(orig);
-    }
-
-    /** Keep the end side of the corner original data */
-    public static CornerData end(CornerData orig, View view) {
-      return ViewUtils.isLayoutRtl(view) ? left(orig) : right(orig);
-    }
-
-    /** Keep the left side of the corner original data */
-    public static CornerData left(CornerData orig) {
-      return new CornerData(orig.topLeft, orig.bottomLeft, noCorner, noCorner);
-    }
-
-    /** Keep the right side of the corner original data */
-    public static CornerData right(CornerData orig) {
-      return new CornerData(noCorner, noCorner, orig.topRight, orig.bottomRight);
-    }
-
-    /** Keep the top side of the corner original data */
-    public static CornerData top(CornerData orig) {
-      return new CornerData(orig.topLeft, noCorner, orig.topRight, noCorner);
-    }
-
-    /** Keep the bottom side of the corner original data */
-    public static CornerData bottom(CornerData orig) {
-      return new CornerData(noCorner, orig.bottomLeft, noCorner, orig.bottomRight);
     }
   }
 }

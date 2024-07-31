@@ -33,7 +33,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -68,8 +67,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.ContextCompat;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.customview.view.AbsSavedState;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -196,7 +193,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
             context, attrs, R.styleable.NavigationView, defStyleAttr, DEF_STYLE_RES);
 
     if (a.hasValue(R.styleable.NavigationView_android_background)) {
-      ViewCompat.setBackground(this, a.getDrawable(R.styleable.NavigationView_android_background));
+      setBackground(a.getDrawable(R.styleable.NavigationView_android_background));
     }
 
     // Get the drawer layout corner size to be used to shape the exposed corners of this view when
@@ -220,7 +217,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
         materialShapeDrawable.setFillColor(backgroundColorStateList);
       }
       materialShapeDrawable.initializeElevationOverlay(context);
-      ViewCompat.setBackground(this, materialShapeDrawable);
+      setBackground(materialShapeDrawable);
     }
 
     if (a.hasValue(R.styleable.NavigationView_elevation)) {
@@ -411,8 +408,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
         && getBackground() instanceof MaterialShapeDrawable) {
       int layoutGravity = ((DrawerLayout.LayoutParams) getLayoutParams()).gravity;
       boolean isAbsGravityLeft =
-          GravityCompat.getAbsoluteGravity(layoutGravity, ViewCompat.getLayoutDirection(this))
-              == Gravity.LEFT;
+          Gravity.getAbsoluteGravity(layoutGravity, getLayoutDirection()) == Gravity.LEFT;
 
       // Create and set a background to a MaterialShapeDrawable with the gravity edge's corners
       // set to zero. This is needed in addition to the ShapeableDelegate's clip since the
@@ -473,17 +469,15 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
 
-    if (Build.VERSION.SDK_INT < 16) {
-      getViewTreeObserver().removeGlobalOnLayoutListener(onGlobalLayoutListener);
-    } else {
-      getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
-    }
+    getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
 
     ViewParent parent = getParent();
     if (parent instanceof DrawerLayout) {
       DrawerLayout drawerLayout = (DrawerLayout) parent;
       drawerLayout.removeDrawerListener(backDrawerListener);
     }
+
+    backOrchestrator.stopListeningForBackCallbacks();
   }
 
   @Override

@@ -20,7 +20,6 @@ import com.google.android.material.R;
 
 import static com.google.android.material.resources.MaterialResources.getDimensionPixelSize;
 import static java.lang.Math.abs;
-import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.content.Context;
@@ -74,11 +73,17 @@ public abstract class BaseProgressIndicatorSpec {
   /** The size of the gap between the indicator and the rest of the track. */
   @Px public int indicatorTrackGapSize;
 
-  /** The size of the wavelength, if a wave effect is configured. */
-  @Px public int wavelength;
+  /** The size of the wavelength in determinate mode, if a wave effect is configured. */
+  @Px public int wavelengthDeterminate;
+
+  /** The size of the wavelength in indeterminate mode, if a wave effect is configured. */
+  @Px public int wavelengthIndeterminate;
 
   /** The size of the amplitude, if a wave effect is configured. */
-  @Px public int amplitude;
+  @Px public int waveAmplitude;
+
+  /** The speed of the waveform, if a wave effect is configured. */
+  @Px public int waveSpeed;
 
   /**
    * Instantiates BaseProgressIndicatorSpec.
@@ -106,7 +111,7 @@ public abstract class BaseProgressIndicatorSpec {
         min(
             getDimensionPixelSize(
                 context, a, R.styleable.BaseProgressIndicator_trackCornerRadius, 0),
-            trackThickness / 2);
+            Math.round(trackThickness / 2f));
     showAnimationBehavior =
         a.getInt(
             R.styleable.BaseProgressIndicator_showAnimationBehavior,
@@ -115,15 +120,21 @@ public abstract class BaseProgressIndicatorSpec {
         a.getInt(
             R.styleable.BaseProgressIndicator_hideAnimationBehavior,
             BaseProgressIndicator.HIDE_NONE);
-    indicatorTrackGapSize = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_indicatorTrackGapSize, 0);
+    indicatorTrackGapSize =
+        a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_indicatorTrackGapSize, 0);
 
-    wavelength =
-        max(
-            abs(
-                a.getDimensionPixelSize(
-                    R.styleable.BaseProgressIndicator_wavelength, Integer.MAX_VALUE)),
-            1);
-    amplitude = abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_amplitude, 0));
+    int wavelength = abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_wavelength, 0));
+    wavelengthDeterminate =
+        abs(
+            a.getDimensionPixelSize(
+                R.styleable.BaseProgressIndicator_wavelengthDeterminate, wavelength));
+    wavelengthIndeterminate =
+        abs(
+            a.getDimensionPixelSize(
+                R.styleable.BaseProgressIndicator_wavelengthIndeterminate, wavelength));
+    waveAmplitude =
+        abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_waveAmplitude, 0));
+    waveSpeed = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_waveSpeed, 0);
 
     loadIndicatorColors(context, a);
     loadTrackColor(context, a);
@@ -199,8 +210,10 @@ public abstract class BaseProgressIndicatorSpec {
     return hideAnimationBehavior != BaseProgressIndicator.HIDE_NONE;
   }
 
-  public boolean hasWavyEffect() {
-    return amplitude > 0 && wavelength < Integer.MAX_VALUE;
+  public boolean hasWavyEffect(boolean isDeterminate) {
+    return waveAmplitude > 0
+        && ((!isDeterminate && wavelengthIndeterminate > 0)
+            || (isDeterminate && wavelengthDeterminate > 0));
   }
 
   @CallSuper

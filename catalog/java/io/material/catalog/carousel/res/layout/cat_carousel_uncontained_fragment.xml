@@ -112,7 +112,8 @@
       android:id="@+id/uncontained_carousel_recycler_view"
       android:layout_width="match_parent"
       android:layout_height="196dp"
-      android:layout_marginHorizontal="16dp"
+      android:paddingStart="16dp"
+      android:paddingEnd="16dp"
       android:layout_marginVertical="16dp"
       android:clipChildren="false"
       android:clipToPadding="false" />

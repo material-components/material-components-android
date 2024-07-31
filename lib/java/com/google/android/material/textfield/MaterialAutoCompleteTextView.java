@@ -54,7 +54,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -162,7 +161,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
             Object selectedItem =
                 position < 0 ? modalListPopup.getSelectedItem() : getAdapter().getItem(position);
 
-            updateText(selectedItem);
+            setText(convertSelectionToString(selectedItem), false);
 
             OnItemClickListener userOnItemClickListener = getOnItemClickListener();
             if (userOnItemClickListener != null) {
@@ -523,18 +522,6 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     return null;
   }
 
-  @SuppressWarnings("unchecked")
-  private <T extends ListAdapter & Filterable> void updateText(Object selectedItem) {
-    if (VERSION.SDK_INT >= 17) {
-      setText(convertSelectionToString(selectedItem), false);
-    } else {
-      ListAdapter adapter = getAdapter();
-      setAdapter(null);
-      setText(convertSelectionToString(selectedItem));
-      setAdapter((T) adapter);
-    }
-  }
-
   /** ArrayAdapter for the {@link MaterialAutoCompleteTextView}. */
   private class MaterialArrayAdapter<T> extends ArrayAdapter<String> {
 
@@ -559,7 +546,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
       if (view instanceof TextView) {
         TextView textView = (TextView) view;
         boolean isSelectedItem = getText().toString().contentEquals(textView.getText());
-        ViewCompat.setBackground(textView, isSelectedItem ? getSelectedItemDrawable() : null);
+        textView.setBackground(isSelectedItem ? getSelectedItemDrawable() : null);
       }
 
       return view;

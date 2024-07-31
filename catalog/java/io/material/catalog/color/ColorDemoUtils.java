@@ -18,7 +18,7 @@ package io.material.catalog.color;
 
 import android.graphics.Color;
 import androidx.annotation.ColorInt;
-import com.google.android.material.color.MaterialColors;
+import androidx.core.graphics.ColorUtils;
 
 /** Utility methods for Color. */
 final class ColorDemoUtils {
@@ -26,7 +26,12 @@ final class ColorDemoUtils {
   private ColorDemoUtils() {}
 
   static int getTextColor(@ColorInt int backgroundColor) {
-    // Use white text color if the background color is considered dark.
-    return MaterialColors.isColorLight(backgroundColor) ? Color.BLACK : Color.WHITE;
+    // Use the text color with the best contrast against the background color.
+    if (ColorUtils.calculateContrast(Color.BLACK, backgroundColor)
+        > ColorUtils.calculateContrast(Color.WHITE, backgroundColor)) {
+      return Color.BLACK;
+    } else {
+      return Color.WHITE;
+    }
   }
 }

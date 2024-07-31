@@ -21,11 +21,9 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-import android.os.Build;
 import android.widget.ImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.filters.LargeTest;
-import androidx.test.filters.SdkSuppress;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.testapp.R;
@@ -38,8 +36,6 @@ import org.junit.runner.RunWith;
 @SuppressWarnings("unchecked")
 public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
   @Test
-  // Suppressed due to high % flakiness on API 15
-  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.JELLY_BEAN)
   public void testPinnedToolbar() throws Throwable {
     configureContent(
         R.layout.design_appbar_toolbar_collapse_pin, R.string.design_appbar_collapsing_toolbar_pin);
@@ -161,8 +157,6 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
   }
 
   @Test
-  // Suppressed due to high % flakiness on API 15
-  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.JELLY_BEAN)
   public void testScrollingToolbar() throws Throwable {
     configureContent(
         R.layout.design_appbar_toolbar_collapse_scroll,

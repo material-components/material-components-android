@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.carousel.CarouselHelper.CarouselTestAdapter;
 import com.google.android.material.carousel.CarouselHelper.WrappedCarouselLayoutManager;
+import com.google.android.material.carousel.CarouselStrategy.StrategyType;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -134,7 +135,8 @@ public class CarouselSnapHelperTest {
     // original snap distance if keylines stayed the same) minus the difference in focal keyline
     // location between keyline states.
     KeylineStateList stateList =
-        KeylineStateList.from(layoutManager, getTestCenteredKeylineState(), 0, 0, 0);
+        KeylineStateList.from(
+            layoutManager, getTestCenteredKeylineState(), 0, 0, 0, StrategyType.CONTAINED);
     KeylineState target1 =
         stateList.getShiftedState(
             horizontalScrollBefore,

@@ -304,8 +304,8 @@ public final class DynamicColor {
       double expansionDir = scheme.isDark ? 1 : -1;
 
       // 1st round: solve to min, each
-      double nContrast = nearer.contrastCurve.getContrast(scheme.contrastLevel);
-      double fContrast = farther.contrastCurve.getContrast(scheme.contrastLevel);
+      double nContrast = nearer.contrastCurve.get(scheme.contrastLevel);
+      double fContrast = farther.contrastCurve.get(scheme.contrastLevel);
 
       // If a color is good enough, it is not adjusted.
       // Initial and adjusted tones for `nearer`
@@ -385,7 +385,7 @@ public final class DynamicColor {
 
       double bgTone = background.apply(scheme).getTone(scheme);
 
-      double desiredRatio = contrastCurve.getContrast(scheme.contrastLevel);
+      double desiredRatio = contrastCurve.get(scheme.contrastLevel);
 
       if (Contrast.ratioOfTones(bgTone, answer) >= desiredRatio) {
         // Don't "improve" what's good enough.

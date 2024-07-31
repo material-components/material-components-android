@@ -17,6 +17,7 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.progressindicator.CircularProgressIndicator.INDETERMINATE_ANIMATION_TYPE_RETREAT;
 import static com.google.android.material.progressindicator.LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS;
 
 import android.animation.ObjectAnimator;
@@ -123,7 +124,9 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
             context,
             /* baseSpec= */ spec,
             drawingDelegate,
-            new CircularIndeterminateAnimatorDelegate(spec));
+            spec.indeterminateAnimationType == INDETERMINATE_ANIMATION_TYPE_RETREAT
+                ? new CircularIndeterminateRetreatAnimatorDelegate(context, spec)
+                : new CircularIndeterminateAdvanceAnimatorDelegate(spec));
     indeterminateDrawable.setStaticDummyDrawable(
         VectorDrawableCompat.create(context.getResources(), R.drawable.indeterminate_static, null));
     return indeterminateDrawable;
@@ -200,8 +203,14 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
     int gapSize = baseSpec.indicatorTrackGapSize;
     int trackAlpha = getAlpha();
+    boolean drawTrack =
+        baseSpec instanceof LinearProgressIndicatorSpec
+            || (baseSpec instanceof CircularProgressIndicatorSpec
+                && ((CircularProgressIndicatorSpec) baseSpec).indeterminateTrackVisible);
+    boolean drawFullTrack =
+        drawTrack && gapSize == 0 && !baseSpec.hasWavyEffect(/* isDeterminate= */ false);
 
-    if (gapSize == 0) {
+    if (drawFullTrack) {
       drawingDelegate.fillTrack(
           canvas,
           paint,
@@ -210,7 +219,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
           baseSpec.trackColor,
           trackAlpha,
           /* gapSize= */ 0);
-    } else {
+    } else if (drawTrack) {
+      // Draws the track with partial length.
       ActiveIndicator firstIndicator = animatorDelegate.activeIndicators.get(0);
       ActiveIndicator lastIndicator =
           animatorDelegate.activeIndicators.get(animatorDelegate.activeIndicators.size() - 1);
@@ -232,8 +242,8 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
             trackAlpha,
             gapSize);
       } else {
-        // TODO(b/316911565) Remove if decide not enforcing the track to be transparent.
-        trackAlpha = 0;
+        canvas.save();
+        canvas.rotate(lastIndicator.rotationDegree);
         drawingDelegate.fillTrack(
             canvas,
             paint,
@@ -242,6 +252,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
             baseSpec.trackColor,
             trackAlpha,
             gapSize);
+        canvas.restore();
       }
     }
 
@@ -250,11 +261,12 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
         indicatorIndex < animatorDelegate.activeIndicators.size();
         indicatorIndex++) {
       ActiveIndicator curIndicator = animatorDelegate.activeIndicators.get(indicatorIndex);
+      curIndicator.phaseFraction = getPhaseFraction();
       // Draws indicators.
       drawingDelegate.fillIndicator(canvas, paint, curIndicator, getAlpha());
 
       // Draws tracks between indicators.
-      if (indicatorIndex > 0 && gapSize > 0) {
+      if (indicatorIndex > 0 && !drawFullTrack && drawTrack) {
         ActiveIndicator prevIndicator = animatorDelegate.activeIndicators.get(indicatorIndex - 1);
         drawingDelegate.fillTrack(
             canvas,

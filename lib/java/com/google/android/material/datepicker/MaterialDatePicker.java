@@ -74,7 +74,7 @@ import java.util.LinkedHashSet;
  * developer guidance</a> and <a href="https://material.io/components/date-pickers/overview">design
  * guidelines</a>.
  */
-public final class MaterialDatePicker<S> extends DialogFragment {
+public class MaterialDatePicker<S> extends DialogFragment {
 
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
   private static final String DATE_SELECTOR_KEY = "DATE_SELECTOR_KEY";
@@ -321,8 +321,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     }
 
     headerSelectionText = root.findViewById(R.id.mtrl_picker_header_selection_text);
-    ViewCompat.setAccessibilityLiveRegion(
-        headerSelectionText, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+    headerSelectionText.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
     headerToggleButton = root.findViewById(R.id.mtrl_picker_header_toggle);
     headerTitleTextView = root.findViewById(R.id.mtrl_picker_title_text);
     initHeaderToggle(context);
@@ -345,17 +344,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       confirmButton.setContentDescription(
           getContext().getResources().getText(positiveButtonContentDescriptionResId));
     }
-    confirmButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
-                onPositiveButtonClickListeners) {
-              listener.onPositiveButtonClick(getSelection());
-            }
-            dismiss();
-          }
-        });
+    confirmButton.setOnClickListener(this::onPositiveButtonClick);
 
     Button cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
@@ -370,17 +359,33 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       cancelButton.setContentDescription(
           getContext().getResources().getText(negativeButtonContentDescriptionResId));
     }
-    cancelButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            for (View.OnClickListener listener : onNegativeButtonClickListeners) {
-              listener.onClick(v);
-            }
-            dismiss();
-          }
-        });
+    cancelButton.setOnClickListener(this::onNegativeButtonClick);
     return root;
+  }
+
+  /**
+   * Called when the positive button on the picker has been clicked.
+   *
+   * @param view The view that was clicked.
+   */
+  public void onPositiveButtonClick(@NonNull View view) {
+    for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
+        onPositiveButtonClickListeners) {
+      listener.onPositiveButtonClick(getSelection());
+    }
+    dismiss();
+  }
+
+  /**
+   * Called when the negative button on the picker has been clicked.
+   *
+   * @param view The view that was clicked.
+   */
+  public void onNegativeButtonClick(@NonNull View view) {
+    for (View.OnClickListener listener : onNegativeButtonClickListeners) {
+      listener.onClick(view);
+    }
+    dismiss();
   }
 
   @Override

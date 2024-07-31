@@ -23,7 +23,6 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.min;
 
 import android.content.Context;
-import android.content.res.Resources;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -36,7 +35,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -109,7 +107,8 @@ public class NavigationRailView extends NavigationBarView {
   private static final int DEFAULT_HEADER_GRAVITY = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
   static final int NO_ITEM_MINIMUM_HEIGHT = -1;
 
-  private final int topMargin;
+  private final int contentMarginTop;
+  private final int headerMarginBottom;
   @Nullable private View headerView;
   @Nullable private Boolean paddingTopSystemWindowInsets = null;
   @Nullable private Boolean paddingBottomSystemWindowInsets = null;
@@ -132,9 +131,6 @@ public class NavigationRailView extends NavigationBarView {
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
 
-    final Resources res = getResources();
-    topMargin = res.getDimensionPixelSize(R.dimen.mtrl_navigation_rail_margin);
-
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
@@ -142,6 +138,13 @@ public class NavigationRailView extends NavigationBarView {
     TintTypedArray attributes =
         ThemeEnforcement.obtainTintedStyledAttributes(
             context, attrs, R.styleable.NavigationRailView, defStyleAttr, defStyleRes);
+
+    contentMarginTop =
+        attributes.getDimensionPixelSize(R.styleable.NavigationRailView_contentMarginTop,
+            getResources().getDimensionPixelSize(R.dimen.mtrl_navigation_rail_margin));
+    headerMarginBottom =
+        attributes.getDimensionPixelSize(R.styleable.NavigationRailView_headerMarginBottom,
+            getResources().getDimensionPixelSize(R.dimen.mtrl_navigation_rail_margin));
 
     int headerLayoutRes = attributes.getResourceId(R.styleable.NavigationRailView_headerLayout, 0);
     if (headerLayoutRes != 0) {
@@ -186,6 +189,8 @@ public class NavigationRailView extends NavigationBarView {
         AnimationUtils.lerp(getItemPaddingBottom(), largeFontBottomPadding, progress);
     setItemPaddingTop(Math.round(topPadding));
     setItemPaddingBottom(Math.round(bottomPadding));
+    setItemSpacing(
+        attributes.getDimensionPixelSize(R.styleable.NavigationRailView_itemSpacing, 0));
 
     attributes.recycle();
 
@@ -228,7 +233,7 @@ public class NavigationRailView extends NavigationBarView {
    * fitsSystemWindow will be used.
    */
   private boolean shouldApplyWindowInsetPadding(Boolean paddingInsetFlag) {
-    return paddingInsetFlag != null ? paddingInsetFlag : ViewCompat.getFitsSystemWindows(this);
+    return paddingInsetFlag != null ? paddingInsetFlag : getFitsSystemWindows();
   }
 
   @Override
@@ -237,7 +242,8 @@ public class NavigationRailView extends NavigationBarView {
     super.onMeasure(minWidthSpec, heightMeasureSpec);
 
     if (isHeaderViewVisible()) {
-      int maxMenuHeight = getMeasuredHeight() - headerView.getMeasuredHeight() - topMargin;
+      int maxMenuHeight = getMeasuredHeight() - headerView.getMeasuredHeight() - contentMarginTop
+          - headerMarginBottom;
       int menuHeightSpec = MeasureSpec.makeMeasureSpec(maxMenuHeight, MeasureSpec.AT_MOST);
       measureChild(getNavigationRailMenuView(), minWidthSpec, menuHeightSpec);
     }
@@ -250,13 +256,13 @@ public class NavigationRailView extends NavigationBarView {
     NavigationRailMenuView menuView = getNavigationRailMenuView();
     int offsetY = 0;
     if (isHeaderViewVisible()) {
-      int usedTop = headerView.getBottom() + topMargin;
+      int usedTop = headerView.getBottom() + headerMarginBottom;
       int menuTop = menuView.getTop();
       if (menuTop < usedTop) {
         offsetY = usedTop - menuTop;
       }
     } else if (menuView.isTopGravity()) {
-      offsetY = topMargin;
+      offsetY = contentMarginTop;
     }
 
     if (offsetY > 0) {
@@ -297,7 +303,7 @@ public class NavigationRailView extends NavigationBarView {
 
     FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
     params.gravity = DEFAULT_HEADER_GRAVITY;
-    params.topMargin = topMargin;
+    params.topMargin = contentMarginTop;
     addView(headerView, /* index= */ 0, params);
   }
 
@@ -352,6 +358,20 @@ public class NavigationRailView extends NavigationBarView {
   public void setItemMinimumHeight(@Px int minHeight) {
     NavigationRailMenuView menuView = (NavigationRailMenuView) getMenuView();
     menuView.setItemMinimumHeight(minHeight);
+  }
+
+  /**
+   * Set the padding in between the navigation rail menu items.
+   */
+  public void setItemSpacing(@Px int itemSpacing) {
+    getNavigationRailMenuView().setItemSpacing(itemSpacing);
+  }
+
+  /**
+   * Get the padding in between the navigation rail menu items.
+   */
+  public int getItemSpacing() {
+    return getNavigationRailMenuView().getItemSpacing();
   }
 
   @Override

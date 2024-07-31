@@ -57,9 +57,7 @@ import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -78,8 +76,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Pools;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.PointerIconCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -552,7 +548,7 @@ public class TabLayout extends HorizontalScrollView {
       materialShapeDrawable.setFillColor(backgroundColorStateList);
       materialShapeDrawable.initializeElevationOverlay(context);
       materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
-      ViewCompat.setBackground(this, materialShapeDrawable);
+      setBackground(materialShapeDrawable);
     }
 
     setSelectedTabIndicator(
@@ -808,7 +804,7 @@ public class TabLayout extends HorizontalScrollView {
             || (position == getSelectedTabPosition());
     // If the layout direction is RTL, the scrollXForPosition and scrollX comparisons are
     // reversed since scrollX values remain the same in RTL but tab positions go RTL.
-    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
       toMove =
           (position < getSelectedTabPosition() && scrollXForPosition <= scrollX)
               || (position > getSelectedTabPosition()
@@ -1193,7 +1189,7 @@ public class TabLayout extends HorizontalScrollView {
   public void setSelectedTabIndicatorGravity(@TabIndicatorGravity int indicatorGravity) {
     if (tabIndicatorGravity != indicatorGravity) {
       tabIndicatorGravity = indicatorGravity;
-      ViewCompat.postInvalidateOnAnimation(slidingTabIndicator);
+      slidingTabIndicator.postInvalidateOnAnimation();
     }
   }
 
@@ -1271,7 +1267,7 @@ public class TabLayout extends HorizontalScrollView {
   public void setTabIndicatorFullWidth(boolean tabIndicatorFullWidth) {
     this.tabIndicatorFullWidth = tabIndicatorFullWidth;
     slidingTabIndicator.jumpIndicatorToSelectedPosition();
-    ViewCompat.postInvalidateOnAnimation(slidingTabIndicator);
+    slidingTabIndicator.postInvalidateOnAnimation();
   }
 
   /**
@@ -1443,8 +1439,8 @@ public class TabLayout extends HorizontalScrollView {
   /**
    * Sets the ripple color for this TabLayout.
    *
-   * <p>When running on devices with KitKat or below, we draw this color as a filled overlay rather
-   * than a ripple.
+   * <p>When running on devices with KitKat, we draw this color as a filled overlay rather than a
+   * ripple.
    *
    * @param color color (or ColorStateList) to use for the ripple
    * @attr ref com.google.android.material.R.styleable#TabLayout_tabRippleColor
@@ -1465,8 +1461,8 @@ public class TabLayout extends HorizontalScrollView {
   /**
    * Sets the ripple color resource for this TabLayout.
    *
-   * <p>When running on devices with KitKat or below, we draw this color as a filled overlay rather
-   * than a ripple.
+   * <p>When running on devices with KitKat, we draw this color as a filled overlay rather than a
+   * ripple.
    *
    * @param tabRippleColorResourceId A color resource to use as ripple color.
    * @see #getTabRippleColor()
@@ -1923,9 +1919,7 @@ public class TabLayout extends HorizontalScrollView {
       return;
     }
 
-    if (getWindowToken() == null
-        || !ViewCompat.isLaidOut(this)
-        || slidingTabIndicator.childrenNeedLayout()) {
+    if (getWindowToken() == null || !isLaidOut() || slidingTabIndicator.childrenNeedLayout()) {
       // If we don't have a window token, or we haven't been laid out yet just draw the new
       // position now
       setScrollPosition(newPosition, 0f, true);
@@ -2081,7 +2075,7 @@ public class TabLayout extends HorizontalScrollView {
       // offset amount: fraction of the distance between centers of tabs
       int scrollOffset = (int) ((selectedWidth + nextWidth) * 0.5f * positionOffset);
 
-      return (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR)
+      return (getLayoutDirection() == View.LAYOUT_DIRECTION_LTR)
           ? scrollBase + scrollOffset
           : scrollBase - scrollOffset;
     }
@@ -2094,7 +2088,7 @@ public class TabLayout extends HorizontalScrollView {
       // If we're scrollable, or fixed at start, inset using padding
       paddingStart = Math.max(0, contentInsetStart - tabPaddingStart);
     }
-    ViewCompat.setPaddingRelative(slidingTabIndicator, paddingStart, 0, 0, 0);
+    slidingTabIndicator.setPaddingRelative(paddingStart, 0, 0, 0);
 
     switch (mode) {
       case MODE_AUTO:
@@ -2127,7 +2121,7 @@ public class TabLayout extends HorizontalScrollView {
                 + " instead");
         // Fall through
       case GRAVITY_START:
-        slidingTabIndicator.setGravity(GravityCompat.START);
+        slidingTabIndicator.setGravity(Gravity.START);
         break;
       default:
         break;
@@ -2316,12 +2310,6 @@ public class TabLayout extends HorizontalScrollView {
         parent.updateTabViews(true);
       }
       updateView();
-      if (BadgeUtils.USE_COMPAT_PARENT
-          && view.hasBadgeDrawable()
-          && view.badgeDrawable.isVisible()) {
-        // Invalidate the TabView if icon visibility has changed and a badge is displayed.
-        view.invalidate();
-      }
       return this;
     }
 
@@ -2426,12 +2414,6 @@ public class TabLayout extends HorizontalScrollView {
         parent.updateTabViews(true);
       }
       this.updateView();
-      if (BadgeUtils.USE_COMPAT_PARENT
-          && view.hasBadgeDrawable()
-          && view.badgeDrawable.isVisible()) {
-        // Invalidate the TabView if label visibility has changed and a badge is displayed.
-        view.invalidate();
-      }
       return this;
     }
 
@@ -2550,8 +2532,7 @@ public class TabLayout extends HorizontalScrollView {
     public TabView(@NonNull Context context) {
       super(context);
       updateBackgroundDrawable(context);
-      ViewCompat.setPaddingRelative(
-          this, tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
+      setPaddingRelative(tabPaddingStart, tabPaddingTop, tabPaddingEnd, tabPaddingBottom);
       setGravity(Gravity.CENTER);
       setOrientation(inlineLabel ? HORIZONTAL : VERTICAL);
       setClickable(true);
@@ -2600,7 +2581,7 @@ public class TabLayout extends HorizontalScrollView {
       } else {
         background = contentDrawable;
       }
-      ViewCompat.setBackground(this, background);
+      setBackground(background);
       TabLayout.this.invalidate();
     }
 
@@ -2656,11 +2637,6 @@ public class TabLayout extends HorizontalScrollView {
       final boolean changed = isSelected() != selected;
 
       super.setSelected(selected);
-
-      if (changed && selected && Build.VERSION.SDK_INT < 16) {
-        // Pre-JB we need to manually send the TYPE_VIEW_SELECTED event
-        sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
-      }
 
       // Always dispatch this to the child views, regardless of whether the value has
       // changed
@@ -2721,6 +2697,9 @@ public class TabLayout extends HorizontalScrollView {
       // We need to switch the text size based on whether the text is spanning 2 lines or not
       if (textView != null) {
         float textSize = tabTextSize;
+        if (isSelected() && selectedTabTextAppearance != -1) {
+          textSize = selectedTabTextSize;
+        }
         int maxLines = defaultMaxLines;
 
         if (iconView != null && iconView.getVisibility() == VISIBLE) {
@@ -2733,7 +2712,7 @@ public class TabLayout extends HorizontalScrollView {
 
         final float curTextSize = textView.getTextSize();
         final int curLineCount = textView.getLineCount();
-        final int curMaxLines = TextViewCompat.getMaxLines(textView);
+        final int curMaxLines = textView.getMaxLines();
 
         if (textSize != curTextSize || (curMaxLines >= 0 && maxLines != curMaxLines)) {
           // We've got a new text size and/or max lines...
@@ -2802,7 +2781,7 @@ public class TabLayout extends HorizontalScrollView {
 
         customTextView = custom.findViewById(android.R.id.text1);
         if (customTextView != null) {
-          defaultMaxLines = TextViewCompat.getMaxLines(customTextView);
+          defaultMaxLines = customTextView.getMaxLines();
         }
         customIconView = custom.findViewById(android.R.id.icon);
       } else {
@@ -2822,7 +2801,7 @@ public class TabLayout extends HorizontalScrollView {
         }
         if (this.textView == null) {
           inflateAndAddDefaultTextView();
-          defaultMaxLines = TextViewCompat.getMaxLines(this.textView);
+          defaultMaxLines = this.textView.getMaxLines();
         }
         TextViewCompat.setTextAppearance(this.textView, defaultTabTextAppearance);
         if (isSelected() && selectedTabTextAppearance != -1) {
@@ -2859,39 +2838,19 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     private void inflateAndAddDefaultIconView() {
-      ViewGroup iconViewParent = this;
-      if (BadgeUtils.USE_COMPAT_PARENT) {
-        iconViewParent = createPreApi18BadgeAnchorRoot();
-        addView(iconViewParent, 0);
-      }
       this.iconView =
           (ImageView)
               LayoutInflater.from(getContext())
-                  .inflate(R.layout.design_layout_tab_icon, iconViewParent, false);
-      iconViewParent.addView(iconView, 0);
+                  .inflate(R.layout.design_layout_tab_icon, this, false);
+      addView(iconView, 0);
     }
 
     private void inflateAndAddDefaultTextView() {
-      ViewGroup textViewParent = this;
-      if (BadgeUtils.USE_COMPAT_PARENT) {
-        textViewParent = createPreApi18BadgeAnchorRoot();
-        addView(textViewParent);
-      }
       this.textView =
           (TextView)
               LayoutInflater.from(getContext())
-                  .inflate(R.layout.design_layout_tab_text, textViewParent, false);
-      textViewParent.addView(textView);
-    }
-
-    @NonNull
-    private FrameLayout createPreApi18BadgeAnchorRoot() {
-      FrameLayout frameLayout = new FrameLayout(getContext());
-      FrameLayout.LayoutParams layoutparams =
-          new FrameLayout.LayoutParams(
-              ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-      frameLayout.setLayoutParams(layoutparams);
-      return frameLayout;
+                  .inflate(R.layout.design_layout_tab_text, this, false);
+      addView(textView);
     }
 
     /**
@@ -2987,8 +2946,7 @@ public class TabLayout extends HorizontalScrollView {
       }
       if (anchorView != null) {
         clipViewToPaddingForBadge(false);
-        BadgeUtils.attachBadgeDrawable(
-            badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
+        BadgeUtils.attachBadgeDrawable(badgeDrawable, anchorView, null);
         badgeAnchorView = anchorView;
       }
     }
@@ -3075,8 +3033,8 @@ public class TabLayout extends HorizontalScrollView {
           iconMargin = (int) ViewUtils.dpToPx(getContext(), DEFAULT_GAP_TEXT_ICON);
         }
         if (inlineLabel) {
-          if (iconMargin != MarginLayoutParamsCompat.getMarginEnd(lp)) {
-            MarginLayoutParamsCompat.setMarginEnd(lp, iconMargin);
+          if (iconMargin != lp.getMarginEnd()) {
+            lp.setMarginEnd(iconMargin);
             lp.bottomMargin = 0;
             // Calls resolveLayoutParams(), necessary for layout direction
             iconView.setLayoutParams(lp);
@@ -3085,7 +3043,7 @@ public class TabLayout extends HorizontalScrollView {
         } else {
           if (iconMargin != lp.bottomMargin) {
             lp.bottomMargin = iconMargin;
-            MarginLayoutParamsCompat.setMarginEnd(lp, 0);
+            lp.setMarginEnd(0);
             // Calls resolveLayoutParams(), necessary for layout direction
             iconView.setLayoutParams(lp);
             iconView.requestLayout();
@@ -3103,20 +3061,12 @@ public class TabLayout extends HorizontalScrollView {
     private void tryUpdateBadgeDrawableBounds(@NonNull View anchor) {
       // Check that this view is the badge's current anchor view.
       if (hasBadgeDrawable() && anchor == badgeAnchorView) {
-        BadgeUtils.setBadgeDrawableBounds(badgeDrawable, anchor, getCustomParentForBadge(anchor));
+        BadgeUtils.setBadgeDrawableBounds(badgeDrawable, anchor, null);
       }
     }
 
     private boolean hasBadgeDrawable() {
       return badgeDrawable != null;
-    }
-
-    @Nullable
-    private FrameLayout getCustomParentForBadge(@NonNull View anchor) {
-      if (anchor != iconView && anchor != textView) {
-        return null;
-      }
-      return BadgeUtils.USE_COMPAT_PARENT ? ((FrameLayout) anchor.getParent()) : null;
     }
 
     /**
@@ -3372,7 +3322,7 @@ public class TabLayout extends HorizontalScrollView {
             -1, tabSelectedIndicator.getBounds().top, -1, tabSelectedIndicator.getBounds().bottom);
       }
 
-      ViewCompat.postInvalidateOnAnimation(this);
+      postInvalidateOnAnimation();
     }
 
     /**

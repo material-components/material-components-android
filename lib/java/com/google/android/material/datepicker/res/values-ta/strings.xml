@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@
   <string name="mtrl_picker_toggle_to_day_selection">கேலெண்டர் காட்சிக்கு மாற தட்டவும்</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">தற்போதைய தேர்வு: %1$s</string>
-  <string name="mtrl_picker_announce_current_range_selection">தொடங்கும் தேதியைத் தேர்ந்தெடுங்கள்: %1$s – முடியும் தேதியைத் தேர்ந்தெடுங்கள்: %2$s</string>
+  <string name="mtrl_picker_announce_current_range_selection">தேர்ந்தெடுத்த தொடக்கத் தேதி: %1$s – தேர்ந்தெடுத்த முடிவுத் தேதி: %2$s</string>
   <string name="mtrl_picker_announce_current_selection_none">எதுவுமில்லை</string>
   <string name="mtrl_picker_navigate_to_year_description">%1$d ஆம் ஆண்டிற்குச் செல்லும்</string>
   <string name="mtrl_picker_navigate_to_current_year_description">தற்போதைய வருடத்திற்கு (%1$d) செல்லும்</string>

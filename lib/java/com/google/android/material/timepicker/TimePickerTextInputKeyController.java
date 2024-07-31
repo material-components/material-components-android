@@ -112,7 +112,9 @@ class TimePickerTextInputKeyController implements OnEditorActionListener, OnKeyL
       return true;
     }
 
-    clearPrefilledText(editText);
+    if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
+      clearPrefilledText(editText);
+    }
 
     return false;
   }
@@ -135,7 +137,9 @@ class TimePickerTextInputKeyController implements OnEditorActionListener, OnKeyL
       return true;
     }
 
-    clearPrefilledText(editText);
+    if (keyCode >= KeyEvent.KEYCODE_0 && keyCode <= KeyEvent.KEYCODE_9) {
+      clearPrefilledText(editText);
+    }
 
     return false;
   }

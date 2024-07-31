@@ -300,9 +300,9 @@ class TransitionUtils {
     return new Rect(view.getLeft(), view.getTop(), view.getRight(), view.getBottom());
   }
 
-  static RectF getLocationOnScreen(View view) {
+  static RectF getLocationInWindow(View view) {
     int[] location = new int[2];
-    view.getLocationOnScreen(location);
+    view.getLocationInWindow(location);
     int left = location[0];
     int top = location[1];
     int right = left + view.getWidth();

@@ -54,8 +54,9 @@
       android:layout_weight="1"
       android:paddingStart="@dimen/mtrl_calendar_header_text_padding"
       android:paddingLeft="@dimen/mtrl_calendar_header_text_padding"
-      android:focusable="true"
-      android:focusableInTouchMode="true">
+      android:importantForAccessibility="yes"
+      android:focusable="false"
+      android:focusableInTouchMode="false">
 
       <TextView
         android:id="@+id/mtrl_picker_title_text"

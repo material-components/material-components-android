@@ -28,7 +28,7 @@ import org.robolectric.annotation.Config;
  * Tests for {@link ViewScheduler}.
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 19)
+@Config(sdk = Config.OLDEST_SDK)
 public class ViewSchedulerTest {
 
   private ViewScheduler viewScheduler;

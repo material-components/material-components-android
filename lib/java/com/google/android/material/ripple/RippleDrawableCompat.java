@@ -28,9 +28,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.graphics.drawable.TintAwareDrawable;
+import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
+import com.google.android.material.shape.StateListShapeAppearanceModel;
 
 /**
  * A compat {@link Drawable} that is used to provide an overlay for pressed, focused, and hovered
@@ -93,6 +95,25 @@ public class RippleDrawableCompat extends Drawable implements Shapeable, TintAwa
   @NonNull
   public ShapeAppearanceModel getShapeAppearanceModel() {
     return drawableState.delegate.getShapeAppearanceModel();
+  }
+
+  public void setStateListShapeAppearanceModel(
+      @NonNull StateListShapeAppearanceModel stateListShapeAppearanceModel) {
+    drawableState.delegate.setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
+  }
+
+  @Nullable
+  public StateListShapeAppearanceModel getStateListShapeAppearanceModel() {
+    return drawableState.delegate.getStateListShapeAppearanceModel();
+  }
+
+  public void setCornerSpringForce(@NonNull SpringForce springForce) {
+    drawableState.delegate.setCornerSpringForce(springForce);
+  }
+
+  @Nullable
+  public SpringForce getCornerSpringForce() {
+    return drawableState.delegate.getCornerSpringForce();
   }
 
   /*

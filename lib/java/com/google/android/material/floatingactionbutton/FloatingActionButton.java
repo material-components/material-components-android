@@ -323,7 +323,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   /**
    * Sets the ripple color for this button.
    *
-   * <p>When running on devices with KitKat or below, we draw this color as a filled circle rather
+   * <p>When running on devices with KitKat, we draw this color as a filled circle rather
    * than a ripple.
    *
    * @param color ARGB color to use for the ripple
@@ -337,7 +337,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   /**
    * Sets the ripple color for this button.
    *
-   * <p>When running on devices with KitKat or below, we draw this color as a filled circle rather
+   * <p>When running on devices with KitKat, we draw this color as a filled circle rather
    * than a ripple.
    *
    * @param color color state list to use for the ripple
@@ -887,7 +887,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   @Deprecated
   public boolean getContentRect(@NonNull Rect rect) {
-    if (ViewCompat.isLaidOut(this)) {
+    if (isLaidOut()) {
       rect.set(0, 0, getWidth(), getHeight());
       offsetRectWithShadow(rect);
       return true;

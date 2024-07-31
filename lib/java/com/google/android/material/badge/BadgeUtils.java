@@ -47,8 +47,6 @@ import com.google.android.material.internal.ToolbarUtils;
 @ExperimentalBadgeUtils
 public class BadgeUtils {
 
-  public static final boolean USE_COMPAT_PARENT = VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2;
-
   private static final String LOG_TAG = "BadgeUtils";
 
   private BadgeUtils() {
@@ -80,9 +78,9 @@ public class BadgeUtils {
 
   /**
    * Attaches a BadgeDrawable to its associated anchor and update the BadgeDrawable's coordinates
-   * based on the anchor. For API 18+, the BadgeDrawable will be added as a view overlay. For
-   * pre-API 18, the BadgeDrawable will be set as the foreground of a FrameLayout that is an
-   * ancestor of the anchor.
+   * based on the anchor. The BadgeDrawable will be added as a view overlay as default. If it has a
+   * FrameLayout custom parent that is an ancestor of the anchor, then the BadgeDrawable will be set
+   * as the foreground of that.
    */
   public static void attachBadgeDrawable(
       @NonNull BadgeDrawable badgeDrawable,
@@ -93,11 +91,7 @@ public class BadgeUtils {
     if (badgeDrawable.getCustomBadgeParent() != null) {
       badgeDrawable.getCustomBadgeParent().setForeground(badgeDrawable);
     } else {
-      if (USE_COMPAT_PARENT) {
-        throw new IllegalArgumentException("Trying to reference null customBadgeParent");
-      } else {
-        anchor.getOverlay().add(badgeDrawable);
-      }
+      anchor.getOverlay().add(badgeDrawable);
     }
   }
 
@@ -117,9 +111,9 @@ public class BadgeUtils {
   /**
    * Attaches a BadgeDrawable to its associated action menu item on a toolbar, update the
    * BadgeDrawable's coordinates based on this anchor and adjust the BadgeDrawable's offset so it is
-   * not clipped off by the toolbar. For API 18+, the BadgeDrawable will be added as a view overlay.
-   * For pre-API 18, the BadgeDrawable will be set as the foreground of a FrameLayout that is an
-   * ancestor of the anchor.
+   * not clipped off by the toolbar. The BadgeDrawable will be added as a view overlay as default.
+   * If it has a FrameLayout custom parent that is an ancestor of the anchor, then the BadgeDrawable
+   * will be set as the foreground of that.
    *
    * <p>Menu item views are reused by the menu, so any structural changes to the menu may require
    * detaching the BadgeDrawable and re-attaching it to the correct item.
@@ -173,16 +167,16 @@ public class BadgeUtils {
   }
 
   /**
-   * Detaches a BadgeDrawable from its associated anchor. For API 18+, the BadgeDrawable will be
-   * removed from its anchor's ViewOverlay. For pre-API 18, the BadgeDrawable will be removed from
-   * the foreground of a FrameLayout that is an ancestor of the anchor.
+   * Detaches a BadgeDrawable from its associated anchor. The BadgeDrawable will be removed from its
+   * anchor's ViewOverlay. If it has a FrameLayout custom parent that is an ancestor of the anchor,
+   * then the BadgeDrawable will be removed from the parent's foreground instead.
    */
   public static void detachBadgeDrawable(
       @Nullable BadgeDrawable badgeDrawable, @NonNull View anchor) {
     if (badgeDrawable == null) {
       return;
     }
-    if (USE_COMPAT_PARENT || badgeDrawable.getCustomBadgeParent() != null) {
+    if (badgeDrawable.getCustomBadgeParent() != null) {
       badgeDrawable.getCustomBadgeParent().setForeground(null);
     } else {
       anchor.getOverlay().remove(badgeDrawable);
@@ -190,9 +184,10 @@ public class BadgeUtils {
   }
 
   /**
-   * Detaches a BadgeDrawable from its associated action menu item on a toolbar, For API 18+, the
-   * BadgeDrawable will be removed from its anchor's ViewOverlay. For pre-API 18, the BadgeDrawable
-   * will be removed from the foreground of a FrameLayout that is an ancestor of the anchor.
+   * Detaches a BadgeDrawable from its associated action menu item on a toolbar, The BadgeDrawable
+   * will be removed from its anchor's ViewOverlay. If it has a FrameLayout custom parent that is an
+   * ancestor of the anchor, then the BadgeDrawable will be removed from the parent's foreground
+   * instead.
    */
   public static void detachBadgeDrawable(
       @Nullable BadgeDrawable badgeDrawable, @NonNull Toolbar toolbar, @IdRes int menuItemId) {
@@ -243,8 +238,8 @@ public class BadgeUtils {
   }
 
   /**
-   * Sets the bounds of a BadgeDrawable to match the bounds of its anchor (for API 18+) or its
-   * anchor's FrameLayout ancestor (pre-API 18).
+   * Sets the bounds of a BadgeDrawable to match the bounds of its anchor or its anchor's
+   * FrameLayout ancestor if it has a custom parent set.
    */
   public static void setBadgeDrawableBounds(
       @NonNull BadgeDrawable badgeDrawable,

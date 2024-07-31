@@ -16,12 +16,12 @@ a single subject.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using cards](#using-cards)
 *   [Card](#card)
 *   [Theming](#theming-cards)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/cards/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/card/package-summary)

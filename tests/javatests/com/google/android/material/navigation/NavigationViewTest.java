@@ -15,7 +15,6 @@
  */
 package com.google.android.material.navigation;
 
-import static android.os.Build.VERSION_CODES.KITKAT;
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -732,11 +731,6 @@ public class NavigationViewTest {
 
   @Test
   public void testAccessibility() throws Throwable {
-    if (VERSION.SDK_INT < KITKAT) {
-      // CollectionInfo and CollectionItemInfo only available on API 19+.
-      return;
-    }
-
     // Open our drawer
     onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
 

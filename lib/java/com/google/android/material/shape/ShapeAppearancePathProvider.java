@@ -17,6 +17,7 @@
 package com.google.android.material.shape;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.shape.ShapeAppearanceModel.NUM_CORNERS;
 
 import android.graphics.Matrix;
 import android.graphics.Path;
@@ -24,16 +25,18 @@ import android.graphics.Path.Direction;
 import android.graphics.Path.Op;
 import android.graphics.PointF;
 import android.graphics.RectF;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.UiThread;
 
 /** A class to convert a {@link ShapeAppearanceModel} to a {@link android.graphics.Path}. */
 public class ShapeAppearancePathProvider {
+
+  protected static final int TOP_RIGHT_CORNER_INDEX = 0;
+  protected static final int BOTTOM_RIGHT_CORNER_INDEX = 1;
+  protected static final int BOTTOM_LEFT_CORNER_INDEX = 2;
+  protected static final int TOP_LEFT_CORNER_INDEX = 3;
 
   private static class Lazy {
     static final ShapeAppearancePathProvider INSTANCE = new ShapeAppearancePathProvider();
@@ -41,6 +44,8 @@ public class ShapeAppearancePathProvider {
 
   /**
    * Listener called every time a {@link ShapePath} is created for a corner or an edge treatment.
+   *
+   * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
   public interface PathListener {
@@ -52,9 +57,9 @@ public class ShapeAppearancePathProvider {
 
   // Inter-method state. This class works under the assumption that there is only one exposed
   // method, the method is responsible for correctly reset state.
-  private final ShapePath[] cornerPaths = new ShapePath[4];
-  private final Matrix[] cornerTransforms = new Matrix[4];
-  private final Matrix[] edgeTransforms = new Matrix[4];
+  private final ShapePath[] cornerPaths = new ShapePath[NUM_CORNERS];
+  private final Matrix[] cornerTransforms = new Matrix[NUM_CORNERS];
+  private final Matrix[] edgeTransforms = new Matrix[NUM_CORNERS];
 
   // Pre-allocated objects that are re-used several times during path computation and rendering.
   private final PointF pointF = new PointF();
@@ -69,13 +74,14 @@ public class ShapeAppearancePathProvider {
   private boolean edgeIntersectionCheckEnabled = true;
 
   public ShapeAppearancePathProvider() {
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < NUM_CORNERS; i++) {
       cornerPaths[i] = new ShapePath();
       cornerTransforms[i] = new Matrix();
       edgeTransforms[i] = new Matrix();
     }
   }
 
+  /** @hide */
   @UiThread
   @RestrictTo(LIBRARY_GROUP)
   @NonNull
@@ -107,10 +113,39 @@ public class ShapeAppearancePathProvider {
    * @param bounds the desired bounds for the path.
    * @param pathListener the path
    * @param path the returned path out-var.
+   * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
   public void calculatePath(
       ShapeAppearanceModel shapeAppearanceModel,
+      float interpolation,
+      RectF bounds,
+      PathListener pathListener,
+      @NonNull Path path) {
+    calculatePath(
+        shapeAppearanceModel,
+        /* cornerSizeOverrides= */ null,
+        interpolation,
+        bounds,
+        pathListener,
+        path);
+  }
+
+  /**
+   * Writes the given {@link ShapeAppearanceModel} to {@code path}
+   *
+   * @param shapeAppearanceModel The shape to be applied in the path.
+   * @param cornerSizeOverrides the corner sizes to overload the ones from shapeAppearanceModel.
+   * @param interpolation the desired interpolation.
+   * @param bounds the desired bounds for the path.
+   * @param pathListener the path
+   * @param path the returned path out-var.
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void calculatePath(
+      @NonNull ShapeAppearanceModel shapeAppearanceModel,
+      @Nullable float[] cornerSizeOverrides,
       float interpolation,
       RectF bounds,
       PathListener pathListener,
@@ -125,12 +160,12 @@ public class ShapeAppearancePathProvider {
 
     // Calculate the transformations (rotations and translations) necessary for each edge and
     // corner treatment.
-    for (int index = 0; index < 4; index++) {
-      setCornerPathAndTransform(spec, index);
+    for (int index = 0; index < NUM_CORNERS; index++) {
+      setCornerPathAndTransform(spec, index, cornerSizeOverrides);
       setEdgePathAndTransform(index);
     }
 
-    for (int index = 0; index < 4; index++) {
+    for (int index = 0; index < NUM_CORNERS; index++) {
       appendCornerPath(spec, index);
       appendEdgePath(spec, index);
     }
@@ -139,15 +174,19 @@ public class ShapeAppearancePathProvider {
     overlappedEdgePath.close();
 
     // Union with the edge paths that had an intersection to handle overlaps.
-    if (VERSION.SDK_INT >= VERSION_CODES.KITKAT && !overlappedEdgePath.isEmpty()) {
+    if (!overlappedEdgePath.isEmpty()) {
       path.op(overlappedEdgePath, Op.UNION);
     }
   }
 
-  private void setCornerPathAndTransform(@NonNull ShapeAppearancePathSpec spec, int index) {
-    CornerSize size = getCornerSizeForIndex(index, spec.shapeAppearanceModel);
+  private void setCornerPathAndTransform(
+      @NonNull ShapeAppearancePathSpec spec, int index, @Nullable float[] cornerSizes) {
+    CornerSize cornerSize =
+        cornerSizes == null
+            ? getCornerSizeForIndex(index, spec.shapeAppearanceModel)
+            : new ClampedCornerSize(cornerSizes[index]);
     getCornerTreatmentForIndex(index, spec.shapeAppearanceModel)
-        .getCornerPath(cornerPaths[index], 90, spec.interpolation, spec.bounds, size);
+        .getCornerPath(cornerPaths[index], 90, spec.interpolation, spec.bounds, cornerSize);
 
     float edgeAngle = angleOfEdge(index);
     cornerTransforms[index].reset();
@@ -202,7 +241,6 @@ public class ShapeAppearancePathProvider {
     shapePath.applyToPath(edgeTransforms[index], edgePath);
 
     if (edgeIntersectionCheckEnabled
-        && VERSION.SDK_INT >= VERSION_CODES.KITKAT
         && (edgeTreatment.forceIntersection()
             || pathOverlapsCorner(edgePath, index)
             || pathOverlapsCorner(edgePath, nextIndex))) {
@@ -229,16 +267,15 @@ public class ShapeAppearancePathProvider {
     }
   }
 
-  @RequiresApi(VERSION_CODES.KITKAT)
   private boolean pathOverlapsCorner(Path edgePath, int index) {
     cornerPath.reset();
     cornerPaths[index].applyToPath(cornerTransforms[index], cornerPath);
 
     RectF bounds = new RectF();
-    edgePath.computeBounds(bounds, /* exact = */ true);
-    cornerPath.computeBounds(bounds, /* exact = */ true);
+    edgePath.computeBounds(bounds, /* exact= */ true);
+    cornerPath.computeBounds(bounds, /* exact= */ true);
     edgePath.op(cornerPath, Op.INTERSECT);
-    edgePath.computeBounds(bounds, /* exact = */ true);
+    edgePath.computeBounds(bounds, /* exact= */ true);
 
     return !bounds.isEmpty() || (bounds.width() > 1 && bounds.height() > 1);
   }
@@ -273,8 +310,8 @@ public class ShapeAppearancePathProvider {
     }
   }
 
-  private CornerSize getCornerSizeForIndex(
-      int index, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
+  @NonNull
+  CornerSize getCornerSizeForIndex(int index, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
     switch (index) {
       case 1:
         return shapeAppearanceModel.getBottomRightCornerSize();

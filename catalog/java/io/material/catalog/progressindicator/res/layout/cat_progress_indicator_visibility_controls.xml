@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2024 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:showDividers="middle"
+    android:divider="@drawable/layout_divider">
+
+  <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/determinate_mode_switch"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:checked="true"
+      android:text="@string/cat_progress_indicator_set_to_determinate_mode"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_determinate_progress"/>
+  <com.google.android.material.slider.Slider
+      android:id="@+id/progress_slider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:valueFrom="0"
+      android:valueTo="100"
+      android:stepSize="1"/>
+
+  <com.google.android.material.textfield.TextInputLayout
+      style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/cat_progress_indicator_show_behavior">
+    <AutoCompleteTextView
+        android:id="@+id/showBehaviorDropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:text="@string/cat_progress_indicator_initial_behavior"
+        android:hint="@string/cat_progress_indicator_show_behavior"
+        app:simpleItems="@array/show_behaviors_array"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/cat_progress_indicator_hide_behavior">
+    <AutoCompleteTextView
+        android:id="@+id/hideBehaviorDropdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="none"
+        android:text="@string/cat_progress_indicator_initial_behavior"
+        android:hint="@string/cat_progress_indicator_hide_behavior"
+        app:simpleItems="@array/hide_behaviors_array"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <androidx.appcompat.widget.LinearLayoutCompat
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+    <Button
+        android:id="@+id/showButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="2dp"
+        android:text="@string/cat_progress_indicator_show"/>
+    <Button
+        android:id="@+id/hideButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_margin="2dp"
+        android:text="@string/cat_progress_indicator_hide"/>
+  </androidx.appcompat.widget.LinearLayoutCompat>
+
+</LinearLayout>
+

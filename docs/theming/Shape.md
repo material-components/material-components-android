@@ -19,7 +19,7 @@ mechanism with which to easily customize component shapes at the theme level.
 Shape theming offers a new dimension with which to customize the look and feel
 of your app.
 
-## Design & API documentation
+## Design and API Documentation
 
 -   [Material Design 3 guidelines: Shape](https://m3.material.io/styles/shape/overview)
 

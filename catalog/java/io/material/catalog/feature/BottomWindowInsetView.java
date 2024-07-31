@@ -49,7 +49,7 @@ public class BottomWindowInsetView extends View {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     ViewGroup parent = (ViewGroup) getParent();
-    while (parent != null && !ViewCompat.getFitsSystemWindows(parent)) {
+    while (parent != null && !parent.getFitsSystemWindows()) {
       parent = (ViewGroup) parent.getParent();
     }
 

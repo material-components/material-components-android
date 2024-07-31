@@ -263,6 +263,17 @@ public class SearchView extends FrameLayout
     super.onAttachedToWindow();
 
     MaterialShapeUtils.setParentAbsoluteElevation(this);
+    TransitionState state = getCurrentTransitionState();
+    updateModalForAccessibility(state);
+    updateListeningForBackCallbacks(state);
+  }
+
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+
+    setModalForAccessibility(/* isSearchViewModal= */ false);
+    backOrchestrator.stopListeningForBackCallbacks();
   }
 
   @Override
@@ -465,6 +476,7 @@ public class SearchView extends FrameLayout
       if (toolbar.getNavigationIconTint() != null) {
         DrawableCompat.setTint(navigationIconDrawable, toolbar.getNavigationIconTint());
       }
+      DrawableCompat.setLayoutDirection(navigationIconDrawable, getLayoutDirection());
       toolbar.setNavigationIcon(
           new FadeThroughDrawable(searchBar.getNavigationIcon(), navigationIconDrawable));
       updateNavigationIconProgressIfNeeded();
@@ -801,11 +813,7 @@ public class SearchView extends FrameLayout
     }
 
     if (updateModalForAccessibility) {
-      if (state == TransitionState.SHOWN) {
-        setModalForAccessibility(true);
-      } else if (state == TransitionState.HIDDEN) {
-        setModalForAccessibility(false);
-      }
+      updateModalForAccessibility(state);
     }
 
     TransitionState previousState = currentTransitionState;
@@ -816,6 +824,14 @@ public class SearchView extends FrameLayout
     }
 
     updateListeningForBackCallbacks(state);
+  }
+
+  private void updateModalForAccessibility(@NonNull TransitionState state) {
+    if (state == TransitionState.SHOWN) {
+      setModalForAccessibility(true);
+    } else if (state == TransitionState.HIDDEN) {
+      setModalForAccessibility(false);
+    }
   }
 
   private void updateListeningForBackCallbacks(@NonNull TransitionState state) {
@@ -937,7 +953,7 @@ public class SearchView extends FrameLayout
   public void setModalForAccessibility(boolean isSearchViewModal) {
     ViewGroup rootView = (ViewGroup) this.getRootView();
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && isSearchViewModal) {
+    if (isSearchViewModal) {
       childImportantForAccessibilityMap = new HashMap<>(rootView.getChildCount());
     }
     updateChildImportantForAccessibility(rootView, isSearchViewModal);
@@ -977,17 +993,13 @@ public class SearchView extends FrameLayout
         if (childImportantForAccessibilityMap != null
             && childImportantForAccessibilityMap.containsKey(child)) {
           // Restores the original important for accessibility value of the child view.
-          ViewCompat.setImportantForAccessibility(
-              child, childImportantForAccessibilityMap.get(child));
+          child.setImportantForAccessibility(childImportantForAccessibilityMap.get(child));
         }
       } else {
         // Saves the important for accessibility value of the child view.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          childImportantForAccessibilityMap.put(child, child.getImportantForAccessibility());
-        }
+        childImportantForAccessibilityMap.put(child, child.getImportantForAccessibility());
 
-        ViewCompat.setImportantForAccessibility(
-            child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        child.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
       }
     }
   }

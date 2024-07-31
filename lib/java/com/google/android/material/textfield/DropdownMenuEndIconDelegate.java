@@ -19,8 +19,6 @@ package com.google.android.material.textfield;
 import com.google.android.material.R;
 
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
-import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
-import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES;
 import static com.google.android.material.textfield.EditTextUtils.isEditable;
 
 import android.animation.Animator;
@@ -38,15 +36,14 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
 import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityEventCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.motion.MotionUtils;
@@ -81,9 +78,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private final TouchExplorationStateChangeListener touchExplorationStateChangeListener =
       (boolean enabled) -> {
         if (autoCompleteTextView != null && !isEditable(autoCompleteTextView)) {
-          ViewCompat.setImportantForAccessibility(
-              endIconView,
-              enabled ? IMPORTANT_FOR_ACCESSIBILITY_NO : IMPORTANT_FOR_ACCESSIBILITY_YES);
+          endIconView.setImportantForAccessibility(
+              enabled ? View.IMPORTANT_FOR_ACCESSIBILITY_NO : View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         }
       };
 
@@ -192,7 +188,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     setUpDropdownShowHideBehavior();
     textInputLayout.setErrorIconDrawable(null);
     if (!isEditable(editText) && accessibilityManager.isTouchExplorationEnabled()) {
-      ViewCompat.setImportantForAccessibility(endIconView, IMPORTANT_FOR_ACCESSIBILITY_NO);
+      endIconView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
     textInputLayout.setEndIconVisible(true);
   }

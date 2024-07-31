@@ -23,8 +23,8 @@ import static com.google.common.truth.Truth.assertThat;
 import android.os.Bundle;
 import android.os.Parcel;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
 import android.view.ViewGroup;
-import androidx.core.view.ViewCompat;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -58,7 +58,7 @@ public class SliderStateTest {
 
   private Slider addSlider(ActivityController<AppCompatActivity> controller) {
     Slider slider = new Slider(controller.get());
-    slider.setId(ViewCompat.generateViewId());
+    slider.setId(View.generateViewId());
     ViewGroup content = controller.get().findViewById(android.R.id.content);
     content.addView(slider);
     return slider;
