@@ -135,11 +135,20 @@
   <!-- These container colors are only meant to be used in component-level
        styles and resources as a means of indirection. They enable remapping
        to other attrs like primary, secondary, surface, etc. -->
-  <!-- Container background color. -->
+  <!-- Color to use for background container. -->
   <attr name="colorContainer" format="color"/>
+
+  <!-- Color to use for checkable background container in checked state. -->
+  <attr name="colorContainerChecked" format="color"/>
+
+  <!-- Color to use for checkable background container in unchecked state. -->
+  <attr name="colorContainerUnchecked" format="color"/>
 
   <!-- Color to use for foreground elements on top of colorContainer. -->
   <attr name="colorOnContainer" format="color"/>
+
+  <!-- Color to use for checkable foreground elements in checked state on top of colorContainer. -->
+  <attr name="colorOnContainerChecked" format="color"/>
 
   <!-- Color to use for checkable foreground elements in unchecked state on top of colorContainer. -->
   <attr name="colorOnContainerUnchecked" format="color"/>

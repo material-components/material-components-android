@@ -162,7 +162,6 @@
 
   <!-- M3 filled tonal button style. -->
   <style name="Widget.Material3.Button.TonalButton">
-    <item name="rippleColor">@color/m3_tonal_button_ripple_color_selector</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TonalButton</item>
   </style>
 
@@ -301,13 +300,21 @@
   <style name="ThemeOverlay.Material3.Button" parent="">
     <!-- The colors used by the color selectors -->
     <item name="colorOnContainer">@macro/m3_comp_filled_button_label_text_color</item>
+    <item name="colorOnContainerChecked">@macro/m3_comp_filled_button_label_text_color</item>
+    <item name="colorOnContainerUnchecked">@macro/m3_comp_filled_button_label_text_color</item>
     <item name="colorContainer">@macro/m3_comp_filled_button_container_color</item>
+    <item name="colorContainerChecked">@macro/m3_comp_filled_button_container_color</item>
+    <item name="colorContainerUnchecked">@macro/m3_comp_filled_button_container_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Button.TonalButton">
     <!-- The colors used by the color selectors -->
     <item name="colorOnContainer">@macro/m3_comp_filled_tonal_button_label_text_color</item>
+    <item name="colorOnContainerChecked">@macro/m3_comp_filled_tonal_button_label_text_color</item>
+    <item name="colorOnContainerUnchecked">@macro/m3_comp_filled_tonal_button_label_text_color</item>
     <item name="colorContainer">@macro/m3_comp_filled_tonal_button_container_color</item>
+    <item name="colorContainerChecked">@macro/m3_comp_filled_tonal_button_container_color</item>
+    <item name="colorContainerUnchecked">@macro/m3_comp_filled_tonal_button_container_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Button.TextButton" parent="">
@@ -324,6 +331,8 @@
   <style name="ThemeOverlay.Material3.Button.ElevatedButton" parent="ThemeOverlay.Material3.Button.TextButton">
     <!-- The colors used by the color selectors -->
     <item name="colorContainer">@macro/m3_comp_elevated_button_container_color</item>
+    <item name="colorContainerChecked">@macro/m3_comp_elevated_button_container_color</item>
+    <item name="colorContainerUnchecked">@macro/m3_comp_elevated_button_container_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Button.IconButton" parent="ThemeOverlay.Material3.Button.TextButton">

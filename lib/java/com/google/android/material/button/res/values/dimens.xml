@@ -85,6 +85,7 @@
 
   <dimen name="m3_btn_translation_z_base">0dp</dimen>
   <dimen name="m3_btn_translation_z_hovered">1dp</dimen>
+  <dimen name="m3_btn_elevated_translation_z_hovered">2dp</dimen>
   <dimen name="m3_btn_disabled_translation_z">0dp</dimen>
   <dimen name="m3_btn_disabled_elevation">0dp</dimen>
 

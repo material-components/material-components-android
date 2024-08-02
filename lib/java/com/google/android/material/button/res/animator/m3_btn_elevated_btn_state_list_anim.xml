@@ -22,6 +22,7 @@
         android:state_enabled="true"
         android:state_hovered="true">
       <set>
+        <!-- TODO(b/356201474) change valueTo to m3_btn_elevated_translation_z_hovered. -->
         <objectAnimator
             android:duration="@integer/m3_btn_anim_duration_ms"
             android:propertyName="translationZ"
