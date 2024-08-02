@@ -77,12 +77,11 @@ public class StateListCornerSize {
       @NonNull CornerSize defaultCornerSize) {
     int resourceId = attributes.getResourceId(index, 0);
     if (resourceId == ID_NULL) {
-      return create(defaultCornerSize);
+      return create(ShapeAppearanceModel.getCornerSize(attributes, index, defaultCornerSize));
     }
     String typeName = context.getResources().getResourceTypeName(resourceId);
     if (!typeName.equals("xml")) {
-      return StateListCornerSize.create(
-          ShapeAppearanceModel.getCornerSize(attributes, index, defaultCornerSize));
+      return create(ShapeAppearanceModel.getCornerSize(attributes, index, defaultCornerSize));
     }
     try (XmlResourceParser parser = context.getResources().getXml(resourceId)) {
       StateListCornerSize stateListCornerSize = new StateListCornerSize();
