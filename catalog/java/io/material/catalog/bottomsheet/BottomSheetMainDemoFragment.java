@@ -98,12 +98,12 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_content);
     // Opt in to perform swipe to dismiss animation when dismissing bottom sheet dialog.
     bottomSheetDialog.setDismissWithAnimation(true);
-    windowPreferencesManager.applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
     View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
     BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(peekHeightPx);
     View button = view.findViewById(R.id.bottomsheet_button);
     button.setOnClickListener(
         v -> {
+          windowPreferencesManager.applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
           bottomSheetDialog.show();
           bottomSheetDialog.setTitle(getText(R.string.cat_bottomsheet_title));
           Button button0 = bottomSheetInternal.findViewById(R.id.cat_bottomsheet_modal_button);
