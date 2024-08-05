@@ -478,6 +478,10 @@ public class MaterialDatePicker<S> extends DialogFragment {
             return insets;
           }
         });
+    ViewCompat.setOnApplyWindowInsetsListener(window.getDecorView(), (v, insets) -> {
+      v.setPadding(insets.getSystemWindowInsetLeft(), 0, insets.getSystemWindowInsetRight(), 0);
+      return insets;
+    });
     edgeToEdgeEnabled = true;
   }
 
