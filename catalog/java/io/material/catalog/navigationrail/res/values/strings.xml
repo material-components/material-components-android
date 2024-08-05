@@ -104,5 +104,5 @@
   <string name="cat_navigation_rail_fab_content_desc"
           description="Content description for a floating action button in the navigation rail.[CHAR_LIMIT=50]">Navigation Rail FAB</string>
 
-  <string name="cat_navigation_rail_compact_message" description="Usage guidance for Navigation Rail advising using a Bottom Navigation Bar on compact screens instead. [CHAR_LIMIT=50]">This demo is for demonstration purposes only. Use a Bottom Navigation Bar instead on compact screen sizes.</string>
+  <string name="cat_navigation_rail_compact_message" description="Usage guidance for Navigation Rail advising using a Bottom Navigation Bar on compact screens instead. [CHAR_LIMIT=NONE]">The orientation of this Navigation Rail demo has been locked to portrait mode, because landscape mode results in a compact height on this device. For any compact screen dimensions, use a Bottom Navigation Bar instead.</string>
 </resources>
