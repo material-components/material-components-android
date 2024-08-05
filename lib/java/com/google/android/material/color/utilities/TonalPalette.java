@@ -80,8 +80,6 @@ public final class TonalPalette {
    * @param tone HCT tone, measured from 0 to 100.
    * @return ARGB representation of a color with that tone.
    */
-  // AndroidJdkLibsChecker is higher priority than ComputeIfAbsentUseValue (b/119581923)
-  @SuppressWarnings("ComputeIfAbsentUseValue")
   public int tone(int tone) {
     Integer color = cache.get(tone);
     if (color == null) {
@@ -177,8 +175,13 @@ public final class TonalPalette {
 
     // Find the maximum chroma for a given tone
     private double maxChroma(int tone) {
-      return chromaCache.computeIfAbsent(
-          tone, (Integer key) -> Hct.from(hue, MAX_CHROMA_VALUE, key).getChroma());
+      if (chromaCache.get(tone) == null) {
+        Double newChroma = Hct.from(hue, MAX_CHROMA_VALUE, tone).getChroma();
+        if (newChroma != null) {
+          chromaCache.put(tone, newChroma);
+        }
+      }
+      return chromaCache.get(tone);
     }
   }
 }
