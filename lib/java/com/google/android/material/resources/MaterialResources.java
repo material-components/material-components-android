@@ -273,7 +273,7 @@ public class MaterialResources {
    * contain values, the first given index takes precedence and is returned.
    */
   @StyleableRes
-  public static int getIndexWithValue(
+  static int getIndexWithValue(
       @NonNull TypedArray attributes, @StyleableRes int a, @StyleableRes int b) {
     if (attributes.hasValue(a)) {
       return a;

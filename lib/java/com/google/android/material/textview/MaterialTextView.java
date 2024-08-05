@@ -24,13 +24,10 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleableRes;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.resources.MaterialResources;
@@ -112,84 +109,39 @@ public class MaterialTextView extends AppCompatTextView {
   public void setTextAppearance(@NonNull Context context, int resId) {
     super.setTextAppearance(context, resId);
 
-    boolean canApplyLineHeight = canApplyTextAppearanceLineHeight(context);
-    boolean canForceRefreshFontVariationSettings = VERSION.SDK_INT >= VERSION_CODES.O;
-    if (!canApplyLineHeight && !canForceRefreshFontVariationSettings) {
-      return;
+    if (canApplyTextAppearanceLineHeight(context)) {
+      applyLineHeightFromViewAppearance(context.getTheme(), resId);
     }
-
-    TypedArray appearance =
-        context.getTheme().obtainStyledAttributes(resId, R.styleable.MaterialTextAppearance);
-    if (canApplyLineHeight) {
-      applyLineHeightFromViewAppearance(appearance);
-    }
-    if (canForceRefreshFontVariationSettings) {
-      maybeForceApplyFontVariationSettingsFromViewAppearance(appearance);
-    }
-    appearance.recycle();
   }
 
   private void initialize(@Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     Context context = getContext();
-    final Resources.Theme theme = context.getTheme();
-    boolean canApplyLineHeight = canApplyTextAppearanceLineHeight(context)
-        && !viewAttrsHasLineHeight(context, theme, attrs, defStyleAttr, defStyleRes);
-    boolean canForceRefreshFontVariationSettings = VERSION.SDK_INT >= VERSION_CODES.O;
-    if (!canApplyLineHeight && !canForceRefreshFontVariationSettings) {
-      return;
-    }
 
-    int resId = findViewAppearanceResourceId(theme, attrs, defStyleAttr, defStyleRes);
-    if (resId == -1) {
-      return;
-    }
+    if (canApplyTextAppearanceLineHeight(context)) {
+      final Resources.Theme theme = context.getTheme();
 
-    TypedArray appearance =
-        context.getTheme().obtainStyledAttributes(resId, R.styleable.MaterialTextAppearance);
-    if (canApplyLineHeight) {
-      applyLineHeightFromViewAppearance(appearance);
+      if (!viewAttrsHasLineHeight(context, theme, attrs, defStyleAttr, defStyleRes)) {
+        int resId = findViewAppearanceResourceId(theme, attrs, defStyleAttr, defStyleRes);
+        if (resId != -1) {
+          applyLineHeightFromViewAppearance(theme, resId);
+        }
+      }
     }
-    if (canForceRefreshFontVariationSettings) {
-      maybeForceApplyFontVariationSettingsFromViewAppearance(appearance);
-    }
-    appearance.recycle();
   }
 
-  private void applyLineHeightFromViewAppearance(TypedArray appearance) {
+  private void applyLineHeightFromViewAppearance(@NonNull Theme theme, int resId) {
+    TypedArray attributes = theme.obtainStyledAttributes(resId, R.styleable.MaterialTextAppearance);
     int lineHeight =
         readFirstAvailableDimension(
             getContext(),
-            appearance,
+            attributes,
             R.styleable.MaterialTextAppearance_android_lineHeight,
             R.styleable.MaterialTextAppearance_lineHeight);
+    attributes.recycle();
+
     if (lineHeight >= 0) {
       setLineHeight(lineHeight);
-    }
-  }
-
-  /**
-   * Maybe read and set font variation settings from a TextAppearance.
-   *
-   * <p>This is a workaround for a bug in appcompat where fontVariationSettings set in a
-   * TextAppearance do not take effect.
-   *
-   * <p>TODO(b/264321145): Remove once AppCompatTextView fixes text appearance font variation
-   * support
-   */
-  @RequiresApi(VERSION_CODES.O)
-  private void maybeForceApplyFontVariationSettingsFromViewAppearance(TypedArray appearance) {
-    int fontVariationSettingsIndex =
-        MaterialResources.getIndexWithValue(
-            appearance,
-            R.styleable.MaterialTextAppearance_fontVariationSettings,
-            R.styleable.MaterialTextAppearance_android_fontVariationSettings);
-    String fontVariationSettings = appearance.getString(fontVariationSettingsIndex);
-    if (fontVariationSettings != null) {
-      // Clear the font variation settings to force TextView to reset the text Paint's
-      // settings.
-      setFontVariationSettings("");
-      setFontVariationSettings(fontVariationSettings);
     }
   }
 

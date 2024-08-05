@@ -364,8 +364,6 @@ public class TextAppearance {
     textPaint.setTextSize(textSize);
 
     if (VERSION.SDK_INT >= VERSION_CODES.O) {
-      // TODO(b/264321145): Remove once variation settings in text appearances are fixed.
-      textPaint.setFontVariationSettings("");
       textPaint.setFontVariationSettings(fontVariationSettings);
     }
 
