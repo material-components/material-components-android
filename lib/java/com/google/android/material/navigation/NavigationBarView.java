@@ -36,6 +36,7 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -130,6 +131,26 @@ public abstract class NavigationBarView extends FrameLayout {
 
   /** Icon is placed at the top of the item */
   public static final int ITEM_ICON_GRAVITY_START = 1;
+
+  /**
+   * Navigation Bar Item gravity enum to control where the item is in its container.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef(value = {ITEM_GRAVITY_TOP_CENTER, ITEM_GRAVITY_CENTER, ITEM_GRAVITY_START_CENTER})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface ItemGravity {}
+
+  /** Item is placed at the top center of its container */
+  public static final int ITEM_GRAVITY_TOP_CENTER = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+
+  /** Item is placed at the center of its container */
+  public static final int ITEM_GRAVITY_CENTER = Gravity.CENTER;
+
+  /** Item is placed at the start center of its container */
+  public static final int ITEM_GRAVITY_START_CENTER = Gravity.START | Gravity.CENTER_VERTICAL;
+
 
   /**
    * Navigation Bar Item icon gravity enum to control which item configuration to display.
@@ -274,6 +295,9 @@ public abstract class NavigationBarView extends FrameLayout {
         attributes.getInteger(
             R.styleable.NavigationBarView_itemIconGravity,
             NavigationBarView.ITEM_ICON_GRAVITY_TOP));
+    setItemGravity(
+        attributes.getInteger(
+            R.styleable.NavigationBarView_itemGravity, NavigationBarView.ITEM_GRAVITY_TOP_CENTER));
 
     int itemBackground = attributes.getResourceId(R.styleable.NavigationBarView_itemBackground, 0);
     if (itemBackground != 0) {
@@ -738,6 +762,29 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemActiveIndicatorMarginHorizontal(@Px int horizontalMargin) {
     menuView.setItemActiveIndicatorMarginHorizontal(horizontalMargin);
+  }
+
+  /**
+   * Sets the navigation items' layout gravity.
+   *
+   * @param itemGravity the layout {@link android.view.Gravity} of the item
+   * @see #getItemGravity()
+   */
+  public void setItemGravity(@ItemGravity int itemGravity) {
+    if (menuView.getItemIconGravity() != itemGravity) {
+      menuView.setItemGravity(itemGravity);
+      presenter.updateMenuView(false);
+    }
+  }
+
+  /**
+   * Returns the navigation items' layout gravity.
+   *
+   * @see #setItemGravity(int)
+   */
+  @ItemGravity
+  public int getItemGravity() {
+    return menuView.getItemGravity();
   }
 
   /**

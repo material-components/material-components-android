@@ -88,6 +88,16 @@
       <enum name="start" value="1"/>
     </attr>
 
+    <!-- The gravity of the item within the Navigation Bar -->
+    <attr name="itemGravity">
+      <!-- Gravity.TOP | Gravity.CENTER_HORIZONTAL -->
+      <enum name="top_center" value="49"/>
+      <!-- Gravity.CENTER-->
+      <enum name="center" value="17"/>
+      <!-- Gravity.START | Gravity.CENTER_VERTICAL -->
+      <enum name="start_center" value="8388627"/>
+    </attr>
+
     <!-- Measure the item's bottom padding from the baseline of the label, not the bottom of its
          view. -->
     <attr name="measureBottomPaddingFromLabelBaseline" format="boolean"/>

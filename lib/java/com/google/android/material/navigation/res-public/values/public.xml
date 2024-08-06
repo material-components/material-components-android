@@ -56,6 +56,7 @@
   <public name="itemPaddingBottom" type="attr"/>
   <public name="itemActiveIndicatorStyle" type="attr"/>
   <public name="itemIconGravity" type="attr"/>
+  <public name="itemGravity" type="attr"/>
   <public name="marginHorizontal" type="attr"/>
   <public name="expandedWidth" type="attr"/>
   <public name="expandedHeight" type="attr"/>

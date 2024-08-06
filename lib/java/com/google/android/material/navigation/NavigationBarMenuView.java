@@ -109,6 +109,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
   private int itemActiveIndicatorMarginHorizontal;
   private int itemActiveIndicatorExpandedMarginHorizontal;
+  private int itemGravity = NavigationBarView.ITEM_GRAVITY_TOP_CENTER;
   private ShapeAppearanceModel itemActiveIndicatorShapeAppearance;
   private boolean itemActiveIndicatorResizeable = false;
   private ColorStateList itemActiveIndicatorColor;
@@ -473,6 +474,30 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         item.setActiveIndicatorHeight(height);
       }
     }
+  }
+
+  /**
+   * Sets the navigation items' layout gravity.
+   *
+   * @param itemGravity the layout {@link android.view.Gravity} of the item
+   * @see #getItemGravity()
+   */
+  public void setItemGravity(int itemGravity) {
+    this.itemGravity = itemGravity;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setItemGravity(itemGravity);
+      }
+    }
+  }
+
+  /**
+   * Returns the navigation items' layout gravity.
+   *
+   * @see #setItemGravity(int)
+   */
+  public int getItemGravity() {
+    return itemGravity;
   }
 
   /**
@@ -886,6 +911,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setActiveIndicatorExpandedWidth(itemActiveIndicatorExpandedWidth);
       child.setActiveIndicatorExpandedHeight(itemActiveIndicatorExpandedHeight);
       child.setActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
+      child.setItemGravity(itemGravity);
       child.setActiveIndicatorExpandedMarginHorizontal(itemActiveIndicatorExpandedMarginHorizontal);
       child.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
       child.setActiveIndicatorResizeable(itemActiveIndicatorResizeable);
@@ -946,6 +972,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       presenter.setUpdateSuspended(true);
       buttons[i].setLabelVisibilityMode(labelVisibilityMode);
       buttons[i].setItemIconGravity(itemIconGravity);
+      buttons[i].setItemGravity(itemGravity);
       buttons[i].setShifting(shifting);
       buttons[i].initialize((MenuItemImpl) menu.getItem(i), 0);
       presenter.setUpdateSuspended(false);
