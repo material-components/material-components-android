@@ -188,7 +188,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
           // If item icon gravity is start, we want to update the active indicator width in a layout
           // change listener to keep the active indicator size up to date with the content width.
           if (itemIconGravity == ITEM_ICON_GRAVITY_START
-              && activeIndicatorExpandedDesiredWidth == ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT) {
+              && activeIndicatorExpandedDesiredWidth == ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT
+              && (right - left) != (oldRight - oldLeft)) {
             LayoutParams lp = (LayoutParams) innerContentContainer.getLayoutParams();
             int newWidth = right - left + lp.rightMargin + lp.leftMargin;
             LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();

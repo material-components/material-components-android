@@ -43,7 +43,7 @@
     <attr name="android:background"/>
     <!-- The initial expanded state for the AppBarLayout. This only takes effect when this
          view is a direct child of a CoordinatorLayout. -->
-    <attr name="expanded" format="boolean"/>
+    <attr name="expanded" />
     <attr name="android:keyboardNavigationCluster"/>
     <attr name="android:touchscreenBlocksFocus"/>
     <!-- Whether the {@link AppBarLayout} should lift on scroll. If set to

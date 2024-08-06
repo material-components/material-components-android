@@ -57,6 +57,8 @@
     <!-- Shape appearance overlay style reference for NavigationRail. To be used to augment
          attributes declared in the shapeAppearance. Attribute declaration is in the Shape package. -->
     <attr name="shapeAppearanceOverlay"/>
+    <!-- Whether or not to start the NavigationRailView in its expanded state. -->
+    <attr name="expanded" />
   </declare-styleable>
 
 </resources>

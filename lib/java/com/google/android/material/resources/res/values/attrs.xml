@@ -26,6 +26,7 @@
   <attr name="ensureMinTouchTargetSize" format="boolean" />
   <attr name="trackColor" format="color" />
   <attr name="navigationIconTint" format="color"/>
+  <attr name="expanded" format="boolean" />
 
   <!-- Navigation and Pickers -->
   <attr name="headerLayout" format="reference"/>
