@@ -204,9 +204,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
-  private static final float TOGGLE_BUTTON_SPRING_DAMPING = 0.8f;
-  private static final float DEFAULT_BUTTON_CORNER_SPRING_DAMPING = 0.5f;
-  private static final float DEFAULT_BUTTON_SPRING_STIFFNESS = 800;
+  private static final float DEFAULT_BUTTON_CORNER_SPRING_DAMPING = 0.8f;
+  private static final float DEFAULT_BUTTON_SPRING_STIFFNESS = 380;
 
   @NonNull private final MaterialButtonHelper materialButtonHelper;
 
@@ -283,8 +282,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private SpringForce createSpringForce() {
     return new SpringForce()
-        .setDampingRatio(
-            isCheckable() ? TOGGLE_BUTTON_SPRING_DAMPING : DEFAULT_BUTTON_CORNER_SPRING_DAMPING)
+        .setDampingRatio(DEFAULT_BUTTON_CORNER_SPRING_DAMPING)
         .setStiffness(DEFAULT_BUTTON_SPRING_STIFFNESS);
   }
 
