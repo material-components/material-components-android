@@ -19,7 +19,6 @@ package com.google.android.material.shape;
 import com.google.android.material.R;
 
 import static android.content.res.Resources.ID_NULL;
-import static com.google.android.material.shape.ShapeAppearanceModel.getCornerSize;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -28,63 +27,56 @@ import android.content.res.TypedArray;
 import android.content.res.XmlResourceParser;
 import android.util.AttributeSet;
 import android.util.StateSet;
+import android.util.TypedValue;
 import android.util.Xml;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleableRes;
-import com.google.android.material.shape.ShapeAppearanceModel.CornerSizeUnaryOperator;
 import java.io.IOException;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 /**
- * A state list of {@link CornerSize}s, which are used to define the corner size overrides in a
- * {@link StateListShapeAppearanceModel}.
+ * A state list of size values, which are used to define the change per state.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class StateListCornerSize {
+public class StateListSizeChange {
   private static final int INITIAL_CAPACITY = 10;
   int stateCount;
-  @NonNull private CornerSize defaultCornerSize;
+  @NonNull private SizeChange defaultSizeChange;
   @NonNull int[][] stateSpecs = new int[INITIAL_CAPACITY][];
-  @NonNull CornerSize[] cornerSizes = new CornerSize[INITIAL_CAPACITY];
+  @NonNull SizeChange[] sizeChanges = new SizeChange[INITIAL_CAPACITY];
 
   /**
-   * Creates a {@link StateListCornerSize} from a styleable attribute.
+   * Creates a {@link StateListSizeChange} from a styleable attribute.
    *
-   * <p>If the attribute refers to an xml resource, the resource is parsed and the corner sizes are
-   * extracted from the items. If the attribute refers to a {@code dimen} or {@code fraction}
-   * resource, the resource is resolved as a {@link CornerSize} and set as the default corner size.
-   * If the attribute is not set or refers to a resource that cannot be resolved, the {@code
-   * defaultCornerSize} is set.
+   * <p>If the attribute refers to an xml resource, the resource is parsed and the size values are
+   * extracted from the items. If the attribute is not set or refers to a resource that cannot be
+   * resolved, {@code null} will be returned.
    *
    * @param context the context
    * @param attributes the typed array in context
    * @param index the index of the styleable attribute
-   * @param defaultCornerSize the default corner size, when attribute is not set or cannot be
-   *     resolved.
-   * @return the {@link StateListCornerSize}
+   * @return the {@link StateListSizeChange}
    */
-  @NonNull
-  public static StateListCornerSize create(
-      @NonNull Context context,
-      @NonNull TypedArray attributes,
-      @StyleableRes int index,
-      @NonNull CornerSize defaultCornerSize) {
+  @Nullable
+  public static StateListSizeChange create(
+      @NonNull Context context, @NonNull TypedArray attributes, @StyleableRes int index) {
     int resourceId = attributes.getResourceId(index, 0);
     if (resourceId == ID_NULL) {
-      return create(ShapeAppearanceModel.getCornerSize(attributes, index, defaultCornerSize));
+      return null;
     }
     String typeName = context.getResources().getResourceTypeName(resourceId);
     if (!typeName.equals("xml")) {
-      return create(ShapeAppearanceModel.getCornerSize(attributes, index, defaultCornerSize));
+      return null;
     }
     try (XmlResourceParser parser = context.getResources().getXml(resourceId)) {
-      StateListCornerSize stateListCornerSize = new StateListCornerSize();
+      StateListSizeChange stateListSizeChange = new StateListSizeChange();
       AttributeSet attrs = Xml.asAttributeSet(parser);
       int type;
 
@@ -97,32 +89,12 @@ public class StateListCornerSize {
       }
       final String name = parser.getName();
       if (name.equals("selector")) {
-        stateListCornerSize.loadCornerSizesFromItems(context, parser, attrs, context.getTheme());
+        stateListSizeChange.loadSizeChangeFromItems(context, parser, attrs, context.getTheme());
       }
-      return stateListCornerSize;
+      return stateListSizeChange;
     } catch (XmlPullParserException | IOException | Resources.NotFoundException e) {
-      return create(defaultCornerSize);
+      return null;
     }
-  }
-
-  @NonNull
-  public static StateListCornerSize create(@NonNull CornerSize cornerSize) {
-    StateListCornerSize stateListCornerSize = new StateListCornerSize();
-    stateListCornerSize.addStateCornerSize(StateSet.WILD_CARD, cornerSize);
-    return stateListCornerSize;
-  }
-
-  @NonNull
-  public StateListCornerSize withTransformedCornerSizes(@NonNull CornerSizeUnaryOperator op) {
-    StateListCornerSize newStateListCornerSize = new StateListCornerSize();
-    newStateListCornerSize.stateCount = stateCount;
-    newStateListCornerSize.stateSpecs = new int[stateSpecs.length][];
-    System.arraycopy(stateSpecs, 0, newStateListCornerSize.stateSpecs, 0, stateSpecs.length);
-    newStateListCornerSize.cornerSizes = new CornerSize[cornerSizes.length];
-    for (int i = 0; i < stateCount; i++) {
-      newStateListCornerSize.cornerSizes[i] = op.apply(cornerSizes[i]);
-    }
-    return newStateListCornerSize;
   }
 
   public boolean isStateful() {
@@ -130,17 +102,17 @@ public class StateListCornerSize {
   }
 
   @NonNull
-  public CornerSize getDefaultCornerSize() {
-    return defaultCornerSize;
+  public SizeChange getDefaultSizeChange() {
+    return defaultSizeChange;
   }
 
   @NonNull
-  public CornerSize getCornerSizeForState(@NonNull int[] stateSet) {
+  public SizeChange getSizeChangeForState(@NonNull int[] stateSet) {
     int idx = indexOfStateSet(stateSet);
     if (idx < 0) {
       idx = indexOfStateSet(StateSet.WILD_CARD);
     }
-    return idx < 0 ? defaultCornerSize : cornerSizes[idx];
+    return idx < 0 ? defaultSizeChange : sizeChanges[idx];
   }
 
   private int indexOfStateSet(int[] stateSet) {
@@ -153,7 +125,7 @@ public class StateListCornerSize {
     return -1;
   }
 
-  private void loadCornerSizesFromItems(
+  private void loadSizeChangeFromItems(
       @NonNull Context context,
       @NonNull XmlPullParser parser,
       @NonNull AttributeSet attrs,
@@ -174,11 +146,12 @@ public class StateListCornerSize {
       Resources res = context.getResources();
       final TypedArray a =
           theme == null
-              ? res.obtainAttributes(attrs, R.styleable.ShapeAppearance)
-              : theme.obtainStyledAttributes(attrs, R.styleable.ShapeAppearance, 0, 0);
+              ? res.obtainAttributes(attrs, R.styleable.StateListSizeChange)
+              : theme.obtainStyledAttributes(attrs, R.styleable.StateListSizeChange, 0, 0);
 
-      CornerSize cornerSize =
-          getCornerSize(a, R.styleable.ShapeAppearance_cornerSize, new AbsoluteCornerSize(0));
+      SizeChangeAmount widthChangeAmount =
+          getSizeChangeAmount(a, R.styleable.StateListSizeChange_widthChange, null);
+
       a.recycle();
 
       // Parse all unrecognized attributes as state specifiers.
@@ -187,24 +160,43 @@ public class StateListCornerSize {
       int[] stateSpec = new int[numAttrs];
       for (int i = 0; i < numAttrs; i++) {
         final int stateResId = attrs.getAttributeNameResource(i);
-        if (stateResId != R.attr.cornerSize) {
+        if (stateResId != R.attr.widthChange) {
           stateSpec[j++] = attrs.getAttributeBooleanValue(i, false) ? stateResId : -stateResId;
         }
       }
       stateSpec = StateSet.trimStateSet(stateSpec, j);
-      addStateCornerSize(stateSpec, cornerSize);
+      addStateSizeChange(stateSpec, new SizeChange(widthChangeAmount));
     }
   }
 
-  private void addStateCornerSize(@NonNull int[] stateSpec, @NonNull CornerSize cornerSize) {
+  @Nullable
+  private SizeChangeAmount getSizeChangeAmount(
+      @NonNull TypedArray a, int index, @Nullable SizeChangeAmount defaultValue) {
+    TypedValue value = a.peekValue(index);
+    if (value == null) {
+      return defaultValue;
+    }
+
+    if (value.type == TypedValue.TYPE_DIMENSION) {
+      return new SizeChangeAmount(
+          SizeChangeType.PIXELS,
+          TypedValue.complexToDimensionPixelSize(value.data, a.getResources().getDisplayMetrics()));
+    } else if (value.type == TypedValue.TYPE_FRACTION) {
+      return new SizeChangeAmount(SizeChangeType.PERCENT, value.getFraction(1.0f, 1.0f));
+    } else {
+      return defaultValue;
+    }
+  }
+
+  private void addStateSizeChange(@NonNull int[] stateSpec, @NonNull SizeChange sizeChange) {
     if (stateCount == 0 || stateSpec.length == 0) {
-      defaultCornerSize = cornerSize;
+      defaultSizeChange = sizeChange;
     }
     if (stateCount >= stateSpecs.length) {
       growArray(stateCount, stateCount + 10);
     }
     stateSpecs[stateCount] = stateSpec;
-    cornerSizes[stateCount] = cornerSize;
+    sizeChanges[stateCount] = sizeChange;
     stateCount++;
   }
 
@@ -212,8 +204,44 @@ public class StateListCornerSize {
     int[][] newStateSets = new int[newSize][];
     System.arraycopy(stateSpecs, 0, newStateSets, 0, oldSize);
     stateSpecs = newStateSets;
-    CornerSize[] newCornerSizes = new CornerSize[newSize];
-    System.arraycopy(cornerSizes, 0, newCornerSizes, 0, oldSize);
-    cornerSizes = newCornerSizes;
+    SizeChange[] newSizeChanges = new SizeChange[newSize];
+    System.arraycopy(sizeChanges, 0, newSizeChanges, 0, oldSize);
+    sizeChanges = newSizeChanges;
+  }
+
+  /** A collection of all values needed in a size change. */
+  public static class SizeChange {
+    SizeChangeAmount widthChange;
+
+    SizeChange(@Nullable SizeChangeAmount widthChange) {
+      this.widthChange = widthChange;
+    }
+  }
+
+  /** The size change of one dimension, including the type and amount. */
+  public static class SizeChangeAmount {
+    SizeChangeType type;
+    float amount;
+
+    SizeChangeAmount(SizeChangeType type, float amount) {
+      this.type = type;
+      this.amount = amount;
+    }
+
+    public int getChange(@Px int baseSize) {
+      if (type == SizeChangeType.PERCENT) {
+        return (int) (amount * baseSize);
+      }
+      if (type == SizeChangeType.PIXELS) {
+        return (int) amount;
+      }
+      return 0;
+    }
+  }
+
+  /** The type of size change. */
+  public enum SizeChangeType {
+    PERCENT,
+    PIXELS
   }
 }

@@ -51,21 +51,48 @@ public class StateListCornerSizeTest {
   public void testCreateStateListWithStateList() {
     attributeMap.put(R.attr.testCornerSizeAttr, "@xml/state_list_corner_size");
     AttributeSet attributeSet = setupAttributeSetForTest();
-    TypedArray attrs =
-        context.obtainStyledAttributes(attributeSet, new int[] {R.attr.testCornerSizeAttr});
+    TypedArray attrs = context.obtainStyledAttributes(attributeSet, R.styleable.ShapeTest);
     StateListCornerSize stateListCornerSize =
         StateListCornerSize.create(
             context, attrs, R.styleable.ShapeTest_testCornerSizeAttr, new AbsoluteCornerSize(0));
 
     CornerSize pressedCornerSize =
         stateListCornerSize.getCornerSizeForState(new int[] {android.R.attr.state_pressed});
+    CornerSize unspecifiedCornerSize =
+        stateListCornerSize.getCornerSizeForState(new int[] {android.R.attr.state_hovered});
     CornerSize defaultCornerSize = stateListCornerSize.getDefaultCornerSize();
 
     assertTrue(pressedCornerSize instanceof AbsoluteCornerSize);
     assertEquals(((AbsoluteCornerSize) pressedCornerSize).getCornerSize(), 2, FLOAT_TOLERANCE);
+    assertTrue(unspecifiedCornerSize instanceof RelativeCornerSize);
+    assertEquals(
+        ((RelativeCornerSize) unspecifiedCornerSize).getRelativePercent(), 0.5, FLOAT_TOLERANCE);
     assertTrue(defaultCornerSize instanceof RelativeCornerSize);
     assertEquals(
         ((RelativeCornerSize) defaultCornerSize).getRelativePercent(), 0.5, FLOAT_TOLERANCE);
+  }
+
+  @Test
+  public void testCreateStateListWithStateListWithoutDefault() {
+    attributeMap.put(R.attr.testCornerSizeAttr, "@xml/state_list_corner_size_without_default");
+    AttributeSet attributeSet = setupAttributeSetForTest();
+    TypedArray attrs = context.obtainStyledAttributes(attributeSet, R.styleable.ShapeTest);
+    StateListCornerSize stateListCornerSize =
+        StateListCornerSize.create(
+            context, attrs, R.styleable.ShapeTest_testCornerSizeAttr, new AbsoluteCornerSize(0));
+
+    CornerSize pressedCornerSize =
+        stateListCornerSize.getCornerSizeForState(new int[] {android.R.attr.state_pressed});
+    CornerSize unspecifiedCornerSize =
+        stateListCornerSize.getCornerSizeForState(new int[] {android.R.attr.state_hovered});
+    CornerSize defaultCornerSize = stateListCornerSize.getDefaultCornerSize();
+
+    assertTrue(pressedCornerSize instanceof AbsoluteCornerSize);
+    assertEquals(((AbsoluteCornerSize) pressedCornerSize).getCornerSize(), 2, FLOAT_TOLERANCE);
+    assertTrue(unspecifiedCornerSize instanceof AbsoluteCornerSize);
+    assertEquals(((AbsoluteCornerSize) unspecifiedCornerSize).getCornerSize(), 2, FLOAT_TOLERANCE);
+    assertTrue(defaultCornerSize instanceof AbsoluteCornerSize);
+    assertEquals(((AbsoluteCornerSize) defaultCornerSize).getCornerSize(), 2, FLOAT_TOLERANCE);
   }
 
   @Test

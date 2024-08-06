@@ -14,9 +14,8 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
-  <declare-styleable name="ShapeTest">
-    <attr name="testCornerSizeAttr" format="dimension|fraction|reference"/>
-    <attr name="testSizeChangeAttr" format="fraction"/>
-  </declare-styleable>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item android:state_pressed="true" app:widthChange="15%" />
+  <item app:widthChange="0dp" />
+</selector>
