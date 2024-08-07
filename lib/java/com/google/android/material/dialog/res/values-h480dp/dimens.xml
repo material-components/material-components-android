@@ -17,7 +17,7 @@
 
 <resources>
   <dimen name="mtrl_alert_dialog_background_inset_start">24dp</dimen>
-  <dimen name="mtrl_alert_dialog_background_inset_top">24dp</dimen>
+  <dimen name="mtrl_alert_dialog_background_inset_top">80dp</dimen>
   <dimen name="mtrl_alert_dialog_background_inset_end">24dp</dimen>
-  <dimen name="mtrl_alert_dialog_background_inset_bottom">24dp</dimen>
+  <dimen name="mtrl_alert_dialog_background_inset_bottom">80dp</dimen>
 </resources>
