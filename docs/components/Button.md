@@ -167,6 +167,8 @@ Element           | Style
 **Default style** | `Widget.Material3.Button.ElevatedButton`
 **Icon style**    | `Widget.Material3.Button.ElevatedButton.Icon`
 
+Default style theme attribute: `?attr/materialButtonElevatedStyle`
+
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/styles.xml)
 and
@@ -394,6 +396,8 @@ Element           | Style
 ----------------- | ------------------------------------------
 **Default style** | `Widget.Material3.Button.TonalButton`
 **Icon style**    | `Widget.Material3.Button.TonalButton.Icon`
+
+Default style theme attribute: `?attr/materialButtonTonalStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/styles.xml)

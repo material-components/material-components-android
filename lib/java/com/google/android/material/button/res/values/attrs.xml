@@ -19,6 +19,14 @@
 
   <!-- Style to use for MaterialButtons in this theme. -->
   <attr name="materialButtonStyle" format="reference" />
+  <!-- Style to use for Material Tonal Buttons in this theme. -->
+  <attr name="materialButtonTonalStyle" format="reference" />
+  <!-- Style to use for Material Outlined Buttons in this theme. -->
+  <attr name="materialButtonOutlinedStyle" format="reference" />
+  <!-- Style to use for Material Elevated Buttons in this theme. -->
+  <attr name="materialButtonElevatedStyle" format="reference" />
+  <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
+  <attr name="materialButtonToggleGroupStyle" format="reference" />
   <!-- Style to use for Material Icon Only Buttons in this theme. -->
   <attr name="materialIconButtonStyle" format="reference" />
   <!-- Style to use for Filled Material Icon Only Buttons in this theme. -->
@@ -27,10 +35,6 @@
   <attr name="materialIconButtonFilledTonalStyle" format="reference" />
   <!-- Style to use for Outlined Material Icon Only Buttons in this theme. -->
   <attr name="materialIconButtonOutlinedStyle" format="reference" />
-  <!-- Style to use for Material Outlined Buttons in this theme. -->
-  <attr name="materialButtonOutlinedStyle" format="reference" />
-  <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
-  <attr name="materialButtonToggleGroupStyle" format="reference" />
 
   <declare-styleable name="MaterialButton">
     <!-- Whether the button can be checked. -->

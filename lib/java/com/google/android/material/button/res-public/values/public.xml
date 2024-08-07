@@ -26,11 +26,13 @@
   <public name="toggleCheckedStateOnClick" type="attr"/>
   <public name="innerCornerSize" type="attr"/>
   <public name="materialButtonStyle" type="attr"/>
+  <public name="materialButtonTonalStyle" type="attr"/>
+  <public name="materialButtonOutlinedStyle" type="attr"/>
+  <public name="materialButtonElevatedStyle" type="attr"/>
   <public name="materialIconButtonStyle" type="attr"/>
   <public name="materialIconButtonFilledStyle" type="attr"/>
   <public name="materialIconButtonFilledTonalStyle" type="attr"/>
   <public name="materialIconButtonOutlinedStyle" type="attr"/>
-  <public name="materialButtonOutlinedStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
   <public name="Widget.MaterialComponents.Button" type="style"/>
   <public name="Widget.MaterialComponents.Button.UnelevatedButton" type="style"/>
