@@ -220,7 +220,7 @@ and affects other components:
 <style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorPrimary">@color/pink_200</item>
-    <item name="colorSurfaceVariant">@color/pink_100</item>
+    <item name="colorSurfaceContainerHighest">@color/pink_100</item>
 </style>
 
 ```
@@ -240,7 +240,7 @@ all switches but do not affect other components:
 
 <style name="ThemeOverlay.App.Switch" parent="">
     <item name="colorPrimary">@color/pink_200</item>
-    <item name="colorSurfaceVariant">@color/pink_100</item>
+    <item name="colorSurfaceContainerHighest">@color/pink_100</item>
 </style>
 ```
 
