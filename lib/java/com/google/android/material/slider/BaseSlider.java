@@ -344,6 +344,8 @@ abstract class BaseSlider<
   @NonNull private List<Drawable> customThumbDrawablesForValues = Collections.emptyList();
 
   private float touchPosition;
+
+  private float minSeparation = 0f;
   @SeparationUnit private int separationUnit = UNIT_PX;
 
   @NonNull
@@ -628,7 +630,6 @@ abstract class BaseSlider<
   }
 
   private void validateMinSeparation() {
-    final float minSeparation = getMinSeparation();
     if (minSeparation < 0) {
       throw new IllegalStateException(
           String.format(EXCEPTION_ILLEGAL_MIN_SEPARATION, minSeparation));
@@ -2532,7 +2533,7 @@ abstract class BaseSlider<
 
   /** Thumbs cannot cross each other, clamp the value to a bound or the value next to it. */
   private float getClampedValue(int idx, float value) {
-    float minSeparation = getMinSeparation();
+    float minSeparation = this.minSeparation;
     minSeparation = separationUnit == UNIT_PX ? dimenToValue(minSeparation) : minSeparation;
     if (isRtl()) {
       minSeparation = -minSeparation;
@@ -2550,14 +2551,20 @@ abstract class BaseSlider<
     return ((dimen - trackSidePadding) / trackWidth) * (valueFrom - valueTo) + valueFrom;
   }
 
-  protected void setSeparationUnit(int separationUnit) {
-    this.separationUnit = separationUnit;
-    dirtyConfig = true;
-    postInvalidate();
+  protected float getMinSeparation() {
+    return minSeparation;
   }
 
-  protected float getMinSeparation() {
-    return 0;
+  protected float getSeparationUnit() {
+    return separationUnit;
+  }
+
+  protected void setMinSeparation(float minSeparation, @SeparationUnit int separationUnit) {
+    this.minSeparation = minSeparation;
+    this.separationUnit = separationUnit;
+
+    dirtyConfig = true;
+    postInvalidate();
   }
 
   private float getValueOfTouchPosition() {
@@ -3131,6 +3138,8 @@ abstract class BaseSlider<
     sliderState.valueTo = valueTo;
     sliderState.values = new ArrayList<>(values);
     sliderState.stepSize = stepSize;
+    sliderState.minSeparation = minSeparation;
+    sliderState.separationUnit = separationUnit;
     sliderState.hasFocus = hasFocus();
     return sliderState;
   }
@@ -3144,6 +3153,9 @@ abstract class BaseSlider<
     valueTo = sliderState.valueTo;
     setValuesInternal(sliderState.values);
     stepSize = sliderState.stepSize;
+    minSeparation = sliderState.minSeparation;
+    separationUnit = sliderState.separationUnit;
+
     if (sliderState.hasFocus) {
       requestFocus();
     }
@@ -3155,6 +3167,8 @@ abstract class BaseSlider<
     float valueTo;
     ArrayList<Float> values;
     float stepSize;
+    float minSeparation;
+    @SeparationUnit int separationUnit;
     boolean hasFocus;
 
     public static final Creator<SliderState> CREATOR =
@@ -3184,6 +3198,8 @@ abstract class BaseSlider<
       values = new ArrayList<>();
       source.readList(values, Float.class.getClassLoader());
       stepSize = source.readFloat();
+      minSeparation = source.readFloat();
+      separationUnit = source.readInt();
       hasFocus = source.createBooleanArray()[0];
     }
 
@@ -3194,6 +3210,8 @@ abstract class BaseSlider<
       dest.writeFloat(valueTo);
       dest.writeList(values);
       dest.writeFloat(stepSize);
+      dest.writeFloat(minSeparation);
+      dest.writeInt(separationUnit);
       boolean[] booleans = new boolean[1];
       booleans[0] = hasFocus;
       dest.writeBooleanArray(booleans);
