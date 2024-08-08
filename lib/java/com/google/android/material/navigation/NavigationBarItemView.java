@@ -45,6 +45,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.PointerIcon;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -59,12 +60,11 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.PointerIconCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
@@ -619,13 +619,15 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     smallLabel.setEnabled(enabled);
     largeLabel.setEnabled(enabled);
     icon.setEnabled(enabled);
+  }
 
-    if (enabled) {
-      ViewCompat.setPointerIcon(
-          this, PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
-    } else {
-      ViewCompat.setPointerIcon(this, null);
+  @RequiresApi(api = VERSION_CODES.N)
+  @Override
+  public PointerIcon onResolvePointerIcon(MotionEvent event, int pointerIndex) {
+    if (getPointerIcon() == null && isClickable() && isEnabled()) {
+      return PointerIcon.getSystemIcon(getContext(), PointerIcon.TYPE_HAND);
     }
+    return super.onResolvePointerIcon(event, pointerIndex);
   }
 
   @Override

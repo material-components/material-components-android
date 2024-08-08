@@ -30,9 +30,12 @@ import android.graphics.drawable.StateListDrawable;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.TooltipCompat;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.PointerIcon;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
@@ -42,6 +45,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -272,6 +276,15 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
       mergeDrawableStates(drawableState, CHECKED_STATE_SET);
     }
     return drawableState;
+  }
+
+  @RequiresApi(api = Build.VERSION_CODES.N)
+  @Override
+  public PointerIcon onResolvePointerIcon(MotionEvent event, int pointerIndex) {
+    if (getPointerIcon() == null && isClickable() && isEnabled()) {
+      return PointerIcon.getSystemIcon(getContext(), PointerIcon.TYPE_HAND);
+    }
+    return super.onResolvePointerIcon(event, pointerIndex);
   }
 
   void setIconTintList(ColorStateList tintList) {
