@@ -25,6 +25,10 @@ import static com.google.android.material.slider.LabelFormatter.LABEL_FLOATING;
 import static com.google.android.material.slider.LabelFormatter.LABEL_GONE;
 import static com.google.android.material.slider.LabelFormatter.LABEL_VISIBLE;
 import static com.google.android.material.slider.LabelFormatter.LABEL_WITHIN_BOUNDS;
+import static com.google.android.material.slider.TickVisibilityMode.TICK_VISIBILITY_AUTO_HIDE;
+import static com.google.android.material.slider.TickVisibilityMode.TICK_VISIBILITY_AUTO_LIMIT;
+import static com.google.android.material.slider.TickVisibilityMode.TICK_VISIBILITY_HIDDEN;
+import static com.google.android.material.slider.TickVisibilityMode.TICK_VISIBILITY_VISIBLE_ALL;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Float.compare;
 import static java.lang.Math.abs;
@@ -151,8 +155,10 @@ import java.util.Locale;
  *       discrete mode. This is a short hand for setting both the {@code tickColorActive} and {@code
  *       tickColorInactive} to the same thing. This takes precedence over {@code tickColorActive}
  *       and {@code tickColorInactive}.
- *   <li>{@code tickVisible}: Whether to show the tick marks. Only used when the slider is in
- *       discrete mode.
+ *   <li>{@code tickVisible} (deprecated, use {@code tickVisibilityMode} instead): Whether to show
+ *       the tick marks. Only used when the slider is in discrete mode.
+ *   <li>{@code tickVisibilityMode}: Mode to specify the visibility of tick marks. Only used when
+ *       the slider is in discrete mode.
  *   <li>{@code trackColorActive}: The color of the active part of the track.
  *   <li>{@code trackColorInactive}: The color of the inactive part of the track.
  *   <li>{@code trackColor}: The color of the whole track. This is a short hand for setting both the
@@ -202,6 +208,7 @@ import java.util.Locale;
  * @attr ref com.google.android.material.R.styleable#Slider_tickColorActive
  * @attr ref com.google.android.material.R.styleable#Slider_tickColorInactive
  * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
+ * @attr ref com.google.android.material.R.styleable#Slider_tickVisibilityMode
  * @attr ref com.google.android.material.R.styleable#Slider_trackColor
  * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
  * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
@@ -322,7 +329,7 @@ abstract class BaseSlider<
   private int focusedThumbIdx = -1;
   private float stepSize = 0.0f;
   private float[] ticksCoordinates;
-  private boolean tickVisible = true;
+  private int tickVisibilityMode;
   private int tickActiveRadius;
   private int tickInactiveRadius;
   private int trackWidth;
@@ -501,7 +508,10 @@ abstract class BaseSlider<
             ? haloColor
             : AppCompatResources.getColorStateList(context, R.color.material_slider_halo_color));
 
-    tickVisible = a.getBoolean(R.styleable.Slider_tickVisible, true);
+    tickVisibilityMode = a.hasValue(R.styleable.Slider_tickVisibilityMode)
+        ? a.getInt(R.styleable.Slider_tickVisibilityMode, -1)
+        : convertToTickVisibilityMode(a.getBoolean(R.styleable.Slider_tickVisible, true));
+
     boolean hasTickColor = a.hasValue(R.styleable.Slider_tickColor);
     int tickColorInactiveRes =
         hasTickColor ? R.styleable.Slider_tickColor : R.styleable.Slider_tickColorInactive;
@@ -1669,11 +1679,20 @@ abstract class BaseSlider<
   /**
    * Returns whether the tick marks are visible. Only used when the slider is in discrete mode.
    *
-   * @see #setTickVisible(boolean)
    * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
    */
   public boolean isTickVisible() {
-    return tickVisible;
+    switch (tickVisibilityMode) {
+      case TICK_VISIBILITY_VISIBLE_ALL:
+      case TICK_VISIBILITY_AUTO_LIMIT:
+        return true;
+      case TICK_VISIBILITY_AUTO_HIDE:
+        return getDesiredTickCount() <= getMaxTickCount();
+      case TICK_VISIBILITY_HIDDEN:
+        return false;
+      default:
+        throw new RuntimeException("Unexpected tickVisibilityMode: " + tickVisibilityMode);
+    }
   }
 
   /**
@@ -1681,10 +1700,40 @@ abstract class BaseSlider<
    *
    * @param tickVisible The visibility of tick marks.
    * @attr ref com.google.android.material.R.styleable#Slider_tickVisible
+   * @deprecated Use {@link #setTickVisibilityMode(int)} instead.
    */
+  @Deprecated
   public void setTickVisible(boolean tickVisible) {
-    if (this.tickVisible != tickVisible) {
-      this.tickVisible = tickVisible;
+    setTickVisibilityMode(convertToTickVisibilityMode(tickVisible));
+  }
+
+  @TickVisibilityMode
+  private int convertToTickVisibilityMode(boolean tickVisible) {
+    return tickVisible
+        ? TICK_VISIBILITY_AUTO_LIMIT
+        : TICK_VISIBILITY_HIDDEN;
+  }
+
+  /**
+   * Returns the current tick visibility mode.
+   *
+   * @see #setTickVisibilityMode(int)
+   * @attr ref com.google.android.material.R.styleable#Slider_tickVisibilityMode
+   */
+  @TickVisibilityMode
+  public int getTickVisibilityMode() {
+    return tickVisibilityMode;
+  }
+
+  /**
+   * Sets the tick visibility mode. Only used when the slider is in discrete mode.
+   *
+   * @see #getTickVisibilityMode()
+   * @attr ref com.google.android.material.R.styleable#Slider_tickVisibilityMode
+   */
+  public void setTickVisibilityMode(@TickVisibilityMode int tickVisibilityMode) {
+    if (this.tickVisibilityMode != tickVisibilityMode) {
+      this.tickVisibilityMode = tickVisibilityMode;
       postInvalidate();
     }
   }
@@ -1933,24 +1982,60 @@ abstract class BaseSlider<
     updateHaloHotspot();
   }
 
-  private void maybeCalculateTicksCoordinates() {
+  private void updateTicksCoordinates() {
+    validateConfigurationIfDirty();
+
     if (stepSize <= 0.0f) {
+      updateTicksCoordinates(/* tickCount= */ 0);
       return;
     }
 
-    validateConfigurationIfDirty();
+    final int tickCount;
+    switch (tickVisibilityMode) {
+      case TICK_VISIBILITY_VISIBLE_ALL:
+        tickCount = getDesiredTickCount();
+        break;
+      case TICK_VISIBILITY_AUTO_LIMIT:
+        tickCount = min(getDesiredTickCount(), getMaxTickCount());
+        break;
+      case TICK_VISIBILITY_AUTO_HIDE:
+        int desiredTickCount = getDesiredTickCount();
+        tickCount = desiredTickCount <= getMaxTickCount() ? desiredTickCount : 0;
+        break;
+      case TICK_VISIBILITY_HIDDEN:
+        tickCount = 0;
+        break;
+      default:
+        throw new RuntimeException("Unexpected tickVisibilityMode: " + tickVisibilityMode);
+    }
 
-    int tickCount = (int) ((valueTo - valueFrom) / stepSize + 1);
-    // Limit the tickCount if they will be too dense.
-    tickCount = min(tickCount, trackWidth / minTickSpacing + 1);
+    updateTicksCoordinates(tickCount);
+  }
+
+  private int getDesiredTickCount() {
+    return (int) ((valueTo - valueFrom) / stepSize + 1);
+  }
+
+  private int getMaxTickCount() {
+    return trackWidth / minTickSpacing + 1;
+  }
+
+  private void updateTicksCoordinates(int tickCount) {
+    if (tickCount == 0) {
+      ticksCoordinates = null;
+      return;
+    }
+
     if (ticksCoordinates == null || ticksCoordinates.length != tickCount * 2) {
       ticksCoordinates = new float[tickCount * 2];
     }
 
     float interval = trackWidth / (float) (tickCount - 1);
+    float trackCenterY = calculateTrackCenter();
+
     for (int i = 0; i < tickCount * 2; i += 2) {
       ticksCoordinates[i] = trackSidePadding + i / 2f * interval;
-      ticksCoordinates[i + 1] = calculateTrackCenter();
+      ticksCoordinates[i + 1] = trackCenterY;
     }
   }
 
@@ -1959,7 +2044,7 @@ abstract class BaseSlider<
     trackWidth = max(width - trackSidePadding * 2, 0);
 
     // Update the visible tick coordinates.
-    maybeCalculateTicksCoordinates();
+    updateTicksCoordinates();
   }
 
   private void updateHaloHotspot() {
@@ -1988,7 +2073,7 @@ abstract class BaseSlider<
       validateConfigurationIfDirty();
 
       // Update the visible tick coordinates.
-      maybeCalculateTicksCoordinates();
+      updateTicksCoordinates();
     }
 
     super.onDraw(canvas);
@@ -2213,7 +2298,7 @@ abstract class BaseSlider<
   }
 
   private void maybeDrawTicks(@NonNull Canvas canvas) {
-    if (!tickVisible || stepSize <= 0.0f) {
+    if (ticksCoordinates == null || ticksCoordinates.length == 0) {
       return;
     }
 
