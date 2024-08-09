@@ -204,8 +204,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
-  private static final float DEFAULT_BUTTON_CORNER_SPRING_DAMPING = 0.8f;
-  private static final float DEFAULT_BUTTON_SPRING_STIFFNESS = 380;
+  // Use Fast Bouncy spring as default.
+  private static final float DEFAULT_BUTTON_CORNER_SPRING_DAMPING = 0.6f;
+  private static final float DEFAULT_BUTTON_SPRING_STIFFNESS = 800;
 
   @NonNull private final MaterialButtonHelper materialButtonHelper;
 
