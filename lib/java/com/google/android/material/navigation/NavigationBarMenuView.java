@@ -42,6 +42,7 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Pools;
+import androidx.core.util.Pools.SynchronizedPool;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.transition.AutoTransition;
@@ -63,7 +64,6 @@ import java.util.HashSet;
  */
 @RestrictTo(LIBRARY_GROUP)
 public abstract class NavigationBarMenuView extends ViewGroup implements MenuView {
-  private static final int ITEM_POOL_SIZE = 7;
   private static final int NO_PADDING = -1;
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
@@ -71,11 +71,10 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
   @Nullable private final TransitionSet set;
   @NonNull private final OnClickListener onClickListener;
-  private final Pools.Pool<NavigationBarItemView> itemPool =
-      new Pools.SynchronizedPool<>(ITEM_POOL_SIZE);
+  @Nullable private Pools.Pool<NavigationBarItemView> itemPool;
 
   @NonNull
-  private final SparseArray<OnTouchListener> onTouchListeners = new SparseArray<>(ITEM_POOL_SIZE);
+  private final SparseArray<OnTouchListener> onTouchListeners = new SparseArray<>();
 
   @NavigationBarView.LabelVisibility private int labelVisibilityMode;
 
@@ -96,7 +95,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   @Nullable private ColorStateList itemRippleColor;
   private int itemBackgroundRes;
   @NonNull private final SparseArray<BadgeDrawable> badgeDrawables =
-      new SparseArray<>(ITEM_POOL_SIZE);
+      new SparseArray<>();
   private int itemPaddingTop = NO_PADDING;
   private int itemPaddingBottom = NO_PADDING;
   private int itemActiveIndicatorLabelPadding = NO_PADDING;
@@ -117,6 +116,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private NavigationBarPresenter presenter;
   private MenuBuilder menu;
   private boolean measurePaddingFromLabelBaseline;
+
+  private int itemPoolSize = 0;
 
   public NavigationBarMenuView(@NonNull Context context) {
     super(context);
@@ -866,7 +867,9 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
         if (item != null) {
-          itemPool.release(item);
+          if (itemPool != null) {
+            itemPool.release(item);
+          }
           item.clear();
         }
       }
@@ -876,13 +879,19 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       selectedItemId = 0;
       selectedItemPosition = 0;
       buttons = null;
+      itemPool = null;
       return;
+    }
+    if (itemPool == null || itemPoolSize != menu.size()) {
+      itemPool = new SynchronizedPool<>(menu.size());
+      itemPoolSize = menu.size();
     }
     removeUnusedBadges();
 
-    buttons = new NavigationBarItemView[menu.size()];
+    int menuSize = menu.size();
+    buttons = new NavigationBarItemView[menuSize];
     boolean shifting = isShifting(labelVisibilityMode, menu.getVisibleItems().size());
-    for (int i = 0; i < menu.size(); i++) {
+    for (int i = 0; i < menuSize; i++) {
       presenter.setUpdateSuspended(true);
       menu.getItem(i).setCheckable(true);
       presenter.setUpdateSuspended(false);
@@ -980,7 +989,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   }
 
   private NavigationBarItemView getNewItem() {
-    NavigationBarItemView item = itemPool.acquire();
+    NavigationBarItemView item = itemPool != null ? itemPool.acquire() : null;
     if (item == null) {
       item = createNavigationBarItemView(getContext());
     }
