@@ -574,14 +574,14 @@ abstract class BaseSlider<
   }
 
   private void validateValueFrom() {
-    if (valueFrom >= valueTo) {
+    if (valueFrom > valueTo) {
       throw new IllegalStateException(
           String.format(EXCEPTION_ILLEGAL_VALUE_FROM, valueFrom, valueTo));
     }
   }
 
   private void validateValueTo() {
-    if (valueTo <= valueFrom) {
+    if (valueTo < valueFrom) {
       throw new IllegalStateException(
           String.format(EXCEPTION_ILLEGAL_VALUE_TO, valueTo, valueFrom));
     }
@@ -2437,7 +2437,7 @@ abstract class BaseSlider<
   }
 
   private double snapPosition(float position) {
-    if (stepSize > 0.0f) {
+    if (stepSize > 0.0f && valueTo != valueFrom) {
       int stepCount = (int) ((valueTo - valueFrom) / stepSize);
       return Math.round(position * stepCount) / (double) stepCount;
     }
