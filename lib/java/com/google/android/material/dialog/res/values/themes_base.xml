@@ -206,6 +206,22 @@
     <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
 
+    <item name="textAppearanceDisplayLargeEmphasized">@style/TextAppearance.Material3.DisplayLarge.Emphasized</item>
+    <item name="textAppearanceDisplayMediumEmphasized">@style/TextAppearance.Material3.DisplayMedium.Emphasized</item>
+    <item name="textAppearanceDisplaySmallEmphasized">@style/TextAppearance.Material3.DisplaySmall.Emphasized</item>
+    <item name="textAppearanceHeadlineLargeEmphasized">@style/TextAppearance.Material3.HeadlineLarge.Emphasized</item>
+    <item name="textAppearanceHeadlineMediumEmphasized">@style/TextAppearance.Material3.HeadlineMedium.Emphasized</item>
+    <item name="textAppearanceHeadlineSmallEmphasized">@style/TextAppearance.Material3.HeadlineSmall.Emphasized</item>
+    <item name="textAppearanceTitleLargeEmphasized">@style/TextAppearance.Material3.TitleLarge.Emphasized</item>
+    <item name="textAppearanceTitleMediumEmphasized">@style/TextAppearance.Material3.TitleMedium.Emphasized</item>
+    <item name="textAppearanceTitleSmallEmphasized">@style/TextAppearance.Material3.TitleSmall.Emphasized</item>
+    <item name="textAppearanceBodyLargeEmphasized">@style/TextAppearance.Material3.BodyLarge.Emphasized</item>
+    <item name="textAppearanceBodyMediumEmphasized">@style/TextAppearance.Material3.BodyMedium.Emphasized</item>
+    <item name="textAppearanceBodySmallEmphasized">@style/TextAppearance.Material3.BodySmall.Emphasized</item>
+    <item name="textAppearanceLabelLargeEmphasized">@style/TextAppearance.Material3.LabelLarge.Emphasized</item>
+    <item name="textAppearanceLabelMediumEmphasized">@style/TextAppearance.Material3.LabelMedium.Emphasized</item>
+    <item name="textAppearanceLabelSmallEmphasized">@style/TextAppearance.Material3.LabelSmall.Emphasized</item>
+
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
@@ -469,6 +485,22 @@
     <item name="textAppearanceLabelLarge">@style/TextAppearance.Material3.LabelLarge</item>
     <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
+
+    <item name="textAppearanceDisplayLargeEmphasized">@style/TextAppearance.Material3.DisplayLarge.Emphasized</item>
+    <item name="textAppearanceDisplayMediumEmphasized">@style/TextAppearance.Material3.DisplayMedium.Emphasized</item>
+    <item name="textAppearanceDisplaySmallEmphasized">@style/TextAppearance.Material3.DisplaySmall.Emphasized</item>
+    <item name="textAppearanceHeadlineLargeEmphasized">@style/TextAppearance.Material3.HeadlineLarge.Emphasized</item>
+    <item name="textAppearanceHeadlineMediumEmphasized">@style/TextAppearance.Material3.HeadlineMedium.Emphasized</item>
+    <item name="textAppearanceHeadlineSmallEmphasized">@style/TextAppearance.Material3.HeadlineSmall.Emphasized</item>
+    <item name="textAppearanceTitleLargeEmphasized">@style/TextAppearance.Material3.TitleLarge.Emphasized</item>
+    <item name="textAppearanceTitleMediumEmphasized">@style/TextAppearance.Material3.TitleMedium.Emphasized</item>
+    <item name="textAppearanceTitleSmallEmphasized">@style/TextAppearance.Material3.TitleSmall.Emphasized</item>
+    <item name="textAppearanceBodyLargeEmphasized">@style/TextAppearance.Material3.BodyLarge.Emphasized</item>
+    <item name="textAppearanceBodyMediumEmphasized">@style/TextAppearance.Material3.BodyMedium.Emphasized</item>
+    <item name="textAppearanceBodySmallEmphasized">@style/TextAppearance.Material3.BodySmall.Emphasized</item>
+    <item name="textAppearanceLabelLargeEmphasized">@style/TextAppearance.Material3.LabelLarge.Emphasized</item>
+    <item name="textAppearanceLabelMediumEmphasized">@style/TextAppearance.Material3.LabelMedium.Emphasized</item>
+    <item name="textAppearanceLabelSmallEmphasized">@style/TextAppearance.Material3.LabelSmall.Emphasized</item>
 
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
