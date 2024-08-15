@@ -15,13 +15,14 @@
  */
 package com.google.android.material.shape;
 
-import static com.google.android.material.shape.MaterialShapeUtils.createRotationMatrix;
-import static com.google.android.material.shape.MaterialShapeUtils.createScaleMatrix;
-import static com.google.android.material.shape.MaterialShapeUtils.createSkewMatrix;
 import static java.lang.Math.PI;
+import static java.lang.Math.min;
 
 import android.graphics.Matrix;
 import android.graphics.PointF;
+import android.graphics.RectF;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.PathShape;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -60,104 +61,77 @@ public final class MaterialShapes {
       new CornerRounding(/* radius= */ 1f, /* smoothing= */ 0f);
 
   /** A circle shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon CIRCLE =
-      MaterialShapeUtils.normalize(getCircle(), /* radial= */ true);
+  public static final RoundedPolygon CIRCLE = normalize(getCircle(), /* radial= */ true);
 
   /** A rounded square shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon SQUARE =
-      MaterialShapeUtils.normalize(getSquare(), /* radial= */ true);
+  public static final RoundedPolygon SQUARE = normalize(getSquare(), /* radial= */ true);
 
   /** A slanted rounded square shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon SLANTED_SQUARE =
-      MaterialShapeUtils.normalize(getSlantedSquare(), /* radial= */ true);
+      normalize(getSlantedSquare(), /* radial= */ true);
 
   /** An arch shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon ARCH =
-      MaterialShapeUtils.normalize(getArch(), /* radial= */ true);
+  public static final RoundedPolygon ARCH = normalize(getArch(), /* radial= */ true);
 
   /** A fan shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon FAN =
-      MaterialShapeUtils.normalize(getFan(/* rotateDegrees= */ -45f), /* radial= */ true);
+      normalize(getFan(/* rotateDegrees= */ -45f), /* radial= */ true);
 
   /** An arrow shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon ARROW =
-      MaterialShapeUtils.normalize(getArrow(), /* radial= */ true);
+  public static final RoundedPolygon ARROW = normalize(getArrow(), /* radial= */ true);
 
   /** A semi-circle shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon SEMI_CIRCLE =
-      MaterialShapeUtils.normalize(getSemiCircle(), /* radial= */ true);
+  public static final RoundedPolygon SEMI_CIRCLE = normalize(getSemiCircle(), /* radial= */ true);
 
   /** An oval shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon OVAL =
-      MaterialShapeUtils.normalize(getOval(/* rotateDegrees= */ -45f), /* radial= */ true);
+      normalize(getOval(/* rotateDegrees= */ -45f), /* radial= */ true);
 
   /** A pill shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon PILL =
-      MaterialShapeUtils.normalize(getPill(/* rotateDegrees= */ -45f), /* radial= */ true);
+      normalize(getPill(/* rotateDegrees= */ -45f), /* radial= */ true);
 
   /** A triangle shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon TRIANGLE =
-      MaterialShapeUtils.normalize(getTriangle(/* rotateDegrees= */ -90f), /* radial= */ true);
+      normalize(getTriangle(/* rotateDegrees= */ -90f), /* radial= */ true);
 
   /** A diamond shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon DIAMOND =
-      MaterialShapeUtils.normalize(getDiamond(), /* radial= */ true);
+  public static final RoundedPolygon DIAMOND = normalize(getDiamond(), /* radial= */ true);
 
   /** A clam-shell shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon CLAM_SHELL =
-      MaterialShapeUtils.normalize(getClamShell(), /* radial= */ true);
+  public static final RoundedPolygon CLAM_SHELL = normalize(getClamShell(), /* radial= */ true);
 
   /** A pentagon shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon PENTAGON =
-      MaterialShapeUtils.normalize(
-          getPentagon(/* rotateDegrees= */ -18f), /* radial= */ true);
+      normalize(getPentagon(/* rotateDegrees= */ -18f), /* radial= */ true);
 
   /** A gem shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon GEM =
-      MaterialShapeUtils.normalize(getGem(/* rotateDegrees= */ -90f), /* radial= */ true);
+      normalize(getGem(/* rotateDegrees= */ -90f), /* radial= */ true);
 
-  public static final RoundedPolygon SUNNY =
-      MaterialShapeUtils.normalize(getSunny(), /* radial= */ true);
-  public static final RoundedPolygon VERY_SUNNY =
-      MaterialShapeUtils.normalize(getVerySunny(), /* radial= */ true);
-  public static final RoundedPolygon COOKIE_4 =
-      MaterialShapeUtils.normalize(getCookie4(), /* radial= */ true);
-  public static final RoundedPolygon COOKIE_6 =
-      MaterialShapeUtils.normalize(getCookie6(), /* radial= */ true);
-  public static final RoundedPolygon COOKIE_7 =
-      MaterialShapeUtils.normalize(getCookie7(), /* radial= */ true);
-  public static final RoundedPolygon COOKIE_9 =
-      MaterialShapeUtils.normalize(getCookie9(), /* radial= */ true);
-  public static final RoundedPolygon COOKIE_12 =
-      MaterialShapeUtils.normalize(getCookie12(), /* radial= */ true);
-  public static final RoundedPolygon GHOSTISH =
-      MaterialShapeUtils.normalize(getGhostish(), /* radial= */ true);
-  public static final RoundedPolygon CLOVER_4 =
-      MaterialShapeUtils.normalize(getClover4(), /* radial= */ true);
-  public static final RoundedPolygon CLOVER_8 =
-      MaterialShapeUtils.normalize(getClover8(), /* radial= */ true);
-  public static final RoundedPolygon BURST =
-      MaterialShapeUtils.normalize(getBurst(), /* radial= */ true);
-  public static final RoundedPolygon SOFT_BURST =
-      MaterialShapeUtils.normalize(getSoftBurst(), /* radial= */ true);
-  public static final RoundedPolygon BOOM =
-      MaterialShapeUtils.normalize(getBoom(), /* radial= */ true);
-  public static final RoundedPolygon SOFT_BOOM =
-      MaterialShapeUtils.normalize(getSoftBoom(), /* radial= */ true);
-  public static final RoundedPolygon FLOWER =
-      MaterialShapeUtils.normalize(getFlower(), /* radial= */ true);
-  public static final RoundedPolygon PUFFY =
-      MaterialShapeUtils.normalize(getPuffy(), /* radial= */ true);
+  public static final RoundedPolygon SUNNY = normalize(getSunny(), /* radial= */ true);
+  public static final RoundedPolygon VERY_SUNNY = normalize(getVerySunny(), /* radial= */ true);
+  public static final RoundedPolygon COOKIE_4 = normalize(getCookie4(), /* radial= */ true);
+  public static final RoundedPolygon COOKIE_6 = normalize(getCookie6(), /* radial= */ true);
+  public static final RoundedPolygon COOKIE_7 = normalize(getCookie7(), /* radial= */ true);
+  public static final RoundedPolygon COOKIE_9 = normalize(getCookie9(), /* radial= */ true);
+  public static final RoundedPolygon COOKIE_12 = normalize(getCookie12(), /* radial= */ true);
+  public static final RoundedPolygon GHOSTISH = normalize(getGhostish(), /* radial= */ true);
+  public static final RoundedPolygon CLOVER_4 = normalize(getClover4(), /* radial= */ true);
+  public static final RoundedPolygon CLOVER_8 = normalize(getClover8(), /* radial= */ true);
+  public static final RoundedPolygon BURST = normalize(getBurst(), /* radial= */ true);
+  public static final RoundedPolygon SOFT_BURST = normalize(getSoftBurst(), /* radial= */ true);
+  public static final RoundedPolygon BOOM = normalize(getBoom(), /* radial= */ true);
+  public static final RoundedPolygon SOFT_BOOM = normalize(getSoftBoom(), /* radial= */ true);
+  public static final RoundedPolygon FLOWER = normalize(getFlower(), /* radial= */ true);
+  public static final RoundedPolygon PUFFY = normalize(getPuffy(), /* radial= */ true);
   public static final RoundedPolygon PUFFY_DIAMOND =
-      MaterialShapeUtils.normalize(getPuffyDiamond(), /* radial= */ true);
-  public static final RoundedPolygon PIXEL_CIRCLE =
-      MaterialShapeUtils.normalize(getPixelCircle(), /* radial= */ true);
+      normalize(getPuffyDiamond(), /* radial= */ true);
+  public static final RoundedPolygon PIXEL_CIRCLE = normalize(getPixelCircle(), /* radial= */ true);
   public static final RoundedPolygon PIXEL_TRIANGLE =
-      MaterialShapeUtils.normalize(getPixelTriangle(), /* radial= */ true);
-  public static final RoundedPolygon BUN =
-      MaterialShapeUtils.normalize(getBun(), /* radial= */ true);
-  public static final RoundedPolygon HEART =
-      MaterialShapeUtils.normalize(getHeart(), /* radial= */ true);
+      normalize(getPixelTriangle(), /* radial= */ true);
+  public static final RoundedPolygon BUN = normalize(getBun(), /* radial= */ true);
+  public static final RoundedPolygon HEART = normalize(getHeart(), /* radial= */ true);
 
   @NonNull
   private static RoundedPolygon getCircle() {
@@ -833,4 +807,129 @@ public final class MaterialShapes {
   }
 
   private MaterialShapes() {}
+
+  // ============== Utility methods. ==================
+
+  /**
+   * Returns a {@link ShapeDrawable} with the shape's path.
+   *
+   * <p>The shape is always assumed to fit in (0, 0) to (1, 1) square.
+   *
+   * @param shape A {@link RoundedPolygon} object to be used in the drawable.
+   * @hide
+   */
+  @NonNull
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public static ShapeDrawable createShapeDrawable(@NonNull RoundedPolygon shape) {
+    PathShape pathShape = new PathShape(Shapes_androidKt.toPath(shape), 1, 1);
+    return new ShapeDrawable(pathShape);
+  }
+
+  /**
+   * Creates a new {@link RoundedPolygon}, moving and resizing this one, so it's completely inside
+   * the destination bounds.
+   *
+   * <p>If {@code radial} is true, the shape will be scaled to fit in the biggest circle centered in
+   * the destination bounds. This is useful when the shape is animated to rotate around its center.
+   * Otherwise, the shape will be scaled to fit in the destination bounds. With either option, the
+   * shape's original center will be aligned with the destination bounds center.
+   *
+   * @param shape The original {@link RoundedPolygon}.
+   * @param radial Whether to transform the shape to fit in the biggest circle centered in the
+   *     destination bounds.
+   * @param dstBounds The destination bounds to fit.
+   * @return A new {@link RoundedPolygon} that fits in the destination bounds.
+   * @hide
+   */
+  @NonNull
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public static RoundedPolygon normalize(
+      @NonNull RoundedPolygon shape, boolean radial, @NonNull RectF dstBounds) {
+    float[] srcBoundsArray = new float[4];
+    if (radial) {
+      // This calculates the axis-aligned bounds of the shape and returns that rectangle. It
+      // determines the max dimension of the shape (by calculating the distance from its center to
+      // the start and midpoint of each curve) and returns a square which can be used to hold the
+      // object in any rotation.
+      shape.calculateMaxBounds(srcBoundsArray);
+    } else {
+      // This calculates the bounds of the shape without rotating the shape.
+      shape.calculateBounds(srcBoundsArray);
+    }
+    RectF srcBounds =
+        new RectF(srcBoundsArray[0], srcBoundsArray[1], srcBoundsArray[2], srcBoundsArray[3]);
+    float scale =
+        min(dstBounds.width() / srcBounds.width(), dstBounds.height() / srcBounds.height());
+    // Scales the shape with pivot point at its original center then moves it to align its original
+    // center with the destination bounds center.
+    Matrix transform = createScaleMatrix(scale, scale);
+    transform.preTranslate(-srcBounds.centerX(), -srcBounds.centerY());
+    transform.postTranslate(dstBounds.centerX(), dstBounds.centerY());
+    return Shapes_androidKt.transformed(shape, transform);
+  }
+
+  /**
+   * Creates a new {@link RoundedPolygon}, moving and resizing this one, so it's completely inside
+   * (0, 0) - (1, 1) square.
+   *
+   * <p>If {@code radial} is true, the shape will be scaled to fit in the circle centered at (0.5,
+   * 0.5) with a radius of 0.5. This is useful when the shape is animated to rotate around its
+   * center. Otherwise, the shape will be scaled to fit in the (0, 0) - (1, 1) square. With either
+   * option, the shape center will be (0.5, 0.5).
+   *
+   * @param shape The original {@link RoundedPolygon}.
+   * @param radial Whether to transform the shape to fit in the circle centered at (0.5, 0.5) with a
+   *     radius of 0.5.
+   * @return A new {@link RoundedPolygon} that fits in (0, 0) - (1, 1) square.
+   * @hide
+   */
+  @NonNull
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public static RoundedPolygon normalize(@NonNull RoundedPolygon shape, boolean radial) {
+    return normalize(shape, radial, new RectF(0, 0, 1, 1));
+  }
+
+  /**
+   * Returns a {@link Matrix} with the input scales.
+   *
+   * @param scaleX Scale in X axis.
+   * @param scaleY Scale in Y axis
+   * @hide
+   */
+  @NonNull
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  static Matrix createScaleMatrix(float scaleX, float scaleY) {
+    Matrix matrix = new Matrix();
+    matrix.setScale(scaleX, scaleY);
+    return matrix;
+  }
+
+  /**
+   * Returns a {@link Matrix} with the input rotation in degrees.
+   *
+   * @param degrees The rotation in degrees.
+   * @hide
+   */
+  @NonNull
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  static Matrix createRotationMatrix(float degrees) {
+    Matrix matrix = new Matrix();
+    matrix.setRotate(degrees);
+    return matrix;
+  }
+
+  /**
+   * Returns a {@link Matrix} with the input skews.
+   *
+   * @param kx The skew in X axis.
+   * @param ky The skew in Y axis.
+   * @hide
+   */
+  @NonNull
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  static Matrix createSkewMatrix(float kx, float ky) {
+    Matrix matrix = new Matrix();
+    matrix.setSkew(kx, ky);
+    return matrix;
+  }
 }

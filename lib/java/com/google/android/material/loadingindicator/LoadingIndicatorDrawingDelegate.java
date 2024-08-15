@@ -31,7 +31,6 @@ import androidx.graphics.shapes.Morph;
 import androidx.graphics.shapes.RoundedPolygon;
 import androidx.graphics.shapes.Shapes_androidKt;
 import com.google.android.material.color.MaterialColors;
-import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.MaterialShapes;
 
 class LoadingIndicatorDrawingDelegate {
@@ -128,13 +127,13 @@ class LoadingIndicatorDrawingDelegate {
 
   private static final RoundedPolygon[] INDETERMINATE_SHAPES =
       new RoundedPolygon[] {
-        MaterialShapeUtils.normalize(MaterialShapes.SOFT_BURST, true, new RectF(-1, -1, 1, 1)),
-        MaterialShapeUtils.normalize(MaterialShapes.COOKIE_9, true, new RectF(-1, -1, 1, 1)),
-        MaterialShapeUtils.normalize(MaterialShapes.PENTAGON, true, new RectF(-1, -1, 1, 1)),
-        MaterialShapeUtils.normalize(MaterialShapes.PILL, true, new RectF(-1, -1, 1, 1)),
-        MaterialShapeUtils.normalize(MaterialShapes.SUNNY, true, new RectF(-1, -1, 1, 1)),
-        MaterialShapeUtils.normalize(MaterialShapes.COOKIE_4, true, new RectF(-1, -1, 1, 1)),
-        MaterialShapeUtils.normalize(MaterialShapes.OVAL, true, new RectF(-1, -1, 1, 1))
+        MaterialShapes.normalize(MaterialShapes.SOFT_BURST, true, new RectF(-1, -1, 1, 1)),
+        MaterialShapes.normalize(MaterialShapes.COOKIE_9, true, new RectF(-1, -1, 1, 1)),
+        MaterialShapes.normalize(MaterialShapes.PENTAGON, true, new RectF(-1, -1, 1, 1)),
+        MaterialShapes.normalize(MaterialShapes.PILL, true, new RectF(-1, -1, 1, 1)),
+        MaterialShapes.normalize(MaterialShapes.SUNNY, true, new RectF(-1, -1, 1, 1)),
+        MaterialShapes.normalize(MaterialShapes.COOKIE_4, true, new RectF(-1, -1, 1, 1)),
+        MaterialShapes.normalize(MaterialShapes.OVAL, true, new RectF(-1, -1, 1, 1))
       };
 
   private static final Morph[] INDETERMINATE_MORPH_SEQUENCE =
