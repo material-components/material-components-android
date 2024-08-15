@@ -146,6 +146,7 @@
     <item name="floatingActionButtonLargeTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Tertiary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
     <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3.Button.IconButton.Filled.Tonal</item>
@@ -429,6 +430,7 @@
     <item name="floatingActionButtonLargeTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Tertiary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
     <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3.Button.IconButton.Filled.Tonal</item>

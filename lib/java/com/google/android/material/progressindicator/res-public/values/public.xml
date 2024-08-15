@@ -22,7 +22,6 @@
   <public name="trackThickness" type="attr" />
   <public name="trackCornerRadius" type="attr" />
   <public name="indicatorTrackGapSize" type="attr"/>
-  <public name="indicatorColor" type="attr" />
   <public name="showAnimationBehavior" type="attr"/>
   <public name="hideAnimationBehavior" type="attr"/>
   <public name="showDelay" type="attr"/>
@@ -38,7 +37,6 @@
   <public name="indicatorDirectionLinear" type="attr"/>
 
   <!-- CircularProgressIndicator attributes -->
-  <public name="indicatorSize" type="attr"/>
   <public name="indicatorInset" type="attr"/>
   <public name="indicatorDirectionCircular" type="attr"/>
   <public name="indeterminateAnimationTypeCircular" type="attr"/>

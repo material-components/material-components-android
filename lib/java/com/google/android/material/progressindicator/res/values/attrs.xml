@@ -31,7 +31,7 @@
       The indicator color (or colors in an array). By default, it uses theme
       primary color.
     -->
-    <attr name="indicatorColor" format="color|reference" />
+    <attr name="indicatorColor" />
     <!--
       The color used for the progress track. If not defined, it will be set to
       the indicatorColor and apply the android:disabledAlpha from the theme.
@@ -166,7 +166,7 @@
     <!--
       Defines the size (outer diameter) of the circular progress indicator.
     -->
-    <attr name="indicatorSize" format="dimension" />
+    <attr name="indicatorSize" />
     <!--
       The extra space from the outer edge of the indicator to the edge of the
       canvas.

@@ -36,6 +36,7 @@ import io.material.catalog.elevation.ElevationFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
 import io.material.catalog.imageview.ShapeableImageViewFragment;
+import io.material.catalog.loadingindicator.LoadingIndicatorFragment;
 import io.material.catalog.materialswitch.SwitchFragment;
 import io.material.catalog.menu.MenuFragment;
 import io.material.catalog.navigationdrawer.NavigationDrawerFragment;
@@ -72,6 +73,7 @@ import io.material.catalog.transition.TransitionFragment;
       ElevationFragment.Module.class,
       FabFragment.Module.class,
       FontFragment.Module.class,
+      LoadingIndicatorFragment.Module.class,
       MenuFragment.Module.class,
       NavigationDrawerFragment.Module.class,
       NavigationRailFragment.Module.class,
