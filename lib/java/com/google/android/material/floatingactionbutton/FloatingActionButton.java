@@ -110,6 +110,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         Shapeable,
         CoordinatorLayout.AttachedBehavior {
 
+  static final String ACCESSIBIILTY_FAB_ROLE =
+      "com.google.android.material.floatingactionbutton.FloatingActionButton";
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
   private static final int DEF_STYLE_RES = R.style.Widget_Design_FloatingActionButton;
@@ -934,6 +936,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       }
     }
     return super.onTouchEvent(ev);
+  }
+
+  @Override
+  public CharSequence getAccessibilityClassName() {
+    return ACCESSIBIILTY_FAB_ROLE;
   }
 
   /**

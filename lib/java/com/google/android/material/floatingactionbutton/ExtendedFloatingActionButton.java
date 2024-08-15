@@ -532,6 +532,11 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
   }
 
+  @Override
+  public CharSequence getAccessibilityClassName() {
+    return FloatingActionButton.ACCESSIBIILTY_FAB_ROLE;
+  }
+
   /**
    * Add a listener that will be invoked when this ExtendedFloatingActionButton is shown. See {@link
    * AnimatorListener}.
