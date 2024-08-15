@@ -41,6 +41,7 @@ ext {
     vectorDrawable               : '1.1.0',
     viewpager2                   : '1.0.0',
     dynamicanimation             : '1.0.0',
+    graphicsShapes               : '1.0.0-rc01',
   ]
 
   errorproneVersion = '2.15.0'
@@ -123,6 +124,8 @@ def compatibility(name) {
       return "androidx.resourceinspection:resourceinspection-processor:${androidXVersions.resourceInspectionProcessor}"
     case "viewpager2":
       return "androidx.viewpager2:viewpager2:${androidXVersions.viewpager2}"
+    case "graphicsShapes":
+      return "androidx.graphics:graphics-shapes:${androidXVersions.graphicsShapes}"
     case "experimental":
       return "androidx.annotation:annotation-experimental:${androidXVersions.experimental}"
     default:

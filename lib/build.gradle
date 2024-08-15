@@ -23,6 +23,7 @@ dependencies {
   api compatibility("transition")
   api compatibility("vectordrawable")
   api compatibility("viewpager2")
+  api compatibility("graphicsShapes")
 
   annotationProcessor compatibility("resourceInspectionProcessor")
 
@@ -66,6 +67,7 @@ def srcDirs = [
   'com/google/android/material/floatingactionbutton',
   'com/google/android/material/imageview',
   'com/google/android/material/internal',
+  'com/google/android/material/loadingindicator',
   'com/google/android/material/materialswitch',
   'com/google/android/material/math',
   'com/google/android/material/menu',
