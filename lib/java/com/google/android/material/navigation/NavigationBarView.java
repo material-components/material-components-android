@@ -911,8 +911,11 @@ public abstract class NavigationBarView extends FrameLayout {
   public void setSelectedItemId(@IdRes int itemId) {
     MenuItem item = menu.findItem(itemId);
     if (item != null) {
-      if (!menu.performItemAction(item, presenter, 0)) {
-        item.setChecked(true);
+      boolean result = menu.performItemAction(item, presenter, 0);
+      // If the item action was not invoked successfully (ie if there's no listener) or if
+      // the item was checked through the action, we should update the checked item.
+      if (item.isCheckable() && (!result || item.isChecked())) {
+        menuView.setCheckedItem(item);
       }
     }
   }

@@ -118,6 +118,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private boolean measurePaddingFromLabelBaseline;
 
   private int itemPoolSize = 0;
+  private MenuItem checkedItem = null;
 
   public NavigationBarMenuView(@NonNull Context context) {
     super(context);
@@ -148,13 +149,33 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
           public void onClick(View v) {
             final NavigationBarItemView itemView = (NavigationBarItemView) v;
             MenuItem item = itemView.getItemData();
-            if (!menu.performItemAction(item, presenter, 0)) {
-              item.setChecked(true);
+            boolean result = menu.performItemAction(item, presenter, 0);
+            if (item != null && item.isCheckable() && (!result || item.isChecked())) {
+              // If the item action was not invoked successfully (ie if there's no listener) or if
+              // the item was checked through the action, we should update the checked item.
+              setCheckedItem(item);
             }
           }
         };
 
     setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+  }
+
+  /**
+   * Set the checked item in the menu view.
+   *
+   * @param checkedItem the item to set checked
+   */
+  public void setCheckedItem(@NonNull MenuItem checkedItem) {
+    if (this.checkedItem == checkedItem || !checkedItem.isCheckable()) {
+      return;
+    }
+    // Unset the previous checked item
+    if (this.checkedItem != null) {
+      this.checkedItem.setChecked(false);
+    }
+    checkedItem.setChecked(true);
+    this.checkedItem = checkedItem;
   }
 
   @Override
@@ -947,7 +968,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       addView(child);
     }
     selectedItemPosition = Math.min(menu.size() - 1, selectedItemPosition);
-    menu.getItem(selectedItemPosition).setChecked(true);
+    setCheckedItem(menu.getItem(selectedItemPosition));
   }
 
   public void updateMenuView() {
@@ -967,6 +988,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     for (int i = 0; i < menuSize; i++) {
       MenuItem item = menu.getItem(i);
       if (item.isChecked()) {
+        setCheckedItem(item);
         selectedItemId = item.getItemId();
         selectedItemPosition = i;
       }
@@ -1014,7 +1036,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       if (itemId == item.getItemId()) {
         selectedItemId = itemId;
         selectedItemPosition = i;
-        item.setChecked(true);
+        setCheckedItem(item);
         break;
       }
     }

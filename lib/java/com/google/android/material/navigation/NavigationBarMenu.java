@@ -20,7 +20,6 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.appcompat.view.menu.MenuItemImpl;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import androidx.annotation.NonNull;
@@ -75,9 +74,6 @@ public final class NavigationBarMenu extends MenuBuilder {
     }
     stopDispatchingItemsChanged();
     final MenuItem item = super.addInternal(group, id, categoryOrder, title);
-    if (item instanceof MenuItemImpl) {
-      ((MenuItemImpl) item).setExclusiveCheckable(true);
-    }
     startDispatchingItemsChanged();
     return item;
   }
