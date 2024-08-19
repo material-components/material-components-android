@@ -388,8 +388,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     view.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
     view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
-    ViewCompat.setAccessibilityPaneTitle(
-        view, getContext().getString(R.string.snackbar_accessibility_pane_title));
 
     // Make sure that we fit system windows and have a listener to apply any insets
     view.setFitsSystemWindows(true);
@@ -831,6 +829,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void showViewImpl() {
+    if (ViewCompat.getAccessibilityPaneTitle(view) == null) {
+      ViewCompat.setAccessibilityPaneTitle(
+          view, getContext().getString(R.string.snackbar_accessibility_pane_title));
+    }
     if (shouldAnimate()) {
       // If animations are enabled, animate it in
       animateViewIn();

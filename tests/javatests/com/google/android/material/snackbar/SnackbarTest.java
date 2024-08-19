@@ -405,6 +405,7 @@ public class SnackbarTest {
     final Snackbar snackbar =
         Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
     assertEquals(
         snackbar.getContext().getString(R.string.snackbar_accessibility_pane_title),
         ViewCompat.getAccessibilityPaneTitle(snackbar.getView()).toString());
