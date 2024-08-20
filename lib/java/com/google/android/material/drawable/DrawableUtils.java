@@ -16,12 +16,9 @@
 
 package com.google.android.material.drawable;
 
-import com.google.android.material.R;
-
 import static java.lang.Math.max;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources.NotFoundException;
@@ -150,7 +147,6 @@ public final class DrawableUtils {
     }
   }
 
-  @TargetApi(VERSION_CODES.LOLLIPOP)
   public static void setRippleDrawableRadius(@Nullable RippleDrawable drawable, int radius) {
     if (VERSION.SDK_INT >= VERSION_CODES.M) {
       drawable.setRadius(radius);
@@ -373,7 +369,7 @@ public final class DrawableUtils {
         // The change to support concave paths was done late in the release cycle. People
         // using pre-releases of Q would experience a crash here.
       }
-    } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && path.isConvex()) {
+    } else if (path.isConvex()) {
       OutlineCompatL.setConvexPath(outline, path);
     }
   }

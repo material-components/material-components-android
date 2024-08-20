@@ -20,7 +20,6 @@ import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -35,8 +34,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
+
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
@@ -146,9 +144,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     borderPaint.setAntiAlias(true);
     shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyle, DEF_STYLE_RES).build();
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      setOutlineProvider(new OutlineProvider());
-    }
+    setOutlineProvider(new OutlineProvider());
   }
 
   @Override
@@ -158,7 +154,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
       return;
     }
 
-    if (VERSION.SDK_INT > VERSION_CODES.KITKAT && !isLayoutDirectionResolved()) {
+    if (!isLayoutDirectionResolved()) {
       return;
     }
 
@@ -166,8 +162,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
     // Update the super padding to be the combined `android:padding` and
     // `app:contentPadding`, keeping with ShapeableImageView's internal padding contract:
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && (isPaddingRelative() || isContentPaddingRelative())) {
+    if (isPaddingRelative() || isContentPaddingRelative()) {
       setPaddingRelative(
           super.getPaddingStart(),
           super.getPaddingTop(),
@@ -453,9 +448,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     }
     updateShapeMask(getWidth(), getHeight());
     invalidate();
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      invalidateOutline();
-    }
+    invalidateOutline();
   }
 
   @NonNull
@@ -563,7 +556,6 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     invalidate();
   }
 
-  @TargetApi(VERSION_CODES.LOLLIPOP)
   class OutlineProvider extends ViewOutlineProvider {
 
     private final Rect rect = new Rect();

@@ -32,8 +32,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
@@ -54,7 +52,6 @@ import com.google.android.material.card.MaterialCardView.CheckedIconGravity;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -119,7 +116,6 @@ class MaterialCardViewHelper {
   @Nullable private ColorStateList strokeColor;
   @Nullable private Drawable rippleDrawable;
   @Nullable private LayerDrawable clickableForegroundDrawable;
-  @Nullable private MaterialShapeDrawable compatRippleDrawable;
   @Nullable private MaterialShapeDrawable foregroundShapeDrawable;
 
   private boolean isBackgroundOverwritten = false;
@@ -474,10 +470,9 @@ class MaterialCardViewHelper {
 
   void recalculateCheckedIconPosition(int measuredWidth, int measuredHeight) {
     if (clickableForegroundDrawable != null) {
-      boolean isPreLollipop = VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
       int verticalPaddingAdjustment = 0;
       int horizontalPaddingAdjustment = 0;
-      if (isPreLollipop || materialCardView.getUseCompatPadding()) {
+      if (materialCardView.getUseCompatPadding()) {
         verticalPaddingAdjustment = (int) Math.ceil(2f * calculateVerticalBackgroundPadding());
         horizontalPaddingAdjustment = (int) Math.ceil(2f * calculateHorizontalBackgroundPadding());
       }
@@ -535,10 +530,6 @@ class MaterialCardViewHelper {
     if (foregroundShapeDrawable != null) {
       foregroundShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
     }
-
-    if (compatRippleDrawable != null) {
-      compatRippleDrawable.setShapeAppearanceModel(shapeAppearanceModel);
-    }
   }
 
   ShapeAppearanceModel getShapeAppearanceModel() {
@@ -573,8 +564,7 @@ class MaterialCardViewHelper {
   private Drawable insetDrawable(Drawable originalDrawable) {
     int insetVertical = 0;
     int insetHorizontal = 0;
-    boolean isPreLollipop = Build.VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
-    if (isPreLollipop || materialCardView.getUseCompatPadding()) {
+    if (materialCardView.getUseCompatPadding()) {
       // Calculate the shadow padding used by CardView
       insetVertical = (int) Math.ceil(calculateVerticalBackgroundPadding());
       insetHorizontal = (int) Math.ceil(calculateHorizontalBackgroundPadding());
@@ -623,12 +613,11 @@ class MaterialCardViewHelper {
   }
 
   private boolean canClipToOutline() {
-    return VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && bgDrawable.isRoundRect();
+    return bgDrawable.isRoundRect();
   }
 
   private float getParentCardViewCalculatedCornerPadding() {
-    if (materialCardView.getPreventCornerOverlap()
-        && (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || materialCardView.getUseCompatPadding())) {
+    if (materialCardView.getPreventCornerOverlap() && materialCardView.getUseCompatPadding()) {
       return (float) ((1 - COS_45) * materialCardView.getCardViewRadius());
     }
     return 0f;
@@ -707,36 +696,14 @@ class MaterialCardViewHelper {
 
   @NonNull
   private Drawable createForegroundRippleDrawable() {
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-      foregroundShapeDrawable = createForegroundShapeDrawable();
-      //noinspection NewApi
-      return new RippleDrawable(rippleColor, null, foregroundShapeDrawable);
-    }
-
-    return createCompatRippleDrawable();
-  }
-
-  @NonNull
-  private Drawable createCompatRippleDrawable() {
-    StateListDrawable rippleDrawable = new StateListDrawable();
-    compatRippleDrawable = createForegroundShapeDrawable();
-    compatRippleDrawable.setFillColor(rippleColor);
-    rippleDrawable.addState(new int[] {android.R.attr.state_pressed}, compatRippleDrawable);
-    return rippleDrawable;
+    foregroundShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+    return new RippleDrawable(rippleColor, null, foregroundShapeDrawable);
   }
 
   private void updateRippleColor() {
-    //noinspection NewApi
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE && rippleDrawable != null) {
+    if (rippleDrawable != null) {
       ((RippleDrawable) rippleDrawable).setColor(rippleColor);
-    } else if (compatRippleDrawable != null) {
-      compatRippleDrawable.setFillColor(rippleColor);
     }
-  }
-
-  @NonNull
-  private MaterialShapeDrawable createForegroundShapeDrawable() {
-    return new MaterialShapeDrawable(shapeAppearanceModel);
   }
 
   public void setChecked(boolean checked) {

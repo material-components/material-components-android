@@ -19,9 +19,6 @@ package io.material.catalog.card;
 import io.material.catalog.R;
 
 import android.animation.LayoutTransition;
-import android.os.Build;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -64,10 +61,6 @@ public class DraggableCardFragment extends DemoFragment {
     card.setAccessibilityDelegate(cardDelegate);
     container.addDraggableChild(card);
 
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      return view;
-    }
-
     container.setViewDragListener(
         new ViewDragListener() {
           @Override
@@ -88,9 +81,6 @@ public class DraggableCardFragment extends DemoFragment {
     @Override
     public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
       super.onInitializeAccessibilityNodeInfo(host, info);
-      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-        return;
-      }
 
       CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) card
           .getLayoutParams();

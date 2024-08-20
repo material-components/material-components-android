@@ -26,8 +26,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -422,9 +420,7 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   @Override
   public void setElevation(float elevation) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      super.setElevation(elevation);
-    }
+    super.setElevation(elevation);
     MaterialShapeUtils.setElevation(this, elevation);
   }
 

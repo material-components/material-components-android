@@ -16,8 +16,6 @@
 
 package com.google.android.material.color;
 
-import com.google.android.material.R;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;

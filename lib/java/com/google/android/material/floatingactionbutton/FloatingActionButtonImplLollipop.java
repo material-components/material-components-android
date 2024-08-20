@@ -36,7 +36,6 @@ import android.os.Build.VERSION_CODES;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
@@ -45,7 +44,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(VERSION_CODES.LOLLIPOP)
 class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   @Nullable private StateListAnimator stateListAnimator;
 

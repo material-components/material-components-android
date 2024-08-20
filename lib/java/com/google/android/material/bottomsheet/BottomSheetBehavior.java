@@ -368,9 +368,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     createMaterialShapeDrawableIfNeeded(context);
     createShapeValueAnimator();
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      this.elevation = a.getDimension(R.styleable.BottomSheetBehavior_Layout_android_elevation, -1);
-    }
+    this.elevation = a.getDimension(R.styleable.BottomSheetBehavior_Layout_android_elevation, -1);
 
     if (a.hasValue(R.styleable.BottomSheetBehavior_Layout_android_maxWidth)) {
       setMaxWidth(

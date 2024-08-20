@@ -19,7 +19,6 @@ package com.google.android.material.timepicker;
 import com.google.android.material.R;
 
 import static android.view.HapticFeedbackConstants.CLOCK_TICK;
-import static android.view.HapticFeedbackConstants.VIRTUAL_KEY;
 import static android.view.View.GONE;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static com.google.android.material.timepicker.RadialViewGroup.LEVEL_1;
@@ -29,8 +28,6 @@ import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
 import static java.util.Calendar.HOUR;
 import static java.util.Calendar.MINUTE;
 
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -147,8 +144,7 @@ class TimePickerClockPresenter
 
   private void performHapticFeedback(int prevHour, int prevMinute) {
     if (time.minute != prevMinute || time.hour != prevHour) {
-      int feedbackKey = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP ? CLOCK_TICK : VIRTUAL_KEY;
-      timePickerView.performHapticFeedback(feedbackKey);
+      timePickerView.performHapticFeedback(CLOCK_TICK);
     }
   }
 

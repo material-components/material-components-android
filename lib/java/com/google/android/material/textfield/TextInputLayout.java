@@ -848,22 +848,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
   private void updateEditTextBoxBackground() {
     Drawable editTextBoxBackground = getEditTextBoxBackground();
-
-    // On pre-Lollipop, setting a LayerDrawable as a background always replaces the original view
-    // paddings with its own, so we preserve the original paddings and restore them after setting
-    // a new background.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
-        && editTextBoxBackground instanceof LayerDrawable) {
-      int paddingLeft = editText.getPaddingLeft();
-      int paddingTop = editText.getPaddingTop();
-      int paddingRight = editText.getPaddingRight();
-      int paddingBottom = editText.getPaddingBottom();
-
-      editText.setBackground(editTextBoxBackground);
-      editText.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-    } else {
-      editText.setBackground(editTextBoxBackground);
-    }
+    editText.setBackground(editTextBoxBackground);
   }
 
   @Nullable
@@ -893,21 +878,15 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     int pressedBackgroundColor = MaterialColors.layer(rippleColor, surfaceColor, 0.1f);
     int[] rippleBackgroundColors = new int[] { pressedBackgroundColor, Color.TRANSPARENT };
     rippleBackground.setFillColor(new ColorStateList(states, rippleBackgroundColors));
-
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      rippleBackground.setTint(surfaceColor);
-      int[] colors = new int[] {pressedBackgroundColor, surfaceColor};
-      ColorStateList rippleColorStateList = new ColorStateList(states, colors);
-      MaterialShapeDrawable mask =
-          new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
-      mask.setTint(Color.WHITE);
-      Drawable rippleDrawable = new RippleDrawable(rippleColorStateList, rippleBackground, mask);
-      Drawable[] layers = {rippleDrawable, boxBackground};
-      editTextBackground = new LayerDrawable(layers);
-    } else {
-      Drawable[] layers = {rippleBackground, boxBackground};
-      editTextBackground = new LayerDrawable(layers);
-    }
+    rippleBackground.setTint(surfaceColor);
+    int[] colors = new int[] {pressedBackgroundColor, surfaceColor};
+    ColorStateList rippleColorStateList = new ColorStateList(states, colors);
+    MaterialShapeDrawable mask =
+        new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
+    mask.setTint(Color.WHITE);
+    Drawable rippleDrawable = new RippleDrawable(rippleColorStateList, rippleBackground, mask);
+    Drawable[] layers = {rippleDrawable, boxBackground};
+    editTextBackground = new LayerDrawable(layers);
     return editTextBackground;
   }
 
@@ -919,18 +898,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     int pressedBackgroundColor = MaterialColors.layer(rippleColor, boxBackgroundColor, 0.1f);
     int[] colors = new int[] { pressedBackgroundColor, boxBackgroundColor };
 
-    Drawable editTextBackground;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      ColorStateList rippleColorStateList = new ColorStateList(states, colors);
-      editTextBackground = new RippleDrawable(rippleColorStateList, boxBackground, boxBackground);
-    } else {
-      MaterialShapeDrawable rippleBackground =
-          new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
-      rippleBackground.setFillColor(new ColorStateList(states, colors));
-      Drawable[] layers = {boxBackground, rippleBackground};
-      editTextBackground = new LayerDrawable(layers);
-    }
-    return editTextBackground;
+    ColorStateList rippleColorStateList = new ColorStateList(states, colors);
+    return new RippleDrawable(rippleColorStateList, boxBackground, boxBackground);
   }
 
   private void setDropDownMenuBackgroundIfNeeded() {
@@ -938,8 +907,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       return;
     }
     AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) editText;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && autoCompleteTextView.getDropDownBackground() == null) {
+    if (autoCompleteTextView.getDropDownBackground() == null) {
       if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
         autoCompleteTextView.setDropDownBackgroundDrawable(
             getOrCreateOutlinedDropDownMenuBackground());
@@ -1547,9 +1515,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     // Use the EditText's typeface, text size, and letter spacing for our expanded text.
     collapsingTextHelper.setTypefaces(this.editText.getTypeface());
     collapsingTextHelper.setExpandedTextSize(this.editText.getTextSize());
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      collapsingTextHelper.setExpandedLetterSpacing(this.editText.getLetterSpacing());
-    }
+    collapsingTextHelper.setExpandedLetterSpacing(this.editText.getLetterSpacing());
 
     final int editTextGravity = this.editText.getGravity();
     collapsingTextHelper.setCollapsedTextGravity(

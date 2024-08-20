@@ -35,7 +35,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -57,7 +56,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -238,17 +236,13 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     context = getContext();
     setOrientation(VERTICAL);
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      // Use the bounds view outline provider so that we cast a shadow, even without a
-      // background
-      if (getOutlineProvider() == ViewOutlineProvider.BACKGROUND) {
-        ViewUtilsLollipop.setBoundsViewOutlineProvider(this);
-      }
-
-      // If we're running on API 21+, we should reset any state list animator from our
-      // default style
-      ViewUtilsLollipop.setStateListAnimatorFromAttrs(this, attrs, defStyleAttr, DEF_STYLE_RES);
+    // Use the bounds view outline provider so that we cast a shadow, even without a background.
+    if (getOutlineProvider() == ViewOutlineProvider.BACKGROUND) {
+      ViewUtilsLollipop.setBoundsViewOutlineProvider(this);
     }
+
+    // Reset any state list animator from our default style.
+    ViewUtilsLollipop.setStateListAnimatorFromAttrs(this, attrs, defStyleAttr, DEF_STYLE_RES);
 
     final TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
@@ -287,8 +281,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           /* force= */ false);
     }
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && a.hasValue(R.styleable.AppBarLayout_elevation)) {
+    if (a.hasValue(R.styleable.AppBarLayout_elevation)) {
       ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(
           this, a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0));
     }
@@ -686,7 +679,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     return background instanceof MaterialShapeDrawable ? (MaterialShapeDrawable) background : null;
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -1156,9 +1148,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
    */
   @Deprecated
   public void setTargetElevation(float elevation) {
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(this, elevation);
-    }
+    ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(this, elevation);
   }
 
   /**
@@ -2206,7 +2196,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         if (VERSION.SDK_INT >= VERSION_CODES.M && layout.getForeground() != null) {
           layout.getForeground().jumpToCurrentState();
         }
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && layout.getStateListAnimator() != null) {
+        if (layout.getStateListAnimator() != null) {
           layout.getStateListAnimator().jumpToCurrentState();
         }
       }

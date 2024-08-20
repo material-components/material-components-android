@@ -561,7 +561,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
   private static boolean isToolbar(View view) {
     return view instanceof androidx.appcompat.widget.Toolbar
-        || (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && view instanceof android.widget.Toolbar);
+        || view instanceof android.widget.Toolbar;
   }
 
   private boolean isToolbarChild(View child) {
@@ -752,8 +752,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   private static CharSequence getToolbarTitle(View view) {
     if (view instanceof androidx.appcompat.widget.Toolbar) {
       return ((androidx.appcompat.widget.Toolbar) view).getTitle();
-    } else if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && view instanceof android.widget.Toolbar) {
+    } else if (view instanceof android.widget.Toolbar) {
       return ((android.widget.Toolbar) view).getTitle();
     } else {
       return null;
