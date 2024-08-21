@@ -19,6 +19,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
@@ -36,11 +37,11 @@ import com.google.android.material.shape.MaterialShapes;
 class LoadingIndicatorDrawingDelegate {
 
   @NonNull LoadingIndicatorSpec specs;
-  @NonNull Path indicatorPath;
+  @NonNull final Path indicatorPath = new Path();
+  @NonNull final Matrix indicatorPathTransform = new Matrix();
 
   public LoadingIndicatorDrawingDelegate(@NonNull LoadingIndicatorSpec specs) {
     this.specs = specs;
-    this.indicatorPath = new Path();
   }
 
   /**
@@ -112,7 +113,6 @@ class LoadingIndicatorDrawingDelegate {
     paint.setColor(color);
     paint.setStyle(Style.FILL);
     canvas.save();
-    canvas.scale(specs.indicatorSize / 2f, specs.indicatorSize / 2f);
     canvas.rotate(indicatorState.rotationDegree);
     // Draws the shape morph.
     indicatorPath.rewind();
@@ -121,6 +121,10 @@ class LoadingIndicatorDrawingDelegate {
     float fractionPerShape = indicatorState.morphFraction % 1;
     Shapes_androidKt.toPath(
         INDETERMINATE_MORPH_SEQUENCE[fractionAmongAllShapes], fractionPerShape, indicatorPath);
+    // We need to apply the scaling to the path directly, instead of on the canvas, to avoid the
+    // limitation of hardware accelerated rendering.
+    indicatorPathTransform.setScale(specs.indicatorSize / 2f, specs.indicatorSize / 2f);
+    indicatorPath.transform(indicatorPathTransform);
     canvas.drawPath(indicatorPath, paint);
     canvas.restore();
   }
