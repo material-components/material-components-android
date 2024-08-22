@@ -19,6 +19,7 @@ package com.google.android.material.shape;
 import com.google.android.material.R;
 
 import static android.content.res.Resources.ID_NULL;
+import static java.lang.Math.max;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -113,6 +114,19 @@ public class StateListSizeChange {
       idx = indexOfStateSet(StateSet.WILD_CARD);
     }
     return idx < 0 ? defaultSizeChange : sizeChanges[idx];
+  }
+
+  public int getMaxWidthChange(@Px int baseWidth) {
+    int maxWidthChange = -baseWidth;
+    for (int i = 0; i < stateCount; i++) {
+      SizeChange sizeChange = sizeChanges[i];
+      if (sizeChange.widthChange.type == SizeChangeType.PIXELS) {
+        maxWidthChange = (int) max(maxWidthChange, sizeChange.widthChange.amount);
+      } else if (sizeChange.widthChange.type == SizeChangeType.PERCENT) {
+        maxWidthChange = (int) max(maxWidthChange, baseWidth * sizeChange.widthChange.amount);
+      }
+    }
+    return maxWidthChange;
   }
 
   private int indexOfStateSet(int[] stateSet) {
@@ -211,10 +225,14 @@ public class StateListSizeChange {
 
   /** A collection of all values needed in a size change. */
   public static class SizeChange {
-    SizeChangeAmount widthChange;
+    @Nullable public SizeChangeAmount widthChange;
 
     SizeChange(@Nullable SizeChangeAmount widthChange) {
       this.widthChange = widthChange;
+    }
+
+    SizeChange(@NonNull SizeChange other) {
+      this.widthChange = new SizeChangeAmount(other.widthChange.type, other.widthChange.amount);
     }
   }
 

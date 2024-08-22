@@ -139,6 +139,7 @@
     <item name="materialButtonTonalStyle">@style/Widget.Material3.Button.TonalButton</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
     <item name="materialButtonElevatedStyle">@style/Widget.Material3.Button.ElevatedButton</item>
+    <item name="materialButtonGroupStyle">@style/Widget.Material3.MaterialButtonGroup</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3.MaterialButtonToggleGroup</item>
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>
     <item name="materialCardViewOutlinedStyle">@style/Widget.Material3.CardView.Outlined</item>
@@ -420,6 +421,7 @@
     <item name="materialButtonTonalStyle">@style/Widget.Material3.Button.TonalButton</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
     <item name="materialButtonElevatedStyle">@style/Widget.Material3.Button.ElevatedButton</item>
+    <item name="materialButtonGroupStyle">@style/Widget.Material3.MaterialButtonGroup</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3.MaterialButtonToggleGroup</item>
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>
     <item name="materialCardViewOutlinedStyle">@style/Widget.Material3.CardView.Outlined</item>

@@ -25,8 +25,6 @@
   <attr name="materialButtonOutlinedStyle" format="reference" />
   <!-- Style to use for Material Elevated Buttons in this theme. -->
   <attr name="materialButtonElevatedStyle" format="reference" />
-  <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
-  <attr name="materialButtonToggleGroupStyle" format="reference" />
   <!-- Style to use for Material Icon Only Buttons in this theme. -->
   <attr name="materialIconButtonStyle" format="reference" />
   <!-- Style to use for Filled Material Icon Only Buttons in this theme. -->
@@ -35,6 +33,10 @@
   <attr name="materialIconButtonFilledTonalStyle" format="reference" />
   <!-- Style to use for Outlined Material Icon Only Buttons in this theme. -->
   <attr name="materialIconButtonOutlinedStyle" format="reference" />
+  <!-- Style to use for MaterialButtonGroups in this theme. -->
+  <attr name="materialButtonGroupStyle" format="reference"/>
+  <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
+  <attr name="materialButtonToggleGroupStyle" format="reference" />
 
   <declare-styleable name="MaterialButton">
     <!-- Whether the button can be checked. -->
@@ -106,6 +108,24 @@
     <attr name="toggleCheckedStateOnClick" format="boolean" />
   </declare-styleable>
 
+  <declare-styleable name="MaterialButtonGroup">
+    <!-- Whether all child buttons are enabled. -->
+    <attr name="android:enabled"/>
+    <!-- The reference to the state list of the size change per state of all child buttons. -->
+    <attr name="buttonSizeChange" format="reference"/>
+    <!-- The corner size of inner corners, which are adjacent to neighbor buttons.
+         Can be a dp value as the absolute corner size; a fraction value as the relative
+         corner size; or a reference to a state list corner size. -->
+    <attr name="innerCornerSize" format="dimension|fraction|reference" />
+    <!-- The shape appearance of the group. -->
+    <attr name="shapeAppearance" />
+    <!-- The shape appearance overlay of the group. -->
+    <attr name="shapeAppearanceOverlay" />
+    <!-- The spacing between inclusive buttons. Outlines will overlap, when set to zero
+         or negative. -->
+    <attr name="android:spacing" />
+  </declare-styleable>
+
   <declare-styleable name="MaterialButtonToggleGroup">
     <!-- Whether only a single button in this group is allowed to be checked at any time. By
          default, this is false and multiple buttons in this group are allowed to be checked at
@@ -122,7 +142,7 @@
     <!-- The corner size of inner corners, which are adjacent to neighbor buttons.
          Can be a dp value as the absolute corner size; a fraction value as the relative
          corner size; or a reference to a state list corner size. -->
-    <attr name="innerCornerSize" format="dimension|fraction|reference" />
+    <attr name="innerCornerSize" />
     <!-- The shape appearance of the group. -->
     <attr name="shapeAppearance" />
     <!-- The shape appearance overlay of the group. -->

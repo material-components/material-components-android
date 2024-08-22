@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2019 The Android Open Source Project
+  Copyright 2024 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -20,11 +20,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_vertical">
-
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingTop="8dp"
+      android:paddingHorizontal="8dp"
       android:gravity="center_horizontal"
       android:orientation="vertical">
     <TextView
@@ -32,165 +32,132 @@
         android:layout_height="wrap_content"
         android:paddingTop="16dp"
         android:paddingBottom="8dp"
-        android:text="@string/cat_single_select"
-        android:textAppearance="?attr/textAppearanceSubtitle1"/>
-
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:singleSelection="true">
-
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_private" />
-
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_team" />
-
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_everyone" />
-
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_custom" />
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="8dp"
-        android:text="@string/cat_multi_select"
-        android:textAppearance="?attr/textAppearanceSubtitle1"/>
-
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_cheese"/>
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_tomatoes"/>
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_mushrooms"/>
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="8dp"
         android:text="@string/cat_icon_only"
         android:textAppearance="?attr/textAppearanceSubtitle1"/>
-
-    <com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/icon_only_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+    <com.google.android.material.button.MaterialButtonGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:spacing="0dp">
       <Button
-          style="?attr/materialButtonOutlinedStyle"
+          style="?attr/materialIconButtonFilledTonalStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_paint_bucket"
           app:icon="@drawable/ic_colors_24px"
           app:iconPadding="0dp"/>
       <Button
-          style="?attr/materialButtonOutlinedStyle"
+          style="?attr/materialIconButtonFilledTonalStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_plus"
           app:icon="@drawable/ic_fab_24px"
           app:iconPadding="0dp"/>
       <Button
-          style="?attr/materialButtonOutlinedStyle"
+          style="?attr/materialIconButtonFilledTonalStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_components"
           app:icon="@drawable/ic_components_24px"
           app:iconPadding="0dp"/>
       <Button
-          style="?attr/materialButtonOutlinedStyle"
+          style="?attr/materialIconButtonFilledTonalStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_accelerator"
           app:icon="@drawable/ic_accelerator_24px"
           app:iconPadding="0dp"/>
       <Button
-          style="?attr/materialButtonOutlinedStyle"
+          style="?attr/materialIconButtonFilledTonalStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_dialog"
           app:icon="@drawable/ic_dialogs_24px"
           app:iconPadding="0dp"/>
-    </com.google.android.material.button.MaterialButtonToggleGroup>
-
+    </com.google.android.material.button.MaterialButtonGroup>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cat_inner_corner_size_label" />
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/innerCornerSizeSlider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:valueFrom="0"
-        android:valueTo="50" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_spacing_label"/>
-
-    <com.google.android.material.slider.Slider
-        android:id="@+id/spacingSlider"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:valueFrom="0"
-        android:valueTo="20"/>
-
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/switch_toggle"
         android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/cat_label_only"
+        android:textAppearance="?attr/textAppearanceSubtitle1"/>
+    <com.google.android.material.button.MaterialButtonGroup
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"
-        android:checked="false"
-        android:enabled="true"
-        android:text="@string/cat_button_require_selection" />
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:spacing="8dp">
+      <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_button_label_cheese"/>
+      <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_button_label_tomatoes"/>
+      <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_button_label_mushrooms"/>
+    </com.google.android.material.button.MaterialButtonGroup>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/cat_icon_and_label_mixed"
+        android:textAppearance="?attr/textAppearanceSubtitle1"/>
+    <com.google.android.material.button.MaterialButtonGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:spacing="0dp">
+      <Button
+          style="?attr/materialIconButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:contentDescription="@string/cat_icon_button_label_paint_bucket"
+          app:icon="@drawable/ic_colors_24px"
+          app:iconPadding="0dp"/>
+      <Button
+          style="?attr/materialIconButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:contentDescription="@string/cat_icon_button_label_plus"
+          app:icon="@drawable/ic_fab_24px"
+          app:iconPadding="0dp"/>
+      <Button
+          style="?attr/materialIconButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:contentDescription="@string/cat_icon_button_label_components"
+          app:icon="@drawable/ic_components_24px"
+          app:iconPadding="0dp"
+          android:text="@string/cat_button_label_custom"/>
+      <Button
+          style="?attr/materialIconButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:contentDescription="@string/cat_icon_button_label_accelerator"
+          app:icon="@drawable/ic_accelerator_24px"
+          app:iconPadding="0dp"/>
+      <Button
+          style="?attr/materialIconButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:contentDescription="@string/cat_icon_button_label_dialog"
+          app:icon="@drawable/ic_dialogs_24px"
+          app:iconPadding="0dp"/>
+    </com.google.android.material.button.MaterialButtonGroup>
 
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/orientation_switch_toggle"
+        android:paddingTop="16dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:paddingTop="16dp"
         android:checked="false"
         android:enabled="true"
         android:text="@string/cat_button_vertical_orientation" />
-
     <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switch_enable"
         android:paddingTop="16dp"
@@ -200,6 +167,5 @@
         android:checked="true"
         android:enabled="true"
         android:text="@string/cat_button_enable" />
-
   </LinearLayout>
 </ScrollView>
