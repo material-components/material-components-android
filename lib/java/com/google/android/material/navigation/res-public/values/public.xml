@@ -39,6 +39,8 @@
   <public name="labelVisibilityMode" type="attr"/>
   <public name="topInsetScrimEnabled" type="attr"/>
   <public name="bottomInsetScrimEnabled" type="attr"/>
+  <public name="startInsetScrimEnabled" type="attr"/>
+  <public name="endInsetScrimEnabled" type="attr"/>
   <public name="menu" type="attr"/>
   <public name="subheaderColor" type="attr"/>
   <public name="subheaderTextAppearance" type="attr"/>

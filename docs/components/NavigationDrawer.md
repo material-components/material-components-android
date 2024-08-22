@@ -322,9 +322,10 @@ Element        | Attribute                                             | Related
 
 ### Scrim attributes
 
-Element   | Attribute | Related method(s)                 | Default value
---------- | --------- | --------------------------------- | --------------------
-**Color** | N/A       | `setScrimColor` on `DrawerLayout` | Black at 60% opacity
+Element           | Attribute                                                                                                     | Related method(s)                                                                                                                                                                                                                                 | Default value
+----------------- | ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------
+**Color**         | N/A                                                                                                           | `setScrimColor` on `DrawerLayout`                                                                                                                                                                                                                 | Black at 60% opacity
+**Window Insets** | `app:topInsetScrimEnabled`<br/>`app:bottomScrimEnabled`<br/>`app:startScrimEnabled`<br/>`app:endScrimEnabled` | `setTopInsetScrimEnabled`<br/>`isTopInsetScrimEnabled`<br/>`setBottomInsetScrimEnabled`<br/>`isBottomInsetScrimEnabled`<br/>`setStartInsetScrimEnabled`<br/>`isStartInsetScrimEnabled`<br/>`setEndInsetScrimEnabled`<br/>`isEndInsetScrimEnabled` | true
 
 ### `NavigationView` styles
 

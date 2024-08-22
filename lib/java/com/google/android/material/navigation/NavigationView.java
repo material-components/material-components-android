@@ -142,6 +142,8 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   private OnGlobalLayoutListener onGlobalLayoutListener;
   private boolean topInsetScrimEnabled = true;
   private boolean bottomInsetScrimEnabled = true;
+  private boolean startInsetScrimEnabled = true;
+  private boolean endInsetScrimEnabled = true;
 
   @Px private int drawerLayoutCornerSize = 0;
   private final boolean drawerLayoutCornerSizeBackAnimationEnabled;
@@ -328,6 +330,11 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
 
     setBottomInsetScrimEnabled(
         a.getBoolean(R.styleable.NavigationView_bottomInsetScrimEnabled, bottomInsetScrimEnabled));
+    setStartInsetScrimEnabled(
+        a.getBoolean(R.styleable.NavigationView_startInsetScrimEnabled, startInsetScrimEnabled));
+
+    setEndInsetScrimEnabled(
+        a.getBoolean(R.styleable.NavigationView_endInsetScrimEnabled, endInsetScrimEnabled));
 
     final int itemIconPadding =
         a.getDimensionPixelSize(R.styleable.NavigationView_itemIconPadding, 0);
@@ -933,6 +940,34 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     this.bottomInsetScrimEnabled = enabled;
   }
 
+  /** Whether or not the NavigationView will draw a scrim behind the window's start inset. */
+  public boolean isStartInsetScrimEnabled() {
+    return this.startInsetScrimEnabled;
+  }
+
+  /**
+   * Set whether or not the NavigationView should draw a scrim behind the window's start inset.
+   *
+   * @param enabled true when the NavigationView should draw a scrim.
+   */
+  public void setStartInsetScrimEnabled(boolean enabled) {
+    this.startInsetScrimEnabled = enabled;
+  }
+
+  /** Whether or not the NavigationView will draw a scrim behind the window's end inset. */
+  public boolean isEndInsetScrimEnabled() {
+    return this.endInsetScrimEnabled;
+  }
+
+  /**
+   * Set whether or not the NavigationView should draw a scrim behind the window's end inset.
+   *
+   * @param enabled true when the NavigationView should draw a scrim.
+   */
+  public void setEndInsetScrimEnabled(boolean enabled) {
+    this.endInsetScrimEnabled = enabled;
+  }
+
   /**
    * Get the distance between the start edge of the NavigationView and the start of a menu divider.
    */
@@ -1087,10 +1122,12 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
             presenter.setBehindStatusBar(isBehindStatusBar);
             setDrawTopInsetForeground(isBehindStatusBar && isTopInsetScrimEnabled());
 
+            boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
             // The navigation view could be left aligned or just hidden out of view in a drawer
             // layout when the global layout listener is called.
             boolean isOnLeftSide = (tmpLocation[0] == 0) || (tmpLocation[0] + getWidth() == 0);
-            setDrawLeftInsetForeground(isOnLeftSide);
+            setDrawLeftInsetForeground(
+                isOnLeftSide && (isRtl ? isEndInsetScrimEnabled() : isStartInsetScrimEnabled()));
 
             Activity activity = ContextUtils.getActivity(getContext());
             if (activity != null && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
@@ -1108,7 +1145,8 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
                   (displayBounds.width() == tmpLocation[0])
                       || (displayBounds.width() - getWidth() == tmpLocation[0]);
 
-              setDrawRightInsetForeground(isOnRightSide);
+              setDrawRightInsetForeground(
+                  isOnRightSide && (isRtl ? isStartInsetScrimEnabled() : isEndInsetScrimEnabled()));
             }
           }
         };

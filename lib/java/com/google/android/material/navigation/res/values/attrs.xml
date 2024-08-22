@@ -199,6 +199,12 @@
     <!-- Whether or not the navigation view should draw a scrim behind the bottom window
          inset, usually the navigation area, when drawing edge to edge. -->
     <attr name="bottomInsetScrimEnabled" format="boolean"/>
+    <!-- Whether or not the navigation view should draw a scrim behind the start window
+     inset when drawing edge to edge. -->
+    <attr name="startInsetScrimEnabled" format="boolean"/>
+    <!-- Whether or not the navigation view should draw a scrim behind the end window
+         inset when drawing edge to edge. -->
+    <attr name="endInsetScrimEnabled" format="boolean"/>
     <!-- The distance between the start of the navigation view container and a menu divider. -->
     <attr name="dividerInsetStart"/>
     <!-- The distance between the end of the navigation view container and a menu divider. -->
