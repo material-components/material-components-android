@@ -387,11 +387,15 @@ public class MaterialButtonToggleGroup extends MaterialButtonGroup {
   }
 
   private void updateChildrenA11yClassName() {
+    String className = getChildrenA11yClassName();
     for (int i = 0; i < getChildCount(); i++) {
-      String className =
-          singleSelection ? RadioButton.class.getName() : ToggleButton.class.getName();
       getChildButton(i).setA11yClassName(className);
     }
+  }
+
+  @NonNull
+  private String getChildrenA11yClassName() {
+    return singleSelection ? RadioButton.class.getName() : ToggleButton.class.getName();
   }
 
   /**
@@ -517,6 +521,7 @@ public class MaterialButtonToggleGroup extends MaterialButtonGroup {
     buttonChild.setMaxLines(1);
     buttonChild.setEllipsize(TruncateAt.END);
     buttonChild.setCheckable(true);
+    buttonChild.setA11yClassName(getChildrenA11yClassName());
 
     // Enables surface layer drawing for semi-opaque strokes
     buttonChild.setShouldDrawSurfaceColorStroke(true);
