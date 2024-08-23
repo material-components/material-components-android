@@ -63,10 +63,10 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:paddingTop="8dp"
-      android:text="@string/cat_text_button_text"
+      android:text="@string/cat_elevated_button_text"
       android:textSize="12sp" />
   <Button
-      style="?attr/borderlessButtonStyle"
+      style="?attr/materialButtonElevatedStyle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/cat_button_label_enabled" />
@@ -74,10 +74,10 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:paddingTop="8dp"
-      android:text="@string/cat_elevated_button_text"
+      android:text="@string/cat_text_button_text"
       android:textSize="12sp" />
   <Button
-      style="?attr/materialButtonElevatedStyle"
+      style="?attr/borderlessButtonStyle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/cat_button_label_enabled" />

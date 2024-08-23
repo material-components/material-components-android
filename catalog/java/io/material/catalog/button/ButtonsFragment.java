@@ -19,6 +19,7 @@ package io.material.catalog.button;
 import io.material.catalog.R;
 
 import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -57,13 +58,7 @@ public class ButtonsFragment extends DemoLandingFragment {
   @Override
   public List<Demo> getAdditionalDemos() {
     return Arrays.asList(
-        new Demo(R.string.cat_buttons_group) {
-          @Nullable
-          @Override
-          public Fragment createFragment() {
-            return new ButtonGroupDemoFragment();
-          }
-        },
+        getButtonGroupDemo(),
         new Demo(R.string.cat_buttons_toggle_group) {
           @Nullable
           @Override
@@ -71,6 +66,17 @@ public class ButtonsFragment extends DemoLandingFragment {
             return new ButtonToggleGroupDemoFragment();
           }
         });
+  }
+
+  @NonNull
+  protected Demo getButtonGroupDemo() {
+    return new Demo(R.string.cat_buttons_group) {
+      @Nullable
+      @Override
+      public Fragment createFragment() {
+        return new ButtonGroupDemoFragment();
+      }
+    };
   }
 
   /** The Dagger module for {@link ButtonsFragment} dependencies. */

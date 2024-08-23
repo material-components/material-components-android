@@ -46,7 +46,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_standard_icon_button_desc"
-          app:icon="@drawable/ic_dialogs_24px"/>
+          app:icon="@drawable/ic_star_checkable_24"/>
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_filled_icon_button_desc"
-          app:icon="@drawable/ic_dialogs_24px"/>
+          app:icon="@drawable/ic_star_checkable_24"/>
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_filled_tonal_icon_button_desc"
-          app:icon="@drawable/ic_dialogs_24px"/>
+          app:icon="@drawable/ic_star_checkable_24"/>
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_outlined_icon_button_desc"
-          app:icon="@drawable/ic_dialogs_24px"/>
+          app:icon="@drawable/ic_star_checkable_24"/>
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -134,7 +134,7 @@
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_standard_icon_button_desc"
           android:checkable="true"
-          app:icon="@drawable/ic_dialogs_24px"/>
+          app:icon="@drawable/ic_star_checkable_24"/>
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_filled_icon_button_desc"
           android:checkable="true"
-          app:icon="@drawable/ic_dialogs_24px"/>
+          app:icon="@drawable/ic_star_checkable_24"/>
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_filled_tonal_icon_button_desc"
           android:checkable="true"
-          app:icon="@drawable/ic_dialogs_24px"/>
+          app:icon="@drawable/ic_star_checkable_24"/>
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -191,7 +191,7 @@
           android:layout_height="wrap_content"
           android:contentDescription="@string/cat_outlined_icon_button_desc"
           android:checkable="true"
-          app:icon="@drawable/ic_dialogs_24px"/>
+          app:icon="@drawable/ic_star_checkable_24"/>
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"

@@ -74,8 +74,11 @@
   <string name="cat_single_select">Single-select</string>
   <string name="cat_multi_select">Multi-select</string>
   <string name="cat_icon_only" description="A label for icon only buttons below. [CHAR LIMIT=NONE]">Icon only</string>
+  <string name="cat_icon_only_toggle" description="A label for icon only toggle buttons below. [CHAR LIMIT=NONE]">Icon only toggle</string>
   <string name="cat_label_only" description="A label for lebal only buttons below. [CHAR LIMIT=NONE]">Label only</string>
+  <string name="cat_label_only_toggle" description="A label for lebal only toggle buttons below. [CHAR LIMIT=NONE]">Label only toggle</string>
   <string name="cat_icon_and_label_mixed" description="A label for icon and label mixed buttons below. [CHAR LIMIT=NONE]">Icon and label mixed</string>
+  <string name="cat_icon_and_label_mixed_toggle" description="A label for icon and label mixed toggle buttons below. [CHAR LIMIT=NONE]">Icon and label mixed toggle</string>
   <string description="A label for a spacing slider [CHAR LIMIT=NONE]"
       name="cat_spacing_label">Spacing (dp)</string>
   <string description="A label for an inner corner size slider [CHAR LIMIT=NONE]"

@@ -24,10 +24,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonGroup;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoFragment;
@@ -36,8 +35,6 @@ import java.util.List;
 
 /** A fragment that displays a button group demo for the Catalog app. */
 public class ButtonGroupDemoFragment extends DemoFragment {
-
-  private int defaultInset;
 
   /** Create a Demo View with different types of {@link MaterialButtonGroup}. */
   @Nullable
@@ -49,10 +46,14 @@ public class ButtonGroupDemoFragment extends DemoFragment {
     View view =
         layoutInflater.inflate(
             R.layout.cat_buttons_group_fragment, viewGroup, /* attachToRoot= */ false);
+
+    ViewGroup content = view.findViewById(R.id.button_group_content);
+    layoutInflater.inflate(getIconOnlyButtonGroupContent(), content, /* attachToRoot= */ true);
+    layoutInflater.inflate(getLabelOnlyButtonGroupContent(), content, /* attachToRoot= */ true);
+    layoutInflater.inflate(getMixedButtonGroupContent(), content, /* attachToRoot= */ true);
+
     List<MaterialButtonGroup> buttonGroups =
         DemoUtils.findViewsWithType(view, MaterialButtonGroup.class);
-
-    defaultInset = getResources().getDimensionPixelSize(R.dimen.mtrl_btn_inset);
 
     MaterialSwitch verticalOrientationToggle = view.findViewById(R.id.orientation_switch_toggle);
     verticalOrientationToggle.setOnCheckedChangeListener(
@@ -60,14 +61,6 @@ public class ButtonGroupDemoFragment extends DemoFragment {
           for (MaterialButtonGroup buttonGroup : buttonGroups) {
             int orientation = isChecked ? VERTICAL : HORIZONTAL;
             buttonGroup.setOrientation(orientation);
-            for (int i = 0; i < buttonGroup.getChildCount(); ++i) {
-              int inset = getInsetForOrientation(orientation);
-              MaterialButton button = (MaterialButton) buttonGroup.getChildAt(i);
-              button.setInsetBottom(inset);
-              button.setInsetTop(inset);
-              adjustParams(button.getLayoutParams(), orientation);
-            }
-
             buttonGroup.requestLayout();
           }
         });
@@ -83,12 +76,18 @@ public class ButtonGroupDemoFragment extends DemoFragment {
     return view;
   }
 
-  private int getInsetForOrientation(int orientation) {
-    return orientation == VERTICAL ? 0 : defaultInset;
+  @LayoutRes
+  protected int getIconOnlyButtonGroupContent() {
+    return R.layout.cat_button_group_content_icon_only;
   }
 
-  private static void adjustParams(LayoutParams layoutParams, int orientation) {
-    layoutParams.width =
-        orientation == VERTICAL ? LayoutParams.MATCH_PARENT : LayoutParams.WRAP_CONTENT;
+  @LayoutRes
+  protected int getLabelOnlyButtonGroupContent() {
+    return R.layout.cat_button_group_content_label_only;
+  }
+
+  @LayoutRes
+  protected int getMixedButtonGroupContent() {
+    return R.layout.cat_button_group_content_mixed;
   }
 }
