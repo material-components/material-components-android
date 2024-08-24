@@ -170,8 +170,8 @@ The modes of `app:labelBehavior` are:
 *   `gone` - prevents the label from being drawn
 *   `visible` - always draws the label
 
-Note: there's a known issue where the label doesn't scroll along with the screen
-when the slider is in a scrollable container and `app:labelBehavior=visible`. To
+Note: as of version 1.13.0-alpha05 and below, there's a known issue where the label doesn't scroll along with the screen
+when the slider is in a scrollable container and `app:labelBehavior="visible"`. To
 work around that you should either use a different mode or hide the label on
 scroll.
 
