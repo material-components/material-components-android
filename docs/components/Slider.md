@@ -36,8 +36,8 @@ page.
 
 ### Usage
 
-![Continuous slider](assets/slider/slider_continuous.png){width="600"}
-![Discrete slider](assets/slider/slider_discrete.png){width="600"}
+![Continuous slider](assets/slider/slider_continuous.png)
+![Discrete slider](assets/slider/slider_discrete.png)
 
 Add a `Slider` to a layout:
 
@@ -184,7 +184,7 @@ indicate magnitude (e.g.: 1.5K, 3M, 12B). That can be achieved through the
 The following example shows a slider for a price range in USD currency.
 
 !["Range slider with range of $0 to $10. Left thumb is set at $2, right thumb
-at $7."](assets/slider/slider_price.png){width="400"}
+at $7."](assets/slider/slider_price.png)
 
 In code:
 
@@ -266,7 +266,7 @@ In the layout:
 
 The following example shows a discrete range slider.
 
-!["Discrete range slider."](assets/slider/slider_discrete_range.png){width="400"}
+!["Discrete range slider."](assets/slider/slider_discrete_range.png)
 
 In the layout:
 

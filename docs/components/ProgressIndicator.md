@@ -174,7 +174,7 @@ The following example shows a determinate linear progress indicator.
 
 ![Determinate linear progress indicator animation: purple indicator fills up
 grey
-track](assets/progressindicator/linear_determinate.gif){width="600"}
+track](assets/progressindicator/linear_determinate.gif)
 
 In the layout:
 
@@ -188,7 +188,7 @@ The following example shows an indeterminate linear progress indicator.
 
 ![Indeterminate linear progress indicator animation: purple indicator travels
 along grey
-track](assets/progressindicator/linear_indeterminate.gif){width="600"}
+track](assets/progressindicator/linear_indeterminate.gif)
 
 In the layout:
 
@@ -206,12 +206,12 @@ For linear progress indicator, there are two indeterminate animation types:
 *   `disjoint` - animates as repeated cycles with two disjoint segments in the
     same color at a time. ![Disjointed indeterminate linear progress indicator animation: red indicator
 travels along track 2x then switches to
-yellow](assets/progressindicator/linear_multicolor_disjoint.gif){width="600"}
+yellow](assets/progressindicator/linear_multicolor_disjoint.gif)
 
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
     different colors. ![Contiguous indeterminate linear progress indicator
     animation: red, yellow, blue indicators move sequentially and cover
-    track](assets/progressindicator/linear_multicolor_contiguous.gif){width="600"}
+    track](assets/progressindicator/linear_multicolor_contiguous.gif)
 
 **Note:** There is a minimum requirement of 3 indicator colors to use the
 **contiguous** animation. Otherwise, an IllegalArgumentException will be thrown.
@@ -240,7 +240,7 @@ The following example shows a determinate circular progress indicator.
 
 ![Determinate circular progress indicator animation: purple indicator draws a
 circle clockwise from the
-top](assets/progressindicator/circular_determinate.gif){width="600"}
+top](assets/progressindicator/circular_determinate.gif)
 
 In the layout:
 
@@ -254,7 +254,7 @@ The following example shows an indeterminate circular progress indicator.
 
 ![Indeterminate circular progress indicator animation: purple indicator follows
 a circle clockwise from the
-top](assets/progressindicator/circular_indeterminate.gif){width="600"}
+top](assets/progressindicator/circular_indeterminate.gif)
 
 In the layout:
 
