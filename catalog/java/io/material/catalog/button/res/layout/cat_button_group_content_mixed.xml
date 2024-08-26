@@ -33,33 +33,32 @@
         style="?attr/materialIconButtonFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_paint_bucket"
-        app:icon="@drawable/ic_colors_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_add_circle"
+        app:icon="@drawable/ic_add_circle_checkable_24px"/>
     <Button
         style="?attr/materialIconButtonFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_plus"
-        app:icon="@drawable/ic_fab_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_favorite"
+        app:icon="@drawable/ic_favorite_checkable_24px"/>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:insetLeft="4dp"
         android:insetRight="4dp"
-        android:contentDescription="@string/cat_icon_button_label_components"
         android:text="@string/cat_button_label_custom"/>
     <Button
         style="?attr/materialIconButtonFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_accelerator"
-        app:icon="@drawable/ic_accelerator_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_settings"
+        app:icon="@drawable/ic_settings_checkable_24px"/>
     <Button
         style="?attr/materialIconButtonFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_dialog"
-        app:icon="@drawable/ic_dialogs_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_delete_forever"
+        app:icon="@drawable/ic_delete_forever_checkable_24px"/>
   </com.google.android.material.button.MaterialButtonGroup>
   <com.google.android.material.button.MaterialButtonGroup
       android:layout_width="wrap_content"
@@ -70,34 +69,33 @@
         style="?attr/materialIconButtonFilledTonalStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_paint_bucket"
-        app:icon="@drawable/ic_colors_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_add_circle"
+        app:icon="@drawable/ic_add_circle_checkable_24px"/>
     <Button
         style="?attr/materialIconButtonFilledTonalStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_plus"
-        app:icon="@drawable/ic_fab_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_favorite"
+        app:icon="@drawable/ic_favorite_checkable_24px"/>
     <Button
         style="?attr/materialButtonTonalStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:insetLeft="4dp"
         android:insetRight="4dp"
-        android:contentDescription="@string/cat_icon_button_label_components"
         android:text="@string/cat_button_label_custom"/>
     <Button
         style="?attr/materialIconButtonFilledTonalStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_accelerator"
-        app:icon="@drawable/ic_accelerator_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_settings"
+        app:icon="@drawable/ic_settings_checkable_24px"/>
     <Button
         style="?attr/materialIconButtonFilledTonalStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_dialog"
-        app:icon="@drawable/ic_dialogs_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_delete_forever"
+        app:icon="@drawable/ic_delete_forever_checkable_24px"/>
   </com.google.android.material.button.MaterialButtonGroup>
   <com.google.android.material.button.MaterialButtonGroup
       android:layout_width="wrap_content"
@@ -108,34 +106,33 @@
         style="?attr/materialIconButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_paint_bucket"
-        app:icon="@drawable/ic_colors_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_add_circle"
+        app:icon="@drawable/ic_add_circle_checkable_24px"/>
     <Button
         style="?attr/materialIconButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_plus"
-        app:icon="@drawable/ic_fab_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_favorite"
+        app:icon="@drawable/ic_favorite_checkable_24px"/>
     <Button
         style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:insetLeft="4dp"
         android:insetRight="4dp"
-        android:contentDescription="@string/cat_icon_button_label_components"
         android:text="@string/cat_button_label_custom"/>
     <Button
         style="?attr/materialIconButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_accelerator"
-        app:icon="@drawable/ic_accelerator_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_settings"
+        app:icon="@drawable/ic_settings_checkable_24px"/>
     <Button
         style="?attr/materialIconButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_dialog"
-        app:icon="@drawable/ic_dialogs_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_delete_forever"
+        app:icon="@drawable/ic_delete_forever_checkable_24px"/>
   </com.google.android.material.button.MaterialButtonGroup>
   <com.google.android.material.button.MaterialButtonGroup
       android:layout_width="wrap_content"
@@ -146,33 +143,32 @@
         style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_paint_bucket"
-        app:icon="@drawable/ic_colors_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_add_circle"
+        app:icon="@drawable/ic_add_circle_checkable_24px"/>
     <Button
         style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_plus"
-        app:icon="@drawable/ic_fab_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_favorite"
+        app:icon="@drawable/ic_favorite_checkable_24px"/>
     <Button
         style="?attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:insetLeft="4dp"
         android:insetRight="4dp"
-        android:contentDescription="@string/cat_icon_button_label_components"
         android:text="@string/cat_button_label_custom"/>
     <Button
         style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_accelerator"
-        app:icon="@drawable/ic_accelerator_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_settings"
+        app:icon="@drawable/ic_settings_checkable_24px"/>
     <Button
         style="?attr/materialIconButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_icon_button_label_dialog"
-        app:icon="@drawable/ic_dialogs_24px"/>
+        android:contentDescription="@string/cat_icon_button_label_delete_forever"
+        app:icon="@drawable/ic_delete_forever_checkable_24px"/>
   </com.google.android.material.button.MaterialButtonGroup>
 </merge>

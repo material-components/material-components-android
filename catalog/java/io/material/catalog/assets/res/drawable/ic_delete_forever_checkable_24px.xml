@@ -1,5 +1,5 @@
 <!--
-  Copyright 2018 The Android Open Source Project
+  Copyright 2024 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -12,17 +12,10 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-  -->
+-->
 
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:width="24dp"
-    android:height="24dp"
-    android:tint="?attr/colorControlNormal"
-    android:viewportHeight="24.0"
-    android:viewportWidth="24.0"
-    tools:ignore="NewApi">
-  <path
-      android:fillColor="@android:color/white"
-      android:pathData="M3,13h8L11,3L3,3v10zM3,21h8v-6L3,15v6zM13,21h8L21,11h-8v10zM13,3v6h8L21,3h-8z"/>
-</vector>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:state_checkable="true" android:state_checked="false"
+        android:drawable="@drawable/ic_delete_forever_default_24px"/>
+  <item android:drawable="@drawable/ic_delete_forever_fill_24px"/>
+</selector>

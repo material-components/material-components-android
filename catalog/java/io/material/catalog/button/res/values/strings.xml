@@ -91,15 +91,17 @@
   <string name="cat_button_label_tomatoes">Tomatoes</string>
   <string name="cat_button_label_mushrooms">Mushrooms</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_paint_bucket">Paint bucket icon</string>
+    name="cat_icon_button_label_add_circle">Add icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_plus">Plus icon</string>
+    name="cat_icon_button_label_favorite">Favorite icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_components">Components icon</string>
+    name="cat_icon_button_label_home">Home icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_accelerator">Accelerator icon</string>
+    name="cat_icon_button_label_settings">Settings icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_dialog">Dialog icon</string>
+    name="cat_icon_button_label_delete_forever">Delete forever icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+    name="cat_icon_button_label_star">Star icon</string>
   <string name="cat_button_require_selection" translatable="false">Require Selection</string>
   <string name="cat_button_vertical_orientation" translatable="false">Vertical Orientation</string>
   <string name="cat_button_enable" translatable="false">Enabled</string>
