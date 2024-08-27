@@ -172,9 +172,9 @@ API and source code:
 
 The following example shows a determinate linear progress indicator.
 
-![Determinate linear progress indicator animation: purple indicator fills up
+<img src="assets/progressindicator/linear_determinate.gif" alt="Determinate linear progress indicator animation: purple indicator fills up
 grey
-track](assets/progressindicator/linear_determinate.gif){width="600"}
+track" width="600"/>
 
 In the layout:
 
@@ -186,9 +186,9 @@ In the layout:
 
 The following example shows an indeterminate linear progress indicator.
 
-![Indeterminate linear progress indicator animation: purple indicator travels
+<img src="assets/progressindicator/linear_indeterminate.gif" alt="Indeterminate linear progress indicator animation: purple indicator travels
 along grey
-track](assets/progressindicator/linear_indeterminate.gif){width="600"}
+track" width="600"/>
 
 In the layout:
 
@@ -204,14 +204,14 @@ In the layout:
 For linear progress indicator, there are two indeterminate animation types:
 
 *   `disjoint` - animates as repeated cycles with two disjoint segments in the
-    same color at a time. ![Disjointed indeterminate linear progress indicator animation: red indicator
+    same color at a time. <img src="assets/progressindicator/linear_multicolor_disjoint.gif" alt="Disjointed indeterminate linear progress indicator animation: red indicator
 travels along track 2x then switches to
-yellow](assets/progressindicator/linear_multicolor_disjoint.gif){width="600"}
+yellow" width="600"/>
 
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
-    different colors. ![Contiguous indeterminate linear progress indicator
+    different colors. <img src="assets/progressindicator/linear_multicolor_contiguous.gif" alt="Contiguous indeterminate linear progress indicator
     animation: red, yellow, blue indicators move sequentially and cover
-    track](assets/progressindicator/linear_multicolor_contiguous.gif){width="600"}
+    track" width="600"/>
 
 **Note:** There is a minimum requirement of 3 indicator colors to use the
 **contiguous** animation. Otherwise, an IllegalArgumentException will be thrown.
@@ -238,9 +238,9 @@ API and source code:
 
 The following example shows a determinate circular progress indicator.
 
-![Determinate circular progress indicator animation: purple indicator draws a
+<img src="assets/progressindicator/circular_determinate.gif" alt="Determinate circular progress indicator animation: purple indicator draws a
 circle clockwise from the
-top](assets/progressindicator/circular_determinate.gif){width="600"}
+top" width="600"/>
 
 In the layout:
 
@@ -252,9 +252,9 @@ In the layout:
 
 The following example shows an indeterminate circular progress indicator.
 
-![Indeterminate circular progress indicator animation: purple indicator follows
+<img src="assets/progressindicator/circular_indeterminate.gif" alt="Indeterminate circular progress indicator animation: purple indicator follows
 a circle clockwise from the
-top](assets/progressindicator/circular_indeterminate.gif){width="600"}
+top" width="600"/>
 
 In the layout:
 
