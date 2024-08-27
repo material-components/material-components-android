@@ -81,21 +81,22 @@
 
   <!-- M3 LinearProgressIndicator style -->
   <style name="Widget.Material3.LinearProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
-    <item name="trackThickness">@dimen/m3_comp_progress_indicator_track_thickness</item>
+    <item name="trackThickness">@dimen/m3_comp_progress_indicator_linear_track_thickness</item>
     <item name="trackColor">@macro/m3_comp_progress_indicator_track_color</item>
     <item name="indicatorColor">@macro/m3_comp_progress_indicator_active_indicator_color</item>
     <item name="trackCornerRadius">2dp</item>
-    <item name="indicatorTrackGapSize">@dimen/m3_comp_progress_indicator_active_indicator_track_space</item>
-    <item name="trackStopIndicatorSize">@dimen/m3_comp_progress_indicator_stop_indicator_size</item>
+    <item name="indicatorTrackGapSize">@dimen/m3_comp_progress_indicator_linear_track_active_indicator_space</item>
+    <item name="trackStopIndicatorSize">@dimen/m3_comp_progress_indicator_linear_stop_indicator_size</item>
   </style>
 
   <!-- M3 CircularProgressIndicator style -->
   <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
-    <item name="trackThickness">@dimen/m3_comp_progress_indicator_track_thickness</item>
+    <item name="trackThickness">@dimen/m3_comp_progress_indicator_circular_track_thickness</item>
+    <item name="indicatorSize">@dimen/m3_comp_progress_indicator_circular_size</item>
     <item name="indicatorColor">@macro/m3_comp_progress_indicator_active_indicator_color</item>
     <item name="trackColor">@macro/m3_comp_progress_indicator_track_color</item>
     <item name="trackCornerRadius">2dp</item>
-    <item name="indicatorTrackGapSize">@dimen/m3_comp_progress_indicator_active_indicator_track_space</item>
+    <item name="indicatorTrackGapSize">@dimen/m3_comp_progress_indicator_circular_track_active_indicator_space</item>
     <item name="indeterminateTrackVisible">false</item>
   </style>
   <style name="Widget.Material3.CircularProgressIndicator.Medium"/>
