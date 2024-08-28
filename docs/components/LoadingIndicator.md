@@ -16,10 +16,7 @@ Loading indicators express an unspecified wait time of a process.
 **Contents**
 
 *   [Using loading indicators](#using-progress-indicators)
-*   [Linear progress indicators](#linear-progress-indicators)
-*   [Circular progress indicators](#circular-progress-indicators)
 *   [Anatomy and key properties](#anatomy-and-key-properties)
-*   [Theming progress indicators](#theming-progress-indicators)
 
 ## Using loading indicators
 
