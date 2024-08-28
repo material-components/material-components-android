@@ -59,6 +59,19 @@
          android:textColor in itemTextAppearanceActive. Instead, set itemTextColor to a
          ColorStateList to make the text color stateful. -->
     <attr name="itemTextAppearanceActive" format="reference"/>
+    <!-- The text appearance to apply to the inactive navigation item label when the item
+         is in the horizontal layout (ie. the start icon gravity configuration). Setting
+         android:textColor in horizontalItemTextAppearanceInactive will take precedence over android:textColor
+         in horizontalItemTextAppearanceActive. Instead, set itemTextColor with a ColorStateList to make
+         the text color stateful. This attr takes precedence over itemTextAppearanceInactive for horizontal
+         items. -->
+    <attr name="horizontalItemTextAppearanceInactive" format="reference"/>
+    <!-- The text appearance to apply to the active navigation item label when the item
+         is in the horizontal layout (ie. the start icon gravity configuration). You should not set
+         android:textColor in horizontalItemTextAppearanceActive. Instead, set itemTextColor to a
+         ColorStateList to make the text color stateful. This attr takes precedence over
+         itemTextAppearanceActive for horizontal items. -->
+    <attr name="horizontalItemTextAppearanceActive" format="reference"/>
     <!-- Whether the active navigation item is bold. Attribute type definition is in navigation
          package. -->
     <attr name="itemTextAppearanceActiveBoldEnabled"/>

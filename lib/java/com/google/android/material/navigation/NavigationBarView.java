@@ -239,6 +239,16 @@ public abstract class NavigationBarView extends FrameLayout {
           attributes.getResourceId(R.styleable.NavigationBarView_itemTextAppearanceActive, 0));
     }
 
+    if (attributes.hasValue(R.styleable.NavigationBarView_horizontalItemTextAppearanceInactive)) {
+      setHorizontalItemTextAppearanceInactive(
+          attributes.getResourceId(R.styleable.NavigationBarView_horizontalItemTextAppearanceInactive, 0));
+    }
+
+    if (attributes.hasValue(R.styleable.NavigationBarView_horizontalItemTextAppearanceActive)) {
+      setHorizontalItemTextAppearanceActive(
+          attributes.getResourceId(R.styleable.NavigationBarView_horizontalItemTextAppearanceActive, 0));
+    }
+
     boolean isBold =
         attributes.getBoolean(R.styleable.NavigationBarView_itemTextAppearanceActiveBoldEnabled, true);
     setItemTextAppearanceActiveBoldEnabled(isBold);
@@ -1005,15 +1015,6 @@ public abstract class NavigationBarView extends FrameLayout {
   }
 
   /**
-   * Sets whether the active menu item labels are bold.
-   *
-   * @param isBold whether the active menu item labels are bold
-   */
-  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
-    menuView.setItemTextAppearanceActiveBoldEnabled(isBold);
-  }
-
-  /**
    * Returns the text appearance used for the active menu item label.
    *
    * @return the text appearance ID used for the active menu item label
@@ -1021,6 +1022,60 @@ public abstract class NavigationBarView extends FrameLayout {
   @StyleRes
   public int getItemTextAppearanceActive() {
     return menuView.getItemTextAppearanceActive();
+  }
+
+  /**
+   * Sets the text appearance to be used for inactive menu item labels when they are in the
+   * horizontal item layout (when the start icon value is {@link
+   * ItemIconGravity#ITEM_ICON_GRAVITY_START}).
+   *
+   * @param textAppearanceRes the text appearance ID used for inactive menu item labels
+   */
+  public void setHorizontalItemTextAppearanceInactive(@StyleRes int textAppearanceRes) {
+    menuView.setHorizontalItemTextAppearanceInactive(textAppearanceRes);
+  }
+
+  /**
+   * Returns the text appearance used for inactive menu item labels when they are in the
+   * horizontal item layout (when the start icon value is {@link
+   * ItemIconGravity#ITEM_ICON_GRAVITY_START}).
+   *
+   * @return the text appearance ID used for inactive menu item labels
+   */
+  @StyleRes
+  public int getHorizontalItemTextAppearanceInactive() {
+    return menuView.getHorizontalItemTextAppearanceInactive();
+  }
+
+  /**
+   * Sets the text appearance to be used for the menu item labels when they are in the horizontal
+   * item layout (when the start icon value is {@link ItemIconGravity#ITEM_ICON_GRAVITY_START}).
+   *
+   * @param textAppearanceRes the text appearance ID used for menu item labels
+   */
+  public void setHorizontalItemTextAppearanceActive(@StyleRes int textAppearanceRes) {
+    menuView.setHorizontalItemTextAppearanceActive(textAppearanceRes);
+  }
+
+  /**
+   * Returns the text appearance used for the active menu item label when they are in the
+   * horizontal item layout (when the start icon value is {@link
+   * ItemIconGravity#ITEM_ICON_GRAVITY_START}).
+   *
+   * @return the text appearance ID used for the active menu item label
+   */
+  @StyleRes
+  public int getHorizontalItemTextAppearanceActive() {
+    return menuView.getHorizontalItemTextAppearanceActive();
+  }
+
+  /**
+   * Sets whether the active menu item labels are bold.
+   *
+   * @param isBold whether the active menu item labels are bold
+   */
+  public void setItemTextAppearanceActiveBoldEnabled(boolean isBold) {
+    menuView.setItemTextAppearanceActiveBoldEnabled(isBold);
   }
 
   /**

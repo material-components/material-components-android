@@ -90,6 +90,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   @Nullable private final ColorStateList itemTextColorDefault;
   @StyleRes private int itemTextAppearanceInactive;
   @StyleRes private int itemTextAppearanceActive;
+  @StyleRes private int horizontalItemTextAppearanceInactive;
+  @StyleRes private int horizontalItemTextAppearanceActive;
   private boolean itemTextAppearanceActiveBoldEnabled;
   private Drawable itemBackground;
   @Nullable private ColorStateList itemRippleColor;
@@ -280,11 +282,6 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
         item.setTextAppearanceInactive(textAppearanceRes);
-        // Set the text color if the user has set it, since itemTextColorFromUser takes precedence
-        // over a color set in the text appearance.
-        if (itemTextColorFromUser != null) {
-          item.setTextColor(itemTextColorFromUser);
-        }
       }
     }
   }
@@ -309,11 +306,6 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     if (buttons != null) {
       for (NavigationBarItemView item : buttons) {
         item.setTextAppearanceActive(textAppearanceRes);
-        // Set the text color if the user has set it, since itemTextColorFromUser takes precedence
-        // over a color set in the text appearance.
-        if (itemTextColorFromUser != null) {
-          item.setTextColor(itemTextColorFromUser);
-        }
       }
     }
   }
@@ -340,6 +332,60 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   @StyleRes
   public int getItemTextAppearanceActive() {
     return itemTextAppearanceActive;
+  }
+
+  /**
+   * Sets the text appearance to be used for inactive menu item labels when they are in the
+   * horizontal item layout (when the start icon value is {@link
+   * ItemIconGravity#ITEM_ICON_GRAVITY_START}).
+   *
+   * @param textAppearanceRes the text appearance ID used for inactive menu item labels
+   */
+  public void setHorizontalItemTextAppearanceInactive(@StyleRes int textAppearanceRes) {
+    this.horizontalItemTextAppearanceInactive = textAppearanceRes;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setHorizontalTextAppearanceInactive(textAppearanceRes);
+      }
+    }
+  }
+
+  /**
+   * Returns the text appearance used for inactive menu item labels when they are in the horizontal
+   * item layout (when the start icon value is {@link ItemIconGravity#ITEM_ICON_GRAVITY_START}).
+   *
+   * @return the text appearance ID used for inactive menu item labels
+   */
+  @StyleRes
+  public int getHorizontalItemTextAppearanceInactive() {
+    return horizontalItemTextAppearanceInactive;
+  }
+
+  /**
+   * Sets the text appearance to be used for the active menu item label when they are in the
+   * horizontal item layout (when the start icon value is {@link
+   * ItemIconGravity#ITEM_ICON_GRAVITY_START}).
+   *
+   * @param textAppearanceRes the text appearance ID used for the active menu item label
+   */
+  public void setHorizontalItemTextAppearanceActive(@StyleRes int textAppearanceRes) {
+    this.horizontalItemTextAppearanceActive = textAppearanceRes;
+    if (buttons != null) {
+      for (NavigationBarItemView item : buttons) {
+        item.setHorizontalTextAppearanceActive(textAppearanceRes);
+      }
+    }
+  }
+
+  /**
+   * Returns the text appearance used for the active menu item label when they are in the horizontal
+   * item layout (when the start icon value is {@link ItemIconGravity#ITEM_ICON_GRAVITY_START}).
+   *
+   * @return the text appearance ID used for the active menu item label
+   */
+  @StyleRes
+  public int getHorizontalItemTextAppearanceActive() {
+    return horizontalItemTextAppearanceActive;
   }
 
   /**
@@ -924,6 +970,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setTextColor(itemTextColorDefault);
       child.setTextAppearanceInactive(itemTextAppearanceInactive);
       child.setTextAppearanceActive(itemTextAppearanceActive);
+      child.setHorizontalTextAppearanceInactive(horizontalItemTextAppearanceInactive);
+      child.setHorizontalTextAppearanceActive(horizontalItemTextAppearanceActive);
       child.setTextAppearanceActiveBoldEnabled(itemTextAppearanceActiveBoldEnabled);
       child.setTextColor(itemTextColorFromUser);
       if (itemPaddingTop != NO_PADDING) {
