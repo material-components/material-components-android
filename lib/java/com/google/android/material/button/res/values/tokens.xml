@@ -19,58 +19,43 @@
 
 <resources>
 
-  <!-- Generated from token set (md.comp.filled-button) in context (platform=android, audience=3p). -->
-  <!-- Group: Enabled - Container -->
-  <style name="ShapeAppearance.M3.Comp.FilledButton.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
-  <dimen name="m3_comp_filled_button_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
-  <macro name="m3_comp_filled_button_container_color">?attr/colorPrimary</macro>
-  <!-- Group: Enabled - Label text -->
-  <macro name="m3_comp_filled_button_label_text_type">?attr/textAppearanceLabelLarge</macro>
-  <macro name="m3_comp_filled_button_label_text_color">?attr/colorOnPrimary</macro>
-  <!-- Group: Enabled - Icon -->
-  <dimen name="m3_comp_filled_button_with_icon_icon_size">18dp</dimen>
+  <!-- Generated from token set (md.comp.button.small) in context (platform=android, audience=3p). -->
+  <dimen name="m3_comp_button_small_outlined_outline_width">1dp</dimen>
+  <macro name="m3_comp_button_small_label_text">?attr/textAppearanceLabelLarge</macro>
+  <style name="ShapeAppearance.M3.Comp.Button.Small.Container.Shape.Round" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
+  <dimen name="m3_comp_button_small_leading_space">16dp</dimen>
+  <dimen name="m3_comp_button_small_icon_label_space">8dp</dimen>
 
-  <!-- Generated from token set (md.comp.filled-tonal-button) in context (platform=android, audience=3p). -->
-  <!-- Group: Enabled - Container -->
-  <macro name="m3_comp_filled_tonal_button_container_color">?attr/colorSecondaryContainer</macro>
-  <!-- Group: Enabled - Label text -->
-  <macro name="m3_comp_filled_tonal_button_label_text_color">?attr/colorOnSecondaryContainer</macro>
+  <!-- Generated from token set (md.comp.button.filled) in context (platform=android, audience=3p). -->
+  <!-- Group: Enabled -->
+  <macro name="m3_comp_button_filled_container_color">?attr/colorPrimary</macro>
+  <dimen name="m3_comp_button_filled_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
+  <macro name="m3_comp_button_filled_icon_color">?attr/colorOnPrimary</macro>
+  <!-- Group: Disabled -->
+  <dimen name="m3_comp_button_filled_disabled_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
 
-  <!-- Generated from token set (md.comp.text-button) in context (platform=android, audience=3p). -->
-  <!-- Group: Enabled - Container -->
-  <style name="ShapeAppearance.M3.Comp.TextButton.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
-  <!-- Group: Enabled - Label text -->
-  <macro name="m3_comp_text_button_label_text_type">?attr/textAppearanceLabelLarge</macro>
-  <macro name="m3_comp_text_button_label_text_color">?attr/colorPrimary</macro>
-  <!-- Group: Hovered - State layer -->
-  <macro name="m3_comp_text_button_hover_state_layer_color">?attr/colorPrimary</macro>
-  <dimen name="m3_comp_text_button_hover_state_layer_opacity">@dimen/m3_sys_state_hover_state_layer_opacity</dimen>
-  <!-- Group: Focused - State layer -->
-  <macro name="m3_comp_text_button_focus_state_layer_color">?attr/colorPrimary</macro>
-  <dimen name="m3_comp_text_button_focus_state_layer_opacity">@dimen/m3_sys_state_focus_state_layer_opacity</dimen>
-  <!-- Group: Pressed (ripple) - State layer -->
-  <macro name="m3_comp_text_button_pressed_state_layer_color">?attr/colorPrimary</macro>
-  <dimen name="m3_comp_text_button_pressed_state_layer_opacity">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
+  <!-- Generated from token set (md.comp.button.tonal) in context (platform=android, audience=3p). -->
+  <!-- Group: Enabled -->
+  <macro name="m3_comp_button_tonal_container_color">?attr/colorSecondaryContainer</macro>
+  <dimen name="m3_comp_button_tonal_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
+  <macro name="m3_comp_button_tonal_icon_color">?attr/colorOnSecondaryContainer</macro>
 
-  <!-- Generated from token set (md.comp.outlined-button) in context (platform=android, audience=3p). -->
-  <!-- Group: Enabled - Outline -->
-  <macro name="m3_comp_outlined_button_outline_color">?attr/colorOutline</macro>
-  <dimen name="m3_comp_outlined_button_outline_width">1dp</dimen>
-  <!-- Group: Disabled - Outline -->
-  <macro name="m3_comp_outlined_button_disabled_outline_color">?attr/colorOnSurface</macro>
-  <item name="m3_comp_outlined_button_disabled_outline_opacity" format="float" type="dimen">0.12</item>
-  <!-- Group: Hovered - Outline -->
-  <macro name="m3_comp_outlined_button_hover_outline_color">?attr/colorOutline</macro>
-  <!-- Group: Focused - Outline -->
-  <macro name="m3_comp_outlined_button_focus_outline_color">?attr/colorPrimary</macro>
-  <!-- Group: Pressed (ripple) - Outline -->
-  <macro name="m3_comp_outlined_button_pressed_outline_color">?attr/colorOutline</macro>
+  <!-- Generated from token set (md.comp.button.elevated) in context (platform=android, audience=3p). -->
+  <!-- Group: Enabled -->
+  <macro name="m3_comp_button_elevated_container_color">?attr/colorSurfaceContainerLow</macro>
+  <dimen name="m3_comp_button_elevated_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
+  <macro name="m3_comp_button_elevated_icon_color">?attr/colorPrimary</macro>
+  <!-- Group: Disabled -->
+  <dimen name="m3_comp_button_elevated_disabled_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
 
-  <!-- Generated from token set (md.comp.elevated-button) in context (platform=android, audience=3p). -->
-  <!-- Group: Enabled - Container -->
-  <dimen name="m3_comp_elevated_button_container_elevation">@dimen/m3_sys_elevation_level1</dimen>
-  <macro name="m3_comp_elevated_button_container_color">?attr/colorSurfaceContainerLow</macro>
-  <!-- Group: Disabled - Container -->
-  <dimen name="m3_comp_elevated_button_disabled_container_elevation">@dimen/m3_sys_elevation_level0</dimen>
+  <!-- Generated from token set (md.comp.button.text) in context (platform=android, audience=3p). -->
+  <!-- Group: Enabled -->
+  <macro name="m3_comp_button_text_icon_color">?attr/colorPrimary</macro>
+  <!-- Group: Hovered -->
+  <dimen name="m3_comp_button_text_hovered_state_layer_opacity">@dimen/m3_sys_state_hover_state_layer_opacity</dimen>
+  <!-- Group: Focused -->
+  <dimen name="m3_comp_button_text_focused_state_layer_opacity">@dimen/m3_sys_state_focus_state_layer_opacity</dimen>
+  <!-- Group: Pressed -->
+  <dimen name="m3_comp_button_text_pressed_state_layer_opacity">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>
 
 </resources>
