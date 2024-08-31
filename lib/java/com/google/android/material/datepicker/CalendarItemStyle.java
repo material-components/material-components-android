@@ -24,8 +24,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -155,12 +153,7 @@ final class CalendarItemStyle {
         backgroundColorOverride != null ? backgroundColorOverride : backgroundColor);
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
     item.setTextColor(textColorOverride != null ? textColorOverride : textColor);
-    Drawable d;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      d = new RippleDrawable(textColor.withAlpha(30), backgroundDrawable, shapeMask);
-    } else {
-      d = backgroundDrawable;
-    }
+    Drawable d = new RippleDrawable(textColor.withAlpha(30), backgroundDrawable, shapeMask);
     item.setBackground(new InsetDrawable(d, insets.left, insets.top, insets.right, insets.bottom));
   }
 

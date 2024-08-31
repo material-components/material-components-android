@@ -34,7 +34,6 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -66,7 +65,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
@@ -276,7 +274,6 @@ public class Chip extends AppCompatCheckBox
     MaterialShapeUtils.setParentAbsoluteElevation(this, chipDrawable);
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -416,20 +413,17 @@ public class Chip extends AppCompatCheckBox
   }
 
   private void initOutlineProvider() {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      setOutlineProvider(
-          new ViewOutlineProvider() {
-            @Override
-            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-            public void getOutline(View view, @NonNull Outline outline) {
-              if (chipDrawable != null) {
-                chipDrawable.getOutline(outline);
-              } else {
-                outline.setAlpha(0.0f);
-              }
+    setOutlineProvider(
+        new ViewOutlineProvider() {
+          @Override
+          public void getOutline(View view, @NonNull Outline outline) {
+            if (chipDrawable != null) {
+              chipDrawable.getOutline(outline);
+            } else {
+              outline.setAlpha(0.0f);
             }
-          });
-    }
+          }
+        });
   }
 
   /** Returns the ChipDrawable backing this chip. */
@@ -451,22 +445,7 @@ public class Chip extends AppCompatCheckBox
   }
 
   private void updateBackgroundDrawable() {
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-      updateFrameworkRippleBackground();
-    } else {
-      chipDrawable.setUseCompatRipple(true);
-      setBackground(getBackgroundDrawable());
-      updatePaddingInternal();
-      ensureChipDrawableHasCallback();
-    }
-  }
-
-  private void ensureChipDrawableHasCallback() {
-    if (getBackgroundDrawable() == insetBackgroundDrawable && chipDrawable.getCallback() == null) {
-      // View#setBackground nulls out the callback of the previous background drawable, so we need
-      // to reset it.
-      chipDrawable.setCallback(insetBackgroundDrawable);
-    }
+    updateFrameworkRippleBackground();
   }
 
   @Nullable
@@ -710,9 +689,7 @@ public class Chip extends AppCompatCheckBox
   public void onChipDrawableSizeChange() {
     ensureAccessibleTouchTarget(minTouchTargetSize);
     requestLayout();
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      invalidateOutline();
-    }
+    invalidateOutline();
   }
 
   @Override

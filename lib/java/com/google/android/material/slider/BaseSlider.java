@@ -2327,9 +2327,7 @@ abstract class BaseSlider<
   }
 
   private boolean shouldDrawCompatHalo() {
-    return forceDrawCompatHalo
-        || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
-        || !(getBackground() instanceof RippleDrawable);
+    return forceDrawCompatHalo || !(getBackground() instanceof RippleDrawable);
   }
 
   @Override

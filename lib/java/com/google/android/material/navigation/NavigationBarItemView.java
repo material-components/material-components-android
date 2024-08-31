@@ -32,7 +32,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -256,7 +255,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
             : itemData.getTitle();
 
     // Avoid calling tooltip for L and M devices because long pressing twice may freeze devices.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || VERSION.SDK_INT > VERSION_CODES.M) {
+    if (VERSION.SDK_INT > VERSION_CODES.M) {
       TooltipCompat.setTooltipText(this, tooltipText);
     }
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
@@ -370,7 +369,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
             ? title
             : itemData.getTooltipText();
     // Avoid calling tooltip for L and M devices because long pressing twice may freeze devices.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || VERSION.SDK_INT > VERSION_CODES.M) {
+    if (VERSION.SDK_INT > VERSION_CODES.M) {
       TooltipCompat.setTooltipText(this, tooltipText);
     }
   }
@@ -849,11 +848,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
 
     if (itemRippleColor != null) {
       Drawable maskDrawable = getActiveIndicatorDrawable();
-      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-          && activeIndicatorEnabled
-          && getActiveIndicatorDrawable() != null
-          && maskDrawable != null) {
-
+      if (activeIndicatorEnabled && getActiveIndicatorDrawable() != null && maskDrawable != null) {
         // Remove the default focus highlight that highlights the entire view and rely on the
         // active indicator ripple to communicate state.
         defaultHighlightEnabled = false;
@@ -885,20 +880,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
    */
   private static Drawable createItemBackgroundCompat(@NonNull ColorStateList rippleColor) {
     ColorStateList rippleDrawableColor = RippleUtils.convertToRippleDrawableColor(rippleColor);
-    Drawable backgroundDrawable;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      backgroundDrawable = new RippleDrawable(rippleDrawableColor, null, null);
-    } else {
-      GradientDrawable rippleDrawable = new GradientDrawable();
-      // TODO: Find a workaround for this. Currently on certain devices/versions, LayerDrawable
-      // will draw a black background underneath any layer with a non-opaque color,
-      // (e.g. ripple) unless we set the shape to be something that's not a perfect rectangle.
-      rippleDrawable.setCornerRadius(0.00001F);
-      Drawable rippleDrawableCompat = DrawableCompat.wrap(rippleDrawable);
-      DrawableCompat.setTintList(rippleDrawableCompat, rippleDrawableColor);
-      backgroundDrawable = rippleDrawableCompat;
-    }
-    return backgroundDrawable;
+    return new RippleDrawable(rippleDrawableColor, null, null);
   }
 
   /**

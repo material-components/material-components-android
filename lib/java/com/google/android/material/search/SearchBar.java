@@ -57,7 +57,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
@@ -292,29 +291,10 @@ public class SearchBar extends Toolbar {
 
     int rippleColor = MaterialColors.getColor(this, R.attr.colorControlHighlight);
     Drawable background;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      backgroundShape.setFillColor(ColorStateList.valueOf(backgroundColor));
-      background =
-          new RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundShape, backgroundShape);
-    } else {
-      backgroundShape.setFillColor(getCompatBackgroundColorStateList(backgroundColor, rippleColor));
-      background = backgroundShape;
-    }
-
+    backgroundShape.setFillColor(ColorStateList.valueOf(backgroundColor));
+    background =
+        new RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundShape, backgroundShape);
     setBackground(background);
-  }
-
-  private ColorStateList getCompatBackgroundColorStateList(
-      @ColorInt int backgroundColor, @ColorInt int rippleColor) {
-    int[][] states =
-        new int[][] {
-          new int[] {android.R.attr.state_pressed},
-          new int[] {android.R.attr.state_focused},
-          new int[] {},
-        };
-    int pressedBackgroundColor = MaterialColors.layer(backgroundColor, rippleColor);
-    int[] colors = new int[] {pressedBackgroundColor, pressedBackgroundColor, backgroundColor};
-    return new ColorStateList(states, colors);
   }
 
   @Override
@@ -326,7 +306,6 @@ public class SearchBar extends Toolbar {
     super.addView(child, index, params);
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);

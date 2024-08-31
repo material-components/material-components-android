@@ -135,8 +135,7 @@ class IconHelper {
   }
 
   static void setCompatRippleBackgroundIfNeeded(@NonNull CheckableImageButton iconView) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && VERSION.SDK_INT <= VERSION_CODES.LOLLIPOP_MR1) {
+    if (VERSION.SDK_INT < VERSION_CODES.M) {
       // Note that this is aligned with ?attr/actionBarItemBackground on API 23+, which sets ripple
       // radius to 20dp. Therefore we set the padding here to (48dp [view size] - 20dp * 2) / 2.
       iconView.setBackground(

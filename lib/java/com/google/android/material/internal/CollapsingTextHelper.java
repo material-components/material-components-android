@@ -333,17 +333,13 @@ public final class CollapsingTextHelper {
   private void getTextPaintExpanded(@NonNull TextPaint textPaint) {
     textPaint.setTextSize(expandedTextSize);
     textPaint.setTypeface(expandedTypeface);
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      textPaint.setLetterSpacing(expandedLetterSpacing);
-    }
+    textPaint.setLetterSpacing(expandedLetterSpacing);
   }
 
   private void getTextPaintCollapsed(@NonNull TextPaint textPaint) {
     textPaint.setTextSize(collapsedTextSize);
     textPaint.setTypeface(collapsedTypeface);
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      textPaint.setLetterSpacing(collapsedLetterSpacing);
-    }
+    textPaint.setLetterSpacing(collapsedLetterSpacing);
   }
 
   public void setExpandedTextGravity(int gravity) {
@@ -631,17 +627,15 @@ public final class CollapsingTextHelper {
       textPaint.setColor(getCurrentCollapsedTextColor());
     }
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      if (collapsedLetterSpacing != expandedLetterSpacing) {
-        textPaint.setLetterSpacing(
-            lerp(
-                expandedLetterSpacing,
-                collapsedLetterSpacing,
-                fraction,
-                AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-      } else {
-        textPaint.setLetterSpacing(collapsedLetterSpacing);
-      }
+    if (collapsedLetterSpacing != expandedLetterSpacing) {
+      textPaint.setLetterSpacing(
+          lerp(
+              expandedLetterSpacing,
+              collapsedLetterSpacing,
+              fraction,
+              AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+    } else {
+      textPaint.setLetterSpacing(collapsedLetterSpacing);
     }
 
     // Calculates paint parameters for shadow layer.
@@ -1049,9 +1043,7 @@ public final class CollapsingTextHelper {
     if (textToDraw == null || updateDrawText) {
       textPaint.setTextSize(currentTextSize);
       textPaint.setTypeface(currentTypeface);
-      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-        textPaint.setLetterSpacing(currentLetterSpacing);
-      }
+      textPaint.setLetterSpacing(currentLetterSpacing);
 
       isRtl = calculateIsRtl(text);
       textLayout = createStaticLayout(shouldDrawMultiline() ? maxLines : 1, availableWidth, isRtl);

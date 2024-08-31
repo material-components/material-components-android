@@ -32,8 +32,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.appcompat.widget.AppCompatDrawableManager;
@@ -54,7 +52,6 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -1201,7 +1198,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -1453,18 +1449,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   private FloatingActionButtonImpl getImpl() {
     if (impl == null) {
-      impl = createImpl();
+      impl = new FloatingActionButtonImplLollipop(this, new ShadowDelegateImpl());
     }
     return impl;
-  }
-
-  @NonNull
-  private FloatingActionButtonImpl createImpl() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      return new FloatingActionButtonImplLollipop(this, new ShadowDelegateImpl());
-    } else {
-      return new FloatingActionButtonImpl(this, new ShadowDelegateImpl());
-    }
   }
 
   private class ShadowDelegateImpl implements ShadowViewDelegate {

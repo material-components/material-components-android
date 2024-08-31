@@ -924,20 +924,6 @@ class FloatingActionButtonImpl {
   }
 
   void updateFromViewRotation() {
-    if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
-      // KitKat seems to have an issue with views which are rotated with angles which are
-      // not divisible by 90. Worked around by moving to software rendering in these cases.
-      if ((rotation % 90) != 0) {
-        if (view.getLayerType() != View.LAYER_TYPE_SOFTWARE) {
-          view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        }
-      } else {
-        if (view.getLayerType() != View.LAYER_TYPE_NONE) {
-          view.setLayerType(View.LAYER_TYPE_NONE, null);
-        }
-      }
-    }
-
     // Offset any View rotation
     if (shapeDrawable != null) {
       shapeDrawable.setShadowCompatRotation((int) rotation);

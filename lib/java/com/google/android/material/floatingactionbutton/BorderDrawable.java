@@ -18,7 +18,6 @@ package com.google.android.material.floatingactionbutton;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -31,7 +30,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.IntRange;
@@ -143,7 +141,6 @@ class BorderDrawable extends Drawable {
     }
   }
 
-  @TargetApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void getOutline(@NonNull Outline outline) {
     if (shapeAppearanceModel.isRoundRect(getBoundsAsRectF())) {

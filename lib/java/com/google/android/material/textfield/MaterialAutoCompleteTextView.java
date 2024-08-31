@@ -29,8 +29,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.ListPopupWindow;
 import android.text.InputType;
@@ -554,7 +552,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
     @Nullable
     private Drawable getSelectedItemDrawable() {
-      if (!hasSelectedColor() || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      if (!hasSelectedColor()) {
         return null;
       }
 
@@ -578,9 +576,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
     @Nullable
     private ColorStateList createItemSelectedColorStateList() {
-      if (!hasSelectedColor()
-          || !hasSelectedRippleColor()
-          || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      if (!hasSelectedColor() || !hasSelectedRippleColor()) {
         return null;
       }
       int[] stateHovered = new int[] {android.R.attr.state_hovered, -android.R.attr.state_pressed};

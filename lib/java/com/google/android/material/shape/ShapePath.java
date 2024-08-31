@@ -22,9 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import com.google.android.material.shadow.ShadowRenderer;
 import java.util.ArrayList;
 import java.util.List;
@@ -197,7 +195,6 @@ public class ShapePath {
    * @param toX the end x of the arc.
    * @param toY the end y of the arc.
    */
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   public void quadToPoint(float controlX, float controlY, float toX, float toY) {
     PathQuadOperation operation = new PathQuadOperation();
     operation.setControlX(controlX);
@@ -225,7 +222,6 @@ public class ShapePath {
    * @param toX the end x of the arc.
    * @param toY the end y of the arc.
    */
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   public void cubicToPoint(
       float controlX1, float controlY1, float controlX2, float controlY2, float toX, float toY) {
     PathCubicOperation operation =

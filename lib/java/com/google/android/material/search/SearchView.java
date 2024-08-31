@@ -26,7 +26,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
@@ -56,7 +55,6 @@ import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
@@ -251,7 +249,6 @@ public class SearchView extends FrameLayout
     updateSoftInputMode();
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -970,9 +967,7 @@ public class SearchView extends FrameLayout
    * search results.
    */
   public void setToolbarTouchscreenBlocksFocus(boolean touchscreenBlocksFocus) {
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      toolbar.setTouchscreenBlocksFocus(touchscreenBlocksFocus);
-    }
+    toolbar.setTouchscreenBlocksFocus(touchscreenBlocksFocus);
   }
 
   @SuppressLint("InlinedApi") // View Compat will handle the differences.

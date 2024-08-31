@@ -18,7 +18,6 @@ package com.google.android.material.chip;
 
 import com.google.android.material.R;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -331,10 +330,7 @@ public class ChipDrawable extends MaterialShapeDrawable
     setCloseIconState(DEFAULT_STATE);
     shouldDrawText = true;
 
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-      //noinspection NewApi
-      closeIconRippleMask.setTint(Color.WHITE);
-    }
+    closeIconRippleMask.setTint(Color.WHITE);
   }
 
   private void loadFromAttributes(
@@ -770,13 +766,9 @@ public class ChipDrawable extends MaterialShapeDrawable
 
       closeIcon.setBounds(0, 0, (int) rectF.width(), (int) rectF.height());
 
-      if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-        closeIconRipple.setBounds(closeIcon.getBounds());
-        closeIconRipple.jumpToCurrentState();
-        closeIconRipple.draw(canvas);
-      } else {
-        closeIcon.draw(canvas);
-      }
+      closeIconRipple.setBounds(closeIcon.getBounds());
+      closeIconRipple.jumpToCurrentState();
+      closeIconRipple.draw(canvas);
 
       canvas.translate(-tx, -ty);
     }
@@ -1137,8 +1129,7 @@ public class ChipDrawable extends MaterialShapeDrawable
           closeIconState, 0, closeIconMergedState, chipState.length, closeIconState.length);
       invalidate |= closeIcon.setState(closeIconMergedState);
     }
-    //noinspection NewApi
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE && isStateful(closeIconRipple)) {
+    if (isStateful(closeIconRipple)) {
       invalidate |= closeIconRipple.setState(closeIconState);
     }
 
@@ -1279,7 +1270,6 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   @Override
-  @TargetApi(VERSION_CODES.LOLLIPOP)
   public void getOutline(@NonNull Outline outline) {
     if (isShapeThemingEnabled) {
       super.getOutline(outline);
@@ -1881,9 +1871,7 @@ public class ChipDrawable extends MaterialShapeDrawable
     if (oldCloseIcon != closeIcon) {
       float oldCloseIconWidth = calculateCloseIconWidth();
       this.closeIcon = closeIcon != null ? DrawableCompat.wrap(closeIcon).mutate() : null;
-      if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-        updateFrameworkCloseIconRipple();
-      }
+      updateFrameworkCloseIconRipple();
       float newCloseIconWidth = calculateCloseIconWidth();
 
       unapplyChildDrawable(oldCloseIcon);
@@ -1898,7 +1886,6 @@ public class ChipDrawable extends MaterialShapeDrawable
     }
   }
 
-  @TargetApi(VERSION_CODES.LOLLIPOP)
   private void updateFrameworkCloseIconRipple() {
     closeIconRipple =
         new RippleDrawable(
