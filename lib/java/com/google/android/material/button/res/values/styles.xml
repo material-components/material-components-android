@@ -123,14 +123,14 @@
   <!-- Styles for M3 Buttons. -->
 
   <style name="Widget.Material3.MaterialButtonGroup" parent="android:Widget">
-    <item name="android:spacing">12dp</item>
+    <item name="android:spacing">@dimen/m3_comp_button_group_standard_small_between_space</item>
     <item name="buttonSizeChange">@xml/m3_button_group_child_size_change</item>
   </style>
 
   <style name="Widget.Material3.MaterialButtonGroup.Connected">
-    <item name="android:spacing">2dp</item>
+    <item name="android:spacing">@dimen/m3_comp_button_group_connected_small_between_space</item>
     <item name="innerCornerSize">8dp</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.ButtonGroup.Connected.Small.Container.Shape</item>
   </style>
 
   <style name="Widget.Material3.MaterialButtonToggleGroup" parent="Widget.MaterialComponents.MaterialButtonToggleGroup">
