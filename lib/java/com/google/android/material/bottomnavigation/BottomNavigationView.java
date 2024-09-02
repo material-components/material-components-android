@@ -33,11 +33,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
-import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.navigation.NavigationBarMenuView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -94,6 +94,12 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 public class BottomNavigationView extends NavigationBarView {
   private static final int MAX_ITEM_COUNT = 6;
 
+  @Nullable private Boolean paddingStartSystemWindowInsets = null;
+
+  @Nullable private Boolean paddingEndSystemWindowInsets = null;
+
+  @Nullable private Boolean paddingBottomSystemWindowInsets = null;
+
   public BottomNavigationView(@NonNull Context context) {
     this(context, null);
   }
@@ -128,6 +134,24 @@ public class BottomNavigationView extends NavigationBarView {
           attributes.getDimensionPixelSize(R.styleable.BottomNavigationView_android_minHeight, 0));
     }
 
+    if (attributes.hasValue(R.styleable.BottomNavigationView_paddingStartSystemWindowInsets)) {
+      paddingStartSystemWindowInsets =
+          attributes.getBoolean(
+              R.styleable.BottomNavigationView_paddingStartSystemWindowInsets, false);
+    }
+
+    if (attributes.hasValue(R.styleable.BottomNavigationView_paddingEndSystemWindowInsets)) {
+      paddingEndSystemWindowInsets =
+          attributes.getBoolean(
+              R.styleable.BottomNavigationView_paddingEndSystemWindowInsets, false);
+    }
+
+    if (attributes.hasValue(R.styleable.BottomNavigationView_paddingBottomSystemWindowInsets)) {
+      paddingBottomSystemWindowInsets =
+          attributes.getBoolean(
+              R.styleable.BottomNavigationView_paddingBottomSystemWindowInsets, false);
+    }
+
     if (attributes.getBoolean(R.styleable.BottomNavigationView_compatShadowEnabled, true)
         && shouldDrawCompatibilityTopDivider()) {
       addCompatibilityTopDivider(context);
@@ -139,28 +163,37 @@ public class BottomNavigationView extends NavigationBarView {
   }
 
   private void applyWindowInsets() {
-    ViewUtils.doOnApplyWindowInsets(
-        this,
-        new ViewUtils.OnApplyWindowInsetsListener() {
-          @NonNull
-          @Override
-          public WindowInsetsCompat onApplyWindowInsets(
-              View view,
-              @NonNull WindowInsetsCompat insets,
-              @NonNull RelativePadding initialPadding) {
-            // Apply the bottom, start, and end padding for a BottomNavigationView
-            // to dodge the system navigation bar
-            initialPadding.bottom += insets.getSystemWindowInsetBottom();
+    ViewUtils.doOnApplyWindowInsets(this, (view, insets, initialPadding) -> {
+      // Apply the bottom, start, and end padding for a BottomNavigationView
+      // to dodge the system navigation bar
+      Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+      boolean isRtl = ViewUtils.isLayoutRtl(this);
 
-            boolean isRtl = view.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
-            int systemWindowInsetLeft = insets.getSystemWindowInsetLeft();
-            int systemWindowInsetRight = insets.getSystemWindowInsetRight();
-            initialPadding.start += isRtl ? systemWindowInsetRight : systemWindowInsetLeft;
-            initialPadding.end += isRtl ? systemWindowInsetLeft : systemWindowInsetRight;
-            initialPadding.applyToView(view);
-            return insets;
-          }
-        });
+      if (shouldApplyWindowInsetPadding(paddingStartSystemWindowInsets)) {
+        initialPadding.start += isRtl ? systemBarInsets.right : systemBarInsets.left;
+      }
+
+      if (shouldApplyWindowInsetPadding(paddingEndSystemWindowInsets)) {
+        initialPadding.end += isRtl ? systemBarInsets.left : systemBarInsets.right;
+      }
+
+      if (shouldApplyWindowInsetPadding(paddingBottomSystemWindowInsets)) {
+        initialPadding.bottom += systemBarInsets.bottom;
+      }
+
+      initialPadding.applyToView(view);
+      return insets;
+    });
+  }
+
+  /**
+   * Whether the view should be padded in to avoid the system window insets.
+   * <p>
+   * If the {@code paddingInsetFlag} is set, that value will take precedent. Otherwise,
+   * fitsSystemWindow will be used.
+   */
+  private boolean shouldApplyWindowInsetPadding(Boolean paddingInsetFlag) {
+    return paddingInsetFlag != null ? paddingInsetFlag : getFitsSystemWindows();
   }
 
   @Override
