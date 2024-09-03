@@ -201,11 +201,13 @@ public abstract class NavigationBarView extends FrameLayout {
             R.styleable.NavigationBarView_itemTextAppearanceActive);
 
     // Create the menu.
-    this.menu = new NavigationBarMenu(context, this.getClass(), getMaxItemCount());
+    this.menu =
+        new NavigationBarMenu(context, this.getClass(), getMaxItemCount(), isSubMenuSupported());
 
     // Create the menu view.
     menuView = createNavigationBarMenuView(context);
     menuView.setMinimumHeight(getSuggestedMinimumHeight());
+    menuView.setCollapsedMaxItemCount(getMaxItemCount());
 
     presenter.setMenuView(menuView);
     presenter.setId(MENU_PRESENTER_ID);
@@ -1146,6 +1148,12 @@ public abstract class NavigationBarView extends FrameLayout {
 
   /** Returns the maximum number of items that can be shown in NavigationBarView. */
   public abstract int getMaxItemCount();
+
+  /** Returns whether or not submenus are supported. */
+  protected boolean isSubMenuSupported() {
+    // TODO: b/352634230 - NavigationRail should support submenus once ready
+    return false;
+  }
 
   /**
    * Returns reference to a newly created {@link NavigationBarMenuView}

@@ -36,7 +36,6 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.view.menu.MenuItemImpl;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.widget.TooltipCompat;
 import android.text.TextUtils;
 import android.util.Log;
@@ -85,7 +84,8 @@ import com.google.android.material.ripple.RippleUtils;
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-public abstract class NavigationBarItemView extends FrameLayout implements MenuView.ItemView {
+public abstract class NavigationBarItemView extends FrameLayout
+    implements NavigationBarMenuItemView {
   private static final int INVALID_ITEM_POSITION = -1;
   private static final int UNSET_VALUE = -1;
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
@@ -156,6 +156,8 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
   @ItemIconGravity private int itemIconGravity;
   private int badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_START;
   @ItemGravity private int itemGravity = NavigationBarView.ITEM_GRAVITY_TOP_CENTER;
+  private boolean expanded = false;
+  private boolean onlyShowWhenExpanded = false;
 
   public NavigationBarItemView(@NonNull Context context) {
     super(context);
@@ -184,7 +186,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     setFocusable(true);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
     activeIndicatorExpandedDesiredHeight = getResources().getDimensionPixelSize(
-        R.dimen.m3_expressive_item_expanded_active_indicator_height_default);
+        R.dimen.m3_navigation_item_expanded_active_indicator_height_default);
 
     // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
     innerContentContainer.addOnLayoutChangeListener(
@@ -258,8 +260,15 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     if (VERSION.SDK_INT > VERSION_CODES.M) {
       TooltipCompat.setTooltipText(this, tooltipText);
     }
-    setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
+    updateVisibility();
     this.initialized = true;
+  }
+
+  private void updateVisibility() {
+    if (itemData != null) {
+      setVisibility(
+          itemData.isVisible() && (expanded || !onlyShowWhenExpanded) ? View.VISIBLE : View.GONE);
+    }
   }
 
   /**
@@ -310,7 +319,7 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
     if (itemIconGravity == ITEM_ICON_GRAVITY_START) {
       sideMargin =
           getResources()
-              .getDimensionPixelSize(R.dimen.m3_expressive_navigation_item_leading_trailing_space);
+              .getDimensionPixelSize(R.dimen.m3_navigation_item_leading_trailing_space);
       labelGroupTopMargin = 0;
       labelGroupSideMargin = activeIndicatorLabelPadding;
       badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_END;
@@ -348,6 +357,28 @@ public abstract class NavigationBarItemView extends FrameLayout implements MenuV
       updateItemIconGravity();
       refreshItemBackground();
     }
+  }
+
+  @Override
+  public void setExpanded(boolean expanded) {
+    this.expanded = expanded;
+    updateVisibility();
+  }
+
+  @Override
+  public boolean isExpanded() {
+    return this.expanded;
+  }
+
+  @Override
+  public void setOnlyShowWhenExpanded(boolean onlyShowWhenExpanded) {
+    this.onlyShowWhenExpanded = onlyShowWhenExpanded;
+    updateVisibility();
+  }
+
+  @Override
+  public boolean isOnlyVisibleWhenExpanded() {
+    return this.onlyShowWhenExpanded;
   }
 
   @Override

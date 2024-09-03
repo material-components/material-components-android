@@ -44,7 +44,12 @@
   <dimen name="m3_navigation_menu_headline_horizontal_padding">28dp</dimen>
   <dimen name="m3_navigation_drawer_layout_corner_size">16dp</dimen>
   <dimen name="m3_navigation_item_active_indicator_label_padding">4dp</dimen>
-  <dimen name="m3_expressive_navigation_item_leading_trailing_space">16dp</dimen>
-  <dimen name="m3_expressive_item_expanded_active_indicator_height_default">40dp</dimen>
+  <dimen name="m3_navigation_item_leading_trailing_space">16dp</dimen>
+  <dimen name="m3_navigation_item_expanded_active_indicator_height_default">40dp</dimen>
+
+  <dimen name="m3_navigation_subheader_horizontal_padding">16dp</dimen>
+  <dimen name="m3_navigation_subheader_vertical_padding">8dp</dimen>
+  <dimen name="m3_navigation_subheader_top_margin">12dp</dimen>
+  <dimen name="m3_navigation_subheader_horizontal_margin">20dp</dimen>
 </resources>
 

@@ -223,7 +223,6 @@ public class NavigationRailView extends NavigationBarView {
     setItemPaddingBottom(Math.round(bottomPadding));
     setCollapsedItemSpacing(
         attributes.getDimensionPixelSize(R.styleable.NavigationRailView_itemSpacing, 0));
-
     setExpanded(attributes.getBoolean(R.styleable.NavigationRailView_expanded, false));
 
     attributes.recycle();
@@ -274,6 +273,7 @@ public class NavigationRailView extends NavigationBarView {
     super.setItemIconGravity(iconGravity);
     getNavigationRailMenuView().setItemSpacing(itemSpacing);
     getNavigationRailMenuView().setItemMinimumHeight(itemMinHeight);
+    getNavigationRailMenuView().setExpanded(expanded);
   }
 
   private void applyWindowInsets() {

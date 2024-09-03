@@ -33,6 +33,7 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenuView;
+import com.google.android.material.navigation.NavigationBarSubheaderView;
 
 /** @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
@@ -54,13 +55,16 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     int maxHeight = MeasureSpec.getSize(heightMeasureSpec);
-    int visibleCount = getMenu().getVisibleItems().size();
+    int visibleContentItemCount = getCurrentVisibleContentItemCount();
 
     int measuredHeight;
-    if (visibleCount > 1 && isShifting(getLabelVisibilityMode(), visibleCount)) {
-      measuredHeight = measureShiftingChildHeights(widthMeasureSpec, maxHeight, visibleCount);
+    if (visibleContentItemCount > 1
+        && isShifting(getLabelVisibilityMode(), visibleContentItemCount)) {
+      measuredHeight =
+          measureShiftingChildHeights(widthMeasureSpec, maxHeight, visibleContentItemCount);
     } else {
-      measuredHeight = measureSharedChildHeights(widthMeasureSpec, maxHeight, visibleCount, null);
+      measuredHeight =
+          measureSharedChildHeights(widthMeasureSpec, maxHeight, visibleContentItemCount, null);
     }
 
     // Set view to use parent width, but wrap all item heights
@@ -126,11 +130,24 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
     }
 
     return selectedViewHeight
-        + measureSharedChildHeights(widthMeasureSpec, maxHeight, shareCount, selectedView);
+        + measureSharedChildHeights(
+            widthMeasureSpec, maxHeight, shareCount, selectedView);
   }
 
   private int measureSharedChildHeights(
       int widthMeasureSpec, int maxHeight, int shareCount, View selectedView) {
+    int subheaderHeightSpec = MeasureSpec.makeMeasureSpec(maxHeight, MeasureSpec.UNSPECIFIED);
+    int childCount = getChildCount();
+    int totalHeight = 0;
+    for (int i = 0; i < childCount; i++) {
+      final View child = getChildAt(i);
+      if (child instanceof NavigationBarSubheaderView) {
+        int subheaderHeight = measureChildHeight(child, widthMeasureSpec, subheaderHeightSpec);
+        maxHeight -= subheaderHeight;
+        totalHeight += subheaderHeight;
+      }
+    }
+    maxHeight = max(maxHeight, 0);
     int childHeightSpec;
     if (selectedView == null) {
       childHeightSpec = makeSharedHeightSpec(widthMeasureSpec, maxHeight, shareCount);
@@ -142,15 +159,15 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
           MeasureSpec.makeMeasureSpec(selectedView.getMeasuredHeight(), MeasureSpec.UNSPECIFIED);
     }
 
-    int childCount = getChildCount();
     int visibleChildCount = 0;
-    int totalHeight = 0;
+
     for (int i = 0; i < childCount; i++) {
       final View child = getChildAt(i);
       if (child.getVisibility() == VISIBLE) {
         visibleChildCount += 1;
       }
-      if (child != selectedView) {
+      // Subheaders are already measured in total height
+      if (child instanceof NavigationBarItemView && child != selectedView) {
         totalHeight += measureChildHeight(child, widthMeasureSpec, childHeightSpec);
       }
     }
