@@ -58,6 +58,11 @@
     <item name="paddingTopSystemWindowInsets">true</item>
   </style>
 
+  <style name="Base.V21.ThemeOverlay.MaterialComponents.BottomSheetDialog"
+    parent="Base.V14.ThemeOverlay.MaterialComponents.BottomSheetDialog">
+    <item name="android:statusBarColor">@android:color/transparent</item>
+  </style>
+
   <style name="ThemeOverlay.MaterialComponents.BottomSheetDialog"
-    parent="Base.V14.ThemeOverlay.MaterialComponents.BottomSheetDialog"/>
+    parent="Base.V21.ThemeOverlay.MaterialComponents.BottomSheetDialog"/>
 </resources>

@@ -221,7 +221,9 @@
     <item name="android:popupElevation" tools:ignore="NewApi">@dimen/mtrl_exposed_dropdown_menu_popup_elevation</item>
   </style>
 
-  <style name="Base.Widget.MaterialComponents.AutoCompleteTextView" parent="Base.V14.Widget.MaterialComponents.AutoCompleteTextView"/>
+  <style name="Base.Widget.MaterialComponents.AutoCompleteTextView" parent="Base.V14.Widget.MaterialComponents.AutoCompleteTextView">
+    <item name="android:popupBackground">@null</item>
+  </style>
 
   <!-- Styles for the AutocompleteTextView to be used if an ExposedDropdownMenu style is being used. -->
   <style name="Widget.MaterialComponents.AutoCompleteTextView.FilledBox" parent="Base.Widget.MaterialComponents.AutoCompleteTextView">

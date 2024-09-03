@@ -15,4 +15,8 @@
   limitations under the License.
   -->
 
-<accelerateInterpolator />
+<pathInterpolator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:controlX1="@dimen/m3_sys_motion_easing_emphasized_accelerate_control_x1"
+    android:controlY1="@dimen/m3_sys_motion_easing_emphasized_accelerate_control_y1"
+    android:controlX2="@dimen/m3_sys_motion_easing_emphasized_accelerate_control_x2"
+    android:controlY2="@dimen/m3_sys_motion_easing_emphasized_accelerate_control_y2"/>

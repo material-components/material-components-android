@@ -17,9 +17,18 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Spinner"/>
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Calendar"/>
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="android:buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="android:buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Spinner">
+    <item name="android:datePickerStyle">@style/MaterialAlertDialog.MaterialComponents.Picker.Date.Spinner</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Calendar">
+    <item name="android:datePickerStyle">@style/MaterialAlertDialog.MaterialComponents.Picker.Date.Calendar</item>
+  </style>
 
   <style name="ThemeOverlay.MaterialComponents.MaterialCalendar" parent="ThemeOverlay.MaterialComponents.Dialog">
     <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>

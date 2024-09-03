@@ -33,7 +33,9 @@
     <item name="minSeparation">0dp</item>
   </style>
 
-  <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider"/>
+  <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider">
+    <item name="android:background">?attr/controlBackground</item>
+  </style>
 
   <style name="Widget.Material3.Slider.Legacy" parent="Widget.MaterialComponents.Slider">
     <item name="haloColor">@color/m3_slider_halo_color_legacy</item>

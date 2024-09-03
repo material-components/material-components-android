@@ -33,7 +33,6 @@
   </style>
 
   <style name="Base.TextAppearance.MaterialComponents.Badge" parent="TextAppearance.AppCompat">
-    <!-- Fake Roboto Medium. -->
     <item name="fontFamily">sans-serif-medium</item>
     <item name="android:fontFamily">sans-serif-medium</item>
     <item name="android:textStyle">bold</item>
@@ -43,7 +42,9 @@
     <item name="android:textColor">?attr/colorOnError</item>
   </style>
 
-  <style name="TextAppearance.MaterialComponents.Badge" parent="Base.TextAppearance.MaterialComponents.Badge"/>
+  <style name="TextAppearance.MaterialComponents.Badge" parent="Base.TextAppearance.MaterialComponents.Badge">
+    <item name="android:textStyle">normal</item>
+  </style>
 
   <style name="ShapeAppearance.MaterialComponents.Badge">
     <item name="cornerFamily">?attr/shapeCornerFamily</item>
