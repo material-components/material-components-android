@@ -19,7 +19,7 @@ Use radio buttons to:
 *   If available options can be collapsed, consider using a dropdown menu
     instead, as it uses less space.
 
-![Settings menu with radio buttons for ringtones](assets/radiobutton/radiobutton_hero.png)
+![Settings menu with radio buttons](assets/radiobutton/radiobutton.png)
 
 **Contents**
 
@@ -75,45 +75,38 @@ API and source code:
 
 ### Radio buttons example
 
-The following example shows a radio button group with five radio buttons.
+The following example shows a radio button group with three radio buttons.
 
-![Example radio button group with 5 radio buttons, the first one is selected and
-the last one is disabled.](assets/radiobutton/radiobutton_example.png)
+![Example radio button group with 3 radio buttons, the first one is selected](assets/radiobutton/radiobutton_example.png)
 
 In the layout:
 
 ```xml
 <RadioGroup
-    android:id="@+id/radioGroup"
-    android:checkedButton="@+id/radio_button_1"
+    android:checkedButton="@+id/enabled_selected"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <RadioButton
-        android:id="@+id/radio_button_1"
+        android:id="@+id/enabled_selected"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/label_1"/>
+        android:enabled="true"
+        android:paddingStart="@dimen/padding_start"
+        android:text="@string/radiobutton_text"/>
     <RadioButton
-        android:id="@+id/radio_button_2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/label_2"/>
+        android:checked="false"
+        android:enabled="true"
+        android:paddingStart="@dimen/padding_start"
+        android:text="@string/radiobutton_text"/>
     <RadioButton
-        android:id="@+id/radio_button_3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/label_3"/>
-    <RadioButton
-        android:id="@+id/radio_button_4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/label_4"/>
-    <RadioButton
-        android:id="@+id/radio_button_5"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:enabled="false"
-        android:text="@string/label_5"/>
+        android:checked="false"
+        android:enabled="true"
+        android:paddingStart="@dimen/padding_start"
+        android:text="@string/radiobutton_text"/>
 </RadioGroup>
 ```
 
