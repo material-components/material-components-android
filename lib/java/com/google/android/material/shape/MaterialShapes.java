@@ -24,7 +24,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.PathShape;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.graphics.shapes.CornerRounding;
@@ -32,9 +31,9 @@ import androidx.graphics.shapes.RoundedPolygon;
 import androidx.graphics.shapes.RoundedPolygonKt;
 import androidx.graphics.shapes.ShapesKt;
 import androidx.graphics.shapes.Shapes_androidKt;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.jetbrains.annotations.Contract;
 
 /**
  * A utility class providing static methods for creating Material endorsed shapes using the {@code
@@ -45,16 +44,12 @@ import org.jetbrains.annotations.Contract;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public final class MaterialShapes {
   // Cache various roundings for use below
-  private static final CornerRounding CORNER_ROUND_10 =
-      new CornerRounding(/* radius= */ .1f, /* smoothing= */ 0f);
   private static final CornerRounding CORNER_ROUND_15 =
       new CornerRounding(/* radius= */ .15f, /* smoothing= */ 0f);
   private static final CornerRounding CORNER_ROUND_20 =
       new CornerRounding(/* radius= */ .2f, /* smoothing= */ 0f);
   private static final CornerRounding CORNER_ROUND_30 =
       new CornerRounding(/* radius= */ .3f, /* smoothing= */ 0f);
-  private static final CornerRounding CORNER_ROUND_40 =
-      new CornerRounding(/* radius= */ .4f, /* smoothing= */ 0f);
   private static final CornerRounding CORNER_ROUND_50 =
       new CornerRounding(/* radius= */ .5f, /* smoothing= */ 0f);
   private static final CornerRounding CORNER_ROUND_100 =
@@ -74,8 +69,7 @@ public final class MaterialShapes {
   public static final RoundedPolygon ARCH = normalize(getArch(), /* radial= */ true);
 
   /** A fan shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon FAN =
-      normalize(getFan(/* rotateDegrees= */ -45f), /* radial= */ true);
+  public static final RoundedPolygon FAN = normalize(getFan(), /* radial= */ true);
 
   /** An arrow shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon ARROW = normalize(getArrow(), /* radial= */ true);
@@ -88,8 +82,7 @@ public final class MaterialShapes {
       normalize(getOval(/* rotateDegrees= */ -45f), /* radial= */ true);
 
   /** A pill shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon PILL =
-      normalize(getPill(/* rotateDegrees= */ -45f), /* radial= */ true);
+  public static final RoundedPolygon PILL = normalize(getPill(), /* radial= */ true);
 
   /** A triangle shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon TRIANGLE =
@@ -102,8 +95,7 @@ public final class MaterialShapes {
   public static final RoundedPolygon CLAM_SHELL = normalize(getClamShell(), /* radial= */ true);
 
   /** A pentagon shape {@link RoundedPolygon} fitting in a unit circle. */
-  public static final RoundedPolygon PENTAGON =
-      normalize(getPentagon(/* rotateDegrees= */ -18f), /* radial= */ true);
+  public static final RoundedPolygon PENTAGON = normalize(getPentagon(), /* radial= */ true);
 
   /** A gem shape {@link RoundedPolygon} fitting in a unit circle. */
   public static final RoundedPolygon GEM =
@@ -152,7 +144,12 @@ public final class MaterialShapes {
 
   @NonNull
   private static RoundedPolygon getSlantedSquare() {
-    return Shapes_androidKt.transformed(getSquare(), createSkewMatrix(-.1f, 0f));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(
+        new VertexAndRounding(new PointF(0.926f, 0.970f), new CornerRounding(0.189f, 0.811f)));
+    points.add(
+        new VertexAndRounding(new PointF(-0.021f, 0.967f), new CornerRounding(0.187f, 0.057f)));
+    return customPolygon(points, 2, 0.5f, 0.5f, false);
   }
 
   @NonNull
@@ -171,26 +168,23 @@ public final class MaterialShapes {
 
   @NonNull
   private static RoundedPolygon getFan() {
-    return RoundedPolygonKt.RoundedPolygon(
-        /* numVertices= */ 4,
-        /* radius= */ 1f,
-        /* centerX= */ 0f,
-        /* centerY= */ 0f,
-        CornerRounding.Unrounded,
-        /* perVertexRounding= */ Arrays.asList(
-            CORNER_ROUND_100, CORNER_ROUND_20, CORNER_ROUND_20, CORNER_ROUND_20));
-  }
-
-  @NonNull
-  private static RoundedPolygon getFan(float rotateDegrees) {
-    return Shapes_androidKt.transformed(getFan(), createRotationMatrix(rotateDegrees));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(1f, 1f), new CornerRounding(0.148f, 0.417f)));
+    points.add(new VertexAndRounding(new PointF(0f, 1f), new CornerRounding(0.151f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0f, 0f), new CornerRounding(0.148f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.978f, 0.020f), new CornerRounding(0.803f, 0f)));
+    return customPolygon(points, 1, 0.5f, 0.5f, false);
   }
 
   @NonNull
   private static RoundedPolygon getArrow() {
-    return triangleChip(
-        /* innerRadius= */ .3375f,
-        /* cornerRounding= */ new CornerRounding(/* radius= */ .25f, /* smoothing= */ .48f));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, 0.892f), new CornerRounding(0.313f, 0f)));
+    points.add(new VertexAndRounding(new PointF(-0.216f, 1.050f), new CornerRounding(0.207f, 0f)));
+    points.add(
+        new VertexAndRounding(new PointF(0.499f, -0.160f), new CornerRounding(0.215f, 1.000f)));
+    points.add(new VertexAndRounding(new PointF(1.225f, 1.060f), new CornerRounding(0.211f, 0f)));
+    return customPolygon(points, 1, 0.5f, 0.5f, false);
   }
 
   @NonNull
@@ -210,7 +204,7 @@ public final class MaterialShapes {
   private static RoundedPolygon getOval() {
     return Shapes_androidKt.transformed(
         ShapesKt.circle(RoundedPolygon.Companion),
-        createScaleMatrix(/* scaleX= */ 1f, /* scaleY= */ .7f));
+        createScaleMatrix(/* scaleX= */ 1f, /* scaleY= */ .64f));
   }
 
   @NonNull
@@ -220,12 +214,11 @@ public final class MaterialShapes {
 
   @NonNull
   private static RoundedPolygon getPill() {
-    return ShapesKt.pill(RoundedPolygon.Companion, /* width= */ 1.25f, /* height= */ 1f);
-  }
-
-  @NonNull
-  private static RoundedPolygon getPill(float rotateDegrees) {
-    return Shapes_androidKt.transformed(getPill(), createRotationMatrix(rotateDegrees));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.961f, 0.039f), new CornerRounding(0.426f, 0f)));
+    points.add(new VertexAndRounding(new PointF(1.001f, 0.428f)));
+    points.add(new VertexAndRounding(new PointF(1.000f, 0.609f), CORNER_ROUND_100));
+    return customPolygon(points, 2, 0.5f, 0.5f, true);
   }
 
   @NonNull
@@ -245,93 +238,40 @@ public final class MaterialShapes {
 
   @NonNull
   private static RoundedPolygon getDiamond() {
-    return Shapes_androidKt.transformed(
-        RoundedPolygonKt.RoundedPolygon(
-            /* numVertices= */ 4,
-            /* radius= */ 1f,
-            /* centerX= */ 0f,
-            /* centerY= */ 0f,
-            /* rounding= */ CORNER_ROUND_30),
-        createScaleMatrix(/* scaleX= */ 1f, /* scaleY= */ 1.2f));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(
+        new VertexAndRounding(new PointF(0.500f, 1.096f), new CornerRounding(0.151f, 0.524f)));
+    points.add(new VertexAndRounding(new PointF(0.040f, 0.500f), new CornerRounding(0.159f, 0f)));
+    return customPolygon(points, 2, 0.5f, 0.5f, false);
   }
 
   @NonNull
   private static RoundedPolygon getClamShell() {
-    float cornerInset = .6f;
-    float edgeInset = .4f;
-    float height = .7f;
-    float[] hexPoints =
-        new float[] {
-          1f,
-          0f,
-          cornerInset,
-          height,
-          edgeInset,
-          height,
-          -edgeInset,
-          height,
-          -cornerInset,
-          height,
-          -1f,
-          0f,
-          -cornerInset,
-          -height,
-          -edgeInset,
-          -height,
-          edgeInset,
-          -height,
-          cornerInset,
-          -height
-        };
-    List<CornerRounding> perVertexRounding =
-        Arrays.asList(
-            CORNER_ROUND_30,
-            CORNER_ROUND_30,
-            CornerRounding.Unrounded,
-            CornerRounding.Unrounded,
-            CORNER_ROUND_30,
-            CORNER_ROUND_30,
-            CORNER_ROUND_30,
-            CornerRounding.Unrounded,
-            CornerRounding.Unrounded,
-            CORNER_ROUND_30);
-    return RoundedPolygonKt.RoundedPolygon(
-        hexPoints, /* rounding= */ CornerRounding.Unrounded, perVertexRounding);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.171f, 0.841f), new CornerRounding(0.159f, 0f)));
+    points.add(new VertexAndRounding(new PointF(-0.020f, 0.500f), new CornerRounding(0.140f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.170f, 0.159f), new CornerRounding(0.159f, 0f)));
+    return customPolygon(points, 2, 0.5f, 0.5f, false);
   }
 
   @NonNull
   private static RoundedPolygon getPentagon() {
-    return RoundedPolygonKt.RoundedPolygon(
-        /* numVertices= */ 5,
-        /* radius= */ 1f,
-        /* centerX= */ 0f,
-        /* centerY= */ 0f,
-        /* rounding= */ CORNER_ROUND_30);
-  }
-
-  @NonNull
-  private static RoundedPolygon getPentagon(float rotateDegrees) {
-    return Shapes_androidKt.transformed(getPentagon(), createRotationMatrix(rotateDegrees));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, -0.009f), new CornerRounding(0.172f, 0f)));
+    points.add(new VertexAndRounding(new PointF(1.030f, 0.365f), new CornerRounding(0.164f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.828f, 0.970f), new CornerRounding(0.169f, 0f)));
+    return customPolygon(points, 1, 0.5f, 0.5f, true);
   }
 
   @NonNull
   private static RoundedPolygon getGem() {
-    // This shape looks like a rounded hexagon with a small offset in the second and last vertices.
-    int numVertices = 6;
-    float radius = 1f;
-    float[] points = new float[numVertices * 2];
-    for (int i = 0; i < numVertices; i++) {
-      PointF vertex = radialToCartesian(new PointF(radius, (float) (2 * PI / numVertices * i)));
-      points[i * 2] = vertex.x;
-      points[i * 2 + 1] = vertex.y;
-    }
-    // Offsets the second vertex (in the first quadrant) by (-0.1, -0.1) towards the center.
-    points[2] -= .1f;
-    points[3] -= .1f;
-    // Offsets the last vertex (in the fourth quadrant) by (-0.1, 0.1) towards the center.
-    points[10] -= .1f;
-    points[11] += .1f;
-    return RoundedPolygonKt.RoundedPolygon(points, CORNER_ROUND_40);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(
+        new VertexAndRounding(new PointF(0.499f, 1.023f), new CornerRounding(0.241f, 0.778f)));
+    points.add(new VertexAndRounding(new PointF(-0.005f, 0.792f), new CornerRounding(0.208f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.073f, 0.258f), new CornerRounding(0.228f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.433f, -0.000f), new CornerRounding(0.491f, 0f)));
+    return customPolygon(points, 1, 0.5f, 0.5f, true);
   }
 
   @NonNull
@@ -351,36 +291,26 @@ public final class MaterialShapes {
 
   @NonNull
   private static RoundedPolygon getVerySunny() {
-    return ShapesKt.star(
-        RoundedPolygon.Companion,
-        /* numVerticesPerRadius= */ 8,
-        /* radius= */ 1f,
-        /* innerRadius= */ 0.65f,
-        /* rounding= */ CORNER_ROUND_10);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, 1.080f), new CornerRounding(0.085f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.358f, 0.843f), new CornerRounding(0.085f, 0f)));
+    return customPolygon(points, 8, 0.5f, 0.5f, false);
   }
 
   @NonNull
   private static RoundedPolygon getCookie4() {
-    return Shapes_androidKt.transformed(
-        ShapesKt.star(
-            RoundedPolygon.Companion,
-            /* numVerticesPerRadius= */ 4,
-            /* radius= */ 1f,
-            /* innerRadius= */ 0.5f,
-            /* rounding= */ CORNER_ROUND_30),
-        createRotationMatrix(-45f));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(1.237f, 1.236f), new CornerRounding(0.258f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.500f, 0.918f), new CornerRounding(0.233f, 0f)));
+    return customPolygon(points, 4, 0.5f, 0.5f, false);
   }
 
   @NonNull
   private static RoundedPolygon getCookie6() {
-    return Shapes_androidKt.transformed(
-        ShapesKt.star(
-            RoundedPolygon.Companion,
-            /* numVerticesPerRadius= */ 6,
-            /* radius= */ 1f,
-            /* innerRadius= */ 0.75f,
-            /* rounding= */ CORNER_ROUND_30),
-        createRotationMatrix(-90f));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.723f, 0.884f), new CornerRounding(0.394f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.500f, 1.099f), new CornerRounding(0.398f, 0f)));
+    return customPolygon(points, 6, 0.5f, 0.5f, false);
   }
 
   @NonNull
@@ -421,389 +351,209 @@ public final class MaterialShapes {
 
   @NonNull
   private static RoundedPolygon getGhostish() {
-    float inset = .46f;
-    float h = 1.2f;
-    float[] points = new float[] {-1f, -h, 1f, -h, 1f, h, 0f, inset, -1f, h};
-    List<CornerRounding> perVertexRounding =
-        Arrays.asList(
-            CORNER_ROUND_100, CORNER_ROUND_100, CORNER_ROUND_50, CORNER_ROUND_100, CORNER_ROUND_50);
-    return RoundedPolygonKt.RoundedPolygon(
-        points, /* rounding= */ CornerRounding.Unrounded, perVertexRounding);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, 0f), CORNER_ROUND_100));
+    points.add(new VertexAndRounding(new PointF(1f, 0f), CORNER_ROUND_100));
+    points.add(new VertexAndRounding(new PointF(1f, 1.140f), new CornerRounding(0.254f, 0.106f)));
+    points.add(new VertexAndRounding(new PointF(0.575f, 0.906f), new CornerRounding(0.253f, 0f)));
+    return customPolygon(points, 1, 0.5f, 0.5f, true);
   }
 
   @NonNull
   private static RoundedPolygon getClover4() {
-    // No inner rounding.
-    return Shapes_androidKt.transformed(
-        ShapesKt.star(
-            RoundedPolygon.Companion,
-            /* numVerticesPerRadius= */ 4,
-            /* radius= */ 1f,
-            /* innerRadius= */ 0.2f,
-            /* rounding= */ CORNER_ROUND_40,
-            /* innerRounding= */ CornerRounding.Unrounded),
-        createRotationMatrix(45f));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, 0.074f)));
+    points.add(new VertexAndRounding(new PointF(0.725f, -0.099f), new CornerRounding(0.476f, 0f)));
+    return customPolygon(points, 4, 0.5f, 0.5f, true);
   }
 
   @NonNull
   private static RoundedPolygon getClover8() {
-    return Shapes_androidKt.transformed(
-        ShapesKt.star(
-            RoundedPolygon.Companion,
-            /* numVerticesPerRadius= */ 8,
-            /* radius= */ 1f,
-            /* innerRadius= */ 0.65f,
-            /* rounding= */ CORNER_ROUND_30,
-            /* innerRounding= */ CornerRounding.Unrounded),
-        createRotationMatrix(360 / 16f));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, 0.036f)));
+    points.add(new VertexAndRounding(new PointF(0.758f, -0.101f), new CornerRounding(0.209f, 0f)));
+    return customPolygon(points, 8, 0.5f, 0.5f, false);
   }
 
   @NonNull
   private static RoundedPolygon getBurst() {
-    return ShapesKt.star(
-        RoundedPolygon.Companion,
-        /* numVerticesPerRadius= */ 12,
-        /* radius= */ 1f,
-        /* innerRadius= */ 0.7f);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, -0.006f), new CornerRounding(0.006f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.592f, 0.158f), new CornerRounding(0.006f, 0f)));
+    return customPolygon(points, 12, 0.5f, 0.5f, false);
   }
 
   @NonNull
   private static RoundedPolygon getSoftBurst() {
-    return Shapes_androidKt.transformed(
-        ShapesKt.star(
-            RoundedPolygon.Companion,
-            /* numVerticesPerRadius= */ 10,
-            /* radius= */ 1f,
-            /* innerRadius= */ 0.65f,
-            /* rounding= */ CORNER_ROUND_10,
-            /* innerRounding= */ CORNER_ROUND_10),
-        createRotationMatrix(360 / 20f));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.193f, 0.277f), new CornerRounding(0.053f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.176f, 0.055f), new CornerRounding(0.053f, 0f)));
+    return customPolygon(points, 10, 0.5f, 0.5f, false);
   }
 
   @NonNull
   private static RoundedPolygon getBoom() {
-    return Shapes_androidKt.transformed(
-        ShapesKt.star(
-            RoundedPolygon.Companion,
-            /* numVerticesPerRadius= */ 15,
-            /* radius= */ 1f,
-            /* innerRadius= */ 0.42f),
-        createRotationMatrix(360 / 60f));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.457f, 0.296f), new CornerRounding(0.007f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.500f, -0.051f), new CornerRounding(0.007f, 0f)));
+    return customPolygon(points, 15, 0.5f, 0.5f, false);
   }
 
   @NonNull
   private static RoundedPolygon getSoftBoom() {
-    float[] pointsXyTemplate =
-        new float[] {
-          0.456f, 0.224f,
-          0.460f, 0.170f,
-          0.500f, 0.100f,
-          0.540f, 0.170f,
-          0.544f, 0.224f,
-          0.538f, 0.308f
-        };
-    CornerRounding[] roundingsTemplate =
-        new CornerRounding[] {
-          new CornerRounding(/* radius= */ 0.020f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.143f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.025f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.143f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.190f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0f, /* smoothing= */ 0f)
-        };
-
-    float[] pointsXy = new float[pointsXyTemplate.length * 16];
-    CornerRounding[] roundings = new CornerRounding[roundingsTemplate.length * 16];
-
-    repeatAroundCenter(
-        pointsXyTemplate,
-        pointsXy,
-        roundingsTemplate,
-        roundings,
-        16,
-        0.5f,
-        0.5f,
-        -360f / 32,
-        false);
-
-    return RoundedPolygonKt.RoundedPolygon(
-        pointsXy,
-        /* rounding= */ CornerRounding.Unrounded,
-        Arrays.asList(roundings),
-        /* centerX= */ 0.5f,
-        /* centerY= */ 0.5f);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.733f, 0.454f)));
+    points.add(new VertexAndRounding(new PointF(0.839f, 0.437f), new CornerRounding(0.532f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.949f, 0.449f), new CornerRounding(0.439f, 1f)));
+    points.add(new VertexAndRounding(new PointF(0.998f, 0.478f), new CornerRounding(0.174f, 0f)));
+    return customPolygon(points, 16, 0.5f, 0.5f, true);
   }
 
   @NonNull
   private static RoundedPolygon getFlower() {
-    return ShapesKt.star(
-        RoundedPolygon.Companion,
-        /* numVerticesPerRadius= */ 8,
-        /* radius= */ 1f,
-        /* innerRadius= */ 0.588f,
-        /* rounding= */ new CornerRounding(/* radius= */ 0.12f, /* smoothing= */ 0.48f),
-        /* innerRounding= */ CornerRounding.Unrounded);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.370f, 0.187f)));
+    points.add(new VertexAndRounding(new PointF(0.416f, 0.049f), new CornerRounding(0.381f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.479f, 0f), new CornerRounding(0.095f, 0f)));
+    return customPolygon(points, 8, 0.5f, 0.5f, true);
   }
 
   @NonNull
   private static RoundedPolygon getPuffy() {
-    float[] pointsXyTemplate =
-        new float[] {
-          0.501f, 0.260f,
-          0.526f, 0.188f,
-          0.676f, 0.226f,
-          0.660f, 0.300f,
-          0.734f, 0.230f,
-          0.838f, 0.350f,
-          0.782f, 0.418f,
-          0.874f, 0.414f
-        };
-    CornerRounding[] roundingsTemplate =
-        new CornerRounding[] {
-          CornerRounding.Unrounded,
-          new CornerRounding(/* radius= */ 0.095f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.095f, /* smoothing= */ 0f),
-          CornerRounding.Unrounded,
-          new CornerRounding(/* radius= */ 0.095f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.095f, /* smoothing= */ 0f),
-          CornerRounding.Unrounded,
-          new CornerRounding(/* radius= */ 0.095f, /* smoothing= */ 0f)
-        };
-
-    float[] pointsXy = new float[pointsXyTemplate.length * 4];
-    CornerRounding[] roundings = new CornerRounding[roundingsTemplate.length * 4];
-
-    repeatAroundCenter(
-        pointsXyTemplate, pointsXy, roundingsTemplate, roundings, 4, 0.5f, 0.5f, 0f, true);
-
-    return RoundedPolygonKt.RoundedPolygon(
-        pointsXy,
-        /* rounding= */ CornerRounding.Unrounded,
-        Arrays.asList(roundings),
-        /* centerX= */ 0.5f,
-        /* centerY= */ 0.5f);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, 0.053f)));
+    points.add(new VertexAndRounding(new PointF(0.545f, -0.040f), new CornerRounding(0.405f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.670f, -0.035f), new CornerRounding(0.426f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.717f, 0.066f), new CornerRounding(0.574f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.722f, 0.128f)));
+    points.add(new VertexAndRounding(new PointF(0.777f, 0.002f), new CornerRounding(0.360f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.914f, 0.149f), new CornerRounding(0.660f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.926f, 0.289f), new CornerRounding(0.660f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.881f, 0.346f)));
+    points.add(new VertexAndRounding(new PointF(0.940f, 0.344f), new CornerRounding(0.126f, 0f)));
+    points.add(new VertexAndRounding(new PointF(1.003f, 0.437f), new CornerRounding(0.255f, 0f)));
+    return Shapes_androidKt.transformed(
+        customPolygon(points, 2, 0.5f, 0.5f, true), createScaleMatrix(1f, 0.742f));
   }
 
   @NonNull
   private static RoundedPolygon getPuffyDiamond() {
-    float[] pointsXyTemplate =
-        new float[] {
-          0.390f, 0.260f,
-          0.390f, 0.130f,
-          0.610f, 0.130f,
-          0.610f, 0.260f,
-          0.740f, 0.260f
-        };
-    CornerRounding[] roundingsTemplate =
-        new CornerRounding[] {
-          new CornerRounding(/* radius= */ 0.000f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.104f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.104f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.000f, /* smoothing= */ 0f),
-          new CornerRounding(/* radius= */ 0.104f, /* smoothing= */ 0f)
-        };
-
-    float[] pointsXy = new float[pointsXyTemplate.length * 4];
-    CornerRounding[] roundings = new CornerRounding[roundingsTemplate.length * 4];
-
-    repeatAroundCenter(
-        pointsXyTemplate, pointsXy, roundingsTemplate, roundings, 4, 0.5f, 0.5f, -24.63f, false);
-
-    return RoundedPolygonKt.RoundedPolygon(
-        pointsXy,
-        /* rounding= */ CornerRounding.Unrounded,
-        Arrays.asList(roundings),
-        /* centerX= */ 0.5f,
-        /* centerY= */ 0.5f);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.870f, 0.130f), new CornerRounding(0.146f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.818f, 0.357f)));
+    points.add(new VertexAndRounding(new PointF(1.000f, 0.332f), new CornerRounding(0.853f, 0f)));
+    return customPolygon(points, 4, 0.5f, 0.5f, true);
   }
 
   @NonNull
   private static RoundedPolygon getPixelCircle() {
-    PointF start = new PointF();
-    PointF[] offsets =
-        new PointF[] {
-          new PointF(0.4f, -1f),
-          new PointF(0f, 0.14f),
-          new PointF(0.28f, 0f),
-          new PointF(0f, 0.16f),
-          new PointF(0.16f, 0f),
-          new PointF(0f, 0.3f),
-          new PointF(0.16f, 0f)
-        };
-    float[] pointsXyTemplate = new float[offsets.length * 2];
-    for (int i = 0; i < offsets.length; i++) {
-      start.offset(offsets[i].x, offsets[i].y);
-      pointsXyTemplate[i * 2] = start.x;
-      pointsXyTemplate[i * 2 + 1] = start.y;
-    }
-    float[] pointsXy = new float[pointsXyTemplate.length * 4];
-    repeatAroundCenter(pointsXyTemplate, pointsXy, null, null, 4, 0f, 0f, 0f, true);
-    return RoundedPolygonKt.RoundedPolygon(pointsXy, /* rounding= */ CornerRounding.Unrounded);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, 0.000f)));
+    points.add(new VertexAndRounding(new PointF(0.704f, 0.000f)));
+    points.add(new VertexAndRounding(new PointF(0.704f, 0.065f)));
+    points.add(new VertexAndRounding(new PointF(0.843f, 0.065f)));
+    points.add(new VertexAndRounding(new PointF(0.843f, 0.148f)));
+    points.add(new VertexAndRounding(new PointF(0.926f, 0.148f)));
+    points.add(new VertexAndRounding(new PointF(0.926f, 0.296f)));
+    points.add(new VertexAndRounding(new PointF(1.000f, 0.296f)));
+    return customPolygon(points, 2, 0.5f, 0.5f, true);
   }
 
   @NonNull
   private static RoundedPolygon getPixelTriangle() {
-    PointF start = new PointF();
-    PointF[] offsets =
-        new PointF[] {
-          new PointF(),
-          new PointF(56f, 0f),
-          new PointF(0f, 28f),
-          new PointF(44f, 0f),
-          new PointF(0f, 26f),
-          new PointF(44f, 0f),
-          new PointF(0f, 32f),
-          new PointF(38f, 0f),
-          new PointF(0f, 26f),
-          new PointF(38f, 0f),
-          new PointF(0f, 32f),
-          new PointF(32f, 0f)
-        };
-    float[] pointsXyTemplate = new float[offsets.length * 2];
-    for (int i = 0; i < offsets.length; i++) {
-      start.offset(offsets[i].x, offsets[i].y);
-      pointsXyTemplate[i * 2] = start.x;
-      pointsXyTemplate[i * 2 + 1] = start.y;
-    }
-    // Moves start to the center of the shape.
-    start.offset(-start.x / 2f, 19f);
-    float[] pointsXy = new float[pointsXyTemplate.length * 2];
-    repeatAroundCenter(pointsXyTemplate, pointsXy, null, null, 2, start.x, start.y, -90, true);
-    return RoundedPolygonKt.RoundedPolygon(
-        pointsXy,
-        /* rounding= */ CornerRounding.Unrounded,
-        /* perVertexRounding= */ null,
-        /* centerX= */ start.x,
-        /* centerY= */ start.y);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.110f, 0.500f)));
+    points.add(new VertexAndRounding(new PointF(0.113f, 0.000f)));
+    points.add(new VertexAndRounding(new PointF(0.287f, 0.000f)));
+    points.add(new VertexAndRounding(new PointF(0.287f, 0.087f)));
+    points.add(new VertexAndRounding(new PointF(0.421f, 0.087f)));
+    points.add(new VertexAndRounding(new PointF(0.421f, 0.170f)));
+    points.add(new VertexAndRounding(new PointF(0.560f, 0.170f)));
+    points.add(new VertexAndRounding(new PointF(0.560f, 0.265f)));
+    points.add(new VertexAndRounding(new PointF(0.674f, 0.265f)));
+    points.add(new VertexAndRounding(new PointF(0.675f, 0.344f)));
+    points.add(new VertexAndRounding(new PointF(0.789f, 0.344f)));
+    points.add(new VertexAndRounding(new PointF(0.789f, 0.439f)));
+    points.add(new VertexAndRounding(new PointF(0.888f, 0.439f)));
+    return customPolygon(points, 1, 0.5f, 0.5f, true);
   }
 
   @NonNull
   private static RoundedPolygon getBun() {
-    float inset = .4f;
-    float[] sandwichPoints =
-        new float[] {
-          1f, 1f, inset, 1f, -inset, 1f, -1f, 1f, -1f, 0f, -inset, 0f, -1f, 0f, -1f, -1f, -inset,
-          -1f, inset, -1f, 1f, -1f, 1f, 0f, inset, 0f, 1f, 0f
-        };
-    CornerRounding[] roundings =
-        new CornerRounding[] {
-          CORNER_ROUND_100,
-          CornerRounding.Unrounded,
-          CornerRounding.Unrounded,
-          CORNER_ROUND_100,
-          CORNER_ROUND_100,
-          CornerRounding.Unrounded,
-          CORNER_ROUND_100,
-          CORNER_ROUND_100,
-          CornerRounding.Unrounded,
-          CornerRounding.Unrounded,
-          CORNER_ROUND_100,
-          CORNER_ROUND_100,
-          CornerRounding.Unrounded,
-          CORNER_ROUND_100
-        };
-    return RoundedPolygonKt.RoundedPolygon(
-        sandwichPoints, CornerRounding.Unrounded, Arrays.asList(roundings));
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.796f, 0.500f)));
+    points.add(new VertexAndRounding(new PointF(0.853f, 0.518f), CORNER_ROUND_100));
+    points.add(new VertexAndRounding(new PointF(0.992f, 0.631f), CORNER_ROUND_100));
+    points.add(new VertexAndRounding(new PointF(0.968f, 1.000f), CORNER_ROUND_100));
+    return customPolygon(points, 2, 0.5f, 0.5f, true);
   }
 
   @NonNull
   private static RoundedPolygon getHeart() {
-    float[] points =
-        new float[] {
-          .2f, 0f, -.4f, .5f, -1f, 1f, -1.5f, .5f, -1f, 0f, -1.5f, -.5f, -1f, -1f, -.4f, -.5f
-        };
-    CornerRounding[] roundings =
-        new CornerRounding[] {
-          CornerRounding.Unrounded,
-          CornerRounding.Unrounded,
-          CORNER_ROUND_100,
-          CORNER_ROUND_100,
-          CornerRounding.Unrounded,
-          CORNER_ROUND_100,
-          CORNER_ROUND_100,
-          CornerRounding.Unrounded,
-        };
-    return Shapes_androidKt.transformed(
-        RoundedPolygonKt.RoundedPolygon(points, CornerRounding.Unrounded, Arrays.asList(roundings)),
-        createRotationMatrix(90f));
-  }
-
-  @NonNull
-  private static RoundedPolygon triangleChip(float innerRadius, CornerRounding cornerRounding) {
-    PointF[] radialPoints =
-        new PointF[] {
-          new PointF(0.888f, (float) Math.toRadians(270f)),
-          new PointF(1f, (float) Math.toRadians(30f)),
-          new PointF(innerRadius, (float) Math.toRadians(90f)),
-          new PointF(1f, (float) Math.toRadians(150f))
-        };
-    PointF[] cartesianPoints = new PointF[radialPoints.length];
-    for (int i = 0; i < radialPoints.length; i++) {
-      cartesianPoints[i] = radialToCartesian(radialPoints[i]);
-    }
-    float[] cartesianPointsXy = new float[cartesianPoints.length * 2];
-    for (int i = 0; i < cartesianPoints.length; i++) {
-      cartesianPointsXy[2 * i] = cartesianPoints[i].x;
-      cartesianPointsXy[2 * i + 1] = cartesianPoints[i].y;
-    }
-    return RoundedPolygonKt.RoundedPolygon(cartesianPointsXy, cornerRounding);
+    List<VertexAndRounding> points = new ArrayList<>();
+    points.add(new VertexAndRounding(new PointF(0.500f, 0.268f), new CornerRounding(0.016f, 0f)));
+    points.add(new VertexAndRounding(new PointF(0.792f, -0.066f), new CornerRounding(0.958f, 0f)));
+    points.add(new VertexAndRounding(new PointF(1.064f, 0.276f), CORNER_ROUND_100));
+    points.add(new VertexAndRounding(new PointF(0.501f, 0.946f), new CornerRounding(0.129f, 0f)));
+    return customPolygon(points, 1, 0.5f, 0.5f, true);
   }
 
   private static void repeatAroundCenter(
-      @NonNull float[] srcPointsXy,
-      @NonNull float[] dstPointsXy,
-      @Nullable CornerRounding[] srcRoundings,
-      @Nullable CornerRounding[] dstRoundings,
-      int reps,
+      @NonNull List<VertexAndRounding> template,
+      @NonNull List<VertexAndRounding> outList,
+      int repeatCount,
       float centerX,
       float centerY,
-      float srcRotateOffset,
-      boolean alternate) {
-    float rotationOffset = 360f / reps;
-    int srcPointsCount = srcPointsXy.length / 2;
-    // Moves src points centered at (0, 0) and rotates src points to start from 0 degree.
-    Matrix preTransform = createRotationMatrix(-srcRotateOffset);
-    preTransform.preTranslate(-centerX, -centerY);
-    preTransform.mapPoints(srcPointsXy);
-    // Start repeat src points to dst points.
-    int dstRoundingsWriteIndex = 0;
-    int dstPointsXyWriteIndex = 0;
-    for (int i = 0; i < reps; i++) {
-      // Flips the odd indexed iteration direction, if alternate is true.
-      boolean flip = alternate && (i % 2 == 1);
-      for (int j = 0; j < srcPointsCount; j++) {
-        // Reverts the src points order in dst points, if flips.
-        int indexRounding = flip ? srcPointsCount - 1 - j : j;
-        int indexX = indexRounding * 2;
-        int indexY = indexX + 1;
-        if (srcRoundings != null && dstRoundings != null) {
-          dstRoundings[dstRoundingsWriteIndex++] = srcRoundings[indexRounding];
+      boolean mirroring) {
+    outList.clear();
+    toRadial(template, centerX, centerY);
+    float spanPerRepeat = (float) (2 * PI / repeatCount);
+    if (mirroring) {
+      // Template will be repeated in the original order then in the reverse order.
+      int mirroredRepeatCount = repeatCount * 2;
+      spanPerRepeat /= 2;
+      for (int i = 0; i < mirroredRepeatCount; i++) {
+        for (int j = 0; j < template.size(); j++) {
+          boolean reverse = i % 2 != 0;
+          int indexInTemplate = reverse ? template.size() - 1 - j : j;
+          VertexAndRounding templatePoint = template.get(indexInTemplate);
+          if (indexInTemplate > 0 || !reverse) {
+            float angle =
+                spanPerRepeat * i
+                    + (reverse
+                        ? spanPerRepeat - templatePoint.vertex.x + 2 * template.get(0).vertex.x
+                        : templatePoint.vertex.x);
+            PointF outVertex = new PointF(angle, templatePoint.vertex.y);
+            outList.add(new VertexAndRounding(outVertex, templatePoint.rounding));
+          }
         }
-        // Flips the src points along y axis, if flips.
-        dstPointsXy[dstPointsXyWriteIndex++] = srcPointsXy[indexX] * (flip ? -1 : 1);
-        dstPointsXy[dstPointsXyWriteIndex++] = srcPointsXy[indexY];
       }
-      // Rotates 1 more offset rotation, if flips.
-      createRotationMatrix(rotationOffset * (flip ? i + 1 : i))
-          .mapPoints(
-              dstPointsXy,
-              srcPointsXy.length * i,
-              dstPointsXy,
-              srcPointsXy.length * i,
-              srcPointsCount);
+    } else {
+      for (int i = 0; i < repeatCount; i++) {
+        for (VertexAndRounding templatePoint : template) {
+          float angle = spanPerRepeat * i + templatePoint.vertex.x;
+          PointF outVertex = new PointF(angle, templatePoint.vertex.y);
+          outList.add(new VertexAndRounding(outVertex, templatePoint.rounding));
+        }
+      }
     }
-    // Rotates dst points with the same offset and moves them back to the original center.
-    Matrix postTransform = createRotationMatrix(srcRotateOffset);
-    postTransform.postTranslate(centerX, centerY);
-    postTransform.mapPoints(dstPointsXy);
+    toCartesian(outList, centerX, centerY);
   }
 
   @NonNull
-  @Contract("_ -> new")
-  private static PointF radialToCartesian(@NonNull PointF radialPoint) {
-    float radius = radialPoint.x;
-    float angle = radialPoint.y;
-    return new PointF((float) (radius * Math.cos(angle)), (float) (radius * Math.sin(angle)));
+  private static RoundedPolygon customPolygon(
+      @NonNull List<VertexAndRounding> template,
+      int repeat,
+      float centerX,
+      float centerY,
+      boolean mirroring) {
+    List<VertexAndRounding> vertexAndRoundings = new ArrayList<>();
+    repeatAroundCenter(template, vertexAndRoundings, repeat, centerX, centerY, mirroring);
+
+    float[] verticesXy = toVerticesXyArray(vertexAndRoundings);
+    List<CornerRounding> roundings = toRoundingsList(vertexAndRoundings);
+    return RoundedPolygonKt.RoundedPolygon(
+        verticesXy, CornerRounding.Unrounded, roundings, centerX, centerY);
   }
 
   private MaterialShapes() {}
@@ -931,5 +681,68 @@ public final class MaterialShapes {
     Matrix matrix = new Matrix();
     matrix.setSkew(kx, ky);
     return matrix;
+  }
+
+  private static void toRadial(
+      @NonNull List<VertexAndRounding> vertexAndRoundings, float centerX, float centerY) {
+    for (VertexAndRounding vertexAndRounding : vertexAndRoundings) {
+      vertexAndRounding.toRadial(centerX, centerY);
+    }
+  }
+
+  private static void toCartesian(
+      @NonNull List<VertexAndRounding> vertexAndRoundings, float centerX, float centerY) {
+    for (VertexAndRounding vertexAndRounding : vertexAndRoundings) {
+      vertexAndRounding.toCartesian(centerX, centerY);
+    }
+  }
+
+  @NonNull
+  private static float[] toVerticesXyArray(@NonNull List<VertexAndRounding> vertexAndRoundings) {
+    float[] verticesXy = new float[vertexAndRoundings.size() * 2];
+    for (int i = 0; i < vertexAndRoundings.size(); i++) {
+      verticesXy[2 * i] = vertexAndRoundings.get(i).vertex.x;
+      verticesXy[2 * i + 1] = vertexAndRoundings.get(i).vertex.y;
+    }
+    return verticesXy;
+  }
+
+  @NonNull
+  private static List<CornerRounding> toRoundingsList(
+      @NonNull List<VertexAndRounding> vertexAndRoundings) {
+    List<CornerRounding> roundings = new ArrayList<>();
+    for (int i = 0; i < vertexAndRoundings.size(); i++) {
+      roundings.add(vertexAndRoundings.get(i).rounding);
+    }
+    return roundings;
+  }
+
+  static class VertexAndRounding {
+    private PointF vertex;
+    private CornerRounding rounding;
+
+    private VertexAndRounding(@NonNull PointF vertex) {
+      this(vertex, CornerRounding.Unrounded);
+    }
+
+    private VertexAndRounding(@NonNull PointF vertex, @NonNull CornerRounding rounding) {
+      this.vertex = vertex;
+      this.rounding = rounding;
+    }
+
+    private void toRadial(float centerX, float centerY) {
+      vertex.offset(-centerX, -centerY);
+      float angle = (float) Math.atan2(vertex.y, vertex.x);
+      float distance = (float) Math.hypot(vertex.x, vertex.y);
+      vertex.x = angle;
+      vertex.y = distance;
+    }
+
+    private void toCartesian(float centerX, float centerY) {
+      float x = (float) (vertex.y * Math.cos(vertex.x) + centerX);
+      float y = (float) (vertex.y * Math.sin(vertex.x) + centerY);
+      vertex.x = x;
+      vertex.y = y;
+    }
   }
 }
