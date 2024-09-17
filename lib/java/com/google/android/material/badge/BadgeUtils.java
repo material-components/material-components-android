@@ -149,7 +149,7 @@ public class BadgeUtils {
             public void onInitializeAccessibilityNodeInfo(
                 View host, AccessibilityNodeInfoCompat info) {
               super.onInitializeAccessibilityNodeInfo(host, info);
-              info.setContentDescription(badgeDrawable.getContentDescription());
+              info.setContentDescription(getBadgeAnchorContentDescription(view, badgeDrawable));
             }
           });
     } else {
@@ -160,10 +160,18 @@ public class BadgeUtils {
             public void onInitializeAccessibilityNodeInfo(
                 View host, AccessibilityNodeInfoCompat info) {
               super.onInitializeAccessibilityNodeInfo(host, info);
-              info.setContentDescription(badgeDrawable.getContentDescription());
+              info.setContentDescription(getBadgeAnchorContentDescription(view, badgeDrawable));
             }
           });
     }
+  }
+
+  private static CharSequence getBadgeAnchorContentDescription(
+      View anchor, BadgeDrawable badgeDrawable) {
+    CharSequence badgeContentDescription = badgeDrawable.getContentDescription();
+    return badgeContentDescription != null
+        ? badgeContentDescription
+        : anchor.getContentDescription();
   }
 
   /**
@@ -213,7 +221,7 @@ public class BadgeUtils {
             public void onInitializeAccessibilityNodeInfo(
                 View host, AccessibilityNodeInfoCompat info) {
               super.onInitializeAccessibilityNodeInfo(host, info);
-              info.setContentDescription(null);
+              info.setContentDescription(view.getContentDescription());
             }
           });
     } else {
