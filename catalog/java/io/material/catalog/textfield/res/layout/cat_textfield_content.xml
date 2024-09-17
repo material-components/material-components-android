@@ -24,7 +24,7 @@
   <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/cat_textfield_standard_spacing"
+    android:padding="@dimen/cat_textfield_standard_spacing"
     android:orientation="vertical">
 
     <!-- Default width of text fields should be 245dp. -->
