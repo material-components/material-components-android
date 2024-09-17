@@ -25,7 +25,6 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
@@ -217,9 +216,5 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
   @Px
   public int getItemSpacing() {
     return this.itemSpacing;
-  }
-
-  boolean isTopGravity() {
-    return (layoutParams.gravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.TOP;
   }
 }

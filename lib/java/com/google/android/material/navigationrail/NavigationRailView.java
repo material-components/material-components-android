@@ -18,6 +18,7 @@ package com.google.android.material.navigationrail;
 
 import com.google.android.material.R;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.max;
@@ -127,6 +128,7 @@ public class NavigationRailView extends NavigationBarView {
   @ItemIconGravity private int expandedIconGravity;
   @ItemGravity private int expandedItemGravity;
   private int expandedItemSpacing;
+  private NavigationRailFrameLayout contentContainer;
 
   public NavigationRailView(@NonNull Context context) {
     this(context, null);
@@ -177,6 +179,8 @@ public class NavigationRailView extends NavigationBarView {
     headerMarginBottom =
         attributes.getDimensionPixelSize(R.styleable.NavigationRailView_headerMarginBottom,
             getResources().getDimensionPixelSize(R.dimen.mtrl_navigation_rail_margin));
+
+    addContentContainer();
 
     int headerLayoutRes = attributes.getResourceId(R.styleable.NavigationRailView_headerLayout, 0);
     if (headerLayoutRes != 0) {
@@ -337,37 +341,10 @@ public class NavigationRailView extends NavigationBarView {
       minWidthSpec = makeExpandedWidthMeasureSpec(widthMeasureSpec, getMaxChildWidth());
     }
     super.onMeasure(minWidthSpec, heightMeasureSpec);
-    if (isHeaderViewVisible()) {
-      int maxMenuHeight = getMeasuredHeight() - headerView.getMeasuredHeight() - contentMarginTop
-          - headerMarginBottom;
-      int menuHeightSpec = MeasureSpec.makeMeasureSpec(maxMenuHeight, MeasureSpec.AT_MOST);
-      measureChild(getNavigationRailMenuView(), minWidthSpec, menuHeightSpec);
-    }
-  }
-
-  @Override
-  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
-    super.onLayout(changed, left, top, right, bottom);
-
-    NavigationRailMenuView menuView = getNavigationRailMenuView();
-    int offsetY = 0;
-    if (isHeaderViewVisible()) {
-      int usedTop = headerView.getBottom() + headerMarginBottom;
-      int menuTop = menuView.getTop();
-      if (menuTop < usedTop) {
-        offsetY = usedTop - menuTop;
-      }
-    } else if (menuView.isTopGravity()) {
-      offsetY = contentMarginTop;
-    }
-
-    if (offsetY > 0) {
-      menuView.layout(
-          menuView.getLeft(),
-          menuView.getTop() + offsetY,
-          menuView.getRight(),
-          menuView.getBottom() + offsetY);
-    }
+    measureChild(
+        contentContainer,
+        minWidthSpec,
+        MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY));
   }
 
   /**
@@ -399,8 +376,8 @@ public class NavigationRailView extends NavigationBarView {
 
     FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT);
     params.gravity = DEFAULT_HEADER_GRAVITY;
-    params.topMargin = contentMarginTop;
-    addView(headerView, /* index= */ 0, params);
+    params.bottomMargin = headerMarginBottom;
+    contentContainer.addView(headerView, /* index= */ 0, params);
   }
 
   /**
@@ -425,7 +402,7 @@ public class NavigationRailView extends NavigationBarView {
    */
   public void removeHeaderView() {
     if (headerView != null) {
-      removeView(headerView);
+      contentContainer.removeView(headerView);
       headerView = null;
     }
   }
@@ -527,7 +504,20 @@ public class NavigationRailView extends NavigationBarView {
     return measureSpec;
   }
 
-  private boolean isHeaderViewVisible() {
-    return headerView != null && headerView.getVisibility() != View.GONE;
+  private void addContentContainer() {
+    View menuView = (View) getMenuView();
+    contentContainer = new NavigationRailFrameLayout(getContext());
+    contentContainer.setPaddingTop(contentMarginTop);
+    contentContainer.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    menuView.setLayoutParams(new FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
+    contentContainer.addView(menuView);
+    addView(contentContainer);
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @Override
+  public boolean shouldAddMenuView() {
+    return true;
   }
 }
