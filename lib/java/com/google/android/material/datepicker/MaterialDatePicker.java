@@ -50,6 +50,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.graphics.Insets;
 import androidx.core.util.Pair;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
@@ -459,21 +460,23 @@ public class MaterialDatePicker<S> extends DialogFragment {
     final View headerLayout = requireView().findViewById(R.id.fullscreen_header);
     EdgeToEdgeUtils.applyEdgeToEdge(window, true, ViewUtils.getBackgroundColor(headerLayout), null);
     final int originalPaddingTop = headerLayout.getPaddingTop();
+    final int originalPaddingLeft = headerLayout.getPaddingLeft();
+    final int originalPaddingRight = headerLayout.getPaddingRight();
     final int originalHeaderHeight = headerLayout.getLayoutParams().height;
     ViewCompat.setOnApplyWindowInsetsListener(
         headerLayout,
         new OnApplyWindowInsetsListener() {
           @Override
           public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-            int topInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
+            Insets inset = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             if (originalHeaderHeight >= 0) {
-              headerLayout.getLayoutParams().height = originalHeaderHeight + topInset;
+              headerLayout.getLayoutParams().height = originalHeaderHeight + inset.top;
               headerLayout.setLayoutParams(headerLayout.getLayoutParams());
             }
             headerLayout.setPadding(
-                headerLayout.getPaddingLeft(),
-                originalPaddingTop + topInset,
-                headerLayout.getPaddingRight(),
+                originalPaddingLeft + inset.left,
+                originalPaddingTop + inset.top,
+                originalPaddingRight + inset.right,
                 headerLayout.getPaddingBottom());
             return insets;
           }
