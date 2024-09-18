@@ -471,9 +471,9 @@ public class MaterialDatePicker<S> extends DialogFragment {
               headerLayout.setLayoutParams(headerLayout.getLayoutParams());
             }
             headerLayout.setPadding(
-                headerLayout.getPaddingLeft(),
+                insets.getSystemWindowInsetLeft(),
                 originalPaddingTop + topInset,
-                headerLayout.getPaddingRight(),
+                insets.getSystemWindowInsetRight(),
                 headerLayout.getPaddingBottom());
             return insets;
           }
