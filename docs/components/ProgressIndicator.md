@@ -106,6 +106,13 @@ programmatically like so:
 progressIndicator.contentDescription = contentDescription
 ```
 
+**Note:** Depending on the track thickness of the linear progress indicator, the
+component could be less than or equal to 4dp tall. There's a known limitation in
+the focus indicator (green box) while using the talkback. It will fail to draw
+the focus indicator, if the component bounds is less than or equal to 4dp in
+either dimension. Consider to use `android:paddingTop` and
+`android:paddingBottom` to increase the bounds height when available.
+
 ### Showing/hiding the progress indicator
 
 By default, the progress indicator will be shown or hidden without animations.
