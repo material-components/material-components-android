@@ -231,6 +231,7 @@ class EndCompoundLayout extends LinearLayout {
     errorIconView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     errorIconView.setClickable(false);
     errorIconView.setPressable(false);
+    errorIconView.setCheckable(false);
     errorIconView.setFocusable(false);
   }
 
