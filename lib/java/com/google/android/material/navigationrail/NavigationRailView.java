@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.navigation.NavigationBarMenu.NO_MAX_ITEM_LIMIT;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
@@ -31,6 +32,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ScrollView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -105,7 +107,7 @@ import com.google.android.material.resources.MaterialResources;
 public class NavigationRailView extends NavigationBarView {
 
   static final int DEFAULT_MENU_GRAVITY = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-  static final int MAX_ITEM_COUNT = 7;
+  static final int COLLAPSED_MAX_ITEM_COUNT = 7;
   private static final int DEFAULT_HEADER_GRAVITY = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
   static final int NO_ITEM_MINIMUM_HEIGHT = -1;
 
@@ -113,6 +115,7 @@ public class NavigationRailView extends NavigationBarView {
   private final int headerMarginBottom;
   private final int minExpandedWidth;
   private final int maxExpandedWidth;
+  private final boolean scrollingEnabled;
   @Nullable private View headerView;
   @Nullable private Boolean paddingTopSystemWindowInsets = null;
   @Nullable private Boolean paddingBottomSystemWindowInsets = null;
@@ -174,11 +177,14 @@ public class NavigationRailView extends NavigationBarView {
             context, attrs, R.styleable.NavigationRailView, defStyleAttr, defStyleRes);
 
     contentMarginTop =
-        attributes.getDimensionPixelSize(R.styleable.NavigationRailView_contentMarginTop,
+        attributes.getDimensionPixelSize(
+            R.styleable.NavigationRailView_contentMarginTop,
             getResources().getDimensionPixelSize(R.dimen.mtrl_navigation_rail_margin));
     headerMarginBottom =
         attributes.getDimensionPixelSize(R.styleable.NavigationRailView_headerMarginBottom,
             getResources().getDimensionPixelSize(R.dimen.mtrl_navigation_rail_margin));
+    scrollingEnabled =
+        attributes.getBoolean(R.styleable.NavigationRailView_scrollingEnabled, false);
 
     addContentContainer();
 
@@ -341,10 +347,14 @@ public class NavigationRailView extends NavigationBarView {
       minWidthSpec = makeExpandedWidthMeasureSpec(widthMeasureSpec, getMaxChildWidth());
     }
     super.onMeasure(minWidthSpec, heightMeasureSpec);
-    measureChild(
-        contentContainer,
-        minWidthSpec,
-        MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY));
+    // If the content container is measured to be less than the measured height of the nav rail,
+    // we want to measure it to be exactly the height of the nav rail.
+    if (contentContainer.getMeasuredHeight() < getMeasuredHeight()) {
+      measureChild(
+          contentContainer,
+          minWidthSpec,
+          MeasureSpec.makeMeasureSpec(getMeasuredHeight(), MeasureSpec.EXACTLY));
+    }
   }
 
   /**
@@ -466,7 +476,14 @@ public class NavigationRailView extends NavigationBarView {
 
   @Override
   public int getMaxItemCount() {
-    return MAX_ITEM_COUNT;
+    return NO_MAX_ITEM_LIMIT;
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @Override
+  public int getCollapsedMaxItemCount() {
+    return COLLAPSED_MAX_ITEM_COUNT;
   }
 
   private NavigationRailMenuView getNavigationRailMenuView() {
@@ -504,14 +521,30 @@ public class NavigationRailView extends NavigationBarView {
     return measureSpec;
   }
 
+  @Override
+  protected boolean isSubMenuSupported() {
+    return true;
+  }
+
   private void addContentContainer() {
     View menuView = (View) getMenuView();
     contentContainer = new NavigationRailFrameLayout(getContext());
     contentContainer.setPaddingTop(contentMarginTop);
+    contentContainer.setScrollingEnabled(scrollingEnabled);
     contentContainer.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
     menuView.setLayoutParams(new FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
     contentContainer.addView(menuView);
-    addView(contentContainer);
+
+    if (!scrollingEnabled) {
+      addView(contentContainer);
+      return;
+    }
+
+    ScrollView scrollView = new ScrollView(getContext());
+    scrollView.setVerticalScrollBarEnabled(false);
+    scrollView.addView(contentContainer);
+    scrollView.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    addView(scrollView);
   }
 
   /** @hide */

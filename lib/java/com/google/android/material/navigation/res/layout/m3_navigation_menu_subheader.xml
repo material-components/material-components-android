@@ -24,6 +24,5 @@
   android:layout_marginTop="@dimen/m3_navigation_subheader_top_margin"
   android:gravity="center_vertical|start"
   android:ellipsize="end"
-  android:textAppearance="?attr/textAppearanceLabelMedium"
   android:filterTouchesWhenObscured="true"
   android:maxLines="1"/>

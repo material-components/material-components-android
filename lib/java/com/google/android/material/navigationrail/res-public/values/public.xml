@@ -23,6 +23,7 @@
   <public name="contentMarginTop" type="attr"/>
   <public name="headerMarginBottom" type="attr"/>
   <public name="itemSpacing" type="attr"/>
+  <public name="scrollingEnabled" type="attr"/>
   <public name="Widget.MaterialComponents.NavigationRailView" type="style"/>
   <public name="Widget.MaterialComponents.NavigationRailView.Compact" type="style"/>
   <public name="Widget.MaterialComponents.NavigationRailView.Colored" type="style"/>

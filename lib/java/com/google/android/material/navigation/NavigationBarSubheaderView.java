@@ -20,6 +20,7 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import android.view.LayoutInflater;
@@ -28,6 +29,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
+import androidx.core.widget.TextViewCompat;
 
 /**
  * Provides a view that will be used to render subheader items inside a {@link
@@ -43,6 +46,7 @@ public class NavigationBarSubheaderView extends FrameLayout
   boolean onlyShowWhenExpanded;
   @Nullable
   private MenuItemImpl itemData;
+  @Nullable private ColorStateList textColor;
 
   NavigationBarSubheaderView(@NonNull Context context) {
     super(context);
@@ -57,6 +61,22 @@ public class NavigationBarSubheaderView extends FrameLayout
     menuItem.setCheckable(false);
     subheaderLabel.setText(menuItem.getTitle());
     updateVisibility();
+  }
+
+  public void setTextAppearance(@StyleRes int textAppearance) {
+    TextViewCompat.setTextAppearance(subheaderLabel, textAppearance);
+    // Set the text color if the user has set it, since it takes precedence
+    // over a color set in the text appearance.
+    if (textColor != null) {
+      subheaderLabel.setTextColor(textColor);
+    }
+  }
+
+  public void setTextColor(@Nullable ColorStateList color) {
+    textColor = color;
+    if (color != null) {
+      subheaderLabel.setTextColor(color);
+    }
   }
 
   @Override

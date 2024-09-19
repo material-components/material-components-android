@@ -59,6 +59,8 @@
     <attr name="shapeAppearanceOverlay"/>
     <!-- Whether or not to start the NavigationRailView in its expanded state. -->
     <attr name="expanded" />
+    <!-- Whether or not to enable scrolling in the NavigationRail. -->
+    <attr name="scrollingEnabled" format="boolean" />
   </declare-styleable>
 
 </resources>

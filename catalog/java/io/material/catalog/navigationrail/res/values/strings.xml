@@ -30,6 +30,9 @@
           description="Label the navigation rail demo that shows animated icons [CHAR_LIMIT=100]">Animated Demo</string>
   <string name="cat_navigation_rail_compact_demo_title"
           description="Label for the demo that shows navigation rail in compact style. [CHAR_LIMIT=100]">Compact Style Demo</string>
+  <string name="cat_navigation_rail_submenus_demo_title"
+    description="Label the navigation rail demo that shows a submenu example [CHAR_LIMIT=100]">SubMenu Demo</string>
+
 
   <string name="cat_navigation_rail_page_1_name"
           description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 1</string>
@@ -45,6 +48,14 @@
           description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 6</string>
   <string name="cat_navigation_rail_page_7_name"
           description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 7</string>
+  <string name="cat_navigation_rail_page_8_name"
+    description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 8</string>
+  <string name="cat_navigation_rail_page_9_name"
+    description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 9</string>
+  <string name="cat_navigation_rail_page_10_name"
+    description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 10</string>
+  <string name="cat_navigation_rail_subheader_1_name"
+    description="The title of a subheader in the navigation rail demo. [CHAR_LIMIT=50]">Subheader 1</string>
 
   <string name="cat_navigation_rail_add_nav_item"
           description="Label for the button that will add a destination to the navigation rail. [CHAR_LIMIT=50]">Add destination</string>

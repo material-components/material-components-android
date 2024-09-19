@@ -39,6 +39,10 @@ public final class NavigationBarMenu extends MenuBuilder {
 
   @NonNull private final Class<?> viewClass;
   private final int maxItemCount;
+
+  /** Constant to indicate there is no limit to the number of Navigation Bar items */
+  public static final int NO_MAX_ITEM_LIMIT = Integer.MAX_VALUE;
+
   private final boolean subMenuSupported;
 
   public NavigationBarMenu(

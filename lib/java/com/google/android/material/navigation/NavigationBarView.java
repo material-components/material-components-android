@@ -208,7 +208,7 @@ public abstract class NavigationBarView extends FrameLayout {
     // Create the menu view.
     menuView = createNavigationBarMenuView(context);
     menuView.setMinimumHeight(getSuggestedMinimumHeight());
-    menuView.setCollapsedMaxItemCount(getMaxItemCount());
+    menuView.setCollapsedMaxItemCount(getCollapsedMaxItemCount());
 
     presenter.setMenuView(menuView);
     presenter.setId(MENU_PRESENTER_ID);
@@ -1174,8 +1174,19 @@ public abstract class NavigationBarView extends FrameLayout {
 
   /** Returns whether or not submenus are supported. */
   protected boolean isSubMenuSupported() {
-    // TODO: b/352634230 - NavigationRail should support submenus once ready
     return false;
+  }
+
+  // TODO: b/361189184 - Make public once expanded state is public
+  /**
+   * Returns the maximum number of items that can be shown in the collapsed state in
+   * NavigationBarView.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public int getCollapsedMaxItemCount() {
+    return getMaxItemCount();
   }
 
   /**

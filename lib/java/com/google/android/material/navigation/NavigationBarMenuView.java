@@ -1127,6 +1127,10 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         }
         // Add subheader item
         child = new NavigationBarSubheaderView(getContext());
+        ((NavigationBarSubheaderView) child).
+            setTextAppearance(horizontalItemTextAppearanceActive != 0
+                ? horizontalItemTextAppearanceActive : itemTextAppearanceActive);
+        ((NavigationBarSubheaderView) child).setTextColor(itemTextColorFromUser);
         child.setOnlyShowWhenExpanded(true);
         child.initialize((MenuItemImpl) menuItem, 0);
         nextSubheaderItemCount = menuItem.getSubMenu().size();

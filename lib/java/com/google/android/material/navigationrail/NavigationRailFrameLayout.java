@@ -34,6 +34,7 @@ import androidx.annotation.RestrictTo;
 public class NavigationRailFrameLayout extends FrameLayout {
 
   int paddingTop = 0;
+  boolean scrollingEnabled = false;
 
   public NavigationRailFrameLayout(@NonNull Context context) {
     super(context);
@@ -41,6 +42,10 @@ public class NavigationRailFrameLayout extends FrameLayout {
 
   public void setPaddingTop(int paddingTop) {
     this.paddingTop = paddingTop;
+  }
+
+  public void setScrollingEnabled(boolean scrollingEnabled) {
+    this.scrollingEnabled = scrollingEnabled;
   }
 
   @Override
@@ -63,7 +68,11 @@ public class NavigationRailFrameLayout extends FrameLayout {
 
       // Measure menu
       menuView = getChildAt(1);
-      menuHeightSpec = MeasureSpec.makeMeasureSpec(maxMenuHeight, MeasureSpec.AT_MOST);
+      // If scrolling is not enabled, we try to measure the menu such that it'll fit in the
+      // remaining space
+      if (!scrollingEnabled) {
+        menuHeightSpec = MeasureSpec.makeMeasureSpec(maxMenuHeight, MeasureSpec.AT_MOST);
+      }
     }
     LayoutParams menuLp = (LayoutParams) menuView.getLayoutParams();
     measureChild(menuView, widthMeasureSpec, menuHeightSpec);

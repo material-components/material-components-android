@@ -294,6 +294,8 @@ The following is an anatomy diagram for the navigation rail:
 **Fits system windows**                 | `android:fitsSystemWindows`           | `getFitsSystemWindows`<br/>`setFitsSystemWindows` | `true`
 **Padding top system window insets**    | `app:paddingTopSystemWindowInsets`    | N/A                                               | `null`
 **Padding bottom system window insets** | `app:paddingBottomSystemWindowInsets` | N/A                                               | `null`
+**Top margin**                          | `app:contentMarginTop`                | N/A                                               | N/A
+**Scrolling**                           | `app:scrollingEnabled`                | N/A                                               | `false`
 
 #### Header attributes
 
@@ -311,7 +313,6 @@ for more attributes.
 **Element**      | **Attribute**          | **Related methods**                   | **Default value**
 ---------------- | ---------------------- | ------------------------------------- | -----------------
 **Menu gravity** | `app:menuGravity`      | `setMenuGravity`<br/>`getMenuGravity` | `TOP\|CENTER_HORIZONTAL`
-**Top margin**   | `app:contentMarginTop` | N/A                                   | N/A
 
 #### Navigation item attributes
 
