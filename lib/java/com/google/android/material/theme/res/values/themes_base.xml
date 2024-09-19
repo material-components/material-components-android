@@ -243,7 +243,7 @@
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" tools:targetApi="lollipop">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary" >?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
@@ -528,7 +528,7 @@
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" tools:targetApi="lollipop">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary" >?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
@@ -660,6 +660,10 @@
     <item name="materialTimePickerTheme">@style/ThemeOverlay.MaterialComponents.TimePicker</item>
   </style>
 
+  <style name="Base.V21.Theme.MaterialComponents" parent="Base.V14.Theme.MaterialComponents">
+    <item name="android:alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert.Framework</item>
+  </style>
+
   <style name="Base.V14.Theme.MaterialComponents.Light" parent="Base.V14.Theme.MaterialComponents.Light.Bridge">
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 
@@ -723,6 +727,10 @@
     <item name="materialTimePickerTheme">@style/ThemeOverlay.MaterialComponents.TimePicker</item>
   </style>
 
+  <style name="Base.V21.Theme.MaterialComponents.Light" parent="Base.V14.Theme.MaterialComponents.Light">
+    <item name="android:alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework</item>
+  </style>
+
   <!-- Themes in the "Base.Theme" family vary based on the current platform
        version to provide the correct basis on each device. You probably don't
        want to use them directly in your apps.
@@ -731,9 +739,9 @@
        directly by apps. -->
   <eat-comment/>
 
-  <style name="Base.Theme.MaterialComponents" parent="Base.V14.Theme.MaterialComponents"/>
+  <style name="Base.Theme.MaterialComponents" parent="Base.V21.Theme.MaterialComponents"/>
 
-  <style name="Base.Theme.MaterialComponents.Light" parent="Base.V14.Theme.MaterialComponents.Light"/>
+  <style name="Base.Theme.MaterialComponents.Light" parent="Base.V21.Theme.MaterialComponents.Light"/>
 
   <style name="Base.Theme.MaterialComponents.Light.DarkActionBar" parent="Base.Theme.MaterialComponents.Light">
     <item name="actionBarWidgetTheme">@null</item>

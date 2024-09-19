@@ -86,9 +86,7 @@
     <item name="activeIndicatorLabelPadding">@dimen/m3_navigation_item_active_indicator_label_padding</item>
   </style>
 
-  <style name="Widget.Material3.BottomNavigationView" parent="Base.Widget.Material3.BottomNavigationView">
-    <item name="compatShadowEnabled">false</item>
-  </style>
+  <style name="Widget.Material3.BottomNavigationView" parent="Base.Widget.Material3.BottomNavigationView"/>
 
   <style name="ThemeOverlay.Material3.BottomNavigationView" parent="">
     <item name="badgeStyle">@style/Widget.Material3.BottomNavigation.Badge</item>

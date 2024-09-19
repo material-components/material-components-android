@@ -367,7 +367,7 @@ Element                         | Attribute                   | Related method(s
 ------------------------------- | --------------------------- | ------------------------------------------------ | -------------
 **Color**                       | `android:background`        | `setBackground`<br>`getBackground`               | `?attr/colorSurface`
 **`MaterialToolbar` elevation** | `android:elevation`         | `setElevation`<br>`getElevation`                 | `4dp`
-**`AppBarLayout` elevation**    | `android:stateListAnimator` | `setStateListAnimator`<br>`getStateListAnimator` | `0dp` to `4dp` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/res/animator-v21/design_appbar_state_list_animator.xml))
+**`AppBarLayout` elevation**    | `android:stateListAnimator` | `setStateListAnimator`<br>`getStateListAnimator` | `0dp` to `4dp` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/res/animator/design_appbar_state_list_animator.xml))
 
 #### Navigation icon attributes
 
