@@ -102,6 +102,7 @@ import com.google.android.material.tooltip.TooltipDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -3264,7 +3265,13 @@ abstract class BaseSlider<
         }
       }
 
-      info.setRangeInfo(RangeInfoCompat.obtain(RANGE_TYPE_FLOAT, valueFrom, valueTo, value));
+      DecimalFormat df = new DecimalFormat("#.##");
+      info.setRangeInfo(
+          RangeInfoCompat.obtain(
+              RANGE_TYPE_FLOAT,
+              Float.parseFloat(df.format(valueFrom)),
+              Float.parseFloat(df.format(valueTo)),
+              Float.parseFloat(df.format(value))));
       info.setClassName(SeekBar.class.getName());
       StringBuilder contentDescription = new StringBuilder();
       // Add the content description of the slider.
