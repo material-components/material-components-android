@@ -23,6 +23,8 @@ import static com.google.common.truth.Truth.assertThat;
 import android.animation.TimeInterpolator;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.PathInterpolator;
@@ -37,6 +39,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.internal.DoNotInstrument;
+import org.robolectric.shadow.api.Shadow;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = VERSION_CODES.LOLLIPOP)
@@ -53,7 +56,7 @@ public class MotionUtilsTest {
     assertThemeInterpolatorIsInstanceOf(
         R.style.Theme_Material3_DayNight,
         R.attr.motionEasingStandardInterpolator,
-        LinearInterpolator.class);
+        isAnimationUtilsShadowed() ? LinearInterpolator.class : PathInterpolator.class);
   }
 
   @Test
@@ -61,7 +64,7 @@ public class MotionUtilsTest {
     assertThemeInterpolatorIsInstanceOf(
         R.style.Theme_Material3_DayNight_CustomInterpolator,
         R.attr.motionEasingStandardInterpolator,
-        LinearInterpolator.class);
+        isAnimationUtilsShadowed() ? LinearInterpolator.class : PathInterpolator.class);
   }
 
   @Test
@@ -69,7 +72,7 @@ public class MotionUtilsTest {
     assertThemeInterpolatorIsInstanceOf(
         R.style.Theme_Material3_DayNight_CustomAnimInterpolator,
         R.attr.motionEasingStandardInterpolator,
-        LinearInterpolator.class);
+        isAnimationUtilsShadowed() ? LinearInterpolator.class : AccelerateInterpolator.class);
   }
 
   @Test
@@ -123,6 +126,10 @@ public class MotionUtilsTest {
         activityController.get().getApplicationContext(),
         R.attr.motionEasingStandard,
         new DefaultDummyInterpolator());
+  }
+
+  private boolean isAnimationUtilsShadowed() {
+    return Shadow.extract(new AnimationUtils()) != null;
   }
 
   private void createActivityAndSetTheme(int themeId) {
