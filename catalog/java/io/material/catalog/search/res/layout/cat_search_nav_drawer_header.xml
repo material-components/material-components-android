@@ -24,8 +24,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:scaleType="centerCrop"
-      android:src="@drawable/cat_nav_drawer_header"
-      tools:ignore="NewApi"/>
+      android:src="@drawable/cat_nav_drawer_header"/>
 
   <LinearLayout
       android:layout_width="wrap_content"
@@ -41,8 +40,7 @@
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginBottom="20dp"
-        android:src="@drawable/cat_ic_avatar_72"
-        tools:ignore="NewApi"/>
+        android:src="@drawable/cat_ic_avatar_72"/>
 
     <TextView
         android:layout_width="wrap_content"
