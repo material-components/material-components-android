@@ -215,7 +215,7 @@ To enable edge-to-edge by default for modal bottom sheets, you can override
 </style>
 
 <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-    <item name="android:navigationBarColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
 </style>
 ```
 

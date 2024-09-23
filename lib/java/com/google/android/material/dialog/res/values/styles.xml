@@ -79,7 +79,7 @@
   <style name="MaterialAlertDialog.MaterialComponents.Title.Icon"
       parent="Base.MaterialAlertDialog.MaterialComponents.Title.Icon">
     <item name="android:layout_gravity">start|center_vertical</item>
-    <item name="android:layout_marginEnd" tools:ignore="NewApi">8dip</item>
+    <item name="android:layout_marginEnd">8dip</item>
     <item name="android:layout_marginRight">8dip</item>
   </style>
 
@@ -91,13 +91,13 @@
   <style name="MaterialAlertDialog.MaterialComponents.Title.Text"
       parent="Base.MaterialAlertDialog.MaterialComponents.Title.Text">
     <item name="android:layout_gravity">start|center_vertical</item>
-    <item name="android:textAlignment" tools:ignore="NewApi">viewStart</item>
+    <item name="android:textAlignment">viewStart</item>
   </style>
 
   <style name="MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked"
       parent="Base.MaterialAlertDialog.MaterialComponents.Title.Text">
     <item name="android:layout_gravity">center</item>
-    <item name="android:textAlignment" tools:ignore="NewApi">center</item>
+    <item name="android:textAlignment">center</item>
   </style>
 
   <style name="MaterialAlertDialog.MaterialComponents.Body.Text" parent="TextAppearance.MaterialComponents.Body2">
@@ -131,7 +131,7 @@
   <style name="MaterialAlertDialog.Material3.Title.Icon" parent="MaterialAlertDialog.MaterialComponents.Title.Icon">
     <item name="android:layout_width">@dimen/m3_alert_dialog_icon_size</item>
     <item name="android:layout_height">@dimen/m3_alert_dialog_icon_size</item>
-    <item name="android:layout_marginEnd" tools:ignore="NewApi">@dimen/m3_alert_dialog_icon_margin</item>
+    <item name="android:layout_marginEnd">@dimen/m3_alert_dialog_icon_margin</item>
     <item name="android:layout_marginRight">@dimen/m3_alert_dialog_icon_margin</item>
     <item name="android:theme">@style/ThemeOverlay.MaterialAlertDialog.Material3.Title.Icon</item>
   </style>
@@ -142,7 +142,7 @@
   </style>
 
   <style name="MaterialAlertDialog.Material3.Title.Icon.CenterStacked">
-    <item name="android:layout_marginEnd" tools:ignore="NewApi">0dp</item>
+    <item name="android:layout_marginEnd">0dp</item>
     <item name="android:layout_marginRight">0dp</item>
     <item name="android:layout_marginBottom">@dimen/m3_alert_dialog_icon_margin</item>
     <item name="android:layout_gravity">center</item>
@@ -156,7 +156,7 @@
   <style name="MaterialAlertDialog.Material3.Title.Text.CenterStacked">
     <item name="android:layout_gravity">center</item>
     <item name="android:gravity">center</item>
-    <item name="android:textAlignment" tools:ignore="NewApi">gravity</item>
+    <item name="android:textAlignment">gravity</item>
   </style>
 
   <style name="MaterialAlertDialog.Material3.Body.Text" parent="">
@@ -167,7 +167,7 @@
   <style name="MaterialAlertDialog.Material3.Body.Text.CenterStacked">
     <item name="android:layout_gravity">center</item>
     <item name="android:gravity">center</item>
-    <item name="android:textAlignment" tools:ignore="NewApi">gravity</item>
+    <item name="android:textAlignment">gravity</item>
   </style>
 
   <style name="MaterialAlertDialog.Material3.Animation">

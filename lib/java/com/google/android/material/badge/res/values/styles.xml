@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.MaterialComponents.Badge" parent="android:Widget">
     <item name="badgeWidth">@dimen/mtrl_badge_size</item>

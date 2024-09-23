@@ -172,8 +172,8 @@
     <item name="enforceMaterialTheme">true</item>
     <item name="enforceTextAppearance">true</item>
     <item name="android:background">@null</item>
-    <item name="android:paddingStart" tools:ignore="NewApi">16dp</item>
-    <item name="android:paddingEnd" tools:ignore="NewApi">16dp</item>
+    <item name="android:paddingStart">16dp</item>
+    <item name="android:paddingEnd">16dp</item>
     <item name="android:paddingLeft">16dp</item>
     <item name="android:paddingRight">16dp</item>
     <!-- Edit text's default text size is 16sp which currently equals to 22dp total line height, so
@@ -208,8 +208,8 @@
     <item name="enforceMaterialTheme">true</item>
     <item name="enforceTextAppearance">true</item>
     <item name="android:background">@null</item>
-    <item name="android:paddingStart" tools:ignore="NewApi">16dp</item>
-    <item name="android:paddingEnd" tools:ignore="NewApi">16dp</item>
+    <item name="android:paddingStart">16dp</item>
+    <item name="android:paddingEnd">16dp</item>
     <item name="android:paddingLeft">16dp</item>
     <item name="android:paddingRight">16dp</item>
     <!-- Edit text's default text size is 16sp which currently equals to 22dp total line height, so
@@ -218,7 +218,7 @@
     <item name="android:paddingBottom">17dp</item>
     <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
     <item name="android:dropDownVerticalOffset">@dimen/mtrl_exposed_dropdown_menu_popup_vertical_offset</item>
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/mtrl_exposed_dropdown_menu_popup_elevation</item>
+    <item name="android:popupElevation">@dimen/mtrl_exposed_dropdown_menu_popup_elevation</item>
   </style>
 
   <style name="Base.Widget.MaterialComponents.AutoCompleteTextView" parent="Base.V14.Widget.MaterialComponents.AutoCompleteTextView">
@@ -466,7 +466,7 @@
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
     <item name="dropDownBackgroundTint">@macro/m3_comp_outlined_autocomplete_menu_container_color</item>
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_outlined_autocomplete_menu_container_elevation</item>
+    <item name="android:popupElevation">@dimen/m3_comp_outlined_autocomplete_menu_container_elevation</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.OutlinedBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense">
@@ -475,7 +475,7 @@
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
     <item name="dropDownBackgroundTint">@macro/m3_comp_outlined_autocomplete_menu_container_color</item>
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_outlined_autocomplete_menu_container_elevation</item>
+    <item name="android:popupElevation">@dimen/m3_comp_outlined_autocomplete_menu_container_elevation</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.FilledBox" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox">
@@ -484,7 +484,7 @@
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
     <item name="dropDownBackgroundTint">@macro/m3_comp_filled_autocomplete_menu_container_color</item>
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_filled_autocomplete_menu_container_elevation</item>
+    <item name="android:popupElevation">@dimen/m3_comp_filled_autocomplete_menu_container_elevation</item>
   </style>
 
   <style name="Widget.Material3.AutoCompleteTextView.FilledBox.Dense" parent="Widget.MaterialComponents.AutoCompleteTextView.FilledBox.Dense">
@@ -493,7 +493,7 @@
     <item name="simpleItemSelectedRippleColor">@color/m3_simple_item_ripple_color</item>
     <item name="simpleItemLayout">@layout/m3_auto_complete_simple_item</item>
     <item name="dropDownBackgroundTint">@macro/m3_comp_filled_autocomplete_menu_container_color</item>
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_comp_filled_autocomplete_menu_container_elevation</item>
+    <item name="android:popupElevation">@dimen/m3_comp_filled_autocomplete_menu_container_elevation</item>
   </style>
 
   <!-- ThemeOverlays to be used internally in the TextInputLayout styles to automatically apply the correct TextInputEditText style to the TextInputEditText. -->
