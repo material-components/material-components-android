@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Vaihda seuraavaan kuukauteen</string>
   <string name="mtrl_picker_toggle_to_year_selection">Siirry vuosinäkymään napauttamalla</string>
   <string name="mtrl_picker_toggle_to_day_selection">Siirry kalenterinäkymään napauttamalla</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Vaihdettiin vuosinäkymään</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Vaihdettiin kalenterinäkymään</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Nykyinen valinta: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Alkamispäivän valinta: %1$s – päättymispäivän valinta: %2$s</string>

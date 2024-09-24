@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Ndrysho te muaji i ardhshëm</string>
   <string name="mtrl_picker_toggle_to_year_selection">Trokit për t\'u kthyer te pamja vjetore</string>
   <string name="mtrl_picker_toggle_to_day_selection">Trokit për t\'u kthyer te pamja e \"Kalendarit\"</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Kaloi në pamjen vjetore</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Kaloi në pamjen e \"Kalendarit\"</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Zgjedhja aktuale: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Zgjedhja e datës së fillimit: %1$s - Zgjedhja e datës së përfundimit: %2$s</string>

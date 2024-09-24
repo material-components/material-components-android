@@ -17,7 +17,7 @@
 <resources>
   <string name="mtrl_picker_range_header_title">Выберите диапазон дат</string>
   <string name="mtrl_picker_date_header_title">Выберите дату</string>
-  <string name="mtrl_picker_range_header_unselected">Дата начала – Дата окончания</string>
+  <string name="mtrl_picker_range_header_unselected">Дата начала – дата окончания</string>
   <string name="mtrl_picker_range_header_only_start_selected">%1$s – Дата окончания</string>
   <string name="mtrl_picker_range_header_only_end_selected">Дата начала – %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Перейти к следующему месяцу</string>
   <string name="mtrl_picker_toggle_to_year_selection">Нажмите, чтобы выбрать год</string>
   <string name="mtrl_picker_toggle_to_day_selection">Нажмите, чтобы перейти к Календарю</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Вы перешли к выбору года</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Вы перешли к Календарю</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Выбранный элемент: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Выбранная дата начала: %1$s. Выбранная дата окончания: %2$s.</string>

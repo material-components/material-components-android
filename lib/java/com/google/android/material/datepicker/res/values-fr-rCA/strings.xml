@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Passer au mois suivant</string>
   <string name="mtrl_picker_toggle_to_year_selection">Toucher pour passer à la vue de l\'année</string>
   <string name="mtrl_picker_toggle_to_day_selection">Toucher pour passer à la vue du calendrier</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Passé à la vue annuelle</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Passé à la vue d\'Agenda</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Sélection actuelle : %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Sélection de la date de début : %1$s – Sélection de la date de fin : %2$s</string>

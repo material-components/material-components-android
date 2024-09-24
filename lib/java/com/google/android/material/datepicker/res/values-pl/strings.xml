@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Zmień na następny miesiąc</string>
   <string name="mtrl_picker_toggle_to_year_selection">Kliknij, aby przełączyć się na widok roku</string>
   <string name="mtrl_picker_toggle_to_day_selection">Kliknij, aby przełączyć się na widok kalendarza</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Przełączono na widok roku</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Przełączono na widok Kalendarza</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Bieżący wybór: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Wybrana data rozpoczęcia: %1$s – wybrana data zakończenia: %2$s</string>

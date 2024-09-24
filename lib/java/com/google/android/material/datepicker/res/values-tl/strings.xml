@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Lumipat sa susunod na buwan</string>
   <string name="mtrl_picker_toggle_to_year_selection">I-tap para lumipat sa view ng taon</string>
   <string name="mtrl_picker_toggle_to_day_selection">I-tap para lumipat sa view ng Kalendaryo</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Lumipat sa view ng taon</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Lumipat sa view ng Kalendaryo</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Kasalukuyang seleksyon: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Napiling petsa ng pagsisimula: %1$s – Napiling petsa ng pagtatapos: %2$s</string>

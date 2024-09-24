@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">နောက်လသို့ ပြောင်းရန်</string>
   <string name="mtrl_picker_toggle_to_year_selection">နှစ်အလိုက်မြင်ကွင်းသို့ ပြောင်းရန် တို့နိုင်သည်</string>
   <string name="mtrl_picker_toggle_to_day_selection">ပြက္ခဒိန်မြင်ကွင်းသို့ ပြောင်းရန် တို့နိုင်သည်</string>
+  <string name="mtrl_picker_toggled_to_year_selection">နှစ်မြင်ကွင်းသို့ ပြောင်းလိုက်သည်</string>
+  <string name="mtrl_picker_toggled_to_day_selection">ပြက္ခဒိန်မြင်ကွင်းသို့ ပြောင်းလိုက်သည်</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">လက်ရှိ ရွေးချယ်မှု- %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">စတင်ရက် ရွေးရန်- %1$s – ပြီးဆုံးရက် ရွေးရန်- %2$s</string>

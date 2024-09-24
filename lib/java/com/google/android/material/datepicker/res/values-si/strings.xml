@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">ලබන මාසයට වෙනස් කරන්න</string>
   <string name="mtrl_picker_toggle_to_year_selection">වසරේ දසුන වෙත මාරු වීමට තට්ටු කරන්න</string>
   <string name="mtrl_picker_toggle_to_day_selection">දින දර්ශන දසුන වෙත මාරු වීමට තට්ටු කරන්න</string>
+  <string name="mtrl_picker_toggled_to_year_selection">වසර දසුන වෙත මාරු විය</string>
+  <string name="mtrl_picker_toggled_to_day_selection">දින දර්ශන දසුන වෙත මාරු විය</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">වත්මන් තේරීම: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">ආරම්භක දිනය තේරීම: %1$s – අවසාන දිනය තේරීම: %2$s</string>

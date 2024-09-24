@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Кийинки айга өзгөртүү</string>
   <string name="mtrl_picker_toggle_to_year_selection">Жыл көрүнүшүнө өтүү үчүн таптап коюңуз</string>
   <string name="mtrl_picker_toggle_to_day_selection">Жылнаама көрүнүшүнө өтүү үчүн таптап коюңуз</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Жылдык көрүнүшкө которулду</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Жылнаама көрүнүшүнө которулду</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Учурдагы тандоо: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Башталуу күнүн тандоо: %1$s – Аяктоо күнүн тандоо: %2$s</string>

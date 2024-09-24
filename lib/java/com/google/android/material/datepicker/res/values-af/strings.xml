@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Verander na volgende maand</string>
   <string name="mtrl_picker_toggle_to_year_selection">Tik om na jaaraansig oor te skakel</string>
   <string name="mtrl_picker_toggle_to_day_selection">Tik om na kalenderaansig oor te skakel</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Oorgeskakel na jaaraansig</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Oorgeskakel na kalenderaansig</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Huidige keuse: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Keuse van begindatum: %1$s – Keuse van einddatum: %2$s</string>

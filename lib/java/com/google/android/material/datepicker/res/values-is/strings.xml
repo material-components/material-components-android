@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Breyta í næsta mánuð</string>
   <string name="mtrl_picker_toggle_to_year_selection">Ýttu til að skipta yfir í ársyfirlit</string>
   <string name="mtrl_picker_toggle_to_day_selection">Ýttu til að skipta yfir í dagatalsyfirlit</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Skipt yfir í ársyfirlit</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Skipt yfir í dagatalsyfirlit</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Núverandi val: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Val upphafsdags: %1$s – Val lokadags: %2$s</string>

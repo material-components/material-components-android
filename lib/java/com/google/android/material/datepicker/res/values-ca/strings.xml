@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Canvia al mes següent</string>
   <string name="mtrl_picker_toggle_to_year_selection">Toca per canviar a la visualització d\'any</string>
   <string name="mtrl_picker_toggle_to_day_selection">Toca per canviar a la visualització de calendari</string>
+  <string name="mtrl_picker_toggled_to_year_selection">S\'ha canviat a la visualització d\'any</string>
+  <string name="mtrl_picker_toggled_to_day_selection">S\'ha canviat a la visualització de calendari</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Selecció actual: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Selecció de la data d\'inici: %1$s – Selecció de la data de finalització: %2$s</string>

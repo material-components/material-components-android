@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Váltás a következő hónapra</string>
   <string name="mtrl_picker_toggle_to_year_selection">Koppintson az éves nézetre való váltáshoz</string>
   <string name="mtrl_picker_toggle_to_day_selection">Koppintson a naptárnézetre való váltáshoz</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Átváltott az éves nézetre</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Átváltott a naptárnézetre</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Jelenleg kiválasztva: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Kiválasztott kezdő dátum: %1$s – Kiválasztott befejező dátum: %2$s</string>
