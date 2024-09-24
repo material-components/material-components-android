@@ -88,6 +88,8 @@
   <string name="cat_topappbar_configure_centered">Centered</string>
   <!-- Label for a check box for configuring toolbar navigation icon [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_configure_navigation_icon">Navigation Icon</string>
+  <!-- Label for the toolbar navigation icon when it's a close button -->
+  <string name="cat_topappbar_close_button" description="The title of the close button of the toolbar. [CHAR_LIMIT=NONE]">Close</string>
   <!-- Label for a check box for configuring toolbar menu items [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_configure_menu_items">Menu Items</string>
   <!-- Label for a button to apply toolbar configurations [CHAR_LIMIT=NONE] -->
