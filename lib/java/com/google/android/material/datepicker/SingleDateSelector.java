@@ -33,6 +33,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
@@ -113,6 +114,11 @@ public class SingleDateSelector implements DateSelector<Long> {
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
     EditText dateEditText = dateTextInput.getEditText();
+    Integer hintTextColor =
+        MaterialColors.getColorOrNull(root.getContext(), R.attr.colorOnSurfaceVariant);
+    if (hintTextColor != null) {
+      dateEditText.setHintTextColor(hintTextColor);
+    }
     if (ManufacturerUtils.isDateInputKeyboardMissingSeparatorCharacters()) {
       // Using the URI variation places the '/' and '.' in more prominent positions
       dateEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
