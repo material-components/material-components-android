@@ -136,6 +136,10 @@ public class MaterialMainContainerBackHelper extends MaterialBackAnimationHelper
     float translationYDirection = Math.signum(yDelta);
     float translationY = AnimationUtils.lerp(0, maxTranslationY, yProgress) * translationYDirection;
 
+    if (Float.isNaN(scale) || Float.isNaN(translationX) || Float.isNaN(translationY)) {
+      return;
+    }
+
     view.setScaleX(scale);
     view.setScaleY(scale);
     view.setTranslationX(translationX);
