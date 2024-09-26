@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 The Android Open Source Project
+ * Copyright 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,13 +35,16 @@ import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /**
- * A fragment that displays the a BottomSheet demo with vertical scrollable content for the Catalog
- * app.
+ * A fragment that displays the a BottomSheet demo with unscrollable content and text input for the
+ * Catalog app.
  */
-public class BottomSheetScrollableContentDemoFragment extends DemoFragment {
+public class BottomSheetUnscrollableContentDemoFragment extends DemoFragment {
+  @NonNull
   @Override
   public View onCreateDemoView(
-      LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
+      @NonNull LayoutInflater layoutInflater,
+      @Nullable ViewGroup viewGroup,
+      @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getDemoContent(), viewGroup, false /* attachToRoot */);
     View button = view.findViewById(R.id.bottomsheet_button);
     button.setOnClickListener(v -> new BottomSheet().show(getParentFragmentManager(), ""));
@@ -60,15 +63,13 @@ public class BottomSheetScrollableContentDemoFragment extends DemoFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
       // Set up BottomSheetDialog
-      BottomSheetDialog bottomSheetDialog =
-          new BottomSheetDialog(
-              getContext(), R.style.ThemeOverlay_Catalog_BottomSheetDialog_Scrollable);
+      BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
       new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
-      bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_scrollable_content);
+      bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_unscrollable_content);
       View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
       BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);
 
-      View bottomSheetContent = bottomSheetInternal.findViewById(R.id.bottom_drawer_2);
+      View bottomSheetContent = bottomSheetInternal.findViewById(R.id.bottom_drawer_3);
       ViewUtils.doOnApplyWindowInsets(bottomSheetContent, (v, insets, initialPadding) -> {
         // Add the inset in the inner NestedScrollView instead to make the edge-to-edge behavior
         // consistent - i.e., the extra padding will only show at the bottom of all content, i.e.,
