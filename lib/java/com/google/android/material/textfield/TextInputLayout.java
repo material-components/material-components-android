@@ -4259,6 +4259,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     // drawing area.
     cutoutBounds.offset(
         -getPaddingLeft(), -getPaddingTop() - cutoutBounds.height() / 2 + boxStrokeWidthPx);
+    cutoutBounds.top = 0;
     ((CutoutDrawable) boxBackground).setCutout(cutoutBounds);
   }
 
