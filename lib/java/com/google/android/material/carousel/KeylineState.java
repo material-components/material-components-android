@@ -280,7 +280,7 @@ public final class KeylineState {
      *     carousel to measure and lay out all children, overriding each child's desired size.
      * @param availableSpace The available space of the carousel the keylines calculate cutoffs by.
      */
-    Builder(float itemSize, float availableSpace) {
+    public Builder(float itemSize, float availableSpace) {
       this.itemSize = itemSize;
       this.availableSpace = availableSpace;
     }
