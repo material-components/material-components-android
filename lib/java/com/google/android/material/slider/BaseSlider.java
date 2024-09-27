@@ -2071,7 +2071,10 @@ abstract class BaseSlider<
    * being on the far left, and 1 on the far right.
    */
   private float normalizeValue(float value) {
-    float normalized = (value - valueFrom) / (valueTo - valueFrom);
+    float normalized = 0;
+    if (valueTo != valueFrom) {
+      normalized = (value - valueFrom) / (valueTo - valueFrom);
+    }
     if (isRtl()) {
       return 1 - normalized;
     }
