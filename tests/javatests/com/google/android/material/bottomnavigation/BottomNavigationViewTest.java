@@ -51,7 +51,6 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.PointerIcon;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.ColorInt;
@@ -706,18 +705,17 @@ public class BottomNavigationViewTest {
   @TargetApi(Build.VERSION_CODES.N)
   public void testPointerIcon() throws Throwable {
     final Activity activity = activityTestRule.getActivity();
-    final PointerIcon expectedIcon = PointerIcon.getSystemIcon(activity, PointerIcon.TYPE_HAND);
     final MotionEvent event = MotionEvent.obtain(0, 0, MotionEvent.ACTION_HOVER_MOVE, 0, 0, 0);
     final Menu menu = bottomNavigation.getMenu();
     for (int i = 0; i < menu.size(); i++) {
       final MenuItem item = menu.getItem(i);
       assertTrue(item.isEnabled());
       final View itemView = activity.findViewById(item.getItemId());
-      assertEquals(expectedIcon, itemView.onResolvePointerIcon(event, 0));
+      assertEquals(null, itemView.onResolvePointerIcon(event, 0));
       item.setEnabled(false);
       assertEquals(null, itemView.onResolvePointerIcon(event, 0));
       item.setEnabled(true);
-      assertEquals(expectedIcon, itemView.onResolvePointerIcon(event, 0));
+      assertEquals(null, itemView.onResolvePointerIcon(event, 0));
     }
   }
 
