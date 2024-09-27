@@ -44,8 +44,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityManager;
-import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -148,10 +146,6 @@ public class SearchBar extends Toolbar {
   private boolean defaultScrollFlagsEnabled;
   private MaterialShapeDrawable backgroundShape;
 
-  @Nullable private final AccessibilityManager accessibilityManager;
-  private final TouchExplorationStateChangeListener touchExplorationStateChangeListener =
-      (boolean enabled) -> setFocusableInTouchMode(enabled);
-
   public SearchBar(@NonNull Context context) {
     this(context, null);
   }
@@ -209,35 +203,6 @@ public class SearchBar extends Toolbar {
     ViewCompat.setElevation(this, elevation);
     initTextView(textAppearanceResId, text, hint);
     initBackground(shapeAppearanceModel, backgroundColor, elevation, strokeWidth, strokeColor);
-
-    accessibilityManager =
-        (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-    setupTouchExplorationStateChangeListener();
-  }
-
-  private void setupTouchExplorationStateChangeListener() {
-    if (accessibilityManager != null) {
-      // Handle the case where touch exploration is already enabled.
-      if (accessibilityManager.isEnabled() && accessibilityManager.isTouchExplorationEnabled()) {
-        setFocusableInTouchMode(true);
-      }
-
-      // Handle the case where touch exploration state can change while the view is active.
-      addOnAttachStateChangeListener(
-          new OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View ignored) {
-              accessibilityManager.addTouchExplorationStateChangeListener(
-                  touchExplorationStateChangeListener);
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View ignored) {
-              accessibilityManager.removeTouchExplorationStateChangeListener(
-                  touchExplorationStateChangeListener);
-            }
-          });
-    }
   }
 
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
