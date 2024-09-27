@@ -43,7 +43,7 @@ import java.util.Map;
  * handle reversing a KeylineState when being laid out right-to-left before constructing a
  * KeylineStateList.
  */
-class KeylineStateList {
+public class KeylineStateList {
 
   private static final int NO_INDEX = -1;
 
@@ -133,6 +133,7 @@ class KeylineStateList {
    *     container as possible.
    * @return a {@link KeylineState} that has been shifted according on the scroll offset.
    */
+  @NonNull
   public KeylineState getShiftedState(
       float scrollOffset, float minScrollOffset, float maxScrollOffset) {
     return getShiftedState(scrollOffset, minScrollOffset, maxScrollOffset, false);

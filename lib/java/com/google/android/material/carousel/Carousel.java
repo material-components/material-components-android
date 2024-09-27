@@ -19,7 +19,7 @@ package com.google.android.material.carousel;
 import com.google.android.material.carousel.CarouselLayoutManager.Alignment;
 
 /** An interface that defines a widget that can be configured as a Carousel. */
-interface Carousel {
+public interface Carousel {
 
   /** Gets the width of the carousel container. */
   int getContainerWidth();

@@ -103,7 +103,8 @@ public abstract class CarouselStrategy {
    * @return A {@link KeylineState} to be used by the layout manager to offset and mask children
    *     along the scrolling axis.
    */
-  abstract KeylineState onFirstChildMeasuredWithMargins(
+  @NonNull
+  public abstract KeylineState onFirstChildMeasuredWithMargins(
       @NonNull Carousel carousel, @NonNull View child);
 
   /**
@@ -120,7 +121,8 @@ public abstract class CarouselStrategy {
    *     maskedSize}. 0F is fully unmasked and 1F is fully masked.
    */
   @FloatRange(from = 0F, to = 1F)
-  static float getChildMaskPercentage(float maskedSize, float unmaskedSize, float childMargins) {
+  public static float getChildMaskPercentage(
+      float maskedSize, float unmaskedSize, float childMargins) {
     return 1F - ((maskedSize - childMargins) / (unmaskedSize - childMargins));
   }
 
@@ -153,11 +155,13 @@ public abstract class CarouselStrategy {
 
   /**
    * Whether or not the strategy keylines should be refreshed based on the old item count and the
-   * carousel's current parameters.
+   * carousel's current parameters. This method is called when the item count is updated, and is
+   * used to update the keyline strategy when the item count is less than the number of keylines in
+   * the normal keyline strategy.
    *
    * @return true if the keylines should be refreshed.
    */
-  boolean shouldRefreshKeylineState(Carousel carousel, int oldItemCount) {
+  public boolean shouldRefreshKeylineState(@NonNull Carousel carousel, int oldItemCount) {
     // TODO: b/301332183 - Update existing strategies with logic on when to refresh keyline
     // state based on item count.
     return false;
