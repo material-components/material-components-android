@@ -53,38 +53,6 @@
           android:layout_gravity="center"
           android:contentDescription="@null"
           android:duplicateParentState="true" />
-        <com.google.android.material.internal.BaselineLayout
-          android:id="@id/navigation_bar_expanded_item_labels_group"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:clipChildren="false"
-          android:clipToPadding="false"
-          android:layout_gravity="center"
-          android:visibility="gone"
-          android:duplicateParentState="true">
-          <TextView
-            android:id="@id/navigation_bar_expanded_item_small_label_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:includeFontPadding="false"
-            android:gravity="center_vertical"
-            android:textSize="@dimen/design_bottom_navigation_text_size" />
-          <TextView
-            android:id="@id/navigation_bar_expanded_item_large_label_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:duplicateParentState="true"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:gravity="center_vertical"
-            android:includeFontPadding="false"
-            android:textSize="@dimen/design_bottom_navigation_active_text_size"
-            android:visibility="invisible" />
-        </com.google.android.material.internal.BaselineLayout>
-
       </LinearLayout>
     </FrameLayout>
     <com.google.android.material.internal.BaselineLayout

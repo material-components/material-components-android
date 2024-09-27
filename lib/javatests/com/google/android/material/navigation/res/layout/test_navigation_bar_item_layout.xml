@@ -52,38 +52,6 @@
         android:layout_gravity="center"
         android:contentDescription="@null"
         android:duplicateParentState="true"/>
-      <com.google.android.material.internal.BaselineLayout
-        android:id="@id/navigation_bar_expanded_item_labels_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/m3_navigation_rail_icon_label_padding"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:layout_gravity="center"
-        android:visibility="gone"
-        android:duplicateParentState="true">
-        <TextView
-          android:id="@id/navigation_bar_expanded_item_small_label_view"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:duplicateParentState="true"
-          android:ellipsize="end"
-          android:maxLines="1"
-          android:paddingStart="@dimen/m3_navigation_rail_label_padding_horizontal"
-          android:paddingEnd="@dimen/m3_navigation_rail_label_padding_horizontal"
-          android:textSize="@dimen/mtrl_navigation_rail_text_size" />
-        <TextView
-          android:id="@id/navigation_bar_expanded_item_large_label_view"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:duplicateParentState="true"
-          android:ellipsize="end"
-          android:maxLines="1"
-          android:textSize="@dimen/mtrl_navigation_rail_active_text_size"
-          android:paddingStart="@dimen/m3_navigation_rail_label_padding_horizontal"
-          android:paddingEnd="@dimen/m3_navigation_rail_label_padding_horizontal"
-          android:visibility="invisible" />
-      </com.google.android.material.internal.BaselineLayout>
     </LinearLayout>
   </FrameLayout>
     <com.google.android.material.internal.BaselineLayout
