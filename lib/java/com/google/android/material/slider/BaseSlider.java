@@ -1997,7 +1997,7 @@ abstract class BaseSlider<
 
     float first = values.get(0);
     float last = values.get(values.size() - 1);
-    if (last < valueTo || (values.size() > 1 && first > valueFrom)) {
+    if (last < valueTo || (values.size() > 1 && first > valueFrom) || valueTo == valueFrom) {
       drawInactiveTrack(canvas, trackWidth, yCenter);
     }
     if (last > valueFrom) {
