@@ -21,7 +21,7 @@ dependencies {
   api "androidx.window:window-java:1.0.0-beta04"
   api "androidx.preference:preference:1.1.1"
 
-  api 'com.google.guava:guava:33.2.1-android'
+  api 'com.google.guava:guava:33.3.1-android'
   modules {
     module("com.google.guava:listenablefuture") {
       replacedBy("com.google.guava:guava", "listenablefuture is part of guava")
