@@ -102,6 +102,8 @@ import com.google.android.material.tooltip.TooltipDrawable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -239,6 +241,8 @@ abstract class BaseSlider<
       "Floating point value used for %s(%s). Using floats can have rounding errors which may"
           + " result in incorrect values. Instead, consider using integers with a custom"
           + " LabelFormatter to display the value correctly.";
+  private static final String WARNING_PARSE_ERROR =
+      "Error parsing value(%s), valueFrom(%s), and valueTo(%s) into a float.";
 
   private static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
   private static final int HALO_ALPHA = 63;
@@ -3251,7 +3255,7 @@ abstract class BaseSlider<
       info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS);
 
       List<Float> values = slider.getValues();
-      final float value = values.get(virtualViewId);
+      float value = values.get(virtualViewId);
       float valueFrom = slider.getValueFrom();
       float valueTo = slider.getValueTo();
 
@@ -3262,6 +3266,16 @@ abstract class BaseSlider<
         if (value < valueTo) {
           info.addAction(AccessibilityNodeInfoCompat.ACTION_SCROLL_FORWARD);
         }
+      }
+
+      NumberFormat nf = NumberFormat.getNumberInstance();
+      nf.setMaximumFractionDigits(2);
+      try {
+        valueFrom = nf.parse(nf.format(valueFrom)).floatValue();
+        valueTo = nf.parse(nf.format(valueTo)).floatValue();
+        value = nf.parse(nf.format(value)).floatValue();
+      } catch (ParseException e) {
+        Log.w(TAG, String.format(WARNING_PARSE_ERROR, value, valueFrom, valueTo));
       }
 
       info.setRangeInfo(RangeInfoCompat.obtain(RANGE_TYPE_FLOAT, valueFrom, valueTo, value));
