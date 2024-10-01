@@ -61,8 +61,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.PointerIconCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
@@ -659,13 +657,6 @@ public abstract class NavigationBarItemView extends FrameLayout
     smallLabel.setEnabled(enabled);
     largeLabel.setEnabled(enabled);
     icon.setEnabled(enabled);
-
-    if (enabled) {
-      ViewCompat.setPointerIcon(
-          this, PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
-    } else {
-      ViewCompat.setPointerIcon(this, null);
-    }
   }
 
   @Override
