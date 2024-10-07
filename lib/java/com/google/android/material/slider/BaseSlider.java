@@ -18,6 +18,8 @@ package com.google.android.material.slider;
 
 import com.google.android.material.R;
 
+import static android.view.accessibility.AccessibilityManager.FLAG_CONTENT_CONTROLS;
+import static android.view.accessibility.AccessibilityManager.FLAG_CONTENT_TEXT;
 import static androidx.core.math.MathUtils.clamp;
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCompat.RANGE_TYPE_FLOAT;
 import static com.google.android.material.shape.CornerFamily.ROUNDED;
@@ -245,6 +247,8 @@ abstract class BaseSlider<
       "Error parsing value(%s), valueFrom(%s), and valueTo(%s) into a float.";
 
   private static final int TIMEOUT_SEND_ACCESSIBILITY_EVENT = 200;
+  private static final int MIN_TIMEOUT_TOOLTIP_WITH_ACCESSIBILITY = 10000;
+  private static final int MAX_TIMEOUT_TOOLTIP_WITH_ACCESSIBILITY = 120000;
   private static final int HALO_ALPHA = 63;
   private static final double THRESHOLD = .0001;
   private static final float THUMB_WIDTH_PRESSED_RATIO = .5f;
@@ -350,12 +354,21 @@ abstract class BaseSlider<
   private float touchPosition;
   @SeparationUnit private int separationUnit = UNIT_PX;
 
+  private final int tooltipTimeoutMillis;
+
   @NonNull
   private final ViewTreeObserver.OnScrollChangedListener onScrollChangedListener =
       this::updateLabels;
+
   @NonNull
-  private final ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener =
-      this::updateLabels;
+  private final ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = this::updateLabels;
+
+  @NonNull
+  private final Runnable resetActiveThumbIndex =
+      () -> {
+        setActiveThumbIndex(-1);
+        invalidate();
+      };
 
   /**
    * Determines the behavior of the label which can be any of the following.
@@ -432,6 +445,13 @@ abstract class BaseSlider<
 
     accessibilityManager =
         (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+    if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+      tooltipTimeoutMillis =
+          accessibilityManager.getRecommendedTimeoutMillis(
+              MIN_TIMEOUT_TOOLTIP_WITH_ACCESSIBILITY, FLAG_CONTENT_CONTROLS | FLAG_CONTENT_TEXT);
+    } else {
+      tooltipTimeoutMillis = MAX_TIMEOUT_TOOLTIP_WITH_ACCESSIBILITY;
+    }
   }
 
   private void loadResources(@NonNull Resources resources) {
@@ -683,6 +703,11 @@ abstract class BaseSlider<
       warnAboutFloatingPointError();
       dirtyConfig = false;
     }
+  }
+
+  public void scheduleTooltipTimeout() {
+    removeCallbacks(resetActiveThumbIndex);
+    postDelayed(resetActiveThumbIndex, tooltipTimeoutMillis);
   }
 
   /**
@@ -2238,11 +2263,7 @@ abstract class BaseSlider<
 
     // Draw ticks on the left inactive track (if any).
     if (leftActiveTickIndex > 0) {
-      canvas.drawPoints(
-          ticksCoordinates,
-          0,
-          leftActiveTickIndex * 2,
-          inactiveTicksPaint);
+      canvas.drawPoints(ticksCoordinates, 0, leftActiveTickIndex * 2, inactiveTicksPaint);
     }
 
     // Draw ticks on the active track (if any).
@@ -2937,7 +2958,7 @@ abstract class BaseSlider<
         moveFocusInAbsoluteDirection(1);
         return true;
       case KeyEvent.KEYCODE_EQUALS:
-        // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
+      // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
       case KeyEvent.KEYCODE_PLUS:
         moveFocus(1);
         return true;
@@ -3016,7 +3037,7 @@ abstract class BaseSlider<
       case KeyEvent.KEYCODE_MINUS:
         return -increment;
       case KeyEvent.KEYCODE_EQUALS:
-        // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
+      // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
       case KeyEvent.KEYCODE_PLUS:
         return increment;
       default:
@@ -3357,6 +3378,8 @@ abstract class BaseSlider<
                     slider.getValueFrom(),
                     slider.getValueTo());
             if (slider.snapThumbToValue(virtualViewId, clamped)) {
+              slider.setActiveThumbIndex(virtualViewId);
+              slider.scheduleTooltipTimeout();
               slider.updateHaloHotspot();
               slider.postInvalidate();
               invalidateVirtualView(virtualViewId);
