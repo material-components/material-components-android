@@ -354,7 +354,7 @@ abstract class BaseSlider<
   private final ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener =
       this::updateLabels;
 
-  private boolean isVisible = isShown();
+  private boolean isVisible;
 
   /**
    * Determines the behavior of the label which can be any of the following.
@@ -425,6 +425,8 @@ abstract class BaseSlider<
         MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
 
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
+
+    isVisible = isShown();
 
     accessibilityHelper = new AccessibilityHelper(this);
     ViewCompat.setAccessibilityDelegate(this, accessibilityHelper);
