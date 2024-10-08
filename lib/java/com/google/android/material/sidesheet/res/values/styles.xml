@@ -25,7 +25,7 @@
          needs to be explicitly set on the behavior's associated View in the
          layout. -->
     <item name="android:layout_gravity">end</item>
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_side_sheet_standard_elevation</item>
+    <item name="android:elevation">@dimen/m3_side_sheet_standard_elevation</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.Sheet.Side.Docked.Container.Shape</item>
   </style>
 
@@ -45,7 +45,7 @@
          explicitly on the modal side sheet View. -->
     <item name="android:layout_width">@dimen/m3_side_sheet_width</item>
     <item name="android:layout_height">match_parent</item>
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_side_sheet_modal_elevation</item>
+    <item name="android:elevation">@dimen/m3_side_sheet_modal_elevation</item>
     <item name="backgroundTint">@macro/m3_comp_sheet_side_docked_modal_container_color</item>
     <item name="shapeAppearance">@macro/m3_comp_sheet_side_docked_modal_container_shape</item>
   </style>

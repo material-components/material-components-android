@@ -57,7 +57,7 @@
     <item name="android:alpha">@dimen/material_emphasis_high_type</item>
     <item name="android:ellipsize">end</item>
     <item name="android:maxLines">@integer/design_snackbar_text_max_lines</item>
-    <item name="android:textAlignment" tools:ignore="NewApi">viewStart</item>
+    <item name="android:textAlignment">viewStart</item>
     <item name="android:textAppearance">?attr/textAppearanceBody2</item>
     <item name="android:textColor">?attr/colorSurface</item>
     <item name="android:paddingTop">@dimen/design_snackbar_padding_vertical</item>

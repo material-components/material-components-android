@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Material3.SearchBar" parent="android:Widget">
     <item name="backgroundTint">@macro/m3_comp_search_bar_container_color</item>
@@ -32,8 +32,8 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Search</item>
 
     <!-- On newer API levels, hide shadows while keeping elevation. -->
-    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
-    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:outlineAmbientShadowColor" tools:targetApi="p">@android:color/transparent</item>
+    <item name="android:outlineSpotShadowColor" tools:targetApi="p">@android:color/transparent</item>
   </style>
 
   <style name="Widget.Material3.SearchBar.Outlined">

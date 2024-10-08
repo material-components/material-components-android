@@ -21,9 +21,7 @@
   <style name="Widget.MaterialComponents.CardView" parent="CardView">
     <item name="enforceMaterialTheme">true</item>
 
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/mtrl_card_state_list_anim
-    </item>
+    <item name="android:stateListAnimator">@animator/mtrl_card_state_list_anim</item>
     <item name="cardBackgroundColor">?attr/colorSurface</item>
     <item name="cardCornerRadius">@null</item>
     <item name="cardElevation">@dimen/mtrl_card_elevation</item>
@@ -39,9 +37,7 @@
   <!-- Style for the M3 card. -->
   <style name="Base.Widget.Material3.CardView" parent="Widget.MaterialComponents.CardView">
     <item name="enforceMaterialTheme">true</item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_card_state_list_anim
-    </item>
+    <item name="android:stateListAnimator">@animator/m3_card_state_list_anim</item>
     <item name="cardElevation">@dimen/m3_card_elevation</item>
     <item name="cardForegroundColor">@color/m3_card_foreground_color</item>
     <item name="rippleColor">@color/m3_card_ripple_color</item>
@@ -68,9 +64,7 @@
   </style>
 
   <style name="Widget.Material3.CardView.Elevated" parent="Base.Widget.Material3.CardView">
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_card_elevated_state_list_anim
-    </item>
+    <item name="android:stateListAnimator">@animator/m3_card_elevated_state_list_anim</item>
     <item name="strokeWidth">0dp</item>
     <item name="cardElevation">@dimen/m3_card_elevated_elevation</item>
     <item name="cardBackgroundColor">@macro/m3_comp_elevated_card_container_color</item>
