@@ -1257,7 +1257,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public void setChecked(boolean checked) {
-    if (isCheckable() && isEnabled() && this.checked != checked) {
+    if (isCheckable() && this.checked != checked) {
       this.checked = checked;
 
       refreshDrawableState();
@@ -1292,7 +1292,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public boolean performClick() {
-    if (materialButtonHelper.isToggleCheckedStateOnClick()) {
+    if (isEnabled() && materialButtonHelper.isToggleCheckedStateOnClick()) {
       toggle();
     }
 
