@@ -354,6 +354,8 @@ abstract class BaseSlider<
   private final ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener =
       this::updateLabels;
 
+  private boolean isVisible = isShown();
+
   /**
    * Determines the behavior of the label which can be any of the following.
    *
@@ -2681,7 +2683,17 @@ abstract class BaseSlider<
   private boolean isSliderVisibleOnScreen() {
     final Rect contentViewBounds = new Rect();
     ViewUtils.getContentView(this).getHitRect(contentViewBounds);
-    return getLocalVisibleRect(contentViewBounds) && isShown();
+    return getLocalVisibleRect(contentViewBounds) && isVisible();
+  }
+
+  private boolean isVisible() {
+    return (VERSION.SDK_INT >= VERSION_CODES.N) ? isVisible : isShown();
+  }
+
+  @Override
+  public void onVisibilityAggregated(boolean isVisible) {
+    super.onVisibilityAggregated(isVisible);
+    this.isVisible = isVisible;
   }
 
   private void ensureLabelsRemoved() {
