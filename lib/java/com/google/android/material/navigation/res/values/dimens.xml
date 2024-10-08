@@ -51,5 +51,8 @@
   <dimen name="m3_navigation_subheader_vertical_padding">8dp</dimen>
   <dimen name="m3_navigation_subheader_top_margin">12dp</dimen>
   <dimen name="m3_navigation_subheader_horizontal_margin">20dp</dimen>
+
+  <dimen name="default_navigation_text_size">12sp</dimen>
+  <dimen name="default_navigation_active_text_size">14sp</dimen>
 </resources>
 
