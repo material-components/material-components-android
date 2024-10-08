@@ -29,12 +29,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
-import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
-import androidx.appcompat.widget.ListPopupWindow;
+import android.os.Parcelable;
 import android.text.InputType;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
@@ -51,6 +49,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
+import androidx.appcompat.widget.ListPopupWindow;
 import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ManufacturerUtils;
@@ -622,5 +622,13 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     private boolean hasSelectedRippleColor() {
       return simpleItemSelectedRippleColor != null;
     }
+  }
+
+  @Override
+  public void onRestoreInstanceState(Parcelable state) {
+    int threshold = getThreshold();
+    setThreshold(Integer.MAX_VALUE);
+    super.onRestoreInstanceState(state);
+    setThreshold(threshold);
   }
 }
