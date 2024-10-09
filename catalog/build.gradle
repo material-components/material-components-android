@@ -12,10 +12,8 @@ dependencies {
   api 'com.google.dagger:dagger-android-support:2.51.1'
   annotationProcessor 'com.google.dagger:dagger-android-processor:2.51.1'
 
-  api 'androidx.multidex:multidex:2.0.1'
   api 'androidx.constraintlayout:constraintlayout:2.1.0'
   api 'androidx.gridlayout:gridlayout:1.0.0'
-  api "androidx.multidex:multidex:2.0.1"
   api "androidx.recyclerview:recyclerview:1.2.1"
   api 'androidx.window:window:1.0.0-beta04'
   api "androidx.window:window-java:1.0.0-beta04"
@@ -54,7 +52,6 @@ def srcDirs = [
   'adaptive',
   'application',
   'application/attrs',
-  'application/legacymultidex',
   'application/scope',
   'application/theme',
   'assets',
@@ -111,7 +108,6 @@ android {
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
-    multiDexEnabled true
     minSdkVersion 21
     targetSdkVersion 33
   }
