@@ -24,6 +24,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.os.SystemClock;
 import android.util.Property;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
@@ -463,7 +464,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
                 ? baseSpec.wavelengthDeterminate
                 : baseSpec.wavelengthIndeterminate;
         int cycleInMs = (int) (1000f * wavelength / baseSpec.waveSpeed * durationScale);
-        phaseFraction = (float) (System.currentTimeMillis() % cycleInMs) / cycleInMs;
+        phaseFraction = (float) (SystemClock.uptimeMillis() % cycleInMs) / cycleInMs;
         if (phaseFraction < 0f) {
           phaseFraction = (phaseFraction % 1) + 1f;
         }
