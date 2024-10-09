@@ -315,7 +315,7 @@ public class SearchRecyclerDemoActivity extends DemoActivity {
     void onItemSelectedStateChanged(Item item);
   }
 
-  /** The Dagger module for {@link SearchBarRecyclerDemoActivity} dependencies. */
+  /** The Dagger module for {@link SearchRecyclerDemoActivity} dependencies. */
   @dagger.Module
   public abstract static class Module {
 

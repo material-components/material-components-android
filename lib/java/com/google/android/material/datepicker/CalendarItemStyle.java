@@ -44,8 +44,8 @@ final class CalendarItemStyle {
    * the selection marker.
    *
    * <p>The selection marker's size is defined by the {@link
-   * R.styleable.MaterialCalendarItem#itemShapeAppearance} and {@link
-   * R.styleable.MaterialCalendarItem#itemShapeAppearanceOverlay}.
+   * R.styleable#MaterialCalendarItem_itemShapeAppearance} and {@link
+   * R.styleable#MaterialCalendarItem_itemShapeAppearanceOverlay}.
    */
   @NonNull private final Rect insets;
 
