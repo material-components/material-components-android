@@ -370,6 +370,8 @@ abstract class BaseSlider<
         invalidate();
       };
 
+  private boolean thisAndAncestorsVisible;
+
   /**
    * Determines the behavior of the label which can be any of the following.
    *
@@ -405,6 +407,9 @@ abstract class BaseSlider<
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
+
+    // Initialize with just this view's visibility.
+    thisAndAncestorsVisible = isShown();
 
     inactiveTrackPaint = new Paint();
     activeTrackPaint = new Paint();
@@ -1914,6 +1919,10 @@ abstract class BaseSlider<
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
+
+    // Update factoring in the visibility of all ancestors.
+    thisAndAncestorsVisible = isShown();
+
     getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
     getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
     // The label is attached on the Overlay relative to the content.
@@ -2705,7 +2714,19 @@ abstract class BaseSlider<
   private boolean isSliderVisibleOnScreen() {
     final Rect contentViewBounds = new Rect();
     ViewUtils.getContentView(this).getHitRect(contentViewBounds);
-    return getLocalVisibleRect(contentViewBounds);
+    return getLocalVisibleRect(contentViewBounds) && isThisAndAncestorsVisible();
+  }
+
+  private boolean isThisAndAncestorsVisible() {
+    // onVisibilityAggregated is only available on N+ devices, so on pre-N devices we check if this
+    // view and its ancestors are visible each time, in case one of the visibilities has changed.
+    return (VERSION.SDK_INT >= VERSION_CODES.N) ? thisAndAncestorsVisible : isShown();
+  }
+
+  @Override
+  public void onVisibilityAggregated(boolean isVisible) {
+    super.onVisibilityAggregated(isVisible);
+    this.thisAndAncestorsVisible = isVisible;
   }
 
   private void ensureLabelsRemoved() {
