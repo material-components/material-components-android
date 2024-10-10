@@ -370,6 +370,8 @@ abstract class BaseSlider<
         invalidate();
       };
 
+  private boolean isVisible;
+
   /**
    * Determines the behavior of the label which can be any of the following.
    *
@@ -1914,6 +1916,7 @@ abstract class BaseSlider<
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
+    isVisible = isShown();
     getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
     getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
     // The label is attached on the Overlay relative to the content.
@@ -2705,7 +2708,17 @@ abstract class BaseSlider<
   private boolean isSliderVisibleOnScreen() {
     final Rect contentViewBounds = new Rect();
     ViewUtils.getContentView(this).getHitRect(contentViewBounds);
-    return getLocalVisibleRect(contentViewBounds);
+    return getLocalVisibleRect(contentViewBounds) && isVisible();
+  }
+
+  private boolean isVisible() {
+    return (VERSION.SDK_INT >= VERSION_CODES.N) ? isVisible : isShown();
+  }
+
+  @Override
+  public void onVisibilityAggregated(boolean isVisible) {
+    super.onVisibilityAggregated(isVisible);
+    this.isVisible = isVisible;
   }
 
   private void ensureLabelsRemoved() {
