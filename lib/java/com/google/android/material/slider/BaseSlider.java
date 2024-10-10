@@ -426,8 +426,6 @@ abstract class BaseSlider<
 
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
-    isVisible = isShown();
-
     accessibilityHelper = new AccessibilityHelper(this);
     ViewCompat.setAccessibilityDelegate(this, accessibilityHelper);
 
@@ -1890,6 +1888,7 @@ abstract class BaseSlider<
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
+    isVisible = isShown();
     getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
     getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
     // The label is attached on the Overlay relative to the content.
