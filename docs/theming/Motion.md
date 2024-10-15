@@ -159,15 +159,13 @@ the
 **AndroidX (preferred)**
 
 *   Available in the `com.google.android.material.transition` package
-*   Supports API Level 14+
-*   Supports Fragments and Views, but not Activities or Windows
+*   Supports Fragments and Views but not Activities or Windows
 *   Contains backported bug fixes and consistent behavior across API Levels
 
 **Platform**
 
 *   Available in the `com.google.android.material.transition.platform` package
-*   Supports API Level 21+
-*   Supports Fragments, Views, Activities, and Windows
+*   Supports Activities, Windows, Fragments, and Views.
 *   Bug fixes not backported and may have different behavior across API Levels
 
 ### Motion resources
@@ -342,8 +340,7 @@ expand Fragment A when it is reentering during the return container transform.
 **Note:** When using `MaterialElevationScale`, make sure to mark the root view
 of your Fragment as a
 [transition group](https://developer.android.com/reference/android/view/ViewGroup#setTransitionGroup\(boolean\)),
-either with `android:transitionGroup="true"` for API level 21+ or
-`ViewGroupCompat#setTransitionGroup` for all API levels. This will ensure that
+either with `android:transitionGroup="true"`. This will ensure that
 the animation is applied to the Fragment view as a whole, as opposed to each
 child view individually, which is the default behavior of the Android
 Transitions system.
@@ -352,7 +349,7 @@ Transitions system.
 
 **Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
-package and are only available on API level 21 and above.
+package.
 
 In Activity A’s layout, identify the start View to be used as the “shared
 element” as described in the
@@ -676,7 +673,7 @@ respective axis. Alternatively, try replacing `MaterialSharedAxis` with a
 
 **Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
-package and are only available on API level 21 and above.
+package.
 
 Enable Activity transitions by either setting
 `android:windowActivityTransitions` to true in your theme or enabling them on an
@@ -927,7 +924,7 @@ supportFragmentManager
 
 **Note:** Activity and Window transitions require using Android Framework
 Transitions provided in the `com.google.android.material.transition.platform`
-package and are only available on API level 21 and above.
+package.
 
 Enable Activity transitions by either setting
 `android:windowActivityTransitions` to true in your theme or enabling them on an
