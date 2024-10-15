@@ -431,7 +431,10 @@ public class BottomSheetDialog extends AppCompatDialog {
         }
 
         @Override
-        public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+          bottomSheet.setVisibility(View.INVISIBLE);
+          bottomSheet.setVisibility(View.VISIBLE);
+        }
       };
 
   private static class EdgeToEdgeCallback extends BottomSheetBehavior.BottomSheetCallback {
