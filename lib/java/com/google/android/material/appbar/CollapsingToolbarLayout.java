@@ -300,7 +300,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_scrimVisibleHeightTrigger, -1);
 
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_maxLines)) {
-      collapsingTextHelper.setMaxLines(a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
+      collapsingTextHelper.setExpandedMaxLines(a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
     }
 
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_titlePositionInterpolator)) {
@@ -616,7 +616,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    if (extraMultilineHeightEnabled && collapsingTextHelper.getMaxLines() > 1) {
+    if (extraMultilineHeightEnabled && collapsingTextHelper.getExpandedMaxLines() > 1) {
       // Need to update title and bounds in order to calculate line count and text height.
       updateTitleFromToolbarIfNeeded();
       updateTextBounds(0, 0, getMeasuredWidth(), getMeasuredHeight(), /* forceRecalculate= */ true);
@@ -624,7 +624,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
       int lineCount = collapsingTextHelper.getExpandedLineCount();
       if (lineCount > 1) {
         // Add extra height based on the amount of height beyond the first line of title text.
-        int expandedTextHeight = Math.round(collapsingTextHelper.getExpandedTextFullHeight());
+        int expandedTextHeight =
+            Math.round(collapsingTextHelper.getExpandedTextFullSingleLineHeight());
         extraMultilineHeight = expandedTextHeight * (lineCount - 1);
         int newHeight = getMeasuredHeight() + extraMultilineHeight;
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY);
@@ -1407,7 +1408,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   @RestrictTo(LIBRARY_GROUP)
   public void setMaxLines(int maxLines) {
-    collapsingTextHelper.setMaxLines(maxLines);
+    collapsingTextHelper.setExpandedMaxLines(maxLines);
   }
 
   /**
@@ -1416,7 +1417,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   @RestrictTo(LIBRARY_GROUP)
   public int getMaxLines() {
-    return collapsingTextHelper.getMaxLines();
+    return collapsingTextHelper.getExpandedMaxLines();
   }
 
   /**
