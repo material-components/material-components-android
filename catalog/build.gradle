@@ -75,6 +75,7 @@ def srcDirs = [
   'imageview',
   'fab',
   'feature',
+  'floatingappbar',
   'font',
   'internal',
   'loadingindicator',
