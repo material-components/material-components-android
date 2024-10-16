@@ -88,12 +88,16 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public static class Callback extends BaseCallback<Snackbar> {
     /** Indicates that the Snackbar was dismissed via a swipe. */
     public static final int DISMISS_EVENT_SWIPE = BaseCallback.DISMISS_EVENT_SWIPE;
+
     /** Indicates that the Snackbar was dismissed via an action click. */
     public static final int DISMISS_EVENT_ACTION = BaseCallback.DISMISS_EVENT_ACTION;
+
     /** Indicates that the Snackbar was dismissed via a timeout. */
     public static final int DISMISS_EVENT_TIMEOUT = BaseCallback.DISMISS_EVENT_TIMEOUT;
+
     /** Indicates that the Snackbar was dismissed via a call to {@link #dismiss()}. */
     public static final int DISMISS_EVENT_MANUAL = BaseCallback.DISMISS_EVENT_MANUAL;
+
     /** Indicates that the Snackbar was dismissed from a new Snackbar being shown. */
     public static final int DISMISS_EVENT_CONSECUTIVE = BaseCallback.DISMISS_EVENT_CONSECUTIVE;
 
@@ -376,10 +380,8 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
           userSetDuration, controlsFlag | FLAG_CONTENT_ICONS | FLAG_CONTENT_TEXT);
     }
 
-    // If touch exploration is enabled override duration to give people chance to interact.
-    return hasAction && accessibilityManager.isTouchExplorationEnabled()
-        ? LENGTH_INDEFINITE
-        : userSetDuration;
+    // If a11y technologies are enabled override duration to give people chance to interact.
+    return hasAction && accessibilityManager.isEnabled() ? LENGTH_INDEFINITE : userSetDuration;
   }
 
   /**
