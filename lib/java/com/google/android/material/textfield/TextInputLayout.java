@@ -3808,9 +3808,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   /**
-   * Sets {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * Sets {@link ScaleType} for the start icon's ImageButton.
    *
-   * @param scaleType {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * @param scaleType {@link ScaleType} for the start icon's ImageButton.
    * @attr ref android.support.design.button.R.styleable#TextInputLayout_startIconScaleType
    * @see #getStartIconScaleType()
    */
@@ -3819,9 +3819,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   /**
-   * Returns the {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * Returns the {@link ScaleType} for the start icon's ImageButton.
    *
-   * @return Returns the {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * @return Returns the {@link ScaleType} for the start icon's ImageButton.
    * @attr ref android.support.design.button.R.styleable#TextInputLayout_startIconScaleType
    * @see #setStartIconScaleType(ScaleType)
    */
@@ -3831,9 +3831,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   /**
-   * Sets {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * Sets {@link ScaleType} for the end icon's ImageButton.
    *
-   * @param scaleType {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * @param scaleType {@link ScaleType} for the end icon's ImageButton.
    * @attr ref android.support.design.button.R.styleable#TextInputLayout_endIconScaleType
    * @see #getEndIconScaleType()
    */
@@ -3842,9 +3842,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   /**
-   * Returns the {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * Returns the {@link ScaleType} for the end icon's ImageButton.
    *
-   * @return Returns the {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * @return Returns the {@link ScaleType} for the end icon's ImageButton.
    * @attr ref android.support.design.button.R.styleable#TextInputLayout_endIconScaleType
    * @see #setEndIconScaleType(ScaleType)
    */
