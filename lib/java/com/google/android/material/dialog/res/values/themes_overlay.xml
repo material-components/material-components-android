@@ -29,8 +29,8 @@
     <!-- Widget styles -->
     <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_invisible</item>
     <item name="alertDialogStyle">@style/MaterialAlertDialog.MaterialComponents</item>
-    <item name="android:checkedTextViewStyle" tools:ignore="NewApi">@style/Widget.MaterialComponents.CheckedTextView</item>
-    <item name="android:dialogCornerRadius" tools:ignore="newApi">@null</item>
+    <item name="android:checkedTextViewStyle">@style/Widget.MaterialComponents.CheckedTextView</item>
+    <item name="android:dialogCornerRadius" tools:targetApi="p">@null</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
     <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
     <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
@@ -108,7 +108,7 @@
   -->
   <style name="ThemeOverlay.Material3.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
-    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
   </style>
 
   <!--
@@ -132,8 +132,8 @@
     -->
   <style name="ThemeOverlay.Material3.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
     <item name="alertDialogStyle">@style/MaterialAlertDialog.Material3</item>
-    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_alert_dialog_elevation</item>
-    <item name="android:checkedTextViewStyle" tools:ignore="NewApi">@style/Widget.Material3.CheckedTextView</item>
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:checkedTextViewStyle">@style/Widget.Material3.CheckedTextView</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="buttonBarNegativeButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
