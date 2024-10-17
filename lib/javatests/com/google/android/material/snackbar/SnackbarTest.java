@@ -56,8 +56,8 @@ public class SnackbarTest {
   }
 
   @Test
-  public void testGetDuration_whenA11yEnabled_isIndefinite() {
-    accessibilityManager.setEnabled(true);
+  public void testGetDuration_whenTouchExplorationEnabled_isIndefinite() {
+    accessibilityManager.setTouchExplorationEnabled(true);
 
     CoordinatorLayout view = new CoordinatorLayout(activity);
     snackbar = Snackbar.make(view, "Test text", Snackbar.LENGTH_LONG).setAction("STUFF!",
@@ -70,8 +70,8 @@ public class SnackbarTest {
   }
 
   @Test
-  public void testGetDuration_whenA11yDisabled_isProvidedValue() {
-    accessibilityManager.setEnabled(false);
+  public void testGetDuration_whenTouchExplorationDisabled_isProvidedValue() {
+    accessibilityManager.setTouchExplorationEnabled(false);
 
     CoordinatorLayout view = new CoordinatorLayout(activity);
     snackbar = Snackbar.make(view, "Test text", 300).setAction("STUFF!",
