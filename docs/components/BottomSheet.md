@@ -405,6 +405,33 @@ you need to use `Activity.getSupportFragmentManager()`.
 `BottomSheetDialogFragment`. You can override
 `onCancel(DialogInterface)` or `onDismiss(DialogInterface)` if necessary.
 
+`BottomSheetDialogFragment` wraps the view in a `BottomSheetDialog`, which has
+its own `BottomSheetBehavior`. You can define your own `BottomSheetBehavior`
+through overriding `onCreateDialog`. Note that if overriding `onCreateDialog`,
+you should not override `onCreateView`.
+
+```kt
+
+import android.view.View
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+
+class ModalBottomSheet : BottomSheetDialogFragment() {
+
+  override fun onCreateDialog(
+    savedInstanceState: Bundle?,
+  ): Dialog {
+    val bottomSheetDialog: BottomSheetDialog =
+      BottomSheetDialog(
+        getContext(), R.style.ThemeOverlay_Catalog_BottomSheetDialog_Scrollable
+      )
+    bottomSheetDialog.setContentView(R.layout.bottom_sheet_content)
+    // Set behavior attributes
+    bottomSheetDialog.getBehavior().setPeekHeight(123)
+    return bottomSheetDialog
+  }
+}
+```
+
 ## Anatomy and key properties
 
 Bottom sheets have a sheet, a drag handle, and, if modal, a scrim.

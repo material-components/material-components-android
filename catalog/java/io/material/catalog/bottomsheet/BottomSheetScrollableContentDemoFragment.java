@@ -23,11 +23,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.WindowInsetsCompat;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.internal.ViewUtils;
@@ -56,6 +56,7 @@ public class BottomSheetScrollableContentDemoFragment extends DemoFragment {
   /** A custom bottom sheet dialog fragment. */
   @SuppressWarnings("RestrictTo")
   public static class BottomSheet extends BottomSheetDialogFragment {
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -64,11 +65,13 @@ public class BottomSheetScrollableContentDemoFragment extends DemoFragment {
           new BottomSheetDialog(
               getContext(), R.style.ThemeOverlay_Catalog_BottomSheetDialog_Scrollable);
       new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
-      bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_scrollable_content);
-      View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
-      BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);
+      View content =
+          LayoutInflater.from(getContext())
+              .inflate(R.layout.cat_bottomsheet_scrollable_content, new FrameLayout(getContext()));
+      bottomSheetDialog.setContentView(content);
+      bottomSheetDialog.getBehavior().setPeekHeight(400);
 
-      View bottomSheetContent = bottomSheetInternal.findViewById(R.id.bottom_drawer_2);
+      View bottomSheetContent = content.findViewById(R.id.bottom_drawer_2);
       ViewUtils.doOnApplyWindowInsets(bottomSheetContent, (v, insets, initialPadding) -> {
         // Add the inset in the inner NestedScrollView instead to make the edge-to-edge behavior
         // consistent - i.e., the extra padding will only show at the bottom of all content, i.e.,
