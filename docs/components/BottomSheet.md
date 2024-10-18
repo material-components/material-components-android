@@ -204,9 +204,9 @@ specifying any of these to true on the view:
 *   `app:paddingTopSystemWindowInsets`
 
 On API 21 and above the modal bottom sheet will be rendered fullscreen (edge to
-edge) if the navigation bar is transparent and `app:enableEdgeToEdge` is true.
+edge) if the navigation bar is transparent and `enableEdgeToEdge` is true.
 To enable edge-to-edge by default for modal bottom sheets, you can override
-`?attr/bottomSheetDialogTheme` like the below example:
+`?attr/bottomSheetDialogTheme` like the below example (`enableEdgeToEdge` is already true in `ThemeOverlay.Material3.BottomSheetDialog`):
 
 ```xml
 <style name="AppTheme" parent="Theme.Material3.*">
