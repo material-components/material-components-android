@@ -1547,8 +1547,8 @@ public class Chip extends AppCompatCheckBox
   /**
    * Returns whether this chip's close icon is visible.
    *
-   * @see id #setCloseIconVisible(boolean)
    * @attr ref com.google.android.material.R.styleable#Chip_chipIconSize
+   * @see #setCloseIconVisible(boolean)
    */
   public boolean isCloseIconVisible() {
     return chipDrawable != null && chipDrawable.isCloseIconVisible();
@@ -1575,6 +1575,7 @@ public class Chip extends AppCompatCheckBox
    *
    * @param closeIconVisible This chip's close icon visibility.
    * @attr ref com.google.android.material.R.styleable#Chip_closeIconVisible
+   * @see #isCloseIconVisible()
    */
   public void setCloseIconVisible(boolean closeIconVisible) {
     if (chipDrawable != null) {

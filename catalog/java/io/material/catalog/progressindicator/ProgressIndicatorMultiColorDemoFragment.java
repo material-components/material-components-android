@@ -18,6 +18,8 @@ package io.material.catalog.progressindicator;
 import io.material.catalog.R;
 
 import androidx.annotation.LayoutRes;
+import com.google.android.material.progressindicator.CircularProgressIndicator;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 /**
  * This is the fragment to demo using multiple indicator colors in {@link LinearProgressIndicator}
