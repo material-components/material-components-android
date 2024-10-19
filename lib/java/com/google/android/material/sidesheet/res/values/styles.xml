@@ -27,6 +27,7 @@
     <item name="android:layout_gravity">end</item>
     <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_side_sheet_standard_elevation</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.Sheet.Side.Docked.Container.Shape</item>
+    <item name="android:clickable">true</item>
   </style>
 
   <style name="Widget.Material3.SideSheet.Detached">
