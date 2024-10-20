@@ -76,10 +76,9 @@ public class WindowPreferencesManager {
       }
     } else {
       if (window.getContext() instanceof ComponentActivity) {
-        if ((window.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-            == Configuration.UI_MODE_NIGHT_YES) {
-          new WindowInsetsControllerCompat(window, window.getDecorView()).setAppearanceLightStatusBars(true);
-        }
+        boolean dark = (window.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
+            == Configuration.UI_MODE_NIGHT_YES;
+        new WindowInsetsControllerCompat(window, window.getDecorView()).setAppearanceLightStatusBars(dark);
       }
     }
     ViewCompat.setOnApplyWindowInsetsListener(
