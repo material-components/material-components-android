@@ -56,6 +56,7 @@
   <public name="Widget.Material3.DrawerLayout" type="style"/>
 
   <public name="activeIndicatorLabelPadding" type="attr"/>
+  <public name="iconLabelHorizontalSpacing" type="attr"/>
   <public name="itemPaddingTop" type="attr"/>
   <public name="itemPaddingBottom" type="attr"/>
   <public name="itemActiveIndicatorStyle" type="attr"/>

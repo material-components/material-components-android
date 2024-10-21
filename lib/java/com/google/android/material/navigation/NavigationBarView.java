@@ -289,6 +289,11 @@ public abstract class NavigationBarView extends FrameLayout {
           attributes.getDimensionPixelSize(R.styleable.NavigationBarView_activeIndicatorLabelPadding, 0));
     }
 
+    if (attributes.hasValue(R.styleable.NavigationBarView_iconLabelHorizontalSpacing)) {
+      setIconLabelHorizontalSpacing(
+          attributes.getDimensionPixelSize(R.styleable.NavigationBarView_iconLabelHorizontalSpacing, 0));
+    }
+
     if (attributes.hasValue(R.styleable.NavigationBarView_elevation)) {
       setElevation(attributes.getDimensionPixelSize(R.styleable.NavigationBarView_elevation, 0));
     }
@@ -717,6 +722,24 @@ public abstract class NavigationBarView extends FrameLayout {
   public int getActiveIndicatorLabelPadding() {
     return menuView.getActiveIndicatorLabelPadding();
   }
+
+  /**
+   * Set the horizontal distance between the icon and the item's label when the item is in the
+   * {@link NavigationBarView#ITEM_ICON_GRAVITY_START} configuration.
+   */
+  public void setIconLabelHorizontalSpacing(@Px int iconLabelSpacing) {
+    menuView.setIconLabelHorizontalSpacing(iconLabelSpacing);
+  }
+
+  /**
+   * Get the horizontal distance between the icon and the item's label when the item is in the
+   * {@link NavigationBarView#ITEM_ICON_GRAVITY_START} configuration.
+   */
+  @Px
+  public int getIconLabelHorizontalSpacing() {
+    return menuView.getIconLabelHorizontalSpacing();
+  }
+
 
   /**
    * Get whether or not a selected item should show an active indicator.

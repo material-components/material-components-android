@@ -87,6 +87,10 @@
     <attr name="itemPaddingBottom" format="dimension"/>
     <!-- Padding between the active indicator container and label. -->
     <attr name="activeIndicatorLabelPadding" format="dimension"/>
+    <!-- The horizontal spacing between the icon and label which will show when
+         the item is in its horizontal configuration (ie. the start icon gravity
+         configuration). -->
+    <attr name="iconLabelHorizontalSpacing" format="dimension"/>
 
     <!-- The style used for each navigation item's active indicator-->
     <attr name="itemActiveIndicatorStyle" format="reference"/>

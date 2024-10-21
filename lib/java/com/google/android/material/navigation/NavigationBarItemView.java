@@ -94,6 +94,7 @@ public abstract class NavigationBarItemView extends FrameLayout
   private int itemPaddingTop;
   private int itemPaddingBottom;
   private int activeIndicatorLabelPadding;
+  private int iconLabelHorizontalSpacing;
   private float shiftAmountY;
   private float scaleUpFactor;
   private float scaleDownFactor;
@@ -187,6 +188,7 @@ public abstract class NavigationBarItemView extends FrameLayout
     itemPaddingTop = getResources().getDimensionPixelSize(getItemDefaultMarginResId());
     itemPaddingBottom = labelGroup.getPaddingBottom();
     activeIndicatorLabelPadding = 0;
+    iconLabelHorizontalSpacing = 0;
 
 
     // The labels used aren't always visible, so they are unreliable for accessibility. Instead,
@@ -356,11 +358,8 @@ public abstract class NavigationBarItemView extends FrameLayout
     LinearLayout.LayoutParams expandedLabelGroupLp = new LinearLayout.LayoutParams(
         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     expandedLabelGroupLp.gravity = Gravity.CENTER;
-    expandedLabelGroupLp.rightMargin =
-        getLayoutDirection() == LAYOUT_DIRECTION_RTL ? activeIndicatorLabelPadding : 0;
-    expandedLabelGroupLp.leftMargin =
-        getLayoutDirection() == LAYOUT_DIRECTION_RTL ? 0 : activeIndicatorLabelPadding;
     innerContentContainer.addView(expandedLabelGroup, expandedLabelGroupLp);
+    setExpandedLabelGroupMargins();
   }
 
   private void updateItemIconGravity() {
@@ -785,6 +784,17 @@ public abstract class NavigationBarItemView extends FrameLayout
     iconParams.width = iconSize;
     iconParams.height = iconSize;
     icon.setLayoutParams(iconParams);
+    // Reset expanded label group margins, in case the icon width is now 0
+    setExpandedLabelGroupMargins();
+  }
+
+  private void setExpandedLabelGroupMargins() {
+    int margin = icon.getLayoutParams().width > 0 ? iconLabelHorizontalSpacing : 0;
+    LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) expandedLabelGroup.getLayoutParams();
+    if (lp != null) {
+      lp.rightMargin = getLayoutDirection() == LAYOUT_DIRECTION_RTL ? margin : 0;
+      lp.leftMargin = getLayoutDirection() == LAYOUT_DIRECTION_RTL ? 0 : margin;
+    }
   }
 
   // TODO(b/338647654): We can remove this once navigation rail is updated
@@ -1017,6 +1027,18 @@ public abstract class NavigationBarItemView extends FrameLayout
             getLayoutDirection() == LAYOUT_DIRECTION_RTL ? 0 : activeIndicatorLabelPadding;
         requestLayout();
       }
+    }
+  }
+
+  /**
+   * Set the horizontal distance between the icon and the item label which shows when the item is in
+   * the {@link NavigationBarView#ITEM_ICON_GRAVITY_START} configuration.
+   */
+  public void setIconLabelHorizontalSpacing(int iconLabelHorizontalSpacing) {
+    if (this.iconLabelHorizontalSpacing != iconLabelHorizontalSpacing) {
+      this.iconLabelHorizontalSpacing = iconLabelHorizontalSpacing;
+      setExpandedLabelGroupMargins();
+      requestLayout();
     }
   }
 

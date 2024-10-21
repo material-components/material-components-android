@@ -39,6 +39,7 @@
   <dimen name="m3_navigation_rail_item_active_indicator_margin_horizontal">4dp</dimen>
   <dimen name="m3_navigation_rail_label_padding_horizontal">2dp</dimen>
   <dimen name="m3_navigation_rail_icon_label_padding">4dp</dimen>
+  <dimen name="m3_navigation_rail_icon_label_horizontal_padding">8dp</dimen>
 
   <dimen name="m3_navigation_rail_expanded_active_indicator_height">56dp</dimen>
   <dimen name="m3_navigation_rail_expanded_leading_trailing_space">20dp</dimen>

@@ -348,13 +348,14 @@ expands to wrap the content of the Navigation Rail item when the
 
 #### Icon attributes
 
-**Element**          | **Attribute**                         | **Related methods**                                              | **Default value**
--------------------- | ------------------------------------- | ---------------------------------------------------------------- | -----------------
-**Icon**             | `android:icon` in the `menu` resource | N/A                                                              | N/A
-**Size**             | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize` | `24dp`
-**Color (inactive)** | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSurfaceVariant`
-**Color (active)**   | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSecondaryContainer`
-**Gravity**          | `app:itemIconGravity`                 | `setItemIconGravity`<br/>`getItemIconGravity`                    | `TOP`
+**Element**                       | **Attribute**                         | **Related methods**                                                 | **Default value**
+--------------------------------- | ------------------------------------- | ------------------------------------------------------------------- | -----------------
+**Icon**                          | `android:icon` in the `menu` resource | N/A                                                                 | N/A
+**Size**                          | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize`    | `24dp`
+**Color (inactive)**              | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                     | `?attr/colorOnSurfaceVariant`
+**Color (active)**                | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                     | `?attr/colorOnSecondaryContainer`
+**Gravity**                       | `app:itemIconGravity`                 | `setItemIconGravity`<br/>`getItemIconGravity`                       | `TOP`
+**Icon label horizontal padding** | `app:iconLabelHorizontalSpacing`      | `setIconLabelHorizontalSpacing`<br/>`getIconLabelHorizontalSpacing` | `8dp`
 
 #### Text label attributes
 
