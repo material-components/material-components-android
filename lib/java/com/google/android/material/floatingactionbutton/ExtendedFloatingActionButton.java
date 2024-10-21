@@ -32,6 +32,7 @@ import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -102,6 +103,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   private static final int SHRINK = 2;
   /** Strategy to extend the FAB. */
   private static final int EXTEND = 3;
+
+  private boolean animationEnabled = true;
 
   /**
    * The strategy type determines what motion strategy to apply on the FAB.
@@ -915,8 +918,25 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
   }
 
+  /**
+   * Set whether or not animations are enabled.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setAnimationEnabled(boolean animationEnabled) {
+    this.animationEnabled = animationEnabled;
+  }
+
+  /** Return whether or not animations are enabled. */
+  public boolean isAnimationEnabled() {
+    return animationEnabled;
+  }
+
   private boolean shouldAnimateVisibilityChange() {
-    return (isLaidOut() || (!isOrWillBeShown() && animateShowBeforeLayout)) && !isInEditMode();
+    return animationEnabled
+        && (isLaidOut() || (!isOrWillBeShown() && animateShowBeforeLayout))
+        && !isInEditMode();
   }
 
   /**
@@ -1332,6 +1352,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       }
       layoutParams.width = size.getLayoutParams().width;
       layoutParams.height = size.getLayoutParams().height;
+
+      if (extending) { // extending
+        silentlyUpdateTextColor(originalTextCsl);
+      } else if (getText() != null && getText() != "") { // shrinking
+        // We only update the text to transparent if it exists, otherwise, updating the
+        // text color to transparent affects the elevation of the view.
+        // It's okay for the text to be set afterwards and not be transparent, as it is cut off
+        // by forcing the layout param dimens.
+        silentlyUpdateTextColor(ColorStateList.valueOf(Color.TRANSPARENT));
+      }
+
       setPaddingRelative(
           size.getPaddingStart(),
           getPaddingTop(),
