@@ -163,6 +163,7 @@ import java.util.Locale;
  *       {@code trackColorActive} and {@code trackColorInactive} to the same thing. This takes
  *       precedence over {@code trackColorActive} and {@code trackColorInactive}.
  *   <li>{@code trackHeight}: The height of the track.
+ *   <li>{@code trackCornerSize}: The corner size on the outside of the track.
  *   <li>{@code trackInsideCornerSize}: The corner size on the inside of the track (visible with
  *       gap).
  *   <li>{@code trackStopIndicatorSize}: The size of the stop indicator at the edges of the track.
@@ -210,6 +211,7 @@ import java.util.Locale;
  * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
  * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
  * @attr ref com.google.android.material.R.styleable#Slider_trackHeight
+ * @attr ref com.google.android.material.R.styleable#Slider_trackCornerSize
  * @attr ref com.google.android.material.R.styleable#Slider_trackInsideCornerSize
  * @attr ref com.google.android.material.R.styleable#Slider_trackStopIndicatorSize
  */
@@ -252,6 +254,7 @@ abstract class BaseSlider<
   private static final int HALO_ALPHA = 63;
   private static final double THRESHOLD = .0001;
   private static final float THUMB_WIDTH_PRESSED_RATIO = .5f;
+  private static final int TRACK_CORNER_SIZE_UNSET = -1;
 
   static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Slider;
   static final int UNIT_VALUE = 1;
@@ -313,6 +316,7 @@ abstract class BaseSlider<
   private int defaultThumbWidth = -1;
   private int defaultThumbTrackGapSize = -1;
   private int trackStopIndicatorSize;
+  private int trackCornerSize;
   private int trackInsideCornerSize;
   private int labelPadding;
   private float touchDownX;
@@ -557,6 +561,8 @@ abstract class BaseSlider<
     setThumbTrackGapSize(a.getDimensionPixelSize(R.styleable.Slider_thumbTrackGapSize, 0));
     setTrackStopIndicatorSize(
         a.getDimensionPixelSize(R.styleable.Slider_trackStopIndicatorSize, 0));
+    setTrackCornerSize(
+        a.getDimensionPixelSize(R.styleable.Slider_trackCornerSize, TRACK_CORNER_SIZE_UNSET));
     setTrackInsideCornerSize(a.getDimensionPixelSize(R.styleable.Slider_trackInsideCornerSize, 0));
 
     int radius = a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0);
@@ -1869,6 +1875,34 @@ abstract class BaseSlider<
   }
 
   /**
+   * Returns the corner size on the outside of the track.
+   *
+   * @see #setTrackCornerSize(int)
+   * @attr ref com.google.android.material.R.styleable#Slider_trackCornerSize
+   */
+  @Px
+  public int getTrackCornerSize() {
+    if (trackCornerSize == TRACK_CORNER_SIZE_UNSET) {
+      return trackHeight / 2; // full rounded corners by default when unset
+    }
+    return trackCornerSize;
+  }
+
+  /**
+   * Sets the corner size on the outside of the track.
+   *
+   * @see #getTrackCornerSize()
+   * @attr ref com.google.android.material.R.styleable#Slider_trackCornerSize
+   */
+  public void setTrackCornerSize(@Px int cornerSize) {
+    if (this.trackCornerSize == cornerSize) {
+      return;
+    }
+    this.trackCornerSize = cornerSize;
+    invalidate();
+  }
+
+  /**
    * Returns the corner size on the inside of the track (visible with gap).
    *
    * @see #setTrackInsideCornerSize(int)
@@ -2077,35 +2111,23 @@ abstract class BaseSlider<
     float[] activeRange = getActiveRange();
     float right = trackSidePadding + activeRange[1] * width;
     if (right < trackSidePadding + width) {
-      if (hasGapBetweenThumbAndTrack()) {
-        trackRect.set(
-            right + thumbTrackGapSize,
-            yCenter - trackHeight / 2f,
-            trackSidePadding + width + trackHeight / 2f,
-            yCenter + trackHeight / 2f);
-        updateTrack(canvas, inactiveTrackPaint, trackRect, FullCornerDirection.RIGHT);
-      } else {
-        inactiveTrackPaint.setStyle(Style.STROKE);
-        inactiveTrackPaint.setStrokeCap(Cap.ROUND);
-        canvas.drawLine(right, yCenter, trackSidePadding + width, yCenter, inactiveTrackPaint);
-      }
+      trackRect.set(
+          right + thumbTrackGapSize,
+          yCenter - trackHeight / 2f,
+          trackSidePadding + width + getTrackCornerSize(),
+          yCenter + trackHeight / 2f);
+      updateTrack(canvas, inactiveTrackPaint, trackRect, FullCornerDirection.RIGHT);
     }
 
     // Also draw inactive track to the left if there is any
     float left = trackSidePadding + activeRange[0] * width;
     if (left > trackSidePadding) {
-      if (hasGapBetweenThumbAndTrack()) {
-        trackRect.set(
-            trackSidePadding - trackHeight / 2f,
-            yCenter - trackHeight / 2f,
-            left - thumbTrackGapSize,
-            yCenter + trackHeight / 2f);
-        updateTrack(canvas, inactiveTrackPaint, trackRect, FullCornerDirection.LEFT);
-      } else {
-        inactiveTrackPaint.setStyle(Style.STROKE);
-        inactiveTrackPaint.setStrokeCap(Cap.ROUND);
-        canvas.drawLine(trackSidePadding, yCenter, left, yCenter, inactiveTrackPaint);
-      }
+      trackRect.set(
+          trackSidePadding - getTrackCornerSize(),
+          yCenter - trackHeight / 2f,
+          left - thumbTrackGapSize,
+          yCenter + trackHeight / 2f);
+      updateTrack(canvas, inactiveTrackPaint, trackRect, FullCornerDirection.LEFT);
     }
   }
 
@@ -2126,54 +2148,48 @@ abstract class BaseSlider<
     float right = trackSidePadding + activeRange[1] * width;
     float left = trackSidePadding + activeRange[0] * width;
 
-    if (hasGapBetweenThumbAndTrack()) {
-      FullCornerDirection direction = FullCornerDirection.NONE;
-      if (values.size() == 1) { // Only 1 thumb
-        direction = isRtl() ? FullCornerDirection.RIGHT : FullCornerDirection.LEFT;
+    FullCornerDirection direction = FullCornerDirection.NONE;
+    if (values.size() == 1) { // Only 1 thumb
+      direction = isRtl() ? FullCornerDirection.RIGHT : FullCornerDirection.LEFT;
+    }
+
+    for (int i = 0; i < values.size(); i++) {
+      if (values.size() > 1) {
+        if (i > 0) {
+          left = valueToX(values.get(i - 1));
+        }
+        right = valueToX(values.get(i));
+        if (isRtl()) { // Swap left right
+          float temp = left;
+          left = right;
+          right = temp;
+        }
       }
 
-      for (int i = 0; i < values.size(); i++) {
-        if (values.size() > 1) {
-          if (i > 0) {
-            left = valueToX(values.get(i - 1));
-          }
-          right = valueToX(values.get(i));
-          if (isRtl()) { // Swap left right
-            float temp = left;
-            left = right;
-            right = temp;
-          }
-        }
-
-        switch (direction) {
-          case NONE:
-            left += thumbTrackGapSize;
-            right -= thumbTrackGapSize;
-            break;
-          case LEFT:
-            left -= trackHeight / 2f;
-            right -= thumbTrackGapSize;
-            break;
-          case RIGHT:
-            left += thumbTrackGapSize;
-            right += trackHeight / 2f;
-            break;
-          default:
-            // fall through
-        }
-
-        // Nothing to draw if left is bigger than right.
-        if (left >= right) {
-          continue;
-        }
-
-        trackRect.set(left, yCenter - trackHeight / 2f, right, yCenter + trackHeight / 2f);
-        updateTrack(canvas, activeTrackPaint, trackRect, direction);
+      switch (direction) {
+        case NONE:
+          left += thumbTrackGapSize;
+          right -= thumbTrackGapSize;
+          break;
+        case LEFT:
+          left -= getTrackCornerSize();
+          right -= thumbTrackGapSize;
+          break;
+        case RIGHT:
+          left += thumbTrackGapSize;
+          right += getTrackCornerSize();
+          break;
+        default:
+          // fall through
       }
-    } else {
-      activeTrackPaint.setStyle(Style.STROKE);
-      activeTrackPaint.setStrokeCap(Cap.ROUND);
-      canvas.drawLine(left, yCenter, right, yCenter, activeTrackPaint);
+
+      // Nothing to draw if left is bigger than right.
+      if (left >= right) {
+        continue;
+      }
+
+      trackRect.set(left, yCenter - trackHeight / 2f, right, yCenter + trackHeight / 2f);
+      updateTrack(canvas, activeTrackPaint, trackRect, direction);
     }
   }
 
@@ -2191,8 +2207,8 @@ abstract class BaseSlider<
 
   private void updateTrack(
       Canvas canvas, Paint paint, RectF bounds, FullCornerDirection direction) {
-    float leftCornerSize = trackHeight / 2f;
-    float rightCornerSize = trackHeight / 2f;
+    float leftCornerSize = getTrackCornerSize();
+    float rightCornerSize = getTrackCornerSize();
     switch (direction) {
       case BOTH:
         break;
@@ -2210,7 +2226,10 @@ abstract class BaseSlider<
 
     paint.setStyle(Style.FILL);
     paint.setStrokeCap(Cap.BUTT);
-    paint.setAntiAlias(true);
+    // TODO(b/373654533): activate anti-aliasing for legacy Slider
+    if (hasGapBetweenThumbAndTrack()) {
+      paint.setAntiAlias(true);
+    }
 
     // Draws track path with rounded corners.
     trackPath.reset();

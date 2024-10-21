@@ -79,6 +79,8 @@
     <attr name="trackColorInactive" format="color" />
     <!-- The height of the track. -->
     <attr name="trackHeight" format="dimension" />
+    <!-- The corner size on the outside of the track. -->
+    <attr name="trackCornerSize" format="dimension" />
     <!-- The corner size on the inside of the track (visible with gap). -->
     <attr name="trackInsideCornerSize" format="dimension" />
     <!-- The size of the stop indicator at the edges of the track. -->

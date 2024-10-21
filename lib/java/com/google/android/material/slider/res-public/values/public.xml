@@ -38,6 +38,7 @@
   <public name="trackColorActive" type="attr" />
   <public name="trackColorInactive" type="attr" />
   <public name="trackHeight" type="attr" />
+  <public name="trackCornerSize" type="attr" />
   <public name="trackInsideCornerSize" type="attr" />
   <public name="values" type="attr" />
 

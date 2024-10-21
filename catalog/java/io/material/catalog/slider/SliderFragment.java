@@ -84,6 +84,13 @@ public class SliderFragment extends DemoLandingFragment {
             return new SliderLabelBehaviorDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_slider_demo_corner_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SliderCornerDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

@@ -60,6 +60,7 @@ public class SliderTouchTest {
     slider = helper.getRangeSlider();
     slider.setValueFrom(SLIDER_VALUE_FROM);
     slider.setValueTo(SLIDER_VALUE_TO);
+    slider.setStepSize(VALUE_SMALL_DIFF);
 
     helper.addContentView(activity);
   }
