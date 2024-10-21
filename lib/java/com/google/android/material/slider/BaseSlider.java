@@ -1905,6 +1905,9 @@ abstract class BaseSlider<
       for (TooltipDrawable label : labels) {
         contentViewOverlay.remove(label);
       }
+      thisAndAncestorsVisible = false;
+    } else {
+      thisAndAncestorsVisible = true;
     }
   }
 
@@ -2714,19 +2717,7 @@ abstract class BaseSlider<
   private boolean isSliderVisibleOnScreen() {
     final Rect contentViewBounds = new Rect();
     ViewUtils.getContentView(this).getHitRect(contentViewBounds);
-    return getLocalVisibleRect(contentViewBounds) && isThisAndAncestorsVisible();
-  }
-
-  private boolean isThisAndAncestorsVisible() {
-    // onVisibilityAggregated is only available on N+ devices, so on pre-N devices we check if this
-    // view and its ancestors are visible each time, in case one of the visibilities has changed.
-    return (VERSION.SDK_INT >= VERSION_CODES.N) ? thisAndAncestorsVisible : isShown();
-  }
-
-  @Override
-  public void onVisibilityAggregated(boolean isVisible) {
-    super.onVisibilityAggregated(isVisible);
-    this.thisAndAncestorsVisible = isVisible;
+    return getLocalVisibleRect(contentViewBounds) && thisAndAncestorsVisible;
   }
 
   private void ensureLabelsRemoved() {
