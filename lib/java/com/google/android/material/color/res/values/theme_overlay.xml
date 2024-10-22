@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="ThemeOverlay.Material3.HarmonizedColors" parent="">
     <item name="colorError">@color/material_harmonized_color_error</item>

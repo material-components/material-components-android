@@ -243,7 +243,7 @@
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" >?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
@@ -528,7 +528,7 @@
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" >?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
@@ -646,8 +646,8 @@
     <item name="bottomSheetDialogTheme">@style/ThemeOverlay.MaterialComponents.BottomSheetDialog</item>
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
-    <item name="android:datePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
-    <item name="android:timePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:datePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:timePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog</item>
 
     <!-- Type styles -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>
@@ -713,8 +713,8 @@
     <item name="bottomSheetDialogTheme">@style/ThemeOverlay.MaterialComponents.BottomSheetDialog</item>
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
-    <item name="android:datePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
-    <item name="android:timePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:datePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:timePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog</item>
 
     <!-- Type styles -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>

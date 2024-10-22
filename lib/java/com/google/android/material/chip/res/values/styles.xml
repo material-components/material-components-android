@@ -26,9 +26,7 @@
     <item name="android:focusable">true</item>
     <item name="android:clickable">true</item>
     <item name="android:checkable">false</item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/mtrl_chip_state_list_anim
-    </item>
+    <item name="android:stateListAnimator">@animator/mtrl_chip_state_list_anim</item>
 
     <item name="chipIconVisible">true</item>
     <item name="checkedIconVisible">true</item>
@@ -163,9 +161,7 @@
     <item name="checkedIcon">@drawable/ic_m3_chip_checked_circle</item>
     <item name="closeIcon">@drawable/ic_m3_chip_close</item>
     <item name="chipIconSize">@dimen/m3_chip_icon_size</item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_chip_state_list_anim
-    </item>
+    <item name="android:stateListAnimator">@animator/m3_chip_state_list_anim</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Chip</item>
   </style>
 
@@ -188,7 +184,7 @@
     <item name="chipMinHeight">@dimen/m3_comp_input_chip_container_height</item>
     <item name="chipIconSize">@dimen/m3_comp_input_chip_with_avatar_avatar_size</item>
     <item name="chipStrokeWidth">@dimen/m3_comp_input_chip_unselected_outline_width</item>
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_comp_input_chip_container_elevation</item>
+    <item name="android:elevation">@dimen/m3_comp_input_chip_container_elevation</item>
 
     <item name="chipStartPadding">4dp</item>
     <item name="iconStartPadding">0dp</item>
@@ -204,12 +200,8 @@
   <!-- Style for input Chip, to be used when placed against a background
        that needs protection, such as an image. -->
   <style name="Widget.Material3.Chip.Input.Elevated">
-    <item name="android:elevation" tools:ignore="NewApi">
-      @dimen/m3_chip_elevated_elevation
-    </item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_elevated_chip_state_list_anim
-    </item>
+    <item name="android:elevation">@dimen/m3_chip_elevated_elevation</item>
+    <item name="android:stateListAnimator">@animator/m3_elevated_chip_state_list_anim</item>
     <item name="chipStrokeColor">@android:color/transparent</item>
     <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
   </style>
@@ -224,12 +216,8 @@
   <!-- Style for Input Chip with system icons, to be used when placed against a
        background that needs protection, such as an image. -->
   <style name="Widget.Material3.Chip.Input.Icon.Elevated">
-    <item name="android:elevation" tools:ignore="NewApi">
-      @dimen/m3_chip_elevated_elevation
-    </item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_elevated_chip_state_list_anim
-    </item>
+    <item name="android:elevation">@dimen/m3_chip_elevated_elevation</item>
+    <item name="android:stateListAnimator">@animator/m3_elevated_chip_state_list_anim</item>
     <item name="chipStrokeColor">@android:color/transparent</item>
     <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
   </style>
@@ -257,7 +245,7 @@
     <item name="chipMinHeight">@dimen/m3_comp_suggestion_chip_container_height</item>
     <item name="chipIconSize">@dimen/m3_comp_suggestion_chip_with_leading_icon_leading_icon_size</item>
     <item name="chipStrokeWidth">@dimen/m3_comp_suggestion_chip_flat_outline_width</item>
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_comp_suggestion_chip_flat_container_elevation</item>
+    <item name="android:elevation">@dimen/m3_comp_suggestion_chip_flat_container_elevation</item>
 
     <item name="chipStartPadding">8dp</item>
     <item name="iconStartPadding">0dp</item>
@@ -274,12 +262,10 @@
   <!-- Style for Suggestion Chip, to be used when placed against a background
        that needs protection, such as an image. -->
   <style name="Widget.Material3.Chip.Suggestion.Elevated">
-    <item name="android:elevation" tools:ignore="NewApi">
+    <item name="android:elevation">
       @dimen/m3_comp_suggestion_chip_elevated_container_elevation
     </item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_elevated_chip_state_list_anim
-    </item>
+    <item name="android:stateListAnimator">@animator/m3_elevated_chip_state_list_anim</item>
     <item name="chipStrokeColor">@android:color/transparent</item>
     <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
   </style>
@@ -309,7 +295,7 @@
     <item name="chipMinHeight">@dimen/m3_comp_assist_chip_container_height</item>
     <item name="chipIconSize">@dimen/m3_comp_assist_chip_with_icon_icon_size</item>
     <item name="chipStrokeWidth">@dimen/m3_comp_assist_chip_flat_outline_width</item>
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_comp_assist_chip_flat_container_elevation</item>
+    <item name="android:elevation">@dimen/m3_comp_assist_chip_flat_container_elevation</item>
 
     <item name="chipStartPadding">8dp</item>
     <item name="iconStartPadding">0dp</item>
@@ -326,12 +312,8 @@
   <!-- Style for Assist Chip to be used against a background that needs
        protection, such as an image. -->
   <style name="Widget.Material3.Chip.Assist.Elevated">
-    <item name="android:elevation" tools:ignore="NewApi">
-      @dimen/m3_comp_assist_chip_elevated_container_elevation
-    </item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_elevated_chip_state_list_anim
-    </item>
+    <item name="android:elevation">@dimen/m3_comp_assist_chip_elevated_container_elevation</item>
+    <item name="android:stateListAnimator">@animator/m3_elevated_chip_state_list_anim</item>
     <item name="chipStrokeColor">@android:color/transparent</item>
     <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
   </style>
@@ -348,7 +330,7 @@
     <item name="chipMinHeight">@dimen/m3_comp_filter_chip_container_height</item>
     <item name="chipIconSize">@dimen/m3_comp_filter_chip_with_icon_icon_size</item>
     <item name="chipStrokeWidth">@dimen/m3_comp_filter_chip_flat_unselected_outline_width</item>
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/m3_comp_filter_chip_flat_container_elevation</item>
+    <item name="android:elevation">@dimen/m3_comp_filter_chip_flat_container_elevation</item>
 
     <item name="chipStartPadding">8dp</item>
     <item name="iconStartPadding">0dp</item>
@@ -365,11 +347,8 @@
   <!-- Style for Filter Chip to be used against a background that needs
        protection, such as an image. -->
   <style name="Widget.Material3.Chip.Filter.Elevated">
-    <item name="android:elevation" tools:ignore="NewApi">
-      @dimen/m3_comp_filter_chip_elevated_container_elevation</item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_elevated_chip_state_list_anim
-    </item>
+    <item name="android:elevation">@dimen/m3_comp_filter_chip_elevated_container_elevation</item>
+    <item name="android:stateListAnimator">@animator/m3_elevated_chip_state_list_anim</item>
     <item name="chipStrokeColor">@android:color/transparent</item>
     <item name="chipBackgroundColor">@color/m3_elevated_chip_background_color</item>
   </style>
