@@ -230,8 +230,6 @@ abstract class BaseSlider<
           + " stepSize(%s)";
   private static final String EXCEPTION_ILLEGAL_VALUE_FROM =
       "valueFrom(%s) must be smaller than valueTo(%s)";
-  private static final String EXCEPTION_ILLEGAL_VALUE_TO =
-      "valueTo(%s) must be greater than valueFrom(%s)";
   private static final String EXCEPTION_ILLEGAL_STEP_SIZE =
       "The stepSize(%s) must be 0, or a factor of the valueFrom(%s)-valueTo(%s) range";
   private static final String EXCEPTION_ILLEGAL_MIN_SEPARATION =
@@ -612,16 +610,9 @@ abstract class BaseSlider<
   }
 
   private void validateValueFrom() {
-    if (valueFrom >= valueTo) {
+    if (valueFrom > valueTo) {
       throw new IllegalStateException(
           String.format(EXCEPTION_ILLEGAL_VALUE_FROM, valueFrom, valueTo));
-    }
-  }
-
-  private void validateValueTo() {
-    if (valueTo <= valueFrom) {
-      throw new IllegalStateException(
-          String.format(EXCEPTION_ILLEGAL_VALUE_TO, valueTo, valueFrom));
     }
   }
 
@@ -707,7 +698,6 @@ abstract class BaseSlider<
   private void validateConfigurationIfDirty() {
     if (dirtyConfig) {
       validateValueFrom();
-      validateValueTo();
       validateStepSize();
       validateValues();
       validateMinSeparation();
@@ -2074,7 +2064,7 @@ abstract class BaseSlider<
 
     float first = values.get(0);
     float last = values.get(values.size() - 1);
-    if (last < valueTo || (values.size() > 1 && first > valueFrom)) {
+    if (last < valueTo || (values.size() > 1 && first > valueFrom) || valueTo == valueFrom) {
       drawInactiveTrack(canvas, trackWidth, yCenter);
     }
     if (last > valueFrom) {
@@ -2136,7 +2126,10 @@ abstract class BaseSlider<
    * being on the far left, and 1 on the far right.
    */
   private float normalizeValue(float value) {
-    float normalized = (value - valueFrom) / (valueTo - valueFrom);
+    float normalized = 0;
+    if (valueTo != valueFrom) {
+      normalized = (value - valueFrom) / (valueTo - valueFrom);
+    }
     if (isRtl()) {
       return 1 - normalized;
     }
@@ -2493,7 +2486,7 @@ abstract class BaseSlider<
   }
 
   private double snapPosition(float position) {
-    if (stepSize > 0.0f) {
+    if (stepSize > 0.0f && valueTo != valueFrom) {
       int stepCount = (int) ((valueTo - valueFrom) / stepSize);
       return Math.round(position * stepCount) / (double) stepCount;
     }
