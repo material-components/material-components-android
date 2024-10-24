@@ -24,7 +24,7 @@ ext {
   androidXVersions = [
     activity                     : '1.8.0',
     annotation                   : '1.2.0',
-    appCompat                    : '1.6.1',
+    appCompat                    : '1.7.0',
     cardView                     : '1.0.0',
     constraintlayout             : '2.0.1',
     coordinatorlayout            : '1.1.0',
