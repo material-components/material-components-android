@@ -79,6 +79,18 @@
     <attr name="trackColorInactive" format="color" />
     <!-- The height of the track. -->
     <attr name="trackHeight" format="dimension" />
+    <!-- The icon on the active portion of the track. -->
+    <attr name="trackIconActive" format="reference" />
+    <!-- The size of the icon on the active portion of the track. -->
+    <attr name="trackIconActiveSize" format="dimension" />
+    <!-- The color of the icon on the active portion of the track. -->
+    <attr name="trackIconActiveColor" format="color" />
+    <!-- The icon on the inactive portion of the track. -->
+    <attr name="trackIconInactive" format="reference" />
+    <!-- The size of the icon on the inactive portion of the track. -->
+    <attr name="trackIconInactiveSize" format="dimension" />
+    <!-- The color of the icon on the inactive portion of the track. -->
+    <attr name="trackIconInactiveColor" format="color" />
     <!-- The corner size on the outside of the track. -->
     <attr name="trackCornerSize" format="dimension" />
     <!-- The corner size on the inside of the track (visible with gap). -->

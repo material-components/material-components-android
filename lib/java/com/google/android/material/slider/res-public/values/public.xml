@@ -40,6 +40,12 @@
   <public name="trackHeight" type="attr" />
   <public name="trackCornerSize" type="attr" />
   <public name="trackInsideCornerSize" type="attr" />
+  <public name="trackIconActive" type="attr" />
+  <public name="trackIconActiveSize" type="attr" />
+  <public name="trackIconActiveColor" type="attr" />
+  <public name="trackIconInactive" type="attr" />
+  <public name="trackIconInactiveSize" type="attr" />
+  <public name="trackIconInactiveColor" type="attr" />
   <public name="values" type="attr" />
 
   <public name="Widget.MaterialComponents.Slider" type="style"/>

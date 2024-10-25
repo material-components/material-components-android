@@ -101,6 +101,7 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.tooltip.TooltipDrawable;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
@@ -211,6 +212,12 @@ import java.util.Locale;
  * @attr ref com.google.android.material.R.styleable#Slider_trackColorActive
  * @attr ref com.google.android.material.R.styleable#Slider_trackColorInactive
  * @attr ref com.google.android.material.R.styleable#Slider_trackHeight
+ * @attr ref com.google.android.material.R.styleable#Slider_trackIconActive
+ * @attr ref com.google.android.material.R.styleable#Slider_trackIconActiveSize
+ * @attr ref com.google.android.material.R.styleable#Slider_trackIconActiveColor
+ * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactive
+ * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactiveSize
+ * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactiveColor
  * @attr ref com.google.android.material.R.styleable#Slider_trackCornerSize
  * @attr ref com.google.android.material.R.styleable#Slider_trackInsideCornerSize
  * @attr ref com.google.android.material.R.styleable#Slider_trackStopIndicatorSize
@@ -318,6 +325,12 @@ abstract class BaseSlider<
   private int trackStopIndicatorSize;
   private int trackCornerSize;
   private int trackInsideCornerSize;
+  private Drawable trackIconActive;
+  @Px private int trackIconActiveSize;
+  private ColorStateList trackIconActiveColor;
+  private Drawable trackIconInactive;
+  @Px private int trackIconInactiveSize;
+  private ColorStateList trackIconInactiveColor;
   private int labelPadding;
   private float touchDownX;
   private MotionEvent lastEvent;
@@ -349,7 +362,8 @@ abstract class BaseSlider<
   @NonNull private ColorStateList trackColorInactive;
 
   @NonNull private final Path trackPath = new Path();
-  @NonNull private final RectF trackRect = new RectF();
+  @NonNull private final RectF activeTrackRect = new RectF();
+  @NonNull private final RectF inactiveTrackRect = new RectF();
   @NonNull private final RectF cornerRect = new RectF();
   @NonNull private final MaterialShapeDrawable defaultThumbDrawable = new MaterialShapeDrawable();
   @Nullable private Drawable customThumbDrawable;
@@ -564,6 +578,16 @@ abstract class BaseSlider<
     setTrackCornerSize(
         a.getDimensionPixelSize(R.styleable.Slider_trackCornerSize, TRACK_CORNER_SIZE_UNSET));
     setTrackInsideCornerSize(a.getDimensionPixelSize(R.styleable.Slider_trackInsideCornerSize, 0));
+    setTrackIconActive(
+        MaterialResources.getDrawable(context, a, R.styleable.Slider_trackIconActive));
+    setTrackIconActiveSize(a.getDimensionPixelSize(R.styleable.Slider_trackIconActiveSize, 0));
+    setTrackIconActiveColor(
+        MaterialResources.getColorStateList(context, a, R.styleable.Slider_trackIconActiveColor));
+    setTrackIconInactive(
+        MaterialResources.getDrawable(context, a, R.styleable.Slider_trackIconInactive));
+    setTrackIconInactiveSize(a.getDimensionPixelSize(R.styleable.Slider_trackIconInactiveSize, 0));
+    setTrackIconInactiveColor(
+        MaterialResources.getColorStateList(context, a, R.styleable.Slider_trackIconInactiveColor));
 
     int radius = a.getDimensionPixelSize(R.styleable.Slider_thumbRadius, 0);
     int thumbWidth = a.getDimensionPixelSize(R.styleable.Slider_thumbWidth, radius * 2);
@@ -1926,6 +1950,198 @@ abstract class BaseSlider<
     invalidate();
   }
 
+  /**
+   * Sets the active track icon.
+   *
+   * @param icon Drawable to use for the active track's icon.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconActive
+   * @see #setTrackIconActiveResource(int)
+   * @see #getTrackIconActive()
+   */
+  public void setTrackIconActive(@Nullable Drawable icon) {
+    if (this.trackIconActive == icon) {
+      return;
+    }
+    this.trackIconActive = icon;
+    invalidate();
+  }
+
+  /**
+   * Sets the active track icon.
+   *
+   * @param iconResourceId Drawable resource ID to use for the active track's icon.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconActive
+   * @see #setTrackIconActive(Drawable)
+   * @see #getTrackIconActive()
+   */
+  public void setTrackIconActiveResource(@DrawableRes int iconResourceId) {
+    Drawable icon = null;
+    if (iconResourceId != 0) {
+      icon = AppCompatResources.getDrawable(getContext(), iconResourceId);
+    }
+    setTrackIconActive(icon);
+  }
+
+  /**
+   * Gets the active track icon shown, if present.
+   *
+   * @return Icon shown for this active track, if present.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconActive
+   * @see #setTrackIconActive(Drawable)
+   * @see #setTrackIconActiveResource(int)
+   */
+  public Drawable getTrackIconActive() {
+    return trackIconActive;
+  }
+
+  /**
+   * Sets the active track icon size.
+   *
+   * @param size size to use for the active track's icon.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconActiveSize
+   * @see #getTrackIconActiveSize()
+   */
+  public void setTrackIconActiveSize(@Px int size) {
+    if (this.trackIconActiveSize == size) {
+      return;
+    }
+    this.trackIconActiveSize = size;
+    invalidate();
+  }
+
+  /**
+   * Gets the active track icon size shown, if present.
+   *
+   * @return Size of the icon shown for this active track, if present.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconActiveSize
+   * @see #setTrackIconActiveSize(int)
+   */
+  public int getTrackIconActiveSize() {
+    return trackIconActiveSize;
+  }
+
+  /**
+   * Sets the active track icon color.
+   *
+   * @param color color to use for the active track's icon.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconActiveColor
+   * @see #getTrackIconActiveColor()
+   */
+  public void setTrackIconActiveColor(ColorStateList color) {
+    if (this.trackIconActiveColor == color) {
+      return;
+    }
+    this.trackIconActiveColor = color;
+    invalidate();
+  }
+
+  /**
+   * Gets the active track icon color shown, if present.
+   *
+   * @return Color of the icon shown for this active track, if present.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconActiveColor
+   * @see #setTrackIconActiveColor(ColorStateList)
+   */
+  public ColorStateList getTrackIconActiveColor() {
+    return trackIconActiveColor;
+  }
+
+  /**
+   * Sets the inactive track icon.
+   *
+   * @param icon Drawable to use for the inactive track's icon.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactive
+   * @see #setTrackIconInactiveResource(int)
+   * @see #getTrackIconInactive()
+   */
+  public void setTrackIconInactive(@Nullable Drawable icon) {
+    if (this.trackIconInactive == icon) {
+      return;
+    }
+    this.trackIconInactive = icon;
+    invalidate();
+  }
+
+  /**
+   * Sets the inactive track icon.
+   *
+   * @param iconResourceId Drawable resource ID to use for the inactive track's icon.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactive
+   * @see #setTrackIconInactive(Drawable)
+   * @see #getTrackIconInactive()
+   */
+  public void setTrackIconInactiveResource(@DrawableRes int iconResourceId) {
+    Drawable icon = null;
+    if (iconResourceId != 0) {
+      icon = AppCompatResources.getDrawable(getContext(), iconResourceId);
+    }
+    setTrackIconInactive(icon);
+  }
+
+  /**
+   * Gets the inactive track icon shown, if present.
+   *
+   * @return Icon shown for this inactive track, if present.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactive
+   * @see #setTrackIconInactive(Drawable)
+   * @see #setTrackIconInactiveResource(int)
+   */
+  public Drawable getTrackIconInactive() {
+    return trackIconInactive;
+  }
+
+  /**
+   * Sets the inactive track icon size.
+   *
+   * @param size size to use for the inactive track's icon.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactiveSize
+   * @see #getTrackIconInactiveSize()
+   */
+  public void setTrackIconInactiveSize(@Px int size) {
+    if (this.trackIconInactiveSize == size) {
+      return;
+    }
+    this.trackIconInactiveSize = size;
+    invalidate();
+  }
+
+  /**
+   * Gets the inactive track icon size shown, if present.
+   *
+   * @return Size of the icon shown for this inactive track, if present.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactiveSize
+   * @see #setTrackIconInactiveSize(int)
+   */
+  public int getTrackIconInactiveSize() {
+    return trackIconInactiveSize;
+  }
+
+  /**
+   * Sets the inactive track icon color.
+   *
+   * @param color color to use for the inactive track's icon.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactiveColor
+   * @see #getTrackIconInactiveColor()
+   */
+  public void setTrackIconInactiveColor(ColorStateList color) {
+    if (this.trackIconInactiveColor == color) {
+      return;
+    }
+    this.trackIconInactiveColor = color;
+    invalidate();
+  }
+
+  /**
+   * Gets the inactive track icon color shown, if present.
+   *
+   * @return Color of the icon shown for this inactive track, if present.
+   * @attr ref com.google.android.material.R.styleable#Slider_trackIconInactiveColor
+   * @see #setTrackIconInactiveColor(ColorStateList)
+   */
+  public ColorStateList getTrackIconInactiveColor() {
+    return trackIconInactiveColor;
+  }
+
   @Override
   protected void onVisibilityChanged(@NonNull View changedView, int visibility) {
     super.onVisibilityChanged(changedView, visibility);
@@ -2080,6 +2296,7 @@ abstract class BaseSlider<
     if (last > valueFrom) {
       drawActiveTrack(canvas, trackWidth, yCenter);
     }
+    drawTrackIcons(canvas, activeTrackRect, inactiveTrackRect);
 
     maybeDrawTicks(canvas);
     maybeDrawStopIndicator(canvas, yCenter);
@@ -2111,23 +2328,23 @@ abstract class BaseSlider<
     float[] activeRange = getActiveRange();
     float right = trackSidePadding + activeRange[1] * width;
     if (right < trackSidePadding + width) {
-      trackRect.set(
+      inactiveTrackRect.set(
           right + thumbTrackGapSize,
           yCenter - trackHeight / 2f,
           trackSidePadding + width + getTrackCornerSize(),
           yCenter + trackHeight / 2f);
-      updateTrack(canvas, inactiveTrackPaint, trackRect, FullCornerDirection.RIGHT);
+      updateTrack(canvas, inactiveTrackPaint, inactiveTrackRect, FullCornerDirection.RIGHT);
     }
 
     // Also draw inactive track to the left if there is any
     float left = trackSidePadding + activeRange[0] * width;
     if (left > trackSidePadding) {
-      trackRect.set(
+      inactiveTrackRect.set(
           trackSidePadding - getTrackCornerSize(),
           yCenter - trackHeight / 2f,
           left - thumbTrackGapSize,
           yCenter + trackHeight / 2f);
-      updateTrack(canvas, inactiveTrackPaint, trackRect, FullCornerDirection.LEFT);
+      updateTrack(canvas, inactiveTrackPaint, inactiveTrackRect, FullCornerDirection.LEFT);
     }
   }
 
@@ -2188,9 +2405,65 @@ abstract class BaseSlider<
         continue;
       }
 
-      trackRect.set(left, yCenter - trackHeight / 2f, right, yCenter + trackHeight / 2f);
-      updateTrack(canvas, activeTrackPaint, trackRect, direction);
+      activeTrackRect.set(left, yCenter - trackHeight / 2f, right, yCenter + trackHeight / 2f);
+      updateTrack(canvas, activeTrackPaint, activeTrackRect, direction);
     }
+  }
+
+  private void drawTrackIcons(
+      @NonNull Canvas canvas,
+      @NonNull RectF activeTrackBounds,
+      @NonNull RectF inactiveTrackBounds) {
+    if (values.size() > 1) {
+      Log.w(TAG, "Track icons can only be used when only 1 thumb is present.");
+    }
+
+    // draw active track icon
+    if (trackIconActive != null
+        && drawTrackIcon(
+            canvas,
+            activeTrackBounds,
+            trackIconActive,
+            trackIconActiveSize,
+            trackIconActiveColor)) {
+      return;
+    }
+    // draw inactive track icon if active not drawn
+    if (trackIconInactive != null) {
+      drawTrackIcon(
+          canvas,
+          inactiveTrackBounds,
+          trackIconInactive,
+          trackIconInactiveSize,
+          trackIconInactiveColor);
+    }
+  }
+
+  @CanIgnoreReturnValue
+  private boolean drawTrackIcon(
+      @NonNull Canvas canvas,
+      @NonNull RectF trackBounds,
+      @NonNull Drawable drawable,
+      @Px int size,
+      ColorStateList color) {
+    Rect iconBounds = calculateTrackIconBounds(trackBounds, size);
+    if (trackBounds.left > iconBounds.left || trackBounds.right < iconBounds.right) {
+      // not enough space to draw icon
+      return false;
+    }
+    DrawableCompat.setTintList(drawable, color);
+    drawable.setBounds(iconBounds);
+    drawable.draw(canvas);
+    return true;
+  }
+
+  private Rect calculateTrackIconBounds(@NonNull RectF trackBounds, @Px int iconSize) {
+    float iconPadding = getResources().getDimension(R.dimen.m3_slider_track_icon_padding);
+    float iconLeft =
+        !isRtl() ? trackBounds.left + iconPadding : trackBounds.right - iconSize - iconPadding;
+    float iconRight = iconLeft + iconSize;
+    int iconTop = calculateTrackCenter() - iconSize / 2;
+    return new Rect((int) iconLeft, iconTop, (int) iconRight, iconTop + iconSize);
   }
 
   private boolean hasGapBetweenThumbAndTrack() {
