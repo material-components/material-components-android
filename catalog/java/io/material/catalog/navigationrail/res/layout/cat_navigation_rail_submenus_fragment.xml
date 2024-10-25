@@ -14,13 +14,29 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<com.google.android.material.navigationrail.NavigationRailView
+<androidx.constraintlayout.widget.ConstraintLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/cat_navigation_rail"
-  android:layout_width="wrap_content"
-  android:layout_height="match_parent"
-  app:labelVisibilityMode="labeled"
-  android:fitsSystemWindows="false"
-  app:scrollingEnabled="true"
-  app:menu="@menu/navigation_rail_submenus_menu"/>
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  <com.google.android.material.navigationrail.NavigationRailView
+    android:id="@+id/cat_navigation_rail"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    app:labelVisibilityMode="labeled"
+    android:fitsSystemWindows="false"
+    app:scrollingEnabled="true"
+    app:layout_constraintStart_toStartOf="parent"
+    app:menu="@menu/navigation_rail_submenus_menu"/>
+  <FrameLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    app:layout_constraintStart_toEndOf="@id/cat_navigation_rail"
+    app:layout_constraintEnd_toEndOf="parent">
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:text="@string/cat_navigation_rail_center_text"/>
+  </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

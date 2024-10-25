@@ -74,4 +74,26 @@
         android:title="@string/cat_navigation_rail_page_10_name"/>
     </menu>
   </item>
+
+  <item
+    android:title="@string/cat_navigation_rail_subheader_2_name">
+    <menu>
+      <item
+        android:id="@+id/action_page_11"
+        android:enabled="true"
+        android:icon="@drawable/ic_star_checkable_24"
+        android:title="@string/cat_navigation_rail_page_11_name"/>
+    </menu>
+  </item>
+
+  <item
+    android:title="@string/cat_navigation_rail_subheader_3_name">
+    <menu>
+      <item
+        android:id="@+id/action_page_12"
+        android:enabled="true"
+        android:icon="@drawable/ic_star_checkable_24"
+        android:title="@string/cat_navigation_rail_page_12_name"/>
+    </menu>
+  </item>
 </menu>

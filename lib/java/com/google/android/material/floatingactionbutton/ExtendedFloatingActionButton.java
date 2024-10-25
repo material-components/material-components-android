@@ -920,10 +920,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   /**
    * Set whether or not animations are enabled.
-   *
-   * @hide
    */
-  @RestrictTo(LIBRARY_GROUP)
   public void setAnimationEnabled(boolean animationEnabled) {
     this.animationEnabled = animationEnabled;
   }

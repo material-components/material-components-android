@@ -210,11 +210,11 @@ public abstract class NavigationBarItemView extends FrameLayout
           }
           // If item icon gravity is start, we want to update the active indicator width in a layout
           // change listener to keep the active indicator size up to date with the content width.
+          LayoutParams lp = (LayoutParams) innerContentContainer.getLayoutParams();
+          int newWidth = right - left + lp.rightMargin + lp.leftMargin;
           if (itemIconGravity == ITEM_ICON_GRAVITY_START
               && activeIndicatorExpandedDesiredWidth == ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT
-              && (right - left) != (oldRight - oldLeft)) {
-            LayoutParams lp = (LayoutParams) innerContentContainer.getLayoutParams();
-            int newWidth = right - left + lp.rightMargin + lp.leftMargin;
+              && newWidth != activeIndicatorView.getMeasuredWidth()) {
             LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();
             int minWidth =
                 min(
@@ -306,6 +306,16 @@ public abstract class NavigationBarItemView extends FrameLayout
 
   public int getItemPosition() {
     return itemPosition;
+  }
+
+  @NonNull
+  public BaselineLayout getLabelGroup() {
+    return labelGroup;
+  }
+
+  @NonNull
+  public BaselineLayout getExpandedLabelGroup() {
+    return expandedLabelGroup;
   }
 
   public void setShifting(boolean shifting) {
@@ -1103,7 +1113,11 @@ public abstract class NavigationBarItemView extends FrameLayout
   private void updateActiveIndicatorLayoutParams(int availableWidth) {
     // Set width to the min of either the desired indicator width or the available width minus
     // a horizontal margin.
-    if (availableWidth <= 0) {
+    if (availableWidth <= 0 && getVisibility() == VISIBLE) {
+      // Return early if there's not yet an available width and the view is visible; this will be
+      // called again when there is an available width. Otherwise if the available width is 0 due to
+      // the view being gone, we still want to set layout params so that when the view appears,
+      // there is no jump in animation from turning visible and then adjusting the height/width.
       return;
     }
 
@@ -1125,7 +1139,7 @@ public abstract class NavigationBarItemView extends FrameLayout
     // If the label visibility is unlabeled, make the active indicator's height equal to its
     // width.
     indicatorParams.height = isActiveIndicatorResizeableAndUnlabeled() ? newWidth : newHeight;
-    indicatorParams.width = newWidth;
+    indicatorParams.width = max(0, newWidth);
     activeIndicatorView.setLayoutParams(indicatorParams);
   }
 

@@ -25,12 +25,15 @@ import static com.google.android.material.navigation.NavigationBarMenu.NO_MAX_IT
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+import android.animation.TimeInterpolator;
 import android.content.Context;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ScrollView;
 import androidx.annotation.LayoutRes;
@@ -40,10 +43,16 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.transition.ChangeBounds;
+import androidx.transition.Fade;
+import androidx.transition.Transition;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.ViewUtils.RelativePadding;
+import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.resources.MaterialResources;
 
@@ -110,6 +119,14 @@ public class NavigationRailView extends NavigationBarView {
   static final int COLLAPSED_MAX_ITEM_COUNT = 7;
   private static final int DEFAULT_HEADER_GRAVITY = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
   static final int NO_ITEM_MINIMUM_HEIGHT = -1;
+
+  // These are the values for the cubic bezier curve to mimic the spring curve with a damping
+  // ratio of 0.8 and stiffness value of 380.
+  private static final int EXPAND_DURATION = 500;
+  private static final TimeInterpolator CUBIC_BEZIER_INTERPOLATOR =
+      new PathInterpolator(0.38f, 1.21f, 0.22f, 1.00f);
+
+  private static final int FADE_DURATION = 100;
 
   private final int contentMarginTop;
   private final int headerMarginBottom;
@@ -240,6 +257,74 @@ public class NavigationRailView extends NavigationBarView {
     applyWindowInsets();
   }
 
+  private void startTransitionAnimation() {
+    if (!isLaidOut()) {
+      return;
+    }
+    Transition changeBoundsTransition = new ChangeBounds().setDuration(EXPAND_DURATION)
+        .setInterpolator(CUBIC_BEZIER_INTERPOLATOR);
+    Transition labelFadeInTransition = new Fade().setDuration(FADE_DURATION);
+    Transition labelFadeOutTransition = new Fade().setDuration(FADE_DURATION);
+    Transition labelHorizontalMoveTransition = new LabelMoveTransition();
+    Transition fadingItemsTransition = new Fade().setDuration(FADE_DURATION);
+    // Remove all label groups from being targeted by ChangeBounds as we want a different transition
+    // for it
+    int childCount = getNavigationRailMenuView().getChildCount();
+    for (int i = 0; i < childCount; i++) {
+      View item = getNavigationRailMenuView().getChildAt(i);
+      if (item instanceof NavigationBarItemView) {
+        // Exclude labels from ChangeBounds transition
+        changeBoundsTransition.excludeTarget(((NavigationBarItemView) item).getLabelGroup(), true);
+        changeBoundsTransition.excludeTarget(
+            ((NavigationBarItemView) item).getExpandedLabelGroup(), true);
+
+        // If currently expanded, we are fading out the expanded label group and fading in the
+        // collapsed label group
+        if (expanded) {
+          labelFadeOutTransition.addTarget(((NavigationBarItemView) item).getExpandedLabelGroup());
+          labelFadeInTransition.addTarget(((NavigationBarItemView) item).getLabelGroup());
+        } else {
+          // Otherwise if we are collapsed, we fade out the collapsed label group and fade in the
+          // expanded
+          labelFadeOutTransition.addTarget(((NavigationBarItemView) item).getLabelGroup());
+          labelFadeInTransition.addTarget(((NavigationBarItemView) item).getExpandedLabelGroup());
+        }
+        labelHorizontalMoveTransition.addTarget(
+            ((NavigationBarItemView) item).getExpandedLabelGroup());
+      }
+      fadingItemsTransition.addTarget(item);
+    }
+
+    TransitionSet changeBoundsFadeLabelInTransition = new TransitionSet();
+    changeBoundsFadeLabelInTransition.setOrdering(TransitionSet.ORDERING_TOGETHER);
+    changeBoundsFadeLabelInTransition
+        .addTransition(changeBoundsTransition)
+        .addTransition(labelFadeInTransition)
+        .addTransition(labelHorizontalMoveTransition);
+
+    // If collapsed, we want to fade in the hidden nav items with the labels
+    if (!expanded) {
+      changeBoundsFadeLabelInTransition.addTransition(fadingItemsTransition);
+    }
+
+    TransitionSet fadeOutTransitions = new TransitionSet();
+    fadeOutTransitions.setOrdering(TransitionSet.ORDERING_TOGETHER);
+    fadeOutTransitions.addTransition(labelFadeOutTransition);
+
+    // If expanded, we want to fade out the nav items to hide with the labels
+    if (expanded) {
+      fadeOutTransitions.addTransition(fadingItemsTransition);
+    }
+
+    TransitionSet transitionSet = new TransitionSet();
+    transitionSet.setOrdering(TransitionSet.ORDERING_SEQUENTIAL);
+    transitionSet
+        .addTransition(fadeOutTransitions)
+        .addTransition(changeBoundsFadeLabelInTransition);
+
+    TransitionManager.beginDelayedTransition((ViewGroup) getParent(), transitionSet);
+  }
+
   @Override
   public void setItemIconGravity(int itemIconGravity) {
     collapsedIconGravity = itemIconGravity;
@@ -268,6 +353,7 @@ public class NavigationRailView extends NavigationBarView {
     if (this.expanded == expanded) {
       return;
     }
+    startTransitionAnimation();
     this.expanded = expanded;
     int iconGravity = collapsedIconGravity;
     int itemSpacing = collapsedItemSpacing;
@@ -284,6 +370,21 @@ public class NavigationRailView extends NavigationBarView {
     getNavigationRailMenuView().setItemSpacing(itemSpacing);
     getNavigationRailMenuView().setItemMinimumHeight(itemMinHeight);
     getNavigationRailMenuView().setExpanded(expanded);
+  }
+
+  /** Expand the navigation rail. */
+  public void expand() {
+    setExpanded(true);
+  }
+
+  /** Returns whether or not the navigation rail is currently expanded. **/
+  public boolean isExpanded() {
+    return expanded;
+  }
+
+  /** Collapse the navigation rail. */
+  public void collapse() {
+    setExpanded(false);
   }
 
   private void applyWindowInsets() {
@@ -343,6 +444,9 @@ public class NavigationRailView extends NavigationBarView {
     if (expanded) {
       // Try measuring child with no other restrictions than existing measure spec
       measureChild(getNavigationRailMenuView(), widthMeasureSpec, heightMeasureSpec);
+      if (headerView != null) {
+        measureChild(headerView, widthMeasureSpec, heightMeasureSpec);
+      }
       // Measure properly with the max child width
       minWidthSpec = makeExpandedWidthMeasureSpec(widthMeasureSpec, getMaxChildWidth());
     }
@@ -444,8 +548,12 @@ public class NavigationRailView extends NavigationBarView {
     menuView.setItemMinimumHeight(minHeight);
   }
 
-  // TODO: b/361189184 - Make public once expanded state is public
-  private void setCollapsedItemMinimumHeight(@Px int minHeight) {
+  /**
+   * Sets the minimum height of a navigation rail menu item when the navigation rail is collapsed.
+   *
+   * @param minHeight the min height of the item when the nav rail is collapsed
+   */
+  public void setCollapsedItemMinimumHeight(@Px int minHeight) {
     collapsedItemMinHeight = minHeight;
     if (!expanded) {
       ((NavigationRailMenuView) getMenuView()).setItemMinimumHeight(minHeight);
@@ -461,8 +569,13 @@ public class NavigationRailView extends NavigationBarView {
     getNavigationRailMenuView().setItemSpacing(itemSpacing);
   }
 
-  // TODO: b/361189184 - Make public once expanded state is public
-  private void setCollapsedItemSpacing(@Px int itemSpacing) {
+  /**
+   * Sets the padding in between the navigation rail menu items when the navigation rail is
+   * collapsed.
+   *
+   * @param itemSpacing the desired item spacing in between the items when the nav rail is collapsed
+   */
+  public void setCollapsedItemSpacing(@Px int itemSpacing) {
     this.collapsedItemSpacing = itemSpacing;
     if (!expanded) {
       getNavigationRailMenuView().setItemSpacing(itemSpacing);
@@ -514,6 +627,10 @@ public class NavigationRailView extends NavigationBarView {
 
     if (MeasureSpec.getMode(measureSpec) != MeasureSpec.EXACTLY) {
       int newWidth = max(measuredWidth, minWidth);
+      // Also take into account header view max
+      if (headerView != null) {
+        newWidth = max(newWidth, headerView.getMeasuredWidth());
+      }
       newWidth = max(getSuggestedMinimumWidth(), min(newWidth, maxExpandedWidth));
       return MeasureSpec.makeMeasureSpec(newWidth, MeasureSpec.EXACTLY);
     }
@@ -531,6 +648,7 @@ public class NavigationRailView extends NavigationBarView {
     contentContainer = new NavigationRailFrameLayout(getContext());
     contentContainer.setPaddingTop(contentMarginTop);
     contentContainer.setScrollingEnabled(scrollingEnabled);
+    contentContainer.setClipChildren(false);
     contentContainer.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
     menuView.setLayoutParams(new FrameLayout.LayoutParams(WRAP_CONTENT, WRAP_CONTENT));
     contentContainer.addView(menuView);
