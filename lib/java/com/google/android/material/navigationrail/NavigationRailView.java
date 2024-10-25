@@ -374,7 +374,11 @@ public class NavigationRailView extends NavigationBarView {
 
   /** Expand the navigation rail. */
   public void expand() {
+    if (expanded) {
+      return;
+    }
     setExpanded(true);
+    announceForAccessibility(getResources().getString(R.string.nav_rail_expanded_a11y_label));
   }
 
   /** Returns whether or not the navigation rail is currently expanded. **/
@@ -384,7 +388,11 @@ public class NavigationRailView extends NavigationBarView {
 
   /** Collapse the navigation rail. */
   public void collapse() {
+    if (!expanded) {
+      return;
+    }
     setExpanded(false);
+    announceForAccessibility(getResources().getString(R.string.nav_rail_collapsed_a11y_label));
   }
 
   private void applyWindowInsets() {

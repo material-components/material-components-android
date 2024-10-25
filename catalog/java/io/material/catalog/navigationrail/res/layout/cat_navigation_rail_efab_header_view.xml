@@ -28,7 +28,8 @@
     android:layout_width="56dp"
     android:layout_height="56dp"
     android:src="@drawable/ic_drawer_menu_24px"
-    android:contentDescription="@null"
+    android:contentDescription=
+      "@string/cat_navigation_rail_expand_button_description"
     android:scaleType="center" />
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
     android:id="@+id/cat_navigation_rail_efab"

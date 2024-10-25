@@ -129,6 +129,7 @@
   <string name="cat_navigation_rail_efab_text" description="The text on the button to expand the navigation rail [CHAR_LIMIT=NONE]">Label</string>
   <string name="cat_navigation_rail_center_text" description="The text in the content centered in the remaining space beside the navigation rail [CHAR_LIMIT=NONE]">center</string>
   <string name="cat_navigation_rail_efab_message" description="The message to display when the extended floating action button is clicked [CHAR_LIMIT=NONE]">Button clicked</string>
-  <string name="cat_navigation_rail_expand_collapse_button_description" description="The content description for the button that expands and collapses the navigation rail [CHAR_LIMIT=NONE]">Button to expand or collapse the navigation rail</string>
+  <string name="cat_navigation_rail_expand_button_description" description="The content description for the button that expands the navigation rail [CHAR_LIMIT=NONE]">Expand navigation rail</string>
+  <string name="cat_navigation_rail_collapse_button_description" description="The content description for the button that collapses the navigation rail [CHAR_LIMIT=NONE]">Collapse navigation rail</string>
 
 </resources>
