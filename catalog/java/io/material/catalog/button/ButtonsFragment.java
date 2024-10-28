@@ -57,15 +57,7 @@ public class ButtonsFragment extends DemoLandingFragment {
 
   @Override
   public List<Demo> getAdditionalDemos() {
-    return Arrays.asList(
-        getButtonGroupDemo(),
-        new Demo(R.string.cat_buttons_toggle_group) {
-          @Nullable
-          @Override
-          public Fragment createFragment() {
-            return new ButtonToggleGroupDemoFragment();
-          }
-        });
+    return Arrays.asList(getButtonGroupDemo(), getButtonToggleGroupDemo(), getSplitButtonDemo());
   }
 
   @NonNull
@@ -75,6 +67,28 @@ public class ButtonsFragment extends DemoLandingFragment {
       @Override
       public Fragment createFragment() {
         return new ButtonGroupDemoFragment();
+      }
+    };
+  }
+
+  @NonNull
+  protected Demo getButtonToggleGroupDemo() {
+    return new Demo(R.string.cat_buttons_toggle_group) {
+      @Nullable
+      @Override
+      public Fragment createFragment() {
+        return new ButtonToggleGroupDemoFragment();
+      }
+    };
+  }
+
+  @NonNull
+  protected Demo getSplitButtonDemo() {
+    return new Demo(R.string.cat_split_button) {
+      @Nullable
+      @Override
+      public Fragment createFragment() {
+        return new SplitButtonDemoFragment();
       }
     };
   }

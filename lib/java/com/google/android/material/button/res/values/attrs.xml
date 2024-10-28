@@ -35,6 +35,12 @@
   <attr name="materialIconButtonOutlinedStyle" format="reference" />
   <!-- Style to use for MaterialButtonGroups in this theme. -->
   <attr name="materialButtonGroupStyle" format="reference"/>
+  <!-- Style to use for MaterialSplitButtons in this theme. -->
+  <attr name="materialSplitButtonStyle" format="reference"/>
+<!-- Style to use for Filled Material Icon Only Split Buttons in this theme. -->
+  <attr name="materialSplitButtonIconFilledStyle" format="reference" />
+  <!-- Style to use for Filled Tonal Material Icon Only Split Buttons in this theme. -->
+  <attr name="materialSplitButtonIconFilledTonalStyle" format="reference" />
   <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
   <attr name="materialButtonToggleGroupStyle" format="reference" />
 
