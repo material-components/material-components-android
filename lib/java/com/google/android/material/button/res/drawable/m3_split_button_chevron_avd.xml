@@ -34,10 +34,10 @@
   <transition
     android:fromId="@+id/checked"
     android:toId="@+id/unchecked"
-    android:drawable="@drawable/chevron_checked_unchecked" />
+    android:drawable="@animator/chevron_checked_unchecked" />
 
   <transition
     android:fromId="@+id/unchecked"
     android:toId="@+id/checked"
-    android:drawable="@drawable/chevron_unchecked_checked" />
+    android:drawable="@animator/chevron_unchecked_checked" />
 </animated-selector>
