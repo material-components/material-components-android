@@ -748,6 +748,81 @@ Element           | Style                                  | Theme Attribute
 ----------------- | -------------------------------------- | ---------------
 **Default style** | `Widget.Material3.MaterialButtonGroup` | `?attr/materialButtonGroupStyle`
 
+### Split button
+
+A specialized type of the connected button group is the split button. The
+trailing button is checkable with an animated icon.
+
+![Examples of using split button](assets/buttons/split_button.png)
+
+#### Split button examples
+
+Source code:
+
+*   `MaterialSplitButton`
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialSplitButton.java)
+
+The following example shows a split button with a leading label button and a
+trailing icon button that has an AnimatedVectorDrawable.
+
+In the layout:
+
+```xml
+  <com.google.android.material.button.MaterialSplitButton
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/splitbutton"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+    <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/split_button_label"
+          app:icon="@drawable/ic_edit_vd_theme_24dp"/>
+    <Button
+          style="?attr/materialSplitButtonIconFilledStyle"
+          android:id="@+id/expand_more_or_less"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:minWidth="48dp"
+          android:gravity="center"
+          android:contentDescription="@string/split_button_label_chevron"
+          app:icon="@drawable/m3_split_button_chevron_avd"/>
+</com.google.android.material.button.MaterialSplitButton>
+```
+
+### Animated Trailing Icon
+
+The icon on the trailing button is animated. In the samples, this is done with
+an AVD, `m3_split_button_chevron_avd`
+[[source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/drawable/m3_split_button_chevron_avd.xml)].
+
+### Properties
+
+Element                     | Attribute              | Related method(s)                             | Default value
+--------------------------- | ---------------------- | --------------------------------------------- | -------------
+**Size of inner corners**   | `app:innerCornerSize`  | `setInnerCornerSize`<br/>`getInnerCornerSize` | `none`
+**Spacing between buttons** | `android:spacing`      | `setSpacing`<br/>`getSpacing`                 | `2dp`
+**Button size change**      | `app:buttonSizeChange` | N/A                                           | `0%`
+
+#### Styles and Theme attributes
+
+Element                                   | Style                                                        | Theme Attribute
+----------------------------------------- | ------------------------------------------------------------ | ---------------
+**Default style**                         | `Widget.Material3.MaterialSplitButton`                 | `?attr/materialSplitButtonStyle`
+**Trailing icon primary (filled) style**  | `Widget.Material3.SplitButton.IconButton.Filled`       | `?attr/materialSplitButtonIconFilledStyle`
+**Trailing icon secondary (tonal) style** | `Widget.Material3.SplitButton.IconButton.Filled.Tonal` | `?attr/materialSplitButtonIconFilledTonalStyle`
+
+The two new trailing icon styles `materialSplitButtonIconFilledStyle` – parented
+by `materialIconButtonFilledStyle` – and
+`materialSplitButtonIconFilledTonalStyle`-- parented by
+`materialIconButtonFilledTonalStyle` allow for the `MaterialSplitButton` custom
+behavior for `onChecked` and `onUnchecked` states.
+`materialSplitButtonIconFilledStyle` is paired with default leading button
+styling, with no style explicitly specified in the XML.
+`materialSplitButtonIconFilledTonalStyle` is paired with
+`materialButtonTonalStyle` for the leading button.
+
 ## Toggle button groups
 
 [Toggle button group (Segmented buttons)](https://m3.material.io/components/segmented-buttons)
