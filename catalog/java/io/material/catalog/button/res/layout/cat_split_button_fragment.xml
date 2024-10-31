@@ -35,8 +35,42 @@
         android:paddingBottom="8dp"
         android:text="@string/cat_split_button_subheader_filled"
         android:textAppearance="?attr/textAppearanceSubtitle1"/>
+      <com.google.android.material.button.MaterialSplitButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+      <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:minWidth="@dimen/mtrl_min_touch_target_size"
+          app:icon="@drawable/ic_edit_vd_theme_24dp"
+          app:iconPadding="0dp"/>
+      <Button
+          style="?attr/materialSplitButtonIconFilledStyle"
+          android:id="@+id/expand_more_or_less_filled_icon"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:contentDescription="@string/cat_split_button_label_chevron"
+          app:icon="@drawable/m3_split_button_chevron_avd"/>
+      </com.google.android.material.button.MaterialSplitButton>
 
-    <com.google.android.material.button.MaterialSplitButton
+      <com.google.android.material.button.MaterialSplitButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+      <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:minWidth="@dimen/mtrl_min_touch_target_size"
+          android:text="@string/cat_split_button_short_label"/>
+      <Button
+          style="?attr/materialSplitButtonIconFilledStyle"
+          android:id="@+id/expand_more_or_less_filled_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:contentDescription="@string/cat_split_button_label_chevron"
+          app:icon="@drawable/m3_split_button_chevron_avd"/>
+      </com.google.android.material.button.MaterialSplitButton>
+
+      <com.google.android.material.button.MaterialSplitButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
       <Button
@@ -61,7 +95,44 @@
         android:text="@string/cat_split_button_subheader_filled_tonal"
         android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
-    <com.google.android.material.button.MaterialSplitButton
+      <com.google.android.material.button.MaterialSplitButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+      <Button
+          style="?attr/materialButtonTonalStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:minWidth="@dimen/mtrl_min_touch_target_size"
+          app:icon="@drawable/ic_edit_vd_theme_24dp"
+          app:iconPadding="0dp"/>
+      <Button
+          style="?attr/materialSplitButtonIconFilledTonalStyle"
+          android:id="@+id/expand_more_or_less_tonal_icon"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:contentDescription="@string/cat_split_button_label_chevron"
+          app:icon="@drawable/m3_split_button_chevron_avd"/>
+      </com.google.android.material.button.MaterialSplitButton>
+
+      <com.google.android.material.button.MaterialSplitButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+      <Button
+          style="?attr/materialButtonTonalStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:minWidth="@dimen/mtrl_min_touch_target_size"
+          android:text="@string/cat_split_button_short_label"/>
+      <Button
+          style="?attr/materialSplitButtonIconFilledTonalStyle"
+          android:id="@+id/expand_more_or_less_tonal_label"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:contentDescription="@string/cat_split_button_label_chevron"
+          app:icon="@drawable/m3_split_button_chevron_avd"/>
+      </com.google.android.material.button.MaterialSplitButton>
+
+      <com.google.android.material.button.MaterialSplitButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
       <Button
@@ -78,6 +149,7 @@
           android:contentDescription="@string/cat_split_button_label_chevron"
           app:icon="@drawable/m3_split_button_chevron_avd"/>
       </com.google.android.material.button.MaterialSplitButton>
+
       <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switch_enable"
           android:paddingTop="16dp"

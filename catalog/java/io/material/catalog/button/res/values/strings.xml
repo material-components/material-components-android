@@ -94,6 +94,7 @@
   <string name="cat_button_label_tomatoes">Tomatoes</string>
   <string name="cat_button_label_mushrooms">Mushrooms</string>
   <string name="cat_split_button_label" translatable="false">Label</string>
+  <string name="cat_split_button_short_label" translatable="false">No</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
     name="cat_icon_button_label_add_circle">Add icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
