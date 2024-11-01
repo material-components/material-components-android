@@ -68,17 +68,22 @@ public class WindowPreferencesManager {
   }
 
   public void applyEdgeToEdgePreference(Window window) {
+    boolean dark = (window.getContext().getResources().getConfiguration().uiMode &
+        Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
+    WindowInsetsControllerCompat windowInsetsControllerCompat =
+        new WindowInsetsControllerCompat(window, window.getDecorView());
     if (isEdgeToEdgeEnabled()) {
       if (window.getContext() instanceof ComponentActivity) {
         EdgeToEdge.enable((ComponentActivity) window.getContext());
       } else {
         window.setNavigationBarColor(0);
+        if (!dark) {
+          windowInsetsControllerCompat.setAppearanceLightNavigationBars(true);
+        }
       }
     } else {
       if (window.getContext() instanceof ComponentActivity) {
-        boolean dark = (window.getContext().getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)
-            == Configuration.UI_MODE_NIGHT_YES;
-        new WindowInsetsControllerCompat(window, window.getDecorView()).setAppearanceLightStatusBars(dark);
+        windowInsetsControllerCompat.setAppearanceLightStatusBars(dark);
       }
     }
     ViewCompat.setOnApplyWindowInsetsListener(
