@@ -65,6 +65,7 @@ def srcDirs = [
   'com/google/android/material/elevation',
   'com/google/android/material/expandable',
   'com/google/android/material/floatingactionbutton',
+  'com/google/android/material/floatingtoolbar',
   'com/google/android/material/imageview',
   'com/google/android/material/internal',
   'com/google/android/material/loadingindicator',
