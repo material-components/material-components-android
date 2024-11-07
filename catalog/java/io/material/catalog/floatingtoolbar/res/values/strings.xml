@@ -15,12 +15,12 @@
   ~ limitations under the License.
   -->
 <resources>
-  <string name="cat_floating_app_bar_title"
-    description="Title for the screen that showcases demonstrative usages of the Floating App Bar widget [CHAR LIMIT=NONE]">
-    Floating App Bar
+  <string name="cat_floating_toolbar_title"
+    description="Title for the screen that showcases demonstrative usages of the Floating Toolbar widget [CHAR LIMIT=NONE]">
+    Floating Toolbar
   </string>
-  <string name="cat_floating_app_bar_description"
-    description="Body text describing the Floating App Bar component within the design system [CHAR LIMIT=NONE]">
+  <string name="cat_floating_toolbar_description"
+    description="Body text describing the Floating Toolbar component within the design system [CHAR LIMIT=NONE]">
     The floating toolbar floats above the body content and can be used to display contextual actions relevant to the body content or the specific page.
   </string>
   <string name="cat_floating_toolbar_filler_text" translatable="false">

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.material.catalog.floatingappbar;
+package io.material.catalog.floatingtoolbar;
 
 import io.material.catalog.R;
 
@@ -32,8 +32,8 @@ import com.google.android.material.button.MaterialButton;
 import io.material.catalog.feature.DemoFragment;
 import java.util.Random;
 
-/** A fragment that displays the main Floating App Bar demo for the Catalog app. */
-public class FloatingAppBarMainDemoFragment extends DemoFragment {
+/** A fragment that displays the main Floating Toolbar demo for the Catalog app. */
+public class FloatingToolbarMainDemoFragment extends DemoFragment {
 
   @NonNull
   @Override
@@ -44,7 +44,7 @@ public class FloatingAppBarMainDemoFragment extends DemoFragment {
 
     View view =
         layoutInflater.inflate(
-            R.layout.cat_floating_app_bar_fragment, viewGroup, /* attachToRoot= */ false);
+            R.layout.cat_floating_toolbar_fragment, viewGroup, /* attachToRoot= */ false);
 
     TextView bodyText = (TextView) view.findViewById(R.id.body_text);
 

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.material.catalog.floatingappbar;
+package io.material.catalog.floatingtoolbar;
 
 import io.material.catalog.R;
 
@@ -28,16 +28,16 @@ import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
 
-/** A fragment that displays Floating App Bar demos for the Catalog app. */
-public class FloatingAppBarFragment extends DemoLandingFragment {
+/** A fragment that displays Floating Toolbar demos for the Catalog app. */
+public class FloatingToolbarFragment extends DemoLandingFragment {
   @Override
   public int getTitleResId() {
-    return R.string.cat_floating_app_bar_title;
+    return R.string.cat_floating_toolbar_title;
   }
 
   @Override
   public int getDescriptionResId() {
-    return R.string.cat_floating_app_bar_description;
+    return R.string.cat_floating_toolbar_description;
   }
 
   @Override
@@ -46,26 +46,26 @@ public class FloatingAppBarFragment extends DemoLandingFragment {
     return new Demo() {
       @Override
       public Fragment createFragment() {
-        return new FloatingAppBarMainDemoFragment();
+        return new FloatingToolbarMainDemoFragment();
       }
     };
   }
 
-  /** The Dagger module for {@link FloatingAppBarFragment} dependencies. */
+  /** The Dagger module for {@link FloatingToolbarFragment} dependencies. */
   @dagger.Module
   public abstract static class Module {
     @FragmentScope
     @ContributesAndroidInjector
-    abstract FloatingAppBarFragment contributeInjector();
+    abstract FloatingToolbarFragment contributeInjector();
 
     @IntoSet
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_floating_app_bar_title, R.drawable.ic_sliders_24px) {
+      return new FeatureDemo(R.string.cat_floating_toolbar_title, R.drawable.ic_sliders_24px) {
         @Override
         public Fragment createFragment() {
-          return new FloatingAppBarFragment();
+          return new FloatingToolbarFragment();
         }
       };
     }
