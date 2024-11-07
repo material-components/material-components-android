@@ -180,6 +180,11 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
           button1.setEnabled(isChecked);
         });
 
+    MaterialSwitch hideableSwitch = view.findViewById(R.id.cat_bottomsheet_hideable_switch);
+    hideableSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      persistentBottomSheetBehavior.setHideable(isChecked);
+    });
+
     ViewCompat.setOnApplyWindowInsetsListener(
         view,
         (ignored, insets) -> {

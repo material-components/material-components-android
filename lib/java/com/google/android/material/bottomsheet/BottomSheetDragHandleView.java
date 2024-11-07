@@ -21,9 +21,16 @@ import com.google.android.material.R;
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
@@ -55,6 +62,8 @@ public class BottomSheetDragHandleView extends AppCompatImageView
 
   @Nullable private BottomSheetBehavior<?> bottomSheetBehavior;
 
+  private final GestureDetector gestureDetector;
+
   private boolean accessibilityServiceEnabled;
   private boolean interactable;
   private boolean clickToExpand;
@@ -78,6 +87,34 @@ public class BottomSheetDragHandleView extends AppCompatImageView
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
       };
 
+  /**
+   * A gesture listener that handles both single and double taps on the drag handle.
+   *
+   * Single taps cycle through the available states of the bottom sheet. A double tap hides
+   * the sheet.
+   */
+  private final OnGestureListener gestureListener = new SimpleOnGestureListener() {
+
+    @Override
+    public boolean onDown(@NonNull MotionEvent e) {
+      return isClickable();
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(@NonNull MotionEvent e) {
+      return expandOrCollapseBottomSheetIfPossible();
+    }
+
+    @Override
+    public boolean onDoubleTap(@NonNull MotionEvent e) {
+      if (bottomSheetBehavior != null && bottomSheetBehavior.isHideable()) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        return true;
+      }
+      return super.onDoubleTap(e);
+    }
+  };
+
   public BottomSheetDragHandleView(@NonNull Context context) {
     this(context, /* attrs= */ null);
   }
@@ -92,6 +129,9 @@ public class BottomSheetDragHandleView extends AppCompatImageView
 
     // Override the provided context with the wrapped one to prevent it from being used.
     context = getContext();
+
+    gestureDetector =
+        new GestureDetector(context, gestureListener, new Handler(Looper.getMainLooper()));
 
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
@@ -130,6 +170,12 @@ public class BottomSheetDragHandleView extends AppCompatImageView
     super.onDetachedFromWindow();
   }
 
+  @SuppressLint("ClickableViewAccessibility") // Will be handled by accessibility delegate
+  @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    return gestureDetector.onTouchEvent(event);
+  }
+
   @Override
   public void onAccessibilityStateChanged(boolean enabled) {
     accessibilityServiceEnabled = enabled;
@@ -164,7 +210,7 @@ public class BottomSheetDragHandleView extends AppCompatImageView
   }
 
   private void updateInteractableState() {
-    interactable = accessibilityServiceEnabled && bottomSheetBehavior != null;
+    interactable = bottomSheetBehavior != null;
     setImportantForAccessibility(bottomSheetBehavior != null
         ? View.IMPORTANT_FOR_ACCESSIBILITY_YES
         : View.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -185,7 +231,7 @@ public class BottomSheetDragHandleView extends AppCompatImageView
     if (!interactable) {
       return false;
     }
-    announceAccessibilityEvent(clickFeedback);
+    maybeAnnounceAccessibilityEvent(clickFeedback);
     boolean canHalfExpand =
         !bottomSheetBehavior.isFitToContents()
             && !bottomSheetBehavior.shouldSkipHalfExpandedStateWhenDragging();
@@ -209,8 +255,8 @@ public class BottomSheetDragHandleView extends AppCompatImageView
     return true;
   }
 
-  private void announceAccessibilityEvent(String announcement) {
-    if (accessibilityManager == null) {
+  private void maybeAnnounceAccessibilityEvent(String announcement) {
+    if (accessibilityManager == null || !accessibilityServiceEnabled) {
       return;
     }
     AccessibilityEvent announce =
