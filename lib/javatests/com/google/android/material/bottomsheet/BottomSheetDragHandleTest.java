@@ -76,10 +76,10 @@ public class BottomSheetDragHandleTest {
   }
 
   @Test
-  public void test_interactableWhenAttachedAndAccessibilityDisabled() {
+  public void test_notInteractableWhenAttachedAndAccessibilityDisabled() {
     activity.addViewToBottomSheet(dragHandleView);
     assertImportantForAccessibility(true);
-    assertThat(dragHandleView.isClickable()).isTrue();
+    assertThat(dragHandleView.isClickable()).isFalse();
   }
 
   @Test
@@ -208,7 +208,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    dragHandleView.performAccessibilityAction(ACTION_EXPAND.getId(), /* arguments= */ null);
+    dragHandleView.performAccessibilityAction(ACTION_EXPAND.getId(), /* args= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -225,7 +225,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    dragHandleView.performAccessibilityAction(getHalfExpandActionId(), /* arguments= */ null);
+    dragHandleView.performAccessibilityAction(getHalfExpandActionId(), /* args= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -241,7 +241,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    dragHandleView.performAccessibilityAction(ACTION_COLLAPSE.getId(), /* arguments= */ null);
+    dragHandleView.performAccessibilityAction(ACTION_COLLAPSE.getId(), /* args= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -258,7 +258,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    dragHandleView.performAccessibilityAction(ACTION_DISMISS.getId(), /* arguments= */ null);
+    dragHandleView.performAccessibilityAction(ACTION_DISMISS.getId(), /* args= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
