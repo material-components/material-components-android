@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<FrameLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
@@ -23,20 +21,96 @@
   <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <TextView
-      android:id="@+id/body_text"
+    <LinearLayout
+      android:id="@+id/body_container"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingTop="16dp"
-      android:paddingBottom="16dp"
-      android:paddingLeft="16dp"
-      android:paddingRight="16dp"
-      android:lineSpacingMultiplier="1.2"
-      android:text="@string/cat_floating_toolbar_filler_text"/>
+      android:gravity="center"
+      android:orientation="vertical">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:text="@string/cat_floating_toolbar_orientation"
+        android:textAppearance="?attr/textAppearanceBody1"/>
+
+      <com.google.android.material.button.MaterialButtonToggleGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+        <Button
+          android:id="@+id/bottom_button"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_floating_toolbar_orientation_bottom" />
+        <Button
+          android:id="@+id/left_button"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_floating_toolbar_orientation_left" />
+        <Button
+          android:id="@+id/right_button"
+          style="?attr/materialButtonOutlinedStyle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_floating_toolbar_orientation_right" />
+      </com.google.android.material.button.MaterialButtonToggleGroup>
+
+      <TextView
+        android:id="@+id/body_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:lineSpacingMultiplier="1.2"
+        android:text="@string/cat_floating_toolbar_filler_text" />
+
+    </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
-    android:id="@+id/floating_toolbar"
+    android:id="@+id/floating_toolbar_left"
+    style="@style/Widget.Material3.FloatingToolbar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="36dp"
+    android:layout_gravity="left|center"
+    android:paddingVertical="8dp"
+    android:visibility="gone">
+    <LinearLayout
+      android:id="@+id/floating_toolbar_child_left"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="vertical">
+      <include layout="@layout/cat_floating_toolbar_content" />
+    </LinearLayout>
+  </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+
+  <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
+    android:id="@+id/floating_toolbar_right"
+    style="@style/Widget.Material3.FloatingToolbar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="36dp"
+    android:layout_gravity="right|center"
+    android:paddingVertical="8dp"
+    android:visibility="gone">
+    <LinearLayout
+      android:id="@+id/floating_toolbar_child_right"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="vertical">
+      <include layout="@layout/cat_floating_toolbar_content" />
+    </LinearLayout>
+  </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+
+  <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
+    android:id="@+id/floating_toolbar_bottom"
     style="@style/Widget.Material3.FloatingToolbar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -44,52 +118,12 @@
     android:layout_gravity="bottom|center"
     android:paddingHorizontal="8dp">
     <LinearLayout
-      android:id="@+id/floating_toolbar_child"
+      android:id="@+id/floating_toolbar_child_bottom"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:orientation="horizontal">
-      <Button
-        android:id="@+id/floating_toolbar_button_bold"
-        style="?attr/materialIconButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="2dp"
-        android:checkable="true"
-        app:icon="@drawable/ic_format_bold_24px"/>
-      <Button
-        android:id="@+id/floating_toolbar_button_italic"
-        style="?attr/materialIconButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:checkable="true"
-        app:icon="@drawable/ic_format_italic_24px"/>
-      <Button
-        android:id="@+id/floating_toolbar_button_underlined"
-        style="?attr/materialIconButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        android:checkable="true"
-        app:icon="@drawable/ic_format_underlined_24px"/>
-      <Button
-        android:id="@+id/floating_toolbar_button_color_text"
-        style="?attr/materialIconButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        android:layout_marginEnd="2dp"
-        app:icon="@drawable/ic_format_color_text_24px"/>
-      <Button
-        android:id="@+id/floating_toolbar_button_color_fill"
-        style="?attr/materialIconButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="2dp"
-        app:icon="@drawable/ic_format_color_fill_24px"/>
+      <include layout="@layout/cat_floating_toolbar_content" />
     </LinearLayout>
   </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
 </FrameLayout>

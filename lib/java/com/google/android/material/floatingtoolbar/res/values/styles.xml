@@ -18,7 +18,8 @@
 
   <style name="Widget.Material3.FloatingToolbar" parent="">
     <item name="enforceMaterialTheme">true</item>
-    <item name="android:minHeight">@dimen/m3_floatingtoolbar_height</item>
+    <item name="android:minHeight">@dimen/m3_floatingtoolbar_min_height</item>
+    <item name="android:minWidth">@dimen/m3_floatingtoolbar_min_width</item>
     <item name="backgroundTint">?attr/colorSurfaceContainer</item>
     <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
   </style>

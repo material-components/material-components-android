@@ -23,6 +23,22 @@
     description="Body text describing the Floating Toolbar component within the design system [CHAR LIMIT=NONE]">
     The floating toolbar floats above the body content and can be used to display contextual actions relevant to the body content or the specific page.
   </string>
+  <string name="cat_floating_toolbar_orientation"
+    description="Title for the toggle button group that determines the orientation for the Floating Toolbar [CHAR LIMIT=NONE]">
+    Floating Toolbar Orientation
+  </string>
+  <string name="cat_floating_toolbar_orientation_bottom"
+    description="Text for a button that sets the Floating Toolbar to bottom orientation [CHAR LIMIT=NONE]">
+    Bottom
+  </string>
+  <string name="cat_floating_toolbar_orientation_left"
+    description="Text for a button that sets the Floating Toolbar to left orientation [CHAR LIMIT=NONE]">
+    Left
+  </string>
+  <string name="cat_floating_toolbar_orientation_right"
+    description="Text for a button that sets the Floating Toolbar to right orientation [CHAR LIMIT=NONE]">
+    Right
+  </string>
   <string name="cat_floating_toolbar_filler_text" translatable="false">
     \t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.
     \n\n\t\tSuspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae, molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor bibendum, vel congue leo egestas.

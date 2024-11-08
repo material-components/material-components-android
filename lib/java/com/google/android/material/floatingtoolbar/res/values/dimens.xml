@@ -16,5 +16,6 @@
 -->
 
 <resources>
-  <dimen name="m3_floatingtoolbar_height">64dp</dimen>
+  <dimen name="m3_floatingtoolbar_min_height">64dp</dimen>
+  <dimen name="m3_floatingtoolbar_min_width">64dp</dimen>
 </resources>
