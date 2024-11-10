@@ -868,7 +868,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       return boxBackground;
     }
 
-    int rippleColor = MaterialColors.getColor(editText, R.attr.colorControlHighlight);
+    int rippleColor = MaterialColors.getColor(editText, androidx.appcompat.R.attr.colorControlHighlight);
     if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE) {
       return getOutlinedBoxBackgroundWithRipple(
           getContext(), boxBackground, rippleColor, EDIT_TEXT_BACKGROUND_RIPPLE_STATE);
@@ -2877,7 +2877,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     if (useDefaultColor) {
       // Probably caused by our theme not extending from Theme.Design*. Instead
       // we manually set something appropriate
-      TextViewCompat.setTextAppearance(textView, R.style.TextAppearance_AppCompat_Caption);
+      TextViewCompat.setTextAppearance(textView, androidx.appcompat.R.style.TextAppearance_AppCompat_Caption);
       textView.setTextColor(ContextCompat.getColor(getContext(), R.color.design_error));
     }
   }
@@ -4539,7 +4539,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   private void updateCursorColor() {
     ColorStateList color = cursorColor != null
         ? cursorColor
-        : MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorControlActivated);
+        : MaterialColors.getColorStateListOrNull(getContext(), androidx.appcompat.R.attr.colorControlActivated);
 
     if (editText == null || editText.getTextCursorDrawable() == null) {
       // If there's no cursor, return.

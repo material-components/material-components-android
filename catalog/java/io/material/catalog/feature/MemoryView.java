@@ -123,7 +123,7 @@ public final class MemoryView extends AppCompatTextView {
     TypedValue typedValue = new TypedValue();
     getContext()
         .getTheme()
-        .resolveAttribute(R.attr.colorPrimary, typedValue, true);
+        .resolveAttribute(androidx.appcompat.R.attr.colorPrimary, typedValue, true);
 
     int colorPrimary = typedValue.data;
     paint.setColor(colorPrimary);

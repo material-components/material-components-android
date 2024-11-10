@@ -254,7 +254,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
     setUpModalSheet(
         getDetachedModalThemeOverlayResId(),
         R.layout.cat_sidesheet_content,
-        R.id.m3_side_sheet,
+        com.google.android.material.R.id.m3_side_sheet,
         R.id.side_sheet_title_text,
         R.string.cat_sidesheet_modal_detached_title,
         showDetachedModalSheetButton,
@@ -264,7 +264,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
   private void setUpModalSheet() {
     setUpModalSheet(
         R.layout.cat_sidesheet_content,
-        R.id.m3_side_sheet,
+        com.google.android.material.R.id.m3_side_sheet,
         R.id.side_sheet_title_text,
         R.string.cat_sidesheet_modal_title,
         showModalSheetButton,

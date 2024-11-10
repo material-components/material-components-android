@@ -66,7 +66,7 @@ public class BottomSheetUnscrollableContentDemoFragment extends DemoFragment {
       BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
       new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
       bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_unscrollable_content);
-      View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+      View bottomSheetInternal = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
       BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);
 
       View bottomSheetContent = bottomSheetInternal.findViewById(R.id.bottom_drawer_3);

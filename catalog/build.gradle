@@ -103,6 +103,7 @@ def srcDirs = [
 ]
 
 android {
+  namespace "io.material.catalog"
   defaultConfig {
     manifestPlaceholders = [
       application_name             : 'CatalogApplication',

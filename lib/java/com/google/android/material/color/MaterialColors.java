@@ -263,7 +263,7 @@ public class MaterialColors {
   public static int harmonizeWithPrimary(@NonNull Context context, @ColorInt int colorToHarmonize) {
     return harmonize(
         colorToHarmonize,
-        getColor(context, R.attr.colorPrimary, MaterialColors.class.getCanonicalName()));
+        getColor(context, androidx.appcompat.R.attr.colorPrimary, MaterialColors.class.getCanonicalName()));
   }
 
   /**
@@ -348,7 +348,7 @@ public class MaterialColors {
 
   static boolean isLightTheme(@NonNull Context context) {
     return MaterialAttributes.resolveBoolean(
-        context, R.attr.isLightTheme, /* defaultValue= */ true);
+        context, androidx.appcompat.R.attr.isLightTheme, /* defaultValue= */ true);
   }
 
   @ColorInt

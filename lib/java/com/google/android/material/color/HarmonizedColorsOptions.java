@@ -80,7 +80,7 @@ public class HarmonizedColorsOptions {
 
     @NonNull @ColorRes private int[] colorResourceIds = new int[] {};
     @Nullable private HarmonizedColorAttributes colorAttributes;
-    @AttrRes private int colorAttributeToHarmonizeWith = R.attr.colorPrimary;
+    @AttrRes private int colorAttributeToHarmonizeWith = androidx.appcompat.R.attr.colorPrimary;
 
     /**
      * Sets the array of color resource ids for harmonization.

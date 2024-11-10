@@ -23,6 +23,7 @@ dependencies {
 }
 
 android {
+  namespace "com.google.android.material.testapp.base"
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
     main.java.srcDirs = [ '.' ]

@@ -1,5 +1,6 @@
 import org.gradle.internal.os.OperatingSystem
 
+
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
 
@@ -99,6 +100,8 @@ def srcDirs = [
 ]
 
 android {
+  namespace "com.google.android.material"
+
   sourceSets {
     main.manifest.srcFile 'java/com/google/android/material/AndroidManifest.xml'
     main.java.srcDir 'java'
@@ -269,7 +272,7 @@ afterEvaluate {
 
     publications {
       release(MavenPublication) {
-        from components.release
+        from components.findByName('release')
 
         artifact androidSourcesJar
 

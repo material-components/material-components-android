@@ -13,6 +13,7 @@ dependencies {
 }
 
 android {
+  namespace "com.google.android.material.testapp"
   defaultConfig {
     multiDexEnabled true
     minSdkVersion 21
