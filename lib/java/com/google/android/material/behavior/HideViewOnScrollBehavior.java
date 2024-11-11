@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The Android Open Source Project
+ * Copyright (C) 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,12 +19,16 @@ package com.google.android.material.behavior;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.behavior.HideOnScrollView.EDGE_BOTTOM;
+import static com.google.android.material.behavior.HideOnScrollView.EDGE_LEFT;
+import static com.google.android.material.behavior.HideOnScrollView.EDGE_RIGHT;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
@@ -35,20 +39,23 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.behavior.HideOnScrollView.ViewEdge;
 import com.google.android.material.motion.MotionUtils;
 import java.util.LinkedHashSet;
 
 /**
- * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off the
- * bottom of the screen when scrolling down, and show it when scrolling up.
+ * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off of the
+ * edge of the screen when scrolling down, and show it when scrolling up.
  *
- * @deprecated Use {@link HideViewOnScrollBehavior} instead.
- *     <p>TODO(b/378132394): Migrate usages of this class to {@link HideViewOnScrollBehavior}.
+ * <p>Supports hiding the View off of three screen edges: {@link HideOnScrollView#EDGE_RIGHT},
+ * {@link HideOnScrollView#EDGE_BOTTOM} and {@link HideOnScrollView#EDGE_LEFT}.
  */
-@Deprecated
-public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
+public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
+
+  private HideViewOnScrollDelegate hideOnScrollViewDelegate;
 
   /**
    * Interface definition for a listener to be notified when the bottom view scroll state changes.
@@ -56,13 +63,13 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   public interface OnScrollStateChangedListener {
 
     /**
-     * Called when the bottom view changes its scrolled state.
+     * Called when the view changes its scrolled state.
      *
-     * @param bottomView The bottom view.
-     * @param newState The new state. This will be one of {@link #STATE_SCROLLED_UP} or {@link
-     *     #STATE_SCROLLED_DOWN}.
+     * @param view The scrollable view.
+     * @param newState The new state. This will be one of {@link #STATE_SCROLLED_IN} or {@link
+     *     #STATE_SCROLLED_OUT}.
      */
-    void onStateChanged(@NonNull View bottomView, @ScrollState int newState);
+    void onStateChanged(@NonNull View view, @ScrollState int newState);
   }
 
   @NonNull
@@ -77,16 +84,16 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
 
   private int enterAnimDuration;
   private int exitAnimDuration;
-  private TimeInterpolator enterAnimInterpolator;
-  private TimeInterpolator exitAnimInterpolator;
+  @Nullable private TimeInterpolator enterAnimInterpolator;
+  @Nullable private TimeInterpolator exitAnimInterpolator;
 
-  /** State of the bottom view when it's scrolled down. */
-  public static final int STATE_SCROLLED_DOWN = 1;
+  /** State of the view when it's scrolled out. */
+  public static final int STATE_SCROLLED_OUT = 1;
 
-  /** State of the bottom view when it's scrolled up. */
-  public static final int STATE_SCROLLED_UP = 2;
+  /** State of the view when it's scrolled in. */
+  public static final int STATE_SCROLLED_IN = 2;
 
-  private int height = 0;
+  private int size = 0;
 
   /**
    * Positions the scroll state can be set to.
@@ -94,25 +101,76 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
-  @IntDef({STATE_SCROLLED_DOWN, STATE_SCROLLED_UP})
+  @IntDef({STATE_SCROLLED_OUT, STATE_SCROLLED_IN})
   public @interface ScrollState {}
 
-  @ScrollState private int currentState = STATE_SCROLLED_UP;
-  private int additionalHiddenOffsetY = 0;
+  @ScrollState private int currentState = STATE_SCROLLED_IN;
+  private int additionalHiddenOffset = 0;
   @Nullable private ViewPropertyAnimator currentAnimator;
 
-  public HideBottomViewOnScrollBehavior() {}
+  public HideViewOnScrollBehavior() {}
 
-  public HideBottomViewOnScrollBehavior(Context context, AttributeSet attrs) {
+  public HideViewOnScrollBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
+  }
+
+  private void setViewEdge(@NonNull V view, int layoutDirection) {
+    LayoutParams params = (LayoutParams) view.getLayoutParams();
+    int viewGravity = params.gravity;
+
+    if (isGravityBottom(viewGravity)) {
+      setViewEdge(EDGE_BOTTOM);
+    } else {
+      viewGravity = Gravity.getAbsoluteGravity(viewGravity, layoutDirection);
+      setViewEdge(isGravityLeft(viewGravity) ? EDGE_LEFT : EDGE_RIGHT);
+    }
+  }
+
+  public void setViewEdge(@ViewEdge int viewEdge) {
+    if (hideOnScrollViewDelegate == null || hideOnScrollViewDelegate.getViewEdge() != viewEdge) {
+      switch (viewEdge) {
+        case EDGE_RIGHT:
+          this.hideOnScrollViewDelegate = new HideRightViewOnScrollDelegate();
+          break;
+        case EDGE_BOTTOM:
+          this.hideOnScrollViewDelegate = new HideBottomViewOnScrollDelegate();
+          break;
+        case EDGE_LEFT:
+          this.hideOnScrollViewDelegate = new HideLeftViewOnScrollDelegate();
+          break;
+        default:
+          throw new IllegalArgumentException(
+              "Invalid view edge position value: "
+                  + viewEdge
+                  + ". Must be "
+                  + EDGE_RIGHT
+                  + ", "
+                  + EDGE_BOTTOM
+                  + " or "
+                  + EDGE_LEFT
+                  + ".");
+      }
+    }
+  }
+
+  private boolean isGravityBottom(int viewGravity) {
+    return viewGravity == Gravity.BOTTOM || (viewGravity == (Gravity.BOTTOM | Gravity.CENTER));
+  }
+
+  private boolean isGravityLeft(int viewGravity) {
+    return viewGravity == Gravity.LEFT || (viewGravity == (Gravity.LEFT | Gravity.CENTER));
   }
 
   @Override
   public boolean onLayoutChild(
       @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
-    ViewGroup.MarginLayoutParams paramsCompat =
+
+    ViewGroup.MarginLayoutParams marginParams =
         (ViewGroup.MarginLayoutParams) child.getLayoutParams();
-    height = child.getMeasuredHeight() + paramsCompat.bottomMargin;
+    setViewEdge(child, layoutDirection);
+
+    this.size = hideOnScrollViewDelegate.getSize(child, marginParams);
+
     enterAnimDuration =
         MotionUtils.resolveThemeDuration(
             child.getContext(), ENTER_ANIM_DURATION_ATTR, DEFAULT_ENTER_ANIMATION_DURATION_MS);
@@ -133,16 +191,16 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   }
 
   /**
-   * Sets an additional offset for the y position used to hide the view.
+   * Sets an additional offset used to hide the view.
    *
    * @param child the child view that is hidden by this behavior
    * @param offset the additional offset in pixels that should be added when the view slides away
    */
-  public void setAdditionalHiddenOffsetY(@NonNull V child, @Dimension int offset) {
-    additionalHiddenOffsetY = offset;
+  public void setAdditionalHiddenOffset(@NonNull V child, @Dimension int offset) {
+    additionalHiddenOffset = offset;
 
-    if (currentState == STATE_SCROLLED_DOWN) {
-      child.setTranslationY(height + additionalHiddenOffsetY);
+    if (currentState == STATE_SCROLLED_OUT) {
+      hideOnScrollViewDelegate.setAdditionalHiddenOffset(child, size, additionalHiddenOffset);
     }
   }
 
@@ -159,7 +217,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
 
   @Override
   public void onNestedScroll(
-      CoordinatorLayout coordinatorLayout,
+      @NonNull CoordinatorLayout coordinatorLayout,
       @NonNull V child,
       @NonNull View target,
       int dxConsumed,
@@ -169,23 +227,23 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       int type,
       @NonNull int[] consumed) {
     if (dyConsumed > 0) {
-      slideDown(child);
+      slideOut(child);
     } else if (dyConsumed < 0) {
-      slideUp(child);
+      slideIn(child);
     }
   }
 
-  /** Returns true if the current state is scrolled up. */
-  public boolean isScrolledUp() {
-    return currentState == STATE_SCROLLED_UP;
+  /** Returns true if the current state is scrolled in. */
+  public boolean isScrolledIn() {
+    return currentState == STATE_SCROLLED_IN;
   }
 
   /**
-   * Performs an animation that will slide the child from it's current position to be totally on the
+   * Performs an animation that will slide the child from its current position to be totally on the
    * screen.
    */
-  public void slideUp(@NonNull V child) {
-    slideUp(child, /* animate= */ true);
+  public void slideIn(@NonNull V child) {
+    slideIn(child, /* animate= */ true);
   }
 
   /**
@@ -194,8 +252,8 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    *
    * @param animate {@code true} to slide with animation.
    */
-  public void slideUp(@NonNull V child, boolean animate) {
-    if (isScrolledUp()) {
+  public void slideIn(@NonNull V child, boolean animate) {
+    if (isScrolledIn()) {
       return;
     }
 
@@ -203,26 +261,27 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       currentAnimator.cancel();
       child.clearAnimation();
     }
-    updateCurrentState(child, STATE_SCROLLED_UP);
-    int targetTranslationY = 0;
+    updateCurrentState(child, STATE_SCROLLED_IN);
+    int targetTranslation = hideOnScrollViewDelegate.getTargetTranslation();
+
     if (animate) {
-      animateChildTo(child, targetTranslationY, enterAnimDuration, enterAnimInterpolator);
+      animateChildTo(child, targetTranslation, enterAnimDuration, enterAnimInterpolator);
     } else {
-      child.setTranslationY(targetTranslationY);
+      hideOnScrollViewDelegate.setViewTranslation(child, targetTranslation);
     }
   }
 
-  /** Returns true if the current state is scrolled down. */
-  public boolean isScrolledDown() {
-    return currentState == STATE_SCROLLED_DOWN;
+  /** Returns true if the current state is scrolled out. */
+  public boolean isScrolledOut() {
+    return currentState == STATE_SCROLLED_OUT;
   }
 
   /**
    * Performs an animation that will slide the child from it's current position to be totally off
    * the screen.
    */
-  public void slideDown(@NonNull V child) {
-    slideDown(child, /* animate= */ true);
+  public void slideOut(@NonNull V child) {
+    slideOut(child, /* animate= */ true);
   }
 
   /**
@@ -231,8 +290,8 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    *
    * @param animate {@code true} to slide with animation.
    */
-  public void slideDown(@NonNull V child, boolean animate) {
-    if (isScrolledDown()) {
+  public void slideOut(@NonNull V child, boolean animate) {
+    if (isScrolledOut()) {
       return;
     }
 
@@ -240,8 +299,8 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       currentAnimator.cancel();
       child.clearAnimation();
     }
-    updateCurrentState(child, STATE_SCROLLED_DOWN);
-    int targetTranslationY = height + additionalHiddenOffsetY;
+    updateCurrentState(child, STATE_SCROLLED_OUT);
+    int targetTranslationY = size + additionalHiddenOffset;
     if (animate) {
       animateChildTo(child, targetTranslationY, exitAnimDuration, exitAnimInterpolator);
     } else {
@@ -257,11 +316,13 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   }
 
   private void animateChildTo(
-      @NonNull V child, int targetY, long duration, TimeInterpolator interpolator) {
+      @NonNull V child,
+      int targetTranslation,
+      long duration,
+      @NonNull TimeInterpolator interpolator) {
     currentAnimator =
-        child
-            .animate()
-            .translationY(targetY)
+        hideOnScrollViewDelegate
+            .getViewTranslationAnimator(child, targetTranslation)
             .setInterpolator(interpolator)
             .setDuration(duration)
             .setListener(
@@ -274,9 +335,9 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   }
 
   /**
-   * Adds a listener to be notified of bottom view scroll state changes.
+   * Adds a listener to be notified of View scroll state changes.
    *
-   * @param listener The listener to notify when bottom view scroll state changes.
+   * @param listener The listener to notify when View scroll state changes.
    */
   public void addOnScrollStateChangedListener(@NonNull OnScrollStateChangedListener listener) {
     onScrollStateChangedListeners.add(listener);

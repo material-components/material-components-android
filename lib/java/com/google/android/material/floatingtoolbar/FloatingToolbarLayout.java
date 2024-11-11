@@ -30,6 +30,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
+import com.google.android.material.behavior.HideViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -40,11 +42,13 @@ import com.google.android.material.shape.ShapeAppearanceModel;
  * <p>Floating toolbars float above the body content and can be used to display contextual actions
  * relevant to the body content or the specific page.
  *
- * <p>The floating toolbar supports a custom ViewGroup child. The toolbar provides styling for the
- * provided child to give a uniform "floating toolbar" appearance to the ViewGroup.
+ * <p>The floating toolbar supports a custom {@link android.view.ViewGroup} child. The toolbar
+ * provides styling for the provided child to give a uniform "floating toolbar" appearance to the
+ * {@link android.view.ViewGroup}.
  */
-public class FloatingToolbarLayout extends FrameLayout {
+public class FloatingToolbarLayout extends FrameLayout implements AttachedBehavior {
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_FloatingToolbar;
+  @Nullable private Behavior behavior;
 
   public FloatingToolbarLayout(@NonNull Context context) {
     this(context, null);
@@ -89,4 +93,20 @@ public class FloatingToolbarLayout extends FrameLayout {
 
     attributes.recycle();
   }
+
+  @Override
+  @NonNull
+  public Behavior getBehavior() {
+    if (behavior == null) {
+      behavior = new Behavior();
+    }
+    return behavior;
+  }
+
+  /**
+   * Behavior designed for use with {@link FloatingToolbarLayout} instances. Its main function is to
+   * hide the {@link FloatingToolbarLayout} view when scrolling. Supports scrolling the floating
+   * toolbar off of either the right, bottom or left edge of the screen.
+   */
+  public static class Behavior extends HideViewOnScrollBehavior<FloatingToolbarLayout> {}
 }
