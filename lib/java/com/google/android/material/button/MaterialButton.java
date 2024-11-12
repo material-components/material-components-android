@@ -55,6 +55,7 @@ import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
@@ -212,6 +213,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
+  @AttrRes private static final int MATERIAL_SIZE_OVERLAY_ATTR = R.attr.materialSizeOverlay;
+
   // Use Fast Bouncy spring as default.
   private static final float DEFAULT_BUTTON_SPRING_DAMPING = 0.6f;
   private static final float DEFAULT_BUTTON_SPRING_STIFFNESS = 800f;
@@ -261,7 +264,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   public MaterialButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    super(
+        wrap(context, attrs, defStyleAttr, DEF_STYLE_RES, MATERIAL_SIZE_OVERLAY_ATTR),
+        attrs,
+        defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
