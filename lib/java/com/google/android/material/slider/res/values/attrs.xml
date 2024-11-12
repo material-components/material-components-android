@@ -21,7 +21,8 @@
     <attr name="android:valueTo" />
     <attr name="android:stepSize" />
     <!-- Whether the Slider is enabled. -->
-    <attr name="android:enabled"/>
+    <attr name="android:enabled" />
+    <attr name="android:orientation" />
     <!-- The color of the slider's halo. -->
     <attr name="haloColor" format="color" />
     <!-- The radius of the halo. -->

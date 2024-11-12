@@ -294,6 +294,7 @@ slider also has tick marks.
 
 | Element                                    | Attribute                    | Related method(s)                                                                    | Default value                        |
 |--------------------------------------------|------------------------------|--------------------------------------------------------------------------------------|--------------------------------------|
+| **Orientation**                            | `android:orientation`        | `setOrientation`<br/>`isVertical`                                                    | `horizontal`                         |
 | **Min value**                              | `android:valueFrom`          | `setValueFrom`<br/>`getValueFrom`                                                    | N/A                                  |
 | **Max value**                              | `android:valueTo`            | `setValueTo`<br/>`getValueTo`                                                        | N/A                                  |
 | **Step size (discrete)**                   | `android:stepSize`           | `setStepSize`<br/>`getStepSize`                                                      | N/A                                  |
@@ -320,6 +321,10 @@ thing.
 
 **Note:** `app:trackStopIndicatorSize` takes precedence over
 `app:tickRadiusActive` and `app:tickRadiusInactive`.
+
+**Note:** `vertical` orientation still uses `height` in the same way as for
+`horizontal` orientation. In this context, `height` can be seen as track
+thickness.
 
 #### Thumb attributes
 
