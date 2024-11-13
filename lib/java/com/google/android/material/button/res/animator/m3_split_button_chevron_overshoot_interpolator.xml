@@ -15,4 +15,4 @@
     limitations under the License.
 -->
 <overshootInterpolator xmlns:android="http://schemas.android.com/apk/res/android"
-  android:tension="5.0"/>
+  android:tension="1.0"/>
