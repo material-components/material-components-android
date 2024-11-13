@@ -16,5 +16,8 @@
 -->
 <resources>
   <public name="floatingToolbarStyle" type="attr"/>
-  <public name="Widget.Material3.FloatingToolbar" type="style"/>
+  <public name="Widget.Material3.FloatingToolbar.Horizontal" type="style"/>
+  <public name="Widget.Material3.FloatingToolbar.Horizontal.Vibrant" type="style"/>
+  <public name="Widget.Material3.FloatingToolbar.Vertical" type="style"/>
+  <public name="Widget.Material3.FloatingToolbar.Vertical.Vibrant" type="style"/>
 </resources>

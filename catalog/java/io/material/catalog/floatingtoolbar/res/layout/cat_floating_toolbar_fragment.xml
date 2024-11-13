@@ -17,7 +17,8 @@
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:padding="8dp">
 
   <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
@@ -74,12 +75,10 @@
 
   <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
     android:id="@+id/floating_toolbar_left"
-    style="@style/Widget.Material3.FloatingToolbar"
+    style="@style/Widget.Material3.FloatingToolbar.Vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="36dp"
     android:layout_gravity="left|center"
-    android:paddingVertical="8dp"
     android:visibility="gone">
     <LinearLayout
       android:id="@+id/floating_toolbar_child_left"
@@ -93,12 +92,9 @@
 
   <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
     android:id="@+id/floating_toolbar_right"
-    style="@style/Widget.Material3.FloatingToolbar"
+    style="@style/Widget.Material3.FloatingToolbar.Vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="36dp"
-    android:layout_gravity="right|center"
-    android:paddingVertical="8dp"
     android:visibility="gone">
     <LinearLayout
       android:id="@+id/floating_toolbar_child_right"
@@ -112,12 +108,9 @@
 
   <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
     android:id="@+id/floating_toolbar_bottom"
-    style="@style/Widget.Material3.FloatingToolbar"
+    style="@style/Widget.Material3.FloatingToolbar.Horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="36dp"
-    android:layout_gravity="bottom|center"
-    android:paddingHorizontal="8dp">
+    android:layout_height="wrap_content">
     <LinearLayout
       android:id="@+id/floating_toolbar_child_bottom"
       android:layout_width="match_parent"

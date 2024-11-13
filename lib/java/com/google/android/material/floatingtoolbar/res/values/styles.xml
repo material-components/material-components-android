@@ -15,13 +15,49 @@
   ~ limitations under the License.
 -->
 <resources>
-
-  <style name="Widget.Material3.FloatingToolbar" parent="">
+  <!-- Base style for Floating Toolbar. Do not use; use one of the horizontal or vertical variants,
+     instead. -->
+  <style name="Base.Widget.Material3.FloatingToolbar" parent="">
     <item name="enforceMaterialTheme">true</item>
-    <item name="android:minHeight">@dimen/m3_floatingtoolbar_min_height</item>
-    <item name="android:minWidth">@dimen/m3_floatingtoolbar_min_width</item>
-    <item name="backgroundTint">?attr/colorSurfaceContainer</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="android:minHeight">@dimen/m3_comp_toolbar_floating_container_height</item>
+    <item name="android:minWidth">@dimen/m3_comp_toolbar_floating_container_height</item>
+    <item name="backgroundTint">@macro/m3_comp_toolbar_floating_standard_container_color</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.Toolbar.Floating.Container.Shape</item>
+    <item name="android:layout_margin">@dimen/m3_comp_toolbar_floating_container_external_padding</item>
+  </style>
+
+  <!-- Style for Horizontal Floating Toolbar.
+       Note that layout_* attributes break when set via a default style. Always set this style
+       explicitly on the layout to ensure that layout_* attributes are set properly. -->
+  <style name="Widget.Material3.FloatingToolbar.Horizontal" parent="Base.Widget.Material3.FloatingToolbar">
+    <item name="android:paddingStart">@dimen/m3_comp_toolbar_floating_container_leading_space</item>
+    <item name="android:paddingEnd">@dimen/m3_comp_toolbar_floating_container_trailing_space</item>
+    <item name="android:layout_gravity">bottom|center</item>
+  </style>
+
+  <!-- Style for Vibrant color variation of the Horizontal Floating Toolbar.
+       Note that layout_* attributes break when set via a default style. Always set this style
+       explicitly on the layout to ensure that layout_* attributes are set properly. -->
+  <style name="Widget.Material3.FloatingToolbar.Horizontal.Vibrant">
+    <item name="backgroundTint">@macro/m3_comp_toolbar_floating_vibrant_container_color</item>
+  </style>
+
+  <!-- Style for Vibrant color variation of the Vertical Floating Toolbar. Defaults to the right
+       side; override android:layout_gravity to position the toolbar on the left side. Note that
+       layout_* attributes break when set via a default style. Always set this style explicitly on
+       the layout to ensure that layout_* attributes are set properly. -->
+  <style name="Widget.Material3.FloatingToolbar.Vertical" parent="Base.Widget.Material3.FloatingToolbar">
+    <item name="android:paddingTop">@dimen/m3_comp_toolbar_floating_container_leading_space</item>
+    <item name="android:paddingBottom">@dimen/m3_comp_toolbar_floating_container_trailing_space</item>
+    <item name="android:layout_gravity">right|center</item>
+  </style>
+
+  <!-- Style for Vibrant color variation of the Vertical Floating Toolbar. Defaults to the right
+       side; override android:layout_gravity to position the toolbar on the left side. Note that
+       layout_* attributes break when set via a default style. Always set this style explicitly on
+       the layout to ensure that layout_* attributes are set properly. -->
+  <style name="Widget.Material3.FloatingToolbar.Vertical.Vibrant">
+    <item name="backgroundTint">@macro/m3_comp_toolbar_floating_vibrant_container_color</item>
   </style>
 
 </resources>
