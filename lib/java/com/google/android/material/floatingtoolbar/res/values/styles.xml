@@ -30,9 +30,9 @@
        Note that layout_* attributes break when set via a default style. Always set this style
        explicitly on the layout to ensure that layout_* attributes are set properly. -->
   <style name="Widget.Material3.FloatingToolbar.Horizontal" parent="Base.Widget.Material3.FloatingToolbar">
+    <item name="android:layout_gravity">bottom|center</item>
     <item name="android:paddingStart">@dimen/m3_comp_toolbar_floating_container_leading_space</item>
     <item name="android:paddingEnd">@dimen/m3_comp_toolbar_floating_container_trailing_space</item>
-    <item name="android:layout_gravity">bottom|center</item>
   </style>
 
   <!-- Style for Vibrant color variation of the Horizontal Floating Toolbar.
@@ -47,9 +47,9 @@
        layout_* attributes break when set via a default style. Always set this style explicitly on
        the layout to ensure that layout_* attributes are set properly. -->
   <style name="Widget.Material3.FloatingToolbar.Vertical" parent="Base.Widget.Material3.FloatingToolbar">
+    <item name="android:layout_gravity">right|center</item>
     <item name="android:paddingTop">@dimen/m3_comp_toolbar_floating_container_leading_space</item>
     <item name="android:paddingBottom">@dimen/m3_comp_toolbar_floating_container_trailing_space</item>
-    <item name="android:layout_gravity">right|center</item>
   </style>
 
   <!-- Style for Vibrant color variation of the Vertical Floating Toolbar. Defaults to the right

@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
@@ -47,10 +48,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
 
-    View view =
-        layoutInflater.inflate(
-            R.layout.cat_floating_toolbar_fragment, viewGroup, /* attachToRoot= */ false);
-
+    View view = layoutInflater.inflate(getLayoutResId(), viewGroup, /* attachToRoot= */ false);
     TextView bodyText = view.findViewById(R.id.body_text);
 
     // Initialize group of floating toolbars.
@@ -131,7 +129,8 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
         view, floatingToolbars, R.id.bottom_button, R.id.floating_toolbar_bottom);
     initializeOrientationButton(
         view, floatingToolbars, R.id.left_button, R.id.floating_toolbar_left);
-    initializeOrientationButton(view, floatingToolbars, R.id.right_button, R.id.floating_toolbar_right);
+    initializeOrientationButton(
+        view, floatingToolbars, R.id.right_button, R.id.floating_toolbar_right);
 
     // Select bottom configuration button to represent the toolbar that's initially visible.
     view.findViewById(R.id.bottom_button).performClick();
@@ -181,5 +180,10 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     Random random = new Random();
     final int bound = 256;
     return Color.rgb(random.nextInt(bound), random.nextInt(bound), random.nextInt(bound));
+  }
+
+  @LayoutRes
+  protected int getLayoutResId() {
+    return R.layout.cat_floating_toolbar_fragment;
   }
 }
