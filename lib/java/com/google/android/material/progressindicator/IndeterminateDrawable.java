@@ -23,7 +23,6 @@ import static com.google.android.material.progressindicator.LinearProgressIndica
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -183,8 +182,6 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   /** Draws the graphics based on the progress indicator's properties and the animation states. */
   @Override
   public void draw(@NonNull Canvas canvas) {
-    Rect clipBounds = new Rect();
-
     if (getBounds().isEmpty() || !isVisible() || !canvas.getClipBounds(clipBounds)) {
       // Escape if bounds are empty, clip bounds are empty, or currently hidden.
       return;
