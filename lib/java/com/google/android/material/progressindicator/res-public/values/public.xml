@@ -31,6 +31,7 @@
   <public name="wavelengthIndeterminate" type="attr"/>
   <public name="waveAmplitude" type="attr"/>
   <public name="waveSpeed" type="attr"/>
+  <public name="indeterminateAnimatorDurationScale" type="attr"/>
 
   <!-- LinearProgressIndicator attributes -->
   <public name="indeterminateAnimationType" type="attr"/>

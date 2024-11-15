@@ -33,6 +33,7 @@ import android.view.ViewParent;
 import android.widget.ProgressBar;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -904,6 +905,22 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
               + " View.");
     }
     visibilityAfterHide = visibility;
+  }
+
+  /**
+   * Sets the scale of the animation duration in indeterminate mode.
+   *
+   * @param indeterminateAnimatorDurationScale The new scale of the animation duration in
+   *     indeterminate mode.
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#BaseProgressIndicator_indeterminateAnimatorDurationScale
+   */
+  public void setIndeterminateAnimatorDurationScale(
+      @FloatRange(from = 0.1f, to = 10f) float indeterminateAnimatorDurationScale) {
+    if (spec.indeterminateAnimatorDurationScale != indeterminateAnimatorDurationScale) {
+      spec.indeterminateAnimatorDurationScale = indeterminateAnimatorDurationScale;
+      getIndeterminateDrawable().getAnimatorDelegate().invalidateSpecValues();
+    }
   }
 
   /** @hide */

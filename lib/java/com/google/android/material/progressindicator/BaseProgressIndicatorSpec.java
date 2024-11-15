@@ -29,6 +29,7 @@ import android.util.TypedValue;
 import androidx.annotation.AttrRes;
 import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
@@ -85,6 +86,10 @@ public abstract class BaseProgressIndicatorSpec {
   /** The speed of the waveform, if a wave effect is configured. */
   @Px public int waveSpeed;
 
+  /** The scale of the animation duration in indeterminate mode. */
+  @FloatRange(from = 0.1f, to = 10f)
+  public float indeterminateAnimatorDurationScale;
+
   /**
    * Instantiates BaseProgressIndicatorSpec.
    *
@@ -135,6 +140,8 @@ public abstract class BaseProgressIndicatorSpec {
     waveAmplitude =
         abs(a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_waveAmplitude, 0));
     waveSpeed = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_waveSpeed, 0);
+    indeterminateAnimatorDurationScale =
+        a.getFloat(R.styleable.BaseProgressIndicator_indeterminateAnimatorDurationScale, 1);
 
     loadIndicatorColors(context, a);
     loadTrackColor(context, a);
