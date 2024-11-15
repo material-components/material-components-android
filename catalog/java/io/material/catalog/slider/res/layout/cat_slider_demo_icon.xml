@@ -23,7 +23,7 @@
   android:orientation="vertical">
 
   <com.google.android.material.slider.Slider
-    android:id="@+id/slider"
+    android:id="@+id/slider_icon_start"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="32dp"
@@ -31,32 +31,52 @@
     android:value="8.09"
     android:valueFrom="0.0"
     android:valueTo="11.0"
+    app:thumbHeight="48dp"
     app:trackCornerSize="12dp"
-    app:trackHeight="36dp" />
+    app:trackHeight="40dp"
+    app:trackIconActiveColor="@color/m3_slider_active_tick_marks_color"
+    app:trackIconActiveStart="@drawable/baseline_music_note_24"
+    app:trackIconInactiveColor="@color/m3_slider_inactive_tick_marks_color"
+    app:trackIconInactiveStart="@drawable/baseline_music_off_24"
+    app:trackIconSize="20dp" />
 
-  <com.google.android.material.slider.RangeSlider
-    android:id="@+id/range_slider"
+  <com.google.android.material.slider.Slider
+    android:id="@+id/slider_icon_end"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="32dp"
     android:layout_gravity="center"
+    android:value="8.09"
     android:valueFrom="0.0"
     android:valueTo="11.0"
-    app:thumbHeight="56dp"
-    app:trackCornerSize="16dp"
-    app:trackHeight="48dp"
-    app:values="@array/initial_slider_values" />
+    app:thumbHeight="48dp"
+    app:trackCornerSize="12dp"
+    app:trackHeight="40dp"
+    app:trackIconActiveColor="@color/m3_slider_active_tick_marks_color"
+    app:trackIconActiveEnd="@drawable/baseline_music_note_24"
+    app:trackIconInactiveColor="@color/m3_slider_inactive_tick_marks_color"
+    app:trackIconInactiveEnd="@drawable/baseline_music_off_24"
+    app:trackIconSize="20dp"
+    app:trackStopIndicatorSize="0dp" />
 
-  <com.google.android.material.slider.RangeSlider
-    android:id="@+id/range_slider_multi"
+  <com.google.android.material.slider.Slider
+    android:id="@+id/slider_icon_start_end"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="32dp"
     android:layout_gravity="center"
+    android:value="8.09"
     android:valueFrom="0.0"
     android:valueTo="11.0"
-    app:thumbHeight="92dp"
-    app:trackCornerSize="28dp"
-    app:trackHeight="84dp"
-    app:values="@array/initial_slider_multi_values" />
+    app:thumbHeight="48dp"
+    app:trackCornerSize="12dp"
+    app:trackHeight="40dp"
+    app:trackIconActiveColor="@color/m3_slider_active_tick_marks_color"
+    app:trackIconActiveEnd="@drawable/baseline_music_note_24"
+    app:trackIconActiveStart="@drawable/baseline_music_note_24"
+    app:trackIconInactiveColor="@color/m3_slider_inactive_tick_marks_color"
+    app:trackIconInactiveEnd="@drawable/baseline_music_off_24"
+    app:trackIconInactiveStart="@drawable/baseline_music_off_24"
+    app:trackIconSize="20dp"
+    app:trackStopIndicatorSize="0dp" />
 </LinearLayout>

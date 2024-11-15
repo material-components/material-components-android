@@ -34,12 +34,11 @@
     app:thumbHeight="48dp"
     app:trackCornerSize="12dp"
     app:trackHeight="40dp"
-    app:trackIconActive="@drawable/baseline_music_note_24"
+    app:trackIconSize="20dp"
+    app:trackIconActiveStart="@drawable/baseline_music_note_24"
     app:trackIconActiveColor="@color/m3_slider_active_tick_marks_color"
-    app:trackIconActiveSize="20dp"
-    app:trackIconInactive="@drawable/baseline_music_off_24"
-    app:trackIconInactiveColor="@color/m3_slider_inactive_tick_marks_color"
-    app:trackIconInactiveSize="20dp" />
+    app:trackIconInactiveStart="@drawable/baseline_music_off_24"
+    app:trackIconInactiveColor="@color/m3_slider_inactive_tick_marks_color" />
 
   <com.google.android.material.materialswitch.MaterialSwitch
     android:id="@+id/switch_button"
