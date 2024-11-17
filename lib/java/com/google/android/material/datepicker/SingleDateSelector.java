@@ -40,6 +40,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TimeZone;
 
 /**
  * A {@link DateSelector} that uses a {@link Long} for its selection state.
@@ -91,7 +92,7 @@ public class SingleDateSelector implements DateSelector<Long> {
   @Override
   @Nullable
   public Long getSelection() {
-    return selectedItem;
+    return selectedItem == null ? null : selectedItem - TimeZone.getDefault().getRawOffset();
   }
 
   @Override
