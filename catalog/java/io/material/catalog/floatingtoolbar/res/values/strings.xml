@@ -39,6 +39,26 @@
     description="Text for a button that sets the Floating Toolbar to right orientation [CHAR LIMIT=NONE]">
     Right
   </string>
+  <string name="cat_floating_toolbar_button_bold_content_description"
+    description="Content description for a button that bolds the body text [CHAR LIMIT=NONE]">
+    Format text bold
+  </string>
+  <string name="cat_floating_toolbar_button_italic_content_description"
+    description="Content description for a button that italicizes the body text [CHAR LIMIT=NONE]">
+    Format text italic
+  </string>
+  <string name="cat_floating_toolbar_button_underlined_content_description"
+    description="Content description for a button that underlines the body text [CHAR LIMIT=NONE]">
+    Format text underlined
+  </string>
+  <string name="cat_floating_toolbar_button_color_text_content_description"
+    description="Content description for a button that sets the body text to a new random color [CHAR LIMIT=NONE]">
+    Format text color
+  </string>
+  <string name="cat_floating_toolbar_button_color_fill_content_description"
+    description="Content description for a button that sets the body text background to a new random color [CHAR LIMIT=NONE]">
+    Format text background color
+  </string>
   <string name="cat_floating_toolbar_filler_text" translatable="false">
     \t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.
     \n\n\t\tSuspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae, molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor bibendum, vel congue leo egestas.
