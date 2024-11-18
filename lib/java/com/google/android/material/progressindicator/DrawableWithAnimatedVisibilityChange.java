@@ -241,7 +241,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
    * @param animate Whether to change the visibility with animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
-   * @see #setVisible(boolean, boolean, boolean)
    */
   public boolean setVisible(boolean visible, boolean restart, boolean animate) {
     float systemAnimatorDurationScale =

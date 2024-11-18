@@ -113,11 +113,26 @@ public final class LoadingIndicatorDrawable extends Drawable implements Drawable
   @CanIgnoreReturnValue
   @Override
   public boolean setVisible(boolean visible, boolean restart) {
+    return setVisible(visible, restart, /* animate= */ visible);
+  }
+
+  /**
+   * Changes the visibility with/without triggering the animation callbacks.
+   *
+   * @param visible Whether to make the drawable visible.
+   * @param restart Whether to force starting the animation from the beginning.
+   * @param animate Whether to change the visibility with animation.
+   * @return {@code true}, if the visibility changes or will change after the animation; {@code
+   *     false}, otherwise.
+   * @see #setVisible(boolean, boolean, boolean)
+   */
+  @CanIgnoreReturnValue
+  public boolean setVisible(boolean visible, boolean restart, boolean animate) {
     boolean changed = super.setVisible(visible, restart);
-    if (visible && !isSystemAnimatorDisabled()) {
+    animatorDelegate.cancelAnimatorImmediately();
+    // Restarts the main animator if it's visible and needs to be animated.
+    if (visible && animate && !isSystemAnimatorDisabled()) {
       animatorDelegate.startAnimator();
-    } else {
-      animatorDelegate.cancelAnimatorImmediately();
     }
     return changed;
   }
