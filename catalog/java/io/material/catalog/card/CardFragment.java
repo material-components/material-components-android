@@ -63,12 +63,6 @@ public class CardFragment extends DemoLandingFragment {
             return new Intent(getContext(), CardSelectionModeActivity.class);
           }
         },
-        new Demo(R.string.cat_card_draggable_card) {
-          @Override
-          public Fragment createFragment() {
-            return new DraggableCardFragment();
-          }
-        },
         new Demo(R.string.cat_card_states) {
           @Override
           public Fragment createFragment() {
