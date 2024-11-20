@@ -220,6 +220,20 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   }
 
   @Override
+  public boolean onInterceptTouchEvent(MotionEvent event) {
+    // Intercept touch events outside the masked bounds and prevent them from
+    // reaching the children.
+    if (!maskRect.isEmpty()) {
+      float x = event.getX();
+      float y = event.getY();
+      if (!maskRect.contains(x, y)) {
+        return true; // Intercept touch events outside the mask
+      }
+    }
+    return super.onInterceptTouchEvent(event);
+  }
+
+  @Override
   protected void dispatchDraw(Canvas canvas) {
     shapeableDelegate.maybeClip(canvas, super::dispatchDraw);
   }
