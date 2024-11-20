@@ -36,6 +36,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.TextView;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -139,6 +140,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     } else {
       set = new AutoTransition();
       set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+      set.excludeTarget(TextView.class, true);
       set.setDuration(
           MotionUtils.resolveThemeDuration(
               getContext(),

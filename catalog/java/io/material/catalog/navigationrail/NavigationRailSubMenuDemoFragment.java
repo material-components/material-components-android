@@ -78,10 +78,12 @@ public class NavigationRailSubMenuDemoFragment extends DemoFragment {
             efab.shrink();
             navigationRailView.collapse();
             button.setContentDescription(getResources().getString(R.string.cat_navigation_rail_expand_button_description));
+            button.setImageResource(R.drawable.ic_drawer_menu_24px);
           } else {
             efab.extend();
             navigationRailView.expand();
             button.setContentDescription(getResources().getString(R.string.cat_navigation_rail_collapse_button_description));
+            button.setImageResource(R.drawable.gs_menu_open_vd_theme_24);
           }
         });
     return view;
