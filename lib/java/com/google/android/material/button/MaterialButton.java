@@ -265,7 +265,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   public MaterialButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(
-        wrap(context, attrs, defStyleAttr, DEF_STYLE_RES, MATERIAL_SIZE_OVERLAY_ATTR),
+        wrap(context, attrs, defStyleAttr, DEF_STYLE_RES, new int[] { MATERIAL_SIZE_OVERLAY_ATTR }),
         attrs,
         defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
