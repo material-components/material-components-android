@@ -137,7 +137,8 @@ public final class LoadingIndicator extends View implements Drawable.Callback {
   @Override
   protected void onWindowVisibilityChanged(int visibility) {
     super.onWindowVisibilityChanged(visibility);
-    drawable.setVisible(visibleToUser(), /* restart= */ false, /* animate= */ false);
+    drawable.setVisible(
+        visibleToUser(), /* restart= */ false, /* animate= */ visibility == VISIBLE);
   }
 
   @Override
