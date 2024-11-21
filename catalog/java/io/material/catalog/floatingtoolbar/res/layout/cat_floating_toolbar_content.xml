@@ -17,7 +17,7 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
   <Button
     android:id="@+id/floating_toolbar_button_bold"
-    style="?attr/materialIconButtonStyle"
+    style="?attr/materialIconButtonFilledStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:checkable="true"
@@ -25,7 +25,7 @@
     app:icon="@drawable/ic_format_bold_24px" />
   <Button
     android:id="@+id/floating_toolbar_button_italic"
-    style="?attr/materialIconButtonStyle"
+    style="?attr/materialIconButtonFilledStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:checkable="true"
@@ -33,7 +33,7 @@
     app:icon="@drawable/ic_format_italic_24px" />
   <Button
     android:id="@+id/floating_toolbar_button_underlined"
-    style="?attr/materialIconButtonStyle"
+    style="?attr/materialIconButtonFilledStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:checkable="true"
