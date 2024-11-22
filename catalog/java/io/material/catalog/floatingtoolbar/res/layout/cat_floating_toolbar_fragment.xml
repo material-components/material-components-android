@@ -75,7 +75,7 @@
 
   <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
     android:id="@+id/floating_toolbar_left"
-    style="@style/Widget.Material3.FloatingToolbar.Vertical"
+    style="@style/Widget.Material3.FloatingToolbar.Vertical.Vibrant"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="left|center"
@@ -84,8 +84,7 @@
       android:id="@+id/floating_toolbar_child_left"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:orientation="vertical">
+      android:layout_gravity="center">
       <include layout="@layout/cat_floating_toolbar_content" />
     </LinearLayout>
   </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
@@ -100,23 +99,21 @@
       android:id="@+id/floating_toolbar_child_right"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:orientation="vertical">
+      android:layout_gravity="center">
       <include layout="@layout/cat_floating_toolbar_content" />
     </LinearLayout>
   </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
 
   <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
     android:id="@+id/floating_toolbar_bottom"
-    style="@style/Widget.Material3.FloatingToolbar.Horizontal"
+    style="@style/Widget.Material3.FloatingToolbar.Horizontal.Vibrant"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <LinearLayout
       android:id="@+id/floating_toolbar_child_bottom"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:orientation="horizontal">
+      android:layout_gravity="center">
       <include layout="@layout/cat_floating_toolbar_content" />
     </LinearLayout>
   </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>

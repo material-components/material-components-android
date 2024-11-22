@@ -16,39 +16,39 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto">
   <Button
+    style="?attr/materialIconButtonStyle"
     android:id="@+id/floating_toolbar_button_bold"
-    style="?attr/materialIconButtonFilledStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:checkable="true"
     android:contentDescription="@string/cat_floating_toolbar_button_bold_content_description"
     app:icon="@drawable/ic_format_bold_24px" />
   <Button
+    style="?attr/materialIconButtonStyle"
     android:id="@+id/floating_toolbar_button_italic"
-    style="?attr/materialIconButtonFilledStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:checkable="true"
     android:contentDescription="@string/cat_floating_toolbar_button_italic_content_description"
     app:icon="@drawable/ic_format_italic_24px" />
   <Button
+    style="?attr/materialIconButtonStyle"
     android:id="@+id/floating_toolbar_button_underlined"
-    style="?attr/materialIconButtonFilledStyle"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:checkable="true"
     android:contentDescription="@string/cat_floating_toolbar_button_underlined_content_description"
     app:icon="@drawable/ic_format_underlined_24px" />
   <Button
-    android:id="@+id/floating_toolbar_button_color_text"
     style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_color_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:contentDescription="@string/cat_floating_toolbar_button_color_text_content_description"
     app:icon="@drawable/ic_format_color_text_24px" />
   <Button
-    android:id="@+id/floating_toolbar_button_color_fill"
     style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_color_fill"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:contentDescription="@string/cat_floating_toolbar_button_color_fill_content_description"
