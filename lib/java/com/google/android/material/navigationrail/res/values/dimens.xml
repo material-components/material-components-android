@@ -47,6 +47,5 @@
   <dimen name="m3_navigation_rail_min_expanded_width">220dp</dimen>
   <dimen name="m3_navigation_rail_max_expanded_width">360dp</dimen>
   <dimen name="m3_navigation_rail_expanded_item_spacing">0dp</dimen>
-  <dimen name="m3_navigation_rail_expanded_item_min_height">56dp</dimen>
 
 </resources>

@@ -369,15 +369,17 @@ for more attributes.
 
 #### Navigation item attributes
 
-**Element**               | **Attribute**             | **Related methods**                                   | **Default value**
-------------------------- | ------------------------- | ----------------------------------------------------- | -----------------
-**Menu resource**         | `app:menu`                | `inflateMenu`<br/>`getMenu`                           | N/A
-**Ripple (inactive)**     | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
-**Ripple (active)**       | `app:itemRippleColor`     | `setItemRippleColor`<br/>`getItemRippleColor`         | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
-**Label visibility mode** | `app:labelVisibilityMode` | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode` | `LABEL_VISIBILITY_AUTO`
-**Item minimum height**   | `app:itemMinHeight`       | `setItemMinimumHeight`<br/>`getItemMinimumHeight`     | `NO_ITEM_MINIMUM_HEIGHT`
-**Item spacing**          | `app:itemSpacing`         | `setItemSpacing`<br/>`getItemSpacing`                 | `0dp`
-**Item Gravity**          | `app:itemGravity`         | `setItemGravity`<br/>`getItemGravity`                 | `TOP_CENTER`
+**Element**                       | **Attribute**                | **Related methods**                                                 | **Default value**
+--------------------------------- | ---------------------------- | ------------------------------------------------------------------- | -----------------
+**Menu resource**                 | `app:menu`                   | `inflateMenu`<br/>`getMenu`                                         | N/A
+**Ripple (inactive)**             | `app:itemRippleColor`        | `setItemRippleColor`<br/>`getItemRippleColor`                       | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
+**Ripple (active)**               | `app:itemRippleColor`        | `setItemRippleColor`<br/>`getItemRippleColor`                       | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
+**Label visibility mode**         | `app:labelVisibilityMode`    | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode`               | `LABEL_VISIBILITY_AUTO`
+**Item minimum height**           | `app:itemMinHeight`          | `setItemMinimumHeight`<br/>`getItemMinimumHeight`                   | `NO_ITEM_MINIMUM_HEIGHT`
+**Collapsed item minimum height** | `app:collapsedItemMinHeight` | `setCollapsedItemMinimumHeight`<br/>`getCollapsedItemMinimumHeight` | `NO_ITEM_MINIMUM_HEIGHT`
+**Expanded item minimum height**  | `app:expandedItemMinHeight`  | `setExpandedItemMinimumHeight`<br/>`getExpandedItemMinimumHeight`   | `NO_ITEM_MINIMUM_HEIGHT`
+**Item spacing**                  | `app:itemSpacing`            | `setItemSpacing`<br/>`getItemSpacing`                               | `0dp`
+**Item Gravity**                  | `app:itemGravity`            | `setItemGravity`<br/>`getItemGravity`                               | `TOP_CENTER`
 
 **Note:** If there's not enough room, `itemMinHeight` and `itemSpacing` may not be respected in order to fit the items.
 

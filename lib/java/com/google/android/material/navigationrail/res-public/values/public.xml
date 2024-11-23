@@ -18,6 +18,9 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="itemMinHeight" type="attr"/>
+  <public name="expandedItemMinHeight" type="attr"/>
+  <public name="expandedMinWidth" type="attr"/>
+  <public name="expandedMaxWidth" type="attr"/>
   <public name="navigationRailStyle" type="attr"/>
   <public name="menuGravity" type="attr"/>
   <public name="contentMarginTop" type="attr"/>
