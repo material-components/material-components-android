@@ -163,8 +163,11 @@
   <!-- M3 CollapsingToolbarLayout styles -->
   <style name="Base.Widget.Material3.CollapsingToolbar" parent="Widget.MaterialComponents.CollapsingToolbar">
     <item name="collapsedTitleTextAppearance">@macro/m3_comp_top_app_bar_small_headline_type</item>
+    <item name="collapsedSubtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="collapsedTitleTextColor">@macro/m3_comp_top_app_bar_small_headline_color</item>
+    <item name="collapsedSubtitleTextColor">@macro/m3_comp_top_app_bar_small_headline_color</item>
     <item name="expandedTitleTextColor">@macro/m3_comp_top_app_bar_small_headline_color</item>
+    <item name="expandedSubtitleTextColor">@macro/m3_comp_top_app_bar_small_headline_color</item>
     <item name="expandedTitleMarginStart">@dimen/m3_appbar_expanded_title_margin_horizontal</item>
     <item name="expandedTitleMarginEnd">@dimen/m3_appbar_expanded_title_margin_horizontal</item>
     <item name="expandedTitleMarginBottom">@dimen/m3_appbar_expanded_title_margin_bottom</item>
@@ -182,6 +185,7 @@
   <style name="Widget.Material3.CollapsingToolbar" parent="Base.Widget.Material3.CollapsingToolbar">
     <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger</item>
     <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadlineSmall</item>
+    <item name="expandedSubtitleTextAppearance">?attr/textAppearanceTitleLarge</item>
   </style>
 
   <style name="Widget.Material3.CollapsingToolbar.Medium" parent="Base.Widget.Material3.CollapsingToolbar">
@@ -189,6 +193,7 @@
     <item name="collapsedTitleTextColor">@macro/m3_comp_top_app_bar_medium_headline_color</item>
     <item name="expandedTitleTextColor">@macro/m3_comp_top_app_bar_medium_headline_color</item>
     <item name="expandedTitleTextAppearance">@macro/m3_comp_top_app_bar_medium_headline_type</item>
+    <item name="expandedSubtitleTextAppearance">?attr/textAppearanceTitleLarge</item>
   </style>
 
   <style name="Widget.Material3.CollapsingToolbar.Large" parent="Base.Widget.Material3.CollapsingToolbar">
@@ -196,6 +201,7 @@
     <item name="collapsedTitleTextColor">@macro/m3_comp_top_app_bar_large_headline_color</item>
     <item name="expandedTitleTextColor">@macro/m3_comp_top_app_bar_large_headline_color</item>
     <item name="expandedTitleTextAppearance">@macro/m3_comp_top_app_bar_large_headline_type</item>
+    <item name="expandedSubtitleTextAppearance">?attr/textAppearanceHeadlineSmall</item>
   </style>
 
   <!-- Style for a M3 Toolbar. -->

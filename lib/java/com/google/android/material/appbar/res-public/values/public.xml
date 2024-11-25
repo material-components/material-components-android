@@ -20,7 +20,9 @@
   <public name="collapsingToolbarLayoutMediumStyle" type="attr"/>
   <public name="collapsingToolbarLayoutLargeStyle" type="attr"/>
   <public name="collapsingToolbarLayoutMediumSize" type="attr"/>
+  <public name="collapsingToolbarLayoutMediumWithSubtitleSize" type="attr"/>
   <public name="collapsingToolbarLayoutLargeSize" type="attr"/>
+  <public name="collapsingToolbarLayoutLargeWithSubtitleSize" type="attr"/>
   <public name="toolbarSurfaceStyle" type="attr"/>
   <public name="layout_scrollInterpolator" type="attr"/>
   <public name="layout_scrollEffect" type="attr"/>
@@ -30,10 +32,15 @@
   <public name="expandedTitleMarginTop" type="attr"/>
   <public name="expandedTitleMarginEnd" type="attr"/>
   <public name="expandedTitleMarginBottom" type="attr"/>
+  <public name="expandedTitleSpacing" type="attr"/>
   <public name="expandedTitleTextAppearance" type="attr"/>
+  <public name="expandedSubtitleTextAppearance" type="attr"/>
   <public name="expandedTitleTextColor" type="attr"/>
+  <public name="expandedSubtitleTextColor" type="attr"/>
   <public name="collapsedTitleTextAppearance" type="attr"/>
+  <public name="collapsedSubtitleTextAppearance" type="attr"/>
   <public name="collapsedTitleTextColor" type="attr"/>
+  <public name="collapsedSubtitleTextColor" type="attr"/>
   <public name="contentScrim" type="attr"/>
   <public name="statusBarForeground" type="attr"/>
   <public name="statusBarScrim" type="attr"/>
@@ -75,6 +82,8 @@
   <public name="liftOnScrollTargetViewId" type="attr"/>
   <public name="collapsedTitleGravity" type="attr"/>
   <public name="expandedTitleGravity" type="attr"/>
+  <public name="collapsedSubtitleGravity" type="attr"/>
+  <public name="expandedSubtitleGravity" type="attr"/>
   <public name="layout_collapseMode" type="attr"/>
   <public name="layout_collapseParallaxMultiplier" type="attr"/>
   <public name="layout_scrollFlags" type="attr"/>

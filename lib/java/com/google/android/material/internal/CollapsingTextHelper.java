@@ -365,6 +365,12 @@ public final class CollapsingTextHelper {
     return -tmpPaint.ascent();
   }
 
+  public float getCollapsedFullSingleLineHeight() {
+    getTextPaintCollapsed(tmpPaint);
+    // Return collapsed height measured from the baseline.
+    return -tmpPaint.ascent() + tmpPaint.descent();
+  }
+
   public void setCurrentOffsetY(int currentOffsetY) {
     this.currentOffsetY = currentOffsetY;
   }

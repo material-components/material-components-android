@@ -31,8 +31,14 @@
   <!-- Size to use for Medium CollapsingToolbarLayouts in this theme. -->
   <attr name="collapsingToolbarLayoutMediumSize" format="reference"/>
 
+  <!-- Size to use for Medium CollapsingToolbarLayouts with subtitle in this theme. -->
+  <attr name="collapsingToolbarLayoutMediumWithSubtitleSize" format="reference"/>
+
   <!-- Size to use for Large CollapsingToolbarLayouts in this theme. -->
   <attr name="collapsingToolbarLayoutLargeSize" format="reference"/>
+
+  <!-- Size to use for Large CollapsingToolbarLayouts with subtitle in this theme. -->
+  <attr name="collapsingToolbarLayoutLargeWithSubtitleSize" format="reference"/>
 
   <!-- Style to use for Surface Toolbars in this theme. -->
   <attr name="toolbarSurfaceStyle" format="reference"/>
@@ -134,27 +140,35 @@
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout">
-    <!--  Specifies extra space on the start, top, end and bottom
+    <!-- Specifies extra space on the start, top, end and bottom
           sides of the the expanded title text. Margin values should be positive. -->
     <attr name="expandedTitleMargin" format="dimension"/>
-    <!--  Specifies extra space on the start side of the the expanded title text.
+    <!-- Specifies extra space on the start side of the the expanded title text.
           Margin values should be positive. -->
     <attr name="expandedTitleMarginStart" format="dimension"/>
-    <!--  Specifies extra space on the top side of the the expanded title text.
+    <!-- Specifies extra space on the top side of the the expanded title text.
           Margin values should be positive. -->
     <attr name="expandedTitleMarginTop" format="dimension"/>
-    <!--  Specifies extra space on the end side of the the expanded title text.
+    <!-- Specifies extra space on the end side of the the expanded title text.
           Margin values should be positive. -->
     <attr name="expandedTitleMarginEnd" format="dimension"/>
-    <!--  Specifies extra space on the bottom side of the the expanded title text.
+    <!-- Specifies extra space on the bottom side of the the expanded title text.
           Margin values should be positive. -->
     <attr name="expandedTitleMarginBottom" format="dimension"/>
+    <!-- Specifies space between the title and subtitle. -->
+    <attr name="expandedTitleSpacing" format="dimension"/>
     <!-- The text appearance of the CollapsingToolbarLayout's title when it is fully
          'expanded' -->
     <attr name="expandedTitleTextAppearance" format="reference"/>
     <!-- The text appearance of the CollapsingToolbarLayouts title when it is fully
          'collapsed' -->
     <attr name="collapsedTitleTextAppearance" format="reference"/>
+    <!-- The text appearance of the CollapsingToolbarLayout's subtitle when it is fully
+         'expanded' -->
+    <attr name="expandedSubtitleTextAppearance" format="reference"/>
+    <!-- The text appearance of the CollapsingToolbarLayouts subtitle when it is fully
+         'collapsed' -->
+    <attr name="collapsedSubtitleTextAppearance" format="reference"/>
     <!-- The text ellipsize of the collapsedToolbarLayout title -->
     <attr name="titleTextEllipsize" format="enum">
       <enum name="start" value="0" />
@@ -168,6 +182,12 @@
     <!-- The text color of the CollapsingToolbarLayouts title when it is fully
          'collapsed' -->
     <attr name="collapsedTitleTextColor" format="color|reference"/>
+    <!-- The text color of the CollapsingToolbarLayout's subtitle when it is fully
+         'expanded' -->
+    <attr name="expandedSubtitleTextColor" format="color|reference"/>
+    <!-- The text color of the CollapsingToolbarLayouts subtitle when it is fully
+         'collapsed' -->
+    <attr name="collapsedSubtitleTextColor" format="color|reference"/>
     <!-- The drawable to use as a scrim on top of the CollapsingToolbarLayouts content when
          it has been scrolled sufficiently off screen. -->
     <attr name="contentScrim" format="color"/>
@@ -233,10 +253,60 @@
       <flag name="end" value="0x00800005"/>
     </attr>
 
+    <!-- Specifies how the subtitle should be positioned when collapsed. -->
+    <attr name="collapsedSubtitleGravity">
+      <!-- Push subtitle to the top of its container, not changing its size. -->
+      <flag name="top" value="0x30"/>
+      <!-- Push subtitle to the bottom of its container, not changing its size. -->
+      <flag name="bottom" value="0x50"/>
+      <!-- Push subtitle to the left of its container, not changing its size. -->
+      <flag name="left" value="0x03"/>
+      <!-- Push subtitle to the right of its container, not changing its size. -->
+      <flag name="right" value="0x05"/>
+      <!-- Place subtitle in the vertical center of its container, not changing its size. -->
+      <flag name="center_vertical" value="0x10"/>
+      <!-- Grow the vertical size of the subtitle if needed so it completely fills its container. -->
+      <flag name="fill_vertical" value="0x70"/>
+      <!-- Place subtitle in the horizontal center of its container, not changing its size. -->
+      <flag name="center_horizontal" value="0x01"/>
+      <!-- Place the subtitle in the center of its container in both the vertical and horizontal axis, not changing its size. -->
+      <flag name="center" value="0x11"/>
+      <!-- Push subtitle to the beginning of its container, not changing its size. -->
+      <flag name="start" value="0x00800003"/>
+      <!-- Push subtitle to the end of its container, not changing its size. -->
+      <flag name="end" value="0x00800005"/>
+    </attr>
+
+    <!-- Specifies how the subtitle should be positioned when expanded. -->
+    <attr name="expandedSubtitleGravity">
+      <!-- Push subtitle to the top of its container, not changing its size. -->
+      <flag name="top" value="0x30"/>
+      <!-- Push subtitle to the bottom of its container, not changing its size. -->
+      <flag name="bottom" value="0x50"/>
+      <!-- Push subtitle to the left of its container, not changing its size. -->
+      <flag name="left" value="0x03"/>
+      <!-- Push subtitle to the right of its container, not changing its size. -->
+      <flag name="right" value="0x05"/>
+      <!-- Place subtitle in the vertical center of its container, not changing its size. -->
+      <flag name="center_vertical" value="0x10"/>
+      <!-- Grow the vertical size of the subtitle if needed so it completely fills its container. -->
+      <flag name="fill_vertical" value="0x70"/>
+      <!-- Place subtitle in the horizontal center of its container, not changing its size. -->
+      <flag name="center_horizontal" value="0x01"/>
+      <!-- Place the subtitle in the center of its container in both the vertical and horizontal axis, not changing its size. -->
+      <flag name="center" value="0x11"/>
+      <!-- Push subtitle to the beginning of its container, not changing its size. -->
+      <flag name="start" value="0x00800003"/>
+      <!-- Push subtitle to the end of its container, not changing its size. -->
+      <flag name="end" value="0x00800005"/>
+    </attr>
+
     <!-- Whether the CollapsingToolbarLayout should draw its own collapsing title. -->
     <attr name="titleEnabled" format="boolean"/>
     <!-- The title to show when titleEnabled is set to true. -->
     <attr name="title"/>
+    <!-- The title to show when titleEnabled is set to true. -->
+    <attr name="subtitle"/>
     <!-- Mode to specify the effect used to collapse and expand the title text. -->
     <attr name="titleCollapseMode">
       <!-- The expanded title will continuously scale and translate to its final collapsed position. -->
