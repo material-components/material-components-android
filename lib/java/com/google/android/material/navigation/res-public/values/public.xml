@@ -66,5 +66,9 @@
   <public name="expandedWidth" type="attr"/>
   <public name="expandedHeight" type="attr"/>
   <public name="expandedMarginHorizontal" type="attr"/>
+
+  <public name="scaleLabelWithFontSize" type="attr"/>
+  <public name="labelMaxLines" type="attr"/>
+
   <public name="ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" type="style"/>
 </resources>

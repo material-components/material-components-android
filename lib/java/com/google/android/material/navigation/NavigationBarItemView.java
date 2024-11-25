@@ -166,6 +166,7 @@ public abstract class NavigationBarItemView extends FrameLayout
   private boolean expanded = false;
   private boolean onlyShowWhenExpanded = false;
   private boolean measurePaddingFromBaseline = false;
+  private boolean scaleLabelSizeWithFont = false;
 
   public NavigationBarItemView(@NonNull Context context) {
     super(context);
@@ -208,20 +209,37 @@ public abstract class NavigationBarItemView extends FrameLayout
           if (icon.getVisibility() == VISIBLE) {
             tryUpdateBadgeBounds(icon);
           }
-          // If item icon gravity is start, we want to update the active indicator width in a layout
-          // change listener to keep the active indicator size up to date with the content width.
           LayoutParams lp = (LayoutParams) innerContentContainer.getLayoutParams();
           int newWidth = right - left + lp.rightMargin + lp.leftMargin;
+          int newHeight = bottom - top + lp.topMargin + lp.bottomMargin;
+          // If item icon gravity is start, we want to update the active indicator width in a layout
+          // change listener to keep the active indicator size up to date with the content width.
           if (itemIconGravity == ITEM_ICON_GRAVITY_START
-              && activeIndicatorExpandedDesiredWidth == ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT
-              && newWidth != activeIndicatorView.getMeasuredWidth()) {
+              && activeIndicatorExpandedDesiredWidth == ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT) {
+
             LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();
-            int minWidth =
-                min(
-                    activeIndicatorDesiredWidth,
-                    getMeasuredWidth() - (activeIndicatorMarginHorizontal * 2));
-            indicatorParams.width = max(newWidth, minWidth);
-            activeIndicatorView.setLayoutParams(indicatorParams);
+            boolean layoutParamsChanged = false;
+            if (activeIndicatorExpandedDesiredWidth == ACTIVE_INDICATOR_WIDTH_WRAP_CONTENT
+                && activeIndicatorView.getMeasuredWidth() != newWidth) {
+              int minWidth =
+                  min(
+                      activeIndicatorDesiredWidth,
+                      getMeasuredWidth() - (activeIndicatorMarginHorizontal * 2));
+              indicatorParams.width = max(newWidth, minWidth);
+              layoutParamsChanged = true;
+            }
+
+            // We expect the active indicator height to be larger than the height of the
+            // inner content due to having a min height, but if it is smaller (for example due to
+            // the text content changing to be multi-line) it should encompass that
+            if (activeIndicatorView.getMeasuredHeight() < newHeight) {
+              indicatorParams.height = newHeight;
+              layoutParamsChanged = true;
+            }
+
+            if (layoutParamsChanged) {
+              activeIndicatorView.setLayoutParams(indicatorParams);
+            }
           }
         });
   }
@@ -819,12 +837,28 @@ public abstract class NavigationBarItemView extends FrameLayout
     requestLayout();
   }
 
+  public void setLabelFontScalingEnabled(boolean scaleLabelSizeWithFont) {
+    this.scaleLabelSizeWithFont = scaleLabelSizeWithFont;
+    setTextAppearanceActive(textAppearanceActive);
+    setTextAppearanceInactive(textAppearanceInactive);
+    setHorizontalTextAppearanceActive(horizontalTextAppearanceActive);
+    setHorizontalTextAppearanceInactive(horizontalTextAppearanceInactive);
+  }
+
+  private void setTextAppearanceForLabel(TextView label, int textAppearance) {
+    if (scaleLabelSizeWithFont) {
+      TextViewCompat.setTextAppearance(label, textAppearance);
+    } else {
+      setTextAppearanceWithoutFontScaling(label, textAppearance);
+    }
+  }
+
   private void updateInactiveLabelTextAppearance(
       @Nullable TextView smallLabel, @StyleRes int textAppearanceInactive) {
     if (smallLabel == null) {
       return;
     }
-    setTextAppearanceWithoutFontScaling(smallLabel, textAppearanceInactive);
+    setTextAppearanceForLabel(smallLabel, textAppearanceInactive);
     calculateTextScaleFactors();
     smallLabel.setMinimumHeight(
         MaterialResources.getUnscaledLineHeight(
@@ -841,7 +875,7 @@ public abstract class NavigationBarItemView extends FrameLayout
     if (largeLabel == null) {
       return;
     }
-    setTextAppearanceWithoutFontScaling(largeLabel, textAppearanceActive);
+    setTextAppearanceForLabel(largeLabel, textAppearanceActive);
     calculateTextScaleFactors();
     largeLabel.setMinimumHeight(
         MaterialResources.getUnscaledLineHeight(
@@ -909,6 +943,37 @@ public abstract class NavigationBarItemView extends FrameLayout
     if (unscaledSize != 0) {
       textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, unscaledSize);
     }
+  }
+
+  public void setLabelMaxLines(int labelMaxLines) {
+    smallLabel.setMaxLines(labelMaxLines);
+    largeLabel.setMaxLines(labelMaxLines);
+    expandedSmallLabel.setMaxLines(labelMaxLines);
+    expandedLargeLabel.setMaxLines(labelMaxLines);
+
+    // Due to b/316260445 that was fixed in V+, text with ellipses may be cut off when centered
+    // due to letter spacing being miscalculated for the ellipses character. We only center the text
+    // in the following scenarios:
+    // 1. API level is greater than 34, OR
+    // 2. The text is not cut off by an ellipses
+    if (VERSION.SDK_INT > VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      smallLabel.setGravity(Gravity.CENTER);
+      largeLabel.setGravity(Gravity.CENTER);
+    } else if (labelMaxLines > 1) {
+      // If not single-line, remove the ellipses and center. Removing the ellipses is an unfortunate
+      // tradeoff due to this bug. We do not want to remove the ellipses for single-line text
+      // because centering text is not useful (since the textview is centered already) and we
+      // would rather keep the ellipses.
+      smallLabel.setEllipsize(null);
+      largeLabel.setEllipsize(null);
+      smallLabel.setGravity(Gravity.CENTER);
+      largeLabel.setGravity(Gravity.CENTER);
+    } else {
+      smallLabel.setGravity(Gravity.CENTER_VERTICAL);
+      largeLabel.setGravity(Gravity.CENTER_VERTICAL);
+    }
+
+    requestLayout();
   }
 
   public void setTextColor(@Nullable ColorStateList color) {
@@ -1133,7 +1198,8 @@ public abstract class NavigationBarItemView extends FrameLayout
       } else {
         newWidth = min(activeIndicatorExpandedDesiredWidth, adjustedAvailableWidth);
       }
-      newHeight = activeIndicatorExpandedDesiredHeight;
+      newHeight =
+          max(activeIndicatorExpandedDesiredHeight, innerContentContainer.getMeasuredHeight());
     }
     LayoutParams indicatorParams = (LayoutParams) activeIndicatorView.getLayoutParams();
     // If the label visibility is unlabeled, make the active indicator's height equal to its

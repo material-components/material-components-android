@@ -327,6 +327,12 @@ public abstract class NavigationBarView extends FrameLayout {
     setMeasureBottomPaddingFromLabelBaseline(attributes.getBoolean(
         R.styleable.NavigationBarView_measureBottomPaddingFromLabelBaseline, true));
 
+    setLabelFontScalingEnabled(
+        attributes.getBoolean(R.styleable.NavigationBarView_labelFontScalingEnabled, false));
+
+    setLabelMaxLines(
+        attributes.getInteger(R.styleable.NavigationBarView_labelMaxLines, 1));
+
     int activeIndicatorStyleResId =
         attributes.getResourceId(R.styleable.NavigationBarView_itemActiveIndicatorStyle, 0);
 
@@ -706,6 +712,34 @@ public abstract class NavigationBarView extends FrameLayout {
 
   private void setMeasureBottomPaddingFromLabelBaseline(boolean measurePaddingFromBaseline) {
     menuView.setMeasurePaddingFromLabelBaseline(measurePaddingFromBaseline);
+  }
+
+  /**
+   * Sets whether or not the label text should scale with the system font size.
+   */
+  public void setLabelFontScalingEnabled(boolean labelFontScalingEnabled) {
+    menuView.setLabelFontScalingEnabled(labelFontScalingEnabled);
+  }
+
+  /**
+   * Returns whether or not the label text should scale with the system font size.
+   */
+  public boolean getScaleLabelTextWithFont() {
+    return menuView.getScaleLabelTextWithFont();
+  }
+
+  /**
+   * Set the max lines limit for the label text.
+   */
+  public void setLabelMaxLines(int labelMaxLines) {
+    menuView.setLabelMaxLines(labelMaxLines);
+  }
+
+  /**
+   * Returns the max lines limit for the label text.
+   */
+  public int getLabelMaxLines(int labelMaxLines) {
+    return menuView.getLabelMaxLines();
   }
 
   /**

@@ -122,6 +122,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private NavigationBarPresenter presenter;
   private NavigationBarMenuBuilder menu;
   private boolean measurePaddingFromLabelBaseline;
+  private boolean scaleLabelWithFont;
+  private int labelMaxLines = 1;
 
   private int itemPoolSize = 0;
   private boolean expanded;
@@ -500,6 +502,38 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         }
       }
     }
+  }
+
+  public void setLabelFontScalingEnabled(boolean scaleLabelWithFont) {
+    this.scaleLabelWithFont = scaleLabelWithFont;
+    if (buttons != null) {
+      for (NavigationBarMenuItemView item : buttons) {
+        if (item instanceof NavigationBarItemView) {
+          ((NavigationBarItemView) item)
+              .setLabelFontScalingEnabled(scaleLabelWithFont);
+        }
+      }
+    }
+  }
+
+  public boolean getScaleLabelTextWithFont() {
+    return scaleLabelWithFont;
+  }
+
+  public void setLabelMaxLines(int labelMaxLines) {
+    this.labelMaxLines = labelMaxLines;
+    if (buttons != null) {
+      for (NavigationBarMenuItemView item : buttons) {
+        if (item instanceof NavigationBarItemView) {
+          ((NavigationBarItemView) item)
+              .setLabelMaxLines(labelMaxLines);
+        }
+      }
+    }
+  }
+
+  public int getLabelMaxLines() {
+    return labelMaxLines;
   }
 
   /**
@@ -1062,6 +1096,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     presenter.setUpdateSuspended(false);
     NavigationBarItemView child = getNewItem();
     child.setShifting(shifting);
+    child.setLabelMaxLines(labelMaxLines);
     child.setIconTintList(itemIconTint);
     child.setIconSize(itemIconSize);
     // Set the text color the default, then look for another text color in order of precedence.
@@ -1079,6 +1114,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setItemPaddingBottom(itemPaddingBottom);
     }
     child.setMeasureBottomPaddingFromLabelBaseline(measurePaddingFromLabelBaseline);
+    child.setLabelFontScalingEnabled(scaleLabelWithFont);
     if (itemActiveIndicatorLabelPadding != NO_PADDING) {
       child.setActiveIndicatorLabelPadding(itemActiveIndicatorLabelPadding);
     }

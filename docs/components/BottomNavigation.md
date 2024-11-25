@@ -319,6 +319,8 @@ expands to wrap the content of the Bottom Navigation item when the
 **Typography (inactive)** | `app:itemTextAppearanceInactive`<br/>`app:horizontalItemTextAppearanceInactive` | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive`<br/>`setHorizontalItemTextAppearanceInactive`<br/>`getHorizontalItemTextAppearanceInactive` | `?attr/textAppearanceTitleSmall`
 **Typography (active)**   | `app:itemTextAppearanceActive`<br/>`app:horizontalItemTextAppearanceActive`     | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`<br/>`setHorizontalItemTextAppearanceActive`<br/>`getHorizontalItemTextAppearanceActive`         | `?attr/textAppearanceTitleSmall`
 **Typography (active)**   | `app:itemTextAppearanceActiveBoldEnabled`                                       | `setItemTextAppearanceActiveBoldEnabled`                                                                                                                        | `true`
+**Max lines**             | `app:labelMaxLines`                                                             | `setLabelMaxLines`<br/>`getLabelMaxLines`                                                                                                                       | `1`
+**Scale with font size**  | `app:scaleLabelWithFontSize`                                                    | `setScaleLabelTextWithFont`<br/>`getScaleLabelTextWithFont`                                                                                                     | `false`
 
 #### Styles
 

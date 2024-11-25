@@ -118,6 +118,12 @@
     <!-- Measure the item's bottom padding from the baseline of the label, not the bottom of its
          view. -->
     <attr name="measureBottomPaddingFromLabelBaseline" format="boolean"/>
+
+    <!-- Whether or not to scale the label with the font size. -->
+    <attr name="labelFontScalingEnabled" format="boolean"/>
+
+    <!-- The maximum number of lines the label can be. -->
+    <attr name="labelMaxLines" format="integer"/>
   </declare-styleable>
 
   <declare-styleable name="NavigationBarActiveIndicator">
