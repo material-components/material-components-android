@@ -175,8 +175,8 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
   }
 
   private int measureChildHeight(View child, int widthMeasureSpec, int heightMeasureSpec) {
+    child.measure(widthMeasureSpec, heightMeasureSpec);
     if (child.getVisibility() != GONE) {
-      child.measure(widthMeasureSpec, heightMeasureSpec);
       return child.getMeasuredHeight();
     }
 
