@@ -258,9 +258,7 @@ public final class MaterialShapes {
   private static RoundedPolygon getPentagon() {
     List<VertexAndRounding> points = new ArrayList<>();
     points.add(new VertexAndRounding(new PointF(0.500f, -0.009f), new CornerRounding(0.172f, 0f)));
-    points.add(new VertexAndRounding(new PointF(1.030f, 0.365f), new CornerRounding(0.164f, 0f)));
-    points.add(new VertexAndRounding(new PointF(0.828f, 0.970f), new CornerRounding(0.169f, 0f)));
-    return customPolygon(points, 1, 0.5f, 0.5f, true);
+    return customPolygon(points, 5, 0.5f, 0.5f, false);
   }
 
   @NonNull
