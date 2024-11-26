@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 The Android Open Source Project
+ * Copyright 2024 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@ import io.material.catalog.R;
 
 import androidx.annotation.LayoutRes;
 
-/** A fragment that displays a large collapsing Top App Bar demo for the Catalog app. */
-public class TopAppBarCollapsingLargeDemoFragment extends BaseTopAppBarCollapsingDemoFragment {
+/** A fragment that displays a medium Collapsing Toolbar Top App Bar demo for the Catalog app. */
+public class TopAppBarCollapsingMediumWithSubtitleDemoFragment
+    extends BaseTopAppBarCollapsingDemoFragment {
 
   @Override
   @LayoutRes
   protected int getCollapsingToolbarLayoutResId() {
-    return R.layout.cat_topappbar_collapsing_large_fragment;
+    return R.layout.cat_topappbar_collapsing_medium_with_subtitle_fragment;
   }
 }
