@@ -29,7 +29,7 @@ ext {
     constraintlayout             : '2.0.1',
     coordinatorlayout            : '1.1.0',
     core                         : '1.6.0',
-    drawerlayout                 : '1.1.1',
+    drawerlayout                 : '1.2.0',
     experimental                 : '1.0.0',
     fragment                     : '1.2.5',
     lifecycle                    : '2.0.0',
