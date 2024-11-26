@@ -1473,7 +1473,7 @@ abstract class BaseSlider<
   public void setLabelBehavior(@LabelBehavior int labelBehavior) {
     if (this.labelBehavior != labelBehavior) {
       this.labelBehavior = labelBehavior;
-      requestLayout();
+      updateWidgetLayout(true);
     }
   }
 
@@ -1607,7 +1607,7 @@ abstract class BaseSlider<
   }
 
   private void updateRotationMatrix() {
-    float pivot = widgetThickness / 2f;
+    float pivot = calculateTrackCenter();
     rotationMatrix.reset();
     rotationMatrix.setRotate(90, pivot, pivot);
   }
@@ -2320,8 +2320,7 @@ abstract class BaseSlider<
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     int labelSize = 0;
     if (labelBehavior == LABEL_WITHIN_BOUNDS || shouldAlwaysShowLabel()) {
-      labelSize =
-          isVertical() ? labels.get(0).getIntrinsicWidth() : labels.get(0).getIntrinsicHeight();
+      labelSize = labels.get(0).getIntrinsicHeight();
     }
     int spec = MeasureSpec.makeMeasureSpec(widgetThickness + labelSize, MeasureSpec.EXACTLY);
     if (isVertical()) {
@@ -2394,7 +2393,7 @@ abstract class BaseSlider<
   private int calculateTrackCenter() {
     return widgetThickness / 2
         + (labelBehavior == LABEL_WITHIN_BOUNDS || shouldAlwaysShowLabel()
-            ? isVertical() ? labels.get(0).getIntrinsicWidth() : labels.get(0).getIntrinsicHeight()
+            ? labels.get(0).getIntrinsicHeight()
             : 0);
   }
 
