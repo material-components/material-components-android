@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ProgressBar;
 import androidx.annotation.AttrRes;
@@ -471,10 +472,10 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    * <p>This is necessary as before API 24, it is not guaranteed that Views will ever be notified
    * about their parent changing. Thus, we don't have a proper point to hook in and re-check {@link
    * #isShown()} on parent changes that result from {@link
-   * android.view.ViewGroup#attachViewToParent(View, int, LayoutParams)}, which *can* change our
-   * effective visibility. So this method errs on the side of assuming visibility unless we can
-   * conclusively prove otherwise (but may result in some false positives, if this view ends up
-   * being attached to a non-visible hierarchy after being detached in a visible state).
+   * android.view.ViewGroup#attachViewToParent(View, int, ViewGroup.LayoutParams)}, which *can*
+   * change our effective visibility. So this method errs on the side of assuming visibility unless
+   * we can conclusively prove otherwise (but may result in some false positives, if this view
+   * ends up being attached to a non-visible hierarchy after being detached in a visible state).
    */
   boolean isEffectivelyVisible() {
     View current = this;

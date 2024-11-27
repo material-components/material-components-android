@@ -215,8 +215,8 @@ public class BottomSheetDialog extends AppCompatDialog {
    * or calling `dismiss()` from a `BottomSheetDialogFragment`, tapping outside a dialog, etc...
    *
    * <p>The default animation to dismiss this dialog is a fade-out transition through a
-   * windowAnimation. Call {@link #setDismissWithAnimation(true)} if you want to utilize the
-   * BottomSheet animation instead.
+   * windowAnimation. Call {@link #setDismissWithAnimation(boolean)} with `true`
+   * if you want to utilize the BottomSheet animation instead.
    *
    * <p>If this function is called from a swipe down interaction, or dismissWithAnimation is false,
    * then keep the default behavior.
