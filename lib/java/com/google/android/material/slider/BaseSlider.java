@@ -2447,26 +2447,33 @@ abstract class BaseSlider<
   }
 
   private void drawInactiveTrack(@NonNull Canvas canvas, int width, int yCenter) {
+    int trackCornerSize = getTrackCornerSize();
     float[] activeRange = getActiveRange();
     float right = trackSidePadding + activeRange[1] * width;
     if (right < trackSidePadding + width) {
       inactiveTrackRect.set(
           right + thumbTrackGapSize,
           yCenter - trackThickness / 2f,
-          trackSidePadding + width + getTrackCornerSize(),
+          trackSidePadding + width + trackCornerSize,
           yCenter + trackThickness / 2f);
-      updateTrack(canvas, inactiveTrackPaint, inactiveTrackRect, FullCornerDirection.RIGHT);
+      updateTrack(
+          canvas,
+          inactiveTrackPaint,
+          inactiveTrackRect,
+          trackCornerSize,
+          FullCornerDirection.RIGHT);
     }
 
     // Also draw inactive track to the left if there is any
     float left = trackSidePadding + activeRange[0] * width;
     if (left > trackSidePadding) {
       inactiveTrackRect.set(
-          trackSidePadding - getTrackCornerSize(),
+          trackSidePadding - trackCornerSize,
           yCenter - trackThickness / 2f,
           left - thumbTrackGapSize,
           yCenter + trackThickness / 2f);
-      updateTrack(canvas, inactiveTrackPaint, inactiveTrackRect, FullCornerDirection.LEFT);
+      updateTrack(
+          canvas, inactiveTrackPaint, inactiveTrackRect, trackCornerSize, FullCornerDirection.LEFT);
     }
   }
 
@@ -2505,18 +2512,19 @@ abstract class BaseSlider<
         }
       }
 
+      int trackCornerSize = getTrackCornerSize();
       switch (direction) {
         case NONE:
           left += thumbTrackGapSize;
           right -= thumbTrackGapSize;
           break;
         case LEFT:
-          left -= getTrackCornerSize();
+          left -= trackCornerSize;
           right -= thumbTrackGapSize;
           break;
         case RIGHT:
           left += thumbTrackGapSize;
-          right += getTrackCornerSize();
+          right += trackCornerSize;
           break;
         default:
           // fall through
@@ -2529,8 +2537,32 @@ abstract class BaseSlider<
 
       activeTrackRect.set(
           left, yCenter - trackThickness / 2f, right, yCenter + trackThickness / 2f);
-      updateTrack(canvas, activeTrackPaint, activeTrackRect, direction);
+      updateTrack(canvas, activeTrackPaint, activeTrackRect, trackCornerSize, direction);
     }
+  }
+
+  private float calculateStartTrackCornerSize(float trackCornerSize) {
+    if (values.isEmpty() || !hasGapBetweenThumbAndTrack()) {
+      return trackCornerSize;
+    }
+    int firstIdx = isRtl() || isVertical() ? values.size() - 1 : 0;
+    float currentX = valueToX(values.get(firstIdx)) - trackSidePadding;
+    if (currentX < trackCornerSize) {
+      return max(currentX, trackInsideCornerSize);
+    }
+    return trackCornerSize;
+  }
+
+  private float calculateEndTrackCornerSize(float trackCornerSize) {
+    if (values.isEmpty() || !hasGapBetweenThumbAndTrack()) {
+      return trackCornerSize;
+    }
+    int lastIdx = isRtl() || isVertical() ? 0 : values.size() - 1;
+    float currentX = valueToX(values.get(lastIdx)) - trackSidePadding;
+    if (currentX > trackWidth - trackCornerSize) {
+      return max(trackWidth - currentX, trackInsideCornerSize);
+    }
+    return trackCornerSize;
   }
 
   private void drawTrackIcons(
@@ -2619,9 +2651,9 @@ abstract class BaseSlider<
   }
 
   private void updateTrack(
-      Canvas canvas, Paint paint, RectF bounds, FullCornerDirection direction) {
-    float leftCornerSize = getTrackCornerSize();
-    float rightCornerSize = getTrackCornerSize();
+      Canvas canvas, Paint paint, RectF bounds, float cornerSize, FullCornerDirection direction) {
+    float leftCornerSize = calculateStartTrackCornerSize(cornerSize);
+    float rightCornerSize = calculateEndTrackCornerSize(cornerSize);
     switch (direction) {
       case BOTH:
         break;
@@ -2741,12 +2773,12 @@ abstract class BaseSlider<
   }
 
   private void maybeDrawStopIndicator(@NonNull Canvas canvas, int yCenter) {
-    if (trackStopIndicatorSize <= 0) {
+    if (trackStopIndicatorSize <= 0 || values.isEmpty()) {
       return;
     }
 
     // Draw stop indicator at the end of the track.
-    if (!values.isEmpty() && values.get(values.size() - 1) < valueTo) {
+    if (values.get(values.size() - 1) < valueTo) {
       drawStopIndicator(canvas, valueToX(valueTo), yCenter);
     }
     // Multiple thumbs, inactive track may be visible at the start.
