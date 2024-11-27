@@ -135,7 +135,11 @@
 
   <style name="Widget.Material3.MaterialSplitButton" parent="Widget.Material3.MaterialButtonGroup.Connected">
     <item name="android:spacing">0dp</item>
+    <item name="android:paddingTop">10dp</item>
+    <item name="android:paddingBottom">10dp</item>
+    <item name="innerCornerSize">@xml/m3_split_button_inner_corner_size_state_list</item>
     <item name="buttonSizeChange">@null</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Sys.Shape.Corner.Full</item>
   </style>
 
   <style name="Widget.Material3.SplitButton.IconButton.Filled" parent="Widget.Material3.Button.IconButton.Filled">
