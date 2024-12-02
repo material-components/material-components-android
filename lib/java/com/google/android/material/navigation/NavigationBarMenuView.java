@@ -184,7 +184,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       return;
     }
     // Unset the previous checked item
-    if (this.checkedItem != null) {
+    if (this.checkedItem != null && this.checkedItem.isChecked()) {
       this.checkedItem.setChecked(false);
     }
     checkedItem.setChecked(true);
