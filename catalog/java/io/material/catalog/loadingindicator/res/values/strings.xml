@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2024 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<resources>
+  <string name="cat_loading_indicator_title"
+    description="Title for the screen that showcases demonstrative usages of the Loading Indicator widget [CHAR LIMIT=NONE]">
+    Loading Indicator
+  </string>
+  <string name="cat_loading_indicator_description"
+    description="Body text describing the LoadingIndicator widget within the design system [CHAR LIMIT=NONE]">
+    LoadingIndicator shows an indeterminate undergoing process.
+  </string>
+  <string name="cat_loading_indicator_default"
+    description="Text label above a default loading indicator. [CHAR LIMIT=NONE]">
+    Loading indicator
+    </string>
+  <string name="cat_loading_indicator_with_container"
+    description="Text label above a loading indicator with a container [CHAR LIMIT=NONE]">
+    Loading indicator with container
+  </string>
+  <string name="cat_loading_indicator_with_multiple_colors"
+    description="Text label above a loading indicator with multiple colors [CHAR LIMIT=NONE]">
+    Loading indicator with multiple colors
+  </string>
+  <string name="cat_loading_indicator_in_a_button"
+    description="Text label above a button with a loading indicator icon [CHAR LIMIT=NONE]">
+    Loading indicator in a button
+  </string>
+</resources>

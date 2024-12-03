@@ -23,7 +23,8 @@ and make choices, with a single tap.
 *   [Filled tonal button](#filled-tonal-button)
 *   [Outlined button](#outlined-button)
 *   [Text button](#text-button)
-*   [Toggle button](#toggle-button)
+*   [Button groups](#button-groups)
+*   [Toggle button group](#toggle-button-groups)
 *   [Icon button](#icon-button)
 *   [Theming](#theming-buttons)
 
@@ -166,6 +167,8 @@ Element           | Style
 ----------------- | ---------------------------------------------
 **Default style** | `Widget.Material3.Button.ElevatedButton`
 **Icon style**    | `Widget.Material3.Button.ElevatedButton.Icon`
+
+Default style theme attribute: `?attr/materialButtonElevatedStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/styles.xml)
@@ -395,6 +398,8 @@ Element           | Style
 **Default style** | `Widget.Material3.Button.TonalButton`
 **Icon style**    | `Widget.Material3.Button.TonalButton.Icon`
 
+Default style theme attribute: `?attr/materialButtonTonalStyle`
+
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/styles.xml)
 and
@@ -619,12 +624,211 @@ See the full list of
 and
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/attrs.xml).
 
-## Toggle button
+## Button groups
 
-[Toggle buttons](https://material.io/components/buttons/#toggle-button) can be
-used to select from a group of choices.
+Button groups organize buttons and add interactions between them.
 
-There are two types of toggle buttons:
+There are two types of button groups based on their shapes:
+
+*   [Button group](#button-group)
+*   [Connected button group](#connected-button-group)
+
+### Button group
+
+The default button group contains multiple related individual buttons. The
+individual button's shape is preserved.
+
+![Examples of using default button group](assets/buttons/default_button_group.png)
+
+#### Button group examples
+
+Source code:
+
+*   `MaterialButtonGroup`
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButtonGroup.java)
+*   `MaterialButton`
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButton.java)
+
+The following example shows a button group with three buttons that have text
+labels.
+
+In the layout:
+
+```xml
+<com.google.android.material.button.MaterialButtonGroup
+    android:id="@+id/buttonGroup"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button 1"
+    />
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button 2"
+    />
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button 3"
+    />
+</com.google.android.material.button.MaterialButtonGroup>
+```
+
+### Connected button group
+
+In addition to standard button groups, connected button group also overrides the
+individual button's shape to make them visually more belong to a group with 2dp
+spacing, 8dp inner corners, and fully rounded outer corners.
+
+![Examples of using connected button group](assets/buttons/connected_button_group.png)
+
+#### Connected button group examples
+
+Source code:
+
+*   `MaterialButtonGroup`
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButtonGroup.java)
+*   `MaterialButton`
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButton.java)
+
+The following example shows a connected button group with three buttons that
+have text labels. To correctly style a button group as connected button group,
+the specific style needs to be set.
+
+In the layout:
+
+```xml
+<com.google.android.material.button.MaterialButtonGroup
+    android:id="@+id/buttonGroup"
+    style="@style/Widget.Material3.MaterialButtonGroup.Connected"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <Button
+        style="?attr/materialButtonOutlinedStyle"
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button 1"
+    />
+    <Button
+        style="?attr/materialButtonOutlinedStyle"
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button 2"
+    />
+    <Button
+        style="?attr/materialButtonOutlinedStyle"
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button 3"
+    />
+</com.google.android.material.button.MaterialButtonGroup>
+```
+
+### Properties
+
+Element                         | Attribute             | Related method(s)                             | Default value
+------------------------------- | --------------------- | --------------------------------------------- | -------------
+**Group shape (outer corners)** | `app:shapeAppearance` | `setShapeAppearance`</br>`getShapeAppearance` | `none`
+**Size of inner corners**       | `app:innerCornerSize` | `setInnerCornerSize`<br/>`getInnerCornerSize` | `none`
+**Spacing between buttons**     | `android:spacing`     | `setSpacing`<br/>`getSpacing`                 | `12dp`
+**Child size change**           | `app:childSizeChange` | N/A                                           | `15%` in pressed,</br>otherwise, `0%`
+
+#### Styles and Theme attributes
+
+Element           | Style                                  | Theme Attribute
+----------------- | -------------------------------------- | ---------------
+**Default style** | `Widget.Material3.MaterialButtonGroup` | `?attr/materialButtonGroupStyle`
+
+### Split button
+
+A specialized type of the connected button group is the split button. The
+trailing button is checkable with an animated icon.
+
+![Examples of using split button](assets/buttons/split_button.png)
+
+#### Split button examples
+
+Source code:
+
+*   `MaterialSplitButton`
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialSplitButton.java)
+
+The following example shows a split button with a leading label button and a
+trailing icon button that has an AnimatedVectorDrawable.
+
+In the layout:
+
+```xml
+  <com.google.android.material.button.MaterialSplitButton
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/splitbutton"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+    <Button
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/split_button_label"
+          app:icon="@drawable/ic_edit_vd_theme_24dp"/>
+    <Button
+          style="?attr/materialSplitButtonIconFilledStyle"
+          android:id="@+id/expand_more_or_less"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:minWidth="48dp"
+          android:gravity="center"
+          android:contentDescription="@string/split_button_label_chevron"
+          app:icon="@drawable/m3_split_button_chevron_avd"/>
+</com.google.android.material.button.MaterialSplitButton>
+```
+
+### Animated Trailing Icon
+
+The icon on the trailing button is animated. In the samples, this is done with
+an AVD, `m3_split_button_chevron_avd`
+[[source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/drawable/m3_split_button_chevron_avd.xml)].
+
+### Properties
+
+Element                     | Attribute              | Related method(s)                             | Default value
+--------------------------- | ---------------------- | --------------------------------------------- | -------------
+**Size of inner corners**   | `app:innerCornerSize`  | `setInnerCornerSize`<br/>`getInnerCornerSize` | `none`
+**Spacing between buttons** | `android:spacing`      | `setSpacing`<br/>`getSpacing`                 | `2dp`
+**Button size change**      | `app:buttonSizeChange` | N/A                                           | `0%`
+
+#### Styles and Theme attributes
+
+Element                                   | Style                                                        | Theme Attribute
+----------------------------------------- | ------------------------------------------------------------ | ---------------
+**Default style**                         | `Widget.Material3.MaterialSplitButton`                 | `?attr/materialSplitButtonStyle`
+**Trailing icon primary (filled) style**  | `Widget.Material3.SplitButton.IconButton.Filled`       | `?attr/materialSplitButtonIconFilledStyle`
+**Trailing icon secondary (tonal) style** | `Widget.Material3.SplitButton.IconButton.Filled.Tonal` | `?attr/materialSplitButtonIconFilledTonalStyle`
+
+The two new trailing icon styles `materialSplitButtonIconFilledStyle` – parented
+by `materialIconButtonFilledStyle` – and
+`materialSplitButtonIconFilledTonalStyle`-- parented by
+`materialIconButtonFilledTonalStyle` allow for the `MaterialSplitButton` custom
+behavior for `onChecked` and `onUnchecked` states.
+`materialSplitButtonIconFilledStyle` is paired with default leading button
+styling, with no style explicitly specified in the XML.
+`materialSplitButtonIconFilledTonalStyle` is paired with
+`materialButtonTonalStyle` for the leading button.
+
+## Toggle button groups
+
+[Toggle button group (Segmented buttons)](https://m3.material.io/components/segmented-buttons)
+can be used to select from a group of choices.
+
+There are two types of toggle buttons can be placed in a toggle button group:
 
 *   [Toggle button](#toggle-button)
 *   [Icon](#icon)

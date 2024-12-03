@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Vaheta järgmisele kuule</string>
   <string name="mtrl_picker_toggle_to_year_selection">Puudutage aastavaatele lülitumiseks</string>
   <string name="mtrl_picker_toggle_to_day_selection">Puudutage kalendrivaatele lülitumiseks</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Lülituti aasta kuvale</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Lülituti kalendri kuvale</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Praegune valik: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Alguskuupäeva valik: %1$s. Lõppkuupäeva valik: %2$s.</string>

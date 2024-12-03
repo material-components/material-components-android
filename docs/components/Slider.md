@@ -36,8 +36,8 @@ page.
 
 ### Usage
 
-![Continuous slider](assets/slider/slider_continuous.png){width="600"}
-![Discrete slider](assets/slider/slider_discrete.png){width="600"}
+<img src="assets/slider/slider_continuous.png" alt="Continuous slider" width="600"/>
+<img src="assets/slider/slider_discrete.png" alt="Discrete slider" width="600"/>
 
 Add a `Slider` to a layout:
 
@@ -183,8 +183,8 @@ indicate magnitude (e.g.: 1.5K, 3M, 12B). That can be achieved through the
 
 The following example shows a slider for a price range in USD currency.
 
-!["Range slider with range of $0 to $10. Left thumb is set at $2, right thumb
-at $7."](assets/slider/slider_price.png){width="400"}
+<img src="assets/slider/slider_price.png" alt="Range slider with range of $0 to $10. Left thumb is set at $2, right thumb
+at $7." width="400"/>
 
 In code:
 
@@ -266,7 +266,7 @@ In the layout:
 
 The following example shows a discrete range slider.
 
-!["Discrete range slider."](assets/slider/slider_discrete_range.png){width="400"}
+<img src="assets/slider/slider_discrete_range.png" alt="Discrete range slider." width="400"/>
 
 In the layout:
 
@@ -294,6 +294,7 @@ slider also has tick marks.
 
 | Element                                    | Attribute                    | Related method(s)                                           | Default value                        |
 |--------------------------------------------|------------------------------|-------------------------------------------------------------|--------------------------------------|
+| **Orientation**                            | `android:orientation`        | `setOrientation`<br/>`isVertical`                           | `horizontal`                         |
 | **Min value**                              | `android:valueFrom`          | `setValueFrom`<br/>`getValueFrom`                           | N/A                                  |
 | **Max value**                              | `android:valueTo`            | `setValueTo`<br/>`getValueTo`                               | N/A                                  |
 | **Step size (discrete)**                   | `android:stepSize`           | `setStepSize`<br/>`getStepSize`                             | N/A                                  |
@@ -303,9 +304,17 @@ slider also has tick marks.
 | **Color**                                  | `app:trackColor`             | `setTrackTintList`<br/>`getTrackTintList`                   | `null`                               |
 | **Color for track's active part**          | `app:trackColorActive`       | `setTrackActiveTintList`<br/>`getTrackActiveTintList`       | `?attr/colorPrimary`                 |
 | **Color for track's inactive part**        | `app:trackColorInactive`     | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList`   | `?attr/colorSurfaceContainerHighest` |
+| **Corner size**                            | `app:trackCornerSize`        | `setTrackCornerSize`<br/>`getTrackCornerSize`               | `trackHeight / 2`                    |
 | **Inside corner size**                     | `app:trackInsideCornerSize`  | `setTrackInsideCornerSize`<br/>`getTrackInsideCornerSize`   | `2dp`                                |
 | **Stop indicator size**                    | `app:trackStopIndicatorSize` | `setTrackStopIndicatorSize`<br/>`getTrackStopIndicatorSize` | `4dp`                                |
 | **Minimum separation for adjacent thumbs** | `app:minSeparation`          | `setMinSeparation`<br/>`getMinSeparation`                   | `0dp`                                |
+| **Active start icon**                      | `app:trackIconActiveStart`   | `setTrackIconActiveStart`<br/>`getTrackIconActiveStart`     | `null`                               |
+| **Active end icon**                        | `app:trackIconActiveEnd`     | `setTrackIconActiveEnd`<br/>`getTrackIconActiveEnd`         | `null`                               |
+| **Active icon color**                      | `app:trackIconActiveColor`   | `setTrackIconActiveColor`<br/>`getTrackIconActiveColor`     | N/A                                  |
+| **Inactive start icon**                    | `app:trackIconInactiveStart` | `setTrackIconInactiveStart`<br/>`getTrackIconInactiveStart` | `null`                               |
+| **Inactive end icon**                      | `app:trackIconInactiveEnd`   | `setTrackIconInactiveEnd`<br/>`getTrackIconInactiveEnd`     | `null`                               |
+| **Inactive icon color**                    | `app:trackIconInactiveColor` | `setTrackIconInactiveColor`<br/>`getTrackIconInactiveColor` | N/A                                  |
+| **Icon size**                              | `app:trackIconSize`          | `setTrackIconSize`<br/>`getTrackIconSize`                   | N/A                                  |
 
 **Note:** `app:trackColor` takes precedence over `app:trackColorActive` and
 `app:trackColorInative`. It's a shorthand for setting both values to the same
@@ -313,6 +322,10 @@ thing.
 
 **Note:** `app:trackStopIndicatorSize` takes precedence over
 `app:tickRadiusActive` and `app:tickRadiusInactive`.
+
+**Note:** `vertical` orientation still uses `height` in the same way as for
+`horizontal` orientation. In this context, `height` can be seen as track
+thickness.
 
 #### Thumb attributes
 

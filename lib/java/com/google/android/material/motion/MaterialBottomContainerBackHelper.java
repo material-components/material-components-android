@@ -85,6 +85,11 @@ public class MaterialBottomContainerBackHelper extends MaterialBackAnimationHelp
     float scaleYDelta = AnimationUtils.lerp(0, maxScaleYDelta, progress);
     float scaleX = 1 - scaleXDelta;
     float scaleY = 1 - scaleYDelta;
+
+    if (Float.isNaN(scaleX) || Float.isNaN(scaleY)) {
+      return;
+    }
+
     view.setScaleX(scaleX);
     view.setPivotY(height);
     view.setScaleY(scaleY);

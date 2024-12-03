@@ -18,7 +18,9 @@
 <resources>
 
   <string name="cat_toc_buttons">Buttons</string>
+  <string name="cat_buttons_group" translatable="false">Buttons Group</string>
   <string name="cat_buttons_toggle_group">Buttons Toggle Group</string>
+  <string name="cat_split_button" translatable="false">Split Button</string>
   <string name="cat_buttons_title">Buttons</string>
   <string name="cat_buttons_description">
     Buttons communicate the action that will occur when the user touches them.
@@ -27,37 +29,70 @@
   </string>
   <string name="cat_button_label_enabled">Enabled</string>
   <string name="cat_button_label_disabled">Disabled</string>
-  <string name="cat_button_icon_btn_text">Icon only button</string>
-  <string name="cat_btn_text">Material button</string>
-  <string name="cat_unelevated_btn_text">Unelevated button</string>
-  <string name="cat_text_btn_text">Text button</string>
-  <string name="cat_stroked_btn_text">Stroked button</string>
-  <string name="cat_icon_btn_text">Icon button</string>
-  <string name="cat_icon_text_btn_text">Icon text button</string>
-  <string name="cat_filled_buttons_section_title">Filled buttons</string>
-  <string name="cat_outlined_btn_text">Outlined buttons</string>
-  <string name="cat_outlined_icon_btn_text">Icon only buttons</string>
 
-  <string name="cat_icon_btn_default_style">Standard</string>
-  <string name="cat_standard_icon_btn_desc"
-          description="Description for standard icon only button. [CHAR LIMIT=NONE]">Standard Icon</string>
-  <string name="cat_icon_btn_filled_style">Filled</string>
-  <string name="cat_filled_icon_btn_desc"
-          description="Description for filled icon only button. [CHAR LIMIT=NONE]">Filled Icon</string>
-  <string name="cat_icon_btn_filled_tonal_style">Tonal</string>
-  <string name="cat_filled_tonal_icon_btn_desc"
-          description="Description for filled tonal icon only button. [CHAR LIMIT=NONE]">Tonal Icon</string>
-  <string name="cat_icon_btn_outlined_style">Outlined</string>
-  <string name="cat_outlined_icon_btn_desc"
-          description="Description for outlined icon only button. [CHAR LIMIT=NONE]">Outlined Icon</string>
-  <string description="A label for Toggleable Icon Buttons switch. [CHAR LIMIT=NONE]"
-          name="cat_button_label_toggleable_icon_buttons">Toggleable Icon Buttons</string>
-  <string name="cat_button_clicked">Button clicked</string>
-  <string name="cat_snackbar_action_button_text">Done</string>
+  <string name="cat_label_buttons_text"
+      description="Title for a section that shows label buttons. [CHAR LIMIT=NONE]">Label Buttons</string>
+  <string name="cat_label_buttons_with_icon_text"
+      description="Title for a section that shows label buttons with icon. [CHAR LIMIT=NONE]">Icon Label Buttons</string>
+  <string name="cat_icon_buttons_text"
+      description="Title for a section that shows icon buttons. [CHAR LIMIT=NONE]">Icon Buttons</string>
+  <string name="cat_icon_toggle_buttons_text"
+      description="Title for a section that shows icon toggle buttons. [CHAR LIMIT=NONE]">Icon Toggle Buttons</string>
+
+  <string name="cat_filled_button_default_text"
+      description="Text for filled color variant with a note that it is the default style. [CHAR LIMIT=NONE]">Filled Button (Default)</string>
+  <string name="cat_filled_button_text"
+      description="Text for filled color variant. [CHAR LIMIT=NONE]">Filled Button</string>
+  <string name="cat_tonal_button_text"
+      description="Text for tonal color variant. [CHAR LIMIT=NONE]">Tonal Button</string>
+  <string name="cat_outlined_button_text"
+      description="Text for outlined variant. [CHAR LIMIT=NONE]">Outlined Button</string>
+  <string name="cat_text_button_text"
+      description="Text for text-only variant. [CHAR LIMIT=NONE]">Text Button</string>
+  <string name="cat_elevated_button_text"
+      description="Text for elevated variant. [CHAR LIMIT=NONE]">Elevated Button</string>
+  <string name="cat_standard_icon_button_text"
+      description="Text for standard icon only button. [CHAR LIMIT=NONE]">Standard</string>
+  <string name="cat_standard_icon_button_desc"
+    description="Description for standard icon only button. [CHAR LIMIT=NONE]">Standard Icon</string>
+  <string name="cat_filled_icon_button_text"
+      description="Text for filled icon only button. [CHAR LIMIT=NONE]">Filled</string>
+  <string name="cat_filled_icon_button_desc"
+    description="Description for filled icon only button. [CHAR LIMIT=NONE]">Filled Icon</string>
+  <string name="cat_tonal_icon_button_text"
+      description="Text for tonal icon only button. [CHAR LIMIT=NONE]">Tonal</string>
+  <string name="cat_filled_tonal_icon_button_desc"
+    description="Description for filled tonal icon only button. [CHAR LIMIT=NONE]">Tonal Icon</string>
+  <string name="cat_outlined_icon_button_text"
+      description="Text for outlined icon only button. [CHAR LIMIT=NONE]">Outlined</string>
+  <string name="cat_outlined_icon_button_desc"
+    description="Description for outlined icon only button. [CHAR LIMIT=NONE]">Outlined Icon</string>
+  <string name="cat_button_clicked"
+      description="Text for a snackbar that indicates a button was clicked. [CHAR LIMIT=NONE]">Button clicked</string>
+  <string name="cat_snackbar_action_button_text"
+      description="Text for a snackbar action button. [CHAR LIMIT=NONE]">Done</string>
+
+  <string name="cat_filled_button_xsmall_text"
+    description="Text for filled color extra small variant. [CHAR LIMIT=NONE]">Extra Small Button</string>
+  <string name="cat_filled_button_small_text"
+    description="Text for filled color small variant with a note that it is the default style. [CHAR LIMIT=NONE]">Small Button (Default)</string>
+  <string name="cat_filled_button_medium_text"
+    description="Text for filled color medium variant. [CHAR LIMIT=NONE]">Medium Button</string>
+  <string name="cat_filled_button_large_text"
+    description="Text for filled color large variant. [CHAR LIMIT=NONE]">Large Button</string>
+  <string name="cat_filled_button_xlarge_text"
+    description="Text for filled color extra large variant. [CHAR LIMIT=NONE]">Extra Large Button</string>
 
   <string name="cat_single_select">Single-select</string>
   <string name="cat_multi_select">Multi-select</string>
-  <string name="cat_icon_only">Icon only</string>
+  <string name="cat_split_button_subheader_filled" translatable="false">Split button, primary</string>
+  <string name="cat_split_button_subheader_filled_tonal" translatable="false">Split button, secondary</string>
+  <string name="cat_icon_only" description="A label for icon only buttons below. [CHAR LIMIT=NONE]">Icon only</string>
+  <string name="cat_icon_only_toggle" description="A label for icon only toggle buttons below. [CHAR LIMIT=NONE]">Icon only toggle</string>
+  <string name="cat_label_only" description="A label for lebal only buttons below. [CHAR LIMIT=NONE]">Label only</string>
+  <string name="cat_label_only_toggle" description="A label for lebal only toggle buttons below. [CHAR LIMIT=NONE]">Label only toggle</string>
+  <string name="cat_icon_and_label_mixed" description="A label for icon and label mixed buttons below. [CHAR LIMIT=NONE]">Icon and label mixed</string>
+  <string name="cat_icon_and_label_mixed_toggle" description="A label for icon and label mixed toggle buttons below. [CHAR LIMIT=NONE]">Icon and label mixed toggle</string>
   <string description="A label for a spacing slider [CHAR LIMIT=NONE]"
       name="cat_spacing_label">Spacing (dp)</string>
   <string description="A label for an inner corner size slider [CHAR LIMIT=NONE]"
@@ -69,16 +104,22 @@
   <string name="cat_button_label_cheese">Cheese</string>
   <string name="cat_button_label_tomatoes">Tomatoes</string>
   <string name="cat_button_label_mushrooms">Mushrooms</string>
+  <string name="cat_split_button_label" translatable="false">Label</string>
+  <string name="cat_split_button_short_label" translatable="false">No</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_paint_bucket">Paint bucket icon</string>
+    name="cat_icon_button_label_add_circle">Add icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_plus">Plus icon</string>
+    name="cat_icon_button_label_favorite">Favorite icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_components">Components icon</string>
+    name="cat_icon_button_label_home">Home icon</string>
+  <string name="cat_split_button_label_chevron"
+    description="A label for an icon-only button [CHAR LIMIT=NONE]">Chevron icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_accelerator">Accelerator icon</string>
+    name="cat_icon_button_label_settings">Settings icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
-      name="cat_icon_button_label_dialog">Dialog icon</string>
+    name="cat_icon_button_label_delete_forever">Delete forever icon</string>
+  <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
+    name="cat_icon_button_label_star">Star icon</string>
   <string name="cat_button_require_selection" translatable="false">Require Selection</string>
   <string name="cat_button_vertical_orientation" translatable="false">Vertical Orientation</string>
   <string name="cat_button_enable" translatable="false">Enabled</string>

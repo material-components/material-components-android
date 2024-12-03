@@ -32,8 +32,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.appcompat.widget.AppCompatDrawableManager;
@@ -54,7 +52,6 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -110,6 +107,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         Shapeable,
         CoordinatorLayout.AttachedBehavior {
 
+  static final String ACCESSIBIILTY_FAB_ROLE =
+      "com.google.android.material.floatingactionbutton.FloatingActionButton";
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
   private static final int DEF_STYLE_RES = R.style.Widget_Design_FloatingActionButton;
@@ -936,6 +935,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     return super.onTouchEvent(ev);
   }
 
+  @Override
+  public CharSequence getAccessibilityClassName() {
+    return ACCESSIBIILTY_FAB_ROLE;
+  }
+
   /**
    * Behavior designed for use with {@link FloatingActionButton} instances. Its main function is to
    * move {@link FloatingActionButton} views so that any displayed {@link
@@ -1194,7 +1198,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -1446,18 +1449,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   private FloatingActionButtonImpl getImpl() {
     if (impl == null) {
-      impl = createImpl();
+      impl = new FloatingActionButtonImplLollipop(this, new ShadowDelegateImpl());
     }
     return impl;
-  }
-
-  @NonNull
-  private FloatingActionButtonImpl createImpl() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      return new FloatingActionButtonImplLollipop(this, new ShadowDelegateImpl());
-    } else {
-      return new FloatingActionButtonImpl(this, new ShadowDelegateImpl());
-    }
   }
 
   private class ShadowDelegateImpl implements ShadowViewDelegate {

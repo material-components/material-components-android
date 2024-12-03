@@ -49,7 +49,7 @@ import java.util.List;
  * focal keylines at the beginning of the scroll container, center-aligned strategies at the center
  * of the scroll container, etc.
  */
-final class KeylineState {
+public final class KeylineState {
 
   private final float itemSize;
   private int totalVisibleFocalItems;
@@ -252,7 +252,7 @@ final class KeylineState {
    *
    * Typically there should be a keyline for every visible item in the scrolling container.
    */
-  static final class Builder {
+  public static final class Builder {
 
     private static final int NO_INDEX = -1;
     private static final float UNKNOWN_LOC = Float.MIN_VALUE;
@@ -276,11 +276,11 @@ final class KeylineState {
     /**
      * Creates a new {@link KeylineState.Builder}.
      *
-     * @param itemSize The size of a fully unmaksed item. This is the size that will be used by the
+     * @param itemSize The size of a fully unmasked item. This is the size that will be used by the
      *     carousel to measure and lay out all children, overriding each child's desired size.
      * @param availableSpace The available space of the carousel the keylines calculate cutoffs by.
      */
-    Builder(float itemSize, float availableSpace) {
+    public Builder(float itemSize, float availableSpace) {
       this.itemSize = itemSize;
       this.availableSpace = availableSpace;
     }
@@ -305,7 +305,7 @@ final class KeylineState {
      */
     @NonNull
     @CanIgnoreReturnValue
-    Builder addKeyline(
+    public Builder addKeyline(
         float offsetLoc,
         @FloatRange(from = 0.0F, to = 1.0F) float mask,
         float maskedItemSize,
@@ -321,7 +321,7 @@ final class KeylineState {
      */
     @NonNull
     @CanIgnoreReturnValue
-    Builder addKeyline(
+    public Builder addKeyline(
         float offsetLoc, @FloatRange(from = 0.0F, to = 1.0F) float mask, float maskedItemSize) {
       return addKeyline(offsetLoc, mask, maskedItemSize, false);
     }
@@ -353,7 +353,7 @@ final class KeylineState {
      */
     @NonNull
     @CanIgnoreReturnValue
-    Builder addKeyline(
+    public Builder addKeyline(
         float offsetLoc,
         @FloatRange(from = 0.0F, to = 1.0F) float mask,
         float maskedItemSize,
@@ -440,7 +440,7 @@ final class KeylineState {
      */
     @NonNull
     @CanIgnoreReturnValue
-    Builder addKeyline(
+    public Builder addKeyline(
         float offsetLoc,
         @FloatRange(from = 0.0F, to = 1.0F) float mask,
         float maskedItemSize,
@@ -478,7 +478,7 @@ final class KeylineState {
      */
     @NonNull
     @CanIgnoreReturnValue
-    Builder addKeyline(
+    public Builder addKeyline(
         float offsetLoc,
         @FloatRange(from = 0.0F, to = 1.0F) float mask,
         float maskedItemSize,
@@ -520,7 +520,7 @@ final class KeylineState {
      */
     @NonNull
     @CanIgnoreReturnValue
-    Builder addAnchorKeyline(
+    public Builder addAnchorKeyline(
         float offsetLoc, @FloatRange(from = 0.0F, to = 1.0F) float mask, float maskedItemSize) {
       return addKeyline(
           offsetLoc, mask, maskedItemSize, /* isFocal= */ false, /* isAnchor= */ true);
@@ -535,7 +535,7 @@ final class KeylineState {
      */
     @NonNull
     @CanIgnoreReturnValue
-    Builder addKeylineRange(
+    public Builder addKeylineRange(
         float offsetLoc,
         @FloatRange(from = 0.0F, to = 1.0F) float mask,
         float maskedItemSize,
@@ -564,7 +564,7 @@ final class KeylineState {
      */
     @NonNull
     @CanIgnoreReturnValue
-    Builder addKeylineRange(
+    public Builder addKeylineRange(
         float offsetLoc,
         @FloatRange(from = 0.0F, to = 1.0F) float mask,
         float maskedItemSize,
@@ -584,7 +584,7 @@ final class KeylineState {
 
     /** Builds and returns a {@link KeylineState}. */
     @NonNull
-    KeylineState build() {
+    public KeylineState build() {
       if (tmpFirstFocalKeyline == null) {
         throw new IllegalStateException("There must be a keyline marked as focal.");
       }

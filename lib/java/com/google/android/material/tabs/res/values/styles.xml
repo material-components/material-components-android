@@ -88,7 +88,9 @@
     <item name="badgeStyle">@style/Widget.Material3.Badge</item>
   </style>
 
-  <style name="Widget.Material3.TabLayout" parent="Base.Widget.Material3.TabLayout"/>
+  <style name="Widget.Material3.TabLayout" parent="Base.Widget.Material3.TabLayout">
+    <item name="android:background">@drawable/m3_tabs_background</item>
+  </style>
 
   <!-- Styles for M3 Tabs used on an elevatable surface. -->
   <style name="Base.Widget.Material3.TabLayout.OnSurface" parent="Widget.Material3.TabLayout">
@@ -98,8 +100,7 @@
   <style name="Widget.Material3.TabLayout.OnSurface" parent="Base.Widget.Material3.TabLayout.OnSurface"/>
 
   <!-- Style for M3 secondary tabs, which are used as an alternate when primary tabs are already
-       present in the UI. This style does not have a bottom divider, which is added in v21 because
-       the drawable cannot use theme colors pre-21. -->
+       present in the UI. -->
   <style name="Base.Widget.Material3.TabLayout.Secondary" parent="Widget.Material3.TabLayout">
     <item name="android:background">@macro/m3_comp_secondary_navigation_tab_container_color</item>
     <item name="tabIconTint">@color/m3_tabs_icon_color_secondary</item>
@@ -111,6 +112,8 @@
     <item name="tabIndicatorFullWidth">true</item>
   </style>
 
-  <style name="Widget.Material3.TabLayout.Secondary" parent="Base.Widget.Material3.TabLayout.Secondary"/>
+  <style name="Widget.Material3.TabLayout.Secondary" parent="Base.Widget.Material3.TabLayout.Secondary">
+    <item name="android:background">@drawable/m3_tabs_background</item>
+  </style>
 
 </resources>

@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Pāriet uz nākamo mēnesi</string>
   <string name="mtrl_picker_toggle_to_year_selection">Pieskarieties, lai pārslēgtos uz gada skatu</string>
   <string name="mtrl_picker_toggle_to_day_selection">Pieskarieties, lai pārslēgtos uz Kalendāra skatu</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Pārslēgts uz gada skatu</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Pārslēgts uz Kalendāra skatu</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Pašreizējā atlase: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Sākuma datuma atlase: %1$s; beigu datuma atlase: %2$s</string>

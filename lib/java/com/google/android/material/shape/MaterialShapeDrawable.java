@@ -23,7 +23,6 @@ import static com.google.android.material.math.MathUtils.areAllElementsEqual;
 import static com.google.android.material.shape.ShapeAppearanceModel.NUM_CORNERS;
 import static java.lang.Math.max;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -45,7 +44,6 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Looper;
@@ -186,6 +184,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private boolean shadowBitmapDrawingEnable = true;
 
+  // Variables for corner morph.
+  private boolean boundsIsEmpty = true;
   @NonNull private ShapeAppearanceModel strokeShapeAppearanceModel;
   @Nullable private SpringForce cornerSpringForce;
   @NonNull SpringAnimation[] cornerSpringAnimations = new SpringAnimation[NUM_CORNERS];
@@ -965,12 +965,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Returns true if fake shadows should be drawn. Native elevation shadows can't be drawn on API <
-   * 21 or when the shape is concave.
+   * Returns true if compat shadows should be drawn.
+   * Native elevation shadows can't be drawn for concave paths on API < 29.
    */
   public boolean requiresCompatShadow() {
-    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
-        || (!isRoundRect() && !path.isConvex() && Build.VERSION.SDK_INT < Build.VERSION_CODES.Q);
+    return !isRoundRect() && !path.isConvex() && VERSION.SDK_INT < VERSION_CODES.Q;
   }
 
   /**
@@ -1083,8 +1082,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     strokePathDirty = true;
     super.onBoundsChange(bounds);
     if (drawableState.stateListShapeAppearanceModel != null && !bounds.isEmpty()) {
-      updateShape(getState(), true);
+      // We only want to skip the corner morph animation if this is the first non-empty bounds.
+      updateShape(getState(), /* skipAnimation= */ boundsIsEmpty);
     }
+    boundsIsEmpty = bounds.isEmpty();
   }
 
   @Override
@@ -1235,18 +1236,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     int shadowOffsetX = getShadowOffsetX();
     int shadowOffsetY = getShadowOffsetY();
 
-    // We only handle clipping as a convenience for older apis where we are trying to seamlessly
-    // provide fake shadows. On newer versions of android, we require that the parent is set so that
-    // clipChildren is false.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && shadowBitmapDrawingEnable) {
-      // Add space and offset the canvas for the shadows. Otherwise any shadows drawn outside would
-      // be clipped and not visible.
-      Rect canvasClipBounds = canvas.getClipBounds();
-      canvasClipBounds.inset(-drawableState.shadowCompatRadius, -drawableState.shadowCompatRadius);
-      canvasClipBounds.offset(shadowOffsetX, shadowOffsetY);
-      canvas.clipRect(canvasClipBounds, Region.Op.REPLACE);
-    }
-
     // Translate the canvas by an amount specified by the shadowCompatOffset. This will make the
     // shadow appear at and angle from the shape.
     canvas.translate(shadowOffsetX, shadowOffsetY);
@@ -1386,7 +1375,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
   }
 
-  @TargetApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void getOutline(@NonNull Outline outline) {
     if (drawableState.shadowCompatMode == SHADOW_COMPAT_MODE_ALWAYS) {

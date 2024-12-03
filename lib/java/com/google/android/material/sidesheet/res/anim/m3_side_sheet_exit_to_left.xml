@@ -16,7 +16,7 @@
 -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:duration="275"
-    android:interpolator="@android:anim/accelerate_interpolator">
+    android:interpolator="?attr/motionEasingEmphasizedInterpolator">
 
   <translate
     android:fromXDelta="0"

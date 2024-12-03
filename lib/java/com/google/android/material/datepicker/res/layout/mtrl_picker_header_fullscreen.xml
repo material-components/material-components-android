@@ -74,7 +74,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top|start"
         android:gravity="start|bottom"
-        android:paddingBottom="@dimen/mtrl_calendar_pre_l_text_clip_padding"
         app:firstBaselineToTopHeight="@dimen/mtrl_calendar_selection_baseline_to_top_fullscreen"
         app:lineHeight="@dimen/mtrl_calendar_header_selection_line_height"/>
     </FrameLayout>

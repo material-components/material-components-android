@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">వచ్చే నెలకు మార్చుతుంది</string>
   <string name="mtrl_picker_toggle_to_year_selection">సంవత్సర వీక్షణకు మారడానికి ట్యాప్ చేయండి</string>
   <string name="mtrl_picker_toggle_to_day_selection">క్యాలెండర్ వీక్షణకు మారడానికి ట్యాప్ చేయండి</string>
+  <string name="mtrl_picker_toggled_to_year_selection">సంవత్సరం వీక్షణకు మారారు</string>
+  <string name="mtrl_picker_toggled_to_day_selection">క్యాలెండర్ వీక్షణకు మారారు</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">ప్రస్తుత ఎంపిక: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">ప్రారంభ తేదీ ఎంపిక: %1$s – ముగింపు తేదీ ఎంపిక: %2$s</string>

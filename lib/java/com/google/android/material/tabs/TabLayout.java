@@ -38,7 +38,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
@@ -71,7 +70,6 @@ import androidx.annotation.IntDef;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -1804,7 +1802,6 @@ public class TabLayout extends HorizontalScrollView {
     }
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -2567,17 +2564,11 @@ public class TabLayout extends HorizontalScrollView {
 
         // TODO: Add support to RippleUtils.compositeRippleColorStateList for different ripple color
         // for selected items vs non-selected items
-        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-          background =
-              new RippleDrawable(
-                  rippleColor,
-                  unboundedRipple ? null : contentDrawable,
-                  unboundedRipple ? null : maskDrawable);
-        } else {
-          Drawable rippleDrawable = DrawableCompat.wrap(maskDrawable);
-          DrawableCompat.setTintList(rippleDrawable, rippleColor);
-          background = new LayerDrawable(new Drawable[] {contentDrawable, rippleDrawable});
-        }
+        background =
+            new RippleDrawable(
+                rippleColor,
+                unboundedRipple ? null : contentDrawable,
+                unboundedRipple ? null : maskDrawable);
       } else {
         background = contentDrawable;
       }
@@ -3053,7 +3044,7 @@ public class TabLayout extends HorizontalScrollView {
 
       final CharSequence contentDesc = tab != null ? tab.contentDesc : null;
       // Avoid calling tooltip for L and M devices because long pressing twice may freeze devices.
-      if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || VERSION.SDK_INT > VERSION_CODES.M) {
+      if (VERSION.SDK_INT > VERSION_CODES.M) {
         TooltipCompat.setTooltipText(this, hasText ? text : contentDesc);
       }
     }

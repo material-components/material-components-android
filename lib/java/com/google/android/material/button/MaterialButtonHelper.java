@@ -31,7 +31,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,7 +40,6 @@ import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.ripple.RippleDrawableCompat;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -52,11 +50,6 @@ import com.google.android.material.shape.StateListShapeAppearanceModel;
 @RestrictTo(LIBRARY_GROUP)
 class MaterialButtonHelper {
 
-  @ChecksSdkIntAtLeast(api = VERSION_CODES.LOLLIPOP)
-  private static final boolean IS_MIN_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
-
-  private static final boolean IS_LOLLIPOP =
-      VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && VERSION.SDK_INT <= VERSION_CODES.LOLLIPOP_MR1;
   private final MaterialButton materialButton;
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
   @Nullable private StateListShapeAppearanceModel stateListShapeAppearanceModel;
@@ -244,40 +237,23 @@ class MaterialButtonHelper {
             ? MaterialColors.getColor(materialButton, R.attr.colorSurface)
             : Color.TRANSPARENT);
 
-    if (IS_MIN_LOLLIPOP) {
-      maskDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
-      if (stateListShapeAppearanceModel != null) {
-        ((MaterialShapeDrawable) maskDrawable)
-            .setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
-      }
-      if (cornerSpringForce != null) {
-        ((MaterialShapeDrawable) maskDrawable).setCornerSpringForce(cornerSpringForce);
-      }
-      DrawableCompat.setTint(maskDrawable, Color.WHITE);
-      rippleDrawable =
-          new RippleDrawable(
-              RippleUtils.sanitizeRippleDrawableColor(rippleColor),
-              wrapDrawableWithInset(
-                  new LayerDrawable(
-                      new Drawable[] {surfaceColorStrokeDrawable, backgroundDrawable})),
-              maskDrawable);
-      return rippleDrawable;
-    } else {
-      maskDrawable = new RippleDrawableCompat(shapeAppearanceModel);
-      if (stateListShapeAppearanceModel != null) {
-        ((RippleDrawableCompat) maskDrawable)
-            .setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
-      }
-      if (cornerSpringForce != null) {
-        ((RippleDrawableCompat) maskDrawable).setCornerSpringForce(cornerSpringForce);
-      }
-      DrawableCompat.setTintList(
-          maskDrawable, RippleUtils.sanitizeRippleDrawableColor(rippleColor));
-      rippleDrawable =
-          new LayerDrawable(
-              new Drawable[] {surfaceColorStrokeDrawable, backgroundDrawable, maskDrawable});
-      return wrapDrawableWithInset(rippleDrawable);
+    maskDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+    if (stateListShapeAppearanceModel != null) {
+      ((MaterialShapeDrawable) maskDrawable)
+          .setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
     }
+    if (cornerSpringForce != null) {
+      ((MaterialShapeDrawable) maskDrawable).setCornerSpringForce(cornerSpringForce);
+    }
+    DrawableCompat.setTint(maskDrawable, Color.WHITE);
+    rippleDrawable =
+        new RippleDrawable(
+            RippleUtils.sanitizeRippleDrawableColor(rippleColor),
+            wrapDrawableWithInset(
+                new LayerDrawable(
+                    new Drawable[] {surfaceColorStrokeDrawable, backgroundDrawable})),
+            maskDrawable);
+    return rippleDrawable;
   }
 
   void updateMaskBounds(int height, int width) {
@@ -295,13 +271,9 @@ class MaterialButtonHelper {
   void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (this.rippleColor != rippleColor) {
       this.rippleColor = rippleColor;
-      if (IS_MIN_LOLLIPOP && materialButton.getBackground() instanceof RippleDrawable) {
+      if (materialButton.getBackground() instanceof RippleDrawable) {
         ((RippleDrawable) materialButton.getBackground())
             .setColor(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
-      } else if (!IS_MIN_LOLLIPOP
-          && materialButton.getBackground() instanceof RippleDrawableCompat) {
-        ((RippleDrawableCompat) materialButton.getBackground())
-            .setTintList(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
       }
     }
   }
@@ -367,15 +339,10 @@ class MaterialButtonHelper {
   @Nullable
   private MaterialShapeDrawable getMaterialShapeDrawable(boolean getSurfaceColorStrokeDrawable) {
     if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 0) {
-      if (IS_MIN_LOLLIPOP) {
-        InsetDrawable insetDrawable = (InsetDrawable) rippleDrawable.getDrawable(0);
-        LayerDrawable layerDrawable = (LayerDrawable) insetDrawable.getDrawable();
-        return (MaterialShapeDrawable)
-            layerDrawable.getDrawable(getSurfaceColorStrokeDrawable ? 0 : 1);
-      } else {
-        return (MaterialShapeDrawable)
-            rippleDrawable.getDrawable(getSurfaceColorStrokeDrawable ? 0 : 1);
-      }
+      InsetDrawable insetDrawable = (InsetDrawable) rippleDrawable.getDrawable(0);
+      LayerDrawable layerDrawable = (LayerDrawable) insetDrawable.getDrawable();
+      return (MaterialShapeDrawable)
+          layerDrawable.getDrawable(getSurfaceColorStrokeDrawable ? 0 : 1);
     }
 
     return null;
@@ -410,7 +377,7 @@ class MaterialButtonHelper {
   private void updateButtonShape() {
     // There seems to be a bug to drawables that is affecting Lollipop, since invalidation is not
     // changing an existing drawable shape. This is a fallback.
-    if (IS_LOLLIPOP && !backgroundOverwritten) {
+    if (VERSION.SDK_INT < VERSION_CODES.M && !backgroundOverwritten) {
       // Store padding before setting background, since background overwrites padding values
       int paddingStart = materialButton.getPaddingStart();
       int paddingTop = materialButton.getPaddingTop();

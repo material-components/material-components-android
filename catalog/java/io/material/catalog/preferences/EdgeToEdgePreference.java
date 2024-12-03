@@ -19,9 +19,6 @@ package io.material.catalog.preferences;
 import io.material.catalog.R;
 
 import android.content.Context;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
-import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
@@ -50,12 +47,6 @@ public class EdgeToEdgePreference extends CatalogPreference {
 
   public EdgeToEdgePreference() {
     super(R.string.edge_to_edge_preference_description);
-  }
-
-  @ChecksSdkIntAtLeast(api = VERSION_CODES.LOLLIPOP)
-  @Override
-  protected boolean isEnabled() {
-    return VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
   }
 
   @Override

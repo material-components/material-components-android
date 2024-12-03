@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Aldatu hurrengo hilabetera</string>
   <string name="mtrl_picker_toggle_to_year_selection">Urteko ikuspegira aldatzeko, sakatu hau</string>
   <string name="mtrl_picker_toggle_to_day_selection">Calendar-en ikuspegira aldatzeko, sakatu hau</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Aldatu da urtearen ikuspegira</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Aldatu da egutegiaren ikuspegira</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Oraingo hautapena: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Hasiera-dataren hautapena: %1$s – Amaiera-dataren hautapena: %2$s</string>

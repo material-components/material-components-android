@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">შემდეგ თვეზე გადასვლა</string>
   <string name="mtrl_picker_toggle_to_year_selection">შეეხეთ წლის ხედზე გადასართავად</string>
   <string name="mtrl_picker_toggle_to_day_selection">შეეხეთ კალენდრის ხედზე გადასართავად</string>
+  <string name="mtrl_picker_toggled_to_year_selection">გადაერთო წლის ხედზე</string>
+  <string name="mtrl_picker_toggled_to_day_selection">გადაერთო კალენდრის ხედზე</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">ამჟამინდელი არჩევანი: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">დაწყების თარიღის შერჩევა: %1$s — დასრულების თარიღის შერჩევა: %2$s</string>

@@ -40,6 +40,10 @@
   <!-- Slider and ProgressIndicator -->
   <attr name="trackStopIndicatorSize" format="dimension" />
 
+  <!-- ProgressIndicator and LoadingIndicator -->
+  <attr name="indicatorColor" format="color|reference" />
+  <attr name="indicatorSize" format="dimension" />
+
   <declare-styleable name="MaterialTextAppearance" parent="TextAppearance">
     <attr name="android:lineHeight"/>
     <attr name="lineHeight" format="dimension"/>

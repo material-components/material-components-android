@@ -20,8 +20,6 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import androidx.annotation.NonNull;
@@ -60,24 +58,21 @@ public final class CircularRevealCompat {
             CircularRevealProperty.CIRCULAR_REVEAL,
             CircularRevealEvaluator.CIRCULAR_REVEAL,
             new RevealInfo(centerX, centerY, endRadius));
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      // Ideally, the start radius would be inferred from the RevealInfo at the time of animation
-      // start (usually on the next event loop iteration). So we approximate.
-      RevealInfo revealInfo = view.getRevealInfo();
-      if (revealInfo == null) {
-        throw new IllegalStateException(
-            "Caller must set a non-null RevealInfo before calling this.");
-      }
-      float startRadius = revealInfo.radius;
-      Animator circularRevealAnimator =
-          ViewAnimationUtils.createCircularReveal(
-              (View) view, (int) centerX, (int) centerY, startRadius, endRadius);
-      AnimatorSet set = new AnimatorSet();
-      set.playTogether(revealInfoAnimator, circularRevealAnimator);
-      return set;
-    } else {
-      return revealInfoAnimator;
+
+    // Ideally, the start radius would be inferred from the RevealInfo at the time of animation
+    // start (usually on the next event loop iteration). So we approximate.
+    RevealInfo revealInfo = view.getRevealInfo();
+    if (revealInfo == null) {
+      throw new IllegalStateException(
+          "Caller must set a non-null RevealInfo before calling this.");
     }
+    float startRadius = revealInfo.radius;
+    Animator circularRevealAnimator =
+        ViewAnimationUtils.createCircularReveal(
+            (View) view, (int) centerX, (int) centerY, startRadius, endRadius);
+    AnimatorSet set = new AnimatorSet();
+    set.playTogether(revealInfoAnimator, circularRevealAnimator);
+    return set;
   }
 
   /**
@@ -101,16 +96,13 @@ public final class CircularRevealCompat {
             CircularRevealEvaluator.CIRCULAR_REVEAL,
             new RevealInfo(centerX, centerY, startRadius),
             new RevealInfo(centerX, centerY, endRadius));
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      Animator circularRevealAnimator =
-          ViewAnimationUtils.createCircularReveal(
-              (View) view, (int) centerX, (int) centerY, startRadius, endRadius);
-      AnimatorSet set = new AnimatorSet();
-      set.playTogether(revealInfoAnimator, circularRevealAnimator);
-      return set;
-    } else {
-      return revealInfoAnimator;
-    }
+
+    Animator circularRevealAnimator =
+        ViewAnimationUtils.createCircularReveal(
+            (View) view, (int) centerX, (int) centerY, startRadius, endRadius);
+    AnimatorSet set = new AnimatorSet();
+    set.playTogether(revealInfoAnimator, circularRevealAnimator);
+    return set;
   }
 
   /**

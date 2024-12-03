@@ -22,10 +22,13 @@
   <string name="cat_topappbar_description">The Top App Bar, formerly known as the action bar in Android, is a special kind of toolbar that’s used for branding, navigation, search, and actions.</string>
   <string name="cat_topappbar_scrolling_title" translatable="false">Scrolling Demo</string>
   <string name="cat_topappbar_scrolling_transparent_title" translatable="false">Scrolling Demo (transparent status bar)</string>
-  <string name="cat_topappbar_collapsing_medium_title" translatable="false">Collapsing Demo (Medium)</string>
-  <string name="cat_topappbar_collapsing_large_title" translatable="false">Collapsing Demo (Large)</string>
+  <string name="cat_topappbar_collapsing_medium_demo_title" translatable="false">Collapsing Demo (Medium)</string>
+  <string name="cat_topappbar_collapsing_medium_with_subtitle_demo_title" translatable="false">Collapsing with Subtitle Demo (Medium)</string>
+  <string name="cat_topappbar_collapsing_large_demo_title" translatable="false">Collapsing Demo (Large)</string>
+  <string name="cat_topappbar_collapsing_large_with_subtitle_demo_title" translatable="false">Collapsing with Subtitle Demo (Large)</string>
+  <string name="cat_topappbar_collapsing_with_filled_action_demo_title" translatable="false">Collapsing Demo (Filled Action)</string>
+  <string name="cat_topappbar_collapsing_multiline_demo_title" translatable="false">Collapsing Demo (Multiline title)</string>
   <string name="cat_topappbar_toolbar_title" translatable="false">Toolbar Demo</string>
-  <string name="cat_topappbar_collapsing_multiline_title" translatable="false">Collapsing Demo (Multiline title)</string>
   <string name="cat_topappbar_action_bar_title" translatable="false">Action Bar Demo</string>
   <string name="cat_topappbar_dark_action_bar_title" translatable="false">Dark Action Bar Demo</string>
   <string name="cat_topappbar_preferences_demo_title" translatable="false">Preferences Demo</string>
@@ -41,10 +44,16 @@
   <string name="cat_topappbar_main_demo_toolbar_title">Regular Title</string>
   <!-- Title for the scrolling toolbar demo [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_scrolling_demo_toolbar_title">Scrolling Title</string>
-  <!-- Title for the medium collpasing toolbar demo [CHAR_LIMIT=NONE] -->
-  <string name="cat_topappbar_collapsing_demo_toolbar_medium_title">Collapsing Title Medium Size</string>
-  <!-- Title for the large collpasing toolbar demo [CHAR_LIMIT=NONE] -->
-  <string name="cat_topappbar_collapsing_demo_toolbar_large_title">Collapsing Title Large Size</string>
+  <string name="cat_topappbar_collapsing_demo_toolbar_medium_title"
+    description="Title for the medium collapsing toolbar demo [CHAR_LIMIT=NONE]">Medium Title</string>
+  <string name="cat_topappbar_collapsing_demo_toolbar_medium_subtitle"
+    description="Subtitle for the medium collapsing toolbar demo [CHAR_LIMIT=NONE]">Medium Subtitle</string>
+  <string name="cat_topappbar_collapsing_demo_toolbar_large_title"
+    description="Title for the large collapsing toolbar demo [CHAR_LIMIT=NONE]">Large Title</string>
+  <string name="cat_topappbar_collapsing_demo_toolbar_large_subtitle"
+    description="Subtitle for the large collapsing toolbar demo [CHAR_LIMIT=NONE]">Large Subtitle</string>
+  <string name="cat_topappbar_action_button_label"
+    description="A label of an action button [CHAR_LIMIT=NONE]">Action</string>
   <!-- Label for a button in the menu [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_edit_menu_item_title">Edit</string>
   <!-- Label for a button in the menu [CHAR_LIMIT=NONE] -->
@@ -53,7 +62,7 @@
   <string name="cat_topappbar_settings_menu_item_title">Settings</string>
   <!-- Label for a button in the menu [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_help_and_feedback_menu_item_title">Help &amp; feedback</string>
-  <!-- Sample subitle [CHAR_LIMIT=NONE] -->
+  <!-- Sample subtitle [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_action_bar_subtitle">Subtitle text</string>
   <!-- The description of the AppBar component [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_action_bar_description">
@@ -88,6 +97,8 @@
   <string name="cat_topappbar_configure_centered">Centered</string>
   <!-- Label for a check box for configuring toolbar navigation icon [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_configure_navigation_icon">Navigation Icon</string>
+  <!-- Label for the toolbar navigation icon when it's a close button -->
+  <string name="cat_topappbar_close_button" description="The title of the close button of the toolbar. [CHAR_LIMIT=NONE]">Close</string>
   <!-- Label for a check box for configuring toolbar menu items [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_configure_menu_items">Menu Items</string>
   <!-- Label for a button to apply toolbar configurations [CHAR_LIMIT=NONE] -->

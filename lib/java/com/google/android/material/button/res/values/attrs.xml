@@ -19,6 +19,12 @@
 
   <!-- Style to use for MaterialButtons in this theme. -->
   <attr name="materialButtonStyle" format="reference" />
+  <!-- Style to use for Material Tonal Buttons in this theme. -->
+  <attr name="materialButtonTonalStyle" format="reference" />
+  <!-- Style to use for Material Outlined Buttons in this theme. -->
+  <attr name="materialButtonOutlinedStyle" format="reference" />
+  <!-- Style to use for Material Elevated Buttons in this theme. -->
+  <attr name="materialButtonElevatedStyle" format="reference" />
   <!-- Style to use for Material Icon Only Buttons in this theme. -->
   <attr name="materialIconButtonStyle" format="reference" />
   <!-- Style to use for Filled Material Icon Only Buttons in this theme. -->
@@ -27,8 +33,14 @@
   <attr name="materialIconButtonFilledTonalStyle" format="reference" />
   <!-- Style to use for Outlined Material Icon Only Buttons in this theme. -->
   <attr name="materialIconButtonOutlinedStyle" format="reference" />
-  <!-- Style to use for Material Outlined Buttons in this theme. -->
-  <attr name="materialButtonOutlinedStyle" format="reference" />
+  <!-- Style to use for MaterialButtonGroups in this theme. -->
+  <attr name="materialButtonGroupStyle" format="reference"/>
+  <!-- Style to use for MaterialSplitButtons in this theme. -->
+  <attr name="materialSplitButtonStyle" format="reference"/>
+<!-- Style to use for Filled Material Icon Only Split Buttons in this theme. -->
+  <attr name="materialSplitButtonIconFilledStyle" format="reference" />
+  <!-- Style to use for Filled Tonal Material Icon Only Split Buttons in this theme. -->
+  <attr name="materialSplitButtonIconFilledTonalStyle" format="reference" />
   <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
   <attr name="materialButtonToggleGroupStyle" format="reference" />
 
@@ -102,6 +114,24 @@
     <attr name="toggleCheckedStateOnClick" format="boolean" />
   </declare-styleable>
 
+  <declare-styleable name="MaterialButtonGroup">
+    <!-- Whether all child buttons are enabled. -->
+    <attr name="android:enabled"/>
+    <!-- The reference to the state list of the size change per state of all child buttons. -->
+    <attr name="buttonSizeChange" format="reference"/>
+    <!-- The corner size of inner corners, which are adjacent to neighbor buttons.
+         Can be a dp value as the absolute corner size; a fraction value as the relative
+         corner size; or a reference to a state list corner size. -->
+    <attr name="innerCornerSize" format="dimension|fraction|reference" />
+    <!-- The shape appearance of the group. -->
+    <attr name="shapeAppearance" />
+    <!-- The shape appearance overlay of the group. -->
+    <attr name="shapeAppearanceOverlay" />
+    <!-- The spacing between inclusive buttons. Outlines will overlap, when set to zero
+         or negative. -->
+    <attr name="android:spacing" />
+  </declare-styleable>
+
   <declare-styleable name="MaterialButtonToggleGroup">
     <!-- Whether only a single button in this group is allowed to be checked at any time. By
          default, this is false and multiple buttons in this group are allowed to be checked at
@@ -118,7 +148,7 @@
     <!-- The corner size of inner corners, which are adjacent to neighbor buttons.
          Can be a dp value as the absolute corner size; a fraction value as the relative
          corner size; or a reference to a state list corner size. -->
-    <attr name="innerCornerSize" format="dimension|fraction|reference" />
+    <attr name="innerCornerSize" />
     <!-- The shape appearance of the group. -->
     <attr name="shapeAppearance" />
     <!-- The shape appearance overlay of the group. -->
@@ -128,5 +158,42 @@
     <attr name="android:spacing" />
 
   </declare-styleable>
+
+  <!-- Container sizes. -->
+  <!-- These container sizes are only meant to be used in component-level styles and
+       resources as a means of indirection. They enable remapping to different values
+       for different size variants. -->
+  <!-- Container start padding. -->
+  <attr name="containerPaddingStart" format="dimension"/>
+  <!-- Container end padding. -->
+  <attr name="containerPaddingEnd" format="dimension"/>
+  <!-- Container top padding. -->
+  <attr name="containerPaddingTop" format="dimension"/>
+  <!-- Container bottom padding. -->
+  <attr name="containerPaddingBottom" format="dimension"/>
+  <!-- Container left inset. Aligned with the InsetDrawable API. -->
+  <attr name="containerInsetLeft" format="dimension"/>
+  <!-- Container right inset. Aligned with the InsetDrawable API. -->
+  <attr name="containerInsetRight" format="dimension"/>
+  <!-- Container top inset. -->
+  <attr name="containerInsetTop" format="dimension"/>
+  <!-- Container bottom inset. -->
+  <attr name="containerInsetBottom" format="dimension"/>
+  <!-- Container icon size. -->
+  <attr name="containerIconSize" format="dimension"/>
+  <!-- Container icon padding. -->
+  <attr name="containerIconPadding" format="dimension"/>
+  <!-- Container stroke width. -->
+  <attr name="containerStrokeWidth" format="dimension"/>
+  <!-- Container label text appearance. -->
+  <attr name="labelTextAppearance" format="reference"/>
+  <!-- Container shape appearance in default state. -->
+  <attr name="containerShapeDefault" format="reference"/>
+  <!-- Container shape appearance in pressed state. -->
+  <attr name="containerShapePressed" format="reference"/>
+  <!-- Container shape appearance in checked state. -->
+  <attr name="containerShapeChecked" format="reference"/>
+
+  <attr name="materialSizeOverlay" format="reference" />
 
 </resources>

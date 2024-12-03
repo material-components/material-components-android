@@ -185,8 +185,7 @@ public class RippleDrawableCompat extends Drawable implements Shapeable, TintAwa
   }
 
   /**
-   * A {@link ConstantState} for {@link Ripple}
-   *
+   * A {@link ConstantState} for {@link RippleDrawableCompat}
    */
   static final class RippleDrawableCompatState extends ConstantState {
 

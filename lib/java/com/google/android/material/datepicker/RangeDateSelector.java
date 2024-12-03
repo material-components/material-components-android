@@ -35,6 +35,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
 import androidx.core.util.Preconditions;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
@@ -213,6 +214,12 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     final TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
     EditText startEditText = startTextInput.getEditText();
     EditText endEditText = endTextInput.getEditText();
+    Integer hintTextColor =
+        MaterialColors.getColorOrNull(root.getContext(), R.attr.colorOnSurfaceVariant);
+    if (hintTextColor != null) {
+      startEditText.setHintTextColor(hintTextColor);
+      endEditText.setHintTextColor(hintTextColor);
+    }
     if (ManufacturerUtils.isDateInputKeyboardMissingSeparatorCharacters()) {
       // Using the URI variation places the '/' and '.' in more prominent positions
       startEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);

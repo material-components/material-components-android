@@ -146,12 +146,19 @@
     <item name="floatingActionButtonLargeTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Tertiary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
     <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3.Button.IconButton.Filled.Tonal</item>
     <item name="materialIconButtonOutlinedStyle">@style/Widget.Material3.Button.IconButton.Outlined</item>
-    <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
     <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
+    <item name="materialButtonTonalStyle">@style/Widget.Material3.Button.TonalButton</item>
+    <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
+    <item name="materialButtonElevatedStyle">@style/Widget.Material3.Button.ElevatedButton</item>
+    <item name="materialButtonGroupStyle">@style/Widget.Material3.MaterialButtonGroup</item>
+    <item name="materialSplitButtonStyle">@style/Widget.Material3.MaterialSplitButton</item>
+    <item name="materialSplitButtonIconFilledStyle">@style/Widget.Material3.SplitButton.IconButton.Filled</item>
+    <item name="materialSplitButtonIconFilledTonalStyle">@style/Widget.Material3.SplitButton.IconButton.Filled.Tonal</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3.MaterialButtonToggleGroup</item>
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>
     <item name="materialCardViewOutlinedStyle">@style/Widget.Material3.CardView.Outlined</item>
@@ -185,7 +192,9 @@
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
+    <item name="collapsingToolbarLayoutMediumWithSubtitleSize">@dimen/m3_appbar_size_medium_with_subtitle</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
+    <item name="collapsingToolbarLayoutLargeWithSubtitleSize">@dimen/m3_appbar_size_large_with_subtitle</item>
 
     <!-- Action Bars. -->
     <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Light</item>
@@ -220,10 +229,26 @@
     <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
 
+    <item name="textAppearanceDisplayLargeEmphasized">@style/TextAppearance.Material3.DisplayLarge.Emphasized</item>
+    <item name="textAppearanceDisplayMediumEmphasized">@style/TextAppearance.Material3.DisplayMedium.Emphasized</item>
+    <item name="textAppearanceDisplaySmallEmphasized">@style/TextAppearance.Material3.DisplaySmall.Emphasized</item>
+    <item name="textAppearanceHeadlineLargeEmphasized">@style/TextAppearance.Material3.HeadlineLarge.Emphasized</item>
+    <item name="textAppearanceHeadlineMediumEmphasized">@style/TextAppearance.Material3.HeadlineMedium.Emphasized</item>
+    <item name="textAppearanceHeadlineSmallEmphasized">@style/TextAppearance.Material3.HeadlineSmall.Emphasized</item>
+    <item name="textAppearanceTitleLargeEmphasized">@style/TextAppearance.Material3.TitleLarge.Emphasized</item>
+    <item name="textAppearanceTitleMediumEmphasized">@style/TextAppearance.Material3.TitleMedium.Emphasized</item>
+    <item name="textAppearanceTitleSmallEmphasized">@style/TextAppearance.Material3.TitleSmall.Emphasized</item>
+    <item name="textAppearanceBodyLargeEmphasized">@style/TextAppearance.Material3.BodyLarge.Emphasized</item>
+    <item name="textAppearanceBodyMediumEmphasized">@style/TextAppearance.Material3.BodyMedium.Emphasized</item>
+    <item name="textAppearanceBodySmallEmphasized">@style/TextAppearance.Material3.BodySmall.Emphasized</item>
+    <item name="textAppearanceLabelLargeEmphasized">@style/TextAppearance.Material3.LabelLarge.Emphasized</item>
+    <item name="textAppearanceLabelMediumEmphasized">@style/TextAppearance.Material3.LabelMedium.Emphasized</item>
+    <item name="textAppearanceLabelSmallEmphasized">@style/TextAppearance.Material3.LabelSmall.Emphasized</item>
+
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" tools:targetApi="lollipop">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary" >?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
@@ -411,12 +436,19 @@
     <item name="floatingActionButtonLargeTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Tertiary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
     <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3.Button.IconButton.Filled.Tonal</item>
     <item name="materialIconButtonOutlinedStyle">@style/Widget.Material3.Button.IconButton.Outlined</item>
-    <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
     <item name="materialButtonStyle">@style/Widget.Material3.Button</item>
+    <item name="materialButtonTonalStyle">@style/Widget.Material3.Button.TonalButton</item>
+    <item name="materialButtonOutlinedStyle">@style/Widget.Material3.Button.OutlinedButton</item>
+    <item name="materialButtonElevatedStyle">@style/Widget.Material3.Button.ElevatedButton</item>
+    <item name="materialButtonGroupStyle">@style/Widget.Material3.MaterialButtonGroup</item>
+    <item name="materialSplitButtonStyle">@style/Widget.Material3.MaterialSplitButton</item>
+    <item name="materialSplitButtonIconFilledStyle">@style/Widget.Material3.SplitButton.IconButton.Filled</item>
+    <item name="materialSplitButtonIconFilledTonalStyle">@style/Widget.Material3.SplitButton.IconButton.Filled.Tonal</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3.MaterialButtonToggleGroup</item>
     <item name="materialCardViewStyle">?attr/materialCardViewOutlinedStyle</item>
     <item name="materialCardViewOutlinedStyle">@style/Widget.Material3.CardView.Outlined</item>
@@ -450,7 +482,9 @@
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
+    <item name="collapsingToolbarLayoutMediumWithSubtitleSize">@dimen/m3_appbar_size_medium_with_subtitle</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
+    <item name="collapsingToolbarLayoutLargeWithSubtitleSize">@dimen/m3_appbar_size_large_with_subtitle</item>
 
     <!-- Action Bars. -->
     <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Dark</item>
@@ -485,10 +519,26 @@
     <item name="textAppearanceLabelMedium">@style/TextAppearance.Material3.LabelMedium</item>
     <item name="textAppearanceLabelSmall">@style/TextAppearance.Material3.LabelSmall</item>
 
+    <item name="textAppearanceDisplayLargeEmphasized">@style/TextAppearance.Material3.DisplayLarge.Emphasized</item>
+    <item name="textAppearanceDisplayMediumEmphasized">@style/TextAppearance.Material3.DisplayMedium.Emphasized</item>
+    <item name="textAppearanceDisplaySmallEmphasized">@style/TextAppearance.Material3.DisplaySmall.Emphasized</item>
+    <item name="textAppearanceHeadlineLargeEmphasized">@style/TextAppearance.Material3.HeadlineLarge.Emphasized</item>
+    <item name="textAppearanceHeadlineMediumEmphasized">@style/TextAppearance.Material3.HeadlineMedium.Emphasized</item>
+    <item name="textAppearanceHeadlineSmallEmphasized">@style/TextAppearance.Material3.HeadlineSmall.Emphasized</item>
+    <item name="textAppearanceTitleLargeEmphasized">@style/TextAppearance.Material3.TitleLarge.Emphasized</item>
+    <item name="textAppearanceTitleMediumEmphasized">@style/TextAppearance.Material3.TitleMedium.Emphasized</item>
+    <item name="textAppearanceTitleSmallEmphasized">@style/TextAppearance.Material3.TitleSmall.Emphasized</item>
+    <item name="textAppearanceBodyLargeEmphasized">@style/TextAppearance.Material3.BodyLarge.Emphasized</item>
+    <item name="textAppearanceBodyMediumEmphasized">@style/TextAppearance.Material3.BodyMedium.Emphasized</item>
+    <item name="textAppearanceBodySmallEmphasized">@style/TextAppearance.Material3.BodySmall.Emphasized</item>
+    <item name="textAppearanceLabelLargeEmphasized">@style/TextAppearance.Material3.LabelLarge.Emphasized</item>
+    <item name="textAppearanceLabelMediumEmphasized">@style/TextAppearance.Material3.LabelMedium.Emphasized</item>
+    <item name="textAppearanceLabelSmallEmphasized">@style/TextAppearance.Material3.LabelSmall.Emphasized</item>
+
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" tools:targetApi="lollipop">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary" >?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
@@ -620,6 +670,10 @@
     <item name="materialTimePickerTheme">@style/ThemeOverlay.MaterialComponents.TimePicker</item>
   </style>
 
+  <style name="Base.V21.Theme.MaterialComponents" parent="Base.V14.Theme.MaterialComponents">
+    <item name="android:alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert.Framework</item>
+  </style>
+
   <style name="Base.V14.Theme.MaterialComponents.Light" parent="Base.V14.Theme.MaterialComponents.Light.Bridge">
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 
@@ -683,6 +737,10 @@
     <item name="materialTimePickerTheme">@style/ThemeOverlay.MaterialComponents.TimePicker</item>
   </style>
 
+  <style name="Base.V21.Theme.MaterialComponents.Light" parent="Base.V14.Theme.MaterialComponents.Light">
+    <item name="android:alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework</item>
+  </style>
+
   <!-- Themes in the "Base.Theme" family vary based on the current platform
        version to provide the correct basis on each device. You probably don't
        want to use them directly in your apps.
@@ -691,9 +749,9 @@
        directly by apps. -->
   <eat-comment/>
 
-  <style name="Base.Theme.MaterialComponents" parent="Base.V14.Theme.MaterialComponents"/>
+  <style name="Base.Theme.MaterialComponents" parent="Base.V21.Theme.MaterialComponents"/>
 
-  <style name="Base.Theme.MaterialComponents.Light" parent="Base.V14.Theme.MaterialComponents.Light"/>
+  <style name="Base.Theme.MaterialComponents.Light" parent="Base.V21.Theme.MaterialComponents.Light"/>
 
   <style name="Base.Theme.MaterialComponents.Light.DarkActionBar" parent="Base.Theme.MaterialComponents.Light">
     <item name="actionBarWidgetTheme">@null</item>

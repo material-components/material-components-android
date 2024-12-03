@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">ወደ የሚቀጥለው ወር ቀይር</string>
   <string name="mtrl_picker_toggle_to_year_selection">ወደ የዓመት ዕይታ ለመቀየር መታ ያድርጉ</string>
   <string name="mtrl_picker_toggle_to_day_selection">ወደ የቀን መቁጠሪያ ዕይታ ለመቀየር መታ ያድርጉ</string>
+  <string name="mtrl_picker_toggled_to_year_selection">ወደ ዓመት ዕይታ ተቀይሯል</string>
+  <string name="mtrl_picker_toggled_to_day_selection">ወደ ቀን መቁጠሪያ ዕይታ ተቀይሯል</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">የአሁኑ ምርጫ፦ %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">የመጀመሪያ ቀን ምርጫ፦ %1$s – የማብቂያ ቀን ምርጫ፦ %2$s</string>

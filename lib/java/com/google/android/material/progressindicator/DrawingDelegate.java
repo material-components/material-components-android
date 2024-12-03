@@ -34,6 +34,7 @@ import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Px;
+import java.util.Arrays;
 
 /** A delegate abstract class for drawing the graphics in different drawable classes. */
 abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
@@ -48,8 +49,12 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
 
   final PathMeasure activePathMeasure = new PathMeasure(cachedActivePath, /* forceClosed= */ false);
 
+  // Pre-allocates a Matrix to transform this point.
+  final Matrix transform;
+
   public DrawingDelegate(S spec) {
     this.spec = spec;
+    this.transform = new Matrix();
   }
 
   /**
@@ -186,9 +191,12 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
     float[] posVec = new float[2];
     // The tangent vector of this point on a path. The length is not guaranteed.
     float[] tanVec = new float[2];
+    // Pre-allocates a Matrix for transform this point.
+    final Matrix transform;
 
     public PathPoint() {
       tanVec[0] = 1;
+      transform = new Matrix();
     }
 
     public PathPoint(PathPoint other) {
@@ -198,6 +206,7 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
     public PathPoint(float[] pos, float[] tan) {
       arraycopy(pos, 0, this.posVec, 0, 2);
       arraycopy(tan, 0, this.tanVec, 0, 2);
+      transform = new Matrix();
     }
 
     /** Moves this point by (x, y). */
@@ -239,10 +248,17 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
 
     /** Rotates the coordinates by the given degrees around (0, 0). */
     public void rotate(float rotationDegrees) {
-      Matrix transform = new Matrix();
+      transform.reset();
       transform.setRotate(rotationDegrees);
       transform.mapPoints(posVec);
       transform.mapPoints(tanVec);
+    }
+
+    public void reset() {
+      Arrays.fill(posVec, 0);
+      Arrays.fill(tanVec, 0);
+      tanVec[0] = 1;
+      transform.reset();
     }
   }
 }

@@ -26,7 +26,6 @@ import static java.lang.Math.min;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
@@ -62,6 +61,9 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   // scaled by this fraction with a pivot of 1.0f.
   @FloatRange(from = 0.0f, to = 1.0f)
   private float totalTrackLengthFraction;
+
+  // Pre-allocates objects used in draw().
+  Pair<PathPoint, PathPoint> endPoints = new Pair<>(new PathPoint(), new PathPoint());
 
   /** Instantiates LinearDrawingDelegate with the current spec. */
   LinearDrawingDelegate(@NonNull LinearProgressIndicatorSpec spec) {
@@ -255,7 +257,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       paint.setAntiAlias(true);
       paint.setStrokeWidth(displayedTrackThickness);
 
-      Pair<PathPoint, PathPoint> endPoints = new Pair<>(new PathPoint(), new PathPoint());
+      endPoints.first.reset();
+      endPoints.second.reset();
       endPoints.first.translate(startBlockCenterX + originX, 0);
       endPoints.second.translate(endBlockCenterX + originX, 0);
       if (startBlockCenterX >= endBlockCenterX) {
@@ -280,14 +283,14 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
               paint);
         } else {
           // Draws a portion of the cached wavy path.
-          endPoints =
-              getDisplayedPath(
-                  activePathMeasure,
-                  displayedActivePath,
-                  startBlockCenterX / trackLength,
-                  endBlockCenterX / trackLength,
-                  amplitudeFraction,
-                  phaseFraction);
+          calculateDisplayedPath(
+              activePathMeasure,
+              displayedActivePath,
+              endPoints,
+              startBlockCenterX / trackLength,
+              endBlockCenterX / trackLength,
+              amplitudeFraction,
+              phaseFraction);
           canvas.drawPath(displayedActivePath, paint);
         }
         if (!useStrokeCap && displayedCornerRadius > 0) {
@@ -381,20 +384,20 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       }
       // Transforms the wavy path from y = -1/2 * cos(PI * x) + 1/2, as calculated above,
       // to y = cos(2 * PI * x / wavelength), as required in spec.
-      Matrix transformMatrix = new Matrix();
-      transformMatrix.setScale(adjustedWavelength / 2, -2);
-      transformMatrix.postTranslate(0, 1);
-      cachedActivePath.transform(transformMatrix);
+      transform.reset();
+      transform.setScale(adjustedWavelength / 2, -2);
+      transform.postTranslate(0, 1);
+      cachedActivePath.transform(transform);
     } else {
       cachedActivePath.lineTo(trackLength, 0);
     }
     activePathMeasure.setPath(cachedActivePath, /* forceNewPath= */ false);
   }
 
-  @NonNull
-  private Pair<PathPoint, PathPoint> getDisplayedPath(
+  private void calculateDisplayedPath(
       @NonNull PathMeasure pathMeasure,
       @NonNull Path displayedPath,
+      @NonNull Pair<PathPoint, PathPoint> endPoints,
       float start,
       float end,
       float amplitudeFraction,
@@ -420,12 +423,14 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     float endDistance = end * pathMeasure.getLength();
     pathMeasure.getSegment(startDistance, endDistance, displayedPath, true);
     // Gathers the position and tangent of the start and end.
-    PathPoint startPoint = new PathPoint();
+    PathPoint startPoint = endPoints.first;
+    startPoint.reset();
     pathMeasure.getPosTan(startDistance, startPoint.posVec, startPoint.tanVec);
-    PathPoint endPoint = new PathPoint();
+    PathPoint endPoint = endPoints.second;
+    endPoint.reset();
     pathMeasure.getPosTan(endDistance, endPoint.posVec, endPoint.tanVec);
     // Transforms the result path to match the canvas.
-    Matrix transform = new Matrix();
+    transform.reset();
     transform.setTranslate(resultTranslationX, 0);
     startPoint.translate(resultTranslationX, 0);
     endPoint.translate(resultTranslationX, 0);
@@ -436,6 +441,5 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       endPoint.scale(1, scaleY);
     }
     displayedPath.transform(transform);
-    return new Pair<>(startPoint, endPoint);
   }
 }

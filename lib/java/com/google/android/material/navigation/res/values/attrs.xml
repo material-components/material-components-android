@@ -59,6 +59,19 @@
          android:textColor in itemTextAppearanceActive. Instead, set itemTextColor to a
          ColorStateList to make the text color stateful. -->
     <attr name="itemTextAppearanceActive" format="reference"/>
+    <!-- The text appearance to apply to the inactive navigation item label when the item
+         is in the horizontal layout (ie. the start icon gravity configuration). Setting
+         android:textColor in horizontalItemTextAppearanceInactive will take precedence over android:textColor
+         in horizontalItemTextAppearanceActive. Instead, set itemTextColor with a ColorStateList to make
+         the text color stateful. This attr takes precedence over itemTextAppearanceInactive for horizontal
+         items. -->
+    <attr name="horizontalItemTextAppearanceInactive" format="reference"/>
+    <!-- The text appearance to apply to the active navigation item label when the item
+         is in the horizontal layout (ie. the start icon gravity configuration). You should not set
+         android:textColor in horizontalItemTextAppearanceActive. Instead, set itemTextColor to a
+         ColorStateList to make the text color stateful. This attr takes precedence over
+         itemTextAppearanceActive for horizontal items. -->
+    <attr name="horizontalItemTextAppearanceActive" format="reference"/>
     <!-- Whether the active navigation item is bold. Attribute type definition is in navigation
          package. -->
     <attr name="itemTextAppearanceActiveBoldEnabled"/>
@@ -74,6 +87,10 @@
     <attr name="itemPaddingBottom" format="dimension"/>
     <!-- Padding between the active indicator container and label. -->
     <attr name="activeIndicatorLabelPadding" format="dimension"/>
+    <!-- The horizontal spacing between the icon and label which will show when
+         the item is in its horizontal configuration (ie. the start icon gravity
+         configuration). -->
+    <attr name="iconLabelHorizontalSpacing" format="dimension"/>
 
     <!-- The style used for each navigation item's active indicator-->
     <attr name="itemActiveIndicatorStyle" format="reference"/>
@@ -101,6 +118,12 @@
     <!-- Measure the item's bottom padding from the baseline of the label, not the bottom of its
          view. -->
     <attr name="measureBottomPaddingFromLabelBaseline" format="boolean"/>
+
+    <!-- Whether or not to scale the label with the font size. -->
+    <attr name="labelFontScalingEnabled" format="boolean"/>
+
+    <!-- The maximum number of lines the label can be. -->
+    <attr name="labelMaxLines" format="integer"/>
   </declare-styleable>
 
   <declare-styleable name="NavigationBarActiveIndicator">
@@ -199,6 +222,12 @@
     <!-- Whether or not the navigation view should draw a scrim behind the bottom window
          inset, usually the navigation area, when drawing edge to edge. -->
     <attr name="bottomInsetScrimEnabled" format="boolean"/>
+    <!-- Whether or not the navigation view should draw a scrim behind the start window
+     inset when drawing edge to edge. -->
+    <attr name="startInsetScrimEnabled" format="boolean"/>
+    <!-- Whether or not the navigation view should draw a scrim behind the end window
+         inset when drawing edge to edge. -->
+    <attr name="endInsetScrimEnabled" format="boolean"/>
     <!-- The distance between the start of the navigation view container and a menu divider. -->
     <attr name="dividerInsetStart"/>
     <!-- The distance between the end of the navigation view container and a menu divider. -->

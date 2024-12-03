@@ -20,6 +20,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.math.MathUtils;
 
 /**
@@ -27,7 +28,7 @@ import androidx.core.math.MathUtils;
  * an arrangement to fit within an available space, and can assess the arrangement's
  * desirability according to a priority heuristic.
  */
-final class Arrangement {
+public final class Arrangement {
 
   // Specifies a percentage of a medium item's size by which it can be increased or decreased to
   // help fit an arrangement into the carousel's available space.
@@ -64,7 +65,7 @@ final class Arrangement {
    * @param largeCount the number of large items in this arrangement
    * @param availableSpace the space this arrangement needs to fit within
    */
-  Arrangement(
+  public Arrangement(
       int priority,
       float targetSmallSize,
       float minSmallSize,
@@ -237,16 +238,17 @@ final class Arrangement {
    * @return the arrangement that is considered the most desirable and has been adjusted to fit
    *     within the available space
    */
-  static Arrangement findLowestCostArrangement(
+  @Nullable
+  public static Arrangement findLowestCostArrangement(
       float availableSpace,
       float targetSmallSize,
       float minSmallSize,
       float maxSmallSize,
-      int[] smallCounts,
+      @NonNull int[] smallCounts,
       float targetMediumSize,
-      int[] mediumCounts,
+      @NonNull int[] mediumCounts,
       float targetLargeSize,
-      int[] largeCounts) {
+      @NonNull int[] largeCounts) {
     Arrangement lowestCostArrangement = null;
     int priority = 1;
     for (int largeCount : largeCounts) {

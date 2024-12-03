@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Spremeni na naslednji mesec</string>
   <string name="mtrl_picker_toggle_to_year_selection">Dotaknite se za preklop na pogled leta</string>
   <string name="mtrl_picker_toggle_to_day_selection">Dotaknite se za preklop na pogled koledarja</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Preklopljeno na pogled leta</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Preklopljeno na pogled koledarja</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Trenutna izbira: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Izbira začetnega datuma: %1$s – Izbira končnega datuma: %2$s</string>

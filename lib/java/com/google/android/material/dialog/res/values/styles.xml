@@ -19,7 +19,7 @@
 
   <!-- Styles for MaterialComponents Dialogs. -->
 
-  <style name="Base.Widget.MaterialComponents.CheckedTextView" parent="android:Widget"/>
+  <style name="Base.Widget.MaterialComponents.CheckedTextView" parent="android:Widget.Material.CheckedTextView"/>
 
   <style name="Widget.MaterialComponents.CheckedTextView" parent="Base.Widget.MaterialComponents.CheckedTextView">
     <item name="android:textAppearance">?attr/textAppearanceBody1</item>

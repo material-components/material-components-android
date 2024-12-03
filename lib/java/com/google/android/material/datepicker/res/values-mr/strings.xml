@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">पुढील महिन्यावर बदला</string>
   <string name="mtrl_picker_toggle_to_year_selection">वर्ष या दृश्यावर स्विच करण्यासाठी टॅप करा</string>
   <string name="mtrl_picker_toggle_to_day_selection">कॅलेंडर या दृश्यावर स्विच करण्यासाठी टॅप करा</string>
+  <string name="mtrl_picker_toggled_to_year_selection">वर्षाच्या दृश्यावर स्विच केले आहे</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Calendar दृश्यावर स्विच केले आहे</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">सध्याची निवड: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">सुरू होण्याच्या तारखेची निवड: %1$s – संपण्याच्या तारखेची निवड: %2$s</string>
