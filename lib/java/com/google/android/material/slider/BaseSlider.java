@@ -3783,7 +3783,7 @@ abstract class BaseSlider<
     virtualViewBounds.set((int) rect.left, (int) rect.top, (int) rect.right, (int) rect.bottom);
   }
 
-  private static class AccessibilityHelper extends ExploreByTouchHelper {
+  public static class AccessibilityHelper extends ExploreByTouchHelper {
 
     private final BaseSlider<?, ?, ?> slider;
     final Rect virtualViewBounds = new Rect();
@@ -3806,7 +3806,7 @@ abstract class BaseSlider<
     }
 
     @Override
-    protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
+    protected void getVisibleVirtualViews(@NonNull List<Integer> virtualViewIds) {
       for (int i = 0; i < slider.getValues().size(); i++) {
         virtualViewIds.add(i);
       }
@@ -3814,7 +3814,7 @@ abstract class BaseSlider<
 
     @Override
     protected void onPopulateNodeForVirtualView(
-        int virtualViewId, AccessibilityNodeInfoCompat info) {
+        int virtualViewId, @NonNull AccessibilityNodeInfoCompat info) {
 
       info.addAction(AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS);
 
@@ -3855,7 +3855,8 @@ abstract class BaseSlider<
       if (values.size() > 1) {
         verbalValueType = startOrEndDescription(virtualViewId);
       }
-      contentDescription.append(String.format(Locale.US, "%s, %s", verbalValueType, verbalValue));
+      contentDescription.append(
+          String.format(Locale.getDefault(), "%s, %s", verbalValueType, verbalValue));
       info.setContentDescription(contentDescription.toString());
 
       slider.updateBoundsForVirtualViewId(virtualViewId, virtualViewBounds);
@@ -3878,7 +3879,7 @@ abstract class BaseSlider<
 
     @Override
     protected boolean onPerformActionForVirtualView(
-        int virtualViewId, int action, Bundle arguments) {
+        int virtualViewId, int action, @Nullable Bundle arguments) {
       if (!slider.isEnabled()) {
         return false;
       }
