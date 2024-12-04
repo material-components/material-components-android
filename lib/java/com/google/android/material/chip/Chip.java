@@ -500,6 +500,7 @@ public class Chip extends AppCompatCheckBox
     }
   }
 
+  @Override
   public void setBackgroundTintList(@Nullable ColorStateList tint) {
     Log.w(TAG, "Do not set the background tint list; Chip manages its own background drawable.");
   }
