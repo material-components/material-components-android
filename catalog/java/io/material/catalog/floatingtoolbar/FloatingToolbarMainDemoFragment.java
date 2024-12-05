@@ -186,4 +186,9 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
   protected int getLayoutResId() {
     return R.layout.cat_floating_toolbar_fragment;
   }
+
+  @Override
+  public boolean shouldShowDefaultDemoActionBar() {
+    return false;
+  }
 }
