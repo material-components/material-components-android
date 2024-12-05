@@ -287,9 +287,9 @@
     <item name="motionDurationExtraLong4">@integer/m3_sys_motion_duration_extra_long4</item>
     <item name="motionPath">@integer/m3_sys_motion_path</item>
 
-    <!-- Elevation overlays. -->
+    <!-- Elevation overlays is deprecated, use surface container colors instead. -->
     <item name="elevationOverlayEnabled">true</item>
-    <item name="elevationOverlayColor">@macro/m3_sys_color_light_surface_tint</item>
+    <item name="elevationOverlayColor">?attr/colorPrimary</item>
 
     <!-- Dialog themes and scrim. -->
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
@@ -574,9 +574,9 @@
     <item name="motionDurationExtraLong4">@integer/m3_sys_motion_duration_extra_long4</item>
     <item name="motionPath">@integer/m3_sys_motion_path</item>
 
-    <!-- Elevation overlays. -->
+    <!-- Elevation overlays is deprecated, use surface container colors instead. -->
     <item name="elevationOverlayEnabled">true</item>
-    <item name="elevationOverlayColor">@macro/m3_sys_color_dark_surface_tint</item>
+    <item name="elevationOverlayColor">?attr/colorPrimary</item>
 
     <!-- Dialog themes and scrim. -->
     <item name="alertDialogTheme">@style/ThemeOverlay.Material3.Dialog.Alert</item>
