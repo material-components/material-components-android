@@ -3304,17 +3304,24 @@ abstract class BaseSlider<
   }
 
   private void calculateLabelBounds(TooltipDrawable label, float value) {
-    int left =
-        trackSidePadding
-            + (int) (normalizeValue(value) * trackWidth)
-            - label.getIntrinsicWidth() / 2;
-    int right = left + label.getIntrinsicWidth();
+    int left;
+    int right;
     int bottom;
     int top;
     if (isVertical() && !isRtl()) {
+      left =
+          trackSidePadding
+              + (int) (normalizeValue(value) * trackWidth)
+              - label.getIntrinsicHeight() / 2;
+      right = left + label.getIntrinsicHeight();
       top = calculateTrackCenter() + (labelPadding + thumbHeight / 2);
-      bottom = top + label.getIntrinsicHeight();
+      bottom = top + label.getIntrinsicWidth();
     } else {
+      left =
+          trackSidePadding
+              + (int) (normalizeValue(value) * trackWidth)
+              - label.getIntrinsicWidth() / 2;
+      right = left + label.getIntrinsicWidth();
       bottom = calculateTrackCenter() - (labelPadding + thumbHeight / 2);
       top = bottom - label.getIntrinsicHeight();
     }
@@ -3911,7 +3918,7 @@ abstract class BaseSlider<
             }
 
             // Swap the increment if we're in RTL.
-            if (slider.isRtl() || slider.isVertical()) {
+            if (slider.isRtl()) {
               increment = -increment;
             }
 
