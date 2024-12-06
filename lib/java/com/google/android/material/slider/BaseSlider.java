@@ -239,7 +239,7 @@ abstract class BaseSlider<
       "Value(%s) must be equal to valueFrom(%s) plus a multiple of stepSize(%s) when using"
           + " stepSize(%s)";
   private static final String EXCEPTION_ILLEGAL_VALUE_FROM =
-      "valueFrom(%s) must be smaller than valueTo(%s)";
+      "valueFrom(%s) must be smaller than or equal to valueTo(%s)";
   private static final String EXCEPTION_ILLEGAL_STEP_SIZE =
       "The stepSize(%s) must be 0, or a factor of the valueFrom(%s)-valueTo(%s) range";
   private static final String EXCEPTION_ILLEGAL_MIN_SEPARATION =
