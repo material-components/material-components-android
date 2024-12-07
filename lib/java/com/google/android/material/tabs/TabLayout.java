@@ -2164,6 +2164,8 @@ public class TabLayout extends HorizontalScrollView {
     @NonNull public TabView view;
     private int id = NO_ID;
 
+    private OnTabClickListener onTabClickListener = new DefaultOnTabClickListener();
+
     // TODO(b/76413401): make package private constructor after the widget migration is finished
     public Tab() {
       // Private constructor
@@ -2208,6 +2210,17 @@ public class TabLayout extends HorizontalScrollView {
     /** Returns the id for this tab, {@code View.NO_ID} if not set. */
     public int getId() {
       return id;
+    }
+
+    /**
+     * Register a callback to be invoked when the tab is clicked.
+     * <p>
+     * Note: By default, tab is selected on click.
+     */
+    public Tab setOnTabClickListener(@Nullable OnTabClickListener onTabClickListener) {
+      this.onTabClickListener = onTabClickListener;
+
+      return this;
     }
 
     /**
@@ -2508,6 +2521,18 @@ public class TabLayout extends HorizontalScrollView {
       contentDesc = null;
       position = INVALID_POSITION;
       customView = null;
+      onTabClickListener = new DefaultOnTabClickListener();
+    }
+
+    private static class DefaultOnTabClickListener implements OnTabClickListener {
+      @Override
+      public void onClick(@NonNull Tab tab) {
+        tab.select();
+      }
+    }
+
+    interface OnTabClickListener {
+      void onClick(@NonNull Tab tab);
     }
   }
 
@@ -2616,7 +2641,9 @@ public class TabLayout extends HorizontalScrollView {
         if (!handled) {
           playSoundEffect(SoundEffectConstants.CLICK);
         }
-        tab.select();
+        if (tab.onTabClickListener != null) {
+          tab.onTabClickListener.onClick(tab);
+        }
         return true;
       } else {
         return handled;
