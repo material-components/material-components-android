@@ -330,6 +330,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   @Nullable private final AccessibilityManager accessibilityManager;
 
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  protected interface OnMeasureListener {
+    void onMeasure(View v);
+  }
+
   /**
    * Constructor for the transient bottom bar.
    *
@@ -765,6 +771,21 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   final void showView() {
+    this.view.setOnMeasureListener(new OnMeasureListener()
+    {
+      @Override
+      public void onMeasure(View v)
+      {
+        if (view.getAnimationMode() == ANIMATION_MODE_SLIDE && shouldAnimate()) {
+          int translationYBottom = getTranslationYBottom();
+          if (USE_OFFSET_API) {
+            ViewCompat.offsetTopAndBottom(view, translationYBottom);
+          } else {
+            view.setTranslationY(translationYBottom);
+          }
+        }
+      }
+    });
     if (this.view.getParent() == null) {
       ViewGroup.LayoutParams lp = this.view.getLayoutParams();
 
@@ -1064,7 +1085,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private int getTranslationYBottom() {
-    int translationY = view.getHeight();
+    int translationY = view.getMeasuredHeight();
     LayoutParams layoutParams = view.getLayoutParams();
     if (layoutParams instanceof MarginLayoutParams) {
       translationY += ((MarginLayoutParams) layoutParams).bottomMargin;
@@ -1136,6 +1157,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           }
         };
 
+    private BaseTransientBottomBar.OnMeasureListener onMeasureListener;
     @Nullable private BaseTransientBottomBar<?> baseTransientBottomBar;
     @Nullable ShapeAppearanceModel shapeAppearanceModel;
     @AnimationMode private int animationMode;
@@ -1258,6 +1280,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      if (onMeasureListener != null)
+        onMeasureListener.onMeasure(this);
+    }
+
+    @Override
     protected void onAttachedToWindow() {
       super.onAttachedToWindow();
       if (baseTransientBottomBar != null) {
@@ -1286,6 +1315,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           baseTransientBottomBar.updateMargins();
         }
       }
+    }
+
+    void setOnMeasureListener(BaseTransientBottomBar.OnMeasureListener listener) {
+      onMeasureListener = listener;
     }
 
     @AnimationMode
