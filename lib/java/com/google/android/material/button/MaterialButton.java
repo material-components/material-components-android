@@ -29,6 +29,7 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -322,6 +323,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   @NonNull
+  @SuppressLint("KotlinPropertyAccess")
   String getA11yClassName() {
     if (!TextUtils.isEmpty(accessibilityClassName)) {
       return accessibilityClassName;
@@ -330,7 +332,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     return (isCheckable() ? CompoundButton.class : Button.class).getName();
   }
 
-  void setA11yClassName(@Nullable String className) {
+  @RestrictTo(LIBRARY_GROUP)
+  public void setA11yClassName(@Nullable String className) {
     accessibilityClassName = className;
   }
 
