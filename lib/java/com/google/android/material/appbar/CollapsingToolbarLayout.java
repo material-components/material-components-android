@@ -225,14 +225,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.CollapsingToolbarLayout, defStyleAttr, DEF_STYLE_RES);
 
-    collapsingTitleHelper.setExpandedTextGravity(
+    int titleExpandedGravity =
         a.getInt(
             R.styleable.CollapsingToolbarLayout_expandedTitleGravity,
-            Gravity.START | Gravity.BOTTOM));
-    collapsingTitleHelper.setCollapsedTextGravity(
+            Gravity.START | Gravity.BOTTOM);
+    int titleCollapsedGravity =
         a.getInt(
             R.styleable.CollapsingToolbarLayout_collapsedTitleGravity,
-            Gravity.START | Gravity.CENTER_VERTICAL));
+            Gravity.START | Gravity.CENTER_VERTICAL);
+
+    collapsingTitleHelper.setExpandedTextGravity(titleExpandedGravity);
+    collapsingTitleHelper.setCollapsedTextGravity(titleCollapsedGravity);
 
     expandedMarginStart =
         expandedMarginTop =
@@ -322,14 +325,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
       setSubtitle(a.getText(R.styleable.CollapsingToolbarLayout_subtitle));
     }
 
-    collapsingSubtitleHelper.setExpandedTextGravity(
-        a.getInt(
-            R.styleable.CollapsingToolbarLayout_expandedSubtitleGravity,
-            Gravity.START | Gravity.BOTTOM));
-    collapsingSubtitleHelper.setCollapsedTextGravity(
-        a.getInt(
-            R.styleable.CollapsingToolbarLayout_collapsedSubtitleGravity,
-            Gravity.START | Gravity.CENTER_VERTICAL));
+    collapsingSubtitleHelper.setExpandedTextGravity(titleExpandedGravity);
+    collapsingSubtitleHelper.setCollapsedTextGravity(titleCollapsedGravity);
     collapsingSubtitleHelper.setExpandedTextAppearance(
         androidx.appcompat.R.style.TextAppearance_AppCompat_Headline);
     collapsingSubtitleHelper.setCollapsedTextAppearance(
@@ -1324,44 +1321,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
-   * Sets the horizontal alignment of the collapsed title and the vertical gravity that will be used
-   * when there is extra space in the collapsed bounds beyond what is required for the title itself.
+   * Sets the horizontal alignment of the collapsed titles and the vertical gravity that will be
+   * used when there is extra space in the collapsed bounds beyond what is required for the title
+   * itself.
    *
    * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedTitleGravity
    */
   public void setCollapsedTitleGravity(int gravity) {
     collapsingTitleHelper.setCollapsedTextGravity(gravity);
-  }
-
-  /**
-   * Sets the horizontal alignment of the collapsed subtitle and the vertical gravity that will be
-   * used when there is extra space in the collapsed bounds beyond what is required for the subtitle
-   * itself.
-   *
-   * @attr ref
-   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedSubtitleGravity
-   */
-  public void setCollapsedSubitleGravity(int gravity) {
     collapsingSubtitleHelper.setCollapsedTextGravity(gravity);
   }
 
   /**
-   * Returns the horizontal and vertical alignment for title when collapsed.
+   * Returns the horizontal and vertical alignment for titles when collapsed.
    *
    * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedTitleGravity
    */
   public int getCollapsedTitleGravity() {
     return collapsingTitleHelper.getCollapsedTextGravity();
-  }
-
-  /**
-   * Returns the horizontal and vertical alignment for subtitle when collapsed.
-   *
-   * @attr ref
-   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedSubtitleGravity
-   */
-  public int getCollapsedSubtitleGravity() {
-    return collapsingSubtitleHelper.getCollapsedTextGravity();
   }
 
   /**
@@ -1422,44 +1399,23 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
-   * Sets the horizontal alignment of the expanded title and the vertical gravity that will be used
+   * Sets the horizontal alignment of the expanded titles and the vertical gravity that will be used
    * when there is extra space in the expanded bounds beyond what is required for the title itself.
    *
    * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleGravity
    */
   public void setExpandedTitleGravity(int gravity) {
     collapsingTitleHelper.setExpandedTextGravity(gravity);
-  }
-
-  /**
-   * Sets the horizontal alignment of the expanded subtitle and the vertical gravity that will be
-   * used when there is extra space in the expanded bounds beyond what is required for the subtitle
-   * itself.
-   *
-   * @attr ref
-   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedSubtitleGravity
-   */
-  public void setExpandedSubtitleGravity(int gravity) {
     collapsingSubtitleHelper.setExpandedTextGravity(gravity);
   }
 
   /**
-   * Returns the horizontal and vertical alignment for title when expanded.
+   * Returns the horizontal and vertical alignment for titles when expanded.
    *
    * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleGravity
    */
   public int getExpandedTitleGravity() {
     return collapsingTitleHelper.getExpandedTextGravity();
-  }
-
-  /**
-   * Returns the horizontal and vertical alignment for subtitle when expanded.
-   *
-   * @attr ref
-   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedSubtitleGravity
-   */
-  public int getExpandedSubtitleGravity() {
-    return collapsingSubtitleHelper.getExpandedTextGravity();
   }
 
   /**

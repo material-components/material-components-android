@@ -82,8 +82,6 @@
   <public name="liftOnScrollTargetViewId" type="attr"/>
   <public name="collapsedTitleGravity" type="attr"/>
   <public name="expandedTitleGravity" type="attr"/>
-  <public name="collapsedSubtitleGravity" type="attr"/>
-  <public name="expandedSubtitleGravity" type="attr"/>
   <public name="layout_collapseMode" type="attr"/>
   <public name="layout_collapseParallaxMultiplier" type="attr"/>
   <public name="layout_scrollFlags" type="attr"/>

@@ -34,7 +34,6 @@
         android:layout_height="?attr/collapsingToolbarLayoutMediumWithSubtitleSize"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         app:expandedTitleGravity="bottom|center_horizontal"
-        app:expandedSubtitleGravity="bottom|center_horizontal"
         app:title="@string/cat_topappbar_collapsing_demo_toolbar_medium_title"
         app:subtitle="@string/cat_topappbar_collapsing_demo_toolbar_medium_subtitle"
         app:toolbarId="@id/toolbar">
