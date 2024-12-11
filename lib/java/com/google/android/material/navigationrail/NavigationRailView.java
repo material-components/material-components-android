@@ -26,11 +26,13 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import android.animation.TimeInterpolator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.PathInterpolator;
@@ -711,6 +713,14 @@ public class NavigationRailView extends NavigationBarView {
   @RestrictTo(LIBRARY_GROUP)
   @Override
   public boolean shouldAddMenuView() {
+    return true;
+  }
+
+  @SuppressLint("ClickableViewAccessibility")
+  @Override
+  public boolean onTouchEvent(@NonNull MotionEvent event) {
+    super.onTouchEvent(event);
+    // Consume all events to avoid views under the BottomNavigationView from receiving touch events.
     return true;
   }
 }
