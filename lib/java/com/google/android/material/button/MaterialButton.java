@@ -74,6 +74,7 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.motion.MotionUtils;
 import androidx.resourceinspection.annotation.Attribute;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeUtils;
@@ -216,10 +217,6 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @AttrRes private static final int MATERIAL_SIZE_OVERLAY_ATTR = R.attr.materialSizeOverlay;
 
-  // Use Fast Bouncy spring as default.
-  private static final float DEFAULT_BUTTON_SPRING_DAMPING = 0.6f;
-  private static final float DEFAULT_BUTTON_SPRING_STIFFNESS = 800f;
-
   private static final int UNSET = -1;
 
   @NonNull private final MaterialButtonHelper materialButtonHelper;
@@ -317,9 +314,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   private SpringForce createSpringForce() {
-    return new SpringForce()
-        .setDampingRatio(DEFAULT_BUTTON_SPRING_DAMPING)
-        .setStiffness(DEFAULT_BUTTON_SPRING_STIFFNESS);
+    return MotionUtils.resolveThemeSpringForce(getContext(), R.attr.motionSpringFastSpacial);
   }
 
   @NonNull

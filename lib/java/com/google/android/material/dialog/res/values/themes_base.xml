@@ -257,6 +257,12 @@
     <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
 
     <!-- Motion attributes. -->
+    <item name="motionSpringFastSpacial">@style/Motion.Material3.Spring.Standard.Fast.Spacial</item>
+    <item name="motionSpringFastEffects">@style/Motion.Material3.Spring.Standard.Fast.Effects</item>
+    <item name="motionSpringDefaultSpacial">@style/Motion.Material3.Spring.Standard.Default.Spacial</item>
+    <item name="motionSpringDefaultEffects">@style/Motion.Material3.Spring.Standard.Default.Effects</item>
+    <item name="motionSpringSlowSpacial">@style/Motion.Material3.Spring.Standard.Slow.Spacial</item>
+    <item name="motionSpringSlowEffects">@style/Motion.Material3.Spring.Standard.Slow.Effects</item>
     <item name="motionEasingStandardInterpolator">@interpolator/m3_sys_motion_easing_standard</item>
     <item name="motionEasingStandardDecelerateInterpolator">@interpolator/m3_sys_motion_easing_standard_decelerate</item>
     <item name="motionEasingStandardAccelerateInterpolator">@interpolator/m3_sys_motion_easing_standard_accelerate</item>
@@ -544,6 +550,12 @@
     <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
 
     <!-- Motion attributes. -->
+    <item name="motionSpringFastSpacial">@style/Motion.Material3.Spring.Standard.Fast.Spacial</item>
+    <item name="motionSpringFastEffects">@style/Motion.Material3.Spring.Standard.Fast.Effects</item>
+    <item name="motionSpringDefaultSpacial">@style/Motion.Material3.Spring.Standard.Default.Spacial</item>
+    <item name="motionSpringDefaultEffects">@style/Motion.Material3.Spring.Standard.Default.Effects</item>
+    <item name="motionSpringSlowSpacial">@style/Motion.Material3.Spring.Standard.Slow.Spacial</item>
+    <item name="motionSpringSlowEffects">@style/Motion.Material3.Spring.Standard.Slow.Effects</item>
     <item name="motionEasingStandardInterpolator">@interpolator/m3_sys_motion_easing_standard</item>
     <item name="motionEasingStandardDecelerateInterpolator">@interpolator/m3_sys_motion_easing_standard_decelerate</item>
     <item name="motionEasingStandardAccelerateInterpolator">@interpolator/m3_sys_motion_easing_standard_accelerate</item>
