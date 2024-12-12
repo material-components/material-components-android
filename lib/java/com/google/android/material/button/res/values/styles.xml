@@ -134,7 +134,7 @@
   </style>
 
   <style name="Widget.Material3.MaterialSplitButton" parent="Widget.Material3.MaterialButtonGroup.Connected">
-    <item name="android:spacing">0dp</item>
+    <item name="android:spacing">2dp</item>
     <item name="android:paddingTop">10dp</item>
     <item name="android:paddingBottom">10dp</item>
     <item name="innerCornerSize">@xml/m3_split_button_inner_corner_size_state_list</item>
@@ -143,6 +143,7 @@
   </style>
 
   <style name="Widget.Material3.SplitButton.IconButton.Filled" parent="Widget.Material3.Button.IconButton.Filled">
+    <item name="android:insetLeft">0dp</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
     <item name="backgroundTint">@color/m3_button_background_color_selector</item>
@@ -152,6 +153,7 @@
   </style>
 
   <style name="Widget.Material3.SplitButton.IconButton.Filled.Tonal" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
+    <item name="android:insetLeft">0dp</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
     <item name="backgroundTint">@color/m3_button_background_color_selector</item>
