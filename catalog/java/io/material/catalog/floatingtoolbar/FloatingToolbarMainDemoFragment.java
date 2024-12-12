@@ -21,6 +21,8 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +52,9 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
 
     View view = layoutInflater.inflate(getLayoutResId(), viewGroup, /* attachToRoot= */ false);
     TextView bodyText = view.findViewById(R.id.body_text);
+
+    Toolbar toolbar = view.findViewById(R.id.toolbar);
+    ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
 
     // Initialize group of floating toolbars.
     List<FloatingToolbarLayout> floatingToolbars =
@@ -185,5 +190,10 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
   @LayoutRes
   protected int getLayoutResId() {
     return R.layout.cat_floating_toolbar_fragment;
+  }
+
+  @Override
+  public boolean shouldShowDefaultDemoActionBar() {
+    return false;
   }
 }
