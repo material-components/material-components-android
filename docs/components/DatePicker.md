@@ -426,16 +426,7 @@ date pickers and affect other components:
     ...
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
-    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
-</style>
-
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
-    <item name="cornerFamily">cut</item>
-</style>
-
-<style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
-    <item name="cornerSize">16dp</item>
+    <item name="shapeCornerFamily">cut</item>
 </style>
 ```
 
@@ -451,11 +442,10 @@ all date pickers but do not affect other components:
 <style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
-    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
+    <item name="shapeCornerFamily">cut</item>
     <!-- Customize text field of the text input mode. -->
     <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
-  </style>
+</style>
 ```
 
 Set the theme in code, which affects only this date picker:
