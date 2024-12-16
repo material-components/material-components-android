@@ -22,11 +22,6 @@
 
   <include layout="@layout/mtrl_calendar_days_of_week"/>
 
-  <View
-      android:layout_width="match_parent"
-      android:layout_height="1dp"
-      android:background="?attr/colorOnSurface"/>
-
   <include layout="@layout/mtrl_calendar_months"/>
 
 </LinearLayout>
