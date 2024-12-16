@@ -18,7 +18,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
+    android:paddingStart="@dimen/mtrl_calendar_content_padding"
+    android:paddingEnd="@dimen/mtrl_calendar_content_padding"
+    android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+    android:paddingRight="@dimen/mtrl_calendar_content_padding">
 
   <include layout="@layout/mtrl_calendar_days_of_week"/>
 
