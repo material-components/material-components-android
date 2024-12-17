@@ -325,10 +325,10 @@ bottom app bars and FABs and affects other components:
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnPrimary">@color/shrine_pink_900</item>
-    <item name="colorSecondary">@color/shrine_pink_50</item>
-    <item name="colorOnSecondary">@color/shrine_pink_900</item>
+    <item name="colorSurfaceContainer">@color/shrine_pink_100</item>
+    <item name="colorOnSurface">@color/shrine_pink_900</item>
+    <item name="colorPrimaryContainer">@color/shrine_pink_50</item>
+    <item name="colorOnPrimaryContainer">@color/shrine_pink_900</item>
     <item name="textAppearanceTitleMedium">@style/TextAppearance.App.Medium</item>
     <item name="shapeCornerFamily">cut</item>
 </style>
@@ -357,15 +357,15 @@ theme to all bottom app bars and FABs but does not affect other components:
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
 </style>
 
-<style name="ThemeOverlay.App.BottomAppBar" parent="">
-    <item name="colorPrimary">@color/shrine_pink_100</item>
-    <item name="colorOnPrimary">@color/shrine_pink_900</item>
+<style name="ThemeOverlay.App.BottomAppBar" parent="ThemeOverlay.Material3.BottomAppBar">
+    <item name="colorSurfaceContainer">@color/shrine_pink_100</item>
+    <item name="colorOnSurface">@color/shrine_pink_900</item>
     <item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
 </style>
 
-<style name="ThemeOverlay.App.FloatingActionButton" parent="">
-    <item name="colorContainer">@color/shrine_pink_50</item>
-    <item name="colorOnContainer">@color/shrine_pink_900</item>
+<style name="ThemeOverlay.App.FloatingActionButton" parent="ThemeOverlay.Material3.FloatingActionButton.Primary">
+    <item name="colorPrimaryContainer">@color/shrine_pink_50</item>
+    <item name="colorOnPrimaryContainer">@color/shrine_pink_900</item>
     <item name="shapeCornerFamily">cut</item>
 </style>
 ```
