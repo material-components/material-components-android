@@ -22,6 +22,8 @@ import static java.lang.Math.min;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ import java.util.List;
  * focal keylines at the beginning of the scroll container, center-aligned strategies at the center
  * of the scroll container, etc.
  */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public final class KeylineState {
 
   private final float itemSize;

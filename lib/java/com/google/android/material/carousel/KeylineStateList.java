@@ -20,6 +20,8 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.core.math.MathUtils;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.carousel.KeylineState.Keyline;
@@ -43,6 +45,7 @@ import java.util.Map;
  * handle reversing a KeylineState when being laid out right-to-left before constructing a
  * KeylineStateList.
  */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class KeylineStateList {
 
   private static final int NO_INDEX = -1;

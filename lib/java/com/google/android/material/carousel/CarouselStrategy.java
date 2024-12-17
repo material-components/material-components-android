@@ -20,6 +20,8 @@ import android.content.Context;
 import android.view.View;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 
 /**
  * A class responsible for creating a model used by a carousel to mask and offset views as they move
@@ -104,6 +106,7 @@ public abstract class CarouselStrategy {
    *     along the scrolling axis.
    */
   @NonNull
+  @RestrictTo(Scope.LIBRARY_GROUP)
   public abstract KeylineState onFirstChildMeasuredWithMargins(
       @NonNull Carousel carousel, @NonNull View child);
 
@@ -161,6 +164,7 @@ public abstract class CarouselStrategy {
    *
    * @return true if the keylines should be refreshed.
    */
+  @RestrictTo(Scope.LIBRARY_GROUP)
   public boolean shouldRefreshKeylineState(@NonNull Carousel carousel, int oldItemCount) {
     // TODO: b/301332183 - Update existing strategies with logic on when to refresh keyline
     // state based on item count.
