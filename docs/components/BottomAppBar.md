@@ -312,8 +312,6 @@ API and source code:
 *   `FloatingActionButton`
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
-*   `BottomAppBarCutCornersTopEdge`:
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/bottomappbar/BottomAppBarCutCornersTopEdge.java)
 
 The following example shows a bottom app bar with Material Theming.
 
@@ -332,17 +330,12 @@ bottom app bars and FABs and affects other components:
     <item name="colorSecondary">@color/shrine_pink_50</item>
     <item name="colorOnSecondary">@color/shrine_pink_900</item>
     <item name="textAppearanceTitleMedium">@style/TextAppearance.App.Medium</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="shapeCornerFamily">cut</item>
 </style>
 
 <style name="TextAppearance.App.Medium" parent="TextAppearance.Material3.TitleMedium">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
-</style>
-
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
-    <item name="cornerFamily">cut</item>
-    <item name="cornerSize">4dp</item>
 </style>
 ```
 
@@ -360,7 +353,7 @@ theme to all bottom app bars and FABs but does not affect other components:
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomAppBar</item>
 </style>
 
-<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton">
+<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
 </style>
 
@@ -371,9 +364,9 @@ theme to all bottom app bars and FABs but does not affect other components:
 </style>
 
 <style name="ThemeOverlay.App.FloatingActionButton" parent="">
-    <item name="colorSecondary">@color/shrine_pink_50</item>
-    <item name="colorOnSecondary">@color/shrine_pink_900</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="colorContainer">@color/shrine_pink_50</item>
+    <item name="colorOnContainer">@color/shrine_pink_900</item>
+    <item name="shapeCornerFamily">cut</item>
 </style>
 ```
 
@@ -390,18 +383,3 @@ Use the styles in the layout, which affects only this bottom app bar and FAB:
     style="@style/Widget.App.FloatingActionButton"
     />
 ```
-
-In code:
-
-```kt
-val topEdge = BottomAppBarCutCornersTopEdge(
-    bottomAppBar.fabCradleMargin,
-    bottomAppBar.fabCradleRoundedCornerRadius,
-    bottomAppBar.cradleVerticalOffset
-)
-val background = bottomAppBar.background as MaterialShapeDrawable
-background.shapeAppearanceModel = background.shapeAppearanceModel.toBuilder().setTopEdge(topEdge).build()
-```
-
-**Note:** Using `BottomAppBarCutCornersTopEdge` is not necessary with rounded
-shapeAppearance corners.
