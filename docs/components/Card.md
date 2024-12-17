@@ -448,9 +448,7 @@ to all cards. This will affect other components:
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="colorSecondary">@color/shrine_pink_100</item>
-    <item name="colorSurface">@color/shrine_pink_light</item>
-    <item name="colorOnSurfaceVariant">@color/shrine_pink_900</item>
+    <item name="colorSurfaceContainerLow">@color/shrine_pink_100</item>
     <item name="shapeCornerFamily">cut</item>
 </style>
 ```
@@ -461,7 +459,7 @@ theme to all cards but does not affect other components:
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="materialCardViewStyle">@style/Widget.App.CardView</item>
+    <item name="materialCardViewElevatedStyle">@style/Widget.App.CardView</item>
 </style>
 
 <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
@@ -470,9 +468,7 @@ theme to all cards but does not affect other components:
 </style>
 
 <style name="ThemeOverlay.App.Card" parent="">
-    <item name="colorSecondary">@color/shrine_pink_100</item>
-    <item name="colorSurface">@color/shrine_pink_light</item>
-    <item name="colorOnSurfaceVariant">@color/shrine_pink_900</item>
+    <item name="colorSurfaceContainerLow">@color/shrine_pink_100</item>
 </style>
 
 <style name="ShapeAppearance.App.Corner.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
