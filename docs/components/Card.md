@@ -449,7 +449,12 @@ to all cards. This will affect other components:
 <style name="Theme.App" parent="Theme.Material3.*">
     ...
     <item name="colorSurfaceContainerLow">@color/shrine_pink_100</item>
-    <item name="shapeCornerFamily">cut</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.App.Corner.Medium</item>
+</style>
+
+<style name="ShapeAppearance.App.Corner.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">8dp</item>
 </style>
 ```
 
@@ -469,11 +474,6 @@ theme to all cards but does not affect other components:
 
 <style name="ThemeOverlay.App.Card" parent="">
     <item name="colorSurfaceContainerLow">@color/shrine_pink_100</item>
-</style>
-
-<style name="ShapeAppearance.App.Corner.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
-    <item name="cornerFamily">cut</item>
-    <item name="cornerSize">8dp</item>
 </style>
 ```
 
