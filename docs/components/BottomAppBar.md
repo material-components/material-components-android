@@ -330,12 +330,17 @@ bottom app bars and FABs and affects other components:
     <item name="colorPrimaryContainer">@color/shrine_pink_50</item>
     <item name="colorOnPrimaryContainer">@color/shrine_pink_900</item>
     <item name="textAppearanceTitleMedium">@style/TextAppearance.App.Medium</item>
-    <item name="shapeCornerFamily">cut</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.App.Corner.Large</item>
 </style>
 
 <style name="TextAppearance.App.Medium" parent="TextAppearance.Material3.TitleMedium">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
+</style>
+
+<style name="ShapeAppearance.App.Corner.Large" parent="ShapeAppearance.Material3.Corner.Large">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">50%</item>
 </style>
 ```
 
@@ -366,7 +371,7 @@ theme to all bottom app bars and FABs but does not affect other components:
 <style name="ThemeOverlay.App.FloatingActionButton" parent="ThemeOverlay.Material3.FloatingActionButton.Primary">
     <item name="colorPrimaryContainer">@color/shrine_pink_50</item>
     <item name="colorOnPrimaryContainer">@color/shrine_pink_900</item>
-    <item name="shapeCornerFamily">cut</item>
+    <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.App.Corner.Large</item>
 </style>
 ```
 
