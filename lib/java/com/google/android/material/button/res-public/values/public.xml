@@ -76,4 +76,5 @@
   <public name="ThemeOverlay.Material3.Button.TextButton" type="style"/>
   <public name="ThemeOverlay.Material3.Button.TextButton.Snackbar" type="style"/>
   <public name="ThemeOverlay.Material3.Button.TonalButton" type="style"/>
+  <public name="m3_split_button_chevron_avd" type="drawable"/>
 </resources>
