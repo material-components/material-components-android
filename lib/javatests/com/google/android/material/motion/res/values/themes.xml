@@ -17,9 +17,9 @@
 <resources>
   <!-- A theme with an incorrectly configured custom spring. -->
   <style name="Theme.Material3.DayNight.PartialSpring" parent="Theme.Material3.DayNight">
-    <item name="motionSpringFastSpacial">@style/Motion.MyApp.Spring.Custom.Fast.Spacial</item>
+    <item name="motionSpringFastSpatial">@style/Motion.MyApp.Spring.Custom.Fast.Spatial</item>
   </style>
-  <style name="Motion.MyApp.Spring.Custom.Fast.Spacial" parent="">
+  <style name="Motion.MyApp.Spring.Custom.Fast.Spatial" parent="">
     <item name="stiffness">1400</item>
   </style>
 

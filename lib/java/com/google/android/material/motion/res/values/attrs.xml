@@ -27,19 +27,19 @@
   </declare-styleable>
 
   <!-- Spring for small components animations such as switches and buttons. -->
-  <attr name="motionSpringFastSpacial" format="reference" />
+  <attr name="motionSpringFastSpatial" format="reference" />
   <!-- Spring for color or opacity change on small components such as a
        switch's thumb changing color. -->
   <attr name="motionSpringFastEffects" format="reference" />
   <!-- Spring for animations that partially cover the screen such as a bottom
        sheet sliding or a navigation rail expanding. -->
-  <attr name="motionSpringDefaultSpacial" format="reference" />
+  <attr name="motionSpringDefaultSpatial" format="reference" />
   <!-- Spring for color or opacity changes of animations that partially cover
        the screen such as the opacity of the navigation rail content as the
        rail expands. -->
   <attr name="motionSpringDefaultEffects" format="reference" />
   <!-- Spring for full screen movements. -->
-  <attr name="motionSpringSlowSpacial" format="reference" />
+  <attr name="motionSpringSlowSpatial" format="reference" />
   <!-- Spring for full screen color or opacity changes such as content
        refreshes. -->
   <attr name="motionSpringSlowEffects" format="reference" />

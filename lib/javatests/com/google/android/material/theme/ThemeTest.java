@@ -365,11 +365,11 @@ public class ThemeTest {
 
   private static final ImmutableList<Integer> M3_ACTIVE_MOTION_ATTRIBUTES =
       ImmutableList.of(
-          R.attr.motionSpringFastSpacial,
+          R.attr.motionSpringFastSpatial,
           R.attr.motionSpringFastEffects,
-          R.attr.motionSpringDefaultSpacial,
+          R.attr.motionSpringDefaultSpatial,
           R.attr.motionSpringDefaultEffects,
-          R.attr.motionSpringSlowSpacial,
+          R.attr.motionSpringSlowSpatial,
           R.attr.motionSpringSlowEffects,
           R.attr.motionEasingStandardInterpolator,
           R.attr.motionEasingStandardAccelerateInterpolator,

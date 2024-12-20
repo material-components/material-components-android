@@ -15,15 +15,15 @@
   ~ limitations under the License.
 -->
 <resources>
-  <style name="Motion.Material3.Spring.Standard.Fast.Spacial" parent="">
+  <style name="Motion.Material3.Spring.Standard.Fast.Spatial" parent="">
     <item name="stiffness">@dimen/m3_sys_motion_standard_spring_fast_spatial_stiffness</item>
     <item name="damping">@dimen/m3_sys_motion_standard_spring_fast_spatial_damping</item>
   </style>
-  <style name="Motion.Material3.Spring.Standard.Default.Spacial" parent="">
+  <style name="Motion.Material3.Spring.Standard.Default.Spatial" parent="">
     <item name="stiffness">@dimen/m3_sys_motion_standard_spring_default_spatial_stiffness</item>
     <item name="damping">@dimen/m3_sys_motion_standard_spring_default_spatial_damping</item>
   </style>
-  <style name="Motion.Material3.Spring.Standard.Slow.Spacial" parent="">
+  <style name="Motion.Material3.Spring.Standard.Slow.Spatial" parent="">
     <item name="stiffness">@dimen/m3_sys_motion_standard_spring_slow_spatial_stiffness</item>
     <item name="damping">@dimen/m3_sys_motion_standard_spring_slow_spatial_damping</item>
   </style>

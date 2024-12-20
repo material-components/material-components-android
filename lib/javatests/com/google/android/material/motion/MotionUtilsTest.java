@@ -64,7 +64,7 @@ public class MotionUtilsTest {
     float expectedDampingRatio = ResourcesCompat.getFloat(
         context.getResources(), R.dimen.m3_sys_motion_standard_spring_fast_spatial_damping);
     SpringForce spring =
-        MotionUtils.resolveThemeSpringForce(context, R.attr.motionSpringFastSpacial);
+        MotionUtils.resolveThemeSpringForce(context, R.attr.motionSpringFastSpatial);
 
     assertThat(spring.getStiffness()).isEqualTo(expectedStiffness);
     assertThat(spring.getDampingRatio()).isEqualTo(expectedDampingRatio);
@@ -77,7 +77,7 @@ public class MotionUtilsTest {
 
     IllegalArgumentException thrown = assertThrows(
         IllegalArgumentException.class,
-        () -> MotionUtils.resolveThemeSpringForce(context, R.attr.motionSpringFastSpacial)
+        () -> MotionUtils.resolveThemeSpringForce(context, R.attr.motionSpringFastSpatial)
     );
     assertThat(thrown).hasMessageThat().contains("must have a damping");
   }
