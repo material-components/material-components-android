@@ -54,6 +54,7 @@ import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.ViewUtils.RelativePadding;
+import com.google.android.material.navigation.NavigationBarDividerView;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.resources.MaterialResources;
@@ -135,6 +136,7 @@ public class NavigationRailView extends NavigationBarView {
   private final int minExpandedWidth;
   private final int maxExpandedWidth;
   private final boolean scrollingEnabled;
+  private boolean submenuDividersEnabled;
   @Nullable private View headerView;
   @Nullable private Boolean paddingTopSystemWindowInsets = null;
   @Nullable private Boolean paddingBottomSystemWindowInsets = null;
@@ -192,6 +194,7 @@ public class NavigationRailView extends NavigationBarView {
             getResources().getDimensionPixelSize(R.dimen.mtrl_navigation_rail_margin));
     scrollingEnabled =
         attributes.getBoolean(R.styleable.NavigationRailView_scrollingEnabled, false);
+    setSubmenuDividersEnabled(attributes.getBoolean(R.styleable.NavigationRailView_submenuDividersEnabled, false));
 
     addContentContainer();
 
@@ -449,7 +452,7 @@ public class NavigationRailView extends NavigationBarView {
     int maxChildWidth = 0;
     for (int i = 0; i < childCount; i++) {
       View child = getNavigationRailMenuView().getChildAt(i);
-      if (child.getVisibility() != GONE) {
+      if (child.getVisibility() != GONE && !(child instanceof NavigationBarDividerView)) {
         maxChildWidth = max(maxChildWidth, child.getMeasuredWidth());
       }
     }
@@ -602,6 +605,24 @@ public class NavigationRailView extends NavigationBarView {
    */
   public int getExpandedItemMinimumHeight() {
     return expandedItemMinHeight;
+  }
+
+  /**
+   * Set whether or not to enable the dividers which go between each subgroup in the menu.
+   */
+  public void setSubmenuDividersEnabled(boolean submenuDividersEnabled) {
+    if (this.submenuDividersEnabled == submenuDividersEnabled) {
+      return;
+    }
+    this.submenuDividersEnabled = submenuDividersEnabled;
+    getNavigationRailMenuView().setSubmenuDividersEnabled(submenuDividersEnabled);
+  }
+
+  /**
+   * Get whether or not to enable the dividers which go between each subgroup in the menu.
+   */
+  public boolean getSubmenuDividersEnabled() {
+    return submenuDividersEnabled;
   }
 
   /**

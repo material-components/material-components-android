@@ -14,15 +14,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/navigation_menu_subheader_label"
+<com.google.android.material.divider.MaterialDivider xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  android:paddingHorizontal="@dimen/m3_navigation_subheader_horizontal_padding"
-  android:paddingVertical="@dimen/m3_navigation_subheader_vertical_padding"
-  android:layout_marginStart="@dimen/m3_navigation_content_horizontal_margin"
-  android:layout_marginTop="@dimen/m3_navigation_subheader_top_margin"
-  android:gravity="center_vertical|start"
-  android:ellipsize="end"
-  android:filterTouchesWhenObscured="true"
-  android:maxLines="1"/>
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  app:dividerInsetStart="@dimen/m3_navigation_content_horizontal_margin"
+  app:dividerInsetEnd="@dimen/m3_navigation_content_horizontal_margin"
+  android:layout_marginTop="@dimen/m3_navigation_divider_top_margin"
+  android:layout_marginBottom="@dimen/m3_navigation_divider_bottom_margin"
+  android:filterTouchesWhenObscured="true" />

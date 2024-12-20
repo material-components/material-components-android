@@ -26,6 +26,7 @@
     app:labelVisibilityMode="labeled"
     android:fitsSystemWindows="false"
     app:scrollingEnabled="true"
+    app:submenuDividersEnabled="true"
     app:layout_constraintStart_toStartOf="parent"
     app:menu="@menu/navigation_rail_submenus_menu"/>
   <FrameLayout
