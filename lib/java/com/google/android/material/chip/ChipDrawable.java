@@ -1396,6 +1396,14 @@ public class ChipDrawable extends MaterialShapeDrawable
     }
   }
 
+  boolean refreshCloseIconFocus(boolean closeIconFocused) {
+    boolean changed = false;
+    if (closeIcon != null) {
+      changed = setCloseIconState(closeIconFocused ? new int[] {android.R.attr.state_pressed, android.R.attr.state_enabled} : DEFAULT_STATE);
+    }
+    return changed;
+  }
+
   /** Delegate interface to be implemented by Views that own a ChipDrawable. */
   public interface Delegate {
 

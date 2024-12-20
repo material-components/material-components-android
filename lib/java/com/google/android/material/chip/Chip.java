@@ -985,6 +985,8 @@ public class Chip extends AppCompatCheckBox
     protected void onVirtualViewKeyboardFocusChanged(int virtualViewId, boolean hasFocus) {
       if (virtualViewId == CLOSE_ICON_VIRTUAL_ID) {
         closeIconFocused = hasFocus;
+      }
+      if (chipDrawable.refreshCloseIconFocus(closeIconFocused)) {
         refreshDrawableState();
       }
     }
