@@ -9,11 +9,15 @@ path: /theming/motion/
 
 # Motion
 
-Material motion is a system to help create stylized and consistent animations across an app. Provided in the library are semantic easing and duration theme attributes, components that use themed motion for their built-in animations, and a set of transitions for navigational events or custom animations.
+Material motion is a system to help create stylized and consistent animations
+across an app. Provided in the library are semantic easing and duration theme
+attributes, semantic spring theme attributes, components that use themed motion
+for their built-in animations, and a set of transitions for
+navigational events or custom animations.
 
-Before you can use the motion library, you need to add a dependency on the
-Material Components for Android library (version `1.2.0` or later). For more
-information, go to the
+The easing and duration motion system is available in version `1.6.0` or later.
+The physics motion system is available in version `1.13.0` or later. For more
+information, see the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
@@ -22,11 +26,96 @@ page.
 
 ## Theming
 
-The Material motion system is backed by a limited number of easing and duration slots. These are the building blocks for creating any Material-styled animation. These slots are implemented as theme attributes, similar to color or shape attributes, and are used by all components in the library to create a unified motion feel.
+The Material motion system is backed by a set of easing and duration slots and
+a set of spring slots. These are the building blocks for creating any
+Material-styled animation. These slots are implemented as theme attributes,
+similar to color or shape attributes. They are used by components in the
+library to create a unified motion feel and can be used by custom animations
+to make motion feel cohesive across an entire app.
 
-### Easing
+### Springs
 
-Easing theme attributes define a set of curves that are used as [Interpolators](https://developer.android.com/reference/androidx/core/animation/Interpolator).
+The spring (or physics) motion system is a set of six opinionated spring
+attributes intended to be used with the [Dynamic Animation AndroidX library](https://developer.android.com/develop/ui/views/animations/spring-animation#add-support-library).
+A spring attribute is configured as a style made up of a damping and stiffness
+value (see [MaterialSpring styleable](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/motion/res/values/attrs.xml)
+for available properties and [spring styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/motion/res/values/styles.xml)
+for examples). The damping ratio describes how rapidly spring oscillations
+decay. Stiffness defines the strength of the spring. Learn more about how
+spring animations work [here](https://developer.android.com/develop/ui/views/animations/spring-animation).
+
+The spring system provides springs in three speeds - fast, slow, and default.
+A speed is chosen based on the size of the component being animated or the
+distance covered. Small component animations like switches should use the fast
+spring, full screen animations or transitions should use the slow spring, and
+everything in between should use the default spring.
+
+Additionally, for each speed there are two types of springs - spatial and
+effects. Spatial springs are used for animations that move something on
+screen - like the x & y position of a View. Effects springs are used to animate
+properties such as color or opacity where the property's value should not be
+overshot (e.g. a background's alpha shouldn't bounce or oscillate above 100%).
+
+This makes for a total of six spring attributes:
+
+Attribute        | Default value                | Description
+-------------- | ------------------------ | ---------------------------------
+**?attr/motionSpringFastSpatial** | `damping: 0.9, stiffness: 1400`  | Spring for small components like switches and buttons.
+**?attr/motionSpringFastEffects** | `damping: 1, stiffness: 3800`  | Spring for small component effects like color and opacity.
+**?attr/motionSpringSlowSpatial** | `damping: 0.9, stiffness: 300` | Spring for full screen animations.
+**?attr/motionSpringSlowEffects** | `damping: 1, stiffness: 800` | Spring for full screen animation effects like color and opacity.
+**?attr/motionSpringDefaultSpatial** | `damping: 0.9, stiffness: 700` | Spring for animations that partially cover the screen like a bottom sheet or nav drawer.
+**?attr/motionSpringDefaultEffects** | `damping: 1, stiffness: 1600` | Spring for animation effects that partially cover the screen.
+
+When building spring animations, a speed should be chosen based on the
+animation's size or distance covered. Then, a spacial or effects type should be
+chosen depending on the property being animated. For example, if animating a
+button's shape and color when pressed, use two springs: a
+`motionSpringFastSpatial` spring to animate the button's shape/size and a
+`motionSpringFastEffects` spring to animate the button's color.
+
+Spring attributes can be customized (or "themed") by overriding their value to
+your own [MaterialSpring](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/motion/res/values/attrs.xml)
+style.
+
+#### Custom animations using the spring motion system
+
+To create a spring animation, you'll need to declare a dependency on the
+Dynamic Animation AndroidX library. Follow instructions for including the
+library and creating a spring animation
+[here](https://developer.android.com/develop/ui/views/animations/spring-animation#add-support-library).
+
+With your configured `SpringAnimation`, use
+[MotionUtils.resolveThemeSpring()](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/motion/MotionUtils.java)
+to resolve a spring attribute from your theme into a SpringForce object. Then,
+use the resolved object to configure your SpringAnimation's SpringForce.
+
+```kt
+val defaultSpatialSpring = MotionUtils.resolveThemeSpringForce(
+  /* context= */ this,
+  /* attrResId= */ com.google.android.material.R.attr.motionSpringDefaultSpacial
+)
+SpringAnimation(box, DynamicAnimation.TRANSLATION_Y, 400f).apply {
+  spring.apply {
+    dampingRatio = defaultSpacialSpring.dampingRatio
+    stiffness = defaultSpacialSpring.stiffness
+  }
+  start()
+}
+```
+
+### Curves (easing & duration)
+
+Easing (aka interpolator) and duration theme attributes make up the curve
+motion system. Easing is a curve which determines how long it takes an object
+to start and stop moving. Duration determines the overall time of the animation.
+These are paired together to define how motion moves and feels. Learn about
+suggested pairings by reading through Material's
+[Easing and duration guidance](https://m3.material.io/styles/motion/easing-and-duration/applying-easing-and-duration).
+
+Material's curve system includes seven easing attributes
+([interpolators](https://developer.android.com/reference/androidx/core/animation/Interpolator))
+:
 
 Attribute        | Default value                | Description
 -------------- | ------------------------ | ---------------------------------
@@ -38,7 +127,10 @@ Attribute        | Default value                | Description
 **?attr/motionEasingEmphasizedAccelerateInterpolator** | `cubic-bezier: 0.3, 0, 0.8, 0.15` | Easing used for common, M3-styled animations that exit the screen.
 **?attr/motionEasingLinearInterpolator** | `cubic-bezier: 0, 0, 1, 1` | Easing for simple, non-stylized motion.
 
-To customize an easing value, override any of the attributes in your app’s theme to your own interpolator resource.
+By default, these attribute values are set to interpolators that feel cohesive
+when used together in an app. However, they can be overridden (or "themed") to
+reflect your app's unique style by setting their values to your own interpolator
+resource from your app's theme.
 
 ```xml
 <style name="Theme.MyTheme" parent="Theme.Material3.DayNight.NoActionBar">
@@ -49,10 +141,8 @@ To customize an easing value, override any of the attributes in your app’s the
 
 For more information on easing, see [Applying easing and duration](https://m3.material.io/styles/motion/easing-and-duration/applying-easing-and-duration#569498ab-3e78-4e1a-bf59-c3fc7b1a187b).
 
-### Duration
-
-Duration attributes are a set of durations in milliseconds that can be used for
-animations.
+Material's curve system also includes 16 duration attributes to be paired
+with an easing. The duration attributes include:
 
 Attribute        | Default value
 -------------- | ------------------------
@@ -89,22 +179,14 @@ millisecond integer value.
 
 For more information on duration, see [Applying easing and duration](https://m3.material.io/styles/motion/easing-and-duration/applying-easing-and-duration#569498ab-3e78-4e1a-bf59-c3fc7b1a187b).
 
-### Path
+#### Custom animations using the curve motion system
 
-Path attributes are values which control the behavior of animating elements.
+When implementing your own animations, use an easing and duration theme
+attribute so your animations tie in with animations used by Material components,
+bringing motion consistency across your app.
 
-Attribute        | Default value                | Description
--------------- | ------------------------ | ---------------------------------
-**?attr/motionPath** | `linear`   | An enum that controls the path along which animating elements move.<br/>`linear`: Elements move along a straight path from their current position to their new position. A linear path corresponds to a `null` `PathMotion`.<br/>`arc`: Elements move along a curved/arced path. An arc path corresponds to a `MaterialArcMotion` `PathMotion`.
-
-For more information of motionPath, see
-[material.io/design/motion/customization.html#motion-paths](https://material.io/design/motion/customization.html#motion-paths)
-
-### Custom animations using the motion system
-
-When implementing your own animations, use an easing and duration theme attribute so your animations tie in with animations used by Material components, bringing motion consistency across your app.
-
-When creating animations in xml, set your animation's `interpolator` and `duration` properties to a Material motion theme attribute.
+When creating animations in xml, set your animation's `interpolator` and
+`duration` properties to a Material motion theme attribute.
 
 ```xml
 <!-- res/anim/slide_in.xml –>
@@ -120,7 +202,8 @@ When creating animations in xml, set your animation's `interpolator` and `durati
 <set/>
 ```
 
-If creating animations in Java or Kotlin, Material provides a `MotionUtils` class to help facilitate loading `interpolator` and `duration` theme attributes.
+If creating animations in Java or Kotlin, Material provides a `MotionUtils`
+class to help facilitate loading `interpolator` and `duration` theme attributes.
 
 ```kt
 val interpolator = MotionUtils.resolveThemeInterpolator(
@@ -138,7 +221,9 @@ val duration = MotionUtils.resolveThemeDuration(
 
 ## Transitions
 
-Material provides a set of transition patterns that help users understand and navigate an app. For more information on the patterns and how to choose between them, check out the
+Material provides a set of transition patterns that help users understand and
+navigate an app. For more information on the patterns and how to choose between 
+them, check out the
 [Material motion transition patterns](https://m3.material.io/styles/motion/transitions/transition-patterns).
 
 Material Components for Android provides support for all four motion patterns
@@ -260,7 +345,8 @@ override fun onCreate(savedInstanceState: Bundle?)  {
 }
 ```
 
-Add or replace Fragment B, adding the shared element from your start scene to your Fragment transaction.
+Add or replace Fragment B, adding the shared element from your start scene to
+your Fragment transaction.
 
 ```kt
 childFragmentManager
