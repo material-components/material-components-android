@@ -24,17 +24,17 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 
 /**
- * A fragment that displays a medium Collapsing Toolbar Top App Bar with a filled action button demo
- * for the Catalog app.
+ * A fragment that displays a medium Collapsing Toolbar Top App Bar with a toggleable action button
+ * demo for the Catalog app.
  */
-public class TopAppBarCollapsingFilledActionDemoFragment extends DemoFragment {
+public class TopAppBarCollapsingToggleableActionDemoFragment extends DemoFragment {
 
   @Override
   @Nullable
@@ -44,15 +44,20 @@ public class TopAppBarCollapsingFilledActionDemoFragment extends DemoFragment {
       @Nullable Bundle bundle) {
     View view =
         layoutInflater.inflate(
-            R.layout.cat_topappbar_collapsing_filled_action_fragment, viewGroup, false);
+            R.layout.cat_topappbar_collapsing_toggleable_action_fragment, viewGroup, false);
 
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.setSupportActionBar(toolbar);
 
-    Button actionButton = view.findViewById(R.id.action_button);
+    MaterialButton actionButton = view.findViewById(R.id.action_button);
     actionButton.setOnClickListener(
-        v -> Snackbar.make(v, "Action button is clicked.", Snackbar.LENGTH_SHORT).show());
+        v ->
+            Snackbar.make(
+                    v,
+                    (actionButton.isChecked() ? "Marked as favorite." : "Marked as not favorite"),
+                    Snackbar.LENGTH_SHORT)
+                .show());
 
     return view;
   }
