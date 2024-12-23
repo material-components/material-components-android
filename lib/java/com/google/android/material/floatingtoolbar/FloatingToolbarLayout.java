@@ -47,7 +47,7 @@ import com.google.android.material.shape.ShapeAppearanceModel;
  * {@link android.view.ViewGroup}.
  */
 public class FloatingToolbarLayout extends FrameLayout implements AttachedBehavior {
-  private static final int DEF_STYLE_RES = R.style.Widget_Material3_FloatingToolbar_Horizontal;
+  private static final int DEF_STYLE_RES = R.style.Widget_Material3_FloatingToolbar;
   @Nullable private Behavior behavior;
 
   public FloatingToolbarLayout(@NonNull Context context) {

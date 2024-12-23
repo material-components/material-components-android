@@ -15,8 +15,11 @@
   ~ limitations under the License.
 -->
 <resources>
-  <!-- Style to use for FloatingToolbars in this theme. -->
+  <!-- Style to use for standard FloatingToolbars in this theme. -->
   <attr name="floatingToolbarStyle" format="reference"/>
+
+  <!-- Style to use for vibrant FloatingToolbars in this theme. -->
+  <attr name="floatingToolbarVibrantStyle" format="reference"/>
 
   <declare-styleable name="FloatingToolbar">
     <!-- Color of the floating toolbar container. -->

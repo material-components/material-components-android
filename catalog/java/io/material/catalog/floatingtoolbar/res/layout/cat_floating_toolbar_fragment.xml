@@ -31,102 +31,118 @@
       app:title="@string/cat_floating_toolbar_title"/>
   </com.google.android.material.appbar.AppBarLayout>
 
-  <androidx.core.widget.NestedScrollView
+<androidx.core.widget.NestedScrollView
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+  <LinearLayout
+    android:id="@+id/body_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    <LinearLayout
-      android:id="@+id/body_container"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center"
-      android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
 
-      <TextView
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="4dp"
+      android:text="@string/cat_floating_toolbar_orientation"
+      android:textAppearance="?attr/textAppearanceBody1" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      app:selectionRequired="true"
+      app:singleSelection="true">
+
+      <Button
+        android:id="@+id/bottom_button"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:text="@string/cat_floating_toolbar_orientation"
-        android:textAppearance="?attr/textAppearanceBody1"/>
+        android:text="@string/cat_floating_toolbar_orientation_bottom" />
 
-      <com.google.android.material.button.MaterialButtonToggleGroup
+      <Button
+        android:id="@+id/left_button"
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:selectionRequired="true"
-        app:singleSelection="true">
-        <Button
-          android:id="@+id/bottom_button"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_floating_toolbar_orientation_bottom" />
-        <Button
-          android:id="@+id/left_button"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_floating_toolbar_orientation_left" />
-        <Button
-          android:id="@+id/right_button"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_floating_toolbar_orientation_right" />
-      </com.google.android.material.button.MaterialButtonToggleGroup>
+        android:text="@string/cat_floating_toolbar_orientation_left" />
 
-      <TextView
-        android:id="@+id/body_text"
-        android:layout_width="match_parent"
+      <Button
+        android:id="@+id/right_button"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:lineSpacingMultiplier="1.2"
-        android:text="@string/cat_floating_toolbar_filler_text" />
+        android:text="@string/cat_floating_toolbar_orientation_right" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
-    </LinearLayout>
-  </androidx.core.widget.NestedScrollView>
+    <TextView
+      android:id="@+id/body_text"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:lineSpacingMultiplier="1.2"
+      android:text="@string/cat_floating_toolbar_filler_text" />
 
-  <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
-    android:id="@+id/floating_toolbar_left"
-    style="@style/Widget.Material3.FloatingToolbar.Vertical.Vibrant"
-    android:layout_width="wrap_content"
+  </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+
+<com.google.android.material.floatingtoolbar.FloatingToolbarLayout
+  android:id="@+id/floating_toolbar_left"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_gravity="left|center"
+  android:layout_margin="16dp"
+  android:visibility="gone">
+
+  <LinearLayout
+    android:id="@+id/floating_toolbar_child_left"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_gravity="left|center"
-    android:visibility="gone">
-    <LinearLayout
-      android:id="@+id/floating_toolbar_child_left"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center">
-      <include layout="@layout/cat_floating_toolbar_content" />
-    </LinearLayout>
-  </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+    android:layout_gravity="center"
+    android:orientation="vertical">
 
-  <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
-    android:id="@+id/floating_toolbar_right"
-    style="@style/Widget.Material3.FloatingToolbar.Vertical"
-    android:layout_width="wrap_content"
+    <include layout="@layout/cat_floating_toolbar_content" />
+  </LinearLayout>
+</com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+
+<com.google.android.material.floatingtoolbar.FloatingToolbarLayout
+  android:id="@+id/floating_toolbar_right"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_gravity="right|center"
+  android:layout_margin="16dp"
+  android:visibility="gone">
+
+  <LinearLayout
+    android:id="@+id/floating_toolbar_child_right"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:visibility="gone">
-    <LinearLayout
-      android:id="@+id/floating_toolbar_child_right"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center">
-      <include layout="@layout/cat_floating_toolbar_content" />
-    </LinearLayout>
-  </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+    android:layout_gravity="center"
+    android:orientation="vertical">
 
-  <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
-    android:id="@+id/floating_toolbar_bottom"
-    style="@style/Widget.Material3.FloatingToolbar.Horizontal.Vibrant"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <LinearLayout
-      android:id="@+id/floating_toolbar_child_bottom"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center">
-      <include layout="@layout/cat_floating_toolbar_content" />
-    </LinearLayout>
-  </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+    <include layout="@layout/cat_floating_toolbar_content" />
+  </LinearLayout>
+</com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+
+<com.google.android.material.floatingtoolbar.FloatingToolbarLayout
+  android:id="@+id/floating_toolbar_bottom"
+  style="?attr/floatingToolbarVibrantStyle"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content"
+  android:layout_gravity="bottom|center"
+  android:layout_margin="16dp">
+
+  <LinearLayout
+    android:id="@+id/floating_toolbar_child_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="horizontal">
+
+    <include layout="@layout/cat_floating_toolbar_content" />
+  </LinearLayout>
+</com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -27,7 +27,6 @@
   <dimen name="m3_comp_toolbar_floating_container_height">64dp</dimen>
   <dimen name="m3_comp_toolbar_floating_container_leading_space">8dp</dimen>
   <dimen name="m3_comp_toolbar_floating_container_trailing_space">8dp</dimen>
-  <dimen name="m3_comp_toolbar_floating_container_external_padding">16dp</dimen>
   <!-- Group: Shape -->
   <style name="ShapeAppearance.M3.Comp.Toolbar.Floating.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
 

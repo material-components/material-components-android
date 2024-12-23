@@ -64,9 +64,10 @@ Here's what a typical layout would look like:
 
   <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
     android:id="@+id/floating_toolbar"
-    style="@style/Widget.Material3.FloatingToolbar.Horizontal"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center"
+    android:layout_margin="16dp">
     
     <!-- floating toolbar sample content -->
     <LinearLayout
@@ -175,14 +176,13 @@ The following is an anatomy diagram for the navigation rail:
 
 #### Styles
 
-**Element**       | **Style**
------------------ | -------------------------------------
-**Default style** | `Widget.Material3.FloatingToolbar.Horizontal`
-**Vertical style** | `Widget.Material3.FloatingToolbar.Vertical`
-**Horizontal Vibrant style** | `Widget.Material3.FloatingToolbar.Horizontal.Vibrant`
-**Vertical Vibrant style** | `Widget.Material3.FloatingToolbar.Vertical.Vibrant`
+**Element**        | **Style**
+------------------ | ------------------------------------------
+**Standard style** | `Widget.Material3.FloatingToolbar`
+**Vibrant style**  | `Widget.Material3.FloatingToolbar.Vibrant`
 
-Default style theme attribute: `?attr/floatingToolbarStyle`
+Standard style theme attribute: `?attr/floatingToolbarStyle`
+Vibrant style theme attribute: `?attr/floatingToolbarVibrantStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingtoolbar/res/values/styles.xml) and
@@ -231,10 +231,10 @@ all floating toolbars but do not affect other components:
 ```xml
 <style name="Theme.App" parent="Theme.Material3.*">
     ...
-    <item name="floatingToolbarStyle">@style/Widget.App.FloatingToolbar.Horizontal</item>
+    <item name="floatingToolbarStyle">@style/Widget.App.FloatingToolbar</item>
 </style>
 
-<style name="Widget.App.FloatingToolbar.Horizontal" parent="Widget.Material3.FloatingToolbar.Horizontal">
+<style name="Widget.App.FloatingToolbar" parent="Widget.Material3.FloatingToolbar">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingToolbar</item>
 </style>
 

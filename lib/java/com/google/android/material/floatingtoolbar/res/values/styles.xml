@@ -15,52 +15,26 @@
   ~ limitations under the License.
 -->
 <resources>
-  <!-- Base style for Floating Toolbar. Do not use; use one of the horizontal or vertical variants,
-     instead. -->
+  <!-- Base style for Floating Toolbar. -->
   <style name="Base.Widget.Material3.FloatingToolbar" parent="">
     <item name="enforceMaterialTheme">true</item>
     <item name="android:minHeight">@dimen/m3_comp_toolbar_floating_container_height</item>
     <item name="android:minWidth">@dimen/m3_comp_toolbar_floating_container_height</item>
     <item name="backgroundTint">@macro/m3_comp_toolbar_floating_standard_container_color</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.Toolbar.Floating.Container.Shape</item>
-    <item name="android:layout_margin">@dimen/m3_comp_toolbar_floating_container_external_padding</item>
   </style>
 
-  <!-- Style for Horizontal Floating Toolbar.
-       Note that layout_* attributes break when set via a default style. Always set this style
-       explicitly on the layout to ensure that layout_* attributes are set properly. -->
-  <style name="Widget.Material3.FloatingToolbar.Horizontal" parent="Base.Widget.Material3.FloatingToolbar">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingToolbar.Horizontal</item>
-    <item name="android:layout_gravity">bottom|center</item>
+  <!-- Style for Floating Toolbar. -->
+  <style name="Widget.Material3.FloatingToolbar" parent="Base.Widget.Material3.FloatingToolbar">
     <item name="android:paddingStart">@dimen/m3_comp_toolbar_floating_container_leading_space</item>
     <item name="android:paddingEnd">@dimen/m3_comp_toolbar_floating_container_trailing_space</item>
-  </style>
-
-  <!-- Style for Vibrant color variation of the Horizontal Floating Toolbar.
-       Note that layout_* attributes break when set via a default style. Always set this style
-       explicitly on the layout to ensure that layout_* attributes are set properly. -->
-  <style name="Widget.Material3.FloatingToolbar.Horizontal.Vibrant">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingToolbar.Horizontal.Vibrant</item>
-    <item name="backgroundTint">@macro/m3_comp_toolbar_floating_vibrant_container_color</item>
-  </style>
-
-  <!-- Style for Vibrant color variation of the Vertical Floating Toolbar. Defaults to the right
-       side; override android:layout_gravity to position the toolbar on the left side. Note that
-       layout_* attributes break when set via a default style. Always set this style explicitly on
-       the layout to ensure that layout_* attributes are set properly. -->
-  <style name="Widget.Material3.FloatingToolbar.Vertical" parent="Base.Widget.Material3.FloatingToolbar">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingToolbar.Vertical</item>
-    <item name="android:layout_gravity">right|center</item>
     <item name="android:paddingTop">@dimen/m3_comp_toolbar_floating_container_leading_space</item>
     <item name="android:paddingBottom">@dimen/m3_comp_toolbar_floating_container_trailing_space</item>
   </style>
 
-  <!-- Style for Vibrant color variation of the Vertical Floating Toolbar. Defaults to the right
-       side; override android:layout_gravity to position the toolbar on the left side. Note that
-       layout_* attributes break when set via a default style. Always set this style explicitly on
-       the layout to ensure that layout_* attributes are set properly. -->
-  <style name="Widget.Material3.FloatingToolbar.Vertical.Vibrant">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingToolbar.Vertical.Vibrant</item>
+  <!-- Style for Vibrant color variation of the Floating Toolbar. -->
+  <style name="Widget.Material3.FloatingToolbar.Vibrant">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingToolbar.Vibrant</item>
     <item name="backgroundTint">@macro/m3_comp_toolbar_floating_vibrant_container_color</item>
   </style>
 
@@ -78,51 +52,10 @@
     <item name="iconTint">@color/m3_floating_toolbar_vibrant_icon_button_text_color_selector</item>
   </style>
 
-  <!-- Theme overlay to be set on Horizontal Floating Toolbars. Sets the
-       orientation of children within the toolbar to vertical to ensure that the
-       children of the toolbar are displayed properly. In order for the
-       orientation in this theme overlay to take effect, the android:orientation
-       attribute should not be set directly on the child. Only takes effect on
-       children that support android:orientation, such as a LinearLayout. -->
-  <style name="ThemeOverlay.Material3.FloatingToolbar.Horizontal" parent="">
-    <item name="android:orientation">horizontal</item>
-  </style>
-
-  <!-- Theme overlay to be set on Horizontal Vibrant Floating Toolbars. Sets the
-       orientation of children within the toolbar to vertical to ensure that the
-       children of the toolbar are displayed properly. In order for the
-       orientation in this theme overlay to take effect, the android:orientation
-       attribute should not be set directly on the child. Only takes effect on
-       children that support android:orientation, such as a LinearLayout. Also
-       sets icon buttons which use ?attr/materialIconButtonStyle to a vibrant
-       icon button style variant. -->
-  <style name="ThemeOverlay.Material3.FloatingToolbar.Horizontal.Vibrant">
+  <!-- Theme overlay to be set on Vibrant Floating Toolbars. -->
+  <style name="ThemeOverlay.Material3.FloatingToolbar.Vibrant" parent="">
     <item name="materialIconButtonStyle">
       @style/Widget.Material3.FloatingToolbar.IconButton.Vibrant
-    </item>
-  </style>
-
-  <!-- Theme overlay to be set on Vertical Floating Toolbars. Sets the
-       orientation of children within the toolbar to vertical to ensure that the
-       children of the toolbar are displayed properly. In order for the
-       orientation in this theme overlay to take effect, the android:orientation
-       attribute should not be set directly on the child. Only takes effect on
-       children that support android:orientation, such as a LinearLayout. -->
-  <style name="ThemeOverlay.Material3.FloatingToolbar.Vertical" parent="">
-    <item name="android:orientation">vertical</item>
-  </style>
-
-  <!-- Theme overlay to be set on Vertical Vibrant Floating Toolbars. Sets the
-       orientation of children within the toolbar to vertical to ensure that
-       the children of the toolbar are displayed properly. In order for the
-       orientation in this theme overlay to take effect, the
-       android:orientation attribute should not be set directly on the child.
-       Only takes effect on children that support android:orientation, such as
-       a LinearLayout. Also sets icon buttons which use
-       ?attr/materialIconButtonStyle to a vibrant icon button style variant. -->
-  <style name="ThemeOverlay.Material3.FloatingToolbar.Vertical.Vibrant">
-    <item name="materialIconButtonStyle">
-        @style/Widget.Material3.FloatingToolbar.IconButton.Vibrant
     </item>
   </style>
 
