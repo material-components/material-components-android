@@ -426,7 +426,7 @@ The following is an anatomy diagram of a chip:
 | **Stroke color**     | `app:chipStrokeColor`                                           | `setStrokeColor`<br/>`setChipStrokeColorResource`<br/>`getChipStrokeColor`                                 | `?attr/colorOnSurface`                                      |
 | **Min height**       | `app:chipMinHeight`                                             | `setChipMinHeight`<br/>`setChipMinHeightResource`<br/>`getChipMinHeight`                                   | `32dp`                                                      |
 | **Padding**          | `app:chipStartPadding`<br/>`app:chipEndPadding`                 | `setChip*Padding`<br/>`setChip*PaddingResource`<br/>`getChip*Padding`                                      | `4dp` (start)<br/>`6dp` (end)                               |
-| **Shape**            | `app:shapeAppearance`<br/>`shapeAppearanceOverlay`              | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                                                    | `?attr/shapeAppearanceSmallComponent` with 8dp `cornerSize` |
+| **Shape**            | `app:shapeAppearance`<br/>`shapeAppearanceOverlay`              | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                                                    | `?attr/shapeAppearanceCornerSmall` with 8dp `cornerSize` |
 | **Min touch target** | `app:chipMinTouchTargetSize`<br/>`app:ensureMinTouchTargetSize` | `ensureAccessibleTouchTarget`<br/>`setEnsureAccessibleTouchTarget`<br/>`shouldEnsureAccessibleTouchTarget` | `48dp`<br/>`true`                                           |
 | **Checkable**        | `android:checkable`                                             | `setCheckable`<br/>`setCheckableResource`<br/>`isCheckable`                                                | `true` (input, suggestion, filter)                          |
 
@@ -536,7 +536,7 @@ theme to all chips and affects other components:
     ...
     <item name="colorOnSurface">@color/shrine_pink_100</item>
     <item name="textAppearanceBodyMedium">@style/TextAppearance.App.BodyMedium</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.App.Corner.Small</item>
     <item name="chipStyle">@style/Widget.App.Chip</item>
 </style>
 
@@ -554,7 +554,7 @@ theme to all chips and affects other components:
     <item name="android:fontFamily">@font/rubik_regular</item>
 </style>
 
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+<style name="ShapeAppearance.App.Corner.Small" parent="ShapeAppearance.Material3.Corner.Small">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">4dp</item>
 </style>
@@ -581,12 +581,12 @@ the theme to all chips but does not affect other components:
 <style name="Widget.App.Chip" parent="Widget.Material3.Chip.Input">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Chip</item>
     <item name="android:textAppearance">@style/TextAppearance.App.BodyMedium</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.Corner.Small</item>
     ...
 </style>
 
 <style name="ThemeOverlay.App.Chip" parent="">
-    <item name="colorOnSurface">@color/shrine_pink_900</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_pink_900</item>
 </style>
 ```
 
@@ -595,5 +595,5 @@ Use the style in the layout, which affects only specific chips:
 ```xml
 <com.google.android.material.chip.Chip
       ...
-      style="@style/Widget.App.Chip."  />
+      style="@style/Widget.App.Chip"  />
 ```
