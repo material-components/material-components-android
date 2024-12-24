@@ -2821,7 +2821,7 @@ abstract class BaseSlider<
       @NonNull Canvas canvas, int width, int top, float value, @NonNull Drawable thumbDrawable) {
     canvas.save();
     if (isVertical()) {
-      canvas.setMatrix(rotationMatrix);
+      canvas.concat(rotationMatrix);
     }
     canvas.translate(
         trackSidePadding
