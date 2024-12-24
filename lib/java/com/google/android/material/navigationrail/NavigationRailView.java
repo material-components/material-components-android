@@ -741,7 +741,7 @@ public class NavigationRailView extends NavigationBarView {
   @Override
   public boolean onTouchEvent(@NonNull MotionEvent event) {
     super.onTouchEvent(event);
-    // Consume all events to avoid views under the BottomNavigationView from receiving touch events.
+    // Consume all events to avoid views under the NavigationRailView from receiving touch events.
     return true;
   }
 }
