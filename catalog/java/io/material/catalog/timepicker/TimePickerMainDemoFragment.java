@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
@@ -132,6 +133,16 @@ public class TimePickerMainDemoFragment extends DemoFragment {
         TimePickerMainDemoFragment.this.onTimeSet(newHour, newMinute);
       });
     });
+
+    Fragment fragment = getParentFragmentManager().findFragmentByTag("fragment_tag");
+    if (fragment instanceof MaterialTimePicker) {
+      MaterialTimePicker materialTimePicker = (MaterialTimePicker) fragment;
+      materialTimePicker.addOnPositiveButtonClickListener(dialog -> {
+        int newHour = materialTimePicker.getHour();
+        int newMinute = materialTimePicker.getMinute();
+        TimePickerMainDemoFragment.this.onTimeSet(newHour, newMinute);
+      });
+    }
 
     return view;
   }
