@@ -48,7 +48,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:hint="@string/cat_progress_indicator_show_behavior">
-    <AutoCompleteTextView
+    <io.material.catalog.textfield.AutoCompleteTextView2
         android:id="@+id/showBehaviorDropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:hint="@string/cat_progress_indicator_hide_behavior">
-    <AutoCompleteTextView
+    <io.material.catalog.textfield.AutoCompleteTextView2
         android:id="@+id/hideBehaviorDropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
