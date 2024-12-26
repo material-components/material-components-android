@@ -26,7 +26,6 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.slider.SliderOrientation;
-
 import io.material.catalog.feature.DemoFragment;
 
 /**
