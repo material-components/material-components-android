@@ -25,6 +25,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import com.google.android.material.slider.Slider;
+import com.google.android.material.slider.SliderOrientation;
+
 import io.material.catalog.feature.DemoFragment;
 
 /**
@@ -43,10 +45,11 @@ public class SliderScrollContainerDemoFragment extends DemoFragment {
     for (int i = 0; i < 50; i++) {
       Slider slider = new Slider(layoutInflater.getContext());
       slider.setValueTo(11f);
+      slider.setOrientation(SliderOrientation.VERTICAL);
       sliderContainer.addView(
           slider,
-          ViewGroup.LayoutParams.MATCH_PARENT,
-          ViewGroup.LayoutParams.WRAP_CONTENT);
+          ViewGroup.LayoutParams.WRAP_CONTENT,
+          ViewGroup.LayoutParams.MATCH_PARENT);
     }
     return view;
   }
