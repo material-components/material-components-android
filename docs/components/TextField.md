@@ -463,7 +463,7 @@ indicator, optional helper/error text and optional leading/trailing icons.
 Element                | Attribute                | Related method(s)                                                                       | Default value
 ---------------------- | ------------------------ | --------------------------------------------------------------------------------------- | -------------
 **Color**              | `app:boxBackgroundColor` | `setBoxBackgroundColor`<br/>`setBoxBackgroundColorResource`<br/>`getBoxBackgroundColor` | `?attr/colorSurfaceContainerHighest` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/m3_textfield_filled_background_color.xml))
-**Shape**              | `app:shapeAppearance`    | N/A                                                                                     | `?attr/shapeAppearanceSmallComponent`
+**Shape**              | `app:shapeAppearance`    | N/A                                                                                     | `?attr/shapeAppearanceCornerExtraSmall`
 **Text field enabled** | `android:enabled`        | `setEnabled`                                                                            | `true`
 
 #### Leading icon attributes
@@ -643,7 +643,7 @@ Element                  | Attribute                   | Related method(s)      
 **Stroke error color**   | `app:boxStrokeErrorColor`   | `setBoxStrokeErrorColor`<br/>`getBoxStrokeErrorColor`                        | `?attr/colorError`
 **Stroke width**         | `app:boxStrokeWidth`        | N/A                                                                          | `1dp`
 **Stroke focused width** | `app:boxStrokeWidthFocused` | N/A                                                                          | `2dp`
-**Shape**                | `app:shapeAppearance`       | N/A                                                                          | `?attr/shapeAppearanceSmallComponent`
+**Shape**                | `app:shapeAppearance`       | N/A                                                                          | `?attr/shapeAppearanceCornerExtraSmall`
 **Text field enabled**   | `android:enabled`           | `setEnabled`                                                                 | `true`
 
 #### Leading icon attributes
@@ -777,7 +777,7 @@ text fields and affects other components:
     <item name="colorError">@color/shrine_red</item>
     <item name="textAppearanceTitleMedium">@style/TextAppearance.App.TitleMedium</item>
     <item name="textAppearanceBodySmall">@style/TextAppearance.App.BodySmall</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.App.Corner.ExtraSmall</item>
 </style>
 
 <style name="TextAppearance.App.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
@@ -790,7 +790,7 @@ text fields and affects other components:
     <item name="android:fontFamily">@font/rubik</item>
 </style>
 
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+<style name="ShapeAppearance.App.Corner.ExtraSmall" parent="ShapeAppearance.Material3.Corner.ExtraSmall">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">4dp</item>
 </style>
@@ -807,7 +807,7 @@ all text fields but does not affect other components:
 
 <style name="Widget.App.TextInputLayout" parent="Widget.Material3.TextInputLayout.*">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.TextInputLayout</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.Corner.ExtraSmall</item>
     <item name="hintTextColor">?attr/colorOnSurface</item>
 </style>
 
