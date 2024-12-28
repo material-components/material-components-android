@@ -306,6 +306,12 @@ class EndCompoundLayout extends LinearLayout {
     setSuffixText(a.getText(R.styleable.TextInputLayout_suffixText));
   }
 
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    updateSuffixTextViewPadding();
+  }
+
   void setErrorIconDrawable(@DrawableRes int resId) {
     setErrorIconDrawable(resId != 0 ? AppCompatResources.getDrawable(getContext(), resId) : null);
     refreshErrorIconDrawableState();
@@ -717,18 +723,19 @@ class EndCompoundLayout extends LinearLayout {
   }
 
   void updateSuffixTextViewPadding() {
-    if (textInputLayout.editText == null) {
+    EditText editText = textInputLayout.editText;
+    if (editText == null) {
       return;
     }
     int endPadding =
-        (isEndIconVisible() || isErrorIconVisible()) ? 0 : textInputLayout.editText.getPaddingEnd();
+        (isEndIconVisible() || isErrorIconVisible()) ? 0 : editText.getPaddingEnd();
     suffixTextView.setPaddingRelative(
         getContext()
             .getResources()
             .getDimensionPixelSize(R.dimen.material_input_text_to_prefix_suffix_padding),
-        textInputLayout.editText.getPaddingTop(),
+        editText.getCompoundPaddingTop(),
         endPadding,
-        textInputLayout.editText.getPaddingBottom());
+        editText.getCompoundPaddingBottom());
   }
 
   int getSuffixTextEndOffset() {
