@@ -330,10 +330,14 @@ abstract class BaseSlider<
   private int trackCornerSize;
   private int trackInsideCornerSize;
   @Nullable private Drawable trackIconActiveStart;
+  private boolean trackIconActiveStartMutated = false;
   @Nullable private Drawable trackIconActiveEnd;
+  private boolean trackIconActiveEndMutated = false;
   @Nullable private ColorStateList trackIconActiveColor;
   @Nullable private Drawable trackIconInactiveStart;
+  private boolean trackIconInactiveStartMutated = false;
   @Nullable private Drawable trackIconInactiveEnd;
+  private boolean trackIconInactiveEndMutated = false;
   @Nullable private ColorStateList trackIconInactiveColor;
   @Px private int trackIconSize;
   private int labelPadding;
@@ -1991,11 +1995,27 @@ abstract class BaseSlider<
    * @see #getTrackIconActiveStart()
    */
   public void setTrackIconActiveStart(@Nullable Drawable icon) {
-    if (this.trackIconActiveStart == icon) {
+    if (icon == trackIconActiveStart) {
       return;
     }
-    this.trackIconActiveStart = icon;
+
+    trackIconActiveStart = icon;
+    trackIconActiveStartMutated = false;
+    updateTrackIconActiveStart();
     invalidate();
+  }
+
+  private void updateTrackIconActiveStart() {
+    if (trackIconActiveStart != null) {
+      if (!trackIconActiveStartMutated && trackIconActiveColor != null) {
+        trackIconActiveStart = DrawableCompat.wrap(trackIconActiveStart).mutate();
+        trackIconActiveStartMutated = true;
+      }
+
+      if (trackIconActiveStartMutated) {
+        DrawableCompat.setTintList(trackIconActiveStart, trackIconActiveColor);
+      }
+    }
   }
 
   /**
@@ -2036,11 +2056,27 @@ abstract class BaseSlider<
    * @see #getTrackIconActiveEnd()
    */
   public void setTrackIconActiveEnd(@Nullable Drawable icon) {
-    if (this.trackIconActiveEnd == icon) {
+    if (icon == trackIconActiveEnd) {
       return;
     }
-    this.trackIconActiveEnd = icon;
+
+    trackIconActiveEnd = icon;
+    trackIconActiveEndMutated = false;
+    updateTrackIconActiveEnd();
     invalidate();
+  }
+
+  private void updateTrackIconActiveEnd() {
+    if (trackIconActiveEnd != null) {
+      if (!trackIconActiveEndMutated && trackIconActiveColor != null) {
+        trackIconActiveEnd = DrawableCompat.wrap(trackIconActiveEnd).mutate();
+        trackIconActiveEndMutated = true;
+      }
+
+      if (trackIconActiveEndMutated) {
+        DrawableCompat.setTintList(trackIconActiveEnd, trackIconActiveColor);
+      }
+    }
   }
 
   /**
@@ -2106,10 +2142,13 @@ abstract class BaseSlider<
    * @see #getTrackIconActiveColor()
    */
   public void setTrackIconActiveColor(@Nullable ColorStateList color) {
-    if (this.trackIconActiveColor == color) {
+    if (color == trackIconActiveColor) {
       return;
     }
-    this.trackIconActiveColor = color;
+
+    trackIconActiveColor = color;
+    updateTrackIconActiveStart();
+    updateTrackIconActiveEnd();
     invalidate();
   }
 
@@ -2134,11 +2173,27 @@ abstract class BaseSlider<
    * @see #getTrackIconInactiveStart()
    */
   public void setTrackIconInactiveStart(@Nullable Drawable icon) {
-    if (this.trackIconInactiveStart == icon) {
+    if (icon == trackIconInactiveStart) {
       return;
     }
-    this.trackIconInactiveStart = icon;
+
+    trackIconInactiveStart = icon;
+    trackIconInactiveStartMutated = false;
+    updateTrackIconInactiveStart();
     invalidate();
+  }
+
+  private void updateTrackIconInactiveStart() {
+    if (trackIconInactiveStart != null) {
+      if (!trackIconInactiveStartMutated && trackIconInactiveColor != null) {
+        trackIconInactiveStart = DrawableCompat.wrap(trackIconInactiveStart).mutate();
+        trackIconInactiveStartMutated = true;
+      }
+
+      if (trackIconInactiveStartMutated) {
+        DrawableCompat.setTintList(trackIconInactiveStart, trackIconInactiveColor);
+      }
+    }
   }
 
   /**
@@ -2179,11 +2234,27 @@ abstract class BaseSlider<
    * @see #getTrackIconInactiveEnd()
    */
   public void setTrackIconInactiveEnd(@Nullable Drawable icon) {
-    if (this.trackIconInactiveEnd == icon) {
+    if (icon == trackIconInactiveEnd) {
       return;
     }
-    this.trackIconInactiveEnd = icon;
+
+    trackIconInactiveEnd = icon;
+    trackIconInactiveEndMutated = false;
+    updateTrackIconInactiveEnd();
     invalidate();
+  }
+
+  private void updateTrackIconInactiveEnd() {
+    if (trackIconInactiveEnd != null) {
+      if (!trackIconInactiveEndMutated && trackIconInactiveColor != null) {
+        trackIconInactiveEnd = DrawableCompat.wrap(trackIconInactiveEnd).mutate();
+        trackIconInactiveEndMutated = true;
+      }
+
+      if (trackIconInactiveEndMutated) {
+        DrawableCompat.setTintList(trackIconInactiveEnd, trackIconInactiveColor);
+      }
+    }
   }
 
   /**
@@ -2223,10 +2294,13 @@ abstract class BaseSlider<
    * @see #getTrackIconInactiveColor()
    */
   public void setTrackIconInactiveColor(@Nullable ColorStateList color) {
-    if (this.trackIconInactiveColor == color) {
+    if (color == trackIconInactiveColor) {
       return;
     }
-    this.trackIconInactiveColor = color;
+
+    trackIconInactiveColor = color;
+    updateTrackIconInactiveStart();
+    updateTrackIconInactiveEnd();
     invalidate();
   }
 
@@ -2575,26 +2649,25 @@ abstract class BaseSlider<
 
     // draw track start icons
     calculateBoundsAndDrawTrackIcon(
-        canvas, activeTrackBounds, trackIconActiveStart, trackIconActiveColor, true);
+        canvas, activeTrackBounds, trackIconActiveStart, true);
     calculateBoundsAndDrawTrackIcon(
-        canvas, inactiveTrackBounds, trackIconInactiveStart, trackIconInactiveColor, true);
+        canvas, inactiveTrackBounds, trackIconInactiveStart, true);
     // draw track end icons
     calculateBoundsAndDrawTrackIcon(
-        canvas, activeTrackBounds, trackIconActiveEnd, trackIconActiveColor, false);
+        canvas, activeTrackBounds, trackIconActiveEnd, false);
     calculateBoundsAndDrawTrackIcon(
-        canvas, inactiveTrackBounds, trackIconInactiveEnd, trackIconInactiveColor, false);
+        canvas, inactiveTrackBounds, trackIconInactiveEnd, false);
   }
 
   private void calculateBoundsAndDrawTrackIcon(
       @NonNull Canvas canvas,
       @NonNull RectF trackBounds,
       @Nullable Drawable icon,
-      @Nullable ColorStateList iconColor,
       boolean isStart) {
     if (icon != null) {
       calculateTrackIconBounds(trackBounds, iconRectF, trackIconSize, isStart);
       if (!iconRectF.isEmpty()) {
-        drawTrackIcon(canvas, iconRectF, icon, iconColor);
+        drawTrackIcon(canvas, iconRectF, icon);
       }
     }
   }
@@ -2602,9 +2675,7 @@ abstract class BaseSlider<
   private void drawTrackIcon(
       @NonNull Canvas canvas,
       @NonNull RectF iconBounds,
-      @NonNull Drawable icon,
-      @Nullable ColorStateList color) {
-    DrawableCompat.setTintList(icon, color);
+      @NonNull Drawable icon) {
     if (isVertical()) {
       rotationMatrix.mapRect(iconBounds);
     }
