@@ -167,12 +167,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
             MaterialDatePicker<?> picker = builder.build();
             addSnackBarListeners(picker);
             picker.show(getChildFragmentManager(), "MaterialDatePicker");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-              view.post(() -> {
-                picker.requireDialog().getWindow().setNavigationBarContrastEnforced(
-                    !new WindowPreferencesManager(requireContext()).isEdgeToEdgeEnabled());
-              });
-            }
+            navigationBarContrast(picker, view);
           } catch (IllegalArgumentException e) {
             snackbar.setText(e.getMessage());
             snackbar.show();
@@ -181,16 +176,19 @@ public class DatePickerMainDemoFragment extends DemoFragment {
 
     Fragment fragment = getChildFragmentManager().findFragmentByTag("MaterialDatePicker");
     if (fragment instanceof MaterialDatePicker<?>) {
-      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        view.post(() -> {
-          ((MaterialDatePicker<?>) fragment).requireDialog().getWindow()
-              .setNavigationBarContrastEnforced(
-                  !new WindowPreferencesManager(requireContext()).isEdgeToEdgeEnabled());
-        });
-      }
+      navigationBarContrast((MaterialDatePicker<?>) fragment, view);
     }
 
     return view;
+  }
+
+  private void navigationBarContrast(MaterialDatePicker<?> materialDatePicker, View view) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      view.post(() -> {
+        materialDatePicker.requireDialog().getWindow().setNavigationBarContrastEnforced(
+            !new WindowPreferencesManager(requireContext()).isEdgeToEdgeEnabled());
+      });
+    }
   }
 
   private MaterialDatePicker.Builder<?> setupDateSelectorBuilder(
