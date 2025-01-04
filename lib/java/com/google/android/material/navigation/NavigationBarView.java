@@ -859,7 +859,7 @@ public abstract class NavigationBarView extends FrameLayout {
    * @see #getItemGravity()
    */
   public void setItemGravity(@ItemGravity int itemGravity) {
-    if (menuView.getItemIconGravity() != itemGravity) {
+    if (menuView.getItemGravity() != itemGravity) {
       menuView.setItemGravity(itemGravity);
       presenter.updateMenuView(false);
     }
