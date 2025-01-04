@@ -18,6 +18,7 @@
   <public name="sliderStyle" type="attr"/>
 
   <public name="haloColor" type="attr" />
+  <public name="haloEffectColor" type="attr" />
   <public name="haloRadius" type="attr" />
   <public name="labelBehavior" type="attr" />
   <public name="labelStyle" type="attr" />
