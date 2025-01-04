@@ -279,6 +279,15 @@ abstract class BaseSlider<
   private static final int LABEL_ANIMATION_EXIT_EASING_ATTR =
       R.attr.motionEasingEmphasizedAccelerateInterpolator;
 
+  private static final float TOP_LABEL_PIVOT_X = 0.5f;
+  private static final float TOP_LABEL_PIVOT_Y = 1.2f;
+
+  private static final float LEFT_LABEL_PIVOT_X = 1.2f;
+  private static final float LEFT_LABEL_PIVOT_Y = 0.5f;
+
+  private static final float RIGHT_LABEL_PIVOT_X = -0.2f;
+  private static final float RIGHT_LABEL_PIVOT_Y = 0.5f;
+
   @Dimension(unit = Dimension.DP)
   private static final int MIN_TOUCH_TARGET_DP = 48;
 
@@ -3180,6 +3189,8 @@ abstract class BaseSlider<
   }
 
   private void updateLabels() {
+    updateLabelPivots();
+
     switch (labelBehavior) {
       case LABEL_GONE:
         ensureLabelsRemoved();
@@ -3201,6 +3212,29 @@ abstract class BaseSlider<
         break;
       default:
         throw new IllegalArgumentException("Unexpected labelBehavior: " + labelBehavior);
+    }
+  }
+
+  private void updateLabelPivots() {
+    // Set the pivot point so that the label pops up in the direction from the thumb.
+    final float labelPivotX;
+    final float labelPivotY;
+
+    final boolean isVertical = isVertical();
+    final boolean isRtl = isRtl();
+    if (isVertical && isRtl) {
+      labelPivotX = RIGHT_LABEL_PIVOT_X;
+      labelPivotY = RIGHT_LABEL_PIVOT_Y;
+    } else if (isVertical) {
+      labelPivotX = LEFT_LABEL_PIVOT_X;
+      labelPivotY = LEFT_LABEL_PIVOT_Y;
+    } else {
+      labelPivotX = TOP_LABEL_PIVOT_X;
+      labelPivotY = TOP_LABEL_PIVOT_Y;
+    }
+
+    for (TooltipDrawable label : labels) {
+      label.setPivots(labelPivotX, labelPivotY);
     }
   }
 
