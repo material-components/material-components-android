@@ -338,6 +338,7 @@ abstract class BaseSlider<
   @Px private int trackIconSize;
   private int labelPadding;
   private float touchDownX;
+  private float touchDownY;
   private MotionEvent lastEvent;
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
@@ -2864,6 +2865,7 @@ abstract class BaseSlider<
     }
 
     float eventCoordinate = isVertical() ? event.getY() : event.getX();
+    float eventCoordinateY = isVertical() ? event.getX() : event.getY();
     touchPosition = (eventCoordinate - trackSidePadding) / trackWidth;
     touchPosition = max(0, touchPosition);
     touchPosition = min(1, touchPosition);
@@ -2871,10 +2873,16 @@ abstract class BaseSlider<
     switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
         touchDownX = eventCoordinate;
+        touchDownY = eventCoordinateY;
 
         // If we're inside a vertical scrolling container,
         // we should start dragging in ACTION_MOVE
-        if (isPotentialVerticalScroll(event)) {
+        if (!isVertical() && isPotentialVerticalScroll(event)) {
+          break;
+        }
+        // If we're inside a horizontal scrolling container,
+        // we should start dragging in ACTION_MOVE
+        if (isVertical() && isPotentialHorizontalScroll(event)) {
           break;
         }
 
@@ -2897,8 +2905,13 @@ abstract class BaseSlider<
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
           // Check if we're trying to scroll vertically instead of dragging this Slider
-          if (isPotentialVerticalScroll(event)
+          if (!isVertical() && isPotentialVerticalScroll(event)
               && abs(eventCoordinate - touchDownX) < scaledTouchSlop) {
+            return false;
+          }
+          // Check if we're trying to scroll horizontally instead of dragging this Slider
+          if (isVertical() && isPotentialHorizontalScroll(event)
+              && abs(eventCoordinateY - touchDownY) < scaledTouchSlop / 1.2) {
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
@@ -3353,12 +3366,29 @@ abstract class BaseSlider<
     return false;
   }
 
+  private boolean isInHorizontalScrollingContainer() {
+    ViewParent p = getParent();
+    while (p instanceof ViewGroup) {
+      ViewGroup parent = (ViewGroup) p;
+      boolean canScrollHorizontally = parent.canScrollHorizontally(1) || parent.canScrollHorizontally(-1);
+      if (canScrollHorizontally && parent.shouldDelayChildPressedState()) {
+        return true;
+      }
+      p = p.getParent();
+    }
+    return false;
+  }
+
   private static boolean isMouseEvent(MotionEvent event) {
     return event.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE;
   }
 
   private boolean isPotentialVerticalScroll(MotionEvent event) {
     return !isMouseEvent(event) && isInVerticalScrollingContainer();
+  }
+
+  private boolean isPotentialHorizontalScroll(MotionEvent event) {
+    return !isMouseEvent(event) && isInHorizontalScrollingContainer();
   }
 
   @SuppressWarnings("unchecked")
