@@ -68,7 +68,7 @@ Attribute        | Default value                | Description
 **?attr/motionSpringDefaultEffects** | `damping: 1, stiffness: 1600` | Spring for animation effects that partially cover the screen.
 
 When building spring animations, a speed should be chosen based on the
-animation's size or distance covered. Then, a spacial or effects type should be
+animation's size or distance covered. Then, a spatial or effects type should be
 chosen depending on the property being animated. For example, if animating a
 button's shape and color when pressed, use two springs: a
 `motionSpringFastSpatial` spring to animate the button's shape/size and a
@@ -93,12 +93,12 @@ use the resolved object to configure your SpringAnimation's SpringForce.
 ```kt
 val defaultSpatialSpring = MotionUtils.resolveThemeSpringForce(
   /* context= */ this,
-  /* attrResId= */ com.google.android.material.R.attr.motionSpringDefaultSpacial
+  /* attrResId= */ com.google.android.material.R.attr.motionSpringDefaultSpatial
 )
 SpringAnimation(box, DynamicAnimation.TRANSLATION_Y, 400f).apply {
   spring.apply {
-    dampingRatio = defaultSpacialSpring.dampingRatio
-    stiffness = defaultSpacialSpring.stiffness
+    dampingRatio = defaultSpatialSpring.dampingRatio
+    stiffness = defaultSpatialSpring.stiffness
   }
   start()
 }
@@ -222,7 +222,7 @@ val duration = MotionUtils.resolveThemeDuration(
 ## Transitions
 
 Material provides a set of transition patterns that help users understand and
-navigate an app. For more information on the patterns and how to choose between 
+navigate an app. For more information on the patterns and how to choose between
 them, check out the
 [Material motion transition patterns](https://m3.material.io/styles/motion/transitions/transition-patterns).
 
