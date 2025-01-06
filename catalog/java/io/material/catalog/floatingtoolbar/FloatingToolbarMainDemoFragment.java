@@ -63,6 +63,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     // Initialize group of bold buttons.
     List<MaterialButton> boldButtons =
         initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_button_bold);
+    boldButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_bold));
     for (MaterialButton boldButton : boldButtons) {
       boldButton.addOnCheckedChangeListener(
           (button, isChecked) -> {
@@ -83,6 +84,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     // Initialize group of italics format buttons.
     List<MaterialButton> italicButtons =
         initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_button_italic);
+    italicButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_italic));
     for (MaterialButton italicButton : italicButtons) {
       italicButton.addOnCheckedChangeListener(
           (button, isChecked) -> {
@@ -102,6 +104,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     // Initialize group of underline format buttons.
     List<MaterialButton> underlineButtons =
         initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_button_underlined);
+    underlineButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_underlined));
     for (MaterialButton underlineButton : underlineButtons) {
       underlineButton.addOnCheckedChangeListener(
           (button, isChecked) -> {
@@ -118,6 +121,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     // Initialize color text format buttons.
     List<MaterialButton> colorTextButtons =
         initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_button_color_text);
+    colorTextButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_color_text));
     for (MaterialButton colorTextButton : colorTextButtons) {
       colorTextButton.setOnClickListener(v -> bodyText.setTextColor(getRandomColor()));
     }
@@ -125,6 +129,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     // Initialize color fill format buttons.
     List<MaterialButton> colorFillButtons =
         initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_button_color_fill);
+    colorFillButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_color_fill));
     for (MaterialButton colorFillButton : colorFillButtons) {
       colorFillButton.setOnClickListener(v -> view.setBackgroundColor(getRandomColor()));
     }
@@ -169,7 +174,9 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
       @NonNull List<FloatingToolbarLayout> floatingToolbars, @IdRes int formatButtonId) {
     List<MaterialButton> formatButtons = new ArrayList<>();
     for (FloatingToolbarLayout floatingToolbar : floatingToolbars) {
-      formatButtons.add(floatingToolbar.findViewById(formatButtonId));
+      if (floatingToolbar.findViewById(formatButtonId) != null) {
+          formatButtons.add(floatingToolbar.findViewById(formatButtonId));
+      }
     }
     return formatButtons;
   }
