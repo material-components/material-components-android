@@ -368,7 +368,8 @@ abstract class BaseSlider<
 
   @NonNull private final Path trackPath = new Path();
   @NonNull private final RectF activeTrackRect = new RectF();
-  @NonNull private final RectF inactiveTrackRect = new RectF();
+  @NonNull private final RectF inactiveTrackLeftRect = new RectF();
+  @NonNull private final RectF inactiveTrackRightRect = new RectF();
   @NonNull private final RectF cornerRect = new RectF();
   @NonNull private final Rect labelRect = new Rect();
   @NonNull private final RectF iconRectF = new RectF();
@@ -2410,15 +2411,14 @@ abstract class BaseSlider<
 
     int yCenter = calculateTrackCenter();
 
-    float first = values.get(0);
-    float last = values.get(values.size() - 1);
-    if (last < valueTo || (values.size() > 1 && first > valueFrom)) {
-      drawInactiveTrack(canvas, trackWidth, yCenter);
+    drawInactiveTracks(canvas, trackWidth, yCenter);
+    drawActiveTracks(canvas, trackWidth, yCenter);
+
+    if (isRtl() || isVertical()) {
+      drawTrackIcons(canvas, activeTrackRect, inactiveTrackLeftRect);
+    } else {
+      drawTrackIcons(canvas, activeTrackRect, inactiveTrackRightRect);
     }
-    if (last > valueFrom) {
-      drawActiveTrack(canvas, trackWidth, yCenter);
-    }
-    drawTrackIcons(canvas, activeTrackRect, inactiveTrackRect);
 
     maybeDrawTicks(canvas);
     maybeDrawStopIndicator(canvas, yCenter);
@@ -2446,34 +2446,50 @@ abstract class BaseSlider<
     return isRtl() || isVertical() ? new float[] {right, left} : new float[] {left, right};
   }
 
-  private void drawInactiveTrack(@NonNull Canvas canvas, int width, int yCenter) {
-    int trackCornerSize = getTrackCornerSize();
+  private void drawInactiveTracks(@NonNull Canvas canvas, int width, int yCenter) {
+    populateInactiveTrackRightRect(width, yCenter);
+    updateTrack(
+        canvas,
+        inactiveTrackPaint,
+        inactiveTrackRightRect,
+        getTrackCornerSize(),
+        FullCornerDirection.RIGHT);
+
+    // Also draw inactive track to the left if there is any
+    populateInactiveTrackLeftRect(width, yCenter);
+    updateTrack(
+        canvas,
+        inactiveTrackPaint,
+        inactiveTrackLeftRect,
+        getTrackCornerSize(),
+        FullCornerDirection.LEFT);
+  }
+
+  private void populateInactiveTrackRightRect(int width, int yCenter) {
     float[] activeRange = getActiveRange();
     float right = trackSidePadding + activeRange[1] * width;
     if (right < trackSidePadding + width) {
-      inactiveTrackRect.set(
+      inactiveTrackRightRect.set(
           right + thumbTrackGapSize,
           yCenter - trackThickness / 2f,
-          trackSidePadding + width + trackCornerSize,
+          trackSidePadding + width + getTrackCornerSize(),
           yCenter + trackThickness / 2f);
-      updateTrack(
-          canvas,
-          inactiveTrackPaint,
-          inactiveTrackRect,
-          trackCornerSize,
-          FullCornerDirection.RIGHT);
+    } else {
+      inactiveTrackRightRect.setEmpty();
     }
+  }
 
-    // Also draw inactive track to the left if there is any
+  private void populateInactiveTrackLeftRect(int width, int yCenter) {
+    float[] activeRange = getActiveRange();
     float left = trackSidePadding + activeRange[0] * width;
     if (left > trackSidePadding) {
-      inactiveTrackRect.set(
-          trackSidePadding - trackCornerSize,
+      inactiveTrackLeftRect.set(
+          trackSidePadding - getTrackCornerSize(),
           yCenter - trackThickness / 2f,
           left - thumbTrackGapSize,
           yCenter + trackThickness / 2f);
-      updateTrack(
-          canvas, inactiveTrackPaint, inactiveTrackRect, trackCornerSize, FullCornerDirection.LEFT);
+    } else {
+      inactiveTrackLeftRect.setEmpty();
     }
   }
 
@@ -2489,10 +2505,14 @@ abstract class BaseSlider<
     return normalized;
   }
 
-  private void drawActiveTrack(@NonNull Canvas canvas, int width, int yCenter) {
+  private void drawActiveTracks(@NonNull Canvas canvas, int width, int yCenter) {
     float[] activeRange = getActiveRange();
     float right = trackSidePadding + activeRange[1] * width;
     float left = trackSidePadding + activeRange[0] * width;
+    if (left >= right) {
+      activeTrackRect.setEmpty();
+      return;
+    }
 
     FullCornerDirection direction = FullCornerDirection.NONE;
     if (values.size() == 1) { // Only 1 thumb
@@ -2532,6 +2552,7 @@ abstract class BaseSlider<
 
       // Nothing to draw if left is bigger than right.
       if (left >= right) {
+        activeTrackRect.setEmpty();
         continue;
       }
 
@@ -2652,6 +2673,10 @@ abstract class BaseSlider<
 
   private void updateTrack(
       Canvas canvas, Paint paint, RectF bounds, float cornerSize, FullCornerDirection direction) {
+    if (bounds.isEmpty()) {
+      return;
+    }
+
     float leftCornerSize = calculateStartTrackCornerSize(cornerSize);
     float rightCornerSize = calculateEndTrackCornerSize(cornerSize);
     switch (direction) {
