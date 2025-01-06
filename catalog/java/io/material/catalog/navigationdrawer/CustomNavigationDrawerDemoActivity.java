@@ -94,6 +94,7 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
             unregisterBackCallback();
           }
         });
+    drawerLayout.setScrimColor(0x52000000);
 
     View endDrawer = view.findViewById(R.id.custom_drawer_end);
     view.findViewById(R.id.show_end_drawer_gravity)

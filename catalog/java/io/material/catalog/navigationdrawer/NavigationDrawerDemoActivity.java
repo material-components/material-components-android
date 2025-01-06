@@ -82,6 +82,7 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
             drawerOnBackPressedCallback.setEnabled(false);
           }
         });
+    drawerLayout.setScrimColor(0x52000000);
 
     NavigationView navigationViewStart = view.findViewById(R.id.navigation_view_start);
     initNavigationView(navigationViewStart);
