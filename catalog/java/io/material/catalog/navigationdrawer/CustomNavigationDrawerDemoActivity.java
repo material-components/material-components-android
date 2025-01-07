@@ -36,6 +36,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.LayoutParams;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
@@ -94,7 +95,7 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
             unregisterBackCallback();
           }
         });
-    drawerLayout.setScrimColor(0x52000000);
+    drawerLayout.setScrimColor(ContextCompat.getColor(this, R.color.mtrl_scrim_color));
 
     View endDrawer = view.findViewById(R.id.custom_drawer_end);
     view.findViewById(R.id.show_end_drawer_gravity)
