@@ -194,9 +194,7 @@
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
-    <item name="collapsingToolbarLayoutMediumWithSubtitleSize">@dimen/m3_appbar_size_medium_with_subtitle</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
-    <item name="collapsingToolbarLayoutLargeWithSubtitleSize">@dimen/m3_appbar_size_large_with_subtitle</item>
 
     <!-- Action Bars. -->
     <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Light</item>
@@ -490,9 +488,7 @@
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
-    <item name="collapsingToolbarLayoutMediumWithSubtitleSize">@dimen/m3_appbar_size_medium_with_subtitle</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
-    <item name="collapsingToolbarLayoutLargeWithSubtitleSize">@dimen/m3_appbar_size_large_with_subtitle</item>
 
     <!-- Action Bars. -->
     <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Dark</item>

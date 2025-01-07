@@ -31,7 +31,7 @@
         style="?attr/collapsingToolbarLayoutMediumStyle"
         android:id="@+id/collapsingtoolbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/collapsingToolbarLayoutMediumWithSubtitleSize"
+        android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         app:expandedTitleGravity="bottom|center_horizontal"
         app:title="@string/cat_topappbar_collapsing_demo_toolbar_medium_title"

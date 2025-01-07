@@ -31,14 +31,8 @@
   <!-- Size to use for Medium CollapsingToolbarLayouts in this theme. -->
   <attr name="collapsingToolbarLayoutMediumSize" format="reference"/>
 
-  <!-- Size to use for Medium CollapsingToolbarLayouts with subtitle in this theme. -->
-  <attr name="collapsingToolbarLayoutMediumWithSubtitleSize" format="reference"/>
-
   <!-- Size to use for Large CollapsingToolbarLayouts in this theme. -->
   <attr name="collapsingToolbarLayoutLargeSize" format="reference"/>
-
-  <!-- Size to use for Large CollapsingToolbarLayouts with subtitle in this theme. -->
-  <attr name="collapsingToolbarLayoutLargeWithSubtitleSize" format="reference"/>
 
   <!-- Style to use for Surface Toolbars in this theme. -->
   <attr name="toolbarSurfaceStyle" format="reference"/>

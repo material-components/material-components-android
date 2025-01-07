@@ -31,11 +31,9 @@
         style="?attr/collapsingToolbarLayoutMediumStyle"
         android:id="@+id/collapsingtoolbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/collapsingToolbarLayoutMediumWithSubtitleSize"
+        android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-        app:expandedTitleGravity="bottom|center_horizontal"
-        app:title="@string/cat_topappbar_collapsing_demo_toolbar_medium_title"
-        app:subtitle="@string/cat_topappbar_collapsing_demo_toolbar_medium_subtitle">
+        app:expandedTitleGravity="bottom|center_horizontal">
 
       <androidx.appcompat.widget.Toolbar
           android:id="@+id/toolbar"
@@ -43,7 +41,9 @@
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
           android:elevation="0dp"
-          app:layout_collapseMode="pin"/>
+          app:layout_collapseMode="pin"
+          app:title="@string/cat_topappbar_collapsing_demo_toolbar_medium_title"
+          app:subtitle="@string/cat_topappbar_collapsing_demo_toolbar_medium_subtitle" />
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 

@@ -20,9 +20,7 @@
   <public name="collapsingToolbarLayoutMediumStyle" type="attr"/>
   <public name="collapsingToolbarLayoutLargeStyle" type="attr"/>
   <public name="collapsingToolbarLayoutMediumSize" type="attr"/>
-  <public name="collapsingToolbarLayoutMediumWithSubtitleSize" type="attr"/>
   <public name="collapsingToolbarLayoutLargeSize" type="attr"/>
-  <public name="collapsingToolbarLayoutLargeWithSubtitleSize" type="attr"/>
   <public name="toolbarSurfaceStyle" type="attr"/>
   <public name="layout_scrollInterpolator" type="attr"/>
   <public name="layout_scrollEffect" type="attr"/>

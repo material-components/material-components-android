@@ -31,11 +31,9 @@
         style="?attr/collapsingToolbarLayoutMediumStyle"
         android:id="@+id/collapsingtoolbarlayout"
         android:layout_width="match_parent"
-        android:layout_height="?attr/collapsingToolbarLayoutMediumWithSubtitleSize"
+        android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         app:expandedTitleGravity="bottom|center_horizontal"
-        app:title="@string/cat_topappbar_collapsing_demo_toolbar_medium_title"
-        app:subtitle="@string/cat_topappbar_collapsing_demo_toolbar_medium_subtitle"
         app:toolbarId="@id/toolbar">
       <LinearLayout
           android:layout_width="match_parent"
@@ -48,7 +46,9 @@
             android:layout_width="0dp"
             android:layout_height="?attr/actionBarSize"
             android:layout_weight="1"
-            android:elevation="0dp"/>
+            android:elevation="0dp"
+            app:title="@string/cat_topappbar_collapsing_demo_toolbar_medium_title"
+            app:subtitle="@string/cat_topappbar_collapsing_demo_toolbar_medium_subtitle" />
         <Button
             android:id="@+id/action_button"
             android:layout_width="wrap_content"
