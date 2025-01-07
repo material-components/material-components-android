@@ -2864,15 +2864,15 @@ abstract class BaseSlider<
       return false;
     }
 
-    float eventCoordinate = isVertical() ? event.getY() : event.getX();
+    float eventCoordinateX = isVertical() ? event.getY() : event.getX();
     float eventCoordinateY = isVertical() ? event.getX() : event.getY();
-    touchPosition = (eventCoordinate - trackSidePadding) / trackWidth;
+    touchPosition = (eventCoordinateX - trackSidePadding) / trackWidth;
     touchPosition = max(0, touchPosition);
     touchPosition = min(1, touchPosition);
 
     switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
-        touchDownX = eventCoordinate;
+        touchDownX = eventCoordinateX;
         touchDownY = eventCoordinateY;
 
         // If we're inside a vertical scrolling container,
@@ -2906,7 +2906,7 @@ abstract class BaseSlider<
         if (!thumbIsPressed) {
           // Check if we're trying to scroll vertically instead of dragging this Slider
           if (!isVertical() && isPotentialVerticalScroll(event)
-              && abs(eventCoordinate - touchDownX) < scaledTouchSlop) {
+              && abs(eventCoordinateX - touchDownX) < scaledTouchSlop) {
             return false;
           }
           // Check if we're trying to scroll horizontally instead of dragging this Slider

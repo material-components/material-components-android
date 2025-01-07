@@ -16,37 +16,41 @@
 
 package io.material.catalog.slider;
 
-import io.material.catalog.R;
-
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
 import androidx.annotation.Nullable;
+
 import com.google.android.material.slider.Slider;
+import com.google.android.material.slider.SliderOrientation;
+
+import io.material.catalog.R;
 import io.material.catalog.feature.DemoFragment;
 
 /**
- * A fragment that displays a list of {@link Slider} inside a ScrollView to showcase how touch
- * events are handled.
+ * A fragment that displays a list of vertical {@link Slider} inside a HorizontalScrollView to
+ * showcase how touch events are handled.
  */
-public class SliderScrollContainerDemoFragment extends DemoFragment {
+public class SliderVerticalScrollContainerDemoFragment extends DemoFragment {
 
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view =
         layoutInflater.inflate(
-            R.layout.cat_slider_demo_scroll, viewGroup, false /* attachToRoot */);
+            R.layout.cat_slider_demo_vertical_scroll, viewGroup, false /* attachToRoot */);
     LinearLayout sliderContainer = view.findViewById(R.id.sliderContainer);
     for (int i = 0; i < 50; i++) {
       Slider slider = new Slider(layoutInflater.getContext());
       slider.setValueTo(11f);
+      slider.setOrientation(SliderOrientation.VERTICAL);
       sliderContainer.addView(
           slider,
-          ViewGroup.LayoutParams.MATCH_PARENT,
-          ViewGroup.LayoutParams.WRAP_CONTENT);
+          ViewGroup.LayoutParams.WRAP_CONTENT,
+          ViewGroup.LayoutParams.MATCH_PARENT);
     }
     return view;
   }
