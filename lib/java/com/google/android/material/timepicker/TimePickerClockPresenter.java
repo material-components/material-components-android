@@ -242,6 +242,7 @@ class TimePickerClockPresenter
   /** Update values with the correct number format */
   private void updateValues() {
     updateValues(HOUR_CLOCK_VALUES, TimeModel.NUMBER_FORMAT);
+    updateValues(HOUR_CLOCK_24_VALUES, TimeModel.NUMBER_FORMAT);
     updateValues(MINUTE_CLOCK_VALUES, TimeModel.ZERO_LEADING_NUMBER_FORMAT);
   }
 
