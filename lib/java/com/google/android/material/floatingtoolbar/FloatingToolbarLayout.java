@@ -19,11 +19,16 @@ package com.google.android.material.floatingtoolbar;
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.max;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
@@ -31,6 +36,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.behavior.HideViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -47,8 +55,59 @@ import com.google.android.material.shape.ShapeAppearanceModel;
  * {@link android.view.ViewGroup}.
  */
 public class FloatingToolbarLayout extends FrameLayout implements AttachedBehavior {
+
+  private static final String TAG = FloatingToolbarLayout.class.getSimpleName();
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_FloatingToolbar;
   @Nullable private Behavior behavior;
+
+  private boolean marginLeftSystemWindowInsets;
+  private boolean marginTopSystemWindowInsets;
+  private boolean marginRightSystemWindowInsets;
+  private boolean marginBottomSystemWindowInsets;
+
+  private int topInset = 0;
+  private int leftInset = 0;
+  private int rightInset = 0;
+  private int bottomInset = 0;
+
+  private final Runnable insetsRunnable =
+      () -> {
+        ViewGroup.LayoutParams lp = getLayoutParams();
+        if (!(lp instanceof MarginLayoutParams)) {
+          Log.w(TAG, "Unable to update margins because layout params are not MarginLayoutParams");
+          return;
+        }
+
+        int[] coords = new int[2];
+        getLocationInWindow(coords);
+        int x = coords[0];
+        int y = coords[1];
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        if (getDisplay() == null) {
+          return;
+        }
+        getDisplay().getMetrics(displayMetrics);
+
+        MarginLayoutParams marginLp = (MarginLayoutParams) lp;
+
+        if (marginLeftSystemWindowInsets && x < leftInset) {
+          marginLp.leftMargin = max(leftInset, marginLp.leftMargin);
+        }
+
+        if (marginRightSystemWindowInsets && x + getWidth() > displayMetrics.widthPixels - rightInset) {
+          marginLp.rightMargin = max(rightInset, marginLp.rightMargin);
+        }
+
+        if (marginTopSystemWindowInsets && y < topInset) {
+          marginLp.topMargin = max(topInset, marginLp.topMargin);
+        }
+
+        if (marginBottomSystemWindowInsets && y + getHeight() > displayMetrics.heightPixels - bottomInset) {
+          marginLp.bottomMargin = max(bottomInset, marginLp.bottomMargin);
+        }
+        requestLayout();
+      };
 
   public FloatingToolbarLayout(@NonNull Context context) {
     this(context, null);
@@ -90,6 +149,34 @@ public class FloatingToolbarLayout extends FrameLayout implements AttachedBehavi
 
       setBackground(materialShapeDrawable);
     }
+
+    // Reading out if we are handling inset margins, so we can apply it to the content.
+    marginLeftSystemWindowInsets = attributes.getBoolean(R.styleable.FloatingToolbar_marginLeftSystemWindowInsets, true);
+    marginTopSystemWindowInsets = attributes.getBoolean(R.styleable.FloatingToolbar_marginTopSystemWindowInsets, true);
+    marginRightSystemWindowInsets = attributes.getBoolean(R.styleable.FloatingToolbar_marginRightSystemWindowInsets, true);
+    marginBottomSystemWindowInsets = attributes.getBoolean(R.styleable.FloatingToolbar_marginBottomSystemWindowInsets, true);
+
+    ViewCompat.setOnApplyWindowInsetsListener(
+        this,
+        new androidx.core.view.OnApplyWindowInsetsListener() {
+          @NonNull
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(
+              @NonNull View v, @NonNull WindowInsetsCompat insets) {
+            if (!marginLeftSystemWindowInsets && !marginRightSystemWindowInsets
+            && !marginTopSystemWindowInsets && !marginBottomSystemWindowInsets) {
+              return insets;
+            }
+            Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            bottomInset = systemBarInsets.bottom;
+            topInset = systemBarInsets.top;
+            rightInset = systemBarInsets.right;
+            leftInset = systemBarInsets.left;
+            v.removeCallbacks(insetsRunnable);
+            v.post(insetsRunnable);
+            return insets;
+          }
+        });
 
     attributes.recycle();
   }

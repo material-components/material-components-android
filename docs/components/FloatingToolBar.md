@@ -169,10 +169,14 @@ The following is an anatomy diagram for the navigation rail:
 
 #### Container attributes
 
-**Element** | **Attribute**         | **Related methods** | **Default value**
------------ | --------------------- | ------------------- | -----------------
-**Color**   | `app:backgroundTint`  | N/A                 | standard is `?attr/colorSurfaceContainer`, vibrant is `?attr/colorPrimaryContainer`
-**Shape**   | `app:shapeAppearance` | N/A                 | `50% rounded`
+**Element**             | **Attribute**                        | **Related methods** | **Default value**
+----------------------- | ------------------------------------ | ------------------- | -----------------
+**Color**               | `app:backgroundTint`                 | N/A                 | standard is `?attr/colorSurfaceContainer`, vibrant is `?attr/colorPrimaryContainer`
+**Shape**               | `app:shapeAppearance`                | N/A                 | `50% rounded`
+**Left inset margin**   | `app:marginLeftSystemWindowInsets`   | N/A                 | `true`
+**Top inset margin**    | `app:marginTopSystemWindowInsets`    | N/A                 | `true`
+**Right inset margin**  | `app:marginRightSystemWindowInsets`  | N/A                 | `true`
+**Bottom inset margin** | `app:marginBottomSystemWindowInsets` | N/A                 | `true`
 
 #### Styles
 
@@ -183,6 +187,8 @@ The following is an anatomy diagram for the navigation rail:
 
 Standard style theme attribute: `?attr/floatingToolbarStyle`
 Vibrant style theme attribute: `?attr/floatingToolbarVibrantStyle`
+
+Floating toolbar also provides specific styles for icon buttons, `Widget.Material3.FloatingToolbar.IconButton` and `Widget.Material3.FloatingToolbar.IconButton.Vibrant`.
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingtoolbar/res/values/styles.xml) and

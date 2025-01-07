@@ -24,5 +24,13 @@
   <declare-styleable name="FloatingToolbar">
     <!-- Color of the floating toolbar container. -->
     <attr name="backgroundTint"/>
+    <!-- Whether or not to add additional top margin to handle the top inset. -->
+    <attr name="marginTopSystemWindowInsets"/>
+    <!-- Whether or not to add additional left margin to handle the left inset. -->
+    <attr name="marginLeftSystemWindowInsets"/>
+    <!-- Whether or not to add additional right margin to handle the top inset. -->
+    <attr name="marginRightSystemWindowInsets"/>
+    <!-- Whether or not to add additional bottom margin to handle the top inset. -->
+    <attr name="marginBottomSystemWindowInsets"/>
   </declare-styleable>
 </resources>

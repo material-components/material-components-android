@@ -63,6 +63,7 @@
     <attr name="marginLeftSystemWindowInsets" format="boolean"/>
     <attr name="marginRightSystemWindowInsets" format="boolean"/>
     <attr name="marginTopSystemWindowInsets" format="boolean"/>
+    <attr name="marginBottomSystemWindowInsets" format="boolean"/>
   </declare-styleable>
 
 </resources>
