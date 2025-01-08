@@ -260,8 +260,11 @@
       <!-- The expanded title will fade out and translate, and the collapsed title will fade in. -->
       <enum name="fade" value="1"/>
     </attr>
-    <!-- The maximum number of lines to display in the expanded state. Experimental Feature. -->
+    <!-- The maximum number of lines to display the title in the expanded state. Experimental Feature. -->
     <attr name="maxLines" format="integer" />
+    <attr name="titleMaxLines" format="integer"/>
+    <!-- The maximum number of lines to display the subtitle in the expanded state. Experimental Feature. -->
+    <attr name="subtitleMaxLines" format="integer" />
     <!-- Whether the system window inset top should be applied regardless of
          what the layout_height is set to. Experimental Feature. -->
     <attr name="forceApplySystemWindowInsetTop" format="boolean" />

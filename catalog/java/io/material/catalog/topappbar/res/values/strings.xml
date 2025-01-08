@@ -85,6 +85,8 @@
   <!-- Sample long title [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_collapsing_multiline_demo_toolbar_title" description="Long title [CHAR_LIMIT=NONE]">This Collapsing Title is
     extremely long and thus will be displayed in multiple lines.</string>
+  <string name="cat_topappbar_collapsing_multiline_demo_toolbar_subtitle" description="Long subtitle [CHAR_LIMIT=NONE]">This Collapsing Subtitle is
+    extremely long and thus will be displayed in multiple lines.</string>
   <!-- Label for a button to change the maximum number of lines [CHAR_LIMIT=32] -->
   <string name="menu_max_lines">Max lines = <xliff:g id="max">%d</xliff:g></string>
 

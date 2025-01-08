@@ -196,7 +196,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
   private int topInsetApplied = 0;
   private boolean forceApplySystemWindowInsetTop;
 
-  private int extraMultilineHeight = 0;
+  private int extraMultilineTitleHeight = 0;
+  private int extraMultilineSubtitleHeight = 0;
   private boolean extraMultilineHeightEnabled;
 
   private int extraHeightForTitles = 0;
@@ -307,7 +308,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
     scrimVisibleHeightTrigger =
         a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_scrimVisibleHeightTrigger, -1);
 
-    if (a.hasValue(R.styleable.CollapsingToolbarLayout_maxLines)) {
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_titleMaxLines)) {
+      collapsingTitleHelper.setExpandedMaxLines(
+          a.getInt(R.styleable.CollapsingToolbarLayout_titleMaxLines, 1));
+    } else if (a.hasValue(R.styleable.CollapsingToolbarLayout_maxLines)) {
       collapsingTitleHelper.setExpandedMaxLines(
           a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
     }
@@ -350,6 +354,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
       collapsingSubtitleHelper.setCollapsedTextColor(
           MaterialResources.getColorStateList(
               context, a, R.styleable.CollapsingToolbarLayout_collapsedSubtitleTextColor));
+    }
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_subtitleMaxLines)) {
+      collapsingSubtitleHelper.setExpandedMaxLines(
+          a.getInt(R.styleable.CollapsingToolbarLayout_subtitleMaxLines, 1));
     }
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_titlePositionInterpolator)) {
       collapsingSubtitleHelper.setPositionInterpolator(
@@ -690,23 +698,42 @@ public class CollapsingToolbarLayout extends FrameLayout {
         extraHeightForTitles = 0;
       }
 
-      // Calculates the extra height needed for the multiline title, if needed.
-      if (extraMultilineHeightEnabled && collapsingTitleHelper.getExpandedMaxLines() > 1) {
-        int lineCount = collapsingTitleHelper.getExpandedLineCount();
-        if (lineCount > 1) {
-          // Add extra height based on the amount of height beyond the first line of title text.
-          int expandedTextHeight =
-              Math.round(collapsingTitleHelper.getExpandedTextFullSingleLineHeight());
-          extraMultilineHeight = expandedTextHeight * (lineCount - 1);
-        } else {
-          extraMultilineHeight = 0;
+      if (extraMultilineHeightEnabled) {
+        // Calculates the extra height needed for the multiline title, if needed.
+        if (collapsingTitleHelper.getExpandedMaxLines() > 1) {
+          int lineCount = collapsingTitleHelper.getExpandedLineCount();
+          if (lineCount > 1) {
+            // Add extra height based on the amount of height beyond the first line of title text.
+            int expandedTextHeight =
+                Math.round(collapsingTitleHelper.getExpandedTextFullSingleLineHeight());
+            extraMultilineTitleHeight = expandedTextHeight * (lineCount - 1);
+          } else {
+            extraMultilineTitleHeight = 0;
+          }
+        }
+        // Calculates the extra height needed for the multiline subtitle, if needed.
+        if (collapsingSubtitleHelper.getExpandedMaxLines() > 1) {
+          int lineCount = collapsingSubtitleHelper.getExpandedLineCount();
+          if (lineCount > 1) {
+            // Add extra height based on the amount of height beyond the first line of subtitle
+            // text.
+            int expandedTextHeight =
+                Math.round(collapsingSubtitleHelper.getExpandedTextFullSingleLineHeight());
+            extraMultilineSubtitleHeight = expandedTextHeight * (lineCount - 1);
+          } else {
+            extraMultilineSubtitleHeight = 0;
+          }
         }
       }
 
-      if (extraHeightForTitles + extraMultilineHeight > 0) {
+      if (extraHeightForTitles + extraMultilineTitleHeight + extraMultilineSubtitleHeight > 0) {
         heightMeasureSpec =
             MeasureSpec.makeMeasureSpec(
-                originalHeight + extraHeightForTitles + extraMultilineHeight, MeasureSpec.EXACTLY);
+                originalHeight
+                    + extraHeightForTitles
+                    + extraMultilineTitleHeight
+                    + extraMultilineSubtitleHeight,
+                MeasureSpec.EXACTLY);
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
       }
     }
@@ -790,7 +817,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
               titleBoundsRight,
               (int)
                   (titleBoundsBottom
-                      - collapsingSubtitleHelper.getExpandedTextFullSingleLineHeight()
+                      - (collapsingSubtitleHelper.getExpandedTextFullSingleLineHeight()
+                          + extraMultilineSubtitleHeight)
                       - expandedTitleSpacing),
               /* alignBaselineAtBottom= */ false);
           collapsingSubtitleHelper.setExpandedBounds(
@@ -798,7 +826,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
               (int)
                   (titleBoundsTop
                       + (collapsingTitleHelper.getExpandedTextFullSingleLineHeight()
-                          + extraMultilineHeight)
+                          + extraMultilineTitleHeight)
                       + expandedTitleSpacing),
               titleBoundsRight,
               titleBoundsBottom,
@@ -1713,6 +1741,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   @RestrictTo(LIBRARY_GROUP)
   public void setMaxLines(int maxLines) {
     collapsingTitleHelper.setExpandedMaxLines(maxLines);
+    collapsingSubtitleHelper.setExpandedMaxLines(maxLines);
   }
 
   /** Gets the maximum number of lines to display in the expanded state. Experimental Feature. */
@@ -1880,7 +1909,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
       // If we have one explicitly set, return it
       return scrimVisibleHeightTrigger
           + topInsetApplied
-          + extraMultilineHeight
+          + extraMultilineTitleHeight
+          + extraMultilineSubtitleHeight
           + extraHeightForTitles;
     }
 
