@@ -332,7 +332,7 @@ public class ViewUtils {
   public static void requestApplyInsetsWhenAttached(@NonNull View view) {
     if (view.isAttachedToWindow()) {
       // We're already attached, just request as normal.
-      ViewCompat.requestApplyInsets(view);
+      view.requestApplyInsets();
     } else {
       // We're not attached to the hierarchy, add a listener to request when we are.
       view.addOnAttachStateChangeListener(
@@ -340,7 +340,7 @@ public class ViewUtils {
             @Override
             public void onViewAttachedToWindow(@NonNull View v) {
               v.removeOnAttachStateChangeListener(this);
-              ViewCompat.requestApplyInsets(v);
+              v.requestApplyInsets();
             }
 
             @Override
@@ -357,7 +357,7 @@ public class ViewUtils {
     float absoluteElevation = 0;
     ViewParent viewParent = view.getParent();
     while (viewParent instanceof View) {
-      absoluteElevation += ViewCompat.getElevation((View) viewParent);
+      absoluteElevation += ((View) viewParent).getElevation();
       viewParent = viewParent.getParent();
     }
     return absoluteElevation;

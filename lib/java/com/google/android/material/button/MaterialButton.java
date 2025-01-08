@@ -387,8 +387,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   /**
-   * This should be accessed via {@link
-   * androidx.core.view.ViewCompat#getBackgroundTintList(android.view.View)}
+   * This should be accessed via {@link android.view.View#getBackgroundTintList()}
    *
    * @hide
    */
@@ -425,8 +424,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   /**
-   * This should be accessed via {@link
-   * androidx.core.view.ViewCompat#getBackgroundTintMode(android.view.View)}
+   * This should be accessed via {@link android.view.View#getBackgroundTintMode()}
    *
    * @hide
    */
@@ -927,9 +925,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   private void updateIcon(boolean needsIconReset) {
     if (icon != null) {
       icon = DrawableCompat.wrap(icon).mutate();
-      DrawableCompat.setTintList(icon, iconTint);
+      icon.setTintList(iconTint);
       if (iconTintMode != null) {
-        DrawableCompat.setTintMode(icon, iconTintMode);
+        icon.setTintMode(iconTintMode);
       }
 
       int width = iconSize != 0 ? iconSize : icon.getIntrinsicWidth();

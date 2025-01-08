@@ -234,7 +234,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
       if (hasIconTintList) {
         Drawable.ConstantState state = icon.getConstantState();
         icon = DrawableCompat.wrap(state == null ? icon : state.newDrawable()).mutate();
-        DrawableCompat.setTintList(icon, iconTintList);
+        icon.setTintList(iconTintList);
       }
       icon.setBounds(0, 0, iconSize, iconSize);
     } else if (needsEmptyIcon) {

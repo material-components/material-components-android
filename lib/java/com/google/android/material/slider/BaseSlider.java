@@ -2014,7 +2014,7 @@ abstract class BaseSlider<
       }
 
       if (trackIconActiveStartMutated) {
-        DrawableCompat.setTintList(trackIconActiveStart, trackIconActiveColor);
+        trackIconActiveStart.setTintList(trackIconActiveColor);
       }
     }
   }
@@ -2075,7 +2075,7 @@ abstract class BaseSlider<
       }
 
       if (trackIconActiveEndMutated) {
-        DrawableCompat.setTintList(trackIconActiveEnd, trackIconActiveColor);
+        trackIconActiveEnd.setTintList(trackIconActiveColor);
       }
     }
   }
@@ -2192,7 +2192,7 @@ abstract class BaseSlider<
       }
 
       if (trackIconInactiveStartMutated) {
-        DrawableCompat.setTintList(trackIconInactiveStart, trackIconInactiveColor);
+        trackIconInactiveStart.setTintList(trackIconInactiveColor);
       }
     }
   }
@@ -2253,7 +2253,7 @@ abstract class BaseSlider<
       }
 
       if (trackIconInactiveEndMutated) {
-        DrawableCompat.setTintList(trackIconInactiveEnd, trackIconInactiveColor);
+        trackIconInactiveEnd.setTintList(trackIconInactiveColor);
       }
     }
   }
@@ -2455,8 +2455,7 @@ abstract class BaseSlider<
         if (isVertical()) {
           rotationMatrix.mapPoints(haloBounds);
         }
-        DrawableCompat.setHotspotBounds(
-            background,
+        background.setHotspotBounds(
             (int) haloBounds[0],
             (int) haloBounds[1],
             (int) haloBounds[2],

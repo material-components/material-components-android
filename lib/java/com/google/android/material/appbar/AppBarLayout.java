@@ -336,7 +336,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           if (statusBarForeground != null
               && statusBarForegroundOriginalColor != null
               && statusBarForegroundOriginalColor.equals(colorSurface)) {
-            DrawableCompat.setTint(statusBarForeground, mixedColor);
+            statusBarForeground.setTint(mixedColor);
           }
 
           if (!liftOnScrollListeners.isEmpty()) {
@@ -1242,7 +1242,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
      * When exiting (scrolling off screen) the view will be scrolled until it is 'collapsed'. The
      * collapsed height is defined by the view's minimum height.
      *
-     * @see ViewCompat#getMinimumHeight(View)
+     * @see View#getMinimumHeight()
      * @see View#setMinimumHeight(int)
      */
     public static final int SCROLL_FLAG_EXIT_UNTIL_COLLAPSED = 1 << 1;
@@ -1260,7 +1260,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
      * scroll range, the remainder of this view will be scrolled into view. The collapsed height is
      * defined by the view's minimum height.
      *
-     * @see ViewCompat#getMinimumHeight(View)
+     * @see View#getMinimumHeight()
      * @see View#setMinimumHeight(int)
      */
     public static final int SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED = 1 << 3;

@@ -60,7 +60,6 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.appbar.AppBarLayout;
@@ -200,7 +199,7 @@ public class SearchBar extends Toolbar {
 
     textView = findViewById(R.id.open_search_bar_text_view);
 
-    ViewCompat.setElevation(this, elevation);
+    setElevation(elevation);
     initTextView(textAppearanceResId, text, hint);
     initBackground(shapeAppearanceModel, backgroundColor, elevation, strokeWidth, strokeColor);
   }
@@ -335,7 +334,7 @@ public class SearchBar extends Toolbar {
     }
 
     Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
-    DrawableCompat.setTint(wrappedNavigationIcon, navigationIconColor);
+    wrappedNavigationIcon.setTint(navigationIconColor);
     return wrappedNavigationIcon;
   }
 
@@ -801,7 +800,7 @@ public class SearchBar extends Toolbar {
   }
 
   float getCompatElevation() {
-    return backgroundShape != null ? backgroundShape.getElevation() : ViewCompat.getElevation(this);
+    return backgroundShape != null ? backgroundShape.getElevation() : getElevation();
   }
 
   /** Behavior that sets up the scroll-away mode for an {@link SearchBar}. */

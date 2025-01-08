@@ -51,7 +51,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -984,7 +983,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   /**
    * A Property wrapper around the <code>paddingStart</code> functionality handled by the {@link
-   * ViewCompat#setPaddingRelative(View, int, int, int, int)}.
+   * View#setPaddingRelative(int, int, int, int)}.
    */
   static final Property<View, Float> PADDING_START =
       new Property<View, Float>(Float.class, "paddingStart") {
@@ -1006,7 +1005,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   /**
    * A Property wrapper around the <code>paddingEnd</code> functionality handled by the {@link
-   * ViewCompat#setPaddingRelative(View, int, int, int, int)}.
+   * View#setPaddingRelative(int, int, int, int)}.
    */
   static final Property<View, Float> PADDING_END =
       new Property<View, Float>(Float.class, "paddingEnd") {

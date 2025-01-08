@@ -416,7 +416,7 @@ class MaterialCardViewHelper {
   void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
     this.checkedIconTint = checkedIconTint;
     if (checkedIcon != null) {
-      DrawableCompat.setTintList(checkedIcon, checkedIconTint);
+      checkedIcon.setTintList(checkedIconTint);
     }
   }
 
@@ -438,7 +438,7 @@ class MaterialCardViewHelper {
   void setCheckedIcon(@Nullable Drawable checkedIcon) {
     if (checkedIcon != null) {
       this.checkedIcon = DrawableCompat.wrap(checkedIcon).mutate();
-      DrawableCompat.setTintList(this.checkedIcon, checkedIconTint);
+      this.checkedIcon.setTintList(checkedIconTint);
       setChecked(materialCardView.isChecked());
     } else {
       this.checkedIcon = CHECKED_ICON_NONE;
