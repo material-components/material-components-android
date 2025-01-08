@@ -1175,7 +1175,7 @@ public abstract class NavigationBarItemView extends FrameLayout
    *
    * @param availableWidth The total width of this item layout.
    */
-  private void updateActiveIndicatorLayoutParams(int availableWidth) {
+  public void updateActiveIndicatorLayoutParams(int availableWidth) {
     // Set width to the min of either the desired indicator width or the available width minus
     // a horizontal margin.
     if (availableWidth <= 0 && getVisibility() == VISIBLE) {

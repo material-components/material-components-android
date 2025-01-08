@@ -1484,4 +1484,14 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       throw new IllegalArgumentException(viewId + " is not a valid view id");
     }
   }
+
+  public void updateActiveIndicator(int availableWidth) {
+    if (buttons != null) {
+      for (NavigationBarMenuItemView item : buttons) {
+        if (item instanceof NavigationBarItemView) {
+          ((NavigationBarItemView) item).updateActiveIndicatorLayoutParams(availableWidth);
+        }
+      }
+    }
+  }
 }
