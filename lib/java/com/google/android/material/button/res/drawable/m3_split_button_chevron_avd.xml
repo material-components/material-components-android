@@ -17,18 +17,22 @@
 <animated-selector xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
-  android:width="22dp"
-  android:height="22dp"
+  android:width="20dp"
+  android:height="20dp"
   tools:ignore="NewApi">
 
   <item
     android:id="@+id/checked"
     android:drawable="@drawable/ic_expand_less_22px"
+    app:iconSize="20dp"
+    app:iconPadding="0dp"
     android:state_checked="true" />
 
   <item
     android:id="@+id/unchecked"
     android:drawable="@drawable/ic_expand_more_22px"
+    app:iconSize="20dp"
+    app:iconPadding="0dp"
     android:state_checked="false" />
 
   <transition
