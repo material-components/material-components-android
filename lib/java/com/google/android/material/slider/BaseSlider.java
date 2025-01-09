@@ -2673,6 +2673,10 @@ abstract class BaseSlider<
       @NonNull Canvas canvas,
       @NonNull RectF activeTrackBounds,
       @NonNull RectF inactiveTrackBounds) {
+    if (!hasTrackIcons()) {
+      return;
+    }
+
     if (values.size() > 1) {
       Log.w(TAG, "Track icons can only be used when only 1 thumb is present.");
     }
@@ -2687,6 +2691,13 @@ abstract class BaseSlider<
         canvas, activeTrackBounds, trackIconActiveEnd, false);
     calculateBoundsAndDrawTrackIcon(
         canvas, inactiveTrackBounds, trackIconInactiveEnd, false);
+  }
+
+  private boolean hasTrackIcons() {
+    return trackIconActiveStart != null
+        || trackIconActiveEnd != null
+        || trackIconInactiveStart != null
+        || trackIconInactiveEnd != null;
   }
 
   private void calculateBoundsAndDrawTrackIcon(
