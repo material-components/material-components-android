@@ -199,6 +199,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
   private int extraMultilineHeight = 0;
   private boolean extraMultilineHeightEnabled;
 
+  private int extraHeightForTitles = 0;
+
   public CollapsingToolbarLayout(@NonNull Context context) {
     this(context, null);
   }
@@ -225,14 +227,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.CollapsingToolbarLayout, defStyleAttr, DEF_STYLE_RES);
 
-    collapsingTitleHelper.setExpandedTextGravity(
+    int titleExpandedGravity =
         a.getInt(
             R.styleable.CollapsingToolbarLayout_expandedTitleGravity,
-            Gravity.START | Gravity.BOTTOM));
-    collapsingTitleHelper.setCollapsedTextGravity(
+            Gravity.START | Gravity.BOTTOM);
+    int titleCollapsedGravity =
         a.getInt(
             R.styleable.CollapsingToolbarLayout_collapsedTitleGravity,
-            Gravity.START | Gravity.CENTER_VERTICAL));
+            Gravity.START | Gravity.CENTER_VERTICAL);
+
+    collapsingTitleHelper.setExpandedTextGravity(titleExpandedGravity);
+    collapsingTitleHelper.setCollapsedTextGravity(titleCollapsedGravity);
 
     expandedMarginStart =
         expandedMarginTop =
@@ -322,14 +327,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
       setSubtitle(a.getText(R.styleable.CollapsingToolbarLayout_subtitle));
     }
 
-    collapsingSubtitleHelper.setExpandedTextGravity(
-        a.getInt(
-            R.styleable.CollapsingToolbarLayout_expandedSubtitleGravity,
-            Gravity.START | Gravity.BOTTOM));
-    collapsingSubtitleHelper.setCollapsedTextGravity(
-        a.getInt(
-            R.styleable.CollapsingToolbarLayout_collapsedSubtitleGravity,
-            Gravity.START | Gravity.CENTER_VERTICAL));
+    collapsingSubtitleHelper.setExpandedTextGravity(titleExpandedGravity);
+    collapsingSubtitleHelper.setCollapsedTextGravity(titleCollapsedGravity);
     collapsingSubtitleHelper.setExpandedTextAppearance(
         androidx.appcompat.R.style.TextAppearance_AppCompat_Headline);
     collapsingSubtitleHelper.setCollapsedTextAppearance(
@@ -667,22 +666,48 @@ public class CollapsingToolbarLayout extends FrameLayout {
       super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
-    if (extraMultilineHeightEnabled && collapsingTitleHelper.getExpandedMaxLines() > 1) {
-      // Need to update title and bounds in order to calculate line count and text height.
-      updateTitleFromToolbarIfNeeded();
-      updateTextBounds(0, 0, getMeasuredWidth(), getMeasuredHeight(), /* forceRecalculate= */ true);
+    updateTitleFromToolbarIfNeeded();
 
-      int lineCount = collapsingTitleHelper.getExpandedLineCount();
-      if (lineCount > 1) {
-        // Add extra height based on the amount of height beyond the first line of title text.
-        int expandedTextHeight =
-            Math.round(collapsingTitleHelper.getExpandedTextFullSingleLineHeight());
-        extraMultilineHeight = expandedTextHeight * (lineCount - 1);
-        int newHeight = getMeasuredHeight() + extraMultilineHeight;
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(newHeight, MeasureSpec.EXACTLY);
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    if (collapsingTitleEnabled && !TextUtils.isEmpty(collapsingTitleHelper.getText())) {
+      final int originalHeight = getMeasuredHeight();
+      // Need to update title and bounds in order to calculate line count and text height.
+      updateTextBounds(0, 0, getMeasuredWidth(), originalHeight, /* forceRecalculate= */ true);
+
+      // Calculates the extra height needed for the contents of the collapsing toolbar, if needed.
+      int expectedHeight =
+          (int)
+              (topInsetApplied
+                  + expandedMarginTop
+                  + collapsingTitleHelper.getExpandedTextFullSingleLineHeight()
+                  + (TextUtils.isEmpty(collapsingSubtitleHelper.getText())
+                      ? 0
+                      : expandedTitleSpacing
+                          + collapsingSubtitleHelper.getExpandedTextFullSingleLineHeight())
+                  + expandedMarginBottom);
+      if (expectedHeight > originalHeight) {
+        extraHeightForTitles = expectedHeight - originalHeight;
       } else {
-        extraMultilineHeight = 0;
+        extraHeightForTitles = 0;
+      }
+
+      // Calculates the extra height needed for the multiline title, if needed.
+      if (extraMultilineHeightEnabled && collapsingTitleHelper.getExpandedMaxLines() > 1) {
+        int lineCount = collapsingTitleHelper.getExpandedLineCount();
+        if (lineCount > 1) {
+          // Add extra height based on the amount of height beyond the first line of title text.
+          int expandedTextHeight =
+              Math.round(collapsingTitleHelper.getExpandedTextFullSingleLineHeight());
+          extraMultilineHeight = expandedTextHeight * (lineCount - 1);
+        } else {
+          extraMultilineHeight = 0;
+        }
+      }
+
+      if (extraHeightForTitles + extraMultilineHeight > 0) {
+        heightMeasureSpec =
+            MeasureSpec.makeMeasureSpec(
+                originalHeight + extraHeightForTitles + extraMultilineHeight, MeasureSpec.EXACTLY);
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
       }
     }
 
@@ -747,35 +772,37 @@ public class CollapsingToolbarLayout extends FrameLayout {
         updateCollapsedBounds(isRtl);
 
         // Update the expanded bounds
+        final int titleBoundsLeft = isRtl ? expandedMarginEnd : expandedMarginStart;
+        final int titleBoundsTop = tmpRect.top + expandedMarginTop;
+        final int titleBoundsRight =
+            right - left - (isRtl ? expandedMarginStart : expandedMarginEnd);
+        final int titleBoundsBottom = bottom - top - expandedMarginBottom;
         if (TextUtils.isEmpty(collapsingSubtitleHelper.getText())) {
           collapsingTitleHelper.setExpandedBounds(
-              isRtl ? expandedMarginEnd : expandedMarginStart,
-              tmpRect.top + expandedMarginTop,
-              right - left - (isRtl ? expandedMarginStart : expandedMarginEnd),
-              bottom - top - expandedMarginBottom);
+              titleBoundsLeft, titleBoundsTop, titleBoundsRight, titleBoundsBottom);
 
           // Now recalculate using the new bounds
           collapsingTitleHelper.recalculate(forceRecalculate);
         } else {
           collapsingTitleHelper.setExpandedBounds(
-              isRtl ? expandedMarginEnd : expandedMarginStart,
-              tmpRect.top + expandedMarginTop,
-              right - left - (isRtl ? expandedMarginStart : expandedMarginEnd),
+              titleBoundsLeft,
+              titleBoundsTop,
+              titleBoundsRight,
               (int)
-                  (bottom
-                      - top
-                      - expandedMarginBottom
+                  (titleBoundsBottom
                       - collapsingSubtitleHelper.getExpandedTextFullSingleLineHeight()
-                      - expandedTitleSpacing));
+                      - expandedTitleSpacing),
+              /* alignBaselineAtBottom= */ false);
           collapsingSubtitleHelper.setExpandedBounds(
-              isRtl ? expandedMarginEnd : expandedMarginStart,
+              titleBoundsLeft,
               (int)
-                  (tmpRect.top
-                      + expandedMarginTop
-                      + collapsingTitleHelper.getExpandedTextFullSingleLineHeight()
+                  (titleBoundsTop
+                      + (collapsingTitleHelper.getExpandedTextFullSingleLineHeight()
+                          + extraMultilineHeight)
                       + expandedTitleSpacing),
-              right - left - (isRtl ? expandedMarginStart : expandedMarginEnd),
-              bottom - top - expandedMarginBottom);
+              titleBoundsRight,
+              titleBoundsBottom,
+              /* alignBaselineAtBottom= */ false);
 
           // Now recalculate using the new bounds
           collapsingTitleHelper.recalculate(forceRecalculate);
@@ -788,9 +815,15 @@ public class CollapsingToolbarLayout extends FrameLayout {
   private void updateTitleFromToolbarIfNeeded() {
     if (toolbar != null) {
       if (collapsingTitleEnabled) {
-        if (TextUtils.isEmpty(collapsingTitleHelper.getText())) {
+        CharSequence title = getToolbarTitle(toolbar);
+        if (TextUtils.isEmpty(collapsingTitleHelper.getText()) && !TextUtils.isEmpty(title)) {
           // If we do not currently have a title, try and grab it from the Toolbar
-          setTitle(getToolbarTitle(toolbar));
+          setTitle(title);
+        }
+        CharSequence subtitle = getToolbarSubtitle(toolbar);
+        if (TextUtils.isEmpty(collapsingSubtitleHelper.getText()) && !TextUtils.isEmpty(subtitle)) {
+          // If we do not currently have a subtitle, try and grab it from the Toolbar
+          setSubtitle(subtitle);
         }
       }
     }
@@ -822,31 +855,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
       titleMarginTop = 0;
       titleMarginBottom = 0;
     }
+    final int titleBoundsLeft = tmpRect.left + (isRtl ? titleMarginEnd : titleMarginStart);
+    final int titleBoundsRight = tmpRect.right - (isRtl ? titleMarginStart : titleMarginEnd);
+    final int titleBoundsTop = tmpRect.top + maxOffset + titleMarginTop;
+    final int titleBoundsBottom = tmpRect.bottom + maxOffset - titleMarginBottom;
     if (TextUtils.isEmpty(collapsingSubtitleHelper.getText())) {
       collapsingTitleHelper.setCollapsedBounds(
-          tmpRect.left + (isRtl ? titleMarginEnd : titleMarginStart),
-          tmpRect.top + maxOffset + titleMarginTop,
-          tmpRect.right - (isRtl ? titleMarginStart : titleMarginEnd),
-          tmpRect.bottom + maxOffset - titleMarginBottom);
+          titleBoundsLeft, titleBoundsTop, titleBoundsRight, titleBoundsBottom);
     } else {
       collapsingTitleHelper.setCollapsedBounds(
-          tmpRect.left + (isRtl ? titleMarginEnd : titleMarginStart),
-          tmpRect.top + maxOffset + titleMarginTop,
-          tmpRect.right - (isRtl ? titleMarginStart : titleMarginEnd),
-          (int)
-              (tmpRect.bottom
-                  + maxOffset
-                  - titleMarginBottom
-                  - collapsingSubtitleHelper.getCollapsedFullSingleLineHeight()));
+          titleBoundsLeft,
+          titleBoundsTop,
+          titleBoundsRight,
+          (int) (titleBoundsBottom - collapsingSubtitleHelper.getCollapsedFullSingleLineHeight()));
       collapsingSubtitleHelper.setCollapsedBounds(
-          tmpRect.left + (isRtl ? titleMarginEnd : titleMarginStart),
-          (int)
-              (tmpRect.top
-                  + maxOffset
-                  + titleMarginTop
-                  + collapsingTitleHelper.getCollapsedFullSingleLineHeight()),
-          tmpRect.right - (isRtl ? titleMarginStart : titleMarginEnd),
-          tmpRect.bottom + maxOffset - titleMarginBottom);
+          titleBoundsLeft,
+          (int) (titleBoundsTop + collapsingTitleHelper.getCollapsedFullSingleLineHeight()),
+          titleBoundsRight,
+          titleBoundsBottom);
     }
   }
 
@@ -856,6 +882,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
       return ((androidx.appcompat.widget.Toolbar) view).getTitle();
     } else if (view instanceof android.widget.Toolbar) {
       return ((android.widget.Toolbar) view).getTitle();
+    } else {
+      return null;
+    }
+  }
+
+  @Nullable
+  private static CharSequence getToolbarSubtitle(View view) {
+    if (view instanceof androidx.appcompat.widget.Toolbar) {
+      return ((androidx.appcompat.widget.Toolbar) view).getSubtitle();
+    } else if (view instanceof android.widget.Toolbar) {
+      return ((android.widget.Toolbar) view).getSubtitle();
     } else {
       return null;
     }
@@ -1324,44 +1361,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
-   * Sets the horizontal alignment of the collapsed title and the vertical gravity that will be used
-   * when there is extra space in the collapsed bounds beyond what is required for the title itself.
+   * Sets the horizontal alignment of the collapsed titles and the vertical gravity that will be
+   * used when there is extra space in the collapsed bounds beyond what is required for the title
+   * itself.
    *
    * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedTitleGravity
    */
   public void setCollapsedTitleGravity(int gravity) {
     collapsingTitleHelper.setCollapsedTextGravity(gravity);
-  }
-
-  /**
-   * Sets the horizontal alignment of the collapsed subtitle and the vertical gravity that will be
-   * used when there is extra space in the collapsed bounds beyond what is required for the subtitle
-   * itself.
-   *
-   * @attr ref
-   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedSubtitleGravity
-   */
-  public void setCollapsedSubitleGravity(int gravity) {
     collapsingSubtitleHelper.setCollapsedTextGravity(gravity);
   }
 
   /**
-   * Returns the horizontal and vertical alignment for title when collapsed.
+   * Returns the horizontal and vertical alignment for titles when collapsed.
    *
    * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedTitleGravity
    */
   public int getCollapsedTitleGravity() {
     return collapsingTitleHelper.getCollapsedTextGravity();
-  }
-
-  /**
-   * Returns the horizontal and vertical alignment for subtitle when collapsed.
-   *
-   * @attr ref
-   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_collapsedSubtitleGravity
-   */
-  public int getCollapsedSubtitleGravity() {
-    return collapsingSubtitleHelper.getCollapsedTextGravity();
   }
 
   /**
@@ -1422,44 +1439,23 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
-   * Sets the horizontal alignment of the expanded title and the vertical gravity that will be used
+   * Sets the horizontal alignment of the expanded titles and the vertical gravity that will be used
    * when there is extra space in the expanded bounds beyond what is required for the title itself.
    *
    * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleGravity
    */
   public void setExpandedTitleGravity(int gravity) {
     collapsingTitleHelper.setExpandedTextGravity(gravity);
-  }
-
-  /**
-   * Sets the horizontal alignment of the expanded subtitle and the vertical gravity that will be
-   * used when there is extra space in the expanded bounds beyond what is required for the subtitle
-   * itself.
-   *
-   * @attr ref
-   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedSubtitleGravity
-   */
-  public void setExpandedSubtitleGravity(int gravity) {
     collapsingSubtitleHelper.setExpandedTextGravity(gravity);
   }
 
   /**
-   * Returns the horizontal and vertical alignment for title when expanded.
+   * Returns the horizontal and vertical alignment for titles when expanded.
    *
    * @attr ref com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedTitleGravity
    */
   public int getExpandedTitleGravity() {
     return collapsingTitleHelper.getExpandedTextGravity();
-  }
-
-  /**
-   * Returns the horizontal and vertical alignment for subtitle when expanded.
-   *
-   * @attr ref
-   *     com.google.android.material.R.styleable#CollapsingToolbarLayout_expandedSubtitleGravity
-   */
-  public int getExpandedSubtitleGravity() {
-    return collapsingSubtitleHelper.getExpandedTextGravity();
   }
 
   /**
@@ -1882,7 +1878,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
   public int getScrimVisibleHeightTrigger() {
     if (scrimVisibleHeightTrigger >= 0) {
       // If we have one explicitly set, return it
-      return scrimVisibleHeightTrigger + topInsetApplied + extraMultilineHeight;
+      return scrimVisibleHeightTrigger
+          + topInsetApplied
+          + extraMultilineHeight
+          + extraHeightForTitles;
     }
 
     // Otherwise we'll use the default computed value

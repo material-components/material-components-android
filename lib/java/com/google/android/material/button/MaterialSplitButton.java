@@ -21,9 +21,12 @@ import com.google.android.material.R;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.content.Context;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -104,6 +107,25 @@ public class MaterialSplitButton extends MaterialButtonGroup {
     super.addView(child, index, params);
     if (indexOfChild(child) == 1) {
       buttonChild.setCheckable(true);
+      buttonChild.setA11yClassName(Button.class.getName());
+      if (VERSION.SDK_INT >= VERSION_CODES.R) {
+        // Set initial content description based on checked state when focused.
+        buttonChild.setStateDescription(
+            getResources()
+                .getString(
+                    buttonChild.isChecked()
+                        ? R.string.mtrl_button_expanded_content_description
+                        : R.string.mtrl_button_collapsed_content_description));
+
+        buttonChild.addOnCheckedChangeListener(
+            (button, isChecked) ->
+                button.setStateDescription(
+                    getResources()
+                        .getString(
+                            isChecked
+                                ? R.string.mtrl_button_expanded_content_description
+                                : R.string.mtrl_button_collapsed_content_description)));
+      }
     }
   }
 }

@@ -48,8 +48,9 @@ public class NavigationBarMenuBuilder {
   }
 
   /**
-   * Returns total number of items in the menu, including submenus and submenu items. For example,
-   * a Menu with items {Item, SubMenu, SubMenuItem} would have a size of 3.
+   * Returns total number of items in the menu, including submenus, submenu items, and dividers. For
+   * example, a Menu with items {Item, Divider, SubMenu, SubMenuItem, Divider} would have a size of
+   * 5.
    */
   public int size() {
     return items.size();
@@ -103,8 +104,13 @@ public class NavigationBarMenuBuilder {
     visibleMainItemCount = 0;
     for (int i = 0; i < menuBuilder.size(); i++) {
       MenuItem item = menuBuilder.getItem(i);
-      items.add(item);
       if (item.hasSubMenu()) {
+        if (!items.isEmpty()
+            && !(items.get(items.size() - 1) instanceof DividerMenuItem)
+            && item.isVisible()) {
+          items.add(new DividerMenuItem());
+        }
+        items.add(item);
         SubMenu subMenu = item.getSubMenu();
         for (int j = 0; j < subMenu.size(); j++) {
           MenuItem submenuItem = subMenu.getItem(j);
@@ -117,13 +123,19 @@ public class NavigationBarMenuBuilder {
             visibleContentItemCount++;
           }
         }
+        items.add(new DividerMenuItem());
       } else {
+        items.add(item);
         contentItemCount++;
         if (item.isVisible()) {
           visibleContentItemCount++;
           visibleMainItemCount++;
         }
       }
+    }
+
+    if (!items.isEmpty() && items.get(items.size()-1) instanceof DividerMenuItem) {
+      items.remove(items.size()-1);
     }
   }
 }

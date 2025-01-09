@@ -90,6 +90,7 @@
 
   <style name="Widget.Material3.TabLayout" parent="Base.Widget.Material3.TabLayout">
     <item name="android:background">@drawable/m3_tabs_background</item>
+    <item name="tabUnboundedRipple">false</item>
   </style>
 
   <!-- Styles for M3 Tabs used on an elevatable surface. -->

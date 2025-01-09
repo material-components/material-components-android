@@ -71,6 +71,8 @@
     <attr name="expanded" />
     <!-- Whether or not to enable scrolling in the NavigationRail. -->
     <attr name="scrollingEnabled" format="boolean" />
+    <!-- Whether or not to add a divider between every submenu. -->
+    <attr name="submenuDividersEnabled" format="boolean" />
   </declare-styleable>
 
 </resources>

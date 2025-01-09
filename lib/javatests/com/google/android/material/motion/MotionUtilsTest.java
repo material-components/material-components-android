@@ -19,8 +19,10 @@ package com.google.android.material.motion;
 import com.google.android.material.test.R;
 
 import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
 
 import android.animation.TimeInterpolator;
+import android.content.Context;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.animation.AccelerateInterpolator;
@@ -29,6 +31,8 @@ import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.PathInterpolator;
 import androidx.annotation.RequiresApi;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.dynamicanimation.animation.SpringForce;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Rule;
 import org.junit.Test;
@@ -50,6 +54,33 @@ public class MotionUtilsTest {
   private ActivityController<AppCompatActivity> activityController;
 
   @Rule public final ExpectedException thrown = ExpectedException.none();
+
+  @Test
+  public void testResolvesThemeSpring() {
+    createActivityAndSetTheme(R.style.Theme_Material3_DayNight);
+    Context context = activityController.get().getApplicationContext();
+    float expectedStiffness = ResourcesCompat.getFloat(
+        context.getResources(), R.dimen.m3_sys_motion_standard_spring_fast_spatial_stiffness);
+    float expectedDampingRatio = ResourcesCompat.getFloat(
+        context.getResources(), R.dimen.m3_sys_motion_standard_spring_fast_spatial_damping);
+    SpringForce spring =
+        MotionUtils.resolveThemeSpringForce(context, R.attr.motionSpringFastSpatial);
+
+    assertThat(spring.getStiffness()).isEqualTo(expectedStiffness);
+    assertThat(spring.getDampingRatio()).isEqualTo(expectedDampingRatio);
+  }
+
+  @Test
+  public void testPartialSpring_shouldThrow() {
+    createActivityAndSetTheme(R.style.Theme_Material3_DayNight_PartialSpring);
+    Context context = activityController.get().getApplicationContext();
+
+    IllegalArgumentException thrown = assertThrows(
+        IllegalArgumentException.class,
+        () -> MotionUtils.resolveThemeSpringForce(context, R.attr.motionSpringFastSpatial)
+    );
+    assertThat(thrown).hasMessageThat().contains("must have a damping");
+  }
 
   @Test
   public void testResolvesThemeInterpolator() {

@@ -139,6 +139,13 @@ public class TopAppBarFragment extends DemoLandingFragment {
           public Fragment createFragment() {
             return new TopAppBarCollapsingFilledActionDemoFragment();
           }
+        },
+        new Demo(R.string.cat_topappbar_collapsing_with_toggleable_action_demo_title) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingToggleableActionDemoFragment();
+          }
         });
   }
 

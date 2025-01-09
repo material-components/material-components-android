@@ -147,7 +147,7 @@ Element          | Attribute             | Related method(s)                    
 **Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorSurfaceContainerLow` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
 **Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
 **Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
-**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `ShapeAppearance.M3.Sys.Shape.Corner.Full`
 **Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `1dp`
 **Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
 
@@ -262,7 +262,7 @@ Element          | Attribute             | Related method(s)                    
 **Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
 **Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
 **Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
-**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `ShapeAppearance.M3.Sys.Shape.Corner.Full`
 **Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `2dp`
 **Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnPrimary` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_ripple_color_selector.xml))
 
@@ -377,7 +377,7 @@ Element          | Attribute             | Related method(s)                    
 **Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `?attr/colorSecondaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
 **Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
 **Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
-**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `ShapeAppearance.M3.Sys.Shape.Corner.Full`
 **Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `2dp`
 **Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSecondaryContainer` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_tonal_button_ripple_color_selector.xml))
 
@@ -488,7 +488,7 @@ Element          | Attribute             | Related method(s)                    
 **Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
 **Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `?attr/colorOnSurface` at 12% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_button_outline_color_selector.xml))
 **Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `1dp`
-**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `ShapeAppearance.M3.Sys.Shape.Corner.Full`
 **Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `0dp`
 **Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
 
@@ -595,7 +595,7 @@ Element          | Attribute             | Related method(s)                    
 **Color**        | `app:backgroundTint`  | `setBackgroundColor`<br/>`setBackgroundTintList`<br/>`getBackgroundTintList` | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_background_color_selector.xml))
 **Stroke color** | `app:strokeColor`     | `setStrokeColor`<br/>`setStrokeColorResource`<br/>`getStrokeColor`           | `null`
 **Stroke width** | `app:strokeWidth`     | `setStrokeWidth`<br/>`setStrokeWidthResource`<br/>`getStrokeWidth`           | `0dp`
-**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `?attr/shapeAppearanceSmallComponent`
+**Shape**        | `app:shapeAppearance` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                      | `ShapeAppearance.M3.Sys.Shape.Corner.Full`
 **Elevation**    | `app:elevation`       | `setElevation`<br/>`getElevation`                                            | `0dp`
 **Ripple color** | `app:rippleColor`     | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`           | `?attr/colorOnSurface` at 16% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_ripple_color_selector.xml))
 
@@ -1203,17 +1203,12 @@ all buttons. This affects other components:
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
     <item name="textAppearanceLabelLarge">@style/TextAppearance.App.Button</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="shapeCornerFamily">cut</item>
 </style>
 
 <style name="TextAppearance.App.Button" parent="TextAppearance.Material3.LabelLarge">
     <item name="fontFamily">@font/rubik</item>
     <item name="android:fontFamily">@font/rubik</item>
-</style>
-
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
-    <item name="cornerFamily">cut</item>
-    <item name="cornerSize">4dp</item>
 </style>
 ```
 
@@ -1231,19 +1226,19 @@ theme to all buttons but does not affect other components:
 <style name="Widget.App.Button.TextButton" parent="Widget.Material3.Button.TextButton">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.TextButton</item>
     <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.Button</item>
 </style>
 
 <style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button.TextButton</item>
     <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.Button</item>
 </style>
 
 <style name="Widget.App.Button" parent="Widget.Material3.Button">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Button</item>
     <item name="android:textAppearance">@style/TextAppearance.App.Button</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.App.SmallComponent</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.Button</item>
 </style>
 
 <style name="ThemeOverlay.App.Button.TextButton" parent="ThemeOverlay.Material3.Button.TextButton">
@@ -1253,6 +1248,11 @@ theme to all buttons but does not affect other components:
 <style name="ThemeOverlay.App.Button" parent="ThemeOverlay.Material3.Button">
     <item name="colorContainer">@color/shrine_pink_100</item>
     <item name="colorOnContainer">@color/shrine_pink_900</item>
+</style>
+
+<style name="ShapeAppearance.App.Button" parent="">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">4dp</item>
 </style>
 ```
 

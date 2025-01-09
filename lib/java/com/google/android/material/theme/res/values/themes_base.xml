@@ -145,6 +145,8 @@
     <item name="floatingActionButtonLargeSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Secondary</item>
     <item name="floatingActionButtonLargeTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Tertiary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
+    <item name="floatingToolbarStyle">@style/Widget.Material3.FloatingToolbar</item>
+    <item name="floatingToolbarVibrantStyle">@style/Widget.Material3.FloatingToolbar.Vibrant</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
     <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
@@ -192,9 +194,7 @@
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
-    <item name="collapsingToolbarLayoutMediumWithSubtitleSize">@dimen/m3_appbar_size_medium_with_subtitle</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
-    <item name="collapsingToolbarLayoutLargeWithSubtitleSize">@dimen/m3_appbar_size_large_with_subtitle</item>
 
     <!-- Action Bars. -->
     <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Light</item>
@@ -248,7 +248,7 @@
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" >?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
@@ -271,6 +271,12 @@
     <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
 
     <!-- Motion attributes.-->
+    <item name="motionSpringFastSpatial">@style/Motion.Material3.Spring.Standard.Fast.Spatial</item>
+    <item name="motionSpringFastEffects">@style/Motion.Material3.Spring.Standard.Fast.Effects</item>
+    <item name="motionSpringDefaultSpatial">@style/Motion.Material3.Spring.Standard.Default.Spatial</item>
+    <item name="motionSpringDefaultEffects">@style/Motion.Material3.Spring.Standard.Default.Effects</item>
+    <item name="motionSpringSlowSpatial">@style/Motion.Material3.Spring.Standard.Slow.Spatial</item>
+    <item name="motionSpringSlowEffects">@style/Motion.Material3.Spring.Standard.Slow.Effects</item>
     <item name="motionEasingStandardInterpolator">@interpolator/m3_sys_motion_easing_standard</item>
     <item name="motionEasingStandardDecelerateInterpolator">@interpolator/m3_sys_motion_easing_standard_decelerate</item>
     <item name="motionEasingStandardAccelerateInterpolator">@interpolator/m3_sys_motion_easing_standard_accelerate</item>
@@ -301,9 +307,9 @@
     <item name="motionDurationExtraLong4">@integer/m3_sys_motion_duration_extra_long4</item>
     <item name="motionPath">@integer/m3_sys_motion_path</item>
 
-    <!-- Elevation overlays. -->
+    <!-- Elevation overlays is deprecated, use surface container colors instead. -->
     <item name="elevationOverlayEnabled">true</item>
-    <item name="elevationOverlayColor">@macro/m3_sys_color_light_surface_tint</item>
+    <item name="elevationOverlayColor">?attr/colorPrimary</item>
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
@@ -482,9 +488,7 @@
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
-    <item name="collapsingToolbarLayoutMediumWithSubtitleSize">@dimen/m3_appbar_size_medium_with_subtitle</item>
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
-    <item name="collapsingToolbarLayoutLargeWithSubtitleSize">@dimen/m3_appbar_size_large_with_subtitle</item>
 
     <!-- Action Bars. -->
     <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Dark</item>
@@ -538,7 +542,7 @@
     <!-- Default Framework Text styles. -->
     <item name="android:textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="android:textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
-    <item name="android:textAppearanceListItemSecondary" >?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
     <item name="textAppearanceListItem">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSmall">?attr/textAppearanceTitleMedium</item>
     <item name="textAppearanceListItemSecondary">?attr/textAppearanceBodyMedium</item>
@@ -561,6 +565,12 @@
     <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
 
     <!-- Motion attributes. -->
+    <item name="motionSpringFastSpatial">@style/Motion.Material3.Spring.Standard.Fast.Spatial</item>
+    <item name="motionSpringFastEffects">@style/Motion.Material3.Spring.Standard.Fast.Effects</item>
+    <item name="motionSpringDefaultSpatial">@style/Motion.Material3.Spring.Standard.Default.Spatial</item>
+    <item name="motionSpringDefaultEffects">@style/Motion.Material3.Spring.Standard.Default.Effects</item>
+    <item name="motionSpringSlowSpatial">@style/Motion.Material3.Spring.Standard.Slow.Spatial</item>
+    <item name="motionSpringSlowEffects">@style/Motion.Material3.Spring.Standard.Slow.Effects</item>
     <item name="motionEasingStandardInterpolator">@interpolator/m3_sys_motion_easing_standard</item>
     <item name="motionEasingStandardDecelerateInterpolator">@interpolator/m3_sys_motion_easing_standard_decelerate</item>
     <item name="motionEasingStandardAccelerateInterpolator">@interpolator/m3_sys_motion_easing_standard_accelerate</item>
@@ -591,9 +601,9 @@
     <item name="motionDurationExtraLong4">@integer/m3_sys_motion_duration_extra_long4</item>
     <item name="motionPath">@integer/m3_sys_motion_path</item>
 
-    <!-- Elevation overlays. -->
+    <!-- Elevation overlays is deprecated, use surface container colors instead. -->
     <item name="elevationOverlayEnabled">true</item>
-    <item name="elevationOverlayColor">@macro/m3_sys_color_dark_surface_tint</item>
+    <item name="elevationOverlayColor">?attr/colorPrimary</item>
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Dark</item>
@@ -656,8 +666,8 @@
     <item name="bottomSheetDialogTheme">@style/ThemeOverlay.MaterialComponents.BottomSheetDialog</item>
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
-    <item name="android:datePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
-    <item name="android:timePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:datePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:timePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog</item>
 
     <!-- Type styles -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>
@@ -723,8 +733,8 @@
     <item name="bottomSheetDialogTheme">@style/ThemeOverlay.MaterialComponents.BottomSheetDialog</item>
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
-    <item name="android:datePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
-    <item name="android:timePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:datePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:timePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog</item>
 
     <!-- Type styles -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>

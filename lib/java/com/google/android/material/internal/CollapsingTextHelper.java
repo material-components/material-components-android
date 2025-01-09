@@ -73,13 +73,15 @@ public final class CollapsingTextHelper {
   private static final float FADE_MODE_THRESHOLD_FRACTION_RELATIVE = 0.5f;
 
   private static final boolean DEBUG_DRAW = false;
-  @NonNull private static final Paint DEBUG_DRAW_PAINT;
+  @Nullable private static final Paint DEBUG_DRAW_PAINT;
+
+  public static final int SEMITRANSPARENT_MAGENTA = 0x40FF00FF;
 
   static {
     DEBUG_DRAW_PAINT = DEBUG_DRAW ? new Paint() : null;
     if (DEBUG_DRAW_PAINT != null) {
       DEBUG_DRAW_PAINT.setAntiAlias(true);
-      DEBUG_DRAW_PAINT.setColor(Color.MAGENTA);
+      DEBUG_DRAW_PAINT.setColor(SEMITRANSPARENT_MAGENTA);
     }
   }
 
@@ -172,6 +174,7 @@ public final class CollapsingTextHelper {
   @Nullable private StaticLayoutBuilderConfigurer staticLayoutBuilderConfigurer;
   private int collapsedHeight = -1;
   private int expandedHeight = -1;
+  private boolean alignBaselineAtBottom;
 
   public CollapsingTextHelper(View view) {
     this.view = view;
@@ -252,11 +255,18 @@ public final class CollapsingTextHelper {
     }
   }
 
-  public void setExpandedBounds(int left, int top, int right, int bottom) {
-    if (!rectEquals(expandedBounds, left, top, right, bottom)) {
+  public void setExpandedBounds(
+      int left, int top, int right, int bottom, boolean alignBaselineAtBottom) {
+    if (!rectEquals(expandedBounds, left, top, right, bottom)
+        || alignBaselineAtBottom != this.alignBaselineAtBottom) {
       expandedBounds.set(left, top, right, bottom);
       boundsChanged = true;
+      this.alignBaselineAtBottom = alignBaselineAtBottom;
     }
+  }
+
+  public void setExpandedBounds(int left, int top, int right, int bottom) {
+    setExpandedBounds(left, top, right, bottom, /* alignBaselineAtBottom= */ true);
   }
 
   public void setExpandedBounds(@NonNull Rect bounds) {
@@ -832,7 +842,10 @@ public final class CollapsingTextHelper {
             isRtl ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
     switch (expandedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
-        expandedDrawY = expandedBounds.bottom - expandedTextHeight + textPaint.descent();
+        expandedDrawY =
+            expandedBounds.bottom
+                - expandedTextHeight
+                + (alignBaselineAtBottom ? textPaint.descent() : 0);
         break;
       case Gravity.TOP:
         expandedDrawY = expandedBounds.top;
@@ -898,7 +911,9 @@ public final class CollapsingTextHelper {
       float y = currentDrawY;
 
       if (DEBUG_DRAW) {
-        // Just a debug tool, which drawn a magenta rect in the text bounds
+        // Just a debug tool, which draws semitransparent magenta rects in the expanded bounds and
+        // text bounds.
+        canvas.drawRect(expandedBounds, DEBUG_DRAW_PAINT);
         canvas.drawRect(
             x,
             y,
@@ -968,9 +983,9 @@ public final class CollapsingTextHelper {
     int lineBaseline = textLayout.getLineBaseline(0);
     canvas.drawText(
         textToDrawCollapsed,
-        /* start = */ 0,
+        /* start= */ 0,
         textToDrawCollapsed.length(),
-        /* x = */ 0,
+        /* x= */ 0,
         lineBaseline,
         textPaint);
     // Reverse workaround for API 31(+). Applying opaque shadow color after the expanded text and
@@ -990,9 +1005,9 @@ public final class CollapsingTextHelper {
       textPaint.setAlpha(originalAlpha);
       canvas.drawText(
           tmp,
-          /* start = */ 0,
+          /* start= */ 0,
           min(textLayout.getLineEnd(0), tmp.length()),
-          /* x = */ 0,
+          /* x= */ 0,
           lineBaseline,
           textPaint);
     }
@@ -1163,8 +1178,7 @@ public final class CollapsingTextHelper {
   private Alignment getMultilineTextLayoutAlignment() {
     int absoluteGravity =
         Gravity.getAbsoluteGravity(
-            expandedTextGravity,
-            isRtl ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
+            expandedTextGravity, isRtl ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
     switch (absoluteGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
       case Gravity.CENTER_HORIZONTAL:
         return ALIGN_CENTER;

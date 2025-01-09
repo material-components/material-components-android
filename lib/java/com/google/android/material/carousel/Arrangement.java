@@ -21,6 +21,8 @@ import static java.lang.Math.min;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.core.math.MathUtils;
 
 /**
@@ -28,6 +30,7 @@ import androidx.core.math.MathUtils;
  * an arrangement to fit within an available space, and can assess the arrangement's
  * desirability according to a priority heuristic.
  */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public final class Arrangement {
 
   // Specifies a percentage of a medium item's size by which it can be increased or decreased to

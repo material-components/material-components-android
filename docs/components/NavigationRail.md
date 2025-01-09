@@ -363,9 +363,12 @@ for more attributes.
 
 #### Navigation Menu attributes
 
-**Element**      | **Attribute**          | **Related methods**                   | **Default value**
----------------- | ---------------------- | ------------------------------------- | -----------------
-**Menu gravity** | `app:menuGravity`      | `setMenuGravity`<br/>`getMenuGravity` | `TOP\|CENTER_HORIZONTAL`
+**Element**      | **Attribute**                | **Related methods**                                         | **Default value**
+---------------- | ---------------------------- | ----------------------------------------------------------- | -----------------
+**Menu gravity** | `app:menuGravity`            | `setMenuGravity`<br/>`getMenuGravity`                       | `TOP\|CENTER_HORIZONTAL`
+**Dividers**     | `app:submenuDividersEnabled` | `setSubmenuDividersEnabled`<br/>`getSubmenuDividersEnabled` | `false`
+
+**Note:** If dividers are enabled, they will be between all submenus, which are only visible when expanded.
 
 #### Navigation item attributes
 

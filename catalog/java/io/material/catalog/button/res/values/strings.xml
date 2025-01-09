@@ -114,6 +114,7 @@
     name="cat_icon_button_label_home">Home icon</string>
   <string name="cat_split_button_label_chevron"
     description="A label for an icon-only button [CHAR LIMIT=NONE]">Chevron icon</string>
+  <string name="cat_split_button_label_edit" description="The edit icon [CHAR LIMIT=NONE]">Edit icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
     name="cat_icon_button_label_settings">Settings icon</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"

@@ -20,7 +20,7 @@
   android:layout_height="wrap_content"
   android:paddingHorizontal="@dimen/m3_navigation_subheader_horizontal_padding"
   android:paddingVertical="@dimen/m3_navigation_subheader_vertical_padding"
-  android:layout_marginStart="@dimen/m3_navigation_subheader_horizontal_margin"
+  android:layout_marginStart="@dimen/m3_navigation_content_horizontal_margin"
   android:layout_marginTop="@dimen/m3_navigation_subheader_top_margin"
   android:gravity="center_vertical|start"
   android:ellipsize="end"

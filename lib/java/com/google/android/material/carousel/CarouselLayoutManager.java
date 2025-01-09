@@ -213,6 +213,14 @@ public class CarouselLayoutManager extends LayoutManager
   }
 
   /**
+   * Recalculates the internal state of the Carousel based on the size of the items. This should be
+   * called whenever the size of the items is changed.
+   */
+  public void notifyItemSizeChanged() {
+    refreshKeylineState();
+  }
+
+  /**
    * Sets the alignment of the focal items in the carousel.
    */
   public void setCarouselAlignment(@Alignment int alignment) {

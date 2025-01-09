@@ -31,7 +31,7 @@ import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 
 /**
- * A fragment that displays a large Collapsing Toolbar Top App Bar with a filled action button demo
+ * A fragment that displays a medium Collapsing Toolbar Top App Bar with a filled action button demo
  * for the Catalog app.
  */
 public class TopAppBarCollapsingFilledActionDemoFragment extends DemoFragment {
