@@ -2155,14 +2155,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
       int height = getHeight();
       final int expandRange = height - getMinimumHeight() - insetTop;
       final int scrimRange = height - getScrimVisibleHeightTrigger();
+      final int currentOffsetY = currentOffset + expandRange;
+      final float expansionFraction = Math.abs(verticalOffset) / (float) expandRange;
       collapsingTitleHelper.setFadeModeStartFraction(
           Math.min(1, (float) scrimRange / (float) expandRange));
-      collapsingTitleHelper.setCurrentOffsetY(currentOffset + expandRange);
-      collapsingTitleHelper.setExpansionFraction(Math.abs(verticalOffset) / (float) expandRange);
+      collapsingTitleHelper.setCurrentOffsetY(currentOffsetY);
+      collapsingTitleHelper.setExpansionFraction(expansionFraction);
       collapsingSubtitleHelper.setFadeModeStartFraction(
           Math.min(1, (float) scrimRange / (float) expandRange));
-      collapsingSubtitleHelper.setCurrentOffsetY(currentOffset + expandRange);
-      collapsingSubtitleHelper.setExpansionFraction(Math.abs(verticalOffset) / (float) expandRange);
+      collapsingSubtitleHelper.setCurrentOffsetY(currentOffsetY);
+      collapsingSubtitleHelper.setExpansionFraction(expansionFraction);
     }
   }
 

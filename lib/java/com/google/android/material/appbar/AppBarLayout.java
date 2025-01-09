@@ -268,11 +268,14 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       }
     }
 
-    liftOnScrollColorDuration = MotionUtils.resolveThemeDuration(context,
-        R.attr.motionDurationMedium2,
-        getResources().getInteger(R.integer.app_bar_elevation_anim_duration));
-    liftOnScrollColorInterpolator = MotionUtils.resolveThemeInterpolator(context,
-        R.attr.motionEasingStandardInterpolator, AnimationUtils.LINEAR_INTERPOLATOR);
+    liftOnScrollColorDuration =
+        MotionUtils.resolveThemeDuration(
+            context,
+            R.attr.motionDurationMedium2,
+            getResources().getInteger(R.integer.app_bar_elevation_anim_duration));
+    liftOnScrollColorInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, R.attr.motionEasingStandardInterpolator, AnimationUtils.LINEAR_INTERPOLATOR);
 
     if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
       setExpanded(
@@ -354,16 +357,17 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   private void initializeLiftOnScrollWithElevation(
       Context context, MaterialShapeDrawable background) {
     background.initializeElevationOverlay(context);
-    liftOnScrollColorUpdateListener = valueAnimator -> {
-      float elevation = (float) valueAnimator.getAnimatedValue();
-      background.setElevation(elevation);
-      if (statusBarForeground instanceof MaterialShapeDrawable) {
-        ((MaterialShapeDrawable) statusBarForeground).setElevation(elevation);
-      }
-      for (LiftOnScrollListener liftOnScrollListener : liftOnScrollListeners) {
-        liftOnScrollListener.onUpdate(elevation, background.getResolvedTintColor());
-      }
-    };
+    liftOnScrollColorUpdateListener =
+        valueAnimator -> {
+          float elevation = (float) valueAnimator.getAnimatedValue();
+          background.setElevation(elevation);
+          if (statusBarForeground instanceof MaterialShapeDrawable) {
+            ((MaterialShapeDrawable) statusBarForeground).setElevation(elevation);
+          }
+          for (LiftOnScrollListener liftOnScrollListener : liftOnScrollListeners) {
+            liftOnScrollListener.onUpdate(elevation, background.getResolvedTintColor());
+          }
+        };
 
     setBackground(background);
   }
@@ -559,8 +563,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         case MeasureSpec.AT_MOST:
           // For AT_MOST, we need to clamp our desired height with the max height
           newHeight =
-              clamp(
-                  getMeasuredHeight() + getTopInset(), 0, MeasureSpec.getSize(heightMeasureSpec));
+              clamp(getMeasuredHeight() + getTopInset(), 0, MeasureSpec.getSize(heightMeasureSpec));
           break;
         case MeasureSpec.UNSPECIFIED:
           // For UNSPECIFIED we can use any height so just add the top inset
@@ -634,9 +637,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     // If there's a pending action, we should skip this step and respect the pending action.
     SavedState savedState =
         behavior == null
-            || totalScrollRange == INVALID_SCROLL_RANGE
-            || pendingAction != PENDING_ACTION_NONE
-            ? null : behavior.saveScrollState(AbsSavedState.EMPTY_STATE, this);
+                || totalScrollRange == INVALID_SCROLL_RANGE
+                || pendingAction != PENDING_ACTION_NONE
+            ? null
+            : behavior.saveScrollState(AbsSavedState.EMPTY_STATE, this);
     // Invalidate the scroll ranges
     totalScrollRange = INVALID_SCROLL_RANGE;
     downPreScrollRange = INVALID_SCROLL_RANGE;
@@ -1040,8 +1044,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     return getBackground() instanceof MaterialShapeDrawable;
   }
 
-  private void startLiftOnScrollColorAnimation(
-      float fromValue, float toValue) {
+  private void startLiftOnScrollColorAnimation(float fromValue, float toValue) {
     if (liftOnScrollColorAnimator != null) {
       liftOnScrollColorAnimator.cancel();
     }
@@ -1225,6 +1228,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         })
     @Retention(RetentionPolicy.SOURCE)
     public @interface ScrollFlags {}
+
     /**
      * Disable scrolling on the view. This flag should not be combined with any of the other scroll
      * flags.
@@ -1296,8 +1300,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
     /**
      * An effect that will "compress" this view as it hits the scroll ceiling (typically the top of
-     * the screen). This is a parallax effect that masks this view and decreases its scroll ratio
-     * in relation to the AppBarLayout's offset.
+     * the screen). This is a parallax effect that masks this view and decreases its scroll ratio in
+     * relation to the AppBarLayout's offset.
      */
     public static final int SCROLL_EFFECT_COMPRESS = 1;
 
@@ -1396,9 +1400,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       }
     }
 
-    /**
-     * Get the scroll effect to be applied when the AppBarLayout's offset changes
-     */
+    /** Get the scroll effect to be applied when the AppBarLayout's offset changes */
     @Nullable
     public ChildScrollEffect getScrollEffect() {
       return scrollEffect;
@@ -1408,7 +1410,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
      * Set the scroll effect to be applied when the AppBarLayout's offset changes.
      *
      * @param scrollEffect An {@code AppBarLayoutChildScrollEffect} implementation. If null is
-     * passed, the scroll effect will be cleared and no effect will be applied.
+     *     passed, the scroll effect will be cleared and no effect will be applied.
      */
     public void setScrollEffect(@Nullable ChildScrollEffect scrollEffect) {
       this.scrollEffect = scrollEffect;
@@ -1417,9 +1419,9 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     /**
      * Set the scroll effect to be applied when the AppBarLayout's offset changes.
      *
-     * @param scrollEffect An {@code AppBarLayoutChildScrollEffect} implementation. If
-     * {@link #SCROLL_EFFECT_NONE} is passed, the scroll effect will be cleared and no
-     * effect will be applied.
+     * @param scrollEffect An {@code AppBarLayoutChildScrollEffect} implementation. If {@link
+     *     #SCROLL_EFFECT_NONE} is passed, the scroll effect will be cleared and no effect will be
+     *     applied.
      */
     public void setScrollEffect(@ScrollEffect int scrollEffect) {
       this.scrollEffect = createScrollEffectFromInt(scrollEffect);
@@ -1816,7 +1818,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           // Keep fully expanded.
           setHeaderTopBottomOffset(parent, abl, 0);
         } else {
-          // Not fully scrolled, restore the visible percetage of child layout.
+          // Not fully scrolled, restore the visible percentage of child layout.
           View child = abl.getChildAt(savedState.firstVisibleChildIndex);
           int offset = -child.getBottom();
           if (savedState.firstVisibleChildAtMinimumHeight) {
@@ -1850,8 +1852,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
 
       // We may have changed size, so let's constrain the top and bottom offset correctly,
       // just in case we're out of the bounds
-      setTopAndBottomOffset(
-          clamp(getTopAndBottomOffset(), -abl.getTotalScrollRange(), 0));
+      setTopAndBottomOffset(clamp(getTopAndBottomOffset(), -abl.getTotalScrollRange(), 0));
 
       // Update the AppBarLayout's drawable state for any elevation changes. This is needed so that
       // the elevation is set in the first layout, so that we don't get a visual jump pre-N (due to
