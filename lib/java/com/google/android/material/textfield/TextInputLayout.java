@@ -3588,7 +3588,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
    *
    * <p>Subsequent calls to {@link #setStartIconDrawable(Drawable)} will automatically mutate the
    * drawable and apply the specified tint and tint mode using {@link
-   * DrawableCompat#setTintList(Drawable, ColorStateList)}.
+   * Drawable#setTintList(ColorStateList)}.
    *
    * @param startIconTintList the tint to apply, may be null to clear tint
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconTint
@@ -3897,7 +3897,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
    *
    * <p>Subsequent calls to {@link #setEndIconDrawable(Drawable)} will automatically mutate the
    * drawable and apply the specified tint and tint mode using {@link
-   * DrawableCompat#setTintList(Drawable, ColorStateList)}.
+   * Drawable#setTintList(ColorStateList)}.
    *
    * @param endIconTintList the tint to apply, may be null to clear tint
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconTint
@@ -4550,7 +4550,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     if (isOnError() && cursorErrorColor != null) {
       color = cursorErrorColor;
     }
-    DrawableCompat.setTintList(cursorDrawable, color);
+    cursorDrawable.setTintList(color);
   }
 
   private void expandHint(boolean animate) {

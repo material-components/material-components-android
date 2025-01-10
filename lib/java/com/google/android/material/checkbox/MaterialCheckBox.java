@@ -49,7 +49,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.core.widget.TintableCompoundButton;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
@@ -176,8 +175,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
           super.onAnimationStart(drawable);
           if (buttonTintList != null) {
             // Have the color remain on the checked state while the animation is happening.
-            DrawableCompat.setTint(
-                drawable,
+            drawable.setTint(
                 buttonTintList.getColorForState(
                     currentStateChecked, buttonTintList.getDefaultColor()));
           }
@@ -187,9 +185,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
         public void onAnimationEnd(Drawable drawable) {
           super.onAnimationEnd(drawable);
           if (buttonTintList != null) {
-            DrawableCompat.setTintList(
-                drawable,
-                buttonTintList);
+            drawable.setTintList(buttonTintList);
           }
         }
       };
@@ -298,8 +294,8 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
         if (getBackground() != null) {
           Rect bounds = drawable.getBounds();
-          DrawableCompat.setHotspotBounds(
-              getBackground(), bounds.left + dx, bounds.top, bounds.right + dx, bounds.bottom);
+          getBackground().setHotspotBounds(
+              bounds.left + dx, bounds.top, bounds.right + dx, bounds.bottom);
         }
 
         return;
@@ -756,11 +752,11 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
   private void updateButtonTints() {
     if (buttonDrawable != null && buttonTintList != null) {
-      DrawableCompat.setTintList(buttonDrawable, buttonTintList);
+      buttonDrawable.setTintList(buttonTintList);
     }
 
     if (buttonIconDrawable != null && buttonIconTintList != null) {
-      DrawableCompat.setTintList(buttonIconDrawable, buttonIconTintList);
+      buttonIconDrawable.setTintList(buttonIconTintList);
     }
   }
 

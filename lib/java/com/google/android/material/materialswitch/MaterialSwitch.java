@@ -35,7 +35,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
@@ -232,7 +231,7 @@ public class MaterialSwitch extends SwitchCompat {
    * <p>
    * Subsequent calls to {@link #setThumbIconDrawable(Drawable)} will
    * automatically mutate the drawable and apply the specified tint and tint
-   * mode using {@link DrawableCompat#setTintList(Drawable, ColorStateList)}.
+   * mode using {@link Drawable#setTintList(ColorStateList)}.
    *
    * @param tintList the tint to apply, may be {@code null} to clear tint
    *
@@ -346,7 +345,7 @@ public class MaterialSwitch extends SwitchCompat {
    *
    * <p>Subsequent calls to {@link #setTrackDecorationDrawable(Drawable)} will
    * automatically mutate the drawable and apply the specified tint and tint
-   * mode using {@link DrawableCompat#setTintList(Drawable, ColorStateList)}.
+   * mode using {@link Drawable#setTintList(ColorStateList)}.
    *
    * @param tintList the tint to apply, may be {@code null} to clear tint
    *
@@ -487,11 +486,9 @@ public class MaterialSwitch extends SwitchCompat {
       return;
     }
 
-    DrawableCompat.setTint(
-        drawable,
-        blendARGB(
-            tint.getColorForState(stateUnchecked, 0),
-            tint.getColorForState(stateChecked, 0),
-            thumbPosition));
+    drawable.setTint(blendARGB(
+        tint.getColorForState(stateUnchecked, 0),
+        tint.getColorForState(stateChecked, 0),
+        thumbPosition));
   }
 }

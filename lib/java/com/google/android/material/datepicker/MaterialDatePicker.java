@@ -293,7 +293,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
 
     background.initializeElevationOverlay(context);
     background.setFillColor(ColorStateList.valueOf(backgroundColor));
-    background.setElevation(ViewCompat.getElevation(dialog.getWindow().getDecorView()));
+    background.setElevation(dialog.getWindow().getDecorView().getElevation());
     return dialog;
   }
 

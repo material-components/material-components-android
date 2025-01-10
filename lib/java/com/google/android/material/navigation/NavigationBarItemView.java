@@ -60,7 +60,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -783,7 +782,7 @@ public abstract class NavigationBarItemView extends FrameLayout
           DrawableCompat.wrap(state == null ? iconDrawable : state.newDrawable()).mutate();
       wrappedIconDrawable = iconDrawable;
       if (iconTint != null) {
-        DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
+        wrappedIconDrawable.setTintList(iconTint);
       }
     }
     this.icon.setImageDrawable(iconDrawable);
@@ -802,7 +801,7 @@ public abstract class NavigationBarItemView extends FrameLayout
   public void setIconTintList(@Nullable ColorStateList tint) {
     iconTint = tint;
     if (itemData != null && wrappedIconDrawable != null) {
-      DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
+      wrappedIconDrawable.setTintList(iconTint);
       wrappedIconDrawable.invalidateSelf();
     }
   }
@@ -1001,8 +1000,7 @@ public abstract class NavigationBarItemView extends FrameLayout
   }
 
   public void setItemBackground(int background) {
-    Drawable backgroundDrawable =
-        background == 0 ? null : ContextCompat.getDrawable(getContext(), background);
+    Drawable backgroundDrawable = background == 0 ? null : getContext().getDrawable(background);
     setItemBackground(backgroundDrawable);
   }
 

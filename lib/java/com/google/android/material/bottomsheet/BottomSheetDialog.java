@@ -453,7 +453,7 @@ public class BottomSheetDialog extends AppCompatDialog {
       if (msd != null) {
         backgroundTint = msd.getFillColor();
       } else {
-        backgroundTint = ViewCompat.getBackgroundTintList(bottomSheet);
+        backgroundTint = bottomSheet.getBackgroundTintList();
       }
 
       if (backgroundTint != null) {

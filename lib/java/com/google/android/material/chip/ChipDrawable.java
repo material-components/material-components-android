@@ -1329,11 +1329,11 @@ public class ChipDrawable extends MaterialShapeDrawable
       if (drawable.isStateful()) {
         drawable.setState(getCloseIconState());
       }
-      DrawableCompat.setTintList(drawable, closeIconTint);
+      drawable.setTintList(closeIconTint);
       return;
     }
     if (drawable == chipIcon && hasChipIconTint) {
-      DrawableCompat.setTintList(chipIcon, chipIconTint);
+      chipIcon.setTintList(chipIconTint);
     }
     if (drawable.isStateful()) {
       drawable.setState(getState());
@@ -1770,7 +1770,7 @@ public class ChipDrawable extends MaterialShapeDrawable
     if (this.chipIconTint != chipIconTint) {
       this.chipIconTint = chipIconTint;
       if (showsChipIcon()) {
-        DrawableCompat.setTintList(chipIcon, chipIconTint);
+        chipIcon.setTintList(chipIconTint);
       }
 
       onStateChange(getState());
@@ -1918,7 +1918,7 @@ public class ChipDrawable extends MaterialShapeDrawable
       this.closeIconTint = closeIconTint;
 
       if (showsCloseIcon()) {
-        DrawableCompat.setTintList(closeIcon, closeIconTint);
+        closeIcon.setTintList(closeIconTint);
       }
 
       onStateChange(getState());
@@ -2100,7 +2100,7 @@ public class ChipDrawable extends MaterialShapeDrawable
       this.checkedIconTint = checkedIconTint;
 
       if (canShowCheckedIcon()) {
-        DrawableCompat.setTintList(checkedIcon, checkedIconTint);
+        checkedIcon.setTintList(checkedIconTint);
       }
 
       onStateChange(getState());

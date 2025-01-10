@@ -51,7 +51,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.drawable.DrawableUtils;
@@ -301,7 +300,7 @@ public abstract class NavigationBarView extends FrameLayout {
     ColorStateList backgroundTint =
         MaterialResources.getColorStateList(
             context, attributes, R.styleable.NavigationBarView_backgroundTint);
-    DrawableCompat.setTintList(getBackground().mutate(), backgroundTint);
+    getBackground().mutate().setTintList(backgroundTint);
 
     setLabelVisibilityMode(
         attributes.getInteger(

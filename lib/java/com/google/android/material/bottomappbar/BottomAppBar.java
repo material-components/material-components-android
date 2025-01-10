@@ -55,7 +55,6 @@ import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewCompat.NestedScrollType;
 import androidx.core.view.ViewCompat.ScrollAxis;
 import androidx.core.view.WindowInsetsCompat;
@@ -373,8 +372,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     }
     materialShapeDrawable.setPaintStyle(Style.FILL);
     materialShapeDrawable.initializeElevationOverlay(context);
+    materialShapeDrawable.setTintList(backgroundTint);
     setElevation(elevation);
-    DrawableCompat.setTintList(materialShapeDrawable, backgroundTint);
     setBackground(materialShapeDrawable);
 
     ViewUtils.doOnApplyWindowInsets(
@@ -563,7 +562,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   public void setBackgroundTint(@Nullable ColorStateList backgroundTint) {
-    DrawableCompat.setTintList(materialShapeDrawable, backgroundTint);
+    materialShapeDrawable.setTintList(backgroundTint);
   }
 
   @Nullable
@@ -936,7 +935,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private Drawable maybeTintNavigationIcon(@Nullable Drawable navigationIcon) {
     if (navigationIcon != null && navigationIconTint != null) {
       Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
-      DrawableCompat.setTint(wrappedNavigationIcon, navigationIconTint);
+      wrappedNavigationIcon.setTint(navigationIconTint);
       return wrappedNavigationIcon;
     } else {
       return navigationIcon;
@@ -1427,7 +1426,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         if (dependentView instanceof FloatingActionButton) {
           FloatingActionButton fab = ((FloatingActionButton) dependentView);
           if (child.fabAnchorMode == FAB_ANCHOR_MODE_EMBED && child.removeEmbeddedFabElevation) {
-            ViewCompat.setElevation(fab, 0);
+            fab.setElevation(0);
             fab.setCompatElevation(0);
           }
 

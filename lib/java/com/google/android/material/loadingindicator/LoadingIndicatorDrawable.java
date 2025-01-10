@@ -28,7 +28,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.android.material.progressindicator.AnimatorDurationScaleProvider;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
@@ -98,7 +97,7 @@ public final class LoadingIndicatorDrawable extends Drawable implements Drawable
 
     if (isSystemAnimatorDisabled() && staticDummyDrawable != null) {
       staticDummyDrawable.setBounds(bounds);
-      DrawableCompat.setTint(staticDummyDrawable, specs.indicatorColors[0]);
+      staticDummyDrawable.setTint(specs.indicatorColors[0]);
       staticDummyDrawable.draw(canvas);
       return;
     }

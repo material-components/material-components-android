@@ -212,7 +212,7 @@ public class Chip extends AppCompatCheckBox
             context, attrs, defStyleAttr, DEF_STYLE_RES);
     initMinTouchTarget(context, attrs, defStyleAttr);
     setChipDrawable(drawable);
-    drawable.setElevation(ViewCompat.getElevation(this));
+    drawable.setElevation(getElevation());
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context,

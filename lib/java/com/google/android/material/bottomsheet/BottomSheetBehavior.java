@@ -559,8 +559,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       if (materialShapeDrawable != null) {
         child.setBackground(materialShapeDrawable);
         // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
-        materialShapeDrawable.setElevation(
-            elevation == -1 ? ViewCompat.getElevation(child) : elevation);
+        materialShapeDrawable.setElevation(elevation == -1 ? child.getElevation() : elevation);
       } else if (backgroundTint != null) {
         ViewCompat.setBackgroundTintList(child, backgroundTint);
       }
@@ -1692,7 +1691,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (view.getVisibility() != View.VISIBLE) {
       return null;
     }
-    if (ViewCompat.isNestedScrollingEnabled(view)) {
+    if (view.isNestedScrollingEnabled()) {
       return view;
     }
     if (view instanceof ViewGroup) {

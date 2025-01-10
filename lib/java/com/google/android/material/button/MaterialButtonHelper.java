@@ -35,7 +35,6 @@ import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ViewUtils;
@@ -174,7 +173,7 @@ class MaterialButtonHelper {
     if (backgroundTint != tintList) {
       backgroundTint = tintList;
       if (getMaterialShapeDrawable() != null) {
-        DrawableCompat.setTintList(getMaterialShapeDrawable(), backgroundTint);
+        getMaterialShapeDrawable().setTintList(backgroundTint);
       }
     }
   }
@@ -187,7 +186,7 @@ class MaterialButtonHelper {
     if (backgroundTintMode != mode) {
       backgroundTintMode = mode;
       if (getMaterialShapeDrawable() != null && backgroundTintMode != null) {
-        DrawableCompat.setTintMode(getMaterialShapeDrawable(), backgroundTintMode);
+        getMaterialShapeDrawable().setTintMode(backgroundTintMode);
       }
     }
   }
@@ -216,9 +215,9 @@ class MaterialButtonHelper {
     }
     Context context = materialButton.getContext();
     backgroundDrawable.initializeElevationOverlay(context);
-    DrawableCompat.setTintList(backgroundDrawable, backgroundTint);
+    backgroundDrawable.setTintList(backgroundTint);
     if (backgroundTintMode != null) {
-      DrawableCompat.setTintMode(backgroundDrawable, backgroundTintMode);
+      backgroundDrawable.setTintMode(backgroundTintMode);
     }
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
 
@@ -245,7 +244,7 @@ class MaterialButtonHelper {
     if (cornerSpringForce != null) {
       ((MaterialShapeDrawable) maskDrawable).setCornerSpringForce(cornerSpringForce);
     }
-    DrawableCompat.setTint(maskDrawable, Color.WHITE);
+    maskDrawable.setTint(Color.WHITE);
     rippleDrawable =
         new RippleDrawable(
             RippleUtils.sanitizeRippleDrawableColor(rippleColor),

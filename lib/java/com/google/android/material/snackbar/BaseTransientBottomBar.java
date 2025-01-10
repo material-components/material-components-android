@@ -1160,8 +1160,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       context = getContext();
       TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
       if (a.hasValue(R.styleable.SnackbarLayout_elevation)) {
-        ViewCompat.setElevation(
-            this, a.getDimensionPixelSize(R.styleable.SnackbarLayout_elevation, 0));
+        setElevation(a.getDimensionPixelSize(R.styleable.SnackbarLayout_elevation, 0));
       }
       animationMode = a.getInt(R.styleable.SnackbarLayout_animationMode, ANIMATION_MODE_SLIDE);
       if (a.hasValue(R.styleable.SnackbarLayout_shapeAppearance)
@@ -1202,8 +1201,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     public void setBackgroundDrawable(@Nullable Drawable drawable) {
       if (drawable != null && backgroundTint != null) {
         drawable = DrawableCompat.wrap(drawable.mutate());
-        DrawableCompat.setTintList(drawable, backgroundTint);
-        DrawableCompat.setTintMode(drawable, backgroundTintMode);
+        drawable.setTintList(backgroundTint);
+        drawable.setTintMode(backgroundTintMode);
       }
       super.setBackgroundDrawable(drawable);
     }
@@ -1213,8 +1212,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       this.backgroundTint = backgroundTint;
       if (getBackground() != null) {
         Drawable wrappedBackground = DrawableCompat.wrap(getBackground().mutate());
-        DrawableCompat.setTintList(wrappedBackground, backgroundTint);
-        DrawableCompat.setTintMode(wrappedBackground, backgroundTintMode);
+        wrappedBackground.setTintList(backgroundTint);
+        wrappedBackground.setTintMode(backgroundTintMode);
         if (wrappedBackground != getBackground()) {
           super.setBackgroundDrawable(wrappedBackground);
         }
@@ -1226,7 +1225,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       this.backgroundTintMode = backgroundTintMode;
       if (getBackground() != null) {
         Drawable wrappedBackground = DrawableCompat.wrap(getBackground().mutate());
-        DrawableCompat.setTintMode(wrappedBackground, backgroundTintMode);
+        wrappedBackground.setTintMode(backgroundTintMode);
         if (wrappedBackground != getBackground()) {
           super.setBackgroundDrawable(wrappedBackground);
         }
@@ -1263,7 +1262,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       if (baseTransientBottomBar != null) {
         baseTransientBottomBar.onAttachedToWindow();
       }
-      ViewCompat.requestApplyInsets(this);
+      requestApplyInsets();
     }
 
     @Override
@@ -1341,7 +1340,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
               : createGradientDrawableBackground(backgroundColor, getResources());
       if (backgroundTint != null) {
         Drawable wrappedDrawable = DrawableCompat.wrap(background);
-        DrawableCompat.setTintList(wrappedDrawable, backgroundTint);
+        wrappedDrawable.setTintList(backgroundTint);
         return wrappedDrawable;
       } else {
         return DrawableCompat.wrap(background);
