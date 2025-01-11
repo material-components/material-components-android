@@ -3099,7 +3099,7 @@ abstract class BaseSlider<
 
       if (compare(valueDiff, activeThumbDiff) == 0) {
         // Two thumbs on the same value and we don't have enough movement to use direction yet.
-        if (abs(valueX - touchX) < scaledTouchSlop) {
+        if (abs(valueX - touchX) < scaledTouchSlop && valueFrom != valueTo) {
           activeThumbIdx = -1;
           return false;
         }
