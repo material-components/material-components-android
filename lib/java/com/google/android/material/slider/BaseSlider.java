@@ -63,6 +63,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -265,6 +266,7 @@ abstract class BaseSlider<
   private static final double THRESHOLD = .0001;
   private static final float THUMB_WIDTH_PRESSED_RATIO = .5f;
   private static final int TRACK_CORNER_SIZE_UNSET = -1;
+  private static final int DEFAULT_HALO_EFFECT_COLOR = 0x8dffffff;
 
   static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Slider;
   static final int UNIT_VALUE = 1;
@@ -374,6 +376,7 @@ abstract class BaseSlider<
   private boolean dirtyConfig;
 
   @NonNull private ColorStateList haloColor;
+  @NonNull private ColorStateList haloEffectColor;
   @NonNull private ColorStateList tickColorActive;
   @NonNull private ColorStateList tickColorInactive;
   @NonNull private ColorStateList trackColorActive;
@@ -579,6 +582,15 @@ abstract class BaseSlider<
         haloColor != null
             ? haloColor
             : AppCompatResources.getColorStateList(context, R.color.material_slider_halo_color));
+
+    if (VERSION.SDK_INT >= VERSION_CODES.S) {
+      ColorStateList haloEffectColor =
+          MaterialResources.getColorStateList(context, a, R.styleable.Slider_haloEffectColor);
+      setHaloEffectTintList(
+          haloEffectColor != null
+              ? haloEffectColor
+              : ColorStateList.valueOf(DEFAULT_HALO_EFFECT_COLOR));
+    }
 
     tickVisible = a.getBoolean(R.styleable.Slider_tickVisible, true);
     boolean hasTickColor = a.hasValue(R.styleable.Slider_tickColor);
@@ -1658,6 +1670,39 @@ abstract class BaseSlider<
     haloPaint.setColor(getColorForState(haloColor));
     haloPaint.setAlpha(HALO_ALPHA);
     invalidate();
+  }
+
+  /**
+   * Returns the effect color of the halo.
+   *
+   * @see #setHaloEffectTintList(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Slider_haloEffectColor
+   */
+  @RequiresApi(api = VERSION_CODES.S)
+  @NonNull
+  public ColorStateList getHaloEffectTintList() {
+    return haloEffectColor;
+  }
+
+  /**
+   * Sets the effect color of the halo.
+   *
+   * @see #getHaloEffectTintList()
+   * @attr ref com.google.android.material.R.styleable#Slider_haloEffectColor
+   */
+  @RequiresApi(api = VERSION_CODES.S)
+  public void setHaloEffectTintList(@NonNull ColorStateList haloEffectColor) {
+    if (haloEffectColor.equals(this.haloEffectColor)) {
+      return;
+    }
+
+    this.haloEffectColor = haloEffectColor;
+
+    final Drawable background = getBackground();
+    if (!shouldDrawCompatHalo() && background instanceof RippleDrawable) {
+      ((RippleDrawable) background).setEffectColor(haloEffectColor);
+      postInvalidate();
+    }
   }
 
   /**
