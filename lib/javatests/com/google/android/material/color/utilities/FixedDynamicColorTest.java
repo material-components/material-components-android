@@ -52,6 +52,24 @@ public final class FixedDynamicColorTest {
   }
 
   @Test
+  public void fixedArgbColorsInTonalSpot() {
+    final DynamicScheme scheme = new SchemeTonalSpot(Hct.fromInt(0xFFFF0000), true, 0.0);
+
+    assertThat(scheme.getPrimaryFixed()).isEqualTo(0xFFFFDAD4);
+    assertThat(scheme.getPrimaryFixedDim()).isEqualTo(0xFFFFB4A8);
+    assertThat(scheme.getOnPrimaryFixed()).isEqualTo(0xFF3A0905);
+    assertThat(scheme.getOnPrimaryFixedVariant()).isEqualTo(0xFF73342A);
+    assertThat(scheme.getSecondaryFixed()).isEqualTo(0xFFFFDAD4);
+    assertThat(scheme.getSecondaryFixedDim()).isEqualTo(0xFFE7BDB6);
+    assertThat(scheme.getOnSecondaryFixed()).isEqualTo(0xFF2C1512);
+    assertThat(scheme.getOnSecondaryFixedVariant()).isEqualTo(0xFF5D3F3B);
+    assertThat(scheme.getTertiaryFixed()).isEqualTo(0xFFFBDFA6);
+    assertThat(scheme.getTertiaryFixedDim()).isEqualTo(0xFFDEC48C);
+    assertThat(scheme.getOnTertiaryFixed()).isEqualTo(0xFF251A00);
+    assertThat(scheme.getOnTertiaryFixedVariant()).isEqualTo(0xFF564419);
+  }
+
+  @Test
   public void fixedColorsInLightMonochrome() {
     final DynamicScheme scheme = new SchemeMonochrome(Hct.fromInt(0xFFFF0000), false, 0.0);
 

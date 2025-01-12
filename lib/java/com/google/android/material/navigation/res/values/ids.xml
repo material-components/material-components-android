@@ -21,4 +21,6 @@
   <item type="id" name="navigation_bar_item_labels_group" />
   <item type="id" name="navigation_bar_item_small_label_view" />
   <item type="id" name="navigation_bar_item_large_label_view" />
+  <item type="id" name="navigation_bar_item_content_container" />
+  <item type="id" name="navigation_bar_item_inner_content_container" />
 </resources>

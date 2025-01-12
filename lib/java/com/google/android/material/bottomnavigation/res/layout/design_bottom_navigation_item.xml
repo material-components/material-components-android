@@ -16,52 +16,73 @@
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <FrameLayout
-    android:id="@id/navigation_bar_item_icon_container"
+  <LinearLayout
+    android:id="@id/navigation_bar_item_content_container"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="center_horizontal"
+    android:layout_gravity="top|center_horizontal"
     android:layout_marginTop="@dimen/design_bottom_navigation_margin"
-    android:layout_marginBottom="@dimen/design_bottom_navigation_margin"
-    android:duplicateParentState="true">
-    <View
-      android:id="@id/navigation_bar_item_active_indicator_view"
-      android:layout_width="0dp"
-      android:layout_height="0dp"
-      android:layout_gravity="center" />
-    <ImageView
-      android:id="@id/navigation_bar_item_icon_view"
-      android:layout_width="24dp"
-      android:layout_height="24dp"
+    android:clipChildren="false"
+    android:duplicateParentState="true"
+    android:orientation="vertical">
+    <FrameLayout
+      android:id="@id/navigation_bar_item_icon_container"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:clipChildren="false"
       android:layout_gravity="center"
-      android:contentDescription="@null"
-      android:duplicateParentState="true"/>
-  </FrameLayout>
-  <com.google.android.material.internal.BaselineLayout
+      android:duplicateParentState="true">
+      <View
+        android:id="@id/navigation_bar_item_active_indicator_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_gravity="center" />
+      <LinearLayout
+        android:id="@id/navigation_bar_item_inner_content_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:clipChildren="false"
+        android:duplicateParentState="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+        <ImageView
+          android:id="@id/navigation_bar_item_icon_view"
+          android:layout_width="@dimen/design_bottom_navigation_icon_size"
+          android:layout_height="@dimen/design_bottom_navigation_icon_size"
+          android:layout_gravity="center"
+          android:contentDescription="@null"
+          android:duplicateParentState="true" />
+      </LinearLayout>
+    </FrameLayout>
+    <com.google.android.material.internal.BaselineLayout
       android:id="@id/navigation_bar_item_labels_group"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom|center_horizontal"
-      android:paddingBottom="@dimen/design_bottom_navigation_label_padding"
+      android:paddingBottom="@dimen/m3_bottom_nav_item_padding_bottom"
       android:clipChildren="false"
       android:clipToPadding="false"
+      android:layout_gravity="center"
       android:duplicateParentState="true">
-    <TextView
+      <TextView
         android:id="@id/navigation_bar_item_small_label_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
         android:ellipsize="end"
-        android:maxLines="1"
-        android:textSize="@dimen/design_bottom_navigation_text_size"/>
-    <TextView
+        android:includeFontPadding="false"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/design_bottom_navigation_text_size" />
+      <TextView
         android:id="@id/navigation_bar_item_large_label_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
         android:textSize="@dimen/design_bottom_navigation_active_text_size"
-        android:visibility="invisible"/>
-  </com.google.android.material.internal.BaselineLayout>
+        android:visibility="invisible" />
+    </com.google.android.material.internal.BaselineLayout>
+  </LinearLayout>
 </merge>

@@ -15,5 +15,8 @@
   limitations under the License.
   -->
 
-<!-- MotionSpec replaces this with a fast out slow in interpolator. -->
-<accelerateDecelerateInterpolator />
+<pathInterpolator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:controlX1="0.4"
+    android:controlY1="0"
+    android:controlX2="0.2"
+    android:controlY2="1"/>

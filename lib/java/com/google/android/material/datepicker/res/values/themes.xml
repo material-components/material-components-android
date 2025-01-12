@@ -17,9 +17,18 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Spinner"/>
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Calendar"/>
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="android:buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="android:buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Spinner">
+    <item name="android:datePickerStyle">@style/MaterialAlertDialog.MaterialComponents.Picker.Date.Spinner</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Calendar">
+    <item name="android:datePickerStyle">@style/MaterialAlertDialog.MaterialComponents.Picker.Date.Calendar</item>
+  </style>
 
   <style name="ThemeOverlay.MaterialComponents.MaterialCalendar" parent="ThemeOverlay.MaterialComponents.Dialog">
     <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
@@ -55,7 +64,7 @@
   </style>
 
   <style name="ThemeOverlay.Material3.MaterialCalendar" parent="ThemeOverlay.Material3.Dialog">
-    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_datepicker_elevation</item>
+    <item name="android:windowElevation">@dimen/m3_datepicker_elevation</item>
     <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar</item>
 
     <!-- Header Styles -->
@@ -83,7 +92,7 @@
 
   <style name="ThemeOverlay.Material3.MaterialCalendar.Fullscreen">
     <item name="android:windowIsFloating">false</item>
-    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_datepicker_elevation</item>
+    <item name="android:windowElevation">@dimen/m3_datepicker_elevation</item>
     <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar.Fullscreen</item>
     <item name="materialCalendarHeaderLayout">@style/Widget.Material3.MaterialCalendar.HeaderLayout.Fullscreen</item>
     <item name="materialCalendarHeaderSelection">@style/Widget.Material3.MaterialCalendar.HeaderSelection.Fullscreen</item>

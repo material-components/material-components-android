@@ -82,6 +82,13 @@ public class NavigationRailFragment extends DemoLandingFragment {
             return new NavigationRailAnimatedDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_navigation_rail_submenus_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new NavigationRailSubMenuDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

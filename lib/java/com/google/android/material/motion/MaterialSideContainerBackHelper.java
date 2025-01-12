@@ -37,8 +37,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import com.google.android.material.animation.AnimationUtils;
 
@@ -102,9 +100,14 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
     float endScaleXDelta = swipeEdgeMatchesGravity ? maxScaleXDeltaGrow : -maxScaleXDeltaShrink;
     float scaleXDelta = AnimationUtils.lerp(0, endScaleXDelta, progress);
     float scaleX = 1 + scaleXDelta;
-    view.setScaleX(scaleX);
     float scaleYDelta = AnimationUtils.lerp(0, maxScaleYDelta, progress);
     float scaleY = 1 - scaleYDelta;
+
+    if (Float.isNaN(scaleX) || Float.isNaN(scaleY)) {
+      return;
+    }
+
+    view.setScaleX(scaleX);
     view.setScaleY(scaleY);
 
     if (view instanceof ViewGroup) {
@@ -120,6 +123,11 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
         childView.setPivotY(-childView.getTop());
         float childScaleX = swipeEdgeMatchesGravity ? 1 - scaleXDelta : 1f;
         float childScaleY = scaleY != 0f ? scaleX / scaleY * childScaleX : 1f;
+
+        if (Float.isNaN(childScaleX) || Float.isNaN(childScaleY)) {
+          continue;
+        }
+
         childView.setScaleX(childScaleX);
         childView.setScaleY(childScaleY);
       }
@@ -179,8 +187,7 @@ public class MaterialSideContainerBackHelper extends MaterialBackAnimationHelper
   }
 
   private boolean checkAbsoluteGravity(@GravityInt int gravity, @GravityInt int checkFor) {
-    int absoluteGravity =
-        GravityCompat.getAbsoluteGravity(gravity, ViewCompat.getLayoutDirection(view));
+    int absoluteGravity = Gravity.getAbsoluteGravity(gravity, view.getLayoutDirection());
     return (absoluteGravity & checkFor) == checkFor;
   }
 

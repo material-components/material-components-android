@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2024 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:orientation="vertical"
+  android:padding="16dp"
+  android:showDividers="middle"
+  android:divider="@drawable/layout_divider">
+  <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/determinate_mode_switch"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:checked="true"
+      android:text="@string/cat_progress_indicator_set_to_determinate_mode"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_determinate_progress"/>
+  <com.google.android.material.slider.Slider
+      android:id="@+id/progress_slider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:value="50"
+      android:valueFrom="0"
+      android:valueTo="100"
+      android:stepSize="1"/>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_track_thickness"/>
+  <com.google.android.material.slider.Slider
+      android:id="@+id/thicknessSlider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:value="4"
+      android:valueFrom="1"
+      android:valueTo="15"
+      android:stepSize="1"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_corner_size"/>
+  <com.google.android.material.slider.Slider
+      android:id="@+id/cornerSlider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:value="2"
+      android:valueFrom="0"
+      android:valueTo="5"
+      android:stepSize="1"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_gap_size"/>
+  <com.google.android.material.slider.Slider
+      android:id="@+id/gapSlider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:value="4"
+      android:valueFrom="0"
+      android:valueTo="10"
+      android:stepSize="1"/>
+  <com.google.android.material.materialswitch.MaterialSwitch
+      android:id="@+id/reverseSwitch"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_reverse_direction"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_linear_stop_indicator_size"/>
+  <com.google.android.material.slider.Slider
+      android:id="@+id/linearStopIndicatorSizeSlider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:value="4"
+      android:valueFrom="0"
+      android:valueTo="10"
+      android:stepSize="1"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_circular_indicator_size"/>
+  <com.google.android.material.slider.Slider
+      android:id="@+id/circularSizeSlider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:value="40"
+      android:valueFrom="20"
+      android:valueTo="200"
+      android:stepSize="5"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_indeterminate_animator_duration_scale"/>
+  <com.google.android.material.slider.Slider
+      android:id="@+id/indeterminateDurationScaleSlider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:value="0"
+      android:valueFrom="-1"
+      android:valueTo="1"
+      android:stepSize="0.1"/>
+</LinearLayout>
+

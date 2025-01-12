@@ -14,12 +14,29 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
+<LinearLayout
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="horizontal"
+  xmlns:android="http://schemas.android.com/apk/res/android">
 <com.google.android.material.navigationrail.NavigationRailView
-    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cat_navigation_rail"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     app:menu="@menu/navigation_rail_animated_menu"
     android:fitsSystemWindows="false"/>
+  <LinearLayout
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1">
+    <TextView
+      android:id="@+id/cat_navigation_rail_compact_msg"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:gravity="center"
+      android:visibility="gone"
+      android:text="@string/cat_navigation_rail_compact_message" />
+  </LinearLayout>
+</LinearLayout>
 

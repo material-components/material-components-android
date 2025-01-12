@@ -24,9 +24,9 @@ import android.app.Activity;
 import android.os.SystemClock;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.LinearLayout;
 import androidx.annotation.FloatRange;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.slider.KeyUtils.KeyEventBuilder;
 
 public class SliderHelper {
@@ -129,7 +129,7 @@ public class SliderHelper {
 
   static float calculateXPositionFromValue(BaseSlider<?, ?, ?> s, float value) {
     float x = (value - s.getValueFrom()) * s.getTrackWidth() / (s.getValueTo() - s.getValueFrom());
-    if (ViewCompat.getLayoutDirection(s) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (s.getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
       x = s.getTrackWidth() - x;
     }
     return s.getTrackSidePadding() + x;

@@ -52,7 +52,7 @@ import java.lang.reflect.Constructor;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-final class StaticLayoutBuilderCompat {
+public final class StaticLayoutBuilderCompat {
 
   static final int DEFAULT_HYPHENATION_FREQUENCY =
       VERSION.SDK_INT >= VERSION_CODES.M ? StaticLayout.HYPHENATION_FREQUENCY_NORMAL : 0;
@@ -60,11 +60,6 @@ final class StaticLayoutBuilderCompat {
   // Default line spacing values to match android.text.Layout constants.
   static final float DEFAULT_LINE_SPACING_ADD = 0.0f;
   static final float DEFAULT_LINE_SPACING_MULTIPLIER = 1.0f;
-
-  private static final String TEXT_DIR_CLASS = "android.text.TextDirectionHeuristic";
-  private static final String TEXT_DIRS_CLASS = "android.text.TextDirectionHeuristics";
-  private static final String TEXT_DIR_CLASS_LTR = "LTR";
-  private static final String TEXT_DIR_CLASS_RTL = "RTL";
 
   private static boolean initialized;
 
@@ -241,6 +236,7 @@ final class StaticLayoutBuilderCompat {
     return this;
   }
 
+  @NonNull
   /** A method that allows to create a StaticLayout with maxLines on all supported API levels. */
   public StaticLayout build() throws StaticLayoutBuilderCompatException {
     if (source == null) {
@@ -338,16 +334,8 @@ final class StaticLayoutBuilderCompat {
     try {
       final Class<?> textDirClass;
       boolean useRtl = isRtl && Build.VERSION.SDK_INT >= VERSION_CODES.M;
-      if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
-        textDirClass = TextDirectionHeuristic.class;
-        textDirection = useRtl ? TextDirectionHeuristics.RTL : TextDirectionHeuristics.LTR;
-      } else {
-        ClassLoader loader = StaticLayoutBuilderCompat.class.getClassLoader();
-        String textDirClassName = isRtl ? TEXT_DIR_CLASS_RTL : TEXT_DIR_CLASS_LTR;
-        textDirClass = loader.loadClass(TEXT_DIR_CLASS);
-        Class<?> textDirsClass = loader.loadClass(TEXT_DIRS_CLASS);
-        textDirection = textDirsClass.getField(textDirClassName).get(textDirsClass);
-      }
+      textDirClass = TextDirectionHeuristic.class;
+      textDirection = useRtl ? TextDirectionHeuristics.RTL : TextDirectionHeuristics.LTR;
 
       final Class<?>[] signature =
           new Class<?>[] {
@@ -374,12 +362,19 @@ final class StaticLayoutBuilderCompat {
     }
   }
 
+  @NonNull
   public StaticLayoutBuilderCompat setIsRtl(boolean isRtl) {
     this.isRtl = isRtl;
     return this;
   }
 
-  static class StaticLayoutBuilderCompatException extends Exception {
+  /**
+   * Class representing a StaticLayoutBuilder exception from initializing a StaticLayout.
+   *
+   * @hide
+   */
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public static class StaticLayoutBuilderCompatException extends Exception {
 
     StaticLayoutBuilderCompatException(Throwable cause) {
       super("Error thrown initializing StaticLayout " + cause.getMessage(), cause);

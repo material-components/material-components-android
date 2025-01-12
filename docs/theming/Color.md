@@ -16,7 +16,7 @@ The Material 3 color theming system uses an organized approach to apply colors
 to your UI. Material components use theme colors and their variations to style
 backgrounds, text, and more.
 
-## Design & API Documentation
+## Design and API Documentation
 
 -   [Material Design guidelines: Color](https://m3.material.io/styles/color/overview/)
 
@@ -31,7 +31,7 @@ brand color:
 
 <!-- Auto-generated accent color table starts. Do not edit below or remove this comment. -->
 
-Color Role                 | Android Attribute            | Light Baseline | Light Dynamic 31-33 | Light Dynamic 34+                   | Dark Baseline | Dark Dynamic 31-33 | Dark Dynamic 34+
+Color role                 | Android attribute            | Light baseline | Light dynamic 31-33 | Light dynamic 34+                   | Dark baseline | Dark dynamic 31-33 | Dark dynamic 34+
 -------------------------- | ---------------------------- | -------------- | ------------------- | ----------------------------------- | ------------- | ------------------ | ----------------
 Primary                    | colorPrimary                 | primary40      | system_accent1_600  | system_primary_light                | primary80     | system_accent1_200 | system_primary_dark
 On Primary                 | colorOnPrimary               | white          | system_accent1_0    | system_on_primary_light             | primary20     | system_accent1_800 | system_on_primary_dark
@@ -70,7 +70,7 @@ combinations. These additional color attributes are as follows:
 
 <!-- Auto-generated additional color table starts. Do not edit below or remove this comment. -->
 
-Color Role                | Android Attribute            | Light Baseline    | Light Dynamic 31-33                      | Light Dynamic 34+                      | Dark Baseline     | Dark Dynamic 31-33                       | Dark Dynamic 34+
+Color role                | Android attribute            | Light baseline    | Light dynamic 31-33                      | Light dynamic 34+                      | Dark baseline     | Dark dynamic 31-33                       | Dark dynamic 34+
 ------------------------- | ---------------------------- | ----------------- | ---------------------------------------- | -------------------------------------- | ----------------- | ---------------------------------------- | ----------------
 Error                     | colorError                   | error40           | error40                                  | system_error_light                     | error80           | error80                                  | system_error_dark
 On Error                  | colorOnError                 | white             | white                                    | system_on_error_light                  | error20           | error20                                  | system_on_error_dark
@@ -306,13 +306,13 @@ optionally specify an `OnAppliedCallback` function, which will be called after
 dynamic colors have been applied:
 
 ```java
-DynamicColorsOptions dynamicColorOptions =
+DynamicColorsOptions dynamicColorsOptions =
     new DynamicColorsOptions.Builder()
         .setThemeOverlay(themeOverlay)
         .setPrecondition(precondition)
         .setOnAppliedCallback(onAppliedCallback)
         .build()
-DynamicColors.applyToActivitiesIfAvailable(application, dynamicColorOptions);
+DynamicColors.applyToActivitiesIfAvailable(application, dynamicColorsOptions);
 ```
 
 ##### Apply dynamic colors to a specific activity using `DynamicColorsOptions`
@@ -321,13 +321,13 @@ You can also apply dynamic colors to a specific activity in the app by passing
 in the specific activity and a `DynamicColorsOptions` object:
 
 ```java
-DynamicColorsOptions dynamicColorOptions =
+DynamicColorsOptions dynamicColorsOptions =
     new DynamicColorsOptions.Builder()
         .setThemeOverlay(themeOverlay)
         .setPrecondition(precondition)
         .setOnAppliedCallback(onAppliedCallback)
         .build()
-DynamicColors.applyToActivityIfAvailable(activity, dynamicColorOptions);
+DynamicColors.applyToActivityIfAvailable(activity, dynamicColorsOptions);
 ```
 
 ##### Apply dynamic colors to a specific fragment/view
@@ -599,7 +599,7 @@ suggested default when applying dynamic colors, is to harmonize M3 Error colors
 in the callback when constructing `DynamicColorsOptions`:
 
 ```java
-DynamicColorsOptions dynamicColorOptions =
+DynamicColorsOptions dynamicColorsOptions =
     new DynamicColorsOptions.Builder(activity)
         ...
         .setOnAppliedCallback(
@@ -608,7 +608,7 @@ DynamicColorsOptions dynamicColorOptions =
                     activity,
                     HarmonizedColorsOptions.createMaterialDefaults()))
         .build()
-DynamicColors.applyToActivityIfAvailable(activity, dynamicColorOptions);
+DynamicColors.applyToActivityIfAvailable(activity, dynamicColorsOptions);
 ```
 
 For color ressources harmonization in a fragment/view, you would use the context

@@ -40,4 +40,8 @@
 
   <!-- Slider and ProgressIndicator -->
   <public name="trackStopIndicatorSize" type="attr"/>
+
+  <!-- ProgressIndicator and LoadingIndicator -->
+  <public name="indicatorColor" type="attr"/>
+  <public name="indicatorSize" type="attr"/>
 </resources>

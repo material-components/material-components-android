@@ -71,21 +71,17 @@ the `com.android.support:design:28.0.0` dependency.
 **Note:** You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
 
-## 3. Android 12 compilation
+## 3. Android SDK compilation
 
 In order to use the latest versions of Material Components for Android and the
 AndroidX Jetpack libraries, you will have to install the latest version of
-Android Studio and update your app's `compileSdkVersion` to `32`.
+Android Studio and update your app to meet the following requirements:
 
-As part of migrating to Android 12, you'll need to add `android:exported` to any
-activities, services, or broadcast receivers in your manifest that use intent
-filters (see the
-[documentation](https://developer.android.com/about/versions/12/behavior-changes-12#exported)).
-Consider reading through the Android 12
-[app migration guide](https://developer.android.com/about/versions/12/migration)
-and
-[behavior changes](https://developer.android.com/about/versions/12/behavior-changes-all)
-for more tips and information.
+-   `compileSdkVersion` -> `34` or later (see the
+    [Android 14 app migration guide](https://developer.android.com/about/versions/14/migration))
+-   `minSdkVersion` -> `19` or later (see this
+    [AndroidX blog post](https://android-developers.googleblog.com/2023/10/androidx-minsdkversion-19.html)
+    for more info)
 
 ## 4. Java 8 compilation
 
@@ -96,13 +92,13 @@ for more information on Java 8 support and how to enable it for your app.
 
 ## 5. Gradle, AGP, and Android Studio
 
-When using MDC-Android version `1.7.0-alpha02` and above, you will need to make
-sure your project is built with the following minimum requirements, in order to
+When using MDC-Android version `1.7.0` and above, you will need to make sure
+your project is built with the following minimum requirements, in order to
 support the latest build features such as XML `macro`:
 
-- [Gradle version 7.3.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
-- [Android Gradle Plugin (AGP) version 7.2.0](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
-- [Android Studio Chipmunk, version 2021.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
+-   [Gradle version 7.3.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+-   [Android Gradle Plugin (AGP) version 7.2.0](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+-   [Android Studio Chipmunk, version 2021.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
 
 ## 6. `AppCompatActivity`
 
@@ -137,22 +133,22 @@ Here are the `Material3` themes you can use to get the latest component styles
 and theme-level attributes, as well as their `MaterialComponents` equivalents
 when applicable.
 
-| `Material3`                                          | `MaterialComponents`                              |
-|------------------------------------------------------|---------------------------------------------------|
-| `Theme.Material3.Light`                              | `Theme.MaterialComponents.Light`                  |
-| `Theme.Material3.Light.NoActionBar`                  | `Theme.MaterialComponents.Light.NoActionBar`      |
-| `Theme.Material3.Dark`                               | `Theme.MaterialComponents`                        |
-| `Theme.Material3.Dark.NoActionBar`                   | `Theme.MaterialComponents.NoActionBar`            |
-| `Theme.Material3.DayNight`                           | `Theme.MaterialComponents.DayNight`               |
-| `Theme.Material3.DayNight.NoActionBar`               | `Theme.MaterialComponents.DayNight.NoActionBar`   |
-| `Theme.Material3.DynamicColors.Light`                | N/A                                               |
-| `Theme.Material3.DynamicColors.Light.NoActionBar`    | N/A                                               |
-| `Theme.Material3.DynamicColors.Dark`                 | N/A                                               |
-| `Theme.Material3.DynamicColors.Dark.NoActionBar`     | N/A                                               |
-| `Theme.Material3.DynamicColors.DayNight`             | N/A                                               |
-| `Theme.Material3.DynamicColors.DayNight.NoActionBar` | N/A                                               |
-| N/A                                                  | `Theme.MaterialComponents.Light.DarkActionBar`    |
-| N/A                                                  | `Theme.MaterialComponents.DayNight.DarkActionBar` |
+`Material3`                                          | `MaterialComponents`
+---------------------------------------------------- | --------------------
+`Theme.Material3.Light`                              | `Theme.MaterialComponents.Light`
+`Theme.Material3.Light.NoActionBar`                  | `Theme.MaterialComponents.Light.NoActionBar`
+`Theme.Material3.Dark`                               | `Theme.MaterialComponents`
+`Theme.Material3.Dark.NoActionBar`                   | `Theme.MaterialComponents.NoActionBar`
+`Theme.Material3.DayNight`                           | `Theme.MaterialComponents.DayNight`
+`Theme.Material3.DayNight.NoActionBar`               | `Theme.MaterialComponents.DayNight.NoActionBar`
+`Theme.Material3.DynamicColors.Light`                | N/A
+`Theme.Material3.DynamicColors.Light.NoActionBar`    | N/A
+`Theme.Material3.DynamicColors.Dark`                 | N/A
+`Theme.Material3.DynamicColors.Dark.NoActionBar`     | N/A
+`Theme.Material3.DynamicColors.DayNight`             | N/A
+`Theme.Material3.DynamicColors.DayNight.NoActionBar` | N/A
+N/A                                                  | `Theme.MaterialComponents.Light.DarkActionBar`
+N/A                                                  | `Theme.MaterialComponents.DayNight.DarkActionBar`
 
 Update your app theme to inherit from one of these themes:
 
@@ -261,9 +257,10 @@ theme, or you will encounter `ThemeEnforcement` errors:
 
 ## 8. Add Material components
 
-Take a look at our [documentation](https://material.io/components?platform=android)
-for the full list of available Material components. Each component's page has
-specific instructions on how to implement it in your app.
+Take a look at our
+[documentation](https://material.io/components?platform=android) for the full
+list of available Material components. Each component's page has specific
+instructions on how to implement it in your app.
 
 Let's use [text fields](components/TextField.md) as an example.
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">Vælg interval</string>
   <string name="mtrl_picker_date_header_title">Vælg dato</string>
-  <string name="mtrl_picker_range_header_unselected">Startdato – slutdato</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s – slutdato</string>
+  <string name="mtrl_picker_range_header_unselected">Startdato – Slutdato</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Slutdato</string>
   <string name="mtrl_picker_range_header_only_end_selected">Startdato – %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
   <string name="mtrl_picker_date_header_unselected">Valgt dato</string>
@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Skift til næste måned</string>
   <string name="mtrl_picker_toggle_to_year_selection">Tryk for at skifte til årsvisning</string>
   <string name="mtrl_picker_toggle_to_day_selection">Tryk for at skifte til kalendervisning</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Skiftede til årsvisning</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Skiftede til kalendervisning</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Aktuelt valg: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Valg af startdato: %1$s – Valg af slutdato: %2$s</string>

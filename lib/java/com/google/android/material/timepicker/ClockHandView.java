@@ -40,9 +40,9 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import androidx.annotation.Dimension;
 import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.math.MathUtils;
@@ -57,7 +57,7 @@ class ClockHandView extends View {
   private static final int DEFAULT_ANIMATION_DURATION = 200;
   private final int animationDuration;
   private final TimeInterpolator animationInterpolator;
-  private final ValueAnimator rotationAnimator = new ValueAnimator();
+  @NonNull private final ValueAnimator rotationAnimator = new ValueAnimator();
   private boolean animatingOnTouchUp;
   private float downX;
   private float downY;
@@ -132,8 +132,25 @@ class ClockHandView extends View {
     setHandRotation(0);
 
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     a.recycle();
+
+    initRotationAnimator();
+  }
+
+  private void initRotationAnimator() {
+    rotationAnimator.addUpdateListener(
+        animation -> {
+          float animatedValue = (float) animation.getAnimatedValue();
+          setHandRotationInternal(animatedValue, true);
+        });
+
+    rotationAnimator.addListener(new AnimatorListenerAdapter() {
+      @Override
+      public void onAnimationCancel(Animator animation) {
+        animation.end();
+      }
+    });
   }
 
   @Override
@@ -150,9 +167,7 @@ class ClockHandView extends View {
   }
 
   public void setHandRotation(@FloatRange(from = 0f, to = 360f) float degrees, boolean animate) {
-    if (rotationAnimator != null) {
-      rotationAnimator.cancel();
-    }
+    rotationAnimator.cancel();
 
     if (!animate) {
       setHandRotationInternal(degrees, false);
@@ -163,19 +178,6 @@ class ClockHandView extends View {
     rotationAnimator.setFloatValues(animationValues.first, animationValues.second);
     rotationAnimator.setDuration(animationDuration);
     rotationAnimator.setInterpolator(animationInterpolator);
-    rotationAnimator.addUpdateListener(
-        animation -> {
-          float animatedValue = (float) animation.getAnimatedValue();
-          setHandRotationInternal(animatedValue, true);
-        });
-
-    rotationAnimator.addListener(new AnimatorListenerAdapter() {
-      @Override
-      public void onAnimationCancel(Animator animation) {
-        animation.end();
-      }
-    });
-
     rotationAnimator.start();
   }
 

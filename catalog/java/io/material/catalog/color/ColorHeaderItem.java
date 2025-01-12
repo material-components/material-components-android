@@ -26,6 +26,8 @@ import java.util.List;
 public class ColorHeaderItem implements ColorAdapterItem {
 
   public static final String SYSTEM_PREFIX = "system_";
+  public static final String MATERIAL_CUSTOM_PALETTE_NAME_SEARCH_WORD = "_ref_palette_dynamic_";
+  public static final String MATERIAL_CUSTOM_PALETTE_TITLE_PREFIX = "Material custom ";
   private static final String COLOR_600 = "600";
 
   @ColorRes private final int backgroundColorRes;
@@ -54,13 +56,21 @@ public class ColorHeaderItem implements ColorAdapterItem {
     String name;
     int splitIndex = description.lastIndexOf("_");
     if (description.startsWith(SYSTEM_PREFIX)) {
-      // Split the resource name into the color name and value, ie. system_accent1_500 to
+      // Split the resource name into the color name and value, i.e., system_accent1_500 to
       // system_accent1 and 500.
       name = description.substring(0, splitIndex);
+    } else if (description.contains(MATERIAL_CUSTOM_PALETTE_NAME_SEARCH_WORD)) {
+      // Get the name of the color and value without the search word.
+      splitIndex = description.lastIndexOf(MATERIAL_CUSTOM_PALETTE_NAME_SEARCH_WORD);
+      String trimmedResName =
+          description.substring(splitIndex + MATERIAL_CUSTOM_PALETTE_NAME_SEARCH_WORD.length());
+      // Split the resource name into the color name and value, i.e., neutral92 to neutral and 92.
+      List<String> parts = Arrays.asList(trimmedResName.split("(?<=\\D)(?=\\d)", -1));
+      name = MATERIAL_CUSTOM_PALETTE_TITLE_PREFIX + parts.get(0);
     } else {
-      // Get the name of the color an value without prefixes
+      // Get the name of the color and value without prefixes
       String trimmedResName = description.substring(splitIndex + 1);
-      // Split the resource name into the color name and value, ie. blue500 to blue and 500.
+      // Split the resource name into the color name and value, i.e., blue500 to blue and 500.
       List<String> parts = Arrays.asList(trimmedResName.split("(?<=\\D)(?=\\d)", -1));
       name = parts.get(0);
     }

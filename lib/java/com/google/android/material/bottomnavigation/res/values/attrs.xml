@@ -24,7 +24,8 @@
     <attr name="itemHorizontalTranslationEnabled" format="boolean"/>
     <!-- The min height this view should maintain. -->
     <attr name="android:minHeight" />
-    <!-- Whether or not to add a shadow with a divider that is compatible across pre-21 legacy backgrounds. -->
+    <!-- Whether or not to add a shadow with a divider that is compatible across pre-21 legacy backgrounds.
+         {@deprecated The attribute has no effect, as the library no longer supports pre-Lollipop.} -->
     <attr name="compatShadowEnabled" format="boolean"/>
     <!-- Shape appearance style reference for BottomNavigationView. Attribute declaration is in the Shape package. -->
     <attr name="shapeAppearance"/>

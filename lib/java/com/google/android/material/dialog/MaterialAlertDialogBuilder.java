@@ -182,9 +182,8 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
   @NonNull
   @CanIgnoreReturnValue
   public MaterialAlertDialogBuilder setBackgroundInsetStart(@Px int backgroundInsetStart) {
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1
-        && getContext().getResources().getConfiguration().getLayoutDirection()
-            == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (getContext().getResources().getConfiguration().getLayoutDirection()
+        == View.LAYOUT_DIRECTION_RTL) {
       backgroundInsets.right = backgroundInsetStart;
     } else {
       backgroundInsets.left = backgroundInsetStart;
@@ -202,9 +201,8 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
   @NonNull
   @CanIgnoreReturnValue
   public MaterialAlertDialogBuilder setBackgroundInsetEnd(@Px int backgroundInsetEnd) {
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1
-        && getContext().getResources().getConfiguration().getLayoutDirection()
-            == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (getContext().getResources().getConfiguration().getLayoutDirection()
+        == View.LAYOUT_DIRECTION_RTL) {
       backgroundInsets.left = backgroundInsetEnd;
     } else {
       backgroundInsets.right = backgroundInsetEnd;

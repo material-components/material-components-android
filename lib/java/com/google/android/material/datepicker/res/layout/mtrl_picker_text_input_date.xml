@@ -26,7 +26,10 @@
   <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/mtrl_picker_text_input_date"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:minWidth="@dimen/material_textinput_min_width_with_label"
+      android:maxWidth="@dimen/material_textinput_max_width"
+      android:layout_gravity="center_horizontal">
 
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"

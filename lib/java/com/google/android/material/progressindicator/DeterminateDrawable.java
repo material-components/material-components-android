@@ -16,15 +16,22 @@
 
 package com.google.android.material.progressindicator;
 
+import com.google.android.material.R;
+
+import android.animation.TimeInterpolator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Rect;
+import android.graphics.Paint.Style;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
+import androidx.core.math.MathUtils;
 import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.progressindicator.DrawingDelegate.ActiveIndicator;
 
 /** This class draws the graphics for determinate mode. */
@@ -32,8 +39,19 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     extends DrawableWithAnimatedVisibilityChange {
   // Constants for drawing progress.
   private static final int MAX_DRAWABLE_LEVEL = 10000;
+  // Constants for amplitude animation.
+  private static final float FULL_AMPLITUDE_FRACTION_MIN = 0.1f;
+  private static final float FULL_AMPLITUDE_FRACTION_MAX = 0.9f;
+
   // The constant for spring force stiffness.
   private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
+  // If the progress is less than 1%, the gap will be proportional to the progress. So that, it
+  // draws a full track at 0%.
+  static final float GAP_RAMP_DOWN_THRESHOLD = 0.01f;
+  // The duration of repeated initial phase animation in ms. It can be any positive values.
+  private static final int PHASE_ANIMATION_DURATION_MS = 1000;
+  // The duration of amplitude ramping animation in ms.
+  private static final int AMPLITUDE_ANIMATION_DURATION_MS = 500;
 
   // Drawing delegate object.
   private DrawingDelegate<S> drawingDelegate;
@@ -43,9 +61,16 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   private final SpringAnimation springAnimation;
   // Active indicator for the progress.
   private final ActiveIndicator activeIndicator;
-  private final ActiveIndicator partialTrack;
+  // Fraction of displayed amplitude.
+  private float targetAmplitudeFraction;
   // Whether to skip the spring animation on level change event.
   private boolean skipAnimationOnLevelChange = false;
+
+  @NonNull private final ValueAnimator phaseAnimator;
+  @NonNull private ValueAnimator amplitudeAnimator;
+  private TimeInterpolator amplitudeInterpolator;
+  @NonNull private TimeInterpolator amplitudeOnInterpolator;
+  @NonNull private TimeInterpolator amplitudeOffInterpolator;
 
   DeterminateDrawable(
       @NonNull Context context,
@@ -55,9 +80,9 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
     setDrawingDelegate(drawingDelegate);
     activeIndicator = new ActiveIndicator();
-    partialTrack = new ActiveIndicator();
-    partialTrack.endFraction = 1f;
+    activeIndicator.isDeterminate = true;
 
+    // Initializes a spring animator for progress animation.
     springForce = new SpringForce();
 
     springForce.setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY);
@@ -66,7 +91,48 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     springAnimation = new SpringAnimation(this, INDICATOR_LENGTH_IN_LEVEL);
     springAnimation.setSpring(springForce);
 
+    // Initializes a linear animator to enforce phase animation when progress is unchanged.
+    phaseAnimator = new ValueAnimator();
+    phaseAnimator.setDuration(PHASE_ANIMATION_DURATION_MS);
+    phaseAnimator.setFloatValues(0, 1);
+    phaseAnimator.setRepeatCount(ValueAnimator.INFINITE);
+    phaseAnimator.addUpdateListener(
+        animation -> {
+          if (baseSpec.hasWavyEffect(/* isDeterminate= */ true)
+              && baseSpec.waveSpeed != 0
+              && isVisible()) {
+            invalidateSelf();
+          }
+        });
+    if (baseSpec.hasWavyEffect(/* isDeterminate= */ true) && baseSpec.waveSpeed != 0) {
+      phaseAnimator.start();
+    }
+
     setGrowFraction(1f);
+  }
+
+  private void maybeInitializeAmplitudeAnimator() {
+    if (amplitudeAnimator != null) {
+      return;
+    }
+    // Initializes a linear animator to turn on/off wave amplitude.
+    amplitudeOnInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, R.attr.motionEasingStandardInterpolator, AnimationUtils.LINEAR_INTERPOLATOR);
+    amplitudeOffInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context,
+            R.attr.motionEasingEmphasizedAccelerateInterpolator,
+            AnimationUtils.LINEAR_INTERPOLATOR);
+    amplitudeAnimator = new ValueAnimator();
+    amplitudeAnimator.setDuration(AMPLITUDE_ANIMATION_DURATION_MS);
+    amplitudeAnimator.setFloatValues(0, 1);
+    amplitudeAnimator.setInterpolator(null);
+    amplitudeAnimator.addUpdateListener(
+        animation -> {
+          activeIndicator.amplitudeFraction =
+              amplitudeInterpolator.getInterpolation(amplitudeAnimator.getAnimatedFraction());
+        });
   }
 
   /**
@@ -188,9 +254,11 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
    */
   @Override
   protected boolean onLevelChange(int level) {
+    float nextAmplitudeFraction = getAmplitudeFractionFromLevel(level);
     if (skipAnimationOnLevelChange) {
       springAnimation.skipToEnd();
       setIndicatorFraction((float) level / MAX_DRAWABLE_LEVEL);
+      setAmplitudeFraction(nextAmplitudeFraction);
     } else {
       springAnimation.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
       springAnimation.animateToFinalPosition(level);
@@ -219,12 +287,40 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     setLevel((int) (MAX_DRAWABLE_LEVEL * fraction));
   }
 
+  private float getAmplitudeFractionFromLevel(int level) {
+    return level >= FULL_AMPLITUDE_FRACTION_MIN * MAX_DRAWABLE_LEVEL
+            && level <= FULL_AMPLITUDE_FRACTION_MAX * MAX_DRAWABLE_LEVEL
+        ? 1f
+        : 0f;
+  }
+
+  private void maybeStartAmplitudeAnimator(int level) {
+    if (!baseSpec.hasWavyEffect(/* isDeterminate= */ true)) {
+      return;
+    }
+    maybeInitializeAmplitudeAnimator();
+    float newAmplitudeFraction = getAmplitudeFractionFromLevel(level);
+    if (newAmplitudeFraction != targetAmplitudeFraction) {
+      if (amplitudeAnimator.isRunning()) {
+        amplitudeAnimator.cancel();
+      }
+      targetAmplitudeFraction = newAmplitudeFraction;
+      if (targetAmplitudeFraction == 1f) {
+        amplitudeInterpolator = amplitudeOnInterpolator;
+        amplitudeAnimator.start();
+      } else {
+        amplitudeInterpolator = amplitudeOffInterpolator;
+        amplitudeAnimator.reverse();
+      }
+    } else if (!amplitudeAnimator.isRunning()) {
+      setAmplitudeFraction(newAmplitudeFraction);
+    }
+  }
+
   // ******************* Drawing methods *******************
 
   @Override
   public void draw(@NonNull Canvas canvas) {
-    Rect clipBounds = new Rect();
-
     if (getBounds().isEmpty() || !isVisible() || !canvas.getClipBounds(clipBounds)) {
       // Escape if bounds are empty, clip bounds are empty, or currently hidden.
       return;
@@ -234,22 +330,42 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     drawingDelegate.validateSpecAndAdjustCanvas(
         canvas, getBounds(), getGrowFraction(), isShowing(), isHiding());
 
+    activeIndicator.phaseFraction = getPhaseFraction();
+
+    paint.setStyle(Style.FILL);
+    paint.setAntiAlias(true);
+
     activeIndicator.color = baseSpec.indicatorColors[0];
     if (baseSpec.indicatorTrackGapSize > 0) {
-      partialTrack.color = baseSpec.trackColor;
-      // Draws the indicator and track.
-      int gapSize = baseSpec.indicatorTrackGapSize;
-      // TODO: workaround to maintain pixel-perfect compatibility with drawing logic
-      //  not using indicatorTrackGapSize.
-      //  See https://github.com/material-components/material-components-android/commit/0ce6ae4.
-      baseSpec.indicatorTrackGapSize = 0;
-      drawingDelegate.fillIndicator(canvas, paint, activeIndicator, getAlpha());
-      baseSpec.indicatorTrackGapSize = gapSize;
-      drawingDelegate.fillIndicator(canvas, paint, partialTrack, getAlpha());
+      // Recalculates the gap size, so that it's proportional to the progress when the progress is
+      // below the threshold. For the linear type, this calculation is handled in the
+      // LinearDrawingDelegate.
+      int gapSize =
+          drawingDelegate instanceof LinearDrawingDelegate
+              ? baseSpec.indicatorTrackGapSize
+              : (int)
+                  (baseSpec.indicatorTrackGapSize
+                      * MathUtils.clamp(getIndicatorFraction(), 0f, GAP_RAMP_DOWN_THRESHOLD)
+                      / GAP_RAMP_DOWN_THRESHOLD);
+      drawingDelegate.fillTrack(
+          canvas,
+          paint,
+          getIndicatorFraction(),
+          /* endFraction= */ 1f,
+          baseSpec.trackColor,
+          getAlpha(),
+          gapSize);
     } else {
-      drawingDelegate.fillTrack(canvas, paint, getAlpha());
-      drawingDelegate.fillIndicator(canvas, paint, activeIndicator, getAlpha());
+      drawingDelegate.fillTrack(
+          canvas,
+          paint,
+          /* startFraction= */ 0f,
+          /* endFraction= */ 1f,
+          baseSpec.trackColor,
+          getAlpha(),
+          /* gapSize= */ 0);
     }
+    drawingDelegate.fillIndicator(canvas, paint, activeIndicator, getAlpha());
     drawingDelegate.drawStopIndicator(canvas, paint, baseSpec.indicatorColors[0], getAlpha());
     canvas.restore();
   }
@@ -262,7 +378,11 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
   private void setIndicatorFraction(float indicatorFraction) {
     activeIndicator.endFraction = indicatorFraction;
-    partialTrack.startFraction = indicatorFraction;
+    invalidateSelf();
+  }
+
+  private void setAmplitudeFraction(float amplitudeFraction) {
+    this.activeIndicator.amplitudeFraction = amplitudeFraction;
     invalidateSelf();
   }
 
@@ -275,18 +395,27 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     this.drawingDelegate = drawingDelegate;
   }
 
+  void setEnforcedDrawing(boolean enforced) {
+    if (enforced && !phaseAnimator.isRunning()) {
+      phaseAnimator.start();
+    } else if (!enforced && phaseAnimator.isRunning()) {
+      phaseAnimator.cancel();
+    }
+  }
+
   // ******************* Properties *******************
 
-  private static final FloatPropertyCompat<DeterminateDrawable> INDICATOR_LENGTH_IN_LEVEL =
-      new FloatPropertyCompat<DeterminateDrawable>("indicatorLevel") {
+  private static final FloatPropertyCompat<DeterminateDrawable<?>> INDICATOR_LENGTH_IN_LEVEL =
+      new FloatPropertyCompat<DeterminateDrawable<?>>("indicatorLevel") {
         @Override
-        public float getValue(DeterminateDrawable drawable) {
+        public float getValue(DeterminateDrawable<?> drawable) {
           return drawable.getIndicatorFraction() * MAX_DRAWABLE_LEVEL;
         }
 
         @Override
-        public void setValue(DeterminateDrawable drawable, float value) {
+        public void setValue(DeterminateDrawable<?> drawable, float value) {
           drawable.setIndicatorFraction(value / MAX_DRAWABLE_LEVEL);
+          drawable.maybeStartAmplitudeAnimator((int) value);
         }
       };
 }

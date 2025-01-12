@@ -15,14 +15,18 @@
  */
 package com.google.android.material.motion;
 
+import com.google.android.material.R;
+
 import android.animation.TimeInterpolator;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.TypedValue;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.core.graphics.PathParser;
 import androidx.core.view.animation.PathInterpolatorCompat;
+import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.resources.MaterialAttributes;
 
 /** A utility class for motion system functions. */
@@ -35,6 +39,40 @@ public class MotionUtils {
   private static final String EASING_TYPE_FORMAT_END = ")";
 
   private MotionUtils() {}
+
+  /**
+   * Resolve a {@link SpringForce} object from a Material spring theme attribute.
+   *
+   * @param context the context from where the theme attribute will be resolved
+   * @param attrResId the {@code motionSpring*} theme attribute to resolve
+   * into a {@link SpringForce} object
+   * @return a {@link SpringForce} object configured using the stiffness and damping from the
+   * resolved Material spring attribute
+   */
+  @NonNull
+  public static SpringForce resolveThemeSpringForce(
+      @NonNull Context context, @AttrRes int attrResId) {
+    TypedValue tv = MaterialAttributes.resolveTypedValueOrThrow(
+        context, attrResId, "MaterialSpring");
+    TypedArray a = context.obtainStyledAttributes(tv.resourceId, R.styleable.MaterialSpring);
+    SpringForce springForce = new SpringForce();
+    try {
+      float stiffness = a.getFloat(R.styleable.MaterialSpring_stiffness, Float.MIN_VALUE);
+      if (stiffness == Float.MIN_VALUE) {
+        throw new IllegalArgumentException("A MaterialSpring style must have stiffness value.");
+      }
+      float damping = a.getFloat(R.styleable.MaterialSpring_damping, Float.MIN_VALUE);
+      if (damping == Float.MIN_VALUE) {
+        throw new IllegalArgumentException("A MaterialSpring style must have a damping value.");
+      }
+
+      springForce.setStiffness(stiffness);
+      springForce.setDampingRatio(damping);
+    } finally {
+      a.recycle();
+    }
+    return springForce;
+  }
 
   /**
    * Resolve a duration from a material duration theme attribute.

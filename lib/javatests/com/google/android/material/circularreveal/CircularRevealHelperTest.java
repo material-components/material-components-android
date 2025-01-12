@@ -87,19 +87,6 @@ public class CircularRevealHelperTest {
   }
 
   @Test
-  @Config(sdk = 19)
-  public void oldSdkUsesClipPathStrategy() {
-    helper = new CircularRevealHelper(delegate);
-    helper.setRevealInfo(smallRevealInfo);
-
-    helper.draw(canvas);
-
-    verify(canvas).clipPath(ArgumentMatchers.<Path>any());
-    verify(canvas, never())
-        .drawCircle(anyFloat(), anyFloat(), anyFloat(), ArgumentMatchers.<Paint>any());
-  }
-
-  @Test
   @Config(sdk = VERSION_CODES.LOLLIPOP)
   public void lUsesRevealAnimatorStrategy() {
     helper = new CircularRevealHelper(delegate);
@@ -110,24 +97,6 @@ public class CircularRevealHelperTest {
     verify(canvas, never()).clipPath(ArgumentMatchers.<Path>any());
     verify(canvas, never())
         .drawCircle(anyFloat(), anyFloat(), anyFloat(), ArgumentMatchers.<Paint>any());
-  }
-
-  @Test
-  @Config(sdk = 19)
-  public void oldSdkDrawsScrim() {
-    helper = new CircularRevealHelper(delegate);
-    helper.setCircularRevealScrimColor(Color.RED);
-
-    helper.setRevealInfo(smallRevealInfo);
-    helper.draw(canvas);
-
-    verify(canvas)
-        .drawRect(
-            eq(0f),
-            eq(0f),
-            eq((float) DELEGATE_WIDTH),
-            eq((float) DELEGATE_HEIGHT),
-            ArgumentMatchers.<Paint>any());
   }
 
   @Test

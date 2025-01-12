@@ -41,6 +41,9 @@
          means to expand and collapse the sheet. Attribute declaration is in
          the resources package. -->
     <attr name="behavior_draggable"/>
+    <!-- Whether this bottom sheet is draggable when the nested scrolling child
+         view is scrolled. Default is true. -->
+    <attr name="behavior_draggableOnNestedScroll" format="boolean"/>
     <!-- The ratio to be used to set the height of half-expanded state in proportion to parent, when
          fitToContents is false. Defaults to true half, 0.5, if not explicitly set. Ratio must be a
          float value between 0 and 1 and produce a half-expanded state height larger than the

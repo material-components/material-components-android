@@ -42,19 +42,19 @@ public final class SchemeExpressiveTest {
   @Test
   public void lightTheme_minContrast_primary() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff32835D);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff32835d);
   }
 
   @Test
   public void lightTheme_standardContrast_primary() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff146C48);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff146c48);
   }
 
   @Test
   public void lightTheme_maxContrast_primary() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff002818);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff00341f);
   }
 
   @Test
@@ -66,25 +66,25 @@ public final class SchemeExpressiveTest {
   @Test
   public void lightTheme_standardContrast_primaryContainer() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffA2F4C6);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffa2f4c6);
   }
 
   @Test
   public void lightTheme_maxContrast_primaryContainer() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff004D31);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff005436);
   }
 
   @Test
   public void lightTheme_minContrast_onPrimaryContainer() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff146c48);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff388862);
   }
 
   @Test
   public void lightTheme_standardContrast_onPrimaryContainer() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff002112);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff005234);
   }
 
   @Test
@@ -126,7 +126,7 @@ public final class SchemeExpressiveTest {
   @Test
   public void darkTheme_maxContrast_primary() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xffeefff2);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xffbbffd7);
   }
 
   @Test
@@ -144,13 +144,13 @@ public final class SchemeExpressiveTest {
   @Test
   public void darkTheme_maxContrast_primaryContainer() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff8bdbaf);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff83d3a8);
   }
 
   @Test
   public void darkTheme_minContrast_onPrimaryContainer() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff64b48a);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff43936c);
   }
 
   @Test
@@ -162,7 +162,7 @@ public final class SchemeExpressiveTest {
   @Test
   public void darkTheme_maxContrast_onPrimaryContainer() {
     SchemeExpressive scheme = new SchemeExpressive(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff000e06);
   }
 
   @Test

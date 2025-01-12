@@ -33,7 +33,9 @@
     <item name="minSeparation">0dp</item>
   </style>
 
-  <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider"/>
+  <style name="Widget.MaterialComponents.Slider" parent="Base.Widget.MaterialComponents.Slider">
+    <item name="android:background">?attr/controlBackground</item>
+  </style>
 
   <style name="Widget.Material3.Slider.Legacy" parent="Widget.MaterialComponents.Slider">
     <item name="haloColor">@color/m3_slider_halo_color_legacy</item>
@@ -43,7 +45,7 @@
     <item name="tickColorInactive">@color/m3_slider_active_track_color_legacy</item>
     <item name="trackColorActive">@color/m3_slider_active_track_color_legacy</item>
     <item name="trackColorInactive">@color/m3_slider_inactive_track_color_legacy</item>
-    <item name="trackHeight">@dimen/m3_slider_inactive_track_height</item>
+    <item name="trackHeight">4dp</item>
     <item name="thumbElevation">@dimen/m3_slider_thumb_elevation</item>
     <item name="trackInsideCornerSize">0dp</item>
     <item name="thumbWidth">@null</item>
@@ -53,32 +55,37 @@
   </style>
 
   <style name="Widget.Material3.Slider.Legacy.Label" parent="Widget.Material3.Tooltip">
-    <item name="android:textColor">@macro/m3_comp_slider_label_label_text_color</item>
-    <item name="backgroundTint">@macro/m3_comp_slider_label_container_color</item>
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+    <item name="backgroundTint">?attr/colorPrimary</item>
   </style>
 
   <style name="Widget.Material3.Slider" parent="Widget.MaterialComponents.Slider">
-    <item name="haloColor">@android:color/transparent</item>
+    <item name="haloColor">#00FFFFFF</item>
     <item name="labelStyle">@style/Widget.Material3.Slider.Label</item>
     <item name="thumbColor">@color/m3_slider_thumb_color</item>
-    <item name="tickColorActive">@color/m3_slider_inactive_track_color</item>
-    <item name="tickColorInactive">@color/m3_slider_active_track_color</item>
+    <item name="tickColorActive">@color/m3_slider_active_tick_marks_color</item>
+    <item name="tickColorInactive">@color/m3_slider_inactive_tick_marks_color</item>
+    <item name="tickRadiusActive">@null</item>
+    <item name="tickRadiusInactive">@null</item>
     <item name="trackColorActive">@color/m3_slider_active_track_color</item>
     <item name="trackColorInactive">@color/m3_slider_inactive_track_color</item>
-    <item name="trackHeight">16dp</item>
+    <item name="trackHeight">@dimen/m3_comp_slider_inactive_track_height</item>
     <item name="thumbElevation">0dp</item>
     <item name="trackInsideCornerSize">2dp</item>
-    <item name="thumbWidth">4dp</item>
-    <item name="thumbHeight">44dp</item>
-    <item name="thumbTrackGapSize">6dp</item>
-    <item name="trackStopIndicatorSize">4dp</item>
+    <item name="thumbWidth">@dimen/m3_comp_slider_active_handle_width</item>
+    <item name="thumbHeight">@dimen/m3_comp_slider_active_handle_height</item>
+    <item name="thumbTrackGapSize">@dimen/m3_comp_slider_active_handle_leading_space</item>
+    <item name="trackStopIndicatorSize">@dimen/m3_comp_slider_stop_indicator_size</item>
   </style>
 
   <style name="Widget.Material3.Slider.Label" parent="Widget.Material3.Tooltip">
-    <item name="android:textColor">?attr/colorOnSurfaceInverse</item>
-    <item name="backgroundTint">?attr/colorSurfaceInverse</item>
+    <item name="android:textColor">@macro/m3_comp_slider_value_indicator_label_label_text_color</item>
+    <item name="backgroundTint">@macro/m3_comp_slider_value_indicator_container_color</item>
     <item name="showMarker">false</item>
-    <item name="android:padding">10dp</item>
+    <item name="android:paddingStart">10dp</item>
+    <item name="android:paddingEnd">10dp</item>
+    <item name="android:paddingTop">@dimen/m3_comp_slider_value_indicator_active_bottom_space</item>
+    <item name="android:paddingBottom">@dimen/m3_comp_slider_value_indicator_active_bottom_space</item>
     <item name="android:minHeight">32dp</item>
   </style>
 

@@ -19,7 +19,6 @@ package com.google.android.material.timepicker;
 import com.google.android.material.R;
 
 import static android.view.HapticFeedbackConstants.CLOCK_TICK;
-import static android.view.HapticFeedbackConstants.VIRTUAL_KEY;
 import static android.view.View.GONE;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static com.google.android.material.timepicker.RadialViewGroup.LEVEL_1;
@@ -29,8 +28,6 @@ import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
 import static java.util.Calendar.HOUR;
 import static java.util.Calendar.MINUTE;
 
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.accessibility.AccessibilityManager;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -47,16 +44,18 @@ class TimePickerClockPresenter
         OnActionUpListener,
         TimePickerPresenter {
 
-  private static final String[] HOUR_CLOCK_VALUES =
-      {"12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"};
+  private static final String[] HOUR_CLOCK_VALUES = {
+    "12", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11"
+  };
 
   private static final String[] HOUR_CLOCK_24_VALUES = {
     "00", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16",
     "17", "18", "19", "20", "21", "22", "23"
   };
 
-  private static final  String[] MINUTE_CLOCK_VALUES =
-      {"00", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"};
+  private static final String[] MINUTE_CLOCK_VALUES = {
+    "00", "5", "10", "15", "20", "25", "30", "35", "40", "45", "50", "55"
+  };
 
   private static final int DEGREES_PER_HOUR = 30;
   private static final int DEGREES_PER_MINUTE = 6;
@@ -112,7 +111,8 @@ class TimePickerClockPresenter
 
   @Override
   public void onRotate(float rotation, boolean animating) {
-    if (broadcasting) {
+    // Do not update the displayed and actual time during an animation
+    if (broadcasting || animating) {
       return;
     }
 
@@ -138,17 +138,13 @@ class TimePickerClockPresenter
       hourRotation = getHourRotation();
     }
 
-    // Do not update the display during an animation
-    if (!animating) {
-      updateTime();
-      performHapticFeedback(prevHour, prevMinute);
-    }
+    updateTime();
+    performHapticFeedback(prevHour, prevMinute);
   }
 
   private void performHapticFeedback(int prevHour, int prevMinute) {
     if (time.minute != prevMinute || time.hour != prevHour) {
-      int feedbackKey = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP ? CLOCK_TICK : VIRTUAL_KEY;
-      timePickerView.performHapticFeedback(feedbackKey);
+      timePickerView.performHapticFeedback(CLOCK_TICK);
     }
   }
 
@@ -246,6 +242,7 @@ class TimePickerClockPresenter
   /** Update values with the correct number format */
   private void updateValues() {
     updateValues(HOUR_CLOCK_VALUES, TimeModel.NUMBER_FORMAT);
+    updateValues(HOUR_CLOCK_24_VALUES, TimeModel.NUMBER_FORMAT);
     updateValues(MINUTE_CLOCK_VALUES, TimeModel.ZERO_LEADING_NUMBER_FORMAT);
   }
 

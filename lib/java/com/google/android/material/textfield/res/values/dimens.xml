@@ -24,6 +24,7 @@
   <!-- Minimum width for text fields without a label. If a label is present,
        minimum width should be 88dp. -->
   <dimen name="material_textinput_min_width">56dp</dimen>
+  <dimen name="material_textinput_min_width_with_label">88dp</dimen>
   <dimen name="material_textinput_max_width">488dp</dimen>
 
   <dimen name="mtrl_textinput_outline_box_expanded_padding">16dp</dimen>
@@ -61,7 +62,7 @@
 
   <dimen name="mtrl_exposed_dropdown_menu_popup_elevation">8dp</dimen>
   <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_padding">8dp</dimen>
-  <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_offset">-8dp</dimen>
+  <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_offset">1dp</dimen>
 
   <!-- Alphas for state colors of the dropdown menu items. Same as the ripple
        alpha values but without the changes applied for different APIs. -->
@@ -70,4 +71,5 @@
   <!-- Same as @dimen/m3_ripple_hovered_alpha. -->
   <item name="m3_simple_item_color_hovered_alpha" format="float" type="dimen">0.08</item>
 
+  <dimen name="m3_multiline_hint_filled_text_extra_space">4dp</dimen>
 </resources>

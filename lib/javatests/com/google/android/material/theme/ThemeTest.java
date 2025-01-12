@@ -45,14 +45,15 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 @DoNotInstrument
 public class ThemeTest {
 
-  /** These are motion styles that should be the same for *all* full themes. */
-  private static final ImmutableList<Integer> MOTION_STYLE_ATTRIBUTES =
+  private static final ImmutableList<Integer> MATERIAL_DEPRECATED_MOTION_ATTRIBUTES =
       ImmutableList.of(
           R.attr.motionEasingStandard,
           R.attr.motionEasingEmphasized,
           R.attr.motionEasingDecelerated,
           R.attr.motionEasingAccelerated,
-          R.attr.motionEasingLinear,
+          R.attr.motionEasingLinear);
+  private static final ImmutableList<Integer> MATERIAL_ACTIVE_MOTION_ATTRIBUTES =
+      ImmutableList.of(
           R.attr.motionDurationShort1,
           R.attr.motionDurationShort2,
           R.attr.motionDurationMedium1,
@@ -60,6 +61,12 @@ public class ThemeTest {
           R.attr.motionDurationLong1,
           R.attr.motionDurationLong2,
           R.attr.motionPath);
+
+  private static final ImmutableList<Integer> MATERIAL_MOTION_ATTRIBUTES =
+      ImmutableList.<Integer>builder()
+          .addAll(MATERIAL_DEPRECATED_MOTION_ATTRIBUTES)
+          .addAll(MATERIAL_ACTIVE_MOTION_ATTRIBUTES)
+          .build();
 
   private static final ImmutableList<Integer> DEPRECATED_TYPOGRAPHY_ATTRIBUTES =
       ImmutableList.of(
@@ -212,7 +219,7 @@ public class ThemeTest {
       ImmutableList.<Integer>builder()
           .addAll(MATERIAL_BRIDGE_COLOR_ATTRIBUTES)
           .addAll(MATERIAL_BRIDGE_WIDGET_STYLE_ATTRIBUTES)
-          .addAll(MOTION_STYLE_ATTRIBUTES)
+          .addAll(MATERIAL_MOTION_ATTRIBUTES)
           .addAll(DEPRECATED_TYPOGRAPHY_ATTRIBUTES)
           .build();
 
@@ -223,6 +230,7 @@ public class ThemeTest {
   private static final ImmutableList<Integer> MATERIAL_FULL_ATTRIBUTES =
       ImmutableList.<Integer>builder()
           .addAll(MATERIAL_FULL_COLOR_ATTRIBUTES)
+          .addAll(MATERIAL_MOTION_ATTRIBUTES)
           .addAll(MATERIAL_COMMON_WIDGET_STYLE_ATTRIBUTES)
           .build();
 
@@ -355,6 +363,45 @@ public class ThemeTest {
           .addAll(DEFAULT_FRAMEWORK_TEXT_STYLE_ATTRIBUTES)
           .build();
 
+  private static final ImmutableList<Integer> M3_ACTIVE_MOTION_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.motionSpringFastSpatial,
+          R.attr.motionSpringFastEffects,
+          R.attr.motionSpringDefaultSpatial,
+          R.attr.motionSpringDefaultEffects,
+          R.attr.motionSpringSlowSpatial,
+          R.attr.motionSpringSlowEffects,
+          R.attr.motionEasingStandardInterpolator,
+          R.attr.motionEasingStandardAccelerateInterpolator,
+          R.attr.motionEasingStandardDecelerateInterpolator,
+          R.attr.motionEasingEmphasizedInterpolator,
+          R.attr.motionEasingEmphasizedAccelerateInterpolator,
+          R.attr.motionEasingEmphasizedDecelerateInterpolator,
+          R.attr.motionEasingLinearInterpolator,
+          R.attr.motionDurationShort1,
+          R.attr.motionDurationShort2,
+          R.attr.motionDurationShort3,
+          R.attr.motionDurationShort4,
+          R.attr.motionDurationMedium1,
+          R.attr.motionDurationMedium2,
+          R.attr.motionDurationMedium3,
+          R.attr.motionDurationMedium4,
+          R.attr.motionDurationLong1,
+          R.attr.motionDurationLong2,
+          R.attr.motionDurationLong3,
+          R.attr.motionDurationLong4,
+          R.attr.motionDurationExtraLong1,
+          R.attr.motionDurationExtraLong2,
+          R.attr.motionDurationExtraLong3,
+          R.attr.motionDurationExtraLong4,
+          R.attr.motionPath);
+
+  private static final ImmutableList<Integer> M3_FULL_MOTION_ATTRIBUTES =
+      ImmutableList.<Integer>builder()
+          .addAll(MATERIAL_DEPRECATED_MOTION_ATTRIBUTES)
+          .addAll(M3_ACTIVE_MOTION_ATTRIBUTES)
+          .build();
+
   /** These are widget styles that should be the same for *all* M3 full themes. */
   private static final ImmutableList<Integer> M3_COMMON_WIDGET_STYLE_ATTRIBUTES =
       ImmutableList.of(
@@ -433,7 +480,7 @@ public class ThemeTest {
       ImmutableList.<Integer>builder()
           .addAll(M3_FULL_COLOR_ATTRIBUTES)
           .addAll(M3_FULL_TYPOGRAPHY_ATTRIBUTES)
-          .addAll(MOTION_STYLE_ATTRIBUTES)
+          .addAll(M3_FULL_MOTION_ATTRIBUTES)
           .addAll(M3_COMMON_WIDGET_STYLE_ATTRIBUTES)
           .build();
 
@@ -500,7 +547,7 @@ public class ThemeTest {
             createTestData(
                 R.style.Theme_MaterialComponents,
                 R.style.Theme_MaterialComponents_Light,
-                MOTION_STYLE_ATTRIBUTES))
+                MATERIAL_MOTION_ATTRIBUTES))
         // Compare Material Light and Dark themes - they should have the same typography styles.
         .addAll(
             createTestData(
@@ -563,7 +610,7 @@ public class ThemeTest {
             createTestData(
                 R.style.Theme_Material3_Dark,
                 R.style.Theme_Material3_Light,
-                MOTION_STYLE_ATTRIBUTES))
+                M3_FULL_MOTION_ATTRIBUTES))
         .build();
   }
 

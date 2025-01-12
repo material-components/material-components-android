@@ -68,6 +68,12 @@
     <enum name="rounded" value="0"/>
     <enum name="cut" value="1"/>
   </attr>
+
+  <declare-styleable name="StateListSizeChange">
+    <!-- The change on width. Dimension for absolute value; fraction for relative value. -->
+    <attr name="widthChange" format="dimension|fraction"/>
+  </declare-styleable>
+
   <!-- Shape appearance style reference with extra small corners. -->
   <attr name="shapeAppearanceCornerExtraSmall" format="reference"/>
   <!-- Shape appearance style reference with small corners. -->

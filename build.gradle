@@ -18,7 +18,7 @@ allprojects {
 
 ext {
   compileSdkVersion = 34
-  minSdkVersion = 19
+  minSdkVersion = 21
   targetSdkVersion = 33
 
   androidXVersions = [
@@ -29,7 +29,7 @@ ext {
     constraintlayout             : '2.0.1',
     coordinatorlayout            : '1.1.0',
     core                         : '1.6.0',
-    drawerlayout                 : '1.1.1',
+    drawerlayout                 : '1.2.0',
     experimental                 : '1.0.0',
     fragment                     : '1.2.5',
     lifecycle                    : '2.0.0',
@@ -37,10 +37,11 @@ ext {
     recyclerViewSelection        : '1.0.0',
     resourceInspectionAnnotation : '1.0.1',
     resourceInspectionProcessor  : '1.0.1',
-    transition                   : '1.5.0-alpha04',
+    transition                   : '1.5.0',
     vectorDrawable               : '1.1.0',
     viewpager2                   : '1.0.0',
     dynamicanimation             : '1.0.0',
+    graphicsShapes               : '1.0.1',
   ]
 
   errorproneVersion = '2.15.0'
@@ -58,7 +59,7 @@ ext {
     ? project.property('mavenRepoUrl') : '/tmp/myRepo/')
 
   // Current version of the library (could be in-development/unreleased).
-  mdcLibraryVersion = '1.12.0-alpha03'
+  mdcLibraryVersion = '1.13.0-alpha09'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
 }
@@ -123,6 +124,8 @@ def compatibility(name) {
       return "androidx.resourceinspection:resourceinspection-processor:${androidXVersions.resourceInspectionProcessor}"
     case "viewpager2":
       return "androidx.viewpager2:viewpager2:${androidXVersions.viewpager2}"
+    case "graphicsShapes":
+      return "androidx.graphics:graphics-shapes:${androidXVersions.graphicsShapes}"
     case "experimental":
       return "androidx.annotation:annotation-experimental:${androidXVersions.experimental}"
     default:

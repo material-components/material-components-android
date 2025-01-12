@@ -20,7 +20,6 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -31,7 +30,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 
 /** @hide */
@@ -235,8 +233,6 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
     }
   }
 
-  @TargetApi(21)
-  @RequiresApi(21)
   @Override
   public void drawableHotspotChanged(float x, float y) {
     super.drawableHotspotChanged(x, y);

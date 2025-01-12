@@ -18,8 +18,6 @@ package io.material.catalog.tableofcontents;
 
 import io.material.catalog.R;
 
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.AppCompatActivity;
@@ -123,11 +121,7 @@ public class TocFragment extends DaggerFragment {
           return insetsCompat;
         });
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      addGridTopDividerVisibilityListener();
-    } else {
-      gridTopDivider.setVisibility(View.VISIBLE);
-    }
+    addGridTopDividerVisibilityListener();
 
     final int gridSpanCount = calculateGridSpanCount();
 

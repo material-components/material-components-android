@@ -14,223 +14,57 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
   <ScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-      <TextView
-          android:textStyle="bold"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:text="@string/cat_btn_text"
-          android:textSize="16sp"/>
-
-      <Button
-          android:id="@+id/material_button"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_enabled"/>
-
-      <TextView
-          android:textStyle="bold"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:text="@string/cat_unelevated_btn_text"
-          android:textSize="16sp"/>
-
-      <Button
-          android:id="@+id/material_unelevated_button"
-          style="@style/Widget.Material3.Button.UnelevatedButton"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_enabled" />
-
-      <TextView
-          android:textStyle="bold"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:text="@string/cat_icon_btn_text"
-          android:textSize="16sp"/>
-
-      <Button
-          android:id="@+id/material_icon_button"
-          style="@style/Widget.Material3.Button.Icon"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_enabled"
-          app:icon="@drawable/ic_dialogs_24px"/>
-
-      <TextView
-          android:textStyle="bold"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:text="@string/cat_text_btn_text"
-          android:textSize="16sp"/>
-
-      <Button
-          android:id="@+id/material_text_button"
-          style="@style/Widget.Material3.Button.TextButton"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_enabled"/>
-
-      <TextView
-          android:textStyle="bold"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:text="@string/cat_icon_text_btn_text"
-          android:textSize="16sp"/>
-
-      <Button
-          android:id="@+id/material_icon_text_button"
-          style="@style/Widget.Material3.Button.TextButton.Icon"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_enabled"
-          app:icon="@drawable/ic_dialogs_24px"/>
-
-      <TextView
-          android:textStyle="bold"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:text="@string/cat_outlined_btn_text"
-          android:textSize="16sp"/>
-
-      <Button
-          android:id="@+id/material_outlined_button"
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_enabled"/>
-
-      <TextView
-          android:textStyle="bold"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:text="@string/cat_outlined_icon_btn_text"
-          android:textSize="16sp"/>
-
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
       <LinearLayout
-          android:id="@+id/material_icon_only_buttons_view"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:paddingTop="8dp"
-          android:paddingBottom="8dp"
-          android:gravity="center_horizontal"
+          android:baselineAligned="false"
           android:orientation="horizontal">
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_weight="1"
             android:orientation="vertical">
-          <Button
-              style="?attr/materialIconButtonStyle"
-              android:layout_width="wrap_content"
+          <FrameLayout
+              android:id="@+id/labelButtonContent"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:contentDescription="@string/cat_standard_icon_btn_desc"
-              app:icon="@drawable/ic_dialogs_24px"/>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:paddingTop="4dp"
-              android:text="@string/cat_icon_btn_default_style"
-              android:textSize="12sp"/>
+              android:layout_gravity="center_horizontal"/>
         </LinearLayout>
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_weight="1"
             android:orientation="vertical">
-          <Button
-              style="?attr/materialIconButtonFilledStyle"
-              android:layout_width="wrap_content"
+          <FrameLayout
+              android:id="@+id/labelIconButtonContent"
+              android:layout_width="match_parent"
               android:layout_height="wrap_content"
-              android:contentDescription="@string/cat_filled_icon_btn_desc"
-              app:icon="@drawable/ic_dialogs_24px"/>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:paddingTop="4dp"
-              android:text="@string/cat_icon_btn_filled_style"
-              android:textSize="12sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-          <Button
-              style="?attr/materialIconButtonFilledTonalStyle"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:contentDescription="@string/cat_filled_tonal_icon_btn_desc"
-              app:icon="@drawable/ic_dialogs_24px"/>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:paddingTop="4dp"
-              android:text="@string/cat_icon_btn_filled_tonal_style"
-              android:textSize="12sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
-          <Button
-              style="?attr/materialIconButtonOutlinedStyle"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:contentDescription="@string/cat_outlined_icon_btn_desc"
-              app:icon="@drawable/ic_dialogs_24px"/>
-          <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:paddingTop="4dp"
-              android:text="@string/cat_icon_btn_outlined_style"
-              android:textSize="12sp"/>
+              android:layout_gravity="center_horizontal"/>
         </LinearLayout>
       </LinearLayout>
-
-      <com.google.android.material.materialswitch.MaterialSwitch
-          android:id="@+id/cat_button_toggleable_icon_buttons"
-          android:layout_width="wrap_content"
+      <FrameLayout
+          android:id="@+id/iconButtonContent"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="16dp"
-          android:checked="false"
-          android:text="@string/cat_button_label_toggleable_icon_buttons"/>
-
+          android:layout_gravity="center_horizontal"/>
       <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/cat_button_enabled_switch"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_marginTop="16dp"
+          android:layout_marginBottom="16dp"
           android:checked="true"
           android:text="@string/cat_button_label_enabled"/>
     </LinearLayout>

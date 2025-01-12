@@ -54,7 +54,7 @@ public final class SchemeNeutralTest {
   @Test
   public void lightTheme_maxContrast_primary() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff21212e);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xff2b2b38);
   }
 
   @Test
@@ -72,19 +72,19 @@ public final class SchemeNeutralTest {
   @Test
   public void lightTheme_maxContrast_primaryContainer() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), false, 1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff414250);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xff484856);
   }
 
   @Test
   public void lightTheme_minContrast_onPrimaryContainer() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), false, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff5d5d6c);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff797888);
   }
 
   @Test
   public void lightTheme_standardContrast_onPrimaryContainer() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), false, 0.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff1a1b27);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff454654);
   }
 
   @Test
@@ -126,7 +126,7 @@ public final class SchemeNeutralTest {
   @Test
   public void darkTheme_maxContrast_primary() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xfffdf9ff);
+    assertThat(dynamicColors.primary().getArgb(scheme)).isSameColorAs(0xfff0eeff);
   }
 
   @Test
@@ -144,13 +144,13 @@ public final class SchemeNeutralTest {
   @Test
   public void darkTheme_maxContrast_primaryContainer() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffcac9da);
+    assertThat(dynamicColors.primaryContainer().getArgb(scheme)).isSameColorAs(0xffc2c1d2);
   }
 
   @Test
   public void darkTheme_minContrast_onPrimaryContainer() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xffa3a2b3);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff838393);
   }
 
   @Test
@@ -162,13 +162,13 @@ public final class SchemeNeutralTest {
   @Test
   public void darkTheme_maxContrast_onPrimaryContainer() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
+    assertThat(dynamicColors.onPrimaryContainer().getArgb(scheme)).isSameColorAs(0xff090a16);
   }
 
   @Test
   public void darkTheme_minContrast_onTertiaryContainer() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), true, -1.0);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xffa2a2b9);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff828299);
   }
 
   @Test
@@ -180,7 +180,7 @@ public final class SchemeNeutralTest {
   @Test
   public void darkTheme_maxContrast_onTertiaryContainer() {
     SchemeNeutral scheme = new SchemeNeutral(Hct.fromInt(0xff0000ff), true, 1.0);
-    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff000000);
+    assertThat(dynamicColors.onTertiaryContainer().getArgb(scheme)).isSameColorAs(0xff080a1b);
   }
 
   @Test

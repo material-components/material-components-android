@@ -26,7 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.expandable.ExpandableWidget;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -95,7 +94,7 @@ public abstract class ExpandableBehavior extends Behavior<View> {
   @Override
   public boolean onLayoutChild(
       @NonNull CoordinatorLayout parent, @NonNull final View child, int layoutDirection) {
-    if (!ViewCompat.isLaidOut(child)) {
+    if (!child.isLaidOut()) {
       final ExpandableWidget dep = findExpandableWidget(parent, child);
       if (dep != null && didStateChange(dep.isExpanded())) {
         currentState = dep.isExpanded() ? STATE_EXPANDED : STATE_COLLAPSED;

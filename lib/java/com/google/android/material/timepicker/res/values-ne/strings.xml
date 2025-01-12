@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2024 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-  <string name="material_timepicker_pm">अपराह्न</string>
+  <string name="material_timepicker_pm">PM</string>
   <string name="material_timepicker_am">AM</string>
   <string name="material_timepicker_select_time">समय चयन गर्नुहोस्</string>
   <string name="material_timepicker_minute">मिनेट</string>
@@ -25,7 +25,7 @@
   <string name="material_minute_suffix">%1$s मिनेट</string>
   <string name="material_hour_selection">घन्टा चयन गर्नुहोस्</string>
   <string name="material_minute_selection">मिनेट चयन गर्नुहोस्</string>
-  <string name="material_clock_toggle_content_description">पूर्वाह्न वा अपराह्न चयन गर्नुहोस्</string>
+  <string name="material_clock_toggle_content_description">AM वा PM चयन गर्नुहोस्</string>
   <string name="mtrl_timepicker_confirm">ठिक छ</string>
   <string name="mtrl_timepicker_cancel">रद्द गर्नुहोस्</string>
   <string name="material_timepicker_text_input_mode_description">समय इनपुट गर्न पाठ इनपुट मोडमा स्विच गर्नुहोस्।</string>

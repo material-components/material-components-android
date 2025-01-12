@@ -16,14 +16,14 @@ express an unspecified wait time or display the length of a process.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using progress indicators](#using-progress-indicators)
 *   [Linear progress indicators](#linear-progress-indicators)
 *   [Circular progress indicators](#circular-progress-indicators)
 *   [Anatomy and key properties](#anatomy-and-key-properties)
 *   [Theming progress indicators](#theming-progress-indicators)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/progress-indicators/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/progressindicator/package-summary)
@@ -106,6 +106,13 @@ programmatically like so:
 progressIndicator.contentDescription = contentDescription
 ```
 
+**Note:** Depending on the track thickness of the linear progress indicator, the
+component could be less than or equal to 4dp tall. There's a known limitation in
+the focus indicator (green box) while using the talkback. It will fail to draw
+the focus indicator, if the component bounds is less than or equal to 4dp in
+either dimension. Consider to use `android:paddingTop` and
+`android:paddingBottom` to increase the bounds height when available.
+
 ### Showing/hiding the progress indicator
 
 By default, the progress indicator will be shown or hidden without animations.
@@ -172,9 +179,9 @@ API and source code:
 
 The following example shows a determinate linear progress indicator.
 
-![Determinate linear progress indicator animation: purple indicator fills up
+<img src="assets/progressindicator/linear_determinate.gif" alt="Determinate linear progress indicator animation: purple indicator fills up
 grey
-track](assets/progressindicator/linear_determinate.gif){width="600"}
+track" width="600"/>
 
 In the layout:
 
@@ -186,9 +193,9 @@ In the layout:
 
 The following example shows an indeterminate linear progress indicator.
 
-![Indeterminate linear progress indicator animation: purple indicator travels
+<img src="assets/progressindicator/linear_indeterminate.gif" alt="Indeterminate linear progress indicator animation: purple indicator travels
 along grey
-track](assets/progressindicator/linear_indeterminate.gif){width="600"}
+track" width="600"/>
 
 In the layout:
 
@@ -204,14 +211,14 @@ In the layout:
 For linear progress indicator, there are two indeterminate animation types:
 
 *   `disjoint` - animates as repeated cycles with two disjoint segments in the
-    same color at a time. ![Disjointed indeterminate linear progress indicator animation: red indicator
+    same color at a time. <img src="assets/progressindicator/linear_multicolor_disjoint.gif" alt="Disjointed indeterminate linear progress indicator animation: red indicator
 travels along track 2x then switches to
-yellow](assets/progressindicator/linear_multicolor_disjoint.gif){width="600"}
+yellow" width="600"/>
 
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
-    different colors. ![Contiguous indeterminate linear progress indicator
+    different colors. <img src="assets/progressindicator/linear_multicolor_contiguous.gif" alt="Contiguous indeterminate linear progress indicator
     animation: red, yellow, blue indicators move sequentially and cover
-    track](assets/progressindicator/linear_multicolor_contiguous.gif){width="600"}
+    track" width="600"/>
 
 **Note:** There is a minimum requirement of 3 indicator colors to use the
 **contiguous** animation. Otherwise, an IllegalArgumentException will be thrown.
@@ -238,9 +245,9 @@ API and source code:
 
 The following example shows a determinate circular progress indicator.
 
-![Determinate circular progress indicator animation: purple indicator draws a
+<img src="assets/progressindicator/circular_determinate.gif" alt="Determinate circular progress indicator animation: purple indicator draws a
 circle clockwise from the
-top](assets/progressindicator/circular_determinate.gif){width="600"}
+top" width="600"/>
 
 In the layout:
 
@@ -252,9 +259,9 @@ In the layout:
 
 The following example shows an indeterminate circular progress indicator.
 
-![Indeterminate circular progress indicator animation: purple indicator follows
+<img src="assets/progressindicator/circular_indeterminate.gif" alt="Indeterminate circular progress indicator animation: purple indicator follows
 a circle clockwise from the
-top](assets/progressindicator/circular_indeterminate.gif){width="600"}
+top" width="600"/>
 
 In the layout:
 
@@ -280,37 +287,44 @@ A progress indicator consists of a track and an indicator.
 The following attributes are shared between linear and circular progress
 indicators:
 
-| Element                       | Attribute                   | Related method(s)                                         | Default value                                                                |
-|-------------------------------|-----------------------------|-----------------------------------------------------------|------------------------------------------------------------------------------|
-| **Track thickness**           | `app:trackThickness`        | `setTrackThickness`</br>`getTrackThickness`               | `4dp`                                                                        |
-| **Indicator color**           | `app:indicatorColor`        | `setIndicatorColor`</br>`getIndicatorColor`               | `colorPrimary`                                                               |
-| **Track color**               | `app:trackColor`            | `setTrackColor`</br>`getTrackColor`                       | `colorPrimaryContainer` (linear)</br>`@android:color/transparent` (circular) |
-| **Track corner radius**       | `app:trackCornerRadius`     | `setTrackCornerRadius`</br>`getTrackCornerRadius`         | `2dp`                                                                        |
-| **Indicator track gap size**  | `app:indicatorTrackGapSize` | `setIndicatorTrackGapSize`</br>`getIndicatorTrackGapSize` | `4dp`                                                                        |
-| **Show animation behavior**   | `app:showAnimationBehavior` | `setShowAnimationBehavior`</br>`getShowAnimationBehavior` | `none`                                                                       |
-| **Hide animation behavior**   | `app:hideAnimationBehavior` | `setHideAnimationBehavior`</br>`getHideAnimationBehavior` | `none`                                                                       |
-| **Delay (in ms) to show**     | `app:showDelay`             | N/A                                                       | 0                                                                            |
-| **Min delay (in ms) to hide** | `app:minHideDelay`          | N/A                                                       | 0                                                                            |
+Element                                   | Attribute                                | Related method(s)                                             | Default value
+----------------------------------------- | ---------------------------------------- | ------------------------------------------------------------- | -------------
+**Track thickness**                       | `app:trackThickness`                     | `setTrackThickness`</br>`getTrackThickness`                   | `4dp`
+**Indicator color**                       | `app:indicatorColor`                     | `setIndicatorColor`</br>`getIndicatorColor`                   | `colorPrimary`
+**Track color**                           | `app:trackColor`                         | `setTrackColor`</br>`getTrackColor`                           | `colorPrimaryContainer` (linear)</br>`@android:color/transparent` (circular)
+**Track corner radius**                   | `app:trackCornerRadius`                  | `setTrackCornerRadius`</br>`getTrackCornerRadius`             | `2dp`
+**Indicator track gap size**              | `app:indicatorTrackGapSize`              | `setIndicatorTrackGapSize`</br>`getIndicatorTrackGapSize`     | `4dp`
+**Show animation behavior**               | `app:showAnimationBehavior`              | `setShowAnimationBehavior`</br>`getShowAnimationBehavior`     | `none`
+**Hide animation behavior**               | `app:hideAnimationBehavior`              | `setHideAnimationBehavior`</br>`getHideAnimationBehavior`     | `none`
+**Delay (in ms) to show**                 | `app:showDelay`                          | N/A                                                           | 0
+**Min delay (in ms) to hide**             | `app:minHideDelay`                       | N/A                                                           | 0
+**Wavelength**                            | `app:wavelength`                         | `setWavelength`                                               | 0
+**Wavelength in determinate mode**        | `app:wavelengthDeterminate`              | `setWavelengthDeterminate`</br>`getWavelenthDeterminate`      | `wavelength`
+**Wavelength in indeterminate mode**      | `app:wavelengthIndeterminate`            | `setWavelengthIndeterminate`</br>`getWavelengthIndeterminate` | `wavelength`
+**Wave amplitude**                        | `app:waveAmplitude`                      | `setWaveAmplitude`</br>`getWaveAmplitude`                     | 0
+**Wave speed**                            | `app:waveSpeed`                          | `setWaveSpeed`</br>`getWaveSpeed`                             | 0
+**Indeterminate animator duration scale** | `app:indeterminateAnimatorDurationScale` | `setIndeterminateAnimatorDurationScale`                       | 1
 
 #### Linear type specific attributes
 
 Linear type progress indicators also have the following attributes:
 
-| Element                          | Attribute                        | Related method(s)                                                   | Default value |
-|----------------------------------|----------------------------------|---------------------------------------------------------------------|---------------|
-| **Indeterminate animation type** | `app:indeterminateAnimationType` | `setIndeterminateAnimationType`</br>`getIndeterminateAnimationType` | `disjoint`    |
-| **Indicator direction**          | `app:indicatorDirectionLinear`   | `setIndicatorDirection`</br>`getIndicatorDirection`                 | `leftToRight` |
-| **Track stop indicator size**    | `app:trackStopIndicatorSize`     | `setTrackStopIndicatorSize`</br>`getTrackStopIndicatorSize`         | `4dp`         |
+Element                          | Attribute                        | Related method(s)                                                   | Default value
+-------------------------------- | -------------------------------- | ------------------------------------------------------------------- | -------------
+**Indeterminate animation type** | `app:indeterminateAnimationType` | `setIndeterminateAnimationType`</br>`getIndeterminateAnimationType` | `disjoint`
+**Indicator direction**          | `app:indicatorDirectionLinear`   | `setIndicatorDirection`</br>`getIndicatorDirection`                 | `leftToRight`
+**Track stop indicator size**    | `app:trackStopIndicatorSize`     | `setTrackStopIndicatorSize`</br>`getTrackStopIndicatorSize`         | `4dp`
 
 #### Circular type specific attributes
 
 Circular type progress indicators also have the following attributes:
 
-Element                           | Attribute                        | Related method(s)                                   | Default value
---------------------------------- | -------------------------------- | --------------------------------------------------- | -------------
-**Spinner size (outer diameter)** | `app:indicatorSize`              | `setIndicatorSize`</br>`getIndicatorSize`           | `40dp`
-**Inset**                         | `app:indicatorInset`             | `setIndicatorInset`</br>`getIndicatorInset`         | `4dp`
-**Indicator direction**           | `app:indicatorDirectionCircular` | `setIndicatorDirection`</br>`getIndicatorDirection` | `clockwise`
+Element                           | Attribute                                | Related method(s)                                                   | Default value
+--------------------------------- | ---------------------------------------- | ------------------------------------------------------------------- | -------------
+**Spinner size (outer diameter)** | `app:indicatorSize`                      | `setIndicatorSize`</br>`getIndicatorSize`                           | `40dp`
+**Inset**                         | `app:indicatorInset`                     | `setIndicatorInset`</br>`getIndicatorInset`                         | `4dp`
+**Indicator direction**           | `app:indicatorDirectionCircular`         | `setIndicatorDirection`</br>`getIndicatorDirection`                 | `clockwise`
+**Indeterminate animation type**  | `app:indeterminateAnimationTypeCircular` | `setIndeterminateAnimationType`</br>`getIndeterminateAnimationType` | `advance`
 
 #### Styles
 

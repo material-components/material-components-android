@@ -55,7 +55,7 @@ public class MusicPlayerLibraryDemoFragment extends Fragment
     implements AlbumAdapterListener, OnMenuItemClickListener {
 
   private static final int GRID_SPAN_COUNT = 2;
-  private static final int ALBUM_RECYCLER_VIEW_ID = ViewCompat.generateViewId();
+  private static final int ALBUM_RECYCLER_VIEW_ID = View.generateViewId();
   private FrameLayout listContainer;
   private Parcelable listState = null;
 
@@ -130,7 +130,7 @@ public class MusicPlayerLibraryDemoFragment extends Fragment
       return true;
     }
 
-    // Use a shared axis Y transition to sort the list, showing a spacial relationship between
+    // Use a shared axis Y transition to sort the list, showing a spatial relationship between
     // the outgoing and incoming view.
     MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Y, true);
     setList(listTypeGrid, !listSorted, sharedAxis);

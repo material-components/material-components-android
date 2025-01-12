@@ -19,7 +19,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AppCompatResource">
   <item
-    android:id="@+id/cat_topappbar_item_edit"
+      android:id="@+id/cat_topappbar_item_edit"
+      android:icon="@drawable/ic_edit_vd_theme_24dp"
       android:title="@string/cat_topappbar_edit_menu_item_title"
       app:showAsAction="ifRoom"/>
   <item
@@ -27,10 +28,4 @@
       android:icon="@drawable/ic_favorite_vd_theme_24px"
       android:title="@string/cat_topappbar_favorite_menu_item_title"
       app:showAsAction="ifRoom"/>
-  <item
-      android:title="@string/cat_topappbar_settings_menu_item_title"
-      app:showAsAction="never"/>
-  <item
-      android:title="@string/cat_topappbar_help_and_feedback_menu_item_title"
-      app:showAsAction="never"/>
 </menu>

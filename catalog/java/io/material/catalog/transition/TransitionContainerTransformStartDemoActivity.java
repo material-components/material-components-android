@@ -20,7 +20,6 @@ import io.material.catalog.R;
 
 import android.app.ActivityOptions;
 import android.content.Intent;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,14 +29,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import io.material.catalog.feature.DemoActivity;
 
 /**
  * An activity that displays the Container Transform activity transition demo for the Catalog app.
  */
-@RequiresApi(VERSION_CODES.LOLLIPOP)
 public class TransitionContainerTransformStartDemoActivity extends DemoActivity {
 
   static ContainerTransformConfigurationHelper configurationHelper;

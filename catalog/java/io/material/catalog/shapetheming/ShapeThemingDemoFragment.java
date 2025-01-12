@@ -18,7 +18,6 @@ package io.material.catalog.shapetheming;
 
 import io.material.catalog.R;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -47,25 +46,22 @@ public abstract class ShapeThemingDemoFragment extends DemoFragment {
     this.wrappedContext = new ContextThemeWrapper(getContext(), getShapeTheme());
     LayoutInflater layoutInflaterWithThemedContext =
         layoutInflater.cloneInContext(wrappedContext);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      Window window = getActivity().getWindow();
-      statusBarColor = window.getStatusBarColor();
-      final TypedValue value = new TypedValue();
-      wrappedContext
-          .getTheme()
-          .resolveAttribute(R.attr.colorPrimaryDark, value, true);
-      window.setStatusBarColor(value.data);
-    }
+
+    Window window = getActivity().getWindow();
+    statusBarColor = window.getStatusBarColor();
+    final TypedValue value = new TypedValue();
+    wrappedContext
+        .getTheme()
+        .resolveAttribute(R.attr.colorPrimaryDark, value, true);
+    window.setStatusBarColor(value.data);
 
     return super.onCreateView(layoutInflaterWithThemedContext, viewGroup, bundle);
   }
 
   @Override
   public void onDestroyView() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      Window window = getActivity().getWindow();
-      window.setStatusBarColor(statusBarColor);
-    }
+    Window window = getActivity().getWindow();
+    window.setStatusBarColor(statusBarColor);
     super.onDestroyView();
   }
 

@@ -20,7 +20,6 @@ import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -35,8 +34,6 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
@@ -47,7 +44,6 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -147,9 +143,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     borderPaint.setAntiAlias(true);
     shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyle, DEF_STYLE_RES).build();
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      setOutlineProvider(new OutlineProvider());
-    }
+    setOutlineProvider(new OutlineProvider());
   }
 
   @Override
@@ -159,7 +153,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
       return;
     }
 
-    if (VERSION.SDK_INT > 19 && !isLayoutDirectionResolved()) {
+    if (!isLayoutDirectionResolved()) {
       return;
     }
 
@@ -167,7 +161,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
 
     // Update the super padding to be the combined `android:padding` and
     // `app:contentPadding`, keeping with ShapeableImageView's internal padding contract:
-    if (VERSION.SDK_INT >= 21 && (isPaddingRelative() || isContentPaddingRelative())) {
+    if (isPaddingRelative() || isContentPaddingRelative()) {
       setPaddingRelative(
           super.getPaddingStart(),
           super.getPaddingTop(),
@@ -226,12 +220,11 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   /**
    * Set additional relative padding on the image that is not applied to the background.
    *
-   * @param start  the padding on the start of the image in pixels
-   * @param top    the padding on the top of the image in pixels
-   * @param end    the padding on the end of the image in pixels
+   * @param start the padding on the start of the image in pixels
+   * @param top the padding on the top of the image in pixels
+   * @param end the padding on the end of the image in pixels
    * @param bottom the padding on the bottom of the image in pixels
    */
-  @RequiresApi(17)
   public void setContentPaddingRelative(
       @Dimension int start, @Dimension int top, @Dimension int end, @Dimension int bottom) {
     // Super padding is equal to background padding + content padding. Adjust the content padding
@@ -339,7 +332,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
   }
 
   private boolean isRtl() {
-    return VERSION.SDK_INT >= 17 && getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+    return getLayoutDirection() == LAYOUT_DIRECTION_RTL;
   }
 
   /**
@@ -454,9 +447,7 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     }
     updateShapeMask(getWidth(), getHeight());
     invalidate();
-    if (VERSION.SDK_INT >= 21) {
-      invalidateOutline();
-    }
+    invalidateOutline();
   }
 
   @NonNull
@@ -564,7 +555,6 @@ public class ShapeableImageView extends AppCompatImageView implements Shapeable 
     invalidate();
   }
 
-  @TargetApi(VERSION_CODES.LOLLIPOP)
   class OutlineProvider extends ViewOutlineProvider {
 
     private final Rect rect = new Rect();

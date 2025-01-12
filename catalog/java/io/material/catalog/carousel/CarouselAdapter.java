@@ -21,6 +21,7 @@ import io.material.catalog.R;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.DiffUtil;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
@@ -68,6 +69,19 @@ class CarouselAdapter extends ListAdapter<CarouselItem, CarouselItemViewHolder> 
   @Override
   public void onBindViewHolder(@NonNull CarouselItemViewHolder carouselItemViewHolder, int pos) {
     carouselItemViewHolder.bind(getItem(pos));
+    carouselItemViewHolder.itemView.setOnHoverListener(
+        (v, event) -> {
+          switch (event.getAction()) {
+            case MotionEvent.ACTION_HOVER_ENTER:
+              v.setAlpha(0.5f);
+              break;
+            case MotionEvent.ACTION_HOVER_EXIT:
+              v.setAlpha(1f);
+              break;
+            default: // fall out
+          }
+          return false;
+        });
   }
 
 }

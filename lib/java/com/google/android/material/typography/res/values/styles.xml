@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="TextAppearance.Material3.DisplayLarge" parent="TextAppearance.M3.Sys.Typescale.DisplayLarge"/>
   <style name="TextAppearance.Material3.DisplayMedium" parent="TextAppearance.M3.Sys.Typescale.DisplayMedium"/>
@@ -31,6 +31,166 @@
   <style name="TextAppearance.Material3.LabelLarge" parent="TextAppearance.M3.Sys.Typescale.LabelLarge"/>
   <style name="TextAppearance.Material3.LabelMedium" parent="TextAppearance.M3.Sys.Typescale.LabelMedium"/>
   <style name="TextAppearance.Material3.LabelSmall" parent="TextAppearance.M3.Sys.Typescale.LabelSmall"/>
+
+  <style name="TextAppearance.Material3.DisplayLarge.Emphasized" parent="TextAppearance.M3.Sys.Typescale.DisplayLarge.Emphasized"/>
+  <style name="TextAppearance.Material3.DisplayMedium.Emphasized" parent="TextAppearance.M3.Sys.Typescale.DisplayMedium.Emphasized"/>
+  <style name="TextAppearance.Material3.DisplaySmall.Emphasized" parent="TextAppearance.M3.Sys.Typescale.DisplaySmall.Emphasized"/>
+  <style name="TextAppearance.Material3.HeadlineLarge.Emphasized" parent="TextAppearance.M3.Sys.Typescale.HeadlineLarge.Emphasized"/>
+  <style name="TextAppearance.Material3.HeadlineMedium.Emphasized" parent="TextAppearance.M3.Sys.Typescale.HeadlineMedium.Emphasized"/>
+  <style name="TextAppearance.Material3.HeadlineSmall.Emphasized" parent="TextAppearance.M3.Sys.Typescale.HeadlineSmall.Emphasized"/>
+  <style name="TextAppearance.Material3.TitleLarge.Emphasized" parent="TextAppearance.M3.Sys.Typescale.TitleLarge.Emphasized"/>
+  <style name="TextAppearance.Material3.TitleMedium.Emphasized" parent="TextAppearance.M3.Sys.Typescale.TitleMedium.Emphasized"/>
+  <style name="TextAppearance.Material3.TitleSmall.Emphasized" parent="TextAppearance.M3.Sys.Typescale.TitleSmall.Emphasized"/>
+  <style name="TextAppearance.Material3.BodyLarge.Emphasized" parent="TextAppearance.M3.Sys.Typescale.BodyLarge.Emphasized"/>
+  <style name="TextAppearance.Material3.BodyMedium.Emphasized" parent="TextAppearance.M3.Sys.Typescale.BodyMedium.Emphasized"/>
+  <style name="TextAppearance.Material3.BodySmall.Emphasized" parent="TextAppearance.M3.Sys.Typescale.BodySmall.Emphasized"/>
+  <style name="TextAppearance.Material3.LabelLarge.Emphasized" parent="TextAppearance.M3.Sys.Typescale.LabelLarge.Emphasized"/>
+  <style name="TextAppearance.Material3.LabelMedium.Emphasized" parent="TextAppearance.M3.Sys.Typescale.LabelMedium.Emphasized"/>
+  <style name="TextAppearance.Material3.LabelSmall.Emphasized" parent="TextAppearance.M3.Sys.Typescale.LabelSmall.Emphasized"/>
+
+  <style name="TextAppearance.M3.Sys.Typescale.DisplayLarge.Emphasized" parent="TextAppearance.AppCompat.Display3">
+    <item name="fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:textSize">57sp</item>
+    <item name="android:letterSpacing">0</item>
+    <item name="lineHeight">64sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">64sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.DisplayMedium.Emphasized" parent="TextAppearance.AppCompat.Display2">
+    <item name="fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:textSize">45sp</item>
+    <item name="android:letterSpacing">0</item>
+    <item name="lineHeight">52sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">52sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.DisplaySmall.Emphasized" parent="TextAppearance.AppCompat.Display1">
+    <item name="fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:textSize">36sp</item>
+    <item name="android:letterSpacing">0</item>
+    <item name="lineHeight">44sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">44sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.HeadlineLarge.Emphasized" parent="TextAppearance.AppCompat.Display1">
+    <item name="fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:textSize">32sp</item>
+    <item name="android:letterSpacing">0</item>
+    <item name="lineHeight">40sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">40sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.HeadlineMedium.Emphasized" parent="TextAppearance.AppCompat.Headline">
+    <item name="fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:textSize">28sp</item>
+    <item name="android:letterSpacing">0</item>
+    <item name="lineHeight">36sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">36sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.HeadlineSmall.Emphasized" parent="TextAppearance.AppCompat.Title">
+    <item name="fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:textSize">24sp</item>
+    <item name="android:letterSpacing">0</item>
+    <item name="lineHeight">32sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">32sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.TitleLarge.Emphasized" parent="TextAppearance.AppCompat.Title">
+    <item name="fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_brand_medium</item>
+    <item name="android:textSize">22sp</item>
+    <item name="android:letterSpacing">0</item>
+    <item name="lineHeight">28sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">28sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.TitleMedium.Emphasized" parent="TextAppearance.AppCompat.Subhead">
+    <item name="fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:letterSpacing">0.009375</item>
+    <item name="lineHeight">24sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">24sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.TitleSmall.Emphasized" parent="TextAppearance.AppCompat.Subhead">
+    <item name="fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:letterSpacing">0.00714286</item>
+    <item name="lineHeight">20sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">20sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.BodyLarge.Emphasized" parent="TextAppearance.AppCompat.Body2">
+    <item name="fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:letterSpacing">0.009375</item>
+    <item name="lineHeight">24sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">24sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.BodyMedium.Emphasized" parent="TextAppearance.AppCompat.Body1">
+    <item name="fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:letterSpacing">0.01785714</item>
+    <item name="lineHeight">20sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">20sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.BodySmall.Emphasized" parent="TextAppearance.AppCompat.Caption">
+    <item name="fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_plain_medium</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:letterSpacing">0.03333333</item>
+    <item name="lineHeight">16sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">16sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.LabelLarge.Emphasized" parent="TextAppearance.AppCompat.Body1">
+    <item name="fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:letterSpacing">0.00714286</item>
+    <item name="lineHeight">20sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">20sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.LabelMedium.Emphasized" parent="TextAppearance.AppCompat.Caption">
+    <item name="fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:letterSpacing">0.04166667</item>
+    <item name="lineHeight">16sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">16sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
+  <style name="TextAppearance.M3.Sys.Typescale.LabelSmall.Emphasized" parent="TextAppearance.AppCompat.Caption">
+    <item name="fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:fontFamily">@string/m3_ref_typeface_plain_regular</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">11sp</item>
+    <item name="android:letterSpacing">0.04545455</item>
+    <item name="lineHeight">16sp</item>
+    <item name="android:lineHeight" tools:targetApi="p">16sp</item>
+    <item name="android:textAllCaps">false</item>
+  </style>
 
   <!-- Deprecated -->
 
@@ -80,10 +240,9 @@
   </style>
 
   <style name="Base.TextAppearance.MaterialComponents.Headline6" parent="TextAppearance.AppCompat.Title">
-    <!-- Fake Roboto Medium. -->
     <item name="fontFamily">sans-serif-medium</item>
     <item name="android:fontFamily">sans-serif-medium</item>
-    <item name="android:textStyle">bold</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">false</item>
     <item name="android:textSize">20sp</item>
     <item name="android:letterSpacing">0.0125</item>
@@ -101,10 +260,9 @@
   </style>
 
   <style name="Base.TextAppearance.MaterialComponents.Subtitle2" parent="TextAppearance.AppCompat.Subhead">
-    <!-- Fake Roboto Medium. -->
     <item name="fontFamily">sans-serif-medium</item>
     <item name="android:fontFamily">sans-serif-medium</item>
-    <item name="android:textStyle">bold</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">false</item>
     <item name="android:textSize">14sp</item>
     <item name="android:letterSpacing">0.00714285714</item>
@@ -140,10 +298,9 @@
   </style>
 
   <style name="Base.TextAppearance.MaterialComponents.Button" parent="TextAppearance.AppCompat.Button">
-    <!-- Fake Roboto Medium. -->
     <item name="fontFamily">sans-serif-medium</item>
     <item name="android:fontFamily">sans-serif-medium</item>
-    <item name="android:textStyle">bold</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">true</item>
     <item name="android:textSize">14sp</item>
     <item name="android:letterSpacing">0.0892857143</item>

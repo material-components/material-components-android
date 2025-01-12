@@ -19,8 +19,7 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:orientation="vertical"
-  tools:targetApi="lollipop">
+  android:orientation="vertical">
 
   <androidx.fragment.app.FragmentContainerView
     android:id="@+id/fragment_container"

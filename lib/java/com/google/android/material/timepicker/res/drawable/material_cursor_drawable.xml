@@ -20,5 +20,5 @@
     android:bottom="@dimen/material_cursor_inset"
     android:top="@dimen/material_cursor_inset" />
   <size android:width="@dimen/material_cursor_width" />
-  <solid android:color="@android:color/black" />
+  <solid android:color="?attr/colorPrimary" />
 </shape>

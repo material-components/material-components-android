@@ -15,7 +15,7 @@
 -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_checked="true"
-        android:drawable="@drawable/ic_star_vd_theme_24"/>
-  <item android:drawable="@drawable/ic_star_border_vd_theme_24"/>
+  <item android:state_checkable="true" android:state_checked="false"
+        android:drawable="@drawable/ic_star_border_vd_theme_24"/>
+  <item android:drawable="@drawable/ic_star_vd_theme_24"/>
 </selector>

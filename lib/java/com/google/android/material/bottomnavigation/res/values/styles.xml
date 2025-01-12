@@ -26,9 +26,12 @@
     <item name="itemIconSize">@dimen/design_bottom_navigation_icon_size</item>
     <item name="labelVisibilityMode">auto</item>
     <item name="itemPaddingTop">@dimen/design_bottom_navigation_margin</item>
-    <item name="itemPaddingBottom">@dimen/design_bottom_navigation_label_padding</item>
+    <item name="itemPaddingBottom">0dp</item>
+    <item name="activeIndicatorLabelPadding">1dp</item>
     <item name="itemActiveIndicatorStyle">@null</item>
     <item name="android:minHeight">@dimen/design_bottom_navigation_height</item>
+    <item name="itemIconGravity">top</item>
+    <item name="measureBottomPaddingFromLabelBaseline">false</item>
   </style>
 
   <!-- Default style for BottomNavigationViews.
@@ -80,17 +83,17 @@
     <item name="android:minHeight">@dimen/m3_bottom_nav_min_height</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.BottomNavigationView</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationBar.Container.Shape</item>
+    <item name="activeIndicatorLabelPadding">@dimen/m3_navigation_item_active_indicator_label_padding</item>
+    <item name="iconLabelHorizontalSpacing">@dimen/m3_navigation_item_active_indicator_label_padding</item>
   </style>
 
-  <style name="Widget.Material3.BottomNavigationView" parent="Base.Widget.Material3.BottomNavigationView">
-    <item name="compatShadowEnabled">false</item>
-  </style>
+  <style name="Widget.Material3.BottomNavigationView" parent="Base.Widget.Material3.BottomNavigationView"/>
 
   <style name="ThemeOverlay.Material3.BottomNavigationView" parent="">
     <item name="badgeStyle">@style/Widget.Material3.BottomNavigation.Badge</item>
   </style>
 
-  <style name="Widget.Material3.BottomNavigation.Badge" parent="Widget.Material3.Badge.AdjustToBounds">
+  <style name="Widget.Material3.BottomNavigation.Badge" parent="Widget.Material3.Badge">
     <item name="verticalOffsetWithText">@dimen/m3_nav_badge_with_text_vertical_offset</item>
   </style>
 
@@ -101,5 +104,6 @@
     <item name="marginHorizontal">@dimen/m3_bottom_nav_item_active_indicator_margin_horizontal</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationBar.ActiveIndicator.Shape</item>
     <item name="android:color">@macro/m3_comp_navigation_bar_active_indicator_color</item>
+    <item name="expandedHeight">@dimen/m3_bottom_nav_item_expanded_active_indicator_height</item>
   </style>
 </resources>

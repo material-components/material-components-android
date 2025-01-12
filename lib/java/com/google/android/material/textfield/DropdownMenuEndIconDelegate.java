@@ -19,8 +19,6 @@ package com.google.android.material.textfield;
 import com.google.android.material.R;
 
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
-import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
-import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES;
 import static com.google.android.material.textfield.EditTextUtils.isEditable;
 
 import android.animation.Animator;
@@ -29,8 +27,6 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.text.Editable;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,15 +34,13 @@ import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
-import androidx.annotation.ChecksSdkIntAtLeast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityEventCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.motion.MotionUtils;
@@ -54,9 +48,6 @@ import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
 
 /** Default initialization of the exposed dropdown menu {@link TextInputLayout.EndIconMode}. */
 class DropdownMenuEndIconDelegate extends EndIconDelegate {
-
-  @ChecksSdkIntAtLeast(api = VERSION_CODES.LOLLIPOP)
-  private static final boolean IS_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
 
   private static final int DEFAULT_ANIMATION_FADE_OUT_DURATION = 50;
   private static final int DEFAULT_ANIMATION_FADE_IN_DURATION = 67;
@@ -81,9 +72,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private final TouchExplorationStateChangeListener touchExplorationStateChangeListener =
       (boolean enabled) -> {
         if (autoCompleteTextView != null && !isEditable(autoCompleteTextView)) {
-          ViewCompat.setImportantForAccessibility(
-              endIconView,
-              enabled ? IMPORTANT_FOR_ACCESSIBILITY_NO : IMPORTANT_FOR_ACCESSIBILITY_YES);
+          endIconView.setImportantForAccessibility(
+              enabled ? View.IMPORTANT_FOR_ACCESSIBILITY_NO : View.IMPORTANT_FOR_ACCESSIBILITY_YES);
         }
       };
 
@@ -128,9 +118,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     if (autoCompleteTextView != null) {
       // Remove any listeners set on the edit text.
       autoCompleteTextView.setOnTouchListener(null);
-      if (IS_LOLLIPOP) {
-        autoCompleteTextView.setOnDismissListener(null);
-      }
+      autoCompleteTextView.setOnDismissListener(null);
     }
   }
 
@@ -141,9 +129,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
   @Override
   int getIconDrawableResId() {
-    // For lollipop+, the arrow icon changes orientation based on dropdown popup, otherwise it
-    // always points down.
-    return IS_LOLLIPOP ? R.drawable.mtrl_dropdown_arrow : R.drawable.mtrl_ic_arrow_drop_down;
+    return R.drawable.mtrl_dropdown_arrow;
   }
 
   @Override
@@ -192,7 +178,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     setUpDropdownShowHideBehavior();
     textInputLayout.setErrorIconDrawable(null);
     if (!isEditable(editText) && accessibilityManager.isTouchExplorationEnabled()) {
-      ViewCompat.setImportantForAccessibility(endIconView, IMPORTANT_FOR_ACCESSIBILITY_NO);
+      endIconView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
     }
     textInputLayout.setEndIconVisible(true);
   }
@@ -260,12 +246,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
       dropdownPopupDirty = false;
     }
     if (!dropdownPopupDirty) {
-      if (IS_LOLLIPOP) {
-        setEndIconChecked(!isEndIconChecked);
-      } else {
-        isEndIconChecked = !isEndIconChecked;
-        refreshIconState();
-      }
+      setEndIconChecked(!isEndIconChecked);
       if (isEndIconChecked) {
         autoCompleteTextView.requestFocus();
         autoCompleteTextView.showDropDown();
@@ -291,12 +272,10 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
       }
       return false;
     });
-    if (IS_LOLLIPOP) {
-      autoCompleteTextView.setOnDismissListener(() -> {
-        updateDropdownPopupDirty();
-        setEndIconChecked(false);
-      });
-    }
+    autoCompleteTextView.setOnDismissListener(() -> {
+      updateDropdownPopupDirty();
+      setEndIconChecked(false);
+    });
     autoCompleteTextView.setThreshold(0);
   }
 

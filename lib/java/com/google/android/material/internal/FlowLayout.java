@@ -20,18 +20,14 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.core.view.ViewCompat;
 
 /**
  * Horizontally lay out children until the row is filled and then moved to the next line. Call
@@ -60,7 +56,6 @@ public class FlowLayout extends ViewGroup {
     loadFromAttributes(context, attrs);
   }
 
-  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public FlowLayout(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
@@ -72,7 +67,7 @@ public class FlowLayout extends ViewGroup {
     final TypedArray array =
         context.getTheme().obtainStyledAttributes(attrs, R.styleable.FlowLayout, 0, 0);
     lineSpacing = array.getDimensionPixelSize(R.styleable.FlowLayout_lineSpacing, 0);
-    itemSpacing = array.getDimensionPixelSize(R.styleable.FlowLayout_itemSpacing, 0);
+    itemSpacing = array.getDimensionPixelSize(R.styleable.FlowLayout_horizontalItemSpacing, 0);
     array.recycle();
   }
 
@@ -194,7 +189,7 @@ public class FlowLayout extends ViewGroup {
     }
     rowCount = 1;
 
-    boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+    boolean isRtl = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
     int paddingStart = isRtl ? getPaddingRight() : getPaddingLeft();
     int paddingEnd = isRtl ? getPaddingLeft() : getPaddingRight();
     int childStart = paddingStart;
@@ -217,8 +212,8 @@ public class FlowLayout extends ViewGroup {
       int endMargin = 0;
       if (lp instanceof MarginLayoutParams) {
         MarginLayoutParams marginLp = (MarginLayoutParams) lp;
-        startMargin = MarginLayoutParamsCompat.getMarginStart(marginLp);
-        endMargin = MarginLayoutParamsCompat.getMarginEnd(marginLp);
+        startMargin = marginLp.getMarginStart();
+        endMargin = marginLp.getMarginEnd();
       }
 
       childEnd = childStart + startMargin + child.getMeasuredWidth();

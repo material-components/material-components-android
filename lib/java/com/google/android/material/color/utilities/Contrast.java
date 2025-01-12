@@ -59,7 +59,7 @@ public final class Contrast {
   private static final double CONTRAST_RATIO_EPSILON = 0.04;
 
   // Color spaces that measure luminance, such as Y in XYZ, L* in L*a*b*, or T in HCT, are known as
-  // perceptual accurate color spaces.
+  // perceptually accurate color spaces.
   //
   // To be displayed, they must gamut map to a "display space", one that has a defined limit on the
   // number of colors. Display spaces include sRGB, more commonly understood  as RGB/HSL/HSV/HSB.
@@ -79,7 +79,7 @@ public final class Contrast {
   // result such that the desired contrast ratio will be reached even if inaccuracy is introduced.
   //
   // 0.4 is generous, ex. HCT requires much less delta. It was chosen because it provides a rough
-  // guarantee that as long as a percetual color space gamut maps lightness such that the resulting
+  // guarantee that as long as a perceptual color space gamut maps lightness such that the resulting
   // lightness rounds to the same as the requested, the desired contrast ratio will be reached.
   private static final double LUMINANCE_GAMUT_MAP_TOLERANCE = 0.4;
 

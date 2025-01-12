@@ -40,7 +40,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.motion.MaterialBackOrchestrator;
@@ -98,17 +97,15 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
     super.onCreate(savedInstanceState);
     Window window = getWindow();
     if (window != null) {
-      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-        // The status bar should always be transparent because of the window animation.
-        window.setStatusBarColor(0);
+      // The status bar should always be transparent because of the window animation.
+      window.setStatusBarColor(0);
 
-        window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        if (VERSION.SDK_INT < VERSION_CODES.M) {
-          // It can be transparent for API 23 and above because we will handle switching the status
-          // bar icons to light or dark as appropriate. For API 21 and API 22 we just set the
-          // translucent status bar.
-          window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+      window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+      if (VERSION.SDK_INT < VERSION_CODES.M) {
+        // It can be transparent for API 23 and above because we will handle switching the status
+        // bar icons to light or dark as appropriate. For API 21 and API 22 we just set the
+        // translucent status bar.
+        window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS);
       }
       window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }
@@ -315,7 +312,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
       throw new IllegalStateException(
           "Sheet view reference is null; sheet edge cannot be changed if the sheet view is null.");
     }
-    if (ViewCompat.isLaidOut(sheet)) {
+    if (sheet.isLaidOut()) {
       throw new IllegalStateException(
           "Sheet view has been laid out; sheet edge cannot be changed once the sheet has been laid"
               + " out.");
@@ -335,8 +332,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
       CoordinatorLayout.LayoutParams layoutParams =
           (CoordinatorLayout.LayoutParams) sheet.getLayoutParams();
       int absoluteGravity =
-          GravityCompat.getAbsoluteGravity(
-              layoutParams.gravity, ViewCompat.getLayoutDirection(sheet));
+          Gravity.getAbsoluteGravity(layoutParams.gravity, sheet.getLayoutDirection());
       window.setWindowAnimations(
           absoluteGravity == Gravity.LEFT
               ? R.style.Animation_Material3_SideSheetDialog_Left

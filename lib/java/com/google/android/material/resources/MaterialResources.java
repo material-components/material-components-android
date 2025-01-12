@@ -26,7 +26,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.TintTypedArray;
@@ -69,15 +68,6 @@ public class MaterialResources {
       }
     }
 
-    // Reading a single color with getColorStateList() on API 15 and below doesn't always correctly
-    // read the value. Instead we'll first try to read the color directly here.
-    if (VERSION.SDK_INT <= VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-      int color = attributes.getColor(index, -1);
-      if (color != -1) {
-        return ColorStateList.valueOf(color);
-      }
-    }
-
     return attributes.getColorStateList(index);
   }
 
@@ -95,15 +85,6 @@ public class MaterialResources {
         if (value != null) {
           return value;
         }
-      }
-    }
-
-    // Reading a single color with getColorStateList() on API 15 and below doesn't always correctly
-    // read the value. Instead we'll first try to read the color directly here.
-    if (VERSION.SDK_INT <= VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-      int color = attributes.getColor(index, -1);
-      if (color != -1) {
-        return ColorStateList.valueOf(color);
       }
     }
 
@@ -233,6 +214,37 @@ public class MaterialResources {
     if (getComplexUnit(v) == TypedValue.COMPLEX_UNIT_SP) {
       // Get the raw value. If text size is set to 14sp in the dimen file, this will return 14.
       // Scale the raw value using density and round to avoid truncating.
+      return Math.round(
+          TypedValue.complexToFloat(v.data) * context.getResources().getDisplayMetrics().density);
+    }
+
+    // If the resource is not is sp, return with regular resource system scaling.
+    return TypedValue.complexToDimensionPixelSize(
+        v.data, context.getResources().getDisplayMetrics());
+  }
+
+  public static int getUnscaledLineHeight(
+      @NonNull Context context, @StyleRes int textAppearance, int defValue) {
+    if (textAppearance == 0) {
+      return defValue;
+    }
+
+    TypedArray a = context.obtainStyledAttributes(textAppearance,
+        R.styleable.MaterialTextAppearance);
+    TypedValue v = new TypedValue();
+    boolean available = a.getValue(R.styleable.MaterialTextAppearance_lineHeight, v);
+    if (!available) {
+      available = a.getValue(R.styleable.MaterialTextAppearance_android_lineHeight, v);
+    }
+    a.recycle();
+
+    if (!available) {
+      return defValue;
+    }
+
+    if (getComplexUnit(v) == TypedValue.COMPLEX_UNIT_SP) {
+      // Get the raw value. If the line height is set to 14sp in the dimen file, this will return
+      // 14. Scale the raw value using density and round to avoid truncating.
       return Math.round(
           TypedValue.complexToFloat(v.data) * context.getResources().getDisplayMetrics().density);
     }

@@ -21,22 +21,34 @@
     <item name="android:dropDownVerticalOffset">1px</item>
   </style>
 
-  <style name="Widget.MaterialComponents.PopupMenu.Overflow" parent="Base.Widget.MaterialComponents.PopupMenu.Overflow"/>
+  <style name="Widget.MaterialComponents.PopupMenu.Overflow" parent="Base.Widget.MaterialComponents.PopupMenu.Overflow">
+    <item name="android:popupBackground">?attr/popupMenuBackground</item>
+    <item name="android:popupElevation">8dp</item>
+  </style>
 
   <style name="Base.Widget.MaterialComponents.PopupMenu" parent="Widget.AppCompat.PopupMenu">
     <item name="overlapAnchor">false</item>
     <item name="android:dropDownVerticalOffset">1px</item>
   </style>
 
-  <style name="Widget.MaterialComponents.PopupMenu" parent="Base.Widget.MaterialComponents.PopupMenu"/>
+  <style name="Widget.MaterialComponents.PopupMenu" parent="Base.Widget.MaterialComponents.PopupMenu">
+    <item name="android:popupBackground">?attr/popupMenuBackground</item>
+    <item name="android:popupElevation">8dp</item>
+  </style>
 
   <!-- List Popup Window Menus -->
-  <style name="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Widget.AppCompat.ListPopupWindow"/>
+  <style name="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Widget.AppCompat.ListPopupWindow">
+    <item name="android:popupBackground">?attr/popupMenuBackground</item>
+    <item name="android:popupElevation">8dp</item>
+    <item name="android:dropDownVerticalOffset">1dp</item>
+  </style>
 
   <style name="Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow"/>
 
   <!-- Context Menus -->
-  <style name="Base.Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Widget.AppCompat.PopupMenu"/>
+  <style name="Base.Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Widget.AppCompat.PopupMenu">
+    <item name="android:overlapAnchor">true</item>
+  </style>
 
   <style name="Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Base.Widget.MaterialComponents.PopupMenu.ContextMenu"/>
 
@@ -44,22 +56,22 @@
 
   <!-- Styles for M3 Overflow Menus -->
   <style name="Widget.Material3.PopupMenu.Overflow" parent="Widget.MaterialComponents.PopupMenu.Overflow">
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_menu_elevation</item>
+    <item name="android:popupElevation">@dimen/m3_menu_elevation</item>
   </style>
 
   <!-- Styles for M3 Popup Menus -->
   <style name="Widget.Material3.PopupMenu" parent="Widget.MaterialComponents.PopupMenu">
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_menu_elevation</item>
+    <item name="android:popupElevation">@dimen/m3_menu_elevation</item>
   </style>
 
   <!-- Styles for M3 List Popup Window Menus -->
   <style name="Widget.Material3.PopupMenu.ListPopupWindow" parent="Widget.MaterialComponents.PopupMenu.ListPopupWindow">
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_menu_elevation</item>
+    <item name="android:popupElevation">@dimen/m3_menu_elevation</item>
   </style>
 
   <!-- Styles for M3 Context Menus -->
   <style name="Widget.Material3.PopupMenu.ContextMenu" parent="Widget.MaterialComponents.PopupMenu.ContextMenu">
-    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/m3_menu_elevation</item>
+    <item name="android:popupElevation">@dimen/m3_menu_elevation</item>
   </style>
 
 </resources>

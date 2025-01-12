@@ -40,7 +40,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -239,13 +238,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   static final int MSG_SHOW = 0;
   static final int MSG_DISMISS = 1;
 
-  // On JB/KK versions of the platform sometimes View.setTranslationY does not result in
-  // layout / draw pass, and CoordinatorLayout relies on a draw pass to happen to sync vertical
-  // positioning of all its child views
-  private static final boolean USE_OFFSET_API =
-      (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN)
-          && (Build.VERSION.SDK_INT <= VERSION_CODES.KITKAT);
-
   private static final int[] SNACKBAR_STYLE_ATTR = new int[] {R.attr.snackbarStyle};
 
   private static final String TAG = BaseTransientBottomBar.class.getSimpleName();
@@ -388,11 +380,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
     view.addView(content);
 
-    ViewCompat.setAccessibilityLiveRegion(view, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-    ViewCompat.setImportantForAccessibility(view, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    view.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+    view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
     // Make sure that we fit system windows and have a listener to apply any insets
-    ViewCompat.setFitsSystemWindows(view, true);
+    view.setFitsSystemWindows(true);
     ViewCompat.setOnApplyWindowInsetsListener(
         view,
         new OnApplyWindowInsetsListener() {
@@ -788,7 +780,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       view.setVisibility(View.INVISIBLE);
     }
 
-    if (ViewCompat.isLaidOut(this.view)) {
+    if (view.isLaidOut()) {
       showViewImpl();
       return;
     }
@@ -831,6 +823,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void showViewImpl() {
+    if (ViewCompat.getAccessibilityPaneTitle(view) == null) {
+      ViewCompat.setAccessibilityPaneTitle(
+          view, getContext().getString(R.string.snackbar_accessibility_pane_title));
+    }
     if (shouldAnimate()) {
       // If animations are enabled, animate it in
       animateViewIn();
@@ -1006,11 +1002,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private void startSlideInAnimation() {
     final int translationYBottom = getTranslationYBottom();
-    if (USE_OFFSET_API) {
-      ViewCompat.offsetTopAndBottom(view, translationYBottom);
-    } else {
-      view.setTranslationY(translationYBottom);
-    }
+    view.setTranslationY(translationYBottom);
 
     ValueAnimator animator = new ValueAnimator();
     animator.setIntValues(translationYBottom, 0);
@@ -1032,20 +1024,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         });
     animator.addUpdateListener(
         new ValueAnimator.AnimatorUpdateListener() {
-          private int previousAnimatedIntValue = translationYBottom;
 
           @Override
           public void onAnimationUpdate(@NonNull ValueAnimator animator) {
             int currentAnimatedIntValue = (int) animator.getAnimatedValue();
-            if (USE_OFFSET_API) {
-              // On JB/KK versions of the platform sometimes View.setTranslationY does not
-              // result in layout / draw pass
-              ViewCompat.offsetTopAndBottom(
-                  view, currentAnimatedIntValue - previousAnimatedIntValue);
-            } else {
-              view.setTranslationY(currentAnimatedIntValue);
-            }
-            previousAnimatedIntValue = currentAnimatedIntValue;
+            view.setTranslationY(currentAnimatedIntValue);
           }
         });
     animator.start();
@@ -1070,20 +1053,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         });
     animator.addUpdateListener(
         new ValueAnimator.AnimatorUpdateListener() {
-          private int previousAnimatedIntValue = 0;
 
           @Override
           public void onAnimationUpdate(@NonNull ValueAnimator animator) {
             int currentAnimatedIntValue = (int) animator.getAnimatedValue();
-            if (USE_OFFSET_API) {
-              // On JB/KK versions of the platform sometimes View.setTranslationY does not
-              // result in layout / draw pass
-              ViewCompat.offsetTopAndBottom(
-                  view, currentAnimatedIntValue - previousAnimatedIntValue);
-            } else {
-              view.setTranslationY(currentAnimatedIntValue);
-            }
-            previousAnimatedIntValue = currentAnimatedIntValue;
+            view.setTranslationY(currentAnimatedIntValue);
           }
         });
     animator.start();
@@ -1215,7 +1189,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       setFocusable(true);
 
       if (getBackground() == null) {
-        ViewCompat.setBackground(this, createThemedBackground());
+        setBackground(createThemedBackground());
       }
     }
 
@@ -1473,7 +1447,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     static Anchor anchor(
         @NonNull BaseTransientBottomBar transientBottomBar, @NonNull View anchorView) {
       Anchor anchor = new Anchor(transientBottomBar, anchorView);
-      if (ViewCompat.isAttachedToWindow(anchorView)) {
+      if (anchorView.isAttachedToWindow()) {
         ViewUtils.addOnGlobalLayoutListener(anchorView, anchor);
       }
       anchorView.addOnAttachStateChangeListener(anchor);

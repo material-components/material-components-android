@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.MaterialComponents.Badge" parent="android:Widget">
     <item name="badgeWidth">@dimen/mtrl_badge_size</item>
@@ -32,18 +32,15 @@
     <item name="autoAdjustToWithinGrandparentBounds">false</item>
   </style>
 
-  <style name="Base.TextAppearance.MaterialComponents.Badge" parent="TextAppearance.AppCompat">
-    <!-- Fake Roboto Medium. -->
+  <style name="TextAppearance.MaterialComponents.Badge" parent="TextAppearance.AppCompat">
     <item name="fontFamily">sans-serif-medium</item>
     <item name="android:fontFamily">sans-serif-medium</item>
-    <item name="android:textStyle">bold</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">false</item>
     <item name="android:textSize">@dimen/mtrl_badge_text_size</item>
     <item name="android:letterSpacing">0.0892857143</item>
     <item name="android:textColor">?attr/colorOnError</item>
   </style>
-
-  <style name="TextAppearance.MaterialComponents.Badge" parent="Base.TextAppearance.MaterialComponents.Badge"/>
 
   <style name="ShapeAppearance.MaterialComponents.Badge">
     <item name="cornerFamily">?attr/shapeCornerFamily</item>
@@ -72,8 +69,6 @@
     <item name="badgeVerticalPadding">@dimen/m3_badge_with_text_vertical_padding</item>
   </style>
 
-  <style name="Widget.Material3.Badge.AdjustToBounds" parent="Widget.Material3.Badge">
-    <item name="autoAdjustToWithinGrandparentBounds">true</item>
-  </style>
+  <style name="Widget.Material3.Badge.AdjustToBounds" parent="Widget.Material3.Badge"/>
 
 </resources>

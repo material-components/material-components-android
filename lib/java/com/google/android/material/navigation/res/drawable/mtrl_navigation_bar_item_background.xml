@@ -15,15 +15,5 @@
   ~ limitations under the License.
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_pressed="true">
-    <shape android:shape="rectangle">
-      <solid android:color="#ff0000"/>
-    </shape>
-  </item>
-  <item>
-    <shape android:shape="rectangle">
-      <solid android:color="#ffffff"/>
-    </shape>
-  </item>
-</selector>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorPrimary"/>

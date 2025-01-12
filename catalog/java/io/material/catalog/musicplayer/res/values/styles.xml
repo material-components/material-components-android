@@ -20,7 +20,7 @@
     <item name="colorSecondary">@color/cat_music_player_secondary</item>
     <item name="colorOnSecondary">@color/cat_music_player_on_secondary</item>
 
-    <item name="android:statusBarColor" tools:targetApi="21">?attr/colorControlNormal</item>
+    <item name="android:statusBarColor">?attr/colorControlNormal</item>
     <item name="android:windowLightStatusBar" tools:targetApi="m">?attr/isLightTheme</item>
   </style>
 

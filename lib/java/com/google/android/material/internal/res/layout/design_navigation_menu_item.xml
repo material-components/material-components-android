@@ -24,6 +24,7 @@
       android:drawablePadding="@dimen/design_navigation_icon_padding"
       android:gravity="center_vertical|start"
       android:maxLines="1"
+      android:duplicateParentState="true"
       android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
   <ViewStub

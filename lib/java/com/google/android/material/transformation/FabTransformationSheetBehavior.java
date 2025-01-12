@@ -18,7 +18,6 @@ package com.google.android.material.transformation;
 import com.google.android.material.R;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -28,7 +27,6 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.animation.Positioning;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -88,7 +86,7 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
 
     CoordinatorLayout parent = (CoordinatorLayout) viewParent;
     final int childCount = parent.getChildCount();
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && expanded) {
+    if (expanded) {
       importantForAccessibilityMap = new HashMap<>(childCount);
     }
 
@@ -108,16 +106,13 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
         if (importantForAccessibilityMap != null
             && importantForAccessibilityMap.containsKey(child)) {
           // Restores the original important for accessibility value of the child view.
-          ViewCompat.setImportantForAccessibility(child, importantForAccessibilityMap.get(child));
+          child.setImportantForAccessibility(importantForAccessibilityMap.get(child));
         }
       } else {
         // Saves the important for accessibility value of the child view.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-          importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
-        }
+        importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
 
-        ViewCompat.setImportantForAccessibility(
-            child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+        child.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
       }
     }
 

@@ -39,6 +39,10 @@
     <item name="labelVisibilityMode">auto</item>
     <item name="menuGravity">top</item>
     <item name="android:fitsSystemWindows">true</item>
+    <item name="contentMarginTop">@dimen/mtrl_navigation_rail_margin</item>
+    <item name="headerMarginBottom">@dimen/mtrl_navigation_rail_margin</item>
+    <item name="itemIconGravity">top</item>
+    <item name="measureBottomPaddingFromLabelBaseline">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.NavigationRailView.Compact">
@@ -82,6 +86,8 @@
     <item name="itemTextAppearanceInactive">@macro/m3_comp_navigation_rail_label_text_type</item>
     <item name="itemTextAppearanceActive">@macro/m3_comp_navigation_rail_label_text_type</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.NavigationRailView</item>
+    <item name="activeIndicatorLabelPadding">@dimen/m3_navigation_rail_icon_label_padding</item>
+    <item name="iconLabelHorizontalSpacing">@dimen/m3_navigation_rail_icon_label_horizontal_padding</item>
   </style>
 
   <style name="Widget.Material3.NavigationRailView.ActiveIndicator" parent="">
@@ -90,13 +96,16 @@
     <item name="marginHorizontal">@dimen/m3_navigation_rail_item_active_indicator_margin_horizontal</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationRail.ActiveIndicator.Shape</item>
     <item name="android:color">@macro/m3_comp_navigation_rail_active_indicator_color</item>
+    <item name="expandedWidth">wrap_content</item>
+    <item name="expandedHeight">@dimen/m3_navigation_rail_expanded_active_indicator_height</item>
+    <item name="expandedMarginHorizontal">@dimen/m3_navigation_rail_expanded_leading_trailing_space</item>
   </style>
 
   <style name="ThemeOverlay.Material3.NavigationRailView" parent="">
     <item name="badgeStyle">@style/Widget.Material3.NavigationRailView.Badge</item>
   </style>
 
-  <style name="Widget.Material3.NavigationRailView.Badge" parent="Widget.Material3.Badge.AdjustToBounds">
+  <style name="Widget.Material3.NavigationRailView.Badge" parent="Widget.Material3.Badge">
     <item name="largeFontVerticalOffsetAdjustment">@dimen/m3_large_text_vertical_offset_adjustment</item>
     <item name="verticalOffsetWithText">@dimen/m3_nav_badge_with_text_vertical_offset</item>
   </style>

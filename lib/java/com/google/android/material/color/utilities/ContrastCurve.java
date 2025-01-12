@@ -21,34 +21,34 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import androidx.annotation.RestrictTo;
 
 /**
- * A class containing the contrast curve for a dynamic color on its background.
+ * A class containing a value that changes with the contrast level.
  *
- * <p>The four values correspond to contrast requirements for contrast levels -1.0, 0.0, 0.5, and
- * 1.0, respectively.
+ * <p>Usually represents the contrast requirements for a dynamic color on its background. The four
+ * values correspond to values for contrast levels -1.0, 0.0, 0.5, and 1.0, respectively.
  *
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
 public final class ContrastCurve {
-  /** Contrast requirement for contrast level -1.0 */
+  /** Value for contrast level -1.0 */
   private final double low;
 
-  /** Contrast requirement for contrast level 0.0 */
+  /** Value for contrast level 0.0 */
   private final double normal;
 
-  /** Contrast requirement for contrast level 0.5 */
+  /** Value for contrast level 0.5 */
   private final double medium;
 
-  /** Contrast requirement for contrast level 1.0 */
+  /** Value for contrast level 1.0 */
   private final double high;
 
   /**
    * Creates a `ContrastCurve` object.
    *
-   * @param low Contrast requirement for contrast level -1.0
-   * @param normal Contrast requirement for contrast level 0.0
-   * @param medium Contrast requirement for contrast level 0.5
-   * @param high Contrast requirement for contrast level 1.0
+   * @param low Value for contrast level -1.0
+   * @param normal Value for contrast level 0.0
+   * @param medium Value for contrast level 0.5
+   * @param high Value for contrast level 1.0
    */
   public ContrastCurve(double low, double normal, double medium, double high) {
     this.low = low;
@@ -58,13 +58,13 @@ public final class ContrastCurve {
   }
 
   /**
-   * Returns the contrast ratio at a given contrast level.
+   * Returns the value at a given contrast level.
    *
    * @param contrastLevel The contrast level. 0.0 is the default (normal); -1.0 is the lowest; 1.0
    *     is the highest.
-   * @return The contrast ratio, a number between 1.0 and 21.0.
+   * @return The value. For contrast ratios, a number between 1.0 and 21.0.
    */
-  public double getContrast(double contrastLevel) {
+  public double get(double contrastLevel) {
     if (contrastLevel <= -1.0) {
       return this.low;
     } else if (contrastLevel < 0.0) {

@@ -14,7 +14,7 @@ reflect your brand or style by defining a set of type scales which will be used
 throughout your app. You can use type scales to customize the appearance of text
 in Material components.
 
-## Design & API documentation
+## Design and API Documentation
 
 -   [Material Design guidelines: Typography](https://m3.material.io/styles/typography/overview/)
 

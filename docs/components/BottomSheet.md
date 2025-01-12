@@ -16,7 +16,7 @@ containing supplementary content that are anchored to the bottom of the screen.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using bottom sheets](#using-bottom-sheets)
 *   [Standard bottom sheet](#standard-bottom-sheet)
 *   [Modal bottom sheet](#modal-bottom-sheet)
@@ -24,7 +24,7 @@ containing supplementary content that are anchored to the bottom of the screen.
 *   [Predictive Back](#predictive-back)
 *   [Theming](#theming-bottom-sheets)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/bottom-sheets/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/bottomsheet/package-summary)
@@ -204,9 +204,9 @@ specifying any of these to true on the view:
 *   `app:paddingTopSystemWindowInsets`
 
 On API 21 and above the modal bottom sheet will be rendered fullscreen (edge to
-edge) if the navigation bar is transparent and `app:enableEdgeToEdge` is true.
+edge) if the navigation bar is transparent and `enableEdgeToEdge` is true.
 To enable edge-to-edge by default for modal bottom sheets, you can override
-`?attr/bottomSheetDialogTheme` like the below example:
+`?attr/bottomSheetDialogTheme` like the below example (`enableEdgeToEdge` is already true in `ThemeOverlay.Material3.BottomSheetDialog`):
 
 ```xml
 <style name="AppTheme" parent="Theme.Material3.*">
@@ -215,7 +215,7 @@ To enable edge-to-edge by default for modal bottom sheets, you can override
 </style>
 
 <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-    <item name="android:navigationBarColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:navigationBarColor">@android:color/transparent<item>
 </style>
 ```
 
@@ -405,6 +405,33 @@ you need to use `Activity.getSupportFragmentManager()`.
 `BottomSheetDialogFragment`. You can override
 `onCancel(DialogInterface)` or `onDismiss(DialogInterface)` if necessary.
 
+`BottomSheetDialogFragment` wraps the view in a `BottomSheetDialog`, which has
+its own `BottomSheetBehavior`. You can define your own `BottomSheetBehavior`
+through overriding `onCreateDialog`. Note that if overriding `onCreateDialog`,
+you should not override `onCreateView`.
+
+```kt
+
+import android.view.View
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+
+class ModalBottomSheet : BottomSheetDialogFragment() {
+
+  override fun onCreateDialog(
+    savedInstanceState: Bundle?,
+  ): Dialog {
+    val bottomSheetDialog: BottomSheetDialog =
+      BottomSheetDialog(
+        getContext(), R.style.ThemeOverlay_Catalog_BottomSheetDialog_Scrollable
+      )
+    bottomSheetDialog.setContentView(R.layout.bottom_sheet_content)
+    // Set behavior attributes
+    bottomSheetDialog.getBehavior().setPeekHeight(123)
+    return bottomSheetDialog
+  }
+}
+```
+
 ## Anatomy and key properties
 
 Bottom sheets have a sheet, a drag handle, and, if modal, a scrim.
@@ -439,6 +466,7 @@ Behavior                                    | Related method(s)                 
 `app:behavior_skipCollapsed`                | `setSkipCollapsed`<br/>`getSkipCollapsed`                                 | `false`
 `app:behavior_fitToContents`                | `setFitToContents`<br/>`isFitToContents`                                  | `true`
 `app:behavior_draggable`                    | `setDraggable`<br/>`isDraggable`                                          | `true`
+`app:behavior_draggableOnNestedScroll`      | `setDraggableOnNestedScroll`<br/>`isDraggableOnNestedScroll`              | `true`
 `app:behavior_halfExpandedRatio`            | `setHalfExpandedRatio`<br/>`getHalfExpandedRatio`                         | `0.5`
 `app:behavior_expandedOffset`               | `setExpandedOffset`<br/>`getExpandedOffset`                               | `0dp`
 `app:behavior_significantVelocityThreshold` | `setSignificantVelocityThreshold` <br/> `getSignificantVelocityThreshold` | `500 pixels/s`

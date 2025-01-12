@@ -22,13 +22,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /**
- * A simple ViewGroup that aligns all the views inside on a baseline. Note: bottom padding for this
- * view will be measured starting from the baseline.
+ * A simple ViewGroup that aligns all the views inside on a baseline.
+ *
+ * <p>If {@link BaselineLayout#measurePaddingFromBaseline} is true, bottom padding for this view
+ * will be measured starting from the baseline.
  *
  * @hide
  */
 public class BaselineLayout extends ViewGroup {
   private int baseline = -1;
+
+  private boolean measurePaddingFromBaseline;
 
   public BaselineLayout(Context context) {
     super(context, null, 0);
@@ -42,6 +46,11 @@ public class BaselineLayout extends ViewGroup {
     super(context, attrs, defStyleAttr);
   }
 
+  // TODO(b/338647654): We can remove this once navigation rail is updated to current specs
+  public void setMeasurePaddingFromBaseline(boolean measurePaddingFromBaseline) {
+    this.measurePaddingFromBaseline = measurePaddingFromBaseline;
+  }
+
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     final int count = getChildCount();
@@ -49,6 +58,7 @@ public class BaselineLayout extends ViewGroup {
     int maxHeight = 0;
     int maxChildBaseline = -1;
     int maxChildDescent = -1;
+    int maxMeasuredHeight = 0;
     int childState = 0;
 
     for (int i = 0; i < count; i++) {
@@ -58,6 +68,7 @@ public class BaselineLayout extends ViewGroup {
       }
 
       measureChild(child, widthMeasureSpec, heightMeasureSpec);
+      maxMeasuredHeight = Math.max(maxMeasuredHeight, child.getMeasuredHeight());
       final int baseline = child.getBaseline();
       if (baseline != -1) {
         maxChildBaseline = Math.max(maxChildBaseline, baseline);
@@ -68,11 +79,15 @@ public class BaselineLayout extends ViewGroup {
       childState = View.combineMeasuredStates(childState, child.getMeasuredState());
     }
     if (maxChildBaseline != -1) {
-      maxChildDescent = Math.max(maxChildDescent, getPaddingBottom());
-      maxHeight = Math.max(maxHeight, maxChildBaseline + maxChildDescent);
+      if (measurePaddingFromBaseline) {
+        maxChildDescent = Math.max(maxChildDescent, getPaddingBottom());
+        maxHeight = Math.max(maxHeight, maxChildBaseline + maxChildDescent);
+      }
       this.baseline = maxChildBaseline;
     }
-    maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
+    maxHeight = Math.max(
+        measurePaddingFromBaseline ? maxHeight : maxMeasuredHeight + getPaddingBottom(),
+        getSuggestedMinimumHeight());
     maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
     setMeasuredDimension(
         View.resolveSizeAndState(maxWidth, widthMeasureSpec, childState),

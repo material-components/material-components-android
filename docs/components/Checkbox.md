@@ -24,12 +24,12 @@ checked](assets/checkbox/checkbox_hero.png)
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using checkboxes](#using-checkboxes)
 *   [Checkbox](#checkbox)
 *   [Theming checkboxes](#theming-checkboxes)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/checkbox/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/checkbox/package-summary)

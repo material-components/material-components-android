@@ -15,11 +15,13 @@
   -->
 
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:width="24dp"
     android:height="24dp"
     android:tint="?attr/colorControlNormal"
     android:viewportHeight="24.0"
-    android:viewportWidth="24.0">
+    android:viewportWidth="24.0"
+    tools:ignore="NewApi">
   <path
       android:fillColor="@android:color/white"
       android:pathData="M12,22l10,-10L12,2 8.67,5.33l6.65,6.65 -6.67,6.67zM5.3,15.32l3.35,-3.34 -3.31,-3.3L2,12.02z"/>
