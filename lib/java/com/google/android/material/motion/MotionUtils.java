@@ -24,6 +24,7 @@ import android.util.TypedValue;
 import android.view.animation.AnimationUtils;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
 import androidx.core.graphics.PathParser;
 import androidx.core.view.animation.PathInterpolatorCompat;
 import androidx.dynamicanimation.animation.SpringForce;
@@ -46,15 +47,22 @@ public class MotionUtils {
    * @param context the context from where the theme attribute will be resolved
    * @param attrResId the {@code motionSpring*} theme attribute to resolve
    * into a {@link SpringForce} object
+   * @param defStyleRes a {@code MaterialSpring} style to load if attrResId cannot be resolved
    * @return a {@link SpringForce} object configured using the stiffness and damping from the
    * resolved Material spring attribute
    */
   @NonNull
   public static SpringForce resolveThemeSpringForce(
-      @NonNull Context context, @AttrRes int attrResId) {
-    TypedValue tv = MaterialAttributes.resolveTypedValueOrThrow(
-        context, attrResId, "MaterialSpring");
-    TypedArray a = context.obtainStyledAttributes(tv.resourceId, R.styleable.MaterialSpring);
+      @NonNull Context context, @AttrRes int attrResId, @StyleRes int defStyleRes) {
+
+    TypedValue tv = MaterialAttributes.resolve(context, attrResId);
+    TypedArray a;
+    if (tv == null) {
+      a = context.obtainStyledAttributes(null, R.styleable.MaterialSpring, 0, defStyleRes);
+    } else {
+      a = context.obtainStyledAttributes(tv.resourceId, R.styleable.MaterialSpring);
+    }
+
     SpringForce springForce = new SpringForce();
     try {
       float stiffness = a.getFloat(R.styleable.MaterialSpring_stiffness, Float.MIN_VALUE);

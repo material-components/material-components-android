@@ -314,7 +314,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   private SpringForce createSpringForce() {
-    return MotionUtils.resolveThemeSpringForce(getContext(), R.attr.motionSpringFastSpatial);
+    return MotionUtils.resolveThemeSpringForce(getContext(), R.attr.motionSpringFastSpatial,
+        R.style.Motion_Material3_Spring_Standard_Fast_Spatial);
   }
 
   @NonNull

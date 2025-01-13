@@ -63,11 +63,23 @@ public class MotionUtilsTest {
         context.getResources(), R.dimen.m3_sys_motion_standard_spring_fast_spatial_stiffness);
     float expectedDampingRatio = ResourcesCompat.getFloat(
         context.getResources(), R.dimen.m3_sys_motion_standard_spring_fast_spatial_damping);
-    SpringForce spring =
-        MotionUtils.resolveThemeSpringForce(context, R.attr.motionSpringFastSpatial);
+    SpringForce spring = MotionUtils.resolveThemeSpringForce(context,
+        R.attr.motionSpringFastSpatial, R.style.Motion_Material3_Spring_Standard_Fast_Spatial);
 
     assertThat(spring.getStiffness()).isEqualTo(expectedStiffness);
     assertThat(spring.getDampingRatio()).isEqualTo(expectedDampingRatio);
+  }
+
+  @Test
+  public void testAbsentThemeSpring_shouldResolveDefault() {
+    createActivityAndSetTheme(R.style.Theme_AppCompat_DayNight);
+    Context context = activityController.get().getApplicationContext();
+
+    SpringForce spring = MotionUtils.resolveThemeSpringForce(context,
+        R.attr.motionSpringFastSpatial, R.style.Motion_MyApp_Spring_Custom_Default);
+
+    assertThat(spring.getStiffness()).isEqualTo(1450f);
+    assertThat(spring.getDampingRatio()).isEqualTo(0.5f);
   }
 
   @Test
@@ -77,7 +89,8 @@ public class MotionUtilsTest {
 
     IllegalArgumentException thrown = assertThrows(
         IllegalArgumentException.class,
-        () -> MotionUtils.resolveThemeSpringForce(context, R.attr.motionSpringFastSpatial)
+        () -> MotionUtils.resolveThemeSpringForce(context, R.attr.motionSpringFastSpatial,
+            R.style.Motion_Material3_Spring_Standard_Fast_Spatial)
     );
     assertThat(thrown).hasMessageThat().contains("must have a damping");
   }
