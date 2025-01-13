@@ -27,6 +27,7 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.SystemClock;
 import android.text.Editable;
 import android.view.MotionEvent;
 import android.view.View;
@@ -280,7 +281,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   }
 
   private boolean isDropdownPopupActive() {
-    long activeFor = System.currentTimeMillis() - dropdownPopupActivatedAt;
+    long activeFor = SystemClock.uptimeMillis() - dropdownPopupActivatedAt;
     return activeFor < 0 || activeFor > 300;
   }
 
@@ -297,7 +298,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
   private void updateDropdownPopupDirty() {
     dropdownPopupDirty = true;
-    dropdownPopupActivatedAt = System.currentTimeMillis();
+    dropdownPopupActivatedAt = SystemClock.uptimeMillis();
   }
 
   private void setEndIconChecked(boolean checked) {
