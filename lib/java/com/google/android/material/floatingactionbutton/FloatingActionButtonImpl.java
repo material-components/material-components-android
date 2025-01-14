@@ -45,7 +45,6 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Preconditions;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
@@ -238,8 +237,7 @@ class FloatingActionButtonImpl {
 
   void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (rippleDrawable != null) {
-      DrawableCompat.setTintList(
-          rippleDrawable, RippleUtils.sanitizeRippleDrawableColor(rippleColor));
+      rippleDrawable.setTintList(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     }
   }
 

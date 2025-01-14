@@ -795,8 +795,7 @@ class EndCompoundLayout extends LinearLayout {
       // Setting the tint here instead of calling setEndIconTintList() in order to preserve and
       // restore the icon's original tint.
       Drawable endIconDrawable = DrawableCompat.wrap(getEndIconDrawable()).mutate();
-      DrawableCompat.setTint(
-          endIconDrawable, textInputLayout.getErrorCurrentTextColors());
+      endIconDrawable.setTint(textInputLayout.getErrorCurrentTextColors());
       endIconView.setImageDrawable(endIconDrawable);
     } else {
       applyIconTint(textInputLayout, endIconView, endIconTintList, endIconTintMode);

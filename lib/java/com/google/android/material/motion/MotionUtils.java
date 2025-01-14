@@ -22,11 +22,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.TypedValue;
 import android.view.animation.AnimationUtils;
+import android.view.animation.PathInterpolator;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
 import androidx.core.graphics.PathParser;
-import androidx.core.view.animation.PathInterpolatorCompat;
 import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.resources.MaterialAttributes;
 
@@ -146,10 +146,10 @@ public class MotionUtils {
       float controlY1 = getLegacyControlPoint(controlPoints, 1);
       float controlX2 = getLegacyControlPoint(controlPoints, 2);
       float controlY2 = getLegacyControlPoint(controlPoints, 3);
-      return PathInterpolatorCompat.create(controlX1, controlY1, controlX2, controlY2);
+      return new PathInterpolator(controlX1, controlY1, controlX2, controlY2);
     } else if (isLegacyEasingType(easingString, EASING_TYPE_PATH)) {
       String path = getLegacyEasingContent(easingString, EASING_TYPE_PATH);
-      return PathInterpolatorCompat.create(PathParser.createPathFromPathData(path));
+      return new PathInterpolator(PathParser.createPathFromPathData(path));
     } else {
       throw new IllegalArgumentException("Invalid motion easing type: " + easingString);
     }

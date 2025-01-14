@@ -31,7 +31,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import com.google.android.material.progressindicator.DrawingDelegate.ActiveIndicator;
 
@@ -189,7 +188,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
     if (isSystemAnimatorDisabled() && staticDummyDrawable != null) {
       staticDummyDrawable.setBounds(getBounds());
-      DrawableCompat.setTint(staticDummyDrawable, baseSpec.indicatorColors[0]);
+      staticDummyDrawable.setTint(baseSpec.indicatorColors[0]);
       staticDummyDrawable.draw(canvas);
       return;
     }

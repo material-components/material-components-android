@@ -53,7 +53,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
 import androidx.core.util.ObjectsCompat;
@@ -430,7 +429,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener);
 
       // We're attached, so lets request an inset dispatch
-      ViewCompat.requestApplyInsets(this);
+      requestApplyInsets();
     }
   }
 
@@ -1210,7 +1209,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    * @see #getContentScrim()
    */
   public void setContentScrimResource(@DrawableRes int resId) {
-    setContentScrim(ContextCompat.getDrawable(getContext(), resId));
+    setContentScrim(getContext().getDrawable(resId));
   }
 
   /**
@@ -1316,7 +1315,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    * @see #getStatusBarScrim()
    */
   public void setStatusBarScrimResource(@DrawableRes int resId) {
-    setStatusBarScrim(ContextCompat.getDrawable(getContext(), resId));
+    setStatusBarScrim(getContext().getDrawable(resId));
   }
 
   /**
