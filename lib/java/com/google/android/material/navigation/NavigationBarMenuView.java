@@ -24,6 +24,7 @@ import static java.lang.Math.min;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -132,6 +133,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private static final int DEFAULT_COLLAPSED_MAX_COUNT = 7;
   private int collapsedMaxItemCount = DEFAULT_COLLAPSED_MAX_COUNT;
   private boolean dividersEnabled = false;
+  private final Rect itemActiveIndicatorExpandedPadding = new Rect();
 
   public NavigationBarMenuView(@NonNull Context context) {
     super(context);
@@ -805,6 +807,30 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   }
 
   /**
+   * Set the padding of the expanded active indicator wrapping the content.
+   *
+   * @param paddingLeft The left padding, in pixels.
+   * @param paddingTop The top padding, in pixels.
+   * @param paddingRight The right padding, in pixels.
+   * @param paddingBottom The bottom padding, in pixels.
+   */
+  public void setItemActiveIndicatorExpandedPadding(int paddingLeft, int paddingTop,
+      int paddingRight, int paddingBottom) {
+    itemActiveIndicatorExpandedPadding.left = paddingLeft;
+    itemActiveIndicatorExpandedPadding.top = paddingTop;
+    itemActiveIndicatorExpandedPadding.right = paddingRight;
+    itemActiveIndicatorExpandedPadding.bottom = paddingBottom;
+    if (buttons != null) {
+      for (NavigationBarMenuItemView item : buttons) {
+        if (item instanceof NavigationBarItemView) {
+          ((NavigationBarItemView) item)
+              .setActiveIndicatorExpandedPadding(itemActiveIndicatorExpandedPadding);
+        }
+      }
+    }
+  }
+
+  /**
    * Get the {@link ShapeAppearanceModel} of the active indicator drawable.
    *
    * @return The {@link ShapeAppearanceModel} of the active indicator drawable.
@@ -1128,6 +1154,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     child.setActiveIndicatorExpandedHeight(itemActiveIndicatorExpandedHeight);
     child.setActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
     child.setItemGravity(itemGravity);
+    child.setActiveIndicatorExpandedPadding(itemActiveIndicatorExpandedPadding);
     child.setActiveIndicatorExpandedMarginHorizontal(itemActiveIndicatorExpandedMarginHorizontal);
     child.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
     child.setActiveIndicatorResizeable(itemActiveIndicatorResizeable);

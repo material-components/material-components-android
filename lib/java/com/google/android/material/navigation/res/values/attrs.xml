@@ -151,6 +151,18 @@
     <!--The start and end margin used by the navigation items' active indicator
     when it is expanded to wrap the item content. -->
     <attr name="expandedMarginHorizontal" format="dimension"/>
+    <!-- The start padding of an items' active indicator when it is expanded to
+    wrap the item content. -->
+    <attr name="expandedActiveIndicatorPaddingStart" format="dimension"/>
+    <!-- The end padding of an items' active indicator when it is expanded to
+    wrap the item content. -->
+    <attr name="expandedActiveIndicatorPaddingEnd" format="dimension"/>
+    <!-- The top padding of an items' active indicator when it is expanded to
+    wrap the item content. -->
+    <attr name="expandedActiveIndicatorPaddingTop" format="dimension"/>
+    <!-- The bottom padding of an items' active indicator when it is expanded to
+    wrap the item content. -->
+    <attr name="expandedActiveIndicatorPaddingBottom" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="NavigationView">

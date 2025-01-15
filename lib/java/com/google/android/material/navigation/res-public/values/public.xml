@@ -66,6 +66,10 @@
   <public name="expandedWidth" type="attr"/>
   <public name="expandedHeight" type="attr"/>
   <public name="expandedMarginHorizontal" type="attr"/>
+  <public name="expandedActiveIndicatorPaddingStart" type="attr"/>
+  <public name="expandedActiveIndicatorPaddingEnd" type="attr"/>
+  <public name="expandedActiveIndicatorPaddingTop" type="attr"/>
+  <public name="expandedActiveIndicatorPaddingBottom" type="attr"/>
 
   <public name="scaleLabelWithFontSize" type="attr"/>
   <public name="labelMaxLines" type="attr"/>

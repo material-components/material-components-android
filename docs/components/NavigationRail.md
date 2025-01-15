@@ -388,17 +388,21 @@ for more attributes.
 
 #### Active indicator attributes
 
-**Element**                             | **Attribute**                     | **Related methods**                                                                                   | **Default value**
---------------------------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------- | -----------------
-**Color**                               | `android:color`                   | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                                       | `?attr/colorSecondaryContainer`
-**Width**                               | `android:width`                   | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                                       | `56dp`
-**Height**                              | `android:height`                  | `setItemActiveIndicatorHeight`<br/>`getItemActiveIndicatorHeight`                                     | `32dp`
-**Shape**                               | `app:shapeAppearance`             | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`                   | `50% rounded`
-**Margin horizontal**                   | `app:marginHorizontal`            | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal`                 | `4dp`
-**Padding between indicator and label** | `app:activeIndicatorLabelPadding` | `setActiveIndicatorLabelPadding` <br/> `getActiveIndicatorLabelPadding`                               | `4dp`
-**Expanded Width**                      | `expandedWidth`                   | `setItemExpandedActiveIndicatorWidth`<br/>`getItemExpandedActiveIndicatorWidth`                       | `HUG`
-**Expanded Height**                     | `expandedHeight`                  | `setItemExpandedActiveIndicatorHeight`<br/>`getItemExpandedActiveIndicatorHeight`                     | `56dp`
-**Expanded Margin horizontal**          | `app:expandedMarginHorizontal`    | `setItemExpandedActiveIndicatorMarginHorizontal`<br/>`getItemExpandedActiveIndicatorMarginHorizontal` | `20dp`
+**Element**                             | **Attribute**                              | **Related methods**                                                                                   | **Default value**
+--------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------- | -----------------
+**Color**                               | `android:color`                            | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                                       | `?attr/colorSecondaryContainer`
+**Width**                               | `android:width`                            | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                                       | `56dp`
+**Height**                              | `android:height`                           | `setItemActiveIndicatorHeight`<br/>`getItemActiveIndicatorHeight`                                     | `32dp`
+**Shape**                               | `app:shapeAppearance`                      | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`                   | `50% rounded`
+**Margin horizontal**                   | `app:marginHorizontal`                     | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal`                 | `4dp`
+**Padding between indicator and label** | `app:activeIndicatorLabelPadding`          | `setActiveIndicatorLabelPadding` <br/> `getActiveIndicatorLabelPadding`                               | `4dp`
+**Expanded Width**                      | `expandedWidth`                            | `setItemExpandedActiveIndicatorWidth`<br/>`getItemExpandedActiveIndicatorWidth`                       | `HUG`
+**Expanded Height**                     | `expandedHeight`                           | `setItemExpandedActiveIndicatorHeight`<br/>`getItemExpandedActiveIndicatorHeight`                     | `56dp`
+**Expanded Margin horizontal**          | `app:expandedMarginHorizontal`             | `setItemExpandedActiveIndicatorMarginHorizontal`<br/>`getItemExpandedActiveIndicatorMarginHorizontal` | `20dp`
+**Expanded Start Padding**              | `app:expandedActiveIndicatorPaddingStart`  | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`
+**Expanded End Padding**                | `app:expandedActiveIndicatorPaddingEnd`    | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`
+**Expanded Top Padding**                | `app:expandedActiveIndicatorPaddingTop`    | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`
+**Expanded Start Padding**              | `app:expandedActiveIndicatorPaddingBottom` | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`
 
 **Note:** The expanded active indicator refers to the active indicator that
 expands to wrap the content of the Navigation Rail item when the
