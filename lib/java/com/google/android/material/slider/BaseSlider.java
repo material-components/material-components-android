@@ -240,8 +240,6 @@ abstract class BaseSlider<
           + " stepSize(%s)";
   private static final String EXCEPTION_ILLEGAL_VALUE_FROM =
       "valueFrom(%s) must be smaller than valueTo(%s)";
-  private static final String EXCEPTION_ILLEGAL_VALUE_TO =
-      "valueTo(%s) must be greater than valueFrom(%s)";
   private static final String EXCEPTION_ILLEGAL_STEP_SIZE =
       "The stepSize(%s) must be 0, or a factor of the valueFrom(%s)-valueTo(%s) range";
   private static final String EXCEPTION_ILLEGAL_MIN_SEPARATION =
@@ -667,20 +665,6 @@ abstract class BaseSlider<
     return true;
   }
 
-  private void validateValueFrom() {
-    if (valueFrom >= valueTo) {
-      throw new IllegalStateException(
-          String.format(EXCEPTION_ILLEGAL_VALUE_FROM, valueFrom, valueTo));
-    }
-  }
-
-  private void validateValueTo() {
-    if (valueTo <= valueFrom) {
-      throw new IllegalStateException(
-          String.format(EXCEPTION_ILLEGAL_VALUE_TO, valueTo, valueFrom));
-    }
-  }
-
   private boolean valueLandsOnTick(float value) {
     // Check that the value is a multiple of stepSize given the offset of valueFrom.
     double result =
@@ -709,6 +693,11 @@ abstract class BaseSlider<
   }
 
   private void validateValues() {
+    if (valueFrom >= valueTo) {
+      throw new IllegalStateException(
+          String.format(EXCEPTION_ILLEGAL_VALUE_FROM, valueFrom, valueTo));
+    }
+
     for (Float value : values) {
       if (value < valueFrom || value > valueTo) {
         throw new IllegalStateException(
@@ -762,10 +751,8 @@ abstract class BaseSlider<
 
   private void validateConfigurationIfDirty() {
     if (dirtyConfig) {
-      validateValueFrom();
-      validateValueTo();
-      validateStepSize();
       validateValues();
+      validateStepSize();
       validateMinSeparation();
       warnAboutFloatingPointError();
       dirtyConfig = false;
