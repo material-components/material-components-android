@@ -347,6 +347,7 @@ abstract class BaseSlider<
   private boolean trackIconInactiveEndMutated = false;
   @Nullable private ColorStateList trackIconInactiveColor;
   @Px private int trackIconSize;
+  @Px private int trackIconPadding;
   private int labelPadding;
   private float touchDownX;
   private MotionEvent lastEvent;
@@ -516,6 +517,8 @@ abstract class BaseSlider<
     minTickSpacing = resources.getDimensionPixelSize(R.dimen.mtrl_slider_tick_min_spacing);
 
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
+
+    trackIconPadding = resources.getDimensionPixelOffset(R.dimen.m3_slider_track_icon_padding);
   }
 
   private void processAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -2692,7 +2695,7 @@ abstract class BaseSlider<
       @Nullable Drawable icon,
       boolean isStart) {
     if (icon != null) {
-      calculateTrackIconBounds(trackBounds, iconRectF, trackIconSize, isStart);
+      calculateTrackIconBounds(trackBounds, iconRectF, trackIconSize, trackIconPadding, isStart);
       if (!iconRectF.isEmpty()) {
         drawTrackIcon(canvas, iconRectF, icon);
       }
@@ -2712,28 +2715,24 @@ abstract class BaseSlider<
   }
 
   private void calculateTrackIconBounds(
-      @NonNull RectF trackBounds, @NonNull RectF iconBounds, @Px int iconSize, boolean isStart) {
-    float iconPadding = getResources().getDimension(R.dimen.m3_slider_track_icon_padding);
-    float iconLeft;
-    if (isStart) {
-      iconLeft =
-          isRtl() || isVertical()
-              ? trackBounds.right - iconSize - iconPadding
-              : trackBounds.left + iconPadding;
-    } else {
-      iconLeft =
-          isRtl() || isVertical()
+      @NonNull RectF trackBounds,
+      @NonNull RectF iconBounds,
+      @Px int iconSize,
+      @Px int iconPadding,
+      boolean isStart) {
+    if (trackBounds.right - trackBounds.left >= iconSize + 2 * iconPadding) {
+      float iconLeft =
+          (isStart ^ (isRtl() || isVertical()))
               ? trackBounds.left + iconPadding
-              : trackBounds.right - iconSize - iconPadding;
-    }
-    float iconRight = iconLeft + iconSize;
-    int iconTop = calculateTrackCenter() - iconSize / 2;
-    if (trackBounds.left > iconLeft - iconPadding || trackBounds.right < iconRight + iconPadding) {
+              : trackBounds.right - iconPadding - iconSize;
+      float iconTop = calculateTrackCenter() - iconSize / 2f;
+      float iconRight = iconLeft + iconSize;
+      float iconBottom = iconTop + iconSize;
+      iconBounds.set(iconLeft, iconTop, iconRight, iconBottom);
+    } else {
       // not enough space to draw icon
       iconBounds.setEmpty();
-      return;
     }
-    iconBounds.set(iconLeft, iconTop, iconRight, iconTop + iconSize);
   }
 
   private boolean hasGapBetweenThumbAndTrack() {
