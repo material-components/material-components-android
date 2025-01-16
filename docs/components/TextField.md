@@ -663,6 +663,7 @@ Element                        | Attribute                | Related method(s)   
 **Color**                      | `android:textColorHint`  | `setDefaultHintTextColor`<br/>`getDefaultHintTextColor` | `?attr/colorOnSurfaceVariant` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/res/color/m3_textfield_label_color.xml))
 **Collapsed (floating) color** | `app:hintTextColor`      | `setHintTextColor`<br/>`getHintTextColor`               | `?attr/colorPrimary`
 **Typography**                 | `app:hintTextAppearance` | `setHintTextAppearance`                                 | `?attr/textAppearanceBodySmall`
+**Max number of lines**        | `app:hintMaxLines`       | `setHintMaxLines`<br/>`getHintMaxLines`                 | `1`
 
 **Note:** The `android:hint` should always be set on the `TextInputLayout`
 instead of on the `EditText` in order to avoid unintended behaviors.

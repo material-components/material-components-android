@@ -23,7 +23,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint.Style;
-import android.graphics.Rect;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.core.math.MathUtils;
@@ -322,8 +321,6 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
   @Override
   public void draw(@NonNull Canvas canvas) {
-    Rect clipBounds = new Rect();
-
     if (getBounds().isEmpty() || !isVisible() || !canvas.getClipBounds(clipBounds)) {
       // Escape if bounds are empty, clip bounds are empty, or currently hidden.
       return;

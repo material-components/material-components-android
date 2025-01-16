@@ -29,6 +29,7 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -55,6 +56,7 @@ import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
@@ -72,6 +74,7 @@ import androidx.dynamicanimation.animation.SpringAnimation;
 import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.motion.MotionUtils;
 import androidx.resourceinspection.annotation.Attribute;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeUtils;
@@ -212,9 +215,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
-  // Use Fast Bouncy spring as default.
-  private static final float DEFAULT_BUTTON_SPRING_DAMPING = 0.6f;
-  private static final float DEFAULT_BUTTON_SPRING_STIFFNESS = 800f;
+  @AttrRes private static final int MATERIAL_SIZE_OVERLAY_ATTR = R.attr.materialSizeOverlay;
 
   private static final int UNSET = -1;
 
@@ -261,7 +262,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   public MaterialButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    super(
+        wrap(context, attrs, defStyleAttr, DEF_STYLE_RES, new int[] { MATERIAL_SIZE_OVERLAY_ATTR }),
+        attrs,
+        defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
@@ -310,12 +314,12 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   private SpringForce createSpringForce() {
-    return new SpringForce()
-        .setDampingRatio(DEFAULT_BUTTON_SPRING_DAMPING)
-        .setStiffness(DEFAULT_BUTTON_SPRING_STIFFNESS);
+    return MotionUtils.resolveThemeSpringForce(getContext(), R.attr.motionSpringFastSpatial,
+        R.style.Motion_Material3_Spring_Standard_Fast_Spatial);
   }
 
   @NonNull
+  @SuppressLint("KotlinPropertyAccess")
   String getA11yClassName() {
     if (!TextUtils.isEmpty(accessibilityClassName)) {
       return accessibilityClassName;
@@ -324,7 +328,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     return (isCheckable() ? CompoundButton.class : Button.class).getName();
   }
 
-  void setA11yClassName(@Nullable String className) {
+  @RestrictTo(LIBRARY_GROUP)
+  public void setA11yClassName(@Nullable String className) {
     accessibilityClassName = className;
   }
 
@@ -383,8 +388,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   /**
-   * This should be accessed via {@link
-   * androidx.core.view.ViewCompat#getBackgroundTintList(android.view.View)}
+   * This should be accessed via {@link android.view.View#getBackgroundTintList()}
    *
    * @hide
    */
@@ -421,8 +425,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   /**
-   * This should be accessed via {@link
-   * androidx.core.view.ViewCompat#getBackgroundTintMode(android.view.View)}
+   * This should be accessed via {@link android.view.View#getBackgroundTintMode()}
    *
    * @hide
    */
@@ -923,9 +926,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   private void updateIcon(boolean needsIconReset) {
     if (icon != null) {
       icon = DrawableCompat.wrap(icon).mutate();
-      DrawableCompat.setTintList(icon, iconTint);
+      icon.setTintList(iconTint);
       if (iconTintMode != null) {
-        DrawableCompat.setTintMode(icon, iconTintMode);
+        icon.setTintMode(iconTintMode);
       }
 
       int width = iconSize != 0 ? iconSize : icon.getIntrinsicWidth();
@@ -1257,7 +1260,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public void setChecked(boolean checked) {
-    if (isCheckable() && isEnabled() && this.checked != checked) {
+    if (isCheckable() && this.checked != checked) {
       this.checked = checked;
 
       refreshDrawableState();
@@ -1292,7 +1295,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public boolean performClick() {
-    if (materialButtonHelper.isToggleCheckedStateOnClick()) {
+    if (isEnabled() && materialButtonHelper.isToggleCheckedStateOnClick()) {
       toggle();
     }
 

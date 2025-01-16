@@ -32,7 +32,6 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenuView;
-import com.google.android.material.navigation.NavigationBarSubheaderView;
 
 /** @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
@@ -140,7 +139,7 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
     int totalHeight = 0;
     for (int i = 0; i < childCount; i++) {
       final View child = getChildAt(i);
-      if (child instanceof NavigationBarSubheaderView) {
+      if (!(child instanceof NavigationBarItemView)) {
         int subheaderHeight = measureChildHeight(child, widthMeasureSpec, subheaderHeightSpec);
         maxHeight -= subheaderHeight;
         totalHeight += subheaderHeight;
@@ -175,8 +174,8 @@ public class NavigationRailMenuView extends NavigationBarMenuView {
   }
 
   private int measureChildHeight(View child, int widthMeasureSpec, int heightMeasureSpec) {
+    child.measure(widthMeasureSpec, heightMeasureSpec);
     if (child.getVisibility() != GONE) {
-      child.measure(widthMeasureSpec, heightMeasureSpec);
       return child.getMeasuredHeight();
     }
 

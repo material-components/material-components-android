@@ -54,8 +54,17 @@
     description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 9</string>
   <string name="cat_navigation_rail_page_10_name"
     description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 10</string>
+
+  <string name="cat_navigation_rail_page_11_name"
+    description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 11</string>
+  <string name="cat_navigation_rail_page_12_name"
+    description="The title of a page in the navigation rail demo. [CHAR_LIMIT=50]">Page 12</string>
   <string name="cat_navigation_rail_subheader_1_name"
     description="The title of a subheader in the navigation rail demo. [CHAR_LIMIT=50]">Subheader 1</string>
+  <string name="cat_navigation_rail_subheader_2_name"
+    description="The title of a subheader in the navigation rail demo. [CHAR_LIMIT=50]">Subheader 2</string>
+  <string name="cat_navigation_rail_subheader_3_name"
+    description="The title of a subheader in the navigation rail demo. [CHAR_LIMIT=50]">Subheader 3</string>
 
   <string name="cat_navigation_rail_add_nav_item"
           description="Label for the button that will add a destination to the navigation rail. [CHAR_LIMIT=50]">Add destination</string>
@@ -116,4 +125,11 @@
           description="Content description for a floating action button in the navigation rail.[CHAR_LIMIT=50]">Navigation Rail FAB</string>
 
   <string name="cat_navigation_rail_compact_message" description="Usage guidance for Navigation Rail advising using a Bottom Navigation Bar on compact screens instead. [CHAR_LIMIT=NONE]">The orientation of this Navigation Rail demo has been locked to portrait mode, because landscape mode results in a compact height on this device. For any compact screen dimensions, use a Bottom Navigation Bar instead.</string>
+
+  <string name="cat_navigation_rail_efab_text" description="The text on the button to expand the navigation rail [CHAR_LIMIT=NONE]">Label</string>
+  <string name="cat_navigation_rail_center_text" description="The text in the content centered in the remaining space beside the navigation rail [CHAR_LIMIT=NONE]">center</string>
+  <string name="cat_navigation_rail_efab_message" description="The message to display when the extended floating action button is clicked [CHAR_LIMIT=NONE]">Button clicked</string>
+  <string name="cat_navigation_rail_expand_button_description" description="The content description for the button that expands the navigation rail [CHAR_LIMIT=NONE]">Expand navigation rail</string>
+  <string name="cat_navigation_rail_collapse_button_description" description="The content description for the button that collapses the navigation rail [CHAR_LIMIT=NONE]">Collapse navigation rail</string>
+
 </resources>

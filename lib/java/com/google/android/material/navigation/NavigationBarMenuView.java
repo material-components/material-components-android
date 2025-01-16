@@ -24,6 +24,7 @@ import static java.lang.Math.min;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.menu.MenuBuilder;
@@ -36,6 +37,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.TextView;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -103,6 +105,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private int itemPaddingTop = NO_PADDING;
   private int itemPaddingBottom = NO_PADDING;
   private int itemActiveIndicatorLabelPadding = NO_PADDING;
+  private int iconLabelHorizontalSpacing = NO_PADDING;
   private boolean itemActiveIndicatorEnabled;
   private int itemActiveIndicatorWidth;
   private int itemActiveIndicatorHeight;
@@ -120,6 +123,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private NavigationBarPresenter presenter;
   private NavigationBarMenuBuilder menu;
   private boolean measurePaddingFromLabelBaseline;
+  private boolean scaleLabelWithFont;
+  private int labelMaxLines = 1;
 
   private int itemPoolSize = 0;
   private boolean expanded;
@@ -127,6 +132,8 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
 
   private static final int DEFAULT_COLLAPSED_MAX_COUNT = 7;
   private int collapsedMaxItemCount = DEFAULT_COLLAPSED_MAX_COUNT;
+  private boolean dividersEnabled = false;
+  private final Rect itemActiveIndicatorExpandedPadding = new Rect();
 
   public NavigationBarMenuView(@NonNull Context context) {
     super(context);
@@ -138,6 +145,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     } else {
       set = new AutoTransition();
       set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+      set.excludeTarget(TextView.class, true);
       set.setDuration(
           MotionUtils.resolveThemeDuration(
               getContext(),
@@ -179,7 +187,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       return;
     }
     // Unset the previous checked item
-    if (this.checkedItem != null) {
+    if (this.checkedItem != null && this.checkedItem.isChecked()) {
       this.checkedItem.setChecked(false);
     }
     checkedItem.setChecked(true);
@@ -499,6 +507,38 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     }
   }
 
+  public void setLabelFontScalingEnabled(boolean scaleLabelWithFont) {
+    this.scaleLabelWithFont = scaleLabelWithFont;
+    if (buttons != null) {
+      for (NavigationBarMenuItemView item : buttons) {
+        if (item instanceof NavigationBarItemView) {
+          ((NavigationBarItemView) item)
+              .setLabelFontScalingEnabled(scaleLabelWithFont);
+        }
+      }
+    }
+  }
+
+  public boolean getScaleLabelTextWithFont() {
+    return scaleLabelWithFont;
+  }
+
+  public void setLabelMaxLines(int labelMaxLines) {
+    this.labelMaxLines = labelMaxLines;
+    if (buttons != null) {
+      for (NavigationBarMenuItemView item : buttons) {
+        if (item instanceof NavigationBarItemView) {
+          ((NavigationBarItemView) item)
+              .setLabelMaxLines(labelMaxLines);
+        }
+      }
+    }
+  }
+
+  public int getLabelMaxLines() {
+    return labelMaxLines;
+  }
+
   /**
    * Get the distance between the item's active indicator container and the label.
    */
@@ -517,6 +557,33 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         if (item instanceof NavigationBarItemView) {
           ((NavigationBarItemView) item)
               .setActiveIndicatorLabelPadding(activeIndicatorLabelPadding);
+        }
+      }
+    }
+  }
+
+  /**
+   * Get the horizontal distance between the item's icon and the label which
+   * is shown when the item is in the {@link NavigationBarView#ITEM_ICON_GRAVITY_START}
+   * configuration.
+   */
+  @Px
+  public int getIconLabelHorizontalSpacing() {
+    return iconLabelHorizontalSpacing;
+  }
+
+  /**
+   * Set the horizontal distance between the icon and the label which is shown when the item is in
+   * the {@link NavigationBarView#ITEM_ICON_GRAVITY_START} configuration.
+   */
+  public void setIconLabelHorizontalSpacing(
+      @Px int iconLabelHorizontalSpacing) {
+    this.iconLabelHorizontalSpacing = iconLabelHorizontalSpacing;
+    if (buttons != null) {
+      for (NavigationBarMenuItemView item : buttons) {
+        if (item instanceof NavigationBarItemView) {
+          ((NavigationBarItemView) item)
+              .setIconLabelHorizontalSpacing(iconLabelHorizontalSpacing);
         }
       }
     }
@@ -734,6 +801,30 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         if (item instanceof NavigationBarItemView) {
           ((NavigationBarItemView) item)
               .setActiveIndicatorExpandedMarginHorizontal(marginHorizontal);
+        }
+      }
+    }
+  }
+
+  /**
+   * Set the padding of the expanded active indicator wrapping the content.
+   *
+   * @param paddingLeft The left padding, in pixels.
+   * @param paddingTop The top padding, in pixels.
+   * @param paddingRight The right padding, in pixels.
+   * @param paddingBottom The bottom padding, in pixels.
+   */
+  public void setItemActiveIndicatorExpandedPadding(int paddingLeft, int paddingTop,
+      int paddingRight, int paddingBottom) {
+    itemActiveIndicatorExpandedPadding.left = paddingLeft;
+    itemActiveIndicatorExpandedPadding.top = paddingTop;
+    itemActiveIndicatorExpandedPadding.right = paddingRight;
+    itemActiveIndicatorExpandedPadding.bottom = paddingBottom;
+    if (buttons != null) {
+      for (NavigationBarMenuItemView item : buttons) {
+        if (item instanceof NavigationBarItemView) {
+          ((NavigationBarItemView) item)
+              .setActiveIndicatorExpandedPadding(itemActiveIndicatorExpandedPadding);
         }
       }
     }
@@ -1032,6 +1123,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     presenter.setUpdateSuspended(false);
     NavigationBarItemView child = getNewItem();
     child.setShifting(shifting);
+    child.setLabelMaxLines(labelMaxLines);
     child.setIconTintList(itemIconTint);
     child.setIconSize(itemIconSize);
     // Set the text color the default, then look for another text color in order of precedence.
@@ -1049,8 +1141,12 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       child.setItemPaddingBottom(itemPaddingBottom);
     }
     child.setMeasureBottomPaddingFromLabelBaseline(measurePaddingFromLabelBaseline);
+    child.setLabelFontScalingEnabled(scaleLabelWithFont);
     if (itemActiveIndicatorLabelPadding != NO_PADDING) {
       child.setActiveIndicatorLabelPadding(itemActiveIndicatorLabelPadding);
+    }
+    if (iconLabelHorizontalSpacing != NO_PADDING) {
+      child.setIconLabelHorizontalSpacing(iconLabelHorizontalSpacing);
     }
     child.setActiveIndicatorWidth(itemActiveIndicatorWidth);
     child.setActiveIndicatorHeight(itemActiveIndicatorHeight);
@@ -1058,6 +1154,7 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     child.setActiveIndicatorExpandedHeight(itemActiveIndicatorExpandedHeight);
     child.setActiveIndicatorMarginHorizontal(itemActiveIndicatorMarginHorizontal);
     child.setItemGravity(itemGravity);
+    child.setActiveIndicatorExpandedPadding(itemActiveIndicatorExpandedPadding);
     child.setActiveIndicatorExpandedMarginHorizontal(itemActiveIndicatorExpandedMarginHorizontal);
     child.setActiveIndicatorDrawable(createItemActiveIndicatorDrawable());
     child.setActiveIndicatorResizeable(itemActiveIndicatorResizeable);
@@ -1117,7 +1214,12 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
     for (int i = 0; i < menuSize; i++) {
       MenuItem menuItem = menu.getItemAt(i);
       NavigationBarMenuItemView child;
-      if (menuItem.hasSubMenu()) {
+      if (menuItem instanceof DividerMenuItem) {
+        // Add a divider
+        child = new NavigationBarDividerView(getContext());
+        child.setOnlyShowWhenExpanded(true);
+        ((NavigationBarDividerView) child).setDividersEnabled(dividersEnabled);
+      } else if (menuItem.hasSubMenu()) {
         if (nextSubheaderItemCount > 0) {
           // We do not support submenus inside submenus. If there is still subheader items to be
           // instantiated, we should not have another submenu.
@@ -1144,7 +1246,9 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
                 i, (MenuItemImpl) menuItem, shifting, collapsedItemsSoFar >= collapsedMaxItemCount);
         collapsedItemsSoFar++;
       }
-      if (menuItem.isCheckable() && selectedItemPosition == NO_SELECTED_ITEM) {
+      if (!(menuItem instanceof DividerMenuItem)
+          && menuItem.isCheckable()
+          && selectedItemPosition == NO_SELECTED_ITEM) {
         selectedItemPosition = i;
       }
       buttons[i] = child;
@@ -1159,10 +1263,18 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       return false;
     }
     for (int i = 0; i < buttons.length; i++) {
-      if (menu.getItemAt(i).hasSubMenu()
-          ? buttons[i] instanceof NavigationBarItemView
-          : buttons[i] instanceof NavigationBarSubheaderView) {
+      // If the menu item is a divider but the existing item is not a divider, return false
+      if (menu.getItemAt(i) instanceof DividerMenuItem
+          && !(buttons[i] instanceof NavigationBarDividerView)) {
         return false;
+      }
+      boolean incorrectSubheaderType =
+          menu.getItemAt(i).hasSubMenu() && !(buttons[i] instanceof NavigationBarSubheaderView);
+      boolean incorrectItemType =
+          !menu.getItemAt(i).hasSubMenu() && !(buttons[i] instanceof NavigationBarItemView);
+      if (!(menu.getItemAt(i) instanceof DividerMenuItem)
+          && (incorrectSubheaderType || incorrectItemType)) {
+          return false;
       }
     }
     return true;
@@ -1209,7 +1321,9 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
         itemView.setItemGravity(itemGravity);
         itemView.setShifting(shifting);
       }
-      buttons[i].initialize((MenuItemImpl) menu.getItemAt(i), 0);
+      if (menu.getItemAt(i) instanceof MenuItemImpl) {
+        buttons[i].initialize((MenuItemImpl) menu.getItemAt(i), 0);
+      }
       presenter.setUpdateSuspended(false);
     }
   }
@@ -1220,6 +1334,20 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
       item = createNavigationBarItemView(getContext());
     }
     return item;
+  }
+
+  public void setSubmenuDividersEnabled(boolean dividersEnabled) {
+    if (this.dividersEnabled == dividersEnabled) {
+      return;
+    }
+    this.dividersEnabled = dividersEnabled;
+    if (buttons != null) {
+      for (NavigationBarMenuItemView itemView : buttons) {
+        if (itemView instanceof NavigationBarDividerView) {
+          ((NavigationBarDividerView) itemView).setDividersEnabled(dividersEnabled);
+        }
+      }
+    }
   }
 
   public void setCollapsedMaxItemCount(int collapsedMaxCount) {
@@ -1381,6 +1509,16 @@ public abstract class NavigationBarMenuView extends ViewGroup implements MenuVie
   private void validateMenuItemId(int viewId) {
     if (!isValidId(viewId)) {
       throw new IllegalArgumentException(viewId + " is not a valid view id");
+    }
+  }
+
+  public void updateActiveIndicator(int availableWidth) {
+    if (buttons != null) {
+      for (NavigationBarMenuItemView item : buttons) {
+        if (item instanceof NavigationBarItemView) {
+          ((NavigationBarItemView) item).updateActiveIndicatorLayoutParams(availableWidth);
+        }
+      }
     }
   }
 }

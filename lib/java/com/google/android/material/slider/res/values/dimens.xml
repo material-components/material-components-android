@@ -34,5 +34,6 @@
   <dimen name="mtrl_slider_label_padding">4dp</dimen>
 
   <dimen name="m3_slider_thumb_elevation">2dp</dimen>
+  <dimen name="m3_slider_track_icon_padding">10dp</dimen>
 
 </resources>

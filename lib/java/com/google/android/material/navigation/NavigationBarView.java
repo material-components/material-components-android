@@ -51,7 +51,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.drawable.DrawableUtils;
@@ -289,6 +288,11 @@ public abstract class NavigationBarView extends FrameLayout {
           attributes.getDimensionPixelSize(R.styleable.NavigationBarView_activeIndicatorLabelPadding, 0));
     }
 
+    if (attributes.hasValue(R.styleable.NavigationBarView_iconLabelHorizontalSpacing)) {
+      setIconLabelHorizontalSpacing(
+          attributes.getDimensionPixelSize(R.styleable.NavigationBarView_iconLabelHorizontalSpacing, 0));
+    }
+
     if (attributes.hasValue(R.styleable.NavigationBarView_elevation)) {
       setElevation(attributes.getDimensionPixelSize(R.styleable.NavigationBarView_elevation, 0));
     }
@@ -296,7 +300,7 @@ public abstract class NavigationBarView extends FrameLayout {
     ColorStateList backgroundTint =
         MaterialResources.getColorStateList(
             context, attributes, R.styleable.NavigationBarView_backgroundTint);
-    DrawableCompat.setTintList(getBackground().mutate(), backgroundTint);
+    getBackground().mutate().setTintList(backgroundTint);
 
     setLabelVisibilityMode(
         attributes.getInteger(
@@ -321,6 +325,12 @@ public abstract class NavigationBarView extends FrameLayout {
 
     setMeasureBottomPaddingFromLabelBaseline(attributes.getBoolean(
         R.styleable.NavigationBarView_measureBottomPaddingFromLabelBaseline, true));
+
+    setLabelFontScalingEnabled(
+        attributes.getBoolean(R.styleable.NavigationBarView_labelFontScalingEnabled, false));
+
+    setLabelMaxLines(
+        attributes.getInteger(R.styleable.NavigationBarView_labelMaxLines, 1));
 
     int activeIndicatorStyleResId =
         attributes.getResourceId(R.styleable.NavigationBarView_itemActiveIndicatorStyle, 0);
@@ -377,6 +387,29 @@ public abstract class NavigationBarView extends FrameLayout {
               R.styleable.NavigationBarActiveIndicator_expandedMarginHorizontal,
               itemActiveIndicatorMarginHorizontal);
       setItemActiveIndicatorExpandedMarginHorizontal(itemActiveIndicatorExpandedMarginHorizontal);
+
+      int activeIndicatorExpandedDefaultStartEndPadding = getResources()
+          .getDimensionPixelSize(R.dimen.m3_navigation_item_leading_trailing_space);
+      int activeIndicatorExpandedStartPadding =
+          activeIndicatorAttributes.getDimensionPixelOffset(
+          R.styleable.NavigationBarActiveIndicator_expandedActiveIndicatorPaddingStart,
+              activeIndicatorExpandedDefaultStartEndPadding);
+      int activeIndicatorExpandedEndPadding =
+          activeIndicatorAttributes.getDimensionPixelOffset(
+              R.styleable.NavigationBarActiveIndicator_expandedActiveIndicatorPaddingEnd,
+              activeIndicatorExpandedDefaultStartEndPadding);
+
+      setItemActiveIndicatorExpandedPadding(
+          getLayoutDirection() == LAYOUT_DIRECTION_RTL
+              ? activeIndicatorExpandedEndPadding : activeIndicatorExpandedStartPadding,
+          activeIndicatorAttributes.getDimensionPixelOffset(
+              R.styleable.NavigationBarActiveIndicator_expandedActiveIndicatorPaddingTop,
+              0),
+          getLayoutDirection() == LAYOUT_DIRECTION_RTL
+              ? activeIndicatorExpandedStartPadding : activeIndicatorExpandedEndPadding,
+          activeIndicatorAttributes.getDimensionPixelOffset(
+              R.styleable.NavigationBarActiveIndicator_expandedActiveIndicatorPaddingBottom,
+              0));
 
       ColorStateList itemActiveIndicatorColor =
           MaterialResources.getColorStateList(
@@ -704,6 +737,34 @@ public abstract class NavigationBarView extends FrameLayout {
   }
 
   /**
+   * Sets whether or not the label text should scale with the system font size.
+   */
+  public void setLabelFontScalingEnabled(boolean labelFontScalingEnabled) {
+    menuView.setLabelFontScalingEnabled(labelFontScalingEnabled);
+  }
+
+  /**
+   * Returns whether or not the label text should scale with the system font size.
+   */
+  public boolean getScaleLabelTextWithFont() {
+    return menuView.getScaleLabelTextWithFont();
+  }
+
+  /**
+   * Set the max lines limit for the label text.
+   */
+  public void setLabelMaxLines(int labelMaxLines) {
+    menuView.setLabelMaxLines(labelMaxLines);
+  }
+
+  /**
+   * Returns the max lines limit for the label text.
+   */
+  public int getLabelMaxLines(int labelMaxLines) {
+    return menuView.getLabelMaxLines();
+  }
+
+  /**
    * Set the distance between the active indicator container and the item's label.
    */
   public void setActiveIndicatorLabelPadding(@Px int activeIndicatorLabelPadding) {
@@ -717,6 +778,24 @@ public abstract class NavigationBarView extends FrameLayout {
   public int getActiveIndicatorLabelPadding() {
     return menuView.getActiveIndicatorLabelPadding();
   }
+
+  /**
+   * Set the horizontal distance between the icon and the item's label when the item is in the
+   * {@link NavigationBarView#ITEM_ICON_GRAVITY_START} configuration.
+   */
+  public void setIconLabelHorizontalSpacing(@Px int iconLabelSpacing) {
+    menuView.setIconLabelHorizontalSpacing(iconLabelSpacing);
+  }
+
+  /**
+   * Get the horizontal distance between the icon and the item's label when the item is in the
+   * {@link NavigationBarView#ITEM_ICON_GRAVITY_START} configuration.
+   */
+  @Px
+  public int getIconLabelHorizontalSpacing() {
+    return menuView.getIconLabelHorizontalSpacing();
+  }
+
 
   /**
    * Get whether or not a selected item should show an active indicator.
@@ -802,7 +881,7 @@ public abstract class NavigationBarView extends FrameLayout {
    * @see #getItemGravity()
    */
   public void setItemGravity(@ItemGravity int itemGravity) {
-    if (menuView.getItemIconGravity() != itemGravity) {
+    if (menuView.getItemGravity() != itemGravity) {
       menuView.setItemGravity(itemGravity);
       presenter.updateMenuView(false);
     }
@@ -882,6 +961,19 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemActiveIndicatorExpandedMarginHorizontal(@Px int horizontalMargin) {
     menuView.setItemActiveIndicatorExpandedMarginHorizontal(horizontalMargin);
+  }
+
+  /**
+   * Set the padding of the expanded active indicator wrapping the content.
+   *
+   * @param paddingLeft The left padding, in pixels.
+   * @param paddingTop The top padding, in pixels.
+   * @param paddingRight The right padding, in pixels.
+   * @param paddingBottom The bottom padding, in pixels.
+   */
+  public void setItemActiveIndicatorExpandedPadding(
+      @Px int paddingLeft, @Px int paddingTop, @Px int paddingRight, @Px int paddingBottom) {
+    menuView.setItemActiveIndicatorExpandedPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
   }
 
   /**

@@ -32,6 +32,7 @@ import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -50,7 +51,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -102,6 +102,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   private static final int SHRINK = 2;
   /** Strategy to extend the FAB. */
   private static final int EXTEND = 3;
+
+  private boolean animationEnabled = true;
 
   /**
    * The strategy type determines what motion strategy to apply on the FAB.
@@ -915,8 +917,22 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
   }
 
+  /**
+   * Set whether or not animations are enabled.
+   */
+  public void setAnimationEnabled(boolean animationEnabled) {
+    this.animationEnabled = animationEnabled;
+  }
+
+  /** Return whether or not animations are enabled. */
+  public boolean isAnimationEnabled() {
+    return animationEnabled;
+  }
+
   private boolean shouldAnimateVisibilityChange() {
-    return (isLaidOut() || (!isOrWillBeShown() && animateShowBeforeLayout)) && !isInEditMode();
+    return animationEnabled
+        && (isLaidOut() || (!isOrWillBeShown() && animateShowBeforeLayout))
+        && !isInEditMode();
   }
 
   /**
@@ -967,7 +983,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   /**
    * A Property wrapper around the <code>paddingStart</code> functionality handled by the {@link
-   * ViewCompat#setPaddingRelative(View, int, int, int, int)}.
+   * View#setPaddingRelative(int, int, int, int)}.
    */
   static final Property<View, Float> PADDING_START =
       new Property<View, Float>(Float.class, "paddingStart") {
@@ -989,7 +1005,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   /**
    * A Property wrapper around the <code>paddingEnd</code> functionality handled by the {@link
-   * ViewCompat#setPaddingRelative(View, int, int, int, int)}.
+   * View#setPaddingRelative(int, int, int, int)}.
    */
   static final Property<View, Float> PADDING_END =
       new Property<View, Float>(Float.class, "paddingEnd") {
@@ -1332,6 +1348,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       }
       layoutParams.width = size.getLayoutParams().width;
       layoutParams.height = size.getLayoutParams().height;
+
+      if (extending) { // extending
+        silentlyUpdateTextColor(originalTextCsl);
+      } else if (getText() != null && getText() != "") { // shrinking
+        // We only update the text to transparent if it exists, otherwise, updating the
+        // text color to transparent affects the elevation of the view.
+        // It's okay for the text to be set afterwards and not be transparent, as it is cut off
+        // by forcing the layout param dimens.
+        silentlyUpdateTextColor(ColorStateList.valueOf(Color.TRANSPARENT));
+      }
+
       setPaddingRelative(
           size.getPaddingStart(),
           getPaddingTop(),

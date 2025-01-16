@@ -176,7 +176,7 @@ public class MaterialDividerItemDecoration extends ItemDecoration {
   public void setDividerColor(@ColorInt int color) {
     this.color = color;
     dividerDrawable = DrawableCompat.wrap(dividerDrawable);
-    DrawableCompat.setTint(dividerDrawable, color);
+    dividerDrawable.setTint(color);
   }
 
   /**

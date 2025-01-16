@@ -84,6 +84,7 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.BottomNavigationView</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationBar.Container.Shape</item>
     <item name="activeIndicatorLabelPadding">@dimen/m3_navigation_item_active_indicator_label_padding</item>
+    <item name="iconLabelHorizontalSpacing">@dimen/m3_navigation_item_active_indicator_label_padding</item>
   </style>
 
   <style name="Widget.Material3.BottomNavigationView" parent="Base.Widget.Material3.BottomNavigationView"/>

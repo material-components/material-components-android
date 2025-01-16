@@ -268,7 +268,7 @@ Element                      | Attribute                   | Related method(s)  
 ---------------------------- | --------------------------- | ------------------------------------------------------- | -------------
 **Color**                    | `app:backgroundTint`        | N/A                                                     | `?attr/colorSurface`</br>`?attr/colorSurfaceContainerLow` (modal)
 **Coplanar sibling view id** | `app:coplanarSiblingViewId` | `setCoplanarSiblingViewId`<br/>`setCoplanarSiblingView` | N/A
-**Shape**                    | `app:shapeAppearance`       | N/A                                                     | `?attr/shapeAppearanceLargeComponent`
+**Shape**                    | `app:shapeAppearance`       | N/A                                                     | `?attr/shapeAppearanceCornerLarge`
 **Sheet edge**               | `android:layout_gravity`    | `setSheetEdge` (modal only)                             | end
 **Elevation**                | `android:elevation`         | N/A                                                     | 0dp
 **Max width**                | `android:maxWidth`          | `setMaxWidth`<br/>`getMaxWidth`                         | N/A
@@ -438,10 +438,10 @@ In `res/values/styles.xml`:
 ```xml
 <style name="Widget.App.SideSheet.Modal" parent="Widget.Material3.SideSheet.Modal">
     <item name="backgroundTint">@color/shrine_pink_light</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.Corner.Large</item>
 </style>
 
-<style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
+<style name="ShapeAppearance.App.Corner.Large" parent="ShapeAppearance.Material3.Corner.Large">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">24dp</item>
 </style>

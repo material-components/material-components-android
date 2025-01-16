@@ -23,7 +23,6 @@ import static com.google.android.material.progressindicator.LinearProgressIndica
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -32,7 +31,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import com.google.android.material.progressindicator.DrawingDelegate.ActiveIndicator;
 
@@ -183,8 +181,6 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
   /** Draws the graphics based on the progress indicator's properties and the animation states. */
   @Override
   public void draw(@NonNull Canvas canvas) {
-    Rect clipBounds = new Rect();
-
     if (getBounds().isEmpty() || !isVisible() || !canvas.getClipBounds(clipBounds)) {
       // Escape if bounds are empty, clip bounds are empty, or currently hidden.
       return;
@@ -192,7 +188,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
     if (isSystemAnimatorDisabled() && staticDummyDrawable != null) {
       staticDummyDrawable.setBounds(getBounds());
-      DrawableCompat.setTint(staticDummyDrawable, baseSpec.indicatorColors[0]);
+      staticDummyDrawable.setTint(baseSpec.indicatorColors[0]);
       staticDummyDrawable.draw(canvas);
       return;
     }

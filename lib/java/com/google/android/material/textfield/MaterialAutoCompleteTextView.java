@@ -567,7 +567,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
         // pressed states, but not to other states like focused and hovered. To solve that, we
         // create the selectedItemRippleOverlaidColor that will work in those missing states, making
         // the selected list item stateful as expected.
-        DrawableCompat.setTintList(colorDrawable, selectedItemRippleOverlaidColor);
+        colorDrawable.setTintList(selectedItemRippleOverlaidColor);
         return new RippleDrawable(pressedRippleColor, colorDrawable, null);
       } else {
         return colorDrawable;

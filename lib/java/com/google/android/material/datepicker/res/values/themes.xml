@@ -64,7 +64,7 @@
   </style>
 
   <style name="ThemeOverlay.Material3.MaterialCalendar" parent="ThemeOverlay.Material3.Dialog">
-    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_datepicker_elevation</item>
+    <item name="android:windowElevation">@dimen/m3_datepicker_elevation</item>
     <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar</item>
 
     <!-- Header Styles -->
@@ -92,7 +92,7 @@
 
   <style name="ThemeOverlay.Material3.MaterialCalendar.Fullscreen">
     <item name="android:windowIsFloating">false</item>
-    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_datepicker_elevation</item>
+    <item name="android:windowElevation">@dimen/m3_datepicker_elevation</item>
     <item name="materialCalendarStyle">@style/Widget.Material3.MaterialCalendar.Fullscreen</item>
     <item name="materialCalendarHeaderLayout">@style/Widget.Material3.MaterialCalendar.HeaderLayout.Fullscreen</item>
     <item name="materialCalendarHeaderSelection">@style/Widget.Material3.MaterialCalendar.HeaderSelection.Fullscreen</item>

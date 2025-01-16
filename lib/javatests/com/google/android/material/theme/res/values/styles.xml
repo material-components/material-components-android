@@ -15,14 +15,14 @@
   ~ limitations under the License.
   -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-  <style name="ThemeOverlayColorAccentRed" tools:ignore="NewApi">
+  <style name="ThemeOverlayColorAccentRed">
     <item name="android:colorAccent">#FFFF0000</item>
   </style>
 
 
-  <style name="AndroidThemeColorAccentYellow" tools:ignore="NewApi">
+  <style name="AndroidThemeColorAccentYellow">
     <item name="android:colorAccent">#FFFFFF00</item>
   </style>
 

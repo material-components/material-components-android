@@ -27,8 +27,6 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.ColorStateListDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -37,7 +35,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
@@ -332,7 +329,7 @@ public class ViewUtils {
   public static void requestApplyInsetsWhenAttached(@NonNull View view) {
     if (view.isAttachedToWindow()) {
       // We're already attached, just request as normal.
-      ViewCompat.requestApplyInsets(view);
+      view.requestApplyInsets();
     } else {
       // We're not attached to the hierarchy, add a listener to request when we are.
       view.addOnAttachStateChangeListener(
@@ -340,7 +337,7 @@ public class ViewUtils {
             @Override
             public void onViewAttachedToWindow(@NonNull View v) {
               v.removeOnAttachStateChangeListener(this);
-              ViewCompat.requestApplyInsets(v);
+              v.requestApplyInsets();
             }
 
             @Override
@@ -357,7 +354,7 @@ public class ViewUtils {
     float absoluteElevation = 0;
     ViewParent viewParent = view.getParent();
     while (viewParent instanceof View) {
-      absoluteElevation += ViewCompat.getElevation((View) viewParent);
+      absoluteElevation += ((View) viewParent).getElevation();
       viewParent = viewParent.getParent();
     }
     return absoluteElevation;

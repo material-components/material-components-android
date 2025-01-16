@@ -23,6 +23,7 @@ import android.content.Context;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.util.Property;
 import androidx.annotation.FloatRange;
@@ -83,12 +84,16 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   @IntRange(from = 0, to = 255)
   private int totalAlpha;
 
+  // Pre-allocates objects used in draw().
+  @NonNull Rect clipBounds;
+
   // ******************* Constructor *******************
 
   DrawableWithAnimatedVisibilityChange(
       @NonNull Context context, @NonNull BaseProgressIndicatorSpec baseSpec) {
     this.context = context;
     this.baseSpec = baseSpec;
+    this.clipBounds = new Rect();
     animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
 
     setAlpha(255);
@@ -236,7 +241,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
    * @param animate Whether to change the visibility with animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
-   * @see #setVisible(boolean, boolean, boolean)
    */
   public boolean setVisible(boolean visible, boolean restart, boolean animate) {
     float systemAnimatorDurationScale =

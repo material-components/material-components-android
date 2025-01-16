@@ -56,6 +56,7 @@
   <public name="Widget.Material3.DrawerLayout" type="style"/>
 
   <public name="activeIndicatorLabelPadding" type="attr"/>
+  <public name="iconLabelHorizontalSpacing" type="attr"/>
   <public name="itemPaddingTop" type="attr"/>
   <public name="itemPaddingBottom" type="attr"/>
   <public name="itemActiveIndicatorStyle" type="attr"/>
@@ -65,5 +66,13 @@
   <public name="expandedWidth" type="attr"/>
   <public name="expandedHeight" type="attr"/>
   <public name="expandedMarginHorizontal" type="attr"/>
+  <public name="expandedActiveIndicatorPaddingStart" type="attr"/>
+  <public name="expandedActiveIndicatorPaddingEnd" type="attr"/>
+  <public name="expandedActiveIndicatorPaddingTop" type="attr"/>
+  <public name="expandedActiveIndicatorPaddingBottom" type="attr"/>
+
+  <public name="scaleLabelWithFontSize" type="attr"/>
+  <public name="labelMaxLines" type="attr"/>
+
   <public name="ShapeAppearance.Material3.NavigationBarView.ActiveIndicator" type="style"/>
 </resources>
