@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">ਅਗਲੇ ਮਹੀਨੇ \'ਤੇ ਜਾਓ</string>
   <string name="mtrl_picker_toggle_to_year_selection">ਸਾਲ ਦ੍ਰਿਸ਼ \'ਤੇ ਸਵਿੱਚ ਕਰਨ ਲਈ ਟੈਪ ਕਰੋ</string>
   <string name="mtrl_picker_toggle_to_day_selection">Calendar ਦ੍ਰਿਸ਼ \'ਤੇ ਸਵਿੱਚ ਕਰਨ ਲਈ ਟੈਪ ਕਰੋ</string>
+  <string name="mtrl_picker_toggled_to_year_selection">ਸਾਲ ਦ੍ਰਿਸ਼ \'ਤੇ ਸਵਿੱਚ ਕੀਤਾ ਗਿਆ</string>
+  <string name="mtrl_picker_toggled_to_day_selection">ਕੈਲੰਡਰ ਦ੍ਰਿਸ਼ \'ਤੇ ਸਵਿੱਚ ਕੀਤਾ ਗਿਆ</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">ਮੌਜੂਦਾ ਚੋਣ: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">ਸ਼ੁਰੂਆਤੀ ਤਾਰੀਖ ਦੀ ਚੋਣ: %1$s – ਸਮਾਪਤੀ ਤਾਰੀਖ ਦੀ ਚੋਣ: %2$s</string>

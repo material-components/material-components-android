@@ -16,5 +16,5 @@
 -->
 <!-- Material3 alternative to textColorHighlight for light theme -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:alpha="@dimen/material_emphasis_medium" android:color="@color/m3_sys_color_light_primary" />
+    <item android:alpha="@dimen/material_emphasis_medium" android:color="?attr/colorOnPrimaryContainer" />
 </selector>

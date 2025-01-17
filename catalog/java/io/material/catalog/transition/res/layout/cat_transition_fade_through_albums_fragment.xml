@@ -42,8 +42,7 @@
       app:columnCount="2"
       app:rowCount="3"
       android:gravity="center_horizontal"
-      app:orientation="vertical"
-      tools:targetApi="lollipop">
+      app:orientation="vertical">
 
       <com.google.android.material.card.MaterialCardView
           android:layout_width="0dp"

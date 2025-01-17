@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Преминаване към следващия месец</string>
   <string name="mtrl_picker_toggle_to_year_selection">Докоснете за превключване към годишен изглед</string>
   <string name="mtrl_picker_toggle_to_day_selection">Докоснете за превключване към календарен изглед</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Превключихте към годишен изглед</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Превключихте към изглед в календара</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Текущ избор: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Избиране на начална дата: %1$s – Избиране на крайна дата: %2$s</string>

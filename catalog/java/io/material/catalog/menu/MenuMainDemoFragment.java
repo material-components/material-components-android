@@ -181,6 +181,7 @@ public class MenuMainDemoFragment extends DemoFragment {
             getResources().getStringArray(R.array.cat_list_popup_window_content));
     listPopupWindow.setAdapter(adapter);
     listPopupWindow.setAnchorView(v);
+    listPopupWindow.setModal(true);
     listPopupWindow.setOnItemClickListener(
         (parent, view, position, id) -> {
           Snackbar.make(

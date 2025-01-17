@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Ändra till nästa månad</string>
   <string name="mtrl_picker_toggle_to_year_selection">Tryck för att byta till årsvy</string>
   <string name="mtrl_picker_toggle_to_day_selection">Tryck för att byta till kalendervy</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Du har bytt till årsvy</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Du har bytt till kalendervy</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Aktuellt val: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Val av startdatum: %1$s – val av slutdatum: %2$s</string>

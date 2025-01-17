@@ -112,9 +112,9 @@ API and source code:
 *   `ContextMenu`
     *   [Class definition](https://developer.android.com/reference/android/view/ContextMenu)
 *   `PopupMenu`
-    *   [Class definition](https://developer.android.com/reference/android/widget/PopupMenu)
+    *   [Class definition](https://developer.android.com/reference/androidx/appcompat/widget/PopupMenu)
 *   `ListPopupWindow`
-    *   [Class definition](https://developer.android.com/reference/android/widget/ListPopupWindow)
+    *   [Class definition](https://developer.android.com/reference/androidx/appcompat/widget/ListPopupWindow)
 
 ### Dropdown menu examples
 
@@ -621,9 +621,9 @@ API and source code:
 *   `ContextMenu`
     *   [Class definition](https://developer.android.com/reference/android/view/ContextMenu)
 *   `PopupMenu`
-    *   [Class definition](https://developer.android.com/reference/android/widget/PopupMenu)
+    *   [Class definition](https://developer.android.com/reference/androidx/appcompat/widget/PopupMenu)
 *   `ListPopupWindow`
-    *   [Class definition](https://developer.android.com/reference/android/widget/ListPopupWindow)
+    *   [Class definition](https://developer.android.com/reference/androidx/appcompat/widget/ListPopupWindow)
 
 The following example shows a menu with Material Theming.
 

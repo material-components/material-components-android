@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Naar volgende maand gaan</string>
   <string name="mtrl_picker_toggle_to_year_selection">Tik om over te schakelen naar de jaarweergave</string>
   <string name="mtrl_picker_toggle_to_day_selection">Tik om over te schakelen naar de agendaweergave</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Overgeschakeld naar jaarweergave</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Overgeschakeld naar kalenderweergave</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Huidige selectie: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Startdatumselectie: %1$s – Einddatumselectie: %2$s</string>

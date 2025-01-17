@@ -87,6 +87,10 @@
     <attr name="itemPaddingBottom" format="dimension"/>
     <!-- Padding between the active indicator container and label. -->
     <attr name="activeIndicatorLabelPadding" format="dimension"/>
+    <!-- The horizontal spacing between the icon and label which will show when
+         the item is in its horizontal configuration (ie. the start icon gravity
+         configuration). -->
+    <attr name="iconLabelHorizontalSpacing" format="dimension"/>
 
     <!-- The style used for each navigation item's active indicator-->
     <attr name="itemActiveIndicatorStyle" format="reference"/>
@@ -114,6 +118,12 @@
     <!-- Measure the item's bottom padding from the baseline of the label, not the bottom of its
          view. -->
     <attr name="measureBottomPaddingFromLabelBaseline" format="boolean"/>
+
+    <!-- Whether or not to scale the label with the font size. -->
+    <attr name="labelFontScalingEnabled" format="boolean"/>
+
+    <!-- The maximum number of lines the label can be. -->
+    <attr name="labelMaxLines" format="integer"/>
   </declare-styleable>
 
   <declare-styleable name="NavigationBarActiveIndicator">
@@ -141,6 +151,18 @@
     <!--The start and end margin used by the navigation items' active indicator
     when it is expanded to wrap the item content. -->
     <attr name="expandedMarginHorizontal" format="dimension"/>
+    <!-- The start padding of an items' active indicator when it is expanded to
+    wrap the item content. -->
+    <attr name="expandedActiveIndicatorPaddingStart" format="dimension"/>
+    <!-- The end padding of an items' active indicator when it is expanded to
+    wrap the item content. -->
+    <attr name="expandedActiveIndicatorPaddingEnd" format="dimension"/>
+    <!-- The top padding of an items' active indicator when it is expanded to
+    wrap the item content. -->
+    <attr name="expandedActiveIndicatorPaddingTop" format="dimension"/>
+    <!-- The bottom padding of an items' active indicator when it is expanded to
+    wrap the item content. -->
+    <attr name="expandedActiveIndicatorPaddingBottom" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="NavigationView">

@@ -35,7 +35,6 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityEventCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
 
@@ -63,8 +62,6 @@ public class BottomSheetDragHandleView extends AppCompatImageView
       getResources().getString(R.string.bottomsheet_action_expand);
   private final String clickToCollapseActionLabel =
       getResources().getString(R.string.bottomsheet_action_collapse);
-  private final String clickFeedback =
-      getResources().getString(R.string.bottomsheet_drag_handle_clicked);
 
   private final BottomSheetCallback bottomSheetCallback =
       new BottomSheetCallback() {
@@ -185,7 +182,6 @@ public class BottomSheetDragHandleView extends AppCompatImageView
     if (!interactable) {
       return false;
     }
-    announceAccessibilityEvent(clickFeedback);
     boolean canHalfExpand =
         !bottomSheetBehavior.isFitToContents()
             && !bottomSheetBehavior.shouldSkipHalfExpandedStateWhenDragging();
@@ -207,16 +203,6 @@ public class BottomSheetDragHandleView extends AppCompatImageView
     }
     bottomSheetBehavior.setState(nextState);
     return true;
-  }
-
-  private void announceAccessibilityEvent(String announcement) {
-    if (accessibilityManager == null) {
-      return;
-    }
-    AccessibilityEvent announce =
-        AccessibilityEvent.obtain(AccessibilityEventCompat.TYPE_ANNOUNCEMENT);
-    announce.getText().add(announcement);
-    accessibilityManager.sendAccessibilityEvent(announce);
   }
 
   /**

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2024 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinator"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/appbarlayout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fitsSystemWindows="true">
+
+    <com.google.android.material.appbar.CollapsingToolbarLayout
+        style="?attr/collapsingToolbarLayoutMediumStyle"
+        android:id="@+id/collapsingtoolbarlayout"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/collapsingToolbarLayoutMediumSize"
+        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
+        app:expandedTitleGravity="bottom|center_horizontal">
+
+      <androidx.appcompat.widget.Toolbar
+          android:id="@+id/toolbar"
+          style="?attr/catalogToolbarWithCloseButtonStyle"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/actionBarSize"
+          android:elevation="0dp"
+          app:layout_collapseMode="pin"
+          app:title="@string/cat_topappbar_collapsing_demo_toolbar_medium_title"
+          app:subtitle="@string/cat_topappbar_collapsing_demo_toolbar_medium_subtitle" />
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <include layout="@layout/cat_topappbar_filler_text_view"/>
+  </androidx.core.widget.NestedScrollView>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -70,7 +70,6 @@
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
         android:ellipsize="end"
-        android:maxLines="1"
         android:includeFontPadding="false"
         android:gravity="center_vertical"
         android:textSize="@dimen/design_bottom_navigation_text_size" />
@@ -80,7 +79,6 @@
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
         android:ellipsize="end"
-        android:maxLines="1"
         android:gravity="center_vertical"
         android:includeFontPadding="false"
         android:textSize="@dimen/design_bottom_navigation_active_text_size"

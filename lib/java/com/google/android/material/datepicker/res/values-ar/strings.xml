@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">التغيير إلى الشهر التالي</string>
   <string name="mtrl_picker_toggle_to_year_selection">يمكنك النقر للتبديل إلى عرض السنة.</string>
   <string name="mtrl_picker_toggle_to_day_selection">يمكنك النقر للتبديل إلى عرض \"تقويم Google\".</string>
+  <string name="mtrl_picker_toggled_to_year_selection">تم التبديل إلى عرض اختيار السنة</string>
+  <string name="mtrl_picker_toggled_to_day_selection">تم التبديل إلى عرض التقويم</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">الاختيار الحالي: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">اختيار تاريخ البدء: %1$s – اختيار تاريخ الانتهاء: %2$s</string>

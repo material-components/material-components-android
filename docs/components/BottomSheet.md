@@ -204,9 +204,9 @@ specifying any of these to true on the view:
 *   `app:paddingTopSystemWindowInsets`
 
 On API 21 and above the modal bottom sheet will be rendered fullscreen (edge to
-edge) if the navigation bar is transparent and `app:enableEdgeToEdge` is true.
+edge) if the navigation bar is transparent and `enableEdgeToEdge` is true.
 To enable edge-to-edge by default for modal bottom sheets, you can override
-`?attr/bottomSheetDialogTheme` like the below example:
+`?attr/bottomSheetDialogTheme` like the below example (`enableEdgeToEdge` is already true in `ThemeOverlay.Material3.BottomSheetDialog`):
 
 ```xml
 <style name="AppTheme" parent="Theme.Material3.*">
@@ -215,7 +215,7 @@ To enable edge-to-edge by default for modal bottom sheets, you can override
 </style>
 
 <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-    <item name="android:navigationBarColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:navigationBarColor">@android:color/transparent<item>
 </style>
 ```
 
@@ -404,6 +404,33 @@ you need to use `Activity.getSupportFragmentManager()`.
 **Note:** Don't call `setOnCancelListener` or `setOnDismissListener` on a
 `BottomSheetDialogFragment`. You can override
 `onCancel(DialogInterface)` or `onDismiss(DialogInterface)` if necessary.
+
+`BottomSheetDialogFragment` wraps the view in a `BottomSheetDialog`, which has
+its own `BottomSheetBehavior`. You can define your own `BottomSheetBehavior`
+through overriding `onCreateDialog`. Note that if overriding `onCreateDialog`,
+you should not override `onCreateView`.
+
+```kt
+
+import android.view.View
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+
+class ModalBottomSheet : BottomSheetDialogFragment() {
+
+  override fun onCreateDialog(
+    savedInstanceState: Bundle?,
+  ): Dialog {
+    val bottomSheetDialog: BottomSheetDialog =
+      BottomSheetDialog(
+        getContext(), R.style.ThemeOverlay_Catalog_BottomSheetDialog_Scrollable
+      )
+    bottomSheetDialog.setContentView(R.layout.bottom_sheet_content)
+    // Set behavior attributes
+    bottomSheetDialog.getBehavior().setPeekHeight(123)
+    return bottomSheetDialog
+  }
+}
+```
 
 ## Anatomy and key properties
 

@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Shintshela kunyanga elandelayo</string>
   <string name="mtrl_picker_toggle_to_year_selection">Thepha ukuze ushintshele ekubukeni konyaka</string>
   <string name="mtrl_picker_toggle_to_day_selection">Thepha ukuze ushintshele ekubukeni Kwekhalenda</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Ishintshele ekubukeni konyaka</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Shintshele ekubukeni Kwekhalenda</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Ukukhetha kwamanje: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Ukukhethwa kosuku lokuqala: %1$s – Ukukhethwa kosuku lokuphela: %2$s</string>

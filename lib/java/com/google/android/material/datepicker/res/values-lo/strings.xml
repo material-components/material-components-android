@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">ປ່ຽນເປັນເດືອນຕໍ່ໄປ</string>
   <string name="mtrl_picker_toggle_to_year_selection">ແຕະເພື່ອສະຫຼັບໄປເປັນມຸມມອງປີ</string>
   <string name="mtrl_picker_toggle_to_day_selection">ແຕະເພື່ອສະຫຼັບໄປເປັນມຸມມອງປະຕິທິນ</string>
+  <string name="mtrl_picker_toggled_to_year_selection">ສະຫຼັບເປັນມຸມມອງປີແລ້ວ</string>
+  <string name="mtrl_picker_toggled_to_day_selection">ສະຫຼັບເປັນມຸມມອງປະຕິທິນແລ້ວ</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">ການເລືອກປັດຈຸບັນ: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">ການເລືອກວັນທີເລີ່ມຕົ້ນ: %1$s – ການເລືອກວັນທີສິ້ນສຸດ: %2$s</string>

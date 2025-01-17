@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Перайсці да наступнага месяца</string>
   <string name="mtrl_picker_toggle_to_year_selection">Націсніце, каб пераключыцца на агляд года</string>
   <string name="mtrl_picker_toggle_to_day_selection">Націсніце, каб пераключыцца на прагляд календара</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Вы пераключыліся на агляд года</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Вы пераключыліся на прагляд календара</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Бягучае вылучэнне: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Выбраная дата пачатку: %1$s – Выбраная дата заканчэння: %2$s</string>

@@ -29,9 +29,14 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.ListPopupWindow;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -51,7 +56,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.DrawableCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -83,6 +87,8 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   @Nullable private ColorStateList dropDownBackgroundTint;
   private int simpleItemSelectedColor;
   @Nullable private ColorStateList simpleItemSelectedRippleColor;
+
+  @Nullable private CharSequence selectedItem;
 
   public MaterialAutoCompleteTextView(@NonNull Context context) {
     this(context, null);
@@ -182,6 +188,23 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     }
 
     attributes.recycle();
+
+    // TODO: Remove this workaround once the framework bug (b/202873898) is fixed.
+    addTextChangedListener(
+        new TextWatcher() {
+          @Override
+          public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+          @Override
+          public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+          @Override
+          public void afterTextChanged(Editable s) {
+            if (!TextUtils.equals(selectedItem, s)) {
+              selectedItem = null;
+            }
+          }
+        });
   }
 
   @Override
@@ -439,6 +462,55 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   }
 
   @Override
+  public boolean getFreezesText() {
+    // Always return false to handle the input text restoration by ourselves. This is required
+    // to avoid the auto-completion from being updated when the view is recreated.
+    return false;
+  }
+
+  @Override
+  protected void replaceText(CharSequence text) {
+    selectedItem = text;
+    super.replaceText(text);
+  }
+
+  @Override
+  public void setText(CharSequence text, boolean filter) {
+    if (!filter) {
+      // When filter is false, the text is updated by the selection from the auto-complete list.
+      selectedItem = text;
+    }
+    super.setText(text, filter);
+  }
+
+  @Override
+  @NonNull
+  public Parcelable onSaveInstanceState() {
+    Parcelable parcelable = super.onSaveInstanceState();
+    if (TextUtils.isEmpty(getText()) || !super.getFreezesText()) {
+      return parcelable;
+    }
+
+    SavedState savedState = new SavedState(parcelable);
+    // Remember if the current text is from the auto-complete selection.
+    savedState.shouldRefreshAutoCompletion = (selectedItem == null);
+    savedState.inputText = getText();
+    return savedState;
+  }
+
+  @Override
+  public void onRestoreInstanceState(Parcelable state) {
+    if (!(state instanceof SavedState)) {
+      super.onRestoreInstanceState(state);
+      return;
+    }
+
+    SavedState savedState = (SavedState) state;
+    setText(savedState.inputText, savedState.shouldRefreshAutoCompletion);
+    super.onRestoreInstanceState(savedState.getSuperState());
+  }
+
+  @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
@@ -567,7 +639,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
         // pressed states, but not to other states like focused and hovered. To solve that, we
         // create the selectedItemRippleOverlaidColor that will work in those missing states, making
         // the selected list item stateful as expected.
-        DrawableCompat.setTintList(colorDrawable, selectedItemRippleOverlaidColor);
+        colorDrawable.setTintList(selectedItemRippleOverlaidColor);
         return new RippleDrawable(pressedRippleColor, colorDrawable, null);
       } else {
         return colorDrawable;
@@ -622,5 +694,41 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
     private boolean hasSelectedRippleColor() {
       return simpleItemSelectedRippleColor != null;
     }
+  }
+
+  private static final class SavedState extends BaseSavedState {
+
+    private boolean shouldRefreshAutoCompletion;
+    private CharSequence inputText;
+
+    public SavedState(Parcelable superState) {
+      super(superState);
+    }
+
+    public SavedState(Parcel source) {
+      super(source);
+      shouldRefreshAutoCompletion = source.readInt() != 0;
+      inputText = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
+    }
+
+    @Override
+    public void writeToParcel(Parcel out, int flags) {
+      super.writeToParcel(out, flags);
+      out.writeInt(shouldRefreshAutoCompletion ? 1 : 0);
+      TextUtils.writeToParcel(inputText, out, flags);
+    }
+
+    public static final Creator<SavedState> CREATOR =
+        new Creator<SavedState>() {
+          @Override
+          public SavedState createFromParcel(Parcel source) {
+            return new SavedState(source);
+          }
+
+          @Override
+          public SavedState[] newArray(int size) {
+            return new SavedState[size];
+          }
+        };
   }
 }

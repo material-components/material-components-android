@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Sonraki aya değiştir</string>
   <string name="mtrl_picker_toggle_to_year_selection">Yıl görünümüne geçmek için dokunun</string>
   <string name="mtrl_picker_toggle_to_day_selection">Takvim görünümüne geçmek için dokunun</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Yıl görünümüne geçildi</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Takvim görünümüne geçildi</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Geçerli seçim: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Başlangıç tarihi seçimi: %1$s – Bitiş tarihi seçimi: %2$s</string>

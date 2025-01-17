@@ -46,6 +46,8 @@
   <string name="mtrl_picker_a11y_next_month" description="a11y string to indicate this button moves the calendar to the next month [CHAR_LIMIT=NONE]">Change to next month</string>
   <string name="mtrl_picker_toggle_to_year_selection" description="a11y string to indicate this button switches the user to choosing a year [CHAR_LIMIT=NONE]">Tap to switch to year view</string>
   <string name="mtrl_picker_toggle_to_day_selection" description="a11y string to indicate this button switches the user to choosing a day [CHAR_LIMIT=NONE]">Tap to switch to Calendar view</string>
+  <string name="mtrl_picker_toggled_to_year_selection" description="a11y string to indicate this view switched the user to choosing a year [CHAR_LIMIT=NONE]">Switched to year view</string>
+  <string name="mtrl_picker_toggled_to_day_selection" description="a11y string to indicate this view switched the user to choosing a day [CHAR_LIMIT=NONE]">Switched to Calendar view</string>
   <string name="mtrl_picker_day_of_week_column_header" description="a11y string to indicate this is a header for a column of days for one day of the week (e.g., Monday) [CHAR_LIMIT=NONE]">%1$s</string>
   <string name="mtrl_picker_announce_current_selection" description="a11y string read on selection change to indicate the new selection [CHAR_LIMIT=NONE]">Current selection: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection" description="a11y string read on range selection change to indicate the new selection [CHAR_LIMIT=NONE]">Start date selection: %1$s – End date selection: %2$s</string>

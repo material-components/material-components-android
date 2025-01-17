@@ -31,6 +31,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -95,7 +96,11 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     TextView hourLabel = hourTextInput.findViewById(R.id.material_label);
 
     minuteLabel.setText(res.getString(R.string.material_timepicker_minute));
+    minuteLabel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
     hourLabel.setText(res.getString(R.string.material_timepicker_hour));
+    hourLabel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
     minuteTextInput.setTag(R.id.selection_type, MINUTE);
     hourTextInput.setTag(R.id.selection_type, HOUR);
 
@@ -117,7 +122,13 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     minuteTextInput.addInputFilter(time.getMinuteInputValidator());
 
     hourEditText = hourTextInput.getTextInput().getEditText();
+    hourEditText.setAccessibilityDelegate(
+        setTimeUnitAccessiblityLabel(
+            timePickerView.getResources(), R.string.material_timepicker_hour));
     minuteEditText = minuteTextInput.getTextInput().getEditText();
+    minuteEditText.setAccessibilityDelegate(
+        setTimeUnitAccessiblityLabel(
+            timePickerView.getResources(), R.string.material_timepicker_minute));
 
     controller = new TimePickerTextInputKeyController(hourTextInput, minuteTextInput, time);
     hourTextInput.setChipDelegate(
@@ -146,6 +157,17 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
         });
 
     initialize();
+  }
+
+  private View.AccessibilityDelegate setTimeUnitAccessiblityLabel(
+      Resources res, int contentDescriptionResId) {
+    return new View.AccessibilityDelegate() {
+      @Override
+      public void onInitializeAccessibilityNodeInfo(View v, AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(v, info);
+        info.setText(res.getString(contentDescriptionResId));
+      }
+    };
   }
 
   @Override

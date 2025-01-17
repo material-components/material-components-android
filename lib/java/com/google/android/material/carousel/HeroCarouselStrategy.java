@@ -54,7 +54,8 @@ public class HeroCarouselStrategy extends CarouselStrategy {
 
   @Override
   @NonNull
-  KeylineState onFirstChildMeasuredWithMargins(@NonNull Carousel carousel, @NonNull View child) {
+  public KeylineState onFirstChildMeasuredWithMargins(
+      @NonNull Carousel carousel, @NonNull View child) {
     int availableSpace = carousel.getContainerHeight();
     if (carousel.isHorizontal()) {
       availableSpace = carousel.getContainerWidth();
@@ -147,7 +148,7 @@ public class HeroCarouselStrategy extends CarouselStrategy {
     }
 
   @Override
-  boolean shouldRefreshKeylineState(@NonNull Carousel carousel, int oldItemCount) {
+  public boolean shouldRefreshKeylineState(@NonNull Carousel carousel, int oldItemCount) {
     return carousel.getCarouselAlignment() == CarouselLayoutManager.ALIGNMENT_CENTER
         && ((oldItemCount < keylineCount && carousel.getItemCount() >= keylineCount)
             || (oldItemCount >= keylineCount && carousel.getItemCount() < keylineCount));

@@ -50,4 +50,10 @@ public class NavigationRailAnimatedDemoFragment extends DemoFragment {
     }
     return v;
   }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+  }
 }

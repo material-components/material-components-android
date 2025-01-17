@@ -21,6 +21,7 @@ import io.material.catalog.R;
 import android.content.Intent;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.common.collect.ImmutableList;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -97,22 +98,53 @@ public class TopAppBarFragment extends DemoLandingFragment {
   @NonNull
   protected List<Demo> getCollapsingToolbarDemos() {
     return Arrays.asList(
-        new Demo(R.string.cat_topappbar_collapsing_medium_title) {
+        new Demo(R.string.cat_topappbar_collapsing_medium_demo_title) {
+          @Nullable
           @Override
           public Fragment createFragment() {
             return new TopAppBarCollapsingMediumDemoFragment();
           }
         },
-        new Demo(R.string.cat_topappbar_collapsing_large_title) {
+        new Demo(R.string.cat_topappbar_collapsing_medium_with_subtitle_demo_title) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingMediumWithSubtitleDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_topappbar_collapsing_large_demo_title) {
+          @Nullable
           @Override
           public Fragment createFragment() {
             return new TopAppBarCollapsingLargeDemoFragment();
           }
         },
-        new Demo(R.string.cat_topappbar_collapsing_multiline_title) {
+        new Demo(R.string.cat_topappbar_collapsing_large_with_subtitle_demo_title) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingLargeWithSubtitleDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_topappbar_collapsing_multiline_demo_title) {
+          @Nullable
           @Override
           public Fragment createFragment() {
             return new TopAppBarCollapsingMultilineDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_topappbar_collapsing_with_filled_action_demo_title) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingFilledActionDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_topappbar_collapsing_with_toggleable_action_demo_title) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingToggleableActionDemoFragment();
           }
         });
   }

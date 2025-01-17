@@ -58,7 +58,7 @@ public class RangeDateSelectorTest {
 
   @Before
   public void setupMonthAdapters() {
-    ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
+    ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_Material3_Light);
     activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     context = activity.getApplicationContext();
     res = context.getResources();

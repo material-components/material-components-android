@@ -45,7 +45,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.ArgbEvaluatorCompat;
 import com.google.android.material.animation.ChildrenAlphaProperty;
@@ -198,7 +197,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       @NonNull FabTransformationSpec spec,
       @NonNull List<Animator> animations,
       List<AnimatorListener> unusedListeners) {
-    float translationZ = ViewCompat.getElevation(child) - ViewCompat.getElevation(dependency);
+    float translationZ = child.getElevation() - dependency.getElevation();
     Animator animator;
 
     if (expanded) {
@@ -726,7 +725,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   }
 
   private int getBackgroundTint(@NonNull View view) {
-    ColorStateList tintList = ViewCompat.getBackgroundTintList(view);
+    ColorStateList tintList = view.getBackgroundTintList();
     if (tintList != null) {
       return tintList.getColorForState(view.getDrawableState(), tintList.getDefaultColor());
     } else {

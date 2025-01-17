@@ -77,7 +77,7 @@ To set a default selection:
 
 ```kt
 // Opens the date picker with today's date selected.
-MaterialDatePicker.Builder().datePicker()
+MaterialDatePicker.Builder.datePicker()
       ...
     .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
 
@@ -96,7 +96,7 @@ MaterialDatePicker.Builder.dateRangePicker()
 The picker can be started in text input mode with:
 
 ```kt
-MaterialDatePicker.Builder().datePicker()
+MaterialDatePicker.Builder.datePicker()
       ...
     .setInputMode(MaterialDatePicker.INPUT_MODE_TEXT)
 ```
@@ -104,15 +104,15 @@ MaterialDatePicker.Builder().datePicker()
 A `DayViewDecorator` can be set allowing customizing the day of month views within the picker ([example of a `DayViewDecorator`](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/datepicker/CircleIndicatorDecorator.java)):
 
 ```kt
-MaterialDatePicker.Builder().datePicker()
+MaterialDatePicker.Builder.datePicker()
       ...
-    .setDayViewDecorator(new CircleIndicatorDecorator())
+    .setDayViewDecorator(CircleIndicatorDecorator())
 ```
 
 To show the picker to the user:
 
 ```kt
- picker.show(supportFragmentManager, "tag");
+picker.show(supportFragmentManager, "tag")
 ```
 
 Subscribe to button clicks or dismiss events with the following calls:
@@ -132,7 +132,7 @@ picker.addOnDismissListener {
 }
 ```
 
-Finally, you can get the user selection with `datePicker.selection`.
+Finally, you can get the user selection with `picker.selection`.
 
 ### Adding calendar constraints
 
@@ -183,7 +183,7 @@ To set a validator:
 // Makes only dates from today forward selectable.
 val constraintsBuilder =
    CalendarConstraints.Builder()
-       .setValidator(DateValidatorPointForward.now)
+       .setValidator(DateValidatorPointForward.now())
 
 // Makes only dates from February forward selectable.
 val constraintsBuilder =
@@ -199,7 +199,7 @@ in the MDC catalog).
 Set the constraint to the picker's builder:
 
 ```kt
-MaterialDatePicker.Builder().datePicker()
+MaterialDatePicker.Builder.datePicker()
       ...
     .setCalendarConstraints(constraintsBuilder.build())
 ```
@@ -212,7 +212,7 @@ Use a descriptive title for the task:
 
 ```kt
 val picker =
-   MaterialDatePicker.Builder()
+   MaterialDatePicker.Builder.datePicker()
       ...
        .setTitleText("Select appointment date")
    ...
@@ -426,16 +426,7 @@ date pickers and affect other components:
     ...
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
-    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
-</style>
-
-<style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
-    <item name="cornerFamily">cut</item>
-</style>
-
-<style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
-    <item name="cornerSize">16dp</item>
+    <item name="shapeCornerFamily">cut</item>
 </style>
 ```
 
@@ -451,18 +442,17 @@ all date pickers but do not affect other components:
 <style name="ThemeOverlay.App.DatePicker" parent="@style/ThemeOverlay.Material3.MaterialCalendar">
     <item name="colorPrimary">@color/shrine_pink_100</item>
     <item name="colorOnPrimary">@color/shrine_pink_900</item>
-    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
-    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
+    <item name="shapeCornerFamily">cut</item>
     <!-- Customize text field of the text input mode. -->
     <item name="textInputStyle">@style/Widget.App.TextInputLayout</item>
-  </style>
+</style>
 ```
 
 Set the theme in code, which affects only this date picker:
 
 ```kt
 val picker =
-   MaterialDatePicker.Builder()
+   MaterialDatePicker.Builder.datePicker()
       ...
-       .setTheme(.style.ThemeOverlay_App_DatePicker)
+       .setTheme(R.style.ThemeOverlay_App_DatePicker)
 ```

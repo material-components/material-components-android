@@ -27,7 +27,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimatableView;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.appbar.AppBarLayout;
@@ -350,7 +349,7 @@ class SearchBarAnimationHelper {
     MaterialShapeDrawable expandedViewBackground =
         MaterialShapeDrawable.createWithElevationOverlay(expandedView.getContext());
     expandedViewBackground.setCornerSize(searchBar.getCornerSize());
-    expandedViewBackground.setElevation(ViewCompat.getElevation(searchBar));
+    expandedViewBackground.setElevation(searchBar.getElevation());
 
     return valueAnimator -> {
       expandedViewBackground.setInterpolation(1 - valueAnimator.getAnimatedFraction());

@@ -35,7 +35,8 @@
       android:layout_width="match_parent"
       android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
       app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-      app:maxLines="3">
+      app:titleMaxLines="3"
+      app:subtitleMaxLines="3">
 
       <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -44,8 +45,9 @@
         android:layout_height="?attr/actionBarSize"
         android:elevation="0dp"
         app:layout_collapseMode="pin"
+        tools:ignore="UnusedAttribute"
         app:title="@string/cat_topappbar_collapsing_multiline_demo_toolbar_title"
-        tools:ignore="UnusedAttribute" />
+        app:subtitle="@string/cat_topappbar_collapsing_multiline_demo_toolbar_subtitle" />
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 

@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">다음 달로 변경</string>
   <string name="mtrl_picker_toggle_to_year_selection">탭하여 연도 뷰로 전환</string>
   <string name="mtrl_picker_toggle_to_day_selection">탭하여 캘린더 뷰로 전환</string>
+  <string name="mtrl_picker_toggled_to_year_selection">연도별 보기로 전환됨</string>
+  <string name="mtrl_picker_toggled_to_day_selection">캘린더 보기로 전환됨</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">현재 %1$s 선택됨</string>
   <string name="mtrl_picker_announce_current_range_selection">시작일 선택: %1$s, 종료일 선택: %2$s</string>

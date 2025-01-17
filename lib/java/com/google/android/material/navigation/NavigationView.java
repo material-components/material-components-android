@@ -66,7 +66,6 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.customview.view.AbsSavedState;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -722,7 +721,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
    * @attr ref R.styleable#NavigationView_itemBackground
    */
   public void setItemBackgroundResource(@DrawableRes int resId) {
-    setItemBackground(ContextCompat.getDrawable(getContext(), resId));
+    setItemBackground(getContext().getDrawable(resId));
   }
 
   /**

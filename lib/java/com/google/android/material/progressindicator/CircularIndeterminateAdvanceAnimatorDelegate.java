@@ -86,7 +86,8 @@ final class CircularIndeterminateAdvanceAnimatorDelegate
     if (animator == null) {
       // Instantiates an animator with the linear interpolator to control the animation progress.
       animator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 0, 1);
-      animator.setDuration(TOTAL_DURATION_IN_MS);
+      animator.setDuration(
+          (long) (TOTAL_DURATION_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
       animator.setInterpolator(null);
       animator.setRepeatCount(ValueAnimator.INFINITE);
       animator.addListener(
@@ -102,7 +103,8 @@ final class CircularIndeterminateAdvanceAnimatorDelegate
 
     if (completeEndAnimator == null) {
       completeEndAnimator = ObjectAnimator.ofFloat(this, COMPLETE_END_FRACTION, 0, 1);
-      completeEndAnimator.setDuration(DURATION_TO_COMPLETE_END_IN_MS);
+      completeEndAnimator.setDuration(
+          (long) (DURATION_TO_COMPLETE_END_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
       completeEndAnimator.setInterpolator(interpolator);
       completeEndAnimator.addListener(
           new AnimatorListenerAdapter() {
@@ -116,6 +118,14 @@ final class CircularIndeterminateAdvanceAnimatorDelegate
             }
           });
     }
+  }
+
+  private void updateAnimatorsDuration() {
+    maybeInitializeAnimators();
+    animator.setDuration(
+        (long) (TOTAL_DURATION_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
+    completeEndAnimator.setDuration(
+        (long) (DURATION_TO_COMPLETE_END_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
   }
 
   @Override
@@ -141,6 +151,7 @@ final class CircularIndeterminateAdvanceAnimatorDelegate
 
   @Override
   public void invalidateSpecValues() {
+    updateAnimatorsDuration();
     resetPropertiesForNewStart();
   }
 

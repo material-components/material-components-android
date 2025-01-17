@@ -130,7 +130,7 @@ public class MusicPlayerLibraryDemoFragment extends Fragment
       return true;
     }
 
-    // Use a shared axis Y transition to sort the list, showing a spacial relationship between
+    // Use a shared axis Y transition to sort the list, showing a spatial relationship between
     // the outgoing and incoming view.
     MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Y, true);
     setList(listTypeGrid, !listSorted, sharedAxis);

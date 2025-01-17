@@ -32,6 +32,8 @@
         android:id="@+id/linear_indicator"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         android:progress="50"/>
 
     <TextView

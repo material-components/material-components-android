@@ -29,7 +29,7 @@ ext {
     constraintlayout             : '2.0.1',
     coordinatorlayout            : '1.1.0',
     core                         : '1.6.0',
-    drawerlayout                 : '1.1.1',
+    drawerlayout                 : '1.2.0',
     experimental                 : '1.0.0',
     fragment                     : '1.2.5',
     lifecycle                    : '2.0.0',
@@ -41,7 +41,7 @@ ext {
     vectorDrawable               : '1.1.0',
     viewpager2                   : '1.0.0',
     dynamicanimation             : '1.0.0',
-    graphicsShapes               : '1.0.0-rc01',
+    graphicsShapes               : '1.0.1',
   ]
 
   errorproneVersion = '2.15.0'
@@ -59,7 +59,7 @@ ext {
     ? project.property('mavenRepoUrl') : '/tmp/myRepo/')
 
   // Current version of the library (could be in-development/unreleased).
-  mdcLibraryVersion = '1.13.0-alpha05'
+  mdcLibraryVersion = '1.13.0-alpha09'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
 }

@@ -24,7 +24,6 @@ import static java.lang.Math.min;
 import static java.lang.Math.toDegrees;
 
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Paint.Cap;
 import android.graphics.Paint.Style;
@@ -67,6 +66,10 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
   // scaled by this fraction with a pivot of 1.0f.
   @FloatRange(from = 0.0f, to = 1.0f)
   private float totalTrackLengthFraction;
+
+  // Pre-allocates objects used in draw().
+  private final RectF arcBounds = new RectF();
+  private final Pair<PathPoint, PathPoint> endPoints = new Pair<>(new PathPoint(), new PathPoint());
 
   /** Instantiates CircularDrawingDelegate with the current spec. */
   CircularDrawingDelegate(@NonNull CircularProgressIndicatorSpec spec) {
@@ -349,24 +352,24 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       // Draws the arc without rounded corners.
       float startDegreeWithoutCorners = startDegree + displayedCornerRadiusInDegree;
       float arcDegreeWithoutCorners = arcDegree - displayedCornerRadiusInDegree * 2;
-      Pair<PathPoint, PathPoint> endPoints = new Pair<>(new PathPoint(), new PathPoint());
+      endPoints.first.reset();
+      endPoints.second.reset();
       if (!shouldDrawWavyPath) {
         endPoints.first.rotate(startDegreeWithoutCorners + 90);
         endPoints.first.moveAcross(-adjustedRadius);
         endPoints.second.rotate(startDegreeWithoutCorners + arcDegreeWithoutCorners + 90);
         endPoints.second.moveAcross(-adjustedRadius);
-        RectF arcBound =
-            new RectF(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
-        canvas.drawArc(arcBound, startDegreeWithoutCorners, arcDegreeWithoutCorners, false, paint);
+        arcBounds.set(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
+        canvas.drawArc(arcBounds, startDegreeWithoutCorners, arcDegreeWithoutCorners, false, paint);
       } else {
-        endPoints =
-            getDisplayedPath(
-                activePathMeasure,
-                displayedActivePath,
-                startDegreeWithoutCorners / 360,
-                arcDegreeWithoutCorners / 360,
-                amplitudeFraction,
-                phaseFraction);
+        calculateDisplayedPath(
+            activePathMeasure,
+            displayedActivePath,
+            endPoints,
+            startDegreeWithoutCorners / 360,
+            arcDegreeWithoutCorners / 360,
+            amplitudeFraction,
+            phaseFraction);
         canvas.drawPath(displayedActivePath, paint);
       }
 
@@ -451,7 +454,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
           QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH, -1, 1, -QUARTER_CIRCLE_CONTROL_HANDLE_LENGTH, 1, 0);
     }
     // Scales the circle to its radius.
-    Matrix transform = new Matrix();
+    transform.reset();
     transform.setScale(adjustedRadius, adjustedRadius);
     cachedActivePath.transform(transform);
     if (spec.hasWavyEffect(drawingDeterminateIndicator)) {
@@ -515,10 +518,10 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         anchor2.posVec[1]);
   }
 
-  @NonNull
-  private Pair<PathPoint, PathPoint> getDisplayedPath(
+  private void calculateDisplayedPath(
       @NonNull PathMeasure pathMeasure,
       @NonNull Path displayedPath,
+      @NonNull Pair<PathPoint, PathPoint> endPoints,
       float start,
       float span,
       float amplitudeFraction,
@@ -548,16 +551,17 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     float endDistance = (start + span) * pathMeasure.getLength() / 2;
     pathMeasure.getSegment(startDistance, endDistance, displayedPath, true);
     // Gathers the position and tangent of the start and end.
-    PathPoint startPoint = new PathPoint();
+    PathPoint startPoint = endPoints.first;
+    startPoint.reset();
     pathMeasure.getPosTan(startDistance, startPoint.posVec, startPoint.tanVec);
-    PathPoint endPoint = new PathPoint();
+    PathPoint endPoint = endPoints.second;
+    endPoint.reset();
     pathMeasure.getPosTan(endDistance, endPoint.posVec, endPoint.tanVec);
     // Transforms the result path to match the canvas.
-    Matrix transform = new Matrix();
+    transform.reset();
     transform.setRotate(resultRotation);
     startPoint.rotate(resultRotation);
     endPoint.rotate(resultRotation);
     displayedPath.transform(transform);
-    return new Pair<>(startPoint, endPoint);
   }
 }

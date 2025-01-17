@@ -212,7 +212,7 @@ public class Chip extends AppCompatCheckBox
             context, attrs, defStyleAttr, DEF_STYLE_RES);
     initMinTouchTarget(context, attrs, defStyleAttr);
     setChipDrawable(drawable);
-    drawable.setElevation(ViewCompat.getElevation(this));
+    drawable.setElevation(getElevation());
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context,
@@ -500,6 +500,7 @@ public class Chip extends AppCompatCheckBox
     }
   }
 
+  @Override
   public void setBackgroundTintList(@Nullable ColorStateList tint) {
     Log.w(TAG, "Do not set the background tint list; Chip manages its own background drawable.");
   }
@@ -984,6 +985,8 @@ public class Chip extends AppCompatCheckBox
     protected void onVirtualViewKeyboardFocusChanged(int virtualViewId, boolean hasFocus) {
       if (virtualViewId == CLOSE_ICON_VIRTUAL_ID) {
         closeIconFocused = hasFocus;
+      }
+      if (chipDrawable.refreshCloseIconFocus(closeIconFocused)) {
         refreshDrawableState();
       }
     }
@@ -1547,8 +1550,8 @@ public class Chip extends AppCompatCheckBox
   /**
    * Returns whether this chip's close icon is visible.
    *
-   * @see id #setCloseIconVisible(boolean)
    * @attr ref com.google.android.material.R.styleable#Chip_chipIconSize
+   * @see #setCloseIconVisible(boolean)
    */
   public boolean isCloseIconVisible() {
     return chipDrawable != null && chipDrawable.isCloseIconVisible();
@@ -1575,6 +1578,7 @@ public class Chip extends AppCompatCheckBox
    *
    * @param closeIconVisible This chip's close icon visibility.
    * @attr ref com.google.android.material.R.styleable#Chip_closeIconVisible
+   * @see #isCloseIconVisible()
    */
   public void setCloseIconVisible(boolean closeIconVisible) {
     if (chipDrawable != null) {

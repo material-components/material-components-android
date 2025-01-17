@@ -51,6 +51,9 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
   private final ShapeableDelegate shapeableDelegate = ShapeableDelegate.create(this);
   @Nullable private Boolean savedForceCompatClippingEnabled = null;
+  @Nullable private OnHoverListener hoverListener;
+
+  private boolean isHovered = false;
 
   public MaskableFrameLayout(@NonNull Context context) {
     this(context, null);
@@ -217,6 +220,20 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
   }
 
   @Override
+  public boolean onInterceptTouchEvent(MotionEvent event) {
+    // Intercept touch events outside the masked bounds and prevent them from
+    // reaching the children.
+    if (!maskRect.isEmpty()) {
+      float x = event.getX();
+      float y = event.getY();
+      if (!maskRect.contains(x, y)) {
+        return true; // Intercept touch events outside the mask
+      }
+    }
+    return super.onInterceptTouchEvent(event);
+  }
+
+  @Override
   protected void dispatchDraw(Canvas canvas) {
     shapeableDelegate.maybeClip(canvas, super::dispatchDraw);
   }
@@ -240,5 +257,45 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
     screenBoundsRect.bottom = screenBoundsRect.top + Math.round(maskRect.height());
 
     info.setBoundsInScreen(screenBoundsRect);
+  }
+
+  @Override
+  public void setOnHoverListener(@Nullable OnHoverListener l) {
+    hoverListener = l;
+  }
+
+  @Override
+  public boolean onHoverEvent(MotionEvent event) {
+    // Only handle hover events that are within the masked bounds of this view.
+    int action = event.getAction();
+    if (!maskRect.isEmpty()
+        && (action == MotionEvent.ACTION_HOVER_ENTER
+            || action == MotionEvent.ACTION_HOVER_EXIT
+            || action== MotionEvent.ACTION_HOVER_MOVE)) {
+      float x = event.getX();
+      float y = event.getY();
+      if (!maskRect.contains(x, y)) {
+        if (isHovered && hoverListener != null) {
+          event.setAction(MotionEvent.ACTION_HOVER_EXIT);
+          hoverListener.onHover(this, event);
+        }
+        isHovered = false;
+        return false;
+      }
+    }
+    if (hoverListener != null) {
+      // If the MaskableFrameLayout is currently not hovered and the action is a move, it
+      // should be changed to an enter action
+      if (!isHovered && action == MotionEvent.ACTION_HOVER_MOVE) {
+        event.setAction(MotionEvent.ACTION_HOVER_ENTER);
+        isHovered = true;
+      }
+      if (action == MotionEvent.ACTION_HOVER_MOVE
+          || action == MotionEvent.ACTION_HOVER_ENTER) {
+        isHovered = true;
+      }
+      hoverListener.onHover(this, event);
+    }
+    return super.onHoverEvent(event);
   }
 }

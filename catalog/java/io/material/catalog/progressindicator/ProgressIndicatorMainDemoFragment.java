@@ -28,7 +28,9 @@ import androidx.annotation.NonNull;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
+import java.util.Locale;
 
 /**
  * This is the fragment to demo simple use cases of {@link LinearProgressIndicator} and {@link
@@ -136,6 +138,22 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
           if (circularIndicator.getIndicatorSize() != newCornerRadius) {
             circularIndicator.setIndicatorSize(newCornerRadius);
           }
+        });
+
+    Slider indeterminateAnimatorDurationScaleSlider =
+        view.findViewById(R.id.indeterminateDurationScaleSlider);
+    indeterminateAnimatorDurationScaleSlider.setLabelFormatter(new LabelFormatter() {
+      @NonNull
+      @Override
+      public String getFormattedValue(float value) {
+        return String.format(Locale.US, "%,.2f", (float) Math.pow(10, value));
+      }
+    });
+    indeterminateAnimatorDurationScaleSlider.addOnChangeListener(
+        (slider, value, fromUser) -> {
+          float scale = (float) Math.pow(10, value);
+          linearIndicator.setIndeterminateAnimatorDurationScale(scale);
+          circularIndicator.setIndeterminateAnimatorDurationScale(scale);
         });
   }
 

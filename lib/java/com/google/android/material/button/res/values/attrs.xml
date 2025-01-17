@@ -35,6 +35,12 @@
   <attr name="materialIconButtonOutlinedStyle" format="reference" />
   <!-- Style to use for MaterialButtonGroups in this theme. -->
   <attr name="materialButtonGroupStyle" format="reference"/>
+  <!-- Style to use for MaterialSplitButtons in this theme. -->
+  <attr name="materialSplitButtonStyle" format="reference"/>
+<!-- Style to use for Filled Material Icon Only Split Buttons in this theme. -->
+  <attr name="materialSplitButtonIconFilledStyle" format="reference" />
+  <!-- Style to use for Filled Tonal Material Icon Only Split Buttons in this theme. -->
+  <attr name="materialSplitButtonIconFilledTonalStyle" format="reference" />
   <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
   <attr name="materialButtonToggleGroupStyle" format="reference" />
 
@@ -152,5 +158,42 @@
     <attr name="android:spacing" />
 
   </declare-styleable>
+
+  <!-- Container sizes. -->
+  <!-- These container sizes are only meant to be used in component-level styles and
+       resources as a means of indirection. They enable remapping to different values
+       for different size variants. -->
+  <!-- Container start padding. -->
+  <attr name="containerPaddingStart" format="dimension"/>
+  <!-- Container end padding. -->
+  <attr name="containerPaddingEnd" format="dimension"/>
+  <!-- Container top padding. -->
+  <attr name="containerPaddingTop" format="dimension"/>
+  <!-- Container bottom padding. -->
+  <attr name="containerPaddingBottom" format="dimension"/>
+  <!-- Container left inset. Aligned with the InsetDrawable API. -->
+  <attr name="containerInsetLeft" format="dimension"/>
+  <!-- Container right inset. Aligned with the InsetDrawable API. -->
+  <attr name="containerInsetRight" format="dimension"/>
+  <!-- Container top inset. -->
+  <attr name="containerInsetTop" format="dimension"/>
+  <!-- Container bottom inset. -->
+  <attr name="containerInsetBottom" format="dimension"/>
+  <!-- Container icon size. -->
+  <attr name="containerIconSize" format="dimension"/>
+  <!-- Container icon padding. -->
+  <attr name="containerIconPadding" format="dimension"/>
+  <!-- Container stroke width. -->
+  <attr name="containerStrokeWidth" format="dimension"/>
+  <!-- Container label text appearance. -->
+  <attr name="labelTextAppearance" format="reference"/>
+  <!-- Container shape appearance in default state. -->
+  <attr name="containerShapeDefault" format="reference"/>
+  <!-- Container shape appearance in pressed state. -->
+  <attr name="containerShapePressed" format="reference"/>
+  <!-- Container shape appearance in checked state. -->
+  <attr name="containerShapeChecked" format="reference"/>
+
+  <attr name="materialSizeOverlay" format="reference" />
 
 </resources>

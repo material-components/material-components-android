@@ -36,7 +36,12 @@
     <item name="sideSheetModalStyle">@style/Widget.Material3.SideSheet.Modal</item>
   </style>
 
+  <style name="Base.V21.ThemeOverlay.Material3.SideSheetDialog"
+    parent="Base.V14.ThemeOverlay.Material3.SideSheetDialog">
+    <item name="android:statusBarColor">@android:color/transparent</item>
+  </style>
+
   <style name="Base.Theme.Material3.Light.SideSheetDialog" parent="Base.V14.Theme.Material3.Light.SideSheetDialog"/>
   <style name="Base.Theme.Material3.Dark.SideSheetDialog" parent="Base.V14.Theme.Material3.Dark.SideSheetDialog"/>
-  <style name="Base.ThemeOverlay.Material3.SideSheetDialog" parent="Base.V14.ThemeOverlay.Material3.SideSheetDialog"/>
+  <style name="Base.ThemeOverlay.Material3.SideSheetDialog" parent="Base.V21.ThemeOverlay.Material3.SideSheetDialog"/>
 </resources>

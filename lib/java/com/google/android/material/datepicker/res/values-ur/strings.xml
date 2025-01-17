@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">اگلے مہینہ میں منتقل کریں</string>
   <string name="mtrl_picker_toggle_to_year_selection">سال کے منظر پر سوئچ کرنے کے لیے تھپتھپائیں</string>
   <string name="mtrl_picker_toggle_to_day_selection">کیلنڈر منظر پر سوئچ کرنے کے لیے تھپتھپائیں</string>
+  <string name="mtrl_picker_toggled_to_year_selection">سال کے لحاظ سے دیکھیں پر سوئچ ہو گیا</string>
+  <string name="mtrl_picker_toggled_to_day_selection">کیلنڈر کے لحاظ سے دیکھیں پر سوئچ ہو گیا</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">موجودہ انتخاب: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">تاریخ آغاز کا انتخاب: %1$s – تاریخ اختتام کا انتخاب: %2$s</string>

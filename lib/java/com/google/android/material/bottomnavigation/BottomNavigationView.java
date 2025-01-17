@@ -20,9 +20,11 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -125,6 +127,14 @@ public class BottomNavigationView extends NavigationBarView {
     attributes.recycle();
 
     applyWindowInsets();
+  }
+
+  @SuppressLint("ClickableViewAccessibility")
+  @Override
+  public boolean onTouchEvent(@NonNull MotionEvent event) {
+    super.onTouchEvent(event);
+    // Consume all events to avoid views under the BottomNavigationView from receiving touch events.
+    return true;
   }
 
   private void applyWindowInsets() {

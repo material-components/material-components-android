@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">เปลี่ยนไปที่เดือนถัดไป</string>
   <string name="mtrl_picker_toggle_to_year_selection">แตะเพื่อเปลี่ยนเป็นมุมมองปี</string>
   <string name="mtrl_picker_toggle_to_day_selection">แตะเพื่อเปลี่ยนเป็นมุมมองปฏิทิน</string>
+  <string name="mtrl_picker_toggled_to_year_selection">เปลี่ยนเป็นมุมมองปีแล้ว</string>
+  <string name="mtrl_picker_toggled_to_day_selection">เปลี่ยนเป็นมุมมองปฏิทินแล้ว</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">การเลือกในปัจจุบัน: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">การเลือกวันที่เริ่มต้น: %1$s – การเลือกวันที่สิ้นสุด: %2$s</string>

@@ -16,7 +16,7 @@
 -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
     android:duration="@integer/bottom_sheet_slide_duration"
-    android:interpolator="@android:anim/accelerate_interpolator">
+    android:interpolator="@android:interpolator/fast_out_slow_in">
 
   <translate
       android:fromYDelta="0"

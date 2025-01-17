@@ -84,6 +84,7 @@ public class TopAppBarToolbarDemoFragment extends DemoFragment {
 
   private void initToolbar(View view, MaterialToolbar toolbar) {
     toolbar.setNavigationIcon(NAVIGATION_ICON_RES_ID);
+    toolbar.setNavigationContentDescription(R.string.cat_topappbar_close_button);
     toolbar.setNavigationOnClickListener(
         v -> showSnackbar(view, toolbar.getSubtitle() + " " + toolbar.getTitle()));
     toolbar.inflateMenu(MENU_RES_ID);

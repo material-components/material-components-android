@@ -85,12 +85,12 @@ class IconHelper {
         int color =
             iconTintList.getColorForState(
                 mergeIconState(textInputLayout, iconView), iconTintList.getDefaultColor());
-        DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
+        icon.setTintList(ColorStateList.valueOf(color));
       } else {
-        DrawableCompat.setTintList(icon, iconTintList);
+        icon.setTintList(iconTintList);
       }
       if (iconTintMode != null) {
-        DrawableCompat.setTintMode(icon, iconTintMode);
+        icon.setTintMode(iconTintMode);
       }
     }
 
@@ -116,7 +116,7 @@ class IconHelper {
             mergeIconState(textInputLayout, iconView), colorStateList.getDefaultColor());
 
     icon = DrawableCompat.wrap(icon).mutate();
-    DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
+    icon.setTintList(ColorStateList.valueOf(color));
     iconView.setImageDrawable(icon);
   }
 

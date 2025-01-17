@@ -471,7 +471,7 @@ public class SearchView extends FrameLayout
           DrawableCompat.wrap(
               AppCompatResources.getDrawable(getContext(), navigationIcon).mutate());
       if (toolbar.getNavigationIconTint() != null) {
-        DrawableCompat.setTint(navigationIconDrawable, toolbar.getNavigationIconTint());
+        navigationIconDrawable.setTint(toolbar.getNavigationIconTint());
       }
       DrawableCompat.setLayoutDirection(navigationIconDrawable, getLayoutDirection());
       toolbar.setNavigationIcon(
@@ -821,6 +821,10 @@ public class SearchView extends FrameLayout
     }
 
     updateListeningForBackCallbacks(state);
+
+    if (searchBar != null && state == TransitionState.HIDDEN) {
+      searchBar.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+    }
   }
 
   private void updateModalForAccessibility(@NonNull TransitionState state) {
@@ -932,9 +936,6 @@ public class SearchView extends FrameLayout
     editText.post(
         () -> {
           editText.clearFocus();
-          if (searchBar != null) {
-            searchBar.requestFocus();
-          }
           ViewUtils.hideKeyboard(editText, useWindowInsetsController);
         });
   }

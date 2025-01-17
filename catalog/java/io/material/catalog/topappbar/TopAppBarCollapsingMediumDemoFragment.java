@@ -23,6 +23,7 @@ import androidx.annotation.LayoutRes;
 /** A fragment that displays a medium collapsing Top App Bar demo for the Catalog app. */
 public class TopAppBarCollapsingMediumDemoFragment extends BaseTopAppBarCollapsingDemoFragment {
 
+  @Override
   @LayoutRes
   protected int getCollapsingToolbarLayoutResId() {
     return R.layout.cat_topappbar_collapsing_medium_fragment;
