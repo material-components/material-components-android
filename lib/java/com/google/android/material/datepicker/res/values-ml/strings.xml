@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">അടുത്ത മാസത്തിലേക്ക് മാറ്റുക</string>
   <string name="mtrl_picker_toggle_to_year_selection">വർഷ കാഴ്‌ചയിലേക്ക് മാറാൻ ടാപ്പ് ചെയ്യുക</string>
   <string name="mtrl_picker_toggle_to_day_selection">കലണ്ടർ കാഴ്‌ചയിലേക്ക് മാറാൻ ടാപ്പ് ചെയ്യുക</string>
+  <string name="mtrl_picker_toggled_to_year_selection">വർഷത്തിന്റെ കാഴ്‌ചയിലേക്ക് മാറി</string>
+  <string name="mtrl_picker_toggled_to_day_selection">കലണ്ടർ കാഴ്‌ചയിലേക്ക് മാറി</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">നിലവിൽ തിരഞ്ഞെടുത്തത്: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">തിരഞ്ഞെടുത്ത ആരംഭിക്കുന്ന തീയതി: %1$s – തിരഞ്ഞെടുത്ത അവസാനിക്കുന്ന തീയതി: %2$s</string>

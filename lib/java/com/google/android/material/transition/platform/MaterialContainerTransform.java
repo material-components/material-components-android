@@ -68,7 +68,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.view.ViewCompat;
 import android.transition.ArcMotion;
 import android.transition.PathMotion;
 import android.transition.Transition;
@@ -1022,7 +1021,7 @@ public final class MaterialContainerTransform extends Transition {
   }
 
   private static float getElevationOrDefault(float elevation, View view) {
-    return elevation != ELEVATION_NOT_SET ? elevation : ViewCompat.getElevation(view);
+    return elevation != ELEVATION_NOT_SET ? elevation : view.getElevation();
   }
 
   private static RectF calculateDrawableBounds(

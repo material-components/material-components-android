@@ -15,14 +15,15 @@
   ~ limitations under the License.
   -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:clipChildren="false"
-    android:clipToPadding="false"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:showDividers="middle"
-    android:divider="@drawable/layout_divider">
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:clipChildren="false"
+  android:clipToPadding="false"
+  android:orientation="vertical"
+  android:padding="16dp"
+  android:showDividers="middle"
+  android:divider="@drawable/layout_divider">
   <com.google.android.material.materialswitch.MaterialSwitch
       android:id="@+id/determinate_mode_switch"
       android:layout_width="match_parent"
@@ -107,5 +108,17 @@
       android:valueFrom="20"
       android:valueTo="200"
       android:stepSize="5"/>
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_progress_indicator_indeterminate_animator_duration_scale"/>
+  <com.google.android.material.slider.Slider
+      android:id="@+id/indeterminateDurationScaleSlider"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:value="0"
+      android:valueFrom="-1"
+      android:valueTo="1"
+      android:stepSize="0.1"/>
 </LinearLayout>
 

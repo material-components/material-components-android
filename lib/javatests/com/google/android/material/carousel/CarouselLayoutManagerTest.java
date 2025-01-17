@@ -68,7 +68,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          KeylineState onFirstChildMeasuredWithMargins(
+          public KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return getTestCenteredKeylineState();
           }
@@ -92,7 +92,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          KeylineState onFirstChildMeasuredWithMargins(
+          public KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return new KeylineState.Builder(DEFAULT_ITEM_WIDTH, DEFAULT_RECYCLER_VIEW_WIDTH)
                 .addKeyline(225F, .5F, 225F, true)
@@ -111,7 +111,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          KeylineState onFirstChildMeasuredWithMargins(
+          public KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return new KeylineState.Builder(DEFAULT_ITEM_WIDTH, DEFAULT_RECYCLER_VIEW_WIDTH)
                 .addKeyline(225F, .8F, 90F, true)
@@ -145,7 +145,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          KeylineState onFirstChildMeasuredWithMargins(
+          public KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }
@@ -166,7 +166,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          KeylineState onFirstChildMeasuredWithMargins(
+          public KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }
@@ -190,7 +190,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          KeylineState onFirstChildMeasuredWithMargins(
+          public KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }
@@ -211,7 +211,7 @@ public class CarouselLayoutManagerTest {
     layoutManager.setCarouselStrategy(
         new CarouselStrategy() {
           @Override
-          KeylineState onFirstChildMeasuredWithMargins(
+          public KeylineState onFirstChildMeasuredWithMargins(
               @NonNull Carousel carousel, @NonNull View child) {
             return keylineState;
           }
@@ -709,7 +709,8 @@ public class CarouselLayoutManagerTest {
     }
 
     @Override
-    KeylineState onFirstChildMeasuredWithMargins(@NonNull Carousel carousel, @NonNull View child) {
+    public KeylineState onFirstChildMeasuredWithMargins(@NonNull Carousel carousel,
+        @NonNull View child) {
       int availableSpace = DEFAULT_RECYCLER_VIEW_HEIGHT;
       float xSmallSize = 15F;
       if (carousel.isHorizontal()) {

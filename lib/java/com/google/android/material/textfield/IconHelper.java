@@ -85,12 +85,12 @@ class IconHelper {
         int color =
             iconTintList.getColorForState(
                 mergeIconState(textInputLayout, iconView), iconTintList.getDefaultColor());
-        DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
+        icon.setTintList(ColorStateList.valueOf(color));
       } else {
-        DrawableCompat.setTintList(icon, iconTintList);
+        icon.setTintList(iconTintList);
       }
       if (iconTintMode != null) {
-        DrawableCompat.setTintMode(icon, iconTintMode);
+        icon.setTintMode(iconTintMode);
       }
     }
 
@@ -116,7 +116,7 @@ class IconHelper {
             mergeIconState(textInputLayout, iconView), colorStateList.getDefaultColor());
 
     icon = DrawableCompat.wrap(icon).mutate();
-    DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
+    icon.setTintList(ColorStateList.valueOf(color));
     iconView.setImageDrawable(icon);
   }
 
@@ -135,8 +135,7 @@ class IconHelper {
   }
 
   static void setCompatRippleBackgroundIfNeeded(@NonNull CheckableImageButton iconView) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && VERSION.SDK_INT <= VERSION_CODES.LOLLIPOP_MR1) {
+    if (VERSION.SDK_INT < VERSION_CODES.M) {
       // Note that this is aligned with ?attr/actionBarItemBackground on API 23+, which sets ripple
       // radius to 20dp. Therefore we set the padding here to (48dp [view size] - 20dp * 2) / 2.
       iconView.setBackground(

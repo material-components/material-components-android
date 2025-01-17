@@ -350,6 +350,8 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
+    <!-- Max number of lines that can be displayed in the resting and floating hint. -->
+    <attr name="hintMaxLines" format="integer"/>
   </declare-styleable>
 
   <declare-styleable name="TextInputEditText">

@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">આગલા મહિના પર બદલો</string>
   <string name="mtrl_picker_toggle_to_year_selection">વર્ષ વ્યૂ પર સ્વિચ કરવા માટે ટૅપ કરો</string>
   <string name="mtrl_picker_toggle_to_day_selection">Calendar વ્યૂ પર સ્વિચ કરવા માટે ટૅપ કરો</string>
+  <string name="mtrl_picker_toggled_to_year_selection">વર્ષ વ્યૂ પર સ્વિચ કર્યું</string>
+  <string name="mtrl_picker_toggled_to_day_selection">કૅલેન્ડર વ્યૂ પર સ્વિચ કર્યું</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">હાલની પસંદગી: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">પ્રારંભ તારીખની પસંદગી: %1$s – સમાપ્તિ તારીખની પસંદગી: %2$s</string>

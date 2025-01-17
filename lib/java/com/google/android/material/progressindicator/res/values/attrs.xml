@@ -112,6 +112,13 @@
       If positive, wave moves towards 100%; if negative, wave moves towards 0%.
     -->
     <attr name="waveSpeed" format="dimension" />
+    <!--
+      Defines the scale of the animation in indeterminate mode. If not specified, the value is 1.0.
+      If specified < 1.0, the animation is faster. Otherwise, the animation is slower.
+      Doesn't take affect in determinate mode. This doesn't affect the wave speed of the wavy track.
+      This is independent from the animator scale in the System settings.
+    -->
+    <attr name="indeterminateAnimatorDurationScale" format="float" />
   </declare-styleable>
 
   <declare-styleable name="LinearProgressIndicator">

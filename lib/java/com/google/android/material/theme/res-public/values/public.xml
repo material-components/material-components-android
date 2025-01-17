@@ -75,4 +75,5 @@
   <public name="Theme.Design.Light.NoActionBar" type="style"/>
 
   <public name="materialThemeOverlay" type="attr"/>
+  <public name="materialSizeOverlay" type="attr"/>
 </resources>

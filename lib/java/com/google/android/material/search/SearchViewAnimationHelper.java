@@ -299,7 +299,13 @@ class SearchViewAnimationHelper {
             setContentViewsAlpha(show ? 1 : 0);
             // After expanding or collapsing, we should reset the clip bounds so it can react to the
             // screen or layout changes. Otherwise it will result in wrong clipping on the layout.
-            rootView.resetClipBoundsAndCornerRadius();
+            rootView.resetClipBoundsAndCornerRadii();
+
+            // After collapsing, we should reset the expanded corner radii in case the search view
+            // is shown in a different location the next time.
+            if (!show) {
+              backHelper.clearExpandedCornerRadii();
+            }
           }
         });
     return animatorSet;
@@ -347,20 +353,48 @@ class SearchViewAnimationHelper {
     Rect clipBounds = new Rect(fromClipBounds);
 
     float fromCornerRadius = searchBar.getCornerSize();
-    float toCornerRadius = max(rootView.getCornerRadius(), backHelper.getExpandedCornerSize());
+    float[] toCornerRadius =
+        maxCornerRadii(rootView.getCornerRadii(), backHelper.getExpandedCornerRadii());
 
     ValueAnimator animator =
         ValueAnimator.ofObject(new RectEvaluator(clipBounds), fromClipBounds, toClipBounds);
     animator.addUpdateListener(
         valueAnimator -> {
-          float cornerRadius =
-              lerp(fromCornerRadius, toCornerRadius, valueAnimator.getAnimatedFraction());
-          rootView.updateClipBoundsAndCornerRadius(clipBounds, cornerRadius);
+          float[] cornerRadii =
+              lerpCornerRadii(
+                  fromCornerRadius, toCornerRadius, valueAnimator.getAnimatedFraction());
+          rootView.updateClipBoundsAndCornerRadii(clipBounds, cornerRadii);
         });
     animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
     animator.setInterpolator(
         ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
     return animator;
+  }
+
+  private static float[] maxCornerRadii(float[] startValue, float[] endValue) {
+    return new float[] {
+        max(startValue[0], endValue[0]),
+        max(startValue[1], endValue[1]),
+        max(startValue[2], endValue[2]),
+        max(startValue[3], endValue[3]),
+        max(startValue[4], endValue[4]),
+        max(startValue[5], endValue[5]),
+        max(startValue[6], endValue[6]),
+        max(startValue[7], endValue[7])
+    };
+  }
+
+  private static float[] lerpCornerRadii(float startValue, float[] endValue, float fraction) {
+    return new float[] {
+        lerp(startValue, endValue[0], fraction),
+        lerp(startValue, endValue[1], fraction),
+        lerp(startValue, endValue[2], fraction),
+        lerp(startValue, endValue[3], fraction),
+        lerp(startValue, endValue[4], fraction),
+        lerp(startValue, endValue[5], fraction),
+        lerp(startValue, endValue[6], fraction),
+        lerp(startValue, endValue[7], fraction)
+    };
   }
 
   private Animator getClearButtonAnimator(boolean show) {

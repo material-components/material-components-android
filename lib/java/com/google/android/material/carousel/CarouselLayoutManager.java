@@ -213,6 +213,14 @@ public class CarouselLayoutManager extends LayoutManager
   }
 
   /**
+   * Recalculates the internal state of the Carousel based on the size of the items. This should be
+   * called whenever the size of the items is changed.
+   */
+  public void notifyItemSizeChanged() {
+    refreshKeylineState();
+  }
+
+  /**
    * Sets the alignment of the focal items in the carousel.
    */
   public void setCarouselAlignment(@Alignment int alignment) {
@@ -318,8 +326,8 @@ public class CarouselLayoutManager extends LayoutManager
       }
     }
 
-    // Clamp the horizontal scroll offset by the new min and max by pinging the scroll by
-    // calculator with a 0 delta.
+    // Clamp the scroll offset by the new min and max by pinging the scroll by calculator
+    // with a 0 delta.
     scrollOffset += calculateShouldScrollBy(0, scrollOffset, minScroll, maxScroll);
 
     // Ensure currentFillStartPosition is valid if the number of items in the adapter has changed.
@@ -824,8 +832,7 @@ public class CarouselLayoutManager extends LayoutManager
    *
    * @param delta the delta, resulting from a gesture or other event, that the list would like to be
    *     scrolled by
-   * @param currentScroll the current horizontal scroll offset that is always between the min and
-   *     max horizontal scroll
+   * @param currentScroll the current scroll offset that is always between the min and max scroll
    * @param minScroll the minimum scroll offset allowed
    * @param maxScroll the maximum scroll offset allowed
    * @return an int that represents the change that should be applied to the current scroll offset,
@@ -1122,10 +1129,10 @@ public class CarouselLayoutManager extends LayoutManager
   /**
    * Gets the scroll offset for a position in the adapter.
    *
-   * <p>This will calculate the horizontal scroll offset needed to place a child at {@code
-   * position}'s center at the start-most focal keyline. The returned value might be less or greater
-   * than the min and max scroll offsets but this will be clamped in {@link #scrollBy(int, Recycler,
-   * State)} (Recycler, State)} by {@link #calculateShouldHorizontallyScrollBy(int, int, int, int)}.
+   * <p>This will calculate the scroll offset needed to place a child at {@code position}'s center
+   * at the start-most focal keyline. The returned value might be less or greater than
+   * the min and max scroll offsets but this will be clamped in {@link #scrollBy(int, Recycler,
+   * State)} (Recycler, State)} by {@link #calculateShouldScrollBy(int, int, int, int)}.
    *
    * @param position The position to get the scroll offset to.
    * @param keylineState The keyline state in which to calculate the scroll offset to.
@@ -1183,8 +1190,8 @@ public class CarouselLayoutManager extends LayoutManager
   /**
    * Gets the offset needed to scroll to a position from the current scroll offset.
    *
-   * <p>This will calculate the horizontal scroll offset needed to place a child at {@code
-   * position}'s center at the start-most focal keyline.
+   * <p>This will calculate the scroll offset needed to place a child at {@code position}'s center
+   * at the start-most focal keyline.
    */
   int getOffsetToScrollToPosition(int position, @NonNull KeylineState keylineState) {
     int targetScrollOffset = getScrollOffsetForPosition(position, keylineState);

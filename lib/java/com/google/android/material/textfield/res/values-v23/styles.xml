@@ -14,7 +14,7 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--
       ThemeOverlay to be used internally for API >= 23 in the TextInputLayout M3 box styles.
       Color state lists with theme color references are currently only supported in API >= 23

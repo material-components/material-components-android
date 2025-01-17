@@ -45,7 +45,7 @@
     <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
   </style>
 
-  <style name="Base.V14.ThemeOverlay.MaterialComponents.BottomSheetDialog"
+  <style name="ThemeOverlay.MaterialComponents.BottomSheetDialog"
     parent="Base.ThemeOverlay.MaterialComponents.Dialog">
     <item name="android:windowIsFloating">false</item>
     <item name="android:windowBackground">@android:color/transparent</item>
@@ -56,8 +56,6 @@
     <item name="paddingLeftSystemWindowInsets">true</item>
     <item name="paddingRightSystemWindowInsets">true</item>
     <item name="paddingTopSystemWindowInsets">true</item>
+    <item name="android:statusBarColor">@android:color/transparent</item>
   </style>
-
-  <style name="ThemeOverlay.MaterialComponents.BottomSheetDialog"
-    parent="Base.V14.ThemeOverlay.MaterialComponents.BottomSheetDialog"/>
 </resources>

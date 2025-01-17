@@ -97,17 +97,15 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
     super.onCreate(savedInstanceState);
     Window window = getWindow();
     if (window != null) {
-      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-        // The status bar should always be transparent because of the window animation.
-        window.setStatusBarColor(0);
+      // The status bar should always be transparent because of the window animation.
+      window.setStatusBarColor(0);
 
-        window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        if (VERSION.SDK_INT < VERSION_CODES.M) {
-          // It can be transparent for API 23 and above because we will handle switching the status
-          // bar icons to light or dark as appropriate. For API 21 and API 22 we just set the
-          // translucent status bar.
-          window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+      window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+      if (VERSION.SDK_INT < VERSION_CODES.M) {
+        // It can be transparent for API 23 and above because we will handle switching the status
+        // bar icons to light or dark as appropriate. For API 21 and API 22 we just set the
+        // translucent status bar.
+        window.addFlags(LayoutParams.FLAG_TRANSLUCENT_STATUS);
       }
       window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
     }

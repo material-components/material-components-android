@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">تغییر به ماه بعدی</string>
   <string name="mtrl_picker_toggle_to_year_selection">برای رفتن به نمای سال تک‌ضرب بزنید</string>
   <string name="mtrl_picker_toggle_to_day_selection">برای رفتن به نمای «تقویم» تک‌ضرب بزنید</string>
+  <string name="mtrl_picker_toggled_to_year_selection">به نمای سال تغییر کرد</string>
+  <string name="mtrl_picker_toggled_to_day_selection">به نمای «تقویم» تغییر کرد</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">انتخاب کنونی: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">تاریخ شروع انتخاب‌شده: %1$s – تاریخ پایان انتخاب‌شده: %2$s</string>

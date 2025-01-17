@@ -15,7 +15,7 @@
     limitations under the License.
     -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
   <item android:state_pressed="true" app:widthChange="15%"/>
   <item app:widthChange="0%"/>
 </selector>

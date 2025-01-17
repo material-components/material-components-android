@@ -66,7 +66,6 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.customview.view.AbsSavedState;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -285,10 +284,9 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
           MaterialResources.getColorStateList(
               context, a, R.styleable.NavigationView_itemRippleColor);
 
-      // Use a ripple matching the item's shape as the foreground for api level 21+ and if a ripple
-      // color is set. Otherwise the selectableItemBackground foreground from the item layout will
-      // be used
-      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && itemRippleColor != null) {
+      // Use a ripple matching the item's shape as the foreground if a ripple color is set.
+      // Otherwise the selectableItemBackground foreground from the item layout will be used.
+      if (itemRippleColor != null) {
         Drawable itemRippleMask = createDefaultItemDrawable(a, null);
         RippleDrawable ripple =
             new RippleDrawable(
@@ -495,9 +493,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
 
   @Override
   public void setElevation(float elevation) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      super.setElevation(elevation);
-    }
+    super.setElevation(elevation);
     MaterialShapeUtils.setElevation(this, elevation);
   }
 
@@ -725,7 +721,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
    * @attr ref R.styleable#NavigationView_itemBackground
    */
   public void setItemBackgroundResource(@DrawableRes int resId) {
-    setItemBackground(ContextCompat.getDrawable(getContext(), resId));
+    setItemBackground(getContext().getDrawable(resId));
   }
 
   /**
@@ -1130,7 +1126,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
                 isOnLeftSide && (isRtl ? isEndInsetScrimEnabled() : isStartInsetScrimEnabled()));
 
             Activity activity = ContextUtils.getActivity(getContext());
-            if (activity != null && VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+            if (activity != null) {
               Rect displayBounds = WindowUtils.getCurrentWindowBounds(activity);
 
               boolean isBehindSystemNav = displayBounds.height() - getHeight() == tmpLocation[1];

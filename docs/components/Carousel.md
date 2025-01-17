@@ -259,5 +259,3 @@ carouselLayoutManager.setCarouselAlignment(CarouselLayoutManager.CENTER)
 ```
 
 By default, the focal alignment is start-aligned.
-
-

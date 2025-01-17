@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Келесі айға өту</string>
   <string name="mtrl_picker_toggle_to_year_selection">Жыл бойынша көрсету үшін түртіңіз.</string>
   <string name="mtrl_picker_toggle_to_day_selection">Күнтізбе бойынша көрсету үшін түртіңіз.</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Жыл таңдау режиміне ауыстыңыз.</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Calendar режиміне ауыстыңыз.</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Ағымдағы таңдау: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Таңдалған басталу уақыты: %1$s – Таңдалған аяқталу уақыты: %2$s</string>

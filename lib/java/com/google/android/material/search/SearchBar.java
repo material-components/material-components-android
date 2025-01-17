@@ -44,8 +44,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityManager;
-import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -57,13 +55,11 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.appbar.AppBarLayout;
@@ -149,10 +145,6 @@ public class SearchBar extends Toolbar {
   private boolean defaultScrollFlagsEnabled;
   private MaterialShapeDrawable backgroundShape;
 
-  @Nullable private final AccessibilityManager accessibilityManager;
-  private final TouchExplorationStateChangeListener touchExplorationStateChangeListener =
-      (boolean enabled) -> setFocusableInTouchMode(enabled);
-
   public SearchBar(@NonNull Context context) {
     this(context, null);
   }
@@ -207,38 +199,9 @@ public class SearchBar extends Toolbar {
 
     textView = findViewById(R.id.open_search_bar_text_view);
 
-    ViewCompat.setElevation(this, elevation);
+    setElevation(elevation);
     initTextView(textAppearanceResId, text, hint);
     initBackground(shapeAppearanceModel, backgroundColor, elevation, strokeWidth, strokeColor);
-
-    accessibilityManager =
-        (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-    setupTouchExplorationStateChangeListener();
-  }
-
-  private void setupTouchExplorationStateChangeListener() {
-    if (accessibilityManager != null) {
-      // Handle the case where touch exploration is already enabled.
-      if (accessibilityManager.isEnabled() && accessibilityManager.isTouchExplorationEnabled()) {
-        setFocusableInTouchMode(true);
-      }
-
-      // Handle the case where touch exploration state can change while the view is active.
-      addOnAttachStateChangeListener(
-          new OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View ignored) {
-              accessibilityManager.addTouchExplorationStateChangeListener(
-                  touchExplorationStateChangeListener);
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View ignored) {
-              accessibilityManager.removeTouchExplorationStateChangeListener(
-                  touchExplorationStateChangeListener);
-            }
-          });
-    }
   }
 
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
@@ -292,29 +255,10 @@ public class SearchBar extends Toolbar {
 
     int rippleColor = MaterialColors.getColor(this, R.attr.colorControlHighlight);
     Drawable background;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      backgroundShape.setFillColor(ColorStateList.valueOf(backgroundColor));
-      background =
-          new RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundShape, backgroundShape);
-    } else {
-      backgroundShape.setFillColor(getCompatBackgroundColorStateList(backgroundColor, rippleColor));
-      background = backgroundShape;
-    }
-
+    backgroundShape.setFillColor(ColorStateList.valueOf(backgroundColor));
+    background =
+        new RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundShape, backgroundShape);
     setBackground(background);
-  }
-
-  private ColorStateList getCompatBackgroundColorStateList(
-      @ColorInt int backgroundColor, @ColorInt int rippleColor) {
-    int[][] states =
-        new int[][] {
-          new int[] {android.R.attr.state_pressed},
-          new int[] {android.R.attr.state_focused},
-          new int[] {},
-        };
-    int pressedBackgroundColor = MaterialColors.layer(backgroundColor, rippleColor);
-    int[] colors = new int[] {pressedBackgroundColor, pressedBackgroundColor, backgroundColor};
-    return new ColorStateList(states, colors);
   }
 
   @Override
@@ -326,7 +270,6 @@ public class SearchBar extends Toolbar {
     super.addView(child, index, params);
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -391,7 +334,7 @@ public class SearchBar extends Toolbar {
     }
 
     Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
-    DrawableCompat.setTint(wrappedNavigationIcon, navigationIconColor);
+    wrappedNavigationIcon.setTint(navigationIconColor);
     return wrappedNavigationIcon;
   }
 
@@ -857,7 +800,7 @@ public class SearchBar extends Toolbar {
   }
 
   float getCompatElevation() {
-    return backgroundShape != null ? backgroundShape.getElevation() : ViewCompat.getElevation(this);
+    return backgroundShape != null ? backgroundShape.getElevation() : getElevation();
   }
 
   /** Behavior that sets up the scroll-away mode for an {@link SearchBar}. */

@@ -107,7 +107,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
 
   private float tooltipScaleX = 1F;
   private float tooltipScaleY = 1F;
-  private final float tooltipPivotX = 0.5F;
+  private float tooltipPivotX = 0.5F;
   private float tooltipPivotY = 0.5F;
   private float labelOpacity = 1.0F;
 
@@ -366,12 +366,21 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
    * @param fraction A value between 0.0 and 1.0 that defines how "shown" the tooltip will be.
    */
   public void setRevealFraction(@FloatRange(from = 0.0, to = 1.0) float fraction) {
-    // Set the y pivot point below the bottom of the tooltip to make it look like the
-    // tooltip is translating slightly up while scaling in.
-    tooltipPivotY = 1.2F;
     tooltipScaleX = fraction;
     tooltipScaleY = fraction;
     labelOpacity = AnimationUtils.lerp(0F, 1F, 0.19F, 1F, fraction);
+    invalidateSelf();
+  }
+
+  /**
+   * Set the pivot points for the tooltip.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setPivots(float pivotX, float pivotY) {
+    this.tooltipPivotX = pivotX;
+    this.tooltipPivotY = pivotY;
     invalidateSelf();
   }
 
@@ -486,7 +495,7 @@ public class TooltipDrawable extends MaterialShapeDrawable implements TextDrawab
   private EdgeTreatment createMarkerEdge() {
     float offset = -calculatePointerOffset();
     // The maximum distance the arrow can be offset before extends outside the bounds.
-    float maxArrowOffset = (float) (getBounds().width() - arrowSize * Math.sqrt(2)) / 2.0f;
+    float maxArrowOffset = (float) ((getBounds().width() - arrowSize * Math.sqrt(2)) / 2.0f);
     offset = Math.max(offset, -maxArrowOffset);
     offset = Math.min(offset, maxArrowOffset);
     return new OffsetEdgeTreatment(new MarkerEdgeTreatment(arrowSize), offset);

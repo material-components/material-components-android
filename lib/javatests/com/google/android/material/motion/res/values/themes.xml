@@ -15,6 +15,17 @@
     limitations under the License.
 -->
 <resources>
+  <!-- A theme with an incorrectly configured custom spring. -->
+  <style name="Theme.Material3.DayNight.PartialSpring" parent="Theme.Material3.DayNight">
+    <item name="motionSpringFastSpatial">@style/Motion.MyApp.Spring.Custom.Fast.Spatial.Partial</item>
+  </style>
+  <style name="Motion.MyApp.Spring.Custom.Fast.Spatial.Partial" parent="">
+    <item name="stiffness">1400</item>
+  </style>
+  <style name="Motion.MyApp.Spring.Custom.Default" parent="">
+    <item name="stiffness">1450</item>
+    <item name="damping">.5</item>
+  </style>
 
   <style name="Theme.MaterialComponents.DayNight.IncorrectLegacyEasingAttrType" parent="Theme.MaterialComponents.DayNight">
     <item name="motionEasingStandard">@color/color_primary</item>

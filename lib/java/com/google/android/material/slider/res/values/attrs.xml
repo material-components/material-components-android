@@ -21,7 +21,8 @@
     <attr name="android:valueTo" />
     <attr name="android:stepSize" />
     <!-- Whether the Slider is enabled. -->
-    <attr name="android:enabled"/>
+    <attr name="android:enabled" />
+    <attr name="android:orientation" />
     <!-- The color of the slider's halo. -->
     <attr name="haloColor" format="color" />
     <!-- The radius of the halo. -->
@@ -79,6 +80,22 @@
     <attr name="trackColorInactive" format="color" />
     <!-- The height of the track. -->
     <attr name="trackHeight" format="dimension" />
+    <!-- The start icon on the active portion of the track. -->
+    <attr name="trackIconActiveStart" format="reference" />
+    <!-- The end icon on the active portion of the track. -->
+    <attr name="trackIconActiveEnd" format="reference" />
+    <!-- The color of the icon on the active portion of the track. -->
+    <attr name="trackIconActiveColor" format="color" />
+    <!-- The start icon on the inactive portion of the track. -->
+    <attr name="trackIconInactiveStart" format="reference" />
+    <!-- The end icon on the inactive portion of the track. -->
+    <attr name="trackIconInactiveEnd" format="reference" />
+    <!-- The color of the icon on the inactive portion of the track. -->
+    <attr name="trackIconInactiveColor" format="color" />
+    <!-- The size of the icons of the track. -->
+    <attr name="trackIconSize" format="dimension" />
+    <!-- The corner size on the outside of the track. -->
+    <attr name="trackCornerSize" format="dimension" />
     <!-- The corner size on the inside of the track (visible with gap). -->
     <attr name="trackInsideCornerSize" format="dimension" />
     <!-- The size of the stop indicator at the edges of the track. -->

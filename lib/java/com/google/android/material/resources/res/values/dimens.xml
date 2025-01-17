@@ -18,16 +18,36 @@
   <dimen name="mtrl_min_touch_target_size">48dp</dimen>
 
   <!-- Dimensions for low ripple overlays, used on top of surface. -->
-  <item name="mtrl_low_ripple_pressed_alpha" format="float" type="dimen">0.12</item>
-  <item name="mtrl_low_ripple_focused_alpha" format="float" type="dimen">0.12</item>
-  <item name="mtrl_low_ripple_hovered_alpha" format="float" type="dimen">0.04</item>
-  <item name="mtrl_low_ripple_default_alpha" format="float" type="dimen">0.00</item>
+
+  <!-- RippleDrawable uses half the alpha for pressed for the overlay and half the alpha for pressed
+       for the ripple animation. Using double the desired alpha ensures that the desired alpha
+       is displayed when the overlay and ripple display at different times (unbounded ripples). -->
+  <item name="mtrl_low_ripple_pressed_alpha" format="float" type="dimen">0.24</item>
+  <!-- RippleDrawable uses half the alpha for focused, so this is double the desired alpha. -->
+  <item name="mtrl_low_ripple_focused_alpha" format="float" type="dimen">0.24</item>
+  <!-- RippleDrawable uses half the alpha for hovered, so this is double the desired alpha.
+       The hovered state is not supported by RippleDrawable pre-24. -->
+  <item name="mtrl_low_ripple_hovered_alpha" format="float" type="dimen">0.08</item>
+  <!-- This alpha should be used for non-pressed, non-focused, non-hovered states.
+       RippleDrawable will only finish animations in this state. In API 22-27, this alpha will be
+       used for finishing the ripple animation and therefore needs to be non-zero. -->
+  <item name="mtrl_low_ripple_default_alpha" format="float" type="dimen">0.24</item>
 
   <!-- Dimensions for high ripple overlays, used on top of primary / secondary. -->
-  <item name="mtrl_high_ripple_pressed_alpha" format="float" type="dimen">0.24</item>
-  <item name="mtrl_high_ripple_focused_alpha" format="float" type="dimen">0.24</item>
-  <item name="mtrl_high_ripple_hovered_alpha" format="float" type="dimen">0.08</item>
-  <item name="mtrl_high_ripple_default_alpha" format="float" type="dimen">0.00</item>
+
+  <!-- RippleDrawable uses half the alpha for pressed for the overlay and half the alpha for pressed
+       for the ripple animation. Using double the desired alpha ensures that the desired alpha
+       is displayed when the overlay and ripple display at different times (unbounded ripples). -->
+  <item name="mtrl_high_ripple_pressed_alpha" format="float" type="dimen">0.48</item>
+  <!-- RippleDrawable uses half the alpha for focused, so this is double the desired alpha. -->
+  <item name="mtrl_high_ripple_focused_alpha" format="float" type="dimen">0.48</item>
+  <!-- RippleDrawable uses half the alpha for hovered, so this is double the desired alpha.
+       The hovered state is not supported by RippleDrawable pre-24. -->
+  <item name="mtrl_high_ripple_hovered_alpha" format="float" type="dimen">0.16</item>
+  <!-- This alpha should be used for non-pressed, non-focused, non-hovered states.
+       RippleDrawable will only finish animations in this state. In API 22-27, this alpha will be
+       used for finishing the ripple animation and therefore needs to be non-zero. -->
+  <item name="mtrl_high_ripple_default_alpha" format="float" type="dimen">0.48</item>
 
   <!-- Alpha dimensions for M3 ripple overlays. -->
   <dimen name="m3_ripple_pressed_alpha">@dimen/m3_sys_state_pressed_state_layer_opacity</dimen>

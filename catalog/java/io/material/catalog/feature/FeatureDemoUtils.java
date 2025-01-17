@@ -20,8 +20,6 @@ import io.material.catalog.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.fragment.app.Fragment;
@@ -65,9 +63,7 @@ public abstract class FeatureDemoUtils {
       @Nullable String sharedElementName) {
     FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && sharedElement != null
-        && sharedElementName != null) {
+    if (sharedElement != null && sharedElementName != null) {
       Fragment currentFragment = getCurrentFragment(activity);
 
       Context context = currentFragment.requireContext();

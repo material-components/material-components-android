@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">அடுத்த மாதத்தைக் காட்டு</string>
   <string name="mtrl_picker_toggle_to_year_selection">ஆண்டுக் காட்சிக்கு மாற தட்டவும்</string>
   <string name="mtrl_picker_toggle_to_day_selection">கேலெண்டர் காட்சிக்கு மாற தட்டவும்</string>
+  <string name="mtrl_picker_toggled_to_year_selection">ஆண்டுக் காட்சிக்கு மாற்றப்பட்டது</string>
+  <string name="mtrl_picker_toggled_to_day_selection">கேலெண்டர் காட்சிக்கு மாற்றப்பட்டது</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">தற்போதைய தேர்வு: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">தேர்ந்தெடுத்த தொடக்கத் தேதி: %1$s – தேர்ந்தெடுத்த முடிவுத் தேதி: %2$s</string>

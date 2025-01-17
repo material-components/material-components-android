@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">ប្ដូរ​ទៅ​ខែបន្ទាប់</string>
   <string name="mtrl_picker_toggle_to_year_selection">ចុច ដើម្បីប្ដូរទៅទិដ្ឋភាពឆ្នាំ</string>
   <string name="mtrl_picker_toggle_to_day_selection">ចុច ដើម្បីប្ដូរទៅទិដ្ឋភាពប្រតិទិន</string>
+  <string name="mtrl_picker_toggled_to_year_selection">បានប្ដូរទៅទិដ្ឋភាពឆ្នាំ</string>
+  <string name="mtrl_picker_toggled_to_day_selection">បានប្ដូរទៅទិដ្ឋភាពប្រតិទិន</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">ការជ្រើសរើស​បច្ចុប្បន្ន៖ %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">ការជ្រើសរើស​កាលបរិច្ឆេទចាប់ផ្ដើម៖ %1$s – ការជ្រើសរើស​កាលបរិច្ឆេទបញ្ចប់៖ %2$s</string>

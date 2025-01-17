@@ -262,11 +262,13 @@ The following is an anatomy diagram for the bottom navigation bar:
 
 #### Container attributes
 
-**Element**       | **Attribute**         | **Related methods** | **Default value**
------------------ | --------------------- | ------------------- | -----------------
-**Color**         | `app:backgroundTint`  | N/A                 | `?attr/colorSurfaceContainer`
-**Elevation**     | `app:elevation`       | `setElevation`      | `3dp`
-**Compat Shadow** | `compatShadowEnabled` | N/A                 | `false`
+| **Element**                    | **Attribute**         | **Related methods** | **Default value**             |
+|--------------------------------|-----------------------|---------------------|-------------------------------|
+| **Color**                      | `app:backgroundTint`  | N/A                 | `?attr/colorSurfaceContainer` |
+| **Elevation**                  | `app:elevation`       | `setElevation`      | `3dp`                         |
+| **Compat Shadow** (deprecated) | `compatShadowEnabled` | N/A                 | `false`                       |
+
+**Note:** `compatShadowEnabled` has no effect, as the library no longer supports pre-Lollipop.
 
 #### Navigation item attributes
 
@@ -298,13 +300,14 @@ expands to wrap the content of the Bottom Navigation item when the
 
 #### Icon attributes
 
-**Element**          | **Attribute**                         | **Related methods**                                              | **Default value**
--------------------- | ------------------------------------- | ---------------------------------------------------------------- | -----------------
-**Icon**             | `android:icon` in the `menu` resource | N/A                                                              | N/A
-**Size**             | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize` | `24dp`
-**Color (inactive)** | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                  | `?attr/colorOnSurfaceVariant` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/res/color/m3_navigation_bar_item_with_indicator_icon_tint.xml))
-**Color (active)**   | "                                     | "                                                                | `?attr/colorOnSecondaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/res/color/m3_navigation_bar_item_with_indicator_icon_tint.xml))
-**Gravity**          | `app:itemIconGravity`                 | `setItemIconGravity`<br/>`getItemIconGravity`                    | `TOP`
+**Element**                       | **Attribute**                         | **Related methods**                                                 | **Default value**
+--------------------------------- | ------------------------------------- | ------------------------------------------------------------------- | -----------------
+**Icon**                          | `android:icon` in the `menu` resource | N/A                                                                 | N/A
+**Size**                          | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize`    | `24dp`
+**Color (inactive)**              | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                     | `?attr/colorOnSurfaceVariant` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/res/color/m3_navigation_bar_item_with_indicator_icon_tint.xml))
+**Color (active)**                | "                                     | "                                                                   | `?attr/colorOnSecondaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/res/color/m3_navigation_bar_item_with_indicator_icon_tint.xml))
+**Gravity**                       | `app:itemIconGravity`                 | `setItemIconGravity`<br/>`getItemIconGravity`                       | `TOP`
+**Icon label horizontal padding** | `app:iconLabelHorizontalSpacing`      | `setIconLabelHorizontalSpacing`<br/>`getIconLabelHorizontalSpacing` | `4dp`
 
 #### Text label attributes
 
@@ -316,6 +319,8 @@ expands to wrap the content of the Bottom Navigation item when the
 **Typography (inactive)** | `app:itemTextAppearanceInactive`<br/>`app:horizontalItemTextAppearanceInactive` | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive`<br/>`setHorizontalItemTextAppearanceInactive`<br/>`getHorizontalItemTextAppearanceInactive` | `?attr/textAppearanceTitleSmall`
 **Typography (active)**   | `app:itemTextAppearanceActive`<br/>`app:horizontalItemTextAppearanceActive`     | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`<br/>`setHorizontalItemTextAppearanceActive`<br/>`getHorizontalItemTextAppearanceActive`         | `?attr/textAppearanceTitleSmall`
 **Typography (active)**   | `app:itemTextAppearanceActiveBoldEnabled`                                       | `setItemTextAppearanceActiveBoldEnabled`                                                                                                                        | `true`
+**Max lines**             | `app:labelMaxLines`                                                             | `setLabelMaxLines`<br/>`getLabelMaxLines`                                                                                                                       | `1`
+**Scale with font size**  | `app:scaleLabelWithFontSize`                                                    | `setScaleLabelTextWithFont`<br/>`getScaleLabelTextWithFont`                                                                                                     | `false`
 
 #### Styles
 

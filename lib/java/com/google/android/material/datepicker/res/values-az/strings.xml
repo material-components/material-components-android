@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Növbəti aya dəyişin</string>
   <string name="mtrl_picker_toggle_to_year_selection">İl görünüşünə keçirmək üçün toxunun</string>
   <string name="mtrl_picker_toggle_to_day_selection">Təqvim görünüşünə keçirmək üçün toxunun</string>
+  <string name="mtrl_picker_toggled_to_year_selection">İl görünüşünə keçildi</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Təqvim görünüşünə keçildi</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Cari seçim: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Başlama tarixi seçimi: %1$s – Bitmə tarixi seçimi: %2$s</string>

@@ -395,8 +395,12 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   void toggleVisibleSelector() {
     if (calendarSelector == CalendarSelector.YEAR) {
       setSelector(CalendarSelector.DAY);
+      recyclerView.announceForAccessibility(
+          getString(R.string.mtrl_picker_toggled_to_day_selection));
     } else if (calendarSelector == CalendarSelector.DAY) {
       setSelector(CalendarSelector.YEAR);
+      yearSelector.announceForAccessibility(
+          getString(R.string.mtrl_picker_toggled_to_year_selection));
     }
   }
 

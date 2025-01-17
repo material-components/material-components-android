@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Ďalší mesiac</string>
   <string name="mtrl_picker_toggle_to_year_selection">Klepnutím prepnete na zobrazenie jednotlivých rokov</string>
   <string name="mtrl_picker_toggle_to_day_selection">Klepnutím prepnete na zobrazenie kalendára</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Prepnuté na zobrazenie rokov</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Prepnuté na zobrazenie kalendára</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Aktuálny výber: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Výber dátumu začatia: %1$s – Výber dátumu ukončenia: %2$s</string>

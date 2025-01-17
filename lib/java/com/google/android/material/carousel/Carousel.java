@@ -16,10 +16,13 @@
 
 package com.google.android.material.carousel;
 
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.carousel.CarouselLayoutManager.Alignment;
 
 /** An interface that defines a widget that can be configured as a Carousel. */
-interface Carousel {
+@RestrictTo(Scope.LIBRARY_GROUP)
+public interface Carousel {
 
   /** Gets the width of the carousel container. */
   int getContainerWidth();

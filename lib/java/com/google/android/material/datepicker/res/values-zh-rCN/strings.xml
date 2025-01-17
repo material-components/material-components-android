@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">转到下个月</string>
   <string name="mtrl_picker_toggle_to_year_selection">点按即可切换到年视图</string>
   <string name="mtrl_picker_toggle_to_day_selection">点按即可切换到日历视图</string>
+  <string name="mtrl_picker_toggled_to_year_selection">已切换到年份视图</string>
+  <string name="mtrl_picker_toggled_to_day_selection">已切换到日历视图</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">当前的选择是：%1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">开始日期选择：%1$s – 结束日期选择：%2$s</string>

@@ -294,6 +294,7 @@ slider also has tick marks.
 
 | Element                                    | Attribute                    | Related method(s)                                           | Default value                        |
 |--------------------------------------------|------------------------------|-------------------------------------------------------------|--------------------------------------|
+| **Orientation**                            | `android:orientation`        | `setOrientation`<br/>`isVertical`                           | `horizontal`                         |
 | **Min value**                              | `android:valueFrom`          | `setValueFrom`<br/>`getValueFrom`                           | N/A                                  |
 | **Max value**                              | `android:valueTo`            | `setValueTo`<br/>`getValueTo`                               | N/A                                  |
 | **Step size (discrete)**                   | `android:stepSize`           | `setStepSize`<br/>`getStepSize`                             | N/A                                  |
@@ -303,9 +304,17 @@ slider also has tick marks.
 | **Color**                                  | `app:trackColor`             | `setTrackTintList`<br/>`getTrackTintList`                   | `null`                               |
 | **Color for track's active part**          | `app:trackColorActive`       | `setTrackActiveTintList`<br/>`getTrackActiveTintList`       | `?attr/colorPrimary`                 |
 | **Color for track's inactive part**        | `app:trackColorInactive`     | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList`   | `?attr/colorSurfaceContainerHighest` |
+| **Corner size**                            | `app:trackCornerSize`        | `setTrackCornerSize`<br/>`getTrackCornerSize`               | `trackHeight / 2`                    |
 | **Inside corner size**                     | `app:trackInsideCornerSize`  | `setTrackInsideCornerSize`<br/>`getTrackInsideCornerSize`   | `2dp`                                |
 | **Stop indicator size**                    | `app:trackStopIndicatorSize` | `setTrackStopIndicatorSize`<br/>`getTrackStopIndicatorSize` | `4dp`                                |
 | **Minimum separation for adjacent thumbs** | `app:minSeparation`          | `setMinSeparation`<br/>`getMinSeparation`                   | `0dp`                                |
+| **Active start icon**                      | `app:trackIconActiveStart`   | `setTrackIconActiveStart`<br/>`getTrackIconActiveStart`     | `null`                               |
+| **Active end icon**                        | `app:trackIconActiveEnd`     | `setTrackIconActiveEnd`<br/>`getTrackIconActiveEnd`         | `null`                               |
+| **Active icon color**                      | `app:trackIconActiveColor`   | `setTrackIconActiveColor`<br/>`getTrackIconActiveColor`     | N/A                                  |
+| **Inactive start icon**                    | `app:trackIconInactiveStart` | `setTrackIconInactiveStart`<br/>`getTrackIconInactiveStart` | `null`                               |
+| **Inactive end icon**                      | `app:trackIconInactiveEnd`   | `setTrackIconInactiveEnd`<br/>`getTrackIconInactiveEnd`     | `null`                               |
+| **Inactive icon color**                    | `app:trackIconInactiveColor` | `setTrackIconInactiveColor`<br/>`getTrackIconInactiveColor` | N/A                                  |
+| **Icon size**                              | `app:trackIconSize`          | `setTrackIconSize`<br/>`getTrackIconSize`                   | N/A                                  |
 
 **Note:** `app:trackColor` takes precedence over `app:trackColorActive` and
 `app:trackColorInative`. It's a shorthand for setting both values to the same
@@ -313,6 +322,10 @@ thing.
 
 **Note:** `app:trackStopIndicatorSize` takes precedence over
 `app:tickRadiusActive` and `app:tickRadiusInactive`.
+
+**Note:** `vertical` orientation still uses `height` in the same way as for
+`horizontal` orientation. In this context, `height` can be seen as track
+thickness.
 
 #### Thumb attributes
 
