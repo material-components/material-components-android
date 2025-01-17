@@ -99,9 +99,9 @@ public final class DrawableUtils {
       }
     } else {
       if (hasTint) {
-        DrawableCompat.setTint(drawable, color);
+        drawable.setTint(color);
       } else {
-        DrawableCompat.setTintList(drawable, null);
+        drawable.setTintList(null);
       }
     }
   }
@@ -203,7 +203,7 @@ public final class DrawableUtils {
     if (tintList != null) {
       drawable = DrawableCompat.wrap(drawable).mutate();
       if (tintMode != null) {
-        DrawableCompat.setTintMode(drawable, tintMode);
+        drawable.setTintMode(tintMode);
       }
     } else if (forceMutate) {
       drawable.mutate();

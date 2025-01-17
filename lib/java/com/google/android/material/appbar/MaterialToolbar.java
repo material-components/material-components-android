@@ -38,7 +38,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ToolbarUtils;
@@ -308,7 +307,7 @@ public class MaterialToolbar extends Toolbar {
     Drawable navigationIcon = getNavigationIcon();
     if (navigationIcon != null) {
       Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
-      DrawableCompat.setTintList(wrappedNavigationIcon, null);
+      wrappedNavigationIcon.setTintList(null);
       setNavigationIcon(navigationIcon);
     }
   }
@@ -383,7 +382,7 @@ public class MaterialToolbar extends Toolbar {
       MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
       materialShapeDrawable.setFillColor(backgroundColorStateList);
       materialShapeDrawable.initializeElevationOverlay(context);
-      materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
+      materialShapeDrawable.setElevation(getElevation());
       setBackground(materialShapeDrawable);
     }
   }
@@ -392,7 +391,7 @@ public class MaterialToolbar extends Toolbar {
   private Drawable maybeTintNavigationIcon(@Nullable Drawable navigationIcon) {
     if (navigationIcon != null && navigationIconTint != null) {
       Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
-      DrawableCompat.setTint(wrappedNavigationIcon, navigationIconTint);
+      wrappedNavigationIcon.setTint(navigationIconTint);
       return wrappedNavigationIcon;
     } else {
       return navigationIcon;

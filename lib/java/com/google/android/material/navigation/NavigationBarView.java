@@ -51,7 +51,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.drawable.DrawableUtils;
@@ -301,7 +300,7 @@ public abstract class NavigationBarView extends FrameLayout {
     ColorStateList backgroundTint =
         MaterialResources.getColorStateList(
             context, attributes, R.styleable.NavigationBarView_backgroundTint);
-    DrawableCompat.setTintList(getBackground().mutate(), backgroundTint);
+    getBackground().mutate().setTintList(backgroundTint);
 
     setLabelVisibilityMode(
         attributes.getInteger(
@@ -388,6 +387,29 @@ public abstract class NavigationBarView extends FrameLayout {
               R.styleable.NavigationBarActiveIndicator_expandedMarginHorizontal,
               itemActiveIndicatorMarginHorizontal);
       setItemActiveIndicatorExpandedMarginHorizontal(itemActiveIndicatorExpandedMarginHorizontal);
+
+      int activeIndicatorExpandedDefaultStartEndPadding = getResources()
+          .getDimensionPixelSize(R.dimen.m3_navigation_item_leading_trailing_space);
+      int activeIndicatorExpandedStartPadding =
+          activeIndicatorAttributes.getDimensionPixelOffset(
+          R.styleable.NavigationBarActiveIndicator_expandedActiveIndicatorPaddingStart,
+              activeIndicatorExpandedDefaultStartEndPadding);
+      int activeIndicatorExpandedEndPadding =
+          activeIndicatorAttributes.getDimensionPixelOffset(
+              R.styleable.NavigationBarActiveIndicator_expandedActiveIndicatorPaddingEnd,
+              activeIndicatorExpandedDefaultStartEndPadding);
+
+      setItemActiveIndicatorExpandedPadding(
+          getLayoutDirection() == LAYOUT_DIRECTION_RTL
+              ? activeIndicatorExpandedEndPadding : activeIndicatorExpandedStartPadding,
+          activeIndicatorAttributes.getDimensionPixelOffset(
+              R.styleable.NavigationBarActiveIndicator_expandedActiveIndicatorPaddingTop,
+              0),
+          getLayoutDirection() == LAYOUT_DIRECTION_RTL
+              ? activeIndicatorExpandedStartPadding : activeIndicatorExpandedEndPadding,
+          activeIndicatorAttributes.getDimensionPixelOffset(
+              R.styleable.NavigationBarActiveIndicator_expandedActiveIndicatorPaddingBottom,
+              0));
 
       ColorStateList itemActiveIndicatorColor =
           MaterialResources.getColorStateList(
@@ -859,7 +881,7 @@ public abstract class NavigationBarView extends FrameLayout {
    * @see #getItemGravity()
    */
   public void setItemGravity(@ItemGravity int itemGravity) {
-    if (menuView.getItemIconGravity() != itemGravity) {
+    if (menuView.getItemGravity() != itemGravity) {
       menuView.setItemGravity(itemGravity);
       presenter.updateMenuView(false);
     }
@@ -939,6 +961,19 @@ public abstract class NavigationBarView extends FrameLayout {
    */
   public void setItemActiveIndicatorExpandedMarginHorizontal(@Px int horizontalMargin) {
     menuView.setItemActiveIndicatorExpandedMarginHorizontal(horizontalMargin);
+  }
+
+  /**
+   * Set the padding of the expanded active indicator wrapping the content.
+   *
+   * @param paddingLeft The left padding, in pixels.
+   * @param paddingTop The top padding, in pixels.
+   * @param paddingRight The right padding, in pixels.
+   * @param paddingBottom The bottom padding, in pixels.
+   */
+  public void setItemActiveIndicatorExpandedPadding(
+      @Px int paddingLeft, @Px int paddingTop, @Px int paddingRight, @Px int paddingBottom) {
+    menuView.setItemActiveIndicatorExpandedPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
   }
 
   /**

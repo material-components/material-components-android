@@ -22,10 +22,11 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.TypedValue;
 import android.view.animation.AnimationUtils;
+import android.view.animation.PathInterpolator;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
 import androidx.core.graphics.PathParser;
-import androidx.core.view.animation.PathInterpolatorCompat;
 import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.resources.MaterialAttributes;
 
@@ -46,15 +47,22 @@ public class MotionUtils {
    * @param context the context from where the theme attribute will be resolved
    * @param attrResId the {@code motionSpring*} theme attribute to resolve
    * into a {@link SpringForce} object
+   * @param defStyleRes a {@code MaterialSpring} style to load if attrResId cannot be resolved
    * @return a {@link SpringForce} object configured using the stiffness and damping from the
    * resolved Material spring attribute
    */
   @NonNull
   public static SpringForce resolveThemeSpringForce(
-      @NonNull Context context, @AttrRes int attrResId) {
-    TypedValue tv = MaterialAttributes.resolveTypedValueOrThrow(
-        context, attrResId, "MaterialSpring");
-    TypedArray a = context.obtainStyledAttributes(tv.resourceId, R.styleable.MaterialSpring);
+      @NonNull Context context, @AttrRes int attrResId, @StyleRes int defStyleRes) {
+
+    TypedValue tv = MaterialAttributes.resolve(context, attrResId);
+    TypedArray a;
+    if (tv == null) {
+      a = context.obtainStyledAttributes(null, R.styleable.MaterialSpring, 0, defStyleRes);
+    } else {
+      a = context.obtainStyledAttributes(tv.resourceId, R.styleable.MaterialSpring);
+    }
+
     SpringForce springForce = new SpringForce();
     try {
       float stiffness = a.getFloat(R.styleable.MaterialSpring_stiffness, Float.MIN_VALUE);
@@ -138,10 +146,10 @@ public class MotionUtils {
       float controlY1 = getLegacyControlPoint(controlPoints, 1);
       float controlX2 = getLegacyControlPoint(controlPoints, 2);
       float controlY2 = getLegacyControlPoint(controlPoints, 3);
-      return PathInterpolatorCompat.create(controlX1, controlY1, controlX2, controlY2);
+      return new PathInterpolator(controlX1, controlY1, controlX2, controlY2);
     } else if (isLegacyEasingType(easingString, EASING_TYPE_PATH)) {
       String path = getLegacyEasingContent(easingString, EASING_TYPE_PATH);
-      return PathInterpolatorCompat.create(PathParser.createPathFromPathData(path));
+      return new PathInterpolator(PathParser.createPathFromPathData(path));
     } else {
       throw new IllegalArgumentException("Invalid motion easing type: " + easingString);
     }

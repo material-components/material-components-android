@@ -30,6 +30,7 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
@@ -60,7 +61,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -167,6 +167,7 @@ public abstract class NavigationBarItemView extends FrameLayout
   private boolean onlyShowWhenExpanded = false;
   private boolean measurePaddingFromBaseline = false;
   private boolean scaleLabelSizeWithFont = false;
+  private Rect itemActiveIndicatorExpandedPadding = new Rect();
 
   public NavigationBarItemView(@NonNull Context context) {
     super(context);
@@ -391,7 +392,10 @@ public abstract class NavigationBarItemView extends FrameLayout
   }
 
   private void updateItemIconGravity() {
-    int sideMargin = 0;
+    int leftMargin = 0;
+    int rightMargin = 0;
+    int topMargin = 0;
+    int bottomMargin = 0;
     int sidePadding = 0;
     badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_START;
     int verticalLabelGroupVisibility = VISIBLE;
@@ -401,9 +405,10 @@ public abstract class NavigationBarItemView extends FrameLayout
       if (expandedLabelGroup.getParent() == null) {
         addDefaultExpandedLabelGroupViews();
       }
-      sideMargin =
-          getResources()
-              .getDimensionPixelSize(R.dimen.m3_navigation_item_leading_trailing_space);
+      leftMargin = itemActiveIndicatorExpandedPadding.left;
+      rightMargin = itemActiveIndicatorExpandedPadding.right;
+      topMargin = itemActiveIndicatorExpandedPadding.top;
+      bottomMargin = itemActiveIndicatorExpandedPadding.bottom;
       badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_END;
       sidePadding = activeIndicatorExpandedMarginHorizontal;
       verticalLabelGroupVisibility = GONE;
@@ -416,8 +421,10 @@ public abstract class NavigationBarItemView extends FrameLayout
     contentContainerLp.gravity = itemGravity;
     FrameLayout.LayoutParams innerContentLp =
         (LayoutParams) innerContentContainer.getLayoutParams();
-    innerContentLp.leftMargin = sideMargin;
-    innerContentLp.rightMargin = sideMargin;
+    innerContentLp.leftMargin = leftMargin;
+    innerContentLp.rightMargin = rightMargin;
+    innerContentLp.topMargin = topMargin;
+    innerContentLp.bottomMargin = bottomMargin;
 
     setPadding(sidePadding, 0, sidePadding, 0);
     updateActiveIndicatorLayoutParams(getWidth());
@@ -581,8 +588,8 @@ public abstract class NavigationBarItemView extends FrameLayout
         itemGravity);
     setViewMarginAndGravity(
         innerContentContainer,
-        0,
-        0,
+        itemIconGravity == ITEM_ICON_GRAVITY_TOP ? 0 : itemActiveIndicatorExpandedPadding.top,
+        itemIconGravity == ITEM_ICON_GRAVITY_TOP ? 0 : itemActiveIndicatorExpandedPadding.bottom,
         itemIconGravity == ITEM_ICON_GRAVITY_TOP
             ? Gravity.CENTER
             : Gravity.START | Gravity.CENTER_VERTICAL);
@@ -783,7 +790,7 @@ public abstract class NavigationBarItemView extends FrameLayout
           DrawableCompat.wrap(state == null ? iconDrawable : state.newDrawable()).mutate();
       wrappedIconDrawable = iconDrawable;
       if (iconTint != null) {
-        DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
+        wrappedIconDrawable.setTintList(iconTint);
       }
     }
     this.icon.setImageDrawable(iconDrawable);
@@ -802,7 +809,7 @@ public abstract class NavigationBarItemView extends FrameLayout
   public void setIconTintList(@Nullable ColorStateList tint) {
     iconTint = tint;
     if (itemData != null && wrappedIconDrawable != null) {
-      DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
+      wrappedIconDrawable.setTintList(iconTint);
       wrappedIconDrawable.invalidateSelf();
     }
   }
@@ -1001,8 +1008,7 @@ public abstract class NavigationBarItemView extends FrameLayout
   }
 
   public void setItemBackground(int background) {
-    Drawable backgroundDrawable =
-        background == 0 ? null : ContextCompat.getDrawable(getContext(), background);
+    Drawable backgroundDrawable = background == 0 ? null : getContext().getDrawable(background);
     setItemBackground(backgroundDrawable);
   }
 
@@ -1170,12 +1176,21 @@ public abstract class NavigationBarItemView extends FrameLayout
   }
 
   /**
+   * Set the padding of the active indicator when it is expanded to wrap its content.
+   *
+   * @param itemActiveIndicatorExpandedPadding the Rect containing the padding information
+   */
+  public void setActiveIndicatorExpandedPadding(@NonNull Rect itemActiveIndicatorExpandedPadding) {
+    this.itemActiveIndicatorExpandedPadding = itemActiveIndicatorExpandedPadding;
+  }
+
+  /**
    * Update the active indicators width and height for the available width and label visibility
    * mode.
    *
    * @param availableWidth The total width of this item layout.
    */
-  private void updateActiveIndicatorLayoutParams(int availableWidth) {
+  public void updateActiveIndicatorLayoutParams(int availableWidth) {
     // Set width to the min of either the desired indicator width or the available width minus
     // a horizontal margin.
     if (availableWidth <= 0 && getVisibility() == VISIBLE) {
