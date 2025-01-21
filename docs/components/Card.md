@@ -371,7 +371,7 @@ Element              | Attribute                 | Related method(s)            
 **Foreground color** | `app:cardForegroundColor` | `setCardForegroundColor`<br/>`getCardForegroundColor`               | `@android:color/transparent` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/m3_card_foreground_color.xml))
 **Stroke color**     | `app:strokeColor`         | `setStrokeColor`<br/>`getStrokeColor`<br/>`getStrokeColorStateList` | `?attr/colorOutline` (unchecked)<br/>`?attr/colorSecondary` (checked)
 **Stroke width**     | `app:strokeWidth`         | `setStrokeWidth`<br/>`getStrokeWidth`                               | `1dp` (outlined style)<br/>`0dp` (elevated or filled style)
-**Shape**            | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`             | `?attr/shapeAppearanceMediumComponent`
+**Shape**            | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`             | `?attr/shapeAppearanceCornerMedium`
 **Elevation**        | `app:cardElevation`       | `setCardElevation`<br/>`setCardMaxElevation`                        | `0dp` (outlined or filled style)<br/>`1dp` (elevated style)
 **Ripple color**     | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`  | `?attr/colorOnSurfaceVariant` at 20% opacity (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/color/m3_card_ripple_color.xml))
 
@@ -451,10 +451,10 @@ to all cards. This will affect other components:
     <item name="colorSecondary">@color/shrine_pink_100</item>
     <item name="colorSurface">@color/shrine_pink_light</item>
     <item name="colorOnSurfaceVariant">@color/shrine_pink_900</item>
-    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.App.MediumComponent</item>
+    <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.App.Corner.Medium</item>
 </style>
 
-<style name="ShapeAppearance.App.MediumComponent" parent="ShapeAppearance.Material3.MediumComponent">
+<style name="ShapeAppearance.App.Corner.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
     <item name="cornerFamily">cut</item>
     <item name="cornerSize">8dp</item>
 </style>
@@ -471,7 +471,7 @@ theme to all cards but does not affect other components:
 
 <style name="Widget.App.CardView" parent="Widget.Material3.CardView.Elevated">
     <item name="materialThemeOverlay">@style/ThemeOverlay.App.Card</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.App.MediumComponent</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.Corner.Medium</item>
 </style>
 
 <style name="ThemeOverlay.App.Card" parent="">
@@ -506,7 +506,7 @@ In the layout:
         <!-- Media -->
         <com.google.android.material.imageview.ShapeableImageView
             ...
-            app:shapeAppearance="?attr/shapeAppearanceMediumComponent"
+            app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
             app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.Card.Media"
             />
 
