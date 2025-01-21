@@ -1456,11 +1456,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       return (scrollFlags & SCROLL_FLAG_SCROLL) == SCROLL_FLAG_SCROLL
           && (scrollFlags & COLLAPSIBLE_FLAGS) != 0;
     }
-
-    /** Returns true if the scroll flags are set to snap. */
-    boolean shouldSnapOnScroll() {
-      return (scrollFlags & SCROLL_FLAG_SNAP) == SCROLL_FLAG_SNAP;
-    }
   }
 
   /**
@@ -1725,7 +1720,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         final LayoutParams lp = (LayoutParams) offsetChild.getLayoutParams();
         final int flags = lp.getScrollFlags();
 
-        if (lp.shouldSnapOnScroll()) {
+        if ((flags & LayoutParams.FLAG_SNAP) == LayoutParams.FLAG_SNAP) {
           // We're set the snap, so animate the offset to the nearest edge
           int snapTop = -offsetChild.getTop();
           int snapBottom = -offsetChild.getBottom();
@@ -1816,10 +1811,9 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       // 3. non-forced pending actions
       final int pendingAction = abl.getPendingAction();
       if (savedState != null && (pendingAction & PENDING_ACTION_FORCE) == 0) {
-        final int totalScrollRange = abl.getTotalScrollRange();
         if (savedState.fullyScrolled) {
           // Keep fully scrolled.
-          setHeaderTopBottomOffset(parent, abl, -totalScrollRange);
+          setHeaderTopBottomOffset(parent, abl, -abl.getTotalScrollRange());
         } else if (savedState.fullyExpanded) {
           // Keep fully expanded.
           setHeaderTopBottomOffset(parent, abl, 0);
@@ -1831,10 +1825,6 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
             offset += child.getMinimumHeight() + abl.getTopInset();
           } else {
             offset += Math.round(child.getHeight() * savedState.firstVisibleChildPercentageShown);
-          }
-          // If snap is set, set the offset to top or bottom.
-          if (((LayoutParams) child.getLayoutParams()).shouldSnapOnScroll()) {
-            offset = -totalScrollRange * (-offset < totalScrollRange / 2 ? 0 : 1);
           }
           setHeaderTopBottomOffset(parent, abl, offset);
         }
