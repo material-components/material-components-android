@@ -53,15 +53,18 @@ application.
 
 #### Shape styles
 
-Style Name                                    | Description                           | Corner Sizes
---------------------------------------------- | ------------------------------------- | ------------
-`ShapeAppearance.Material3.Corner.None`       | No corners (i.e., fully rectangular)  | 0dp
-`ShapeAppearance.Material3.Corner.ExtraSmall` | Shape with extra small corner size    | 4dp
-`ShapeAppearance.Material3.Corner.Small`      | Shape with small corner size          | 8dp
-`ShapeAppearance.Material3.Corner.Medium`     | Shape with medium corner size         | 12dp
-`ShapeAppearance.Material3.Corner.Large`      | Shape with large corner size          | 16dp
-`ShapeAppearance.Material3.Corner.ExtraLarge` | Shape with extra large corner size    | 28dp
-`ShapeAppearance.Material3.Corner.Full`       | Shape with full corner size </br> i.e., circle with rounded corners or rhombus with cut corners | 50%
+Style Name                                             | Description                                                                                     | Corner Sizes
+------------------------------------------------------ | ----------------------------------------------------------------------------------------------- | ------------
+`ShapeAppearance.Material3.Corner.None`                | No corners (i.e., fully rectangular)                                                            | 0dp
+`ShapeAppearance.Material3.Corner.ExtraSmall`          | Shape with extra small corner size                                                              | 4dp
+`ShapeAppearance.Material3.Corner.Small`               | Shape with small corner size                                                                    | 8dp
+`ShapeAppearance.Material3.Corner.Medium`              | Shape with medium corner size                                                                   | 12dp
+`ShapeAppearance.Material3.Corner.Large`               | Shape with large corner size                                                                    | 16dp
+`ShapeAppearance.Material3.Corner.LargeIncreased`      | Shape with increased large corner size                                                          | 20dp
+`ShapeAppearance.Material3.Corner.ExtraLarge`          | Shape with extra large corner size                                                              | 28dp
+`ShapeAppearance.Material3.Corner.ExtraLargeIncreased` | Shape with increased extra large corner size                                                    | 32dp
+`ShapeAppearance.Material3.Corner.ExtraExtraLarge`     | Shape with extra extra large corner size                                                        | 48dp
+`ShapeAppearance.Material3.Corner.Full`                | Shape with full corner size </br> i.e., circle with rounded corners or rhombus with cut corners | 50%
 
 These are the shape styles providing the Material 3 shape scale. The shape
 families in these styles (i.e., `cornerFamily`) are mapped to the theme
@@ -80,6 +83,20 @@ Attribute Name                    | Description                                 
 `shapeAppearanceCornerMedium`     | The style reference that contains shape appearance with medium corners      | `ShapeAppearance.Material3.Corner.Medium`
 `shapeAppearanceCornerLarge`      | The style reference that contains shape appearance with large corners       | `ShapeAppearance.Material3.Corner.Large`
 `shapeAppearanceCornerExtraLarge` | The style reference that contains shape appearance with extra large corners | `ShapeAppearance.Material3.Corner.ExtraLarge`
+
+### Corner family and corner sizes
+
+Shape role                        | Android attribute                  | values
+--------------------------------- | ---------------------------------- | -------
+Corner Family                     | shapeCornerFamily                  | Rounded
+Corner Size Extra Small           | shapeCornerSizeExtraSmall          | 4dp
+Corner Size Small                 | shapeCornerSizeSmall               | 8dp
+Corner Size Medium                | shapeCornerSizeMedium              | 12dp
+Corner Size Large                 | shapeCornerSizeLarge               | 16dp
+Corner Size Large Increased       | shapeCornerSizeLargeIncreased      | 20dp
+Corner Size Extra Large           | shapeCornerSizeExtraLarge          | 28dp
+Corner Size Extra Large Increased | shapeCornerSizeExtraLargeIncreased | 32dp
+Corner Size Extra Extra Large     | shapeCornerSizeExtraExtraLarge     | 48dp
 
 Aside from defining these attributes in your theme, you likely will not need to
 reference these attributes at all; the widget styles are already mapped to the

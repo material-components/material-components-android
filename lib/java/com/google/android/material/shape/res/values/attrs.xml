@@ -74,6 +74,23 @@
     <attr name="widthChange" format="dimension|fraction"/>
   </declare-styleable>
 
+  <!-- The size of extra small corners. -->
+  <attr name="shapeCornerSizeExtraSmall" format="dimension|fraction"/>
+  <!-- The size of small corners. -->
+  <attr name="shapeCornerSizeSmall" format="dimension|fraction"/>
+  <!-- The size of medium corners. -->
+  <attr name="shapeCornerSizeMedium" format="dimension|fraction"/>
+  <!-- The size of large corners. -->
+  <attr name="shapeCornerSizeLarge" format="dimension|fraction"/>
+  <!-- The size of corners that are slightly larger than "Large". -->
+  <attr name="shapeCornerSizeLargeIncreased" format="dimension|fraction"/>
+  <!-- The size of extra large corners. -->
+  <attr name="shapeCornerSizeExtraLarge" format="dimension|fraction"/>
+  <!-- The size of corners that are slightly larger than "Extra Large". -->
+  <attr name="shapeCornerSizeExtraLargeIncreased" format="dimension|fraction"/>
+  <!-- The size of extra extra large corners. -->
+  <attr name="shapeCornerSizeExtraExtraLarge" format="dimension|fraction"/>
+
   <!-- Shape appearance style reference with extra small corners. -->
   <attr name="shapeAppearanceCornerExtraSmall" format="reference"/>
   <!-- Shape appearance style reference with small corners. -->
@@ -82,8 +99,14 @@
   <attr name="shapeAppearanceCornerMedium" format="reference"/>
   <!-- Shape appearance style reference with large corners. -->
   <attr name="shapeAppearanceCornerLarge" format="reference"/>
+  <!-- Shape appearance style reference with corners that are slightly larger than "Large". -->
+  <attr name="shapeAppearanceCornerLargeIncreased" format="reference"/>
   <!-- Shape appearance style reference with extra large corners. -->
   <attr name="shapeAppearanceCornerExtraLarge" format="reference"/>
+  <!-- Shape appearance style reference with corners that are slightly larger than "Extra Large". -->
+  <attr name="shapeAppearanceCornerExtraLargeIncreased" format="reference"/>
+  <!-- Shape appearance style reference with extra extra large corners. -->
+  <attr name="shapeAppearanceCornerExtraExtraLarge" format="reference"/>
 
   <!-- Deprecated: Use shapeAppearanceCorner* attributes. -->
   <!-- Shape appearance style reference for small components. -->

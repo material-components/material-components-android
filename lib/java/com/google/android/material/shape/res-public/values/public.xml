@@ -26,11 +26,23 @@
   <public name="shapeAppearanceLargeComponent" type="attr"/>
 
   <public name="shapeCornerFamily" type="attr"/>
+  <public name="shapeCornerSizeExtraSmall" type="attr"/>
+  <public name="shapeCornerSizeSmall" type="attr"/>
+  <public name="shapeCornerSizeMedium" type="attr"/>
+  <public name="shapeCornerSizeLarge" type="attr"/>
+  <public name="shapeCornerSizeLargeIncreased" type="attr"/>
+  <public name="shapeCornerSizeExtraLarge" type="attr"/>
+  <public name="shapeCornerSizeExtraLargeIncreased" type="attr"/>
+  <public name="shapeCornerSizeExtraExtraLarge" type="attr"/>
+
   <public name="shapeAppearanceCornerExtraSmall" type="attr"/>
   <public name="shapeAppearanceCornerSmall" type="attr"/>
   <public name="shapeAppearanceCornerMedium" type="attr"/>
   <public name="shapeAppearanceCornerLarge" type="attr"/>
+  <public name="shapeAppearanceCornerLargeIncreased" type="attr"/>
   <public name="shapeAppearanceCornerExtraLarge" type="attr"/>
+  <public name="shapeAppearanceCornerExtraLargeIncreased" type="attr"/>
+  <public name="shapeAppearanceCornerExtraExtraLarge" type="attr"/>
 
   <public name="cornerSize" type="attr"/>
   <public name="cornerSizeTopLeft" type="attr"/>

@@ -259,11 +259,22 @@
 
     <!-- Shape attributes. -->
     <item name="shapeCornerFamily">@integer/m3_sys_shape_corner_full_corner_family</item>
+    <item name="shapeCornerSizeExtraSmall">@dimen/m3_sys_shape_corner_value_extra_small</item>
+    <item name="shapeCornerSizeSmall">@dimen/m3_sys_shape_corner_value_small</item>
+    <item name="shapeCornerSizeMedium">@dimen/m3_sys_shape_corner_value_medium</item>
+    <item name="shapeCornerSizeLarge">@dimen/m3_sys_shape_corner_value_large</item>
+    <item name="shapeCornerSizeLargeIncreased">@dimen/m3_sys_shape_corner_value_large_increased</item>
+    <item name="shapeCornerSizeExtraLarge">@dimen/m3_sys_shape_corner_value_extra_large</item>
+    <item name="shapeCornerSizeExtraLargeIncreased">@dimen/m3_sys_shape_corner_value_extra_large_increased</item>
+    <item name="shapeCornerSizeExtraExtraLarge">@dimen/m3_sys_shape_corner_value_extra_extra_large</item>
     <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
     <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Small</item>
     <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Medium</item>
     <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.Large</item>
+    <item name="shapeAppearanceCornerLargeIncreased">@style/ShapeAppearance.Material3.Corner.LargeIncreased</item>
     <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+    <item name="shapeAppearanceCornerExtraLargeIncreased">@style/ShapeAppearance.Material3.Corner.ExtraLargeIncreased</item>
+    <item name="shapeAppearanceCornerExtraExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge</item>
 
     <!-- Deprecated shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
@@ -553,11 +564,22 @@
 
     <!-- Shape attributes. -->
     <item name="shapeCornerFamily">@integer/m3_sys_shape_corner_full_corner_family</item>
+    <item name="shapeCornerSizeExtraSmall">@dimen/m3_sys_shape_corner_value_extra_small</item>
+    <item name="shapeCornerSizeSmall">@dimen/m3_sys_shape_corner_value_small</item>
+    <item name="shapeCornerSizeMedium">@dimen/m3_sys_shape_corner_value_medium</item>
+    <item name="shapeCornerSizeLarge">@dimen/m3_sys_shape_corner_value_large</item>
+    <item name="shapeCornerSizeLargeIncreased">@dimen/m3_sys_shape_corner_value_large_increased</item>
+    <item name="shapeCornerSizeExtraLarge">@dimen/m3_sys_shape_corner_value_extra_large</item>
+    <item name="shapeCornerSizeExtraLargeIncreased">@dimen/m3_sys_shape_corner_value_extra_large_increased</item>
+    <item name="shapeCornerSizeExtraExtraLarge">@dimen/m3_sys_shape_corner_value_extra_extra_large</item>
     <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
     <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Small</item>
     <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Medium</item>
     <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.Large</item>
+    <item name="shapeAppearanceCornerLargeIncreased">@style/ShapeAppearance.Material3.Corner.LargeIncreased</item>
     <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+    <item name="shapeAppearanceCornerExtraLargeIncreased">@style/ShapeAppearance.Material3.Corner.ExtraLargeIncreased</item>
+    <item name="shapeAppearanceCornerExtraExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge</item>
 
     <!-- Deprecated shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>

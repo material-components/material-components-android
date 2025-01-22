@@ -75,5 +75,26 @@
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">0dp</item>
   </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.LargeIncreased" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">20dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.ExtraLargeIncreased" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">32dp</item>
+  </style>
+  <style name="ShapeAppearance.M3.Sys.Shape.Corner.ExtraExtraLarge" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">48dp</item>
+  </style>
+  <dimen name="m3_sys_shape_corner_value_none">0dp</dimen>
+  <dimen name="m3_sys_shape_corner_value_extra_small">4dp</dimen>
+  <dimen name="m3_sys_shape_corner_value_small">8dp</dimen>
+  <dimen name="m3_sys_shape_corner_value_medium">12dp</dimen>
+  <dimen name="m3_sys_shape_corner_value_large">16dp</dimen>
+  <dimen name="m3_sys_shape_corner_value_large_increased">20dp</dimen>
+  <dimen name="m3_sys_shape_corner_value_extra_large">28dp</dimen>
+  <dimen name="m3_sys_shape_corner_value_extra_large_increased">32dp</dimen>
+  <dimen name="m3_sys_shape_corner_value_extra_extra_large">48dp</dimen>
 
 </resources>
