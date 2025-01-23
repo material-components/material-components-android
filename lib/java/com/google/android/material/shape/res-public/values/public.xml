@@ -68,7 +68,10 @@
   <public name="ShapeAppearance.Material3.Corner.Small" type="style"/>
   <public name="ShapeAppearance.Material3.Corner.Medium" type="style"/>
   <public name="ShapeAppearance.Material3.Corner.Large" type="style"/>
+  <public name="ShapeAppearance.Material3.Corner.LargeIncreased" type="style"/>
   <public name="ShapeAppearance.Material3.Corner.ExtraLarge" type="style"/>
+  <public name="ShapeAppearance.Material3.Corner.ExtraLargeIncreased" type="style"/>
+  <public name="ShapeAppearance.Material3.Corner.ExtraExtraLarge" type="style"/>
   <public name="ShapeAppearance.Material3.Corner.Full" type="style"/>
 
   <public name="ShapeAppearanceOverlay.Material3.Corner.Top" type="style"/>
