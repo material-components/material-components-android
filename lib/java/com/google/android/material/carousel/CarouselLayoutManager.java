@@ -121,8 +121,8 @@ public class CarouselLayoutManager extends LayoutManager
 
   private final OnLayoutChangeListener recyclerViewSizeChangeListener =
       (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-        // If RV dimen values have changed, refresh the keyline state.
-        if (left != oldLeft || top != oldTop || right != oldRight || bottom != oldBottom) {
+        // If RV width or height values have changed, refresh the keyline state.
+        if ((right - left != oldRight - oldLeft) || (bottom - top != oldBottom - oldTop)) {
           v.post(this::refreshKeylineState);
         }
       };
@@ -297,9 +297,11 @@ public class CarouselLayoutManager extends LayoutManager
     boolean isRtl = isLayoutRtl();
 
     boolean isInitialLoad = keylineStateList == null;
-    // If a keyline state hasn't been created, use the first child as a representative of how each
-    // child would like to be measured and allow the strategy to create a keyline state.
-    if (isInitialLoad) {
+    // If a keyline state hasn't been created or is the wrong size, use the first child as a
+    // representative of how each child would like to be measured and allow the strategy to create
+    // a keyline state.
+    if (isInitialLoad
+        || keylineStateList.getDefaultState().getCarouselSize() != getContainerSize()) {
       recalculateKeylineStateList(recycler);
     }
 

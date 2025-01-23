@@ -238,7 +238,7 @@ public class KeylineStateListTest {
         };
 
     KeylineState state =
-        new KeylineState.Builder(40F, 100F)
+        new KeylineState.Builder(40F, 100)
             .addAnchorKeyline(-10F, getKeylineMaskPercentage(20F, 40F), 20F)
             .addKeyline(10F, getKeylineMaskPercentage(20F, 40F), 20F, false)
             .addKeyline(40F, 0F, 40F, true)

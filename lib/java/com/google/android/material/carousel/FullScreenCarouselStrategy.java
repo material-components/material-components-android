@@ -45,7 +45,7 @@ public class FullScreenCarouselStrategy extends CarouselStrategy {
   @NonNull
   public KeylineState onFirstChildMeasuredWithMargins(
       @NonNull Carousel carousel, @NonNull View child) {
-    float availableSpace;
+    int availableSpace;
     LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
     float childMargins;
     if (carousel.isHorizontal()) {

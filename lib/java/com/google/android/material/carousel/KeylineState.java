@@ -60,11 +60,14 @@ public final class KeylineState {
   private final int firstFocalKeylineIndex;
   private final int lastFocalKeylineIndex;
 
+  private final int carouselSize;
+
   private KeylineState(
       float itemSize,
       List<Keyline> keylines,
       int firstFocalKeylineIndex,
-      int lastFocalKeylineIndex) {
+      int lastFocalKeylineIndex,
+      int carouselSize) {
     this.itemSize = itemSize;
     this.keylines = Collections.unmodifiableList(keylines);
     this.firstFocalKeylineIndex = firstFocalKeylineIndex;
@@ -74,6 +77,7 @@ public final class KeylineState {
         this.totalVisibleFocalItems += 1;
       }
     }
+    this.carouselSize = carouselSize;
   }
 
   /**
@@ -165,6 +169,11 @@ public final class KeylineState {
     return keylines.size() - anchorKeylines;
   }
 
+  /** Returns the size of the carousel used to build this keyline state. */
+  int getCarouselSize() {
+    return carouselSize;
+  }
+
   /**
    * Linearly interpolate between two {@link KeylineState}s.
    *
@@ -198,7 +207,11 @@ public final class KeylineState {
             from.getLastFocalKeylineIndex(), to.getLastFocalKeylineIndex(), progress);
 
     return new KeylineState(
-        from.getItemSize(), keylines, focalKeylineFirstIndex, focalKeylineLastIndex);
+        from.getItemSize(),
+        keylines,
+        focalKeylineFirstIndex,
+        focalKeylineLastIndex,
+        from.carouselSize);
   }
 
   /**
@@ -207,19 +220,18 @@ public final class KeylineState {
    * <p>This is used to reverse a keyline state for RTL layouts.
    *
    * @param keylineState the {@link KeylineState} to reverse
-   * @param availableSpace the space in which the keylines calculate whether or not they are cut
-   *     off.
+   * @param carouselSize the size of the carousel used to build this keyline state
    * @return a new {@link KeylineState} that has all keylines reversed.
    */
-  static KeylineState reverse(KeylineState keylineState, float availableSpace) {
+  static KeylineState reverse(KeylineState keylineState, int carouselSize) {
 
     KeylineState.Builder builder =
-        new KeylineState.Builder(keylineState.getItemSize(), availableSpace);
+        new KeylineState.Builder(keylineState.getItemSize(), carouselSize);
 
     // The new start offset should now be the same distance from the left of the carousel container
     // as the last item's right was from the right of the container.
     float start =
-        availableSpace
+        carouselSize
             - keylineState.getLastKeyline().locOffset
             - (keylineState.getLastKeyline().maskedItemSize / 2F);
     for (int i = keylineState.getKeylines().size() - 1; i >= 0; i--) {
@@ -262,7 +274,7 @@ public final class KeylineState {
 
     private final float itemSize;
 
-    private final float availableSpace;
+    private final int carouselSize;
 
     // A list of keylines that hold all values except the Keyline#loc which needs to be calculated
     // in the build method.
@@ -281,11 +293,11 @@ public final class KeylineState {
      *
      * @param itemSize The size of a fully unmasked item. This is the size that will be used by the
      *     carousel to measure and lay out all children, overriding each child's desired size.
-     * @param availableSpace The available space of the carousel the keylines calculate cutoffs by.
+     * @param carouselSize the size of the carousel used to build this keyline state.
      */
-    public Builder(float itemSize, float availableSpace) {
+    public Builder(float itemSize, int carouselSize) {
       this.itemSize = itemSize;
-      this.availableSpace = availableSpace;
+      this.carouselSize = carouselSize;
     }
 
     /**
@@ -493,8 +505,8 @@ public final class KeylineState {
       // sides, only the end cutoff will be included in the cutoff.
       float keylineStart = offsetLoc - maskedItemSize / 2F;
       float keylineEnd = offsetLoc + maskedItemSize / 2F;
-      if (keylineEnd > availableSpace) {
-        cutoff = Math.abs(keylineEnd - max(keylineEnd - maskedItemSize, availableSpace));
+      if (keylineEnd > carouselSize) {
+        cutoff = Math.abs(keylineEnd - max(keylineEnd - maskedItemSize, carouselSize));
       } else if (keylineStart < 0) {
         cutoff = Math.abs(keylineStart - min(keylineStart + maskedItemSize, 0));
       }
@@ -609,7 +621,12 @@ public final class KeylineState {
         keylines.add(keyline);
       }
 
-      return new KeylineState(itemSize, keylines, firstFocalKeylineIndex, lastFocalKeylineIndex);
+      return new KeylineState(
+          itemSize,
+          keylines,
+          firstFocalKeylineIndex,
+          lastFocalKeylineIndex,
+          carouselSize);
     }
 
     /**

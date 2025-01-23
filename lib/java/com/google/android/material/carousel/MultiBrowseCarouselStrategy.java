@@ -59,9 +59,9 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
   @NonNull
   public KeylineState onFirstChildMeasuredWithMargins(
       @NonNull Carousel carousel, @NonNull View child) {
-    float availableSpace = carousel.getContainerHeight();
+    int carouselSize = carousel.getContainerHeight();
     if (carousel.isHorizontal()) {
-      availableSpace = carousel.getContainerWidth();
+      carouselSize = carousel.getContainerWidth();
     }
 
     LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
@@ -77,7 +77,7 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
     float smallChildSizeMax = getSmallItemSizeMax() + childMargins;
     smallChildSizeMax = max(smallChildSizeMax, smallChildSizeMin);
 
-    float targetLargeChildSize = min(measuredChildSize + childMargins, availableSpace);
+    float targetLargeChildSize = min(measuredChildSize + childMargins, carouselSize);
     // Ideally we would like to create a balanced arrangement where a small item is 1/3 the size of
     // the large item and medium items are sized between large and small items. Clamp the small
     // target size within our min-max range and as close to 1/3 of the target large item size as
@@ -95,7 +95,7 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
     // then finally 1.
 
     int[] smallCounts = SMALL_COUNTS;
-    if (availableSpace < smallChildSizeMin * 2) {
+    if (carouselSize < smallChildSizeMin * 2) {
       // If the available space is too small to fit a large item and small item and a large item
       // (large items must be at least as big as a small item), allow arrangements with no small
       // items.
@@ -111,18 +111,18 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
     // Find the minimum space left for large items after filling the carousel with the most
     // permissible medium and small items to determine a plausible minimum large count.
     float minAvailableLargeSpace =
-        availableSpace
+        carouselSize
             - (targetMediumChildSize * maxValue(mediumCounts))
             - (smallChildSizeMax * maxValue(smallCounts));
     int largeCountMin = (int) max(1, floor(minAvailableLargeSpace / targetLargeChildSize));
-    int largeCountMax = (int) ceil(availableSpace / targetLargeChildSize);
+    int largeCountMax = (int) ceil(carouselSize / targetLargeChildSize);
     int[] largeCounts = new int[largeCountMax - largeCountMin + 1];
     for (int i = 0; i < largeCounts.length; i++) {
       largeCounts[i] = largeCountMax - i;
     }
 
     Arrangement arrangement = Arrangement.findLowestCostArrangement(
-        availableSpace,
+        carouselSize,
         targetSmallChildSize,
         smallChildSizeMin,
         smallChildSizeMax,
@@ -139,7 +139,7 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
       // counts, we call `findLowestCostArrangement` again with the item counts set.
       arrangement =
           Arrangement.findLowestCostArrangement(
-              availableSpace,
+              carouselSize,
               targetSmallChildSize,
               smallChildSizeMin,
               smallChildSizeMax,
@@ -153,7 +153,7 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
     return createKeylineState(
         child.getContext(),
         childMargins,
-        availableSpace,
+        carouselSize,
         arrangement,
         carousel.getCarouselAlignment());
   }
