@@ -115,7 +115,7 @@ To show the picker to the user:
 picker.show(supportFragmentManager, "tag")
 ```
 
-Subscribe to button clicks or dismiss events with the following calls:
+Subscribe to button clicks, cancel and dismiss events with the following calls:
 
 ```kt
 picker.addOnPositiveButtonClickListener {
@@ -125,7 +125,7 @@ picker.addOnNegativeButtonClickListener {
     // Respond to negative button click.
 }
 picker.addOnCancelListener {
-    // Respond to cancel button click.
+    // Respond to cancel events.
 }
 picker.addOnDismissListener {
     // Respond to dismiss events.
