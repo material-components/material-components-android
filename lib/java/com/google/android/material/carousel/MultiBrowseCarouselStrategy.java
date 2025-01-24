@@ -95,7 +95,7 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
     // then finally 1.
 
     int[] smallCounts = SMALL_COUNTS;
-    if (carouselSize < smallChildSizeMin * 2) {
+    if (carouselSize <= smallChildSizeMin * 2) {
       // If the available space is too small to fit a large item and small item and a large item
       // (large items must be at least as big as a small item), allow arrangements with no small
       // items.
@@ -134,7 +134,19 @@ public final class MultiBrowseCarouselStrategy extends CarouselStrategy {
 
     keylineCount = arrangement.getItemCount();
 
-    if (ensureArrangementFitsItemCount(arrangement, carousel.getItemCount())) {
+    boolean refreshArrangement =
+        ensureArrangementFitsItemCount(arrangement, carousel.getItemCount());
+
+    // Ensure that the arrangement is never only filled with large items unless there's no space for
+    // 2 small item.
+    if (arrangement.mediumCount == 0
+        && arrangement.smallCount == 0
+        && carouselSize > 2 * smallChildSizeMin) {
+      arrangement.smallCount = 1;
+      refreshArrangement = true;
+    }
+
+    if (refreshArrangement) {
       // In case counts changed after ensuring the previous arrangement fit the item
       // counts, we call `findLowestCostArrangement` again with the item counts set.
       arrangement =
