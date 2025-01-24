@@ -1642,6 +1642,12 @@ public class CarouselLayoutManager extends LayoutManager
     updateItemCount();
   }
 
+  @Override
+  public void onItemsChanged(@NonNull RecyclerView recyclerView) {
+    super.onItemsChanged(recyclerView);
+    updateItemCount();
+  }
+
   private void updateItemCount() {
     int newItemCount = getItemCount();
 
