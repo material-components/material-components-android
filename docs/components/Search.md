@@ -111,11 +111,17 @@ Element                      | Attribute                   | Related method(s)  
 
 ## Styles
 
-Element                      | Style
----------------------------- | ----------------------------
-**Search Bar Default style** | `Widget.Material3.SearchBar`
+Element                       | Style
+----------------------------- | ----------------------------
+**Search Bar Default style**  | `Widget.Material3.SearchBar`
+**Search View Toolbar style** | `Widget.Material3.SearchView.Toolbar`
+**Search View Toolbar height**| `@dimen/m3_searchview_height`
 
 Default search bar style theme attribute: `?attr/materialSearchBarStyle`.
+
+Search view toolbar theme attribute: `?attr/materialSearchViewToolbarStyle`.
+Search view toolbar height theme attribute:
+`?attr/materialSearchViewToolbarHeight`.
 
 ### Scrolling Behavior
 
