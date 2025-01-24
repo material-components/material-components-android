@@ -95,6 +95,7 @@
   android:layout_height="wrap_content"
   android:layout_gravity="left|center"
   android:layout_margin="16dp"
+  app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
   android:visibility="gone">
 
   <LinearLayout
@@ -114,6 +115,7 @@
   android:layout_height="wrap_content"
   android:layout_gravity="right|center"
   android:layout_margin="16dp"
+  app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
   android:visibility="gone">
 
   <LinearLayout
@@ -133,6 +135,7 @@
   android:layout_height="wrap_content"
   android:layout_gravity="bottom|center"
   style="?attr/floatingToolbarVibrantStyle"
+  app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
   android:layout_margin="16dp">
 
   <LinearLayout

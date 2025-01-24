@@ -35,11 +35,9 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import com.google.android.material.behavior.HideViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -54,11 +52,10 @@ import com.google.android.material.shape.ShapeAppearanceModel;
  * provides styling for the provided child to give a uniform "floating toolbar" appearance to the
  * {@link android.view.ViewGroup}.
  */
-public class FloatingToolbarLayout extends FrameLayout implements AttachedBehavior {
+public class FloatingToolbarLayout extends FrameLayout {
 
   private static final String TAG = FloatingToolbarLayout.class.getSimpleName();
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_FloatingToolbar;
-  @Nullable private Behavior behavior;
 
   private boolean marginLeftSystemWindowInsets;
   private boolean marginTopSystemWindowInsets;
@@ -180,20 +177,4 @@ public class FloatingToolbarLayout extends FrameLayout implements AttachedBehavi
 
     attributes.recycle();
   }
-
-  @Override
-  @NonNull
-  public Behavior getBehavior() {
-    if (behavior == null) {
-      behavior = new Behavior();
-    }
-    return behavior;
-  }
-
-  /**
-   * Behavior designed for use with {@link FloatingToolbarLayout} instances. Its main function is to
-   * hide the {@link FloatingToolbarLayout} view when scrolling. Supports scrolling the floating
-   * toolbar off of either the right, bottom or left edge of the screen.
-   */
-  public static class Behavior extends HideViewOnScrollBehavior<FloatingToolbarLayout> {}
 }

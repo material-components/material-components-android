@@ -67,8 +67,9 @@ Here's what a typical layout would look like:
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|center"
+    app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior"
     android:layout_margin="16dp">
-    
+
     <!-- floating toolbar sample content -->
     <LinearLayout
       android:id="@+id/floating_toolbar_child"
@@ -111,10 +112,20 @@ Here's what a typical layout would look like:
 A Floating Toolbar is a `FrameLayout` that provides additional styling and functionality.
 You may add children to it as you would to a `FrameLayout`.
 
-When inside a `CoordinatorLayout`, a floating toolbar will hide itself on scroll using `CoordinatorLayout.Behavior`.
+Floating toolbars can hide on scroll if inside a `CoordinatorLayout` by setting the following `CoordinatorLayout.Behavior` through the `app:layout_behavior` attribute:
 
-Note that the Material3 style should be explicitly set on the `FloatingToolbarLayout`. See the full list of [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingtoolbar/res/values/styles.xml). Otherwise the default horizontal style will be used and `android:layout_gravity` and `android:layout_margin`
-will need to be set explicitly.
+```xml
+  <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
+    android:id="@+id/floating_toolbar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center"
+    app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
+  ...
+</com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+```
+
+Note that the default M3 style is the horizontal standard color styling. Vibrant color or vertical styles should be explicitly set on the `FloatingToolbarLayout`. M3 stylings for specific components may also be defined, such as for icon buttons. These are recommended to be set explicitly on the corresponding components inside `FloatingToolbarLayout`. See the full list of [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingtoolbar/res/values/styles.xml).
 
 API and source code:
 
