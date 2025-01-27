@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,5 +19,4 @@
   <string name="bottomsheet_drag_handle_content_description">টেনে আনার হ্যান্ডেল</string>
   <string name="bottomsheet_action_expand">স্ক্রিনের নিচে অ্যাটাচ করা শিট বড় করুন</string>
   <string name="bottomsheet_action_collapse">স্ক্রিনের নিচে অ্যাটাচ করা শিট আড়াল করুন</string>
-  <string name="bottomsheet_drag_handle_clicked">টেনে আনার হ্যান্ডেলে ডবল ট্যাপ করা হয়েছে</string>
 </resources>

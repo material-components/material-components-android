@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,5 +19,4 @@
   <string name="bottomsheet_drag_handle_content_description">വലിച്ചിടുന്നതിനുള്ള ഹാൻഡിൽ</string>
   <string name="bottomsheet_action_expand">ബോട്ടം ഷീറ്റ് വികസിപ്പിക്കുക</string>
   <string name="bottomsheet_action_collapse">ബോട്ടം ഷീറ്റ് ചുരുക്കുക</string>
-  <string name="bottomsheet_drag_handle_clicked">വലിച്ചിടുന്നതിനുള്ള ഹാൻഡിൽ ഡബിൾ ടാപ്പ് ചെയ്തു</string>
 </resources>

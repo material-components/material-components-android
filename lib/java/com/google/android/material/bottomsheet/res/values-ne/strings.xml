@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -19,5 +19,4 @@
   <string name="bottomsheet_drag_handle_content_description">ड्र्याग ह्यान्डल</string>
   <string name="bottomsheet_action_expand">पुछारको पाना एक्स्पान्ड गर्नुहोस्</string>
   <string name="bottomsheet_action_collapse">पुछारको पाना कोल्याप्स गर्नुहोस्</string>
-  <string name="bottomsheet_drag_handle_clicked">ड्र्याग ह्यान्डलमा डबल ट्याप गरियो</string>
 </resources>

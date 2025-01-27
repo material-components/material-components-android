@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">החלפה לשיטת קלט של טקסט</string>
   <string name="mtrl_picker_a11y_prev_month">מעבר לחודש הקודם</string>
   <string name="mtrl_picker_a11y_next_month">מעבר לחודש הבא</string>
-  <string name="mtrl_picker_toggle_to_year_selection">יש להקיש כדי לעבור לתצוגת שנתית</string>
-  <string name="mtrl_picker_toggle_to_day_selection">יש להקיש כדי לעבור לתצוגת יומן</string>
+  <string name="mtrl_picker_toggle_to_year_selection">יש ללחוץ כדי לעבור לתצוגת שנתית</string>
+  <string name="mtrl_picker_toggle_to_day_selection">יש ללחוץ כדי לעבור לתצוגת יומן</string>
   <string name="mtrl_picker_toggled_to_year_selection">בוצע מעבר לתצוגה שנתית</string>
   <string name="mtrl_picker_toggled_to_day_selection">עברת לתצוגת יומן</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
