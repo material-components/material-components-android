@@ -263,6 +263,7 @@ abstract class BaseSlider<
   private static final double THRESHOLD = .0001;
   private static final float THUMB_WIDTH_PRESSED_RATIO = .5f;
   private static final int TRACK_CORNER_SIZE_UNSET = -1;
+  private static final float TOUCH_SLOP_RATIO = .8f;
 
   static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Slider;
   static final int UNIT_VALUE = 1;
@@ -349,7 +350,8 @@ abstract class BaseSlider<
   @Px private int trackIconSize;
   @Px private int trackIconPadding;
   private int labelPadding;
-  private float touchDownX;
+  private float touchDownAxis1;
+  private float touchDownAxis2;
   private MotionEvent lastEvent;
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
@@ -2964,18 +2966,25 @@ abstract class BaseSlider<
       return false;
     }
 
-    float eventCoordinate = isVertical() ? event.getY() : event.getX();
-    touchPosition = (eventCoordinate - trackSidePadding) / trackWidth;
+    float eventCoordinateAxis1 = isVertical() ? event.getY() : event.getX();
+    float eventCoordinateAxis2 = isVertical() ? event.getX() : event.getY();
+    touchPosition = (eventCoordinateAxis1 - trackSidePadding) / trackWidth;
     touchPosition = max(0, touchPosition);
     touchPosition = min(1, touchPosition);
 
     switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
-        touchDownX = eventCoordinate;
+        touchDownAxis1 = eventCoordinateAxis1;
+        touchDownAxis2 = eventCoordinateAxis2;
 
         // If we're inside a vertical scrolling container,
         // we should start dragging in ACTION_MOVE
-        if (isPotentialVerticalScroll(event)) {
+        if (!isVertical() && isPotentialVerticalScroll(event)) {
+          break;
+        }
+        // If we're inside a horizontal scrolling container,
+        // we should start dragging in ACTION_MOVE
+        if (isVertical() && isPotentialHorizontalScroll(event)) {
           break;
         }
 
@@ -2998,8 +3007,15 @@ abstract class BaseSlider<
       case MotionEvent.ACTION_MOVE:
         if (!thumbIsPressed) {
           // Check if we're trying to scroll vertically instead of dragging this Slider
-          if (isPotentialVerticalScroll(event)
-              && abs(eventCoordinate - touchDownX) < scaledTouchSlop) {
+          if (!isVertical()
+              && isPotentialVerticalScroll(event)
+              && abs(eventCoordinateAxis1 - touchDownAxis1) < scaledTouchSlop) {
+            return false;
+          }
+          // Check if we're trying to scroll horizontally instead of dragging this Slider
+          if (isVertical()
+              && isPotentialHorizontalScroll(event)
+              && abs(eventCoordinateAxis2 - touchDownAxis2) < scaledTouchSlop * TOUCH_SLOP_RATIO) {
             return false;
           }
           getParent().requestDisallowInterceptTouchEvent(true);
@@ -3479,12 +3495,29 @@ abstract class BaseSlider<
     return false;
   }
 
+  private boolean isInHorizontalScrollingContainer() {
+    ViewParent p = getParent();
+    while (p instanceof ViewGroup) {
+      ViewGroup parent = (ViewGroup) p;
+      boolean canScrollHorizontally = parent.canScrollHorizontally(1) || parent.canScrollHorizontally(-1);
+      if (canScrollHorizontally && parent.shouldDelayChildPressedState()) {
+        return true;
+      }
+      p = p.getParent();
+    }
+    return false;
+  }
+
   private static boolean isMouseEvent(MotionEvent event) {
     return event.getToolType(0) == MotionEvent.TOOL_TYPE_MOUSE;
   }
 
   private boolean isPotentialVerticalScroll(MotionEvent event) {
     return !isMouseEvent(event) && isInVerticalScrollingContainer();
+  }
+
+  private boolean isPotentialHorizontalScroll(MotionEvent event) {
+    return !isMouseEvent(event) && isInHorizontalScrollingContainer();
   }
 
   @SuppressWarnings("unchecked")
