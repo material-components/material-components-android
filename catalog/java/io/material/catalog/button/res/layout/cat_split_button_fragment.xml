@@ -65,7 +65,7 @@
       <com.google.android.material.button.MaterialSplitButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-      <Button
+      <com.google.android.material.button.MaterialButton
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:paddingTop="6dp"
@@ -191,6 +191,40 @@
       <Button
           style="?attr/materialSplitButtonIconFilledTonalStyle"
           android:id="@+id/expand_more_or_less_tonal"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingStart="14dp"
+          android:paddingEnd="14dp"
+          android:minWidth="@dimen/mtrl_min_touch_target_size"
+          android:contentDescription="@string/cat_split_button_label_chevron"
+          app:icon="@drawable/m3_split_button_chevron_avd"/>
+      </com.google.android.material.button.MaterialSplitButton>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
+        android:text="@string/cat_split_button_subheader_popup_menu"
+        android:textAppearance="?attr/textAppearanceSubtitle1"/>
+      <com.google.android.material.button.MaterialSplitButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+      <com.google.android.material.button.MaterialButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:paddingTop="6dp"
+          android:paddingBottom="6dp"
+          android:paddingStart="@dimen/m3_comp_split_button_small_leading_button_leading_space"
+          android:paddingEnd="@dimen/m3_comp_split_button_small_leading_button_trailing_space"
+          android:minWidth="@dimen/mtrl_min_touch_target_size"
+          android:contentDescription="@string/cat_split_button_label_edit"
+          app:icon="@drawable/ic_edit_vd_theme_24dp"
+          app:iconSize="20dp"
+          app:iconPadding="0dp"/>
+      <com.google.android.material.button.MaterialButton
+          style="?attr/materialSplitButtonIconFilledStyle"
+          android:id="@+id/expand_more_or_less_filled_icon_popup"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:paddingStart="14dp"

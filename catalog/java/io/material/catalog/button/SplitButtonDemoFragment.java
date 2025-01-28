@@ -19,13 +19,17 @@ package io.material.catalog.button;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+import androidx.appcompat.widget.PopupMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
+import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialSplitButton;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -52,7 +56,35 @@ public class SplitButtonDemoFragment extends DemoFragment {
             splitButton.setEnabled(isChecked);
           }
         });
+
+    // Popup menu demo for split button
+    MaterialButton button =
+        (MaterialButton) view.findViewById(R.id.expand_more_or_less_filled_icon_popup);
+    button.addOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          if (isChecked) {
+            showMenu(button, R.menu.split_button_menu);
+          }
+        });
+
     return view;
+  }
+
+  @SuppressWarnings("RestrictTo")
+  private void showMenu(View v, @MenuRes int menuRes) {
+    PopupMenu popup = new PopupMenu(getContext(), v);
+    // Inflating the Popup using XML file
+    popup.getMenuInflater().inflate(menuRes, popup.getMenu());
+    popup.setOnMenuItemClickListener(
+        menuItem -> {
+          Snackbar.make(
+                  getActivity().findViewById(android.R.id.content),
+                  menuItem.getTitle(),
+                  Snackbar.LENGTH_LONG)
+              .show();
+          return true;
+        });
+    popup.show();
   }
 
   @LayoutRes

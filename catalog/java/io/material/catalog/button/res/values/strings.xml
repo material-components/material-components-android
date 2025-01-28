@@ -87,6 +87,10 @@
   <string name="cat_multi_select">Multi-select</string>
   <string name="cat_split_button_subheader_filled" translatable="false">Split button, primary</string>
   <string name="cat_split_button_subheader_filled_tonal" translatable="false">Split button, secondary</string>
+  <string name="cat_split_button_subheader_popup_menu" translatable="false">Split button, popup menu</string>
+  <string name="cat_split_button_popup_menu_item_one" translatable="false">List item 1</string>
+  <string name="cat_split_button_popup_menu_item_two" translatable="false">List item 2</string>
+  <string name="cat_split_button_popup_menu_item_three" translatable="false">List item 3</string>
   <string name="cat_icon_only" description="A label for icon only buttons below. [CHAR LIMIT=NONE]">Icon only</string>
   <string name="cat_icon_only_toggle" description="A label for icon only toggle buttons below. [CHAR LIMIT=NONE]">Icon only toggle</string>
   <string name="cat_label_only" description="A label for lebal only buttons below. [CHAR LIMIT=NONE]">Label only</string>
