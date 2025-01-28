@@ -27,10 +27,15 @@
 
   <style name="Platform.MaterialComponents.Light.Dialog" parent="Theme.AppCompat.Light.Dialog"/>
 
-  <!-- All new attributes should be set in the following four Base.V14 themes. -->
+  <!-- Themes in the "Base.Theme" family vary based on the current platform
+       version to provide the correct basis on each device. You probably don't
+       want to use them directly in your apps.
+
+       Themes in the "Theme.MaterialComponents" family are meant to be extended or used
+       directly by apps. -->
   <eat-comment/>
 
-  <style name="Base.V14.Theme.MaterialComponents.Dialog.Bridge" parent="Platform.MaterialComponents.Dialog">
+  <style name="Base.Theme.MaterialComponents.Dialog.Bridge" parent="Platform.MaterialComponents.Dialog">
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_dark_default_color_primary_variant</item>
@@ -113,7 +118,7 @@
     <item name="elevationOverlayColor">?attr/colorOnSurface</item>
   </style>
 
-  <style name="Base.V14.Theme.MaterialComponents.Light.Dialog.Bridge" parent="Platform.MaterialComponents.Light.Dialog">
+  <style name="Base.Theme.MaterialComponents.Light.Dialog.Bridge" parent="Platform.MaterialComponents.Light.Dialog">
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
@@ -195,17 +200,5 @@
     <item name="elevationOverlayEnabled">false</item>
     <item name="elevationOverlayColor">?attr/colorOnSurface</item>
   </style>
-
-  <!-- Themes in the "Base.Theme" family vary based on the current platform
-       version to provide the correct basis on each device. You probably don't
-       want to use them directly in your apps.
-
-       Themes in the "Theme.MaterialComponents" family are meant to be extended or used
-       directly by apps. -->
-  <eat-comment/>
-
-  <style name="Base.Theme.MaterialComponents.Dialog.Bridge" parent="Base.V14.Theme.MaterialComponents.Dialog.Bridge"/>
-
-  <style name="Base.Theme.MaterialComponents.Light.Dialog.Bridge" parent="Base.V14.Theme.MaterialComponents.Light.Dialog.Bridge"/>
 
 </resources>
