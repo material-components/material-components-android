@@ -364,11 +364,14 @@ Element       | Attribute           | Related method(s)                         
 | **Color for tick's inactive part**  | `app:tickColorInactive`  | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary`                 |
 | **Radius for tick's active part**   | `app:tickRadiusActive`   | `setTickActiveRadius`<br/>`getTickActiveRadius`         | `null` (1/2 trackStopIndicatorSize)  |
 | **Radius for tick's inactive part** | `app:tickRadiusInactive` | `setTickInactiveRadius`<br/>`getTickInactiveRadius`     | `null` (1/2 trackStopIndicatorSize)  |
-| **Tick visible**                    | `app:tickVisible`        | `setTickVisible`<br/>`isTickVisible()`                  | `true`                               |
+| **Tick visible** (deprecated)       | `app:tickVisible`        | `setTickVisible`<br/>`isTickVisible()`                  | `true`                               |
+| **Tick visibility mode**            | `app:tickVisibilityMode` | `setTickVisibilityMode`<br/>`getTickVisibilityMode()`   | `autoLimit`                          |
 
 **Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
-`app:tickColorInative`. It's a shorthand for setting both values to the same
+`app:tickColorInactive`. It's a shorthand for setting both values to the same
 thing.
+
+**Note:** `app:tickVisible` is deprecated in favor of `app:tickVisibilityMode`.
 
 #### Styles
 

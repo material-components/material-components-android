@@ -35,6 +35,7 @@
   <public name="tickRadiusActive" type="attr" />
   <public name="tickRadiusInactive" type="attr" />
   <public name="tickVisible" type="attr" />
+  <public name="tickVisibilityMode" type="attr" />
   <public name="trackColorActive" type="attr" />
   <public name="trackColorInactive" type="attr" />
   <public name="trackHeight" type="attr" />
