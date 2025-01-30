@@ -25,6 +25,31 @@
   -->
   <style name="ThemeOverlay.Material3.Light" parent="ThemeOverlay.MaterialComponents.Light">
     <!-- Color palettes -->
+    <item name="colorPrimary">@color/m3_sys_color_light_primary</item>
+    <item name="colorOnPrimary">@color/m3_sys_color_light_on_primary</item>
+    <item name="colorPrimaryContainer">@color/m3_sys_color_light_primary_container</item>
+    <item name="colorOnPrimaryContainer">@color/m3_sys_color_light_on_primary_container</item>
+    <item name="colorPrimaryInverse">@color/m3_sys_color_light_inverse_primary</item>
+    <item name="colorPrimaryFixed">@color/m3_sys_color_primary_fixed</item>
+    <item name="colorPrimaryFixedDim">@color/m3_sys_color_primary_fixed_dim</item>
+    <item name="colorOnPrimaryFixed">@color/m3_sys_color_on_primary_fixed</item>
+    <item name="colorOnPrimaryFixedVariant">@color/m3_sys_color_on_primary_fixed_variant</item>
+    <item name="colorSecondary">@color/m3_sys_color_light_secondary</item>
+    <item name="colorOnSecondary">@color/m3_sys_color_light_on_secondary</item>
+    <item name="colorSecondaryContainer">@color/m3_sys_color_light_secondary_container</item>
+    <item name="colorOnSecondaryContainer">@color/m3_sys_color_light_on_secondary_container</item>
+    <item name="colorSecondaryFixed">@color/m3_sys_color_secondary_fixed</item>
+    <item name="colorSecondaryFixedDim">@color/m3_sys_color_secondary_fixed_dim</item>
+    <item name="colorOnSecondaryFixed">@color/m3_sys_color_on_secondary_fixed</item>
+    <item name="colorOnSecondaryFixedVariant">@color/m3_sys_color_on_secondary_fixed_variant</item>
+    <item name="colorTertiary">@color/m3_sys_color_light_tertiary</item>
+    <item name="colorOnTertiary">@color/m3_sys_color_light_on_tertiary</item>
+    <item name="colorTertiaryContainer">@color/m3_sys_color_light_tertiary_container</item>
+    <item name="colorOnTertiaryContainer">@color/m3_sys_color_light_on_tertiary_container</item>
+    <item name="colorTertiaryFixed">@color/m3_sys_color_tertiary_fixed</item>
+    <item name="colorTertiaryFixedDim">@color/m3_sys_color_tertiary_fixed_dim</item>
+    <item name="colorOnTertiaryFixed">@color/m3_sys_color_on_tertiary_fixed</item>
+    <item name="colorOnTertiaryFixedVariant">@color/m3_sys_color_on_tertiary_fixed_variant</item>
     <item name="android:colorBackground">@color/m3_sys_color_light_background</item>
     <item name="colorOnBackground">@color/m3_sys_color_light_on_background</item>
     <item name="colorSurface">@color/m3_sys_color_light_surface</item>
@@ -70,6 +95,31 @@
   -->
   <style name="ThemeOverlay.Material3.Dark" parent="ThemeOverlay.MaterialComponents.Dark">
     <!-- Color palettes -->
+    <item name="colorPrimary">@color/m3_sys_color_dark_primary</item>
+    <item name="colorOnPrimary">@color/m3_sys_color_dark_on_primary</item>
+    <item name="colorPrimaryContainer">@color/m3_sys_color_dark_primary_container</item>
+    <item name="colorOnPrimaryContainer">@color/m3_sys_color_dark_on_primary_container</item>
+    <item name="colorPrimaryInverse">@color/m3_sys_color_dark_inverse_primary</item>
+    <item name="colorPrimaryFixed">@color/m3_sys_color_primary_fixed</item>
+    <item name="colorPrimaryFixedDim">@color/m3_sys_color_primary_fixed_dim</item>
+    <item name="colorOnPrimaryFixed">@color/m3_sys_color_on_primary_fixed</item>
+    <item name="colorOnPrimaryFixedVariant">@color/m3_sys_color_on_primary_fixed_variant</item>
+    <item name="colorSecondary">@color/m3_sys_color_dark_secondary</item>
+    <item name="colorOnSecondary">@color/m3_sys_color_dark_on_secondary</item>
+    <item name="colorSecondaryContainer">@color/m3_sys_color_dark_secondary_container</item>
+    <item name="colorOnSecondaryContainer">@color/m3_sys_color_dark_on_secondary_container</item>
+    <item name="colorSecondaryFixed">@color/m3_sys_color_secondary_fixed</item>
+    <item name="colorSecondaryFixedDim">@color/m3_sys_color_secondary_fixed_dim</item>
+    <item name="colorOnSecondaryFixed">@color/m3_sys_color_on_secondary_fixed</item>
+    <item name="colorOnSecondaryFixedVariant">@color/m3_sys_color_on_secondary_fixed_variant</item>
+    <item name="colorTertiary">@color/m3_sys_color_dark_tertiary</item>
+    <item name="colorOnTertiary">@color/m3_sys_color_dark_on_tertiary</item>
+    <item name="colorTertiaryContainer">@color/m3_sys_color_dark_tertiary_container</item>
+    <item name="colorOnTertiaryContainer">@color/m3_sys_color_dark_on_tertiary_container</item>
+    <item name="colorTertiaryFixed">@color/m3_sys_color_tertiary_fixed</item>
+    <item name="colorTertiaryFixedDim">@color/m3_sys_color_tertiary_fixed_dim</item>
+    <item name="colorOnTertiaryFixed">@color/m3_sys_color_on_tertiary_fixed</item>
+    <item name="colorOnTertiaryFixedVariant">@color/m3_sys_color_on_tertiary_fixed_variant</item>
     <item name="android:colorBackground">@color/m3_sys_color_dark_background</item>
     <item name="colorOnBackground">@color/m3_sys_color_dark_on_background</item>
     <item name="colorSurface">@color/m3_sys_color_dark_surface</item>
