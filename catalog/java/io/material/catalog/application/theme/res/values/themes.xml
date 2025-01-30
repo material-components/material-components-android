@@ -22,6 +22,7 @@
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
     <item name="textInputSignInStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     <item name="windowActionModeOverlay">true</item>
+    <item name="sliderStyle">@style/Widget.Catalog.Slider</item>
   </style>
 
   <!-- A theme which sets the status bar color to transparent -->
