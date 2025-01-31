@@ -171,7 +171,7 @@ For example, if you want the Floating Toolbar to gain Talkback focus first, you 
 
 ### Anatomy and key properties
 
-The following is an anatomy diagram for the navigation rail:
+The following is an anatomy diagram for the floating toolbar:
 
 ![Floating toolbar anatomy diagram](assets/floatingtoolbar/ftbanatomy.png)
 
