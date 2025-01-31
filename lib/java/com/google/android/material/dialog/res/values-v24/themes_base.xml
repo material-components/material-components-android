@@ -15,11 +15,11 @@
   ~ limitations under the License.
 -->
 <resources>
-  <style name="Base.V24.Theme.Material3.Light.Dialog" parent="Base.V14.Theme.Material3.Light.Dialog">
+  <style name="Base.V24.Theme.Material3.Light.Dialog" parent="Base.V23.Theme.Material3.Light.Dialog">
     <item name="android:contextPopupMenuStyle">@style/Widget.Material3.PopupMenu.ContextMenu</item>
   </style>
 
-  <style name="Base.V24.Theme.Material3.Dark.Dialog" parent="Base.V14.Theme.Material3.Dark.Dialog">
+  <style name="Base.V24.Theme.Material3.Dark.Dialog" parent="Base.V23.Theme.Material3.Dark.Dialog">
     <item name="android:contextPopupMenuStyle">@style/Widget.Material3.PopupMenu.ContextMenu</item>
   </style>
 

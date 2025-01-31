@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,14 +15,6 @@
   ~ limitations under the License.
 -->
 <resources>
-  <style name="Base.V24.Theme.Material3.Light" parent="Base.V23.Theme.Material3.Light">
-    <item name="android:contextPopupMenuStyle">@style/Widget.Material3.PopupMenu.ContextMenu</item>
-  </style>
-
-  <style name="Base.V24.Theme.Material3.Dark" parent="Base.V23.Theme.Material3.Dark">
-    <item name="android:contextPopupMenuStyle">@style/Widget.Material3.PopupMenu.ContextMenu</item>
-  </style>
-
-  <style name="Base.Theme.Material3.Light" parent="Base.V24.Theme.Material3.Light"/>
-  <style name="Base.Theme.Material3.Dark" parent="Base.V24.Theme.Material3.Dark"/>
+  <style name="Base.Theme.Material3.Light" parent="Base.V23.Theme.Material3.Light"/>
+  <style name="Base.Theme.Material3.Dark" parent="Base.V23.Theme.Material3.Dark"/>
 </resources>
