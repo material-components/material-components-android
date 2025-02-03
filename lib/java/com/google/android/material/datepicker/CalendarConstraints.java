@@ -88,6 +88,10 @@ public final class CalendarConstraints implements Parcelable {
     return start.getDay(1) <= date && date <= end.getDay(end.daysInMonth);
   }
 
+  boolean isWithinBounds(Month month) {
+    return start.compareTo(month) <= 0 && end.compareTo(month) >= 0;
+  }
+
   /**
    * Returns the {@link DateValidator} that determines whether a date can be clicked and selected.
    */

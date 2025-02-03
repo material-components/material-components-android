@@ -463,26 +463,20 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           }
         });
 
-    monthNext.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            int currentItem = getLayoutManager().findFirstVisibleItemPosition();
-            if (currentItem + 1 < recyclerView.getAdapter().getItemCount()) {
-              setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem + 1));
-            }
-          }
-        });
-    monthPrev.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            int currentItem = getLayoutManager().findLastVisibleItemPosition();
-            if (currentItem - 1 >= 0) {
-              setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem - 1));
-            }
-          }
-        });
+    monthNext.setOnClickListener(view -> {
+      Month currentMonth = getCurrentMonth();
+      Month nextMonth = currentMonth.monthsLater(1);
+      if (calendarConstraints.isWithinBounds(nextMonth)) {
+        setCurrentMonth(nextMonth);
+      }
+    });
+    monthPrev.setOnClickListener(view -> {
+      Month currentMonth = getCurrentMonth();
+      Month prevMonth = currentMonth.monthsLater(-1);
+      if (calendarConstraints.isWithinBounds(prevMonth)) {
+        setCurrentMonth(prevMonth);
+      }
+    });
   }
 
   private void postSmoothRecyclerViewScroll(final int position) {
