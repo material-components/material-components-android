@@ -633,14 +633,6 @@
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Dark</item>
   </style>
 
-  <style name="Base.V23.Theme.Material3.Light" parent="Base.V14.Theme.Material3.Light">
-    <item name="colorControlHighlight">@color/m3_on_surface_variant_ripple_selector</item>
-  </style>
-
-  <style name="Base.V23.Theme.Material3.Dark" parent="Base.V14.Theme.Material3.Dark">
-    <item name="colorControlHighlight">@color/m3_on_surface_variant_ripple_selector</item>
-  </style>
-
   <style name="Base.Theme.Material3.Light" parent="Base.V14.Theme.Material3.Light"/>
   <style name="Base.Theme.Material3.Dark" parent="Base.V14.Theme.Material3.Dark"/>
 
