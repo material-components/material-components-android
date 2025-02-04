@@ -16,6 +16,8 @@
 
 package io.material.catalog.windowpreferences;
 
+import static android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build.VERSION;
@@ -31,6 +33,7 @@ public class WindowPreferencesManager {
 
   private static final String PREFERENCES_NAME = "window_preferences";
   private static final String KEY_EDGE_TO_EDGE_ENABLED = "edge_to_edge_enabled";
+  private static final String KEY_CUTOUT_MODE = "cutout_mode";
 
   private final Context context;
   private final OnApplyWindowInsetsListener listener;
@@ -69,6 +72,20 @@ public class WindowPreferencesManager {
     EdgeToEdgeUtils.applyEdgeToEdge(window, isEdgeToEdgeEnabled());
     ViewCompat.setOnApplyWindowInsetsListener(
         window.getDecorView(), isEdgeToEdgeEnabled() ? listener : null);
+  }
+
+  public void setCutoutMode(int cutoutMode) {
+    getSharedPreferences()
+        .edit()
+        .putInt(KEY_CUTOUT_MODE, cutoutMode)
+        .commit();
+  }
+
+  public void applyCutoutModePreference(Window window) {
+    if (VERSION.SDK_INT >= VERSION_CODES.P) {
+      window.getAttributes().layoutInDisplayCutoutMode =
+          getSharedPreferences().getInt(KEY_CUTOUT_MODE, LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT);
+    }
   }
 
   private SharedPreferences getSharedPreferences() {
