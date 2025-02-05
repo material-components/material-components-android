@@ -125,6 +125,7 @@
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
     <item name="drawerLayoutStyle">@style/Widget.Material3.DrawerLayout</item>
+    <item name="dockedToolbarStyle">@style/Widget.Material3.DockedToolbar</item>
     <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
     <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
     <item name="extendedFloatingActionButtonSecondaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary</item>
@@ -432,6 +433,7 @@
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
     <item name="drawerLayoutStyle">@style/Widget.Material3.DrawerLayout</item>
+    <item name="dockedToolbarStyle">@style/Widget.Material3.DockedToolbar</item>
     <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
     <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
     <item name="extendedFloatingActionButtonSecondaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary</item>
