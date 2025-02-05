@@ -419,8 +419,9 @@ public class NavigationRailView extends NavigationBarView {
               @NonNull WindowInsetsCompat insets,
               @NonNull RelativePadding initialPadding) {
             // Apply the top, bottom, and start padding for a start edge aligned
-            // NavigationRailView to dodge the system status and navigation bars
+            // NavigationRailView to dodge the system status/navigation bars and display cutouts
             Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets displayCutoutInsets = insets.getInsets(WindowInsetsCompat.Type.displayCutout());
             if (shouldApplyWindowInsetPadding(paddingTopSystemWindowInsets)) {
               initialPadding.top += systemBarInsets.top;
             }
@@ -428,8 +429,11 @@ public class NavigationRailView extends NavigationBarView {
               initialPadding.bottom += systemBarInsets.bottom;
             }
             if (shouldApplyWindowInsetPadding(paddingStartSystemWindowInsets)) {
-              initialPadding.start +=
-                  ViewUtils.isLayoutRtl(view) ? systemBarInsets.right : systemBarInsets.left;
+              if (ViewUtils.isLayoutRtl(view)) {
+                initialPadding.start += max(systemBarInsets.right, displayCutoutInsets.right);
+              } else {
+                initialPadding.start += max(systemBarInsets.left, displayCutoutInsets.left);
+              }
             }
             initialPadding.applyToView(view);
             return insets;
