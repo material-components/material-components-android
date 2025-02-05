@@ -336,6 +336,28 @@ See the full list of
 and
 [bottom navigation attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/res/values/attrs.xml).
 
+### Bottom Navigation on larger screens
+
+On medium screen sizes and larger, bottom navigation bars are recommended to be
+a horizontal item configuration, by setting `app:itemIconGravity` to be `start`
+instead of `top`. You can do this by
+[setting alternative layouts identified by resource qualifiers](https://developer.android.com/develop/ui/views/layout/responsive-adaptive-design-with-views#alternative_layout_resources).
+
+Here's an example:
+
+```xml
+<com.google.android.material.bottomnavigation.BottomNavigationView
+  android:id="@+id/bottom_navigation_bar"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:layout_gravity="bottom"
+  app:itemIconGravity="start"
+  app:itemGravity="center"
+  app:menu="@menu/bottom_navigation_menu"/>
+```
+
+!["Horizontal bottom navigation bar"](assets/bottomnav/bottomnav_horizontal.png)
+
 ## Theming a bottom navigation bar
 
 Bottom navigation supports
