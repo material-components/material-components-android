@@ -110,6 +110,13 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
   @Nullable private BaseCallback<Snackbar> callback;
 
+  /**
+   * This is only used as a temporary flag to opt-out of the new dismissal behavior for Snackbar
+   * with actions, which will never time out.
+   */
+  @SuppressWarnings("unused")
+  private boolean useLegacyDismissalBehavior = false;
+
   private Snackbar(
       @NonNull Context context,
       @NonNull ViewGroup parent,
@@ -162,6 +169,27 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public static Snackbar make(
       @NonNull View view, @NonNull CharSequence text, @Duration int duration) {
     return makeInternal(/* context= */ null, view, text, duration);
+  }
+
+  /**
+   * Make a Snackbar to display a message.
+   *
+   * <p>Snackbar will try and find a parent view to hold Snackbar's view from the value given to
+   * {@code view}. Snackbar will walk up the view tree trying to find a suitable parent, which is
+   * defined as a {@link CoordinatorLayout} or the window decor's content view, whichever comes
+   * first.
+   *
+   * <p>Having a {@link CoordinatorLayout} in your view hierarchy allows Snackbar to enable certain
+   * features, such as swipe-to-dismiss and automatically moving of widgets.
+   *
+   * @param view The view to find a parent from.
+   * @param resId The resource id of the string resource to use. Can be formatted text.
+   * @param duration How long to display the message. Can be {@link #LENGTH_SHORT}, {@link
+   *     #LENGTH_LONG}, {@link #LENGTH_INDEFINITE}, or a custom duration in milliseconds.
+   */
+  @NonNull
+  public static Snackbar make(@NonNull View view, @StringRes int resId, @Duration int duration) {
+    return make(view, view.getResources().getText(resId), duration);
   }
 
   /**
@@ -246,27 +274,6 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     int snackbarTextViewStyleResId = a.getResourceId(1, -1);
     a.recycle();
     return snackbarButtonStyleResId != -1 && snackbarTextViewStyleResId != -1;
-  }
-
-  /**
-   * Make a Snackbar to display a message.
-   *
-   * <p>Snackbar will try and find a parent view to hold Snackbar's view from the value given to
-   * {@code view}. Snackbar will walk up the view tree trying to find a suitable parent, which is
-   * defined as a {@link CoordinatorLayout} or the window decor's content view, whichever comes
-   * first.
-   *
-   * <p>Having a {@link CoordinatorLayout} in your view hierarchy allows Snackbar to enable certain
-   * features, such as swipe-to-dismiss and automatically moving of widgets.
-   *
-   * @param view The view to find a parent from.
-   * @param resId The resource id of the string resource to use. Can be formatted text.
-   * @param duration How long to display the message. Can be {@link #LENGTH_SHORT}, {@link
-   *     #LENGTH_LONG}, {@link #LENGTH_INDEFINITE}, or a custom duration in milliseconds.
-   */
-  @NonNull
-  public static Snackbar make(@NonNull View view, @StringRes int resId, @Duration int duration) {
-    return make(view, view.getResources().getText(resId), duration);
   }
 
   @Nullable
@@ -359,6 +366,18 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
             dispatchDismiss(BaseCallback.DISMISS_EVENT_ACTION);
           });
     }
+    return this;
+  }
+
+  /**
+   * Set whether to use the legacy dismissal behavior for Snackbar with actions. This is a temporary
+   * flag to allow apps to migrate to the new behavior, which will never timeout the Snackbar with
+   * actions. Do not use this for new usages.
+   */
+  @NonNull
+  @CanIgnoreReturnValue
+  public Snackbar setUseLegacyDismissalBehavior(boolean useLegacyDismissalBehavior) {
+    this.useLegacyDismissalBehavior = useLegacyDismissalBehavior;
     return this;
   }
 
