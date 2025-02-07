@@ -71,6 +71,7 @@ def srcDirs = [
   'dialog',
   'divider',
   'draggable',
+  'dockedtoolbar',
   'elevation',
   'imageview',
   'fab',
