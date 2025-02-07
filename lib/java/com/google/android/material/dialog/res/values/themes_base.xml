@@ -19,6 +19,41 @@
   <!-- All new attributes should be set in the follow four Base.V14 themes. -->
   <eat-comment/>
 
+  <!-- Base themes of Theme.Material3Expressive themes for dialogs. -->
+
+  <style name="Base.Theme.Material3Expressive.Light.Dialog" parent="Theme.Material3.Light.Dialog">
+    <!-- Color palettes. -->
+    <item name="colorOnPrimaryContainer">@color/m3_ref_palette_primary30</item>
+    <item name="colorOnSecondaryContainer">@color/m3_ref_palette_secondary30</item>
+    <item name="colorOnTertiaryContainer">@color/m3_ref_palette_tertiary30</item>
+    <item name="colorOnErrorContainer">@color/m3_ref_palette_error30</item>
+
+    <!-- Widget styles. -->
+
+  </style>
+
+  <style name="Base.Theme.Material3Expressive.Dark.Dialog" parent="Theme.Material3.Dark.Dialog">
+
+    <!-- Widget styles. -->
+
+  </style>
+
+  <style name="Base.Theme.Material3Expressive.Light.Dialog.FixedSize">
+    <item name="windowFixedWidthMajor">@dimen/abc_dialog_fixed_width_major</item>
+    <item name="windowFixedWidthMinor">@dimen/abc_dialog_fixed_width_minor</item>
+    <item name="windowFixedHeightMajor">@dimen/abc_dialog_fixed_height_major</item>
+    <item name="windowFixedHeightMinor">@dimen/abc_dialog_fixed_height_minor</item>
+  </style>
+
+  <style name="Base.Theme.Material3Expressive.Dark.Dialog.FixedSize">
+    <item name="windowFixedWidthMajor">@dimen/abc_dialog_fixed_width_major</item>
+    <item name="windowFixedWidthMinor">@dimen/abc_dialog_fixed_width_minor</item>
+    <item name="windowFixedHeightMajor">@dimen/abc_dialog_fixed_height_major</item>
+    <item name="windowFixedHeightMinor">@dimen/abc_dialog_fixed_height_minor</item>
+  </style>
+
+  <!-- Base themes of Theme.Material3 themes for dialogs. -->
+
   <style name="Base.V14.Theme.Material3.Light.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
     <item name="isMaterial3Theme">true</item>
 

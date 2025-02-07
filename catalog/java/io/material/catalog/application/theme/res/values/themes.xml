@@ -16,7 +16,7 @@
   -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="Theme.Catalog" parent="Theme.Material3.DayNight.NoActionBar">
+  <style name="Theme.Catalog" parent="Theme.Material3Expressive.DayNight.NoActionBar">
     <item name="preferenceTheme">@style/CatalogPreferenceThemeOverlay</item>
     <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
