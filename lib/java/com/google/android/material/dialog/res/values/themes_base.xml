@@ -16,10 +16,7 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <!-- All new attributes should be set in the follow four Base.V14 themes. -->
-  <eat-comment/>
-
-  <style name="Base.V14.Theme.Material3.Light.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+  <style name="Base.Theme.Material3.Light.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
     <item name="isMaterial3Theme">true</item>
 
     <!-- Color palettes -->
@@ -108,6 +105,7 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/Widget.Material3.PopupMenu.ContextMenu</item>
     <item name="drawerLayoutStyle">@style/Widget.Material3.DrawerLayout</item>
     <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
     <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
@@ -312,7 +310,7 @@
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Light</item>
   </style>
 
-  <style name="Base.V14.Theme.Material3.Dark.Dialog" parent="Theme.MaterialComponents.Dialog">
+  <style name="Base.Theme.Material3.Dark.Dialog" parent="Theme.MaterialComponents.Dialog">
     <item name="isMaterial3Theme">true</item>
 
     <!-- Color palettes -->
@@ -401,6 +399,7 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="android:contextPopupMenuStyle" tools:targetApi="n">@style/Widget.Material3.PopupMenu.ContextMenu</item>
     <item name="drawerLayoutStyle">@style/Widget.Material3.DrawerLayout</item>
     <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
     <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
@@ -603,9 +602,6 @@
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3.DynamicColors.Dark</item>
   </style>
 
-  <style name="Base.Theme.Material3.Light.Dialog" parent="Base.V14.Theme.Material3.Light.Dialog"/>
-  <style name="Base.Theme.Material3.Dark.Dialog" parent="Base.V14.Theme.Material3.Dark.Dialog"/>
-
   <style name="Base.Theme.Material3.Light.Dialog.FixedSize">
     <item name="windowFixedWidthMajor">@dimen/abc_dialog_fixed_width_major</item>
     <item name="windowFixedWidthMinor">@dimen/abc_dialog_fixed_width_minor</item>
@@ -620,7 +616,15 @@
     <item name="windowFixedHeightMinor">@dimen/abc_dialog_fixed_height_minor</item>
   </style>
 
-  <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="Base.V14.Theme.MaterialComponents.Dialog.Bridge">
+  <!-- Themes in the "Base.Theme" family vary based on the current platform
+       version to provide the correct basis on each device. You probably don't
+       want to use them directly in your apps.
+
+       Themes in the "Theme.MaterialComponents" family are meant to be extended or used
+       directly by apps. -->
+  <eat-comment/>
+
+  <style name="Base.Theme.MaterialComponents.Dialog" parent="Base.Theme.MaterialComponents.Dialog.Bridge">
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 
     <item name="colorPrimary">@color/design_dark_default_color_primary</item>
@@ -666,6 +670,7 @@
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+    <item name="android:alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert.Framework</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
 
     <!-- Type styles -->
@@ -673,11 +678,7 @@
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
   </style>
 
-  <style name="Base.V21.Theme.MaterialComponents.Dialog" parent="Base.V14.Theme.MaterialComponents.Dialog">
-    <item name="android:alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert.Framework</item>
-  </style>
-
-  <style name="Base.V14.Theme.MaterialComponents.Light.Dialog" parent="Base.V14.Theme.MaterialComponents.Light.Dialog.Bridge">
+  <style name="Base.Theme.MaterialComponents.Light.Dialog" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge">
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 
     <!-- Colors -->
@@ -723,28 +724,13 @@
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
+    <item name="android:alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework</item>
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
 
     <!-- Type styles -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
   </style>
-
-  <style name="Base.V21.Theme.MaterialComponents.Light.Dialog" parent="Base.V14.Theme.MaterialComponents.Light.Dialog">
-    <item name="android:alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework</item>
-  </style>
-
-  <!-- Themes in the "Base.Theme" family vary based on the current platform
-       version to provide the correct basis on each device. You probably don't
-       want to use them directly in your apps.
-
-       Themes in the "Theme.MaterialComponents" family are meant to be extended or used
-       directly by apps. -->
-  <eat-comment/>
-
-  <style name="Base.Theme.MaterialComponents.Dialog" parent="Base.V21.Theme.MaterialComponents.Dialog"/>
-
-  <style name="Base.Theme.MaterialComponents.Light.Dialog" parent="Base.V21.Theme.MaterialComponents.Light.Dialog"/>
 
   <style name="Base.Theme.MaterialComponents.Dialog.Alert">
     <item name="android:windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
