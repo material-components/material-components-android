@@ -28,6 +28,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 import android.text.format.Formatter;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import androidx.annotation.NonNull;
 import com.google.common.collect.EvictingQueue;
 import java.util.Queue;
 
@@ -129,7 +130,16 @@ public final class MemoryView extends AppCompatTextView {
     paint.setColor(colorPrimary);
   }
 
-  public void refreshMemStats(Runtime runtime) {
+  /** A wrapper around {@link Runtime} to allow mocking by tests. */
+  interface RuntimeWrapper {
+    long maxMemory();
+
+    long totalMemory();
+
+    long freeMemory();
+  }
+
+  public void refreshMemStats(@NonNull RuntimeWrapper runtime) {
     maxMemoryInBytes = runtime.maxMemory();
     long availableMemInBytes = maxMemoryInBytes - (runtime.totalMemory() - runtime.freeMemory());
     long usedMemInBytes = maxMemoryInBytes - availableMemInBytes;
