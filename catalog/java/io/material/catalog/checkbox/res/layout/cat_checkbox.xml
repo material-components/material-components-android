@@ -28,66 +28,65 @@
     android:orientation="vertical"
     android:padding="@dimen/cat_checkbox_padding">
 
-    <GridLayout
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:columnCount="3"
-      android:useDefaultMargins="true">
+      <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_checkbox_intro"
+        android:layout_marginBottom="@dimen/cat_checkbox_padding"/>
+
+      <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:enabled="true"
+        android:text="@string/cat_checkbox_enabled"
+        android:layout_marginBottom="@dimen/cat_checkbox_padding"/>
+
+      <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checked="false"
+        android:enabled="true"
+        android:text="@string/cat_checkbox_enabled"
+        android:layout_marginBottom="@dimen/cat_checkbox_padding"/>
+
+      <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:checkedState="indeterminate"
+        android:enabled="true"
+        android:text="@string/cat_checkbox_enabled"
+        android:layout_marginBottom="@dimen/cat_checkbox_padding"/>
 
       <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_columnSpan="3"
-        android:text="@string/cat_checkbox_intro" />
+        android:layout_height="wrap_content"
+        android:text="@string/cat_checkbox_disabled_guide"
+        android:layout_marginBottom="@dimen/cat_checkbox_padding"/>
 
       <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:checked="true"
-        android:enabled="true"
-        android:text="@string/cat_checkbox_enabled" />
-
-      <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:checked="false"
-        android:enabled="true"
-        android:text="@string/cat_checkbox_enabled" />
-
-      <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:checkedState="indeterminate"
-        android:enabled="true"
-        android:text="@string/cat_checkbox_enabled" />
-
-      <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_columnSpan="3"
-        android:text="@string/cat_checkbox_disabled_guide" />
-
-      <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:checked="true"
         android:enabled="false"
-        android:text="@string/cat_checkbox_disabled" />
+        android:text="@string/cat_checkbox_disabled"
+        android:layout_marginBottom="@dimen/cat_checkbox_padding"/>
 
       <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:checked="false"
         android:enabled="false"
-        android:text="@string/cat_checkbox_disabled" />
+        android:text="@string/cat_checkbox_disabled"
+        android:layout_marginBottom="@dimen/cat_checkbox_padding"/>
 
       <CheckBox
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         app:checkedState="indeterminate"
         android:enabled="false"
-        android:text="@string/cat_checkbox_disabled" />
-    </GridLayout>
+        android:text="@string/cat_checkbox_disabled"
+        android:layout_marginBottom="@dimen/cat_checkbox_padding"/>
 
     <com.google.android.material.divider.MaterialDivider
       android:layout_width="match_parent"

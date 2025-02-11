@@ -23,10 +23,12 @@ import android.content.Context;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
+import android.os.SystemClock;
 import android.util.Property;
 import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -40,6 +42,9 @@ import java.util.List;
  * extended by drawable implementations for different progress indicator types.
  */
 abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements Animatable2Compat {
+
+  // Constant for mock values used in testing.
+  private static final float DEFAULT_MOCK_PHASE_FRACTION = -1f;
 
   // Argument restart used in Drawable setVisible() doesn't matter in implementation.
   private static final boolean DEFAULT_DRAWABLE_RESTART = false;
@@ -63,6 +68,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   private boolean mockShowAnimationRunning;
   private boolean mockHideAnimationRunning;
   private float mockGrowFraction;
+  private float mockPhaseFraction = DEFAULT_MOCK_PHASE_FRACTION;
 
   // List of AnimationCallback to be called at the end of show/hide animation.
   private List<AnimationCallback> animationCallbacks;
@@ -75,7 +81,12 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   private float growFraction;
 
   final Paint paint = new Paint();
+
+  @IntRange(from = 0, to = 255)
   private int totalAlpha;
+
+  // Pre-allocates objects used in draw().
+  @NonNull Rect clipBounds;
 
   // ******************* Constructor *******************
 
@@ -83,6 +94,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       @NonNull Context context, @NonNull BaseProgressIndicatorSpec baseSpec) {
     this.context = context;
     this.baseSpec = baseSpec;
+    this.clipBounds = new Rect();
     animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
 
     setAlpha(255);
@@ -214,12 +226,12 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
 
   /** Hides the drawable immediately without triggering animation callbacks. */
   public boolean hideNow() {
-    return setVisible(/*visible=*/ false, /*restart=*/ false, /*animate=*/ false);
+    return setVisible(/* visible= */ false, /* restart= */ false, /* animate= */ false);
   }
 
   @Override
   public boolean setVisible(boolean visible, boolean restart) {
-    return setVisible(visible, restart, /*animate=*/ true);
+    return setVisible(visible, restart, /* animate= */ true);
   }
 
   /**
@@ -230,7 +242,6 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
    * @param animate Whether to change the visibility with animation.
    * @return {@code true}, if the visibility changes or will change after the animation; {@code
    *     false}, otherwise.
-   * @see #setVisible(boolean, boolean, boolean)
    */
   public boolean setVisible(boolean visible, boolean restart, boolean animate) {
     float systemAnimatorDurationScale =
@@ -294,7 +305,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       return changed;
     }
 
-    if (restart || VERSION.SDK_INT < 19 || !animatorInAction.isPaused()) {
+    if (restart || !animatorInAction.isPaused()) {
       // Starts/restarts the animator if requested or not eligible to resume.
       animatorInAction.start();
     } else {
@@ -324,7 +335,7 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
   // ******************* Getters and setters *******************
 
   @Override
-  public void setAlpha(int alpha) {
+  public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
     totalAlpha = alpha;
     invalidateSelf();
   }
@@ -434,6 +445,40 @@ abstract class DrawableWithAnimatedVisibilityChange extends Drawable implements 
       boolean running, @FloatRange(from = 0.0, to = 1.0) float fraction) {
     mockHideAnimationRunning = running;
     mockGrowFraction = fraction;
+  }
+
+  @VisibleForTesting
+  void setMockPhaseFraction(@FloatRange(from = 0.0, to = 1.0) float fraction) {
+    mockPhaseFraction = fraction;
+  }
+
+  float getPhaseFraction() {
+    if (mockPhaseFraction > 0) {
+      return mockPhaseFraction;
+    }
+
+    float phaseFraction = 0f;
+    if (baseSpec.hasWavyEffect(isDeterminateDrawable()) && baseSpec.waveSpeed != 0) {
+      float durationScale =
+          animatorDurationScaleProvider.getSystemAnimatorDurationScale(
+              context.getContentResolver());
+      if (durationScale > 0f) {
+        int wavelength =
+            isDeterminateDrawable()
+                ? baseSpec.wavelengthDeterminate
+                : baseSpec.wavelengthIndeterminate;
+        int cycleInMs = (int) (1000f * wavelength / baseSpec.waveSpeed * durationScale);
+        phaseFraction = (float) (SystemClock.uptimeMillis() % cycleInMs) / cycleInMs;
+        if (phaseFraction < 0f) {
+          phaseFraction = (phaseFraction % 1) + 1f;
+        }
+      }
+    }
+    return phaseFraction;
+  }
+
+  private boolean isDeterminateDrawable() {
+    return this instanceof DeterminateDrawable;
   }
 
   // ******************* Properties *******************

@@ -18,8 +18,16 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="itemMinHeight" type="attr"/>
+  <public name="expandedItemMinHeight" type="attr"/>
+  <public name="expandedMinWidth" type="attr"/>
+  <public name="expandedMaxWidth" type="attr"/>
   <public name="navigationRailStyle" type="attr"/>
   <public name="menuGravity" type="attr"/>
+  <public name="contentMarginTop" type="attr"/>
+  <public name="headerMarginBottom" type="attr"/>
+  <public name="itemSpacing" type="attr"/>
+  <public name="scrollingEnabled" type="attr"/>
+  <public name="submenuDividersEnabled" type="attr"/>
   <public name="Widget.MaterialComponents.NavigationRailView" type="style"/>
   <public name="Widget.MaterialComponents.NavigationRailView.Compact" type="style"/>
   <public name="Widget.MaterialComponents.NavigationRailView.Colored" type="style"/>

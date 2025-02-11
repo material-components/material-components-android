@@ -15,6 +15,6 @@
   ~ limitations under the License.
 -->
 <resources>
+  <style name="ThemeOverlay.Material3Expressive.DynamicColors.DayNight" parent="ThemeOverlay.Material3Expressive.DynamicColors.Dark" />
   <style name="ThemeOverlay.Material3.DynamicColors.DayNight" parent="ThemeOverlay.Material3.DynamicColors.Dark" />
-
 </resources>

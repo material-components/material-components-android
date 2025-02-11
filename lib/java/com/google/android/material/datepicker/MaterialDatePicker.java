@@ -50,6 +50,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.graphics.Insets;
 import androidx.core.util.Pair;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
@@ -74,7 +75,7 @@ import java.util.LinkedHashSet;
  * developer guidance</a> and <a href="https://material.io/components/date-pickers/overview">design
  * guidelines</a>.
  */
-public final class MaterialDatePicker<S> extends DialogFragment {
+public class MaterialDatePicker<S> extends DialogFragment {
 
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
   private static final String DATE_SELECTOR_KEY = "DATE_SELECTOR_KEY";
@@ -292,7 +293,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
 
     background.initializeElevationOverlay(context);
     background.setFillColor(ColorStateList.valueOf(backgroundColor));
-    background.setElevation(ViewCompat.getElevation(dialog.getWindow().getDecorView()));
+    background.setElevation(dialog.getWindow().getDecorView().getElevation());
     return dialog;
   }
 
@@ -321,8 +322,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     }
 
     headerSelectionText = root.findViewById(R.id.mtrl_picker_header_selection_text);
-    ViewCompat.setAccessibilityLiveRegion(
-        headerSelectionText, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+    headerSelectionText.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
     headerToggleButton = root.findViewById(R.id.mtrl_picker_header_toggle);
     headerTitleTextView = root.findViewById(R.id.mtrl_picker_title_text);
     initHeaderToggle(context);
@@ -345,17 +345,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       confirmButton.setContentDescription(
           getContext().getResources().getText(positiveButtonContentDescriptionResId));
     }
-    confirmButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
-                onPositiveButtonClickListeners) {
-              listener.onPositiveButtonClick(getSelection());
-            }
-            dismiss();
-          }
-        });
+    confirmButton.setOnClickListener(this::onPositiveButtonClick);
 
     Button cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
@@ -370,17 +360,33 @@ public final class MaterialDatePicker<S> extends DialogFragment {
       cancelButton.setContentDescription(
           getContext().getResources().getText(negativeButtonContentDescriptionResId));
     }
-    cancelButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            for (View.OnClickListener listener : onNegativeButtonClickListeners) {
-              listener.onClick(v);
-            }
-            dismiss();
-          }
-        });
+    cancelButton.setOnClickListener(this::onNegativeButtonClick);
     return root;
+  }
+
+  /**
+   * Called when the positive button on the picker has been clicked.
+   *
+   * @param view The view that was clicked.
+   */
+  public void onPositiveButtonClick(@NonNull View view) {
+    for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
+        onPositiveButtonClickListeners) {
+      listener.onPositiveButtonClick(getSelection());
+    }
+    dismiss();
+  }
+
+  /**
+   * Called when the negative button on the picker has been clicked.
+   *
+   * @param view The view that was clicked.
+   */
+  public void onNegativeButtonClick(@NonNull View view) {
+    for (View.OnClickListener listener : onNegativeButtonClickListeners) {
+      listener.onClick(view);
+    }
+    dismiss();
   }
 
   @Override
@@ -454,21 +460,23 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     final View headerLayout = requireView().findViewById(R.id.fullscreen_header);
     EdgeToEdgeUtils.applyEdgeToEdge(window, true, ViewUtils.getBackgroundColor(headerLayout), null);
     final int originalPaddingTop = headerLayout.getPaddingTop();
+    final int originalPaddingLeft = headerLayout.getPaddingLeft();
+    final int originalPaddingRight = headerLayout.getPaddingRight();
     final int originalHeaderHeight = headerLayout.getLayoutParams().height;
     ViewCompat.setOnApplyWindowInsetsListener(
         headerLayout,
         new OnApplyWindowInsetsListener() {
           @Override
           public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-            int topInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
+            Insets inset = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             if (originalHeaderHeight >= 0) {
-              headerLayout.getLayoutParams().height = originalHeaderHeight + topInset;
+              headerLayout.getLayoutParams().height = originalHeaderHeight + inset.top;
               headerLayout.setLayoutParams(headerLayout.getLayoutParams());
             }
             headerLayout.setPadding(
-                headerLayout.getPaddingLeft(),
-                originalPaddingTop + topInset,
-                headerLayout.getPaddingRight(),
+                originalPaddingLeft + inset.left,
+                originalPaddingTop + inset.top,
+                originalPaddingRight + inset.right,
                 headerLayout.getPaddingBottom());
             return insets;
           }

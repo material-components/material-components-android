@@ -21,12 +21,10 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import androidx.test.filters.MediumTest;
-import androidx.test.filters.SdkSuppress;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.testapp.R;
@@ -39,7 +37,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @MediumTest
-@SdkSuppress(minSdkVersion = 17) // Needed for Configuration#setLocale
 @RunWith(AndroidJUnit4.class)
 public class TextInputLayoutPseudoLocaleTest {
   @Rule
@@ -49,7 +46,6 @@ public class TextInputLayoutPseudoLocaleTest {
   private static final String ORIGINAL_LANGUAGE = Locale.getDefault().getLanguage();
   private static final String ORIGINAL_COUNTRY = Locale.getDefault().getLanguage();
 
-  @TargetApi(17)
   private static void setLocale(String language, String country, Context context) {
     context = context.getApplicationContext();
     Resources resources = context.getResources();

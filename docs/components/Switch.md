@@ -21,12 +21,12 @@ as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using switches](#using-switches)
 *   [Switch](#switch)
 *   [Theming switches](#theming-switches)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/switch/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/switchmaterial/package-summary)

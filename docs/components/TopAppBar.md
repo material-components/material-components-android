@@ -16,14 +16,14 @@ information and actions related to the current screen.
 
 **Contents**
 
-*   [Design & API Documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using top app bars](#using-top-app-bars)
 *   [Regular top app bars](#regular-top-app-bars)
 *   [Collapsing top app bar](#collapsing-top-app-bars)
 *   [Contextual action bar](#contextual-action-bar)
 *   [Theming](#theming-the-top-app-bar)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/top-app-bar/overview)
 *   [API Reference](https://developer.android.com/reference/com/google/android/material/appbar/package-summary)
@@ -367,7 +367,7 @@ Element                         | Attribute                   | Related method(s
 ------------------------------- | --------------------------- | ------------------------------------------------ | -------------
 **Color**                       | `android:background`        | `setBackground`<br>`getBackground`               | `?attr/colorSurface`
 **`MaterialToolbar` elevation** | `android:elevation`         | `setElevation`<br>`getElevation`                 | `4dp`
-**`AppBarLayout` elevation**    | `android:stateListAnimator` | `setStateListAnimator`<br>`getStateListAnimator` | `0dp` to `4dp` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/res/animator-v21/design_appbar_state_list_animator.xml))
+**`AppBarLayout` elevation**    | `android:stateListAnimator` | `setStateListAnimator`<br>`getStateListAnimator` | `0dp` to `4dp` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/res/animator/design_appbar_state_list_animator.xml))
 
 #### Navigation icon attributes
 
@@ -378,23 +378,28 @@ Element                          | Attribute                | Related method(s) 
 
 #### Title attributes
 
-Element                                                  | Attribute                                                                                    | Related method(s)                          | Default value
--------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ------------------------------------------ | -------------
-**`MaterialToolbar` title text**                         | `app:title`                                                                                  | `setTitle`<br>`getTitle`                   | `null`
-**`MaterialToolbar` subtitle text**                      | `app:subtitle`                                                                               | `setSubtitle`<br>`getSubtitle`             | `null`
-**`MaterialToolbar` title color**                        | `app:titleTextColor`                                                                         | `setTitleTextColor`                        | `?attr/colorOnSurface`
-**`MaterialToolbar` subtitle color**                     | `app:subtitleTextColor`                                                                      | `setSubtitleTextColor`                     | `?attr/colorOnSurfaceVariant`
-**`MaterialToolbar` title typography**                   | `app:titleTextAppearance`                                                                    | `setTitleTextAppearance`                   | `?attr/textAppearanceTitleLarge`
-**`MaterialToolbar` subtitle typography**                | `app:subtitleTextAppearance`                                                                 | `setSubtitleTextAppearance`                | `?attr/textAppearanceTitleMedium`
-**`MaterialToolbar` title centering**                    | `app:titleCentered`                                                                          | `setTitleCentered`                         | `false`
-**`MaterialToolbar` subtitle centering**                 | `app:subtitleCentered`                                                                       | `setSubtitleCentered`                      | `false`
-**`CollapsingToolbarLayout` collapsed title typography** | `app:collapsedTitleTextAppearance`                                                           | `setCollapsedTitleTextAppearance`          | `?attr/textAppearanceTitleLarge`
-**`CollapsingToolbarLayout` expanded title typography**  | `app:expandedTitleTextAppearance`                                                            | `setExpandedTitleTextAppearance`           | `?attr/textAppearanceHeadlineSmall` for Medium</br>`?attr/textAppearanceHeadlineMedium` for Large
-**`CollapsingToolbarLayout` collapsed title color**      | `android:textColor` (in `app:collapsedTitleTextAppearance`) or `app:collapsedTitleTextColor` | `setCollapsedTitleTextColor`               | `?attr/colorOnSurface`
-**`CollapsingToolbarLayout` expanded title color**       | `android:textColor` (in `app:expandedTitleTextAppearance`) or `app:expandedTitleTextColor`   | `setExpandedTitleTextColor`                | `?attr/colorOnSurface`
-**`CollapsingToolbarLayout` expanded title margins**     | `app:expandedTitleMargin*`                                                                   | `setExpandedTitleMargin*`                  | `16dp`
-**`CollapsingToolbarLayout` title max lines**            | `app:maxLines`                                                                               | `setMaxLines`<br>`getMaxLines`             | `1`
-**`CollapsingToolbarLayout` title ellipsize**            | `app:titleTextEllipsize`                                                                     | `setTitleEllipsize`<br>`getTitleEllipsize` | `end`
+Element                                                                   | Attribute                                                                                          | Related method(s)                          | Default value
+------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | ------------------------------------------ | -------------
+**`MaterialToolbar` title text**                                          | `app:title`                                                                                        | `setTitle`<br>`getTitle`                   | `null`
+**`MaterialToolbar` subtitle text**                                       | `app:subtitle`                                                                                     | `setSubtitle`<br>`getSubtitle`             | `null`
+**`MaterialToolbar` title color**                                         | `app:titleTextColor`                                                                               | `setTitleTextColor`                        | `?attr/colorOnSurface`
+**`MaterialToolbar` subtitle color**                                      | `app:subtitleTextColor`                                                                            | `setSubtitleTextColor`                     | `?attr/colorOnSurfaceVariant`
+**`MaterialToolbar` title typography**                                    | `app:titleTextAppearance`                                                                          | `setTitleTextAppearance`                   | `?attr/textAppearanceTitleLarge`
+**`MaterialToolbar` subtitle typography**                                 | `app:subtitleTextAppearance`                                                                       | `setSubtitleTextAppearance`                | `?attr/textAppearanceTitleMedium`
+**`MaterialToolbar` title centering**                                     | `app:titleCentered`                                                                                | `setTitleCentered`                         | `false`
+**`MaterialToolbar` subtitle centering**                                  | `app:subtitleCentered`                                                                             | `setSubtitleCentered`                      | `false`
+**`CollapsingToolbarLayout` collapsed title typography**                  | `app:collapsedTitleTextAppearance`                                                                 | `setCollapsedTitleTextAppearance`          | `?attr/textAppearanceTitleLarge`
+**`CollapsingToolbarLayout` expanded title typography**                   | `app:expandedTitleTextAppearance`                                                                  | `setExpandedTitleTextAppearance`           | `?attr/textAppearanceHeadlineSmall` for Medium</br>`?attr/textAppearanceHeadlineMedium` for Large
+**`CollapsingToolbarLayout` collapsed title color**                       | `android:textColor` (in `app:collapsedTitleTextAppearance`) or `app:collapsedTitleTextColor`       | `setCollapsedTitleTextColor`               | `?attr/colorOnSurface`
+**`CollapsingToolbarLayout` expanded title color**                        | `android:textColor` (in `app:expandedTitleTextAppearance`) or `app:expandedTitleTextColor`         | `setExpandedTitleTextColor`                | `?attr/colorOnSurface`
+**`CollapsingToolbarLayout` collapsed subtitle typography**               | `app:collapsedSubtitleTextAppearance`                                                              | `setCollapsedSubtitleTextAppearance`       | `?attr/textAppearanceTitleMedium`
+**`CollapsingToolbarLayout` expanded subtitle typography**                | `app:expandedSubtitleTextAppearance`                                                               | `setExpandedSubtitleTextAppearance`        | `?attr/textAppearanceTitleLarge` for Medium</br>`?attr/textAppearanceHeadlineSmall` for Large
+**`CollapsingToolbarLayout` collapsed subtitle color**                    | `android:textColor` (in `app:collapsedSubtitleTextAppearance`) or `app:collapsedSubtitleTextColor` | `setCollapsedSubtitleTextColor`            | `?attr/colorOnSurface`
+**`CollapsingToolbarLayout` expanded subtitle color**                     | `android:textColor` (in `app:expandedSubtitleTextAppearance`) or `app:expandedSubtitleTextColor`   | `setExpandedSubtitleTextColor`             | `?attr/colorOnSurface`
+**`CollapsingToolbarLayout` expanded title margins**                      | `app:expandedTitleMargin*`                                                                         | `setExpandedTitleMargin*`                  | `16dp`
+**`CollapsingToolbarLayout` padding between expanded title and subtitle** | `app:expandedTitlePadding`                                                                         | `setExpandedTitlePadding`                  | `0dp`
+**`CollapsingToolbarLayout` title max lines**                             | `app:maxLines`                                                                                     | `setMaxLines`<br>`getMaxLines`             | `1`
+**`CollapsingToolbarLayout` title ellipsize**                             | `app:titleTextEllipsize`                                                                           | `setTitleEllipsize`<br>`getTitleEllipsize` | `end`
 
 #### Action items attributes
 
@@ -496,6 +501,8 @@ In the layout:
 
             <com.google.android.material.appbar.MaterialToolbar
                 ...
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 android:elevation="0dp" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
@@ -533,6 +540,8 @@ In the layout:
             android:layout_height="?attr/collapsingToolbarLayoutLargeSize">
 
             <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 ...
                 android:elevation="0dp" />
 
@@ -580,6 +589,8 @@ In the layout:
                 android:contentDescription="@string/content_description_media" />
 
             <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
                 ...
                 android:background="@android:color/transparent" />
 
@@ -623,6 +634,7 @@ In the layout:
 
             <com.google.android.material.appbar.MaterialToolbar
                 ...
+                android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
                 />
 

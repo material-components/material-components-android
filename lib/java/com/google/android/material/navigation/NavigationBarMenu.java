@@ -21,6 +21,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.view.menu.SubMenuBuilder;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import androidx.annotation.NonNull;
@@ -39,11 +40,20 @@ public final class NavigationBarMenu extends MenuBuilder {
   @NonNull private final Class<?> viewClass;
   private final int maxItemCount;
 
+  /** Constant to indicate there is no limit to the number of Navigation Bar items */
+  public static final int NO_MAX_ITEM_LIMIT = Integer.MAX_VALUE;
+
+  private final boolean subMenuSupported;
+
   public NavigationBarMenu(
-      @NonNull Context context, @NonNull Class<?> viewClass, int maxItemCount) {
+      @NonNull Context context,
+      @NonNull Class<?> viewClass,
+      int maxItemCount,
+      boolean subMenuSupported) {
     super(context);
     this.viewClass = viewClass;
     this.maxItemCount = maxItemCount;
+    this.subMenuSupported = subMenuSupported;
   }
 
   /** Returns the maximum number of items that can be shown in NavigationBarMenu. */
@@ -54,8 +64,14 @@ public final class NavigationBarMenu extends MenuBuilder {
   @NonNull
   @Override
   public SubMenu addSubMenu(int group, int id, int categoryOrder, @NonNull CharSequence title) {
-    throw new UnsupportedOperationException(
-        viewClass.getSimpleName() + " does not support submenus");
+    if (!subMenuSupported) {
+      throw new UnsupportedOperationException(
+          viewClass.getSimpleName() + " does not support submenus");
+    }
+    final MenuItemImpl item = (MenuItemImpl) addInternal(group, id, categoryOrder, title);
+    final SubMenuBuilder subMenu = new NavigationBarSubMenu(getContext(), this, item);
+    item.setSubMenu(subMenu);
+    return subMenu;
   }
 
   @Override
@@ -75,9 +91,6 @@ public final class NavigationBarMenu extends MenuBuilder {
     }
     stopDispatchingItemsChanged();
     final MenuItem item = super.addInternal(group, id, categoryOrder, title);
-    if (item instanceof MenuItemImpl) {
-      ((MenuItemImpl) item).setExclusiveCheckable(true);
-    }
     startDispatchingItemsChanged();
     return item;
   }

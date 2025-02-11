@@ -17,15 +17,15 @@
 <set xmlns:android="http://schemas.android.com/apk/res/android">
 
   <translate
-    android:duration="@integer/m3_sys_motion_duration_medium3"
-    android:interpolator="@interpolator/m3_sys_motion_easing_emphasized"
-    android:fromYDelta="0"
-    android:toYDelta="20%p"/>
+      android:duration="@integer/m3_sys_motion_duration_medium3"
+      android:interpolator="@interpolator/m3_sys_motion_easing_emphasized"
+      android:fromYDelta="0"
+      android:toYDelta="20%p"/>
 
   <alpha
-    android:duration="@integer/m3_sys_motion_duration_medium2"
-    android:interpolator="@interpolator/m3_sys_motion_easing_emphasized"
-    android:fromAlpha="1.0"
-    android:toAlpha="0.0"/>
+      android:duration="@integer/m3_sys_motion_duration_medium2"
+      android:interpolator="@interpolator/m3_sys_motion_easing_emphasized"
+      android:fromAlpha="1.0"
+      android:toAlpha="0.0"/>
 
 </set>

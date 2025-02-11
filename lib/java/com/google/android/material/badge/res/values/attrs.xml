@@ -98,8 +98,17 @@
          attribute determines how much to shift the normal vertical offset by. -->
     <attr name="largeFontVerticalOffsetAdjustment" format="dimension"/>
     <!-- Automatically move the badge so it is within the anchor view's
-         grandparent's bounds. -->
+         grandparent's bounds. Deprecated, badges are now automatically moved to
+         within the first ancestor that clips its children. -->
     <attr name="autoAdjustToWithinGrandparentBounds" format="boolean"/>
+    <!-- The edge of the badge that is fixed and does not grow along with the
+         badge.-->
+    <attr name="badgeFixedEdge">
+      <!-- The start of the badge is fixed and it grows towards the end. -->
+      <enum name="start" value="0"/>
+      <!-- The end of the badge is fixed and it grows towards the start. -->
+      <enum name="end" value="1"/>
+    </attr>
   </declare-styleable>
 
 </resources>

@@ -24,12 +24,20 @@
   <public name="iconTint" type="attr"/>
   <public name="iconTintMode" type="attr"/>
   <public name="toggleCheckedStateOnClick" type="attr"/>
+  <public name="innerCornerSize" type="attr"/>
+  <public name="buttonSizeChange" type="attr"/>
   <public name="materialButtonStyle" type="attr"/>
+  <public name="materialButtonTonalStyle" type="attr"/>
+  <public name="materialButtonOutlinedStyle" type="attr"/>
+  <public name="materialButtonElevatedStyle" type="attr"/>
   <public name="materialIconButtonStyle" type="attr"/>
   <public name="materialIconButtonFilledStyle" type="attr"/>
   <public name="materialIconButtonFilledTonalStyle" type="attr"/>
   <public name="materialIconButtonOutlinedStyle" type="attr"/>
-  <public name="materialButtonOutlinedStyle" type="attr"/>
+  <public name="materialButtonGroupStyle" type="attr"/>
+  <public name="materialSplitButtonStyle" type="attr"/>
+  <public name="materialSplitButtonIconFilledStyle" type="attr"/>
+  <public name="materialSplitButtonIconFilledTonalStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
   <public name="Widget.MaterialComponents.Button" type="style"/>
   <public name="Widget.MaterialComponents.Button.UnelevatedButton" type="style"/>
@@ -56,10 +64,17 @@
   <public name="Widget.Material3.Button.IconButton.Filled" type="style"/>
   <public name="Widget.Material3.Button.IconButton.Filled.Tonal" type="style"/>
   <public name="Widget.Material3.Button.IconButton.Outlined" type="style"/>
+  <public name="Widget.Material3.MaterialButtonGroup" type="style"/>
+  <public name="Widget.Material3.MaterialButtonGroup.Connected" type="style"/>
+  <public name="Widget.Material3.MaterialSplitButton" type="style"/>
+  <public name="Widget.Material3.MaterialSplitButton.Icon.Filled" type="style"/>
+  <public name="Widget.Material3.MaterialSplitButton.Icon.Filled.Tonal" type="style"/>
+  <public name="Widget.Material3.MaterialButtonToggleGroup" type="style"/>
   <public name="ShapeAppearanceOverlay.Material3.Button" type="style"/>
   <public name="ThemeOverlay.Material3.Button" type="style"/>
   <public name="ThemeOverlay.Material3.Button.ElevatedButton" type="style"/>
   <public name="ThemeOverlay.Material3.Button.TextButton" type="style"/>
   <public name="ThemeOverlay.Material3.Button.TextButton.Snackbar" type="style"/>
   <public name="ThemeOverlay.Material3.Button.TonalButton" type="style"/>
+  <public name="m3_split_button_chevron_avd" type="drawable"/>
 </resources>

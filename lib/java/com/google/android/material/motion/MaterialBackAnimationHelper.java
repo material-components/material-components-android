@@ -21,12 +21,12 @@ import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.PathInterpolator;
 import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.core.view.animation.PathInterpolatorCompat;
 
 /**
  * Base helper class for views that support back handling, which assists with common animation
@@ -42,7 +42,8 @@ public abstract class MaterialBackAnimationHelper<V extends View> {
   private static final int HIDE_DURATION_MIN_DEFAULT = 150;
   private static final int CANCEL_DURATION_DEFAULT = 100;
 
-  @NonNull private final TimeInterpolator progressInterpolator;
+  @NonNull
+  private final TimeInterpolator progressInterpolator = new PathInterpolator(0.1f, 0.1f, 0, 1);
 
   @NonNull protected final V view;
   protected final int hideDurationMax;
@@ -55,11 +56,6 @@ public abstract class MaterialBackAnimationHelper<V extends View> {
     this.view = view;
 
     Context context = view.getContext();
-    progressInterpolator =
-        MotionUtils.resolveThemeInterpolator(
-            context,
-            R.attr.motionEasingStandardDecelerateInterpolator,
-            PathInterpolatorCompat.create(0, 0, 0, 1));
     hideDurationMax =
         MotionUtils.resolveThemeDuration(
             context, R.attr.motionDurationMedium2, HIDE_DURATION_MAX_DEFAULT);

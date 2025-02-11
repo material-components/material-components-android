@@ -16,5 +16,5 @@
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:color="@macro/m3_comp_time_picker_period_selector_selected_container_color" android:state_enabled="true" android:state_checked="true"/>
-  <item android:color="?attr/colorSurface" android:state_checked="false"/>
+  <item android:color="@android:color/transparent" android:state_checked="false"/>
 </selector>

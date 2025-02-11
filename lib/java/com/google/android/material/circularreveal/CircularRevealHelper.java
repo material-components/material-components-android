@@ -29,8 +29,6 @@ import android.graphics.Path.Direction;
 import android.graphics.Rect;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.view.View;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
@@ -76,20 +74,18 @@ public class CircularRevealHelper {
 
   /**
    * Specify that this view should use a {@link BitmapShader} to create the circular reveal effect.
-   * BitmapShader is supported in all APIs, but has the downside that it can only animate a static
-   * {@link Bitmap}.
+   * The downside that it can only animate a static {@link Bitmap}.
    */
   public static final int BITMAP_SHADER = 0;
   /**
    * Specify that this view should use {@link Canvas#clipPath(Path)} to create the circular reveal
-   * effect. clipPath() is only hardware accelerated on {@link VERSION_CODES#JELLY_BEAN_MR2} and
-   * above.
+   * effect.
    */
   public static final int CLIP_PATH = 1;
   /**
    * Specify that this view should use {@link
    * android.view.ViewAnimationUtils#createCircularReveal(View, int, int, float, float)} to create
-   * the circular reveal effect. This is only supported on {@link VERSION_CODES#LOLLIPOP} and above.
+   * the circular reveal effect.
    */
   public static final int REVEAL_ANIMATOR = 2;
 
@@ -98,7 +94,7 @@ public class CircularRevealHelper {
   @Retention(RetentionPolicy.SOURCE)
   public @interface Strategy {}
 
-  @Strategy public static final int STRATEGY;
+  @Strategy public static final int STRATEGY = REVEAL_ANIMATOR;
 
   private final Delegate delegate;
   @NonNull private final View view;
@@ -122,16 +118,6 @@ public class CircularRevealHelper {
 
   private boolean buildingCircularRevealCache;
   private boolean hasCircularRevealCache;
-
-  static {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      STRATEGY = REVEAL_ANIMATOR;
-    } else if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
-      STRATEGY = CLIP_PATH;
-    } else {
-      STRATEGY = BITMAP_SHADER;
-    }
-  }
 
   public CircularRevealHelper(Delegate delegate) {
     this.delegate = delegate;

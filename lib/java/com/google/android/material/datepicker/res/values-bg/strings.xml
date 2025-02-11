@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">Избиране на период от време</string>
   <string name="mtrl_picker_date_header_title">Избиране на дата</string>
-  <string name="mtrl_picker_range_header_unselected">Начална дата – крайна дата</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s – крайна дата</string>
+  <string name="mtrl_picker_range_header_unselected">Начална дата – Крайна дата</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – Крайна дата</string>
   <string name="mtrl_picker_range_header_only_end_selected">Начална дата – %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
   <string name="mtrl_picker_date_header_unselected">Избрана дата</string>
@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Преминаване към следващия месец</string>
   <string name="mtrl_picker_toggle_to_year_selection">Докоснете за превключване към годишен изглед</string>
   <string name="mtrl_picker_toggle_to_day_selection">Докоснете за превключване към календарен изглед</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Превключихте към годишен изглед</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Превключихте към изглед в календара</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Текущ избор: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Избиране на начална дата: %1$s – Избиране на крайна дата: %2$s</string>

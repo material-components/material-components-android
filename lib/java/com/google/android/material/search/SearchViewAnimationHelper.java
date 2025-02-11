@@ -42,8 +42,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ClippableRoundedCornerLayout;
 import com.google.android.material.internal.FadeThroughDrawable;
@@ -68,6 +66,7 @@ class SearchViewAnimationHelper {
   private static final long SHOW_CONTENT_ALPHA_DURATION_MS = 150;
   private static final long SHOW_CONTENT_ALPHA_START_DELAY_MS = 75;
   private static final long SHOW_CONTENT_SCALE_DURATION_MS = SHOW_DURATION_MS;
+  private static final long SHOW_SCRIM_ALPHA_DURATION_MS = 100;
 
   // Constants for hide collapse animation
   private static final long HIDE_DURATION_MS = 250;
@@ -300,7 +299,13 @@ class SearchViewAnimationHelper {
             setContentViewsAlpha(show ? 1 : 0);
             // After expanding or collapsing, we should reset the clip bounds so it can react to the
             // screen or layout changes. Otherwise it will result in wrong clipping on the layout.
-            rootView.resetClipBoundsAndCornerRadius();
+            rootView.resetClipBoundsAndCornerRadii();
+
+            // After collapsing, we should reset the expanded corner radii in case the search view
+            // is shown in a different location the next time.
+            if (!show) {
+              backHelper.clearExpandedCornerRadii();
+            }
           }
         });
     return animatorSet;
@@ -328,6 +333,7 @@ class SearchViewAnimationHelper {
 
     ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
     animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+    animator.setStartDelay(show ? SHOW_SCRIM_ALPHA_DURATION_MS : 0);
     animator.setInterpolator(ReversableAnimatedValueInterpolator.of(show, interpolator));
     animator.addUpdateListener(MultiViewUpdateListener.alphaListener(scrim));
     return animator;
@@ -347,20 +353,48 @@ class SearchViewAnimationHelper {
     Rect clipBounds = new Rect(fromClipBounds);
 
     float fromCornerRadius = searchBar.getCornerSize();
-    float toCornerRadius = max(rootView.getCornerRadius(), backHelper.getExpandedCornerSize());
+    float[] toCornerRadius =
+        maxCornerRadii(rootView.getCornerRadii(), backHelper.getExpandedCornerRadii());
 
     ValueAnimator animator =
         ValueAnimator.ofObject(new RectEvaluator(clipBounds), fromClipBounds, toClipBounds);
     animator.addUpdateListener(
         valueAnimator -> {
-          float cornerRadius =
-              lerp(fromCornerRadius, toCornerRadius, valueAnimator.getAnimatedFraction());
-          rootView.updateClipBoundsAndCornerRadius(clipBounds, cornerRadius);
+          float[] cornerRadii =
+              lerpCornerRadii(
+                  fromCornerRadius, toCornerRadius, valueAnimator.getAnimatedFraction());
+          rootView.updateClipBoundsAndCornerRadii(clipBounds, cornerRadii);
         });
     animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
     animator.setInterpolator(
         ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
     return animator;
+  }
+
+  private static float[] maxCornerRadii(float[] startValue, float[] endValue) {
+    return new float[] {
+        max(startValue[0], endValue[0]),
+        max(startValue[1], endValue[1]),
+        max(startValue[2], endValue[2]),
+        max(startValue[3], endValue[3]),
+        max(startValue[4], endValue[4]),
+        max(startValue[5], endValue[5]),
+        max(startValue[6], endValue[6]),
+        max(startValue[7], endValue[7])
+    };
+  }
+
+  private static float[] lerpCornerRadii(float startValue, float[] endValue, float fraction) {
+    return new float[] {
+        lerp(startValue, endValue[0], fraction),
+        lerp(startValue, endValue[1], fraction),
+        lerp(startValue, endValue[2], fraction),
+        lerp(startValue, endValue[3], fraction),
+        lerp(startValue, endValue[4], fraction),
+        lerp(startValue, endValue[5], fraction),
+        lerp(startValue, endValue[6], fraction),
+        lerp(startValue, endValue[7], fraction)
+    };
   }
 
   private Animator getClearButtonAnimator(boolean show) {
@@ -564,17 +598,15 @@ class SearchViewAnimationHelper {
   }
 
   private int getFromTranslationXStart(View view) {
-    int marginStart =
-        MarginLayoutParamsCompat.getMarginStart((MarginLayoutParams) view.getLayoutParams());
-    int paddingStart = ViewCompat.getPaddingStart(searchBar);
+    int marginStart = ((MarginLayoutParams) view.getLayoutParams()).getMarginStart();
+    int paddingStart = searchBar.getPaddingStart();
     return ViewUtils.isLayoutRtl(searchBar)
         ? searchBar.getWidth() - searchBar.getRight() + marginStart - paddingStart
         : searchBar.getLeft() - marginStart + paddingStart;
   }
 
   private int getFromTranslationXEnd(View view) {
-    int marginEnd =
-        MarginLayoutParamsCompat.getMarginEnd((MarginLayoutParams) view.getLayoutParams());
+    int marginEnd = ((MarginLayoutParams) view.getLayoutParams()).getMarginEnd();
     return ViewUtils.isLayoutRtl(searchBar)
         ? searchBar.getLeft() - marginEnd
         : searchBar.getRight() - searchView.getWidth() + marginEnd;

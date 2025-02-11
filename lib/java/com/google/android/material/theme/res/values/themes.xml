@@ -17,6 +17,48 @@
 <resources>
 
   <!--
+    Themes in the "Theme.Material3Expressive" family will contain a default full color scheme.
+
+    These theme declarations contain any version-independent specification. Items
+    that need to vary based on platform version should be defined in the corresponding
+    "Base.Theme" theme.
+  -->
+
+  <!-- Platform-independent theme providing a full color scheme in a light-themed activity. -->
+  <style name="Theme.Material3Expressive.Light" parent="Base.Theme.Material3Expressive.Light"/>
+
+  <!-- Platform-independent theme providing a full color scheme in a dark-themed activity. -->
+  <style name="Theme.Material3Expressive.Dark" parent="Base.Theme.Material3Expressive.Dark"/>
+
+  <style name="Theme.Material3Expressive.Light.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="Theme.Material3Expressive.Dark.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="Theme.Material3Expressive.DynamicColors.Light" parent="Theme.Material3Expressive.Light"/>
+
+  <style name="Theme.Material3Expressive.DynamicColors.Dark" parent="Theme.Material3Expressive.Dark"/>
+
+  <style name="Theme.Material3Expressive.DynamicColors.Light.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="Theme.Material3Expressive.DynamicColors.Dark.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="Theme.Material3Expressive.Light.DialogWhenLarge" parent="Base.Theme.Material3Expressive.Light.DialogWhenLarge"/>
+
+  <style name="Theme.Material3Expressive.Dark.DialogWhenLarge" parent="Base.Theme.Material3Expressive.Dark.DialogWhenLarge"/>
+
+  <!--
     Themes in the "Theme.Material3" family will contain a default full color scheme.
 
     These theme declarations contain any version-independent specification. Items

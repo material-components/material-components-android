@@ -41,8 +41,10 @@ public class SliderScrollContainerDemoFragment extends DemoFragment {
             R.layout.cat_slider_demo_scroll, viewGroup, false /* attachToRoot */);
     LinearLayout sliderContainer = view.findViewById(R.id.sliderContainer);
     for (int i = 0; i < 50; i++) {
+      Slider slider = new Slider(layoutInflater.getContext());
+      slider.setValueTo(11f);
       sliderContainer.addView(
-          new Slider(layoutInflater.getContext()),
+          slider,
           ViewGroup.LayoutParams.MATCH_PARENT,
           ViewGroup.LayoutParams.WRAP_CONTENT);
     }

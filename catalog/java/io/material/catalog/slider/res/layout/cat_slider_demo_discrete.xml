@@ -163,7 +163,7 @@
         android:valueFrom="0"
         android:valueTo="10"
         android:stepSize="1"
-        app:tickVisible="false"/>
+        app:tickVisibilityMode="hidden" />
     </LinearLayout>
 
     <com.google.android.material.materialswitch.MaterialSwitch

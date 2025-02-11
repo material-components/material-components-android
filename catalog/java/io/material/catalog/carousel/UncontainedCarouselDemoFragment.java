@@ -38,6 +38,8 @@ import io.material.catalog.feature.DemoFragment;
 public class UncontainedCarouselDemoFragment extends DemoFragment {
 
   private MaterialDividerItemDecoration horizontalDivider;
+  private CarouselAdapter adapter;
+  private Slider positionSlider;
 
   @NonNull
   @Override
@@ -62,7 +64,7 @@ public class UncontainedCarouselDemoFragment extends DemoFragment {
     MaterialSwitch drawDividers = view.findViewById(R.id.draw_dividers_switch);
     MaterialSwitch snapSwitch = view.findViewById(R.id.snap_switch);
     AutoCompleteTextView itemCountDropdown = view.findViewById(R.id.item_count_dropdown);
-    Slider positionSlider = view.findViewById(R.id.position_slider);
+    positionSlider = view.findViewById(R.id.position_slider);
 
     RecyclerView uncontainedRecyclerView =
         view.findViewById(R.id.uncontained_carousel_recycler_view);
@@ -99,7 +101,7 @@ public class UncontainedCarouselDemoFragment extends DemoFragment {
           }
         });
 
-    CarouselAdapter adapter =
+    adapter =
         new CarouselAdapter(
             (item, position) -> {
               uncontainedRecyclerView.scrollToPosition(position);
@@ -119,6 +121,11 @@ public class UncontainedCarouselDemoFragment extends DemoFragment {
         CarouselDemoUtils.createScrollToPositionSliderTouchListener(uncontainedRecyclerView));
 
     uncontainedRecyclerView.setAdapter(adapter);
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
     adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));
   }
 

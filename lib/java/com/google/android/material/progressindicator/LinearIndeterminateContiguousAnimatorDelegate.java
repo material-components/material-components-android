@@ -72,7 +72,8 @@ final class LinearIndeterminateContiguousAnimatorDelegate
     if (animator == null) {
       // Instantiates an animator with the linear interpolator to control the animation progress.
       animator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 0, 1);
-      animator.setDuration(DURATION_PER_CYCLE_IN_MS);
+      animator.setDuration(
+          (long) (DURATION_PER_CYCLE_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
       animator.setInterpolator(null);
       animator.setRepeatCount(ValueAnimator.INFINITE);
       animator.addListener(
@@ -86,6 +87,12 @@ final class LinearIndeterminateContiguousAnimatorDelegate
             }
           });
     }
+  }
+
+  private void updateAnimatorsDuration() {
+    maybeInitializeAnimators();
+    animator.setDuration(
+        (long) (DURATION_PER_CYCLE_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
   }
 
   @Override
@@ -103,6 +110,7 @@ final class LinearIndeterminateContiguousAnimatorDelegate
 
   @Override
   public void invalidateSpecValues() {
+    updateAnimatorsDuration();
     resetPropertiesForNewStart();
   }
 
@@ -141,11 +149,15 @@ final class LinearIndeterminateContiguousAnimatorDelegate
   }
 
   @VisibleForTesting
+  @Override
   void resetPropertiesForNewStart() {
     dirtyColors = true;
     newIndicatorColorIndex = 1;
     for (ActiveIndicator indicator : activeIndicators) {
       indicator.color = baseSpec.indicatorColors[0];
+      // No track is drawn in this type of animation. Half gap is used to maintain the gap between
+      // active indicators.
+      indicator.gapSize = baseSpec.indicatorTrackGapSize / 2;
     }
   }
 
@@ -156,6 +168,7 @@ final class LinearIndeterminateContiguousAnimatorDelegate
   }
 
   @VisibleForTesting
+  @Override
   void setAnimationFraction(float value) {
     animationFraction = value;
     int playtime = (int) (animationFraction * DURATION_PER_CYCLE_IN_MS);

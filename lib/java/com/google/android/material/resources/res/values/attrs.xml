@@ -26,6 +26,7 @@
   <attr name="ensureMinTouchTargetSize" format="boolean" />
   <attr name="trackColor" format="color" />
   <attr name="navigationIconTint" format="color"/>
+  <attr name="expanded" format="boolean" />
 
   <!-- Navigation and Pickers -->
   <attr name="headerLayout" format="reference"/>
@@ -39,10 +40,16 @@
   <!-- Slider and ProgressIndicator -->
   <attr name="trackStopIndicatorSize" format="dimension" />
 
+  <!-- ProgressIndicator and LoadingIndicator -->
+  <attr name="indicatorColor" format="color|reference" />
+  <attr name="indicatorSize" format="dimension" />
+
   <declare-styleable name="MaterialTextAppearance" parent="TextAppearance">
     <attr name="android:lineHeight"/>
     <attr name="lineHeight" format="dimension"/>
     <attr name="android:letterSpacing"/>
+    <attr name="android:fontVariationSettings"/>
+    <attr name="fontVariationSettings" format="string"/>
   </declare-styleable>
 
 </resources>

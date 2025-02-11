@@ -24,14 +24,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.util.Preconditions;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -47,8 +44,8 @@ final class CalendarItemStyle {
    * the selection marker.
    *
    * <p>The selection marker's size is defined by the {@link
-   * R.styleable.MaterialCalendarItem#itemShapeAppearance} and {@link
-   * R.styleable.MaterialCalendarItem#itemShapeAppearanceOverlay}.
+   * R.styleable#MaterialCalendarItem_itemShapeAppearance} and {@link
+   * R.styleable#MaterialCalendarItem_itemShapeAppearanceOverlay}.
    */
   @NonNull private final Rect insets;
 
@@ -156,14 +153,8 @@ final class CalendarItemStyle {
         backgroundColorOverride != null ? backgroundColorOverride : backgroundColor);
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
     item.setTextColor(textColorOverride != null ? textColorOverride : textColor);
-    Drawable d;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      d = new RippleDrawable(textColor.withAlpha(30), backgroundDrawable, shapeMask);
-    } else {
-      d = backgroundDrawable;
-    }
-    ViewCompat.setBackground(
-        item, new InsetDrawable(d, insets.left, insets.top, insets.right, insets.bottom));
+    Drawable d = new RippleDrawable(textColor.withAlpha(30), backgroundDrawable, shapeMask);
+    item.setBackground(new InsetDrawable(d, insets.left, insets.top, insets.right, insets.bottom));
   }
 
   int getLeftInset() {

@@ -665,9 +665,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
 
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      setClipToOutline(shapeAppearanceModel.isRoundRect(getBoundsAsRectF()));
-    }
+    setClipToOutline(shapeAppearanceModel.isRoundRect(getBoundsAsRectF()));
     cardViewHelper.setShapeAppearanceModel(shapeAppearanceModel);
   }
 

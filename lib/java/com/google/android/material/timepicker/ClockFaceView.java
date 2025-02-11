@@ -150,7 +150,7 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
               }
             });
 
-    setFocusable(true);
+    setFocusable(false);
     a.recycle();
     valueAccessibilityDelegate =
         new AccessibilityDelegateCompat() {

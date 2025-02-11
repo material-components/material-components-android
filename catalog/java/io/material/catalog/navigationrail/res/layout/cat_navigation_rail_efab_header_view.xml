@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2024 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:id="@+id/cat_navigation_rail_efab_container"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:clipToPadding="false"
+  android:clipChildren="false"
+  android:layout_gravity="top|start">
+  <ImageView
+    android:id="@+id/cat_navigation_rail_expand_button"
+    android:layout_width="56dp"
+    android:layout_height="56dp"
+    android:src="@drawable/ic_drawer_menu_24px"
+    android:contentDescription=
+      "@string/cat_navigation_rail_expand_button_description"
+    android:scaleType="center" />
+  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    android:id="@+id/cat_navigation_rail_efab"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/ic_add_24px"
+    android:text="@string/cat_navigation_rail_efab_text"/>
+</LinearLayout>

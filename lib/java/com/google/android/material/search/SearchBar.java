@@ -44,7 +44,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -56,16 +55,11 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat;
-import androidx.core.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.appbar.AppBarLayout;
@@ -151,10 +145,6 @@ public class SearchBar extends Toolbar {
   private boolean defaultScrollFlagsEnabled;
   private MaterialShapeDrawable backgroundShape;
 
-  @Nullable private final AccessibilityManager accessibilityManager;
-  private final TouchExplorationStateChangeListener touchExplorationStateChangeListener =
-      (boolean enabled) -> setFocusableInTouchMode(enabled);
-
   public SearchBar(@NonNull Context context) {
     this(context, null);
   }
@@ -209,38 +199,9 @@ public class SearchBar extends Toolbar {
 
     textView = findViewById(R.id.open_search_bar_text_view);
 
-    ViewCompat.setElevation(this, elevation);
+    setElevation(elevation);
     initTextView(textAppearanceResId, text, hint);
     initBackground(shapeAppearanceModel, backgroundColor, elevation, strokeWidth, strokeColor);
-
-    accessibilityManager =
-        (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-    setupTouchExplorationStateChangeListener();
-  }
-
-  private void setupTouchExplorationStateChangeListener() {
-    if (accessibilityManager != null) {
-      // Handle the case where touch exploration is already enabled.
-      if (accessibilityManager.isEnabled() && accessibilityManager.isTouchExplorationEnabled()) {
-        setFocusableInTouchMode(true);
-      }
-
-      // Handle the case where touch exploration state can change while the view is active.
-      addOnAttachStateChangeListener(
-          new OnAttachStateChangeListener() {
-            @Override
-            public void onViewAttachedToWindow(View ignored) {
-              AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
-                  accessibilityManager, touchExplorationStateChangeListener);
-            }
-
-            @Override
-            public void onViewDetachedFromWindow(View ignored) {
-              AccessibilityManagerCompat.removeTouchExplorationStateChangeListener(
-                  accessibilityManager, touchExplorationStateChangeListener);
-            }
-          });
-    }
   }
 
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
@@ -274,10 +235,8 @@ public class SearchBar extends Toolbar {
     setText(text);
     setHint(hint);
     if (getNavigationIcon() == null) {
-      MarginLayoutParamsCompat.setMarginStart(
-          (MarginLayoutParams) textView.getLayoutParams(),
-          getResources()
-              .getDimensionPixelSize(R.dimen.m3_searchbar_text_margin_start_no_navigation_icon));
+      ((MarginLayoutParams) textView.getLayoutParams()).setMarginStart(getResources()
+          .getDimensionPixelSize(R.dimen.m3_searchbar_text_margin_start_no_navigation_icon));
     }
   }
 
@@ -296,29 +255,10 @@ public class SearchBar extends Toolbar {
 
     int rippleColor = MaterialColors.getColor(this, R.attr.colorControlHighlight);
     Drawable background;
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-      backgroundShape.setFillColor(ColorStateList.valueOf(backgroundColor));
-      background =
-          new RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundShape, backgroundShape);
-    } else {
-      backgroundShape.setFillColor(getCompatBackgroundColorStateList(backgroundColor, rippleColor));
-      background = backgroundShape;
-    }
-
-    ViewCompat.setBackground(this, background);
-  }
-
-  private ColorStateList getCompatBackgroundColorStateList(
-      @ColorInt int backgroundColor, @ColorInt int rippleColor) {
-    int[][] states =
-        new int[][] {
-          new int[] {android.R.attr.state_pressed},
-          new int[] {android.R.attr.state_focused},
-          new int[] {},
-        };
-    int pressedBackgroundColor = MaterialColors.layer(backgroundColor, rippleColor);
-    int[] colors = new int[] {pressedBackgroundColor, pressedBackgroundColor, backgroundColor};
-    return new ColorStateList(states, colors);
+    backgroundShape.setFillColor(ColorStateList.valueOf(backgroundColor));
+    background =
+        new RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundShape, backgroundShape);
+    setBackground(background);
   }
 
   @Override
@@ -330,7 +270,6 @@ public class SearchBar extends Toolbar {
     super.addView(child, index, params);
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -343,9 +282,7 @@ public class SearchBar extends Toolbar {
   public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
     info.setClassName(EditText.class.getCanonicalName());
-    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR2) {
-      info.setEditable(isEnabled());
-    }
+    info.setEditable(isEnabled());
 
     CharSequence text = getText();
     boolean isTextEmpty = TextUtils.isEmpty(text);
@@ -397,7 +334,7 @@ public class SearchBar extends Toolbar {
     }
 
     Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
-    DrawableCompat.setTint(wrappedNavigationIcon, navigationIconColor);
+    wrappedNavigationIcon.setTint(navigationIconColor);
     return wrappedNavigationIcon;
   }
 
@@ -420,6 +357,8 @@ public class SearchBar extends Toolbar {
     // that, and restore the original background when the icon becomes clickable.
     navigationIconButton.setBackgroundDrawable(
         decorative ? null : originalNavigationIconBackground);
+
+    setHandwritingBoundsInsets();
   }
 
   @Override
@@ -448,6 +387,7 @@ public class SearchBar extends Toolbar {
     super.onLayout(changed, left, top, right, bottom);
 
     layoutCenterView();
+    setHandwritingBoundsInsets();
   }
 
   @Override
@@ -552,11 +492,37 @@ public class SearchBar extends Toolbar {
   }
 
   private void layoutChild(View child, int left, int top, int right, int bottom) {
-    if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (getLayoutDirection() == View.LAYOUT_DIRECTION_RTL) {
       child.layout(getMeasuredWidth() - right, top, getMeasuredWidth() - left, bottom);
     } else {
       child.layout(left, top, right, bottom);
     }
+  }
+
+  private void setHandwritingBoundsInsets() {
+    if (VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      return;
+    }
+
+    boolean isRtl = getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
+
+    // If the navigation icon is non-decorative, exclude it from the handwriting bounds.
+    int startInset = 0;
+    View navigationIconButton = ToolbarUtils.getNavigationIconButton(this);
+    if (navigationIconButton != null && navigationIconButton.isClickable()) {
+      startInset =
+          isRtl ? (getWidth() - navigationIconButton.getLeft()) : navigationIconButton.getRight();
+    }
+
+    // Exclude the menu items from the handwriting bounds.
+    int endInset = 0;
+    View actionMenuView = ToolbarUtils.getActionMenuView(this);
+    if (actionMenuView != null) {
+      endInset = isRtl ? actionMenuView.getRight() : (getWidth() -  actionMenuView.getLeft());
+    }
+
+    setHandwritingBoundsOffsets(
+        -(isRtl ? endInset : startInset), 0, -(isRtl ? startInset : endInset), 0);
   }
 
   /** Returns the optional centered child view of this {@link SearchBar} */
@@ -834,7 +800,7 @@ public class SearchBar extends Toolbar {
   }
 
   float getCompatElevation() {
-    return backgroundShape != null ? backgroundShape.getElevation() : ViewCompat.getElevation(this);
+    return backgroundShape != null ? backgroundShape.getElevation() : getElevation();
   }
 
   /** Behavior that sets up the scroll-away mode for an {@link SearchBar}. */

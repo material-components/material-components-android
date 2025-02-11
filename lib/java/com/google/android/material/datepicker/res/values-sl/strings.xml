@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">Izberite obseg</string>
   <string name="mtrl_picker_date_header_title">Izberite datum</string>
-  <string name="mtrl_picker_range_header_unselected">Začetni datum–končni datum</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s–končni datum</string>
+  <string name="mtrl_picker_range_header_unselected">Začetni datum–Končni datum</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s–Končni datum</string>
   <string name="mtrl_picker_range_header_only_end_selected">Začetni datum–%1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s–%2$s</string>
   <string name="mtrl_picker_date_header_unselected">Izbrani datum</string>
@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Spremeni na naslednji mesec</string>
   <string name="mtrl_picker_toggle_to_year_selection">Dotaknite se za preklop na pogled leta</string>
   <string name="mtrl_picker_toggle_to_day_selection">Dotaknite se za preklop na pogled koledarja</string>
+  <string name="mtrl_picker_toggled_to_year_selection">Preklopljeno na pogled leta</string>
+  <string name="mtrl_picker_toggled_to_day_selection">Preklopljeno na pogled koledarja</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Trenutna izbira: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Izbira začetnega datuma: %1$s – Izbira končnega datuma: %2$s</string>

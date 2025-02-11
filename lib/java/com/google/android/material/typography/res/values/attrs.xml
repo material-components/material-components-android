@@ -47,6 +47,36 @@
   <!-- Text appearance for the Label Small style. -->
   <attr name="textAppearanceLabelSmall" format="reference"/>
 
+  <!-- Text appearance for an emphasized Display Large style. -->
+  <attr name="textAppearanceDisplayLargeEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Display Medium style. -->
+  <attr name="textAppearanceDisplayMediumEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Display Small style. -->
+  <attr name="textAppearanceDisplaySmallEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Headline Large style. -->
+  <attr name="textAppearanceHeadlineLargeEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Headline Medium style. -->
+  <attr name="textAppearanceHeadlineMediumEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Headline Small style. -->
+  <attr name="textAppearanceHeadlineSmallEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Title Large style. -->
+  <attr name="textAppearanceTitleLargeEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Title Medium style. -->
+  <attr name="textAppearanceTitleMediumEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Title Small style. -->
+  <attr name="textAppearanceTitleSmallEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Body Large style. -->
+  <attr name="textAppearanceBodyLargeEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Body Medium style. -->
+  <attr name="textAppearanceBodyMediumEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Body Small style. -->
+  <attr name="textAppearanceBodySmallEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Label Large style. -->
+  <attr name="textAppearanceLabelLargeEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Label Medium style. -->
+  <attr name="textAppearanceLabelMediumEmphasized" format="reference"/>
+  <!-- Text appearance for an emphasized Label Small style. -->
+  <attr name="textAppearanceLabelSmallEmphasized" format="reference"/>
 
   <!-- Deprecated. -->
 

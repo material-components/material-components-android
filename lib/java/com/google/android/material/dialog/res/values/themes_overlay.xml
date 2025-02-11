@@ -15,61 +15,50 @@
   ~ limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog">
-    <!-- Widget styles -->
-    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+
+  <!-- Dialog theme overlays for Material3Expressive. -->
+
+  <style name="Base.ThemeOverlay.Material3Expressive.Dialog" parent="Base.ThemeOverlay.Material3.Dialog">
+    <!-- Update materialButtonStyle with Expressive style. -->
   </style>
 
-  <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-    <!-- Widget styles -->
-    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
-  </style>
-
-  <style name="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
-    <!-- Widget styles -->
-    <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_invisible</item>
-    <item name="alertDialogStyle">@style/MaterialAlertDialog.MaterialComponents</item>
-    <item name="android:checkedTextViewStyle" tools:ignore="NewApi">@style/Widget.MaterialComponents.CheckedTextView</item>
-    <item name="android:dialogCornerRadius" tools:ignore="newApi">@null</item>
-    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
-    <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
-    <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
-    <item name="buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
-    <item name="android:backgroundDimAmount">@dimen/m3_comp_scrim_container_opacity</item>
-    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.MaterialComponents.Body.Text</item>
-  </style>
-
-  <style name="Base.ThemeOverlay.MaterialComponents.Dialog" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog"/>
-  <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
-  <style name="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
+  <style name="ThemeOverlay.Material3Expressive.Dialog" parent="Base.ThemeOverlay.Material3Expressive.Dialog"/>
 
   <!--
-    The default theme overlay used by MaterialComponents for regular dialogs.
-  -->
-  <style name="ThemeOverlay.MaterialComponents.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog"/>
-
-  <!--
-    The default MaterialComponents theme overlay used for AlertDialogs built via the
+    The default Material3Expressive theme overlay used for AlertDialogs built via the
     alertDialogTheme attribute.
   -->
-  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
+  <style name="ThemeOverlay.Material3Expressive.Dialog.Alert" parent="ThemeOverlay.Material3.Dialog.Alert">
+    <!-- Update buttonBarButtonStyle with Expressive style. -->
+  </style>
 
   <!--
-    The default MaterialComponents theme overlay for AlertDialogs built with the MaterialAlertDialogBuilder, via the
-    materialAlertDialogTheme attribute.
+    The default theme overlay used by Material3Expressive for framework
+    (non-AppCompat) alert dialogs, via the android:alertDialogTheme attribute.
+    It is recommended to use AppCompat alert dialogs, but Preferences does not.
   -->
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel</item>
-    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon</item>
-    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text</item>
+  <style name="ThemeOverlay.Material3Expressive.Dialog.Alert.Framework" parent="ThemeOverlay.Material3.Dialog.Alert.Framework">
+    <!-- Update buttonBarButtonStyle with Expressive style. -->
   </style>
 
-  <!-- A theme overlay for MaterialComponents Alert Dialog panels with a center aligned title text and icon. -->
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked</item>
-    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked</item>
-    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked</item>
+  <style name="ThemeOverlay.Material3Expressive.Light.Dialog.Alert.Framework" parent="ThemeOverlay.Material3.Light.Dialog.Alert.Framework">
+    <!-- Update buttonBarButtonStyle with Expressive style. -->
   </style>
+
+  <!--
+    The default Material3Expressive theme overlay for AlertDialogs built with the MaterialAlertDialogBuilder, via the
+    materialAlertDialogTheme attribute.
+    -->
+  <style name="ThemeOverlay.Material3Expressive.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <!-- Update components styles to Expressive styles. -->
+  </style>
+
+  <!-- A theme overlay for Material3Expressive Alert Dialog panels with a center aligned title text and icon. -->
+  <style name="ThemeOverlay.Material3Expressive.MaterialAlertDialog.Centered">
+    <!-- Update components styles to Expressive styles. -->
+  </style>
+
+  <!-- Dialog theme overlays for Material3. -->
 
   <style name="Base.ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog">
     <item name="materialButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
@@ -85,7 +74,22 @@
   -->
   <style name="ThemeOverlay.Material3.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
-    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
+  </style>
+
+  <!--
+    The default theme overlay used by Material3 for framework
+    (non-AppCompat) alert dialogs, via the android:alertDialogTheme attribute.
+    It is recommended to use AppCompat alert dialogs, but Preferences does not.
+  -->
+  <style name="ThemeOverlay.Material3.Dialog.Alert.Framework" parent="ThemeOverlay.MaterialComponents.Dialog.Alert.Framework">
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Light.Dialog.Alert.Framework" parent="ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework">
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
   </style>
 
   <!--
@@ -94,8 +98,8 @@
     -->
   <style name="ThemeOverlay.Material3.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
     <item name="alertDialogStyle">@style/MaterialAlertDialog.Material3</item>
-    <item name="android:windowElevation" tools:ignore="NewApi">@dimen/m3_alert_dialog_elevation</item>
-    <item name="android:checkedTextViewStyle" tools:ignore="NewApi">@style/Widget.Material3.CheckedTextView</item>
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:checkedTextViewStyle">@style/Widget.Material3.CheckedTextView</item>
     <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
     <item name="buttonBarNegativeButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
@@ -112,5 +116,86 @@
     <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel.CenterStacked</item>
     <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon.CenterStacked</item>
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text.CenterStacked</item>
+  </style>
+
+  <!-- Dialog theme overlays for MaterialComponents. -->
+
+  <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog">
+    <!-- Widget styles -->
+    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+    <!-- Widget styles -->
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <style name="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+    <!-- Widget styles -->
+    <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_invisible</item>
+    <item name="alertDialogStyle">@style/MaterialAlertDialog.MaterialComponents</item>
+    <item name="android:checkedTextViewStyle">@style/Widget.MaterialComponents.CheckedTextView</item>
+    <item name="android:dialogCornerRadius" tools:targetApi="p">@null</item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+    <item name="android:backgroundDimAmount">@dimen/m3_comp_scrim_container_opacity</item>
+    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.MaterialComponents.Body.Text</item>
+  </style>
+
+  <style name="Base.ThemeOverlay.MaterialComponents.Dialog" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog">
+    <item name="android:windowBackground">@drawable/mtrl_dialog_background</item>
+  </style>
+
+  <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
+  <style name="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
+
+  <!--
+    MaterialComponents ThemeOverlays for Framework Alert Dialogs.
+  -->
+  <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert.Framework" parent="@android:style/Theme.Material.Dialog.Alert">
+    <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <style name="Base.ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework" parent="@android:style/Theme.Material.Light.Dialog.Alert">
+    <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <!--
+    The default theme overlay used by MaterialComponents for regular dialogs.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog"/>
+
+  <!--
+    The default MaterialComponents theme overlay used for AlertDialogs built via the
+    alertDialogTheme attribute.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
+
+  <!--
+    The default theme overlay used by MaterialComponents for framework
+    (non-AppCompat) alert dialogs, via the android:alertDialogTheme attribute.
+    It is recommended to use AppCompat alert dialogs, but Preferences does not.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert.Framework" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert.Framework"/>
+  <style name="ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework" parent="Base.ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework"/>
+
+
+  <!--
+    The default MaterialComponents theme overlay for AlertDialogs built with the MaterialAlertDialogBuilder, via the
+    materialAlertDialogTheme attribute.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text</item>
+  </style>
+
+  <!-- A theme overlay for MaterialComponents Alert Dialog panels with a center aligned title text and icon. -->
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked</item>
   </style>
 </resources>

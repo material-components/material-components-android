@@ -50,7 +50,7 @@ public class CornerTreatment {
   public void getCornerPath(float angle, float interpolation, @NonNull ShapePath shapePath) {}
 
   /**
-   * Generates a {@link ShapePath} for this corner treatment.
+   * Generates a {@link ShapePath} using a single radius value for this corner treatment.
    *
    * <p>CornerTreatments are assumed to have an origin of (0, 0) (i.e. they represent the top-left
    * corner), and are automatically rotated and scaled as necessary when applied to other corners.

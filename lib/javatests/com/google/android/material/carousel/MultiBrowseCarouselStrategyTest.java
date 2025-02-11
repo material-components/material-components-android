@@ -96,6 +96,22 @@ public class MultiBrowseCarouselStrategyTest {
   }
 
   @Test
+  public void testContainer_shouldShowOneLargeOneSmallItem() {
+    View view = createViewWithSize(ApplicationProvider.getApplicationContext(), 100, 400);
+    float minSmallItemSize =
+        view.getResources().getDimension(R.dimen.m3_carousel_small_item_size_min);
+    // Create a carousel that will fit at least one small item and one larger item
+    int carouselWidth = ((int) (minSmallItemSize * 2f)) + 1;
+    Carousel carousel = createCarouselWithWidth(carouselWidth);
+
+    MultiBrowseCarouselStrategy config = setupStrategy();
+    KeylineState keylineState = config.onFirstChildMeasuredWithMargins(carousel, view);
+
+    assertThat(keylineState.getKeylines()).hasSize(4);
+    assertThat(keylineState.getKeylines().get(2).maskedItemSize).isEqualTo(minSmallItemSize);
+  }
+
+  @Test
   public void testKnownArrangementWithMediumItem_correctlyCalculatesKeylineLocations() {
     float[] locOffsets = new float[] {-.5F, 100F, 300F, 464F, 556F, 584.5F};
 

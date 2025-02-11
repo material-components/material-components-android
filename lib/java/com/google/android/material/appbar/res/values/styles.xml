@@ -19,11 +19,9 @@
   <!-- AppBarLayout styles -->
   <style name="Widget.Design.AppBarLayout" parent="android:Widget">
     <item name="android:background">?attr/colorPrimary</item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/design_appbar_state_list_animator
-    </item>
-    <item name="android:keyboardNavigationCluster" tools:ignore="NewApi">true</item>
-    <item name="android:touchscreenBlocksFocus" tools:ignore="NewApi">true</item>
+    <item name="android:stateListAnimator">@animator/design_appbar_state_list_animator</item>
+    <item name="android:keyboardNavigationCluster" tools:targetApi="o">true</item>
+    <item name="android:touchscreenBlocksFocus">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.AppBarLayout.Primary" parent="Widget.Design.AppBarLayout"/>
@@ -58,7 +56,7 @@
   </style>
 
   <style name="Widget.MaterialComponents.Toolbar.Primary">
-    <item name="android:elevation" tools:ignore="NewApi">@dimen/design_appbar_elevation</item>
+    <item name="android:elevation">@dimen/design_appbar_elevation</item>
     <item name="android:background">?attr/colorPrimary</item>
     <item name="titleTextColor">?attr/colorOnPrimary</item>
     <item name="subtitleTextColor">@color/material_on_primary_emphasis_medium</item>
@@ -149,22 +147,23 @@
   <!-- M3 AppBarLayout styles -->
   <style name="Widget.Material3.AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
     <item name="liftOnScroll">true</item>
-    <item name="android:background">@macro/m3_comp_top_app_bar_small_container_color</item>
-    <item name="liftOnScrollColor">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/m3_appbar_state_list_animator
-    </item>
+    <item name="android:background">@macro/m3_comp_app_bar_container_color</item>
+    <item name="liftOnScrollColor">@macro/m3_comp_app_bar_on_scroll_container_color</item>
+    <item name="android:stateListAnimator">@animator/m3_appbar_state_list_animator</item>
 
     <!-- On newer API levels, hide shadows while keeping elevation. -->
-    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
-    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:outlineAmbientShadowColor" tools:targetApi="p">@android:color/transparent</item>
+    <item name="android:outlineSpotShadowColor" tools:targetApi="p">@android:color/transparent</item>
   </style>
 
   <!-- M3 CollapsingToolbarLayout styles -->
   <style name="Base.Widget.Material3.CollapsingToolbar" parent="Widget.MaterialComponents.CollapsingToolbar">
-    <item name="collapsedTitleTextAppearance">@macro/m3_comp_top_app_bar_small_headline_type</item>
-    <item name="collapsedTitleTextColor">@macro/m3_comp_top_app_bar_small_headline_color</item>
-    <item name="expandedTitleTextColor">@macro/m3_comp_top_app_bar_small_headline_color</item>
+    <item name="collapsedTitleTextAppearance">@macro/m3_comp_app_bar_small_title_font</item>
+    <item name="collapsedSubtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
+    <item name="collapsedTitleTextColor">@macro/m3_comp_app_bar_title_color</item>
+    <item name="collapsedSubtitleTextColor">@macro/m3_comp_app_bar_title_color</item>
+    <item name="expandedTitleTextColor">@macro/m3_comp_app_bar_title_color</item>
+    <item name="expandedSubtitleTextColor">@macro/m3_comp_app_bar_title_color</item>
     <item name="expandedTitleMarginStart">@dimen/m3_appbar_expanded_title_margin_horizontal</item>
     <item name="expandedTitleMarginEnd">@dimen/m3_appbar_expanded_title_margin_horizontal</item>
     <item name="expandedTitleMarginBottom">@dimen/m3_appbar_expanded_title_margin_bottom</item>
@@ -182,40 +181,39 @@
   <style name="Widget.Material3.CollapsingToolbar" parent="Base.Widget.Material3.CollapsingToolbar">
     <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger</item>
     <item name="expandedTitleTextAppearance">?attr/textAppearanceHeadlineSmall</item>
+    <item name="expandedSubtitleTextAppearance">?attr/textAppearanceTitleLarge</item>
   </style>
 
   <style name="Widget.Material3.CollapsingToolbar.Medium" parent="Base.Widget.Material3.CollapsingToolbar">
     <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger_medium</item>
-    <item name="collapsedTitleTextColor">@macro/m3_comp_top_app_bar_medium_headline_color</item>
-    <item name="expandedTitleTextColor">@macro/m3_comp_top_app_bar_medium_headline_color</item>
-    <item name="expandedTitleTextAppearance">@macro/m3_comp_top_app_bar_medium_headline_type</item>
+    <item name="expandedTitleTextAppearance">@macro/m3_comp_app_bar_medium_title_font</item>
+    <item name="expandedSubtitleTextAppearance">?attr/textAppearanceTitleLarge</item>
   </style>
 
   <style name="Widget.Material3.CollapsingToolbar.Large" parent="Base.Widget.Material3.CollapsingToolbar">
     <item name="scrimVisibleHeightTrigger">@dimen/m3_appbar_scrim_height_trigger_large</item>
-    <item name="collapsedTitleTextColor">@macro/m3_comp_top_app_bar_large_headline_color</item>
-    <item name="expandedTitleTextColor">@macro/m3_comp_top_app_bar_large_headline_color</item>
-    <item name="expandedTitleTextAppearance">@macro/m3_comp_top_app_bar_large_headline_type</item>
+    <item name="expandedTitleTextAppearance">@macro/m3_comp_app_bar_large_title_font</item>
+    <item name="expandedSubtitleTextAppearance">?attr/textAppearanceHeadlineSmall</item>
   </style>
 
   <!-- Style for a M3 Toolbar. -->
   <style name="Widget.Material3.Toolbar" parent="Widget.AppCompat.Toolbar">
-    <item name="titleTextAppearance">@macro/m3_comp_top_app_bar_small_headline_type</item>
+    <item name="titleTextAppearance">@macro/m3_comp_app_bar_small_title_font</item>
     <item name="subtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="contentInsetStartWithNavigation">0dp</item>
 
     <!-- On newer API levels, hide shadows while keeping elevation. -->
-    <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
-    <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">@android:color/transparent</item>
+    <item name="android:outlineAmbientShadowColor" tools:targetApi="p">@android:color/transparent</item>
+    <item name="android:outlineSpotShadowColor" tools:targetApi="p">@android:color/transparent</item>
   </style>
 
   <!-- Style for a M3 On Surface Toolbar (transparent background and on-surface
        colors for text and iconography). Use with MaterialToolbar to get
        navigation icon and menu icon coloring. -->
   <style name="Widget.Material3.Toolbar.OnSurface">
-    <item name="titleTextColor">@macro/m3_comp_top_app_bar_small_headline_color</item>
+    <item name="titleTextColor">@macro/m3_comp_app_bar_title_color</item>
     <item name="subtitleTextColor">?attr/colorOnSurfaceVariant</item>
-    <item name="navigationIconTint">@macro/m3_comp_top_app_bar_small_leading_icon_color</item>
+    <item name="navigationIconTint">@macro/m3_comp_app_bar_leading_icon_color</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Toolbar.Surface</item>
   </style>
 
@@ -223,12 +221,12 @@
        colors for text and iconography). Use with MaterialToolbar to get
        navigation icon and menu icon coloring. -->
   <style name="Widget.Material3.Toolbar.Surface" parent="Widget.Material3.Toolbar.OnSurface">
-    <item name="android:background">@macro/m3_comp_top_app_bar_small_container_color</item>
+    <item name="android:background">@macro/m3_comp_app_bar_container_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Toolbar.Surface" parent="">
-    <item name="actionMenuTextColor">@macro/m3_comp_top_app_bar_small_trailing_icon_color</item>
-    <item name="colorControlNormal">@macro/m3_comp_top_app_bar_small_trailing_icon_color</item>
+    <item name="actionMenuTextColor">@macro/m3_comp_app_bar_trailing_icon_color</item>
+    <item name="colorControlNormal">@macro/m3_comp_app_bar_trailing_icon_color</item>
   </style>
 
   <!-- Style for a M3 ActionBar (inherited from AppCompat due to different
@@ -236,9 +234,9 @@
   <style name="Base.Widget.Material3.ActionBar.Solid" parent="Widget.AppCompat.ActionBar.Solid">
     <item name="titleTextStyle">@style/TextAppearance.Material3.ActionBar.Title</item>
     <item name="subtitleTextStyle">@style/TextAppearance.Material3.ActionBar.Subtitle</item>
-    <item name="background">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
-    <item name="backgroundStacked">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
-    <item name="backgroundSplit">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
+    <item name="background">@macro/m3_comp_app_bar_on_scroll_container_color</item>
+    <item name="backgroundStacked">@macro/m3_comp_app_bar_on_scroll_container_color</item>
+    <item name="backgroundSplit">@macro/m3_comp_app_bar_on_scroll_container_color</item>
   </style>
 
   <style name="Widget.Material3.ActionBar.Solid" parent="Base.Widget.Material3.ActionBar.Solid" />
@@ -246,9 +244,9 @@
   <style name="Base.Widget.Material3.Light.ActionBar.Solid" parent="Widget.AppCompat.Light.ActionBar.Solid">
     <item name="titleTextStyle">@style/TextAppearance.Material3.ActionBar.Title</item>
     <item name="subtitleTextStyle">@style/TextAppearance.Material3.ActionBar.Subtitle</item>
-    <item name="background">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
-    <item name="backgroundStacked">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
-    <item name="backgroundSplit">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
+    <item name="background">@macro/m3_comp_app_bar_on_scroll_container_color</item>
+    <item name="backgroundStacked">@macro/m3_comp_app_bar_on_scroll_container_color</item>
+    <item name="backgroundSplit">@macro/m3_comp_app_bar_on_scroll_container_color</item>
   </style>
 
   <style name="Widget.Material3.Light.ActionBar.Solid" parent="Base.Widget.Material3.Light.ActionBar.Solid" />
@@ -256,14 +254,14 @@
   <style name="Base.Widget.Material3.ActionMode" parent="Widget.AppCompat.ActionMode">
     <item name="titleTextStyle">@style/TextAppearance.Material3.ActionBar.Title</item>
     <item name="subtitleTextStyle">@style/TextAppearance.Material3.ActionBar.Subtitle</item>
-    <item name="background">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
-    <item name="backgroundSplit">@macro/m3_comp_top_app_bar_small_on_scroll_container_color</item>
+    <item name="background">@macro/m3_comp_app_bar_on_scroll_container_color</item>
+    <item name="backgroundSplit">@macro/m3_comp_app_bar_on_scroll_container_color</item>
   </style>
 
   <style name="Widget.Material3.ActionMode" parent="Base.Widget.Material3.ActionMode" />
 
   <style name="TextAppearance.Material3.ActionBar.Title" parent="TextAppearance.Material3.TitleLarge">
-    <item name="android:textColor">@macro/m3_comp_top_app_bar_small_headline_color</item>
+    <item name="android:textColor">@macro/m3_comp_app_bar_title_color</item>
   </style>
 
   <style name="TextAppearance.Material3.ActionBar.Subtitle" parent="TextAppearance.Material3.TitleMedium">

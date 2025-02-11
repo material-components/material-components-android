@@ -18,6 +18,9 @@ package io.material.catalog.navigationrail;
 
 import io.material.catalog.R;
 
+import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +34,26 @@ import io.material.catalog.feature.DemoFragment;
  */
 public class NavigationRailAnimatedDemoFragment extends DemoFragment {
 
+  @SuppressLint("SourceLockedOrientationActivity")
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    return layoutInflater.inflate(
+    View v = layoutInflater.inflate(
         R.layout.cat_navigation_rail_animated, viewGroup, false /* attachToRoot */);
+    Configuration config = getResources().getConfiguration();
+    View compactMessage = v.findViewById(R.id.cat_navigation_rail_compact_msg);
+    if (config.smallestScreenWidthDp <= 600) { // 600dp and below is classified as compact
+      compactMessage.setVisibility(View.VISIBLE);
+      getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    } else {
+      getActivity().setRequestedOrientation(config.orientation);
+    }
+    return v;
+  }
+
+  @Override
+  public void onDestroy() {
+    super.onDestroy();
+    getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
   }
 }

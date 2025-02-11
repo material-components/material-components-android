@@ -84,6 +84,34 @@ public class SliderFragment extends DemoLandingFragment {
             return new SliderLabelBehaviorDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_slider_demo_corner_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SliderCornerDemoFragment();
+          }
+        });
+    additionalDemos.add(
+        new Demo(R.string.cat_slider_demo_icon_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SliderTrackIconDemoFragment();
+          }
+        });
+    additionalDemos.add(
+        new Demo(R.string.cat_slider_demo_vertical_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SliderVerticalDemoFragment();
+          }
+        });
+    additionalDemos.add(
+        new Demo(R.string.cat_slider_demo_vertical_scroll_container_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SliderVerticalScrollContainerDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

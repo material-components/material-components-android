@@ -92,8 +92,10 @@ final class MaterialCalendarGridView extends GridView {
     if (!result) {
       return false;
     }
-    if (getSelectedItemPosition() == INVALID_POSITION
-        || getSelectedItemPosition() >= getAdapter().firstPositionInMonth()) {
+    int selectedPosition = getSelectedItemPosition();
+    if (selectedPosition == INVALID_POSITION
+        || (selectedPosition >= getAdapter().firstPositionInMonth()
+            && selectedPosition <= getAdapter().lastPositionInMonth())) {
       return true;
     }
     if (KeyEvent.KEYCODE_DPAD_UP == keyCode) {

@@ -21,7 +21,6 @@ import static android.os.Looper.getMainLooper;
 import static com.google.android.material.slider.BaseSlider.UNIT_PX;
 import static com.google.android.material.slider.BaseSlider.UNIT_VALUE;
 import static org.robolectric.Shadows.shadowOf;
-import static org.robolectric.annotation.LooperMode.Mode.PAUSED;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.core.app.ApplicationProvider;
@@ -36,10 +35,8 @@ import org.robolectric.ParameterizedRobolectricTestRunner;
 import org.robolectric.ParameterizedRobolectricTestRunner.Parameter;
 import org.robolectric.ParameterizedRobolectricTestRunner.Parameters;
 import org.robolectric.Robolectric;
-import org.robolectric.annotation.LooperMode;
 
 /** Tests for {@link com.google.android.material.slider.RangeSlider}. */
-@LooperMode(PAUSED)
 @RunWith(ParameterizedRobolectricTestRunner.class)
 public class RangeSliderConfigTest {
 

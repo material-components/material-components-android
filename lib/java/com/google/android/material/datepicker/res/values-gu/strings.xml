@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">શ્રેણી પસંદ કરો</string>
   <string name="mtrl_picker_date_header_title">તારીખ પસંદ કરો</string>
-  <string name="mtrl_picker_range_header_unselected">શરૂ કરવાની તારીખ – સમાપ્તિની તારીખ</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s – સમાપ્તિની તારીખ</string>
+  <string name="mtrl_picker_range_header_unselected">પ્રારંભ તારીખ – સમાપ્તિ તારીખ</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s – સમાપ્તિ તારીખ</string>
   <string name="mtrl_picker_range_header_only_end_selected">શરૂ કરવાની તારીખ – %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s – %2$s</string>
   <string name="mtrl_picker_date_header_unselected">પસંદ કરેલી તારીખ</string>
@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">આગલા મહિના પર બદલો</string>
   <string name="mtrl_picker_toggle_to_year_selection">વર્ષ વ્યૂ પર સ્વિચ કરવા માટે ટૅપ કરો</string>
   <string name="mtrl_picker_toggle_to_day_selection">Calendar વ્યૂ પર સ્વિચ કરવા માટે ટૅપ કરો</string>
+  <string name="mtrl_picker_toggled_to_year_selection">વર્ષ વ્યૂ પર સ્વિચ કર્યું</string>
+  <string name="mtrl_picker_toggled_to_day_selection">કૅલેન્ડર વ્યૂ પર સ્વિચ કર્યું</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">હાલની પસંદગી: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">પ્રારંભ તારીખની પસંદગી: %1$s – સમાપ્તિ તારીખની પસંદગી: %2$s</string>

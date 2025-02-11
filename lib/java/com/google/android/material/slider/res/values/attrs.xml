@@ -21,7 +21,8 @@
     <attr name="android:valueTo" />
     <attr name="android:stepSize" />
     <!-- Whether the Slider is enabled. -->
-    <attr name="android:enabled"/>
+    <attr name="android:enabled" />
+    <attr name="android:orientation" />
     <!-- The color of the slider's halo. -->
     <attr name="haloColor" format="color" />
     <!-- The radius of the halo. -->
@@ -69,8 +70,22 @@
     <attr name="tickRadiusActive" format="dimension" />
     <!-- The radius of the inactive tick. Only used when the slider is in discrete mode.-->
     <attr name="tickRadiusInactive" format="dimension" />
-    <!-- Whether to show the tick marks. Only used when the slider is in discrete mode. -->
+    <!-- Whether to show the tick marks. Only used when the slider is in discrete mode.
+         {@deprecated Use tickVisibilityMode instead.} -->
     <attr name="tickVisible" format="boolean" />
+    <!-- Mode to specify the visibility of tick marks. Only used when the slider is in
+         discrete mode. -->
+    <attr name="tickVisibilityMode" format="enum">
+      <!-- All tick marks will be drawn if they are not spaced too densely. Otherwise,
+           the maximum allowed number of tick marks will be drawn.
+           Note that in this case the drawn ticks may not match the actual snap values. -->
+      <enum name="autoLimit" value="0" />
+      <!-- All tick marks will be drawn if they are not spaced too densely. Otherwise,
+           the tick marks will not be drawn. -->
+      <enum name="autoHide" value="1" />
+      <!-- Tick marks will not be drawn. -->
+      <enum name="hidden" value="2" />
+    </attr>
     <!-- The color of the track. -->
     <attr name="trackColor" />
     <!-- The color of active portion of the track. -->
@@ -79,6 +94,22 @@
     <attr name="trackColorInactive" format="color" />
     <!-- The height of the track. -->
     <attr name="trackHeight" format="dimension" />
+    <!-- The start icon on the active portion of the track. -->
+    <attr name="trackIconActiveStart" format="reference" />
+    <!-- The end icon on the active portion of the track. -->
+    <attr name="trackIconActiveEnd" format="reference" />
+    <!-- The color of the icon on the active portion of the track. -->
+    <attr name="trackIconActiveColor" format="color" />
+    <!-- The start icon on the inactive portion of the track. -->
+    <attr name="trackIconInactiveStart" format="reference" />
+    <!-- The end icon on the inactive portion of the track. -->
+    <attr name="trackIconInactiveEnd" format="reference" />
+    <!-- The color of the icon on the inactive portion of the track. -->
+    <attr name="trackIconInactiveColor" format="color" />
+    <!-- The size of the icons of the track. -->
+    <attr name="trackIconSize" format="dimension" />
+    <!-- The corner size on the outside of the track. -->
+    <attr name="trackCornerSize" format="dimension" />
     <!-- The corner size on the inside of the track (visible with gap). -->
     <attr name="trackInsideCornerSize" format="dimension" />
     <!-- The size of the stop indicator at the edges of the track. -->

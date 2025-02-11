@@ -43,6 +43,8 @@ import io.material.catalog.feature.DemoFragment;
 public class HeroCarouselDemoFragment extends DemoFragment {
 
   private MaterialDividerItemDecoration horizontalDivider;
+  private CarouselAdapter adapter;
+  private Slider positionSlider;
 
   @NonNull
   @Override
@@ -67,7 +69,7 @@ public class HeroCarouselDemoFragment extends DemoFragment {
     MaterialSwitch drawDividers = view.findViewById(R.id.draw_dividers_switch);
     MaterialSwitch enableFlingSwitch = view.findViewById(R.id.enable_fling_switch);
     AutoCompleteTextView itemCountDropdown = view.findViewById(R.id.item_count_dropdown);
-    Slider positionSlider = view.findViewById(R.id.position_slider);
+    positionSlider = view.findViewById(R.id.position_slider);
     RadioButton startAlignButton = view.findViewById(R.id.start_align);
     RadioButton centerAlignButton = view.findViewById(R.id.center_align);
 
@@ -96,7 +98,7 @@ public class HeroCarouselDemoFragment extends DemoFragment {
           }
         });
 
-    CarouselAdapter adapter =
+    adapter =
         new CarouselAdapter(
             (item, position) -> {
               heroStartRecyclerView.scrollToPosition(position);
@@ -141,6 +143,11 @@ public class HeroCarouselDemoFragment extends DemoFragment {
         v -> heroStartCarouselLayoutManager.setCarouselAlignment(ALIGNMENT_CENTER));
 
     heroStartRecyclerView.setAdapter(adapter);
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
     adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));
   }
 

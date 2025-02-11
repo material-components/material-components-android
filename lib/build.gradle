@@ -23,6 +23,7 @@ dependencies {
   api compatibility("transition")
   api compatibility("vectordrawable")
   api compatibility("viewpager2")
+  api compatibility("graphicsShapes")
 
   annotationProcessor compatibility("resourceInspectionProcessor")
 
@@ -60,12 +61,15 @@ def srcDirs = [
   'com/google/android/material/datepicker',
   'com/google/android/material/dialog',
   'com/google/android/material/divider',
+  'com/google/android/material/dockedtoolbar',
   'com/google/android/material/drawable',
   'com/google/android/material/elevation',
   'com/google/android/material/expandable',
   'com/google/android/material/floatingactionbutton',
+  'com/google/android/material/floatingtoolbar',
   'com/google/android/material/imageview',
   'com/google/android/material/internal',
+  'com/google/android/material/loadingindicator',
   'com/google/android/material/materialswitch',
   'com/google/android/material/math',
   'com/google/android/material/menu',
@@ -120,7 +124,7 @@ android {
   }
 
   defaultConfig {
-    minSdkVersion 19
+    minSdkVersion 21
   }
 }
 
@@ -279,7 +283,7 @@ afterEvaluate {
           description = 'Material Components for Android is a static library ' +
             'that you can add to your Android application in order to use ' +
             'APIs that provide implementations of the Material Design specification. ' +
-            'Compatible on devices running API 14 or later.'
+            'Compatible on devices running API 21 or later.'
           url = 'https://github.com/material-components/material-components-android'
           inceptionYear = '2015'
           licenses {

@@ -20,6 +20,9 @@ import io.material.catalog.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Typeface;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -38,8 +41,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.resources.TextAppearance;
-import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,16 +62,18 @@ public class FontMainDemoFragment extends DemoFragment {
     recyclerView.addItemDecoration(
         new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
     recyclerView.setAdapter(new FontStyleAdapter(getContext()));
-    ViewCompat.setOnApplyWindowInsetsListener(recyclerView, (view1, windowInsetsCompat) -> {
-      recyclerView.setClipToPadding(windowInsetsCompat.getSystemWindowInsetBottom() == 0);
-      recyclerView.setPadding(
-          recyclerView.getPaddingLeft(),
-          recyclerView.getPaddingTop(),
-          recyclerView.getPaddingRight(),
-          windowInsetsCompat.getSystemWindowInsetBottom());
+    ViewCompat.setOnApplyWindowInsetsListener(
+        recyclerView,
+        (view1, windowInsetsCompat) -> {
+          recyclerView.setClipToPadding(windowInsetsCompat.getSystemWindowInsetBottom() == 0);
+          recyclerView.setPadding(
+              recyclerView.getPaddingLeft(),
+              recyclerView.getPaddingTop(),
+              recyclerView.getPaddingRight(),
+              windowInsetsCompat.getSystemWindowInsetBottom());
 
-      return windowInsetsCompat;
-    });
+          return windowInsetsCompat;
+        });
 
     return view;
   }
@@ -87,19 +92,54 @@ public class FontMainDemoFragment extends DemoFragment {
     return R.array.cat_font_style_names_array;
   }
 
-  protected String convertFontFamilyToDescription(String fontFamily) {
-    if (fontFamily == null) {
-      return "Regular";
+  @SuppressWarnings("StringCaseLocaleUsage")
+  @NonNull
+  protected String getFontFamilyName(@Nullable String fontFamily) {
+    if (fontFamily != null) {
+      switch (fontFamily.toLowerCase()) {
+        case "sans-serif-light":
+          return "Light";
+        case "sans-serif-medium":
+          return "Medium";
+        default:
+          // fall through
+      }
     }
-    switch (fontFamily.toLowerCase()) {
-      case "sans-serif-light":
-        return "Light";
-      case "sans-serif":
-        return "Regular";
-      case "sans-serif-medium":
-        return "Medium";
+
+    return "Regular";
+  }
+
+  @NonNull
+  protected String getTextStyleName(int textStyle) {
+    switch (textStyle) {
+      case Typeface.ITALIC:
+        return "Italic";
+      case Typeface.BOLD:
+        return "Bold";
+      case Typeface.BOLD_ITALIC:
+        return "Bold-Italic";
       default:
-        return fontFamily;
+        // fall through
+    }
+
+    return "Normal";
+  }
+
+  @NonNull
+  protected String convertFontFamilyToDescription(@Nullable String fontFamily, int textStyle) {
+    return getFontFamilyName(fontFamily) + "/" + getTextStyleName(textStyle);
+  }
+
+  @NonNull
+  protected String getFontVariationSettingsDescription(@Nullable String fontVariationSettings) {
+    if (VERSION.SDK_INT < VERSION_CODES.O || fontVariationSettings == null) {
+      return "Unsupported";
+    } else {
+      if (fontVariationSettings.isEmpty()) {
+        return "None";
+      } else {
+        return fontVariationSettings;
+      }
     }
   }
 
@@ -154,8 +194,14 @@ public class FontMainDemoFragment extends DemoFragment {
     private final TextView descriptionView;
     private final ImageView infoView;
 
+    private String name;
+
+    @SuppressWarnings("RestrictTo")
+    private TextAppearance textAppearance;
+
     private String attributeName;
 
+    @SuppressWarnings("RestrictTo")
     public FontStyleViewHolder(ViewGroup parent) {
       super(
           LayoutInflater.from(parent.getContext())
@@ -167,28 +213,38 @@ public class FontMainDemoFragment extends DemoFragment {
 
       infoView.setOnClickListener(
           view ->
-              Snackbar.make(
-                      view,
-                      view.getContext().getString(R.string.cat_font_style_message, attributeName),
-                      Snackbar.LENGTH_LONG)
+              new MaterialAlertDialogBuilder(infoView.getContext())
+                  .setTitle(name)
+                  .setMessage(
+                      view.getContext()
+                          .getString(
+                              R.string.cat_font_style_dialog_message,
+                              /* attribute= */ attributeName,
+                              /*font family=*/ getFontFamilyName(textAppearance.fontFamily),
+                              /*text style=*/ getTextStyleName(textAppearance.textStyle),
+                              /*text size=*/ pxToSp(textAppearance.getTextSize()),
+                              /*variation settings=*/ getFontVariationSettingsDescription(
+                                  textAppearance.fontVariationSettings)))
                   .show());
     }
 
+    @SuppressWarnings("RestrictTo")
     public void bind(@StyleRes int style, String name, String attributeName) {
+      this.name = name;
       this.attributeName = attributeName;
+      this.textAppearance = new TextAppearance(itemView.getContext(), style);
 
       nameView.setText(name);
-      descriptionView.setText(createDescription(name, style));
+      descriptionView.setText(createDescription(name, textAppearance));
 
       TextViewCompat.setTextAppearance(nameView, style);
     }
 
     @SuppressWarnings("RestrictTo")
-    private String createDescription(String name, @StyleRes int style) {
-      TextAppearance textAppearance = new TextAppearance(itemView.getContext(), style);
+    private String createDescription(String name, TextAppearance textAppearance) {
       return name
           + " - "
-          + convertFontFamilyToDescription(textAppearance.fontFamily)
+          + convertFontFamilyToDescription(textAppearance.fontFamily, textAppearance.textStyle)
           + " "
           + pxToSp(textAppearance.getTextSize())
           + "sp";

@@ -49,7 +49,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.core.widget.TintableCompoundButton;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
@@ -176,8 +175,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
           super.onAnimationStart(drawable);
           if (buttonTintList != null) {
             // Have the color remain on the checked state while the animation is happening.
-            DrawableCompat.setTint(
-                drawable,
+            drawable.setTint(
                 buttonTintList.getColorForState(
                     currentStateChecked, buttonTintList.getDefaultColor()));
           }
@@ -187,9 +185,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
         public void onAnimationEnd(Drawable drawable) {
           super.onAnimationEnd(drawable);
           if (buttonTintList != null) {
-            DrawableCompat.setTintList(
-                drawable,
-                buttonTintList);
+            drawable.setTintList(buttonTintList);
           }
         }
       };
@@ -280,11 +276,6 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     attributes.recycle();
 
     refreshButtonDrawable();
-
-    // This is needed due to a pre-21 bug where the drawable states don't get updated correctly.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && buttonIconDrawable != null) {
-      post(() -> buttonIconDrawable.jumpToCurrentState());
-    }
   }
 
   @Override
@@ -303,8 +294,8 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
         if (getBackground() != null) {
           Rect bounds = drawable.getBounds();
-          DrawableCompat.setHotspotBounds(
-              getBackground(), bounds.left + dx, bounds.top, bounds.right + dx, bounds.bottom);
+          getBackground().setHotspotBounds(
+              bounds.left + dx, bounds.top, bounds.right + dx, bounds.bottom);
         }
 
         return;
@@ -337,15 +328,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
     currentStateChecked = DrawableUtils.getCheckedState(drawableStates);
 
-    updateIconTintIfNeeded();
-
     return drawableStates;
-  }
-
-  @Override
-  public void setEnabled(boolean enabled) {
-    super.setEnabled(enabled);
-    updateIconTintIfNeeded();
   }
 
   @Override
@@ -416,11 +399,6 @@ public class MaterialCheckBox extends AppCompatCheckBox {
       }
 
       broadcasting = false;
-
-      // This is needed due to a pre-21 bug where the drawable states don't get updated correctly.
-      if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && buttonIconDrawable != null) {
-        refreshDrawableState();
-      }
     }
   }
 
@@ -476,10 +454,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     }
     this.errorShown = errorShown;
     refreshDrawableState();
-    // This is needed due to a pre-21 bug where the drawable states don't get updated correctly.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && buttonIconDrawable != null) {
-      buttonIconDrawable.jumpToCurrentState();
-    }
+
     for (OnErrorChangedListener listener : onErrorChangedListeners) {
       listener.onErrorChanged(this, this.errorShown);
     }
@@ -777,24 +752,11 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
   private void updateButtonTints() {
     if (buttonDrawable != null && buttonTintList != null) {
-      DrawableCompat.setTintList(buttonDrawable, buttonTintList);
+      buttonDrawable.setTintList(buttonTintList);
     }
 
     if (buttonIconDrawable != null && buttonIconTintList != null) {
-      DrawableCompat.setTintList(buttonIconDrawable, buttonIconTintList);
-    }
-  }
-
-  /*
-   * Update the icon tint due to a pre-21 bug where the drawable states don't get updated correctly.
-   */
-  private void updateIconTintIfNeeded() {
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
-        && buttonIconDrawable != null
-        && buttonIconTintList != null) {
-      buttonIconDrawable.setColorFilter(
-          DrawableUtils.updateTintFilter(
-              buttonIconDrawable, buttonIconTintList, buttonIconTintMode));
+      buttonIconDrawable.setTintList(buttonIconTintList);
     }
   }
 
@@ -831,7 +793,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     if (buttonTintList != null) {
       return buttonTintList;
     }
-    if (VERSION.SDK_INT >= 21 && super.getButtonTintList() != null) {
+    if (super.getButtonTintList() != null) {
       return super.getButtonTintList();
     }
     return ((TintableCompoundButton) this).getSupportButtonTintList();
@@ -841,12 +803,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     int buttonResourceId = attributes.getResourceId(R.styleable.MaterialCheckBox_android_button, 0);
     int buttonCompatResourceId =
         attributes.getResourceId(R.styleable.MaterialCheckBox_buttonCompat, 0);
-    if (VERSION.SDK_INT < 21) {
-      return buttonResourceId == R.drawable.abc_btn_check_material
-          && buttonCompatResourceId == R.drawable.abc_btn_check_material_anim;
-    } else {
-      return buttonResourceId == FRAMEWORK_BUTTON_DRAWABLE_RES_ID && buttonCompatResourceId == 0;
-    }
+    return buttonResourceId == FRAMEWORK_BUTTON_DRAWABLE_RES_ID && buttonCompatResourceId == 0;
   }
 
   private ColorStateList getMaterialThemeColorsTintList() {

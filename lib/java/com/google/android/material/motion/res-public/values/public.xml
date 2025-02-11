@@ -15,7 +15,15 @@
   ~ limitations under the License.
 -->
 <resources>
+  <public name="stiffness" type="attr"/>
+  <public name="damping" type="attr"/>
 
+  <public name="motionSpringFastSpatial" type="attr" />
+  <public name="motionSpringFastEffects" type="attr" />
+  <public name="motionSpringDefaultSpatial" type="attr" />
+  <public name="motionSpringDefaultEffects" type="attr" />
+  <public name="motionSpringSlowSpatial" type="attr" />
+  <public name="motionSpringSlowEffects" type="attr" />
   <public name="motionEasingStandardInterpolator" type="attr" />
   <public name="motionEasingStandardDecelerateInterpolator" type="attr" />
   <public name="motionEasingStandardAccelerateInterpolator" type="attr" />

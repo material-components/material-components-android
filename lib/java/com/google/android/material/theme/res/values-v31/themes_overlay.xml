@@ -15,6 +15,10 @@
   ~ limitations under the License.
 -->
 <resources>
+  <style name="ThemeOverlay.Material3Expressive.DynamicColors.Light" parent="ThemeOverlay.Material3.DynamicColors.Light"/>
+
+  <style name="ThemeOverlay.Material3Expressive.DynamicColors.Dark" parent="ThemeOverlay.Material3.DynamicColors.Dark"/>
+
   <style name="ThemeOverlay.Material3.DynamicColors.Light" parent="">
     <item name="isMaterial3DynamicColorApplied">true</item>
 

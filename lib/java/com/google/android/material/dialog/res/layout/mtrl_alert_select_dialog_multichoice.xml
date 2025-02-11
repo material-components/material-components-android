@@ -29,6 +29,7 @@
 -->
 <CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@android:id/text1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -42,4 +43,5 @@
     app:drawableLeftCompat="?android:attr/listChoiceIndicatorMultiple"
     app:drawableStartCompat="?android:attr/listChoiceIndicatorMultiple"
     android:drawablePadding="20dp"
-    android:ellipsize="marquee" />
+    android:ellipsize="marquee"
+    tools:ignore="RtlCompat" />

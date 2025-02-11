@@ -23,6 +23,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
@@ -30,7 +31,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.ripple.RippleUtils;
 import java.util.Arrays;
@@ -55,18 +55,17 @@ class IconHelper {
 
   private static void setIconClickable(
       @NonNull CheckableImageButton iconView, @Nullable OnLongClickListener onLongClickListener) {
-    boolean iconClickable = ViewCompat.hasOnClickListeners(iconView);
+    boolean iconClickable = iconView.hasOnClickListeners();
     boolean iconLongClickable = onLongClickListener != null;
     boolean iconFocusable = iconClickable || iconLongClickable;
     iconView.setFocusable(iconFocusable);
     iconView.setClickable(iconClickable);
     iconView.setPressable(iconClickable);
     iconView.setLongClickable(iconLongClickable);
-    ViewCompat.setImportantForAccessibility(
-        iconView,
+    iconView.setImportantForAccessibility(
         iconFocusable
-            ? ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES
-            : ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+            ? View.IMPORTANT_FOR_ACCESSIBILITY_YES
+            : View.IMPORTANT_FOR_ACCESSIBILITY_NO);
   }
 
   /**
@@ -86,12 +85,12 @@ class IconHelper {
         int color =
             iconTintList.getColorForState(
                 mergeIconState(textInputLayout, iconView), iconTintList.getDefaultColor());
-        DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
+        icon.setTintList(ColorStateList.valueOf(color));
       } else {
-        DrawableCompat.setTintList(icon, iconTintList);
+        icon.setTintList(iconTintList);
       }
       if (iconTintMode != null) {
-        DrawableCompat.setTintMode(icon, iconTintMode);
+        icon.setTintMode(iconTintMode);
       }
     }
 
@@ -117,7 +116,7 @@ class IconHelper {
             mergeIconState(textInputLayout, iconView), colorStateList.getDefaultColor());
 
     icon = DrawableCompat.wrap(icon).mutate();
-    DrawableCompat.setTintList(icon, ColorStateList.valueOf(color));
+    icon.setTintList(ColorStateList.valueOf(color));
     iconView.setImageDrawable(icon);
   }
 
@@ -136,8 +135,7 @@ class IconHelper {
   }
 
   static void setCompatRippleBackgroundIfNeeded(@NonNull CheckableImageButton iconView) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && VERSION.SDK_INT <= VERSION_CODES.LOLLIPOP_MR1) {
+    if (VERSION.SDK_INT < VERSION_CODES.M) {
       // Note that this is aligned with ?attr/actionBarItemBackground on API 23+, which sets ripple
       // radius to 20dp. Therefore we set the padding here to (48dp [view size] - 20dp * 2) / 2.
       iconView.setBackground(

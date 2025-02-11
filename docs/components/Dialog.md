@@ -16,13 +16,13 @@ can contain critical information, require decisions, or involve multiple tasks.
 
 **Contents**
 
-*   [Design & API documentation](#design-api-documentation)
+*   [Design and API Documentation](#design-and-api-documentation)
 *   [Using dialogs](#using-dialogs)
 *   [Basic dialog](#basic-dialog)
 *   [Full-screen dialog](#full-screen-dialog)
 *   [Theming](#theming-dialogs)
 
-## Design & API Documentation
+## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/date-pickers/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/dialog/package-summary)
@@ -188,10 +188,10 @@ Element        | **Attribute**                 | **Related methods** | **Default
 
 #### Theme overlays
 
-Element                    | **Theme overlay**
--------------------------- | -----------------
-**Default theme overlay**  | `ThemeOverlay.Material3.MaterialAlertDialog`
-**Centered theme overlay** | `ThemeOverlay.Material3.MaterialAlertDialog.Centered`
+Element                    | **Theme overlay**                                      | Description
+-------------------------- | ------------------------------------------------------ | -------------
+**Default theme overlay**  | `ThemeOverlay.Material3.MaterialAlertDialog`           | Dialogs have start-aligned icons and titles with end-aligned buttons
+**Centered theme overlay** | `ThemeOverlay.Material3.MaterialAlertDialog.Centered`  | Dialogs have center-aligned icons and titles with end-aligned buttons
 
 Default theme overlay attribute: `?attr/materialAlertDialogTheme`
 

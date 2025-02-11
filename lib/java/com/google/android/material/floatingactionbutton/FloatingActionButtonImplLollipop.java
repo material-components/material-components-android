@@ -36,7 +36,6 @@ import android.os.Build.VERSION_CODES;
 import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
@@ -45,7 +44,6 @@ import com.google.android.material.shape.ShapeAppearanceModel;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiresApi(21)
 class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   @Nullable private StateListAnimator stateListAnimator;
 
@@ -141,7 +139,8 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     AnimatorSet set = new AnimatorSet();
     List<Animator> animators = new ArrayList<>();
     animators.add(ObjectAnimator.ofFloat(view, "elevation", elevation).setDuration(0));
-    if (Build.VERSION.SDK_INT >= 22 && Build.VERSION.SDK_INT <= 24) {
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP_MR1
+        && Build.VERSION.SDK_INT <= VERSION_CODES.N) {
       // This is a no-op animation which exists here only for introducing the duration
       // because setting the delay (on the next animation) via "setDelay" or "after"
       // can trigger a NPE between android versions 22 and 24 (due to a framework

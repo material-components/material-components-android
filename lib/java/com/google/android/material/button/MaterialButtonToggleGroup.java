@@ -22,7 +22,6 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -36,28 +35,20 @@ import androidx.annotation.BoolRes;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 import androidx.core.view.AccessibilityDelegateCompat;
-import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
-import com.google.android.material.button.MaterialButton.OnPressedChangeListener;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.shape.AbsoluteCornerSize;
-import com.google.android.material.shape.CornerSize;
-import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.StateListCornerSize;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedMap;
-import java.util.TreeMap;
 
 /**
  * A common container for a set of related, toggleable {@link MaterialButton}s. The {@link
@@ -107,9 +98,9 @@ import java.util.TreeMap;
  *
  * <p>Any {@link MaterialButton}s added to this view group are automatically marked as {@code
  * checkable}, and by default multiple buttons within the same group can be checked. To enforce that
- * only one button can be checked at a time, set the {@code
- * app:singleSelection} attribute to {@code true} on the MaterialButtonToggleGroup or call {@link
- * #setSingleSelection(boolean) setSingleSelection(true)}.
+ * only one button can be checked at a time, set the {@code app:singleSelection} attribute to {@code
+ * true} on the MaterialButtonToggleGroup or call {@link #setSingleSelection(boolean)
+ * setSingleSelection(true)}.
  *
  * <p>MaterialButtonToggleGroup is a {@link LinearLayout}. Using {@code
  * android:layout_width="MATCH_PARENT"} and removing {@code android:insetBottom} {@code
@@ -129,7 +120,7 @@ import java.util.TreeMap;
  * developer guidance</a> and <a href="https://material.io/components/buttons/overview">design
  * guidelines</a>.
  */
-public class MaterialButtonToggleGroup extends LinearLayout {
+public class MaterialButtonToggleGroup extends MaterialButtonGroup {
 
   /**
    * Interface definition for a callback to be invoked when a {@link MaterialButton} is checked or
@@ -149,38 +140,14 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   private static final String LOG_TAG = "MButtonToggleGroup";
   private static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_MaterialButtonToggleGroup;
-
-  private final List<CornerData> originalCornerData = new ArrayList<>();
-
-  private final PressedStateTracker pressedStateTracker = new PressedStateTracker();
   private final LinkedHashSet<OnButtonCheckedListener> onButtonCheckedListeners =
       new LinkedHashSet<>();
-  private final Comparator<MaterialButton> childOrderComparator =
-      new Comparator<MaterialButton>() {
-        @Override
-        public int compare(MaterialButton v1, MaterialButton v2) {
-          int checked = Boolean.valueOf(v1.isChecked()).compareTo(v2.isChecked());
-          if (checked != 0) {
-            return checked;
-          }
 
-          int stateful = Boolean.valueOf(v1.isPressed()).compareTo(v2.isPressed());
-          if (stateful != 0) {
-            return stateful;
-          }
-
-          // don't return 0s
-          return Integer.valueOf(indexOfChild(v1)).compareTo(indexOfChild(v2));
-        }
-      };
-
-  private Integer[] childOrder;
   private boolean skipCheckedStateTracker = false;
   private boolean singleSelection;
   private boolean selectionRequired;
 
-  @IdRes
-  private final int defaultCheckId;
+  @IdRes private final int defaultCheckId;
   private Set<Integer> checkedIds = new HashSet<>();
 
   public MaterialButtonToggleGroup(@NonNull Context context) {
@@ -203,15 +170,19 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     setSingleSelection(
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_singleSelection, false));
     defaultCheckId =
-        attributes.getResourceId(
-            R.styleable.MaterialButtonToggleGroup_checkedButton, View.NO_ID);
+        attributes.getResourceId(R.styleable.MaterialButtonToggleGroup_checkedButton, View.NO_ID);
     selectionRequired =
         attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_selectionRequired, false);
-    setChildrenDrawingOrderEnabled(true);
+
+    // If inner corner size is not specified in button group, set it to 0 as default.
+    if (innerCornerSize == null) {
+      innerCornerSize = StateListCornerSize.create(new AbsoluteCornerSize(0));
+    }
+
     setEnabled(attributes.getBoolean(R.styleable.MaterialButtonToggleGroup_android_enabled, true));
     attributes.recycle();
 
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
 
   @Override
@@ -222,18 +193,12 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     }
   }
 
-  @Override
-  protected void dispatchDraw(@NonNull Canvas canvas) {
-    updateChildOrder();
-    super.dispatchDraw(canvas);
-  }
-
   /**
    * This override prohibits Views other than {@link MaterialButton} to be added. It also makes
    * updates to the add button shape and margins.
    */
   @Override
-  public void addView(View child, int index, ViewGroup.LayoutParams params) {
+  public void addView(@NonNull View child, int index, @NonNull ViewGroup.LayoutParams params) {
     if (!(child instanceof MaterialButton)) {
       Log.e(LOG_TAG, "Child views must be of type MaterialButton.");
       return;
@@ -241,24 +206,12 @@ public class MaterialButtonToggleGroup extends LinearLayout {
 
     super.addView(child, index, params);
     MaterialButton buttonChild = (MaterialButton) child;
-    setGeneratedIdIfNeeded(buttonChild);
+
     // Sets sensible default values and an internal checked change listener for this child
     setupButtonChild(buttonChild);
 
     // Update button group's checked states
     checkInternal(buttonChild.getId(), buttonChild.isChecked());
-
-    // Saves original corner data
-    ShapeAppearanceModel shapeAppearanceModel = buttonChild.getShapeAppearanceModel();
-    originalCornerData.add(
-        new CornerData(
-            shapeAppearanceModel.getTopLeftCornerSize(),
-            shapeAppearanceModel.getBottomLeftCornerSize(),
-            shapeAppearanceModel.getTopRightCornerSize(),
-            shapeAppearanceModel.getBottomRightCornerSize()));
-
-    // Enable children based on the MaterialButtonToggleGroup own isEnabled
-    buttonChild.setEnabled(isEnabled());
 
     ViewCompat.setAccessibilityDelegate(
         buttonChild,
@@ -280,31 +233,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   }
 
   @Override
-  public void onViewRemoved(View child) {
-    super.onViewRemoved(child);
-
-    if (child instanceof MaterialButton) {
-      ((MaterialButton) child).setOnPressedChangeListenerInternal(null);
-    }
-
-    int indexOfChild = indexOfChild(child);
-    if (indexOfChild >= 0) {
-      originalCornerData.remove(indexOfChild);
-    }
-
-    updateChildShapes();
-    adjustChildMarginsAndUpdateLayout();
-  }
-
-  @Override
-  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    updateChildShapes();
-    adjustChildMarginsAndUpdateLayout();
-
-    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-  }
-
-  @Override
   public void onInitializeAccessibilityNodeInfo(@NonNull AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
     AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
@@ -313,7 +241,7 @@ public class MaterialButtonToggleGroup extends LinearLayout {
             /* rowCount= */ 1,
             /* columnCount= */ getVisibleButtonCount(),
             /* hierarchical= */ false,
-            /* selectionMode = */ isSingleSelection()
+            /* selectionMode= */ isSingleSelection()
                 ? CollectionInfoCompat.SELECTION_MODE_SINGLE
                 : CollectionInfoCompat.SELECTION_MODE_MULTIPLE));
   }
@@ -459,11 +387,15 @@ public class MaterialButtonToggleGroup extends LinearLayout {
   }
 
   private void updateChildrenA11yClassName() {
+    String className = getChildrenA11yClassName();
     for (int i = 0; i < getChildCount(); i++) {
-      String className =
-          singleSelection ? RadioButton.class.getName() : ToggleButton.class.getName();
       getChildButton(i).setA11yClassName(className);
     }
+  }
+
+  @NonNull
+  private String getChildrenA11yClassName() {
+    return singleSelection ? RadioButton.class.getName() : ToggleButton.class.getName();
   }
 
   /**
@@ -505,114 +437,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     }
   }
 
-  /**
-   * Sets a negative marginStart on all but the first child, if two adjacent children both have a
-   * stroke width greater than 0. This prevents a double-width stroke from being drawn for two
-   * adjacent stroked children, and instead draws the adjacent strokes directly on top of each
-   * other.
-   *
-   * <p>The negative margin adjustment amount will be equal to the smaller of the two adjacent
-   * stroke widths.
-   *
-   * <p>Also rearranges children such that they are shown in the correct visual order.
-   */
-  private void adjustChildMarginsAndUpdateLayout() {
-    int firstVisibleChildIndex = getFirstVisibleChildIndex();
-    if (firstVisibleChildIndex == -1) {
-      return;
-    }
-
-    for (int i = firstVisibleChildIndex + 1; i < getChildCount(); i++) {
-      // Only adjusts margins if both adjacent children are MaterialButtons
-      MaterialButton currentButton = getChildButton(i);
-      MaterialButton previousButton = getChildButton(i - 1);
-
-      // Calculates the margin adjustment to be the smaller of the two adjacent stroke widths
-      int smallestStrokeWidth =
-          Math.min(currentButton.getStrokeWidth(), previousButton.getStrokeWidth());
-
-      LayoutParams params = buildLayoutParams(currentButton);
-      if (getOrientation() == HORIZONTAL) {
-        MarginLayoutParamsCompat.setMarginEnd(params, 0);
-        MarginLayoutParamsCompat.setMarginStart(params, -smallestStrokeWidth);
-        params.topMargin = 0;
-      } else {
-        params.bottomMargin = 0;
-        params.topMargin = -smallestStrokeWidth;
-        MarginLayoutParamsCompat.setMarginStart(params, 0);
-      }
-
-      currentButton.setLayoutParams(params);
-    }
-
-    resetChildMargins(firstVisibleChildIndex);
-  }
-
-  private MaterialButton getChildButton(int index) {
-    return (MaterialButton) getChildAt(index);
-  }
-
-  private void resetChildMargins(int childIndex) {
-    if (getChildCount() == 0 || childIndex == -1) {
-      return;
-    }
-
-    MaterialButton currentButton = getChildButton(childIndex);
-    LayoutParams params = (LayoutParams) currentButton.getLayoutParams();
-    if (getOrientation() == VERTICAL) {
-      params.topMargin = 0;
-      params.bottomMargin = 0;
-      return;
-    }
-
-    MarginLayoutParamsCompat.setMarginEnd(params, 0);
-    MarginLayoutParamsCompat.setMarginStart(params, 0);
-    params.leftMargin = 0;
-    params.rightMargin = 0;
-  }
-
-  /** Sets all corner radii to 0 except for leftmost and rightmost corners. */
-  @VisibleForTesting
-  void updateChildShapes() {
-    int childCount = getChildCount();
-    int firstVisibleChildIndex = getFirstVisibleChildIndex();
-    int lastVisibleChildIndex = getLastVisibleChildIndex();
-    for (int i = 0; i < childCount; i++) {
-      MaterialButton button = getChildButton(i);
-      if (button.getVisibility() == GONE) {
-        continue;
-      }
-
-      ShapeAppearanceModel.Builder builder = button.getShapeAppearanceModel().toBuilder();
-      CornerData newCornerData = getNewCornerData(i, firstVisibleChildIndex, lastVisibleChildIndex);
-      updateBuilderWithCornerData(builder, newCornerData);
-
-      button.setShapeAppearanceModel(builder.build());
-    }
-  }
-
-  private int getFirstVisibleChildIndex() {
-    int childCount = getChildCount();
-    for (int i = 0; i < childCount; i++) {
-      if (isChildVisible(i)) {
-        return i;
-      }
-    }
-
-    return -1;
-  }
-
-  private int getLastVisibleChildIndex() {
-    int childCount = getChildCount();
-    for (int i = childCount - 1; i >= 0; i--) {
-      if (isChildVisible(i)) {
-        return i;
-      }
-    }
-
-    return -1;
-  }
-
   private boolean isChildVisible(int i) {
     View child = getChildAt(i);
     return child.getVisibility() != View.GONE;
@@ -642,42 +466,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
       }
     }
     return -1;
-  }
-
-  @Nullable
-  private CornerData getNewCornerData(
-      int index, int firstVisibleChildIndex, int lastVisibleChildIndex) {
-    CornerData cornerData = originalCornerData.get(index);
-
-    // If only one (visible) child exists, use its original corners
-    if (firstVisibleChildIndex == lastVisibleChildIndex) {
-      return cornerData;
-    }
-
-    boolean isHorizontal = getOrientation() == HORIZONTAL;
-    if (index == firstVisibleChildIndex) {
-      return isHorizontal ? CornerData.start(cornerData, this) : CornerData.top(cornerData);
-    }
-
-    if (index == lastVisibleChildIndex) {
-      return isHorizontal ? CornerData.end(cornerData, this) : CornerData.bottom(cornerData);
-    }
-
-    return null;
-  }
-
-  private static void updateBuilderWithCornerData(
-      ShapeAppearanceModel.Builder shapeAppearanceModelBuilder, @Nullable CornerData cornerData) {
-    if (cornerData == null) {
-      shapeAppearanceModelBuilder.setAllCornerSizes(0);
-      return;
-    }
-
-    shapeAppearanceModelBuilder
-        .setTopLeftCornerSize(cornerData.topLeft)
-        .setBottomLeftCornerSize(cornerData.bottomLeft)
-        .setTopRightCornerSize(cornerData.topRight)
-        .setBottomRightCornerSize(cornerData.bottomRight);
   }
 
   private void checkInternal(@IdRes int buttonId, boolean checked) {
@@ -722,13 +510,6 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     }
   }
 
-  private void setGeneratedIdIfNeeded(@NonNull MaterialButton materialButton) {
-    // Generates an ID if none is set, for relative positioning purposes
-    if (materialButton.getId() == View.NO_ID) {
-      materialButton.setId(ViewCompat.generateViewId());
-    }
-  }
-
   /**
    * Sets sensible default values for {@link MaterialButton} child of this group, set child to
    * {@code checkable}, and set internal checked change listener for this child.
@@ -740,123 +521,17 @@ public class MaterialButtonToggleGroup extends LinearLayout {
     buttonChild.setMaxLines(1);
     buttonChild.setEllipsize(TruncateAt.END);
     buttonChild.setCheckable(true);
-
-    buttonChild.setOnPressedChangeListenerInternal(pressedStateTracker);
+    buttonChild.setA11yClassName(getChildrenA11yClassName());
 
     // Enables surface layer drawing for semi-opaque strokes
     buttonChild.setShouldDrawSurfaceColorStroke(true);
   }
 
-  @NonNull
-  private LinearLayout.LayoutParams buildLayoutParams(@NonNull View child) {
-    ViewGroup.LayoutParams layoutParams = child.getLayoutParams();
-    if (layoutParams instanceof LinearLayout.LayoutParams) {
-      return (LayoutParams) layoutParams;
-    }
-
-    return new LayoutParams(layoutParams.width, layoutParams.height);
-  }
-
-  /**
-   * We keep track of which views are pressed and checked to draw them last. This prevents visual
-   * issues with overlapping strokes.
-   */
-  @Override
-  protected int getChildDrawingOrder(int childCount, int i) {
-    if (childOrder == null || i >= childOrder.length) {
-      Log.w(LOG_TAG, "Child order wasn't updated");
-      return i;
-    }
-
-    return childOrder[i];
-  }
-
-  private void updateChildOrder() {
-    final SortedMap<MaterialButton, Integer> viewToIndexMap = new TreeMap<>(childOrderComparator);
-    int childCount = getChildCount();
-    for (int i = 0; i < childCount; i++) {
-      viewToIndexMap.put(getChildButton(i), i);
-    }
-
-    childOrder = viewToIndexMap.values().toArray(new Integer[0]);
-  }
-
   void onButtonCheckedStateChanged(@NonNull MaterialButton button, boolean isChecked) {
-      // Checked state change is triggered by the button group, do not update checked ids again.
-      if (skipCheckedStateTracker) {
-        return;
-      }
-      checkInternal(button.getId(), isChecked);
-  }
-
-  /**
-   * Enables this {@link MaterialButtonToggleGroup} and all its {@link MaterialButton} children
-   *
-   * @param enabled boolean to setEnable {@link MaterialButtonToggleGroup}
-   */
-  @Override
-  public void setEnabled(boolean enabled) {
-    super.setEnabled(enabled);
-    // Enable or disable child buttons
-    for (int i = 0; i < getChildCount(); i++) {
-      MaterialButton childButton = getChildButton(i);
-      childButton.setEnabled(enabled);
+    // Checked state change is triggered by the button group, do not update checked ids again.
+    if (skipCheckedStateTracker) {
+      return;
     }
-  }
-
-  private class PressedStateTracker implements OnPressedChangeListener {
-
-    @Override
-    public void onPressedChanged(@NonNull MaterialButton button, boolean isPressed) {
-      invalidate();
-    }
-  }
-
-  private static class CornerData {
-
-    private static final CornerSize noCorner = new AbsoluteCornerSize(0);
-
-    CornerSize topLeft;
-    CornerSize topRight;
-    CornerSize bottomRight;
-    CornerSize bottomLeft;
-
-    CornerData(
-        CornerSize topLeft, CornerSize bottomLeft, CornerSize topRight, CornerSize bottomRight) {
-      this.topLeft = topLeft;
-      this.topRight = topRight;
-      this.bottomRight = bottomRight;
-      this.bottomLeft = bottomLeft;
-    }
-
-    /** Keep the start side of the corner original data */
-    public static CornerData start(CornerData orig, View view) {
-      return ViewUtils.isLayoutRtl(view) ? right(orig) : left(orig);
-    }
-
-    /** Keep the end side of the corner original data */
-    public static CornerData end(CornerData orig, View view) {
-      return ViewUtils.isLayoutRtl(view) ? left(orig) : right(orig);
-    }
-
-    /** Keep the left side of the corner original data */
-    public static CornerData left(CornerData orig) {
-      return new CornerData(orig.topLeft, orig.bottomLeft, noCorner, noCorner);
-    }
-
-    /** Keep the right side of the corner original data */
-    public static CornerData right(CornerData orig) {
-      return new CornerData(noCorner, noCorner, orig.topRight, orig.bottomRight);
-    }
-
-    /** Keep the top side of the corner original data */
-    public static CornerData top(CornerData orig) {
-      return new CornerData(orig.topLeft, noCorner, orig.topRight, noCorner);
-    }
-
-    /** Keep the bottom side of the corner original data */
-    public static CornerData bottom(CornerData orig) {
-      return new CornerData(noCorner, orig.bottomLeft, noCorner, orig.bottomRight);
-    }
+    checkInternal(button.getId(), isChecked);
   }
 }

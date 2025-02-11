@@ -20,6 +20,8 @@
   <public name="materialSearchBarStyle" type="attr"/>
   <public name="materialSearchViewStyle" type="attr"/>
   <public name="materialSearchViewPrefixStyle" type="attr"/>
+  <public name="materialSearchViewToolbarStyle" type="attr"/>
+  <public name="materialSearchViewToolbarHeight" type="attr"/>
   <public name="defaultMarginsEnabled" type="attr"/>
   <public name="defaultScrollFlagsEnabled" type="attr"/>
   <public name="hideNavigationIcon" type="attr"/>

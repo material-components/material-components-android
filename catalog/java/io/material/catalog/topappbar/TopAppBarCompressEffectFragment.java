@@ -68,6 +68,15 @@ public class TopAppBarCompressEffectFragment extends DemoFragment {
     showHideTabsButton.setOnCheckedChangeListener(
         (buttonView, isChecked) -> updateTabVisibility(tabs, isChecked));
 
+    ToggleButton showHideToolbarButton = view.findViewById(R.id.show_hide_toolbar_button);
+    showHideToolbarButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        activity.getSupportActionBar().show();
+      } else {
+        activity.getSupportActionBar().hide();
+      }
+    });
+
     return view;
   }
 

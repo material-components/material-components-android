@@ -17,9 +17,10 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="?attr/listPreferredItemHeightSmall"
-    android:paddingLeft="?attr/listPreferredItemPaddingLeft"
-    android:paddingRight="?attr/listPreferredItemPaddingRight"
+    android:paddingStart="?attr/listPreferredItemPaddingStart"
+    android:paddingEnd="?attr/listPreferredItemPaddingEnd"
     android:gravity="center_vertical|start"
     android:maxLines="1"
+    android:textAlignment="viewStart"
     android:textAppearance="@style/TextAppearance.AppCompat.Body2"
     android:textColor="?android:textColorSecondary"/>

@@ -42,6 +42,13 @@ public class ButtonsMainDemoFragment extends DemoFragment {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getButtonsContent(), viewGroup, false /* attachToRoot */);
 
+    ViewGroup labelButtonContent = view.findViewById(R.id.labelButtonContent);
+    View.inflate(getContext(), getLabelButtonContent(), labelButtonContent);
+    ViewGroup labelIconButtonContent = view.findViewById(R.id.labelIconButtonContent);
+    View.inflate(getContext(), getLabelIconButtonContent(), labelIconButtonContent);
+    ViewGroup iconButtonContent = view.findViewById(R.id.iconButtonContent);
+    View.inflate(getContext(), getIconButtonContent(), iconButtonContent);
+
     List<MaterialButton> buttons = DemoUtils.findViewsWithType(view, MaterialButton.class);
     int maxMeasuredWidth = 0;
     DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
@@ -78,23 +85,22 @@ public class ButtonsMainDemoFragment extends DemoFragment {
           }
         });
 
-    ViewGroup iconOnlyButtonsView = view.findViewById(R.id.material_icon_only_buttons_view);
-    // Icon only buttons demo may not be there in derived demos.
-    if (iconOnlyButtonsView != null) {
-      List<MaterialButton> iconButtons =
-          DemoUtils.findViewsWithType(iconOnlyButtonsView, MaterialButton.class);
-      // using SwitchCompat here to avoid class cast issues in derived demos.
-      SwitchCompat toggleableSwitch = view.findViewById(R.id.cat_button_toggleable_icon_buttons);
-      toggleableSwitch.setOnCheckedChangeListener(
-          (buttonView, isCheckable) -> {
-            for (MaterialButton button : iconButtons) {
-              button.setCheckable(isCheckable);
-              button.setChecked(false);
-            }
-          });
-    }
-
     return view;
+  }
+
+  @LayoutRes
+  protected int getLabelButtonContent() {
+    return R.layout.cat_label_buttons_content;
+  }
+
+  @LayoutRes
+  protected int getLabelIconButtonContent() {
+    return R.layout.cat_label_icon_buttons_content;
+  }
+
+  @LayoutRes
+  protected int getIconButtonContent() {
+    return R.layout.cat_icon_buttons_content;
   }
 
   @LayoutRes

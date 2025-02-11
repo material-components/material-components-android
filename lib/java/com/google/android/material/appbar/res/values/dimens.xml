@@ -20,9 +20,11 @@
 
   <dimen name="mtrl_toolbar_default_height">56dp</dimen>
 
-  <dimen name="m3_appbar_size_compact">@dimen/m3_comp_top_app_bar_small_container_height</dimen>
-  <dimen name="m3_appbar_size_medium">@dimen/m3_comp_top_app_bar_medium_container_height</dimen>
-  <dimen name="m3_appbar_size_large">@dimen/m3_comp_top_app_bar_large_container_height</dimen>
+  <dimen name="m3_appbar_size_compact">@dimen/m3_comp_app_bar_small_container_height</dimen>
+  <dimen name="m3_appbar_size_medium">@dimen/m3_comp_app_bar_medium_container_height</dimen>
+  <dimen name="m3_appbar_size_medium_with_subtitle">136dp</dimen>
+  <dimen name="m3_appbar_size_large">@dimen/m3_comp_app_bar_large_container_height</dimen>
+  <dimen name="m3_appbar_size_large_with_subtitle">152dp</dimen>
 
   <dimen name="m3_appbar_expanded_title_margin_horizontal">16dp</dimen>
   <dimen name="m3_appbar_expanded_title_margin_bottom">16dp</dimen>

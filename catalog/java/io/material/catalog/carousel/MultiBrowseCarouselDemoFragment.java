@@ -37,6 +37,8 @@ import io.material.catalog.feature.DemoFragment;
 public class MultiBrowseCarouselDemoFragment extends DemoFragment {
 
   private MaterialDividerItemDecoration horizontalDivider;
+  private CarouselAdapter adapter;
+  private Slider positionSlider;
 
   @NonNull
   @Override
@@ -61,7 +63,7 @@ public class MultiBrowseCarouselDemoFragment extends DemoFragment {
     MaterialSwitch drawDividers = view.findViewById(R.id.draw_dividers_switch);
     MaterialSwitch snapSwitch = view.findViewById(R.id.snap_switch);
     AutoCompleteTextView itemCountDropdown = view.findViewById(R.id.item_count_dropdown);
-    Slider positionSlider = view.findViewById(R.id.position_slider);
+    positionSlider = view.findViewById(R.id.position_slider);
 
     // A start-aligned multi-browse carousel
     RecyclerView multiBrowseStartRecyclerView =
@@ -99,7 +101,7 @@ public class MultiBrowseCarouselDemoFragment extends DemoFragment {
           }
         });
 
-    CarouselAdapter adapter =
+    adapter =
         new CarouselAdapter(
             (item, position) -> {
               multiBrowseStartRecyclerView.scrollToPosition(position);
@@ -120,6 +122,11 @@ public class MultiBrowseCarouselDemoFragment extends DemoFragment {
         CarouselDemoUtils.createScrollToPositionSliderTouchListener(multiBrowseStartRecyclerView));
 
     multiBrowseStartRecyclerView.setAdapter(adapter);
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
     adapter.submitList(CarouselData.createItems(), updateSliderRange(positionSlider, adapter));
   }
 

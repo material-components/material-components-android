@@ -23,6 +23,8 @@
     <item>@array/m3_colors_accent3_array</item>
     <item>@array/m3_colors_neutral1_array</item>
     <item>@array/m3_colors_neutral2_array</item>
+    <item>@array/m3_colors_material_neutral_array</item>
+    <item>@array/m3_colors_material_neutral_variant_array</item>
   </array>
 
   <array name="m3_colors_accent1_array">
@@ -104,4 +106,33 @@
     <item>@android:color/system_neutral2_10</item>
     <item>@android:color/system_neutral2_0</item>
   </array>
+
+  <array name="m3_colors_material_neutral_array">
+    <item>@color/m3_ref_palette_dynamic_neutral4</item>
+    <item>@color/m3_ref_palette_dynamic_neutral6</item>
+    <item>@color/m3_ref_palette_dynamic_neutral12</item>
+    <item>@color/m3_ref_palette_dynamic_neutral17</item>
+    <item>@color/m3_ref_palette_dynamic_neutral22</item>
+    <item>@color/m3_ref_palette_dynamic_neutral24</item>
+    <item>@color/m3_ref_palette_dynamic_neutral87</item>
+    <item>@color/m3_ref_palette_dynamic_neutral92</item>
+    <item>@color/m3_ref_palette_dynamic_neutral94</item>
+    <item>@color/m3_ref_palette_dynamic_neutral96</item>
+    <item>@color/m3_ref_palette_dynamic_neutral98</item>
+  </array>
+
+  <array name="m3_colors_material_neutral_variant_array">
+    <item>@color/m3_ref_palette_dynamic_neutral_variant4</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant6</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant12</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant17</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant22</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant24</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant87</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant92</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant94</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant96</item>
+    <item>@color/m3_ref_palette_dynamic_neutral_variant98</item>
+  </array>
+
 </resources>

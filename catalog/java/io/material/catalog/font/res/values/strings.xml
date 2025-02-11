@@ -25,6 +25,8 @@
     slightly wider and rounder, giving it greater clarity and making it more optimistic.
   </string>
 
-  <string name="cat_font_style_message">Use ?attr/%s in your layout.</string>
+  <string name="cat_font_style_dialog_title" translatable="false">Style details</string>
+  <string name="cat_font_style_dialog_message" translatable="false">Attribute:\n?attr/%1$s\n\nFont Family:\n%2$s\n\nText style:\n%3$s\n\nText size:\n%4$d\n\nVariation settings:\n%5$s
+  </string>
 
 </resources>

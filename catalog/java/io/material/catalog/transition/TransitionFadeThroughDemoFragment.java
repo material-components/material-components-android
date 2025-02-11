@@ -20,6 +20,9 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks;
+import androidx.fragment.app.FragmentTransaction;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +32,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.transition.MaterialFadeThrough;
 import io.material.catalog.feature.DemoFragment;
 
@@ -36,6 +40,12 @@ import io.material.catalog.feature.DemoFragment;
 public class TransitionFadeThroughDemoFragment extends DemoFragment {
 
   private static final SparseIntArray LAYOUT_RES_MAP = new SparseIntArray();
+
+  private final NavigationBarView.OnItemSelectedListener onItemSelectedListener =
+      item -> {
+        replaceFragment(item.getItemId(), /* addToBackStack= */ true);
+        return true;
+      };
 
   static {
     LAYOUT_RES_MAP.append(R.id.action_albums, R.layout.cat_transition_fade_through_albums_fragment);
@@ -51,15 +61,46 @@ public class TransitionFadeThroughDemoFragment extends DemoFragment {
 
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
-
-    replaceFragment(R.id.action_albums);
-
     BottomNavigationView bottomNavigationView = view.findViewById(R.id.bottomnavigation);
-    bottomNavigationView.setOnNavigationItemSelectedListener(
-        item -> {
-          replaceFragment(item.getItemId());
-          return true;
-        });
+    bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
+
+    requireActivity()
+        .getSupportFragmentManager()
+        .registerFragmentLifecycleCallbacks(
+            new FragmentLifecycleCallbacks() {
+              @Override
+              public void onFragmentStarted(
+                  @NonNull FragmentManager fragmentManager, @NonNull Fragment fragment) {
+                super.onFragmentStarted(fragmentManager, fragment);
+                Integer itemId = getItemIdFromFragmentTag(fragment.getTag());
+                if (itemId != null && bottomNavigationView.getSelectedItemId() != itemId) {
+                  // Workaround to avoid breaking the demo by recreating the fragment on back,
+                  // since the FragmentManager handles replacing the fragment instead.
+                  bottomNavigationView.setOnItemSelectedListener(null);
+                  bottomNavigationView.setSelectedItemId(itemId);
+                  bottomNavigationView.setOnItemSelectedListener(onItemSelectedListener);
+                }
+              }
+            },
+            true);
+    replaceFragment(R.id.action_albums, /* addToBackStack= */ false);
+  }
+
+  @Nullable
+  private Integer getItemIdFromFragmentTag(@Nullable String fragmentTag) {
+    try {
+      if (fragmentTag != null) {
+        return Integer.parseInt(fragmentTag);
+      }
+    } catch (NumberFormatException numberFormatException) {
+      // Ignore; we only care about TransitionSimpleLayoutFragments with item id tags.
+    }
+    return null;
+  }
+
+  @NonNull
+  private String convertItemIdToFragmentTag(@IdRes int itemId) {
+    return String.valueOf(itemId);
   }
 
   @LayoutRes
@@ -67,19 +108,26 @@ public class TransitionFadeThroughDemoFragment extends DemoFragment {
     return LAYOUT_RES_MAP.get(itemId);
   }
 
-  private void replaceFragment(@IdRes int itemId) {
+  private void replaceFragment(@IdRes int itemId, boolean addToBackStack) {
     Fragment fragment = TransitionSimpleLayoutFragment.newInstance(getLayoutForItemId(itemId));
     // Set the transition as the Fragment's enter transition. This will be used when the fragment
     // is added to the container and re-used when the fragment is removed from the container.
     fragment.setEnterTransition(createTransition());
 
-    getChildFragmentManager()
-        .beginTransaction()
-        .replace(R.id.fragment_container, fragment)
-        .commit();
+    FragmentTransaction fragmentTransaction =
+        requireActivity()
+            .getSupportFragmentManager()
+            .beginTransaction()
+            .setReorderingAllowed(true)
+            .replace(R.id.fragment_container, fragment, convertItemIdToFragmentTag(itemId));
+
+    if (addToBackStack) {
+      fragmentTransaction.addToBackStack(convertItemIdToFragmentTag(itemId));
+    }
+    fragmentTransaction.commit();
   }
 
-  private MaterialFadeThrough createTransition(){
+  private MaterialFadeThrough createTransition() {
     MaterialFadeThrough fadeThrough = new MaterialFadeThrough();
 
     // Add targets for this transition to explicitly run transitions only on these views. Without

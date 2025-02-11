@@ -19,6 +19,7 @@ package com.google.android.material.color.utilities;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static java.lang.Math.max;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 
 /**
@@ -75,7 +76,7 @@ public final class Cam16 {
    * astar, bstar in code. CAM16-UCS is included in the CAM16 specification, and is used to measure
    * distances between colors.
    */
-  double distance(Cam16 other) {
+  public double distance(@NonNull Cam16 other) {
     double dJ = getJstar() - other.getJstar();
     double dA = getAstar() - other.getAstar();
     double dB = getBstar() - other.getBstar();

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2023 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 <resources>
   <string name="mtrl_picker_range_header_title">Selecciona un interval</string>
   <string name="mtrl_picker_date_header_title">Selecciona una data</string>
-  <string name="mtrl_picker_range_header_unselected">Data d\'inici - data de finalització</string>
-  <string name="mtrl_picker_range_header_only_start_selected">%1$s - data de finalització</string>
+  <string name="mtrl_picker_range_header_unselected">Data d\'inici - Data de finalització</string>
+  <string name="mtrl_picker_range_header_only_start_selected">%1$s - Data de finalització</string>
   <string name="mtrl_picker_range_header_only_end_selected">Data d\'inici - %1$s</string>
   <string name="mtrl_picker_range_header_selected">%1$s - %2$s</string>
   <string name="mtrl_picker_date_header_unselected">Data seleccionada</string>
@@ -43,6 +43,8 @@
   <string name="mtrl_picker_a11y_next_month">Canvia al mes següent</string>
   <string name="mtrl_picker_toggle_to_year_selection">Toca per canviar a la visualització d\'any</string>
   <string name="mtrl_picker_toggle_to_day_selection">Toca per canviar a la visualització de calendari</string>
+  <string name="mtrl_picker_toggled_to_year_selection">S\'ha canviat a la visualització d\'any</string>
+  <string name="mtrl_picker_toggled_to_day_selection">S\'ha canviat a la visualització de calendari</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Selecció actual: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Selecció de la data d\'inici: %1$s – Selecció de la data de finalització: %2$s</string>

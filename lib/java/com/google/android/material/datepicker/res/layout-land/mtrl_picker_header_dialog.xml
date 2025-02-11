@@ -38,8 +38,9 @@
       android:layout_weight="1"
       android:paddingStart="@dimen/mtrl_calendar_header_text_padding"
       android:paddingLeft="@dimen/mtrl_calendar_header_text_padding"
-      android:focusable="true"
-      android:focusableInTouchMode="true">
+      android:importantForAccessibility="yes"
+      android:focusable="false"
+      android:focusableInTouchMode="false">
 
       <include layout="@layout/mtrl_picker_header_title_text"/>
       <include layout="@layout/mtrl_picker_header_selection_text"/>
