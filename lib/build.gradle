@@ -166,67 +166,10 @@ task getVersion {
   }
 }
 
-task generateApiXml(type: Javadoc) {
-  if (project.hasProperty("apiName")) {
-    def jdiff = project.property("jdiffJar")
-    def apiName = project.property("apiName")
-    source = android.sourceSets.main.java.source
-    source = source.findAll { it.name.endsWith(".java") }
-    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    options.doclet = "jdiff.JDiff"
-    options.addStringOption("subpackages", ".")
-    options.addStringOption("apiname", apiName)
-    options.docletpath = [
-      file(jdiff),
-    ]
-
-    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
-    options.setNoTimestamp(false)
-  }
-
-  doLast {
-    // Escape incorrect ampersands in API XML file
-    if (OperatingSystem.current().isLinux()) {
-      ["sed", "-i", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
-    } else {
-      ["sed", "-i", "''", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
-    }
-  }
-}
-
-task generateJdiffReport(type: Javadoc) {
-  if (project.hasProperty('oldApi')) {
-    def outputPath = project.hasProperty('outputPath') ? project.property('outputPath') : 'diffs-out'
-    def jdiff = project.property('jdiffjar')
-    def xerces = project.property('xercesjar')
-    def oldApi = project.property('oldApi')
-    def newApi = project.property('newApi')
-    def newApiDir = project.property('newApiDir')
-    def oldApiDir = project.property('oldApiDir')
-    destinationDir = new File(outputPath)
-    source = android.sourceSets.main.java.source
-    source = source.findAll { it.name.endsWith('.java') }
-    classpath = files('${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar')
-    options.doclet = 'jdiff.JDiff'
-    options.addStringOption('subpackages', '.')
-    options.addStringOption('newapidir', newApiDir)
-    options.addStringOption('oldapidir', oldApiDir)
-    options.addStringOption('oldapi', oldApi)
-    options.addBooleanOption('verbose', true)
-    options.addStringOption('newapi', newApi)
-    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
-    options.setNoTimestamp(false)
-    options.docletpath = [
-      file(jdiff),
-      file(xerces),
-    ]
-  }
-}
-
 def R_CLASS_PATH = "build/generated/not_namespaced_r_class_sources/releaseUnitTest/processReleaseUnitTestResources/r/com/google/android/material/R.java"
 Attribute<String> ARTIFACT_TYPE = Attribute.of("artifactType", String.class)
 afterEvaluate {
-  [generateJavadocs, generateApiXml].forEach { task ->
+  [generateJavadocs].forEach { task ->
     task.dependsOn(':lib:processReleaseUnitTestResources')
     task.source += R_CLASS_PATH
 
