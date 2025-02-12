@@ -54,6 +54,7 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.BoolRes;
@@ -1010,6 +1011,8 @@ public class Chip extends AppCompatCheckBox
         node.setBoundsInParent(getCloseIconTouchBoundsInt());
         node.addAction(AccessibilityActionCompat.ACTION_CLICK);
         node.setEnabled(isEnabled());
+        // Set the class name to Button so that the close icon is treated as a button by TalkBack.
+        node.setClassName(Button.class.getName());
       } else {
         node.setContentDescription("");
         node.setBoundsInParent(EMPTY_BOUNDS);
