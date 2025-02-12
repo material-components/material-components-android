@@ -29,13 +29,36 @@
     <item name="colorOnErrorContainer">@color/m3_ref_palette_error30</item>
 
     <!-- Widget styles. -->
+    <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
+    <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
+    <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
 
+    <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
+    <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>
+
+    <!-- Top App Bars. -->
+    <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_comp_app_bar_medium_flexible_container_height</item>
+    <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_comp_app_bar_large_flexible_container_height</item>
+
+    <!-- Action Bar. -->
+    <item name="actionBarSize">@dimen/m3_comp_app_bar_small_container_height</item>
   </style>
 
   <style name="Base.Theme.Material3Expressive.Dark.Dialog" parent="Theme.Material3.Dark.Dialog">
-
     <!-- Widget styles. -->
+    <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
+    <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
+    <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
 
+    <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
+    <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>
+
+    <!-- Top App Bars. -->
+    <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_comp_app_bar_medium_flexible_container_height</item>
+    <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_comp_app_bar_large_flexible_container_height</item>
+
+    <!-- Action Bar. -->
+    <item name="actionBarSize">@dimen/m3_comp_app_bar_small_container_height</item>
   </style>
 
   <style name="Base.Theme.Material3Expressive.Light.Dialog.FixedSize">
