@@ -19,13 +19,11 @@ package com.google.android.material.floatingtoolbar;
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
-import static java.lang.Math.max;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,50 +59,6 @@ public class FloatingToolbarLayout extends FrameLayout {
   private boolean marginTopSystemWindowInsets;
   private boolean marginRightSystemWindowInsets;
   private boolean marginBottomSystemWindowInsets;
-
-  private int topInset = 0;
-  private int leftInset = 0;
-  private int rightInset = 0;
-  private int bottomInset = 0;
-
-  private final Runnable insetsRunnable =
-      () -> {
-        ViewGroup.LayoutParams lp = getLayoutParams();
-        if (!(lp instanceof MarginLayoutParams)) {
-          Log.w(TAG, "Unable to update margins because layout params are not MarginLayoutParams");
-          return;
-        }
-
-        int[] coords = new int[2];
-        getLocationInWindow(coords);
-        int x = coords[0];
-        int y = coords[1];
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        if (getDisplay() == null) {
-          return;
-        }
-        getDisplay().getMetrics(displayMetrics);
-
-        MarginLayoutParams marginLp = (MarginLayoutParams) lp;
-
-        if (marginLeftSystemWindowInsets && x < leftInset) {
-          marginLp.leftMargin = max(leftInset, marginLp.leftMargin);
-        }
-
-        if (marginRightSystemWindowInsets && x + getWidth() > displayMetrics.widthPixels - rightInset) {
-          marginLp.rightMargin = max(rightInset, marginLp.rightMargin);
-        }
-
-        if (marginTopSystemWindowInsets && y < topInset) {
-          marginLp.topMargin = max(topInset, marginLp.topMargin);
-        }
-
-        if (marginBottomSystemWindowInsets && y + getHeight() > displayMetrics.heightPixels - bottomInset) {
-          marginLp.bottomMargin = max(bottomInset, marginLp.bottomMargin);
-        }
-        requestLayout();
-      };
 
   public FloatingToolbarLayout(@NonNull Context context) {
     this(context, null);
@@ -149,7 +103,8 @@ public class FloatingToolbarLayout extends FrameLayout {
 
     // Reading out if we are handling inset margins, so we can apply it to the content.
     marginLeftSystemWindowInsets = attributes.getBoolean(R.styleable.FloatingToolbar_marginLeftSystemWindowInsets, true);
-    marginTopSystemWindowInsets = attributes.getBoolean(R.styleable.FloatingToolbar_marginTopSystemWindowInsets, true);
+    // Top-aligned floating toolbars are not recommended, so a top inset margin is turned off by default
+    marginTopSystemWindowInsets = attributes.getBoolean(R.styleable.FloatingToolbar_marginTopSystemWindowInsets, false);
     marginRightSystemWindowInsets = attributes.getBoolean(R.styleable.FloatingToolbar_marginRightSystemWindowInsets, true);
     marginBottomSystemWindowInsets = attributes.getBoolean(R.styleable.FloatingToolbar_marginBottomSystemWindowInsets, true);
 
@@ -165,12 +120,37 @@ public class FloatingToolbarLayout extends FrameLayout {
               return insets;
             }
             Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            bottomInset = systemBarInsets.bottom;
-            topInset = systemBarInsets.top;
-            rightInset = systemBarInsets.right;
-            leftInset = systemBarInsets.left;
-            v.removeCallbacks(insetsRunnable);
-            v.post(insetsRunnable);
+            Insets cutoutInsets = insets.getInsets(WindowInsetsCompat.Type.displayCutout());
+            int bottomInset = systemBarInsets.bottom + cutoutInsets.bottom;
+            int topInset = systemBarInsets.top + cutoutInsets.top;
+            int rightInset = systemBarInsets.right + cutoutInsets.right;
+            int leftInset = systemBarInsets.left + cutoutInsets.left;
+
+            ViewGroup.LayoutParams lp = getLayoutParams();
+            if (!(lp instanceof MarginLayoutParams)) {
+              Log.w(TAG, "Unable to update margins because layout params are not MarginLayoutParams");
+              return insets;
+            }
+
+            MarginLayoutParams marginLp = (MarginLayoutParams) lp;
+
+            if (marginLeftSystemWindowInsets) {
+              marginLp.leftMargin += leftInset;
+            }
+
+            if (marginRightSystemWindowInsets) {
+              marginLp.rightMargin += rightInset;
+            }
+
+            if (marginTopSystemWindowInsets) {
+              marginLp.topMargin += topInset;
+            }
+
+            if (marginBottomSystemWindowInsets) {
+              marginLp.bottomMargin += bottomInset;
+            }
+
+            requestLayout();
             return insets;
           }
         });

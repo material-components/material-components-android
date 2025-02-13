@@ -21,5 +21,9 @@
   <declare-styleable name="DockedToolbar">
     <!-- Color of the docked toolbar container. -->
     <attr name="backgroundTint"/>
+    <!-- Whether or not to add top padding to account for system insets. -->
+    <attr name="paddingTopSystemWindowInsets"/>
+    <!-- Whether or not to add bottom padding to account for system insets. -->
+    <attr name="paddingBottomSystemWindowInsets"/>
   </declare-styleable>
 </resources>

@@ -23,7 +23,7 @@
     <item name="backgroundTint">@macro/m3_comp_toolbar_floating_standard_container_color</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.Toolbar.Floating.Container.Shape</item>
     <item name="marginLeftSystemWindowInsets">true</item>
-    <item name="marginTopSystemWindowInsets">true</item>
+    <item name="marginTopSystemWindowInsets">false</item>
     <item name="marginRightSystemWindowInsets">true</item>
     <item name="marginBottomSystemWindowInsets">true</item>
   </style>
