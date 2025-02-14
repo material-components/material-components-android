@@ -158,6 +158,11 @@
       The size of the stop indicator at the end of the progress track.
     -->
     <attr name="trackStopIndicatorSize" />
+
+    <!--
+      The radius of corners between the track and the indicator.
+    -->
+    <attr name="trackInnerCornerRadius" format="dimension|fraction" />
   </declare-styleable>
 
   <declare-styleable name="CircularProgressIndicator">

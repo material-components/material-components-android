@@ -36,6 +36,7 @@
   <!-- LinearProgressIndicator attributes -->
   <public name="indeterminateAnimationType" type="attr"/>
   <public name="indicatorDirectionLinear" type="attr"/>
+  <public name="trackInnerCornerRadius" type="attr"/>
 
   <!-- CircularProgressIndicator attributes -->
   <public name="indicatorInset" type="attr"/>

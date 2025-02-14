@@ -51,6 +51,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   private float trackLength = 300f;
   private float displayedTrackThickness;
   private float displayedCornerRadius;
+  private float displayedInnerCornerRadius;
   private float displayedAmplitude;
   private float adjustedWavelength;
   private int cachedWavelength;
@@ -121,11 +122,16 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     canvas.clipRect(-halfTrackLength, -halfTrackSize, halfTrackLength, halfTrackSize);
 
     // These are set for the drawing the indicator and track.
-    useStrokeCap = spec.trackThickness / 2f <= spec.trackCornerRadius;
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius =
         min(spec.trackThickness / 2f, spec.trackCornerRadius) * trackThicknessFraction;
     displayedAmplitude = spec.waveAmplitude * trackThicknessFraction;
+    displayedInnerCornerRadius =
+        min(spec.trackThickness / 2f, spec.getTrackInnerCornerRadiusInPx())
+            * trackThicknessFraction;
+    useStrokeCap =
+        spec.trackThickness / 2f <= spec.trackCornerRadius
+            && displayedCornerRadius == displayedInnerCornerRadius;
 
     // Further adjusts the canvas for animated visibility change.
     if (isShowing || isHiding) {
@@ -237,6 +243,25 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     // Offsets start and end by the requested gap sizes.
     int startPx = (int) (startFraction * trackLength + startGapSize);
     int endPx = (int) (endFraction * trackLength - endGapSize);
+    float startCornerRadius = displayedCornerRadius;
+    float endCornerRadius = displayedCornerRadius;
+    // Morph corners when outer and inner corner radius are different.
+    if (displayedCornerRadius != displayedInnerCornerRadius) {
+      float cornerRampDownThreshold =
+          max(displayedCornerRadius, displayedInnerCornerRadius) / trackLength;
+      startCornerRadius =
+          lerp(
+              displayedCornerRadius,
+              displayedInnerCornerRadius,
+              MathUtils.clamp((float) startPx / trackLength, 0, cornerRampDownThreshold)
+                  / cornerRampDownThreshold);
+      endCornerRadius =
+          lerp(
+              displayedCornerRadius,
+              displayedInnerCornerRadius,
+              MathUtils.clamp((trackLength - endPx) / trackLength, 0, cornerRampDownThreshold)
+                  / cornerRampDownThreshold);
+    }
     // Adjusts start/end X so the progress indicator will start from 0 when startFraction == 0.
     float originX = -trackLength / 2;
 
@@ -249,9 +274,10 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     if (startPx <= endPx) {
       // The track part will be drawn as three parts: 1) start rounded block (a rounded rectangle),
       // 2) end rounded block (a rounded rectangle), and 3) a path in between, if needed.
-      float startBlockCenterX = startPx + displayedCornerRadius;
-      float endBlockCenterX = endPx - displayedCornerRadius;
-      float blockWidth = displayedCornerRadius * 2;
+      float startBlockCenterX = startPx + startCornerRadius;
+      float endBlockCenterX = endPx - endCornerRadius;
+      float startBlockWidth = startCornerRadius * 2;
+      float endBlockWidth = endCornerRadius * 2;
 
       paint.setColor(paintColor);
       paint.setAntiAlias(true);
@@ -261,10 +287,34 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       endPoints.second.reset();
       endPoints.first.translate(startBlockCenterX + originX, 0);
       endPoints.second.translate(endBlockCenterX + originX, 0);
-      if (startBlockCenterX >= endBlockCenterX) {
-        // Draws the start rounded block clipped by the end rounded block.
+
+      if (startPx == 0
+          && endBlockCenterX + endCornerRadius < startBlockCenterX + startCornerRadius) {
         drawRoundedBlock(
-            canvas, paint, endPoints.first, endPoints.second, blockWidth, displayedTrackThickness);
+            canvas,
+            paint,
+            endPoints.first,
+            startBlockWidth,
+            displayedTrackThickness,
+            startCornerRadius,
+            endPoints.second,
+            endBlockWidth,
+            displayedTrackThickness,
+            endCornerRadius,
+            true);
+      } else if (startBlockCenterX - startCornerRadius > endBlockCenterX - endCornerRadius) {
+        drawRoundedBlock(
+            canvas,
+            paint,
+            endPoints.second,
+            endBlockWidth,
+            displayedTrackThickness,
+            endCornerRadius,
+            endPoints.first,
+            startBlockWidth,
+            displayedTrackThickness,
+            startCornerRadius,
+            false);
       } else {
         // Draws the path with ROUND cap if the corner radius is half of the track
         // thickness.
@@ -293,14 +343,26 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
               phaseFraction);
           canvas.drawPath(displayedActivePath, paint);
         }
-        if (!useStrokeCap && displayedCornerRadius > 0) {
-          if (startBlockCenterX > 0) {
+        if (!useStrokeCap) {
+          if (startBlockCenterX > 0 && startCornerRadius > 0) {
             // Draws the start rounded block.
-            drawRoundedBlock(canvas, paint, endPoints.first, blockWidth, displayedTrackThickness);
+            drawRoundedBlock(
+                canvas,
+                paint,
+                endPoints.first,
+                startBlockWidth,
+                displayedTrackThickness,
+                startCornerRadius);
           }
-          if (endBlockCenterX < trackLength) {
+          if (endBlockCenterX < trackLength && endCornerRadius > 0) {
             // Draws the end rounded block.
-            drawRoundedBlock(canvas, paint, endPoints.second, blockWidth, displayedTrackThickness);
+            drawRoundedBlock(
+                canvas,
+                paint,
+                endPoints.second,
+                endBlockWidth,
+                displayedTrackThickness,
+                endCornerRadius);
           }
         }
       }
@@ -325,46 +387,89 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
           new PathPoint(
               new float[] {trackLength / 2 - displayedTrackThickness / 2, 0}, new float[] {1, 0}),
           spec.trackStopIndicatorSize,
-          spec.trackStopIndicatorSize);
+          spec.trackStopIndicatorSize,
+          displayedCornerRadius * spec.trackStopIndicatorSize / displayedTrackThickness);
     }
   }
 
+  /** Draws a single rounded block for one of the track ends. */
   private void drawRoundedBlock(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
       @NonNull PathPoint drawCenter,
-      float markWidth,
-      float markHeight) {
-    drawRoundedBlock(canvas, paint, drawCenter, null, markWidth, markHeight);
+      float drawWidth,
+      float drawHeight,
+      float drawCornerSize) {
+    drawRoundedBlock(
+        canvas, paint, drawCenter, drawWidth, drawHeight, drawCornerSize, null, 0, 0, 0, false);
   }
 
+  /** Drawas the merged rounded block when two track ends are collapsed. */
   private void drawRoundedBlock(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
       @NonNull PathPoint drawCenter,
+      float drawWidth,
+      float drawHeight,
+      float drawCornerSize,
       @Nullable PathPoint clipCenter,
-      float markWidth,
-      float markHeight) {
-    markHeight = min(markHeight, displayedTrackThickness);
-    float markCornerSize = markHeight * displayedCornerRadius / displayedTrackThickness;
-    markCornerSize = min(markWidth / 2, markCornerSize);
-    RectF roundedBlock =
-        new RectF(-markWidth / 2f, -markHeight / 2f, markWidth / 2f, markHeight / 2f);
+      float clipWidth,
+      float clipHeight,
+      float clipCornerSize,
+      boolean clipRight) {
+    drawHeight = min(drawHeight, displayedTrackThickness);
+    RectF drawRect = new RectF(-drawWidth / 2f, -drawHeight / 2f, drawWidth / 2f, drawHeight / 2f);
     paint.setStyle(Style.FILL);
     canvas.save();
+    // Clipping!
     if (clipCenter != null) {
-      // Clipping!
+      clipHeight = min(clipHeight, displayedTrackThickness);
+      clipCornerSize = min(clipWidth / 2, clipCornerSize * clipHeight / displayedTrackThickness);
+      RectF patchRect = new RectF();
+      if (clipRight) {
+        float leftEdgeDiff =
+            (clipCenter.posVec[0] - clipCornerSize) - (drawCenter.posVec[0] - drawCornerSize);
+        if (leftEdgeDiff > 0) {
+          // Clip block is too small. Expand it to include the left edge of the draw block.
+          clipCenter.translate(-leftEdgeDiff / 2, 0);
+          clipWidth += leftEdgeDiff;
+        }
+        // Draw the patch rectangle to fill the gap from the draw block center to its right edge.
+        patchRect.set(0, -drawHeight / 2f, drawWidth / 2f, drawHeight / 2f);
+      } else {
+        float rightEdgeDiff =
+            (clipCenter.posVec[0] + clipCornerSize) - (drawCenter.posVec[0] + drawCornerSize);
+        if (rightEdgeDiff < 0) {
+          // Clip block is too small. Expand it to include the right edge of the draw block.
+          clipCenter.translate(-rightEdgeDiff / 2, 0);
+          clipWidth -= rightEdgeDiff;
+        }
+        // Draw the patch rectangle to fill the gap from the draw block center to its left edge.
+        patchRect.set(-drawWidth / 2f, -drawHeight / 2f, 0, drawHeight / 2f);
+      }
+      RectF clipRect =
+          new RectF(-clipWidth / 2f, -clipHeight / 2f, clipWidth / 2f, clipHeight / 2f);
       canvas.translate(clipCenter.posVec[0], clipCenter.posVec[1]);
       canvas.rotate(vectorToCanvasRotation(clipCenter.tanVec));
       Path clipPath = new Path();
-      clipPath.addRoundRect(roundedBlock, markCornerSize, markCornerSize, Direction.CCW);
+      clipPath.addRoundRect(clipRect, clipCornerSize, clipCornerSize, Direction.CCW);
       canvas.clipPath(clipPath);
+      // Manually restore to the original canvas transform.
       canvas.rotate(-vectorToCanvasRotation(clipCenter.tanVec));
       canvas.translate(-clipCenter.posVec[0], -clipCenter.posVec[1]);
+      // Transform to the draw block center and rotation.
+      canvas.translate(drawCenter.posVec[0], drawCenter.posVec[1]);
+      canvas.rotate(vectorToCanvasRotation(drawCenter.tanVec));
+      canvas.drawRect(patchRect, paint);
+      // Draw the draw block.
+      canvas.drawRoundRect(drawRect, drawCornerSize, drawCornerSize, paint);
+    } else {
+      // Transform to the draw block center and rotation.
+      canvas.translate(drawCenter.posVec[0], drawCenter.posVec[1]);
+      canvas.rotate(vectorToCanvasRotation(drawCenter.tanVec));
+      // Draw the draw block.
+      canvas.drawRoundRect(drawRect, drawCornerSize, drawCornerSize, paint);
     }
-    canvas.translate(drawCenter.posVec[0], drawCenter.posVec[1]);
-    canvas.rotate(vectorToCanvasRotation(drawCenter.tanVec));
-    canvas.drawRoundRect(roundedBlock, markCornerSize, markCornerSize, paint);
     canvas.restore();
   }
 

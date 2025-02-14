@@ -169,6 +169,59 @@ public class LinearProgressIndicator
   }
 
   /**
+   * Returns the radius of the rounded inner corner for the indicator and track in pixels.
+   *
+   * @see #setTrackInnerCornerRadius(int)
+   * @see #setTrackInnerCornerRadiusFraction(int)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackInnerCornerRadius
+   */
+  @Px
+  public int getTrackInnerCornerRadius() {
+    return spec.trackInnerCornerRadius;
+  }
+
+  /**
+   * Sets the radius of the rounded inner corner for the indicator and track in pixels.
+   *
+   * @param trackInnerCornerRadius The new corner radius in pixels.
+   * @see #setTrackInnerCornerRadiusFraction(float)
+   * @see #getTrackInnerCornerRadius()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackInnerCornerRadius
+   */
+  public void setTrackInnerCornerRadius(@Px int trackInnerCornerRadius) {
+    if (spec.trackInnerCornerRadius != trackInnerCornerRadius) {
+      spec.trackInnerCornerRadius =
+          Math.round(min(trackInnerCornerRadius, spec.trackThickness / 2f));
+      spec.useRelativeTrackInnerCornerRadius = false;
+      spec.hasInnerCornerRadius = true;
+      spec.validateSpec();
+      invalidate();
+    }
+  }
+
+  /**
+   * Sets the radius of the rounded inner corner for the indicator and track in fraction of the
+   * track thickness.
+   *
+   * @param trackInnerCornerRadiusFraction The new corner radius in fraction of the track thickness.
+   * @see #setTrackInnerCornerRadius(int)
+   * @see #getTrackInnerCornerRadius()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackInnerCornerRadius
+   */
+  public void setTrackInnerCornerRadiusFraction(float trackInnerCornerRadiusFraction) {
+    if (spec.trackInnerCornerRadiusFraction != trackInnerCornerRadiusFraction) {
+      spec.trackInnerCornerRadiusFraction = min(trackInnerCornerRadiusFraction, 0.5f);
+      spec.useRelativeTrackInnerCornerRadius = true;
+      spec.hasInnerCornerRadius = true;
+      spec.validateSpec();
+      invalidate();
+    }
+  }
+
+  /**
    * Returns the size of the stop indicator at the end of the track in pixels.
    *
    * @see #setTrackStopIndicatorSize(int)
