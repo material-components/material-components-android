@@ -44,6 +44,10 @@ import java.util.LinkedHashSet;
  * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off the
  * bottom of the screen when scrolling down, and show it when scrolling up.
  *
+ * <p> If Talkback is enabled, the hide on scroll behavior should be disabled until Talkback
+ * is disabled. Ensure that the content is not obscured due to disabling this behavior by
+ * adding padding to the content.
+ *
  * @deprecated Use {@link HideViewOnScrollBehavior} instead.
  *     <p>TODO(b/378132394): Migrate usages of this class to {@link HideViewOnScrollBehavior}.
  */

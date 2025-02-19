@@ -52,6 +52,10 @@ import java.util.LinkedHashSet;
  *
  * <p>Supports hiding the View off of three screen edges: {@link HideOnScrollView#EDGE_RIGHT},
  * {@link HideOnScrollView#EDGE_BOTTOM} and {@link HideOnScrollView#EDGE_LEFT}.
+ *
+ * <p>If Talkback is enabled, the hide on scroll behavior should be disabled until Talkback is
+ * disabled. Ensure that the content is not obscured due to disabling this behavior by adding
+ * padding to the content.
  */
 public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
 

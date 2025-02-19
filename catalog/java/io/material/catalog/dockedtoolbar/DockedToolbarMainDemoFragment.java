@@ -17,6 +17,8 @@ package io.material.catalog.dockedtoolbar;
 
 import io.material.catalog.R;
 
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
@@ -24,11 +26,14 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.dockedtoolbar.DockedToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
@@ -59,9 +64,20 @@ public class DockedToolbarMainDemoFragment extends DemoFragment {
     setupSnackbarOnClick(addButton);
     setupSnackbarOnClick(tabButton);
 
+    LinearLayout bodyContainer = view.findViewById(R.id.body_container);
+
     Button overflowClick = view.findViewById(R.id.docked_toolbar_button_overflow_button);
 
     overflowClick.setOnClickListener(v -> showMenu(v, R.menu.overflow_menu));
+
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      AccessibilityManager am = getContext().getSystemService(AccessibilityManager.class);
+      if (am != null && am.isTouchExplorationEnabled()) {
+        ((CoordinatorLayout.LayoutParams) dockedToolbar.getLayoutParams()).setBehavior(null);
+        dockedToolbar.post(
+            () -> bodyContainer.setPadding(0, 0, 0, dockedToolbar.getMeasuredHeight()));
+      }
+    }
 
     return view;
   }

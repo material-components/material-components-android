@@ -112,7 +112,9 @@ Here's what a typical layout would look like:
 A Floating Toolbar is a `FrameLayout` that provides additional styling and functionality.
 You may add children to it as you would to a `FrameLayout`.
 
-Floating toolbars can hide on scroll if inside a `CoordinatorLayout` by setting the following `CoordinatorLayout.Behavior` through the `app:layout_behavior` attribute:
+Floating toolbars can hide on scroll if inside a `CoordinatorLayout` by setting
+the following `CoordinatorLayout.Behavior` through the `app:layout_behavior`
+attribute:
 
 ```xml
   <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
@@ -125,6 +127,8 @@ Floating toolbars can hide on scroll if inside a `CoordinatorLayout` by setting 
 </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
 ```
 
+This behavior will be disabled when Talkback is enabled for a11y reasons. See [how to make floating toolbars accessible](#making-floating-toolbar-accessible).
+
 Note that the default M3 style is the horizontal standard color styling. Vibrant color or vertical styles should be explicitly set on the `FloatingToolbarLayout`. M3 stylings for specific components may also be defined, such as for icon buttons. These are recommended to be set explicitly on the corresponding components inside `FloatingToolbarLayout`. See the full list of [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingtoolbar/res/values/styles.xml).
 
 API and source code:
@@ -135,12 +139,15 @@ API and source code:
 
 ### Making Floating Toolbar accessible
 
-You should set a `contentDescription` on all the actions in the Floating Toolbar so that screen
-readers like TalkBack can properly announce what each action represents.
+You should set a `contentDescription` on all the actions in the Floating Toolbar
+so that screen readers like TalkBack can properly announce what each action
+represents.
 
-You can also control the ordering of the Talkback focus through the `accessibilityTraversalBefore` and `accessibilityTraversalAfter` flags.
+You can also control the ordering of the Talkback focus through the
+`accessibilityTraversalBefore` and `accessibilityTraversalAfter` flags.
 
-For example, if you want the Floating Toolbar to gain Talkback focus first, you can set these accessibility flags like below:
+For example, if you want the Floating Toolbar to gain Talkback focus first, you
+can set these accessibility flags like below:
 
 ```xml
   <!-- sample screen content -->
@@ -161,12 +168,41 @@ For example, if you want the Floating Toolbar to gain Talkback focus first, you 
   </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.floatingtoolbar.FloatingToolbarLayout
-    android:id="@+id/floating_toolbar"
+android:id="@+id/floating_toolbar"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:accessibilityTraversalBefore="@id/content">
     ...
   </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
+```
+
+#### Talkback
+
+If optionally using the `CoordinatorLayout.Behavior` `HideViewOnScrollBehavior`
+to hide the floating toolbar on scroll, make sure to disable it when Talkback
+is enabled. Screen readers such as Talkback will not be able to see it if the
+floating toolbar is hidden when scrolled.
+
+If using a Floating toolbar in a layout that obscures any content when
+hide on scroll is disabled, make sure to add the appropriate padding to the
+content. For example, if the floating toolbar is on the bottom and it is
+obscuring the content, bottom padding should be added to the content.
+
+See below for an example:
+
+```
+val am = context.getSystemService(AccessibilityManager::class.java)
+if (am != null && am.isTouchExplorationEnabled) {
+    (bar.layoutParams as? CoordinatorLayout.LayoutParams)?.behavior = null
+    bar.post {
+        content.setPadding(
+            content.paddingLeft,
+            content.paddingTop,
+            content.paddingRight,
+            content.paddingBottom + bar.measuredHeight
+        )
+    }
+}
 ```
 
 ### Anatomy and key properties

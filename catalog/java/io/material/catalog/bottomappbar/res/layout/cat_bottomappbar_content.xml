@@ -23,6 +23,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
+      android:id="@+id/bottomappbar_content"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingTop="16dp"
@@ -65,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="@string/cat_bottomappbar_lorem_ipsum" />
+        android:text="@string/cat_bottomappbar_lorem_ipsum"/>
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 

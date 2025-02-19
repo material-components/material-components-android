@@ -71,6 +71,34 @@ in the menu:
 </menu>
 ```
 
+#### Talkback
+
+Bottom app bar can optionally hide on scroll with the `app:hideOnScroll`
+attribute. When this attribute is set to true, scrolling will hide the bottom
+app bar and prevent it from being seen by any screen readers which may be
+confusing for users.
+
+When Talkback is enabled, this behavior should be disabled by setting
+`bottomAppBar.setHideOnScroll(false)`. Additionally, disabling this behavior
+causes any content to be obscured, make sure to add the appropriate bottom
+padding of the height of the bottom app bar to the content. See below for an
+example:
+
+```
+val am = context.getSystemService(AccessibilityManager::class.java)
+if (am != null && am.isTouchExplorationEnabled) {
+    bar.setHideOnScroll(false)
+    bar.post {
+        content.setPadding(
+            content.paddingLeft,
+            content.paddingTop,
+            content.paddingRight,
+            content.paddingBottom + bar.measuredHeight
+        )
+    }
+}
+```
+
 ## Bottom app bar
 
 Bottom app bars provide access to up to four actions, including the
