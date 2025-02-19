@@ -1,0 +1,298 @@
+<!--docs:
+title: "Docked Toolbar"
+layout: detail
+section: components
+excerpt: "Docked toolbars show actions related to the current page"
+iconId: docked_toolbar
+path: /catalog/docked-toolbar/
+-->
+
+# Docked Toolbar
+
+Docked Toolbar provides a way to show actions related to the current page.
+Docked Toolbar is one variant of Toolbars. Toolbars can also be undocked, ie. [Floating Toolbars](FloatingToolbar.md).
+
+![Docked toolbar](assets/dockedtoolbar/docked_toolbar.png)
+
+**Contents**
+
+*   [Design and API Documentation](#design-and-api-documentation)
+*   [Using Docked Toolbar](#using-docked-toolbar)
+*   [Theming](#theming-a-docked-toolbar)
+
+## Design and API Documentation
+
+*   Google Material3 Spec in progress
+*   API Reference in progress
+
+## Using Docked Toolbar
+
+Before you can use the Docked Toolbar, you need to add a dependency to
+the Material Components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
+
+Here's what a typical layout would look like:
+
+```xml
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <!-- sample screen content -->
+  <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/content" />
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+
+  <com.google.android.material.dockedtoolbar.DockedToolbar
+    android:id="@+id/docked_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
+
+    <!-- docked toolbar sample content -->
+    <LinearLayout
+      android:id="@+id/docked_toolbar_child"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="horizontal">
+      <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <Button
+          android:id="@+id/docked_toolbar_back_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          style="?attr/materialIconButtonStyle"
+          android:contentDescription="@string/docked_toolbar_back_button_description"
+          app:icon="@drawable/ic_arrow_back_24px" />
+      </FrameLayout>
+
+      <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <Button
+          android:id="@+id/docked_toolbar_add_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          style="?attr/materialIconButtonStyle"
+          android:contentDescription="@string/docked_toolbar_add_button_description"
+          app:icon="@drawable/ic_add_24px" />
+      </FrameLayout>
+
+      <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+        <Button
+          android:id="@+id/docked_toolbar_forward_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          style="?attr/materialIconButtonStyle"
+          android:contentDescription="@string/docked_toolbar_forward_button_description"
+          app:icon="@drawable/ic_arrow_forward_24px" />
+      </FrameLayout>
+    </LinearLayout>
+
+  </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
+
+A Docked Toolbar is a `FrameLayout` that provides additional styling.
+You may add children to it as you would to a `FrameLayout`.
+
+Docked toolbars can optionally hide on scroll off the bottom if inside a
+`CoordinatorLayout` by setting the following `CoordinatorLayout.Behavior`
+through the `app:layout_behavior` attribute:
+
+```xml
+<com.google.android.material.dockedtoolbar.DockedToolbarLayout
+    android:id="@+id/docked_toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
+  ...
+</com.google.android.material.dockedtoolbar.DockedToolbarLayout>
+```
+
+[Top App Bars](TopAppBar.md) and [Bottom App Bars](BottomAppBar.md) are also
+implementations of a docked toolbar which offer more in terms of functionality,
+but are less flexible than the `DockedToolbarLayout` implementation.
+
+API and source code:
+
+*   `DockedToolbar`
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dockedtoolbar/DockedToolbarLayout.java)
+
+### Making Docked Toolbar accessible
+
+You should set a `contentDescription` on all the actions in the Docked Toolbar
+so that screen readers like TalkBack can properly announce what each action
+represents.
+
+You can also control the ordering of the Talkback focus through the
+`accessibilityTraversalBefore` and `accessibilityTraversalAfter` flags.
+
+For example, if you want the Docked Toolbar to gain Talkback focus first, you
+can set these accessibility flags like below:
+
+```xml
+  <!-- sample screen content -->
+  <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+
+      <TextView
+        android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/content"
+        android:accessibilityTraversalAfter="@id/docked_toolbar" />
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+
+  <com.google.android.material.dockedbar.DockedToolbarLayout
+    android:id="@+id/docked_toolbar"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:accessibilityTraversalBefore="@id/content">
+    ...
+  </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
+```
+
+### Anatomy and key properties
+
+The following is an anatomy diagram for the docked toolbar:
+
+![Docked toolbar anatomy diagram](assets/dockedtoolbar/docked_toolbar_anatomy.png)
+
+1.  Container
+2.  Content
+
+#### Container attributes
+
+**Element**             | **Attribute**                        | **Related methods** | **Default value**
+----------------------- | ------------------------------------ | ------------------- | -----------------
+**Color**               | `app:backgroundTint`                 | N/A                 | `?attr/colorSurfaceContainer`
+**Shape**               | `app:shapeAppearance`                | N/A                 | `0% rounded`
+**Top inset padding**   | `app:paddingTopSystemWindowInsets`    | N/A                 | `unset`
+**Bottom inset padding**| `app:paddingBottomSystemWindowInsets` | N/A                 | `unset`
+
+**Note:** `DockedToolbarLayout` automatically adds top or bottom inset based on
+its gravity inside a `CoordinatorLayout`, if `app:paddingTopSystemWindowInsets`
+or `app:paddingBottomSystemWindowInsets` is not set. If not using a Docked
+Toolbar inside a `CoordinatorLayout`, set these attributes explicitly to add
+inset padding.
+
+#### Styles
+
+**Element**        | **Style**
+------------------ | ------------------------------------------
+**Default style** | `Widget.Material3.DockedToolbar`
+
+Default style theme attribute: `?attr/dockedToolbarStyle`
+
+See the full list of
+[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dockedtoolbar/res/values/styles.xml) and
+[docked toolbar attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dockedtoolbar/res/values/attrs.xml)
+
+## Theming a Docked Toolbar
+
+Docked Toolbar supports [Material Theming](https://m3.material.io/foundations/customization),
+which can customize color and typography.
+
+### Docked Toolbar theming example
+
+The following example shows a Docked Toolbar with Material Theming.
+
+![Docked Toolbar theming example](assets/dockedtoolbar/docked_toolbar_theming.png)
+
+#### Implementing docked toolbar theming
+
+Use theme attributes and a style in `res/values/styles.xml` which apply to all
+docked toolbars and affect other components:
+
+```xml
+<style name="Theme.App" parent="Theme.Material3.*">
+    ...
+    <item name="colorPrimary">@color/shrine_theme_light_primary</item>
+    <item name="colorOnPrimary">@color/shrine_theme_light_onPrimary</item>
+    <item name="colorPrimaryContainer">@color/shrine_theme_light_primaryContainer</item>
+    <item name="colorOnPrimaryContainer">@color/shrine_theme_light_onPrimaryContainer</item>
+    <item name="colorSecondaryContainer">@color/shrine_theme_light_secondaryContainer</item>
+    <item name="colorOnSecondaryContainer">@color/shrine_theme_light_onSecondaryContainer</item>
+    <item name="colorTertiaryContainer">@color/shrine_theme_light_tertiaryContainer</item>
+    <item name="colorOnTertiaryContainer">@color/shrine_theme_light_onTertiaryContainer</item>
+    <item name="colorError">@color/shrine_theme_light_error</item>
+    <item name="colorErrorContainer">@color/shrine_theme_light_errorContainer</item>
+    <item name="colorOnError">@color/shrine_theme_light_onError</item>
+    <item name="colorOnErrorContainer">@color/shrine_theme_light_onErrorContainer</item>
+    <item name="colorSurface">@color/shrine_theme_light_surface</item>
+    <item name="colorOnSurface">@color/shrine_theme_light_onSurface</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_theme_light_onSurfaceVariant</item>
+</style>
+```
+
+Use a default style theme attribute, styles, and a theme overlay, which apply to
+all docked toolbars but do not affect other components:
+
+```xml
+<style name="Theme.App" parent="Theme.Material3.*">
+    ...
+    <item name="dockedToolbarStyle">@style/Widget.App.DockedToolbar</item>
+</style>
+
+<style name="Widget.App.DockedToolbar" parent="Widget.Material3.DockedToolbar">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.App.DockedToolbar</item>
+</style>
+
+<style name="ThemeOverlay.App.DockedToolbar" parent="">
+    <item name="colorPrimary">@color/shrine_theme_light_primary</item>
+    <item name="colorOnPrimary">@color/shrine_theme_light_onPrimary</item>
+    <item name="colorPrimaryContainer">@color/shrine_theme_light_primaryContainer</item>
+    <item name="colorOnPrimaryContainer">@color/shrine_theme_light_onPrimaryContainer</item>
+    <item name="colorSecondaryContainer">@color/shrine_theme_light_secondaryContainer</item>
+    <item name="colorOnSecondaryContainer">@color/shrine_theme_light_onSecondaryContainer</item>
+    <item name="colorTertiaryContainer">@color/shrine_theme_light_tertiaryContainer</item>
+    <item name="colorOnTertiaryContainer">@color/shrine_theme_light_onTertiaryContainer</item>
+    <item name="colorError">@color/shrine_theme_light_error</item>
+    <item name="colorErrorContainer">@color/shrine_theme_light_errorContainer</item>
+    <item name="colorOnError">@color/shrine_theme_light_onError</item>
+    <item name="colorOnErrorContainer">@color/shrine_theme_light_onErrorContainer</item>
+    <item name="colorSurface">@color/shrine_theme_light_surface</item>
+    <item name="colorOnSurface">@color/shrine_theme_light_onSurface</item>
+    <item name="colorOnSurfaceVariant">@color/shrine_theme_light_onSurfaceVariant</item>
+</style>
+```
+
+Or use the style in the layout, which affects only this specific docked toolbar:
+
+```xml
+<com.google.android.material.dockedtoolbar.DockedToolbarLayout
+    ...
+    style="@style/Widget.App.DockedToolbar"
+/>
+```
