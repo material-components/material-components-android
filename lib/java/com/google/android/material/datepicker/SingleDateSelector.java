@@ -158,7 +158,10 @@ public class SingleDateSelector implements DateSelector<Long> {
           }
         });
 
-    DateSelector.showKeyboardWithAutoHideBehavior(dateEditText);
+    // only show keyboard if touch exploration is disabled
+    if (!DateSelector.isTouchExplorationEnabled(root.getContext())) {
+      DateSelector.showKeyboardWithAutoHideBehavior(dateEditText);
+    }
 
     return root;
   }

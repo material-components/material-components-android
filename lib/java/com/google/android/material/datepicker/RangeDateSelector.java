@@ -281,7 +281,10 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
           }
         });
 
-    DateSelector.showKeyboardWithAutoHideBehavior(startEditText, endEditText);
+    // only show keyboard if touch exploration is disabled
+    if (!DateSelector.isTouchExplorationEnabled(root.getContext())) {
+      DateSelector.showKeyboardWithAutoHideBehavior(startEditText, endEditText);
+    }
 
     return root;
   }
