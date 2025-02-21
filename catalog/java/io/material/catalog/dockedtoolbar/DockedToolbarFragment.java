@@ -27,6 +27,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A fragment that displays Docked Toolbar demos for the Catalog app. */
 public class DockedToolbarFragment extends DemoLandingFragment {
@@ -49,6 +51,21 @@ public class DockedToolbarFragment extends DemoLandingFragment {
         return new DockedToolbarMainDemoFragment();
       }
     };
+  }
+
+  @Override
+  @NonNull
+  public List<Demo> getAdditionalDemos() {
+    List<Demo> additionalDemos = new ArrayList<>();
+    additionalDemos.add(
+        new Demo(
+            R.string.cat_docked_toolbar_three_item_title) {
+          @Override
+          public Fragment createFragment() {
+            return new DockedToolbarThreeItemDemoFragment();
+          }
+        });
+    return additionalDemos;
   }
 
   /** The Dagger module for {@link DockedToolbarFragment} dependencies. */
