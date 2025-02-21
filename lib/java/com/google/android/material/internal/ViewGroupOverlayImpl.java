@@ -19,6 +19,10 @@ package com.google.android.material.internal;
 import android.view.View;
 import androidx.annotation.NonNull;
 
+/**
+ * @deprecated Use {@link android.view.ViewOverlay} instead.
+ */
+@Deprecated
 interface ViewGroupOverlayImpl extends ViewOverlayImpl {
 
   /**
