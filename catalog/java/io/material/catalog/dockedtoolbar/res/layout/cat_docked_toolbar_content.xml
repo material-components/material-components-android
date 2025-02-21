@@ -93,7 +93,7 @@
     android:layout_weight="1">
   <Button
     android:id="@+id/docked_toolbar_button_overflow_button"
-    android:layout_width="40dp"
+    android:layout_width="48dp"
     android:layout_height="48dp"
     android:layout_gravity="center"
     app:iconTint="?attr/colorOnSecondaryContainer"
