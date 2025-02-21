@@ -20,6 +20,7 @@ import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING;
 import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE;
 import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_SETTLING;
 
+import android.view.ViewTreeObserver;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -39,8 +40,7 @@ import java.lang.ref.WeakReference;
  * the mediator object, {@link #attach()} will link the TabLayout and the ViewPager2 together. When
  * creating an instance of this class, you must supply an implementation of {@link
  * TabConfigurationStrategy} in which you set the text of the tab, and/or perform any styling of the
- * tabs that you require. Changing ViewPager2's adapter will require a {@link #detach()} followed by
- * {@link #attach()} call. Changing the ViewPager2 or TabLayout will require a new instantiation of
+ * tabs that you require. Changing the ViewPager2 or TabLayout will require a new instantiation of
  * TabLayoutMediator.
  */
 public final class TabLayoutMediator {
@@ -54,6 +54,7 @@ public final class TabLayoutMediator {
 
   @Nullable private TabLayoutOnPageChangeCallback onPageChangeCallback;
   @Nullable private TabLayout.OnTabSelectedListener onTabSelectedListener;
+  @Nullable private ViewPagerOnLayoutListener onLayoutListener;
   @Nullable private RecyclerView.AdapterDataObserver pagerAdapterObserver;
 
   /**
@@ -127,6 +128,13 @@ public final class TabLayoutMediator {
     onTabSelectedListener = new ViewPagerOnTabSelectedListener(viewPager, smoothScroll);
     tabLayout.addOnTabSelectedListener(onTabSelectedListener);
 
+    // Here we'll add a listener that responds to adapter changes. Unlike ViewPager,
+    // ViewPager2 doesn't have a built-in OnAdapterChangeListener, so we'll use a
+    // slightly different approach that relies on the fact that changing the adapter
+    // always causes a layout pass (see b/135299048).
+    onLayoutListener = new ViewPagerOnLayoutListener();
+    viewPager.getViewTreeObserver().addOnGlobalLayoutListener(onLayoutListener);
+
     // Now we'll populate ourselves from the pager adapter, adding an observer if
     // autoRefresh is enabled
     if (autoRefresh) {
@@ -151,8 +159,10 @@ public final class TabLayoutMediator {
       adapter.unregisterAdapterDataObserver(pagerAdapterObserver);
       pagerAdapterObserver = null;
     }
+    viewPager.getViewTreeObserver().removeOnGlobalLayoutListener(onLayoutListener);
     tabLayout.removeOnTabSelectedListener(onTabSelectedListener);
     viewPager.unregisterOnPageChangeCallback(onPageChangeCallback);
+    onLayoutListener = null;
     onTabSelectedListener = null;
     onPageChangeCallback = null;
     adapter = null;
@@ -315,6 +325,18 @@ public final class TabLayoutMediator {
     @Override
     public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
       populateTabsFromPagerAdapter();
+    }
+  }
+
+  private class ViewPagerOnLayoutListener implements ViewTreeObserver.OnGlobalLayoutListener {
+
+    @Override
+    public void onGlobalLayout() {
+      RecyclerView.Adapter<?> currentAdapter = viewPager.getAdapter();
+      if (adapter != currentAdapter) {
+        detach();
+        attach();
+      }
     }
   }
 }
