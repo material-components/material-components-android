@@ -2552,6 +2552,10 @@ public class TabLayout extends HorizontalScrollView {
       ((GradientDrawable) contentDrawable).setColor(Color.TRANSPARENT);
 
       if (tabRippleColorStateList != null) {
+        GradientDrawable mask = new GradientDrawable();
+        mask.setCornerRadius(context.getResources().getDisplayMetrics().density * 40);
+        mask.setColor(Color.WHITE);
+
         GradientDrawable maskDrawable = new GradientDrawable();
         // TODO: Find a workaround for this. Currently on certain devices/versions,
         // LayerDrawable will draw a black background underneath any layer with a non-opaque color,
@@ -2568,7 +2572,7 @@ public class TabLayout extends HorizontalScrollView {
             new RippleDrawable(
                 rippleColor,
                 unboundedRipple ? null : contentDrawable,
-                unboundedRipple ? null : maskDrawable);
+                unboundedRipple ? mask : maskDrawable);
       } else {
         background = contentDrawable;
       }
