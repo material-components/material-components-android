@@ -405,11 +405,7 @@ abstract class BaseSlider<
   private final int tooltipTimeoutMillis;
 
   @NonNull
-  private final ViewTreeObserver.OnScrollChangedListener onScrollChangedListener =
-      this::updateLabels;
-
-  @NonNull
-  private final ViewTreeObserver.OnGlobalLayoutListener onGlobalLayoutListener = this::updateLabels;
+  private final ViewTreeObserver.OnDrawListener onDrawListener = this::updateLabels;
 
   @NonNull
   private final Runnable resetActiveThumbIndex =
@@ -2403,8 +2399,7 @@ abstract class BaseSlider<
     // Update factoring in the visibility of all ancestors.
     thisAndAncestorsVisible = isShown();
 
-    getViewTreeObserver().addOnScrollChangedListener(onScrollChangedListener);
-    getViewTreeObserver().addOnGlobalLayoutListener(onGlobalLayoutListener);
+    getViewTreeObserver().addOnDrawListener(onDrawListener);
     // The label is attached on the Overlay relative to the content.
     for (TooltipDrawable label : labels) {
       attachLabelToContentView(label);
@@ -2425,8 +2420,7 @@ abstract class BaseSlider<
     for (TooltipDrawable label : labels) {
       detachLabelFromContentView(label);
     }
-    getViewTreeObserver().removeOnScrollChangedListener(onScrollChangedListener);
-    getViewTreeObserver().removeOnGlobalLayoutListener(onGlobalLayoutListener);
+    getViewTreeObserver().removeOnDrawListener(onDrawListener);
     super.onDetachedFromWindow();
   }
 
@@ -3447,8 +3441,10 @@ abstract class BaseSlider<
             public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
               ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(BaseSlider.this);
-              for (TooltipDrawable label : labels) {
-                contentViewOverlay.remove(label);
+              if (contentViewOverlay != null) {
+                for (TooltipDrawable label : labels) {
+                  contentViewOverlay.remove(label);
+                }
               }
             }
           });
