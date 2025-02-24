@@ -823,10 +823,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void showViewImpl() {
-    if (ViewCompat.getAccessibilityPaneTitle(view) == null) {
-      ViewCompat.setAccessibilityPaneTitle(
-          view, getContext().getString(R.string.snackbar_accessibility_pane_title));
-    }
     if (shouldAnimate()) {
       // If animations are enabled, animate it in
       animateViewIn();
