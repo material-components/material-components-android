@@ -97,6 +97,12 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     /** Indicates that the Snackbar was dismissed from a new Snackbar being shown. */
     public static final int DISMISS_EVENT_CONSECUTIVE = BaseCallback.DISMISS_EVENT_CONSECUTIVE;
 
+    /**
+     * Called when the given {@link Snackbar} is visible.
+     *
+     * @param sb The snackbar which is now visible.
+     * @see Snackbar#show()
+     */
     @Override
     public void onShown(Snackbar sb) {
       // Stub implementation to make API check happy.

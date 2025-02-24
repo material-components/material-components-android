@@ -1376,6 +1376,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       delegate.setBaseTransientBottomBar(baseTransientBottomBar);
     }
 
+    /**
+     * Called when the user's input indicates that they want to swipe the given view.
+     *
+     * @param child View the user is attempting to swipe
+     * @return true if the view can be dismissed via swiping, false otherwise
+     */
     @Override
     public boolean canSwipeDismissView(View child) {
       return delegate.canSwipeDismissView(child);

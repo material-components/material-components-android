@@ -2193,7 +2193,7 @@ public class TabLayout extends HorizontalScrollView {
      *
      * <p>Do not rely on this if using {@link TabLayout#setupWithViewPager(ViewPager)}
      *
-     * @param id, unique id for this tab
+     * @param id unique id for this tab
      */
     @NonNull
     @CanIgnoreReturnValue
