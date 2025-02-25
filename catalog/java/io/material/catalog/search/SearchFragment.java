@@ -69,6 +69,13 @@ public class SearchFragment extends DemoLandingFragment {
             return new Intent(getContext(), SearchRecyclerDemoActivity.class);
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_searchbar_outside_icon_title) {
+          @Override
+          public Intent createActivityIntent() {
+            return new Intent(getContext(), SearchBarWithOutsideIconsDemoActivity.class);
+          }
+        });
     return additionalDemos;
   }
 
