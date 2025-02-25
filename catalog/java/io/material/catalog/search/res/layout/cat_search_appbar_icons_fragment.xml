@@ -50,6 +50,7 @@
         android:layout_marginVertical="4dp"
         android:layout_gravity="center_vertical"
         app:defaultMarginsEnabled="false"
+        app:hideNavigationIcon="true"
         android:hint="@string/cat_searchbar_hint"/>
       <ImageView
         android:layout_width="48dp"
