@@ -37,7 +37,7 @@
   <string name="mtrl_picker_invalid_format">قالب نامعتبر است.</string>
   <string name="mtrl_picker_invalid_format_use">قالب: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">مثال: %1$s</string>
-  <string name="mtrl_picker_toggle_to_calendar_input_mode">رفتن به روش ورودی تقویم</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode">تعویض به حالت ورودی تقویم</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">رفتن به حالت ورودی نوشتاری</string>
   <string name="mtrl_picker_a11y_prev_month">تغییر به ماه قبلی</string>
   <string name="mtrl_picker_a11y_next_month">تغییر به ماه بعدی</string>
