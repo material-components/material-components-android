@@ -131,6 +131,8 @@ public class MaterialButtonGroup extends LinearLayout {
   @Px private int spacing;
   @Nullable private StateListSizeChange buttonSizeChange;
 
+  private boolean isChildrenShapeInvalidated = true;
+
   public MaterialButtonGroup(@NonNull Context context) {
     this(context, null);
   }
@@ -204,6 +206,7 @@ public class MaterialButtonGroup extends LinearLayout {
       return;
     }
 
+    isChildrenShapeInvalidated = true;
     super.addView(child, index, params);
     MaterialButton buttonChild = (MaterialButton) child;
     setGeneratedIdIfNeeded(buttonChild);
@@ -231,6 +234,7 @@ public class MaterialButtonGroup extends LinearLayout {
       originalChildStateListShapeAppearanceModels.remove(indexOfChild);
     }
 
+    isChildrenShapeInvalidated = true;
     updateChildShapes();
     adjustChildMarginsAndUpdateLayout();
   }
@@ -256,9 +260,11 @@ public class MaterialButtonGroup extends LinearLayout {
   @VisibleForTesting
   void updateChildShapes() {
     // No need to update shape if no inside corners or outer corners are specified.
-    if (innerCornerSize == null && groupStateListShapeAppearance == null) {
+    if ((innerCornerSize == null && groupStateListShapeAppearance == null)
+        || !isChildrenShapeInvalidated) {
       return;
     }
+    isChildrenShapeInvalidated = false;
     int childCount = getChildCount();
     int firstVisibleChildIndex = getFirstVisibleChildIndex();
     int lastVisibleChildIndex = getLastVisibleChildIndex();
@@ -580,6 +586,7 @@ public class MaterialButtonGroup extends LinearLayout {
    */
   public void setInnerCornerSize(@NonNull CornerSize cornerSize) {
     innerCornerSize = StateListCornerSize.create(cornerSize);
+    isChildrenShapeInvalidated = true;
     updateChildShapes();
     invalidate();
   }
@@ -608,6 +615,7 @@ public class MaterialButtonGroup extends LinearLayout {
   @RestrictTo(Scope.LIBRARY_GROUP)
   public void setInnerCornerSizeStateList(@NonNull StateListCornerSize cornerSizeStateList) {
     innerCornerSize = cornerSizeStateList;
+    isChildrenShapeInvalidated = true;
     updateChildShapes();
     invalidate();
   }
@@ -628,6 +636,7 @@ public class MaterialButtonGroup extends LinearLayout {
   public void setShapeAppearance(@Nullable ShapeAppearanceModel shapeAppearance) {
     groupStateListShapeAppearance =
         new StateListShapeAppearanceModel.Builder(shapeAppearance).build();
+    isChildrenShapeInvalidated = true;
     updateChildShapes();
     invalidate();
   }
@@ -653,6 +662,7 @@ public class MaterialButtonGroup extends LinearLayout {
   public void setStateListShapeAppearance(
       @Nullable StateListShapeAppearanceModel stateListShapeAppearance) {
     groupStateListShapeAppearance = stateListShapeAppearance;
+    isChildrenShapeInvalidated = true;
     updateChildShapes();
     invalidate();
   }
