@@ -83,6 +83,7 @@ public class MaterialToolbar extends Toolbar {
   @Nullable private Integer navigationIconTint;
   private boolean titleCentered;
   private boolean subtitleCentered;
+  private boolean titleMarqueeEnabled;
 
   @Nullable private ImageView.ScaleType logoScaleType;
   @Nullable private Boolean logoAdjustViewBounds;
@@ -110,6 +111,7 @@ public class MaterialToolbar extends Toolbar {
 
     titleCentered = a.getBoolean(R.styleable.MaterialToolbar_titleCentered, false);
     subtitleCentered = a.getBoolean(R.styleable.MaterialToolbar_subtitleCentered, false);
+    titleMarqueeEnabled = a.getBoolean(R.styleable.MaterialToolbar_titleMarqueeEnabled, false);
 
     final int index = a.getInt(R.styleable.MaterialToolbar_logoScaleType, -1);
     if (index >= 0 && index < LOGO_SCALE_TYPE_ARRAY.length) {
@@ -144,6 +146,7 @@ public class MaterialToolbar extends Toolbar {
 
     maybeCenterTitleViews();
     updateLogoImageView();
+    enableMarqueeIfNeeded();
   }
 
   private void maybeCenterTitleViews() {
@@ -226,6 +229,19 @@ public class MaterialToolbar extends Toolbar {
         logoImageView.setScaleType(logoScaleType);
       }
     }
+  }
+
+  private void enableMarqueeIfNeeded() {
+      if (!titleMarqueeEnabled) return;
+
+      TextView titleTextView = ToolbarUtils.getTitleTextView(this);
+      if (titleTextView != null) {
+          titleTextView.setEllipsize(android.text.TextUtils.TruncateAt.MARQUEE);
+          titleTextView.setSingleLine(true);
+          titleTextView.setSelected(true);
+          titleTextView.setFocusable(true);
+          titleTextView.setFocusableInTouchMode(true);
+      }
   }
 
   /**
@@ -345,6 +361,24 @@ public class MaterialToolbar extends Toolbar {
    */
   public boolean isTitleCentered() {
     return titleCentered;
+  }
+
+  /**
+   * Sets whether the title text corresponding to the {@link #setTitle(int)} method should be
+   * marquee.
+   */ 
+  public void setTitleMarqueeEnabled(boolean enabled) {
+      this.titleMarqueeEnabled = enabled;
+      requestLayout();
+  }
+
+  /**
+   * Returns whether the title text corresponding to the {@link #setTitle(int)} method is marquee or not.
+   *
+   * @see #setTitleMarqueeEnabled(boolean)
+   */
+  public boolean isTitleMarqueeEnabled() {
+      return titleMarqueeEnabled;
   }
 
   /**
