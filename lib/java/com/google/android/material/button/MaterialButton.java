@@ -50,12 +50,14 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -528,7 +530,16 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       originalWidth = UNSET;
     }
     if (originalWidth == UNSET) {
-      originalWidth = right - left;
+      originalWidth = getMeasuredWidth();
+      if (getParent() instanceof MaterialButtonGroup) {
+        ViewGroup.LayoutParams params = getLayoutParams();
+        if (params instanceof LayoutParams) {
+          LayoutParams linearParams = (LayoutParams) params;
+          if (linearParams.weight != 0) {
+            linearParams.width = getMeasuredWidth();
+          }
+        }
+      }
     }
 
     if (allowedWidthDecrease == UNSET) {
