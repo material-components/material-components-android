@@ -116,13 +116,6 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
   @Nullable private BaseCallback<Snackbar> callback;
 
-  /**
-   * This is only used as a temporary flag to opt-out of the new dismissal behavior for Snackbar
-   * with actions, which will never time out.
-   */
-  @SuppressWarnings("unused")
-  private boolean useLegacyDismissalBehavior = false;
-
   private Snackbar(
       @NonNull Context context,
       @NonNull ViewGroup parent,
@@ -372,18 +365,6 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
             dispatchDismiss(BaseCallback.DISMISS_EVENT_ACTION);
           });
     }
-    return this;
-  }
-
-  /**
-   * Set whether to use the legacy dismissal behavior for Snackbar with actions. This is a temporary
-   * flag to allow apps to migrate to the new behavior, which will never timeout the Snackbar with
-   * actions. Do not use this for new usages.
-   */
-  @NonNull
-  @CanIgnoreReturnValue
-  public Snackbar setUseLegacyDismissalBehavior(boolean useLegacyDismissalBehavior) {
-    this.useLegacyDismissalBehavior = useLegacyDismissalBehavior;
     return this;
   }
 
