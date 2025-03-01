@@ -57,7 +57,17 @@ public class ButtonsFragment extends DemoLandingFragment {
 
   @Override
   public List<Demo> getAdditionalDemos() {
-    return Arrays.asList(getButtonGroupDemo(), getButtonToggleGroupDemo(), getSplitButtonDemo());
+    return Arrays.asList(
+        getButtonGroupDemo(),
+        getButtonToggleGroupDemo(),
+        getSplitButtonDemo(),
+        new Demo(R.string.cat_buttons_group_distribution) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new ButtonGroupDistributionDemoFragment();
+          }
+        });
   }
 
   @NonNull

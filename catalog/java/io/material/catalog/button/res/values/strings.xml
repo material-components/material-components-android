@@ -19,6 +19,7 @@
 
   <string name="cat_toc_buttons">Buttons</string>
   <string name="cat_buttons_group" translatable="false">Buttons Group</string>
+  <string name="cat_buttons_group_distribution" translatable="false">Buttons Group Distribution</string>
   <string name="cat_buttons_toggle_group">Buttons Toggle Group</string>
   <string name="cat_split_button" translatable="false">Split Button</string>
   <string name="cat_buttons_title">Buttons</string>
@@ -128,4 +129,10 @@
   <string name="cat_button_require_selection" translatable="false">Require Selection</string>
   <string name="cat_button_vertical_orientation" translatable="false">Vertical Orientation</string>
   <string name="cat_button_enable" translatable="false">Enabled</string>
+  <string name="cat_buttons_fixed_width_text">Buttons with fixed width</string>
+  <string name="cat_buttons_dynamic_width">Buttons with dynamic width (1:2:1)</string>
+  <string name="cat_buttons_mixed_width">Buttons with mixed width</string>
+  <string name="cat_button_previous_icon">previous button</string>
+  <string name="cat_button_play_icon">play button</string>
+  <string name="cat_button_next_icon">next button</string>
 </resources>
