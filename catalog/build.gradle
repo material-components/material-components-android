@@ -104,6 +104,7 @@ def srcDirs = [
 ]
 
 android {
+  namespace "io.material.catalog"
   defaultConfig {
     manifestPlaceholders = [
       application_name             : 'CatalogApplication',
@@ -143,8 +144,8 @@ android {
   }
 
   compileOptions {
-    sourceCompatibility JavaVersion.VERSION_1_8
-    targetCompatibility JavaVersion.VERSION_1_8
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
   }
   androidResources {
     additionalParameters '--no-version-vectors'

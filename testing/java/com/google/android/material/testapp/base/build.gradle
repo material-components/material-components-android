@@ -23,14 +23,16 @@ dependencies {
 }
 
 android {
+  namespace "com.google.android.material.testapp.base"
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDirs = [ '.' ]
-    main.java.excludes = [
-      '**/build/**',
+    // Manually add src files. Gradle 8 doesn't work well with
+    // a flat source directory (src = [ '.' ]) where java source, a gradle
+    // file, and a build output directory are all in the same location.
+    main.java.srcDirs = [
+      'BaseTestActivity.java',
+      'RecreatableAppCompatActivity.java'
     ]
-    // Only include things in this directory, not subdirectories
-    main.java.includes = [ '*.java' ]
   }
   defaultConfig {
     minSdkVersion 21

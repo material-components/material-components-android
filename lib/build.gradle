@@ -101,6 +101,7 @@ def srcDirs = [
 ]
 
 android {
+  namespace "com.google.android.material"
   sourceSets {
     main.manifest.srcFile 'java/com/google/android/material/AndroidManifest.xml'
     main.java.srcDir 'java'
@@ -126,6 +127,10 @@ android {
   defaultConfig {
     minSdkVersion 21
   }
+
+  publishing {
+    singleVariant("release")
+  }
 }
 
 task getVersion {
@@ -143,48 +148,47 @@ task androidSourcesJar(type: Jar) {
   }
 }
 
-afterEvaluate {
-  publishing {
-    repositories {
-      maven {
-        url = "$mavenRepoUrl"
-      }
+publishing {
+  repositories {
+    maven {
+      url = "$mavenRepoUrl"
     }
+  }
 
-    publications {
-      release(MavenPublication) {
-        from components.release
-
-        artifact androidSourcesJar
-
-        groupId = 'com.google.android.material'
-        artifactId = 'material'
-        version project.version
-        pom {
-          name = 'Material Components for Android'
-          description = 'Material Components for Android is a static library ' +
-            'that you can add to your Android application in order to use ' +
-            'APIs that provide implementations of the Material Design specification. ' +
-            'Compatible on devices running API 21 or later.'
-          url = 'https://github.com/material-components/material-components-android'
-          inceptionYear = '2015'
-          licenses {
-            license {
-              name = 'The Apache Software License, Version 2.0'
-              url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-              distribution = 'repo'
-            }
-          }
-          developers {
-            developer {
-              name = 'The Android Open Source Project'
-            }
-          }
-          scm {
-            connection = 'scm:git:https://github.com/material-components/material-components-android.git'
-            url = 'https://github.com/material-components/material-components-android'
+  publications {
+    release(MavenPublication) {
+      artifact androidSourcesJar
+      groupId = 'com.google.android.material'
+      artifactId = 'material'
+      version project.version
+      pom {
+        name = 'Material Components for Android'
+        description = 'Material Components for Android is a static library ' +
+          'that you can add to your Android application in order to use ' +
+          'APIs that provide implementations of the Material Design specification. ' +
+          'Compatible on devices running API 21 or later.'
+        url = 'https://github.com/material-components/material-components-android'
+        inceptionYear = '2015'
+        licenses {
+          license {
+            name = 'The Apache Software License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution = 'repo'
           }
         }
+        developers {
+          developer {
+            name = 'The Android Open Source Project'
+          }
+        }
+        scm {
+          connection = 'scm:git:https://github.com/material-components/material-components-android.git'
+          url = 'https://github.com/material-components/material-components-android'
+        }
+      }
+
+      afterEvaluate {
+        from components.release
       }
     }
   }

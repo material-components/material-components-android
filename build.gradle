@@ -4,7 +4,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:7.4.2'
+    classpath 'com.android.tools.build:gradle:8.7.3'
   }
 }
 
@@ -49,7 +49,7 @@ ext {
   espressoVersion = '3.1.0'
   mockitoCoreVersion = '2.25.0'
   truthVersion = '0.45'
-  robolectricVersion = '4.9'
+  robolectricVersion = '4.13'
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.
@@ -207,8 +207,8 @@ subprojects {
         // This disables the builds tools automatic vector -> PNG generation
         defaultConfig.generatedDensities = []
 
-        compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
-        compileOptions.targetCompatibility JavaVersion.VERSION_1_8
+        compileOptions.sourceCompatibility JavaVersion.VERSION_17
+        compileOptions.targetCompatibility JavaVersion.VERSION_17
 
         aaptOptions.additionalParameters "--no-version-vectors"
 

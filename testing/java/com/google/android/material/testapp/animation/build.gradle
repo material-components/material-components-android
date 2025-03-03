@@ -23,18 +23,13 @@ dependencies {
   api project(fromPath("lib"))
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
 
-  api 'androidx.multidex:multidex:2.0.0'
+  api 'androidx.multidex:multidex:2.0.1'
 }
 
 android {
+  namespace "com.google.android.material.testapp.animation"
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDirs = [ '.' ]
-    main.java.excludes = [
-      '**/build/**',
-    ]
-    // Only include things in this directory, not subdirectories
-    main.java.includes = [ '*.java' ]
     main.res.srcDirs = [ 'res' ]
   }
   defaultConfig {
