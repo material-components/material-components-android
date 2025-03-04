@@ -712,17 +712,6 @@ public final class CollapsingTextHelper {
       textPaint.setColor(getCurrentCollapsedTextColor());
     }
 
-    if (collapsedLetterSpacing != expandedLetterSpacing) {
-      textPaint.setLetterSpacing(
-          lerp(
-              expandedLetterSpacing,
-              collapsedLetterSpacing,
-              fraction,
-              AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-    } else {
-      textPaint.setLetterSpacing(collapsedLetterSpacing);
-    }
-
     // Calculates paint parameters for shadow layer.
     currentShadowRadius = lerp(expandedShadowRadius, collapsedShadowRadius, fraction, null);
     currentShadowDx = lerp(expandedShadowDx, collapsedShadowDx, fraction, null);
@@ -1099,7 +1088,6 @@ public final class CollapsingTextHelper {
       newTypeface = collapsedTypeface;
     } else {
       newTextSize = expandedTextSize;
-      newLetterSpacing = expandedLetterSpacing;
       newTypeface = expandedTypeface;
       if (isClose(fraction, /* targetValue= */ 0)) {
         // If we're close to the expanded text size, snap to it and use a scale of 1
@@ -1110,6 +1098,11 @@ public final class CollapsingTextHelper {
             lerp(expandedTextSize, collapsedTextSize, fraction, textSizeInterpolator)
                 / expandedTextSize;
       }
+
+      newLetterSpacing = lerp(
+          expandedLetterSpacing, collapsedLetterSpacing,
+          1f, collapsedTextSize / expandedTextSize,
+          scale);
 
       float textSizeRatio = collapsedTextSize / expandedTextSize;
       // This is the size of the expanded bounds when it is scaled to match the
@@ -1320,11 +1313,11 @@ public final class CollapsingTextHelper {
   }
 
   /**
-   * Returns true if {@code value} is 'close' to it's closest decimal value. Close is currently
+   * Returns true if {@code value1} is 'close' to {@code value2}. Close is currently
    * defined as it's difference being < 0.00001.
    */
-  private static boolean isClose(float value, float targetValue) {
-    return Math.abs(value - targetValue) < 0.00001f;
+  private static boolean isClose(float value1, float value2) {
+    return Math.abs(value1 - value2) < 0.00001f;
   }
 
   public ColorStateList getExpandedTextColor() {
@@ -1365,6 +1358,22 @@ public final class CollapsingTextHelper {
       fraction = interpolator.getInterpolation(fraction);
     }
     return AnimationUtils.lerp(startValue, endValue, fraction);
+  }
+
+  private static float lerp(
+      float outputStart, float outputEnd,
+      float inputStart, float inputEnd,
+      float inputValue) {
+    if (isClose(inputEnd, inputStart)) {
+      if (isClose(outputEnd, outputStart)) {
+        return outputStart;
+      } else {
+        throw new RuntimeException("\"input\" range is empty, but \"output\" is not");
+      }
+    }
+
+    float value = (inputValue - inputStart) / (inputEnd - inputStart);
+    return outputStart + (outputEnd - outputStart) * value;
   }
 
   private static boolean rectEquals(@NonNull Rect r, int left, int top, int right, int bottom) {
