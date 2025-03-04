@@ -101,12 +101,12 @@
     <item name="rippleColor">@color/m3_fab_ripple_color_selector</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="borderWidth">@dimen/m3_fab_border_width</item>
-    <item name="elevation">@dimen/m3_comp_fab_primary_container_elevation</item>
-    <item name="hoveredFocusedTranslationZ">@dimen/m3_comp_fab_primary_hover_container_elevation</item>
-    <item name="pressedTranslationZ">@dimen/m3_comp_fab_primary_pressed_container_elevation</item>
-    <item name="fabCustomSize">@dimen/m3_comp_fab_primary_container_height</item>
-    <item name="maxImageSize">@dimen/m3_comp_fab_primary_icon_size</item>
-    <item name="shapeAppearance">@macro/m3_comp_fab_primary_container_shape</item>
+    <item name="elevation">@dimen/m3_comp_fab_primary_container_container_elevation</item>
+    <item name="hoveredFocusedTranslationZ">@dimen/m3_comp_fab_primary_container_hovered_container_elevation</item>
+    <item name="pressedTranslationZ">@dimen/m3_comp_fab_primary_container_pressed_container_elevation</item>
+    <item name="fabCustomSize">@dimen/m3_comp_fab_container_height</item>
+    <item name="maxImageSize">@dimen/m3_comp_fab_icon_size</item>
+    <item name="shapeAppearance">@macro/m3_comp_fab_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
     <!--Remove the motion spec and allow FloatingActionButtonImpl to create a theme-based animation-->
     <item name="showMotionSpec">@null</item>
@@ -132,9 +132,9 @@
   <!-- M3 Small FABs -->
 
   <style name="Base.Widget.Material3.FloatingActionButton.Small" parent="Base.Widget.Material3.FloatingActionButton">
-    <item name="fabCustomSize">@dimen/m3_comp_fab_primary_small_container_height</item>
-    <item name="maxImageSize">@dimen/m3_comp_fab_primary_small_icon_size</item>
-    <item name="shapeAppearance">@macro/m3_comp_fab_primary_small_container_shape</item>
+    <item name="fabCustomSize">@dimen/m3_comp_fab_small_container_height</item>
+    <item name="maxImageSize">@dimen/m3_comp_fab_small_icon_size</item>
+    <item name="shapeAppearance">@macro/m3_comp_fab_small_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
@@ -157,9 +157,9 @@
   <!-- M3 Large FABs -->
 
   <style name="Base.Widget.Material3.FloatingActionButton.Large" parent="Base.Widget.Material3.FloatingActionButton">
-    <item name="fabCustomSize">@dimen/m3_comp_fab_primary_large_container_height</item>
-    <item name="maxImageSize">@dimen/m3_comp_fab_primary_large_icon_size</item>
-    <item name="shapeAppearance">@macro/m3_comp_fab_primary_large_container_shape</item>
+    <item name="fabCustomSize">@dimen/m3_comp_fab_large_container_height</item>
+    <item name="maxImageSize">@dimen/m3_comp_fab_large_icon_size</item>
+    <item name="shapeAppearance">@macro/m3_comp_fab_large_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
 
@@ -182,18 +182,18 @@
   <!-- FAB Overlays -->
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Primary" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_primary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_primary_icon_color</item>
+    <item name="colorContainer">@macro/m3_comp_fab_primary_container_container_color</item>
+    <item name="colorOnContainer">@macro/m3_comp_fab_primary_container_icon_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Secondary" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_secondary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_secondary_icon_color</item>
+    <item name="colorContainer">@macro/m3_comp_fab_secondary_container_container_color</item>
+    <item name="colorOnContainer">@macro/m3_comp_fab_secondary_container_icon_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Tertiary" parent="">
-    <item name="colorContainer">@macro/m3_comp_fab_tertiary_container_color</item>
-    <item name="colorOnContainer">@macro/m3_comp_fab_tertiary_icon_color</item>
+    <item name="colorContainer">@macro/m3_comp_fab_tertiary_container_container_color</item>
+    <item name="colorOnContainer">@macro/m3_comp_fab_tertiary_container_icon_color</item>
   </style>
 
   <style name="ThemeOverlay.Material3.FloatingActionButton.Surface" parent="">
