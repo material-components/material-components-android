@@ -50,8 +50,9 @@
         android:layout_marginVertical="4dp"
         android:layout_gravity="center_vertical"
         app:defaultMarginsEnabled="false"
+        app:textCentered="true"
         app:hideNavigationIcon="true"
-        android:hint="@string/cat_searchbar_hint"/>
+        android:hint="@string/cat_searchbar_short_hint"/>
       <ImageView
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -83,7 +84,7 @@
     android:id="@+id/cat_search_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:hint="@string/cat_searchbar_hint"
+    android:hint="@string/cat_searchbar_short_hint"
     app:layout_anchor="@id/cat_search_bar">
 
     <!-- Content goes here (ScrollView, RecyclerView, etc.). -->

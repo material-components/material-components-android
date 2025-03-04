@@ -27,6 +27,7 @@
   <public name="hideNavigationIcon" type="attr"/>
   <public name="forceDefaultNavigationOnClickListener" type="attr"/>
   <public name="tintNavigationIcon" type="attr"/>
+  <public name="textCentered" type="attr"/>
   <public name="Widget.Material3.SearchBar" type="style"/>
   <public name="Widget.Material3.SearchBar.Outlined" type="style"/>
   <public name="Widget.Material3.SearchView" type="style"/>

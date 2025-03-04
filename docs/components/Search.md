@@ -105,6 +105,7 @@ Element                      | Attribute                   | Related method(s)  
 **Search text appearance**   | `android:textAppearance`    | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
 **Search text**              | `android:text`              | `setText`<br/>`getText`                     | `null`
 **Search hint**              | `android:hint`              | `setHint`<br/>`getHint`                     | `null`
+**Search text centered**     | `app:textCentered`          | `setTextCentered`<br/>`getTextCentered`     | `false`
 **Color**                    | `app:backgroundTint`        | --                                          | `?attr/colorSurfaceContainerHigh`
 **Flag for default margins** | `app:defaultMarginsEnabled` | --                                          | `true`
 **Flag for navigation icon** | `app:hideNavigationIcon`    | --                                          | `false`

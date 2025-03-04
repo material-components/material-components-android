@@ -64,6 +64,9 @@
     <attr name="strokeColor"/>
     <!-- Width of the SearchBar outline stroke. -->
     <attr name="strokeWidth"/>
+    <!-- Whether the text corresponding to the `android:text` attribute or `android:hint` attribute
+         should be centered horizontally within the searchbar. Default is false.-->
+    <attr name="textCentered" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="SearchView">

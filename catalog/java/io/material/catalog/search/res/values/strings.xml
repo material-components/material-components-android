@@ -92,5 +92,6 @@
           description="Description about a home icon button.[CHAR_LIMIT=NONE]">Home</string>
   <string name="cat_searchbar_cast_icon_description"
           description="Description about a cast icon button.[CHAR_LIMIT=NONE]">Cast</string>
-
+  <string name="cat_searchbar_short_hint"
+      description="Search bar short hint text to open search view [CHAR_LIMIT=40]">Search product</string>
 </resources>
