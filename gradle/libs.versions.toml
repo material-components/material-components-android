@@ -23,7 +23,6 @@ androidXFragment                     = "1.2.5"
 androidXGridLayout                   = "1.0.0"
 androidXGraphicsShapes               = "1.0.1"
 androidXLifecycle                    = "2.0.0"
-androidXMultidex                     = "2.0.1"
 androidXPreference                   = "1.1.1"
 androidXRecyclerView                 = "1.2.1"
 androidXRecyclerViewSelection        = "1.0.0"
@@ -64,7 +63,6 @@ androidx-dynamicanimation = { group = "androidx.dynamicanimation", name = "dynam
 androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "androidXFragment" }
 androidx-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "androidXGridLayout" }
 androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidXLifecycle" }
-androidx-multidex = { group = "androidx.multidex", name= "multidex", version.ref = "androidXMultidex" }
 androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "androidXPreference" }
 androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "androidXRecyclerView" }
 androidx-transition = { group = "androidx.transition", name = "transition", version.ref = "androidXTransition" }
