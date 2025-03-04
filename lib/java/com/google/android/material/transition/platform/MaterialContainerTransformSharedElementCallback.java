@@ -28,7 +28,6 @@ import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION_CODES;
 import android.os.Parcelable;
 import android.transition.Transition;
 import android.view.View;
@@ -36,7 +35,6 @@ import android.view.View.MeasureSpec;
 import android.view.Window;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.graphics.BlendModeColorFilterCompat;
 import androidx.core.graphics.BlendModeCompat;
 import com.google.android.material.internal.ContextUtils;
@@ -49,7 +47,6 @@ import java.util.Map;
 /**
  * A {@link SharedElementCallback} to be used for {@link MaterialContainerTransform} transitions.
  */
-@RequiresApi(VERSION_CODES.LOLLIPOP)
 public class MaterialContainerTransformSharedElementCallback extends SharedElementCallback {
 
   @Nullable private static WeakReference<View> capturedSharedElement;
