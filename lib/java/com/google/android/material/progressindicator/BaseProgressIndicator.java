@@ -647,7 +647,36 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   public void setTrackCornerRadius(@Px int trackCornerRadius) {
     if (spec.trackCornerRadius != trackCornerRadius) {
-      spec.trackCornerRadius = Math.round(min(trackCornerRadius, spec.trackThickness / 2f));
+      spec.trackCornerRadius = min(trackCornerRadius, spec.trackThickness / 2);
+      spec.useRelativeTrackCornerRadius = false;
+      invalidate();
+    }
+  }
+
+  /**
+   * Returns the relative radius of the rounded corner for the indicator and track in pixels.
+   *
+   * @see #setTrackCornerRadiusFraction(float)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#BaseProgressIndicator_trackCornerRadius
+   */
+  public float getTrackCornerRadiusFraction() {
+    return spec.trackCornerRadiusFraction;
+  }
+
+  /**
+   * Sets the radius of the rounded corner for the indicator and track in fraction of track
+   * thickness.
+   *
+   * @param fraction The fraction of corner radius to track thickness.
+   * @see #getTrackCornerRadiusFraction()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#BaseProgressIndicator_trackCornerRadius
+   */
+  public void setTrackCornerRadiusFraction(@FloatRange(from = 0f, to = 0.5f) float fraction) {
+    if (spec.trackCornerRadiusFraction != fraction) {
+      spec.trackCornerRadiusFraction = min(fraction, 0.5f);
+      spec.useRelativeTrackCornerRadius = true;
       invalidate();
     }
   }

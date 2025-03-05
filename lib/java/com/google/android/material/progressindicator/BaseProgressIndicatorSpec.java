@@ -55,6 +55,18 @@ public abstract class BaseProgressIndicatorSpec {
   @Px public int trackCornerRadius;
 
   /**
+   * The fraction of the track thickness to be used as the corner radius. And the stroke ROUND cap
+   * is used to prevent artifacts like (b/319309456), when 0.5f is specified.
+   */
+  public float trackCornerRadiusFraction;
+
+  /**
+   * When this is true, the {#link trackCornerRadiusFraction} takes effect. Otherwise, the {@link
+   * trackCornerRadius} takes effect.
+   */
+  public boolean useRelativeTrackCornerRadius;
+
+  /**
    * The color array used in the indicator. In determinate mode, only the first item will be used.
    */
   @NonNull public int[] indicatorColors = new int[0];
@@ -112,11 +124,21 @@ public abstract class BaseProgressIndicatorSpec {
     trackThickness =
         getDimensionPixelSize(
             context, a, R.styleable.BaseProgressIndicator_trackThickness, defaultIndicatorSize);
-    trackCornerRadius =
-        min(
-            getDimensionPixelSize(
-                context, a, R.styleable.BaseProgressIndicator_trackCornerRadius, 0),
-            Math.round(trackThickness / 2f));
+    TypedValue trackCornerRadiusValue =
+        a.peekValue(R.styleable.BaseProgressIndicator_trackCornerRadius);
+    if (trackCornerRadiusValue != null) {
+      if (trackCornerRadiusValue.type == TypedValue.TYPE_DIMENSION) {
+        trackCornerRadius =
+            min(
+                TypedValue.complexToDimensionPixelSize(
+                    trackCornerRadiusValue.data, a.getResources().getDisplayMetrics()),
+                trackThickness / 2);
+        useRelativeTrackCornerRadius = false;
+      } else if (trackCornerRadiusValue.type == TypedValue.TYPE_FRACTION) {
+        trackCornerRadiusFraction = min(trackCornerRadiusValue.getFraction(1.0f, 1.0f), 0.5f);
+        useRelativeTrackCornerRadius = true;
+      }
+    }
     showAnimationBehavior =
         a.getInt(
             R.styleable.BaseProgressIndicator_showAnimationBehavior,
@@ -221,6 +243,27 @@ public abstract class BaseProgressIndicatorSpec {
     return waveAmplitude > 0
         && ((!isDeterminate && wavelengthIndeterminate > 0)
             || (isDeterminate && wavelengthDeterminate > 0));
+  }
+  
+  /**
+   * Returns the track corner radius in pixels.
+   *
+   * <p>If {@link #useRelativeTrackCornerRadius} is true, the track corner radius is calculated
+   * using the track thickness and the track corner radius fraction. Otherwise, the track corner
+   * radius is returned directly.
+   */
+  public int getTrackCornerRadiusInPx() {
+    return useRelativeTrackCornerRadius
+        ? (int) (trackThickness * trackCornerRadiusFraction)
+        : trackCornerRadius;
+  }
+
+  /**
+   * Returns true if the stroke ROUND cap should be used to prevent artifacts like (b/319309456),
+   * when fully rounded corners are specified.
+   */
+  public boolean useStrokeCap() {
+    return useRelativeTrackCornerRadius && trackCornerRadiusFraction == 0.5f;
   }
 
   @CallSuper

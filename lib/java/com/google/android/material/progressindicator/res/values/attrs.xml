@@ -24,9 +24,9 @@
     <!--
       The radius of each corner of both the indicator and the track. A radius
       larger than half of the track width will throw exceptions during
-      initialization.
+      initialization. Use 50% for fully rounded corners.
     -->
-    <attr name="trackCornerRadius" format="dimension" />
+    <attr name="trackCornerRadius" format="dimension|fraction" />
     <!--
       The indicator color (or colors in an array). By default, it uses theme
       primary color.

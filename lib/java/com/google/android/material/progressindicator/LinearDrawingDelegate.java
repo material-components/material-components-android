@@ -55,7 +55,6 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   private float displayedAmplitude;
   private float adjustedWavelength;
   private int cachedWavelength;
-  private boolean useStrokeCap;
   private boolean drawingDeterminateIndicator;
 
   // This will be used in the ESCAPE hide animation. The start and end fraction in track will be
@@ -124,14 +123,11 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     // These are set for the drawing the indicator and track.
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius =
-        min(spec.trackThickness / 2f, spec.trackCornerRadius) * trackThicknessFraction;
+        min(spec.trackThickness / 2, spec.getTrackCornerRadiusInPx()) * trackThicknessFraction;
     displayedAmplitude = spec.waveAmplitude * trackThicknessFraction;
     displayedInnerCornerRadius =
         min(spec.trackThickness / 2f, spec.getTrackInnerCornerRadiusInPx())
             * trackThicknessFraction;
-    useStrokeCap =
-        spec.trackThickness / 2f <= spec.trackCornerRadius
-            && displayedCornerRadius == displayedInnerCornerRadius;
 
     // Further adjusts the canvas for animated visibility change.
     if (isShowing || isHiding) {
@@ -319,7 +315,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
         // Draws the path with ROUND cap if the corner radius is half of the track
         // thickness.
         paint.setStyle(Style.STROKE);
-        paint.setStrokeCap(useStrokeCap ? Cap.ROUND : Cap.BUTT);
+        paint.setStrokeCap(spec.useStrokeCap() ? Cap.ROUND : Cap.BUTT);
 
         // If start rounded block is on the left of end rounded block, draws the path with the
         // start and end rounded blocks.
@@ -343,7 +339,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
               phaseFraction);
           canvas.drawPath(displayedActivePath, paint);
         }
-        if (!useStrokeCap) {
+        if (!spec.useStrokeCap()) {
           if (startBlockCenterX > 0 && startCornerRadius > 0) {
             // Draws the start rounded block.
             drawRoundedBlock(

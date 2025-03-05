@@ -130,10 +130,15 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
 
   public int getTrackInnerCornerRadiusInPx() {
     return !hasInnerCornerRadius
-        ? trackCornerRadius
+        ? getTrackCornerRadiusInPx()
         : useRelativeTrackInnerCornerRadius
             ? (int) (trackThickness * trackInnerCornerRadiusFraction)
             : trackInnerCornerRadius;
+  }
+
+  @Override
+  public boolean useStrokeCap() {
+    return super.useStrokeCap() && getTrackInnerCornerRadiusInPx() == getTrackCornerRadiusInPx();
   }
 
   @Override
@@ -145,7 +150,8 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
     }
     if (indeterminateAnimationType
         == LinearProgressIndicator.INDETERMINATE_ANIMATION_TYPE_CONTIGUOUS) {
-      if ((trackCornerRadius > 0 || (hasInnerCornerRadius && getTrackInnerCornerRadiusInPx() > 0))
+      if ((getTrackCornerRadiusInPx() > 0
+              || (hasInnerCornerRadius && getTrackInnerCornerRadiusInPx() > 0))
           && indicatorTrackGapSize == 0) {
         // Throws an exception if trying to use the cornered indicator/track with contiguous
         // indeterminate animation type without gap.
