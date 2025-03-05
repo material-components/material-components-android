@@ -50,7 +50,6 @@
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
       android:lineSpacingMultiplier="1.2"
-      android:accessibilityTraversalAfter="@id/docked_toolbar"
       android:text="@string/cat_docked_toolbar_filler_text" />
 
   </LinearLayout>
@@ -61,7 +60,6 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_gravity="bottom"
-  android:accessibilityTraversalBefore="@id/body_text"
   app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
   <LinearLayout

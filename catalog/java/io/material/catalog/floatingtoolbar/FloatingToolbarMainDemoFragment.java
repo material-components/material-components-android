@@ -20,18 +20,23 @@ import io.material.catalog.R;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.behavior.HideViewOnScrollBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingtoolbar.FloatingToolbarLayout;
 import io.material.catalog.feature.DemoFragment;
@@ -145,7 +150,25 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     // Select bottom configuration button to represent the toolbar that's initially visible.
     view.findViewById(R.id.bottom_button).performClick();
 
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      AccessibilityManager am = getContext().getSystemService(AccessibilityManager.class);
+      if (am != null) {
+        am.addTouchExplorationStateChangeListener(enabled -> updateScrollBehaviorOnTalkback(floatingToolbars, enabled));
+        if (am.isTouchExplorationEnabled()) {
+          updateScrollBehaviorOnTalkback(floatingToolbars, /* talkbackEnabled= */ true);
+        }
+      }
+    }
+
     return view;
+  }
+
+  private void updateScrollBehaviorOnTalkback(
+      @NonNull List<FloatingToolbarLayout> floatingToolbars, boolean talkbackEnabled) {
+    for (FloatingToolbarLayout floatingToolbar : floatingToolbars) {
+      ((CoordinatorLayout.LayoutParams) floatingToolbar.getLayoutParams())
+          .setBehavior(talkbackEnabled ? null : new HideViewOnScrollBehavior<>());
+    }
   }
 
   private void initializeOrientationButton(
