@@ -47,6 +47,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.BackEventCompat;
 import androidx.annotation.ColorInt;
@@ -143,6 +144,7 @@ public class SearchView extends FrameLayout
   final MaterialToolbar toolbar;
   final Toolbar dummyToolbar;
   final TextView searchPrefix;
+  final LinearLayout textContainer;
   final EditText editText;
   final ImageButton clearButton;
   final View divider;
@@ -214,6 +216,7 @@ public class SearchView extends FrameLayout
     toolbar = findViewById(R.id.open_search_view_toolbar);
     dummyToolbar = findViewById(R.id.open_search_view_dummy_toolbar);
     searchPrefix = findViewById(R.id.open_search_view_search_prefix);
+    textContainer = findViewById(R.id.open_search_view_text_container);
     editText = findViewById(R.id.open_search_view_edit_text);
     clearButton = findViewById(R.id.open_search_view_clear_button);
     divider = findViewById(R.id.open_search_view_divider);

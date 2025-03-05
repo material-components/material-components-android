@@ -36,6 +36,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
@@ -92,6 +93,7 @@ class SearchViewAnimationHelper {
   private final FrameLayout toolbarContainer;
   private final Toolbar toolbar;
   private final Toolbar dummyToolbar;
+  private final LinearLayout textContainer;
   private final TextView searchPrefix;
   private final EditText editText;
   private final ImageButton clearButton;
@@ -116,6 +118,7 @@ class SearchViewAnimationHelper {
     this.clearButton = searchView.clearButton;
     this.divider = searchView.divider;
     this.contentContainer = searchView.contentContainer;
+    this.textContainer = searchView.textContainer;
 
     backHelper = new MaterialMainContainerBackHelper(rootView);
   }
@@ -507,11 +510,19 @@ class SearchViewAnimationHelper {
   }
 
   private Animator getDummyToolbarAnimator(boolean show) {
-    return getTranslationAnimator(show, false, dummyToolbar);
+    return getTranslationAnimator(
+        show,
+        dummyToolbar,
+        getFromTranslationXEnd(dummyToolbar),
+        getFromTranslationY());
   }
 
   private Animator getHeaderContainerAnimator(boolean show) {
-    return getTranslationAnimator(show, false, headerContainer);
+    return getTranslationAnimator(
+        show,
+        headerContainer,
+        getFromTranslationXEnd(headerContainer),
+        getFromTranslationY());
   }
 
   private Animator getActionMenuViewsAlphaAnimator(boolean show) {
@@ -531,11 +542,19 @@ class SearchViewAnimationHelper {
   }
 
   private Animator getSearchPrefixAnimator(boolean show) {
-    return getTranslationAnimator(show, true, searchPrefix);
+    return getTranslationAnimatorForText(show, searchPrefix);
   }
 
   private Animator getEditTextAnimator(boolean show) {
-    return getTranslationAnimator(show, true, editText);
+    return getTranslationAnimatorForText(show, editText);
+  }
+
+  private Animator getTranslationAnimatorForText(boolean show, View v) {
+    int startX =
+        searchBar.getTextView().getLeft()
+            + searchBar.getLeft()
+            - (v.getLeft() + textContainer.getLeft());
+    return getTranslationAnimator(show, v, startX, getFromTranslationY());
   }
 
   private Animator getContentAnimator(boolean show) {
@@ -581,12 +600,11 @@ class SearchViewAnimationHelper {
     return animatorScale;
   }
 
-  private Animator getTranslationAnimator(boolean show, boolean anchoredToStart, View view) {
-    int startX = anchoredToStart ? getFromTranslationXStart(view) : getFromTranslationXEnd(view);
+  private Animator getTranslationAnimator(boolean show, View view, int startX, int startY) {
     ValueAnimator animatorX = ValueAnimator.ofFloat(startX, 0);
     animatorX.addUpdateListener(MultiViewUpdateListener.translationXListener(view));
 
-    ValueAnimator animatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
+    ValueAnimator animatorY = ValueAnimator.ofFloat(startY, 0);
     animatorY.addUpdateListener(MultiViewUpdateListener.translationYListener(view));
 
     AnimatorSet animatorSet = new AnimatorSet();
@@ -613,8 +631,12 @@ class SearchViewAnimationHelper {
   }
 
   private int getFromTranslationY() {
-    int toolbarMiddleY = (toolbarContainer.getTop() + toolbarContainer.getBottom()) / 2;
-    int searchBarMiddleY = (searchBar.getTop() + searchBar.getBottom()) / 2;
+    int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getMeasuredHeight() / 2;
+    int parentTop = searchBar.getParent() != null ? ((View) searchBar.getParent()).getTop() : 0;
+    int searchBarMiddleY =
+        searchBar.getTop()
+            + parentTop
+            + searchBar.getMeasuredHeight() / 2;
     return searchBarMiddleY - toolbarMiddleY;
   }
 
