@@ -37,6 +37,18 @@
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
 
+    <item name="materialButtonStyle">@style/Widget.Material3Expressive.Button</item>
+    <item name="materialButtonTonalStyle">@style/Widget.Material3Expressive.Button.TonalButton</item>
+    <item name="materialButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.OutlinedButton</item>
+    <item name="materialButtonElevatedStyle">@style/Widget.Material3Expressive.Button.ElevatedButton</item>
+    <item name="borderlessButtonStyle">@style/Widget.Material3Expressive.Button.TextButton</item>
+    <item name="buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="snackbarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Snackbar</item>
+    <item name="materialIconButtonStyle">@style/Widget.Material3Expressive.Button.IconButton</item>
+    <item name="materialIconButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.IconButton.Outlined</item>
+    <item name="materialIconButtonFilledStyle">@style/Widget.Material3Expressive.Button.IconButton.Filled</item>
+    <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3Expressive.Button.IconButton.Tonal</item>
+
     <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>
 
@@ -60,6 +72,18 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
+
+    <item name="materialButtonStyle">@style/Widget.Material3Expressive.Button</item>
+    <item name="materialButtonTonalStyle">@style/Widget.Material3Expressive.Button.TonalButton</item>
+    <item name="materialButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.OutlinedButton</item>
+    <item name="materialButtonElevatedStyle">@style/Widget.Material3Expressive.Button.ElevatedButton</item>
+    <item name="borderlessButtonStyle">@style/Widget.Material3Expressive.Button.TextButton</item>
+    <item name="buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="snackbarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Snackbar</item>
+    <item name="materialIconButtonStyle">@style/Widget.Material3Expressive.Button.IconButton</item>
+    <item name="materialIconButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.IconButton.Outlined</item>
+    <item name="materialIconButtonFilledStyle">@style/Widget.Material3Expressive.Button.IconButton.Filled</item>
+    <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3Expressive.Button.IconButton.Tonal</item>
 
     <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>

@@ -88,4 +88,8 @@
   <dimen name="m3_btn_disabled_translation_z">0dp</dimen>
   <dimen name="m3_btn_disabled_elevation">0dp</dimen>
 
+  <!-- Enforce the min touch target size for the button. -->
+  <dimen name="m3expressive_btn_min_height">48dp</dimen>
+  <dimen name="m3expressive_btn_min_width">48dp</dimen>
+
 </resources>
