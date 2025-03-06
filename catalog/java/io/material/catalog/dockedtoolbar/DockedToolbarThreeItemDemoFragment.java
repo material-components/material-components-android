@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,9 +46,13 @@ public class DockedToolbarThreeItemDemoFragment extends DemoFragment {
     dockedToolbar = view.findViewById(R.id.docked_toolbar);
     ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
 
-    Button leftArrowButton = view.findViewById(R.id.docked_toolbar_left_arrow_button);
-    Button rightArrowButton = view.findViewById(R.id.docked_toolbar_right_arrow_button);
-    Button addButton = view.findViewById(R.id.docked_toolbar_add_button);
+    LinearLayout dockedToolbarChild = view.findViewById(R.id.docked_toolbar_child);
+
+    View content = layoutInflater.inflate(getDockedToolbarContent(), dockedToolbarChild, /* attachToRoot= */ true);
+
+    Button leftArrowButton = content.findViewById(R.id.docked_toolbar_left_arrow_button);
+    Button rightArrowButton = content.findViewById(R.id.docked_toolbar_right_arrow_button);
+    Button addButton = content.findViewById(R.id.docked_toolbar_add_button);
     setupSnackbarOnClick(leftArrowButton);
     setupSnackbarOnClick(rightArrowButton);
     setupSnackbarOnClick(addButton);
@@ -74,5 +79,10 @@ public class DockedToolbarThreeItemDemoFragment extends DemoFragment {
   @Override
   public boolean shouldShowDefaultDemoActionBar() {
     return false;
+  }
+
+  @LayoutRes
+  protected int getDockedToolbarContent() {
+    return R.layout.cat_docked_toolbar_small_content;
   }
 }

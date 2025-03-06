@@ -82,9 +82,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:gravity="center"
-      android:orientation="horizontal">
-      <include layout="@layout/cat_docked_toolbar_small_content" />
-    </LinearLayout>
+      android:orientation="horizontal"/>
   </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

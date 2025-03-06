@@ -41,15 +41,11 @@
     android:layout_weight="1">
     <Button
       android:id="@+id/docked_toolbar_add_button"
-      android:layout_width="48dp"
-      android:layout_height="48dp"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
       android:layout_gravity="center"
-      android:gravity="center"
-      android:paddingVertical="8dp"
-      android:paddingHorizontal="8dp"
-      app:iconSize="24dp"
       style="?attr/materialIconButtonFilledStyle"
-      app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+      app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small.Square"
       android:contentDescription="@string/cat_docked_toolbar_add_button_description"
       app:icon="@drawable/ic_add_24px" />
   </FrameLayout>
