@@ -92,7 +92,7 @@
 
   <!-- Styles for M3 Expressive Icon Buttons. -->
 
-  <!-- M3 Expressive icon only button without a container or outline style. -->
+  <!-- M3 Expressive icon only button filled container style. -->
   <style name="Widget.Material3Expressive.Button.IconButton">
     <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_unelevated_state_list_anim</item>
     <item name="elevation">@dimen/m3_sys_elevation_level0</item>
@@ -101,14 +101,10 @@
     <item name="android:insetLeft">?attr/containerInsetLeft</item>
     <item name="android:insetRight">?attr/containerInsetRight</item>
     <item name="iconPadding">@dimen/m3_btn_icon_only_icon_padding</item>
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.Button.IconButton.Standard</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.Button.Filled</item>
     <item name="materialSizeOverlay">@style/SizeOverlay.Material3Expressive.Button.IconButton.Small</item>
   </style>
-
-  <!-- M3 Expressive icon only button filled container style. -->
-  <style name="Widget.Material3Expressive.Button.IconButton.Filled">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.Button.Filled</item>
-  </style>
+  <style name="Widget.Material3Expressive.Button.IconButton.Filled"/>
 
   <!-- M3 Expressive icon only button in tonal container style. -->
   <style name="Widget.Material3Expressive.Button.IconButton.Tonal">
@@ -121,6 +117,12 @@
     <item name="strokeColor">@color/m3expressive_button_outline_color_selector</item>
     <item name="strokeWidth">?attr/containerStrokeWidth</item>
     <item name="backgroundTint">@color/m3expressive_button_outlined_background_color_selector</item>
+  </style>
+
+  <!-- M3 Expressive icon only button without a container or outline style. -->
+  <style name="Widget.Material3Expressive.Button.IconButton.Standard">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.Button.IconButton.Standard</item>
+    <item name="backgroundTint">@android:color/transparent</item>
   </style>
 
   <!-- M3 Expressive Button Theme Overlays for different color variants. -->
