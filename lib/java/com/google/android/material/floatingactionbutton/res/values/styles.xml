@@ -101,9 +101,8 @@
     <item name="rippleColor">@color/m3_fab_ripple_color_selector</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="borderWidth">@dimen/m3_fab_border_width</item>
+    <item name="android:stateListAnimator">@animator/m3_fab_state_list_animator</item>
     <item name="elevation">@dimen/m3_comp_fab_primary_container_container_elevation</item>
-    <item name="hoveredFocusedTranslationZ">@dimen/m3_comp_fab_primary_container_hovered_container_elevation</item>
-    <item name="pressedTranslationZ">@dimen/m3_comp_fab_primary_container_pressed_container_elevation</item>
     <item name="fabCustomSize">@dimen/m3_comp_fab_container_height</item>
     <item name="maxImageSize">@dimen/m3_comp_fab_icon_size</item>
     <item name="shapeAppearance">@macro/m3_comp_fab_container_shape</item>

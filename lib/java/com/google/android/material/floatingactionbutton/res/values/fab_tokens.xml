@@ -43,6 +43,7 @@
   <dimen name="m3_comp_fab_primary_container_hovered_container_elevation">@dimen/m3_sys_elevation_level4</dimen>
   <dimen name="m3_comp_fab_primary_container_hovered_state_layer_opacity">@dimen/m3_sys_state_hover_state_layer_opacity</dimen>
   <!-- Group: Focused -->
+  <dimen name="m3_comp_fab_primary_container_focused_container_elevation">@dimen/m3_sys_elevation_level3</dimen>
   <dimen name="m3_comp_fab_primary_container_focused_state_layer_opacity">@dimen/m3_sys_state_focus_state_layer_opacity</dimen>
   <!-- Group: Pressed -->
   <dimen name="m3_comp_fab_primary_container_pressed_container_elevation">@dimen/m3_sys_elevation_level3</dimen>
