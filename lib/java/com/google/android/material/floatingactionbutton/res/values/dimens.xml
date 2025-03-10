@@ -57,6 +57,14 @@
   <dimen name="m3_extended_fab_start_padding">16dp</dimen>
   <dimen name="m3_extended_fab_top_padding">8dp</dimen>
   <dimen name="m3_extended_fab_min_height">56dp</dimen>
+  <dimen name="m3_extended_fab_disabled_elevation">0dp</dimen>
+  <dimen name="m3_extended_fab_disabled_translation_z">0dp</dimen>
+  <!-- This will make default/pressed/focused elevation remain at level 3. -->
+  <dimen name="m3_extended_fab_translation_z_base">0dp</dimen>
+  <dimen name="m3_extended_fab_translation_z_focused">0dp</dimen>
+  <dimen name="m3_extended_fab_translation_z_pressed">0dp</dimen>
+  <!-- This will make hovered elevation +2dp (level 3 -> level 4). -->
+  <dimen name="m3_extended_fab_translation_z_hovered">2dp</dimen>
 
   <dimen name="m3_small_fab_size">40dp</dimen>
   <dimen name="m3_small_fab_max_image_size">24dp</dimen>
