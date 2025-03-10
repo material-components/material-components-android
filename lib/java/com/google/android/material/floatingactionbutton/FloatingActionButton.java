@@ -1046,34 +1046,34 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     // dereference of possibly-null reference lp
     @SuppressWarnings("nullness:dereference.of.nullable")
-    private boolean shouldUpdateVisibility(
+    private boolean ignoreUpdateVisibility(
         @NonNull View dependency, @NonNull FloatingActionButton child) {
       final CoordinatorLayout.LayoutParams lp =
           (CoordinatorLayout.LayoutParams) child.getLayoutParams();
       if (!autoHideEnabled) {
-        return false;
+        return true;
       }
 
       if (lp.getAnchorId() != dependency.getId()) {
         // The anchor ID doesn't match the dependency, so we won't automatically
         // show/hide the FAB
-        return false;
+        return true;
       }
 
       //noinspection RedundantIfStatement
       if (child.getUserSetVisibility() != VISIBLE) {
         // The view isn't set to be visible so skip changing its visibility
-        return false;
+        return true;
       }
 
-      return true;
+      return false;
     }
 
     private boolean updateFabVisibilityForAppBarLayout(
         CoordinatorLayout parent,
         @NonNull AppBarLayout appBarLayout,
         @NonNull FloatingActionButton child) {
-      if (!shouldUpdateVisibility(appBarLayout, child)) {
+      if (ignoreUpdateVisibility(appBarLayout, child)) {
         return false;
       }
 
@@ -1099,7 +1099,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     @SuppressWarnings("nullness:dereference.of.nullable")
     private boolean updateFabVisibilityForBottomSheet(
         @NonNull View bottomSheet, @NonNull FloatingActionButton child) {
-      if (!shouldUpdateVisibility(bottomSheet, child)) {
+      if (ignoreUpdateVisibility(bottomSheet, child)) {
         return false;
       }
       CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
@@ -1164,7 +1164,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         @NonNull CoordinatorLayout parent, @NonNull FloatingActionButton fab) {
       final Rect padding = fab.shadowPadding;
 
-      if (padding != null && padding.centerX() > 0 && padding.centerY() > 0) {
+      if (padding.centerX() > 0 && padding.centerY() > 0) {
         final CoordinatorLayout.LayoutParams lp =
             (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
 

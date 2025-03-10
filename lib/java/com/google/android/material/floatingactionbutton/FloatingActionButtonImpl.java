@@ -31,7 +31,6 @@ import android.animation.StateListAnimator;
 import android.animation.TimeInterpolator;
 import android.animation.TypeEvaluator;
 import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Matrix;
@@ -675,20 +674,16 @@ class FloatingActionButtonImpl {
     final float startImageMatrixScale = imageMatrixScale;
     final Matrix matrix = new Matrix(tmpMatrix);
     animator.addUpdateListener(
-        new AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator animation) {
-            float progress = (float) animation.getAnimatedValue();
-            // Animate the opacity over the first 20% of the animation
-            view.setAlpha(AnimationUtils.lerp(startAlpha, targetOpacity, 0F, 0.2F, progress));
-            view.setScaleX(AnimationUtils.lerp(startScaleX, targetScale, progress));
-            view.setScaleY(AnimationUtils.lerp(startScaleY, targetScale, progress));
-            imageMatrixScale =
-                AnimationUtils.lerp(startImageMatrixScale, targetIconScale, progress);
-            calculateImageMatrixFromScale(
-                AnimationUtils.lerp(startImageMatrixScale, targetIconScale, progress), matrix);
-            view.setImageMatrix(matrix);
-          }
+        animation -> {
+          float progress = (float) animation.getAnimatedValue();
+          // Animate the opacity over the first 20% of the animation
+          view.setAlpha(AnimationUtils.lerp(startAlpha, targetOpacity, 0F, 0.2F, progress));
+          view.setScaleX(AnimationUtils.lerp(startScaleX, targetScale, progress));
+          view.setScaleY(AnimationUtils.lerp(startScaleY, targetScale, progress));
+          imageMatrixScale = AnimationUtils.lerp(startImageMatrixScale, targetIconScale, progress);
+          calculateImageMatrixFromScale(
+              AnimationUtils.lerp(startImageMatrixScale, targetIconScale, progress), matrix);
+          view.setImageMatrix(matrix);
         });
     animators.add(animator);
     AnimatorSetCompat.playTogether(set, animators);
@@ -874,37 +869,6 @@ class FloatingActionButtonImpl {
                 .setDuration(ELEVATION_ANIM_DURATION));
     set.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
     return set;
-  }
-
-  private abstract class ShadowAnimatorImpl extends AnimatorListenerAdapter
-      implements ValueAnimator.AnimatorUpdateListener {
-
-    private boolean validValues;
-    private float shadowSizeStart;
-    private float shadowSizeEnd;
-
-    @Override
-    public void onAnimationUpdate(@NonNull ValueAnimator animator) {
-      if (!validValues) {
-        shadowSizeStart = shapeDrawable == null ? 0 : shapeDrawable.getElevation();
-        shadowSizeEnd = getTargetShadowSize();
-        validValues = true;
-      }
-
-      updateShapeElevation(
-          (int)
-              (shadowSizeStart
-                  + ((shadowSizeEnd - shadowSizeStart) * animator.getAnimatedFraction())));
-    }
-
-    @Override
-    public void onAnimationEnd(Animator animator) {
-      updateShapeElevation((int) shadowSizeEnd);
-      validValues = false;
-    }
-
-    /** Returns the shadow size we want to animate to. */
-    protected abstract float getTargetShadowSize();
   }
 
   private boolean shouldAnimateVisibilityChange() {
