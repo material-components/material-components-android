@@ -32,6 +32,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.appcompat.widget.AppCompatDrawableManager;
@@ -837,13 +839,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Override
   protected void drawableStateChanged() {
     super.drawableStateChanged();
-    getImpl().onDrawableStateChanged(getDrawableState());
-  }
-
-  @Override
-  public void jumpDrawablesToCurrentState() {
-    super.jumpDrawablesToCurrentState();
-    getImpl().jumpDrawableToCurrentState();
+    if (Build.VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
+      getImpl().onDrawableStateChangedForLollipop();
+    }
   }
 
   @Override
@@ -1363,7 +1361,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   /** Add a {@link TransformationCallback} which can watch for changes to this view. */
   public void addTransformationCallback(
       @NonNull TransformationCallback<? extends FloatingActionButton> listener) {
-    getImpl().addTransformationCallback(new TransformationCallbackWrapper(listener));
+    getImpl().addTransformationCallback(new TransformationCallbackWrapper<>(listener));
   }
 
   /**
@@ -1372,7 +1370,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   public void removeTransformationCallback(
       @NonNull TransformationCallback<? extends FloatingActionButton> listener) {
-    getImpl().removeTransformationCallback(new TransformationCallbackWrapper(listener));
+    getImpl().removeTransformationCallback(new TransformationCallbackWrapper<>(listener));
   }
 
   class TransformationCallbackWrapper<T extends FloatingActionButton>
@@ -1449,7 +1447,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   private FloatingActionButtonImpl getImpl() {
     if (impl == null) {
-      impl = new FloatingActionButtonImplLollipop(this, new ShadowDelegateImpl());
+      impl = new FloatingActionButtonImpl(this, new ShadowDelegateImpl());
     }
     return impl;
   }
