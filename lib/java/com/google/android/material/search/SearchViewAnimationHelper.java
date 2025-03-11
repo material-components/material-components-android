@@ -458,9 +458,23 @@ class SearchViewAnimationHelper {
     if (searchView.isAnimatedNavigationIcon()) {
       addDrawerArrowDrawableAnimatorIfNeeded(animatorSet, drawable);
       addFadeThroughDrawableAnimatorIfNeeded(animatorSet, drawable);
+      addBackButtonAnimatorIfNeeded(animatorSet, backButton);
     } else {
       setFullDrawableProgressIfNeeded(drawable);
     }
+  }
+
+  private void addBackButtonAnimatorIfNeeded(AnimatorSet animatorSet, ImageButton backButton) {
+    // If there's no navigation icon on the search bar, we should set the alpha for the button
+    // itself instead of the drawables since the button background has a ripple.
+    if (searchBar == null || searchBar.getNavigationIcon() != null) {
+      return;
+    }
+
+    ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+    animator.addUpdateListener(
+        animation -> backButton.setAlpha((Float) animation.getAnimatedValue()));
+    animatorSet.playTogether(animator);
   }
 
   private void addDrawerArrowDrawableAnimatorIfNeeded(AnimatorSet animatorSet, Drawable drawable) {
