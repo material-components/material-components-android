@@ -56,7 +56,7 @@ Here's what a typical layout would look like:
     </LinearLayout>
   </androidx.core.widget.NestedScrollView>
 
-  <com.google.android.material.dockedtoolbar.DockedToolbar
+  <com.google.android.material.dockedtoolbar.DockedToolbarLayout
     android:id="@+id/docked_toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
