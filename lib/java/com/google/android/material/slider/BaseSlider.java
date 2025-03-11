@@ -74,6 +74,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewOverlay;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityEvent;
@@ -99,7 +100,6 @@ import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewOverlayImpl;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
@@ -2370,7 +2370,7 @@ abstract class BaseSlider<
     // When the visibility is set to VISIBLE, onDraw() is called again which adds or removes labels
     // according to the setting.
     if (visibility != VISIBLE) {
-      ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(this);
+      final ViewOverlay contentViewOverlay = getContentViewOverlay();
       if (contentViewOverlay == null) {
         return;
       }
@@ -2378,6 +2378,16 @@ abstract class BaseSlider<
         contentViewOverlay.remove(label);
       }
     }
+  }
+
+  @Nullable
+  private ViewOverlay getContentViewOverlay() {
+    final View contentView = ViewUtils.getContentView(this);
+    if (contentView == null) {
+      return null;
+    }
+
+    return contentView.getOverlay();
   }
 
   @Override
@@ -2431,11 +2441,13 @@ abstract class BaseSlider<
   }
 
   private void detachLabelFromContentView(TooltipDrawable label) {
-    ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(this);
-    if (contentViewOverlay != null) {
-      contentViewOverlay.remove(label);
-      label.detachView(ViewUtils.getContentView(this));
+    final View contentView = ViewUtils.getContentView(this);
+    if (contentView == null) {
+      return;
     }
+
+    contentView.getOverlay().remove(label);
+    label.detachView(contentView);
   }
 
   @Override
@@ -3446,7 +3458,11 @@ abstract class BaseSlider<
             @Override
             public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
-              ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(BaseSlider.this);
+              final ViewOverlay contentViewOverlay = getContentViewOverlay();
+              if (contentViewOverlay == null) {
+                return;
+              }
+
               for (TooltipDrawable label : labels) {
                 contentViewOverlay.remove(label);
               }
@@ -3499,7 +3515,12 @@ abstract class BaseSlider<
   private void setValueForLabel(TooltipDrawable label, float value) {
     label.setText(formatValue(value));
     positionLabel(label, value);
-    ViewUtils.getContentViewOverlay(this).add(label);
+    final ViewOverlay contentViewOverlay = getContentViewOverlay();
+    if (contentViewOverlay == null) {
+      return;
+    }
+
+    contentViewOverlay.add(label);
   }
 
   private void positionLabel(TooltipDrawable label, float value) {
