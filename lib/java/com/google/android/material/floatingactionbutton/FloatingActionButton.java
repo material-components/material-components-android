@@ -844,6 +844,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
   }
 
+  @SuppressWarnings("RedundantOverride")
+  @Override
+  public void jumpDrawablesToCurrentState() {
+    super.jumpDrawablesToCurrentState();
+  }
+
   @Override
   protected Parcelable onSaveInstanceState() {
     Parcelable superState = super.onSaveInstanceState();
