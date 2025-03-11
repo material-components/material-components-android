@@ -30,6 +30,7 @@ import android.os.Build.VERSION_CODES;
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -550,8 +551,22 @@ class SearchViewAnimationHelper {
   }
 
   private Animator getTranslationAnimatorForText(boolean show, View v) {
+    TextView textView = searchBar.getTextView();
+    int additionalMovement = 0;
+    // If the text is centered and the text's hint is not equal to the text (ie. if there's any
+    // extra space in between the textview's start and the actual text bounds)
+    if (!TextUtils.isEmpty(textView.getText())
+        && searchBar.getTextCentered()
+        && textView.getHint() != textView.getText()) {
+      String text = textView.getText().toString();
+      Rect bounds = new Rect();
+
+      textView.getPaint().getTextBounds(text, 0, text.length(), bounds);
+      additionalMovement = max(0, searchBar.getTextView().getMeasuredWidth() / 2 - bounds.width() / 2);
+    }
     int startX =
         searchBar.getTextView().getLeft()
+            + additionalMovement
             + searchBar.getLeft()
             - (v.getLeft() + textContainer.getLeft());
     return getTranslationAnimator(show, v, startX, getFromTranslationY());

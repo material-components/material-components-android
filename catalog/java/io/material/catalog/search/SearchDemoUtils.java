@@ -184,7 +184,7 @@ public final class SearchDemoUtils {
 
   private static void submitSearchQuery(SearchBar searchBar, SearchView searchView, String query) {
     searchBar.setText(query);
-    searchView.hide();
+    searchBar.post(() -> searchView.hide());
   }
 
   private static class SuggestionItem {

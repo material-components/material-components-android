@@ -608,8 +608,10 @@ public class SearchBar extends Toolbar {
     }
     Toolbar.LayoutParams lp = (LayoutParams) textView.getLayoutParams();
     if (textCentered) {
+      textView.setGravity(Gravity.CENTER_HORIZONTAL);
       lp.gravity = Gravity.CENTER_HORIZONTAL;
     } else {
+      textView.setGravity(Gravity.NO_GRAVITY);
       lp.gravity = Gravity.NO_GRAVITY;
     }
     textView.setLayoutParams(lp);
