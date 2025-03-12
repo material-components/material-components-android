@@ -30,7 +30,6 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.PathInterpolator;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.dynamicanimation.animation.SpringForce;
 import androidx.test.core.app.ApplicationProvider;
@@ -48,7 +47,6 @@ import org.robolectric.shadow.api.Shadow;
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = VERSION_CODES.LOLLIPOP)
 @DoNotInstrument
-@RequiresApi(api = VERSION_CODES.LOLLIPOP)
 public class MotionUtilsTest {
 
   private ActivityController<AppCompatActivity> activityController;
