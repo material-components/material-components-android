@@ -132,7 +132,7 @@
   <string name="cat_buttons_fixed_width_text">Buttons with fixed width</string>
   <string name="cat_buttons_dynamic_width">Buttons with dynamic width (1:2:1)</string>
   <string name="cat_buttons_mixed_width">Buttons with mixed width</string>
-  <string name="cat_button_previous_icon">previous button</string>
-  <string name="cat_button_play_icon">play button</string>
-  <string name="cat_button_next_icon">next button</string>
+  <string name="cat_button_previous_icon">previous icon</string>
+  <string name="cat_button_play_icon">play icon</string>
+  <string name="cat_button_next_icon">next icon</string>
 </resources>
