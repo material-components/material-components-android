@@ -420,6 +420,8 @@ public class ThemeTest {
           R.attr.collapsingToolbarLayoutStyle,
           R.attr.collapsingToolbarLayoutMediumStyle,
           R.attr.collapsingToolbarLayoutLargeStyle,
+          R.attr.dockedToolbarStyle,
+          R.attr.dockedToolbarVibrantStyle,
           R.attr.extendedFloatingActionButtonStyle,
           R.attr.extendedFloatingActionButtonPrimaryStyle,
           R.attr.extendedFloatingActionButtonSecondaryStyle,
