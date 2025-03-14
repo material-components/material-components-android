@@ -244,7 +244,7 @@ public class LinearProgressIndicator
    */
   public void setTrackStopIndicatorSize(@Px int trackStopIndicatorSize) {
     if (spec.trackStopIndicatorSize != trackStopIndicatorSize) {
-      spec.trackStopIndicatorSize = min(trackStopIndicatorSize, spec.trackThickness);
+      spec.trackStopIndicatorSize = trackStopIndicatorSize;
       spec.validateSpec();
       invalidate();
     }
