@@ -19,6 +19,7 @@ import io.material.catalog.R;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -33,6 +34,7 @@ import android.widget.RadioGroup;
 import androidx.annotation.AttrRes;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.CompositeDateValidator;
@@ -41,6 +43,7 @@ import com.google.android.material.datepicker.DateValidatorPointForward;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -163,14 +166,29 @@ public class DatePickerMainDemoFragment extends DemoFragment {
             builder.setCalendarConstraints(constraintsBuilder.build());
             MaterialDatePicker<?> picker = builder.build();
             addSnackBarListeners(picker);
-            picker.show(getChildFragmentManager(), picker.toString());
+            picker.show(getChildFragmentManager(), "MaterialDatePicker");
+            navigationBarContrast(picker, view);
           } catch (IllegalArgumentException e) {
             snackbar.setText(e.getMessage());
             snackbar.show();
           }
         });
 
+    Fragment fragment = getChildFragmentManager().findFragmentByTag("MaterialDatePicker");
+    if (fragment instanceof MaterialDatePicker<?>) {
+      navigationBarContrast((MaterialDatePicker<?>) fragment, view);
+    }
+
     return view;
+  }
+
+  private void navigationBarContrast(MaterialDatePicker<?> materialDatePicker, View view) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+      view.post(() -> {
+        materialDatePicker.requireDialog().getWindow().setNavigationBarContrastEnforced(
+            !new WindowPreferencesManager(requireContext()).isEdgeToEdgeEnabled());
+      });
+    }
   }
 
   private MaterialDatePicker.Builder<?> setupDateSelectorBuilder(
