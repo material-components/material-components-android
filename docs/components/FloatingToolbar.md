@@ -178,10 +178,10 @@ android:id="@+id/floating_toolbar"
 
 #### Talkback
 
-If optionally using the `CoordinatorLayout.Behavior` `HideViewOnScrollBehavior`
-to hide the floating toolbar on scroll, make sure to disable it when Talkback
-is enabled. Screen readers such as Talkback will not be able to see it if the
-floating toolbar is hidden when scrolled.
+Floating toolbars can optionally use the `CoordinatorLayout.Behavior`
+`HideViewOnScrollBehavior` to hide the floating toolbar on scroll. This behavior
+is disabled when Talkback is enabled disabled due to screen readers not being
+able to see it if the floating toolbar is hidden when scrolled.
 
 If using a Floating toolbar in a layout that obscures any content when
 hide on scroll is disabled, make sure to add the appropriate padding to the
@@ -235,7 +235,9 @@ The following is an anatomy diagram for the floating toolbar:
 Standard style theme attribute: `?attr/floatingToolbarStyle`
 Vibrant style theme attribute: `?attr/floatingToolbarVibrantStyle`
 
-Floating toolbar also provides specific styles for icon buttons, `Widget.Material3.FloatingToolbar.IconButton` and `Widget.Material3.FloatingToolbar.IconButton.Vibrant`.
+Floating toolbar also provides specific styles for icon buttons,
+`Widget.Material3.FloatingToolbar.IconButton` and
+`Widget.Material3.FloatingToolbar.IconButton.Vibrant`.
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingtoolbar/res/values/styles.xml) and

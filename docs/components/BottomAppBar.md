@@ -76,11 +76,13 @@ in the menu:
 Bottom app bar can optionally hide on scroll with the `app:hideOnScroll`
 attribute. When this attribute is set to true, scrolling will hide the bottom
 app bar and prevent it from being seen by any screen readers which may be
-confusing for users.
+confusing for users. To prevent this, the hide behavior is automatically
+disabled when Talkback is enabled. Although discouraged for accessibility, you
+can optionally force the hide behavior by calling
+`bottomAppBar.disableHideOnTouchExploration(false)`.
 
-When Talkback is enabled, this behavior should be disabled by setting
-`bottomAppBar.setHideOnScroll(false)`. Additionally, disabling this behavior
-causes any content to be obscured, make sure to add the appropriate bottom
+Depending on your layout, disabling the hide behavior may potentially cause
+content to be obscured behind the bar. Make sure to add the appropriate bottom
 padding of the height of the bottom app bar to the content. See below for an
 example:
 

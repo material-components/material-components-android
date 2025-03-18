@@ -183,6 +183,35 @@ can set these accessibility flags like below:
   </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
 ```
 
+#### Talkback
+
+Docked toolbars can optionally use the `CoordinatorLayout.Behavior`
+`HideViewOnScrollBehavior` to hide the docked toolbar on scroll. This behavior
+is disabled when Talkback is enabled disabled due to screen readers not being
+able to see it if the docked toolbar is hidden when scrolled.
+
+If using a docked toolbar in a layout that obscures any content when
+hide on scroll is disabled, make sure to add the appropriate padding to the
+content. For example, if the docked toolbar is on the bottom and it is
+obscuring the content, bottom padding should be added to the content.
+
+See below for an example:
+
+```
+val am = context.getSystemService(AccessibilityManager::class.java)
+if (am != null && am.isTouchExplorationEnabled) {
+    (bar.layoutParams as? CoordinatorLayout.LayoutParams)?.behavior = null
+    bar.post {
+        content.setPadding(
+            content.paddingLeft,
+            content.paddingTop,
+            content.paddingRight,
+            content.paddingBottom + bar.measuredHeight
+        )
+    }
+}
+```
+
 ### Anatomy and key properties
 
 The following is an anatomy diagram for the docked toolbar:

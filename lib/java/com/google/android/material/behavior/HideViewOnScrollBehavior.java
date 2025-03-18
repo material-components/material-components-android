@@ -19,6 +19,7 @@ package com.google.android.material.behavior;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.content.ContextCompat.getSystemService;
 import static com.google.android.material.behavior.HideOnScrollView.EDGE_BOTTOM;
 import static com.google.android.material.behavior.HideOnScrollView.EDGE_LEFT;
 import static com.google.android.material.behavior.HideOnScrollView.EDGE_RIGHT;
@@ -30,8 +31,11 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import androidx.annotation.Dimension;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -53,13 +57,17 @@ import java.util.LinkedHashSet;
  * <p>Supports hiding the View off of three screen edges: {@link HideOnScrollView#EDGE_RIGHT},
  * {@link HideOnScrollView#EDGE_BOTTOM} and {@link HideOnScrollView#EDGE_LEFT}.
  *
- * <p>If Talkback is enabled, the hide on scroll behavior should be disabled until Talkback is
- * disabled. Ensure that the content is not obscured due to disabling this behavior by adding
- * padding to the content.
+ * <p>If Touch Exploration is enabled, the hide on scroll behavior should be disabled until Touch
+ * Exploration is disabled. Ensure that the content is not obscured due to disabling this behavior
+ * by adding padding to the content.
  */
 public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
 
   private HideViewOnScrollDelegate hideOnScrollViewDelegate;
+  private AccessibilityManager accessibilityManager;
+  private TouchExplorationStateChangeListener touchExplorationListener;
+
+  private boolean disableOnTouchExploration = true;
 
   /**
    * Interface definition for a listener to be notified when the bottom view scroll state changes.
@@ -165,9 +173,41 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
     return viewGravity == Gravity.LEFT || (viewGravity == (Gravity.LEFT | Gravity.CENTER));
   }
 
+  private void disableIfTouchExplorationEnabled(V child) {
+    if (accessibilityManager == null) {
+      accessibilityManager = getSystemService(child.getContext(), AccessibilityManager.class);
+    }
+
+    if (accessibilityManager != null && touchExplorationListener == null) {
+      touchExplorationListener =
+          enabled -> {
+            if (disableOnTouchExploration && enabled && isScrolledOut()) {
+              slideIn(child);
+            }
+          };
+      accessibilityManager.addTouchExplorationStateChangeListener(touchExplorationListener);
+      child.addOnAttachStateChangeListener(
+          new OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(@NonNull View v) {}
+
+            @Override
+            public void onViewDetachedFromWindow(@NonNull View v) {
+              if (touchExplorationListener != null && accessibilityManager != null) {
+                accessibilityManager.removeTouchExplorationStateChangeListener(
+                    touchExplorationListener);
+                touchExplorationListener = null;
+              }
+            }
+          });
+    }
+  }
+
   @Override
   public boolean onLayoutChild(
       @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
+
+    disableIfTouchExplorationEnabled(child);
 
     ViewGroup.MarginLayoutParams marginParams =
         (ViewGroup.MarginLayoutParams) child.getLayoutParams();
@@ -299,6 +339,13 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
       return;
     }
 
+    // If Touch Exploration is on, we prevent sliding out due to a11y issues.
+    if (disableOnTouchExploration
+        && accessibilityManager != null
+        && accessibilityManager.isTouchExplorationEnabled()) {
+      return;
+    }
+
     if (currentAnimator != null) {
       currentAnimator.cancel();
       child.clearAnimation();
@@ -359,5 +406,19 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
   /** Remove all previously added {@link OnScrollStateChangedListener}s. */
   public void clearOnScrollStateChangedListeners() {
     onScrollStateChangedListeners.clear();
+  }
+
+  /**
+   * Sets whether or not to disable this behavior if touch exploration is enabled.
+   */
+  public void disableOnTouchExploration(boolean disableOnTouchExploration) {
+    this.disableOnTouchExploration = disableOnTouchExploration;
+  }
+
+  /**
+   * Returns whether or not this behavior is disabled if touch exploration is enabled.
+   */
+  public boolean isDisabledOnTouchExploration() {
+    return disableOnTouchExploration;
   }
 }

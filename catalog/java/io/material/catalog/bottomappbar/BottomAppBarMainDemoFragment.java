@@ -150,11 +150,10 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
     if (VERSION.SDK_INT >= VERSION_CODES.M) {
       am = getContext().getSystemService(AccessibilityManager.class);
       if (am != null && am.isTouchExplorationEnabled()) {
-        bar.setHideOnScroll(false);
         bar.post(() -> content.setPadding(0, content.getPaddingTop(), 0, bar.getMeasuredHeight()));
       }
     }
-    
+
     setUpDemoControls(view);
     setUpBottomAppBarShapeAppearance();
     return view;

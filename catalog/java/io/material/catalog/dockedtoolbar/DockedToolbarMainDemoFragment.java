@@ -33,8 +33,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import com.google.android.material.dockedtoolbar.DockedToolbarLayout;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
@@ -43,7 +41,6 @@ import io.material.catalog.feature.DemoFragment;
 public class DockedToolbarMainDemoFragment extends DemoFragment {
 
   private DockedToolbarLayout dockedToolbar;
-  @Nullable private Behavior<View> behavior;
 
   @NonNull
   @Override
@@ -55,9 +52,6 @@ public class DockedToolbarMainDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(getLayoutResId(), viewGroup, /* attachToRoot= */ false);
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     dockedToolbar = view.findViewById(R.id.docked_toolbar);
-    behavior =
-        (CoordinatorLayout.Behavior<View>)
-            ((CoordinatorLayout.LayoutParams) dockedToolbar.getLayoutParams()).getBehavior();
     ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
 
     Button leftArrowButton = view.findViewById(R.id.docked_toolbar_left_arrow_button);
@@ -78,9 +72,9 @@ public class DockedToolbarMainDemoFragment extends DemoFragment {
     if (VERSION.SDK_INT >= VERSION_CODES.M) {
       AccessibilityManager am = getContext().getSystemService(AccessibilityManager.class);
       if (am != null) {
-        am.addTouchExplorationStateChangeListener(enabled -> updateScrollBehaviorWithTalkback(bodyContainer, enabled));
+        am.addTouchExplorationStateChangeListener(enabled -> updateContentPaddingOnTalkback(bodyContainer, enabled));
         if (am.isTouchExplorationEnabled()) {
-          updateScrollBehaviorWithTalkback(bodyContainer, /* talkbackEnabled= */ true);
+          updateContentPaddingOnTalkback(bodyContainer, /* talkbackEnabled= */ true);
         }
       }
     }
@@ -88,8 +82,7 @@ public class DockedToolbarMainDemoFragment extends DemoFragment {
     return view;
   }
 
-  private void updateScrollBehaviorWithTalkback(View content, boolean talkbackEnabled) {
-    ((CoordinatorLayout.LayoutParams) dockedToolbar.getLayoutParams()).setBehavior(talkbackEnabled ? null : behavior);
+  private void updateContentPaddingOnTalkback(View content, boolean talkbackEnabled) {
     dockedToolbar.post(
         () ->
             content.setPadding(
