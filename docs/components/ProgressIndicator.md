@@ -309,6 +309,7 @@ Element                          | Attribute                        | Related me
 **Indeterminate animation type** | `app:indeterminateAnimationType` | `setIndeterminateAnimationType`<br>`getIndeterminateAnimationType`                                | `disjoint`
 **Indicator direction**          | `app:indicatorDirectionLinear`   | `setIndicatorDirection`<br>`getIndicatorDirection`                                                | `leftToRight`
 **Track stop indicator size**    | `app:trackStopIndicatorSize`     | `setTrackStopIndicatorSize`<br>`getTrackStopIndicatorSize`                                        | `4dp`
+**Track stop indicator padding** | `app:trackStopIndicatorPadding`  | `setTrackStopIndicatorPadding`<br>`getTrackStopIndicatorPadding`                                  | `none`
 **Track inner corner radius**    | `app:trackInnerCornerRadius`     | `setTrackInnerCornerRadius`<br>`setTrackInnerCornerRadiusFraction`<br>`getTrackInnerCornerRadius` | `none` (use `trackCornerRadius`)
 
 #### Circular type specific attributes

@@ -163,6 +163,11 @@
       The radius of corners between the track and the indicator.
     -->
     <attr name="trackInnerCornerRadius" format="dimension|fraction" />
+
+    <!--
+      The padding of the stop indicator in the track.
+    -->
+    <attr name="trackStopIndicatorPadding" format="dimension" />
   </declare-styleable>
 
   <declare-styleable name="CircularProgressIndicator">

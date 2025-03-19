@@ -377,11 +377,15 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       // Draws the stop indicator at the end of the track if needed.
       paint.setStyle(Style.FILL);
       paint.setColor(paintColor);
+      float stopIndicatorCenterX =
+          spec.trackStopIndicatorPadding != null
+              ? spec.trackStopIndicatorPadding.floatValue() + spec.trackStopIndicatorSize / 2f
+              : displayedTrackThickness / 2;
       drawRoundedBlock(
           canvas,
           paint,
           new PathPoint(
-              new float[] {trackLength / 2 - displayedTrackThickness / 2, 0}, new float[] {1, 0}),
+              new float[] {trackLength / 2 - stopIndicatorCenterX, 0}, new float[] {1, 0}),
           spec.trackStopIndicatorSize,
           spec.trackStopIndicatorSize,
           displayedCornerRadius * spec.trackStopIndicatorSize / displayedTrackThickness);

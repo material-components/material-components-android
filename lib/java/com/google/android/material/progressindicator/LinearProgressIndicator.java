@@ -33,6 +33,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Objects;
 
 /**
  * This class implements the linear type progress indicators.
@@ -245,6 +246,33 @@ public class LinearProgressIndicator
     if (spec.trackStopIndicatorSize != trackStopIndicatorSize) {
       spec.trackStopIndicatorSize = min(trackStopIndicatorSize, spec.trackThickness);
       spec.validateSpec();
+      invalidate();
+    }
+  }
+
+  /**
+   * Returns the padding of the stop indicator at the end of the track in pixels.
+   *
+   * @see #setTrackStopIndicatorPadding(int)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackStopIndicatorPadding
+   */
+  @Nullable
+  public Integer getTrackStopIndicatorPadding() {
+    return spec.trackStopIndicatorPadding;
+  }
+
+  /**
+   * Sets the padding of the stop indicator at the end of the track in pixels.
+   *
+   * @param trackStopIndicatorPadding The new stop indicator padding in pixels.
+   * @see #getTrackStopIndicatorPadding()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackStopIndicatorPadding
+   */
+  public void setTrackStopIndicatorPadding(@Nullable Integer trackStopIndicatorPadding) {
+    if (!Objects.equals(spec.trackStopIndicatorPadding, trackStopIndicatorPadding)) {
+      spec.trackStopIndicatorPadding = trackStopIndicatorPadding;
       invalidate();
     }
   }
