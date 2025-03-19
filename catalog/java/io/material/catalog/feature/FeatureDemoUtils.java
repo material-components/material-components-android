@@ -69,7 +69,7 @@ public abstract class FeatureDemoUtils {
       Context context = currentFragment.requireContext();
       MaterialContainerTransform transform =
           new MaterialContainerTransform(context, /* entering= */ true);
-      transform.setContainerColor(MaterialColors.getColor(sharedElement, R.attr.colorSurface));
+      transform.setContainerColor(MaterialColors.getColor(sharedElement, com.google.android.material.R.attr.colorSurface));
       transform.setFadeMode(MaterialContainerTransform.FADE_MODE_THROUGH);
       fragment.setSharedElementEnterTransition(transform);
       transaction.addSharedElement(sharedElement, sharedElementName);

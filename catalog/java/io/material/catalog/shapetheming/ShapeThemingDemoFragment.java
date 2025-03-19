@@ -84,7 +84,7 @@ public abstract class ShapeThemingDemoFragment extends DemoFragment {
     materialButton.setOnClickListener(v -> materialAlertDialogBuilder.show());
     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(wrappedContext);
     bottomSheetDialog.setContentView(R.layout.cat_shape_theming_bottomsheet_content);
-    View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+    View bottomSheetInternal = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
     BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(300);
     MaterialButton button = container.findViewById(R.id.material_button_2);
     button.setOnClickListener(v -> bottomSheetDialog.show());

@@ -94,7 +94,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     TypedArray a =
         toolbarContext
             .getTheme()
-            .obtainStyledAttributes(new int[] {R.attr.colorOnSurfaceVariant, R.attr.colorPrimary});
+            .obtainStyledAttributes(new int[] {com.google.android.material.R.attr.colorOnSurfaceVariant, R.attr.colorPrimary});
     menuIconColorUnchecked = a.getColor(0, 0);
     menuIconColorChecked = a.getColor(1, 0);
     a.recycle();

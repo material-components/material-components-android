@@ -94,8 +94,8 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     MaterialButton launcher = root.findViewById(R.id.cat_picker_launch_button);
 
     snackbar = Snackbar.make(viewGroup, R.string.cat_picker_no_action, Snackbar.LENGTH_LONG);
-    int dialogTheme = resolveOrThrow(getContext(), R.attr.materialCalendarTheme);
-    int fullscreenTheme = resolveOrThrow(getContext(), R.attr.materialCalendarFullscreenTheme);
+    int dialogTheme = resolveOrThrow(getContext(), com.google.android.material.R.attr.materialCalendarTheme);
+    int fullscreenTheme = resolveOrThrow(getContext(), com.google.android.material.R.attr.materialCalendarFullscreenTheme);
 
     final RadioGroup selectionMode = root.findViewById(R.id.cat_picker_date_selector_group);
     final RadioGroup theme = root.findViewById(R.id.cat_picker_theme_group);

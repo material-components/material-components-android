@@ -54,7 +54,7 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
     View view =
         layoutInflater.inflate(getButtonToggleGroupContent(), viewGroup, /* attachToRoot= */ false);
     MaterialSwitch requireSelectionToggle = view.findViewById(R.id.switch_toggle);
-    defaultInset = getResources().getDimensionPixelSize(R.dimen.mtrl_btn_inset);
+    defaultInset = getResources().getDimensionPixelSize(com.google.android.material.R.dimen.mtrl_btn_inset);
     List<MaterialButtonToggleGroup> toggleGroups =
         DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
     requireSelectionToggle.setOnCheckedChangeListener(
