@@ -1,15 +1,15 @@
 apply plugin: 'com.android.test'
 
 dependencies {
-  implementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
-  implementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
-  implementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
-  implementation "androidx.test.espresso:espresso-accessibility:${project.rootProject.ext.espressoVersion}"
-  implementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
-  implementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
-  implementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
-  implementation 'com.google.dexmaker:dexmaker:1.2'
-  implementation 'com.google.dexmaker:dexmaker-mockito:1.2'
+  implementation libs.androidx.test.core
+  implementation libs.androidx.test.runner
+  implementation libs.androidx.test.rules
+  implementation libs.androidx.espresso.accessibility
+  implementation libs.androidx.espresso.core
+  implementation libs.androidx.espresso.contrib
+  implementation libs.mockito.core
+  implementation libs.dexmaker
+  implementation libs.dexmaker.mokito
 }
 
 android {

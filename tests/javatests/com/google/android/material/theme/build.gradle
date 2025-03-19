@@ -17,20 +17,20 @@
 apply plugin: 'com.android.test'
 
 dependencies {
-  implementation "androidx.test.ext:junit:1.1.1"
-  implementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
-  implementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
-  implementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
-  implementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
-  implementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
-  implementation 'com.google.dexmaker:dexmaker:1.2'
-  implementation 'com.google.dexmaker:dexmaker-mockito:1.2'
-  implementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
-  implementation compatibility("annotation")
-  implementation compatibility("appcompat")
-  implementation compatibility("core")
+  implementation libs.junit
+  implementation libs.androidx.test.runner
+  implementation libs.androidx.test.rules
+  implementation libs.androidx.espresso.core
+  implementation libs.androidx.espresso.contrib
+  implementation libs.mockito.core
+  implementation libs.dexmaker
+  implementation libs.dexmaker.mokito
+  implementation libs.truth
+  implementation libs.androidx.annotation
+  implementation libs.androidx.appcompat
+  implementation libs.androidx.core
 
-  api 'androidx.multidex:multidex:2.0.1'
+  api libs.androidx.multidex
 }
 
 android {

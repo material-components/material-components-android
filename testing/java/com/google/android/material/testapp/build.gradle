@@ -2,14 +2,14 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api compatibility("annotation")
-  api compatibility("appcompat")
+  api libs.androidx.annotation
+  api libs.androidx.appcompat
 
   api project(fromPath("lib"))
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
   api project(fromPath("testing/java/com/google/android/material/testapp/custom"))
 
-  api 'androidx.multidex:multidex:2.0.1'
+  api libs.androidx.multidex
 }
 
 android {

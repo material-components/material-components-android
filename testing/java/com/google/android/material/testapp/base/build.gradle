@@ -17,9 +17,9 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  api compatibility("appcompat")
-  api compatibility("core")
-  api compatibility("fragment")
+  api libs.androidx.appcompat
+  api libs.androidx.core
+  api libs.androidx.fragment
 }
 
 android {

@@ -6,38 +6,37 @@ apply plugin: 'maven-publish'
 version = mdcLibraryVersion
 
 dependencies {
-  api compatibility("activity")
-  api compatibility("annotation")
-  api compatibility("appcompat")
-  api compatibility("cardview")
-  api compatibility("coordinatorlayout")
-  api compatibility("constraintlayout")
-  api compatibility("core")
-  api compatibility("drawerlayout")
-  api compatibility("dynamicanimation")
-  api compatibility("experimental")
-  api compatibility("fragment")
-  api compatibility("lifecycleRuntime")
-  api compatibility("recyclerview")
-  api compatibility("resourceInspectionAnnotation")
-  api compatibility("transition")
-  api compatibility("vectordrawable")
-  api compatibility("viewpager2")
-  api compatibility("graphicsShapes")
+  api libs.androidx.activity
+  api libs.androidx.annotation
+  api libs.androidx.annotation.experimental
+  api libs.androidx.appcompat
+  api libs.androidx.cardview
+  api libs.androidx.coordinatorlayout
+  api libs.androidx.constraintlayout
+  api libs.androidx.core
+  api libs.androidx.drawerlayout
+  api libs.androidx.dynamicanimation
+  api libs.androidx.fragment
+  api libs.androidx.lifecycle.runtime
+  api libs.androidx.recyclerview
+  api libs.androidx.resourceinspection.annotation
+  api libs.androidx.transition
+  api libs.androidx.vectordrawable
+  api libs.androidx.viewpager2
+  api libs.androidx.graphics.shapes
 
-  annotationProcessor compatibility("resourceInspectionProcessor")
+  annotationProcessor libs.androidx.resourceinspection.processor
 
   // Align kotlin versions
-  implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
+  implementation(platform(libs.kotlin.bom))
 
-  implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
-
-  testImplementation "androidx.test:core:${testRunnerVersion}"
-  testImplementation "androidx.test:runner:${testRunnerVersion}"
-  testImplementation "junit:junit:4.13.2"
-  testImplementation "com.google.truth:truth:${truthVersion}"
-  testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
-  testImplementation "org.robolectric:robolectric:${robolectricVersion}"
+  implementation libs.errorprone.annotations
+  testImplementation libs.androidx.test.core
+  testImplementation libs.androidx.test.runner
+  testImplementation libs.junit
+  testImplementation libs.truth
+  testImplementation libs.mockito.core
+  testImplementation libs.robolectric
 }
 
 def srcDirs = [
