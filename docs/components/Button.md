@@ -28,8 +28,6 @@ and make choices, with a single tap.
 *   [Icon button](#icon-button)
 *   [Theming](#theming-buttons)
 
-[TOC]
-
 ## Design and API Documentation
 
 *   [Google Material3 Spec](https://material.io/components/buttons/overview)
