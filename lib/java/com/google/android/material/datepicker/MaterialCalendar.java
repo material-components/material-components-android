@@ -347,6 +347,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     } else {
       postSmoothRecyclerViewScroll(moveToPosition);
     }
+    updateNavigationButtonsEnabled(moveToPosition);
   }
 
   @Nullable
@@ -442,8 +443,12 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             } else {
               currentItem = getLayoutManager().findLastVisibleItemPosition();
             }
-            current = monthsPagerAdapter.getPageMonth(currentItem);
+            Month moveToMonth = monthsPagerAdapter.getPageMonth(currentItem);
+            current = moveToMonth;
             monthDropSelect.setText(monthsPagerAdapter.getPageTitle(currentItem));
+
+            int currentMonthPosition = monthsPagerAdapter.getPosition(moveToMonth);
+            updateNavigationButtonsEnabled(currentMonthPosition);
           }
 
           @Override
@@ -468,9 +473,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           @Override
           public void onClick(View view) {
             int currentItem = getLayoutManager().findFirstVisibleItemPosition();
-            if (currentItem + 1 < recyclerView.getAdapter().getItemCount()) {
-              setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem + 1));
-            }
+            setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem + 1));
           }
         });
     monthPrev.setOnClickListener(
@@ -478,11 +481,17 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           @Override
           public void onClick(View view) {
             int currentItem = getLayoutManager().findLastVisibleItemPosition();
-            if (currentItem - 1 >= 0) {
-              setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem - 1));
-            }
+            setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem - 1));
           }
         });
+
+    int currentMonthPosition = monthsPagerAdapter.getPosition(current);
+    updateNavigationButtonsEnabled(currentMonthPosition);
+  }
+
+  private void updateNavigationButtonsEnabled(int currentMonthPosition) {
+    monthNext.setEnabled(currentMonthPosition + 1 < recyclerView.getAdapter().getItemCount());
+    monthPrev.setEnabled(currentMonthPosition - 1 >= 0);
   }
 
   private void postSmoothRecyclerViewScroll(final int position) {
