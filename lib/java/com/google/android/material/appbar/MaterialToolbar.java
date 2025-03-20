@@ -26,11 +26,9 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Pair;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -123,19 +121,6 @@ public class MaterialToolbar extends Toolbar {
     a.recycle();
 
     initBackground(context);
-  }
-
-  @Override
-  public void inflateMenu(int i) {
-    // Pause dispatching item changes during inflation to improve performance.
-    Menu menu = getMenu();
-    if (menu instanceof MenuBuilder) {
-      ((MenuBuilder) menu).stopDispatchingItemsChanged();
-    }
-    super.inflateMenu(i);
-    if (menu instanceof MenuBuilder) {
-      ((MenuBuilder) menu).startDispatchingItemsChanged();
-    }
   }
 
   @Override
