@@ -20,9 +20,10 @@ package io.material.catalog.feature;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.ViewGroup;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 /**
  * A View that measures itself to be as tall as the bottom window inset.
@@ -48,19 +49,12 @@ public class BottomWindowInsetView extends View {
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
-    ViewGroup parent = (ViewGroup) getParent();
-    while (parent != null && !parent.getFitsSystemWindows()) {
-      parent = (ViewGroup) parent.getParent();
-    }
-
-    if (parent == null) {
-      return;
-    }
-
     ViewCompat.setOnApplyWindowInsetsListener(
-        parent,
+        this,
         (v, insets) -> {
-          systemWindowInsetBottom = insets.getSystemWindowInsetBottom();
+          Insets systemWindowInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+          systemWindowInsetBottom = systemWindowInsets.bottom;
+
           super.setVisibility(systemWindowInsetBottom == 0 ? GONE : VISIBLE);
           if (systemWindowInsetBottom > 0) {
             requestLayout();
