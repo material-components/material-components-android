@@ -274,7 +274,11 @@ public final class LoadingIndicator extends View implements Drawable.Callback {
   public void setIndicatorColor(@ColorInt int... indicatorColors) {
     if (indicatorColors.length == 0) {
       // Uses theme primary color for indicator by default. Indicator color cannot be empty.
-      indicatorColors = new int[] {MaterialColors.getColor(getContext(), R.attr.colorPrimary, -1)};
+      indicatorColors =
+          new int[] {
+            MaterialColors.getColor(
+                getContext(), androidx.appcompat.R.attr.colorPrimary, -1)
+          };
     }
     if (!Arrays.equals(getIndicatorColor(), indicatorColors)) {
       specs.indicatorColors = indicatorColors;

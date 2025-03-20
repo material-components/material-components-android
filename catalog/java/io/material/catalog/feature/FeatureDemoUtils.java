@@ -90,10 +90,10 @@ public abstract class FeatureDemoUtils {
       }
     } else {
       transaction.setCustomAnimations(
-          R.anim.abc_grow_fade_in_from_bottom,
-          R.anim.abc_fade_out,
-          R.anim.abc_fade_in,
-          R.anim.abc_shrink_fade_out_from_bottom);
+          androidx.appcompat.R.anim.abc_grow_fade_in_from_bottom,
+          androidx.appcompat.R.anim.abc_fade_out,
+          androidx.appcompat.R.anim.abc_fade_in,
+          androidx.appcompat.R.anim.abc_shrink_fade_out_from_bottom);
     }
 
     transaction

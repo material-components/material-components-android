@@ -64,7 +64,7 @@ public class TopAppBarCollapsingMultilineDemoFragment extends DemoFragment {
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.setSupportActionBar(toolbar);
-    colorPrimary = MaterialColors.getColor(view, R.attr.colorPrimary);
+    colorPrimary = MaterialColors.getColor(view, androidx.appcompat.R.attr.colorPrimary);
 
     return view;
   }

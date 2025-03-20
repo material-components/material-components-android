@@ -92,7 +92,7 @@ public class MaterialToolbar extends Toolbar {
   }
 
   public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, R.attr.toolbarStyle);
+    this(context, attrs, androidx.appcompat.R.attr.toolbarStyle);
   }
 
   public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {

@@ -173,7 +173,8 @@ public class MenuMainDemoFragment extends DemoFragment {
 
   private ListPopupWindow initializeListPopupMenu(View v) {
     ListPopupWindow listPopupWindow =
-        new ListPopupWindow(getContext(), null, R.attr.listPopupWindowStyle);
+        new ListPopupWindow(
+            getContext(), null, androidx.appcompat.R.attr.listPopupWindowStyle);
     ArrayAdapter<CharSequence> adapter =
         new ArrayAdapter<>(
             getContext(),
@@ -198,7 +199,9 @@ public class MenuMainDemoFragment extends DemoFragment {
     Context context = textView.getContext();
     CharSequence text = textView.getText();
     TypedValue value = new TypedValue();
-    context.getTheme().resolveAttribute(R.attr.colorPrimary, value, true);
+    context
+        .getTheme()
+        .resolveAttribute(androidx.appcompat.R.attr.colorPrimary, value, true);
     Spannable spanText = Spannable.Factory.getInstance().newSpannable(text);
     spanText.setSpan(
         new BackgroundColorSpan(value.data), 0, text.length(), SPAN_EXCLUSIVE_EXCLUSIVE);

@@ -64,7 +64,7 @@ public class ColorHarmonizationDemoActivity extends DemoActivity {
             R.id.cat_colors_error,
             R.id.cat_colors_harmonized_error,
             new int[] {
-              R.attr.colorError,
+              androidx.appcompat.R.attr.colorError,
               com.google.android.material.R.attr.colorOnError,
               com.google.android.material.R.attr.colorErrorContainer,
               com.google.android.material.R.attr.colorOnErrorContainer

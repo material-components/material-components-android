@@ -267,7 +267,7 @@ public class DatePickerMainDemoFragment extends DemoFragment {
     String titleAndDescriptionText =
         context.getString(R.string.cat_picker_title_description_main) + alarmTimes;
     SpannableString spannable = new SpannableString(titleAndDescriptionText);
-    int alarmTimesColor = resolveOrThrow(context, R.attr.colorPrimary);
+    int alarmTimesColor = resolveOrThrow(context, androidx.appcompat.R.attr.colorPrimary);
     int spanStart = titleAndDescriptionText.indexOf(alarmTimes);
     int spanEnd = spanStart + alarmTimes.length();
     spannable.setSpan(

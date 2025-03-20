@@ -259,7 +259,8 @@ public class SearchBar extends Toolbar {
       backgroundShape.setStroke(strokeWidth, strokeColor);
     }
 
-    int rippleColor = MaterialColors.getColor(this, R.attr.colorControlHighlight);
+    int rippleColor =
+        MaterialColors.getColor(this, androidx.appcompat.R.attr.colorControlHighlight);
     Drawable background;
     backgroundShape.setFillColor(ColorStateList.valueOf(backgroundColor));
     background =

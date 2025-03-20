@@ -52,7 +52,7 @@ public abstract class ShapeThemingDemoFragment extends DemoFragment {
     final TypedValue value = new TypedValue();
     wrappedContext
         .getTheme()
-        .resolveAttribute(R.attr.colorPrimaryDark, value, true);
+        .resolveAttribute(androidx.appcompat.R.attr.colorPrimaryDark, value, true);
     window.setStatusBarColor(value.data);
 
     return super.onCreateView(layoutInflaterWithThemedContext, viewGroup, bundle);

@@ -200,9 +200,12 @@ public class MaterialResources {
       return defValue;
     }
 
-    TypedArray a = context.obtainStyledAttributes(textAppearance, R.styleable.TextAppearance);
+    TypedArray a =
+        context.obtainStyledAttributes(
+            textAppearance, androidx.appcompat.R.styleable.TextAppearance);
     TypedValue v = new TypedValue();
-    boolean available = a.getValue(R.styleable.TextAppearance_android_textSize, v);
+    boolean available =
+        a.getValue(androidx.appcompat.R.styleable.TextAppearance_android_textSize, v);
     a.recycle();
 
     if (!available) {

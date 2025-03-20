@@ -104,7 +104,8 @@ public final class ColorMainDemoFragment extends DemoFragment {
   private List<ColorRow> getColorRolesContent() {
     return Arrays.asList(
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_primary, R.attr.colorPrimary),
+            new ColorRoleItem(
+                R.string.cat_color_role_primary, androidx.appcompat.R.attr.colorPrimary),
             new ColorRoleItem(R.string.cat_color_role_on_primary, com.google.android.material.R.attr.colorOnPrimary)),
         new ColorRow(
             new ColorRoleItem(
@@ -164,7 +165,8 @@ public final class ColorMainDemoFragment extends DemoFragment {
   private List<ColorRow> getColorRolesUtility() {
     return Arrays.asList(
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_error, R.attr.colorError),
+            new ColorRoleItem(
+                R.string.cat_color_role_error, androidx.appcompat.R.attr.colorError),
             new ColorRoleItem(R.string.cat_color_role_on_error, com.google.android.material.R.attr.colorOnError)),
         new ColorRow(
             new ColorRoleItem(R.string.cat_color_role_error_container, com.google.android.material.R.attr.colorErrorContainer),

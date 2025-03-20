@@ -16,8 +16,6 @@
 
 package com.google.android.material.ripple;
 
-import com.google.android.material.R;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -229,7 +227,9 @@ public class RippleUtils {
           new InsetDrawable(maskDrawable, padding, padding, padding, padding);
       return new RippleDrawable(
           MaterialColors.getColorStateList(
-              context, R.attr.colorControlHighlight, ColorStateList.valueOf(Color.TRANSPARENT)),
+              context,
+              androidx.appcompat.R.attr.colorControlHighlight,
+              ColorStateList.valueOf(Color.TRANSPARENT)),
           null,
           maskWithPaddings);
     }

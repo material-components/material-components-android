@@ -86,34 +86,53 @@ public class TextAppearance {
 
   /** Parses the given TextAppearance style resource. */
   public TextAppearance(@NonNull Context context, @StyleRes int id) {
-    TypedArray a = context.obtainStyledAttributes(id, R.styleable.TextAppearance);
+    TypedArray a =
+        context.obtainStyledAttributes(id, androidx.appcompat.R.styleable.TextAppearance);
 
-    setTextSize(a.getDimension(R.styleable.TextAppearance_android_textSize, 0f));
+    setTextSize(
+        a.getDimension(
+            androidx.appcompat.R.styleable.TextAppearance_android_textSize, 0f));
     setTextColor(
         MaterialResources.getColorStateList(
-            context, a, R.styleable.TextAppearance_android_textColor));
+            context, a, androidx.appcompat.R.styleable.TextAppearance_android_textColor));
     textColorHint =
         MaterialResources.getColorStateList(
-            context, a, R.styleable.TextAppearance_android_textColorHint);
+            context,
+            a,
+            androidx.appcompat.R.styleable.TextAppearance_android_textColorHint);
     textColorLink =
         MaterialResources.getColorStateList(
-            context, a, R.styleable.TextAppearance_android_textColorLink);
-    textStyle = a.getInt(R.styleable.TextAppearance_android_textStyle, Typeface.NORMAL);
-    typeface = a.getInt(R.styleable.TextAppearance_android_typeface, TYPEFACE_SANS);
+            context,
+            a,
+            androidx.appcompat.R.styleable.TextAppearance_android_textColorLink);
+    textStyle =
+        a.getInt(
+            androidx.appcompat.R.styleable.TextAppearance_android_textStyle,
+            Typeface.NORMAL);
+    typeface =
+        a.getInt(
+            androidx.appcompat.R.styleable.TextAppearance_android_typeface,
+            TYPEFACE_SANS);
     int fontFamilyIndex =
         MaterialResources.getIndexWithValue(
             a,
-            R.styleable.TextAppearance_fontFamily,
-            R.styleable.TextAppearance_android_fontFamily);
+            androidx.appcompat.R.styleable.TextAppearance_fontFamily,
+            androidx.appcompat.R.styleable.TextAppearance_android_fontFamily);
     fontFamilyResourceId = a.getResourceId(fontFamilyIndex, 0);
     fontFamily = a.getString(fontFamilyIndex);
-    textAllCaps = a.getBoolean(R.styleable.TextAppearance_textAllCaps, false);
+    textAllCaps =
+        a.getBoolean(androidx.appcompat.R.styleable.TextAppearance_textAllCaps, false);
     shadowColor =
         MaterialResources.getColorStateList(
-            context, a, R.styleable.TextAppearance_android_shadowColor);
-    shadowDx = a.getFloat(R.styleable.TextAppearance_android_shadowDx, 0);
-    shadowDy = a.getFloat(R.styleable.TextAppearance_android_shadowDy, 0);
-    shadowRadius = a.getFloat(R.styleable.TextAppearance_android_shadowRadius, 0);
+            context,
+            a,
+            androidx.appcompat.R.styleable.TextAppearance_android_shadowColor);
+    shadowDx =
+        a.getFloat(androidx.appcompat.R.styleable.TextAppearance_android_shadowDx, 0);
+    shadowDy =
+        a.getFloat(androidx.appcompat.R.styleable.TextAppearance_android_shadowDy, 0);
+    shadowRadius =
+        a.getFloat(androidx.appcompat.R.styleable.TextAppearance_android_shadowRadius, 0);
 
     a.recycle();
 
