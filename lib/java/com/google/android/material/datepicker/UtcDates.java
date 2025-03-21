@@ -167,17 +167,75 @@ class UtcDates {
   }
 
   static String getDefaultTextInputHint(Resources res, SimpleDateFormat format) {
-    String formatHint = format.toPattern();
-    String yearChar = res.getString(R.string.mtrl_picker_text_input_year_abbr);
-    String monthChar = res.getString(R.string.mtrl_picker_text_input_month_abbr);
-    String dayChar = res.getString(R.string.mtrl_picker_text_input_day_abbr);
+    String datePattern = format.toPattern();
 
-    // Remove duplicate characters for Korean.
-    if (Locale.getDefault().getLanguage().equals(Locale.KOREAN.getLanguage())) {
-      formatHint = formatHint.replaceAll("d+", "d").replaceAll("M+", "M").replaceAll("y+", "y");
+    final String yearAbbr = res.getString(R.string.mtrl_picker_text_input_year_abbr);
+    final String monthAbbr = res.getString(R.string.mtrl_picker_text_input_month_abbr);
+    final String dayAbbr = res.getString(R.string.mtrl_picker_text_input_day_abbr);
+
+    final boolean abbrsArePlaceholders =
+        res.getBoolean(R.bool.mtrl_picker_text_input_hint_abbrs_are_placeholders);
+
+    return abbrsArePlaceholders
+        ? replaceOneLetterFormatSpecifiers(datePattern, yearAbbr, monthAbbr, dayAbbr)
+        : replaceFormatSpecifiers(datePattern, yearAbbr, monthAbbr, dayAbbr);
+  }
+
+  private static String replaceOneLetterFormatSpecifiers(
+      String datePattern, String yearAbbr, String monthAbbr, String dayAbbr) {
+    final StringBuilder stringBuilder = new StringBuilder();
+    for (int i = 0; i < datePattern.length(); i++) {
+      char ch = datePattern.charAt(i);
+      switch (ch) {
+        case 'y':
+          stringBuilder.append(yearAbbr);
+          break;
+        case 'M':
+          stringBuilder.append(monthAbbr);
+          break;
+        case 'd':
+          stringBuilder.append(dayAbbr);
+          break;
+        default:
+          stringBuilder.append(ch);
+          break;
+      }
     }
 
-    return formatHint.replace("d", dayChar).replace("M", monthChar).replace("y", yearChar);
+    return stringBuilder.toString();
+  }
+
+  private static String replaceFormatSpecifiers(
+      String datePattern, String yearAbbr, String monthAbbr, String dayAbbr) {
+    final StringBuilder stringBuilder = new StringBuilder();
+
+    char prevCh = 0;
+    for (int i = 0; i < datePattern.length(); i++) {
+      char ch = datePattern.charAt(i);
+      switch (ch) {
+        case 'y':
+          if (prevCh != 'y') {
+            stringBuilder.append(yearAbbr);
+          }
+          break;
+        case 'M':
+          if (prevCh != 'M') {
+            stringBuilder.append(monthAbbr);
+          }
+          break;
+        case 'd':
+          if (prevCh != 'd') {
+            stringBuilder.append(dayAbbr);
+          }
+          break;
+        default:
+          stringBuilder.append(ch);
+          break;
+      }
+      prevCh = ch;
+    }
+
+    return stringBuilder.toString();
   }
 
   /**
