@@ -19,7 +19,7 @@
   <style name="Base.Widget.Material3.DockedToolbar" parent="">
     <item name="enforceMaterialTheme">true</item>
     <item name="android:minHeight">@dimen/m3_comp_toolbar_docked_container_height</item>
-    <item name="backgroundTint">@macro/m3_comp_toolbar_docked_container_color</item>
+    <item name="backgroundTint">?attr/colorSurfaceContainer</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.Toolbar.Docked.Container.Shape</item>
     <item name="android:paddingStart">@dimen/m3_comp_toolbar_docked_container_leading_space</item>
     <item name="android:paddingEnd">@dimen/m3_comp_toolbar_docked_container_trailing_space</item>

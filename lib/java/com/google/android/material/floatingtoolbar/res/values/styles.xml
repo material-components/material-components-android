@@ -18,14 +18,15 @@
   <!-- Base style for Floating Toolbar. -->
   <style name="Base.Widget.Material3.FloatingToolbar" parent="">
     <item name="enforceMaterialTheme">true</item>
-    <item name="android:minHeight">@dimen/m3_comp_toolbar_floating_container_height</item>
-    <item name="android:minWidth">@dimen/m3_comp_toolbar_floating_container_height</item>
-    <item name="backgroundTint">@macro/m3_comp_toolbar_floating_standard_container_color</item>
+    <item name="android:minHeight">@dimen/m3_comp_toolbar_floating_horizontal_container_height</item>
+    <item name="android:minWidth">@dimen/m3_comp_toolbar_floating_vertical_container_width</item>
+    <item name="backgroundTint">?attr/colorSurfaceContainer</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.Toolbar.Floating.Container.Shape</item>
     <item name="marginLeftSystemWindowInsets">true</item>
     <item name="marginTopSystemWindowInsets">false</item>
     <item name="marginRightSystemWindowInsets">true</item>
     <item name="marginBottomSystemWindowInsets">true</item>
+    <item name="elevation">@dimen/m3_comp_toolbar_floating_container_elevation</item>
   </style>
 
   <!-- Style for Floating Toolbar. -->
@@ -38,7 +39,7 @@
 
   <!-- Style for Vibrant color variation of the Floating Toolbar. -->
   <style name="Widget.Material3.FloatingToolbar.Vibrant">
-    <item name="backgroundTint">@macro/m3_comp_toolbar_floating_vibrant_container_color</item>
+    <item name="backgroundTint">?attr/colorPrimaryContainer</item>
   </style>
 
   <!-- Style for icon buttons within Vibrant Floating Toolbars. -->
