@@ -39,4 +39,9 @@
   <string name="edge_to_edge_preference_description" description="Title of edge to edge mode toggle [CHAR LIMIT=NONE]">Edge To Edge</string>
   <string name="edge_to_edge_preference_option_on" description="Option to enable edge to edge mode [CHAR LIMIT=NONE]">On</string>
   <string name="edge_to_edge_preference_option_off" description="Option to disable edge to edge mode [CHAR LIMIT=NONE]">Off</string>
+  <string name="cutout_mode_preference_description" translatable="false">Cutout Mode</string>
+  <string name="cutout_mode_preference_option_default" translatable="false">Default</string>
+  <string name="cutout_mode_preference_option_short_edges" translatable="false">Short edges</string>
+  <string name="cutout_mode_preference_option_never" translatable="false">Never</string>
+  <string name="cutout_mode_preference_option_always" translatable="false">Always</string>
 </resources>
