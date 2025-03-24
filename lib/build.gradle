@@ -156,7 +156,6 @@ publishing {
 
   publications {
     release(MavenPublication) {
-      from components.findByName('release')
       artifact androidSourcesJar
       groupId = 'com.google.android.material'
       artifactId = 'material'
@@ -185,6 +184,10 @@ publishing {
           connection = 'scm:git:https://github.com/material-components/material-components-android.git'
           url = 'https://github.com/material-components/material-components-android'
         }
+      }
+
+      afterEvaluate {
+        from components.release
       }
     }
   }
