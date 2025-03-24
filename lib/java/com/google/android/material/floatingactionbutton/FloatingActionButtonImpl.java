@@ -215,8 +215,9 @@ class FloatingActionButtonImpl {
   }
 
   void setRippleColor(@Nullable ColorStateList rippleColor) {
-    if (rippleDrawable instanceof RippleDrawable rippleDrawable) {
-      rippleDrawable.setColor(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
+    if (rippleDrawable instanceof RippleDrawable) {
+      ((RippleDrawable) rippleDrawable).setColor(
+          RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     } else if (rippleDrawable != null) {
       rippleDrawable.setTintList(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     }
@@ -299,8 +300,8 @@ class FloatingActionButtonImpl {
       shapeDrawable.setShapeAppearanceModel(shapeAppearance);
     }
 
-    if (rippleDrawable instanceof Shapeable shapeable) {
-      shapeable.setShapeAppearanceModel(shapeAppearance);
+    if (rippleDrawable instanceof Shapeable) {
+      ((Shapeable) rippleDrawable).setShapeAppearanceModel(shapeAppearance);
     }
 
     if (borderDrawable != null) {
