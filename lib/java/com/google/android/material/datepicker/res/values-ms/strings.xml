@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Beralih kepada mod input teks</string>
   <string name="mtrl_picker_a11y_prev_month">Tukar kepada bulan sebelumnya</string>
   <string name="mtrl_picker_a11y_next_month">Tukar kepada bulan seterusnya</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Ketik untuk menukar kepada paparan tahun</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Ketik untuk menukar kepada paparan Kalendar</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
   <string name="mtrl_picker_toggled_to_year_selection">Beralih kepada paparan tahun</string>
   <string name="mtrl_picker_toggled_to_day_selection">Beralih kepada paparan Kalendar</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>

@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">텍스트 입력 모드로 전환</string>
   <string name="mtrl_picker_a11y_prev_month">이전 달로 변경</string>
   <string name="mtrl_picker_a11y_next_month">다음 달로 변경</string>
-  <string name="mtrl_picker_toggle_to_year_selection">탭하여 연도 뷰로 전환</string>
-  <string name="mtrl_picker_toggle_to_day_selection">탭하여 캘린더 뷰로 전환</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
   <string name="mtrl_picker_toggled_to_year_selection">연도별 보기로 전환됨</string>
   <string name="mtrl_picker_toggled_to_day_selection">캘린더 보기로 전환됨</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>

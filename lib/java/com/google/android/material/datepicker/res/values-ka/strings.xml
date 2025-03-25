@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">ტექსტის შეყვანის რეჟიმზე გადართვა</string>
   <string name="mtrl_picker_a11y_prev_month">წინა თვეზე გადასვლა</string>
   <string name="mtrl_picker_a11y_next_month">შემდეგ თვეზე გადასვლა</string>
-  <string name="mtrl_picker_toggle_to_year_selection">შეეხეთ წლის ხედზე გადასართავად</string>
-  <string name="mtrl_picker_toggle_to_day_selection">შეეხეთ კალენდრის ხედზე გადასართავად</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
   <string name="mtrl_picker_toggled_to_year_selection">გადაერთო წლის ხედზე</string>
   <string name="mtrl_picker_toggled_to_day_selection">გადაერთო კალენდრის ხედზე</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>

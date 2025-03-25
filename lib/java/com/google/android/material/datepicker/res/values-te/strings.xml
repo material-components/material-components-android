@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">వచన ఇన్‌పుట్ మోడ్‌కు మారుస్తుంది</string>
   <string name="mtrl_picker_a11y_prev_month">మునుపటి నెలకు మార్చుతుంది</string>
   <string name="mtrl_picker_a11y_next_month">వచ్చే నెలకు మార్చుతుంది</string>
-  <string name="mtrl_picker_toggle_to_year_selection">సంవత్సర వీక్షణకు మారడానికి ట్యాప్ చేయండి</string>
-  <string name="mtrl_picker_toggle_to_day_selection">క్యాలెండర్ వీక్షణకు మారడానికి ట్యాప్ చేయండి</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
   <string name="mtrl_picker_toggled_to_year_selection">సంవత్సరం వీక్షణకు మారారు</string>
   <string name="mtrl_picker_toggled_to_day_selection">క్యాలెండర్ వీక్షణకు మారారు</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>

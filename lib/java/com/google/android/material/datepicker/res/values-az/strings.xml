@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Mətn daxiletmə rejiminə keçin</string>
   <string name="mtrl_picker_a11y_prev_month">Əvvəlki aya dəyişin</string>
   <string name="mtrl_picker_a11y_next_month">Növbəti aya dəyişin</string>
-  <string name="mtrl_picker_toggle_to_year_selection">İl görünüşünə keçirmək üçün toxunun</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Təqvim görünüşünə keçirmək üçün toxunun</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
   <string name="mtrl_picker_toggled_to_year_selection">İl görünüşünə keçildi</string>
   <string name="mtrl_picker_toggled_to_day_selection">Təqvim görünüşünə keçildi</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>

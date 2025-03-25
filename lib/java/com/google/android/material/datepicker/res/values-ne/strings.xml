@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">पाठको इनपुट मोडमा बदल्नुहोस्</string>
   <string name="mtrl_picker_a11y_prev_month">अघिल्लो महिनामा सार्नुहोस्</string>
   <string name="mtrl_picker_a11y_next_month">अर्को महिनामा सार्नुहोस्</string>
-  <string name="mtrl_picker_toggle_to_year_selection">वर्षको भ्यू प्रयोग गर्न ट्याप गर्नुहोस्</string>
-  <string name="mtrl_picker_toggle_to_day_selection">पात्रोको भ्यू प्रयोग गर्न ट्याप गर्नुहोस्</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
   <string name="mtrl_picker_toggled_to_year_selection">\"वर्ष\" भ्यू प्रयोग गरिएको छ</string>
   <string name="mtrl_picker_toggled_to_day_selection">\"पात्रो\" भ्यू प्रयोग गरिएको छ</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>

@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">टेक्स्ट के इनपुट मोड पर स्विच करें</string>
   <string name="mtrl_picker_a11y_prev_month">पिछले महीने पर जाएं</string>
   <string name="mtrl_picker_a11y_next_month">अगले महीने पर जाएं</string>
-  <string name="mtrl_picker_toggle_to_year_selection">साल के व्यू पर स्विच करने के लिए टैप करें</string>
-  <string name="mtrl_picker_toggle_to_day_selection">कैलेंडर के व्यू पर स्विच करने के लिए टैप करें</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
   <string name="mtrl_picker_toggled_to_year_selection">साल के व्यू पर स्विच किया गया</string>
   <string name="mtrl_picker_toggled_to_day_selection">कैलेंडर व्यू पर स्विच किया गया</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>

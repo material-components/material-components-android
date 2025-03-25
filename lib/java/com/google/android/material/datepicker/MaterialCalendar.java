@@ -45,6 +45,7 @@ import androidx.core.util.Pair;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import com.google.android.material.button.MaterialButton;
 import java.util.Calendar;
 
@@ -417,10 +418,14 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           public void onInitializeAccessibilityNodeInfo(
               View view, @NonNull AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
             super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfoCompat);
-            accessibilityNodeInfoCompat.setHintText(
+            CharSequence description =
                 dayFrame.getVisibility() == View.VISIBLE
                     ? getString(R.string.mtrl_picker_toggle_to_year_selection)
-                    : getString(R.string.mtrl_picker_toggle_to_day_selection));
+                    : getString(R.string.mtrl_picker_toggle_to_day_selection);
+            AccessibilityActionCompat customClickDescription =
+                new AccessibilityActionCompat(
+                    AccessibilityNodeInfoCompat.ACTION_CLICK, description);
+            accessibilityNodeInfoCompat.addAction(customClickDescription);
           }
         });
 

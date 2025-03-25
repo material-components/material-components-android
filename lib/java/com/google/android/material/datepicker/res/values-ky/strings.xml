@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Текст киргизүү режимине которулуу</string>
   <string name="mtrl_picker_a11y_prev_month">Мурунку айга өзгөртүү</string>
   <string name="mtrl_picker_a11y_next_month">Кийинки айга өзгөртүү</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Жыл көрүнүшүнө өтүү үчүн таптап коюңуз</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Жылнаама көрүнүшүнө өтүү үчүн таптап коюңуз</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
   <string name="mtrl_picker_toggled_to_year_selection">Жылдык көрүнүшкө которулду</string>
   <string name="mtrl_picker_toggled_to_day_selection">Жылнаама көрүнүшүнө которулду</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>

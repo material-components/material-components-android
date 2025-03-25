@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">テキスト入力モードに切り替え</string>
   <string name="mtrl_picker_a11y_prev_month">前月に変更</string>
   <string name="mtrl_picker_a11y_next_month">翌月に変更</string>
-  <string name="mtrl_picker_toggle_to_year_selection">タップすると年表示に切り替わります</string>
-  <string name="mtrl_picker_toggle_to_day_selection">タップするとカレンダー表示に切り替わります</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
   <string name="mtrl_picker_toggled_to_year_selection">年表示に切り替えました</string>
   <string name="mtrl_picker_toggled_to_day_selection">カレンダー表示に切り替えました</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
