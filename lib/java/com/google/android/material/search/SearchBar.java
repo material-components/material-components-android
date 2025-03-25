@@ -44,6 +44,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -63,9 +64,11 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.customview.view.AbsSavedState;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.AppBarLayout.LiftOnScrollProgressListener;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ToolbarUtils;
+import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -132,6 +135,10 @@ public class SearchBar extends Toolbar {
   private static final String NAMESPACE_APP = "http://schemas.android.com/apk/res-auto";
 
   private final TextView textView;
+  private final int backgroundColor;
+
+  private boolean liftOnScroll;
+  @Nullable private final ColorStateList liftOnScrollColor;
   private final boolean layoutInflated;
   private final boolean defaultMarginsEnabled;
   private final SearchBarAnimationHelper searchBarAnimationHelper;
@@ -147,6 +154,19 @@ public class SearchBar extends Toolbar {
   private boolean defaultScrollFlagsEnabled;
   private MaterialShapeDrawable backgroundShape;
   private boolean textCentered;
+
+  private final LiftOnScrollProgressListener liftColorListener =
+      new LiftOnScrollProgressListener() {
+
+        @Override
+        public void onUpdate(float elevation, int appBarLayoutColor, float progress) {
+          if (liftOnScrollColor != null) {
+            int mixedColor =
+                MaterialColors.layer(backgroundColor, liftOnScrollColor.getDefaultColor(), progress);
+            backgroundShape.setFillColor(ColorStateList.valueOf(mixedColor));
+          }
+        }
+      };
 
   public SearchBar(@NonNull Context context) {
     this(context, null);
@@ -175,7 +195,9 @@ public class SearchBar extends Toolbar {
 
     ShapeAppearanceModel shapeAppearanceModel =
         ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
-    int backgroundColor = a.getColor(R.styleable.SearchBar_backgroundTint, 0);
+    backgroundColor = a.getColor(R.styleable.SearchBar_backgroundTint, 0);
+    liftOnScrollColor =
+        MaterialResources.getColorStateList(context, a, R.styleable.SearchBar_liftOnScrollColor);
     float elevation = a.getDimension(R.styleable.SearchBar_elevation, 0);
     defaultMarginsEnabled = a.getBoolean(R.styleable.SearchBar_defaultMarginsEnabled, true);
     defaultScrollFlagsEnabled = a.getBoolean(R.styleable.SearchBar_defaultScrollFlagsEnabled, true);
@@ -192,6 +214,7 @@ public class SearchBar extends Toolbar {
     float strokeWidth = a.getDimension(R.styleable.SearchBar_strokeWidth, -1);
     int strokeColor = a.getColor(R.styleable.SearchBar_strokeColor, Color.TRANSPARENT);
     textCentered = a.getBoolean(R.styleable.SearchBar_textCentered, false);
+    liftOnScroll = a.getBoolean(R.styleable.SearchBar_liftOnScroll, false);
 
     a.recycle();
 
@@ -223,6 +246,18 @@ public class SearchBar extends Toolbar {
       throw new UnsupportedOperationException(
           "SearchBar does not support subtitle. Use hint or text instead.");
     }
+  }
+
+  @Nullable
+  private AppBarLayout getAppBarLayoutParentIfExists() {
+    ViewParent v = getParent();
+    while (v != null) {
+      if (v instanceof AppBarLayout) {
+        return (AppBarLayout) v;
+      }
+      v = v.getParent();
+    }
+    return null;
   }
 
   private void initNavigationIcon() {
@@ -417,6 +452,40 @@ public class SearchBar extends Toolbar {
     return additionalMarginStart;
   }
 
+  /**
+   * Sets whether the {@link SearchBar} lifts when a parent {@link AppBarLayout} lifts on scroll.
+   */
+  public void setLiftOnScroll(boolean liftOnScroll) {
+    this.liftOnScroll = liftOnScroll;
+    if (liftOnScroll) {
+      addLiftOnScrollProgressListener();
+    } else {
+      removeLiftOnScrollProgressListener();
+    }
+  }
+
+  /**
+   * Returns whether or not the {@link SearchBar} lifts when a parent {@link AppBarLayout} lifts
+   * on scroll.
+   */
+  public boolean isLiftOnScroll() {
+    return liftOnScroll;
+  }
+
+  private void addLiftOnScrollProgressListener() {
+    AppBarLayout appBarLayout = getAppBarLayoutParentIfExists();
+    if (appBarLayout != null && liftOnScrollColor != null) {
+      appBarLayout.addLiftOnScrollProgressListener(liftColorListener);
+    }
+  }
+
+  private void removeLiftOnScrollProgressListener() {
+    AppBarLayout appBarLayout = getAppBarLayoutParentIfExists();
+    if (appBarLayout != null) {
+      appBarLayout.removeLiftOnScrollProgressListener(liftColorListener);
+    }
+  }
+
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
@@ -424,6 +493,15 @@ public class SearchBar extends Toolbar {
     MaterialShapeUtils.setParentAbsoluteElevation(this, backgroundShape);
     setDefaultMargins();
     setOrClearDefaultScrollFlags();
+    if (liftOnScroll) {
+      addLiftOnScrollProgressListener();
+    }
+  }
+
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+    removeLiftOnScrollProgressListener();
   }
 
   /**

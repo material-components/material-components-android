@@ -67,6 +67,10 @@
     <!-- Whether the text corresponding to the `android:text` attribute or `android:hint` attribute
          should be centered horizontally within the searchbar. Default is false.-->
     <attr name="textCentered" format="boolean"/>
+    <!-- Whether or not the search bar is lifted when a parent AppBarLayout is lifted when scrolling. -->
+    <attr name="liftOnScroll"/>
+    <!-- The color of the search bar when lifted. If null, the search bar color will not change.  -->
+    <attr name="liftOnScrollColor"/>
   </declare-styleable>
 
   <declare-styleable name="SearchView">

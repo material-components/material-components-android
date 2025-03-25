@@ -52,6 +52,7 @@ import android.widget.ScrollView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -77,10 +78,12 @@ import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -177,9 +180,28 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   /**
    * Definition for a callback to be invoked when the lift on scroll elevation and background color
    * change.
+   *
+   * @deprecated Use {@link LiftOnScrollProgressListener} instead
    */
+  @Deprecated
   public interface LiftOnScrollListener {
     void onUpdate(@Dimension float elevation, @ColorInt int backgroundColor);
+  }
+
+  /**
+   * Definition for a callback to be invoked when the lift on scroll progress has changed.
+   */
+  public abstract static class LiftOnScrollProgressListener {
+
+    /**
+     * Update method called when the lift progress is updated.
+     *
+     * @param elevation the elevation of the AppBarLayout
+     * @param backgroundColor the background color of the AppBarLayout
+     * @param progress the progress of the lift animation; 0 is unlifted, 1 is lifted.
+     */
+    public abstract void onUpdate(
+        @Dimension float elevation, @ColorInt int backgroundColor, @FloatRange(from = 0.0f, to = 1.0f) float progress);
   }
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_AppBarLayout;
@@ -209,6 +231,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   @Nullable private ValueAnimator liftOnScrollColorAnimator;
   @Nullable private AnimatorUpdateListener liftOnScrollColorUpdateListener;
   private final List<LiftOnScrollListener> liftOnScrollListeners = new ArrayList<>();
+  private final LinkedHashSet<LiftOnScrollProgressListener> liftProgressListeners =
+      new LinkedHashSet<>();
 
   private final long liftOnScrollColorDuration;
   private final TimeInterpolator liftOnScrollColorInterpolator;
@@ -349,6 +373,12 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
               }
             }
           }
+
+          if (!liftProgressListeners.isEmpty()) {
+            for (LiftOnScrollProgressListener liftProgressListener : liftProgressListeners) {
+              liftProgressListener.onUpdate(0, mixedColor, liftProgress);
+            }
+          }
         };
 
     setBackground(background);
@@ -366,6 +396,10 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           }
           for (LiftOnScrollListener liftOnScrollListener : liftOnScrollListeners) {
             liftOnScrollListener.onUpdate(elevation, background.getResolvedTintColor());
+          }
+          for (LiftOnScrollProgressListener liftProgressListener : liftProgressListeners) {
+            liftProgressListener.onUpdate(
+                elevation, background.getResolvedTintColor(), elevation / appBarElevation);
           }
         };
 
@@ -415,19 +449,51 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   /**
    * Add a {@link LiftOnScrollListener} that will be called when the lift on scroll elevation and
    * background color of this {@link AppBarLayout} change.
+   *
+   * @deprecated Use {@link #addLiftOnScrollProgressListener(LiftOnScrollProgressListener)} instead.
    */
+  @Deprecated
   public void addLiftOnScrollListener(@NonNull LiftOnScrollListener liftOnScrollListener) {
     liftOnScrollListeners.add(liftOnScrollListener);
   }
 
-  /** Remove a previously added {@link LiftOnScrollListener}. */
+  /**
+   * Remove a previously added {@link LiftOnScrollListener}.
+   *
+   * @deprecated Use {@link #removeLiftOnScrollProgressListener(LiftOnScrollProgressListener)} instead.
+   */
+  @CanIgnoreReturnValue
+  @Deprecated
   public boolean removeLiftOnScrollListener(@NonNull LiftOnScrollListener liftOnScrollListener) {
     return liftOnScrollListeners.remove(liftOnScrollListener);
   }
 
-  /** Remove all previously added {@link LiftOnScrollListener}s. */
+  /**
+   * Remove all previously added {@link LiftOnScrollListener}s.
+   *
+   * @deprecated Use {@link #clearLiftOnScrollProgressListener()} instead.
+   */
+  @Deprecated
   public void clearLiftOnScrollListener() {
     liftOnScrollListeners.clear();
+  }
+
+  /**
+   * Add a {@link LiftOnScrollProgressListener} that will be called when the lift on scroll progress changes
+   */
+  public void addLiftOnScrollProgressListener(@NonNull LiftOnScrollProgressListener liftProgressListener) {
+      liftProgressListeners.add(liftProgressListener);
+  }
+
+  /** Remove a previously added {@link LiftOnScrollProgressListener}. */
+  @CanIgnoreReturnValue
+  public boolean removeLiftOnScrollProgressListener(@NonNull LiftOnScrollProgressListener liftProgressListener) {
+    return liftProgressListeners.remove(liftProgressListener);
+  }
+
+  /** Remove all previously added {@link LiftOnScrollProgressListener}s. */
+  public void clearLiftOnScrollProgressListener() {
+    liftProgressListeners.clear();
   }
 
   /**

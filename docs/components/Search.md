@@ -107,6 +107,8 @@ Element                      | Attribute                   | Related method(s)  
 **Search hint**              | `android:hint`              | `setHint`<br/>`getHint`                     | `null`
 **Search text centered**     | `app:textCentered`          | `setTextCentered`<br/>`getTextCentered`     | `false`
 **Color**                    | `app:backgroundTint`        | --                                          | `?attr/colorSurfaceContainerHigh`
+**Lift On Scroll**           | `app:liftOnScroll`          | --                                          | `false`
+**Lift On Scroll Color**     | `app:liftOnScrollColor`     | --                                          | `?attr/colorSurfaceContainerHighest`
 **Flag for default margins** | `app:defaultMarginsEnabled` | --                                          | `true`
 **Flag for navigation icon** | `app:hideNavigationIcon`    | --                                          | `false`
 
@@ -126,7 +128,8 @@ Search view toolbar height theme attribute:
 
 ### Scrolling Behavior
 
-The `SearchBar` can either be used as a fixed or scroll-away search field.
+The `SearchBar` can either be used as a fixed, scroll-away, or lift on scroll
+search field.
 
 #### Fixed Mode
 
@@ -152,6 +155,20 @@ of how to set up this behavior.
 Additionally, if your app is going edge-to-edge, consider adding
 `app:statusBarForeground="?attr/colorSurface"` to your `AppBarLayout` in order
 to avoid overlap between the `SearchBar` and status bar content on scroll.
+
+#### Lift On Scroll Mode
+
+To set up the lift on scroll mode, use a top-level `CoordinatorLayout` and place
+the `SearchBar` within an `AppBarLayout`. Then, place the `AppBarLayout` below
+the scrolling view (usually a `RecyclerView` or `NestedScrollView`) in the
+`CoordinatorLayout`, and set
+`app:layout_behavior="@string/appbar_scrolling_view_behavior"` on the scrolling
+view. On the `SearchBar`, set `app:liftOnScroll=true` and set a
+`app:liftOnScrollColor` to change the color of the `SearchBar` as the
+`AppBarLayout` is lifting.
+
+See the [Putting it all together](#putting-it-all-together) section below for an
+example of how to set up this behavior.
 
 ### Toolbar Transitions
 
@@ -396,6 +413,45 @@ sets up the behavior of showing the `SearchView` when the `SearchBar` is tapped,
 as well as the expand and collapse animations. If you can't use a
 `CoordinatorLayout`, instead you can call the `SearchView#setUpWithSearchBar`
 method to achieve the same result.
+
+Alternatively, an example of the lift on scroll mode is below:
+
+```xml
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <!-- NestedScrollingChild goes here (NestedScrollView, RecyclerView, etc.). -->
+  <androidx.core.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    <!-- Screen content goes here. -->
+  </androidx.core.widget.NestedScrollView>
+
+  <com.google.android.material.appbar.AppBarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content">
+    <com.google.android.material.search.SearchBar
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/searchbar_hint"
+        app:liftOnScroll="true"
+        app:liftOnScrollColor="?attr/colorSurfaceContainerHighest"/>
+  </com.google.android.material.appbar.AppBarLayout>
+
+  <com.google.android.material.search.SearchView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:hint="@string/searchbar_hint"
+      app:layout_anchor="@id/search_bar">
+
+    <!-- Search suggestions/results go here (ScrollView, RecyclerView, etc.). -->
+
+  </com.google.android.material.search.SearchView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
 
 ## Predictive Back
 

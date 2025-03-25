@@ -30,6 +30,8 @@
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.SearchBar</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Search</item>
+    <item name="liftOnScroll">false</item>
+    <item name="liftOnScrollColor">?attr/colorSurfaceContainerHighest</item>
 
     <!-- On newer API levels, hide shadows while keeping elevation. -->
     <item name="android:outlineAmbientShadowColor" tools:targetApi="p">@android:color/transparent</item>
