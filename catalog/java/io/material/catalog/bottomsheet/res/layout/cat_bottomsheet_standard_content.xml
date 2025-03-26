@@ -74,4 +74,14 @@
       android:text="@string/cat_bottomsheet_button_label_enabled"
       android:checked="true"/>
 
+  <com.google.android.material.materialswitch.MaterialSwitch
+    android:id="@+id/cat_bottomsheet_hideable_switch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_below="@id/cat_bottomsheet_enabled_switch"
+    android:layout_centerHorizontal="true"
+    android:layout_marginTop="16dp"
+    android:text="@string/cat_bottomsheet_hideable_switch_text"
+    android:checked="false"/>
+
 </merge>

@@ -21,15 +21,20 @@ import com.google.android.material.R;
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import androidx.appcompat.widget.AppCompatImageView;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
-import android.view.accessibility.AccessibilityManager.AccessibilityStateChangeListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -46,17 +51,24 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
  * clickable. Clicking the drag handle will toggle the bottom sheet between its collapsed and
  * expanded states.
  */
-public class BottomSheetDragHandleView extends AppCompatImageView
-    implements AccessibilityStateChangeListener {
+public class BottomSheetDragHandleView extends AppCompatImageView {
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_BottomSheet_DragHandle;
-
-  @Nullable private final AccessibilityManager accessibilityManager;
 
   @Nullable private BottomSheetBehavior<?> bottomSheetBehavior;
 
-  private boolean accessibilityServiceEnabled;
-  private boolean interactable;
+  private final GestureDetector gestureDetector;
+
   private boolean clickToExpand;
+
+  /**
+   * Track whether clients have set their own touch or click listeners on the drag handle.
+   *
+   * Setting a custom touch or click listener will override the default behavior of cycling through
+   * bottom sheet states when tapped and dismissing the sheet when double tapped. Clients can
+   * restore this behavior by setting their touch and click listeners back to null.
+   */
+  private boolean hasTouchListener = false;
+  private boolean hasClickListener = false;
 
   private final String clickToExpandActionLabel =
       getResources().getString(R.string.bottomsheet_action_expand);
@@ -75,6 +87,34 @@ public class BottomSheetDragHandleView extends AppCompatImageView
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
       };
 
+  /**
+   * A gesture listener that handles both single and double taps on the drag handle.
+   *
+   * Single taps cycle through the available states of the bottom sheet. A double tap hides
+   * the sheet.
+   */
+  private final OnGestureListener gestureListener = new SimpleOnGestureListener() {
+
+    @Override
+    public boolean onDown(@NonNull MotionEvent e) {
+      return isClickable();
+    }
+
+    @Override
+    public boolean onSingleTapConfirmed(@NonNull MotionEvent e) {
+      return expandOrCollapseBottomSheetIfPossible();
+    }
+
+    @Override
+    public boolean onDoubleTap(@NonNull MotionEvent e) {
+      if (bottomSheetBehavior != null && bottomSheetBehavior.isHideable()) {
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        return true;
+      }
+      return super.onDoubleTap(e);
+    }
+  };
+
   public BottomSheetDragHandleView(@NonNull Context context) {
     this(context, /* attrs= */ null);
   }
@@ -83,6 +123,7 @@ public class BottomSheetDragHandleView extends AppCompatImageView
     this(context, attrs, R.attr.bottomSheetDragHandleStyle);
   }
 
+  @SuppressLint("ClickableViewAccessibility") // Will be handled by accessibility delegate
   public BottomSheetDragHandleView(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(wrap(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
@@ -90,10 +131,8 @@ public class BottomSheetDragHandleView extends AppCompatImageView
     // Override the provided context with the wrapped one to prevent it from being used.
     context = getContext();
 
-    accessibilityManager =
-        (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
-
-    updateInteractableState();
+    gestureDetector =
+        new GestureDetector(context, gestureListener, new Handler(Looper.getMainLooper()));
 
     ViewCompat.setAccessibilityDelegate(
         this,
@@ -112,25 +151,36 @@ public class BottomSheetDragHandleView extends AppCompatImageView
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     setBottomSheetBehavior(findParentBottomSheetBehavior());
-    if (accessibilityManager != null) {
-      accessibilityManager.addAccessibilityStateChangeListener(this);
-      onAccessibilityStateChanged(accessibilityManager.isEnabled());
-    }
   }
 
   @Override
   protected void onDetachedFromWindow() {
-    if (accessibilityManager != null) {
-      accessibilityManager.removeAccessibilityStateChangeListener(this);
-    }
     setBottomSheetBehavior(null);
     super.onDetachedFromWindow();
   }
 
+  @SuppressLint("ClickableViewAccessibility") // Will be handled by accessibility delegate
   @Override
-  public void onAccessibilityStateChanged(boolean enabled) {
-    accessibilityServiceEnabled = enabled;
-    updateInteractableState();
+  public boolean onTouchEvent(MotionEvent event) {
+    if (hasClickListener || hasTouchListener) {
+      // If clients have set their own click or touch listeners, do nothing.
+      return super.onTouchEvent(event);
+    }
+
+    return gestureDetector.onTouchEvent(event);
+  }
+
+  @SuppressLint("ClickableViewAccessibility")
+  @Override
+  public void setOnTouchListener(OnTouchListener l) {
+    hasTouchListener = l != null;
+    super.setOnTouchListener(l);
+  }
+
+  @Override
+  public void setOnClickListener(@Nullable OnClickListener l) {
+    hasClickListener = l != null;
+    super.setOnClickListener(l);
   }
 
   private void setBottomSheetBehavior(@Nullable BottomSheetBehavior<?> behavior) {
@@ -144,7 +194,7 @@ public class BottomSheetDragHandleView extends AppCompatImageView
       onBottomSheetStateChanged(bottomSheetBehavior.getState());
       bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback);
     }
-    updateInteractableState();
+    setClickable(hasAttachedBehavior());
   }
 
   private void onBottomSheetStateChanged(@BottomSheetBehavior.State int state) {
@@ -160,12 +210,8 @@ public class BottomSheetDragHandleView extends AppCompatImageView
         (v, args) -> expandOrCollapseBottomSheetIfPossible());
   }
 
-  private void updateInteractableState() {
-    interactable = accessibilityServiceEnabled && bottomSheetBehavior != null;
-    setImportantForAccessibility(bottomSheetBehavior != null
-        ? View.IMPORTANT_FOR_ACCESSIBILITY_YES
-        : View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-    setClickable(interactable);
+  private boolean hasAttachedBehavior() {
+    return bottomSheetBehavior != null;
   }
 
   /**
@@ -179,7 +225,7 @@ public class BottomSheetDragHandleView extends AppCompatImageView
    * the previous state was EXPANDED) or EXPANDED (when the previous state was COLLAPSED.)
    */
   private boolean expandOrCollapseBottomSheetIfPossible() {
-    if (!interactable) {
+    if (!hasAttachedBehavior()) {
       return false;
     }
     boolean canHalfExpand =

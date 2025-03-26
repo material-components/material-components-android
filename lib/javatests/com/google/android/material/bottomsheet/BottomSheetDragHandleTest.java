@@ -63,30 +63,57 @@ public class BottomSheetDragHandleTest {
   }
 
   @Test
+  public void test_importantForAccessibilityEnabledByDefault() {
+    activity.addViewToBottomSheet(dragHandleView);
+    assertImportantForAccessibility(true);
+  }
+
+  @Test
+  public void test_importantForAccessibilityNotAltered() {
+    dragHandleView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+    assertThat(dragHandleView.getImportantForAccessibility())
+        .isEqualTo(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+  }
+
+  @Test
   public void test_notInteractableWhenDetachedAndAccessibilityDisabled() {
-    assertImportantForAccessibility(false);
     assertThat(dragHandleView.isClickable()).isFalse();
   }
 
   @Test
   public void test_notInteractableWhenDetachedAndAccessibilityEnabled() {
     shadowOf(accessibilityManager).setEnabled(true);
-    assertImportantForAccessibility(false);
     assertThat(dragHandleView.isClickable()).isFalse();
   }
 
   @Test
-  public void test_notInteractableWhenAttachedAndAccessibilityDisabled() {
+  public void test_interactableWhenAttachedAndAccessibilityDisabled() {
     activity.addViewToBottomSheet(dragHandleView);
-    assertImportantForAccessibility(true);
-    assertThat(dragHandleView.isClickable()).isFalse();
+    assertThat(dragHandleView.isClickable()).isTrue();
+  }
+
+  @Test
+  public void test_customClickListenerOverridesInternalClickBehavior() {
+    activity.addViewToBottomSheet(dragHandleView);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    shadowOf(accessibilityManager).setEnabled(true);
+    dragHandleView.setOnClickListener(v -> {
+      // do nothing
+    });
+
+    dragHandleView.callOnClick();
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_EXPANDED);
   }
 
   @Test
   public void test_notInteractableWhenNotAttachedToBottomSheetAndAccessibilityEnabled() {
     activity.addViewToContainer(dragHandleView);
     shadowOf(accessibilityManager).setEnabled(true);
-    assertImportantForAccessibility(false);
     assertThat(dragHandleView.isClickable()).isFalse();
   }
 
@@ -94,7 +121,6 @@ public class BottomSheetDragHandleTest {
   public void test_interactableWhenAttachedAndAccessibilityEnabled() {
     activity.addViewToBottomSheet(dragHandleView);
     shadowOf(accessibilityManager).setEnabled(true);
-    assertImportantForAccessibility(true);
     assertThat(dragHandleView.isClickable()).isTrue();
   }
 
@@ -208,7 +234,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    dragHandleView.performAccessibilityAction(ACTION_EXPAND.getId(), /* args= */ null);
+    dragHandleView.performAccessibilityAction(ACTION_EXPAND.getId(), /* arguments= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -225,7 +251,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    dragHandleView.performAccessibilityAction(getHalfExpandActionId(), /* args= */ null);
+    dragHandleView.performAccessibilityAction(getHalfExpandActionId(), /* arguments= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -241,7 +267,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    dragHandleView.performAccessibilityAction(ACTION_COLLAPSE.getId(), /* args= */ null);
+    dragHandleView.performAccessibilityAction(ACTION_COLLAPSE.getId(), /* arguments= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -258,7 +284,7 @@ public class BottomSheetDragHandleTest {
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
-    dragHandleView.performAccessibilityAction(ACTION_DISMISS.getId(), /* args= */ null);
+    dragHandleView.performAccessibilityAction(ACTION_DISMISS.getId(), /* arguments= */ null);
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 

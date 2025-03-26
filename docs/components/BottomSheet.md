@@ -233,13 +233,14 @@ The contents within a bottom sheet should follow their own accessibility
 guidelines, such as setting content descriptions for images.
 
 To support dragging bottom sheets with accessibility services such as TalkBack,
-Voice Access, Switch Access, etc., we provide a convenient widget
-`BottomSheetDragHandleView` which will automatically receive and handle
+Voice Access, Switch Access, etc., we provide a convenient widget,
+`BottomSheetDragHandleView`, which will automatically receive and handle
 accessibility commands to expand and collapse the attached bottom sheet when
-the accessibility mode is enabled. To use `BottomSheetDragHandleView`, you can
-add it to the top of your bottom sheet content. It will show a customizable
-visual indicator for all users. See the example in the below section for how to
-add a drag handle to your bottom sheet.
+the accessibility mode is enabled. The handle also supports tapping to cycle
+through expanded and collapsed states as well as double tapping to hide. To
+use`BottomSheetDragHandleView`, you can add it to the top of your bottom sheet
+content. It will show a customizable visual indicator for all users. See the
+example in the below section for how to add a drag handle to your bottom sheet.
 
 **Note:** `BottomSheetDragHandleView` has a default min width and height of 48dp
 to conform to the minimum touch target requirement. So you will need to preserve
