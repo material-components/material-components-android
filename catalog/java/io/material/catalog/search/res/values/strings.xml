@@ -70,7 +70,7 @@
   <string name="cat_searchbar_recycler_title"
           description="Title for recycler view demo.[CHAR_LIMIT=100]">RecyclerView Demo</string>
   <string name="cat_searchbar_appbar_with_icons_title"
-          description="Title for SearchBar in an AppBarLayout with icons demo.[CHAR_LIMIT=NONE]">Searchar in AppBarLayout with Icons Demo</string>
+          description="Title for SearchBar in an AppBarLayout with icons demo.[CHAR_LIMIT=NONE]">SearchBar in AppBarLayout with Icons Demo</string>
   <string name="cat_searchbar_recycler_item_title_prefix"
           description="Title for recycler item.[CHAR_LIMIT=40]">Message</string>
 
