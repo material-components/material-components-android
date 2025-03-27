@@ -30,7 +30,7 @@
       android:layout_width="48dp"
       android:layout_height="48dp"
       android:layout_gravity="center"
-      style="?attr/materialIconButtonStyle"
+      style="@style/Widget.Material3.DockedToolbar.IconButton.Vibrant"
       android:contentDescription="@string/cat_docked_toolbar_left_arrow_button_description"
       app:icon="@drawable/ic_arrow_back_24px" />
   </FrameLayout>
@@ -59,7 +59,7 @@
       android:layout_width="48dp"
       android:layout_height="48dp"
       android:layout_gravity="center"
-      style="?attr/materialIconButtonStyle"
+      style="@style/Widget.Material3.DockedToolbar.IconButton.Vibrant"
       android:contentDescription="@string/cat_docked_toolbar_right_arrow_button_description"
       app:icon="@drawable/ic_arrow_forward_24px" />
   </FrameLayout>

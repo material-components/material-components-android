@@ -67,11 +67,11 @@
 
   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-<!-- TODO: b/393647677 - Update this toolbar styling to be vibrant once styles are ready -->
   <com.google.android.material.dockedtoolbar.DockedToolbarLayout
     android:id="@+id/docked_toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    style="?attr/dockedToolbarVibrantStyle"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent"
     app:paddingBottomSystemWindowInsets="true"

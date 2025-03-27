@@ -14,9 +14,11 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
-  <public name="dockedToolbarStyle" type="attr"/>
-  <public name="dockedToolbarVibrantStyle" type="attr"/>
-  <public name="Widget.Material3.DockedToolbar" type="style"/>
-  <public name="Widget.Material3.DockedToolbar.Vibrant" type="style"/>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Disabled state -->
+  <item android:color="@macro/m3_comp_toolbar_vibrant_vibrant_button_container_color" android:state_enabled="false"/>
+  <!-- Checkable, checked state -->
+  <item android:color="@macro/m3_comp_toolbar_vibrant_vibrant_selected_button_container_color" android:state_checkable="true" android:state_checked="true"/>
+  <!-- Default, Enabled state -->
+  <item android:color="@macro/m3_comp_toolbar_vibrant_vibrant_button_container_color"/>
+</selector>

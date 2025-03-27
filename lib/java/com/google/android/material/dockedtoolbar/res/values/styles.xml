@@ -26,7 +26,28 @@
     <item name="android:fitsSystemWindows">true</item>
   </style>
 
-  <!-- Style for Docked Toolbar. -->
+  <!-- Style for Standard Docked Toolbar. -->
   <style name="Widget.Material3.DockedToolbar" parent="Base.Widget.Material3.DockedToolbar"/>
+
+  <!-- Style for Vibrant Docked Toolbar. -->
+  <style name="Widget.Material3.DockedToolbar.Vibrant">
+    <item name="backgroundTint">@macro/m3_comp_toolbar_vibrant_vibrant_container_color</item>
+  </style>
+
+  <!-- Style for Icon Buttons in Docked Toolbar. -->
+
+  <style name="Widget.Material3.DockedToolbar.IconButton" parent="Widget.Material3Expressive.Button.IconButton">
+    <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
+    <item name="android:textColor">@color/m3_standard_toolbar_icon_button_text_color_selector</item>
+    <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>
+    <item name="rippleColor">@color/m3_standard_toolbar_icon_button_ripple_color_selector</item>
+  </style>
+
+  <style name="Widget.Material3.DockedToolbar.IconButton.Vibrant">
+    <item name="android:textColor">@color/m3_vibrant_toolbar_icon_button_text_color_selector</item>
+    <item name="backgroundTint">@color/m3_vibrant_toolbar_icon_button_container_color_selector</item>
+    <item name="iconTint">@color/m3_vibrant_toolbar_icon_button_icon_color_selector</item>
+    <item name="rippleColor">@color/m3_vibrant_toolbar_icon_button_ripple_color_selector</item>
+  </style>
 
 </resources>

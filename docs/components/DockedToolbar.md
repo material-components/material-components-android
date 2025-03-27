@@ -238,11 +238,20 @@ inset padding.
 
 #### Styles
 
-**Element**        | **Style**
------------------- | ------------------------------------------
+**Element**       | **Style**
+----------------- | ----------------------------------------
 **Default style** | `Widget.Material3.DockedToolbar`
+**Vibrant style** | `Widget.Material3.DockedToolbar.Vibrant`
 
-Default style theme attribute: `?attr/dockedToolbarStyle`
+Standard style theme attribute: `?attr/floatingToolbarStyle`
+Vibrant style theme attribute: `?attr/floatingToolbarVibrantStyle`
+
+The default style is the standard style.
+
+Docked Toolbar may also recommend styles for specific components for when they
+are inside of a docked toolbar. Currently, there are styles for icon buttons:
+`Widget.Material3.DockedToolbar.IconButton` and
+`Widget.Material3.DockedToolbar.IconButton.Vibrant`.
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dockedtoolbar/res/values/styles.xml) and

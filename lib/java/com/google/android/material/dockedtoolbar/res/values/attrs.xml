@@ -17,6 +17,7 @@
 <resources>
   <!-- Style to use for DockedToolbars in this theme. -->
   <attr name="dockedToolbarStyle" format="reference"/>
+  <attr name="dockedToolbarVibrantStyle" format="reference"/>
 
   <declare-styleable name="DockedToolbar">
     <!-- Color of the docked toolbar container. -->

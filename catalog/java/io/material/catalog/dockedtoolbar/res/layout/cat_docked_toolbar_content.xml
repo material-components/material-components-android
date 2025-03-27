@@ -30,9 +30,8 @@
       android:layout_width="48dp"
       android:layout_height="48dp"
       android:layout_gravity="center"
-      style="?attr/materialIconButtonStyle"
+      style="@style/Widget.Material3.DockedToolbar.IconButton"
       android:contentDescription="@string/cat_docked_toolbar_left_arrow_button_description"
-      app:iconTint="?attr/colorOnSecondaryContainer"
       app:icon="@drawable/ic_arrow_back_24px" />
   </FrameLayout>
 
@@ -45,9 +44,7 @@
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:layout_gravity="center"
-    style="?attr/materialIconButtonStyle"
-    app:iconTint="?attr/colorOnSecondaryContainer"
-
+    style="@style/Widget.Material3.DockedToolbar.IconButton"
     android:contentDescription="@string/cat_docked_toolbar_right_arrow_button_description"
     app:icon="@drawable/ic_arrow_forward_24px" />
   </FrameLayout>
@@ -80,9 +77,8 @@
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:layout_gravity="center"
-    app:iconTint="?attr/colorOnSecondaryContainer"
-
-    style="?attr/materialIconButtonStyle"
+    android:gravity="center"
+    style="@style/Widget.Material3.DockedToolbar.IconButton"
     android:contentDescription="@string/cat_docked_toolbar_tab_button_description"
     app:icon="@drawable/ic_tab_24px" />
   </FrameLayout>
@@ -96,9 +92,8 @@
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:layout_gravity="center"
-    app:iconTint="?attr/colorOnSecondaryContainer"
-
-    style="?attr/materialIconButtonStyle"
+    android:gravity="center"
+    style="@style/Widget.Material3.DockedToolbar.IconButton"
     android:contentDescription="@string/cat_docked_toolbar_overflow_button_description"
     app:icon="@drawable/abc_ic_menu_overflow_material" />
   </FrameLayout>

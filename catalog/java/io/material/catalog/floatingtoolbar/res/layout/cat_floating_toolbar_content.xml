@@ -17,14 +17,14 @@
   xmlns:app="http://schemas.android.com/apk/res-auto">
   <Button
     android:id="@+id/floating_toolbar_button_bold"
-    style="?attr/materialIconButtonStyle"
+    style="@style/Widget.Material3.FloatingToolbar.IconButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:checkable="true"
     android:contentDescription="@string/cat_floating_toolbar_button_bold_content_description"
     app:icon="@drawable/ic_format_bold_24px" />
   <Button
-    style="?attr/materialIconButtonStyle"
+    style="@style/Widget.Material3.FloatingToolbar.IconButton"
     android:id="@+id/floating_toolbar_button_italic"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
     android:contentDescription="@string/cat_floating_toolbar_button_italic_content_description"
     app:icon="@drawable/ic_format_italic_24px" />
   <Button
-    style="?attr/materialIconButtonStyle"
+    style="@style/Widget.Material3.FloatingToolbar.IconButton"
     android:id="@+id/floating_toolbar_button_underlined"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -40,14 +40,14 @@
     android:contentDescription="@string/cat_floating_toolbar_button_underlined_content_description"
     app:icon="@drawable/ic_format_underlined_24px" />
   <Button
-    style="?attr/materialIconButtonStyle"
+    style="@style/Widget.Material3.FloatingToolbar.IconButton"
     android:id="@+id/floating_toolbar_button_color_text"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:contentDescription="@string/cat_floating_toolbar_button_color_text_content_description"
     app:icon="@drawable/ic_format_color_text_24px" />
   <Button
-    style="?attr/materialIconButtonStyle"
+    style="@style/Widget.Material3.FloatingToolbar.IconButton"
     android:id="@+id/floating_toolbar_button_color_fill"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
