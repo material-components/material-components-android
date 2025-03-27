@@ -70,10 +70,10 @@ public class SearchFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
-        new Demo(R.string.cat_searchbar_outside_icon_title) {
+        new Demo(R.string.cat_searchbar_appbar_with_icons_title) {
           @Override
           public Intent createActivityIntent() {
-            return new Intent(getContext(), SearchBarWithOutsideIconsDemoActivity.class);
+            return new Intent(getContext(), SearchBarWithAppBarIconsDemoActivity.class);
           }
         });
     return additionalDemos;

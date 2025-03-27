@@ -111,7 +111,7 @@
       android:windowSoftInputMode="adjustNothing"
       android:exported="true" />
     <activity
-      android:name="io.material.catalog.search.SearchBarWithOutsideIconsDemoActivity"
+      android:name="io.material.catalog.search.SearchBarWithAppBarIconsDemoActivity"
       android:windowSoftInputMode="adjustNothing"
       android:exported="true" />
   </application>

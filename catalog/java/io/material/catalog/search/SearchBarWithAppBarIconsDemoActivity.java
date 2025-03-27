@@ -18,6 +18,8 @@ package io.material.catalog.search;
 
 import io.material.catalog.R;
 
+import static io.material.catalog.search.SearchDemoUtils.showSnackbar;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,12 +27,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
 import io.material.catalog.feature.DemoActivity;
 
-/** An activity that displays a Searchbar in an Appbar with outside icons demo. */
-public class SearchBarWithOutsideIconsDemoActivity extends DemoActivity {
+/** An activity that displays a SearchBar in an AppBar with outside icons demo. */
+public class SearchBarWithAppBarIconsDemoActivity extends DemoActivity {
 
   @Nullable
   @Override
@@ -44,6 +47,19 @@ public class SearchBarWithOutsideIconsDemoActivity extends DemoActivity {
     SearchView searchView = view.findViewById(R.id.cat_search_view);
     LinearLayout suggestionContainer = view.findViewById(R.id.cat_search_view_suggestion_container);
 
+    MaterialSwitch menuSwitch = view.findViewById(R.id.cat_search_bar_menu_switch);
+    menuSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+      if (isChecked) {
+        searchBar.inflateMenu(R.menu.cat_searchview_menu);
+        searchBar.setOnMenuItemClickListener(
+            menuItem -> {
+              showSnackbar(SearchBarWithAppBarIconsDemoActivity.this, menuItem);
+              return true;
+            });
+      } else {
+        searchBar.getMenu().clear();
+      }
+    });
     searchView.setupWithSearchBar(searchBar);
     SearchDemoUtils.setUpSearchView(this, searchBar, searchView);
     SearchDemoUtils.setUpSuggestions(suggestionContainer, searchBar, searchView);
