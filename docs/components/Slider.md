@@ -295,6 +295,7 @@ slider also has tick marks.
 | Element                                    | Attribute                    | Related method(s)                                           | Default value                        |
 |--------------------------------------------|------------------------------|-------------------------------------------------------------|--------------------------------------|
 | **Orientation**                            | `android:orientation`        | `setOrientation`<br/>`isVertical`                           | `horizontal`                         |
+| **Centered**                               | `android:centered`           | `setCentered`<br/>`isCentered`                              | `false`                              |
 | **Min value**                              | `android:valueFrom`          | `setValueFrom`<br/>`getValueFrom`                           | N/A                                  |
 | **Max value**                              | `android:valueTo`            | `setValueTo`<br/>`getValueTo`                               | N/A                                  |
 | **Step size (discrete)**                   | `android:stepSize`           | `setStepSize`<br/>`getStepSize`                             | N/A                                  |

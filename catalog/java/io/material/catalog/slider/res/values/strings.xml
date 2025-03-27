@@ -18,6 +18,7 @@
   <string name="cat_slider_title" description="Title for the screen that showcases demonstrative usages of the Slider widget [CHAR LIMIT=NONE]">Slider</string>
   <string name="cat_slider_demo_continuous_title" description="Title for the continuous Slider widget demo [CHAR LIMIT=NONE]">Continuous Slider demo</string>
   <string name="cat_slider_demo_discrete_title" description="Title for the discrete Slider widget demo [CHAR LIMIT=NONE]">Discrete Slider demo</string>
+  <string name="cat_slider_demo_centered_title" description="Title for the centered Slider widget demo [CHAR LIMIT=NONE]">Centered Slider demo</string>
   <string name="cat_slider_demo_scroll_container_title" description="Title for the Slider inside scrolling container demo [CHAR LIMIT=NONE]">Slider in scrolling container demo</string>
   <string name="cat_slider_demo_label_behavior_title" description="Title for the Slider with different label behaviors demo [CHAR LIMIT=NONE]">Slider label behavior demo</string>
   <string name="cat_slider_demo_corner_title" description="Title for the Slider with different corner sizes demo [CHAR LIMIT=NONE]">Slider custom corners demo</string>

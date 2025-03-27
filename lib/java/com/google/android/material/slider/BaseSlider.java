@@ -343,6 +343,7 @@ abstract class BaseSlider<
   private int trackStopIndicatorSize;
   private int trackCornerSize;
   private int trackInsideCornerSize;
+  private boolean centered = false;
   @Nullable private Drawable trackIconActiveStart;
   private boolean trackIconActiveStartMutated = false;
   @Nullable private Drawable trackIconActiveEnd;
@@ -542,6 +543,7 @@ abstract class BaseSlider<
     valueFrom = a.getFloat(R.styleable.Slider_android_valueFrom, 0.0f);
     valueTo = a.getFloat(R.styleable.Slider_android_valueTo, 1.0f);
     setValues(valueFrom);
+    setCentered(a.getBoolean(R.styleable.Slider_centered, false));
     stepSize = a.getFloat(R.styleable.Slider_android_stepSize, 0.0f);
 
     float defaultMinTouchTargetSize =
@@ -2396,6 +2398,30 @@ abstract class BaseSlider<
     updateWidgetLayout(true);
   }
 
+  /**
+   * Sets the slider to be in centered configuration, meaning the starting value is positioned in
+   * the middle of the slider.
+   *
+   * @param isCentered boolean to use for the slider's centered configuration.
+   * @attr ref com.google.android.material.R.styleable#Slider_centered
+   * @see #isCentered()
+   */
+  public void setCentered(boolean isCentered) {
+    if (this.centered == isCentered) {
+      return;
+    }
+    this.centered = isCentered;
+
+    // if centered, the default value is at the center
+    if (isCentered) {
+      setValues((valueFrom + valueTo) / 2f);
+    } else {
+      setValues(valueFrom);
+    }
+
+    updateWidgetLayout(true);
+  }
+
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
@@ -2562,7 +2588,9 @@ abstract class BaseSlider<
     int yCenter = calculateTrackCenter();
 
     drawInactiveTracks(canvas, trackWidth, yCenter);
-    drawActiveTracks(canvas, trackWidth, yCenter);
+    if (!isCentered()) {
+      drawActiveTracks(canvas, trackWidth, yCenter);
+    }
 
     if (isRtl() || isVertical()) {
       drawTrackIcons(canvas, activeTrackRect, inactiveTrackLeftRect);
@@ -2592,55 +2620,53 @@ abstract class BaseSlider<
     float left = normalizeValue(values.size() == 1 ? valueFrom : min);
     float right = normalizeValue(max);
 
+    // When centered, there is no active range, left == right in order to draw the inactive track on
+    // both sides of the thumb leaving space for it, covering the entirety of the track.
+    if (isCentered()) {
+      left = right;
+    }
+
     // In RTL we draw things in reverse, so swap the left and right range values
     return isRtl() || isVertical() ? new float[] {right, left} : new float[] {left, right};
   }
 
   private void drawInactiveTracks(@NonNull Canvas canvas, int width, int yCenter) {
-    populateInactiveTrackRightRect(width, yCenter);
-    updateTrack(
-        canvas,
-        inactiveTrackPaint,
-        inactiveTrackRightRect,
-        getTrackCornerSize(),
-        FullCornerDirection.RIGHT);
+    float[] activeRange = getActiveRange();
+    float top = yCenter - trackThickness / 2f;
+    float bottom = yCenter + trackThickness / 2f;
 
-    // Also draw inactive track to the left if there is any
-    populateInactiveTrackLeftRect(width, yCenter);
-    updateTrack(
+    drawInactiveTrackSection(
+        trackSidePadding - getTrackCornerSize(),
+        trackSidePadding + activeRange[0] * width - thumbTrackGapSize,
+        top,
+        bottom,
         canvas,
-        inactiveTrackPaint,
         inactiveTrackLeftRect,
-        getTrackCornerSize(),
         FullCornerDirection.LEFT);
+    drawInactiveTrackSection(
+        trackSidePadding + activeRange[1] * width + thumbTrackGapSize,
+        trackSidePadding + width + getTrackCornerSize(),
+        top,
+        bottom,
+        canvas,
+        inactiveTrackRightRect,
+        FullCornerDirection.RIGHT);
   }
 
-  private void populateInactiveTrackRightRect(int width, int yCenter) {
-    float[] activeRange = getActiveRange();
-    float right = trackSidePadding + activeRange[1] * width;
-    if (right < trackSidePadding + width) {
-      inactiveTrackRightRect.set(
-          right + thumbTrackGapSize,
-          yCenter - trackThickness / 2f,
-          trackSidePadding + width + getTrackCornerSize(),
-          yCenter + trackThickness / 2f);
+  private void drawInactiveTrackSection(
+      float from,
+      float to,
+      float top,
+      float bottom,
+      @NonNull Canvas canvas,
+      RectF rect,
+      FullCornerDirection direction) {
+    if (to - from > getTrackCornerSize() - thumbTrackGapSize) {
+      rect.set(from, top, to, bottom);
     } else {
-      inactiveTrackRightRect.setEmpty();
+      rect.setEmpty();
     }
-  }
-
-  private void populateInactiveTrackLeftRect(int width, int yCenter) {
-    float[] activeRange = getActiveRange();
-    float left = trackSidePadding + activeRange[0] * width;
-    if (left > trackSidePadding) {
-      inactiveTrackLeftRect.set(
-          trackSidePadding - getTrackCornerSize(),
-          yCenter - trackThickness / 2f,
-          left - thumbTrackGapSize,
-          yCenter + trackThickness / 2f);
-    } else {
-      inactiveTrackLeftRect.setEmpty();
-    }
+    updateTrack(canvas, inactiveTrackPaint, rect, getTrackCornerSize(), direction);
   }
 
   /**
@@ -2923,26 +2949,41 @@ abstract class BaseSlider<
 
     // Draw ticks on the left inactive track (if any).
     if (leftActiveTickIndex > 0) {
-      canvas.drawPoints(ticksCoordinates, 0, leftActiveTickIndex * 2, inactiveTicksPaint);
+      drawTicks(0, leftActiveTickIndex * 2, canvas, inactiveTicksPaint);
     }
 
     // Draw ticks on the active track (if any).
     if (leftActiveTickIndex <= rightActiveTickIndex) {
-      canvas.drawPoints(
-          ticksCoordinates,
+      drawTicks(
           leftActiveTickIndex * 2,
-          (rightActiveTickIndex - leftActiveTickIndex + 1) * 2,
-          activeTicksPaint);
+          (rightActiveTickIndex + 1) * 2,
+          canvas,
+          isCentered() ? inactiveTicksPaint : activeTicksPaint); // centered uses inactive color.
     }
 
     // Draw ticks on the right inactive track (if any).
     if ((rightActiveTickIndex + 1) * 2 < ticksCoordinates.length) {
-      canvas.drawPoints(
-          ticksCoordinates,
-          (rightActiveTickIndex + 1) * 2,
-          ticksCoordinates.length - (rightActiveTickIndex + 1) * 2,
-          inactiveTicksPaint);
+      drawTicks(
+          (rightActiveTickIndex + 1) * 2, ticksCoordinates.length, canvas, inactiveTicksPaint);
     }
+  }
+
+  private void drawTicks(int from, int to, Canvas canvas, Paint paint) {
+    for (int i = from; i < to; i += 2) {
+      if (isOverlappingThumb(ticksCoordinates[i])) {
+        continue;
+      }
+      canvas.drawPoint(ticksCoordinates[i], ticksCoordinates[i + 1], paint);
+    }
+  }
+
+  private boolean isOverlappingThumb(float tickCoordinate) {
+    float threshold = thumbTrackGapSize + thumbWidth / 2f;
+    for (float value : values) {
+      float valueToX = valueToX(value);
+      return tickCoordinate >= valueToX - threshold && tickCoordinate <= valueToX + threshold;
+    }
+    return false;
   }
 
   private void maybeDrawStopIndicator(@NonNull Canvas canvas, int yCenter) {
@@ -2954,13 +2995,25 @@ abstract class BaseSlider<
     if (values.get(values.size() - 1) < valueTo) {
       drawStopIndicator(canvas, valueToX(valueTo), yCenter);
     }
-    // Multiple thumbs, inactive track may be visible at the start.
-    if (values.size() > 1 && values.get(0) > valueFrom) {
+    // Centered, multiple thumbs, inactive track may be visible at the start.
+    if (isCentered() || (values.size() > 1 && values.get(0) > valueFrom)) {
       drawStopIndicator(canvas, valueToX(valueFrom), yCenter);
+    }
+    // Centered, draw indicator in the middle of the track.
+    if (isCentered()) {
+      drawStopIndicator(canvas, (valueToX(valueTo) + valueToX(valueFrom)) / 2f, yCenter);
     }
   }
 
   private void drawStopIndicator(@NonNull Canvas canvas, float x, float y) {
+    // Prevent drawing indicator on the thumbs.
+    for (float value : values) {
+      float valueToX = valueToX(value);
+      float threshold = thumbTrackGapSize + thumbWidth / 2f;
+      if (x >= valueToX - threshold && x <= valueToX + threshold) {
+        return;
+      }
+    }
     if (isVertical()) {
       canvas.drawPoint(y, x, stopIndicatorPaint);
     } else {
@@ -3751,8 +3804,12 @@ abstract class BaseSlider<
     return getLayoutDirection() == View.LAYOUT_DIRECTION_RTL;
   }
 
-  final boolean isVertical() {
+  public boolean isVertical() {
     return widgetOrientation == VERTICAL;
+  }
+
+  public boolean isCentered() {
+    return centered;
   }
 
   /**
