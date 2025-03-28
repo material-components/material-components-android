@@ -418,11 +418,20 @@ public class SearchBar extends Toolbar {
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
 
-    layoutCenterView();
+    if (centerView != null) {
+      layoutViewInCenter(centerView);
+    }
     setHandwritingBoundsInsets();
-    // If after laying out, there's not enough space between the textview and the start of
-    // the searchbar, we add a margin.
     if (textView != null) {
+      // If the text is centered, we need to re-layout the textview in the center explicitly instead
+      // of using View gravities because a custom center view in the Toolbar will cause the textview
+      // to be pushed to the side. In this case, we want the textview to be still centered on top of
+      // any center views.
+      if (textCentered) {
+        layoutViewInCenter(textView);
+      }
+      // If after laying out, there's not enough space between the textview and the start of
+      // the SearchBar, we add a margin.
       Toolbar.LayoutParams lp = (LayoutParams) textView.getLayoutParams();
       int currentMargin = lp.getMarginStart();
       int newMargin = getNewMargin(currentMargin);
@@ -580,20 +589,20 @@ public class SearchBar extends Toolbar {
     }
   }
 
-  private void layoutCenterView() {
-    if (centerView == null) {
+  private void layoutViewInCenter(View view) {
+    if (view == null) {
       return;
     }
 
-    int centerViewWidth = centerView.getMeasuredWidth();
-    int left = getMeasuredWidth() / 2 - centerViewWidth / 2;
-    int right = left + centerViewWidth;
+    int viewWidth = view.getMeasuredWidth();
+    int left = getMeasuredWidth() / 2 - viewWidth / 2;
+    int right = left + viewWidth;
 
-    int centerViewHeight = centerView.getMeasuredHeight();
-    int top = getMeasuredHeight() / 2 - centerViewHeight / 2;
-    int bottom = top + centerViewHeight;
+    int viewHeight = view.getMeasuredHeight();
+    int top = getMeasuredHeight() / 2 - viewHeight / 2;
+    int bottom = top + viewHeight;
 
-    layoutChild(centerView, left, top, right, bottom);
+    layoutChild(view, left, top, right, bottom);
   }
 
   private void layoutChild(View child, int left, int top, int right, int bottom) {
@@ -678,10 +687,8 @@ public class SearchBar extends Toolbar {
     Toolbar.LayoutParams lp = (LayoutParams) textView.getLayoutParams();
     if (textCentered) {
       textView.setGravity(Gravity.CENTER_HORIZONTAL);
-      lp.gravity = Gravity.CENTER_HORIZONTAL;
     } else {
       textView.setGravity(Gravity.NO_GRAVITY);
-      lp.gravity = Gravity.NO_GRAVITY;
     }
     textView.setLayoutParams(lp);
   }
