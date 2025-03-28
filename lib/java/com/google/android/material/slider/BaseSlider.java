@@ -67,6 +67,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.appcompat.content.res.AppCompatResources;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -4149,8 +4150,13 @@ abstract class BaseSlider<
       if (values.size() > 1) {
         verbalValueType = startOrEndDescription(virtualViewId);
       }
-      contentDescription.append(
-          String.format(Locale.getDefault(), "%s, %s", verbalValueType, verbalValue));
+      CharSequence stateDescription = ViewCompat.getStateDescription(slider);
+      if (!TextUtils.isEmpty(stateDescription)) {
+        info.setStateDescription(stateDescription);
+      } else {
+        contentDescription.append(
+            String.format(Locale.getDefault(), "%s, %s", verbalValueType, verbalValue));
+      }
       info.setContentDescription(contentDescription.toString());
 
       slider.updateBoundsForVirtualViewId(virtualViewId, virtualViewBounds);
