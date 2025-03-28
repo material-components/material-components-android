@@ -35,6 +35,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityManager.AccessibilityStateChangeListener;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -51,8 +53,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
  * clickable. Clicking the drag handle will toggle the bottom sheet between its collapsed and
  * expanded states.
  */
-public class BottomSheetDragHandleView extends AppCompatImageView {
+public class BottomSheetDragHandleView extends AppCompatImageView implements
+    AccessibilityStateChangeListener {
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_BottomSheet_DragHandle;
+
+  @Nullable private final AccessibilityManager accessibilityManager;
 
   @Nullable private BottomSheetBehavior<?> bottomSheetBehavior;
 
@@ -134,6 +139,9 @@ public class BottomSheetDragHandleView extends AppCompatImageView {
     gestureDetector =
         new GestureDetector(context, gestureListener, new Handler(Looper.getMainLooper()));
 
+    accessibilityManager =
+        (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+
     ViewCompat.setAccessibilityDelegate(
         this,
         new AccessibilityDelegateCompat() {
@@ -151,10 +159,17 @@ public class BottomSheetDragHandleView extends AppCompatImageView {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     setBottomSheetBehavior(findParentBottomSheetBehavior());
+    if (accessibilityManager != null) {
+      accessibilityManager.addAccessibilityStateChangeListener(this);
+      onAccessibilityStateChanged(accessibilityManager.isEnabled());
+    }
   }
 
   @Override
   protected void onDetachedFromWindow() {
+    if (accessibilityManager != null) {
+      accessibilityManager.removeAccessibilityStateChangeListener(this);
+    }
     setBottomSheetBehavior(null);
     super.onDetachedFromWindow();
   }
@@ -181,6 +196,11 @@ public class BottomSheetDragHandleView extends AppCompatImageView {
   public void setOnClickListener(@Nullable OnClickListener l) {
     hasClickListener = l != null;
     super.setOnClickListener(l);
+  }
+
+  @Override
+  public void onAccessibilityStateChanged(boolean enabled) {
+    // Do nothing.
   }
 
   private void setBottomSheetBehavior(@Nullable BottomSheetBehavior<?> behavior) {
