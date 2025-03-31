@@ -50,6 +50,7 @@
         android:id="@+id/cat_search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:maxWidth="@null"
         android:hint="@string/cat_searchbar_hint">
     </com.google.android.material.search.SearchBar>
   </com.google.android.material.appbar.AppBarLayout>
