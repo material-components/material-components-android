@@ -578,12 +578,20 @@ class SearchViewAnimationHelper {
       textView.getPaint().getTextBounds(text, 0, text.length(), bounds);
       additionalMovement = max(0, searchBar.getTextView().getMeasuredWidth() / 2 - bounds.width() / 2);
     }
+    int[] searchBarTextViewLoc = new int[2];
+    searchBar.getTextView().getLocationOnScreen(searchBarTextViewLoc);
+    int[] searchBarLoc = new int[2];
+    searchBar.getLocationOnScreen(searchBarLoc);
+    int[] searchViewToolbarLoc = new int[2];
+    searchView.getToolbar().getLocationOnScreen(searchViewToolbarLoc);
+
     int startX =
-        searchBar.getTextView().getLeft()
+        searchBarTextViewLoc[0]
+            - searchViewToolbarLoc[0]
             + additionalMovement
-            + searchBar.getLeft()
             - (v.getLeft() + textContainer.getLeft());
-    return getTranslationAnimator(show, v, startX, getFromTranslationY());
+    return getTranslationAnimator(
+        show, v, startX, getFromTranslationY(searchBarLoc[1] - searchViewToolbarLoc[1]));
   }
 
   private Animator getContentAnimator(boolean show) {
@@ -659,14 +667,19 @@ class SearchViewAnimationHelper {
         : searchBar.getRight() - searchView.getWidth() + marginEnd;
   }
 
+  private int getFromTranslationY(int searchBarViewVerticalDistance) {
+    return searchBarViewVerticalDistance
+        + searchBar.getMeasuredHeight() / 2
+        - toolbarContainer.getMeasuredHeight() / 2;
+  }
+
   private int getFromTranslationY() {
-    int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getMeasuredHeight() / 2;
-    int parentTop = searchBar.getParent() != null ? ((View) searchBar.getParent()).getTop() : 0;
-    int searchBarMiddleY =
-        searchBar.getTop()
-            + parentTop
-            + searchBar.getMeasuredHeight() / 2;
-    return searchBarMiddleY - toolbarMiddleY;
+    int[] searchBarLoc = new int[2];
+    searchBar.getLocationOnScreen(searchBarLoc);
+    int[] searchViewToolbarLoc = new int[2];
+    searchView.getToolbar().getLocationOnScreen(searchViewToolbarLoc);
+
+    return getFromTranslationY(searchBarLoc[1] - searchViewToolbarLoc[1]);
   }
 
   private void setUpDummyToolbarIfNeeded() {

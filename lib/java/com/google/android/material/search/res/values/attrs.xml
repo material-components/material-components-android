@@ -65,12 +65,14 @@
     <!-- Width of the SearchBar outline stroke. -->
     <attr name="strokeWidth"/>
     <!-- Whether the text corresponding to the `android:text` attribute or `android:hint` attribute
-         should be centered horizontally within the searchbar. Default is false.-->
+         should be centered horizontally within the SearchBar. Default is false.-->
     <attr name="textCentered" format="boolean"/>
-    <!-- Whether or not the search bar is lifted when a parent AppBarLayout is lifted when scrolling. -->
+    <!-- Whether or not the SearchBar is lifted when a parent AppBarLayout is lifted when scrolling. -->
     <attr name="liftOnScroll"/>
-    <!-- The color of the search bar when lifted. If null, the search bar color will not change.  -->
+    <!-- The color of the SearchBar when lifted. If null, the search bar color will not change.  -->
     <attr name="liftOnScrollColor"/>
+    <!-- The max width the SearchBar can be. If the SearchBar width is set explicitly, it will ignore this value. -->
+    <attr name="android:maxWidth"/>
   </declare-styleable>
 
   <declare-styleable name="SearchView">

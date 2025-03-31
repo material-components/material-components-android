@@ -56,6 +56,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
@@ -154,6 +155,7 @@ public class SearchBar extends Toolbar {
   private boolean defaultScrollFlagsEnabled;
   private MaterialShapeDrawable backgroundShape;
   private boolean textCentered;
+  private int maxWidth;
 
   private final LiftOnScrollProgressListener liftColorListener =
       new LiftOnScrollProgressListener() {
@@ -215,6 +217,7 @@ public class SearchBar extends Toolbar {
     int strokeColor = a.getColor(R.styleable.SearchBar_strokeColor, Color.TRANSPARENT);
     textCentered = a.getBoolean(R.styleable.SearchBar_textCentered, false);
     liftOnScroll = a.getBoolean(R.styleable.SearchBar_liftOnScroll, false);
+    maxWidth = a.getDimensionPixelSize(R.styleable.SearchBar_android_maxWidth, -1);
 
     a.recycle();
 
@@ -409,6 +412,10 @@ public class SearchBar extends Toolbar {
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    if (maxWidth >= 0 && maxWidth < MeasureSpec.getSize(widthMeasureSpec)) {
+      int measureMode = MeasureSpec.getMode(widthMeasureSpec);
+      widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, measureMode);
+    }
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
     measureCenterView(widthMeasureSpec, heightMeasureSpec);
@@ -935,6 +942,20 @@ public class SearchBar extends Toolbar {
 
   float getCompatElevation() {
     return backgroundShape != null ? backgroundShape.getElevation() : getElevation();
+  }
+
+  /** Sets the max width of SearchBar in pixels. **/
+  public void setMaxWidth(@Px int maxWidth) {
+    if (this.maxWidth != maxWidth) {
+      this.maxWidth = maxWidth;
+      requestLayout();
+    }
+  }
+
+  /** Get the max width of SearchBar in pixels. **/
+  @Px
+  public int getMaxWidth() {
+    return maxWidth;
   }
 
   /** Behavior that sets up the scroll-away mode for an {@link SearchBar}. */

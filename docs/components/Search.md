@@ -101,6 +101,7 @@ The following attributes can be changed for `SearchBar`:
 
 Element                      | Attribute                   | Related method(s)                           | Default value
 ---------------------------- | --------------------------- | ------------------------------------------- | -------------
+**Max Width**                | `android:maxWidth`          | `setMaxWidth`<br/>`getMaxWidth`             | `-1` (unset)
 **Min height**               | `android:minHeight`         | `setMinHeight`<br/>`getMinHeight`           | `@dimen/m3_searchbar_height`
 **Search text appearance**   | `android:textAppearance`    | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
 **Search text**              | `android:text`              | `setText`<br/>`getText`                     | `null`
