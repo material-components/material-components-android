@@ -138,10 +138,12 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
               View host, AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
             info.setContentDescription(
-                host.getResources()
-                    .getString(
-                        time.getHourContentDescriptionResId(),
-                        String.valueOf(time.getHourForDisplay())));
+                res.getString(R.string.material_timepicker_hour)
+                    + " " // Adds a pause between the hour label and the hour value.
+                    + host.getResources()
+                        .getString(
+                            time.getHourContentDescriptionResId(),
+                            String.valueOf(time.getHourForDisplay())));
           }
         });
     minuteTextInput.setChipDelegate(
@@ -151,8 +153,10 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
               View host, AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
             info.setContentDescription(
-                host.getResources()
-                    .getString(R.string.material_minute_suffix, String.valueOf(time.minute)));
+                res.getString(R.string.material_timepicker_minute)
+                    + " " // Adds a pause between the minute label and the minute value.
+                    + host.getResources()
+                        .getString(R.string.material_minute_suffix, String.valueOf(time.minute)));
           }
         });
 
