@@ -75,14 +75,17 @@ attribute `?attr/shapeCornerFamily`. See the section below for more details.
 Theme attributes can be set at the theme level to change the shape values that
 components use to set their shapes.
 
-Attribute Name                    | Description                                                                 | Default Value
---------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------
-`shapeCornerFamily`               | The corner family for all shape appearance styles                           | `rounded`
-`shapeAppearanceCornerExtraSmall` | The style reference that contains shape appearance with extra small corners | `ShapeAppearance.Material3.Corner.ExtraSmall`
-`shapeAppearanceCornerSmall`      | The style reference that contains shape appearance with small corners       | `ShapeAppearance.Material3.Corner.Small`
-`shapeAppearanceCornerMedium`     | The style reference that contains shape appearance with medium corners      | `ShapeAppearance.Material3.Corner.Medium`
-`shapeAppearanceCornerLarge`      | The style reference that contains shape appearance with large corners       | `ShapeAppearance.Material3.Corner.Large`
-`shapeAppearanceCornerExtraLarge` | The style reference that contains shape appearance with extra large corners | `ShapeAppearance.Material3.Corner.ExtraLarge`
+Attribute Name                             | Description                                                                                    | Default Value
+------------------------------------------ | ---------------------------------------------------------------------------------------------- | -------------
+`shapeCornerFamily`                        | The corner family for all shape appearance styles                                              | `rounded`
+`shapeAppearanceCornerExtraSmall`          | The style reference that contains shape appearance with extra small corners                    | `ShapeAppearance.Material3.Corner.ExtraSmall`
+`shapeAppearanceCornerSmall`               | The style reference that contains shape appearance with small corners                          | `ShapeAppearance.Material3.Corner.Small`
+`shapeAppearanceCornerMedium`              | The style reference that contains shape appearance with medium corners                         | `ShapeAppearance.Material3.Corner.Medium`
+`shapeAppearanceCornerLarge`               | The style reference that contains shape appearance with large corners                          | `ShapeAppearance.Material3.Corner.Large`
+`shapeAppearanceCornerLargeIncreased`      | The style reference that contains shape appearance with slightly increased large corners       | `ShapeAppearance.Material3.Corner.LargeIncreased`
+`shapeAppearanceCornerExtraLarge`          | The style reference that contains shape appearance with extra large corners                    | `ShapeAppearance.Material3.Corner.ExtraLarge`
+`shapeAppearanceCornerExtraLargeIncreased` | The style reference that contains shape appearance with slightly increased extra large corners | `ShapeAppearance.Material3.Corner.ExtraLargeIncreased`
+`shapeAppearanceCornerExtraExtraLarge`     | The style reference that contains shape appearance with extra extra large corners              | `ShapeAppearance.Material3.Corner.ExtraExtraLarge`
 
 ### Corner family and corner sizes
 
