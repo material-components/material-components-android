@@ -156,6 +156,7 @@ public class SearchBar extends Toolbar {
   private MaterialShapeDrawable backgroundShape;
   private boolean textCentered;
   private int maxWidth;
+  @Nullable private ActionMenuView menuView;
 
   private final LiftOnScrollProgressListener liftColorListener =
       new LiftOnScrollProgressListener() {
@@ -426,7 +427,7 @@ public class SearchBar extends Toolbar {
     super.onLayout(changed, left, top, right, bottom);
 
     if (centerView != null) {
-      layoutViewInCenter(centerView);
+      layoutViewInCenter(centerView, /* overlapMenu= */ true);
     }
     setHandwritingBoundsInsets();
     if (textView != null) {
@@ -435,7 +436,7 @@ public class SearchBar extends Toolbar {
       // to be pushed to the side. In this case, we want the textview to be still centered on top of
       // any center views.
       if (textCentered) {
-        layoutViewInCenter(textView);
+        layoutViewInCenter(textView, /* overlapMenu= */ false);
       }
       // If after laying out, there's not enough space between the textview and the start of
       // the SearchBar, we add a margin.
@@ -596,7 +597,22 @@ public class SearchBar extends Toolbar {
     }
   }
 
-  private void layoutViewInCenter(View view) {
+  @Nullable
+  private ActionMenuView findOrGetMenuView() {
+    if (menuView == null) {
+      menuView = ToolbarUtils.getActionMenuView(this);
+    }
+    return menuView;
+  }
+
+  /**
+   * Lays out the given view in the center of the {@link SearchBar}.
+   *
+   * @param view The view to layout in the center.
+   * @param overlapMenu Whether the view can overlap the menu. This should be true if your centered
+   *     view should be absolute (eg. a product logo)
+   */
+  private void layoutViewInCenter(View view, boolean overlapMenu) {
     if (view == null) {
       return;
     }
@@ -604,6 +620,17 @@ public class SearchBar extends Toolbar {
     int viewWidth = view.getMeasuredWidth();
     int left = getMeasuredWidth() / 2 - viewWidth / 2;
     int right = left + viewWidth;
+    if (!overlapMenu) {
+      View menuView = findOrGetMenuView();
+      if (menuView != null) {
+        int diff =
+            getLayoutDirection() == LAYOUT_DIRECTION_RTL
+                ? max(menuView.getRight() - left, 0)
+                : max(right - menuView.getLeft(), 0);
+        left -= diff;
+        right -= diff;
+      }
+    }
 
     int viewHeight = view.getMeasuredHeight();
     int top = getMeasuredHeight() / 2 - viewHeight / 2;
