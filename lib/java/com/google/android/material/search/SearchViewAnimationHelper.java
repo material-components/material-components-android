@@ -34,6 +34,7 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -574,24 +575,34 @@ class SearchViewAnimationHelper {
         && textView.getHint() != textView.getText()) {
       String text = textView.getText().toString();
       Rect bounds = new Rect();
-
       textView.getPaint().getTextBounds(text, 0, text.length(), bounds);
       additionalMovement = max(0, searchBar.getTextView().getMeasuredWidth() / 2 - bounds.width() / 2);
     }
-    int[] searchBarTextViewLoc = new int[2];
-    searchBar.getTextView().getLocationOnScreen(searchBarTextViewLoc);
-    int[] searchBarLoc = new int[2];
-    searchBar.getLocationOnScreen(searchBarLoc);
-    int[] searchViewToolbarLoc = new int[2];
-    searchView.getToolbar().getLocationOnScreen(searchViewToolbarLoc);
-
     int startX =
-        searchBarTextViewLoc[0]
-            - searchViewToolbarLoc[0]
+        getViewLeftFromSearchViewParent(searchBar.getTextView())
             + additionalMovement
             - (v.getLeft() + textContainer.getLeft());
-    return getTranslationAnimator(
-        show, v, startX, getFromTranslationY(searchBarLoc[1] - searchViewToolbarLoc[1]));
+    return getTranslationAnimator(show, v, startX, getFromTranslationY());
+  }
+
+  private int getViewLeftFromSearchViewParent(@NonNull View v) {
+    int left = v.getLeft();
+    ViewParent viewParent = v.getParent();
+    while (viewParent instanceof View && viewParent != searchView.getParent()) {
+      left += ((View) viewParent).getLeft();
+      viewParent = viewParent.getParent();
+    }
+    return left;
+  }
+
+  private int getViewTopFromSearchViewParent(@NonNull View v) {
+    int top = v.getTop();
+    ViewParent viewParent = v.getParent();
+    while (viewParent instanceof View && viewParent != searchView.getParent()) {
+      top += ((View) viewParent).getTop();
+      viewParent = viewParent.getParent();
+    }
+    return top;
   }
 
   private Animator getContentAnimator(boolean show) {
@@ -667,19 +678,12 @@ class SearchViewAnimationHelper {
         : searchBar.getRight() - searchView.getWidth() + marginEnd;
   }
 
-  private int getFromTranslationY(int searchBarViewVerticalDistance) {
-    return searchBarViewVerticalDistance
-        + searchBar.getMeasuredHeight() / 2
-        - toolbarContainer.getMeasuredHeight() / 2;
-  }
-
   private int getFromTranslationY() {
-    int[] searchBarLoc = new int[2];
-    searchBar.getLocationOnScreen(searchBarLoc);
-    int[] searchViewToolbarLoc = new int[2];
-    searchView.getToolbar().getLocationOnScreen(searchViewToolbarLoc);
-
-    return getFromTranslationY(searchBarLoc[1] - searchViewToolbarLoc[1]);
+    int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getMeasuredHeight() / 2;
+    int searchBarMiddleY =
+        getViewTopFromSearchViewParent(searchBar)
+            + searchBar.getMeasuredHeight() / 2;
+    return searchBarMiddleY - toolbarMiddleY;
   }
 
   private void setUpDummyToolbarIfNeeded() {
