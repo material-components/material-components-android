@@ -77,7 +77,7 @@ final class ColorResourcesTableCreator {
       colorResource =
           new ColorResource(
               entry.getKey(),
-              context.getResources().getResourceName(entry.getKey()),
+              context.getResources().getResourceEntryName(entry.getKey()),
               entry.getValue());
       if (!context
           .getResources()
