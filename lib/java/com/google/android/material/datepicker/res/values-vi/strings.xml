@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Chuyển sang chế độ nhập văn bản</string>
   <string name="mtrl_picker_a11y_prev_month">Chuyển về tháng trước</string>
   <string name="mtrl_picker_a11y_next_month">Chuyển sang tháng tiếp theo</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Chuyển sang chế độ xem theo năm</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Chuyển sang chế độ xem theo Lịch</string>
   <string name="mtrl_picker_toggled_to_year_selection">Đã chuyển sang chế độ xem năm</string>
   <string name="mtrl_picker_toggled_to_day_selection">Đã chuyển sang chế độ xem Lịch</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>

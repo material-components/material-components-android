@@ -41,8 +41,8 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">စာသား ထည့်သွင်းမှုမုဒ်သို့ ပြောင်းရန်</string>
   <string name="mtrl_picker_a11y_prev_month">ယခင်လသို့ ပြောင်းရန်</string>
   <string name="mtrl_picker_a11y_next_month">နောက်လသို့ ပြောင်းရန်</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
+  <string name="mtrl_picker_toggle_to_year_selection">‘နှစ်’ မြင်ကွင်းသို့ ပြောင်းရန်</string>
+  <string name="mtrl_picker_toggle_to_day_selection">‘ပြက္ခဒိန်’ မြင်ကွင်းသို့ ပြောင်းရန်</string>
   <string name="mtrl_picker_toggled_to_year_selection">နှစ်မြင်ကွင်းသို့ ပြောင်းလိုက်သည်</string>
   <string name="mtrl_picker_toggled_to_day_selection">ပြက္ခဒိန်မြင်ကွင်းသို့ ပြောင်းလိုက်သည်</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
