@@ -92,6 +92,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private View monthNext;
   private View yearFrame;
   private View dayFrame;
+  private MaterialButton toggle;
 
   @NonNull
   public static <T> MaterialCalendar<T> newInstance(
@@ -235,7 +236,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       yearSelector.addItemDecoration(createItemDecoration());
     }
 
-    if (root.findViewById(R.id.month_navigation_fragment_toggle) != null) {
+    toggle = root.findViewById(R.id.month_navigation_fragment_toggle);
+    if (toggle != null) {
       addActionsToMonthNavigation(root, monthsPagerAdapter);
     }
 
@@ -375,6 +377,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   void setSelector(CalendarSelector selector) {
     this.calendarSelector = selector;
     if (selector == CalendarSelector.YEAR) {
+      toggle.setIconResource(R.drawable.material_ic_menu_arrow_up_black_24dp);
       yearSelector
           .getLayoutManager()
           .scrollToPosition(
@@ -384,6 +387,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       monthPrev.setVisibility(View.GONE);
       monthNext.setVisibility(View.GONE);
     } else if (selector == CalendarSelector.DAY) {
+      toggle.setIconResource(R.drawable.material_ic_menu_arrow_down_black_24dp);
       yearFrame.setVisibility(View.GONE);
       dayFrame.setVisibility(View.VISIBLE);
       monthPrev.setVisibility(View.VISIBLE);
