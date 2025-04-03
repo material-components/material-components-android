@@ -22,7 +22,11 @@
   android:layout_height="wrap_content"
   android:paddingTop="@dimen/mtrl_calendar_navigation_top_padding"
   android:paddingBottom="@dimen/mtrl_calendar_navigation_bottom_padding"
-  android:orientation="horizontal">
+  android:orientation="horizontal"
+  android:paddingStart="@dimen/mtrl_calendar_content_padding"
+  android:paddingEnd="@dimen/mtrl_calendar_content_padding"
+  android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+  android:paddingRight="@dimen/mtrl_calendar_content_padding">
 
   <FrameLayout
     android:layout_width="0dp"
