@@ -197,8 +197,6 @@ public class FlowLayout extends ViewGroup {
     int childBottom = childTop;
     int childEnd;
 
-    final int maxChildEnd = right - left - paddingEnd;
-
     for (int i = 0; i < getChildCount(); i++) {
       View child = getChildAt(i);
 
@@ -218,21 +216,28 @@ public class FlowLayout extends ViewGroup {
 
       childEnd = childStart + startMargin + child.getMeasuredWidth();
 
+      final int maxChildEnd = right - left - paddingEnd;
       if (!singleLine && (childEnd > maxChildEnd)) {
         childStart = paddingStart;
+        childEnd = childStart + startMargin + child.getMeasuredWidth();
         childTop = childBottom + lineSpacing;
         rowCount++;
       }
       child.setTag(R.id.row_index_key, rowCount - 1);
-
-      childEnd = childStart + startMargin + child.getMeasuredWidth();
       childBottom = childTop + child.getMeasuredHeight();
 
       if (isRtl) {
         child.layout(
-            maxChildEnd - childEnd, childTop, maxChildEnd - childStart - startMargin, childBottom);
+            /* left= */ right - left - childEnd,
+            /* top= */ childTop,
+            /* right= */ right - left - childStart - startMargin,
+            /* bottom= */ childBottom);
       } else {
-        child.layout(childStart + startMargin, childTop, childEnd, childBottom);
+        child.layout(
+            /* left= */ childStart + startMargin,
+            /* top= */ childTop,
+            /* right= */ childEnd,
+            /* bottom= */ childBottom);
       }
 
       childStart += (startMargin + endMargin + child.getMeasuredWidth()) + itemSpacing;
