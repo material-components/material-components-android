@@ -20,6 +20,7 @@ import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_DRAGGING;
 import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_IDLE;
 import static androidx.viewpager2.widget.ViewPager2.SCROLL_STATE_SETTLING;
 
+import android.util.Log;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -44,6 +45,8 @@ import java.lang.ref.WeakReference;
  * TabLayoutMediator.
  */
 public final class TabLayoutMediator {
+  private static final String TAG = TabLayoutMediator.class.getSimpleName();
+
   @NonNull private final TabLayout tabLayout;
   @NonNull private final ViewPager2 viewPager;
   private final boolean autoRefresh;
@@ -147,6 +150,11 @@ public final class TabLayoutMediator {
    * called before {@link #attach()} when a ViewPager2's adapter is changed.
    */
   public void detach() {
+    if (!attached) {
+      Log.w(TAG, "TabLayoutMediator is already detached");
+      return;
+    }
+
     if (autoRefresh && adapter != null) {
       adapter.unregisterAdapterDataObserver(pagerAdapterObserver);
       pagerAdapterObserver = null;
