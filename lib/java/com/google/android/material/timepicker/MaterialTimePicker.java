@@ -169,7 +169,7 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
 
   /** Sets the hour of day in the range [0, 23]. */
   public void setHour(@IntRange(from = 0, to = 23) int hour) {
-    time.setHour(hour);
+    time.setHourOfDay(hour);
     if (activePresenter != null) {
       activePresenter.invalidate();
     }
