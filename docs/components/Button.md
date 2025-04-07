@@ -768,26 +768,70 @@ trailing icon button that has an AnimatedVectorDrawable.
 In the layout:
 
 ```xml
-  <com.google.android.material.button.MaterialSplitButton
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:id="@+id/splitbutton"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content">
+<com.google.android.material.button.MaterialSplitButton
+    android:id="@+id/splitbutton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <Button
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/split_button_label"
-          app:icon="@drawable/ic_edit_vd_theme_24dp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingStart="@dimen/m3_comp_split_button_small_leading_button_leading_space"
+        android:paddingEnd="@dimen/m3_comp_split_button_small_leading_button_trailing_space"
+        android:minWidth="@dimen/mtrl_min_touch_target_size"
+        android:text="@string/cat_split_button_label"
+        app:icon="@drawable/ic_edit_vd_theme_24dp"
+        app:iconSize="20dp"
+    />
     <Button
-          style="?attr/materialSplitButtonIconFilledStyle"
-          android:id="@+id/expand_more_or_less"
-          android:layout_height="wrap_content"
-          android:layout_width="wrap_content"
-          android:minWidth="48dp"
-          android:gravity="center"
-          android:contentDescription="@string/split_button_label_chevron"
-          app:icon="@drawable/m3_split_button_chevron_avd"/>
+        style="?attr/materialSplitButtonIconFilledStyle"
+        android:id="@+id/expand_more_or_less_filled"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:minWidth="@dimen/mtrl_min_touch_target_size"
+        android:contentDescription="@string/cat_split_button_label_chevron"
+        app:icon="@drawable/m3_split_button_chevron_avd"
+    />
+</com.google.android.material.button.MaterialSplitButton>
+```
+
+The following example shows a split button with a leading icon button and a
+trailing icon button that has an AnimatedVectorDrawable.
+
+In the layout:
+
+```xml
+<com.google.android.material.button.MaterialSplitButton
+    android:id="@+id/splitbutton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingStart="@dimen/m3_comp_split_button_small_leading_button_leading_space"
+        android:paddingEnd="@dimen/m3_comp_split_button_small_leading_button_trailing_space"
+        android:minWidth="@dimen/mtrl_min_touch_target_size"
+        android:contentDescription="@string/cat_split_button_label_edit"
+        app:icon="@drawable/ic_edit_vd_theme_24dp"
+        app:iconSize="20dp"
+        app:iconPadding="0dp"
+    />
+    <Button
+        style="?attr/materialSplitButtonIconFilledStyle"
+        android:id="@+id/expand_more_or_less_filled_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:minWidth="@dimen/mtrl_min_touch_target_size"
+        android:contentDescription="@string/cat_split_button_label_chevron"
+        app:icon="@drawable/m3_split_button_chevron_avd"
+    />
 </com.google.android.material.button.MaterialSplitButton>
 ```
 
