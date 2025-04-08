@@ -434,17 +434,19 @@ class SearchViewAnimationHelper {
   }
 
   private void addBackButtonTranslationAnimatorIfNeeded(AnimatorSet animatorSet) {
-    ImageButton backButton = ToolbarUtils.getNavigationIconButton(toolbar);
-    if (backButton == null) {
+    ImageButton searchViewBackButton = ToolbarUtils.getNavigationIconButton(toolbar);
+    if (searchViewBackButton == null) {
       return;
     }
+    ImageButton searchBarBackButton = ToolbarUtils.getNavigationIconButton(searchBar);
 
     ValueAnimator backButtonAnimatorX =
-        ValueAnimator.ofFloat(getFromTranslationXStart(backButton), 0);
-    backButtonAnimatorX.addUpdateListener(MultiViewUpdateListener.translationXListener(backButton));
+        ValueAnimator.ofFloat(
+            getTranslationXBetweenViews(searchBarBackButton, searchViewBackButton), 0);
+    backButtonAnimatorX.addUpdateListener(MultiViewUpdateListener.translationXListener(searchViewBackButton));
 
     ValueAnimator backButtonAnimatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
-    backButtonAnimatorY.addUpdateListener(MultiViewUpdateListener.translationYListener(backButton));
+    backButtonAnimatorY.addUpdateListener(MultiViewUpdateListener.translationYListener(searchViewBackButton));
 
     animatorSet.playTogether(backButtonAnimatorX, backButtonAnimatorY);
   }
@@ -508,19 +510,21 @@ class SearchViewAnimationHelper {
   }
 
   private void addActionMenuViewAnimatorIfNeeded(AnimatorSet animatorSet) {
-    ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
-    if (actionMenuView == null) {
+    ActionMenuView searchViewActionMenuView = ToolbarUtils.getActionMenuView(toolbar);
+    if (searchViewActionMenuView == null) {
       return;
     }
+    ActionMenuView searchBarActionMenuView = ToolbarUtils.getActionMenuView(searchBar);
 
     ValueAnimator actionMenuViewAnimatorX =
-        ValueAnimator.ofFloat(getFromTranslationXEnd(actionMenuView), 0);
+        ValueAnimator.ofFloat(
+            getTranslationXBetweenViews(searchBarActionMenuView, searchViewActionMenuView), 0);
     actionMenuViewAnimatorX.addUpdateListener(
-        MultiViewUpdateListener.translationXListener(actionMenuView));
+        MultiViewUpdateListener.translationXListener(searchViewActionMenuView));
 
     ValueAnimator actionMenuViewAnimatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
     actionMenuViewAnimatorY.addUpdateListener(
-        MultiViewUpdateListener.translationYListener(actionMenuView));
+        MultiViewUpdateListener.translationYListener(searchViewActionMenuView));
 
     animatorSet.playTogether(actionMenuViewAnimatorX, actionMenuViewAnimatorY);
   }
@@ -663,19 +667,32 @@ class SearchViewAnimationHelper {
     return animatorSet;
   }
 
-  private int getFromTranslationXStart(View view) {
-    int marginStart = ((MarginLayoutParams) view.getLayoutParams()).getMarginStart();
-    int paddingStart = searchBar.getPaddingStart();
-    return ViewUtils.isLayoutRtl(searchBar)
-        ? searchBar.getWidth() - searchBar.getRight() + marginStart - paddingStart
-        : searchBar.getLeft() - marginStart + paddingStart;
+  private int getTranslationXBetweenViews(
+      @Nullable View searchBarSubView, @NonNull View searchViewSubView) {
+    // If there is no equivalent for the SearchView subview in the SearchBar, we return the
+    // translation between the SearchBar and the start of the SearchView subview
+    if (searchBarSubView == null) {
+      int marginStart = ((MarginLayoutParams) searchViewSubView.getLayoutParams()).getMarginStart();
+      int paddingStart = searchBar.getPaddingStart();
+      int searchBarLeft = getViewLeftFromSearchViewParent(searchBar);
+      return ViewUtils.isLayoutRtl(searchBar)
+          ? searchBarLeft
+              + searchBar.getWidth()
+              + marginStart
+              - paddingStart
+              - searchView.getRight()
+          : (searchBarLeft - marginStart + paddingStart);
+    }
+    return getViewLeftFromSearchViewParent(searchBarSubView)
+        - getViewLeftFromSearchViewParent(searchViewSubView);
   }
 
   private int getFromTranslationXEnd(View view) {
     int marginEnd = ((MarginLayoutParams) view.getLayoutParams()).getMarginEnd();
+    int viewLeft = getViewLeftFromSearchViewParent(searchBar);
     return ViewUtils.isLayoutRtl(searchBar)
-        ? searchBar.getLeft() - marginEnd
-        : searchBar.getRight() - searchView.getWidth() + marginEnd;
+        ? viewLeft - marginEnd
+        : viewLeft + searchBar.getWidth() + marginEnd - searchView.getWidth();
   }
 
   private int getFromTranslationY() {
