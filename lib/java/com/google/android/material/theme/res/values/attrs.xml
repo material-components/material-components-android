@@ -1,0 +1,8 @@
+    <attr name="toolbarStyle" format="reference"/>
+    <attr name="toolbarSurfaceStyle" format="reference"/>
+    <attr name="toolbarNavigationButtonStyle" format="reference"/>
+    <!-- Theme attribute for the multiline Toolbar title text appearance -->
+    <attr name="toolbarTitleTextAppearanceMultiline" format="reference"/>
+
+    <!-- Material 3 specific theme attributes. -->
+    <attr name="materialAlertDialogTheme" format="reference"/> 

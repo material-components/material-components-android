@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:ns1="http://schemas.android.com/apk/res/android">
 
   <!-- M3 Expressive CollapsingToolbarLayout styles. -->
   <style name="Widget.Material3Expressive.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar">
@@ -122,7 +122,7 @@
 
   <!-- Style for a M3 Toolbar. -->
   <style name="Widget.Material3.Toolbar" parent="Widget.AppCompat.Toolbar">
-    <item name="titleTextAppearance">@macro/m3_comp_app_bar_small_title_font</item>
+    <item name="titleTextAppearance">?attr/toolbarTitleTextAppearanceMultiline</item>
     <item name="subtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="contentInsetStartWithNavigation">0dp</item>
 
@@ -134,18 +134,19 @@
   <!-- Style for a M3 On Surface Toolbar (transparent background and on-surface
        colors for text and iconography). Use with MaterialToolbar to get
        navigation icon and menu icon coloring. -->
-  <style name="Widget.Material3.Toolbar.OnSurface">
-    <item name="titleTextColor">@macro/m3_comp_app_bar_title_color</item>
-    <item name="subtitleTextColor">?attr/colorOnSurfaceVariant</item>
-    <item name="navigationIconTint">@macro/m3_comp_app_bar_leading_icon_color</item>
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Toolbar.Surface</item>
+  <style name="Widget.Material3.Toolbar.OnSurface" parent="Widget.AppCompat.Toolbar.Title">
+    <item name="titleTextAppearance">?attr/toolbarTitleTextAppearanceMultiline</item>
+    <item name="subtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Toolbar.OnSurface</item>
   </style>
 
   <!-- Style for a M3 Surface Toolbar (surface background and on-surface
        colors for text and iconography). Use with MaterialToolbar to get
        navigation icon and menu icon coloring. -->
-  <style name="Widget.Material3.Toolbar.Surface" parent="Widget.Material3.Toolbar.OnSurface">
-    <item name="android:background">@macro/m3_comp_app_bar_container_color</item>
+  <style name="Widget.Material3.Toolbar.Surface" parent="Widget.AppCompat.Toolbar.Title">
+    <item name="titleTextAppearance">?attr/toolbarTitleTextAppearanceMultiline</item>
+    <item name="subtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Toolbar.Surface</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Toolbar.Surface" parent="">
@@ -222,13 +223,12 @@
 
   <!-- Toolbar styles -->
   <style name="Widget.MaterialComponents.Toolbar" parent="Widget.AppCompat.Toolbar">
+    <!-- We don't set the background; this is done by AppBarLayout based on the surface color. -->
+    <item name="android:background">@android:color/transparent</item>
+    <item name="android:elevation" ns1:ignore="NewApi">@dimen/mtrl_toolbar_default_elevation</item>
     <item name="titleTextAppearance">?attr/textAppearanceHeadline6</item>
-    <item name="titleTextColor">?android:attr/textColorPrimary</item>
     <item name="subtitleTextAppearance">?attr/textAppearanceSubtitle1</item>
-    <item name="subtitleTextColor">?android:attr/textColorSecondary</item>
-    <!-- Overrides minimum height in landscape to avoid headline6 and subtitle1 height concerns. -->
-    <item name="android:minHeight">@dimen/mtrl_toolbar_default_height</item>
-    <item name="maxButtonHeight">@dimen/mtrl_toolbar_default_height</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.Toolbar.Primary</item>
   </style>
 
   <style name="Widget.MaterialComponents.Toolbar.Primary">
@@ -318,6 +318,13 @@
     <item name="colorControlNormal">@color/material_on_surface_emphasis_medium</item>
     <!-- Used to tint the ActionMode background and preserve the underline. -->
     <item name="android:colorBackground">?attr/colorSurface</item>
+  </style>
+
+  <!-- =========================================================================================
+    Material3 Toolbar Text Appearances (Additions for Multiline)
+  ========================================================================================== -->
+  <style name="TextAppearance.Material3.Toolbar.Title.Multiline" parent="TextAppearance.Material3.TitleLarge">
+    <item name="android:maxLines">@integer/mtrl_toolbar_title_max_lines</item>
   </style>
 
 </resources>

@@ -51,6 +51,11 @@
 
     <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>
+    <item name="toolbarNavigationButtonStyle">@style/Widget.Material3Expressive.Toolbar.NavigationButton</item>
+    <item name="toolbarTitleTextAppearanceMultiline">@style/TextAppearance.Material3Expressive.Toolbar.Title.Multiline</item>
+
+    <!-- Tooltip -->
+    <item name="tooltipStyle">@style/Widget.Material3Expressive.Tooltip</item>
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_comp_app_bar_medium_flexible_container_height</item>
@@ -87,6 +92,11 @@
 
     <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>
+    <item name="toolbarNavigationButtonStyle">@style/Widget.Material3Expressive.Toolbar.NavigationButton</item>
+    <item name="toolbarTitleTextAppearanceMultiline">@style/TextAppearance.Material3Expressive.Toolbar.Title.Multiline</item>
+
+    <!-- Tooltip -->
+    <item name="tooltipStyle">@style/Widget.Material3Expressive.Tooltip</item>
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_comp_app_bar_medium_flexible_container_height</item>
@@ -279,6 +289,11 @@
     <item name="textInputFilledExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu</item>
     <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
+    <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.Toolbar.NavigationButton</item>
+    <item name="toolbarTitleTextAppearanceMultiline">@style/TextAppearance.Material3.Toolbar.Title.Multiline</item>
+
+    <!-- Tooltip -->
+    <item name="tooltipStyle">@style/Widget.Material3.Tooltip</item>
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
@@ -588,6 +603,11 @@
     <item name="textInputFilledExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu</item>
     <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
+    <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.Toolbar.NavigationButton</item>
+    <item name="toolbarTitleTextAppearanceMultiline">@style/TextAppearance.Material3.Toolbar.Title.Multiline</item>
+
+    <!-- Tooltip -->
+    <item name="tooltipStyle">@style/Widget.Material3.Tooltip</item>
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_appbar_size_medium</item>
