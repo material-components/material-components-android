@@ -154,6 +154,27 @@ public class CollapsingToolbarLayout extends FrameLayout {
   @Retention(RetentionPolicy.SOURCE)
   public @interface TitleCollapseMode {}
 
+  /**
+   * The gravity of the collapsed title is based on the entire space of the CollapsedToolbarLayout.
+   */
+  private static final int COLLAPSED_TITLE_GRAVITY_ENTIRE_SPACE = 0;
+
+  /**
+   * The gravity of the collapsed title is based on the remaining space in the
+   * CollapsedToolbarLayout after accounting for other views such as the menu.
+   */
+  private static final int COLLAPSED_TITLE_GRAVITY_AVAILABLE_SPACE = 1;
+
+  /**
+   * The mode in which to calculate the gravity of the collapsed title.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef(value = {COLLAPSED_TITLE_GRAVITY_ENTIRE_SPACE, COLLAPSED_TITLE_GRAVITY_AVAILABLE_SPACE})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface CollapsedTitleGravityMode {}
+
   private boolean refreshToolbar = true;
   private int toolbarId;
   @Nullable private ViewGroup toolbar;
@@ -172,6 +193,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   @NonNull final ElevationOverlayProvider elevationOverlayProvider;
   private boolean collapsingTitleEnabled;
   private boolean drawCollapsingTitle;
+  @CollapsedTitleGravityMode private final int collapsedTitleGravityMode;
 
   @Nullable private Drawable contentScrim;
   @Nullable Drawable statusBarScrim;
@@ -235,6 +257,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
         a.getInt(
             R.styleable.CollapsingToolbarLayout_collapsedTitleGravity,
             Gravity.START | Gravity.CENTER_VERTICAL);
+    collapsedTitleGravityMode =
+        a.getInt(
+            R.styleable.CollapsingToolbarLayout_collapsedTitleGravityMode,
+            COLLAPSED_TITLE_GRAVITY_AVAILABLE_SPACE);
 
     collapsingTitleHelper.setExpandedTextGravity(titleExpandedGravity);
     collapsingTitleHelper.setCollapsedTextGravity(titleCollapsedGravity);
@@ -886,6 +912,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
     final int titleBoundsRight = tmpRect.right - (isRtl ? titleMarginStart : titleMarginEnd);
     final int titleBoundsTop = tmpRect.top + maxOffset + titleMarginTop;
     final int titleBoundsBottom = tmpRect.bottom + maxOffset - titleMarginBottom;
+    final int titleBoundsBottomWithSubtitle =
+        (int) (titleBoundsBottom - collapsingSubtitleHelper.getCollapsedFullSingleLineHeight());
+    final int subtitleBoundsTop = (int) (titleBoundsTop + collapsingTitleHelper.getCollapsedFullSingleLineHeight());
+
+    // Setting the valid collapsed bounds that text can be displayed in
     if (TextUtils.isEmpty(collapsingSubtitleHelper.getText())) {
       collapsingTitleHelper.setCollapsedBounds(
           titleBoundsLeft, titleBoundsTop, titleBoundsRight, titleBoundsBottom);
@@ -894,12 +925,35 @@ public class CollapsingToolbarLayout extends FrameLayout {
           titleBoundsLeft,
           titleBoundsTop,
           titleBoundsRight,
-          (int) (titleBoundsBottom - collapsingSubtitleHelper.getCollapsedFullSingleLineHeight()));
+          titleBoundsBottomWithSubtitle);
       collapsingSubtitleHelper.setCollapsedBounds(
           titleBoundsLeft,
-          (int) (titleBoundsTop + collapsingTitleHelper.getCollapsedFullSingleLineHeight()),
+          subtitleBoundsTop,
           titleBoundsRight,
           titleBoundsBottom);
+    }
+
+    // If the collapsed title gravity should be using the whole collapsing toolbar layout instead of
+    // the dummy layout, we should set the collapsed bounds for offsets.
+    if (collapsedTitleGravityMode == COLLAPSED_TITLE_GRAVITY_ENTIRE_SPACE) {
+      DescendantOffsetUtils.getDescendantRect(this, this, tmpRect);
+      final int validTitleBoundsLeft = tmpRect.left + (isRtl ? titleMarginEnd : titleMarginStart);
+      final int validTitleBoundsRight = tmpRect.right - (isRtl ? titleMarginStart : titleMarginEnd);
+      if (TextUtils.isEmpty(collapsingSubtitleHelper.getText())) {
+        collapsingTitleHelper.setCollapsedBoundsForOffsets(
+            validTitleBoundsLeft, titleBoundsTop, validTitleBoundsRight, titleBoundsBottom);
+      } else {
+        collapsingTitleHelper.setCollapsedBoundsForOffsets(
+            validTitleBoundsLeft,
+            titleBoundsTop,
+            validTitleBoundsRight,
+            titleBoundsBottomWithSubtitle);
+        collapsingSubtitleHelper.setCollapsedBoundsForOffsets(
+            validTitleBoundsLeft,
+            subtitleBoundsTop,
+            validTitleBoundsRight,
+            titleBoundsBottom);
+      }
     }
   }
 

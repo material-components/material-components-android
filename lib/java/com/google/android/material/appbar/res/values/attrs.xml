@@ -275,6 +275,16 @@
     <!-- The interpolator to use when animating the title position from collapsed to expanded and
          vice versa. -->
     <attr name="titlePositionInterpolator" format="reference"/>
+    <!-- The mode in which the gravity of the collapsed title is calculated. -->
+    <attr name="collapsedTitleGravityMode">
+      <!-- Calculate the gravity based on the entire size of the container, regardless of how
+           much space is taken by other views in the container. The title will be pushed to the side
+           if overlapping with another view. -->
+      <enum name="entireSpace" value="0"/>
+      <!-- Calculate gravity based on the available space in the container after laying out
+           other views in the container. -->
+      <enum name="availableSpace" value="1"/>
+    </attr>
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">

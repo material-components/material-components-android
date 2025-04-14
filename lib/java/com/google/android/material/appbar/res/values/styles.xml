@@ -28,6 +28,7 @@
     <item name="expandedSubtitleTextColor">@macro/m3_comp_app_bar_subtitle_color</item>
     <item name="expandedTitleMarginTop">72dp</item>
     <item name="expandedTitleMarginBottom">12dp</item>
+    <item name="collapsedTitleGravityMode">availableSpace</item>
   </style>
 
   <style name="Widget.Material3Expressive.CollapsingToolbar.Medium" parent="Widget.Material3Expressive.CollapsingToolbar">

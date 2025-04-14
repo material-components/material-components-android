@@ -79,6 +79,7 @@
   <public name="liftOnScrollColor" type="attr"/>
   <public name="liftOnScrollTargetViewId" type="attr"/>
   <public name="collapsedTitleGravity" type="attr"/>
+  <public name="collapsedTitleGravityMode" type="attr"/>
   <public name="expandedTitleGravity" type="attr"/>
   <public name="layout_collapseMode" type="attr"/>
   <public name="layout_collapseParallaxMultiplier" type="attr"/>
