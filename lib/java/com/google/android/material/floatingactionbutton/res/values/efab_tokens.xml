@@ -21,10 +21,30 @@
 
   <!-- Generated from token set (md.comp.extended-fab.small) in context (platform=android, audience=3p). -->
   <dimen name="m3_comp_extended_fab_small_container_height">56dp</dimen>
-  <!-- The resource value ?attr/textAppearanceTitleMedium has been overridden by the config. -->
-  <macro name="m3_comp_extended_fab_small_label_text">?attr/textAppearanceLabelLarge</macro>
+  <macro name="m3_comp_extended_fab_small_label_text">?attr/textAppearanceTitleMedium</macro>
   <dimen name="m3_comp_extended_fab_small_icon_size">24dp</dimen>
   <macro name="m3_comp_extended_fab_small_container_shape">?attr/shapeAppearanceCornerLarge</macro>
+  <dimen name="m3_comp_extended_fab_small_leading_space">16dp</dimen>
+  <dimen name="m3_comp_extended_fab_small_icon_label_space">8dp</dimen>
+  <dimen name="m3_comp_extended_fab_small_trailing_space">16dp</dimen>
+
+  <!-- Generated from token set (md.comp.extended-fab.medium) in context (platform=android, audience=3p). -->
+  <dimen name="m3_comp_extended_fab_medium_container_height">80dp</dimen>
+  <macro name="m3_comp_extended_fab_medium_label_text">?attr/textAppearanceTitleLarge</macro>
+  <dimen name="m3_comp_extended_fab_medium_icon_size">28dp</dimen>
+  <macro name="m3_comp_extended_fab_medium_container_shape">?attr/shapeAppearanceCornerLargeIncreased</macro>
+  <dimen name="m3_comp_extended_fab_medium_leading_space">26dp</dimen>
+  <dimen name="m3_comp_extended_fab_medium_icon_label_space">12dp</dimen>
+  <dimen name="m3_comp_extended_fab_medium_trailing_space">26dp</dimen>
+
+  <!-- Generated from token set (md.comp.extended-fab.large) in context (platform=android, audience=3p). -->
+  <dimen name="m3_comp_extended_fab_large_container_height">96dp</dimen>
+  <macro name="m3_comp_extended_fab_large_label_text">?attr/textAppearanceHeadlineSmall</macro>
+  <dimen name="m3_comp_extended_fab_large_icon_size">36dp</dimen>
+  <macro name="m3_comp_extended_fab_large_container_shape">?attr/shapeAppearanceCornerExtraLarge</macro>
+  <dimen name="m3_comp_extended_fab_large_leading_space">28dp</dimen>
+  <dimen name="m3_comp_extended_fab_large_icon_label_space">16dp</dimen>
+  <dimen name="m3_comp_extended_fab_large_trailing_space">28dp</dimen>
 
   <!-- Generated from token set (md.comp.extended-fab.primary-container) in context (platform=android,
        audience=3p). -->

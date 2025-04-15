@@ -63,19 +63,32 @@
   </style>
 
   <style name="Widget.Material3.FloatingActionButton.Small.Primary" parent="Base.Widget.Material3.FloatingActionButton.Small">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Primary</item>
   </style>
 
   <style name="Widget.Material3.FloatingActionButton.Small.Secondary" parent="Base.Widget.Material3.FloatingActionButton.Small">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Secondary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
   </style>
 
   <style name="Widget.Material3.FloatingActionButton.Small.Tertiary" parent="Base.Widget.Material3.FloatingActionButton.Small">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Tertiary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary</item>
   </style>
 
   <style name="Widget.Material3.FloatingActionButton.Small.Surface" parent="Base.Widget.Material3.FloatingActionButton.Small">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Surface</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
+  </style>
+
+  <!-- M3 Medium FAB -->
+
+  <style name="Base.Widget.Material3.FloatingActionButton.Medium" parent="Base.Widget.Material3.FloatingActionButton">
+    <item name="fabCustomSize">@dimen/m3_comp_fab_medium_container_height</item>
+    <item name="maxImageSize">@dimen/m3_comp_fab_medium_icon_size</item>
+    <item name="shapeAppearance">@macro/m3_comp_fab_medium_container_shape</item>
+    <item name="shapeAppearanceOverlay">@null</item>
+  </style>
+
+  <style name="Widget.Material3.FloatingActionButton.Medium" parent="Base.Widget.Material3.FloatingActionButton.Medium">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Primary</item>
   </style>
 
   <!-- M3 Large FABs -->
@@ -88,19 +101,19 @@
   </style>
 
   <style name="Widget.Material3.FloatingActionButton.Large.Primary" parent="Base.Widget.Material3.FloatingActionButton.Large">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Primary</item>
   </style>
 
   <style name="Widget.Material3.FloatingActionButton.Large.Secondary" parent="Base.Widget.Material3.FloatingActionButton.Large">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Secondary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Secondary</item>
   </style>
 
   <style name="Widget.Material3.FloatingActionButton.Large.Tertiary" parent="Base.Widget.Material3.FloatingActionButton.Large">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Tertiary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary</item>
   </style>
 
   <style name="Widget.Material3.FloatingActionButton.Large.Surface" parent="Base.Widget.Material3.FloatingActionButton.Large">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Surface</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.FloatingActionButton.Surface</item>
   </style>
 
   <!-- M3 FAB Theme Overlays for different color variants. -->
@@ -145,7 +158,8 @@
     <item name="elevation">@dimen/m3_comp_extended_fab_primary_container_container_elevation</item>
     <item name="android:stateListAnimator">@animator/m3_extended_fab_state_list_animator</item>
     <item name="iconSize">@dimen/m3_comp_extended_fab_small_icon_size</item>
-    <item name="android:textAppearance">@macro/m3_comp_extended_fab_small_label_text</item>
+    <!-- Hardcoded, since token is updated for Expressive eFABs. -->
+    <item name="android:textAppearance">?attr/textAppearanceLabelLarge</item>
     <item name="shapeAppearance">@macro/m3_comp_extended_fab_small_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
     <item name="enforceMaterialTheme">true</item>
@@ -197,6 +211,59 @@
 
   <style name="Widget.Material3.ExtendedFloatingActionButton.Icon.Surface" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Icon">
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Surface</item>
+  </style>
+
+  <!-- M3 Expressive Extended Small FABs -->
+  <style name="Base.Widget.Material3.ExtendedFloatingActionButton.Small" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
+    <item name="android:minWidth">@dimen/m3_comp_extended_fab_small_container_height</item>
+    <item name="android:minHeight">@dimen/m3_comp_extended_fab_small_container_height</item>
+    <item name="android:paddingLeft">@dimen/m3_comp_extended_fab_small_leading_space</item>
+    <item name="android:paddingStart">@dimen/m3_comp_extended_fab_small_leading_space</item>
+    <item name="android:paddingRight">@dimen/m3_comp_extended_fab_small_trailing_space</item>
+    <item name="android:paddingEnd">@dimen/m3_comp_extended_fab_small_trailing_space</item>
+    <item name="android:textAppearance">@macro/m3_comp_extended_fab_small_label_text</item>
+    <item name="iconPadding">@dimen/m3_comp_extended_fab_small_icon_label_space</item>
+    <item name="shapeAppearance">@macro/m3_comp_extended_fab_small_container_shape</item>
+    <item name="collapsedSize">@dimen/m3_comp_fab_container_height</item>
+  </style>
+  <style name="Widget.Material3.ExtendedFloatingActionButton.Small" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Small">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary</item>
+  </style>
+
+  <!-- M3 Expressive Extended Medium FABs -->
+  <style name="Base.Widget.Material3.ExtendedFloatingActionButton.Medium" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
+    <item name="android:minWidth">@dimen/m3_comp_extended_fab_medium_container_height</item>
+    <item name="android:minHeight">@dimen/m3_comp_extended_fab_medium_container_height</item>
+    <item name="android:paddingLeft">@dimen/m3_comp_extended_fab_medium_leading_space</item>
+    <item name="android:paddingStart">@dimen/m3_comp_extended_fab_medium_leading_space</item>
+    <item name="android:paddingRight">@dimen/m3_comp_extended_fab_medium_trailing_space</item>
+    <item name="android:paddingEnd">@dimen/m3_comp_extended_fab_medium_trailing_space</item>
+    <item name="android:textAppearance">@macro/m3_comp_extended_fab_medium_label_text</item>
+    <item name="iconPadding">@dimen/m3_comp_extended_fab_medium_icon_label_space</item>
+    <item name="iconSize">@dimen/m3_comp_extended_fab_medium_icon_size</item>
+    <item name="shapeAppearance">@macro/m3_comp_extended_fab_medium_container_shape</item>
+    <item name="collapsedSize">@dimen/m3_comp_fab_medium_container_height</item>
+  </style>
+  <style name="Widget.Material3.ExtendedFloatingActionButton.Medium" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Medium">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary</item>
+  </style>
+
+  <!-- M3 Expressive Extended Large FABs -->
+  <style name="Base.Widget.Material3.ExtendedFloatingActionButton.Large" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
+    <item name="android:minWidth">@dimen/m3_comp_extended_fab_large_container_height</item>
+    <item name="android:minHeight">@dimen/m3_comp_extended_fab_large_container_height</item>
+    <item name="android:paddingLeft">@dimen/m3_comp_extended_fab_large_leading_space</item>
+    <item name="android:paddingStart">@dimen/m3_comp_extended_fab_large_leading_space</item>
+    <item name="android:paddingRight">@dimen/m3_comp_extended_fab_large_trailing_space</item>
+    <item name="android:paddingEnd">@dimen/m3_comp_extended_fab_large_trailing_space</item>
+    <item name="android:textAppearance">@macro/m3_comp_extended_fab_large_label_text</item>
+    <item name="iconPadding">@dimen/m3_comp_extended_fab_large_icon_label_space</item>
+    <item name="iconSize">@dimen/m3_comp_extended_fab_large_icon_size</item>
+    <item name="shapeAppearance">@macro/m3_comp_extended_fab_large_container_shape</item>
+    <item name="collapsedSize">@dimen/m3_comp_fab_large_container_height</item>
+  </style>
+  <style name="Widget.Material3.ExtendedFloatingActionButton.Large" parent="Base.Widget.Material3.ExtendedFloatingActionButton.Large">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary</item>
   </style>
 
   <!-- M3 Extended FAB Theme Overlays for different color variants. -->

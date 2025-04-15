@@ -29,6 +29,11 @@
   <dimen name="m3_comp_fab_small_icon_size">24dp</dimen>
   <macro name="m3_comp_fab_small_container_shape">?attr/shapeAppearanceCornerMedium</macro>
 
+  <!-- Generated from token set (md.comp.fab.medium) in context (platform=android, audience=3p). -->
+  <dimen name="m3_comp_fab_medium_container_height">80dp</dimen>
+  <dimen name="m3_comp_fab_medium_icon_size">28dp</dimen>
+  <macro name="m3_comp_fab_medium_container_shape">?attr/shapeAppearanceCornerLargeIncreased</macro>
+
   <!-- Generated from token set (md.comp.fab.large) in context (platform=android, audience=3p). -->
   <dimen name="m3_comp_fab_large_container_height">96dp</dimen>
   <dimen name="m3_comp_fab_large_icon_size">36dp</dimen>
