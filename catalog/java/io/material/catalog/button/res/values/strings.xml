@@ -30,6 +30,7 @@
   </string>
   <string name="cat_button_label_enabled">Enabled</string>
   <string name="cat_button_label_disabled">Disabled</string>
+  <string name="cat_button_optical_center" translatable="false">Optical Center</string>
 
   <string name="cat_label_buttons_text"
       description="Title for a section that shows label buttons. [CHAR LIMIT=NONE]">Label Buttons</string>

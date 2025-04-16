@@ -194,6 +194,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   // This array holds the corner sizes of the stroke corresponding to the {@link
   // #springAnimatedCornerSizes}.
   @Nullable private float[] springAnimatedStrokeCornerSizes;
+  @Nullable private OnCornerSizeChangeListener onCornerSizeChangeListener;
 
   /**
    * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
@@ -1634,6 +1635,52 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
             && drawableState.shapeAppearanceModel.hasRoundedCorners());
   }
 
+  /**
+   * Sets the {@link OnCornerSizeChangeListener} for this {@link MaterialShapeDrawable}.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setOnCornerSizeChangeListener(
+      @Nullable OnCornerSizeChangeListener onCornerSizeChangeListener) {
+    this.onCornerSizeChangeListener = onCornerSizeChangeListener;
+  }
+
+  /**
+   * Returns the difference in px between the left corners average size and the right corners
+   * average size.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public float getCornerSizeDiffX() {
+    if (springAnimatedCornerSizes != null) {
+      return (springAnimatedCornerSizes[3]
+              + springAnimatedCornerSizes[2]
+              - springAnimatedCornerSizes[1]
+              - springAnimatedCornerSizes[0])
+          / 2;
+    }
+    RectF bounds = getBoundsAsRectF();
+    return (pathProvider.getCornerSizeForIndex(3, getShapeAppearanceModel()).getCornerSize(bounds)
+            + pathProvider.getCornerSizeForIndex(2, getShapeAppearanceModel()).getCornerSize(bounds)
+            - pathProvider.getCornerSizeForIndex(1, getShapeAppearanceModel()).getCornerSize(bounds)
+            - pathProvider
+                .getCornerSizeForIndex(0, getShapeAppearanceModel())
+                .getCornerSize(bounds))
+        / 2;
+  }
+
+  /**
+   * Corner size change listener with optical center shift input.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public interface OnCornerSizeChangeListener {
+    void onCornerSizeChange(float diffX);
+  }
+
   private static class SpringAnimatedCornerSizeProperty
       extends FloatPropertyCompat<MaterialShapeDrawable> {
     private final int index;
@@ -1652,8 +1699,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     @Override
     public void setValue(@NonNull MaterialShapeDrawable drawable, float value) {
-      if (drawable.springAnimatedCornerSizes != null) {
+      if (drawable.springAnimatedCornerSizes != null
+          && drawable.springAnimatedCornerSizes[index] != value) {
         drawable.springAnimatedCornerSizes[index] = value;
+        if (drawable.onCornerSizeChangeListener != null) {
+          drawable.onCornerSizeChangeListener.onCornerSizeChange(drawable.getCornerSizeDiffX());
+        }
         drawable.invalidateSelf();
       }
     }

@@ -52,5 +52,14 @@
         android:checked="true"
         android:enabled="true"
         android:text="@string/cat_button_enable" />
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_optical_center"
+        android:paddingTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:checked="false"
+        android:enabled="true"
+        android:text="@string/cat_button_optical_center" />
   </LinearLayout>
 </ScrollView>

@@ -59,7 +59,8 @@
           android:paddingEnd="14dp"
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_split_button_label_chevron"
-          app:icon="@drawable/m3_split_button_chevron_avd"/>
+          app:icon="@drawable/m3_split_button_chevron_avd"
+          app:opticalCenterEnabled="true"/>
       </com.google.android.material.button.MaterialSplitButton>
 
       <com.google.android.material.button.MaterialSplitButton
@@ -83,7 +84,8 @@
           android:paddingEnd="14dp"
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_split_button_label_chevron"
-          app:icon="@drawable/m3_split_button_chevron_avd"/>
+          app:icon="@drawable/m3_split_button_chevron_avd"
+          app:opticalCenterEnabled="true"/>
       </com.google.android.material.button.MaterialSplitButton>
 
       <com.google.android.material.button.MaterialSplitButton
@@ -109,7 +111,8 @@
           android:paddingEnd="14dp"
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_split_button_label_chevron"
-          app:icon="@drawable/m3_split_button_chevron_avd"/>
+          app:icon="@drawable/m3_split_button_chevron_avd"
+          app:opticalCenterEnabled="true"/>
       </com.google.android.material.button.MaterialSplitButton>
 
     <TextView
@@ -145,7 +148,8 @@
           android:paddingEnd="14dp"
           android:contentDescription="@string/cat_split_button_label_chevron"
           app:icon="@drawable/m3_split_button_chevron_avd"
-          android:minWidth="@dimen/mtrl_min_touch_target_size"/>
+          android:minWidth="@dimen/mtrl_min_touch_target_size"
+          app:opticalCenterEnabled="true"/>
       </com.google.android.material.button.MaterialSplitButton>
 
       <com.google.android.material.button.MaterialSplitButton
@@ -170,7 +174,8 @@
           android:paddingEnd="14dp"
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_split_button_label_chevron"
-          app:icon="@drawable/m3_split_button_chevron_avd"/>
+          app:icon="@drawable/m3_split_button_chevron_avd"
+          app:opticalCenterEnabled="true"/>
       </com.google.android.material.button.MaterialSplitButton>
 
       <com.google.android.material.button.MaterialSplitButton
@@ -197,7 +202,8 @@
           android:paddingEnd="14dp"
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_split_button_label_chevron"
-          app:icon="@drawable/m3_split_button_chevron_avd"/>
+          app:icon="@drawable/m3_split_button_chevron_avd"
+          app:opticalCenterEnabled="true"/>
       </com.google.android.material.button.MaterialSplitButton>
 
     <TextView
@@ -231,9 +237,9 @@
           android:paddingEnd="14dp"
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_split_button_label_chevron"
-          app:icon="@drawable/m3_split_button_chevron_avd"/>
+          app:icon="@drawable/m3_split_button_chevron_avd"
+          app:opticalCenterEnabled="true"/>
       </com.google.android.material.button.MaterialSplitButton>
-
       <com.google.android.material.materialswitch.MaterialSwitch
           android:id="@+id/switch_enable"
           android:paddingTop="16dp"

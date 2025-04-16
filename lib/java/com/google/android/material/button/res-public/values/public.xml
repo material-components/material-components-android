@@ -39,6 +39,7 @@
   <public name="materialSplitButtonIconFilledStyle" type="attr"/>
   <public name="materialSplitButtonIconFilledTonalStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
+  <public name="opticalCenterEnabled" type="attr"/>
   <public name="Widget.MaterialComponents.Button" type="style"/>
   <public name="Widget.MaterialComponents.Button.UnelevatedButton" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton" type="style"/>

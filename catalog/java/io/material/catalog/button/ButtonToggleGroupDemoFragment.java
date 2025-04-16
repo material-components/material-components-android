@@ -55,6 +55,7 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
         layoutInflater.inflate(getButtonToggleGroupContent(), viewGroup, /* attachToRoot= */ false);
     MaterialSwitch requireSelectionToggle = view.findViewById(R.id.switch_toggle);
     defaultInset = getResources().getDimensionPixelSize(com.google.android.material.R.dimen.mtrl_btn_inset);
+    List<MaterialButton> buttons = DemoUtils.findViewsWithType(view, MaterialButton.class);
     List<MaterialButtonToggleGroup> toggleGroups =
         DemoUtils.findViewsWithType(view, MaterialButtonToggleGroup.class);
     requireSelectionToggle.setOnCheckedChangeListener(
@@ -113,6 +114,13 @@ public class ButtonToggleGroupDemoFragment extends DemoFragment {
           float pixelsInDp = view.getResources().getDisplayMetrics().density;
           for (MaterialButtonToggleGroup toggleGroup : toggleGroups) {
             toggleGroup.setSpacing((int) (value * pixelsInDp));
+          }
+        });
+    MaterialSwitch opticalCenterSwitch = view.findViewById(R.id.switch_optical_center);
+    opticalCenterSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (MaterialButton button : buttons) {
+            button.setOpticalCenterEnabled(isChecked);
           }
         });
     return view;

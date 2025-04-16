@@ -112,6 +112,8 @@
     <attr name="rippleColor" />
     <!-- Whether the button toggles the checked state when clicked. -->
     <attr name="toggleCheckedStateOnClick" format="boolean" />
+    <!-- Whether to enable optical center. -->
+    <attr name="opticalCenterEnabled" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="MaterialButtonGroup">

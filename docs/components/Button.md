@@ -26,6 +26,7 @@ and make choices, with a single tap.
 *   [Button groups](#button-groups)
 *   [Toggle button group](#toggle-button-groups)
 *   [Icon button](#icon-button)
+*   [Optical centering](#optical-centering)
 *   [Theming](#theming-buttons)
 
 ## Design and API Documentation
@@ -1215,6 +1216,19 @@ See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/styles.xml)
 and
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/values/attrs.xml).
+
+## Optical Centering
+
+Optical centering means to offset the `MaterialButton`’s contents (icon and/or
+label) when the shape is asymmetric. Before optical centering, we only provided
+centering with horizontally asymmetrical shapes.
+
+To turn on optical centering for a given button, use
+`setOpticalCenterEnabled(true)`. Optical centering is disabled by default. When
+enabled, the shift amount of the icon and/or text is calculated as a value with
+the fixed ratio to the difference between left corner size in dp and right
+corner size in dp. The shift amount is applied to the padding start and padding
+end.
 
 ## Theming buttons
 

@@ -41,6 +41,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeDrawable.OnCornerSizeChangeListener;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
 import com.google.android.material.shape.StateListShapeAppearanceModel;
@@ -53,6 +54,7 @@ class MaterialButtonHelper {
   @NonNull private ShapeAppearanceModel shapeAppearanceModel;
   @Nullable private StateListShapeAppearanceModel stateListShapeAppearanceModel;
   @Nullable private SpringForce cornerSpringForce;
+  @Nullable private OnCornerSizeChangeListener onCornerSizeChangeListener;
 
   private int insetLeft;
   private int insetRight;
@@ -213,6 +215,9 @@ class MaterialButtonHelper {
     if (cornerSpringForce != null) {
       backgroundDrawable.setCornerSpringForce(cornerSpringForce);
     }
+    if (onCornerSizeChangeListener != null) {
+      backgroundDrawable.setOnCornerSizeChangeListener(onCornerSizeChangeListener);
+    }
     Context context = materialButton.getContext();
     backgroundDrawable.initializeElevationOverlay(context);
     backgroundDrawable.setTintList(backgroundTint);
@@ -366,6 +371,15 @@ class MaterialButtonHelper {
 
   void setToggleCheckedStateOnClick(boolean toggleCheckedStateOnClick) {
     this.toggleCheckedStateOnClick = toggleCheckedStateOnClick;
+  }
+
+  void setCornerSizeChangeListener(
+      @Nullable OnCornerSizeChangeListener onCornerSizeChangeListener) {
+    this.onCornerSizeChangeListener = onCornerSizeChangeListener;
+    MaterialShapeDrawable materialShapeDrawable = getMaterialShapeDrawable();
+    if (materialShapeDrawable != null) {
+      materialShapeDrawable.setOnCornerSizeChangeListener(onCornerSizeChangeListener);
+    }
   }
 
   @Nullable

@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonGroup;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoFragment;
@@ -52,6 +53,7 @@ public class ButtonGroupDemoFragment extends DemoFragment {
     layoutInflater.inflate(getLabelOnlyButtonGroupContent(), content, /* attachToRoot= */ true);
     layoutInflater.inflate(getMixedButtonGroupContent(), content, /* attachToRoot= */ true);
 
+    List<MaterialButton> buttons = DemoUtils.findViewsWithType(view, MaterialButton.class);
     List<MaterialButtonGroup> buttonGroups =
         DemoUtils.findViewsWithType(view, MaterialButtonGroup.class);
 
@@ -71,6 +73,13 @@ public class ButtonGroupDemoFragment extends DemoFragment {
           for (MaterialButtonGroup buttonGroup : buttonGroups) {
             // Enable the button group if enable toggle is checked.
             buttonGroup.setEnabled(isChecked);
+          }
+        });
+    MaterialSwitch opticalCenterSwitch = view.findViewById(R.id.switch_optical_center);
+    opticalCenterSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (MaterialButton button : buttons) {
+            button.setOpticalCenterEnabled(isChecked);
           }
         });
     return view;

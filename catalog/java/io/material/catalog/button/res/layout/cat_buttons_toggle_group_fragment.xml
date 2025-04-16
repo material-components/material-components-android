@@ -50,13 +50,13 @@
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_team" />
+          android:text="@string/cat_button_label_team"  />
 
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_everyone" />
+          android:text="@string/cat_button_label_everyone"  />
 
       <Button
           style="?attr/materialButtonOutlinedStyle"
@@ -80,17 +80,17 @@
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_cheese"/>
+          android:text="@string/cat_button_label_cheese" />
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_tomatoes"/>
+          android:text="@string/cat_button_label_tomatoes" />
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_mushrooms"/>
+          android:text="@string/cat_button_label_mushrooms" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <TextView
@@ -112,7 +112,7 @@
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_add_circle"
           app:icon="@drawable/ic_add_circle_checkable_24px"
-          app:iconPadding="0dp"/>
+          app:iconPadding="0dp" />
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_favorite"
           app:icon="@drawable/ic_favorite_checkable_24px"
-          app:iconPadding="0dp"/>
+          app:iconPadding="0dp" />
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
@@ -128,7 +128,7 @@
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_home"
           app:icon="@drawable/ic_home_checkable_24px"
-          app:iconPadding="0dp"/>
+          app:iconPadding="0dp" />
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
@@ -136,7 +136,7 @@
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_settings"
           app:icon="@drawable/ic_settings_checkable_24px"
-          app:iconPadding="0dp"/>
+          app:iconPadding="0dp" />
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"
@@ -144,7 +144,7 @@
           android:minWidth="@dimen/mtrl_min_touch_target_size"
           android:contentDescription="@string/cat_icon_button_label_delete_forever"
           app:icon="@drawable/ic_delete_forever_checkable_24px"
-          app:iconPadding="0dp"/>
+          app:iconPadding="0dp" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <TextView
@@ -200,6 +200,14 @@
         android:checked="true"
         android:enabled="true"
         android:text="@string/cat_button_enable" />
-
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_optical_center"
+        android:paddingTop="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:checked="false"
+        android:enabled="true"
+        android:text="@string/cat_button_optical_center" />
   </LinearLayout>
 </ScrollView>
