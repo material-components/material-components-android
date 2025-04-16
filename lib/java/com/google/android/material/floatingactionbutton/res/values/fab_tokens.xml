@@ -65,6 +65,21 @@
   <macro name="m3_comp_fab_tertiary_container_container_color">?attr/colorTertiaryContainer</macro>
   <macro name="m3_comp_fab_tertiary_container_icon_color">?attr/colorOnTertiaryContainer</macro>
 
+  <!-- Generated from token set (md.comp.fab.primary) in context (platform=android, audience=3p). -->
+  <!-- Group: Enabled -->
+  <macro name="m3_comp_fab_primary_container_color">?attr/colorPrimary</macro>
+  <macro name="m3_comp_fab_primary_icon_color">?attr/colorOnPrimary</macro>
+
+  <!-- Generated from token set (md.comp.fab.secondary) in context (platform=android, audience=3p). -->
+  <!-- Group: Enabled -->
+  <macro name="m3_comp_fab_secondary_container_color">?attr/colorSecondary</macro>
+  <macro name="m3_comp_fab_secondary_icon_color">?attr/colorOnSecondary</macro>
+
+  <!-- Generated from token set (md.comp.fab.tertiary) in context (platform=android, audience=3p). -->
+  <!-- Group: Enabled -->
+  <macro name="m3_comp_fab_tertiary_container_color">?attr/colorTertiary</macro>
+  <macro name="m3_comp_fab_tertiary_icon_color">?attr/colorOnTertiary</macro>
+
   <!-- Generated from token set (md.comp.fab.surface) in context (platform=android, audience=3p). -->
   <!-- Group: Enabled - Container -->
   <macro name="m3_comp_fab_surface_container_color">?attr/colorSurfaceContainerHigh</macro>

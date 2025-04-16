@@ -37,6 +37,22 @@
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
 
+    <!--
+      Default as primary container FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
+      Please use the corresponding themeoverlay for other color variants via materialThemeOverlay.
+    -->
+    <item name="floatingActionButtonStyle">@style/Widget.Material3Expressive.FloatingActionButton</item>
+    <item name="floatingActionButtonMediumStyle">@style/Widget.Material3Expressive.FloatingActionButton.Medium</item>
+    <item name="floatingActionButtonLargeStyle">@style/Widget.Material3Expressive.FloatingActionButton.Large</item>
+
+    <!--
+      Default as primary container extended FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
+      Please use the corresponding themeoverlay for other color variants via materialThemeOverlay.
+    -->
+    <item name="extendedFloatingActionButtonSmallStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Small</item>
+    <item name="extendedFloatingActionButtonMediumStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Medium</item>
+    <item name="extendedFloatingActionButtonLargeStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Large</item>
+
     <item name="materialButtonStyle">@style/Widget.Material3Expressive.Button</item>
     <item name="materialButtonTonalStyle">@style/Widget.Material3Expressive.Button.TonalButton</item>
     <item name="materialButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.OutlinedButton</item>
@@ -72,6 +88,22 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
+
+    <!--
+      Default as primary container FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
+      Please use the corresponding themeoverlay for other color varaints via materialThemeOverlay.
+    -->
+    <item name="floatingActionButtonStyle">@style/Widget.Material3Expressive.FloatingActionButton</item>
+    <item name="floatingActionButtonMediumStyle">@style/Widget.Material3Expressive.FloatingActionButton.Medium</item>
+    <item name="floatingActionButtonLargeStyle">@style/Widget.Material3Expressive.FloatingActionButton.Large</item>
+
+    <!--
+      Default as primary container extended FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
+      Please use the corresponding themeoverlay for other color varaints via materialThemeOverlay.
+    -->
+    <item name="extendedFloatingActionButtonSmallStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Small</item>
+    <item name="extendedFloatingActionButtonMediumStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Medium</item>
+    <item name="extendedFloatingActionButtonLargeStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Large</item>
 
     <item name="materialButtonStyle">@style/Widget.Material3Expressive.Button</item>
     <item name="materialButtonTonalStyle">@style/Widget.Material3Expressive.Button.TonalButton</item>
