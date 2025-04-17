@@ -77,7 +77,7 @@ final class ColorResourcesTableCreator {
       colorResource =
           new ColorResource(
               entry.getKey(),
-              context.getResources().getResourceName(entry.getKey()),
+              context.getResources().getResourceEntryName(entry.getKey()),
               entry.getValue());
       if (!context
           .getResources()
@@ -338,16 +338,37 @@ final class ColorResourcesTableCreator {
     PackageChunk(PackageInfo packageInfo, List<ColorResource> colorResources) {
       this.packageInfo = packageInfo;
 
-      // Placeholder String type, since only XML color resources will be replaced at runtime.
-      typeStrings = new StringPoolChunk(false, "?1", "?2", "?3", "?4", "?5", "color");
+      typeStrings = new StringPoolChunk(false, generateTypeStrings(colorResources));
+      keyStrings = new StringPoolChunk(true, generateKeyStrings(colorResources));
+      typeSpecChunk = new TypeSpecChunk(colorResources);
+
+      header = new ResChunkHeader(HEADER_TYPE_PACKAGE, HEADER_SIZE, getChunkSize());
+    }
+
+    private String[] generateTypeStrings(List<ColorResource> colorResources) {
+      if (!colorResources.isEmpty()) {
+        byte colorTypeId = colorResources.get(0).typeId;
+        String[] types = new String[colorTypeId];
+
+        // Placeholder String type, since only XML color resources will be replaced at runtime.
+        for (int i = 0; i < colorTypeId - 1; i++) {
+          types[i] = "?" + (i + 1);
+        }
+
+        types[colorTypeId - 1] = "color";
+
+        return types;
+      } else {
+        return new String[0];
+      }
+    }
+
+    private String[] generateKeyStrings(List<ColorResource> colorResources) {
       String[] keys = new String[colorResources.size()];
       for (int i = 0; i < colorResources.size(); i++) {
         keys[i] = colorResources.get(i).name;
       }
-      keyStrings = new StringPoolChunk(true, keys);
-      typeSpecChunk = new TypeSpecChunk(colorResources);
-
-      header = new ResChunkHeader(HEADER_TYPE_PACKAGE, HEADER_SIZE, getChunkSize());
+      return keys;
     }
 
     void writeTo(ByteArrayOutputStream outputStream) throws IOException {
