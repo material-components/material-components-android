@@ -84,6 +84,12 @@ public class SplitButtonDemoFragment extends DemoFragment {
               .show();
           return true;
         });
+    popup.setOnDismissListener(
+        popupMenu -> {
+          MaterialButton button =
+              (MaterialButton) v.findViewById(R.id.expand_more_or_less_filled_icon_popup);
+          button.setChecked(false);
+        });
     popup.show();
   }
 
