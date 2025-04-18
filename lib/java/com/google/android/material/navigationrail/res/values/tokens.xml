@@ -48,6 +48,11 @@
   <dimen name="m3_comp_nav_rail_collapsed_item_vertical_space">4dp</dimen>
   <dimen name="m3_comp_nav_rail_collapsed_top_space">44dp</dimen>
 
+  <!-- Generated from token set (md.comp.nav-rail.expanded) in context (platform=android, audience=3p). -->
+  <dimen name="m3_comp_nav_rail_expanded_container_width_minimum">220dp</dimen>
+  <dimen name="m3_comp_nav_rail_expanded_container_width_maximum">360dp</dimen>
+  <style name="ShapeAppearance.M3.Comp.NavRail.Expanded.Container.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.None"/>
+
   <!-- Generated from token set (md.comp.nav-rail.item) in context (platform=android, audience=3p). -->
   <dimen name="m3_comp_nav_rail_item_icon_size">24dp</dimen>
   <style name="ShapeAppearance.M3.Comp.NavRail.Item.ActiveIndicator.Shape" parent="ShapeAppearance.M3.Sys.Shape.Corner.Full"/>
@@ -63,5 +68,13 @@
   <dimen name="m3_comp_nav_rail_item_vertical_icon_label_space">4dp</dimen>
   <dimen name="m3_comp_nav_rail_item_vertical_leading_space">16dp</dimen>
   <dimen name="m3_comp_nav_rail_item_vertical_trailing_space">16dp</dimen>
+
+  <!-- Generated from token set (md.comp.nav-rail.item.horizontal) in context (platform=android,
+       audience=3p). -->
+  <macro name="m3_comp_nav_rail_item_horizontal_label_text_font">?attr/textAppearanceLabelLarge</macro>
+  <dimen name="m3_comp_nav_rail_item_horizontal_active_indicator_height">56dp</dimen>
+  <dimen name="m3_comp_nav_rail_item_horizontal_full_width_leading_space">16dp</dimen>
+  <dimen name="m3_comp_nav_rail_item_horizontal_full_width_trailing_space">16dp</dimen>
+  <dimen name="m3_comp_nav_rail_item_horizontal_icon_label_space">8dp</dimen>
 
 </resources>

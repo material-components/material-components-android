@@ -68,10 +68,11 @@
     <item name="materialButtonGroupStyle">@style/Widget.Material3Expressive.MaterialButtonGroup</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3Expressive.MaterialButtonToggleGroup</item>
 
+    <item name="bottomNavigationStyle">@style/Widget.Material3Expressive.BottomNavigationView</item>
+    <item name="navigationRailStyle">@style/Widget.Material3Expressive.NavigationRailView</item>
+
     <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>
-
-    <item name="bottomNavigationStyle">@style/Widget.Material3Expressive.BottomNavigationView</item>
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_comp_app_bar_medium_flexible_container_height</item>
@@ -125,10 +126,11 @@
     <item name="materialButtonGroupStyle">@style/Widget.Material3Expressive.MaterialButtonGroup</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3Expressive.MaterialButtonToggleGroup</item>
 
+    <item name="bottomNavigationStyle">@style/Widget.Material3Expressive.BottomNavigationView</item>
+    <item name="navigationRailStyle">@style/Widget.Material3Expressive.NavigationRailView</item>
+
     <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>
-
-    <item name="bottomNavigationStyle">@style/Widget.Material3Expressive.BottomNavigationView</item>
 
     <!-- Top App Bars. -->
     <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_comp_app_bar_medium_flexible_container_height</item>
