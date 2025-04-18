@@ -19,9 +19,13 @@
     description="Title for the screen that showcases the Docked Toolbar widget [CHAR LIMIT=NONE]">
     Docked Toolbar
   </string>
-    <string name="cat_docked_toolbar_three_item_title"
+  <string name="cat_docked_toolbar_three_item_title"
     description="Title for the screen that showcases the Docked Toolbar widget with three items [CHAR LIMIT=NONE]">
     Docked Toolbar with 3 items
+  </string>
+  <string name="cat_docked_toolbar_text_button_demo_title"
+    description="Title for the screen that showcases the Docked Toolbar widget with text buttons [CHAR LIMIT=NONE]">
+    Docked Toolbar with Text Buttons
   </string>
   <string name="cat_docked_toolbar_description"
     description="Body text describing the Docked Toolbar component within the design system [CHAR LIMIT=NONE]">
@@ -42,4 +46,6 @@
   <string name="cat_docked_toolbar_overflow_option_one" description="Content description for an option in an overflow menu [CHAR LIMIT=NONE]">One</string>
   <string name="cat_docked_toolbar_overflow_option_two" description="Content description for an option in an overflow menu [CHAR LIMIT=NONE]">Two</string>
   <string name="cat_docked_toolbar_overflow_option_three" description="Content description for an option in an overflow menu [CHAR LIMIT=NONE]">Three</string>
+  <string name="cat_docked_toolbar_back_text_button_text" description="Content description for a back button [CHAR LIMIT=NONE]">Back</string>
+  <string name="cat_docked_toolbar_next_text_button_text" description="Content description for a next button [CHAR LIMIT=NONE]">Next</string>
 </resources>

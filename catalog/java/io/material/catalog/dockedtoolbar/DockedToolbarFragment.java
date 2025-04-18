@@ -65,6 +65,13 @@ public class DockedToolbarFragment extends DemoLandingFragment {
             return new DockedToolbarThreeItemDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_docked_toolbar_text_button_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new DockedToolbarTextButtonDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

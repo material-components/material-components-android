@@ -235,9 +235,11 @@ The following is an anatomy diagram for the floating toolbar:
 Standard style theme attribute: `?attr/floatingToolbarStyle`
 Vibrant style theme attribute: `?attr/floatingToolbarVibrantStyle`
 
-Floating toolbar also provides specific styles for icon buttons,
-`Widget.Material3.FloatingToolbar.IconButton` and
-`Widget.Material3.FloatingToolbar.IconButton.Vibrant`.
+Floating Toolbar also recommends a special style for specific components for
+when they are inside of a floating toolbar. Currently, the Floating Toolbar
+styles also include a theme overlay for `?attr/materialButtonStyle`,
+`?attr/materialIconButtonStyle`, and `?attr/borderlessButtonStyle` to
+style buttons inside of a Floating Toolbar.
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingtoolbar/res/values/styles.xml) and
