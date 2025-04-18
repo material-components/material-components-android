@@ -16,6 +16,40 @@
   -->
 <resources>
 
+  <!-- Styles for M3 Expressive BottomNavigationView. -->
+
+  <style name="Widget.Material3Expressive.BottomNavigationView" parent="Widget.Material3.BottomNavigationView">
+    <item name="android:minHeight">@dimen/m3_comp_nav_bar_container_height</item>
+    <item name="elevation">@dimen/m3_comp_nav_bar_container_elevation</item>
+    <item name="android:background">@macro/m3_comp_nav_bar_container_color</item>
+    <item name="itemTextColor">@color/m3expressive_bottom_nav_item_label_tint</item>
+    <item name="itemIconTint">@color/m3expressive_bottom_nav_item_icon_tint</item>
+    <item name="itemRippleColor">@color/m3expressive_bottom_nav_item_ripple_tint</item>
+    <item name="itemPaddingTop">@dimen/m3_comp_nav_bar_item_vertical_container_between_space</item>
+    <item name="itemPaddingBottom">@dimen/m3_comp_nav_bar_item_vertical_container_between_space</item>
+    <item name="itemIconGravity">@integer/m3expressive_bottom_nav_icon_gravity</item>
+    <item name="itemGravity">@integer/m3expressive_bottom_nav_item_gravity</item>
+    <item name="itemTextAppearanceActiveBoldEnabled">false</item>
+    <item name="itemTextAppearanceActive">@macro/m3_comp_nav_bar_item_vertical_label_text_font</item>
+    <item name="itemTextAppearanceInactive">@macro/m3_comp_nav_bar_item_vertical_label_text_font</item>
+    <item name="horizontalItemTextAppearanceActive">@macro/m3_comp_nav_bar_item_horizontal_label_text_font</item>
+    <item name="horizontalItemTextAppearanceInactive">@macro/m3_comp_nav_bar_item_horizontal_label_text_font</item>
+    <item name="itemActiveIndicatorStyle">@style/Widget.Material3Expressive.BottomNavigationView.ActiveIndicator</item>
+    <item name="activeIndicatorLabelPadding">@dimen/m3_comp_nav_bar_item_active_indicator_icon_label_space</item>
+    <item name="itemIconSize">@dimen/m3_comp_nav_bar_item_icon_size</item>
+    <item name="labelFontScalingEnabled">true</item>
+    <item name="labelMaxLines">999</item>
+  </style>
+
+  <style name="Widget.Material3Expressive.BottomNavigationView.ActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+    <item name="android:width">@dimen/m3_comp_nav_bar_item_vertical_active_indicator_width</item>
+    <item name="android:height">@dimen/m3_comp_nav_bar_item_vertical_active_indicator_height</item>
+    <item name="marginHorizontal">@dimen/m3_bottom_nav_item_active_indicator_margin_horizontal</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavBar.Item.ActiveIndicator.Shape</item>
+    <item name="android:color">@macro/m3_comp_nav_bar_item_active_indicator_color</item>
+    <item name="expandedHeight">@dimen/m3_comp_nav_bar_item_horizontal_active_indicator_height</item>
+  </style>
+
   <!-- Styles for M3 BottomNavigationView. -->
 
   <style name="Base.Widget.Material3.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
