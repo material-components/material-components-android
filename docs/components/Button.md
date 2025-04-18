@@ -749,6 +749,139 @@ Element           | Style                                  | Theme Attribute
 ----------------- | -------------------------------------- | ---------------
 **Default style** | `Widget.Material3.MaterialButtonGroup` | `?attr/materialButtonGroupStyle`
 
+### Making button groups adaptive
+
+`MaterialButtonGroup` inherits from the `LinearLayout`. It can be configured to
+achieve different child arrangements for different screen sizes or foldable
+screens by using `layout_width` and `layout_weight`.
+
+#### Fixed button sizes
+
+When child buttons should not be adjusted while screen size changes, consider
+using `layout_width` on all buttons.
+
+![Button group with fixed arrangement](assets/buttons/group_arrangement_fixed.png)
+
+```xml
+<com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center_horizontal"
+    android:spacing="4dp">
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_button_previous_icon"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:icon="@drawable/cat_button_previous_icon"/>
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_button_play_icon"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:icon="@drawable/cat_button_play_icon"/>
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_button_next_icon"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:icon="@drawable/cat_button_next_icon"/>
+</com.google.android.material.button.MaterialButtonGroup>
+```
+
+#### Flexible button sizes
+
+When all child buttons are equally important or their sizes are proportional to
+each other, consider using `layout_weight` on all buttons.
+
+![Button group with flexible arrangement](assets/buttons/group_arrangement_flexible.png)
+
+```xml
+<com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center_horizontal"
+    android:spacing="4dp">
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/cat_button_previous_icon"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:icon="@drawable/cat_button_previous_icon"/>
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:contentDescription="@string/cat_button_play_icon"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:icon="@drawable/cat_button_play_icon"/>
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:contentDescription="@string/cat_button_next_icon"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:icon="@drawable/cat_button_next_icon"/>
+</com.google.android.material.button.MaterialButtonGroup>
+```
+
+#### Mixed button sizes
+
+When only some buttons are flexible for different screen sizes, consider using
+`layout_weight` on these buttons but use `layout_width` on the rest as below.
+
+![Button group with mixed arrangement](assets/buttons/group_arrangement_mixed.png)
+
+```xml
+<com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center_horizontal"
+    android:spacing="4dp">
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_button_previous_icon"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:icon="@drawable/cat_button_previous_icon"/>
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:contentDescription="@string/cat_button_play_icon"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:icon="@drawable/cat_button_play_icon"/>
+    <Button
+        style="?attr/materialIconButtonFilledStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/cat_button_next_icon"
+        android:gravity="center"
+        app:iconGravity="textStart"
+        app:icon="@drawable/cat_button_next_icon"/>
+</com.google.android.material.button.MaterialButtonGroup>
+```
+
 ### Split button
 
 A specialized type of the connected button group is the split button. The
