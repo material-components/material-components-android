@@ -17,6 +17,23 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+  <!-- Styles for M3 Expressive Button Groups. -->
+
+  <!-- M3 Expressive Button Group. -->
+  <style name="Widget.Material3Expressive.MaterialButtonGroup" parent="Widget.Material3.MaterialButtonGroup"/>
+
+  <!-- M3 Expressive Connected Button Group. -->
+  <style name="Widget.Material3Expressive.MaterialButtonGroup.Connected" parent="Widget.Material3.MaterialButtonGroup.Connected">
+    <item name="innerCornerSize">@xml/m3expressive_connected_buttons_inner_corner_size_state_list</item>
+  </style>
+
+  <!-- M3 Expressive Connected Button Toggle Group (Segmented Button). -->
+  <style name="Widget.Material3Expressive.MaterialButtonToggleGroup" parent="Widget.Material3.MaterialButtonToggleGroup">
+    <item name="innerCornerSize">@xml/m3expressive_connected_buttons_inner_corner_size_state_list</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.ButtonGroup.Connected.Small.Container.Shape</item>
+    <item name="android:spacing">@dimen/m3_comp_button_group_connected_small_between_space</item>
+  </style>
+
   <!-- Styles for M3 Expressive Buttons. -->
 
   <!-- M3 Expressive filled button style. -->
