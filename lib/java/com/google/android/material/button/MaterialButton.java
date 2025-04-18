@@ -56,6 +56,7 @@ import android.widget.Button;
 import android.widget.Checkable;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -247,6 +248,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @Px private int originalPaddingStart = UNSET;
   @Px private int originalPaddingEnd = UNSET;
 
+  @Nullable private LayoutParams originalLayoutParams;
+
   // Fields for optical center.
   private boolean opticalCenterEnabled;
   private int opticalCenterShift;
@@ -270,7 +273,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   public MaterialButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(
-        wrap(context, attrs, defStyleAttr, DEF_STYLE_RES, new int[] { MATERIAL_SIZE_OVERLAY_ATTR }),
+        wrap(context, attrs, defStyleAttr, DEF_STYLE_RES, new int[] {MATERIAL_SIZE_OVERLAY_ATTR}),
         attrs,
         defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
@@ -324,7 +327,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   private SpringForce createSpringForce() {
-    return MotionUtils.resolveThemeSpringForce(getContext(), R.attr.motionSpringFastSpatial,
+    return MotionUtils.resolveThemeSpringForce(
+        getContext(),
+        R.attr.motionSpringFastSpatial,
         R.style.Motion_Material3_Spring_Standard_Fast_Spatial);
   }
 
@@ -538,7 +543,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       originalWidth = UNSET;
     }
     if (originalWidth == UNSET) {
-      originalWidth = right - left;
+      originalWidth = getMeasuredWidth();
+      // The width morph leverage the width of the layout params. However, it's not available if
+      // layout_weight is used. We need to hardcode the width here. The original layout params will
+      // be preserved for the correctness of distribution when buttons are added or removed into the
+      // group programmatically.
+      if (originalLayoutParams == null
+          && getParent() instanceof MaterialButtonGroup
+          && ((MaterialButtonGroup) getParent()).getButtonSizeChange() != null) {
+        originalLayoutParams = (LayoutParams) getLayoutParams();
+        LayoutParams newLayoutParams = new LayoutParams(originalLayoutParams);
+        newLayoutParams.width = (int) originalWidth;
+        setLayoutParams(newLayoutParams);
+      }
     }
 
     if (allowedWidthDecrease == UNSET) {
@@ -554,6 +571,14 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
     if (originalPaddingEnd == UNSET) {
       originalPaddingEnd = getPaddingEnd();
+    }
+  }
+
+  void recoverOriginalLayoutParams() {
+    if (originalLayoutParams != null) {
+      setLayoutParams(originalLayoutParams);
+      originalLayoutParams = null;
+      originalWidth = UNSET;
     }
   }
 
@@ -1539,7 +1564,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   private void setDisplayedWidthIncrease(float widthIncrease) {
     if (displayedWidthIncrease != widthIncrease) {
       displayedWidthIncrease = widthIncrease;
-      updatePaddingsAndSize();
+      updatePaddingsAndSizeForWidthAnimation();
       invalidate();
       // Report width changed to the parent group.
       if (getParent() instanceof MaterialButtonGroup) {
@@ -1551,7 +1576,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   void setDisplayedWidthDecrease(int widthDecrease) {
     displayedWidthDecrease = min(widthDecrease, allowedWidthDecrease);
-    updatePaddingsAndSize();
+    updatePaddingsAndSizeForWidthAnimation();
     invalidate();
   }
 
@@ -1570,7 +1595,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
               int opticalCenterShift = (int) (diffX * OPTICAL_CENTER_RATIO);
               if (this.opticalCenterShift != opticalCenterShift) {
                 this.opticalCenterShift = opticalCenterShift;
-                updatePaddingsAndSize();
+                updatePaddingsAndSizeForWidthAnimation();
                 invalidate();
               }
             });
@@ -1582,7 +1607,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       post(
           () -> {
             opticalCenterShift = getOpticalCenterShift();
-            updatePaddingsAndSize();
+            updatePaddingsAndSizeForWidthAnimation();
             invalidate();
           });
     }
@@ -1597,7 +1622,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     return opticalCenterEnabled;
   }
 
-  private void updatePaddingsAndSize() {
+  private void updatePaddingsAndSizeForWidthAnimation() {
     int widthChange = (int) (displayedWidthIncrease - displayedWidthDecrease);
     int paddingStartChange = widthChange / 2 + opticalCenterShift;
     getLayoutParams().width = (int) (originalWidth + widthChange);

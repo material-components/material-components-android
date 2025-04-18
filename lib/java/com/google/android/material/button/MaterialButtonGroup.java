@@ -206,6 +206,9 @@ public class MaterialButtonGroup extends LinearLayout {
       return;
     }
 
+    // Recover the original layout params of all children before adding the new child.
+    recoverAllChildrenLayoutParams();
+
     isChildrenShapeInvalidated = true;
     super.addView(child, index, params);
     MaterialButton buttonChild = (MaterialButton) child;
@@ -236,7 +239,17 @@ public class MaterialButtonGroup extends LinearLayout {
 
     isChildrenShapeInvalidated = true;
     updateChildShapes();
+
+    // Recover the original layout params of all children before updating the child layout.
+    recoverAllChildrenLayoutParams();
     adjustChildMarginsAndUpdateLayout();
+  }
+
+  private void recoverAllChildrenLayoutParams(){
+    for (int i = 0; i < getChildCount(); i++) {
+      MaterialButton child = getChildButton(i);
+      child.recoverOriginalLayoutParams();
+    }
   }
 
   @Override
@@ -250,6 +263,7 @@ public class MaterialButtonGroup extends LinearLayout {
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
     super.onLayout(changed, l, t, r, b);
     if (changed) {
+      recoverAllChildrenLayoutParams();
       adjustChildSizeChange();
     }
   }
