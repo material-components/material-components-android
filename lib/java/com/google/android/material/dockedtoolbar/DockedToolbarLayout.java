@@ -123,11 +123,13 @@ public class DockedToolbarLayout extends FrameLayout {
                 && !paddingBottomSystemWindowInsets) {
               return insets;
             }
-
-            Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            Insets cutoutInsets = insets.getInsets(WindowInsetsCompat.Type.displayCutout());
-            int bottomInset = systemBarInsets.bottom + cutoutInsets.bottom;
-            int topInset = systemBarInsets.top + cutoutInsets.top;
+            Insets systemBarInsets =
+                insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars()
+                        | WindowInsetsCompat.Type.displayCutout()
+                        | WindowInsetsCompat.Type.ime());
+            int bottomInset = systemBarInsets.bottom;
+            int topInset = systemBarInsets.top;
             int bottomPadding = 0;
             int topPadding = 0;
 

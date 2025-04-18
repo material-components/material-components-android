@@ -127,12 +127,15 @@ public class FloatingToolbarLayout extends FrameLayout {
                 && !marginBottomSystemWindowInsets) {
               return insets;
             }
-            Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            Insets cutoutInsets = insets.getInsets(WindowInsetsCompat.Type.displayCutout());
-            bottomMarginWindowInset = systemBarInsets.bottom + cutoutInsets.bottom;
-            topMarginWindowInset = systemBarInsets.top + cutoutInsets.top;
-            rightMarginWindowInset = systemBarInsets.right + cutoutInsets.right;
-            leftMarginWindowInset = systemBarInsets.left + cutoutInsets.left;
+            Insets systemBarInsets =
+                insets.getInsets(
+                    WindowInsetsCompat.Type.systemBars()
+                        | WindowInsetsCompat.Type.displayCutout()
+                        | WindowInsetsCompat.Type.ime());
+            bottomMarginWindowInset = systemBarInsets.bottom;
+            topMarginWindowInset = systemBarInsets.top;
+            rightMarginWindowInset = systemBarInsets.right;
+            leftMarginWindowInset = systemBarInsets.left;
 
             updateMargins();
 
