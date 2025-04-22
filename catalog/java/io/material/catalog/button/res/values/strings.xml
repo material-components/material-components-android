@@ -101,8 +101,8 @@
   <string name="cat_icon_and_label_mixed_toggle" description="A label for icon and label mixed toggle buttons below. [CHAR LIMIT=NONE]">Icon and label mixed toggle</string>
   <string description="A label for a spacing slider [CHAR LIMIT=NONE]"
       name="cat_spacing_label">Spacing (dp)</string>
-  <string description="A label for an inner corner size slider [CHAR LIMIT=NONE]"
-      name="cat_inner_corner_size_label">Inner corners size (0 – 50%)</string>
+  <string description="A label for a fixed inner corner size slider [CHAR LIMIT=NONE]"
+      name="cat_inner_corner_size_label">Fixed inner corners size (0 – 50%)</string>
   <string name="cat_button_label_private">Private</string>
   <string name="cat_button_label_team">Team</string>
   <string name="cat_button_label_everyone">Everyone</string>
