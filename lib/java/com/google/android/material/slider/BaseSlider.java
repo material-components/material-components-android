@@ -2589,9 +2589,7 @@ abstract class BaseSlider<
     int yCenter = calculateTrackCenter();
 
     drawInactiveTracks(canvas, trackWidth, yCenter);
-    if (!isCentered()) {
-      drawActiveTracks(canvas, trackWidth, yCenter);
-    }
+    drawActiveTracks(canvas, trackWidth, yCenter);
 
     if (isRtl() || isVertical()) {
       drawTrackIcons(canvas, activeTrackRect, inactiveTrackLeftRect);
@@ -2621,14 +2619,16 @@ abstract class BaseSlider<
     float left = normalizeValue(values.size() == 1 ? valueFrom : min);
     float right = normalizeValue(max);
 
-    // When centered, there is no active range, left == right in order to draw the inactive track on
-    // both sides of the thumb leaving space for it, covering the entirety of the track.
+    // When centered, the active range is bound by the center.
     if (isCentered()) {
-      left = right;
+      left = min(.5f, right);
+      right = max(.5f, right);
     }
 
-    // In RTL we draw things in reverse, so swap the left and right range values
-    return isRtl() || isVertical() ? new float[] {right, left} : new float[] {left, right};
+    // In RTL we draw things in reverse, so swap the left and right range values.
+    return !isCentered() && (isRtl() || isVertical())
+        ? new float[] {right, left}
+        : new float[] {left, right};
   }
 
   private void drawInactiveTracks(@NonNull Canvas canvas, int width, int yCenter) {
@@ -2692,7 +2692,7 @@ abstract class BaseSlider<
     }
 
     FullCornerDirection direction = FullCornerDirection.NONE;
-    if (values.size() == 1) { // Only 1 thumb
+    if (values.size() == 1 && !isCentered()) { // Only 1 thumb
       direction = isRtl() || isVertical() ? FullCornerDirection.RIGHT : FullCornerDirection.LEFT;
     }
 
@@ -2712,8 +2712,14 @@ abstract class BaseSlider<
       int trackCornerSize = getTrackCornerSize();
       switch (direction) {
         case NONE:
-          left += thumbTrackGapSize;
-          right -= thumbTrackGapSize;
+          if (!isCentered()) {
+            left += thumbTrackGapSize;
+            right -= thumbTrackGapSize;
+          } else if (activeRange[1] == .5f) { // centered, active track ends at the center
+            left += thumbTrackGapSize;
+          } else if (activeRange[0] == .5f) { // centered, active track starts at the center
+            right -= thumbTrackGapSize;
+          }
           break;
         case LEFT:
           left -= trackCornerSize;
@@ -2955,11 +2961,7 @@ abstract class BaseSlider<
 
     // Draw ticks on the active track (if any).
     if (leftActiveTickIndex <= rightActiveTickIndex) {
-      drawTicks(
-          leftActiveTickIndex * 2,
-          (rightActiveTickIndex + 1) * 2,
-          canvas,
-          isCentered() ? inactiveTicksPaint : activeTicksPaint); // centered uses inactive color.
+      drawTicks(leftActiveTickIndex * 2, (rightActiveTickIndex + 1) * 2, canvas, activeTicksPaint);
     }
 
     // Draw ticks on the right inactive track (if any).
@@ -2971,7 +2973,9 @@ abstract class BaseSlider<
 
   private void drawTicks(int from, int to, Canvas canvas, Paint paint) {
     for (int i = from; i < to; i += 2) {
-      if (isOverlappingThumb(ticksCoordinates[i])) {
+      float coordinateToCheck = isVertical() ? ticksCoordinates[i + 1] : ticksCoordinates[i];
+      if (isOverlappingThumb(coordinateToCheck)
+          || (isCentered() && isOverlappingCenterGap(coordinateToCheck))) {
         continue;
       }
       canvas.drawPoint(ticksCoordinates[i], ticksCoordinates[i + 1], paint);
@@ -2987,6 +2991,12 @@ abstract class BaseSlider<
     return false;
   }
 
+  private boolean isOverlappingCenterGap(float tickCoordinate) {
+    float threshold = thumbTrackGapSize + thumbWidth / 2f;
+    float trackCenter = (trackWidth + trackSidePadding * 2) / 2f;
+    return tickCoordinate >= trackCenter - threshold && tickCoordinate <= trackCenter + threshold;
+  }
+
   private void maybeDrawStopIndicator(@NonNull Canvas canvas, int yCenter) {
     if (trackStopIndicatorSize <= 0 || values.isEmpty()) {
       return;
@@ -2999,10 +3009,6 @@ abstract class BaseSlider<
     // Centered, multiple thumbs, inactive track may be visible at the start.
     if (isCentered() || (values.size() > 1 && values.get(0) > valueFrom)) {
       drawStopIndicator(canvas, valueToX(valueFrom), yCenter);
-    }
-    // Centered, draw indicator in the middle of the track.
-    if (isCentered()) {
-      drawStopIndicator(canvas, (valueToX(valueTo) + valueToX(valueFrom)) / 2f, yCenter);
     }
   }
 
