@@ -136,4 +136,5 @@
   <string name="cat_button_previous_icon">previous icon</string>
   <string name="cat_button_play_icon">play icon</string>
   <string name="cat_button_next_icon">next icon</string>
+  <string name="cat_button_toggleable">Toggleable</string>
 </resources>
