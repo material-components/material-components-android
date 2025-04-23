@@ -17,6 +17,33 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+  <!-- Styles for M3 Expressive Dialogs. -->
+
+  <style name="MaterialAlertDialog.Material3Expressive" parent="MaterialAlertDialog.Material3">
+    <item name="android:layout">@layout/m3expressive_alert_dialog</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3Expressive.Title.Panel" parent="MaterialAlertDialog.Material3.Title.Panel">
+    <item name="android:paddingLeft">?attr/dialogPreferredPadding</item>
+    <item name="android:paddingRight">?attr/dialogPreferredPadding</item>
+    <item name="android:paddingTop">@dimen/m3expressive_alert_dialog_top_padding</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3Expressive.Title.Panel.CenterStacked">
+    <item name="android:orientation">vertical</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3Expressive.Title.Text" parent="MaterialAlertDialog.Material3.Title.Text">
+    <item name="android:singleLine">false</item>
+    <item name="android:maxLines">4</item>
+  </style>
+
+  <style name="MaterialAlertDialog.Material3Expressive.Title.Text.CenterStacked">
+    <item name="android:layout_gravity">center</item>
+    <item name="android:gravity">center</item>
+    <item name="android:textAlignment" tools:ignore="NewApi">gravity</item>
+  </style>
+
   <!-- Styles for M3 Dialogs. -->
 
   <style name="Widget.Material3.CheckedTextView" parent="Widget.MaterialComponents.CheckedTextView">

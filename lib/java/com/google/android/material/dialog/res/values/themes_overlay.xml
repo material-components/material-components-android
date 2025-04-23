@@ -16,10 +16,10 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <!-- Dialog theme overlays for Material3Expressive. -->
+  <!-- Dialog theme overlays for M3 Expressive. -->
 
   <style name="Base.ThemeOverlay.Material3Expressive.Dialog" parent="Base.ThemeOverlay.Material3.Dialog">
-    <!-- Update materialButtonStyle with Expressive style. -->
+    <item name="materialButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
   </style>
 
   <style name="ThemeOverlay.Material3Expressive.Dialog" parent="Base.ThemeOverlay.Material3Expressive.Dialog"/>
@@ -29,7 +29,7 @@
     alertDialogTheme attribute.
   -->
   <style name="ThemeOverlay.Material3Expressive.Dialog.Alert" parent="ThemeOverlay.Material3.Dialog.Alert">
-    <!-- Update buttonBarButtonStyle with Expressive style. -->
+    <item name="buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
   </style>
 
   <!--
@@ -38,11 +38,11 @@
     It is recommended to use AppCompat alert dialogs, but Preferences does not.
   -->
   <style name="ThemeOverlay.Material3Expressive.Dialog.Alert.Framework" parent="ThemeOverlay.Material3.Dialog.Alert.Framework">
-    <!-- Update buttonBarButtonStyle with Expressive style. -->
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
   </style>
 
   <style name="ThemeOverlay.Material3Expressive.Light.Dialog.Alert.Framework" parent="ThemeOverlay.Material3.Light.Dialog.Alert.Framework">
-    <!-- Update buttonBarButtonStyle with Expressive style. -->
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
   </style>
 
   <!--
@@ -50,15 +50,23 @@
     materialAlertDialogTheme attribute.
     -->
   <style name="ThemeOverlay.Material3Expressive.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-    <!-- Update components styles to Expressive styles. -->
+    <item name="alertDialogStyle">@style/MaterialAlertDialog.Material3Expressive</item>
+    <item name="buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="buttonBarNeutralButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3Expressive.Title.Panel</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3Expressive.Title.Text</item>
   </style>
 
   <!-- A theme overlay for Material3Expressive Alert Dialog panels with a center aligned title text and icon. -->
   <style name="ThemeOverlay.Material3Expressive.MaterialAlertDialog.Centered">
-    <!-- Update components styles to Expressive styles. -->
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3Expressive.Title.Panel.CenterStacked</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon.CenterStacked</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3Expressive.Title.Text.CenterStacked</item>
   </style>
 
-  <!-- Dialog theme overlays for Material3. -->
+  <!-- Dialog theme overlays for M3. -->
 
   <style name="Base.ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog">
     <item name="materialButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
@@ -118,7 +126,7 @@
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text.CenterStacked</item>
   </style>
 
-  <!-- Dialog theme overlays for MaterialComponents. -->
+  <!-- Dialog theme overlays for M2. -->
 
   <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog">
     <!-- Widget styles -->

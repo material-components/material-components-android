@@ -28,6 +28,10 @@
     <item name="colorOnTertiaryContainer">@color/m3_ref_palette_tertiary30</item>
     <item name="colorOnErrorContainer">@color/m3_ref_palette_error30</item>
 
+    <!-- Dialog themes. -->
+    <item name="alertDialogTheme">@style/ThemeOverlay.Material3Expressive.Dialog.Alert</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3Expressive.MaterialAlertDialog</item>
+
     <!-- Widget styles. -->
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
@@ -79,6 +83,11 @@
   </style>
 
   <style name="Base.Theme.Material3Expressive.Dark.Dialog" parent="Theme.Material3.Dark.Dialog">
+
+    <!-- Dialog themes. -->
+    <item name="alertDialogTheme">@style/ThemeOverlay.Material3Expressive.Dialog.Alert</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3Expressive.MaterialAlertDialog</item>
+
     <!-- Widget styles. -->
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
