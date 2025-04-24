@@ -476,7 +476,7 @@ public class MaterialButtonGroup extends LinearLayout {
    * buttons,
    */
   private void adjustChildSizeChange() {
-    if (buttonSizeChange == null) {
+    if (buttonSizeChange == null || getChildCount() == 0) {
       return;
     }
     int firstVisibleChildIndex = getFirstVisibleChildIndex();

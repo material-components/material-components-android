@@ -67,6 +67,13 @@ public class ButtonsFragment extends DemoLandingFragment {
           public Fragment createFragment() {
             return new ButtonGroupDistributionDemoFragment();
           }
+        },
+        new Demo(R.string.cat_buttons_group_runtime) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new ButtonGroupRuntimeDemoFragment();
+          }
         });
   }
 
