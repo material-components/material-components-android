@@ -146,8 +146,6 @@ public class SearchBar extends Toolbar {
   private final Drawable defaultNavigationIcon;
   private final boolean tintNavigationIcon;
   private final boolean forceDefaultNavigationOnClickListener;
-  private final int minimumTextMarginStart;
-  private int currentTextMarginStart;
   @Nullable private View centerView;
   @Nullable private Integer navigationIconTint;
   @Nullable private Drawable originalNavigationIconBackground;
@@ -157,6 +155,7 @@ public class SearchBar extends Toolbar {
   private boolean textCentered;
   private int maxWidth;
   @Nullable private ActionMenuView menuView;
+  @Nullable private ImageButton navIconButton;
 
   private final LiftOnScrollProgressListener liftColorListener =
       new LiftOnScrollProgressListener() {
@@ -185,9 +184,6 @@ public class SearchBar extends Toolbar {
     context = getContext();
     validateAttributes(attrs);
 
-    minimumTextMarginStart =
-        getResources()
-            .getDimensionPixelSize(R.dimen.m3_searchbar_text_margin_start_no_navigation_icon);
     defaultNavigationIcon =
         AppCompatResources.getDrawable(context, getDefaultNavigationIconResource());
     searchBarAnimationHelper = new SearchBarAnimationHelper();
@@ -427,7 +423,7 @@ public class SearchBar extends Toolbar {
     super.onLayout(changed, left, top, right, bottom);
 
     if (centerView != null) {
-      layoutViewInCenter(centerView, /* overlapMenu= */ true);
+      layoutViewInCenter(centerView, /* absolutePlacement= */ true);
     }
     setHandwritingBoundsInsets();
     if (textView != null) {
@@ -436,37 +432,9 @@ public class SearchBar extends Toolbar {
       // to be pushed to the side. In this case, we want the textview to be still centered on top of
       // any center views.
       if (textCentered) {
-        layoutViewInCenter(textView, /* overlapMenu= */ false);
-      }
-      // If after laying out, there's not enough space between the textview and the start of
-      // the SearchBar, we add a margin.
-      Toolbar.LayoutParams lp = (LayoutParams) textView.getLayoutParams();
-      int currentMargin = lp.getMarginStart();
-      int newMargin = getNewMargin(currentMargin);
-      if (currentMargin != newMargin) {
-        lp.setMarginStart(newMargin);
-        currentTextMarginStart = newMargin;
-        textView.setLayoutParams(lp);
+        layoutViewInCenter(textView, /* absolutePlacement= */ false);
       }
     }
-  }
-
-  private int getNewMargin(int currentMargin) {
-    // The start position of the textview with respect to its parent, the searchbar.
-    int textViewStart =
-        getLayoutDirection() == LAYOUT_DIRECTION_RTL
-            ? getMeasuredWidth() - textView.getRight()
-            : textView.getLeft();
-    int additionalMarginStart = max(minimumTextMarginStart - textViewStart, 0);
-    // If we are already including the margin in the textview start, and it is necessary to be added
-    // (ie. keeping the desired distance between the textview and the start), we should keep
-    // the margin.
-    if (currentTextMarginStart != 0
-        && currentMargin == currentTextMarginStart
-        && (textViewStart - currentMargin) < minimumTextMarginStart) {
-      additionalMarginStart = currentMargin;
-    }
-    return additionalMarginStart;
   }
 
   /**
@@ -605,14 +573,22 @@ public class SearchBar extends Toolbar {
     return menuView;
   }
 
+  @Nullable
+  private ImageButton findOrGetNavView() {
+    if (navIconButton == null) {
+      navIconButton = ToolbarUtils.getNavigationIconButton(this);
+    }
+    return navIconButton;
+  }
+
   /**
    * Lays out the given view in the center of the {@link SearchBar}.
    *
    * @param view The view to layout in the center.
-   * @param overlapMenu Whether the view can overlap the menu. This should be true if your centered
-   *     view should be absolute (eg. a product logo)
+   * @param absolutePlacement Whether the view will be placed absolutely in the center (eg. ignoring
+   * other toolbar elements like the nav icon and menu, padding, content insets)
    */
-  private void layoutViewInCenter(View view, boolean overlapMenu) {
+  private void layoutViewInCenter(View view, boolean absolutePlacement) {
     if (view == null) {
       return;
     }
@@ -620,7 +596,7 @@ public class SearchBar extends Toolbar {
     int viewWidth = view.getMeasuredWidth();
     int left = getMeasuredWidth() / 2 - viewWidth / 2;
     int right = left + viewWidth;
-    if (!overlapMenu) {
+    if (!absolutePlacement) {
       View menuView = findOrGetMenuView();
       if (menuView != null) {
         int diff =
@@ -630,13 +606,37 @@ public class SearchBar extends Toolbar {
         left -= diff;
         right -= diff;
       }
-    }
+      View navIcon = findOrGetNavView();
+      if (navIcon != null) {
+        int diff =
+            getLayoutDirection() == LAYOUT_DIRECTION_RTL
+                ? max(right - navIcon.getLeft(), 0)
+                : max(navIcon.getRight() - left, 0);
+        left += diff;
+        right += diff;
+      }
 
+      // Make sure to not lay out the view inside the SearchBar padding. paddingLeftAdded and
+      // paddingRightAdded will never be non-zero at the same time, as Toolbar.measure has already
+      // measured the children accounting for padding.
+      int paddingStartAdded = max(getPaddingStart() - left, getContentInsetStart() - left);
+      int paddingEndAdded =
+          max(
+              right - (getMeasuredWidth() - getPaddingEnd()),
+              right - (getMeasuredWidth() - getContentInsetEnd()));
+      left += max(paddingStartAdded, 0) - max(paddingEndAdded, 0);
+      right += max(paddingStartAdded, 0) - max(paddingEndAdded, 0);
+    }
     int viewHeight = view.getMeasuredHeight();
     int top = getMeasuredHeight() / 2 - viewHeight / 2;
     int bottom = top + viewHeight;
 
-    layoutChild(view, left, top, right, bottom);
+    layoutChild(
+        view,
+        left,
+        top,
+        right,
+        bottom);
   }
 
   private void layoutChild(View child, int left, int top, int right, int bottom) {

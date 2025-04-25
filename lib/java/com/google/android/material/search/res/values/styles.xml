@@ -27,6 +27,7 @@
     <item name="defaultMarginsEnabled">true</item>
     <item name="defaultScrollFlagsEnabled">true</item>
     <item name="hideNavigationIcon">false</item>
+    <item name="contentInsetStart">@dimen/m3_searchbar_text_margin_start_no_navigation_icon</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.SearchBar</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Search</item>
