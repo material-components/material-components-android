@@ -20,6 +20,8 @@ in Material components.
 
 ## Usage
 
+### Baseline scale
+
 Attribute name                 | Default style
 ------------------------------ | -------------
 `textAppearanceDisplayLarge`   | Regular 57sp
@@ -37,6 +39,29 @@ Attribute name                 | Default style
 `textAppearanceLabelLarge`     | Medium 14sp
 `textAppearanceLabelMedium`    | Medium 12sp
 `textAppearanceLabelSmall`     | Medium 11sp
+
+### Emphasized scale
+
+Emphasized styles are used to create hierarchy and are recommended for showing
+selection, actions, headlines, or other editorial treatments.
+
+Attribute name                           | Default style
+---------------------------------------- | -------------
+`textAppearanceDisplayLargeEmphasized`   | Medium 57sp
+`textAppearanceDisplayMediumEmphasized`  | Medium 45sp
+`textAppearanceDisplaySmallEmphasized`   | Medium 36sp
+`textAppearanceHeadlineLargeEmphasized`  | Medium 32sp
+`textAppearanceHeadlineMediumEmphasized` | Medium 28sp
+`textAppearanceHeadlineSmallEmphasized`  | Medium 24sp
+`textAppearanceTitleLargeEmphasized`     | Medium 22sp
+`textAppearanceTitleMediumEmphasized`    | Bold 16sp
+`textAppearanceTitleSmallEmphasized`     | Bold 14sp
+`textAppearanceBodyLargeEmphasized`      | Medium 16sp
+`textAppearanceBodyMediumEmphasized`     | Medium 14sp
+`textAppearanceBodySmallEmphasized`      | Medium 12sp
+`textAppearanceLabelLargeEmphasized`     | Bold 14sp
+`textAppearanceLabelMediumEmphasized`    | Bold 12sp
+`textAppearanceLabelSmallEmphasized`     | Bold 11sp
 
 ## Style values
 
@@ -76,10 +101,6 @@ in your theme:
   ...
 </style>
 ```
-
-**Note:** `AppCompat` must be used to handle backwards compatibility for sdk <
-16. If you don't need to support devices < 16 and aren't using AppCompat, you
-should set `android:fontFamily` instead of `fontFamily` or `app:fontFamily`.
 
 ## Downloadable fonts
 
