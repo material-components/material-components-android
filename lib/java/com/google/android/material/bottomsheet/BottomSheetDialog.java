@@ -306,7 +306,7 @@ public class BottomSheetDialog extends AppCompatDialog {
 
     if (edgeToEdgeEnabled) {
       ViewCompat.setOnApplyWindowInsetsListener(
-          bottomSheet,
+          container,
           new OnApplyWindowInsetsListener() {
             @Override
             public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
