@@ -305,6 +305,8 @@
     <item name="materialButtonElevatedStyle">@style/Widget.Material3.Button.ElevatedButton</item>
     <item name="materialButtonGroupStyle">@style/Widget.Material3.MaterialButtonGroup</item>
     <item name="materialSplitButtonStyle">@style/Widget.Material3.MaterialSplitButton</item>
+    <item name="materialSplitButtonLeadingFilledStyle">@style/Widget.Material3.SplitButton.LeadingButton.Filled</item>
+    <item name="materialSplitButtonLeadingFilledTonalStyle">@style/Widget.Material3.SplitButton.LeadingButton.Filled.Tonal</item>
     <item name="materialSplitButtonIconFilledStyle">@style/Widget.Material3.SplitButton.IconButton.Filled</item>
     <item name="materialSplitButtonIconFilledTonalStyle">@style/Widget.Material3.SplitButton.IconButton.Filled.Tonal</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3.MaterialButtonToggleGroup</item>
@@ -618,6 +620,8 @@
     <item name="materialButtonElevatedStyle">@style/Widget.Material3.Button.ElevatedButton</item>
     <item name="materialButtonGroupStyle">@style/Widget.Material3.MaterialButtonGroup</item>
     <item name="materialSplitButtonStyle">@style/Widget.Material3.MaterialSplitButton</item>
+    <item name="materialSplitButtonLeadingFilledStyle">@style/Widget.Material3.SplitButton.LeadingButton.Filled</item>
+    <item name="materialSplitButtonLeadingFilledTonalStyle">@style/Widget.Material3.SplitButton.LeadingButton.Filled.Tonal</item>
     <item name="materialSplitButtonIconFilledStyle">@style/Widget.Material3.SplitButton.IconButton.Filled</item>
     <item name="materialSplitButtonIconFilledTonalStyle">@style/Widget.Material3.SplitButton.IconButton.Filled.Tonal</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3.MaterialButtonToggleGroup</item>

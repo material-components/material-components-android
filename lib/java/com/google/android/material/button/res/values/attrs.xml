@@ -37,7 +37,11 @@
   <attr name="materialButtonGroupStyle" format="reference"/>
   <!-- Style to use for MaterialSplitButtons in this theme. -->
   <attr name="materialSplitButtonStyle" format="reference"/>
-<!-- Style to use for Filled Material Icon Only Split Buttons in this theme. -->
+  <!-- Style to use for leading Filled Button in Split Buttons in this theme. -->
+  <attr name="materialSplitButtonLeadingFilledStyle" format="reference" />
+  <!-- Style to use for leading Filled Tonal Button in Split Buttons in this theme. -->
+  <attr name="materialSplitButtonLeadingFilledTonalStyle" format="reference" />
+  <!-- Style to use for Filled Material Icon Only Split Buttons in this theme. -->
   <attr name="materialSplitButtonIconFilledStyle" format="reference" />
   <!-- Style to use for Filled Tonal Material Icon Only Split Buttons in this theme. -->
   <attr name="materialSplitButtonIconFilledTonalStyle" format="reference" />

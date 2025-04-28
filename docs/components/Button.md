@@ -907,25 +907,17 @@ In the layout:
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <Button
+        style="?attr/materialSplitButtonLeadingFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:paddingStart="@dimen/m3_comp_split_button_small_leading_button_leading_space"
-        android:paddingEnd="@dimen/m3_comp_split_button_small_leading_button_trailing_space"
-        android:minWidth="@dimen/mtrl_min_touch_target_size"
         android:text="@string/cat_split_button_label"
         app:icon="@drawable/ic_edit_vd_theme_24dp"
-        app:iconSize="20dp"
     />
     <Button
         style="?attr/materialSplitButtonIconFilledStyle"
         android:id="@+id/expand_more_or_less_filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:minWidth="@dimen/mtrl_min_touch_target_size"
         android:contentDescription="@string/cat_split_button_label_chevron"
         app:icon="@drawable/m3_split_button_chevron_avd"
     />
@@ -943,16 +935,11 @@ In the layout:
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
     <Button
+        style="?attr/materialSplitButtonLeadingFilledStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingTop="6dp"
-        android:paddingBottom="6dp"
-        android:paddingStart="@dimen/m3_comp_split_button_small_leading_button_leading_space"
-        android:paddingEnd="@dimen/m3_comp_split_button_small_leading_button_trailing_space"
-        android:minWidth="@dimen/mtrl_min_touch_target_size"
         android:contentDescription="@string/cat_split_button_label_edit"
         app:icon="@drawable/ic_edit_vd_theme_24dp"
-        app:iconSize="20dp"
         app:iconPadding="0dp"
     />
     <Button
@@ -960,9 +947,6 @@ In the layout:
         android:id="@+id/expand_more_or_less_filled_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="14dp"
-        android:paddingEnd="14dp"
-        android:minWidth="@dimen/mtrl_min_touch_target_size"
         android:contentDescription="@string/cat_split_button_label_chevron"
         app:icon="@drawable/m3_split_button_chevron_avd"
     />
@@ -985,11 +969,13 @@ Element                     | Attribute              | Related method(s)        
 
 #### Styles and Theme attributes
 
-Element                                   | Style                                                        | Theme Attribute
------------------------------------------ | ------------------------------------------------------------ | ---------------
-**Default style**                         | `Widget.Material3.MaterialSplitButton`                 | `?attr/materialSplitButtonStyle`
-**Trailing icon primary (filled) style**  | `Widget.Material3.SplitButton.IconButton.Filled`       | `?attr/materialSplitButtonIconFilledStyle`
-**Trailing icon secondary (tonal) style** | `Widget.Material3.SplitButton.IconButton.Filled.Tonal` | `?attr/materialSplitButtonIconFilledTonalStyle`
+Element                                   | Style                                                     | Theme Attribute
+----------------------------------------- | --------------------------------------------------------- | ---------------
+**Default style**                         | `Widget.Material3.MaterialSplitButton`                    | `?attr/materialSplitButtonStyle`
+**Leading button primary (filled) style** | `Widget.Material3.SplitButton.LeadingButton.Filled`       | `?attr/materialSplitButtonLeadingFilledStyle`
+**Leading button primary (tonal) style**  | `Widget.Material3.SplitButton.LeadingButton.Filled.Tonal` | `?attr/materialSplitButtonLeadingFilledTonalStyle`
+**Trailing icon primary (filled) style**  | `Widget.Material3.SplitButton.IconButton.Filled`          | `?attr/materialSplitButtonIconFilledStyle`
+**Trailing icon secondary (tonal) style** | `Widget.Material3.SplitButton.IconButton.Filled.Tonal`    | `?attr/materialSplitButtonIconFilledTonalStyle`
 
 The two new trailing icon styles `materialSplitButtonIconFilledStyle` – parented
 by `materialIconButtonFilledStyle` – and

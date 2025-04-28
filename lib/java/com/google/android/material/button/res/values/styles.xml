@@ -547,13 +547,35 @@
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Sys.Shape.Corner.Full</item>
   </style>
 
+<style name="Widget.Material3.SplitButton.LeadingButton.Filled" parent="Widget.Material3.Button">
+    <item name="android:paddingTop">6dp</item>
+    <item name="android:paddingBottom">6dp</item>
+    <item name="android:paddingStart">@dimen/m3_comp_split_button_small_leading_button_leading_space</item>
+    <item name="android:paddingEnd">@dimen/m3_comp_split_button_small_leading_button_trailing_space</item>
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+    <item name="iconSize">20dp</item>
+  </style>
+
+  <style name="Widget.Material3.SplitButton.LeadingButton.Filled.Tonal" parent="Widget.Material3.Button.TonalButton">
+    <item name="android:paddingTop">6dp</item>
+    <item name="android:paddingBottom">6dp</item>
+    <item name="android:paddingStart">@dimen/m3_comp_split_button_small_leading_button_leading_space</item>
+    <item name="android:paddingEnd">@dimen/m3_comp_split_button_small_leading_button_trailing_space</item>
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+    <item name="iconSize">20dp</item>
+  </style>
+
   <style name="Widget.Material3.SplitButton.IconButton.Filled" parent="Widget.Material3.Button.IconButton.Filled">
     <item name="android:insetLeft">0dp</item>
     <item name="android:paddingTop">6dp</item>
     <item name="android:paddingBottom">6dp</item>
+    <item name="android:paddingStart">14dp</item>
+    <item name="android:paddingEnd">14dp</item>
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
     <item name="backgroundTint">@color/m3_button_background_color_selector</item>
+    <item name="opticalCenterEnabled">true</item>
     <item name="materialThemeOverlay">
       @style/ThemeOverlay.Material3.SplitButton.IconButton.Filled
     </item>
@@ -563,9 +585,13 @@
     <item name="android:insetLeft">0dp</item>
     <item name="android:paddingTop">6dp</item>
     <item name="android:paddingBottom">6dp</item>
+    <item name="android:paddingStart">14dp</item>
+    <item name="android:paddingEnd">14dp</item>
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
     <item name="backgroundTint">@color/m3_button_background_color_selector</item>
+    <item name="opticalCenterEnabled">true</item>
     <item name="materialThemeOverlay">
       @style/ThemeOverlay.Material3.SplitButton.IconButton.Filled.Tonal
     </item>

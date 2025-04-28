@@ -36,6 +36,8 @@
   <public name="materialIconButtonOutlinedStyle" type="attr"/>
   <public name="materialButtonGroupStyle" type="attr"/>
   <public name="materialSplitButtonStyle" type="attr"/>
+  <public name="materialSplitButtonLeadingFilledStyle" type="attr"/>
+  <public name="materialSplitButtonLeadingFilledTonalStyle" type="attr"/>
   <public name="materialSplitButtonIconFilledStyle" type="attr"/>
   <public name="materialSplitButtonIconFilledTonalStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
@@ -68,6 +70,8 @@
   <public name="Widget.Material3.MaterialButtonGroup" type="style"/>
   <public name="Widget.Material3.MaterialButtonGroup.Connected" type="style"/>
   <public name="Widget.Material3.MaterialSplitButton" type="style"/>
+  <public name="Widget.Material3.MaterialSplitButton.LeadingButton.Filled" type="style"/>
+  <public name="Widget.Material3.MaterialSplitButton.LeadingButton.Filled.Tonal" type="style"/>
   <public name="Widget.Material3.MaterialSplitButton.Icon.Filled" type="style"/>
   <public name="Widget.Material3.MaterialSplitButton.Icon.Filled.Tonal" type="style"/>
   <public name="Widget.Material3.MaterialButtonToggleGroup" type="style"/>
