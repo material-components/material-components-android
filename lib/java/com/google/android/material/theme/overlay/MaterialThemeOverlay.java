@@ -104,7 +104,7 @@ public class MaterialThemeOverlay {
         obtainMaterialOverlayIds(context, set, optionalAttrs, defStyleAttr, defStyleRes);
     for (int optionalOverlayId : optionalOverlayIds) {
       if (optionalOverlayId != 0) {
-        contextThemeWrapper = new ContextThemeWrapper(contextThemeWrapper, optionalOverlayId);
+        contextThemeWrapper.getTheme().applyStyle(optionalOverlayId, true);
       }
     }
 
