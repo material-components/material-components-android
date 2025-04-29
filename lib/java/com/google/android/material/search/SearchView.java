@@ -288,6 +288,9 @@ public class SearchView extends FrameLayout
     if (isHiddenOrHiding() || searchBar == null) {
       return;
     }
+    if (searchBar != null) {
+      searchBar.setPlaceholderText(editText.getText().toString());
+    }
     searchViewAnimationHelper.startBackProgress(backEvent);
   }
 
@@ -893,7 +896,12 @@ public class SearchView extends FrameLayout
         || currentTransitionState.equals(TransitionState.HIDING)) {
       return;
     }
-    searchViewAnimationHelper.hide();
+    if (searchBar != null && searchBar.isAttachedToWindow()) {
+      searchBar.setPlaceholderText(editText.getText().toString());
+      searchBar.post(searchViewAnimationHelper::hide);
+    } else {
+      searchViewAnimationHelper.hide();
+    }
   }
 
   /** Updates the visibility of the {@link SearchView} without an animation. */

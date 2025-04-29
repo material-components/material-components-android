@@ -47,6 +47,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
@@ -136,6 +137,8 @@ public class SearchBar extends Toolbar {
   private static final String NAMESPACE_APP = "http://schemas.android.com/apk/res-auto";
 
   private final TextView textView;
+  private final TextView placeholderTextView;
+  private final FrameLayout textViewContainer;
   private final int backgroundColor;
 
   private boolean liftOnScroll;
@@ -228,10 +231,16 @@ public class SearchBar extends Toolbar {
     layoutInflated = true;
 
     textView = findViewById(R.id.open_search_bar_text_view);
+    placeholderTextView = findViewById(R.id.open_search_bar_placeholder_text_view);
+    textViewContainer = findViewById(R.id.open_search_bar_text_view_container);
 
     setElevation(elevation);
     initTextView(textAppearanceResId, text, hint);
     initBackground(shapeAppearanceModel, backgroundColor, elevation, strokeWidth, strokeColor);
+  }
+
+  void setPlaceholderText(String string) {
+    placeholderTextView.setText(string);
   }
 
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
@@ -273,6 +282,7 @@ public class SearchBar extends Toolbar {
   private void initTextView(@StyleRes int textAppearanceResId, String text, String hint) {
     if (textAppearanceResId != -1) {
       TextViewCompat.setTextAppearance(textView, textAppearanceResId);
+      TextViewCompat.setTextAppearance(placeholderTextView, textAppearanceResId);
     }
     setText(text);
     setHint(hint);
@@ -423,7 +433,7 @@ public class SearchBar extends Toolbar {
     super.onLayout(changed, left, top, right, bottom);
 
     if (centerView != null) {
-      layoutViewInCenter(centerView, /* absolutePlacement= */ true);
+      layoutViewInCenter(centerView);
     }
     setHandwritingBoundsInsets();
     if (textView != null) {
@@ -432,7 +442,9 @@ public class SearchBar extends Toolbar {
       // to be pushed to the side. In this case, we want the textview to be still centered on top of
       // any center views.
       if (textCentered) {
-        layoutViewInCenter(textView, /* absolutePlacement= */ false);
+        // Make sure textview does not overlap with any toolbar views (nav icon, menu) or
+        // padding/insets
+        layoutTextViewCenterAvoidToolbarViewsAndPadding();
       }
     }
   }
@@ -581,14 +593,64 @@ public class SearchBar extends Toolbar {
     return navIconButton;
   }
 
+  private void layoutTextViewCenterAvoidToolbarViewsAndPadding() {
+    int textViewContainerLeft = getMeasuredWidth() / 2 - textViewContainer.getMeasuredWidth() / 2;
+    int textViewContainerRight = textViewContainerLeft + textViewContainer.getMeasuredWidth();
+    int textViewContainerTop = getMeasuredHeight() / 2 - textViewContainer.getMeasuredHeight() / 2;
+    int textViewContainerBottom = textViewContainerTop + textViewContainer.getMeasuredHeight();
+    boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+    View menuView = findOrGetMenuView();
+    View navIconButton = findOrGetNavView();
+
+    int textViewLeft = textViewContainer.getMeasuredWidth() / 2 - textView.getMeasuredWidth() / 2;
+    int textViewRight = textViewLeft + textView.getMeasuredWidth();
+
+    // left and right refer to the textview's left and right coordinates within the searchbar
+    int left = textViewLeft + textViewContainerLeft;
+    int right = textViewContainerLeft + textViewRight;
+
+    View leftView = isRtl ? menuView : navIconButton;
+    View rightView = isRtl ? navIconButton : menuView;
+    int leftShift = 0;
+    int rightShift = 0;
+    if (leftView != null) {
+      leftShift = max(leftView.getRight() - left, 0);
+    }
+    left += leftShift;
+    right += leftShift;
+    if (rightView != null) {
+      rightShift = max(right - rightView.getLeft(), 0);
+    }
+    left -= rightShift;
+    right -= rightShift;
+    // Make sure to not lay out the view inside the SearchBar padding. paddingLeftAdded and
+    // paddingRightAdded will never be non-zero at the same time, as Toolbar.measure has already
+    // measured the children accounting for padding.
+    int paddingLeftShift = max(getPaddingLeft() - left, getContentInsetLeft() - left);
+    int paddingRightShift =
+        max(
+            right - (getMeasuredWidth() - getPaddingRight()),
+            right - (getMeasuredWidth() - getContentInsetRight()));
+    paddingLeftShift = max(paddingLeftShift, 0);
+    paddingRightShift = max(paddingRightShift, 0);
+
+    int totalShift = leftShift - rightShift + paddingLeftShift - paddingRightShift;
+    // Center the textViewContainer and shift over textViewContainer by the amount that textView
+    // needs to be shifted over; this shifts both the container and the textView, which is necessary so the textView doesn't get
+    // laid outside of the container.
+    textViewContainer.layout(
+        textViewContainerLeft + totalShift,
+        textViewContainerTop,
+        textViewContainerRight + totalShift,
+        textViewContainerBottom);
+  }
+
   /**
    * Lays out the given view in the center of the {@link SearchBar}.
    *
    * @param view The view to layout in the center.
-   * @param absolutePlacement Whether the view will be placed absolutely in the center (eg. ignoring
-   * other toolbar elements like the nav icon and menu, padding, content insets)
    */
-  private void layoutViewInCenter(View view, boolean absolutePlacement) {
+  private void layoutViewInCenter(View view) {
     if (view == null) {
       return;
     }
@@ -596,37 +658,7 @@ public class SearchBar extends Toolbar {
     int viewWidth = view.getMeasuredWidth();
     int left = getMeasuredWidth() / 2 - viewWidth / 2;
     int right = left + viewWidth;
-    if (!absolutePlacement) {
-      View menuView = findOrGetMenuView();
-      if (menuView != null) {
-        int diff =
-            getLayoutDirection() == LAYOUT_DIRECTION_RTL
-                ? max(menuView.getRight() - left, 0)
-                : max(right - menuView.getLeft(), 0);
-        left -= diff;
-        right -= diff;
-      }
-      View navIcon = findOrGetNavView();
-      if (navIcon != null) {
-        int diff =
-            getLayoutDirection() == LAYOUT_DIRECTION_RTL
-                ? max(right - navIcon.getLeft(), 0)
-                : max(navIcon.getRight() - left, 0);
-        left += diff;
-        right += diff;
-      }
 
-      // Make sure to not lay out the view inside the SearchBar padding. paddingLeftAdded and
-      // paddingRightAdded will never be non-zero at the same time, as Toolbar.measure has already
-      // measured the children accounting for padding.
-      int paddingStartAdded = max(getPaddingStart() - left, getContentInsetStart() - left);
-      int paddingEndAdded =
-          max(
-              right - (getMeasuredWidth() - getPaddingEnd()),
-              right - (getMeasuredWidth() - getContentInsetEnd()));
-      left += max(paddingStartAdded, 0) - max(paddingEndAdded, 0);
-      right += max(paddingStartAdded, 0) - max(paddingEndAdded, 0);
-    }
     int viewHeight = view.getMeasuredHeight();
     int top = getMeasuredHeight() / 2 - viewHeight / 2;
     int bottom = top + viewHeight;
@@ -690,6 +722,10 @@ public class SearchBar extends Toolbar {
     }
   }
 
+  TextView getPlaceholderTextView() {
+    return placeholderTextView;
+  }
+
   /** Returns the main {@link TextView} which can be used for hint and search text. */
   @NonNull
   public TextView getTextView() {
@@ -705,26 +741,31 @@ public class SearchBar extends Toolbar {
   /** Sets the text of main {@link TextView}. */
   public void setText(@Nullable CharSequence text) {
     textView.setText(text);
+    placeholderTextView.setText(text);
   }
 
   /** Sets the text of main {@link TextView}. */
   public void setText(@StringRes int textResId) {
     textView.setText(textResId);
+    placeholderTextView.setText(textResId);
   }
 
-  /** Whether or not to center the text. */
+  /** Whether or not to center the text within the TextView. */
   public void setTextCentered(boolean textCentered) {
     this.textCentered = textCentered;
     if (textView == null) {
       return;
     }
-    Toolbar.LayoutParams lp = (LayoutParams) textView.getLayoutParams();
+    FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) textView.getLayoutParams();
     if (textCentered) {
+      lp.gravity = Gravity.CENTER_HORIZONTAL;
       textView.setGravity(Gravity.CENTER_HORIZONTAL);
     } else {
+      lp.gravity = Gravity.NO_GRAVITY;
       textView.setGravity(Gravity.NO_GRAVITY);
     }
     textView.setLayoutParams(lp);
+    placeholderTextView.setLayoutParams(lp);
   }
 
   /** Whether or not the text is centered. */
@@ -735,6 +776,7 @@ public class SearchBar extends Toolbar {
   /** Clears the text of main {@link TextView}. */
   public void clearText() {
     textView.setText("");
+    placeholderTextView.setText("");
   }
 
   /** Returns the hint of main {@link TextView}. */

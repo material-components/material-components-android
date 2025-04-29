@@ -291,7 +291,8 @@ class SearchViewAnimationHelper {
         getDummyToolbarAnimator(show),
         getActionMenuViewsAlphaAnimator(show),
         getEditTextAnimator(show),
-        getSearchPrefixAnimator(show));
+        getSearchPrefixAnimator(show),
+        getTextAnimator(show));
     animatorSet.addListener(
         new AnimatorListenerAdapter() {
           @Override
@@ -302,6 +303,13 @@ class SearchViewAnimationHelper {
           @Override
           public void onAnimationEnd(Animator animation) {
             setContentViewsAlpha(show ? 1 : 0);
+            // Reset edittext and searchbar textview alphas after the animations are finished since
+            // the visibilities for searchview and searchbar have been set accordingly.
+            editText.setAlpha(1);
+            if (searchBar != null) {
+              searchBar.getTextView().setAlpha(1);
+            }
+
             // After expanding or collapsing, we should reset the clip bounds so it can react to the
             // screen or layout changes. Otherwise it will result in wrong clipping on the layout.
             rootView.resetClipBoundsAndCornerRadii();
@@ -569,23 +577,40 @@ class SearchViewAnimationHelper {
     return getTranslationAnimatorForText(show, editText);
   }
 
+  private AnimatorSet getTextAnimator(boolean show) {
+    AnimatorSet animatorSet = new AnimatorSet();
+    addTextFadeAnimatorIfNeeded(animatorSet);
+    animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+    animatorSet.setInterpolator(
+        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.LINEAR_INTERPOLATOR));
+    return animatorSet;
+  }
+
+  private void addTextFadeAnimatorIfNeeded(AnimatorSet animatorSet) {
+    if (searchBar == null || TextUtils.equals(editText.getText(), searchBar.getText())) {
+      return;
+    }
+    // If the searchbar text is not equal to the searchview edittext, we want to fade out the
+    // edittext and fade in the searchbar text
+    ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+    animator.addUpdateListener(
+        animation -> {
+          editText.setAlpha((Float) animation.getAnimatedValue());
+          searchBar.getTextView().setAlpha(1 - (Float) animation.getAnimatedValue());
+        });
+    animatorSet.playTogether(animator);
+  }
+
   private Animator getTranslationAnimatorForText(boolean show, View v) {
-    TextView textView = searchBar.getTextView();
-    int additionalMovement = 0;
-    // If the text is centered and the text's hint is not equal to the text (ie. if there's any
-    // extra space in between the textview's start and the actual text bounds)
-    if (!TextUtils.isEmpty(textView.getText())
-        && searchBar.getTextCentered()
-        && textView.getHint() != textView.getText()) {
-      String text = textView.getText().toString();
-      Rect bounds = new Rect();
-      textView.getPaint().getTextBounds(text, 0, text.length(), bounds);
-      additionalMovement = max(0, searchBar.getTextView().getMeasuredWidth() / 2 - bounds.width() / 2);
+    TextView textView = searchBar.getPlaceholderTextView();
+    // If the placeholder text is empty, we animate to the searchbar textview instead.
+    // Or if we're showing the searchview, we always animate from the searchbar textview, not
+    // from the placeholder text.
+    if (TextUtils.isEmpty(textView.getText()) || show) {
+      textView = searchBar.getTextView();
     }
     int startX =
-        getViewLeftFromSearchViewParent(searchBar.getTextView())
-            + additionalMovement
-            - (v.getLeft() + textContainer.getLeft());
+        getViewLeftFromSearchViewParent(textView) - (v.getLeft() + textContainer.getLeft());
     return getTranslationAnimator(show, v, startX, getFromTranslationY());
   }
 
