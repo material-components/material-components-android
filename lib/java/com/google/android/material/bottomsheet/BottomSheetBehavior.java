@@ -329,6 +329,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @Nullable WeakReference<V> viewRef;
   @Nullable WeakReference<View> accessibilityDelegateViewRef;
+  @Nullable WeakReference<View> dragHandleViewRef;
 
   @Nullable WeakReference<View> nestedScrollingChildRef;
 
@@ -649,10 +650,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         // Only intercept nested scrolling events here if the view not being moved by the
         // ViewDragHelper.
         if (state != STATE_SETTLING) {
-          View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
-          if (scroll != null && parent.isPointInChildBounds(scroll, initialX, initialY)) {
+          if (isTouchingScrollingChild(parent, initialX, initialY)) {
             activePointerId = event.getPointerId(event.getActionIndex());
-            touchingScrollingChild = true;
+            if (!isTouchingDragHandle(parent, initialX, initialY)) {
+              touchingScrollingChild = true;
+            }
           }
         }
         ignoreEvents =
@@ -1532,6 +1534,20 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return 0;
   }
 
+  private boolean isTouchingScrollingChild(
+      @NonNull CoordinatorLayout parent, int xCoordinate, int yCoordinate) {
+    View scrollingChild = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
+    return scrollingChild != null
+        && parent.isPointInChildBounds(scrollingChild, xCoordinate, yCoordinate);
+  }
+
+  private boolean isTouchingDragHandle(
+      @NonNull CoordinatorLayout parent, int xCoordinate, int yCoordinate) {
+    View dragHandleView = dragHandleViewRef != null ? dragHandleViewRef.get() : null;
+    return dragHandleView != null
+        && parent.isPointInChildBounds(dragHandleView, xCoordinate, yCoordinate);
+  }
+
   private boolean isAtTopOfScreen() {
     if (viewRef == null || viewRef.get() == null) {
       return false;
@@ -2020,10 +2036,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
         @Override
         public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
-          return MathUtils.clamp(
-              top,
-              getExpandedOffset(),
-              getViewVerticalDragRange(child));
+          return MathUtils.clamp(top, getExpandedOffset(), getViewVerticalDragRange(child));
         }
 
         @Override
@@ -2344,6 +2357,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       // to the bottom sheet when expanded.
       viewRef.get().sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
     }
+  }
+
+  void setDragHandleView(@Nullable BottomSheetDragHandleView dragHandleView) {
+    dragHandleViewRef = dragHandleView != null ? new WeakReference<>(dragHandleView) : null;
   }
 
   void setAccessibilityDelegateView(@Nullable View accessibilityDelegateView) {
