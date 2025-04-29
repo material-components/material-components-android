@@ -33,9 +33,12 @@
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3Expressive.MaterialAlertDialog</item>
 
     <!-- Widget styles. -->
+    <item name="appBarLayoutStyle">@style/Widget.Material3Expressive.AppBarLayout</item>
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
+
+    <item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar</item>
 
     <!--
       Default as primary container FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
@@ -89,9 +92,12 @@
     <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3Expressive.MaterialAlertDialog</item>
 
     <!-- Widget styles. -->
+    <item name="appBarLayoutStyle">@style/Widget.Material3Expressive.AppBarLayout</item>
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
+
+    <item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar</item>
 
     <!--
       Default as primary container FABs. Unlisted FAB style attributes are not updated in Material3Expressive.

@@ -16,6 +16,9 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+  <!-- M3 Expressive AppBarLayout styles -->
+  <style name="Widget.Material3Expressive.AppBarLayout" parent="Widget.Material3.AppBarLayout"/>
+
   <!-- M3 Expressive CollapsingToolbarLayout styles. -->
   <style name="Widget.Material3Expressive.CollapsingToolbar" parent="Widget.Material3.CollapsingToolbar">
     <item name="collapsedTitleTextAppearance">@macro/m3_comp_app_bar_small_title_font</item>

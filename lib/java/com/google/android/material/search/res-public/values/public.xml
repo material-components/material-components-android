@@ -41,4 +41,10 @@
   <public name="Widget.Material3.Search.ActionButton.Overflow" type="style"/>
   <public name="Widget.Material3.Search.Toolbar.Button.Navigation" type="style"/>
   <public name="searchbar_scrolling_view_behavior" type="string"/>
+  <public name="Widget.Material3Expressive.SearchBar" type="style"/>
+  <public name="Widget.Material3Expressive.SearchBar.CenteredText" type="style"/>
+  <public name="Widget.Material3Expressive.SearchBar.Outlined" type="style"/>
+  <public name="Widget.Material3Expressive.SearchView" type="style"/>
+  <public name="Widget.Material3Expressive.SearchBar.CenteredText.AppBarWithSearch" type="style"/>
+  <public name="Widget.Material3Expressive.SearchBar.AppBarWithSearch" type="style"/>
 </resources>
