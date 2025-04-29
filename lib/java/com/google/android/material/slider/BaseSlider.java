@@ -3580,7 +3580,19 @@ abstract class BaseSlider<
     int right;
     int bottom;
     int top;
-    if (isVertical() && !isRtl()) {
+
+    final boolean isVertical = isVertical();
+    final boolean isRtl = isRtl();
+
+    if (isVertical && isRtl) {
+      left =
+          trackSidePadding
+              + (int) (normalizeValue(value) * trackWidth)
+              - label.getIntrinsicHeight() / 2;
+      right = left + label.getIntrinsicHeight();
+      bottom = calculateTrackCenter() - (labelPadding + thumbHeight / 2);
+      top = bottom - label.getIntrinsicWidth();
+    } else if (isVertical) {
       left =
           trackSidePadding
               + (int) (normalizeValue(value) * trackWidth)
