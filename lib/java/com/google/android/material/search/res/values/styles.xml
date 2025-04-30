@@ -28,8 +28,8 @@
   </style>
 
   <style name="Widget.Material3Expressive.SearchBar.CenteredText">
-    <item name="contentInsetStart">0dp</item>
-    <item name="android:paddingStart">4dp</item>
+    <item name="contentInsetStart">8dp</item>
+    <item name="contentInsetEnd">8dp</item>
     <item name="hideNavigationIcon">true</item>
     <item name="textCentered">true</item>
   </style>
