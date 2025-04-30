@@ -309,6 +309,8 @@ class SearchViewAnimationHelper {
             if (searchBar != null) {
               searchBar.getTextView().setAlpha(1);
             }
+            // Reset clip bounds so it can react to the screen or layout changes.
+            editText.setClipBounds(null);
 
             // After expanding or collapsing, we should reset the clip bounds so it can react to the
             // screen or layout changes. Otherwise it will result in wrong clipping on the layout.
@@ -580,10 +582,30 @@ class SearchViewAnimationHelper {
   private AnimatorSet getTextAnimator(boolean show) {
     AnimatorSet animatorSet = new AnimatorSet();
     addTextFadeAnimatorIfNeeded(animatorSet);
+    addEditTextClipAnimator(animatorSet);
     animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
     animatorSet.setInterpolator(
         ReversableAnimatedValueInterpolator.of(show, AnimationUtils.LINEAR_INTERPOLATOR));
     return animatorSet;
+  }
+
+  private void addEditTextClipAnimator(AnimatorSet animatorSet) {
+    // We only want to add a clip animation if the edittext and searchbar text is the same, which
+    // means it is translating instead of fading.
+    if (searchBar == null || !TextUtils.equals(editText.getText(), searchBar.getText())) {
+      return;
+    }
+    Rect editTextClipBounds =
+        new Rect(0, 0, editText.getWidth(), editText.getHeight());
+    ValueAnimator animator =
+        ValueAnimator.ofInt(
+            searchBar.getTextView().getWidth(), editText.getWidth());
+    animator.addUpdateListener(
+        animation -> {
+          editTextClipBounds.right = (int) animation.getAnimatedValue();
+          editText.setClipBounds(editTextClipBounds);
+        });
+    animatorSet.playTogether(animator);
   }
 
   private void addTextFadeAnimatorIfNeeded(AnimatorSet animatorSet) {
@@ -721,10 +743,10 @@ class SearchViewAnimationHelper {
   }
 
   private int getFromTranslationY() {
-    int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getMeasuredHeight() / 2;
+    int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getHeight() / 2;
     int searchBarMiddleY =
         getViewTopFromSearchViewParent(searchBar)
-            + searchBar.getMeasuredHeight() / 2;
+            + searchBar.getHeight() / 2;
     return searchBarMiddleY - toolbarMiddleY;
   }
 
