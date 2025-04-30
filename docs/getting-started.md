@@ -77,11 +77,9 @@ In order to use the latest versions of Material Components for Android and the
 AndroidX Jetpack libraries, you will have to install the latest version of
 Android Studio and update your app to meet the following requirements:
 
--   `compileSdkVersion` -> `34` or later (see the
-    [Android 14 app migration guide](https://developer.android.com/about/versions/14/migration))
--   `minSdkVersion` -> `19` or later (see this
-    [AndroidX blog post](https://android-developers.googleblog.com/2023/10/androidx-minsdkversion-19.html)
-    for more info)
+-   `compileSdkVersion` -> `35` or later (see the
+    [Android 15 app migration guide](https://developer.android.com/about/versions/15/migration))
+-   `minSdkVersion` -> `21` or later
 
 ## 4. Java 8 compilation
 
