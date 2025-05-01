@@ -245,7 +245,7 @@ public class MaterialButtonGroup extends LinearLayout {
     adjustChildMarginsAndUpdateLayout();
   }
 
-  private void recoverAllChildrenLayoutParams(){
+  private void recoverAllChildrenLayoutParams() {
     for (int i = 0; i < getChildCount(); i++) {
       MaterialButton child = getChildButton(i);
       child.recoverOriginalLayoutParams();
@@ -408,6 +408,14 @@ public class MaterialButtonGroup extends LinearLayout {
       int smallestStrokeWidth = 0;
       if (spacing <= 0) {
         smallestStrokeWidth = min(currentButton.getStrokeWidth(), previousButton.getStrokeWidth());
+        // Enables the flag to draw additional layer of surface color under the stroke, which may
+        // overlap with its neighbors and results unintended color when the stroke color is
+        // semi-transparent.
+        currentButton.setShouldDrawSurfaceColorStroke(true);
+        previousButton.setShouldDrawSurfaceColorStroke(true);
+      } else {
+        currentButton.setShouldDrawSurfaceColorStroke(false);
+        previousButton.setShouldDrawSurfaceColorStroke(false);
       }
 
       LayoutParams params = buildLayoutParams(currentButton);
