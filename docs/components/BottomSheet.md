@@ -30,7 +30,7 @@ Material Components for Android library. For more information, see the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-![Example bottom sheet: modal bottom sheet](assets/bottomsheet/bottomsheet_hero.png){width="650"}
+<img src="assets/bottomsheet/bottomsheet_hero.png" alt="Example bottom sheet: modal bottom sheet" width="650"/>
 
 ### Anatomy
 
