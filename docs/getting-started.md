@@ -90,13 +90,13 @@ for more information on Java 8 support and how to enable it for your app.
 
 ## 5. Gradle, AGP, and Android Studio
 
-When using MDC-Android version `1.7.0` and above, you will need to make sure
-your project is built with the following minimum requirements, in order to
-support the latest build features such as XML `macro`:
+When using MDC-Android version `1.13.0` and above, you will need to
+make sure your project is built with the following minimum requirements, in
+order to support the latest build features such as XML `macro`:
 
--   [Gradle version 7.3.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
--   [Android Gradle Plugin (AGP) version 7.2.0](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
--   [Android Studio Chipmunk, version 2021.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
+-   [Gradle version 8.9](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+-   [Android Gradle Plugin (AGP) version 8.7.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+-   [Android Studio Ladybug, version 2024.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
 
 ## 6. `AppCompatActivity`
 
