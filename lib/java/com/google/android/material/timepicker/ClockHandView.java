@@ -316,9 +316,7 @@ class ClockHandView extends View {
         break;
       case MotionEvent.ACTION_MOVE:
       case MotionEvent.ACTION_UP:
-        final int deltaX = (int) (x - downX);
-        final int deltaY = (int) (y - downY);
-        int distance = (deltaX * deltaX) + (deltaY * deltaY);
+        double distance = Math.hypot(x - downX, y - downY);
         isInTapRegion = distance > scaledTouchSlop;
         // If we saw a down/up pair without the value changing, assume
         // this is a single-tap selection and force a change.
