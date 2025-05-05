@@ -309,6 +309,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     materialButtonHelper = new MaterialButtonHelper(this, shapeAppearanceModel);
     materialButtonHelper.loadFromAttributes(attributes);
 
+    // Sets the checked state after the MaterialButtonHelper is initialized.
+    setCheckedInternal(attributes.getBoolean(R.styleable.MaterialButton_android_checked, false));
+
     if (stateListShapeAppearanceModel != null) {
       materialButtonHelper.setCornerSpringForce(createSpringForce());
       materialButtonHelper.setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
@@ -1296,6 +1299,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public void setChecked(boolean checked) {
+    setCheckedInternal(checked);
+  }
+
+  private void setCheckedInternal(boolean checked) {
     if (isCheckable() && this.checked != checked) {
       this.checked = checked;
 

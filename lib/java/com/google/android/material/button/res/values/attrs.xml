@@ -50,6 +50,7 @@
 
   <declare-styleable name="MaterialButton">
     <!-- Whether the button can be checked. -->
+    <attr name="android:checked" />
     <attr name="android:checkable" />
     <attr name="android:insetLeft" />
     <attr name="android:insetRight" />
