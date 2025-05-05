@@ -110,12 +110,15 @@ public class BottomSheetDialog extends AppCompatDialog {
   }
 
   private void initialize() {
+    if (VERSION.SDK_INT >= VERSION_CODES.VANILLA_ICE_CREAM) {
+      edgeToEdgeEnabled = true;
+      return;
+    }
+
     final TypedArray a = getContext()
         .getTheme()
         .obtainStyledAttributes(new int[] {R.attr.enableEdgeToEdge});
-
     edgeToEdgeEnabled = a.getBoolean(0, false);
-
     a.recycle();
   }
 
@@ -129,8 +132,10 @@ public class BottomSheetDialog extends AppCompatDialog {
     super.onCreate(savedInstanceState);
     Window window = getWindow();
     if (window != null) {
-      // The status bar should always be transparent because of the window animation.
-      window.setStatusBarColor(0);
+      if (VERSION.SDK_INT < VERSION_CODES.VANILLA_ICE_CREAM) {
+        // The status bar should always be transparent because of the window animation.
+        window.setStatusBarColor(0);
+      }
 
       window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
       if (VERSION.SDK_INT < VERSION_CODES.M) {
@@ -180,9 +185,7 @@ public class BottomSheetDialog extends AppCompatDialog {
     super.onAttachedToWindow();
     Window window = getWindow();
     if (window != null) {
-      // If the navigation bar is transparent at all the BottomSheet should be edge to edge.
-      boolean drawEdgeToEdge =
-          edgeToEdgeEnabled && Color.alpha(window.getNavigationBarColor()) < 255;
+      boolean drawEdgeToEdge = shouldDrawEdgeToEdge(window);
       if (container != null) {
         container.setFitsSystemWindows(!drawEdgeToEdge);
       }
@@ -197,6 +200,14 @@ public class BottomSheetDialog extends AppCompatDialog {
     }
 
     updateListeningForBackCallbacks();
+  }
+
+  private boolean shouldDrawEdgeToEdge(Window window) {
+    if (VERSION.SDK_INT >= VERSION_CODES.VANILLA_ICE_CREAM) {
+      return true;
+    }
+
+    return edgeToEdgeEnabled && Color.alpha(window.getNavigationBarColor()) < 255;
   }
 
   @Override

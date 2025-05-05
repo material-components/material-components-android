@@ -21,6 +21,7 @@
   <!-- Style to use for modal bottom sheets in this theme. -->
   <attr name="bottomSheetStyle" format="reference"/>
   <!-- Determines if the BottomSheetDialog should be shown in edge to edge mode. -->
+  <!-- Deprecated. Edge to Edge is always enabled on API 35 and above. -->
   <attr name="enableEdgeToEdge" format="boolean" />
   <!-- Style of drag handle views when being used with bottom sheets. -->
   <attr name="bottomSheetDragHandleStyle" format="reference"/>

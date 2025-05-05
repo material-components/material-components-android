@@ -563,31 +563,26 @@ bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
 <details>
   <summary><h3>Handling insets and fullscreen</h3></summary>
 
-`BottomSheetBehavior` can automatically handle insets (such as for
-[edge to edge](https://developer.android.com/training/gestures/edge-to-edge)) by
-specifying any of these to true on the view:
+`BottomSheetBehavior` automatically handles window insets by applying padding to
+the top and bottom of the view and margins to the left and right. These
+paddings and margins can be customized by specifying any of the following
+attributes on the view:
 
 *   `app:paddingBottomSystemWindowInsets`
 *   `app:paddingLeftSystemWindowInsets`
 *   `app:paddingRightSystemWindowInsets`
 *   `app:paddingTopSystemWindowInsets`
 
-On API 21 and above the modal bottom sheet will be rendered fullscreen (edge to
-edge) if the navigation bar is transparent and `enableEdgeToEdge` is true.
-To enable edge-to-edge by default for modal bottom sheets, you can override
-`?attr/bottomSheetDialogTheme` like the below example (`enableEdgeToEdge` is
-already true in `ThemeOverlay.Material3.BottomSheetDialog`):
+*   `app:marginLeftSystemWindowInsets`
+*   `app:marginRightSystemWindowInsets`
+*   `app:marginTopSystemWindowInsets`
 
-```xml
-<style name="AppTheme" parent="Theme.Material3.*">
-  ...
-  <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
-</style>
+Modal bottom sheets are rendered fullscreen by default. On API 21-34, this can
+be overriden by setting `enableEdgeToEdge` to `false` in your
+`?attr/bottomSheetDialogTheme` ThemeOverlay. On API 35 and above,
+`enableEdgeToEdge` has been deprecated and will no longer take effect. To
+learn more, read about [edge-to-edge enforcement on Android 15](https://developer.android.com/about/versions/15/behavior-changes-15#edge-to-edge).
 
-<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-    <item name="android:navigationBarColor">@android:color/transparent<item>
-</style>
-```
 Insets can be added automatically if any of the padding attributes above are set
 to true in the style, either by updating the style passed to the constructor, or
 by updating the default style specified by the `?attr/bottomSheetDialogTheme`
