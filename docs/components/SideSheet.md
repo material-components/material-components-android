@@ -13,7 +13,7 @@ path: /catalog/side-sheet-behavior/
 containing supplementary content that are anchored to the side of the screen. See [bottom sheet documentation](BottomSheet.md) for documentation about
 [bottom sheets](https://m3.material.io/components/bottom-sheets/overview). There are two variants of side sheets.
 
-![Side sheet hero image](assets/sidesheet/sidesheet_hero.png){width="650"}
+<img src="assets/sidesheet/sidesheet_hero.png" alt="Side sheet hero image" width="650"/>
 
 1. Standard
 2. Modal
@@ -54,22 +54,18 @@ Standard side sheet basic usage:
 
 ### Anatomy
 
-<section>
+#### Standard
 
-<section class="tabs">
-
-#### Standard {.new-tab}
-
-![standard sheet anatomy](assets/sidesheet/standard_sidesheet_anatomy.png){height="500"}
+<img src="assets/sidesheet/standard_sidesheet_anatomy.png" alt="standard sheet anatomy" height="500"/>
 
 1. Divider (optional)
 2. Headline
 3. Container
 4. Close affordance
 
-#### Modal {.new-tab}
+#### Modal
 
-![standard sheet anatomy](assets/sidesheet/modal_sidesheet_anatomy.png){height="500"}
+<img src="assets/sidesheet/modal_sidesheet_anatomy.png" alt="modal sheet anatomy" height="500"/>
 
 1. Back icon button (optional)
 2. Header
@@ -78,10 +74,6 @@ Standard side sheet basic usage:
 5. Divider (optional)
 6. Action (optional)
 7. Scrim
-
-</section>
-
-</section class="tabs">
 
 More details on anatomy items in the [component guidelines](https://m3.material.io/components/side-sheets/guidelines#4d992de0-362a-41b3-9537-9da4dec148af).
 

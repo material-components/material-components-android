@@ -30,7 +30,7 @@ Material Components for Android library. For more information, see the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-![Example bottom sheet: modal bottom sheet](assets/bottomsheet/bottomsheet_hero.png){width="650"}
+<img src="assets/bottomsheet/bottomsheet_hero.png" alt="Example bottom sheet: modal bottom sheet" width="650"/>
 
 ### Anatomy
 
@@ -135,7 +135,7 @@ expanded states:
 
 Collapsed  <div style="width:400px"></div>                                                                                | Expanded <div style="width:400px"></div>
 :-----------------------------------------------------------------------------------------: | :--------:
-![Standard collapsed bottom sheet example.](assets/bottomsheet/bottomsheet_standard1.png){height="500"} | ![Standard expanded bottom sheet example.](assets/bottomsheet/bottomsheet_standard2.png){height="500"}
+<img src="assets/bottomsheet/bottomsheet_standard1.png" alt="Standard collapsed bottom sheet example." height="500"/> | <img src="assets/bottomsheet/bottomsheet_standard2.png" alt="Standard expanded bottom sheet example." height="500"/>
 
 `BottomSheetBehavior` works in tandem with `CoordinatorLayout` to let you
 display content on a bottom sheet, perform enter/exit animations, respond to
@@ -236,7 +236,7 @@ states:
 
 Collapsed            <div style="width:400px"></div>                                                                | Expanded <div style="width:400px"></div>
 :-----------------------------------------------------------------------------------: | :--------:
-![Modal collapsed bottom sheet example.](assets/bottomsheet/bottomsheet_modal1.png){height="500"} | ![Modal expanded bottom sheet example.](assets/bottomsheet/bottomsheet_modal2.png){height="500"}
+<img src="assets/bottomsheet/bottomsheet_modal1.png" alt="Modal collapsed bottom sheet example." height="500"/> | <img src="assets/bottomsheet/bottomsheet_modal2.png" alt="Modal expanded bottom sheet example." height="500"/>
 
 First, subclass `BottomSheetDialogFragment` and overwrite `onCreateView` to
 provide a layout for the contents of the sheet (in this example, it's
@@ -367,8 +367,7 @@ API and source code:
 The following example shows a bottom sheet with Material Theming, in its
 collapsed and expanded states.
 
-![Bottom sheet with pink background color. Collapsed on the left and expanded on
-the right.](assets/bottomsheet/bottomsheet_theming.png){height="550"}
+<img src="assets/bottomsheet/bottomsheet_theming.png" alt="Bottom sheet with pink background color. Collapsed on the left and expanded on the right." height="550"/>
 
 #### Implementing bottom sheet theming
 
