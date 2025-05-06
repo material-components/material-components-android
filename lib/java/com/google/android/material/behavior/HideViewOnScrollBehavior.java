@@ -351,11 +351,11 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
       child.clearAnimation();
     }
     updateCurrentState(child, STATE_SCROLLED_OUT);
-    int targetTranslationY = size + additionalHiddenOffset;
+    int targetTranslation = size + additionalHiddenOffset;
     if (animate) {
-      animateChildTo(child, targetTranslationY, exitAnimDuration, exitAnimInterpolator);
+      animateChildTo(child, targetTranslation, exitAnimDuration, exitAnimInterpolator);
     } else {
-      child.setTranslationY(targetTranslationY);
+      hideOnScrollViewDelegate.setViewTranslation(child, targetTranslation);
     }
   }
 
