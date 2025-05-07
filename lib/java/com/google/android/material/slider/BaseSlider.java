@@ -304,6 +304,7 @@ abstract class BaseSlider<
   @NonNull private final Paint inactiveTicksPaint;
   @NonNull private final Paint activeTicksPaint;
   @NonNull private final Paint stopIndicatorPaint;
+  @NonNull private final Locale locale;
   @NonNull private final AccessibilityHelper accessibilityHelper;
   private final AccessibilityManager accessibilityManager;
   private AccessibilityEventSender accessibilityEventSender;
@@ -464,6 +465,8 @@ abstract class BaseSlider<
 
     // Initialize with just this view's visibility.
     thisAndAncestorsVisible = isShown();
+
+    locale = context.getResources().getConfiguration().locale;
 
     inactiveTrackPaint = new Paint();
     activeTrackPaint = new Paint();
@@ -3553,7 +3556,7 @@ abstract class BaseSlider<
       return formatter.getFormattedValue(value);
     }
 
-    return String.format((int) value == value ? "%.0f" : "%.2f", value);
+    return String.format(locale, (int) value == value ? "%.0f" : "%.2f", value);
   }
 
   private void setValueForLabel(TooltipDrawable label, float value) {
@@ -4167,7 +4170,7 @@ abstract class BaseSlider<
         info.setStateDescription(stateDescription);
       } else {
         contentDescription.append(
-            String.format(Locale.getDefault(), "%s, %s", verbalValueType, verbalValue));
+            String.format(slider.locale, "%s, %s", verbalValueType, verbalValue));
       }
       info.setContentDescription(contentDescription.toString());
 
