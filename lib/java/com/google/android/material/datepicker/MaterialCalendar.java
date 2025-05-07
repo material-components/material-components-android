@@ -491,22 +491,14 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           }
         });
 
-    monthNext.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            int currentItem = getLayoutManager().findFirstVisibleItemPosition();
-            setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem + 1));
-          }
-        });
-    monthPrev.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            int currentItem = getLayoutManager().findLastVisibleItemPosition();
-            setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem - 1));
-          }
-        });
+    monthNext.setOnClickListener(view -> {
+      Month currentMonth = getCurrentMonth();
+      setCurrentMonth(currentMonth.monthsLater(1));
+    });
+    monthPrev.setOnClickListener(view -> {
+      Month currentMonth = getCurrentMonth();
+      setCurrentMonth(currentMonth.monthsLater(-1));
+    });
 
     int currentMonthPosition = monthsPagerAdapter.getPosition(current);
     updateNavigationButtonsEnabled(currentMonthPosition);
