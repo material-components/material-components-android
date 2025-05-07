@@ -373,7 +373,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       @IntRange(from = 0, to = 255) int drawableAlpha) {
     int paintColor = MaterialColors.compositeARGBWithAlpha(color, drawableAlpha);
     drawingDeterminateIndicator = false;
-    if (spec.trackStopIndicatorSize > 0 && paintColor != Color.TRANSPARENT) {
+    int trackStopIndicatorSize = spec.getActualTrackStopIndicatorSize();
+    if (trackStopIndicatorSize > 0 && paintColor != Color.TRANSPARENT) {
       // Draws the stop indicator at the end of the track if needed.
       paint.setStyle(Style.FILL);
       paint.setColor(paintColor);
@@ -386,9 +387,9 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
           paint,
           new PathPoint(
               new float[] {trackLength / 2 - stopIndicatorCenterX, 0}, new float[] {1, 0}),
-          spec.trackStopIndicatorSize,
-          spec.trackStopIndicatorSize,
-          displayedCornerRadius * spec.trackStopIndicatorSize / displayedTrackThickness);
+          trackStopIndicatorSize,
+          trackStopIndicatorSize,
+          displayedCornerRadius * trackStopIndicatorSize / displayedTrackThickness);
     }
   }
 
