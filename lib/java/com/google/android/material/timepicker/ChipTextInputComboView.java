@@ -107,7 +107,6 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     editText.setVisibility(checked ? VISIBLE : INVISIBLE);
     // TODO(b/247609386) Should not hide chip, we need the background in M3 (but not M2...).
     // Instead, the text in chip should be hidden.
-    chip.setVisibility(checked ? GONE : VISIBLE);
     if (isChecked()) {
       ViewUtils.requestFocusAndShowKeyboard(editText, /* useWindowInsetsController= */ false);
     }
