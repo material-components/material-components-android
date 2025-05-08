@@ -144,6 +144,17 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   private boolean startInsetScrimEnabled = true;
   private boolean endInsetScrimEnabled = true;
 
+  @Nullable private Drawable itemBackground;
+  @Nullable private ShapeAppearanceModel shapeAppearanceModel;
+
+  private int itemShapeInsetStart;
+  private int itemShapeInsetTop;
+  private int itemShapeInsetEnd;
+  private int itemShapeInsetBottom;
+
+  @Nullable private ColorStateList itemShapeFillColor;
+  @Nullable private ColorStateList itemRippleColor;
+
   @Px private int drawerLayoutCornerSize = 0;
   private final boolean drawerLayoutCornerSizeBackAnimationEnabled;
   @Px private final int drawerLayoutCornerSizeBackAnimationMax;
@@ -274,26 +285,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
       itemTextColor = createDefaultColorStateList(android.R.attr.textColorPrimary);
     }
 
-    Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
-    // Set a shaped itemBackground if itemBackground hasn't been set and there is a shape
-    // appearance.
-    if (itemBackground == null && hasShapeAppearance(a)) {
-      itemBackground = createDefaultItemBackground(a);
-
-      ColorStateList itemRippleColor =
-          MaterialResources.getColorStateList(
-              context, a, R.styleable.NavigationView_itemRippleColor);
-
-      // Use a ripple matching the item's shape as the foreground if a ripple color is set.
-      // Otherwise the selectableItemBackground foreground from the item layout will be used.
-      if (itemRippleColor != null) {
-        Drawable itemRippleMask = createDefaultItemDrawable(a, null);
-        RippleDrawable ripple =
-            new RippleDrawable(
-                RippleUtils.sanitizeRippleDrawableColor(itemRippleColor), null, itemRippleMask);
-        presenter.setItemForeground(ripple);
-      }
-    }
+    initItemBackgrounds(context, a);
 
     if (a.hasValue(R.styleable.NavigationView_itemHorizontalPadding)) {
       final int itemHorizontalPadding =
@@ -362,7 +354,6 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     }
     presenter.setItemTextAppearanceActiveBoldEnabled(textAppearanceActiveBoldEnabled);
     presenter.setItemTextColor(itemTextColor);
-    presenter.setItemBackground(itemBackground);
     presenter.setItemIconPadding(itemIconPadding);
     this.menu.addMenuPresenter(presenter);
     addView((View) presenter.getMenuView(this));
@@ -378,6 +369,104 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     a.recycle();
 
     setupInsetScrimsListener();
+  }
+
+  private void initItemBackgrounds(@NonNull Context context, @NonNull TintTypedArray a) {
+    itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
+    if (itemBackground == null && hasShapeAppearance(a)) {
+      int shapeAppearanceResId = a.getResourceId(R.styleable.NavigationView_itemShapeAppearance, 0);
+      int shapeAppearanceOverlayResId =
+          a.getResourceId(R.styleable.NavigationView_itemShapeAppearanceOverlay, 0);
+
+      shapeAppearanceModel = ShapeAppearanceModel
+          .builder(context, shapeAppearanceResId, shapeAppearanceOverlayResId)
+          .build();
+
+      itemShapeInsetStart =
+          a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetStart, 0);
+      itemShapeInsetTop =
+          a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetTop, 0);
+      itemShapeInsetEnd =
+          a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetEnd, 0);
+      itemShapeInsetBottom =
+          a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetBottom, 0);
+
+      itemShapeFillColor = MaterialResources.getColorStateList(
+          context, a, R.styleable.NavigationView_itemShapeFillColor);
+
+      itemRippleColor = MaterialResources.getColorStateList(
+          context, a, R.styleable.NavigationView_itemRippleColor);
+    }
+
+    updateItemBackground();
+    updateItemForeground();
+  }
+
+  private void updateItemBackground() {
+    if (itemBackground != null) {
+      presenter.setItemBackground(itemBackground);
+    } else if (shapeAppearanceModel != null) {
+      final int layoutDirection = getLayoutDirection();
+      final int itemShapeInsetLeft = layoutDirection == View.LAYOUT_DIRECTION_LTR
+          ? itemShapeInsetStart
+          : itemShapeInsetEnd;
+
+      final int itemShapeInsetRight = layoutDirection == View.LAYOUT_DIRECTION_LTR
+          ? itemShapeInsetEnd
+          : itemShapeInsetStart;
+
+      final MaterialShapeDrawable itemShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+      itemShapeDrawable.setFillColor(itemShapeFillColor);
+
+      final InsetDrawable itemDrawable = new InsetDrawable(
+          itemShapeDrawable,
+          itemShapeInsetLeft,
+          itemShapeInsetTop,
+          itemShapeInsetRight,
+          itemShapeInsetBottom);
+
+      presenter.setItemBackground(itemDrawable);
+    } else {
+      presenter.setItemBackground(null);
+    }
+  }
+
+  private void updateItemForeground() {
+    if (shapeAppearanceModel != null) {
+      final int layoutDirection = getLayoutDirection();
+      final int itemShapeInsetLeft = layoutDirection == View.LAYOUT_DIRECTION_LTR
+          ? itemShapeInsetStart
+          : itemShapeInsetEnd;
+
+      final int itemShapeInsetRight = layoutDirection == View.LAYOUT_DIRECTION_LTR
+          ? itemShapeInsetEnd
+          : itemShapeInsetStart;
+
+      final MaterialShapeDrawable itemShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+      final InsetDrawable itemRippleMaskDrawable = new InsetDrawable(
+          itemShapeDrawable,
+          itemShapeInsetLeft,
+          itemShapeInsetTop,
+          itemShapeInsetRight,
+          itemShapeInsetBottom);
+
+      final RippleDrawable itemRippleDrawable =
+          new RippleDrawable(
+              RippleUtils.sanitizeRippleDrawableColor(itemRippleColor),
+              null,
+              itemRippleMaskDrawable);
+
+      presenter.setItemForeground(itemRippleDrawable);
+    } else {
+      presenter.setItemForeground(null);
+    }
+  }
+
+  @Override
+  public void onRtlPropertiesChanged(int layoutDirection) {
+    super.onRtlPropertiesChanged(layoutDirection);
+    updateItemBackground();
+    updateItemForeground();
   }
 
   @Override
@@ -495,40 +584,6 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   public void setElevation(float elevation) {
     super.setElevation(elevation);
     MaterialShapeUtils.setElevation(this, elevation);
-  }
-
-  /**
-   * Creates a {@link MaterialShapeDrawable} to use as the {@code itemBackground} and wraps it in an
-   * {@link InsetDrawable} for margins.
-   *
-   * @param a The TintTypedArray containing the resolved NavigationView style attributes.
-   */
-  @NonNull
-  private Drawable createDefaultItemBackground(@NonNull TintTypedArray a) {
-    ColorStateList fillColor =
-        MaterialResources.getColorStateList(
-            getContext(), a, R.styleable.NavigationView_itemShapeFillColor);
-    return createDefaultItemDrawable(a, fillColor);
-  }
-
-  @NonNull
-  private Drawable createDefaultItemDrawable(
-      @NonNull TintTypedArray a, @Nullable ColorStateList fillColor) {
-    int shapeAppearanceResId = a.getResourceId(R.styleable.NavigationView_itemShapeAppearance, 0);
-    int shapeAppearanceOverlayResId =
-        a.getResourceId(R.styleable.NavigationView_itemShapeAppearanceOverlay, 0);
-    MaterialShapeDrawable materialShapeDrawable =
-        new MaterialShapeDrawable(
-            ShapeAppearanceModel.builder(
-                    getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId)
-                .build());
-    materialShapeDrawable.setFillColor(fillColor);
-
-    int insetLeft = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetStart, 0);
-    int insetTop = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetTop, 0);
-    int insetRight = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetEnd, 0);
-    int insetBottom = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetBottom, 0);
-    return new InsetDrawable(materialShapeDrawable, insetLeft, insetTop, insetRight, insetBottom);
   }
 
   @Override
