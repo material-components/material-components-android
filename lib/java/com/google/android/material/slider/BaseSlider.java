@@ -75,6 +75,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewOverlay;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityEvent;
@@ -100,7 +101,6 @@ import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewOverlayImpl;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
@@ -2373,7 +2373,7 @@ abstract class BaseSlider<
     // When the visibility is set to VISIBLE, onDraw() is called again which adds or removes labels
     // according to the setting.
     if (visibility != VISIBLE) {
-      ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(this);
+      ViewOverlay contentViewOverlay = ViewUtils.getContentViewOverlay(this);
       if (contentViewOverlay == null) {
         return;
       }
@@ -2458,7 +2458,7 @@ abstract class BaseSlider<
   }
 
   private void detachLabelFromContentView(TooltipDrawable label) {
-    ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(this);
+    ViewOverlay contentViewOverlay = ViewUtils.getContentViewOverlay(this);
     if (contentViewOverlay != null) {
       contentViewOverlay.remove(label);
       label.detachView(ViewUtils.getContentView(this));
@@ -3506,7 +3506,7 @@ abstract class BaseSlider<
             @Override
             public void onAnimationEnd(Animator animation) {
               super.onAnimationEnd(animation);
-              ViewOverlayImpl contentViewOverlay = ViewUtils.getContentViewOverlay(BaseSlider.this);
+              ViewOverlay contentViewOverlay = ViewUtils.getContentViewOverlay(BaseSlider.this);
               for (TooltipDrawable label : labels) {
                 contentViewOverlay.remove(label);
               }
