@@ -50,7 +50,7 @@ public final class TabLayoutMediator {
   private final boolean smoothScroll;
   private final TabConfigurationStrategy tabConfigurationStrategy;
   @Nullable private RecyclerView.Adapter<?> adapter;
-  private boolean attached;
+  @Nullable private MediatorSharedStates sharedStates;
 
   @Nullable private TabLayoutOnPageChangeCallback onPageChangeCallback;
   @Nullable private TabLayout.OnTabSelectedListener onTabSelectedListener;
@@ -109,7 +109,7 @@ public final class TabLayoutMediator {
    *     adapter.
    */
   public void attach() {
-    if (attached) {
+    if (sharedStates != null) {
       throw new IllegalStateException("TabLayoutMediator is already attached");
     }
     adapter = viewPager.getAdapter();
@@ -117,14 +117,14 @@ public final class TabLayoutMediator {
       throw new IllegalStateException(
           "TabLayoutMediator attached before ViewPager2 has an " + "adapter");
     }
-    attached = true;
+    sharedStates = new MediatorSharedStates();
 
     // Add our custom OnPageChangeCallback to the ViewPager
-    onPageChangeCallback = new TabLayoutOnPageChangeCallback(tabLayout);
+    onPageChangeCallback = new TabLayoutOnPageChangeCallback(sharedStates, tabLayout);
     viewPager.registerOnPageChangeCallback(onPageChangeCallback);
 
     // Now we'll add a tab selected listener to set ViewPager's current item
-    onTabSelectedListener = new ViewPagerOnTabSelectedListener(viewPager, smoothScroll);
+    onTabSelectedListener = new ViewPagerOnTabSelectedListener(sharedStates, viewPager, smoothScroll);
     tabLayout.addOnTabSelectedListener(onTabSelectedListener);
 
     // Now we'll populate ourselves from the pager adapter, adding an observer if
@@ -156,14 +156,14 @@ public final class TabLayoutMediator {
     onTabSelectedListener = null;
     onPageChangeCallback = null;
     adapter = null;
-    attached = false;
+    sharedStates = null;
   }
 
   /**
    * Returns whether the {@link TabLayout} and the {@link ViewPager2} are linked together.
    */
   public boolean isAttached() {
-    return attached;
+    return sharedStates != null;
   }
 
   @SuppressWarnings("WeakerAccess")
@@ -189,6 +189,13 @@ public final class TabLayoutMediator {
   }
 
   /**
+   * Holds states that can be shared between {@link TabLayoutMediator} and its internal classes.
+   */
+  private static class MediatorSharedStates {
+    boolean inOnPageSelected;
+  }
+
+  /**
    * A {@link ViewPager2.OnPageChangeCallback} class which contains the necessary calls back to the
    * provided {@link TabLayout} so that the tab position is kept in sync.
    *
@@ -197,11 +204,13 @@ public final class TabLayoutMediator {
    * callback and not cause a leak.
    */
   private static class TabLayoutOnPageChangeCallback extends ViewPager2.OnPageChangeCallback {
+    @NonNull private final MediatorSharedStates sharedStates;
     @NonNull private final WeakReference<TabLayout> tabLayoutRef;
     private int previousScrollState;
     private int scrollState;
 
-    TabLayoutOnPageChangeCallback(TabLayout tabLayout) {
+    TabLayoutOnPageChangeCallback(@NonNull MediatorSharedStates sharedStates, TabLayout tabLayout) {
+      this.sharedStates = sharedStates;
       tabLayoutRef = new WeakReference<>(tabLayout);
       reset();
     }
@@ -237,16 +246,24 @@ public final class TabLayoutMediator {
     @Override
     public void onPageSelected(final int position) {
       TabLayout tabLayout = tabLayoutRef.get();
-      if (tabLayout != null
-          && tabLayout.getSelectedTabPosition() != position
-          && position < tabLayout.getTabCount()) {
-        // Select the tab, only updating the indicator if we're not being dragged/settled
-        // (since onPageScrolled will handle that).
-        boolean updateIndicator =
-            scrollState == SCROLL_STATE_IDLE
-                || (scrollState == SCROLL_STATE_SETTLING
-                    && previousScrollState == SCROLL_STATE_IDLE);
-        tabLayout.selectTab(tabLayout.getTabAt(position), updateIndicator);
+
+      if (tabLayout == null) return;
+
+      try {
+        sharedStates.inOnPageSelected = true;
+
+        if (tabLayout.getSelectedTabPosition() != position
+            && position < tabLayout.getTabCount()) {
+          // Select the tab, only updating the indicator if we're not being dragged/settled
+          // (since onPageScrolled will handle that).
+          boolean updateIndicator =
+              scrollState == SCROLL_STATE_IDLE
+                  || (scrollState == SCROLL_STATE_SETTLING
+                  && previousScrollState == SCROLL_STATE_IDLE);
+          tabLayout.selectTab(tabLayout.getTabAt(position), updateIndicator);
+        }
+      } finally {
+        sharedStates.inOnPageSelected = false;
       }
     }
 
@@ -260,16 +277,19 @@ public final class TabLayoutMediator {
    * provided {@link ViewPager2} so that the tab position is kept in sync.
    */
   private static class ViewPagerOnTabSelectedListener implements TabLayout.OnTabSelectedListener {
-    private final ViewPager2 viewPager;
+    @NonNull private final MediatorSharedStates sharedStates;
+    @NonNull private final ViewPager2 viewPager;
     private final boolean smoothScroll;
 
-    ViewPagerOnTabSelectedListener(ViewPager2 viewPager, boolean smoothScroll) {
+    ViewPagerOnTabSelectedListener(@NonNull MediatorSharedStates sharedStates, @NonNull ViewPager2 viewPager, boolean smoothScroll) {
+      this.sharedStates = sharedStates;
       this.viewPager = viewPager;
       this.smoothScroll = smoothScroll;
     }
 
     @Override
     public void onTabSelected(@NonNull TabLayout.Tab tab) {
+      if (this.sharedStates.inOnPageSelected) return;
       viewPager.setCurrentItem(tab.getPosition(), smoothScroll);
     }
 
