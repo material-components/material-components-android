@@ -32,6 +32,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
+import android.view.ViewOverlay;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -360,18 +361,6 @@ public class ViewUtils {
     return absoluteElevation;
   }
 
-  /**
-   * Backward-compatible {@link View#getOverlay()}. TODO(b/144937975): Remove and use the official
-   * version from androidx when it's available.
-   */
-  @Nullable
-  public static ViewOverlayImpl getOverlay(@Nullable View view) {
-    if (view == null) {
-      return null;
-    }
-    return new ViewOverlayApi18(view);
-  }
-
   /** Returns the content view that is the parent of the provided view. */
   @Nullable
   public static ViewGroup getContentView(@Nullable View view) {
@@ -400,8 +389,9 @@ public class ViewUtils {
    * Returns the content view overlay that can be used to add drawables on top of all other views.
    */
   @Nullable
-  public static ViewOverlayImpl getContentViewOverlay(@NonNull View view) {
-    return getOverlay(getContentView(view));
+  public static ViewOverlay getContentViewOverlay(@NonNull View view) {
+    ViewGroup contentView = getContentView(view);
+    return contentView != null ? contentView.getOverlay() : null;
   }
 
   public static void addOnGlobalLayoutListener(
