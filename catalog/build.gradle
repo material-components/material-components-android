@@ -85,7 +85,6 @@ def srcDirs = [
   'musicplayer',
   'navigationrail',
   'navigationdrawer',
-  'overflow',
   'preferences',
   'progressindicator',
   'radiobutton',

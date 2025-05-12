@@ -458,7 +458,6 @@ public class ThemeTest {
           R.attr.materialSearchViewToolbarHeight,
           R.attr.materialSearchViewToolbarStyle,
           R.attr.materialSwitchStyle,
-          R.attr.overflowLinearLayoutStyle,
           R.attr.radioButtonStyle,
           R.attr.sliderStyle,
           R.attr.snackbarStyle,
