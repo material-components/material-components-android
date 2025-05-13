@@ -99,19 +99,20 @@ The following is an anatomy diagram for the search bar:
 
 The following attributes can be changed for `SearchBar`:
 
-Element                      | Attribute                   | Related method(s)                           | Default value
----------------------------- | --------------------------- | ------------------------------------------- | -------------
-**Max Width**                | `android:maxWidth`          | `setMaxWidth`<br/>`getMaxWidth`             | `-1` (unset)
-**Min height**               | `android:minHeight`         | `setMinHeight`<br/>`getMinHeight`           | `@dimen/m3_searchbar_height`
-**Search text appearance**   | `android:textAppearance`    | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
-**Search text**              | `android:text`              | `setText`<br/>`getText`                     | `null`
-**Search hint**              | `android:hint`              | `setHint`<br/>`getHint`                     | `null`
-**Search text centered**     | `app:textCentered`          | `setTextCentered`<br/>`getTextCentered`     | `false`
-**Color**                    | `app:backgroundTint`        | --                                          | `?attr/colorSurfaceContainerHigh`
-**Lift On Scroll**           | `app:liftOnScroll`          | --                                          | `false`
-**Lift On Scroll Color**     | `app:liftOnScrollColor`     | --                                          | `?attr/colorSurfaceContainerHighest`
-**Flag for default margins** | `app:defaultMarginsEnabled` | --                                          | `true`
-**Flag for navigation icon** | `app:hideNavigationIcon`    | --                                          | `false`
+Element                                  | Attribute                     | Related method(s)                           | Default value
+---------------------------------------- | ----------------------------- | ------------------------------------------- | -------------
+**Max Width**                            | `android:maxWidth`            | `setMaxWidth`<br/>`getMaxWidth`             | `-1` (unset)
+**Flag for enabling adaptive max width** | `app:adaptiveMaxWidthEnabled` | --                                          | `false`
+**Min height**                           | `android:minHeight`           | `setMinHeight`<br/>`getMinHeight`           | `@dimen/m3_searchbar_height`
+**Search text appearance**               | `android:textAppearance`      | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
+**Search text**                          | `android:text`                | `setText`<br/>`getText`                     | `null`
+**Search hint**                          | `android:hint`                | `setHint`<br/>`getHint`                     | `null`
+**Search text centered**                 | `app:textCentered`            | `setTextCentered`<br/>`getTextCentered`     | `false`
+**Color**                                | `app:backgroundTint`          | --                                          | `?attr/colorSurfaceContainerHigh`
+**Lift On Scroll**                       | `app:liftOnScroll`            | --                                          | `false`
+**Lift On Scroll Color**                 | `app:liftOnScrollColor`       | --                                          | `?attr/colorSurfaceContainerHighest`
+**Flag for default margins**             | `app:defaultMarginsEnabled`   | --                                          | `true`
+**Flag for navigation icon**             | `app:hideNavigationIcon`      | --                                          | `false`
 
 ## Styles
 

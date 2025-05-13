@@ -157,8 +157,14 @@ public class SearchBar extends Toolbar {
   private MaterialShapeDrawable backgroundShape;
   private boolean textCentered;
   private int maxWidth;
+  private final boolean adaptiveMaxWidthEnabled;
+  private final int adaptiveMaxWidthParentBreakpoint;
   @Nullable private ActionMenuView menuView;
   @Nullable private ImageButton navIconButton;
+
+  // The percentage of the available width that the SearchBar should be at after the specified
+  // breakpoint in the measure pass.
+  private static final float ADAPTIVE_MAX_WIDTH_PERCENT_AFTER_BREAKPOINT = 0.5f;
 
   private final LiftOnScrollProgressListener liftColorListener =
       new LiftOnScrollProgressListener() {
@@ -187,6 +193,8 @@ public class SearchBar extends Toolbar {
     context = getContext();
     validateAttributes(attrs);
 
+    adaptiveMaxWidthParentBreakpoint =
+        getResources().getDimensionPixelSize(R.dimen.m3_searchbar_parent_width_breakpoint);
     defaultNavigationIcon =
         AppCompatResources.getDrawable(context, getDefaultNavigationIconResource());
     searchBarAnimationHelper = new SearchBarAnimationHelper();
@@ -218,6 +226,7 @@ public class SearchBar extends Toolbar {
     textCentered = a.getBoolean(R.styleable.SearchBar_textCentered, false);
     liftOnScroll = a.getBoolean(R.styleable.SearchBar_liftOnScroll, false);
     maxWidth = a.getDimensionPixelSize(R.styleable.SearchBar_android_maxWidth, -1);
+    adaptiveMaxWidthEnabled = a.getBoolean(R.styleable.SearchBar_adaptiveMaxWidthEnabled, false);
 
     a.recycle();
 
@@ -419,9 +428,16 @@ public class SearchBar extends Toolbar {
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    if (maxWidth >= 0 && maxWidth < MeasureSpec.getSize(widthMeasureSpec)) {
-      int measureMode = MeasureSpec.getMode(widthMeasureSpec);
+    int availableWidth = MeasureSpec.getSize(widthMeasureSpec);
+    int measureMode = MeasureSpec.getMode(widthMeasureSpec);
+    if (maxWidth >= 0 && availableWidth > maxWidth) {
       widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, measureMode);
+    } else if (adaptiveMaxWidthEnabled && availableWidth > adaptiveMaxWidthParentBreakpoint) {
+      int newWidth =
+          max(
+              adaptiveMaxWidthParentBreakpoint,
+              Math.round(ADAPTIVE_MAX_WIDTH_PERCENT_AFTER_BREAKPOINT * availableWidth));
+      widthMeasureSpec = MeasureSpec.makeMeasureSpec(newWidth, measureMode);
     }
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 

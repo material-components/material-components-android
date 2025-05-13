@@ -24,7 +24,6 @@
     <item name="liftOnScroll">true</item>
     <item name="contentInsetStart">24dp</item>
     <item name="android:paddingEnd">4dp</item>
-    <item name="android:maxWidth">720dp</item>
   </style>
 
   <style name="Widget.Material3Expressive.SearchBar.CenteredText">
@@ -43,20 +42,20 @@
   <style name="Widget.Material3Expressive.SearchView" parent="Widget.Material3.SearchView"/>
 
   <style name="Widget.Material3Expressive.SearchBar.CenteredText.AppBarWithSearch">
-    <item name="android:maxWidth">312dp</item>
     <item name="defaultMarginsEnabled">false</item>
     <item name="android:layout_gravity">center</item>
     <item name="android:layout_marginStart">8dp</item>
     <item name="android:layout_marginEnd">8dp</item>
+    <item name="adaptiveMaxWidthEnabled">true</item>
   </style>
 
   <style name="Widget.Material3Expressive.SearchBar.AppBarWithSearch">
-    <item name="android:maxWidth">312dp</item>
     <item name="defaultMarginsEnabled">false</item>
     <item name="hideNavigationIcon">true</item>
     <item name="android:layout_gravity">center</item>
     <item name="android:layout_marginStart">8dp</item>
     <item name="android:layout_marginEnd">8dp</item>
+    <item name="adaptiveMaxWidthEnabled">true</item>
   </style>
 
   <style name="Widget.Material3Expressive.AppBarLayout.AppBarWithSearch">

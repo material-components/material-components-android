@@ -71,8 +71,11 @@
     <attr name="liftOnScroll"/>
     <!-- The color of the SearchBar when lifted. If null, the search bar color will not change.  -->
     <attr name="liftOnScrollColor"/>
-    <!-- The max width the SearchBar can be. If the SearchBar width is set explicitly, it will ignore this value. -->
+    <!-- The max width the SearchBar can be. -->
     <attr name="android:maxWidth"/>
+    <!-- Whether or not to set an adaptive maximum width on the SearchBar based on the available width in the parent view.
+         If the max width is set explicitly, it will take precedence over this attribute. -->
+    <attr name="adaptiveMaxWidthEnabled" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="SearchView">

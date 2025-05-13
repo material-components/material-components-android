@@ -24,6 +24,7 @@
   <public name="materialSearchViewToolbarHeight" type="attr"/>
   <public name="defaultMarginsEnabled" type="attr"/>
   <public name="defaultScrollFlagsEnabled" type="attr"/>
+  <public name="adaptiveMaxWidthEnabled" type="attr"/>
   <public name="hideNavigationIcon" type="attr"/>
   <public name="forceDefaultNavigationOnClickListener" type="attr"/>
   <public name="tintNavigationIcon" type="attr"/>
