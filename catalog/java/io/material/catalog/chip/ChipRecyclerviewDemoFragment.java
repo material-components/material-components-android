@@ -111,11 +111,15 @@ public class ChipRecyclerviewDemoFragment extends DemoFragment {
           for (int i = 1; i < getItemCount(); i++) {
             menu.getMenu().add(Menu.NONE, i, i, text + " " + i);
           }
+          menu.getMenu().setGroupCheckable(Menu.NONE, true, false);
           menu.setOnMenuItemClickListener(
               menuItem -> {
                 int id = menuItem.getItemId();
                 if (!checkedChipId.remove(id)) {
                   checkedChipId.add(id);
+                  menuItem.setChecked(true);
+                } else {
+                  menuItem.setChecked(false);
                 }
                 notifyItemChanged(id);
                 return true;
@@ -125,6 +129,9 @@ public class ChipRecyclerviewDemoFragment extends DemoFragment {
       } else {
         chip.setChecked(checkedChipId.contains(position));
         chip.setText(text + " " + position);
+        chip.setOnCheckedChangeListener(
+            (buttonView, isChecked) ->
+                menu.getMenu().getItem((Integer) chip.getTag() - 1).setChecked(isChecked));
       }
     }
 
