@@ -23,6 +23,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,6 +133,48 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     colorFillButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_color_fill));
     for (MaterialButton colorFillButton : colorFillButtons) {
       colorFillButton.setOnClickListener(v -> view.setBackgroundColor(getRandomColor()));
+    }
+
+    // Initialize strikethrough format buttons.
+    List<MaterialButton> strikethroughButtons =
+        initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_button_strikethrough);
+    strikethroughButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_strikethrough));
+    for (MaterialButton strikethroughButton : strikethroughButtons) {
+      strikethroughButton.addOnCheckedChangeListener(
+          (button, isChecked) -> {
+            int paintFlags = bodyText.getPaintFlags();
+            if (isChecked) {
+              bodyText.setPaintFlags(paintFlags | Paint.STRIKE_THRU_TEXT_FLAG);
+            } else {
+              bodyText.setPaintFlags(paintFlags & ~Paint.STRIKE_THRU_TEXT_FLAG);
+            }
+            propagateCheckedButtonState(strikethroughButtons, isChecked);
+          });
+    }
+
+    // Initialize left align format buttons.
+    List<MaterialButton> leftAlignButtons =
+        initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_button_left_align);
+    leftAlignButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_left_align));
+    for (MaterialButton leftAlignButton : leftAlignButtons) {
+      leftAlignButton.setOnClickListener(v -> bodyText.setGravity(Gravity.LEFT));
+    }
+
+    // Initialize center align format buttons.
+    List<MaterialButton> centerAlignButtons =
+        initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_button_center_align);
+    centerAlignButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_center_align));
+    for (MaterialButton centerButton : centerAlignButtons) {
+      centerButton.setOnClickListener(v -> bodyText.setGravity(Gravity.CENTER_HORIZONTAL));
+    }
+
+    // Initialize right align format buttons.
+    List<MaterialButton> rightAlignButtons =
+        initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_button_right_align);
+    rightAlignButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_right_align));
+    for (MaterialButton rightAlignButton : rightAlignButtons) {
+      // Check if is RTL since icon won't change direction.
+      rightAlignButton.setOnClickListener(v -> bodyText.setGravity(Gravity.RIGHT));
     }
 
     // Initialize orientation configuration selection controls.

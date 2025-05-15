@@ -59,6 +59,22 @@
     description="Content description for a button that sets the body text background to a new random color [CHAR LIMIT=NONE]">
     Format text background color
   </string>
+  <string name="cat_floating_toolbar_button_strikethrough_content_description"
+    description="Content description for a button that strikes through the body text [CHAR LIMIT=NONE]">
+    Format text strikethrough
+  </string>
+  <string name="cat_floating_toolbar_button_left_align_content_description"
+    description="Content description for a button that left aligns the body text [CHAR LIMIT=NONE]">
+    Left align text
+  </string>
+  <string name="cat_floating_toolbar_button_center_align_content_description"
+    description="Content description for a button that center aligns the body text [CHAR LIMIT=NONE]">
+    Center align
+  </string>
+  <string name="cat_floating_toolbar_button_right_align_content_description"
+    description="Content description for a button that right aligns the body text [CHAR LIMIT=NONE]">
+    Right align
+  </string>
   <string name="cat_floating_toolbar_filler_text" translatable="false">
     \t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.
     \n\n\t\tSuspendisse interdum ornare ante. Aliquam nec cursus lorem. Morbi id magna felis. Vivamus egestas, est a condimentum egestas, turpis nisl iaculis ipsum, in dictum tellus dolor sed neque. Morbi tellus erat, dapibus ut sem a, iaculis tincidunt dui. Interdum et malesuada fames ac ante ipsum primis in faucibus. Curabitur et eros porttitor, ultricies urna vitae, molestie nibh. Phasellus at commodo eros, non aliquet metus. Sed maximus nisl nec dolor bibendum, vel congue leo egestas.

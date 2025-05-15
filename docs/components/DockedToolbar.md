@@ -64,16 +64,18 @@ Here's what a typical layout would look like:
     app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
     <!-- docked toolbar sample content -->
-    <LinearLayout
+    <com.google.android.material.overflow.OverflowLinearLayout
       android:id="@+id/docked_toolbar_child"
-      android:layout_width="match_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:orientation="horizontal">
       <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        app:layout_overflowText="@string/docked_toolbar_back_button_description"
+        app:layout_overflowIcon="@drawable/ic_arrow_back_24px">
         <Button
           android:id="@+id/docked_toolbar_back_button"
           android:layout_width="wrap_content"
@@ -87,7 +89,9 @@ Here's what a typical layout would look like:
       <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        app:layout_overflowText="@string/docked_toolbar_add_button_description"
+        app:layout_overflowIcon="@drawable/ic_add_24px">
         <Button
           android:id="@+id/docked_toolbar_add_button"
           android:layout_width="wrap_content"
@@ -101,7 +105,9 @@ Here's what a typical layout would look like:
       <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        app:layout_overflowText="@string/docked_toolbar_forward_button_description"
+        app:layout_overflowIcon="@drawable/ic_arrow_forward_24px">
         <Button
           android:id="@+id/docked_toolbar_forward_button"
           android:layout_width="wrap_content"
@@ -111,14 +117,30 @@ Here's what a typical layout would look like:
           android:contentDescription="@string/docked_toolbar_forward_button_description"
           app:icon="@drawable/ic_arrow_forward_24px" />
       </FrameLayout>
-    </LinearLayout>
+    </com.google.android.material.overflow.OverflowLinearLayout>
 
   </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
 A Docked Toolbar is a `FrameLayout` that provides additional styling.
-You may add children to it as you would to a `FrameLayout`.
+You may add children to it as you would to a `FrameLayout`. It's recommended to
+have its children wrapped by an `OverflowLinearLayout` that will handle
+automatically adding items to an overflow menu when there's not enough screen
+space to show all the items.
+
+When using `OverflowLinearLayout`, you should also set `app:layout_overflowText`
+on each child that will show as the text of the menu item that corresponds to
+the hidden child. Optionally, you can also set `app:layout_overflowIcon`. See
+[OverflowLinearLayout](https://github.com/material-components/material-components-android/tree/master//docs/components/Overflow.md)
+for more info.
+
+Note: if the child view that is clickable is not a direct child of
+`OverflowLinearLayout`, such as the case of the example above, make sure to
+propagate the parent's click to the child. That is so overflowed items in the
+overflowed menu respond properly to being clicked. Alternatively, you can also
+set `onClickListener`s on the overflowed items directly by accessing them via
+`OverflowLinearLayout.getOverflowedViews()`.
 
 Docked toolbars can optionally hide on scroll off the bottom if inside a
 `CoordinatorLayout` by setting the following `CoordinatorLayout.Behavior`

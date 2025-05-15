@@ -14,23 +14,20 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  android:baselineAligned="false" android:orientation="horizontal"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:gravity="center">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <FrameLayout
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:minWidth="48dp"
     android:layout_weight="1">
     <Button
       android:id="@+id/docked_toolbar_left_arrow_button"
       android:layout_width="48dp"
       android:layout_height="48dp"
       android:layout_gravity="center"
-      style="@style/Widget.Material3.DockedToolbar.IconButton"
+      style="?attr/materialIconButtonStyle"
       android:contentDescription="@string/cat_docked_toolbar_left_arrow_button_description"
       app:icon="@drawable/ic_arrow_back_24px" />
   </FrameLayout>
@@ -38,13 +35,14 @@
   <FrameLayout
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:minWidth="48dp"
     android:layout_weight="1">
   <Button
     android:id="@+id/docked_toolbar_right_arrow_button"
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:layout_gravity="center"
-    style="@style/Widget.Material3.DockedToolbar.IconButton"
+    style="?attr/materialIconButtonStyle"
     android:contentDescription="@string/cat_docked_toolbar_right_arrow_button_description"
     app:icon="@drawable/ic_arrow_forward_24px" />
   </FrameLayout>
@@ -52,6 +50,7 @@
   <FrameLayout
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:minWidth="48dp"
     android:layout_weight="1">
     <Button
       android:id="@+id/docked_toolbar_add_button"
@@ -71,14 +70,16 @@
   <FrameLayout
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_weight="1">
+    android:minWidth="48dp"
+    android:layout_weight="1"
+    app:layout_overflowText="@string/cat_docked_toolbar_tab_button_description">
   <Button
     android:id="@+id/docked_toolbar_tab_button"
     android:layout_width="48dp"
     android:layout_height="48dp"
     android:layout_gravity="center"
     android:gravity="center"
-    style="@style/Widget.Material3.DockedToolbar.IconButton"
+    style="?attr/materialIconButtonStyle"
     android:contentDescription="@string/cat_docked_toolbar_tab_button_description"
     app:icon="@drawable/ic_tab_24px" />
   </FrameLayout>
@@ -86,16 +87,69 @@
   <FrameLayout
     android:layout_width="0dp"
     android:layout_height="wrap_content"
-    android:layout_weight="1">
-  <Button
-    android:id="@+id/docked_toolbar_button_overflow_button"
-    android:layout_width="48dp"
-    android:layout_height="48dp"
-    android:layout_gravity="center"
-    android:gravity="center"
-    style="@style/Widget.Material3.DockedToolbar.IconButton"
-    android:contentDescription="@string/cat_docked_toolbar_overflow_button_description"
-    app:icon="@drawable/abc_ic_menu_overflow_material" />
+    android:minWidth="48dp"
+    android:layout_weight="1"
+    app:layout_overflowText="@string/cat_docked_toolbar_star_button_description">
+    <Button
+      android:id="@+id/docked_toolbar_star_button"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_gravity="center"
+      android:gravity="center"
+      style="?attr/materialIconButtonStyle"
+      android:contentDescription="@string/cat_docked_toolbar_star_button_description"
+      app:icon="@drawable/ic_star_border_vd_theme_24" />
   </FrameLayout>
 
-</LinearLayout>
+  <FrameLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:minWidth="48dp"
+    android:layout_weight="1"
+    app:layout_overflowText="@string/cat_docked_toolbar_alarm_button_description">
+    <Button
+      android:id="@+id/docked_toolbar_alarm_button"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_gravity="center"
+      android:gravity="center"
+      style="?attr/materialIconButtonStyle"
+      android:contentDescription="@string/cat_docked_toolbar_alarm_button_description"
+      app:icon="@drawable/vd_clock_alarm" />
+  </FrameLayout>
+
+  <FrameLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:minWidth="48dp"
+    android:layout_weight="1"
+    app:layout_overflowText="@string/cat_docked_toolbar_search_button_description">
+    <Button
+      android:id="@+id/docked_toolbar_search_button"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_gravity="center"
+      android:gravity="center"
+      style="?attr/materialIconButtonStyle"
+      android:contentDescription="@string/cat_docked_toolbar_search_button_description"
+      app:icon="@drawable/ic_search_24px" />
+  </FrameLayout>
+
+  <FrameLayout
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:minWidth="48dp"
+    android:layout_weight="1"
+    app:layout_overflowText="@string/cat_docked_toolbar_settings_button_description">
+    <Button
+      android:id="@+id/docked_toolbar_settings_button"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_gravity="center"
+      android:gravity="center"
+      style="?attr/materialIconButtonStyle"
+      android:contentDescription="@string/cat_docked_toolbar_settings_button_description"
+      app:icon="@drawable/ic_settings_24px" />
+  </FrameLayout>
+
+</merge>

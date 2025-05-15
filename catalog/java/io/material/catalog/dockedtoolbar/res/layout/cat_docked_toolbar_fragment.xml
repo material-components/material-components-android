@@ -62,7 +62,7 @@
   android:layout_gravity="bottom"
   app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
-  <LinearLayout
+  <com.google.android.material.overflow.OverflowLinearLayout
     android:id="@+id/docked_toolbar_child"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -70,7 +70,7 @@
     android:orientation="horizontal">
 
     <include layout="@layout/cat_docked_toolbar_content" />
-  </LinearLayout>
+  </com.google.android.material.overflow.OverflowLinearLayout>
 </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
