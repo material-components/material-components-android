@@ -101,6 +101,7 @@ public class ChipGroupDemoFragment extends DemoFragment {
     viewAllChip.setChipIconResource(R.drawable.ic_drawer_menu_open_24px);
     viewAllChip.setChipIconTint(viewAllChip.getTextColors());
     viewAllChip.setChipIconVisible(true);
+    viewAllChip.setCheckable(!showMenu);
     chipGroup.addView(viewAllChip);
 
     PopupMenu menu;
@@ -111,10 +112,9 @@ public class ChipGroupDemoFragment extends DemoFragment {
       menu = null;
       viewAllChip.setOnClickListener(
           v -> {
-            if (chipGroup.isSingleLine()) {
-              chipGroup.setSingleLine(false);
-              initChipGroup(chipGroup, false);
-            }
+            chipGroup.setSingleLine(!chipGroup.isSingleLine());
+            viewAllChip.setChecked(!chipGroup.isSingleLine());
+            chipGroup.requestLayout();
           });
     }
 
@@ -125,7 +125,6 @@ public class ChipGroupDemoFragment extends DemoFragment {
           (Chip) getLayoutInflater().inflate(getChipGroupItem(singleSelection), chipGroup, false);
       chip.setId(i);
       chip.setText(textArray[i]);
-      chip.setCloseIconVisible(false);
       chipGroup.addView(chip);
 
       if (menu != null) {
@@ -138,8 +137,12 @@ public class ChipGroupDemoFragment extends DemoFragment {
               menuItem.setChecked(targetChip.isChecked());
               return true;
             });
+        chip.setCloseIconVisible(false);
         chip.setOnCheckedChangeListener(
             (buttonView, isChecked) -> menu.getMenu().getItem(chip.getId()).setChecked(isChecked));
+      } else {
+        chip.setCloseIconVisible(true);
+        chip.setOnCloseIconClickListener(v -> chipGroup.removeView(chip));
       }
     }
   }
