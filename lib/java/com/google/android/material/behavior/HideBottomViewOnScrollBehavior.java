@@ -42,6 +42,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.motion.MotionUtils;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
 
 /**
@@ -108,6 +110,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    */
   @RestrictTo(LIBRARY_GROUP)
   @IntDef({STATE_SCROLLED_DOWN, STATE_SCROLLED_UP})
+  @Retention(RetentionPolicy.SOURCE)
   public @interface ScrollState {}
 
   @ScrollState private int currentState = STATE_SCROLLED_UP;
