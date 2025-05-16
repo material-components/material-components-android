@@ -102,6 +102,7 @@ import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.math.MathUtils;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -662,16 +663,21 @@ abstract class BaseSlider<
     a.recycle();
   }
 
-  private boolean maybeIncreaseTrackSidePadding() {
-    int increasedSidePaddingByThumb = max(thumbWidth / 2 - defaultThumbRadius, 0);
-    int increasedSidePaddingByTrack = max((trackThickness - defaultTrackThickness) / 2, 0);
-    int increasedSidePaddingByActiveTick = max(tickActiveRadius - defaultTickActiveRadius, 0);
-    int increasedSidePaddingByInactiveTick = max(tickInactiveRadius - defaultTickInactiveRadius, 0);
+  private boolean isSidePaddingChanged() {
+    int minSideSpaceWidthForThumb = MathUtils.ceilDiv(thumbWidth, 2);
+    int minSideSpaceWidthForTrack = getTrackCornerSize();
+    int minSideSpaceWidthForActiveTick = tickActiveRadius;
+    int minSideSpaceWidthForInactiveTick = tickInactiveRadius;
+    int minSideSpaceWidthForStopIndicator = MathUtils.ceilDiv(trackStopIndicatorSize, 2);
+
     int newTrackSidePadding =
-        minTrackSidePadding
-            + max(
-                max(increasedSidePaddingByThumb, increasedSidePaddingByTrack),
-                max(increasedSidePaddingByActiveTick, increasedSidePaddingByInactiveTick));
+        minTrackSidePadding +
+            MathUtils.max(
+                minSideSpaceWidthForThumb,
+                minSideSpaceWidthForTrack,
+                minSideSpaceWidthForActiveTick,
+                minSideSpaceWidthForInactiveTick,
+                minSideSpaceWidthForStopIndicator);
 
     if (trackSidePadding == newTrackSidePadding) {
       return false;
@@ -1594,8 +1600,8 @@ abstract class BaseSlider<
   }
 
   private void updateWidgetLayout(boolean forceRefresh) {
-    boolean sizeChanged = maybeIncreaseWidgetThickness();
-    boolean sidePaddingChanged = maybeIncreaseTrackSidePadding();
+    boolean sizeChanged = isWidgetThicknessChanged();
+    boolean sidePaddingChanged = isSidePaddingChanged();
     if (isVertical()) {
       updateRotationMatrix();
     }
@@ -1606,22 +1612,33 @@ abstract class BaseSlider<
     }
   }
 
-  private boolean maybeIncreaseWidgetThickness() {
+  private boolean isWidgetThicknessChanged() {
     int paddings;
     if (isVertical()) {
       paddings = getPaddingLeft() + getPaddingRight();
     } else {
       paddings = getPaddingTop() + getPaddingBottom();
     }
-    int minHeightRequiredByTrack = trackThickness + paddings;
-    int minHeightRequiredByThumb = thumbHeight + paddings;
 
-    int newWidgetHeight =
-        max(minWidgetThickness, max(minHeightRequiredByTrack, minHeightRequiredByThumb));
-    if (newWidgetHeight == widgetThickness) {
+    int minSpaceHeightForThumb = thumbHeight;
+    int minSpaceHeightForTrack = trackThickness;
+    int minSpaceHeightForActiveTick = tickActiveRadius * 2;
+    int minSpaceHeightForInactiveTick = tickInactiveRadius * 2;
+    int minSpaceHeightForStopIndicator = trackStopIndicatorSize;
+
+    int newWidgetThickness = paddings +
+        MathUtils.max(
+            minSpaceHeightForThumb,
+            minSpaceHeightForTrack,
+            minSpaceHeightForActiveTick,
+            minSpaceHeightForInactiveTick,
+            minSpaceHeightForStopIndicator);
+
+    newWidgetThickness = max(minWidgetThickness, newWidgetThickness);
+    if (newWidgetThickness == widgetThickness) {
       return false;
     }
-    widgetThickness = newWidgetHeight;
+    widgetThickness = newWidgetThickness;
     return true;
   }
 
