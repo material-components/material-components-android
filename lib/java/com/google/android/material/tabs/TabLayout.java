@@ -259,6 +259,7 @@ public class TabLayout extends HorizontalScrollView {
 
   /** @hide */
   @IntDef(value = {TAB_LABEL_VISIBILITY_UNLABELED, TAB_LABEL_VISIBILITY_LABELED})
+  @Retention(RetentionPolicy.SOURCE)
   public @interface LabelVisibility {}
 
   /**

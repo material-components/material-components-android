@@ -131,6 +131,7 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
    */
   @RestrictTo(LIBRARY_GROUP)
   @IntDef({STATE_SCROLLED_OUT, STATE_SCROLLED_IN})
+  @Retention(RetentionPolicy.SOURCE)
   public @interface ScrollState {}
 
   @ScrollState private int currentState = STATE_SCROLLED_IN;
