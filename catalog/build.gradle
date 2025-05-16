@@ -1,9 +1,23 @@
-apply plugin: 'com.android.application'
+buildscript {
+  repositories {
+    google()
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:2.1.0'
+  }
+}
+
+plugins {
+  id 'com.android.application'
+  id 'org.jetbrains.kotlin.android' version "2.1.21"
+  id 'org.jetbrains.kotlin.plugin.compose' version "2.1.0"
+}
 
 dependencies {
 
   // Align kotlin versions
-  implementation(platform(libs.kotlin.bom))
+  implementation(platform('org.jetbrains.kotlin:kotlin-bom:2.1.0'))
 
   api libs.dagger
   annotationProcessor libs.dagger.compiler
@@ -19,6 +33,11 @@ dependencies {
   api libs.androidx.window
   api libs.androidx.window.java
   api libs.androidx.preference
+
+  api libs.androidx.activity.compose
+  api libs.androidx.compose.material.icons.core
+  api libs.androidx.compose.material.icons.extended
+  api libs.androidx.compose.material3
 
   api libs.guava
   modules {
@@ -133,6 +152,13 @@ android {
       java.excludes = [
         '**/build/**',
       ]
+      kotlin.srcDir 'java'
+      kotlin.includes = srcDirs.collect {
+        'io/material/catalog/' + it + '/**/*.kt'
+      }
+      kotlin.excludes = [
+        '**/build/**',
+      ]
       res.srcDirs = ['java/io/material/catalog/res']
       srcDirs.forEach {
         res.srcDirs += 'java/io/material/catalog/' + it + '/res'
@@ -146,6 +172,12 @@ android {
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
+  }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+  buildFeatures {
+    compose true
   }
   androidResources {
     additionalParameters '--no-version-vectors'

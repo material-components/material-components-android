@@ -5,6 +5,7 @@ androidGradlePlugin                  = "8.7.3"
 # Versions defined for :lib are required to follow library versioning - stable
 # releases of the library can only use stable dependencies
 androidXActivity                     = "1.8.0"
+androidXActivityCompose              = "1.10.1"
 androidXAnnotation                   = "1.2.0"
 androidXAnnotationExperimental       = "1.0.0"
 androidXAppCompat                    = "1.7.0"
@@ -12,6 +13,9 @@ androidXCardView                     = "1.0.0"
 androidXConstraintLayout             = "2.1.0"
 androidXCoordinatorLayout            = "1.1.0"
 androidXCore                         = "1.6.0"
+androidXComposeMaterialIconsCore     = "1.7.8"
+androidXComposeMaterialIconsExtended = "1.7.8"
+androidXComposeMaterial3             = "1.4.0-alpha14"
 androidXDrawerLayout                 = "1.1.1"
 androidXDynamicAnimation             = "1.1.0"
 androidXEspresso                     = "3.1.0"
@@ -44,6 +48,7 @@ truth                                = "0.45"
 [libraries]
 android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidXActivity" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidXActivityCompose" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidXAnnotation" }
 androidx-annotation-experimental = { group = "androidx.annotation", name = "annotation-experimental", version.ref = "androidXAnnotationExperimental" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }
@@ -51,6 +56,9 @@ androidx-cardview = { group = "androidx.cardview", name = "cardview", version.re
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidXConstraintLayout" }
 androidx-coordinatorlayout = { group = "androidx.coordinatorlayout", name = "coordinatorlayout", version.ref = "androidXCoordinatorLayout" }
 androidx-core = { group = "androidx.core", name = "core", version.ref = "androidXCore" }
+androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "androidXComposeMaterialIconsCore" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "androidXComposeMaterialIconsExtended" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidXComposeMaterial3" }
 androidx-drawerlayout = { group = "androidx.drawerlayout", name = "drawerlayout", version.ref = "androidXDrawerLayout" }
 androidx-dynamicanimation = { group = "androidx.dynamicanimation", name = "dynamicanimation", version.ref = "androidXDynamicAnimation" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "androidXFragment" }
