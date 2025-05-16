@@ -293,7 +293,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
           @Override
           public int getWidth() {
             return getMeasuredWidth()
-                - getCollapsedPadding() * 2
+                - ExtendedFloatingActionButton.this.getPaddingStart()
+                - ExtendedFloatingActionButton.this.getPaddingEnd()
                 + extendedPaddingStart
                 + extendedPaddingEnd;
           }
