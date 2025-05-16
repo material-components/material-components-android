@@ -73,6 +73,7 @@ Here's what a typical layout would look like:
       <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minWidth="48dp"
         android:layout_weight="1"
         app:layout_overflowText="@string/docked_toolbar_back_button_description"
         app:layout_overflowIcon="@drawable/ic_arrow_back_24px">
@@ -89,6 +90,7 @@ Here's what a typical layout would look like:
       <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minWidth="48dp"
         android:layout_weight="1"
         app:layout_overflowText="@string/docked_toolbar_add_button_description"
         app:layout_overflowIcon="@drawable/ic_add_24px">
@@ -105,6 +107,7 @@ Here's what a typical layout would look like:
       <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minWidth="48dp"
         android:layout_weight="1"
         app:layout_overflowText="@string/docked_toolbar_forward_button_description"
         app:layout_overflowIcon="@drawable/ic_arrow_forward_24px">
@@ -130,8 +133,8 @@ automatically adding items to an overflow menu when there's not enough screen
 space to show all the items.
 
 When using `OverflowLinearLayout`, you should also set `app:layout_overflowText`
-on each child that will show as the text of the menu item that corresponds to
-the hidden child. Optionally, you can also set `app:layout_overflowIcon`. See
+on each child as that will be the text of the menu item that corresponds to the
+hidden child. Optionally, you can also set `app:layout_overflowIcon`. See
 [OverflowLinearLayout](https://github.com/material-components/material-components-android/tree/master//docs/components/Overflow.md)
 for more info.
 
