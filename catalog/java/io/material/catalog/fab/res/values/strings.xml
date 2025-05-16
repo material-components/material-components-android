@@ -21,7 +21,7 @@
   <string name="cat_fab_description" translatable="false">The Floating Action Button (FAB) represents your product\'s primary action, and should be considered a direct extension of its brand.</string>
   <string name="cat_extended_fab_demo_title" translatable="false">Extended FAB</string>
   <string name="cat_extended_fab_behavior_demo_title" translatable="false">Extended FAB Behavior</string>
-  <string name="cat_fab_menu_demo_title" translatable="false">FAB Menu</string>
+  <string name="cat_fab_menu_demo_title" translatable="false">FAB Menu (via Compose interop)</string>
 
   <string name="extended_fab_label" translatable="false">Extended FAB</string>
   <string name="cat_extended_fab_content_desc" translatable="false">Extended FAB</string>
