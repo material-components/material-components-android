@@ -33,7 +33,7 @@ final class HideBottomViewOnScrollDelegate extends HideViewOnScrollDelegate {
 
   @Override
   int getViewEdge() {
-    return HideOnScrollView.EDGE_BOTTOM;
+    return HideViewOnScrollBehavior.EDGE_BOTTOM;
   }
 
   @Override

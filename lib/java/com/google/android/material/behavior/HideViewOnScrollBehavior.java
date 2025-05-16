@@ -20,9 +20,6 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.core.content.ContextCompat.getSystemService;
-import static com.google.android.material.behavior.HideOnScrollView.EDGE_BOTTOM;
-import static com.google.android.material.behavior.HideOnScrollView.EDGE_LEFT;
-import static com.google.android.material.behavior.HideOnScrollView.EDGE_RIGHT;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -46,16 +43,17 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.behavior.HideOnScrollView.ViewEdge;
 import com.google.android.material.motion.MotionUtils;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
 
 /**
  * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off of the
  * edge of the screen when scrolling down, and show it when scrolling up.
  *
- * <p>Supports hiding the View off of three screen edges: {@link HideOnScrollView#EDGE_RIGHT},
- * {@link HideOnScrollView#EDGE_BOTTOM} and {@link HideOnScrollView#EDGE_LEFT}.
+ * <p>Supports hiding the View off of three screen edges: {@link #EDGE_RIGHT}, {@link #EDGE_BOTTOM},
+ * and {@link #EDGE_LEFT}.
  *
  * <p>If Touch Exploration is enabled, the hide on scroll behavior should be disabled until Touch
  * Exploration is disabled. Ensure that the content is not obscured due to disabling this behavior
@@ -99,6 +97,25 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
   @Nullable private TimeInterpolator enterAnimInterpolator;
   @Nullable private TimeInterpolator exitAnimInterpolator;
 
+  /** The sheet slides out from the right edge of the screen. */
+  public static final int EDGE_RIGHT = 0;
+
+  /** The sheet slides out from the bottom edge of the screen. */
+  public static final int EDGE_BOTTOM = 1;
+
+  /** The sheet slides out from the left edge of the screen. */
+  public static final int EDGE_LEFT = 2;
+
+  /**
+   * The edge of the screen that a sheet slides out from.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({EDGE_RIGHT, EDGE_BOTTOM, EDGE_LEFT})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface ViewEdge {}
+
   /** State of the view when it's scrolled out. */
   public static final int STATE_SCROLLED_OUT = 1;
 
@@ -120,25 +137,42 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
   private int additionalHiddenOffset = 0;
   @Nullable private ViewPropertyAnimator currentAnimator;
 
+  private boolean viewEdgeOverride = false;
+
   public HideViewOnScrollBehavior() {}
+
+  public HideViewOnScrollBehavior(@ViewEdge int viewEdge) {
+    this();
+
+    setViewEdge(viewEdge);
+  }
 
   public HideViewOnScrollBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
   }
 
   private void setViewEdge(@NonNull V view, int layoutDirection) {
+    if (viewEdgeOverride) {
+      return;
+    }
+
     LayoutParams params = (LayoutParams) view.getLayoutParams();
     int viewGravity = params.gravity;
 
     if (isGravityBottom(viewGravity)) {
-      setViewEdge(EDGE_BOTTOM);
+      setViewEdgeInternal(EDGE_BOTTOM);
     } else {
       viewGravity = Gravity.getAbsoluteGravity(viewGravity, layoutDirection);
-      setViewEdge(isGravityLeft(viewGravity) ? EDGE_LEFT : EDGE_RIGHT);
+      setViewEdgeInternal(isGravityLeft(viewGravity) ? EDGE_LEFT : EDGE_RIGHT);
     }
   }
 
   public void setViewEdge(@ViewEdge int viewEdge) {
+    viewEdgeOverride = true;
+    setViewEdgeInternal(viewEdge);
+  }
+
+  private void setViewEdgeInternal(@ViewEdge int viewEdge) {
     if (hideOnScrollViewDelegate == null || hideOnScrollViewDelegate.getViewEdge() != viewEdge) {
       switch (viewEdge) {
         case EDGE_RIGHT:
