@@ -33,7 +33,7 @@ final class HideRightViewOnScrollDelegate extends HideViewOnScrollDelegate {
 
   @Override
   int getViewEdge() {
-    return HideOnScrollView.EDGE_RIGHT;
+    return HideViewOnScrollBehavior.EDGE_RIGHT;
   }
 
   @Override
