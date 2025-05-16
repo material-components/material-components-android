@@ -78,7 +78,7 @@ import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.chip.ChipDrawable.Delegate;
 import com.google.android.material.internal.MaterialCheckable;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.resources.TextAppearanceFontCallback;
@@ -147,9 +147,6 @@ public class Chip extends AppCompatCheckBox
   private static final int[] CHECKABLE_STATE_SET = {android.R.attr.state_checkable};
 
   private static final String NAMESPACE_ANDROID = "http://schemas.android.com/apk/res/android";
-
-  /** Value taken from Android Accessibility Guide */
-  private static final int MIN_TOUCH_TARGET_DP = 48;
 
   @Nullable private ChipDrawable chipDrawable;
   @Nullable private InsetDrawable insetBackgroundDrawable;
@@ -330,8 +327,7 @@ public class Chip extends AppCompatCheckBox
             DEF_STYLE_RES);
     ensureMinTouchTargetSize = a.getBoolean(R.styleable.Chip_ensureMinTouchTargetSize, false);
 
-    float defaultMinTouchTargetSize =
-        (float) Math.ceil(ViewUtils.dpToPx(getContext(), MIN_TOUCH_TARGET_DP));
+    float defaultMinTouchTargetSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
     minTouchTargetSize =
         (int)
             Math.ceil(
