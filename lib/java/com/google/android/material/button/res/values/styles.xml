@@ -529,6 +529,7 @@
     <item name="android:spacing">@dimen/m3_comp_button_group_connected_small_between_space</item>
     <item name="innerCornerSize">8dp</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.ButtonGroup.Connected.Small.Container.Shape</item>
+    <item name="buttonSizeChange">@null</item>
   </style>
 
   <style name="Widget.Material3.MaterialButtonToggleGroup" parent="Widget.MaterialComponents.MaterialButtonToggleGroup">
