@@ -18,10 +18,11 @@
   <string name="cat_navigation_rail_title"
           description="The title for the navigation rail demo. [CHAR_LIMIT=100]">Navigation Rail</string>
   <string name="cat_navigation_rail_description"
-          description="Brief summary about navigation rail componentdemo. [CHAR_LIMIT=500]">
-    Navigation Rails make it easy to explore and switch between top-level views in a single
-    tap. This navigational element resides at the bottom of the screen, and provides direct access
-    for three to five destinations within an app.
+          description="Brief summary about navigation rail component demo. [CHAR_LIMIT=500]">
+          Navigation Rails make it easy to explore and switch between top-level views in a single
+          tap. It can be transitioned between collapsed or expanded states to show less or more items
+          It is recommended to only show three to seven elements in a collapsed navigation rail, and to use
+          Navigation Rails in mid-sized or larger devices.
   </string>
 
   <string name="cat_navigation_rail_additional_controls_demo_title"
