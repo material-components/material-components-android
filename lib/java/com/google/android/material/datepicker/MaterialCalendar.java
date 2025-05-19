@@ -473,14 +473,6 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             int currentMonthPosition = monthsPagerAdapter.getPosition(moveToMonth);
             updateNavigationButtonsEnabled(currentMonthPosition);
           }
-
-          @Override
-          public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-              CharSequence announcementText = monthDropSelect.getText();
-              recyclerView.announceForAccessibility(announcementText);
-            }
-          }
         });
 
     monthDropSelect.setOnClickListener(
