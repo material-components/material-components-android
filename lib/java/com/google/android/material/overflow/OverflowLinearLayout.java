@@ -288,8 +288,13 @@ public class OverflowLinearLayout extends LinearLayout {
   @Override
   @NonNull
   protected OverflowLinearLayout.LayoutParams generateDefaultLayoutParams() {
-    return new OverflowLinearLayout.LayoutParams(
+    if (getOrientation() == HORIZONTAL) {
+      return new OverflowLinearLayout.LayoutParams(
         ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    } else {
+      return new OverflowLinearLayout.LayoutParams(
+        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+    }
   }
 
   @Override
@@ -302,7 +307,15 @@ public class OverflowLinearLayout extends LinearLayout {
   @NonNull
   protected OverflowLinearLayout.LayoutParams generateLayoutParams(
       @NonNull ViewGroup.LayoutParams p) {
-    return new OverflowLinearLayout.LayoutParams(p);
+    if (p instanceof LayoutParams) {
+      return new OverflowLinearLayout.LayoutParams(p);
+    } else if (p instanceof LinearLayout.LayoutParams) {
+      return new OverflowLinearLayout.LayoutParams((LinearLayout.LayoutParams) p);
+    } else if (p instanceof MarginLayoutParams) {
+      return new OverflowLinearLayout.LayoutParams((MarginLayoutParams) p);
+    } else {
+      return new OverflowLinearLayout.LayoutParams(p);
+    }
   }
 
   @Override
