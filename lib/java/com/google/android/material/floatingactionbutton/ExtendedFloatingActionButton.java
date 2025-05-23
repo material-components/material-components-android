@@ -43,6 +43,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import androidx.annotation.AnimatorRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -459,6 +460,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   private void saveOriginalTextCsl() {
     originalTextCsl = getTextColors();
+  }
+
+  ColorStateList getOriginalTextColor() {
+    return originalTextCsl;
+  }
+
+  @ColorInt
+  int getCurrentOriginalTextColor() {
+    return originalTextCsl.getColorForState(getDrawableState(), 0);
   }
 
   /**
