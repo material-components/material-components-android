@@ -24,7 +24,7 @@ can contain critical information, require decisions, or involve multiple tasks.
 
 ## Design and API Documentation
 
-*   [Google Material3 Spec](https://material.io/components/date-pickers/overview)
+*   [Google Material3 Spec](https://material.io/components/dialogs/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/dialog/package-summary)
 
 ## Using dialogs
