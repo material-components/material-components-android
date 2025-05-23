@@ -80,6 +80,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.SeekBar;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
@@ -3482,6 +3483,14 @@ abstract class BaseSlider<
     // onVisibilityAggregated is only available on N+ devices, so on pre-N devices we check if this
     // view and its ancestors are visible each time, in case one of the visibilities has changed.
     return (VERSION.SDK_INT >= VERSION_CODES.N) ? thisAndAncestorsVisible : isShown();
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    // Setting content description to null prevents duplicate announcements by making only our
+    // virtual view accessible, not the parent container.
+    info.setContentDescription(null);
   }
 
   @Override
