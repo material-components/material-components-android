@@ -533,7 +533,7 @@ public class ShapeAppearanceModel {
     // Note: we need to wrap shape appearance and shape appearance overlay to workaround b/230755281
     context = new ContextThemeWrapper(context, shapeAppearanceResId);
     if (shapeAppearanceOverlayResId != 0) {
-      context = new ContextThemeWrapper(context, shapeAppearanceOverlayResId);
+      context.getTheme().applyStyle(shapeAppearanceOverlayResId, /* force= */ true);
     }
     TypedArray a = context.obtainStyledAttributes(R.styleable.ShapeAppearance);
 
