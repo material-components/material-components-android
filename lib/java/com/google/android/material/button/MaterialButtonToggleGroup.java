@@ -186,6 +186,11 @@ public class MaterialButtonToggleGroup extends MaterialButtonGroup {
   }
 
   @Override
+  boolean isOverflowSupported() {
+    return false;
+  }
+
+  @Override
   protected void onFinishInflate() {
     super.onFinishInflate();
     if (defaultCheckId != View.NO_ID) {

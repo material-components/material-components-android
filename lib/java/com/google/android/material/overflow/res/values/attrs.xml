@@ -25,13 +25,13 @@
 
   <declare-styleable name="OverflowLinearLayout">
     <!-- The icon of the overflow button of an overflow layout. -->
-    <attr name="overflowButtonIcon" format="reference"/>
+    <attr name="overflowButtonIcon"/>
   </declare-styleable>
 
   <declare-styleable name="OverflowLinearLayout_Layout">
     <!-- The icon of an item inside an overflow layout's overflow menu. -->
-    <attr name="layout_overflowIcon" format="reference"/>
+    <attr name="layout_overflowIcon"/>
     <!-- The text of an item inside an overflow layout's overflow menu. -->
-    <attr name="layout_overflowText" format="string"/>
+    <attr name="layout_overflowText"/>
   </declare-styleable>
 </resources>

@@ -104,13 +104,15 @@
       name="cat_spacing_label">Spacing (dp)</string>
   <string description="A label for a fixed inner corner size slider [CHAR LIMIT=NONE]"
       name="cat_inner_corner_size_label">Fixed inner corners size (0 – 50%)</string>
-  <string name="cat_button_label_private">Private</string>
-  <string name="cat_button_label_team">Team</string>
-  <string name="cat_button_label_everyone">Everyone</string>
-  <string name="cat_button_label_custom">Custom</string>
-  <string name="cat_button_label_cheese">Cheese</string>
-  <string name="cat_button_label_tomatoes">Tomatoes</string>
-  <string name="cat_button_label_mushrooms">Mushrooms</string>
+  <string name="cat_button_label_private" description="A label of an example button representing private access level in the button group demo. [CHAR LIMIT=NONE]">Private</string>
+  <string name="cat_button_label_team" description="A label of an example button representing team access level in the button group demo. [CHAR LIMIT=NONE]">Team</string>
+  <string name="cat_button_label_everyone" description="A label of an example button respresenting public access level in the button group demo. [CHAR LIMIT=NONE]">Everyone</string>
+  <string name="cat_button_label_custom" description="A label of an example button representing custom action in the button group demo. [CHAR LIMIT=NONE]">Custom</string>
+  <string name="cat_button_label_cheese" description="A label of an example button representing cheese option in the button group demo. [CHAR LIMIT=NONE]">Cheese</string>
+  <string name="cat_button_label_tomatoes" description="A label of an example button representing tomatoes option in the button group demo. [CHAR LIMIT=NONE]">Tomatoes</string>
+  <string name="cat_button_label_mushrooms" description="A label of an example button representing mushrooms option in the button group demo. [CHAR LIMIT=NONE]">Mushrooms</string>
+  <string name="cat_button_label_spinach" description="A label of an example button representing spinach option in the button group demo. [CHAR LIMIT=NONE]">Spinach</string>
+  <string name="cat_button_label_bread" description="A label of an example button representing bread option in the button group demo. [CHAR LIMIT=NONE]">Bread</string>
   <string name="cat_split_button_label" translatable="false">Label</string>
   <string name="cat_split_button_short_label" translatable="false">No</string>
   <string description="A label for an icon-only button [CHAR LIMIT=NONE]"
@@ -138,6 +140,17 @@
   <string name="cat_button_play_icon">play icon</string>
   <string name="cat_button_next_icon">next icon</string>
   <string name="cat_button_toggleable">Toggleable</string>
-  <string name="cat_button_group_runtime_add">Add</string>
-  <string name="cat_button_group_runtime_remove">Remove</string>
+  <string name="cat_button_group_runtime_add_button" description="A label of a button to dynamically add a new button at the end of a group. [CHAR LIMIT=NONE]">Add a new button</string>
+  <string name="cat_button_group_runtime_remove_button" description="A label of a button to dynamically remove the last added button from the group. [CHAR LIMIT=NONE]">Remove the last button</string>
+  <string name="cat_button_group_set_last_button_checkable_label" description="A label of a switch to set the last button in a button group checkable. [CHAR LIMIT=NONE]">Make last checkable</string>
+  <string name="cat_button_group_set_last_button_checked_label" description="A label of a switch to set the last button in a button group checked. [CHAR LIMIT=NONE]">Check last</string>
+  <string name="cat_button_group_set_last_button_enabled_label" description="A label of a switch to set the last button in a button group enabled. [CHAR LIMIT=NONE]">Enable last</string>
+  <string name="cat_button_group_hide_first_button_label" description="A label of a switch to hide the first button in a button group. [CHAR LIMIT=NONE]">Hide first</string>
+  <string-array name="cat_button_group_dynamic_labels">
+    <item description="A label for an icon-only button in a overflow menu representing an add action. [CHAR LIMIT=NONE]">Add</item>
+    <item description="A label for an icon-only button in a overflow menu representing a like action. [CHAR LIMIT=NONE]">Like</item>
+    <item description="A label for an icon-only button in a overflow menu representing a home action. [CHAR LIMIT=NONE]">Home</item>
+    <item description="A label for an icon-only button in a overflow menu representing a settings action. [CHAR LIMIT=NONE]">Settings</item>
+    <item description="A label for an icon-only button in a overflow menu representing a delete action. [CHAR LIMIT=NONE]">Delete</item>
+  </string-array>
 </resources>

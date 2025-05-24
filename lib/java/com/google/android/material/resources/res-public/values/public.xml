@@ -44,4 +44,9 @@
   <!-- ProgressIndicator and LoadingIndicator -->
   <public name="indicatorColor" type="attr"/>
   <public name="indicatorSize" type="attr"/>
+
+  <!-- Button Group and Overflow Linear Layout -->
+  <public name="layout_overflowIcon" type="attr"/>
+  <public name="layout_overflowText" type="attr"/>
+  <public name="overflowButtonIcon" type="attr"/>
 </resources>

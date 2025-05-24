@@ -715,39 +715,52 @@ In the layout:
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button 1"
-    />
+        android:text="Button 1" />
     <Button
         style="?attr/materialButtonOutlinedStyle"
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button 2"
-    />
+        android:text="Button 2" />
     <Button
         style="?attr/materialButtonOutlinedStyle"
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button 3"
-    />
+        android:text="Button 3" />
 </com.google.android.material.button.MaterialButtonGroup>
 ```
 
 ### Properties
 
-Element                         | Attribute             | Related method(s)                             | Default value
-------------------------------- | --------------------- | --------------------------------------------- | -------------
-**Group shape (outer corners)** | `app:shapeAppearance` | `setShapeAppearance`</br>`getShapeAppearance` | `none`
-**Size of inner corners**       | `app:innerCornerSize` | `setInnerCornerSize`<br/>`getInnerCornerSize` | `none`
-**Spacing between buttons**     | `android:spacing`     | `setSpacing`<br/>`getSpacing`                 | `12dp`
-**Child size change**           | `app:childSizeChange` | N/A                                           | `15%` in pressed,</br>otherwise, `0%`
+Element                         | Attribute                | Related method(s)                            | Default value
+------------------------------- | ------------------------ | -------------------------------------------- | -------------
+**Group shape (outer corners)** | `app:shapeAppearance`    | `setShapeAppearance`<br>`getShapeAppearance` | `none`
+**Size of inner corners**       | `app:innerCornerSize`    | `setInnerCornerSize`<br>`getInnerCornerSize` | `none`
+**Spacing between buttons**     | `android:spacing`        | `setSpacing`<br>`getSpacing`                 | `12dp`
+**Child size change**           | `app:childSizeChange`    | N/A                                          | `15%` in pressed,<br>otherwise, `0%`
+**Child overflow mode**         | `app:overflowMode`       | `setOverflowMode`<br>`getOverflowMode`       | `none`
+**Overflow button icon**        | `app:overflowButtonIcon` | `setOverflowButtonIcon`                      | `abc_ic_menu_overflow_material` (3 dots)
+
+#### Additional attributes of child buttons
+
+| Element        | Attribute                 | Related   | Default value      |
+:                :                           : method(s) :                    :
+| -------------- | ------------------------- | --------- | ------------------ |
+| **Title of the | `app:layout_overflowText` | N/A       | button's `text`    |
+: overflow menu  :                           :           : value, if not      :
+: item**         :                           :           : specified or empty :
+| **Icon of the  | `app:layout_overflowIcon` | N/A       | `null`             |
+: overflow menu  :                           :           :                    :
+: item**         :                           :           :                    :
 
 #### Styles and Theme attributes
 
-Element           | Style                                  | Theme Attribute
------------------ | -------------------------------------- | ---------------
-**Default style** | `Widget.Material3.MaterialButtonGroup` | `?attr/materialButtonGroupStyle`
+Element                        | Style                                  | Theme Attribute
+------------------------------ | -------------------------------------- | ---------------
+**Default style**              | `Widget.Material3.MaterialButtonGroup` | `?attr/materialButtonGroupStyle`
+**Overflow icon button style** | `?attr/materialIconButtonStyle`        | `?attr/materialButtonGroupOverflowButtonStyle`
+**Overflow menu style**        | `?attr/popupMenuStyle`                 | `?attr/materialButtonGroupOverflowPopupMenuStyle`
 
 ### Making button groups adaptive
 
@@ -881,6 +894,33 @@ When only some buttons are flexible for different screen sizes, consider using
         app:icon="@drawable/cat_button_next_icon"/>
 </com.google.android.material.button.MaterialButtonGroup>
 ```
+
+### Handling overflow
+
+Overflow happens when the screen size or button group size is not enough to
+display all child buttons. By default (mode `none`), the button's text will be
+clipped or wrapped.
+
+#### Overflow mode - menu
+
+Setting `overflowMode=menu` dynamically hides child buttons that don't fit in
+the current screen width in a popup menu. An icon button will be added
+automatically at the end of the button group for toggling the popup menu, once
+it's needed. The style of this icon button can be set via
+`materialButtonGroupOverflowButtonStyle` attribute in your theme overlay. The
+icon can be configured via `overflowButtonIcon` in the button group.
+
+Every hidden child button will be represented by a `MenuItem` in the popup menu.
+You can specify the menu item's title via `layout_overflowText` and the menu
+item's icon via `layout_overflowIcon` in the specific button.
+
+**Note:** Do not use the `menu` overflow mode to toggle button group, since the
+toggle button group should demonstrate all available options and the current
+selection.
+
+**Note:** This feature assumes all child buttons should be visible in the group
+or as a menu item in the overflow menu. Visibility of all child buttons will be
+managed by the button group when setting `overflowMode=menu`.
 
 ### Split button
 
@@ -1182,12 +1222,10 @@ In `res/drawable/sl_favourite_24dp.xml`:
 <selector>
     <item
         android:drawable="@drawable/ic_favourite_outlined_24dp"
-        android:state_checked="false"
-    />
+        android:state_checked="false" />
     <item
         android:drawable="@drawable/ic_favourite_filled_24dp"
-        android:state_checked="true"
-    />
+        android:state_checked="true" />
     <item android:drawable="@drawable/ic_favourite_outlined_24dp" />
 </selector>
 ```
@@ -1436,8 +1474,6 @@ theme to all buttons but does not affect other components:
 Use one of the styles in the layout. That will affect only this button:
 
 ```xml
-<Button
-    style="@style/Widget.App.Button"
-    ...
-/>
+
+<Button style="@style/Widget.App.Button".../>
 ```

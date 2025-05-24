@@ -26,6 +26,7 @@
   <public name="toggleCheckedStateOnClick" type="attr"/>
   <public name="innerCornerSize" type="attr"/>
   <public name="buttonSizeChange" type="attr"/>
+  <public name="overflowMode" type="attr"/>
   <public name="materialButtonStyle" type="attr"/>
   <public name="materialButtonTonalStyle" type="attr"/>
   <public name="materialButtonOutlinedStyle" type="attr"/>
@@ -41,6 +42,8 @@
   <public name="materialSplitButtonIconFilledStyle" type="attr"/>
   <public name="materialSplitButtonIconFilledTonalStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
+  <public name="materialButtonGroupOverflowButtonStyle" type="attr"/>
+  <public name="materialButtonGroupPopupMenuStyle" type="attr"/>
   <public name="opticalCenterEnabled" type="attr"/>
   <public name="Widget.MaterialComponents.Button" type="style"/>
   <public name="Widget.MaterialComponents.Button.UnelevatedButton" type="style"/>

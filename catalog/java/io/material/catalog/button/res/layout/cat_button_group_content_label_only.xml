@@ -15,119 +15,202 @@
   limitations under the License.
   -->
 
-<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
   <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingTop="16dp"
-      android:paddingBottom="8dp"
-      android:text="@string/cat_label_only"
-      android:textAppearance="?attr/textAppearanceSubtitle1"/>
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp"
+    android:paddingBottom="8dp"
+    android:text="@string/cat_label_only"
+    android:textAppearance="?attr/textAppearanceSubtitle1" />
   <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:spacing="12dp"
+    app:overflowMode="menu">
+    <Button
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingBottom="8dp"
-      android:gravity="center"
-      android:spacing="12dp">
+      android:lines="1"
+      android:text="@string/cat_button_label_cheese" />
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_cheese"/>
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_tomatoes" />
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_tomatoes"/>
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_mushrooms" />
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_mushrooms"/>
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_spinach" />
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_bread" />
   </com.google.android.material.button.MaterialButtonGroup>
   <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:spacing="12dp"
+    app:overflowMode="menu">
+    <Button
+      style="?attr/materialButtonTonalStyle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingBottom="8dp"
-      android:gravity="center"
-      android:spacing="12dp">
+      android:lines="1"
+      android:text="@string/cat_button_label_cheese" />
     <Button
-        style="?attr/materialButtonTonalStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_cheese"/>
+      style="?attr/materialButtonTonalStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_tomatoes" />
     <Button
-        style="?attr/materialButtonTonalStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_tomatoes"/>
+      style="?attr/materialButtonTonalStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_mushrooms" />
     <Button
-        style="?attr/materialButtonTonalStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_mushrooms"/>
+      style="?attr/materialButtonTonalStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_spinach" />
+    <Button
+      style="?attr/materialButtonTonalStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_bread" />
   </com.google.android.material.button.MaterialButtonGroup>
   <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:spacing="12dp"
+    app:overflowMode="menu">
+    <Button
+      style="?attr/materialButtonOutlinedStyle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingBottom="8dp"
-      android:gravity="center"
-      android:spacing="12dp">
+      android:lines="1"
+      android:text="@string/cat_button_label_cheese" />
     <Button
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_cheese"/>
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_tomatoes" />
     <Button
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_tomatoes"/>
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_mushrooms" />
     <Button
-        style="?attr/materialButtonOutlinedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_mushrooms"/>
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_spinach" />
+    <Button
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_bread" />
   </com.google.android.material.button.MaterialButtonGroup>
   <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:spacing="12dp"
+    app:overflowMode="menu">
+    <Button
+      style="?attr/materialButtonElevatedStyle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingBottom="8dp"
-      android:gravity="center"
-      android:spacing="12dp">
+      android:lines="1"
+      android:text="@string/cat_button_label_cheese" />
     <Button
-        style="?attr/materialButtonElevatedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_cheese"/>
+      style="?attr/materialButtonElevatedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_tomatoes" />
     <Button
-        style="?attr/materialButtonElevatedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_tomatoes"/>
+      style="?attr/materialButtonElevatedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_mushrooms" />
     <Button
-        style="?attr/materialButtonElevatedStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_mushrooms"/>
+      style="?attr/materialButtonElevatedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_spinach" />
+    <Button
+      style="?attr/materialButtonElevatedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_bread" />
   </com.google.android.material.button.MaterialButtonGroup>
   <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:spacing="12dp"
+    app:overflowMode="menu">
+    <Button
+      style="?attr/borderlessButtonStyle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:paddingBottom="8dp"
-      android:gravity="center"
-      android:spacing="12dp">
+      android:lines="1"
+      android:text="@string/cat_button_label_cheese"
+      android:checkable="true"
+      android:checked="true" />
     <Button
-        style="?attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_cheese"/>
+      style="?attr/borderlessButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_tomatoes" />
     <Button
-        style="?attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_tomatoes"/>
+      style="?attr/borderlessButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_mushrooms" />
     <Button
-        style="?attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_mushrooms"/>
+      style="?attr/borderlessButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_spinach" />
+    <Button
+      style="?attr/borderlessButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:lines="1"
+      android:text="@string/cat_button_label_bread"
+      android:checkable="true"
+      android:checked="true" />
   </com.google.android.material.button.MaterialButtonGroup>
 </merge>

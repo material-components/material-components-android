@@ -95,7 +95,8 @@ public class OverflowLinearLayout extends LinearLayout {
     // Configurations of the overflow button.
     overflowButton =
         (MaterialButton)
-            LayoutInflater.from(context).inflate(R.layout.m3_overflow_button, this, false);
+            LayoutInflater.from(context)
+                .inflate(R.layout.m3_overflow_linear_layout_overflow_button, this, false);
     setOverflowButtonIcon(overflowButtonDrawable);
     if (overflowButton.getContentDescription() == null) {
       overflowButton.setContentDescription(

@@ -20,7 +20,9 @@
   <!-- Styles for M3 Expressive Button Groups. -->
 
   <!-- M3 Expressive Button Group. -->
-  <style name="Widget.Material3Expressive.MaterialButtonGroup" parent="Widget.Material3.MaterialButtonGroup"/>
+  <style name="Widget.Material3Expressive.MaterialButtonGroup" parent="Widget.Material3.MaterialButtonGroup">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.MaterialButtonGroup.Overflow</item>
+  </style>
 
   <!-- M3 Expressive Connected Button Group. -->
   <style name="Widget.Material3Expressive.MaterialButtonGroup.Connected" parent="Widget.Material3.MaterialButtonGroup.Connected">
@@ -32,6 +34,11 @@
     <item name="innerCornerSize">@xml/m3expressive_connected_buttons_inner_corner_size_state_list</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.ButtonGroup.Connected.Small.Container.Shape</item>
     <item name="android:spacing">@dimen/m3_comp_button_group_connected_small_between_space</item>
+  </style>
+
+  <!-- Theme overlay for the Material button group. -->
+  <style name="ThemeOverlay.Material3Expressive.MaterialButtonGroup.Overflow" parent="ThemeOverlay.Material3.MaterialButtonGroup.Overflow">
+    <item name="materialButtonGroupOverflowButtonStyle">?attr/materialIconButtonFilledTonalStyle</item>
   </style>
 
   <!-- Styles for M3 Expressive Buttons. -->
@@ -523,6 +530,8 @@
   <style name="Widget.Material3.MaterialButtonGroup" parent="android:Widget">
     <item name="android:spacing">@dimen/m3_comp_button_group_standard_small_between_space</item>
     <item name="buttonSizeChange">@xml/m3_button_group_child_size_change</item>
+    <item name="overflowButtonIcon">@drawable/abc_ic_menu_overflow_material</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.MaterialButtonGroup.Overflow</item>
   </style>
 
   <style name="Widget.Material3.MaterialButtonGroup.Connected">
@@ -534,6 +543,25 @@
   <style name="Widget.Material3.MaterialButtonToggleGroup" parent="Widget.MaterialComponents.MaterialButtonToggleGroup">
     <item name="android:spacing">0dp</item>
     <item name="buttonSizeChange">@null</item>
+  </style>
+
+  <!-- Theme overlay for the Material button group. -->
+  <style name="ThemeOverlay.Material3.MaterialButtonGroup.Overflow" parent="">
+    <item name="materialButtonGroupPopupMenuStyle">?attr/popupMenuStyle</item>
+    <item name="materialButtonGroupOverflowButtonStyle">?attr/materialIconButtonStyle</item>
+    <!-- Style for the checkbox that appears for checkable overflow menu items. -->
+    <item name="checkboxStyle">@style/Widget.Material3.MaterialButtonGroup.Overflow.CheckBox</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialButtonGroup.Overflow.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
+    <!-- We want the overflow item's checkbox to look/behave like a decorative
+         trailing checkmark icon, not like a normal checkbox. -->
+    <item name="android:button">@null</item>
+    <item name="buttonIconTint">?attr/colorOnSurfaceVariant</item>
+    <item name="buttonIcon">@drawable/m3_overflow_item_checkbox</item>
+    <item name="android:minWidth">24dp</item>
+    <item name="android:minHeight">24dp</item>
+    <item name="android:background">@android:color/transparent</item>
   </style>
 
   <!-- Styles for M3 Split Button. -->

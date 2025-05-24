@@ -71,8 +71,10 @@ public class ButtonGroupDemoFragment extends DemoFragment {
     groupToggleableToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
           for (MaterialButton button : buttons) {
-            button.setCheckable(isChecked);
-            button.refreshDrawableState();
+            if (button.getTag() != MaterialButtonGroup.OVERFLOW_BUTTON_TAG) {
+              button.setCheckable(isChecked);
+              button.refreshDrawableState();
+            }
           }
         });
     MaterialSwitch groupEnabledToggle = view.findViewById(R.id.switch_enable);
@@ -91,16 +93,18 @@ public class ButtonGroupDemoFragment extends DemoFragment {
           }
         });
     for (MaterialButton button : buttons) {
-      MaterialButtonGroup buttonGroup = (MaterialButtonGroup) button.getParent();
-      button.setOnClickListener(
-          v -> {
-            String snackbarText = button.getText() + "";
-            if (snackbarText.isEmpty()) {
-              snackbarText = button.getContentDescription() + "";
-            }
-            snackbarText += " button clicked.";
-            Snackbar.make(buttonGroup, snackbarText, Snackbar.LENGTH_LONG).show();
-          });
+      if (button.getTag() != MaterialButtonGroup.OVERFLOW_BUTTON_TAG) {
+        MaterialButtonGroup buttonGroup = (MaterialButtonGroup) button.getParent();
+        button.setOnClickListener(
+            v -> {
+              String snackbarText = button.getText() + "";
+              if (snackbarText.isEmpty()) {
+                snackbarText = button.getContentDescription() + "";
+              }
+              snackbarText += " button clicked.";
+              Snackbar.make(buttonGroup, snackbarText, Snackbar.LENGTH_LONG).show();
+            });
+      }
     }
     return view;
   }

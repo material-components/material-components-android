@@ -78,18 +78,21 @@
         android:layout_height="wrap_content">
       <Button
           style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
+        android:layout_weight="1"
           android:text="@string/cat_button_label_cheese" />
       <Button
           style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
+        android:layout_weight="1"
           android:text="@string/cat_button_label_tomatoes" />
       <Button
           style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
+          android:layout_width="0dp"
           android:layout_height="wrap_content"
+        android:layout_weight="1"
           android:text="@string/cat_button_label_mushrooms" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 

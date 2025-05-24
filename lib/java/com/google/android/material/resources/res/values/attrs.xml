@@ -44,6 +44,14 @@
   <attr name="indicatorColor" format="color|reference" />
   <attr name="indicatorSize" format="dimension" />
 
+  <!-- Button Group and Overflow Linear Layout -->
+  <!-- The icon of the overflow menu item. -->
+  <attr name="layout_overflowIcon" type="attr"/>
+  <!-- The text of the overflow menu item. -->
+  <attr name="layout_overflowText" type="attr"/>
+  <!-- The icon of the overflow button. -->
+  <attr name="overflowButtonIcon" type="attr"/>
+
   <declare-styleable name="MaterialTextAppearance" parent="TextAppearance">
     <attr name="android:lineHeight"/>
     <attr name="lineHeight" format="dimension"/>
