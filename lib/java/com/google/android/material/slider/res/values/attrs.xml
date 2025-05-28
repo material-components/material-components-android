@@ -24,6 +24,8 @@
     <attr name="android:enabled" />
     <attr name="android:orientation" />
     <attr name="centered" format="boolean" />
+    <!-- The number of purely visual ticks to display in continuous mode. -->
+    <attr name="continuousModeTickCount" format="integer" />
     <!-- The color of the slider's halo. -->
     <attr name="haloColor" format="color" />
     <!-- The radius of the halo. -->

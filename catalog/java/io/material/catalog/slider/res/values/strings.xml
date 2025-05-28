@@ -35,6 +35,8 @@
   </string>
 
   <string name="cat_slider_enabled" description="The label for a switch controlling enabled state[CHAR LIMIT=NONE]">Enabled</string>
+  <string name="cat_slider_add_tick" description="The label for a button that adds a tick to the slider[CHAR LIMIT=NONE]">Add Tick</string>
+  <string name="cat_slider_remove_tick" description="The label for a button that removes a tick from the slider[CHAR LIMIT=NONE]">Remove Tick</string>
   <string name="cat_slider_vertical" description="The label for a switch controlling vertical orientation [CHAR LIMIT=NONE]">Vertical</string>
   <string name="cat_slider_set" description="The label for a set button [CHAR LIMIT=NONE]">Set</string>
   <string name="cat_slider_title_1" description="The title for the first demonstration slider [CHAR LIMIT=NONE]">This one goes to eleven</string>

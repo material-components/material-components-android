@@ -14,10 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
 
   <LinearLayout
       android:layout_width="match_parent"
@@ -114,5 +114,25 @@
       android:layout_gravity="center_horizontal"
       android:checked="true"
       android:text="@string/cat_slider_enabled"/>
+
+    <com.google.android.material.button.MaterialButtonGroup
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center_horizontal"
+      android:layout_marginTop="16dp">
+
+      <Button
+        android:id="@+id/add_tick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_slider_add_tick" />
+
+      <Button
+        android:id="@+id/remove_tick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_slider_remove_tick" />
+
+    </com.google.android.material.button.MaterialButtonGroup>
   </LinearLayout>
 </ScrollView>

@@ -292,30 +292,31 @@ slider also has tick marks.
 
 #### Track attributes
 
-| Element                                    | Attribute                    | Related method(s)                                           | Default value                        |
-|--------------------------------------------|------------------------------|-------------------------------------------------------------|--------------------------------------|
-| **Orientation**                            | `android:orientation`        | `setOrientation`<br/>`isVertical`                           | `horizontal`                         |
-| **Centered**                               | `android:centered`           | `setCentered`<br/>`isCentered`                              | `false`                              |
-| **Min value**                              | `android:valueFrom`          | `setValueFrom`<br/>`getValueFrom`                           | N/A                                  |
-| **Max value**                              | `android:valueTo`            | `setValueTo`<br/>`getValueTo`                               | N/A                                  |
-| **Step size (discrete)**                   | `android:stepSize`           | `setStepSize`<br/>`getStepSize`                             | N/A                                  |
-| **Initial selected value (Slider)**        | `android:value`              | `setValue`<br/>`getValue`                                   | N/A                                  |
-| **Initial selected values (RangeSlider)**  | `app:values`                 | `setValues`<br/>`getValues`                                 | N/A                                  |
-| **Height**                                 | `app:trackHeight`            | `setTrackHeight`<br/>`getTrackHeight`                       | `16dp`                               |
-| **Color**                                  | `app:trackColor`             | `setTrackTintList`<br/>`getTrackTintList`                   | `null`                               |
-| **Color for track's active part**          | `app:trackColorActive`       | `setTrackActiveTintList`<br/>`getTrackActiveTintList`       | `?attr/colorPrimary`                 |
-| **Color for track's inactive part**        | `app:trackColorInactive`     | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList`   | `?attr/colorSurfaceContainerHighest` |
-| **Corner size**                            | `app:trackCornerSize`        | `setTrackCornerSize`<br/>`getTrackCornerSize`               | `trackHeight / 2`                    |
-| **Inside corner size**                     | `app:trackInsideCornerSize`  | `setTrackInsideCornerSize`<br/>`getTrackInsideCornerSize`   | `2dp`                                |
-| **Stop indicator size**                    | `app:trackStopIndicatorSize` | `setTrackStopIndicatorSize`<br/>`getTrackStopIndicatorSize` | `4dp`                                |
-| **Minimum separation for adjacent thumbs** | `app:minSeparation`          | `setMinSeparation`<br/>`getMinSeparation`                   | `0dp`                                |
-| **Active start icon**                      | `app:trackIconActiveStart`   | `setTrackIconActiveStart`<br/>`getTrackIconActiveStart`     | `null`                               |
-| **Active end icon**                        | `app:trackIconActiveEnd`     | `setTrackIconActiveEnd`<br/>`getTrackIconActiveEnd`         | `null`                               |
-| **Active icon color**                      | `app:trackIconActiveColor`   | `setTrackIconActiveColor`<br/>`getTrackIconActiveColor`     | N/A                                  |
-| **Inactive start icon**                    | `app:trackIconInactiveStart` | `setTrackIconInactiveStart`<br/>`getTrackIconInactiveStart` | `null`                               |
-| **Inactive end icon**                      | `app:trackIconInactiveEnd`   | `setTrackIconInactiveEnd`<br/>`getTrackIconInactiveEnd`     | `null`                               |
-| **Inactive icon color**                    | `app:trackIconInactiveColor` | `setTrackIconInactiveColor`<br/>`getTrackIconInactiveColor` | N/A                                  |
-| **Icon size**                              | `app:trackIconSize`          | `setTrackIconSize`<br/>`getTrackIconSize`                   | N/A                                  |
+| Element                                    | Attribute                     | Related method(s)                                              | Default value                        |
+|--------------------------------------------|-------------------------------|----------------------------------------------------------------|--------------------------------------|
+| **Orientation**                            | `android:orientation`         | `setOrientation`<br/>`isVertical`                              | `horizontal`                         |
+| **Min value**                              | `android:valueFrom`           | `setValueFrom`<br/>`getValueFrom`                              | N/A                                  |
+| **Max value**                              | `android:valueTo`             | `setValueTo`<br/>`getValueTo`                                  | N/A                                  |
+| **Step size (discrete)**                   | `android:stepSize`            | `setStepSize`<br/>`getStepSize`                                | N/A                                  |
+| **Initial selected value (Slider)**        | `android:value`               | `setValue`<br/>`getValue`                                      | N/A                                  |
+| **Initial selected values (RangeSlider)**  | `app:values`                  | `setValues`<br/>`getValues`                                    | N/A                                  |
+| **Centered**                               | `app:centered`                | `setCentered`<br/>`isCentered`                                 | `false`                              |
+| **Continuous mode tick count**             | `app:continuousModeTickCount` | `setContinuousModeTickCount`<br/>`getContinuousModeTickCount`  | 0                                    |
+| **Height**                                 | `app:trackHeight`             | `setTrackHeight`<br/>`getTrackHeight`                          | `16dp`                               |
+| **Color**                                  | `app:trackColor`              | `setTrackTintList`<br/>`getTrackTintList`                      | `null`                               |
+| **Color for track's active part**          | `app:trackColorActive`        | `setTrackActiveTintList`<br/>`getTrackActiveTintList`          | `?attr/colorPrimary`                 |
+| **Color for track's inactive part**        | `app:trackColorInactive`      | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList`      | `?attr/colorSurfaceContainerHighest` |
+| **Corner size**                            | `app:trackCornerSize`         | `setTrackCornerSize`<br/>`getTrackCornerSize`                  | `trackHeight / 2`                    |
+| **Inside corner size**                     | `app:trackInsideCornerSize`   | `setTrackInsideCornerSize`<br/>`getTrackInsideCornerSize`      | `2dp`                                |
+| **Stop indicator size**                    | `app:trackStopIndicatorSize`  | `setTrackStopIndicatorSize`<br/>`getTrackStopIndicatorSize`    | `4dp`                                |
+| **Minimum separation for adjacent thumbs** | `app:minSeparation`           | `setMinSeparation`<br/>`getMinSeparation`                      | `0dp`                                |
+| **Active start icon**                      | `app:trackIconActiveStart`    | `setTrackIconActiveStart`<br/>`getTrackIconActiveStart`        | `null`                               |
+| **Active end icon**                        | `app:trackIconActiveEnd`      | `setTrackIconActiveEnd`<br/>`getTrackIconActiveEnd`            | `null`                               |
+| **Active icon color**                      | `app:trackIconActiveColor`    | `setTrackIconActiveColor`<br/>`getTrackIconActiveColor`        | N/A                                  |
+| **Inactive start icon**                    | `app:trackIconInactiveStart`  | `setTrackIconInactiveStart`<br/>`getTrackIconInactiveStart`    | `null`                               |
+| **Inactive end icon**                      | `app:trackIconInactiveEnd`    | `setTrackIconInactiveEnd`<br/>`getTrackIconInactiveEnd`        | `null`                               |
+| **Inactive icon color**                    | `app:trackIconInactiveColor`  | `setTrackIconInactiveColor`<br/>`getTrackIconInactiveColor`    | N/A                                  |
+| **Icon size**                              | `app:trackIconSize`           | `setTrackIconSize`<br/>`getTrackIconSize`                      | N/A                                  |
 
 **Note:** `app:trackColor` takes precedence over `app:trackColorActive` and
 `app:trackColorInative`. It's a shorthand for setting both values to the same

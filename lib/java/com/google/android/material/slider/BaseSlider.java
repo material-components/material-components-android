@@ -257,6 +257,8 @@ abstract class BaseSlider<
   private static final String EXCEPTION_ILLEGAL_MIN_SEPARATION_STEP_SIZE =
       "minSeparation(%s) must be greater or equal and a multiple of stepSize(%s) when using"
           + " stepSize(%s)";
+  private static final String EXCEPTION_ILLEGAL_CONTINUOUS_MODE_TICK_COUNT =
+      "The continuousModeTickCount(%s) must be greater than or equal to 0";
   private static final String WARNING_FLOATING_POINT_ERROR =
       "Floating point value used for %s(%s). Using floats can have rounding errors which may"
           + " result in incorrect values. Instead, consider using integers with a custom"
@@ -371,6 +373,7 @@ abstract class BaseSlider<
   // The index of the currently focused thumb.
   private int focusedThumbIdx = -1;
   private float stepSize = 0.0f;
+  private int continuousModeTickCount = 0;
   private float[] ticksCoordinates;
   private int tickVisibilityMode;
   private int tickActiveRadius;
@@ -544,6 +547,7 @@ abstract class BaseSlider<
     setValues(valueFrom);
     setCentered(a.getBoolean(R.styleable.Slider_centered, false));
     stepSize = a.getFloat(R.styleable.Slider_android_stepSize, 0.0f);
+    continuousModeTickCount = a.getInt(R.styleable.Slider_continuousModeTickCount, 0);
 
     float defaultMinTouchTargetSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
     minTouchTargetSize =
@@ -972,6 +976,40 @@ abstract class BaseSlider<
     }
     if (this.stepSize != stepSize) {
       this.stepSize = stepSize;
+      dirtyConfig = true;
+      postInvalidate();
+    }
+  }
+
+  /**
+   * Returns the tick count used in continuous mode.
+   *
+   * @see #setContinuousModeTickCount(int)
+   * @attr ref com.google.android.material.R.styleable#Slider_continuousModeTickCount
+   */
+  public int getContinuousModeTickCount() {
+    return continuousModeTickCount;
+  }
+
+  /**
+   * Sets the number of ticks to display in continuous mode. Default is 0.
+   *
+   * <p>This allows for showing purely visual ticks in continuous mode.
+   *
+   * <p>Setting this value to a negative value will result in an {@link IllegalArgumentException}.
+   *
+   * @param continuousModeTickCount The number of ticks that must be drawn in continuous mode count
+   * @throws IllegalArgumentException If the continuous mode tick count is less than 0
+   * @see #getContinuousModeTickCount()
+   * @attr ref com.google.android.material.R.styleable#Slider_continuousModeTickCount
+   */
+  public void setContinuousModeTickCount(int continuousModeTickCount) {
+    if (continuousModeTickCount < 0) {
+      throw new IllegalArgumentException(
+          String.format(EXCEPTION_ILLEGAL_CONTINUOUS_MODE_TICK_COUNT, continuousModeTickCount));
+    }
+    if (this.continuousModeTickCount != continuousModeTickCount) {
+      this.continuousModeTickCount = continuousModeTickCount;
       dirtyConfig = true;
       postInvalidate();
     }
@@ -2485,8 +2523,9 @@ abstract class BaseSlider<
   private void updateTicksCoordinates() {
     validateConfigurationIfDirty();
 
+    // Continuous mode.
     if (stepSize <= 0.0f) {
-      updateTicksCoordinates(/* tickCount= */ 0);
+      updateTicksCoordinates(continuousModeTickCount);
       return;
     }
 

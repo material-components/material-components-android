@@ -18,6 +18,7 @@
   <public name="sliderStyle" type="attr"/>
 
   <public name="centered" type="attr" />
+  <public name="continuousModeTickCount" type="attr" />
   <public name="haloColor" type="attr" />
   <public name="haloRadius" type="attr" />
   <public name="labelBehavior" type="attr" />
