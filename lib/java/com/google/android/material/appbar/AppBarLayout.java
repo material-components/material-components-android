@@ -1012,17 +1012,22 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   public final int getMinimumHeightForVisibleOverlappingContent() {
     final int topInset = getTopInset();
     final int minHeight = getMinimumHeight();
+
+    // If this layout has a min height, use it (doubled) or, if this doesn't clear the threshold,
+    // the min height.
     if (minHeight != 0) {
-      // If this layout has a min height, use it (doubled)
-      return (minHeight * 2) + topInset;
+      int idealHeight = (minHeight * 2) + topInset;
+      return idealHeight < getHeight() ? idealHeight : minHeight + topInset;
     }
 
-    // Otherwise, we'll use twice the min height of our last child
+    // Otherwise, we'll ideally use twice the min height of our last child or, if this doesn't
+    // clear the threshold, the min height of our last child.
     final int childCount = getChildCount();
     final int lastChildMinHeight =
         childCount >= 1 ? getChildAt(childCount - 1).getMinimumHeight() : 0;
     if (lastChildMinHeight != 0) {
-      return (lastChildMinHeight * 2) + topInset;
+      int idealHeight = (lastChildMinHeight * 2) + topInset;
+      return idealHeight < getHeight() ? idealHeight : lastChildMinHeight + topInset;
     }
 
     // If we reach here then we don't have a min height explicitly set. Instead we'll take a

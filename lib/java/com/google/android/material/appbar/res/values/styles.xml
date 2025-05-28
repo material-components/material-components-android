@@ -52,21 +52,18 @@
   <style name="Widget.Material3Expressive.Toolbar" parent="Widget.Material3.Toolbar">
     <item name="titleTextAppearance">@macro/m3_comp_app_bar_small_title_font</item>
     <item name="subtitleTextAppearance">@macro/m3_comp_app_bar_small_subtitle_font</item>
-    <item name="android:minHeight">@dimen/m3_comp_app_bar_small_container_height</item>
     <item name="android:layout_marginEnd">4dp</item>
   </style>
 
   <style name="Widget.Material3Expressive.Toolbar.OnSurface" parent="Widget.Material3.Toolbar.OnSurface">
     <item name="titleTextAppearance">@macro/m3_comp_app_bar_small_title_font</item>
     <item name="subtitleTextAppearance">@macro/m3_comp_app_bar_small_subtitle_font</item>
-    <item name="android:minHeight">@dimen/m3_comp_app_bar_small_container_height</item>
     <item name="android:layout_marginEnd">4dp</item>
   </style>
 
   <style name="Widget.Material3Expressive.Toolbar.Surface" parent="Widget.Material3.Toolbar.Surface">
     <item name="titleTextAppearance">@macro/m3_comp_app_bar_small_title_font</item>
     <item name="subtitleTextAppearance">@macro/m3_comp_app_bar_small_subtitle_font</item>
-    <item name="android:minHeight">@dimen/m3_comp_app_bar_small_container_height</item>
     <item name="android:layout_marginEnd">4dp</item>
   </style>
 
