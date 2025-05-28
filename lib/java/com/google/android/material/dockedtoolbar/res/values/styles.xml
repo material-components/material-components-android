@@ -38,7 +38,7 @@
   </style>
 
   <!-- Style for Icon Button in Standard Docked Toolbar. -->
-  <style name="Widget.Material3.DockedToolbar.IconButton" parent="Widget.Material3Expressive.Button.IconButton">
+  <style name="Widget.Material3.DockedToolbar.IconButton" parent="Widget.Material3.Button.IconButton">
     <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
     <item name="android:textColor">@color/m3_standard_toolbar_button_text_color_selector</item>
     <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>
@@ -46,7 +46,7 @@
   </style>
 
   <!-- Style for Buttons in Standard Docked Toolbar. -->
-  <style name="Widget.Material3.DockedToolbar.Button" parent="Widget.Material3Expressive.Button">
+  <style name="Widget.Material3.DockedToolbar.Button" parent="Widget.Material3.Button">
     <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
     <item name="android:textColor">@color/m3_standard_toolbar_button_text_color_selector</item>
     <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>
@@ -54,7 +54,7 @@
   </style>
 
   <!-- Style for Text Buttons in Standard Docked Toolbar. -->
-  <style name="Widget.Material3.DockedToolbar.TextButton" parent="Widget.Material3Expressive.Button.TextButton">
+  <style name="Widget.Material3.DockedToolbar.TextButton" parent="Widget.Material3.Button.TextButton">
     <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
     <item name="android:textColor">@color/m3_standard_toolbar_button_text_color_selector</item>
     <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>
