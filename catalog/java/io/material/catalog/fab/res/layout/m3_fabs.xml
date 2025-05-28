@@ -42,7 +42,7 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/m3_primary_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3.FloatingActionButton.Primary"
     app:srcCompat="@drawable/ic_add_24px"/>
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     style="?attr/floatingActionButtonMediumStyle"
@@ -51,7 +51,7 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/m3_primary_medium_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3.FloatingActionButton.Primary"
     app:srcCompat="@drawable/ic_add_24px"/>
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     style="?attr/floatingActionButtonLargeStyle"
@@ -60,7 +60,7 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/m3_primary_large_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3.FloatingActionButton.Primary"
     app:srcCompat="@drawable/ic_add_24px" />
 
   <TextView
@@ -77,7 +77,7 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/m3_secondary_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Secondary"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3.FloatingActionButton.Secondary"
     app:srcCompat="@drawable/ic_add_24px"/>
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     style="?attr/floatingActionButtonMediumStyle"
@@ -86,7 +86,7 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/m3_secondary_medium_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Secondary"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3.FloatingActionButton.Secondary"
     app:srcCompat="@drawable/ic_add_24px"/>
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     style="?attr/floatingActionButtonLargeStyle"
@@ -95,7 +95,7 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/m3_secondary_large_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Secondary"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3.FloatingActionButton.Secondary"
     app:srcCompat="@drawable/ic_add_24px" />
 
   <TextView
@@ -112,7 +112,7 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/m3_tertiary_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Tertiary"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary"
     app:srcCompat="@drawable/ic_add_24px"/>
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     style="?attr/floatingActionButtonMediumStyle"
@@ -121,7 +121,7 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/m3_tertiary_medium_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Tertiary"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary"
     app:srcCompat="@drawable/ic_add_24px"/>
   <com.google.android.material.floatingactionbutton.FloatingActionButton
     style="?attr/floatingActionButtonLargeStyle"
@@ -130,111 +130,7 @@
     android:layout_margin="8dp"
     android:layout_gravity="center"
     android:contentDescription="@string/m3_tertiary_large_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Tertiary"
+    app:materialThemeOverlay="@style/ThemeOverlay.Material3.FloatingActionButton.Tertiary"
     app:srcCompat="@drawable/ic_add_24px" />
 
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
-    android:layout_gravity="center"
-    android:layout_columnSpan="3"
-    android:text="@string/m3_primary_container_fab_label"/>
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_gravity="center"
-    android:contentDescription="@string/m3_primary_container_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.PrimaryContainer"
-    app:srcCompat="@drawable/ic_add_24px"/>
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonMediumStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_gravity="center"
-    android:contentDescription="@string/m3_primary_container_medium_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.PrimaryContainer"
-    app:srcCompat="@drawable/ic_add_24px"/>
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonLargeStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_gravity="center"
-    android:contentDescription="@string/m3_primary_container_large_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.PrimaryContainer"
-    app:srcCompat="@drawable/ic_add_24px" />
-
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
-    android:layout_gravity="center"
-    android:layout_columnSpan="3"
-    android:text="@string/m3_secondary_container_fab_label"/>
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_gravity="center"
-    android:contentDescription="@string/m3_secondary_container_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.SecondaryContainer"
-    app:srcCompat="@drawable/ic_add_24px"/>
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonMediumStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_gravity="center"
-    android:contentDescription="@string/m3_secondary_container_medium_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.SecondaryContainer"
-    app:srcCompat="@drawable/ic_add_24px"/>
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonLargeStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_gravity="center"
-    android:contentDescription="@string/m3_secondary_container_large_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.SecondaryContainer"
-    app:srcCompat="@drawable/ic_add_24px" />
-
-  <TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
-    android:layout_gravity="center"
-    android:layout_columnSpan="3"
-    android:text="@string/m3_tertiary_container_fab_label"/>
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_gravity="center"
-    android:contentDescription="@string/m3_tertiary_container_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.TertiaryContainer"
-    app:srcCompat="@drawable/ic_add_24px"/>
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonMediumStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_gravity="center"
-    android:contentDescription="@string/m3_tertiary_container_medium_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.TertiaryContainer"
-    app:srcCompat="@drawable/ic_add_24px"/>
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-    style="?attr/floatingActionButtonLargeStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_gravity="center"
-    android:contentDescription="@string/m3_tertiary_container_large_fab_content_desc"
-    app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.TertiaryContainer"
-    app:srcCompat="@drawable/ic_add_24px" />
 </merge>

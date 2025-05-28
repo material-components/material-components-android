@@ -16,28 +16,6 @@
 -->
 <resources>
 
-  <!-- Styles for M3 Expressive ProgressIndicator. -->
-
-  <style name="Widget.Material3Expressive.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator"/>
-
-  <style name="Widget.Material3Expressive.LinearProgressIndicator.Wavy">
-    <item name="waveAmplitude">@dimen/m3_comp_progress_indicator_linear_active_indicator_wave_amplitude</item>
-    <item name="wavelength">@dimen/m3_comp_progress_indicator_linear_active_indicator_wave_wavelength</item>
-    <item name="wavelengthIndeterminate">@dimen/m3_comp_progress_indicator_linear_indeterminate_active_indicator_wave_wavelength</item>
-  </style>
-
-  <style name="Widget.Material3Expressive.CircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator">
-    <item name="indeterminateAnimationTypeCircular">retreat</item>
-    <item name="indeterminateTrackVisible">true</item>
-  </style>
-
-  <style name="Widget.Material3Expressive.CircularProgressIndicator.Wavy">
-    <item name="indicatorSize">@dimen/m3_comp_progress_indicator_circular_with_wave_size</item>
-    <item name="indicatorInset">0dp</item>
-    <item name="waveAmplitude">@dimen/m3_comp_progress_indicator_circular_active_indicator_wave_amplitude</item>
-    <item name="wavelength">@dimen/m3_comp_progress_indicator_circular_active_indicator_wave_wavelength</item>
-  </style>
-
   <!-- Styles for M3 ProgressIndicator. -->
 
   <!-- M3 LinearProgressIndicator style -->
