@@ -595,6 +595,15 @@ attribute in your theme.
 `BottomSheetDialog` will also add padding to the top when the bottom sheet
 slides under the status bar, to prevent content from being drawn underneath it.
 
+`BottomSheetDialog` also supports
+[Protections](https://developer.android.com/reference/androidx/core/view/insets/Protection).
+If using
+[Gradient Protections](https://developer.android.com/reference/androidx/core/view/insets/GradientProtection),
+`BottomSheetBehavior` provides a `getDefaultBottomGradientProtection()` method
+that will return a bottom `GradientProtection` that is the color
+`?attr/colorSurfaceContainerLow` for Material3 or later, or `?attr/colorSurface`
+if otherwise not defined.
+
 </details>
 
 <details>

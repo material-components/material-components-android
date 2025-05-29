@@ -18,6 +18,8 @@ package io.material.catalog.bottomsheet;
 
 import io.material.catalog.R;
 
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.getDefaultBottomGradientProtection;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -35,12 +37,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.insets.ProtectionLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
+import java.util.Collections;
 
 /** A fragment that displays the main BottomSheet demo for the Catalog app. */
 public class BottomSheetMainDemoFragment extends DemoFragment {
@@ -100,6 +104,9 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     bottomSheetDialog.setDismissWithAnimation(true);
     windowPreferencesManager.applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
     View bottomSheetInternal = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+    bottomSheetDialog.setProtections(
+        Collections.singletonList(
+            getDefaultBottomGradientProtection(getContext())));
     BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(peekHeightPx);
     View button = view.findViewById(R.id.bottomsheet_button);
     button.setOnClickListener(
@@ -150,6 +157,7 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
         .addBottomSheetCallback(createBottomSheetCallback(dialogText));
     TextView bottomSheetText = view.findViewById(R.id.cat_persistent_bottomsheet_state);
     View bottomSheetPersistent = view.findViewById(R.id.bottom_drawer);
+    ProtectionLayout protectionLayout = view.findViewById(R.id.cat_bottomsheet_protection_layout);
     persistentBottomSheetBehavior = BottomSheetBehavior.from(bottomSheetPersistent);
     persistentBottomSheetBehavior.addBottomSheetCallback(
         createBottomSheetCallback(bottomSheetText));
@@ -158,6 +166,10 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
           int state = persistentBottomSheetBehavior.getState();
           updateStateTextView(bottomSheetPersistent, bottomSheetText, state);
           updateBackHandlingEnabled(state);
+          protectionLayout.setProtections(
+              Collections.singletonList(
+                  getDefaultBottomGradientProtection(
+                      requireContext())));
         });
     setupBackHandling(persistentBottomSheetBehavior);
 
