@@ -483,7 +483,7 @@ public class MaterialButtonGroup extends LinearLayout {
     }
     MaterialButtonGroup.LayoutParams lp =
         (MaterialButtonGroup.LayoutParams) button.getLayoutParams();
-    String text = OverflowUtils.getMenuItemText(button, lp.overflowText);
+    CharSequence text = OverflowUtils.getMenuItemText(button, lp.overflowText);
     Drawable icon = lp.overflowIcon;
     MenuItem item = menu.add(text);
     if (icon != null) {
@@ -1121,7 +1121,7 @@ public class MaterialButtonGroup extends LinearLayout {
   /** A {@link LinearLayout.LayoutParams} implementation for {@link MaterialButtonGroup}. */
   public static class LayoutParams extends LinearLayout.LayoutParams {
     @Nullable public Drawable overflowIcon = null;
-    @Nullable public String overflowText = null;
+    @Nullable public CharSequence overflowText = null;
 
     /**
      * Creates a new set of layout parameters. The values are extracted from the supplied attributes
@@ -1138,7 +1138,7 @@ public class MaterialButtonGroup extends LinearLayout {
       overflowIcon =
           attributes.getDrawable(R.styleable.MaterialButtonGroup_Layout_layout_overflowIcon);
       overflowText =
-          attributes.getString(R.styleable.MaterialButtonGroup_Layout_layout_overflowText);
+          attributes.getText(R.styleable.MaterialButtonGroup_Layout_layout_overflowText);
 
       attributes.recycle();
     }
@@ -1161,14 +1161,14 @@ public class MaterialButtonGroup extends LinearLayout {
      *     in pixels
      * @param weight the weight
      * @param overflowIcon the overflow icon drawable
-     * @param overflowText the overflow text string
+     * @param overflowText the overflow text char sequence
      */
     public LayoutParams(
         int width,
         int height,
         float weight,
         @Nullable Drawable overflowIcon,
-        @Nullable String overflowText) {
+        @Nullable CharSequence overflowText) {
       super(width, height, weight);
       this.overflowIcon = overflowIcon;
       this.overflowText = overflowText;
@@ -1209,17 +1209,17 @@ public class MaterialButtonGroup extends LinearLayout {
     private OverflowUtils() {}
 
     @Nullable
-    public static String getMenuItemText(@NonNull View view, @Nullable String text) {
+    public static CharSequence getMenuItemText(@NonNull View view, @Nullable CharSequence text) {
       if (!TextUtils.isEmpty(text)) {
         return text;
       }
       if (view instanceof MaterialButton && !TextUtils.isEmpty(((MaterialButton) view).getText())) {
         // Use button's text if overflow text is not specified or empty. We don't do this to icon,
         // since icon in menu item is optional.
-        return (String) ((MaterialButton) view).getText();
+        return ((MaterialButton) view).getText();
       }
       // As a last resort, use content description.
-      return (String) view.getContentDescription();
+      return view.getContentDescription();
     }
   }
 }

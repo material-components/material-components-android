@@ -264,7 +264,7 @@ public class OverflowLinearLayout extends LinearLayout {
       OverflowLinearLayout.LayoutParams lp =
           (OverflowLinearLayout.LayoutParams) view.getLayoutParams();
 
-      String text = OverflowUtils.getMenuItemText(view, lp.overflowText);
+      CharSequence text = OverflowUtils.getMenuItemText(view, lp.overflowText);
       MenuItem item = popupMenu.getMenu().add(text);
       Drawable icon = lp.overflowIcon;
       if (icon != null) {
@@ -330,7 +330,7 @@ public class OverflowLinearLayout extends LinearLayout {
   /** A {@link LinearLayout.LayoutParams} implementation for {@link OverflowLinearLayout}. */
   public static class LayoutParams extends LinearLayout.LayoutParams {
     @Nullable public Drawable overflowIcon = null;
-    @Nullable public String overflowText = null;
+    @Nullable public CharSequence overflowText = null;
 
     /**
      * Creates a new set of layout parameters. The values are extracted from the supplied attributes
@@ -347,7 +347,7 @@ public class OverflowLinearLayout extends LinearLayout {
       overflowIcon =
           attributes.getDrawable(R.styleable.OverflowLinearLayout_Layout_layout_overflowIcon);
       overflowText =
-          attributes.getString(R.styleable.OverflowLinearLayout_Layout_layout_overflowText);
+          attributes.getText(R.styleable.OverflowLinearLayout_Layout_layout_overflowText);
 
       attributes.recycle();
     }
@@ -370,14 +370,14 @@ public class OverflowLinearLayout extends LinearLayout {
      *     in pixels
      * @param weight the weight
      * @param overflowIcon the overflow icon drawable
-     * @param overflowText the overflow text string
+     * @param overflowText the overflow text char sequence
      */
     public LayoutParams(
         int width,
         int height,
         float weight,
         @Nullable Drawable overflowIcon,
-        @Nullable String overflowText) {
+        @Nullable CharSequence overflowText) {
       super(width, height, weight);
       this.overflowIcon = overflowIcon;
       this.overflowText = overflowText;
