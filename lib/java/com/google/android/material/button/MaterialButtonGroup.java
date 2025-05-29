@@ -31,6 +31,7 @@ import android.graphics.drawable.InsetDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.PopupMenu;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -482,12 +483,7 @@ public class MaterialButtonGroup extends LinearLayout {
     }
     MaterialButtonGroup.LayoutParams lp =
         (MaterialButtonGroup.LayoutParams) button.getLayoutParams();
-    String text = lp.overflowText;
-    // Use button's text if overflow text is not specified or empty. We don't do this to icon, since
-    // icon in menu item is optional.
-    if (text == null || text.isEmpty()) {
-      text = (String) button.getText();
-    }
+    String text = OverflowUtils.getMenuItemText(button, lp.overflowText);
     Drawable icon = lp.overflowIcon;
     MenuItem item = menu.add(text);
     if (icon != null) {
@@ -1199,6 +1195,31 @@ public class MaterialButtonGroup extends LinearLayout {
       super(source);
       this.overflowText = source.overflowText;
       this.overflowIcon = source.overflowIcon;
+    }
+  }
+
+  /**
+   * Class for common logic between this MaterialButtonGroup and the OverflowLinearLayout
+   * overflow features.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public static class OverflowUtils {
+    private OverflowUtils() {}
+
+    @Nullable
+    public static String getMenuItemText(@NonNull View view, @Nullable String text) {
+      if (!TextUtils.isEmpty(text)) {
+        return text;
+      }
+      if (view instanceof MaterialButton && !TextUtils.isEmpty(((MaterialButton) view).getText())) {
+        // Use button's text if overflow text is not specified or empty. We don't do this to icon,
+        // since icon in menu item is optional.
+        return (String) ((MaterialButton) view).getText();
+      }
+      // As a last resort, use content description.
+      return (String) view.getContentDescription();
     }
   }
 }

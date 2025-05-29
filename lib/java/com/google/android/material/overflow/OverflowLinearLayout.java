@@ -39,6 +39,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonGroup.OverflowUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialAttributes;
 import java.util.LinkedHashSet;
@@ -262,7 +263,9 @@ public class OverflowLinearLayout extends LinearLayout {
     for (View view : overflowViews) {
       OverflowLinearLayout.LayoutParams lp =
           (OverflowLinearLayout.LayoutParams) view.getLayoutParams();
-      MenuItem item = popupMenu.getMenu().add(lp.overflowText);
+
+      String text = OverflowUtils.getMenuItemText(view, lp.overflowText);
+      MenuItem item = popupMenu.getMenu().add(text);
       Drawable icon = lp.overflowIcon;
       if (icon != null) {
         item.setIcon(
@@ -272,8 +275,8 @@ public class OverflowLinearLayout extends LinearLayout {
         MaterialButton button = (MaterialButton) view;
         item.setCheckable(button.isCheckable());
         item.setChecked(button.isChecked());
-        item.setEnabled(button.isEnabled());
       }
+      item.setEnabled(view.isEnabled());
       item.setOnMenuItemClickListener(
           menuItem -> {
             view.performClick();
