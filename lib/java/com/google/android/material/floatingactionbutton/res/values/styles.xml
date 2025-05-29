@@ -279,7 +279,7 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Surface</item>
   </style>
 
-  <!-- M3 Expressive Extended Small FABs -->
+  <!-- M3 Extended Small FABs -->
   <style name="Base.Widget.Material3.ExtendedFloatingActionButton.Small" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
     <item name="android:minWidth">@dimen/m3_comp_extended_fab_small_container_height</item>
     <item name="android:minHeight">@dimen/m3_comp_extended_fab_small_container_height</item>
@@ -296,7 +296,7 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary</item>
   </style>
 
-  <!-- M3 Expressive Extended Medium FABs -->
+  <!-- M3 Extended Medium FABs -->
   <style name="Base.Widget.Material3.ExtendedFloatingActionButton.Medium" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
     <item name="android:minWidth">@dimen/m3_comp_extended_fab_medium_container_height</item>
     <item name="android:minHeight">@dimen/m3_comp_extended_fab_medium_container_height</item>
@@ -314,7 +314,7 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ExtendedFloatingActionButton.Primary</item>
   </style>
 
-  <!-- M3 Expressive Extended Large FABs -->
+  <!-- M3 Extended Large FABs -->
   <style name="Base.Widget.Material3.ExtendedFloatingActionButton.Large" parent="Base.Widget.Material3.ExtendedFloatingActionButton">
     <item name="android:minWidth">@dimen/m3_comp_extended_fab_large_container_height</item>
     <item name="android:minHeight">@dimen/m3_comp_extended_fab_large_container_height</item>
