@@ -74,7 +74,6 @@ public final class LoadingIndicator extends View implements Drawable.Callback {
     drawable.setCallback(this);
 
     specs = drawable.getDrawingDelegate().specs;
-    setAnimatorDurationScaleProvider(new AnimatorDurationScaleProvider());
   }
 
   @Override
