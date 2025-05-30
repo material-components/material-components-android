@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Развернуть наполовину</string>
   <string name="bottomsheet_drag_handle_content_description">Маркер перемещения</string>
-  <string name="bottomsheet_action_expand">Развернуть нижний экран</string>
-  <string name="bottomsheet_action_collapse">Свернуть нижний экран</string>
+  <string name="bottomsheet_action_expand_description">Развернуть нижний экран</string>
+  <string name="bottomsheet_action_collapse_description">Свернуть нижний экран</string>
 </resources>

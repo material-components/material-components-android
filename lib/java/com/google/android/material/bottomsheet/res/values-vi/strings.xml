@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Mở rộng một nửa</string>
   <string name="bottomsheet_drag_handle_content_description">Nút kéo</string>
-  <string name="bottomsheet_action_expand">Mở rộng bảng dưới cùng</string>
-  <string name="bottomsheet_action_collapse">Thu gọn bảng dưới cùng</string>
+  <string name="bottomsheet_action_expand_description">Mở rộng bảng dưới cùng</string>
+  <string name="bottomsheet_action_collapse_description">Thu gọn bảng dưới cùng</string>
 </resources>

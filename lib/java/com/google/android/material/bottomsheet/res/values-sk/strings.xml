@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Rozbaliť napoly</string>
   <string name="bottomsheet_drag_handle_content_description">Presúvadlo</string>
-  <string name="bottomsheet_action_expand">Rozbaliť dolný hárok</string>
-  <string name="bottomsheet_action_collapse">Zbaliť dolný hárok</string>
+  <string name="bottomsheet_action_expand_description">Rozbaliť dolný hárok</string>
+  <string name="bottomsheet_action_collapse_description">Zbaliť dolný hárok</string>
 </resources>

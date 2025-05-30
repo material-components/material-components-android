@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Desplega fins a la meitat</string>
   <string name="bottomsheet_drag_handle_content_description">Ansa per arrossegar</string>
-  <string name="bottomsheet_action_expand">Desplega el full inferior</string>
-  <string name="bottomsheet_action_collapse">Replega el full inferior</string>
+  <string name="bottomsheet_action_expand_description">Desplega el full inferior</string>
+  <string name="bottomsheet_action_collapse_description">Replega el full inferior</string>
 </resources>

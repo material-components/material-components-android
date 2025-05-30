@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">ਅੱਧ ਤੱਕ ਵਿਸਤਾਰ ਕਰੋ</string>
   <string name="bottomsheet_drag_handle_content_description">ਘਸੀਟਣ ਵਾਲਾ ਹੈਂਡਲ</string>
-  <string name="bottomsheet_action_expand">ਹੇਠਲੀ ਸ਼ੀਟ ਦਾ ਵਿਸਤਾਰ ਕਰੋ</string>
-  <string name="bottomsheet_action_collapse">ਹੇਠਲੀ ਸ਼ੀਟ ਨੂੰ ਸਮੇਟੋ</string>
+  <string name="bottomsheet_action_expand_description">ਹੇਠਲੀ ਸ਼ੀਟ ਦਾ ਵਿਸਤਾਰ ਕਰੋ</string>
+  <string name="bottomsheet_action_collapse_description">ਹੇਠਲੀ ਸ਼ੀਟ ਨੂੰ ਸਮੇਟੋ</string>
 </resources>

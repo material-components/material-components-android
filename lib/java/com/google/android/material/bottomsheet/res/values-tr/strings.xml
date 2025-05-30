@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Yarım genişlet</string>
   <string name="bottomsheet_drag_handle_content_description">Sürükleme tutamacı</string>
-  <string name="bottomsheet_action_expand">Alt sayfayı genişlet</string>
-  <string name="bottomsheet_action_collapse">Alt sayfayı daralt</string>
+  <string name="bottomsheet_action_expand_description">Alt sayfayı genişlet</string>
+  <string name="bottomsheet_action_collapse_description">Alt sayfayı daralt</string>
 </resources>

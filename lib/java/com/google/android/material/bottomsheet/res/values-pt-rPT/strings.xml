@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Expandir até metade</string>
   <string name="bottomsheet_drag_handle_content_description">Indicador para arrastar</string>
-  <string name="bottomsheet_action_expand">Expanda a secção inferior</string>
-  <string name="bottomsheet_action_collapse">Reduza a secção inferior</string>
+  <string name="bottomsheet_action_expand_description">Expanda a secção inferior</string>
+  <string name="bottomsheet_action_collapse_description">Reduza a secção inferior</string>
 </resources>

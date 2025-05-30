@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Tam genişləndirin</string>
   <string name="bottomsheet_drag_handle_content_description">Dəstək</string>
-  <string name="bottomsheet_action_expand">Aşağıdakı vərəqi genişləndirin</string>
-  <string name="bottomsheet_action_collapse">Aşağıdakı vərəqi yığcamlaşdırın</string>
+  <string name="bottomsheet_action_expand_description">Aşağıdakı vərəqi genişləndirin</string>
+  <string name="bottomsheet_action_collapse_description">Aşağıdakı vərəqi yığcamlaşdırın</string>
 </resources>

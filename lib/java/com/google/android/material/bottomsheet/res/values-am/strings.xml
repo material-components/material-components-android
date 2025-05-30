@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">ግማሽ መንገድ ዘርጋ</string>
   <string name="bottomsheet_drag_handle_content_description">መያዣ ይጎትቱ</string>
-  <string name="bottomsheet_action_expand">የግርጌ ሉሁን ይዘርጉ</string>
-  <string name="bottomsheet_action_collapse">የግርጌ ሉሁን ይሰብስቡ</string>
+  <string name="bottomsheet_action_expand_description">የግርጌ ሉሁን ይዘርጉ</string>
+  <string name="bottomsheet_action_collapse_description">የግርጌ ሉሁን ይሰብስቡ</string>
 </resources>

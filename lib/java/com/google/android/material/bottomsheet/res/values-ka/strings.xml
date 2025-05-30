@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">ნახევრამდე გაფართოება</string>
   <string name="bottomsheet_drag_handle_content_description">სახელური ჩავლებისთვის</string>
-  <string name="bottomsheet_action_expand">ქვედა ფურცლის გაშლა</string>
-  <string name="bottomsheet_action_collapse">ქვედა ფურცლის ჩაკეცვა</string>
+  <string name="bottomsheet_action_expand_description">ქვედა ფურცლის გაშლა</string>
+  <string name="bottomsheet_action_collapse_description">ქვედა ფურცლის ჩაკეცვა</string>
 </resources>

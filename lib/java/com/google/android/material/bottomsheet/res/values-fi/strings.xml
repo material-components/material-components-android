@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Laajenna puoliväliin</string>
   <string name="bottomsheet_drag_handle_content_description">Vetokahva</string>
-  <string name="bottomsheet_action_expand">Laajenna alapaneeli</string>
-  <string name="bottomsheet_action_collapse">Tiivistä alapaneeli</string>
+  <string name="bottomsheet_action_expand_description">Laajenna alapaneeli</string>
+  <string name="bottomsheet_action_collapse_description">Tiivistä alapaneeli</string>
 </resources>

@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">पूरी तरह बड़ा करें</string>
   <string name="bottomsheet_drag_handle_content_description">खींचकर छोड़ने वाला हैंडल</string>
-  <string name="bottomsheet_action_expand">बॉटम शीट को बड़ा करें</string>
-  <string name="bottomsheet_action_collapse">बॉटम शीट को छोटा करें</string>
+  <string name="bottomsheet_action_expand_description">बॉटम शीट को बड़ा करें</string>
+  <string name="bottomsheet_action_collapse_description">बॉटम शीट को छोटा करें</string>
 </resources>

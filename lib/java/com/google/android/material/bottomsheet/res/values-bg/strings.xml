@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Разгъване наполовина</string>
   <string name="bottomsheet_drag_handle_content_description">Манипулатор за преместване с плъзгане</string>
-  <string name="bottomsheet_action_expand">Разгъване на долния лист</string>
-  <string name="bottomsheet_action_collapse">Свиване на долния лист</string>
+  <string name="bottomsheet_action_expand_description">Разгъване на долния лист</string>
+  <string name="bottomsheet_action_collapse_description">Свиване на долния лист</string>
 </resources>

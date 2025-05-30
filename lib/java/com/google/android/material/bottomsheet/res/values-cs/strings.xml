@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Rozbalit napůl</string>
   <string name="bottomsheet_drag_handle_content_description">Úchyt pro přetažení</string>
-  <string name="bottomsheet_action_expand">Rozbalit spodní tabulku</string>
-  <string name="bottomsheet_action_collapse">Sbalit spodní tabulku</string>
+  <string name="bottomsheet_action_expand_description">Rozbalit spodní tabulku</string>
+  <string name="bottomsheet_action_collapse_description">Sbalit spodní tabulku</string>
 </resources>

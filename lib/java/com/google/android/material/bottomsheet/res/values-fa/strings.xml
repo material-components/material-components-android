@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">گسترده کردن تا نیمه</string>
   <string name="bottomsheet_drag_handle_content_description">دستگیره کشاندن</string>
-  <string name="bottomsheet_action_expand">ازهم بازکردن برگ زیرین</string>
-  <string name="bottomsheet_action_collapse">جمع کردن برگ زیرین</string>
+  <string name="bottomsheet_action_expand_description">ازهم بازکردن برگ زیرین</string>
+  <string name="bottomsheet_action_collapse_description">جمع کردن برگ زیرین</string>
 </resources>

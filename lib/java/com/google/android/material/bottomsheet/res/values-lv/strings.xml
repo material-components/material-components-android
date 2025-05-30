@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Izvērst līdz pusei</string>
   <string name="bottomsheet_drag_handle_content_description">Vilkšanas turis</string>
-  <string name="bottomsheet_action_expand">Izvērst ekrāna apakšdaļas lapu</string>
-  <string name="bottomsheet_action_collapse">Sakļaut ekrāna apakšdaļas lapu</string>
+  <string name="bottomsheet_action_expand_description">Izvērst ekrāna apakšdaļas lapu</string>
+  <string name="bottomsheet_action_collapse_description">Sakļaut ekrāna apakšdaļas lapu</string>
 </resources>

@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">တစ်ဝက်ချဲ့ရန်</string>
   <string name="bottomsheet_drag_handle_content_description">ဖိဆွဲအထိန်း</string>
-  <string name="bottomsheet_action_expand">အောက်ခြေအပိုဆောင်း စာမျက်နှာကို ချဲ့နိုင်သည်</string>
-  <string name="bottomsheet_action_collapse">အောက်ခြေအပိုဆောင်း စာမျက်နှာကို ပိတ်နိုင်သည်</string>
+  <string name="bottomsheet_action_expand_description">အောက်ခြေအပိုဆောင်း စာမျက်နှာကို ချဲ့နိုင်သည်</string>
+  <string name="bottomsheet_action_collapse_description">အောက်ခြေအပိုဆောင်း စာမျက်နှာကို ပိတ်နိုင်သည်</string>
 </resources>

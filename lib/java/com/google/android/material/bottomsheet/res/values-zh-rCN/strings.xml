@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">展开到一半高度</string>
   <string name="bottomsheet_drag_handle_content_description">拖动手柄</string>
-  <string name="bottomsheet_action_expand">展开底部动作条</string>
-  <string name="bottomsheet_action_collapse">收起底部动作条</string>
+  <string name="bottomsheet_action_expand_description">展开底部动作条</string>
+  <string name="bottomsheet_action_collapse_description">收起底部动作条</string>
 </resources>

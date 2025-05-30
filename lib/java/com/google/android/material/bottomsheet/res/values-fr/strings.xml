@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Développer en entier</string>
   <string name="bottomsheet_drag_handle_content_description">Poignée de déplacement</string>
-  <string name="bottomsheet_action_expand">Développer la bottom sheet</string>
-  <string name="bottomsheet_action_collapse">Réduire la bottom sheet</string>
+  <string name="bottomsheet_action_expand_description">Développer la bottom sheet</string>
+  <string name="bottomsheet_action_collapse_description">Réduire la bottom sheet</string>
 </resources>

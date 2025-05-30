@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Zur Hälfte maximieren</string>
   <string name="bottomsheet_drag_handle_content_description">Ziehpunkt</string>
-  <string name="bottomsheet_action_expand">Ansicht am unteren Rand maximieren</string>
-  <string name="bottomsheet_action_collapse">Ansicht am unteren Rand minimieren</string>
+  <string name="bottomsheet_action_expand_description">Ansicht am unteren Rand maximieren</string>
+  <string name="bottomsheet_action_collapse_description">Ansicht am unteren Rand minimieren</string>
 </resources>

@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Laiendamine poolenisti</string>
   <string name="bottomsheet_drag_handle_content_description">Lohistamispide</string>
-  <string name="bottomsheet_action_expand">Alumise lehe laiendamine</string>
-  <string name="bottomsheet_action_collapse">Alumise lehe ahendamine</string>
+  <string name="bottomsheet_action_expand_description">Alumise lehe laiendamine</string>
+  <string name="bottomsheet_action_collapse_description">Alumise lehe ahendamine</string>
 </resources>

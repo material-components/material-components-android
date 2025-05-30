@@ -26,6 +26,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import androidx.appcompat.widget.AppCompatImageView;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
@@ -42,6 +43,7 @@ import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
 
@@ -50,8 +52,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCa
  * BottomSheetBehavior}. This view will automatically handle the accessibility interaction when the
  * accessibility service is enabled. When you add a drag handle to a bottom sheet and the user
  * enables the accessibility service, the drag handle will become important for accessibility and
- * clickable. Clicking the drag handle will toggle the bottom sheet between its collapsed and
- * expanded states.
+ * clickable. Clicking the drag handle will toggle the bottom sheet between its collapsed,
+ * half expanded, and expanded states.
  */
 public class BottomSheetDragHandleView extends AppCompatImageView implements
     AccessibilityStateChangeListener {
@@ -76,9 +78,11 @@ public class BottomSheetDragHandleView extends AppCompatImageView implements
   private boolean hasClickListener = false;
 
   private final String clickToExpandActionLabel =
-      getResources().getString(R.string.bottomsheet_action_expand);
+      getResources().getString(R.string.bottomsheet_action_expand_description);
+  private final String clickToHalfExpandActionLabel =
+      getResources().getString(R.string.bottomsheet_action_half_expand_description);
   private final String clickToCollapseActionLabel =
-      getResources().getString(R.string.bottomsheet_action_collapse);
+      getResources().getString(R.string.bottomsheet_action_collapse_description);
 
   private final BottomSheetCallback bottomSheetCallback =
       new BottomSheetCallback() {
@@ -150,6 +154,39 @@ public class BottomSheetDragHandleView extends AppCompatImageView implements
             super.onPopulateAccessibilityEvent(host, event);
             if (event.getEventType() == TYPE_VIEW_CLICKED) {
               expandOrCollapseBottomSheetIfPossible();
+            }
+          }
+
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            if (!hasAttachedBehavior()) {
+              return;
+            }
+
+            CharSequence originalDescription = getContentDescription();
+            String stateName = null;
+
+            switch (bottomSheetBehavior.getState()) {
+              case BottomSheetBehavior.STATE_COLLAPSED:
+                stateName = getResources().getString(R.string.bottomsheet_state_collapsed);
+                break;
+              case BottomSheetBehavior.STATE_EXPANDED:
+                stateName = getResources().getString(R.string.bottomsheet_state_expanded);
+                break;
+              case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                stateName = getResources().getString(R.string.bottomsheet_state_half_expanded);
+                break;
+              default: // fall out
+            }
+
+            if (!TextUtils.isEmpty(stateName)) {
+              CharSequence newDescription =
+                  TextUtils.isEmpty(originalDescription)
+                      ? stateName
+                      : stateName + ". " + originalDescription;
+              info.setContentDescription(newDescription);
             }
           }
         });
@@ -225,10 +262,24 @@ public class BottomSheetDragHandleView extends AppCompatImageView implements
     } else if (state == BottomSheetBehavior.STATE_EXPANDED) {
       clickToExpand = false;
     } // Else keep the original settings
+    int nextState = getNextState();
+    String text = null;
+    switch (nextState) {
+      case BottomSheetBehavior.STATE_COLLAPSED:
+        text = clickToCollapseActionLabel;
+        break;
+      case BottomSheetBehavior.STATE_EXPANDED:
+        text = clickToExpandActionLabel;
+        break;
+      case BottomSheetBehavior.STATE_HALF_EXPANDED:
+        text = clickToHalfExpandActionLabel;
+        break;
+      default: // fall out
+    }
     ViewCompat.replaceAccessibilityAction(
         this,
         AccessibilityActionCompat.ACTION_CLICK,
-        clickToExpand ? clickToExpandActionLabel : clickToCollapseActionLabel,
+        text,
         (v, args) -> expandOrCollapseBottomSheetIfPossible());
   }
 
@@ -250,27 +301,44 @@ public class BottomSheetDragHandleView extends AppCompatImageView implements
     if (!hasAttachedBehavior()) {
       return false;
     }
+    int nextState = getNextState();
+    if (nextState != -1) {
+      bottomSheetBehavior.setState(nextState);
+    }
+    return true;
+  }
+
+  private int getNextState() {
+    int nextState = -1;
+    if (!hasAttachedBehavior()) {
+      return nextState;
+    }
     boolean canHalfExpand =
         !bottomSheetBehavior.isFitToContents()
             && !bottomSheetBehavior.shouldSkipHalfExpandedStateWhenDragging();
     int currentState = bottomSheetBehavior.getState();
-    int nextState;
-    if (currentState == BottomSheetBehavior.STATE_COLLAPSED) {
-      nextState =
-          canHalfExpand
-              ? BottomSheetBehavior.STATE_HALF_EXPANDED
-              : BottomSheetBehavior.STATE_EXPANDED;
-    } else if (currentState == BottomSheetBehavior.STATE_EXPANDED) {
-      nextState =
-          canHalfExpand
-              ? BottomSheetBehavior.STATE_HALF_EXPANDED
-              : BottomSheetBehavior.STATE_COLLAPSED;
-    } else {
-      nextState =
-          clickToExpand ? BottomSheetBehavior.STATE_EXPANDED : BottomSheetBehavior.STATE_COLLAPSED;
+    switch (currentState) {
+      case BottomSheetBehavior.STATE_COLLAPSED:
+        nextState =
+            canHalfExpand
+                ? BottomSheetBehavior.STATE_HALF_EXPANDED
+                : BottomSheetBehavior.STATE_EXPANDED;
+        break;
+      case BottomSheetBehavior.STATE_EXPANDED:
+        nextState =
+            canHalfExpand
+                ? BottomSheetBehavior.STATE_HALF_EXPANDED
+                : BottomSheetBehavior.STATE_COLLAPSED;
+        break;
+      case BottomSheetBehavior.STATE_HALF_EXPANDED:
+        nextState =
+            clickToExpand
+                ? BottomSheetBehavior.STATE_EXPANDED
+                : BottomSheetBehavior.STATE_COLLAPSED;
+        break;
+      default: // fall out
     }
-    bottomSheetBehavior.setState(nextState);
-    return true;
+    return nextState;
   }
 
   /**

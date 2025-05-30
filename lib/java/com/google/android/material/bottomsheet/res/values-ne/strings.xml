@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">आधा ठुलो पार्नुहोस्</string>
   <string name="bottomsheet_drag_handle_content_description">ड्र्याग ह्यान्डल</string>
-  <string name="bottomsheet_action_expand">पुछारको पाना एक्स्पान्ड गर्नुहोस्</string>
-  <string name="bottomsheet_action_collapse">पुछारको पाना कोल्याप्स गर्नुहोस्</string>
+  <string name="bottomsheet_action_expand_description">पुछारको पाना एक्स्पान्ड गर्नुहोस्</string>
+  <string name="bottomsheet_action_collapse_description">पुछारको पाना कोल्याप्स गर्नुहोस्</string>
 </resources>

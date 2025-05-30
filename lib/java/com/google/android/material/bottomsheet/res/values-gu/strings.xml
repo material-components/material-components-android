@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">અડધે સુધી મોટું કરો</string>
   <string name="bottomsheet_drag_handle_content_description">ઑબ્જેક્ટ ખેંચવાનું હૅન્ડલ</string>
-  <string name="bottomsheet_action_expand">બોટમ શીટ મોટી કરો</string>
-  <string name="bottomsheet_action_collapse">બોટમ શીટ નાની કરો</string>
+  <string name="bottomsheet_action_expand_description">બોટમ શીટ મોટી કરો</string>
+  <string name="bottomsheet_action_collapse_description">બોટમ શીટ નાની કરો</string>
 </resources>

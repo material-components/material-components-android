@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Razširjanje na pol višine</string>
   <string name="bottomsheet_drag_handle_content_description">Ročica za vlečenje</string>
-  <string name="bottomsheet_action_expand">Razširitev razdelka na dnu zaslona</string>
-  <string name="bottomsheet_action_collapse">Strnitev razdelka na dnu zaslona</string>
+  <string name="bottomsheet_action_expand_description">Razširitev razdelka na dnu zaslona</string>
+  <string name="bottomsheet_action_collapse_description">Strnitev razdelka na dnu zaslona</string>
 </resources>

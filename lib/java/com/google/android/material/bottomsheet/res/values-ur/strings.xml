@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">نصف تک پھیلائیں</string>
   <string name="bottomsheet_drag_handle_content_description">گھسیٹنے کا ہینڈل</string>
-  <string name="bottomsheet_action_expand">نیچے کی شیٹ کو پھیلائیں</string>
-  <string name="bottomsheet_action_collapse">نیچے کی شیٹ کو سکیڑیں</string>
+  <string name="bottomsheet_action_expand_description">نیچے کی شیٹ کو پھیلائیں</string>
+  <string name="bottomsheet_action_collapse_description">نیچے کی شیٹ کو سکیڑیں</string>
 </resources>

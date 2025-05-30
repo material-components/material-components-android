@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Zgjeroje deri në gjysmë</string>
   <string name="bottomsheet_drag_handle_content_description">Doreza e zvarritjes</string>
-  <string name="bottomsheet_action_expand">Zgjero fletën e poshtme</string>
-  <string name="bottomsheet_action_collapse">Palos fletën e poshtme</string>
+  <string name="bottomsheet_action_expand_description">Zgjero fletën e poshtme</string>
+  <string name="bottomsheet_action_collapse_description">Palos fletën e poshtme</string>
 </resources>

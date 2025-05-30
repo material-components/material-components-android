@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">අඩක් දිග හරින්න</string>
   <string name="bottomsheet_drag_handle_content_description">හැඬලය අදින්න</string>
-  <string name="bottomsheet_action_expand">පහළම පත්‍රය දිග හරින්න</string>
-  <string name="bottomsheet_action_collapse">පහළම පත්‍රය හකුළන්න</string>
+  <string name="bottomsheet_action_expand_description">පහළම පත්‍රය දිග හරින්න</string>
+  <string name="bottomsheet_action_collapse_description">පහළම පත්‍රය හකුළන්න</string>
 </resources>

@@ -16,6 +16,7 @@
 
 package com.google.android.material.bottomsheet;
 
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.VIEW_INDEX_BOTTOM_SHEET;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -26,8 +27,8 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 
 import android.content.Context;
-import android.os.Build.VERSION;
 import android.os.SystemClock;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -1041,25 +1042,32 @@ public class BottomSheetBehaviorTest {
 
   private static void assertAccessibilityActions(
       BottomSheetBehavior<?> behavior, ViewGroup bottomSheet) {
-    if (VERSION.SDK_INT >= 21) {
-      int state = behavior.getState();
-      boolean hasExpandAction =
-          state == BottomSheetBehavior.STATE_COLLAPSED
-              || state == BottomSheetBehavior.STATE_HALF_EXPANDED;
-      boolean hasCollapseAction =
-          state == BottomSheetBehavior.STATE_EXPANDED
-              || state == BottomSheetBehavior.STATE_HALF_EXPANDED;
-      boolean hasDismissAction = state != BottomSheetBehavior.STATE_HIDDEN && behavior.isHideable();
-      assertThat(
-          AccessibilityUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_COLLAPSE),
-          equalTo(hasCollapseAction));
-      assertThat(
-          AccessibilityUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_EXPAND),
-          equalTo(hasExpandAction));
-      assertThat(
-          AccessibilityUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_DISMISS),
-          equalTo(hasDismissAction));
-    }
+    int state = behavior.getState();
+    boolean hasExpandAction =
+        state == BottomSheetBehavior.STATE_COLLAPSED
+            || state == BottomSheetBehavior.STATE_HALF_EXPANDED;
+    boolean hasHalfExpandAction =
+        state != BottomSheetBehavior.STATE_HALF_EXPANDED && !behavior.isFitToContents();
+    boolean hasCollapseAction =
+        state == BottomSheetBehavior.STATE_EXPANDED
+            || state == BottomSheetBehavior.STATE_HALF_EXPANDED;
+    boolean hasDismissAction = state != BottomSheetBehavior.STATE_HIDDEN && behavior.isHideable();
+    assertThat(
+        hasCustomAccessibilityAction(behavior.expandActionIds),
+        equalTo(hasExpandAction));
+    assertThat(
+        hasCustomAccessibilityAction(behavior.expandHalfwayActionIds),
+        equalTo(hasHalfExpandAction));
+    assertThat(
+        hasCustomAccessibilityAction(behavior.collapseActionIds),
+        equalTo(hasCollapseAction));
+    assertThat(
+        AccessibilityUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_DISMISS),
+        equalTo(hasDismissAction));
+  }
+
+  private static boolean hasCustomAccessibilityAction(SparseIntArray actionIds) {
+    return actionIds.get(VIEW_INDEX_BOTTOM_SHEET, View.NO_ID) != View.NO_ID;
   }
 
   private ViewGroup getBottomSheet() {

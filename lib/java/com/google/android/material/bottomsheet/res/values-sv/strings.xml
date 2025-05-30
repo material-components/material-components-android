@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Utöka till hälften</string>
   <string name="bottomsheet_drag_handle_content_description">Handtag</string>
-  <string name="bottomsheet_action_expand">Utöka arket på nedre delen av skärmen</string>
-  <string name="bottomsheet_action_collapse">Komprimera arket på nedre delen av skärmen</string>
+  <string name="bottomsheet_action_expand_description">Utöka arket på nedre delen av skärmen</string>
+  <string name="bottomsheet_action_collapse_description">Komprimera arket på nedre delen av skärmen</string>
 </resources>

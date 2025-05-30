@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Développer à moitié</string>
   <string name="bottomsheet_drag_handle_content_description">Faire glisser la poignée</string>
-  <string name="bottomsheet_action_expand">Développer la zone de contenu dans le bas de l\'écran</string>
-  <string name="bottomsheet_action_collapse">Réduire la zone de contenu dans le bas de l\'écran</string>
+  <string name="bottomsheet_action_expand_description">Développer la zone de contenu dans le bas de l\'écran</string>
+  <string name="bottomsheet_action_collapse_description">Réduire la zone de contenu dans le bas de l\'écran</string>
 </resources>

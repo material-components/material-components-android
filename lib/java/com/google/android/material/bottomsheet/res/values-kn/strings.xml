@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">ಅರ್ಧದಷ್ಟು ವಿಸ್ತರಿಸಿ</string>
   <string name="bottomsheet_drag_handle_content_description">ಹ್ಯಾಂಡಲ್ ಡ್ರ್ಯಾಗ್ ಮಾಡಿ</string>
-  <string name="bottomsheet_action_expand">ಕೆಳಭಾಗದ ಶೀಟ್ ಅನ್ನು ವಿಸ್ತರಿಸಿ</string>
-  <string name="bottomsheet_action_collapse">ಕೆಳಭಾಗದ ಶೀಟ್ ಅನ್ನು ಕುಗ್ಗಿಸಿ</string>
+  <string name="bottomsheet_action_expand_description">ಕೆಳಭಾಗದ ಶೀಟ್ ಅನ್ನು ವಿಸ್ತರಿಸಿ</string>
+  <string name="bottomsheet_action_collapse_description">ಕೆಳಭಾಗದ ಶೀಟ್ ಅನ್ನು ಕುಗ್ಗಿಸಿ</string>
 </resources>

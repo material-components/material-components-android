@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Proširi donju polovicu</string>
   <string name="bottomsheet_drag_handle_content_description">Marker za povlačenje</string>
-  <string name="bottomsheet_action_expand">Proširite donju tablicu</string>
-  <string name="bottomsheet_action_collapse">Sažmite donju tablicu</string>
+  <string name="bottomsheet_action_expand_description">Proširite donju tablicu</string>
+  <string name="bottomsheet_action_collapse_description">Sažmite donju tablicu</string>
 </resources>

@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Хагас дэлгэнэ үү</string>
   <string name="bottomsheet_drag_handle_content_description">Чирэх бариул</string>
-  <string name="bottomsheet_action_expand">Доод хүснэгтийг дэлгэх</string>
-  <string name="bottomsheet_action_collapse">Доод хүснэгтийг хураах</string>
+  <string name="bottomsheet_action_expand_description">Доод хүснэгтийг дэлгэх</string>
+  <string name="bottomsheet_action_collapse_description">Доод хүснэгтийг хураах</string>
 </resources>

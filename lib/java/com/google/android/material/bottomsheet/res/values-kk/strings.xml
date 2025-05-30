@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Жартылай кеңейту</string>
   <string name="bottomsheet_drag_handle_content_description">Сүйрейтін тетік</string>
-  <string name="bottomsheet_action_expand">Төменгі парақшаны жаю</string>
-  <string name="bottomsheet_action_collapse">Төменгі парақшаны жию</string>
+  <string name="bottomsheet_action_expand_description">Төменгі парақшаны жаю</string>
+  <string name="bottomsheet_action_collapse_description">Төменгі парақшаны жию</string>
 </resources>

@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Udvid halvdelen</string>
   <string name="bottomsheet_drag_handle_content_description">Håndtag</string>
-  <string name="bottomsheet_action_expand">Udvid feltet i bunden</string>
-  <string name="bottomsheet_action_collapse">Skjul feltet i bunden</string>
+  <string name="bottomsheet_action_expand_description">Udvid feltet i bunden</string>
+  <string name="bottomsheet_action_collapse_description">Skjul feltet i bunden</string>
 </resources>

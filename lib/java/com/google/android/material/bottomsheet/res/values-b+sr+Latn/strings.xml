@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Proširite do pola</string>
   <string name="bottomsheet_drag_handle_content_description">Ručica za prevlačenje</string>
-  <string name="bottomsheet_action_expand">Proširite donju tabelu</string>
-  <string name="bottomsheet_action_collapse">Skupite donju tabelu</string>
+  <string name="bottomsheet_action_expand_description">Proširite donju tabelu</string>
+  <string name="bottomsheet_action_collapse_description">Skupite donju tabelu</string>
 </resources>

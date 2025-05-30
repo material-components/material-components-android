@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Expandir até a metade</string>
   <string name="bottomsheet_drag_handle_content_description">Alça de arrastar</string>
-  <string name="bottomsheet_action_expand">Abrir a página inferior</string>
-  <string name="bottomsheet_action_collapse">Fechar a página inferior</string>
+  <string name="bottomsheet_action_expand_description">Abrir a página inferior</string>
+  <string name="bottomsheet_action_collapse_description">Fechar a página inferior</string>
 </resources>

@@ -231,7 +231,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int NO_MAX_SIZE = -1;
 
-  private static final int VIEW_INDEX_BOTTOM_SHEET = 0;
+  @VisibleForTesting
+  static final int VIEW_INDEX_BOTTOM_SHEET = 0;
 
   private static final int INVALID_POSITION = -1;
 
@@ -352,6 +353,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @VisibleForTesting
   final SparseIntArray expandHalfwayActionIds = new SparseIntArray();
+  @VisibleForTesting
+  final SparseIntArray expandActionIds = new SparseIntArray();
+  @VisibleForTesting
+  final SparseIntArray collapseActionIds = new SparseIntArray();
 
   public BottomSheetBehavior() {}
 
@@ -2409,24 +2414,30 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     switch (state) {
       case STATE_EXPANDED:
         {
-          int nextState = fitToContents ? STATE_COLLAPSED : STATE_HALF_EXPANDED;
-          replaceAccessibilityActionForState(
-              view, AccessibilityActionCompat.ACTION_COLLAPSE, nextState);
+          collapseActionIds.put(
+              viewIndex,
+              addAccessibilityActionForState(
+                  view, R.string.bottomsheet_action_collapse, STATE_COLLAPSED));
           break;
         }
       case STATE_HALF_EXPANDED:
         {
-          replaceAccessibilityActionForState(
-              view, AccessibilityActionCompat.ACTION_COLLAPSE, STATE_COLLAPSED);
-          replaceAccessibilityActionForState(
-              view, AccessibilityActionCompat.ACTION_EXPAND, STATE_EXPANDED);
+          collapseActionIds.put(
+              viewIndex,
+              addAccessibilityActionForState(
+                  view, R.string.bottomsheet_action_collapse, STATE_COLLAPSED));
+          expandActionIds.put(
+              viewIndex,
+              addAccessibilityActionForState(
+                  view, R.string.bottomsheet_action_expand, STATE_EXPANDED));
           break;
         }
       case STATE_COLLAPSED:
         {
-          int nextState = fitToContents ? STATE_EXPANDED : STATE_HALF_EXPANDED;
-          replaceAccessibilityActionForState(
-              view, AccessibilityActionCompat.ACTION_EXPAND, nextState);
+          expandActionIds.put(
+              viewIndex,
+              addAccessibilityActionForState(
+                  view, R.string.bottomsheet_action_expand, STATE_EXPANDED));
           break;
         }
       case STATE_HIDDEN:
@@ -2440,14 +2451,26 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (view == null) {
       return;
     }
+    ViewCompat.removeAccessibilityAction(view, AccessibilityNodeInfoCompat.ACTION_DISMISS);
     ViewCompat.removeAccessibilityAction(view, AccessibilityNodeInfoCompat.ACTION_COLLAPSE);
     ViewCompat.removeAccessibilityAction(view, AccessibilityNodeInfoCompat.ACTION_EXPAND);
-    ViewCompat.removeAccessibilityAction(view, AccessibilityNodeInfoCompat.ACTION_DISMISS);
+
+    int expandActionId = expandActionIds.get(viewIndex, View.NO_ID);
+    if (expandActionId != View.NO_ID) {
+      ViewCompat.removeAccessibilityAction(view, expandActionId);
+      expandActionIds.delete(viewIndex);
+    }
 
     int expandHalfwayActionId = expandHalfwayActionIds.get(viewIndex, View.NO_ID);
     if (expandHalfwayActionId != View.NO_ID) {
       ViewCompat.removeAccessibilityAction(view, expandHalfwayActionId);
       expandHalfwayActionIds.delete(viewIndex);
+    }
+
+    int collapseActionId = collapseActionIds.get(viewIndex, View.NO_ID);
+    if (collapseActionId != View.NO_ID) {
+      ViewCompat.removeAccessibilityAction(view, collapseActionId);
+      collapseActionIds.delete(viewIndex);
     }
   }
 

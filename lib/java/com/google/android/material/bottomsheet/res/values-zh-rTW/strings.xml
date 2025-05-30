@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">展開一半</string>
   <string name="bottomsheet_drag_handle_content_description">拖曳控點</string>
-  <string name="bottomsheet_action_expand">展開底部功能表</string>
-  <string name="bottomsheet_action_collapse">收合底部功能表</string>
+  <string name="bottomsheet_action_expand_description">展開底部功能表</string>
+  <string name="bottomsheet_action_collapse_description">收合底部功能表</string>
 </resources>

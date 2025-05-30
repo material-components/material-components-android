@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Espandi a metà</string>
   <string name="bottomsheet_drag_handle_content_description">Punto di trascinamento</string>
-  <string name="bottomsheet_action_expand">Espandi riquadro inferiore</string>
-  <string name="bottomsheet_action_collapse">Comprimi riquadro inferiore</string>
+  <string name="bottomsheet_action_expand_description">Espandi riquadro inferiore</string>
+  <string name="bottomsheet_action_collapse_description">Comprimi riquadro inferiore</string>
 </resources>

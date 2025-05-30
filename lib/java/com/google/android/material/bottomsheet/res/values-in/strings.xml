@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Luaskan setengah</string>
   <string name="bottomsheet_drag_handle_content_description">Handel geser</string>
-  <string name="bottomsheet_action_expand">Meluaskan sheet bawah</string>
-  <string name="bottomsheet_action_collapse">Menciutkan sheet bawah</string>
+  <string name="bottomsheet_action_expand_description">Meluaskan sheet bawah</string>
+  <string name="bottomsheet_action_collapse_description">Menciutkan sheet bawah</string>
 </resources>

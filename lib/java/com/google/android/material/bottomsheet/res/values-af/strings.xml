@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Vou halfpad uit</string>
   <string name="bottomsheet_drag_handle_content_description">Sleephandvatsel</string>
-  <string name="bottomsheet_action_expand">Vou die onderste blad uit</string>
-  <string name="bottomsheet_action_collapse">Vou die onderste blad in</string>
+  <string name="bottomsheet_action_expand_description">Vou die onderste blad uit</string>
+  <string name="bottomsheet_action_collapse_description">Vou die onderste blad in</string>
 </resources>

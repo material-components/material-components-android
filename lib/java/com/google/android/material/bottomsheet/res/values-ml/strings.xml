@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">മുഴുവനായി വികസിപ്പിക്കുക</string>
   <string name="bottomsheet_drag_handle_content_description">വലിച്ചിടുന്നതിനുള്ള ഹാൻഡിൽ</string>
-  <string name="bottomsheet_action_expand">ബോട്ടം ഷീറ്റ് വികസിപ്പിക്കുക</string>
-  <string name="bottomsheet_action_collapse">ബോട്ടം ഷീറ്റ് ചുരുക്കുക</string>
+  <string name="bottomsheet_action_expand_description">ബോട്ടം ഷീറ്റ് വികസിപ്പിക്കുക</string>
+  <string name="bottomsheet_action_collapse_description">ബോട്ടം ഷീറ്റ് ചുരുക്കുക</string>
 </resources>

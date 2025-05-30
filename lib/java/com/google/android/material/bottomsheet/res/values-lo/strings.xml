@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">ຂະຫຍາຍອອກເຄິ່ງໜຶ່ງ</string>
   <string name="bottomsheet_drag_handle_content_description">ບ່ອນຈັບລາກ</string>
-  <string name="bottomsheet_action_expand">ຂະຫຍາຍຊີດລຸ່ມສຸດ</string>
-  <string name="bottomsheet_action_collapse">ຫຍໍ້ຊີດລຸ່ມສຸດລົງ</string>
+  <string name="bottomsheet_action_expand_description">ຂະຫຍາຍຊີດລຸ່ມສຸດ</string>
+  <string name="bottomsheet_action_collapse_description">ຫຍໍ້ຊີດລຸ່ມສຸດລົງ</string>
 </resources>

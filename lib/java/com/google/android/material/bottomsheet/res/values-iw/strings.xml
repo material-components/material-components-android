@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">הרחבה עד האמצע</string>
   <string name="bottomsheet_drag_handle_content_description">נקודת אחיזה לגרירה</string>
-  <string name="bottomsheet_action_expand">הרחבת הגיליון התחתון</string>
-  <string name="bottomsheet_action_collapse">כיווץ הגיליון התחתון</string>
+  <string name="bottomsheet_action_expand_description">הרחבת הגיליון התחתון</string>
+  <string name="bottomsheet_action_collapse_description">כיווץ הגיליון התחתון</string>
 </resources>

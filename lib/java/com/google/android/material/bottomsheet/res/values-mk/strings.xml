@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Прошири до половина</string>
   <string name="bottomsheet_drag_handle_content_description">Рачка за влечење</string>
-  <string name="bottomsheet_action_expand">Проширете го долниот лист</string>
-  <string name="bottomsheet_action_collapse">Соберете го долниот лист</string>
+  <string name="bottomsheet_action_expand_description">Проширете го долниот лист</string>
+  <string name="bottomsheet_action_collapse_description">Соберете го долниот лист</string>
 </resources>

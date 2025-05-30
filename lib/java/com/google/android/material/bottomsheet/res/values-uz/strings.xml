@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Yarmiga kengaytirish</string>
   <string name="bottomsheet_drag_handle_content_description">Surish dastagi</string>
-  <string name="bottomsheet_action_expand">Quyi ekranni kengaytirish</string>
-  <string name="bottomsheet_action_collapse">Quyi ekranni yigʻish</string>
+  <string name="bottomsheet_action_expand_description">Quyi ekranni kengaytirish</string>
+  <string name="bottomsheet_action_collapse_description">Quyi ekranni yigʻish</string>
 </resources>

@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Expandir hasta la mitad</string>
   <string name="bottomsheet_drag_handle_content_description">Controlador de arrastre</string>
-  <string name="bottomsheet_action_expand">Expandir la hoja inferior</string>
-  <string name="bottomsheet_action_collapse">Contraer la hoja inferior</string>
+  <string name="bottomsheet_action_expand_description">Expandir la hoja inferior</string>
+  <string name="bottomsheet_action_collapse_description">Contraer la hoja inferior</string>
 </resources>

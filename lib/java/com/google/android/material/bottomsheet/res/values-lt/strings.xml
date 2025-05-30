@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Išskleisti iki pusės</string>
   <string name="bottomsheet_drag_handle_content_description">Vilkimo rankenėlė</string>
-  <string name="bottomsheet_action_expand">Išskleisti apatinį lapą</string>
-  <string name="bottomsheet_action_collapse">Sutraukti apatinį lapą</string>
+  <string name="bottomsheet_action_expand_description">Išskleisti apatinį lapą</string>
+  <string name="bottomsheet_action_collapse_description">Sutraukti apatinį lapą</string>
 </resources>

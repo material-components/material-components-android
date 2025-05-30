@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Жарымын жайып көрсөтүү</string>
   <string name="bottomsheet_drag_handle_content_description">Тизменин керектүү жерине сүйрөп баруу</string>
-  <string name="bottomsheet_action_expand">Ылдыйкы экранды жайып көрсөтүү</string>
-  <string name="bottomsheet_action_collapse">Ылдыйкы экранды жыйыштыруу</string>
+  <string name="bottomsheet_action_expand_description">Ылдыйкы экранды жайып көрсөтүү</string>
+  <string name="bottomsheet_action_collapse_description">Ылдыйкы экранды жыйыштыруу</string>
 </resources>

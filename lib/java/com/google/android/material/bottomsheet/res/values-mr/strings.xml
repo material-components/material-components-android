@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">पूर्णपणे विस्तृत करा</string>
   <string name="bottomsheet_drag_handle_content_description">ड्रॅग हॅंडल</string>
-  <string name="bottomsheet_action_expand">तळाशी असलेल्या शीटचा विस्तार करा</string>
-  <string name="bottomsheet_action_collapse">तळाशी असलेली शीट कोलॅप्स करा</string>
+  <string name="bottomsheet_action_expand_description">तळाशी असलेल्या शीटचा विस्तार करा</string>
+  <string name="bottomsheet_action_collapse_description">तळाशी असलेली शीट कोलॅप्स करा</string>
 </resources>

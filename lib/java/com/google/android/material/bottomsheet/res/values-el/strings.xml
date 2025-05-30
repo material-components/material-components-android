@@ -17,6 +17,6 @@
 <resources>
   <string name="bottomsheet_action_expand_halfway">Ανάπτυξη μέχρι τη μέση</string>
   <string name="bottomsheet_drag_handle_content_description">Λαβή μεταφοράς</string>
-  <string name="bottomsheet_action_expand">Ανάπτυξη του φύλλου κάτω μέρους</string>
-  <string name="bottomsheet_action_collapse">Σύμπτυξη του φύλλου κάτω μέρους</string>
+  <string name="bottomsheet_action_expand_description">Ανάπτυξη του φύλλου κάτω μέρους</string>
+  <string name="bottomsheet_action_collapse_description">Σύμπτυξη του φύλλου κάτω μέρους</string>
 </resources>
