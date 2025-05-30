@@ -252,7 +252,7 @@ In the layout:
 within another view (e.g., a `SwipeRefreshLayout`), you should make sure to set
 `app:liftOnScrollTargetViewId` on your `AppBarLayout` to the id of the scrolling
 view. This will ensure that the `AppBarLayout` is using the right view to
-determine whether it should lift or not, and it will help avoid flicker issues.
+determine whether it should lift or not.
 
 The following example shows the top app bar disappearing upon scrolling up, and
 appearing upon scrolling down.
