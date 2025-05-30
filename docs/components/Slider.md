@@ -331,20 +331,23 @@ thickness.
 
 #### Thumb attributes
 
-| Element          | Attribute               | Related method(s)                                                                 | Default value                |
-|------------------|-------------------------|-----------------------------------------------------------------------------------|------------------------------|
-| **Color**        | `app:thumbColor`        | `setThumbTintList`<br/>`getThumbTintList`                                         | `?attr/colorPrimary`         |
-| **Width**        | `app:thumbWidth`        | `setThumbWidth`<br/>`setThumbWidthResource`<br/>`getThumbWidth`                   | `4dp`                        |
-| **Height**       | `app:thumbHeight`       | `setThumbHeight`<br/>`setThumbHeightResource`<br/>`getThumbHeight`                | `44dp`                       |
-| **Radius**       | `app:thumbRadius`       | `setThumbRadiusResource`<br/>`setThumbRadius`<br/>`getThumbRadius`                | N/A                          |
-| **Elevation**    | `app:thumbElevation`    | `setThumbElevationResource`<br/>`setThumbElevation`<br/>`getThumbElevation`       | `2dp`                        |
-| **Halo color**   | `app:haloColor`         | `setHaloTintList`<br/>`getHaloTintList`                                           | `@android:color/transparent` |
-| **Halo radius**  | `app:haloRadius`        | `setHaloRadiusResource`<br/>`setHaloRadius`<br/>`getHaloRadius`                   | N/A                          |
-| **Stroke color** | `app:thumbStrokeColor`  | `setThumbStrokeColor`<br/>`setThumbStrokeColorResource`<br/>`getThumbStrokeColor` | `null`                       |
-| **Stroke width** | `app:thumbStrokeWidth`  | `setThumbStrokeWidth`<br/>`setThumbStrokeWidthResource`<br/>`getThumbStrokeWidth` | `0dp`                        |
-| **Gap size**     | `app:thumbTrackGapSize` | `setThumbTrackGapSize`<br/>`getThumbTrackGapSize`                                 | `6dp`                        |
+| Element               | Attribute               | Related method(s)                                                                 | Default value                |
+|-----------------------|-------------------------|-----------------------------------------------------------------------------------|------------------------------|
+| **Color**             | `app:thumbColor`        | `setThumbTintList`<br/>`getThumbTintList`                                         | `?attr/colorPrimary`         |
+| **Width**             | `app:thumbWidth`        | `setThumbWidth`<br/>`setThumbWidthResource`<br/>`getThumbWidth`                   | `4dp`                        |
+| **Height**            | `app:thumbHeight`       | `setThumbHeight`<br/>`setThumbHeightResource`<br/>`getThumbHeight`                | `44dp`                       |
+| **Radius**            | `app:thumbRadius`       | `setThumbRadiusResource`<br/>`setThumbRadius`<br/>`getThumbRadius`                | N/A                          |
+| **Elevation**         | `app:thumbElevation`    | `setThumbElevationResource`<br/>`setThumbElevation`<br/>`getThumbElevation`       | `2dp`                        |
+| **Halo color**        | `app:haloColor`         | `setHaloTintList`<br/>`getHaloTintList`                                           | `@android:color/transparent` |
+| **Halo effect color** | `app:haloEffectColor`   | `setHaloEffectTintList`<br/>`getHaloEffectTintList`                               | `@android:color/transparent` |
+| **Halo radius**       | `app:haloRadius`        | `setHaloRadiusResource`<br/>`setHaloRadius`<br/>`getHaloRadius`                   | N/A                          |
+| **Stroke color**      | `app:thumbStrokeColor`  | `setThumbStrokeColor`<br/>`setThumbStrokeColorResource`<br/>`getThumbStrokeColor` | `null`                       |
+| **Stroke width**      | `app:thumbStrokeWidth`  | `setThumbStrokeWidth`<br/>`setThumbStrokeWidthResource`<br/>`getThumbStrokeWidth` | `0dp`                        |
+| **Gap size**          | `app:thumbTrackGapSize` | `setThumbTrackGapSize`<br/>`getThumbTrackGapSize`                                 | `6dp`                        |
 
 **Note:** `app:thumbWidth` and `app:thumbHeight` take precedence over `app:thumbRadius`.
+
+**Note:** `app:haloEffectColor` only has an effect on API 31 and above.
 
 #### Value label attributes
 
