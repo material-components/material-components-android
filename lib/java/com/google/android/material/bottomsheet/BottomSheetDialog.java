@@ -92,6 +92,7 @@ public class BottomSheetDialog extends AppCompatDialog {
   private EdgeToEdgeCallback edgeToEdgeCallback;
   private boolean edgeToEdgeEnabled;
   @Nullable private MaterialBackOrchestrator backOrchestrator;
+  private List<Protection> protectionsList;
 
   public BottomSheetDialog(@NonNull Context context) {
     this(context, 0);
@@ -291,8 +292,11 @@ public class BottomSheetDialog extends AppCompatDialog {
    *     existing Protections. An empty list will clear the Protections.
    */
   public void setProtections(@NonNull List<Protection> protections) {
-    protectionLayout.setProtections(protections);
-    protectionLayout.setVisibility(protections.isEmpty() ? View.GONE : View.VISIBLE);
+    protectionsList = protections;
+    if (protectionLayout != null) {
+      protectionLayout.setProtections(protections);
+      protectionLayout.setVisibility(protections.isEmpty() ? View.GONE : View.VISIBLE);
+    }
   }
 
   /** Creates the container layout which must exist to find the behavior */
@@ -301,6 +305,9 @@ public class BottomSheetDialog extends AppCompatDialog {
       container =
           (FrameLayout) View.inflate(getContext(), R.layout.design_bottom_sheet_dialog, null);
       protectionLayout = (ProtectionLayout) container.findViewById(R.id.protection_layout);
+      if (protectionsList != null) {
+        setProtections(protectionsList);
+      }
 
       coordinator = (CoordinatorLayout) container.findViewById(R.id.coordinator);
       bottomSheet = (FrameLayout) container.findViewById(R.id.design_bottom_sheet);
