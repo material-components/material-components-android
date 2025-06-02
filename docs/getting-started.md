@@ -5,7 +5,7 @@ section: docs
 path: /docs/getting-started/
 -->
 
-# Getting started with Material Components for Android
+# Getting started with Material components for Android
 
 ## 1. Migration guidance
 
@@ -90,9 +90,9 @@ for more information on Java 8 support and how to enable it for your app.
 
 ## 5. Gradle, AGP, and Android Studio
 
-When using MDC-Android version `1.13.0` and above, you will need to
-make sure your project is built with the following minimum requirements, in
-order to support the latest build features such as XML `macro`:
+When using MDC-Android version `1.13.0` and above, you will need to make sure
+your project is built with the following minimum requirements, in order to
+support the latest build features such as XML `macro`:
 
 -   [Gradle version 8.9](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
 -   [Android Gradle Plugin (AGP) version 8.7.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
@@ -124,6 +124,31 @@ an `AppCompat` or `MaterialComponents` theme and add some new theme attributes
 to your theme. See the
 [**AppCompat or MaterialComponents themes**](#appcompat-or-materialcomponents-themes)
 section for more details.
+
+### **`Material3Expressive` themes**
+
+**Note:** You must depend on library version `1.14.0-alpha01` or later to use
+`Theme.Material3Expressive.*` themes, which are required for
+`Widget.Material3Expressive.*` component styles.
+
+Here are the `Material3Expressive` themes you can use to get the latest
+component styles and theme-level attributes, as well as their `Material3`
+equivalents when applicable.
+
+`Material3Expressive`                                          | `Material3`
+-------------------------------------------------------------- | -----------
+`Theme.Material3Expressive.Light`                              | `Theme.Material3.Light`
+`Theme.Material3Expressive.Light.NoActionBar`                  | `Theme.Material3.Light.NoActionBar`
+`Theme.Material3Expressive.Dark`                               | `Theme.Material3.Dark`
+`Theme.Material3Expressive.Dark.NoActionBar`                   | `Theme.Material3.Dark.NoActionBar`
+`Theme.Material3Expressive.DayNight`                           | `Theme.Material3.DayNight`
+`Theme.Material3Expressive.DayNight.NoActionBar`               | `Theme.Material3.DayNight.NoActionBar`
+`Theme.Material3Expressive.DynamicColors.Light`                | `Theme.Material3.DynamicColors.Light`
+`Theme.Material3Expressive.DynamicColors.Light.NoActionBar`    | `Theme.Material3.DynamicColors.Light.NoActionBar`
+`Theme.Material3Expressive.DynamicColors.Dark`                 | `Theme.Material3.DynamicColors.Dark`
+`Theme.Material3Expressive.DynamicColors.Dark.NoActionBar`     | `Theme.Material3.DynamicColors.Dark.NoActionBar`
+`Theme.Material3Expressive.DynamicColors.DayNight`             | `Theme.Material3.DynamicColors.DayNight`
+`Theme.Material3Expressive.DynamicColors.DayNight.NoActionBar` | `Theme.Material3.DynamicColors.DayNight.NoActionBar`
 
 ### **`Material3` themes**
 
