@@ -45,7 +45,6 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       style="?attr/materialIconButtonFilledStyle"
-      app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small.Square"
       android:contentDescription="@string/cat_docked_toolbar_add_button_description"
       app:icon="@drawable/ic_add_24px" />
   </FrameLayout>

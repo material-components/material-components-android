@@ -45,7 +45,7 @@
   </style>
 
   <!-- Style for icon buttons within Standard Floating Toolbars. -->
-  <style name="Widget.Material3.FloatingToolbar.IconButton" parent="Widget.Material3Expressive.Button.IconButton.Tonal">
+  <style name="Widget.Material3.FloatingToolbar.IconButton" parent="Widget.Material3.Button.IconButton.Filled.Tonal">
     <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
     <item name="android:textColor">@color/m3_standard_toolbar_button_text_color_selector</item>
     <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>
@@ -54,7 +54,7 @@
   </style>
 
   <!-- Style for buttons within Standard Floating Toolbars. -->
-  <style name="Widget.Material3.FloatingToolbar.Button" parent="Widget.Material3Expressive.Button">
+  <style name="Widget.Material3.FloatingToolbar.Button" parent="Widget.Material3.Button">
     <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
     <item name="android:textColor">@color/m3_standard_toolbar_button_text_color_selector</item>
     <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>
@@ -62,7 +62,7 @@
   </style>
 
   <!-- Style for borderless text buttons within Standard Floating Toolbars. -->
-  <style name="Widget.Material3.FloatingToolbar.TextButton" parent="Widget.Material3Expressive.Button.TextButton">
+  <style name="Widget.Material3.FloatingToolbar.TextButton" parent="Widget.Material3.Button.TextButton">
     <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
     <item name="android:textColor">@color/m3_standard_toolbar_button_text_color_selector</item>
     <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>

@@ -19,8 +19,4 @@
   <public name="floatingToolbarVibrantStyle" type="attr"/>
   <public name="Widget.Material3.FloatingToolbar" type="style"/>
   <public name="Widget.Material3.FloatingToolbar.Vibrant" type="style"/>
-  <public name="Widget.Material3Expressive.FloatingToolbar" type="style"/>
-  <public name="Widget.Material3Expressive.FloatingToolbar.Vibrant" type="style"/>
-  <public name="Widget.Material3Expressive.FloatingToolbar.IconButton" type="style"/>
-  <public name="Widget.Material3Expressive.FloatingToolbar.IconButton.Vibrant" type="style"/>
 </resources>
