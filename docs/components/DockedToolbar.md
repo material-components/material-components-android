@@ -135,7 +135,7 @@ space to show all the items.
 When using `OverflowLinearLayout`, you should also set `app:layout_overflowText`
 on each child as that will be the text of the menu item that corresponds to the
 hidden child. Optionally, you can also set `app:layout_overflowIcon`. See
-[OverflowLinearLayout](https://github.com/material-components/material-components-android/tree/master//docs/components/Overflow.md)
+[OverflowLinearLayout](https://github.com/material-components/material-components-android/tree/master/docs/components/OverflowLinearLayout.md)
 for more info.
 
 Note: if the child view that is clickable is not a direct child of
