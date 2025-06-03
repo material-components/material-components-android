@@ -51,7 +51,7 @@ import androidx.annotation.Nullable;
  *         app:icon="@drawable/ic_edit_vd_theme_24dp"
  *         app:iconGravity="start"/&gt;
  *     &lt;Button
- *        style="?attr/materialIconSplitButtonFilledStyle"
+ *        style="?attr/materialSplitButtonIconFilledStyle"
  *        android:layout_width="wrap_content"
  *        android:layout_height="wrap_content"
  *        android:contentDescription="@string/split_button_label_chevron"
