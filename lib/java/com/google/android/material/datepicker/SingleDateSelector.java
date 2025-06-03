@@ -135,6 +135,11 @@ public class SingleDateSelector implements DateSelector<Long> {
     dateTextInput.setPlaceholderText(formatHint);
     if (selectedItem != null) {
       dateEditText.setText(format.format(selectedItem));
+      // Move the cursor to the end of the text field
+      CharSequence text = dateEditText.getText();
+      if (text != null) {
+        dateEditText.post(() -> dateEditText.setSelection(text.length()));
+      }
     }
 
     dateEditText.addTextChangedListener(
