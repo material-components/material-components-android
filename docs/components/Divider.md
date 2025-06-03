@@ -9,29 +9,67 @@ path: /catalog/dividers/
 
 # Dividers
 
-[Dividers](https://material.io/components/dividers) separate content into clear
-groups.
+[Dividers](https://m3.material.io/components/divider/overview) are thin lines
+that group content in lists or other containers. There are two variants of
+dividers.
 
-![Dividers in a layout](assets/dividers/divider_hero.png)
+<table>
+ <tr>
+   <td><img src="assets/dividers/divider_fullwidth.png" alt="divider with full width"></td>
+   <td><img src="assets/dividers/divider_inset.png" alt="Inset"></td>
+ </tr>
+ <tr>
+   <td style="text-align: center;">Full-width</td>
+   <td style="text-align: center;">Inset</td>
+ </tr>
+</table>
 
-**Contents**
-
-*   [Design and API Documentation](#design-and-api-documentation)
-*   [Using dividers](#using-dividers)
-*   [Divider's key properties](#key-properties)
-*   [Theming dividers](#theming-dividers)
-
-## Design and API Documentation
-
-*   [Google Material3 Spec](https://material.io/components/divider/overview)
-*   [API reference](https://developer.android.com/reference/com/google/android/material/divider/package-summary)
-
-## Using dividers
+**Note:** Images use various dynamic color schemes.
 
 Before you can use Material dividers, you need to add a dependency to the
-Material Components for Android library. For more information, go to the
+Material components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
+
+## Design & API documentation
+
+*   [Material 3 (M3) spec](https://m3.material.io/components/divider/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/divider/package-summary)
+
+## Anatomy
+
+![Anatomy of a divider](assets/dividers/divider_anatomy.png)
+
+1. Divider
+
+More details on anatomy items in the [component guidelines](https://m3.material.io/components/divider/guidelines#b56e93b4-b56d-4e12-bd9f-68ce55132cc4).
+
+## Key properties
+
+### Dividers attributes
+
+Element                 | Attribute               | Related method(s)                                                                    | Default value
+----------------------- | ----------------------- | ------------------------------------------------------------------------------------ | -------------
+**Thickness**           | `app:dividerThickness`  | `setDividerThickness`<br/>`setDividerThicknessResource`<br/>`getDividerThickness`    | `1dp` for the regular divider <br/> `8dp` for the heavy divider
+**Color**               | `app:dividerColor`      | `setDividerColor`<br/>`setDividerColorResource`<br/>`getDividerColor`                | `?attr/colorOutlineVariant`
+**Start inset**         | `app:dividerInsetStart` | `setDividerInsetStart`<br/>`setDividerInsetStartResource`<br/>`getDividerInsetStart` | `0dp`
+**End inset**           | `app:dividerInsetEnd`   | `setDividerInsetEnd`<br/>`setDividerInsetEndResource`<br/>`getDividerInsetEnd`       | `0dp`
+**Last item decorated** | `app:lastItemDecorated` | `setLastItemDecorated`<br/>`isLastItemDecorated`                                     | `true`
+
+### Styles
+
+Element           | Style
+----------------- | -------------------------------------------
+**Default style** | `Widget.Material3.MaterialDivider`
+
+Default style theme attribute: `?attr/materialDividerStyle`
+
+For the full list, see
+[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/res/values/styles.xml)
+and
+[attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/res/values/attrs.xml).
+
+## Code implementation
 
 ### `MaterialDivider`
 
@@ -76,7 +114,6 @@ Or in code:
 divider.setDividerInsetStart(insetStart)
 divider.setDividerInsetEnd(insetEnd)
 ```
-
 ### `MaterialDividerItemDecoration`
 
 API and source code:
@@ -91,7 +128,7 @@ to a `DividerItemDecoration`, that can be used as a divider between items of a
 
 A list with full-bleed dividers is displayed below:
 
-![Vertical list of five items with five gray dividers after each item](assets/dividers/divider_itemdecoration.png)
+<img src="assets/dividers/divider_itemdecoration.png" alt="Vertical list of five items with five gray dividers after each item" height="300">
 
 In code:
 
@@ -103,7 +140,7 @@ recyclerView.addItemDecoration(divider)
 By default, dividers will be full-bleed. To achieve the look of an inset or
 middle divider:
 
-![Vertical list of five items with five gray dividers that have a start inset](assets/dividers/divider_itemdecoration_inset.png)
+<img src="assets/dividers/divider_itemdecoration_inset.png" alt="Vertical list of five items with five gray dividers that have a start inset" height="300">
 
 In code:
 
@@ -114,7 +151,7 @@ divider.setDividerInsetEnd(insetEnd)
 
 Optionally, you can hide the last divider of a list:
 
-![Vertical list of five items with four gray dividers](assets/dividers/divider_itemdecoration_hiddendivider.png)
+<img src="assets/dividers/divider_itemdecoration_hiddendivider.png" alt="Vertical list of five items with four gray dividers" height="300">
 
 In code:
 
@@ -122,42 +159,18 @@ In code:
 divider.setLastItemDecorated(false)
 ```
 
-### Making dividers accessible
+## Making dividers accessible
 
 The divider is a decorative element. There are no special accessibility
 precautions for the divider.
 
-## Key properties
+## Customizing dividers
 
-### Dividers attributes
+### Theming dividers
 
-Element                 | Attribute               | Related method(s)                                                                    | Default value
------------------------ | ----------------------- | ------------------------------------------------------------------------------------ | -------------
-**Thickness**           | `app:dividerThickness`  | `setDividerThickness`<br/>`setDividerThicknessResource`<br/>`getDividerThickness`    | `1dp` for the regular divider <br/> `8dp` for the heavy divider
-**Color**               | `app:dividerColor`      | `setDividerColor`<br/>`setDividerColorResource`<br/>`getDividerColor`                | `?attr/colorOutlineVariant`
-**Start inset**         | `app:dividerInsetStart` | `setDividerInsetStart`<br/>`setDividerInsetStartResource`<br/>`getDividerInsetStart` | `0dp`
-**End inset**           | `app:dividerInsetEnd`   | `setDividerInsetEnd`<br/>`setDividerInsetEndResource`<br/>`getDividerInsetEnd`       | `0dp`
-**Last item decorated** | `app:lastItemDecorated` | `setLastItemDecorated`<br/>`isLastItemDecorated`                                     | `true`
+Dividers support the customization of color.
 
-### Styles
-
-Element           | Style
------------------ | -------------------------------------------
-**Default style** | `Widget.Material3.MaterialDivider`
-
-Default style theme attribute: `?attr/materialDividerStyle`
-
-See the full list of
-[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/res/values/styles.xml)
-and
-[attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/res/values/attrs.xml).
-
-## Theming dividers
-
-Dividers support
-[Material Theming](https://material.io/components/selection-controls#theming) and therefore can have their colors customized.
-
-### Divider theming example
+#### Divider theming example
 
 API and source code:
 
@@ -168,11 +181,11 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/divider/MaterialDividerItemDecoration)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/MaterialDividerItemDecoration.java)
 
-The following example shows a divider with Material Theming.
+The following example shows a divider with Material theming.
 
-![Pink full-bleed divider](assets/dividers/divider_theming.png)
+<img src="assets/dividers/divider_theming.png" alt="Pink full-bleed divider" width="850">
 
-#### Implementing divider theming
+##### Implementing divider theming
 
 Use theme attributes in `res/values/styles.xml`, which applies to all dividers
 and affects other components:
