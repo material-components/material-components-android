@@ -214,16 +214,16 @@ The rail provides a convenient container for anchoring a header view, such as a
 The header view can also be added or removed at runtime using the following
 methods:
 
-**Method**                               | **Description**
----------------------------------------- | ---------------
-`void addHeaderView(@NonNull View view)` | The specified header view will be attached to the NavigationRailView, so that it will appear at the top. If the view already has a header view attached to it, it will be removed first.
-`void removeHeaderView()`                | Detaches the current header view if any, from the Navigation Rail.
+| **Method**                               | **Description**                                                                                                                                                                          |
+|------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `void addHeaderView(@NonNull View view)` | The specified header view will be attached to the NavigationRailView, so that it will appear at the top. If the view already has a header view attached to it, it will be removed first. |
+| `void removeHeaderView()`                | Detaches the current header view if any, from the Navigation Rail.                                                                                                                       |
 
 The following methods can be used to manipulate the header view at runtime.
 
-**Method**                       | **Description**
--------------------------------- | ---------------
-`@Nullable view getHeaderView()` | Returns an instance of the header view associated with the Navigation Rail, null if none was currently attached.
+| **Method**                       | **Description**                                                                                                  |
+|----------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `@Nullable view getHeaderView()` | Returns an instance of the header view associated with the Navigation Rail, null if none was currently attached. |
 
 ### Expanding the Navigation Rail
 
@@ -237,9 +237,9 @@ Navigation rails are collapsed by default which animates into the expanded navig
 the navigation rail takes into account the size of the navigation rail (ie., through setting constraints in `ConstraintLayout` or layout weights) then the content will also be animated to shrink. This animation is taken care of by a [ChangeBounds Transition](https://developer.android.com/reference/android/transition/ChangeBounds); any animations during the expansion of the navigation rail should be 'turned off' as
 it could result in a strange animation due to the `Transition`.
 
-Collapsed Navigation Rail                                                  | Expanded Navigation Rail
--------------------------------------------------------------------------- | ------------------------
-![Collapsed navigation rail](assets/navigationrail/collapsed_nav_rail.png) | ![Expanded navigation rail](assets/navigationrail/expanded_nav_rail.png)
+| Collapsed Navigation Rail                                                  | Expanded Navigation Rail                                                 |
+|----------------------------------------------------------------------------|--------------------------------------------------------------------------|
+| ![Collapsed navigation rail](assets/navigationrail/collapsed_nav_rail.png) | ![Expanded navigation rail](assets/navigationrail/expanded_nav_rail.png) |
 
 ### Adding badges
 
@@ -340,22 +340,22 @@ The following is an anatomy diagram for the navigation rail:
 
 #### Container attributes
 
-**Element**                             | **Attribute**                         | **Related methods**                               | **Default value**
---------------------------------------- | ------------------------------------- | ------------------------------------------------- | -----------------
-**Color**                               | `app:backgroundTint`                  | N/A                                               | `?attr/colorSurface`
-**Elevation**                           | `app:elevation`                       | `setElevation`                                    | `0dp`
-**Fits system windows**                 | `android:fitsSystemWindows`           | `getFitsSystemWindows`<br/>`setFitsSystemWindows` | `true`
-**Padding top system window insets**    | `app:paddingTopSystemWindowInsets`    | N/A                                               | `null`
-**Padding bottom system window insets** | `app:paddingBottomSystemWindowInsets` | N/A                                               | `null`
-**Top margin**                          | `app:contentMarginTop`                | N/A                                               | N/A
-**Scrolling**                           | `app:scrollingEnabled`                | N/A                                               | `false`
+| **Element**                             | **Attribute**                         | **Related methods**                               | **Default value**    |
+|-----------------------------------------|---------------------------------------|---------------------------------------------------|----------------------|
+| **Color**                               | `app:backgroundTint`                  | N/A                                               | `?attr/colorSurface` |
+| **Elevation**                           | `app:elevation`                       | `setElevation`                                    | `0dp`                |
+| **Fits system windows**                 | `android:fitsSystemWindows`           | `getFitsSystemWindows`<br/>`setFitsSystemWindows` | `true`               |
+| **Padding top system window insets**    | `app:paddingTopSystemWindowInsets`    | N/A                                               | `null`               |
+| **Padding bottom system window insets** | `app:paddingBottomSystemWindowInsets` | N/A                                               | `null`               |
+| **Top margin**                          | `app:contentMarginTop`                | N/A                                               | N/A                  |
+| **Scrolling**                           | `app:scrollingEnabled`                | N/A                                               | `false`              |
 
 #### Header attributes
 
-**Element**              | **Attribute**            | **Related methods**                                        | **Default value**
------------------------- | ------------------------ | ---------------------------------------------------------- | -----------------
-**Header view**          | `app:headerLayout`       | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A
-**Header bottom margin** | `app:headerMarginBottom` | N/A                                                        | `8dp`
+| **Element**              | **Attribute**            | **Related methods**                                        | **Default value** |
+|--------------------------|--------------------------|------------------------------------------------------------|-------------------|
+| **Header view**          | `app:headerLayout`       | `addHeaderView`<br/>`removeHeaderView`<br/>`getHeaderView` | N/A               |
+| **Header bottom margin** | `app:headerMarginBottom` | N/A                                                        | `8dp`             |
 
 See the
 [FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)
@@ -363,46 +363,46 @@ for more attributes.
 
 #### Navigation Menu attributes
 
-**Element**      | **Attribute**                | **Related methods**                                         | **Default value**
----------------- | ---------------------------- | ----------------------------------------------------------- | -----------------
-**Menu gravity** | `app:menuGravity`            | `setMenuGravity`<br/>`getMenuGravity`                       | `TOP\|CENTER_HORIZONTAL`
-**Dividers**     | `app:submenuDividersEnabled` | `setSubmenuDividersEnabled`<br/>`getSubmenuDividersEnabled` | `false`
+| **Element**      | **Attribute**                | **Related methods**                                         | **Default value**        |
+|------------------|------------------------------|-------------------------------------------------------------|--------------------------|
+| **Menu gravity** | `app:menuGravity`            | `setMenuGravity`<br/>`getMenuGravity`                       | `TOP\|CENTER_HORIZONTAL` |
+| **Dividers**     | `app:submenuDividersEnabled` | `setSubmenuDividersEnabled`<br/>`getSubmenuDividersEnabled` | `false`                  |
 
 **Note:** If dividers are enabled, they will be between all submenus, which are only visible when expanded.
 
 #### Navigation item attributes
 
-**Element**                       | **Attribute**                | **Related methods**                                                 | **Default value**
---------------------------------- | ---------------------------- | ------------------------------------------------------------------- | -----------------
-**Menu resource**                 | `app:menu`                   | `inflateMenu`<br/>`getMenu`                                         | N/A
-**Ripple (inactive)**             | `app:itemRippleColor`        | `setItemRippleColor`<br/>`getItemRippleColor`                       | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
-**Ripple (active)**               | `app:itemRippleColor`        | `setItemRippleColor`<br/>`getItemRippleColor`                       | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml))
-**Label visibility mode**         | `app:labelVisibilityMode`    | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode`               | `LABEL_VISIBILITY_AUTO`
-**Item minimum height**           | `app:itemMinHeight`          | `setItemMinimumHeight`<br/>`getItemMinimumHeight`                   | `NO_ITEM_MINIMUM_HEIGHT`
-**Collapsed item minimum height** | `app:collapsedItemMinHeight` | `setCollapsedItemMinimumHeight`<br/>`getCollapsedItemMinimumHeight` | `NO_ITEM_MINIMUM_HEIGHT`
-**Expanded item minimum height**  | `app:expandedItemMinHeight`  | `setExpandedItemMinimumHeight`<br/>`getExpandedItemMinimumHeight`   | `NO_ITEM_MINIMUM_HEIGHT`
-**Item spacing**                  | `app:itemSpacing`            | `setItemSpacing`<br/>`getItemSpacing`                               | `0dp`
-**Item Gravity**                  | `app:itemGravity`            | `setItemGravity`<br/>`getItemGravity`                               | `TOP_CENTER`
+| **Element**                       | **Attribute**                | **Related methods**                                                 | **Default value**                                                                                                                                                                                                                                         |
+|-----------------------------------|------------------------------|---------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Menu resource**                 | `app:menu`                   | `inflateMenu`<br/>`getMenu`                                         | N/A                                                                                                                                                                                                                                                       |
+| **Ripple (inactive)**             | `app:itemRippleColor`        | `setItemRippleColor`<br/>`getItemRippleColor`                       | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml)) |
+| **Ripple (active)**               | `app:itemRippleColor`        | `setItemRippleColor`<br/>`getItemRippleColor`                       | `?attr/colorPrimary` at 12% (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/res/color/mtrl_navigation_bar_ripple_color.xml)) |
+| **Label visibility mode**         | `app:labelVisibilityMode`    | `setLabelVisibilityMode`<br/>`getLabelVisibilityMode`               | `LABEL_VISIBILITY_AUTO`                                                                                                                                                                                                                                   |
+| **Item minimum height**           | `app:itemMinHeight`          | `setItemMinimumHeight`<br/>`getItemMinimumHeight`                   | `NO_ITEM_MINIMUM_HEIGHT`                                                                                                                                                                                                                                  |
+| **Collapsed item minimum height** | `app:collapsedItemMinHeight` | `setCollapsedItemMinimumHeight`<br/>`getCollapsedItemMinimumHeight` | `NO_ITEM_MINIMUM_HEIGHT`                                                                                                                                                                                                                                  |
+| **Expanded item minimum height**  | `app:expandedItemMinHeight`  | `setExpandedItemMinimumHeight`<br/>`getExpandedItemMinimumHeight`   | `NO_ITEM_MINIMUM_HEIGHT`                                                                                                                                                                                                                                  |
+| **Item spacing**                  | `app:itemSpacing`            | `setItemSpacing`<br/>`getItemSpacing`                               | `0dp`                                                                                                                                                                                                                                                     |
+| **Item Gravity**                  | `app:itemGravity`            | `setItemGravity`<br/>`getItemGravity`                               | `TOP_CENTER`                                                                                                                                                                                                                                              |
 
 **Note:** If there's not enough room, `itemMinHeight` and `itemSpacing` may not be respected in order to fit the items.
 
 #### Active indicator attributes
 
-**Element**                             | **Attribute**                              | **Related methods**                                                                                   | **Default value**
---------------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------------------------------- | -----------------
-**Color**                               | `android:color`                            | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                                       | `?attr/colorSecondaryContainer`
-**Width**                               | `android:width`                            | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                                       | `56dp`
-**Height**                              | `android:height`                           | `setItemActiveIndicatorHeight`<br/>`getItemActiveIndicatorHeight`                                     | `32dp`
-**Shape**                               | `app:shapeAppearance`                      | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`                   | `50% rounded`
-**Margin horizontal**                   | `app:marginHorizontal`                     | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal`                 | `4dp`
-**Padding between indicator and label** | `app:activeIndicatorLabelPadding`          | `setActiveIndicatorLabelPadding` <br/> `getActiveIndicatorLabelPadding`                               | `4dp`
-**Expanded Width**                      | `expandedWidth`                            | `setItemExpandedActiveIndicatorWidth`<br/>`getItemExpandedActiveIndicatorWidth`                       | `HUG`
-**Expanded Height**                     | `expandedHeight`                           | `setItemExpandedActiveIndicatorHeight`<br/>`getItemExpandedActiveIndicatorHeight`                     | `56dp`
-**Expanded Margin horizontal**          | `app:expandedMarginHorizontal`             | `setItemExpandedActiveIndicatorMarginHorizontal`<br/>`getItemExpandedActiveIndicatorMarginHorizontal` | `20dp`
-**Expanded Start Padding**              | `app:expandedActiveIndicatorPaddingStart`  | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`
-**Expanded End Padding**                | `app:expandedActiveIndicatorPaddingEnd`    | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`
-**Expanded Top Padding**                | `app:expandedActiveIndicatorPaddingTop`    | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`
-**Expanded Start Padding**              | `app:expandedActiveIndicatorPaddingBottom` | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`
+| **Element**                             | **Attribute**                              | **Related methods**                                                                                   | **Default value**               |
+|-----------------------------------------|--------------------------------------------|-------------------------------------------------------------------------------------------------------|---------------------------------|
+| **Color**                               | `android:color`                            | `setItemActiveIndicatorColor`<br/>`getItemActiveIndicatorColor`                                       | `?attr/colorSecondaryContainer` |
+| **Width**                               | `android:width`                            | `setItemActiveIndicatorWidth`<br/>`getItemActiveIndicatorWidth`                                       | `56dp`                          |
+| **Height**                              | `android:height`                           | `setItemActiveIndicatorHeight`<br/>`getItemActiveIndicatorHeight`                                     | `32dp`                          |
+| **Shape**                               | `app:shapeAppearance`                      | `setItemActiveIndicatorShapeAppearance`<br/>`getItemActiveIndicatorShapeAppearance`                   | `50% rounded`                   |
+| **Margin horizontal**                   | `app:marginHorizontal`                     | `setItemActiveIndicatorMarginHorizontal`<br/>`getItemActiveIndicatorMarginHorizontal`                 | `4dp`                           |
+| **Padding between indicator and label** | `app:activeIndicatorLabelPadding`          | `setActiveIndicatorLabelPadding` <br/> `getActiveIndicatorLabelPadding`                               | `4dp`                           |
+| **Expanded Width**                      | `app:expandedWidth`                        | `setItemActiveIndicatorExpandedWidth`<br/>`getItemActiveIndicatorExpandedWidth`                       | `HUG`                           |
+| **Expanded Height**                     | `app:expandedHeight`                       | `setItemActiveIndicatorExpandedHeight`<br/>`getItemActiveIndicatorExpandedHeight`                     | `56dp`                          |
+| **Expanded Margin horizontal**          | `app:expandedMarginHorizontal`             | `setItemActiveIndicatorExpandedMarginHorizontal`<br/>`getItemActiveIndicatorExpandedMarginHorizontal` | `20dp`                          |
+| **Expanded Start Padding**              | `app:expandedActiveIndicatorPaddingStart`  | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`                          |
+| **Expanded End Padding**                | `app:expandedActiveIndicatorPaddingEnd`    | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`                          |
+| **Expanded Top Padding**                | `app:expandedActiveIndicatorPaddingTop`    | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`                          |
+| **Expanded Bottom Padding**             | `app:expandedActiveIndicatorPaddingBottom` | `setItemExpandedActiveIndicatorPadding`                                                               | `16dp`                          |
 
 **Note:** The expanded active indicator refers to the active indicator that
 expands to wrap the content of the Navigation Rail item when the
@@ -410,33 +410,33 @@ expands to wrap the content of the Navigation Rail item when the
 
 #### Icon attributes
 
-**Element**                       | **Attribute**                         | **Related methods**                                                 | **Default value**
---------------------------------- | ------------------------------------- | ------------------------------------------------------------------- | -----------------
-**Icon**                          | `android:icon` in the `menu` resource | N/A                                                                 | N/A
-**Size**                          | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize`    | `24dp`
-**Color (inactive)**              | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                     | `?attr/colorOnSurfaceVariant`
-**Color (active)**                | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                     | `?attr/colorOnSecondaryContainer`
-**Gravity**                       | `app:itemIconGravity`                 | `setItemIconGravity`<br/>`getItemIconGravity`                       | `TOP`
-**Icon label horizontal padding** | `app:iconLabelHorizontalSpacing`      | `setIconLabelHorizontalSpacing`<br/>`getIconLabelHorizontalSpacing` | `8dp`
+| **Element**                       | **Attribute**                         | **Related methods**                                                 | **Default value**                 |
+|-----------------------------------|---------------------------------------|---------------------------------------------------------------------|-----------------------------------|
+| **Icon**                          | `android:icon` in the `menu` resource | N/A                                                                 | N/A                               |
+| **Size**                          | `app:itemIconSize`                    | `setItemIconSize`<br/>`setItemIconSizeRes`<br/>`getItemIconSize`    | `24dp`                            |
+| **Color (inactive)**              | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                     | `?attr/colorOnSurfaceVariant`     |
+| **Color (active)**                | `app:itemIconTint`                    | `setItemIconTintList`<br/>`getItemIconTintList`                     | `?attr/colorOnSecondaryContainer` |
+| **Gravity**                       | `app:itemIconGravity`                 | `setItemIconGravity`<br/>`getItemIconGravity`                       | `TOP`                             |
+| **Icon label horizontal padding** | `app:iconLabelHorizontalSpacing`      | `setIconLabelHorizontalSpacing`<br/>`getIconLabelHorizontalSpacing` | `8dp`                             |
 
 #### Text label attributes
 
-**Element**               | **Attribute**                                                                   | **Related methods**                                                                                                                                             | **Default value**
-------------------------- | ------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- | -----------------
-**Text label**            | `android:title` in the `menu` resource                                          | N/A                                                                                                                                                             | N/A
-**Color (inactive)**      | `app:itemTextColor`                                                             | `setItemTextColor`<br/>`getItemTextColor`                                                                                                                       | `?attr/colorOnSurfaceVariant`
-**Color (active)**        | `app:itemTextColor`                                                             | `setItemTextColor`<br/>`getItemTextColor`                                                                                                                       | `?attr/colorOnSurface`
-**Typography (inactive)** | `app:itemTextAppearanceInactive`<br/>`app:horizontalItemTextAppearanceInactive` | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive`<br/>`setHorizontalItemTextAppearanceInactive`<br/>`getHorizontalItemTextAppearanceInactive` | `?attr/textAppearanceTitleSmall` for regular item configuration, `?attr/textAppearanceLabelLarge` for horizontal
-**Typography (active)**   | `app:itemTextAppearanceActive`<br/>`app:horizontalItemTextAppearanceActive`     | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`<br/>`setHorizontalItemTextAppearanceActive`<br/>`getHorizontalItemTextAppearanceActive`         | `?attr/textAppearanceTitleSmall` for regular item configuration, `?attr/textAppearanceLabelLarge` for horizontal
-**Typography (active)**   | `app:itemTextAppearanceActiveBoldEnabled`                                       | `setItemTextAppearanceActiveBoldEnabled`                                                                                                                        | `true`
-**Max lines**             | `app:labelMaxLines`                                                             | `setLabelMaxLines`<br/>`getLabelMaxLines`                                                                                                                       | `1`
-**Scale with font size**  | `app:scaleLabelWithFontSize`                                                    | `setScaleLabelTextWithFont`<br/>`getScaleLabelTextWithFont`                                                                                                     | `false`
+| **Element**               | **Attribute**                                                                   | **Related methods**                                                                                                                                             | **Default value**                                                                                                |
+|---------------------------|---------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| **Text label**            | `android:title` in the `menu` resource                                          | N/A                                                                                                                                                             | N/A                                                                                                              |
+| **Color (inactive)**      | `app:itemTextColor`                                                             | `setItemTextColor`<br/>`getItemTextColor`                                                                                                                       | `?attr/colorOnSurfaceVariant`                                                                                    |
+| **Color (active)**        | `app:itemTextColor`                                                             | `setItemTextColor`<br/>`getItemTextColor`                                                                                                                       | `?attr/colorOnSurface`                                                                                           |
+| **Typography (inactive)** | `app:itemTextAppearanceInactive`<br/>`app:horizontalItemTextAppearanceInactive` | `setItemTextAppearanceInactive`<br/>`getItemTextAppearanceInactive`<br/>`setHorizontalItemTextAppearanceInactive`<br/>`getHorizontalItemTextAppearanceInactive` | `?attr/textAppearanceTitleSmall` for regular item configuration, `?attr/textAppearanceLabelLarge` for horizontal |
+| **Typography (active)**   | `app:itemTextAppearanceActive`<br/>`app:horizontalItemTextAppearanceActive`     | `setItemTextAppearanceActive`<br/>`getItemTextAppearanceActive`<br/>`setHorizontalItemTextAppearanceActive`<br/>`getHorizontalItemTextAppearanceActive`         | `?attr/textAppearanceTitleSmall` for regular item configuration, `?attr/textAppearanceLabelLarge` for horizontal |
+| **Typography (active)**   | `app:itemTextAppearanceActiveBoldEnabled`                                       | `setItemTextAppearanceActiveBoldEnabled`                                                                                                                        | `true`                                                                                                           |
+| **Max lines**             | `app:labelMaxLines`                                                             | `setLabelMaxLines`<br/>`getLabelMaxLines`                                                                                                                       | `1`                                                                                                              |
+| **Scale with font size**  | `app:scaleLabelWithFontSize`                                                    | `setScaleLabelTextWithFont`<br/>`getScaleLabelTextWithFont`                                                                                                     | `false`                                                                                                          |
 
 #### Styles
 
-**Element**       | **Style**                             | **Container color**  | **Icon/Text label color (inactive)** | **Icon/Text label color (active)**
------------------ | ------------------------------------- | -------------------- | ------------------------------------ | ----------------------------------
-**Default style** | `Widget.Material3.NavigationRailView` | `?attr/colorSurface` | `?attr/colorOnSurfaceVariant`        | `?attr/colorOnSurface`<br/>`?attr/colorOnSecondaryContainer`
+| **Element**       | **Style**                             | **Container color**  | **Icon/Text label color (inactive)** | **Icon/Text label color (active)**                           |
+|-------------------|---------------------------------------|----------------------|--------------------------------------|--------------------------------------------------------------|
+| **Default style** | `Widget.Material3.NavigationRailView` | `?attr/colorSurface` | `?attr/colorOnSurfaceVariant`        | `?attr/colorOnSurface`<br/>`?attr/colorOnSecondaryContainer` |
 
 Default style theme attribute: `?attr/navigationRailStyle`
 
