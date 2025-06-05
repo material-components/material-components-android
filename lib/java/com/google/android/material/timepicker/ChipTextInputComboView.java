@@ -32,6 +32,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -123,7 +124,18 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     chip.setText(formattedText);
     if (!isEmpty(formattedText)) {
       editText.removeTextChangedListener(watcher);
+
       editText.setText(formattedText);
+      editText.setAccessibilityDelegate(
+          new AccessibilityDelegate() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                @NonNull View host, @NonNull AccessibilityNodeInfo info) {
+              super.onInitializeAccessibilityNodeInfo(host, info);
+              info.setText(formattedText);
+            }
+          });
+
       editText.addTextChangedListener(watcher);
     }
   }
