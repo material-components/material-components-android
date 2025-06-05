@@ -1,5 +1,5 @@
 <!--docs:
-title: "Material selection controls: Switches"
+title: "Switch"
 layout: detail
 section: components
 excerpt: "Selection controls allow the user to select options."
@@ -7,36 +7,33 @@ iconId: switch
 path: /catalog/switches/
 -->
 
-# Selection controls: switches
-
-[Selection controls](https://material.io/components/selection-controls#usage)
-allow the user to select options.
+# Switch
 
 [Switches](https://m3.material.io/components/switch/overview) toggle the state
 of a single setting on or off. They are the preferred way to adjust settings on
 mobile devices.
+[Selection controls](https://m3.material.io/components/#selection) allow the
+user to select options.
 
 ![White "Settings" menu with purple header and switches to turn on options, such
 as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
 
-**Contents**
+**Note:** Images use various dynamic color schemes.
 
-*   [Design and API Documentation](#design-and-api-documentation)
-*   [Using switches](#using-switches)
-*   [Switch](#switch)
-*   [Theming switches](#theming-switches)
-
-## Design and API Documentation
-
-*   [Google Material3 Spec](https://material.io/components/switch/overview)
-*   [API Reference](https://developer.android.com/reference/com/google/android/material/switchmaterial/package-summary)
-
-## Using switches
+A `Switch` represents a button with two states, on and off. Switches are most
+often used on mobile devices to enable and disable options in an options menu. A
+switch consists of a track and thumb; the thumb moves along the track to
+indicate its current state.
 
 Before you can use Material switches, you need to add a dependency on the
-Material Components for Android library. For more information, go to the
+Material components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
+
+Use switch to:
+
+*   Toggle a single item on or off, on mobile and tablet
+*   Immediately activate or deactivate something
 
 **Note:** The `MaterialSwitch` widget provides a complete implementation of
 Material Design's switch component. It extends from the support library's
@@ -44,96 +41,27 @@ Material Design's switch component. It extends from the support library's
 does not auto-inflate, unlike other selection controls, and must be explicitly
 specified in layouts.
 
-Use switches to:
-
-*   Toggle a single item on or off, on mobile and tablet
-*   Immediately activate or deactivate something
-
-### Making switches accessible
-
-Switches support content labeling for accessibility and are readable by most
-screen readers, such as TalkBack. Text rendered in switches is automatically
-provided to accessibility services. Additional content labels are usually
-unnecessary.
-
-## Switch
-
-A `Switch` represents a button with two states, on and off. Switches are most
-often used on mobile devices to enable and disable options in an options menu. A
-switch consists of a track and thumb; the thumb moves along the track to
-indicate its current state.
-
-API and source code:
-
-*   `MaterialSwitch`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/materialswitch/MaterialSwitch)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/materialswitch/MaterialSwitch.java)
-
-**Note:** Since version 1.7.0, the new `MaterialSwitch` class will replace the
-obsolete `SwitchMaterial` class. In most cases you should be able to just
-replace all `SwitchMaterial` class reference with `MaterialSwitch` to achieve
-the default look and feel. Please refer to the following sections if you need to
-customize the new styles.
-
 **Note:** For the old `SwitchMaterial` documentation, please refer to
 [Switch (deprecated)](#switch-deprecated) and
-[Theming switches (deprecated)](#theming-switches-deprecated).
+[Theming switch (deprecated)](#theming-switch-deprecated).
 
-### Switches example
+## Design & API documentation
 
-The following example shows a list of five switches.
+*   [Material 3 (M3) spec](https://m3.material.io/components/switch/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/switchmaterial/package-summary)
 
-![Example of 5 switches, the first one is toggled and the last one is disabled.](assets/switch/switch_example.png)
-
-In the layout:
-
-```xml
-<com.google.android.material.materialswitch.MaterialSwitch
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:checked="true"
-    android:text="@string/label_1"/>
-<com.google.android.material.materialswitch.MaterialSwitch
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:text="@string/label_2"/>
-<com.google.android.material.materialswitch.MaterialSwitch
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:text="@string/label_3"/>
-<com.google.android.material.materialswitch.MaterialSwitch
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:text="@string/label_4"/>
-<com.google.android.material.materialswitch.MaterialSwitch
-    android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    android:enabled="false"
-    android:text="@string/label_5"/>
-```
-
-In code:
-
-```kt
-// To check a switch
-materialSwitch.isChecked = true
-
-// To listen for a switch's checked/unchecked state changes
-materialSwitch.setOnCheckedChangeListener { buttonView, isChecked
-    // Responds to switch being checked/unchecked
-}
-```
-
-## Anatomy and key properties
-
-The following is an anatomy diagram that shows a switch thumb and a switch
-track:
+## Anatomy
 
 ![Switch anatomy diagram](assets/switch/switch_anatomy.png)
 
 1.  Track
-2.  Thumb
-3.  Icon (optional)
+2.  Handle (formerly "thumb")
+3.  Icon
+
+More details on anatomy items in the
+[component guidelines](https://m3.material.io/components/switch/guidelines#9f55e13e-1327-4edf-9b81-6fa97db45bdd).
+
+## Key properties
 
 ### Switch attributes
 
@@ -194,24 +122,88 @@ Element           | Style
 
 Default style theme attribute: `?attr/materialSwitchStyle`
 
-See the full list of
+For the full list, see
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/materialswitch/res/values/styles.xml)
 and
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/materialswitch/res/values/attrs.xml).
 
-## Theming switches
+## Code implementation
 
-Switches support
-[Material Theming](https://material.io/components/selection-controls#theming),
-which can customize color and typography.
+The following example shows a list of five switches.
 
-### Switch theming example
+<img src="assets/switch/switch_example.png" alt="Example of 5 switches, the first one is toggled and the last one is disabled." height="350"/>
 
-The following example shows a list of switches with Material Theming.
+In the layout:
 
-!["5 switches with brown text: first switch is on and has pink thumb and track"](assets/switch/switch_theming.png)
+```xml
+<com.google.android.material.materialswitch.MaterialSwitch
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:checked="true"
+    android:text="@string/label_1"/>
+<com.google.android.material.materialswitch.MaterialSwitch
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:text="@string/label_2"/>
+<com.google.android.material.materialswitch.MaterialSwitch
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:text="@string/label_3"/>
+<com.google.android.material.materialswitch.MaterialSwitch
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:text="@string/label_4"/>
+<com.google.android.material.materialswitch.MaterialSwitch
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:enabled="false"
+    android:text="@string/label_5"/>
+```
 
-#### Implementing switch theming
+In code:
+
+```kt
+// To check a switch
+materialSwitch.isChecked = true
+
+// To listen for a switch's checked/unchecked state changes
+materialSwitch.setOnCheckedChangeListener { buttonView, isChecked
+    // Responds to switch being checked/unchecked
+}
+```
+
+## Making switch accessible
+
+Switches support content labeling for accessibility and are readable by most
+screen readers, such as Talkback. Text rendered in switches is automatically
+provided to accessibility services. Additional content labels are usually
+unnecessary.
+
+## Customizing switch
+
+### Theming switch
+
+Switch supports the customization of color and typography.
+
+#### Switch theming example
+
+API and source code:
+
+*   `MaterialSwitch`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/materialswitch/MaterialSwitch)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/materialswitch/MaterialSwitch.java)
+
+**Note:** Since version 1.7.0, the new `MaterialSwitch` class will replace the
+obsolete `SwitchMaterial` class. In most cases you should be able to just
+replace all `SwitchMaterial` class reference with `MaterialSwitch` to achieve
+the default look and feel. Please refer to the following sections if you need to
+customize the new styles.
+
+The following example shows a list of switches with Material theming.
+
+<img src="assets/switch/switch_theming.png" alt="5 switches with brown text: first switch is on and has pink thumb and track" height="350"/>
+
+##### Implementing switch theming
 
 Use theme attributes in `res/values/styles.xml`, which applies to all switches
 and affects other components:
@@ -253,19 +245,12 @@ Use the styles in the layout, which affects only this switch:
     />
 ```
 
-## Switch (deprecated)
-
-### Switches example (deprecated)
-
-API and source code:
-
-*   `SwitchMaterial`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/switchmaterial/SwitchMaterial)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/switchmaterial/SwitchMaterial.java)
+<details>
+<summary><h2 id="switch-deprecated">Switch (deprecated)</h2></summary>
 
 The following example shows a list of five switches.
 
-![Example of 5 switches, the first one is toggled and the last one is disabled.](assets/switch/switch_example_deprecated.png)
+<img src="assets/switch/switch_example_deprecated.png" alt="Example of 5 switches, the first one is toggled and the last one is disabled." height="350"/>
 
 In the layout:
 
@@ -306,17 +291,16 @@ switchmaterial.setOnCheckedChangeListener { buttonView, isChecked
 }
 ```
 
-## Anatomy and key properties (deprecated)
+### Anatomy
 
-The following is an anatomy diagram that shows a switch thumb and a switch
-track:
-
-![Switch anatomy diagram](assets/switch/switch_anatomy_deprecated.png)
+<img src="assets/switch/switch_anatomy_deprecated.png" alt="Switch anatomy deprecated diagram" width="500"/>
 
 1.  Thumb
 2.  Track
 
-### Switch attributes (deprecated)
+### Key properties
+
+#### Switch attributes
 
 Element                    | Attribute                                  | Related method(s)                                          | Default value
 -------------------------- | ------------------------------------------ | ---------------------------------------------------------- | -------------
@@ -336,7 +320,7 @@ with a custom drawable that should not be tinted, set
     />
 ```
 
-### Thumb attributes (deprecated)
+#### Thumb attributes
 
 Element       | Attribute       | Related method(s)                         | Default value
 ------------- | --------------- | ----------------------------------------- | -------------
@@ -344,14 +328,14 @@ Element       | Attribute       | Related method(s)                         | De
 **Color**     | `app:thumbTint` | `setThumbTintList`<br/>`getThumbTintList` | `?attr/colorOnSurface` (unchecked)<br/>`?attr/colorPrimary` (checked)
 **Elevation** | N/A             | N/A                                       | `4dp`
 
-### Track attributes (deprecated)
+#### Track attributes
 
 Element   | Attribute       | Related method(s)                         | Default value
 --------- | --------------- | ----------------------------------------- | -------------
 **Track** | `app:track`     | `setTrackDrawable`<br/>`getTrackDrawable` | inherits from `SwitchCompat`
 **Color** | `app:trackTint` | `setTrackTintList`<br/>`getTrackTintList` | `?attr/colorOutline` (unchecked)<br/>`?attr/colorPrimaryContainer` (checked)
 
-### Text label attributes (deprecated)
+#### Text label attributes
 
 Element        | Attribute                | Related method(s)                  | Default value
 -------------- | ------------------------ | ---------------------------------- | -------------
@@ -359,7 +343,7 @@ Element        | Attribute                | Related method(s)                  |
 **Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColors` | `?android:attr/textColorPrimaryDisableOnly`
 **Typography** | `android:textAppearance` | `setTextAppearance`                | `?attr/textAppearanceBodyMedium`
 
-### Switch states (deprecated)
+#### Switch states
 
 Switches can be on or off. Switches have enabled, hover, focused, and pressed
 states.
@@ -372,7 +356,7 @@ For desktop, the radial reaction isn't needed.
 ![Switch states in an array. Columns are enabled, disabled, hover, focused,
 pressed. Rows are on or off](assets/switch/switch_states_deprecated.png)
 
-### Styles (deprecated)
+#### Styles
 
 Element           | Style
 ----------------- | ----------------------------------------
@@ -380,18 +364,16 @@ Element           | Style
 
 Default style theme attribute: `?attr/switchStyle`
 
-See the full list of
+For the full list, see
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/switchmaterial/res/values/styles.xml)
 and
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/switchmaterial/res/values/attrs.xml).
 
-## Theming switches (deprecated)
+<h3 id="theming-switch-deprecated"> Theming switch</h3>
 
-Switches support
-[Material Theming](https://material.io/components/selection-controls#theming),
-which can customize color and typography.
+Switch supports the customization of color and typography.
 
-### Switch theming example (deprecated)
+#### Switch theming example
 
 API and source code:
 
@@ -399,11 +381,11 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/switchmaterial/SwitchMaterial)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/switchmaterial/SwitchMaterial.java)
 
-The following example shows a list of switches with Material Theming.
+The following example shows a list of switches with Material theming.
 
-!["5 switches with brown text: first switch is on and has pink thumb and track"](assets/switch/switch_theming_deprecated.png)
+<img src="assets/switch/switch_theming_deprecated.png" alt="5 switches with brown text: first switch is on and has pink thumb and track" height="350"/>
 
-#### Implementing switch theming (deprecated)
+##### Implementing switch theming
 
 Use theme attributes in `res/values/styles.xml`, which applies to all switches
 and affects other components:
@@ -444,3 +426,5 @@ Use the styles in the layout, which affects only this switch:
     style="@style/Widget.App.Switch"
     />
 ```
+
+</details>
