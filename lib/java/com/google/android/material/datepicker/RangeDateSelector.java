@@ -238,7 +238,7 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
       // Move the cursor to the end of the text field
       CharSequence text = startEditText.getText();
       if (text != null) {
-        startEditText.post(() -> startEditText.setSelection(text.length()));
+        startEditText.setSelection(text.length());
       }
     }
     if (selectedEndItem != null) {

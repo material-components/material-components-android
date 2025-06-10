@@ -138,7 +138,7 @@ public class SingleDateSelector implements DateSelector<Long> {
       // Move the cursor to the end of the text field
       CharSequence text = dateEditText.getText();
       if (text != null) {
-        dateEditText.post(() -> dateEditText.setSelection(text.length()));
+        dateEditText.setSelection(text.length());
       }
     }
 
