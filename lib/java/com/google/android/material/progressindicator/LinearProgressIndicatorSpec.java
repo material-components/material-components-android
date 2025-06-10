@@ -48,7 +48,7 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
 
   boolean drawHorizontallyInverse;
 
-  /** The size of the stop indicator at the end of the track. */
+  /** The desired size of the stop indicator at the end of the track. */
   @Px public int trackStopIndicatorSize;
 
   /** The padding of the stop indicator at the end of the track. */
@@ -102,9 +102,7 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
             R.styleable.LinearProgressIndicator_indicatorDirectionLinear,
             LinearProgressIndicator.INDICATOR_DIRECTION_LEFT_TO_RIGHT);
     trackStopIndicatorSize =
-        min(
-            a.getDimensionPixelSize(R.styleable.LinearProgressIndicator_trackStopIndicatorSize, 0),
-            trackThickness);
+        a.getDimensionPixelSize(R.styleable.LinearProgressIndicator_trackStopIndicatorSize, 0);
     if (a.hasValue(R.styleable.LinearProgressIndicator_trackStopIndicatorPadding)) {
       trackStopIndicatorPadding =
           a.getDimensionPixelSize(R.styleable.LinearProgressIndicator_trackStopIndicatorPadding, 0);
@@ -141,6 +139,11 @@ public final class LinearProgressIndicatorSpec extends BaseProgressIndicatorSpec
         : useRelativeTrackInnerCornerRadius
             ? (int) (trackThickness * trackInnerCornerRadiusFraction)
             : trackInnerCornerRadius;
+  }
+
+  @Px
+  int getActualTrackStopIndicatorSize() {
+    return min(trackStopIndicatorSize, trackThickness);
   }
 
   @Override

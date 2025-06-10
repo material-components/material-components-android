@@ -58,8 +58,7 @@ import java.util.Objects;
  * developer guidance</a> and <a
  * href="https://material.io/components/progress-indicators/overview">design guidelines</a>.
  */
-public class LinearProgressIndicator
-    extends BaseProgressIndicator<LinearProgressIndicatorSpec> {
+public class LinearProgressIndicator extends BaseProgressIndicator<LinearProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_LinearProgressIndicator;
 
   /**
@@ -122,11 +121,11 @@ public class LinearProgressIndicator
     int contentHeight = h - (getPaddingTop() + getPaddingBottom());
     Drawable drawable = getIndeterminateDrawable();
     if (drawable != null) {
-      drawable.setBounds(/*left=*/ 0, /*top=*/ 0, contentWidth, contentHeight);
+      drawable.setBounds(/* left= */ 0, /* top= */ 0, contentWidth, contentHeight);
     }
     drawable = getProgressDrawable();
     if (drawable != null) {
-      drawable.setBounds(/*left=*/ 0, /*top=*/ 0, contentWidth, contentHeight);
+      drawable.setBounds(/* left= */ 0, /* top= */ 0, contentWidth, contentHeight);
     }
   }
 
@@ -244,7 +243,7 @@ public class LinearProgressIndicator
    */
   public void setTrackStopIndicatorSize(@Px int trackStopIndicatorSize) {
     if (spec.trackStopIndicatorSize != trackStopIndicatorSize) {
-      spec.trackStopIndicatorSize = min(trackStopIndicatorSize, spec.trackThickness);
+      spec.trackStopIndicatorSize = trackStopIndicatorSize;
       spec.validateSpec();
       invalidate();
     }
