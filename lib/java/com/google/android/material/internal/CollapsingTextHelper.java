@@ -72,6 +72,8 @@ public final class CollapsingTextHelper {
 
   private static final float FADE_MODE_THRESHOLD_FRACTION_RELATIVE = 0.5f;
 
+  private static final float MIN_EXPANDED_COLLAPSED_TEXT_SIZE = 0.1f;
+
   private static final boolean DEBUG_DRAW = false;
   @Nullable private static final Paint DEBUG_DRAW_PAINT;
 
@@ -452,18 +454,15 @@ public final class CollapsingTextHelper {
   public void setCollapsedTextAppearance(int resId) {
     TextAppearance textAppearance = new TextAppearance(view.getContext(), resId);
 
-    if (textAppearance.getTextColor() != null) {
-      collapsedTextColor = textAppearance.getTextColor();
-    }
-    if (textAppearance.getTextSize() != 0) {
-      collapsedTextSize = textAppearance.getTextSize();
-    }
-    if (textAppearance.shadowColor != null) {
-      collapsedShadowColor = textAppearance.shadowColor;
-    }
+    collapsedTextSize = textAppearance.getTextSize() > 0
+        ? textAppearance.getTextSize()
+        : MIN_EXPANDED_COLLAPSED_TEXT_SIZE;
+
+    collapsedTextColor = textAppearance.getTextColor();
     collapsedShadowDx = textAppearance.shadowDx;
     collapsedShadowDy = textAppearance.shadowDy;
     collapsedShadowRadius = textAppearance.shadowRadius;
+    collapsedShadowColor = textAppearance.shadowColor;
     collapsedLetterSpacing = textAppearance.letterSpacing;
 
     // Cancel pending async fetch, if any, and replace with a new one.
@@ -486,18 +485,16 @@ public final class CollapsingTextHelper {
 
   public void setExpandedTextAppearance(int resId) {
     TextAppearance textAppearance = new TextAppearance(view.getContext(), resId);
-    if (textAppearance.getTextColor() != null) {
-      expandedTextColor = textAppearance.getTextColor();
-    }
-    if (textAppearance.getTextSize() != 0) {
-      expandedTextSize = textAppearance.getTextSize();
-    }
-    if (textAppearance.shadowColor != null) {
-      expandedShadowColor = textAppearance.shadowColor;
-    }
+
+    expandedTextSize = textAppearance.getTextSize() > 0
+        ? textAppearance.getTextSize()
+        : MIN_EXPANDED_COLLAPSED_TEXT_SIZE;
+
+    expandedTextColor = textAppearance.getTextColor();
     expandedShadowDx = textAppearance.shadowDx;
     expandedShadowDy = textAppearance.shadowDy;
     expandedShadowRadius = textAppearance.shadowRadius;
+    expandedShadowColor = textAppearance.shadowColor;
     expandedLetterSpacing = textAppearance.letterSpacing;
 
     // Cancel pending async fetch, if any, and replace with a new one.
