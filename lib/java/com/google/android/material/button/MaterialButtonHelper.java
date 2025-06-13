@@ -119,9 +119,9 @@ class MaterialButtonHelper {
         attributes.getBoolean(R.styleable.MaterialButton_toggleCheckedStateOnClick, true);
 
     // Store padding before setting background, since background overwrites padding values
-    int paddingStart = materialButton.getPaddingStart();
+    int paddingLeft = materialButton.getPaddingLeft();
     int paddingTop = materialButton.getPaddingTop();
-    int paddingEnd = materialButton.getPaddingEnd();
+    int paddingRight = materialButton.getPaddingRight();
     int paddingBottom = materialButton.getPaddingBottom();
 
     // Update materialButton's background without triggering setBackgroundOverwritten()
@@ -131,10 +131,10 @@ class MaterialButtonHelper {
       updateBackground();
     }
     // Set the stored padding values
-    materialButton.setPaddingRelative(
-        paddingStart + insetLeft,
+    materialButton.setPadding(
+        paddingLeft + insetLeft,
         paddingTop + insetTop,
-        paddingEnd + insetRight,
+        paddingRight + insetRight,
         paddingBottom + insetBottom);
   }
 
@@ -392,13 +392,13 @@ class MaterialButtonHelper {
     // changing an existing drawable shape. This is a fallback.
     if (VERSION.SDK_INT < VERSION_CODES.M && !backgroundOverwritten) {
       // Store padding before setting background, since background overwrites padding values
-      int paddingStart = materialButton.getPaddingStart();
+      int paddingLeft = materialButton.getPaddingLeft();
       int paddingTop = materialButton.getPaddingTop();
-      int paddingEnd = materialButton.getPaddingEnd();
+      int paddingRight = materialButton.getPaddingRight();
       int paddingBottom = materialButton.getPaddingBottom();
       updateBackground();
       // Set the stored padding values
-      materialButton.setPaddingRelative(paddingStart, paddingTop, paddingEnd, paddingBottom);
+      materialButton.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
     } else {
       MaterialShapeDrawable backgroundDrawable = getMaterialShapeDrawable();
       if (backgroundDrawable != null) {
@@ -501,9 +501,9 @@ class MaterialButtonHelper {
 
   private void setVerticalInsets(@Dimension int newInsetTop, @Dimension int newInsetBottom) {
     // Store padding before setting background, since background overwrites padding values
-    int paddingStart = materialButton.getPaddingStart();
+    int paddingLeft = materialButton.getPaddingLeft();
     int paddingTop = materialButton.getPaddingTop();
-    int paddingEnd = materialButton.getPaddingEnd();
+    int paddingRight = materialButton.getPaddingRight();
     int paddingBottom = materialButton.getPaddingBottom();
     int oldInsetTop = insetTop;
     int oldInsetBottom = insetBottom;
@@ -513,10 +513,10 @@ class MaterialButtonHelper {
       updateBackground();
     }
     // Set the stored padding values
-    materialButton.setPaddingRelative(
-        paddingStart,
+    materialButton.setPadding(
+        paddingLeft,
         paddingTop + newInsetTop - oldInsetTop,
-        paddingEnd,
+        paddingRight,
         paddingBottom + newInsetBottom - oldInsetBottom);
   }
 
