@@ -174,7 +174,7 @@ public class MaterialButtonGroup extends LinearLayout {
   @Px private int spacing;
   @Nullable private StateListSizeChange buttonSizeChange;
 
-  private boolean isChildrenShapeInvalidated = true;
+  private boolean childShapesDirty = true;
 
   private final int overflowMenuItemIconPadding;
   private boolean buttonOverflowInitialized;
@@ -305,7 +305,7 @@ public class MaterialButtonGroup extends LinearLayout {
 
     // Recover the original layout params of all children before adding the new child.
     recoverAllChildrenLayoutParams();
-    isChildrenShapeInvalidated = true;
+    childShapesDirty = true;
     // If overflow button has been added, the new child button will be always added before the
     // overflow button.
     int overflowButtonIndex = indexOfChild(overflowButton);
@@ -340,7 +340,7 @@ public class MaterialButtonGroup extends LinearLayout {
       originalChildStateListShapeAppearanceModels.remove(indexOfChild);
     }
 
-    isChildrenShapeInvalidated = true;
+    childShapesDirty = true;
     updateChildShapes();
 
     // Recover the original layout params of all children before updating the child layout.
@@ -517,11 +517,10 @@ public class MaterialButtonGroup extends LinearLayout {
   @VisibleForTesting
   void updateChildShapes() {
     // No need to update shape if no inside corners or outer corners are specified.
-    if ((innerCornerSize == null && groupStateListShapeAppearance == null)
-        || !isChildrenShapeInvalidated) {
+    if ((innerCornerSize == null && groupStateListShapeAppearance == null) || !childShapesDirty) {
       return;
     }
-    isChildrenShapeInvalidated = false;
+    childShapesDirty = false;
     int childCount = getChildCount();
     int firstVisibleChildIndex = getFirstVisibleChildIndex();
     int lastVisibleChildIndex = getLastVisibleChildIndex();
@@ -790,6 +789,14 @@ public class MaterialButtonGroup extends LinearLayout {
 
   // ================ Getters and setters ===================
 
+  @Override
+  public void setOrientation(int orientation) {
+    if (getOrientation() != orientation) {
+      childShapesDirty = true;
+    }
+    super.setOrientation(orientation);
+  }
+
   /**
    * Returns the {@link StateListSizeChange} of child buttons on state changes.
    *
@@ -851,7 +858,7 @@ public class MaterialButtonGroup extends LinearLayout {
    */
   public void setInnerCornerSize(@NonNull CornerSize cornerSize) {
     innerCornerSize = StateListCornerSize.create(cornerSize);
-    isChildrenShapeInvalidated = true;
+    childShapesDirty = true;
     updateChildShapes();
     invalidate();
   }
@@ -880,7 +887,7 @@ public class MaterialButtonGroup extends LinearLayout {
   @RestrictTo(Scope.LIBRARY_GROUP)
   public void setInnerCornerSizeStateList(@NonNull StateListCornerSize cornerSizeStateList) {
     innerCornerSize = cornerSizeStateList;
-    isChildrenShapeInvalidated = true;
+    childShapesDirty = true;
     updateChildShapes();
     invalidate();
   }
@@ -901,7 +908,7 @@ public class MaterialButtonGroup extends LinearLayout {
   public void setShapeAppearance(@Nullable ShapeAppearanceModel shapeAppearance) {
     groupStateListShapeAppearance =
         new StateListShapeAppearanceModel.Builder(shapeAppearance).build();
-    isChildrenShapeInvalidated = true;
+    childShapesDirty = true;
     updateChildShapes();
     invalidate();
   }
@@ -927,7 +934,7 @@ public class MaterialButtonGroup extends LinearLayout {
   public void setStateListShapeAppearance(
       @Nullable StateListShapeAppearanceModel stateListShapeAppearance) {
     groupStateListShapeAppearance = stateListShapeAppearance;
-    isChildrenShapeInvalidated = true;
+    childShapesDirty = true;
     updateChildShapes();
     invalidate();
   }
@@ -1137,8 +1144,7 @@ public class MaterialButtonGroup extends LinearLayout {
 
       overflowIcon =
           attributes.getDrawable(R.styleable.MaterialButtonGroup_Layout_layout_overflowIcon);
-      overflowText =
-          attributes.getText(R.styleable.MaterialButtonGroup_Layout_layout_overflowText);
+      overflowText = attributes.getText(R.styleable.MaterialButtonGroup_Layout_layout_overflowText);
 
       attributes.recycle();
     }
@@ -1199,8 +1205,8 @@ public class MaterialButtonGroup extends LinearLayout {
   }
 
   /**
-   * Class for common logic between this MaterialButtonGroup and the OverflowLinearLayout
-   * overflow features.
+   * Class for common logic between this MaterialButtonGroup and the OverflowLinearLayout overflow
+   * features.
    *
    * @hide
    */
