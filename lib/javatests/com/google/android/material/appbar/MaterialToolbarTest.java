@@ -20,7 +20,6 @@ import com.google.android.material.test.R;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.graphics.Color;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.LayoutRes;
@@ -37,7 +36,7 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link com.google.android.material.appbar.MaterialToolbar}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = VERSION_CODES.LOLLIPOP)
+@Config(sdk = Config.OLDEST_SDK)
 @DoNotInstrument
 public class MaterialToolbarTest {
 

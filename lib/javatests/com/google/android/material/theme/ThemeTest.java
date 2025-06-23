@@ -18,7 +18,6 @@ package com.google.android.material.theme;
 
 import com.google.android.material.test.R;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -41,7 +40,7 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for the Material themes. */
 @RunWith(ParameterizedRobolectricTestRunner.class)
-@Config(sdk = LOLLIPOP)
+@Config(sdk = Config.OLDEST_SDK)
 @DoNotInstrument
 public class ThemeTest {
 
