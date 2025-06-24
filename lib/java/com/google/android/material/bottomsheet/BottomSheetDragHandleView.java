@@ -31,6 +31,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
 import android.view.GestureDetector.SimpleOnGestureListener;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -365,5 +366,25 @@ public class BottomSheetDragHandleView extends AppCompatImageView implements
   private static View getParentView(View view) {
     ViewParent parent = view.getParent();
     return parent instanceof View ? (View) parent : null;
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+    if (!isEnabled()) {
+      return super.onKeyDown(keyCode, event);
+    }
+
+    switch (keyCode) {
+      case KeyEvent.KEYCODE_DPAD_CENTER:
+      case KeyEvent.KEYCODE_ENTER:
+        if (hasClickListener) {
+          return performClick();
+        }
+        return expandOrCollapseBottomSheetIfPossible();
+      default:
+        // Nothing to do in this case.
+    }
+
+    return super.onKeyDown(keyCode, event);
   }
 }

@@ -27,6 +27,7 @@ import static org.robolectric.Shadows.shadowOf;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.util.SparseIntArray;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.accessibility.AccessibilityManager;
@@ -110,6 +111,25 @@ public class BottomSheetDragHandleTest {
   }
 
   @Test
+  public void test_customClickListenerOverridesInternalClickBehaviorWithKeyboardEnter() {
+    activity.addViewToBottomSheet(dragHandleView);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    shadowOf(accessibilityManager).setEnabled(true);
+    dragHandleView.setOnClickListener(
+        v -> {
+          // do nothing
+        });
+
+    boolean unused =
+        dragHandleView.onKeyDown(
+            KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_EXPANDED);
+  }
+
+  @Test
   public void test_notInteractableWhenNotAttachedToBottomSheetAndAccessibilityEnabled() {
     activity.addViewToContainer(dragHandleView);
     shadowOf(accessibilityManager).setEnabled(true);
@@ -145,6 +165,39 @@ public class BottomSheetDragHandleTest {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
     dragHandleView.performClick();
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_COLLAPSED);
+  }
+
+  @Test
+  public void test_expandCollapsedBottomSheetWithKeyboardEnter() {
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+    boolean unused =
+        dragHandleView.onKeyDown(
+            KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    assertThat(activity.bottomSheetBehavior.getState())
+        .isEqualTo(BottomSheetBehavior.STATE_EXPANDED);
+  }
+
+  @Test
+  public void test_collapseExpandedBottomSheetWithKeyboardEnter() {
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    boolean unused =
+        dragHandleView.onKeyDown(
+            KeyEvent.KEYCODE_ENTER, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
 
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
