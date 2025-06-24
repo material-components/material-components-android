@@ -21,6 +21,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:minWidth="48dp"
+    android:focusable="false"
     android:layout_weight="1">
     <Button
       android:id="@+id/docked_toolbar_left_arrow_button"
@@ -36,6 +37,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:minWidth="48dp"
+    android:focusable="false"
     android:layout_weight="1">
   <Button
     android:id="@+id/docked_toolbar_right_arrow_button"
@@ -51,6 +53,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:minWidth="48dp"
+    android:focusable="false"
     android:layout_weight="1">
     <Button
       android:id="@+id/docked_toolbar_add_button"
@@ -72,6 +75,7 @@
     android:layout_height="wrap_content"
     android:minWidth="48dp"
     android:layout_weight="1"
+    android:focusable="false"
     app:layout_overflowText="@string/cat_docked_toolbar_tab_button_description">
   <Button
     android:id="@+id/docked_toolbar_tab_button"
@@ -88,6 +92,7 @@
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:minWidth="48dp"
+    android:focusable="false"
     android:layout_weight="1"
     app:layout_overflowText="@string/cat_docked_toolbar_star_button_description">
     <Button
@@ -106,6 +111,7 @@
     android:layout_height="wrap_content"
     android:minWidth="48dp"
     android:layout_weight="1"
+    android:focusable="false"
     app:layout_overflowText="@string/cat_docked_toolbar_alarm_button_description">
     <Button
       android:id="@+id/docked_toolbar_alarm_button"
@@ -123,6 +129,7 @@
     android:layout_height="wrap_content"
     android:minWidth="48dp"
     android:layout_weight="1"
+    android:focusable="false"
     app:layout_overflowText="@string/cat_docked_toolbar_search_button_description">
     <Button
       android:id="@+id/docked_toolbar_search_button"
@@ -140,6 +147,7 @@
     android:layout_height="wrap_content"
     android:minWidth="48dp"
     android:layout_weight="1"
+    android:focusable="false"
     app:layout_overflowText="@string/cat_docked_toolbar_settings_button_description">
     <Button
       android:id="@+id/docked_toolbar_settings_button"
