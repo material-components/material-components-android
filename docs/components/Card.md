@@ -9,34 +9,25 @@ path: /catalog/cards/
 
 # Cards
 
-[Cards](https://material.io/components/cards/) contain content and actions about
-a single subject. There are three variants of cards: elevated, filled, and
-outlined.
+[Cards](https://m3.material.io/components/cards/overview) contain content and
+actions about a single subject. There are three variants of cards.
 
-<img src="assets/cards/cards_types.png" alt="Three types of cards" width="1024" height ="300">
+<img src="assets/cards/cards_types.png" alt="Three types of cards." height ="300">
+
+1.  Elevated card
+2.  Filled card
+3.  Outlined card
+
+**Note:** Images use various dynamic color schemes.
 
 ## Design & API documentation
 
-*   [Material 3 (M3) spec](https://material.io/components/cards/overview)
+*   [Material 3 (M3) spec](https://m3.material.io/components/cards/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/card/package-summary)
 
-## Using cards
+## Anatomy
 
-Before you can use a Material card, you need to add a dependency to the Material
-Components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
-
-Cards support [checking](#making-cards-checkable) and
-[dragging](#making-cards-draggable), but those behaviors are not implemented by
-default.
-
-### Anatomy
-
-A card has a container and an optional thumbnail, header text, secondary text,
-media, supporting text, buttons and icons.
-
-<img src="assets/cards/card_anatomy.png" alt="A card with labeled sections for container, headline, subhead, supporting text, image, and buttons" width="800" height ="507"/>
+<img src="assets/cards/card_anatomy.png" alt="A card with labeled sections for container, headline, subhead, supporting text, image, and buttons" height ="500"/>
 
 1.  Container
 2.  Headline
@@ -45,13 +36,12 @@ media, supporting text, buttons and icons.
 5.  Image
 6.  Buttons
 
-**Note:** All the optional elements of a card's content (with the exception of
-the checked icon) are implemented through the use of other views/components, as
-shown in the [card examples](#card-examples) section.
+More details on anatomy items in the
+[component guidelines](https://m3.material.io/components/cards/guidelines#dbcb6275-bbaf-4e06-a867-f4aa632c1141).
 
-### Key properties
+## Key properties
 
-#### Container attribute
+### Container attribute
 
 Element              | Attribute                 | Related method(s)                                                   | Default value
 -------------------- | ------------------------- | ------------------------------------------------------------------- | -------------
@@ -72,7 +62,7 @@ applied in the layout with `style="@style/...`.
 **Note:** Without an `app:strokeColor`, the card will not render a stroked
 border, regardless of the `app:strokeWidth` value.
 
-#### Checked icon attributes
+### Checked icon attributes
 
 Element       | Attribute            | Related method(s)                                                                    | Default value
 ------------- | -------------------- | ------------------------------------------------------------------------------------ | -------------
@@ -83,7 +73,7 @@ Element       | Attribute            | Related method(s)                        
 **Margin**    | `checkedIconMargin`  | `setCheckedIconMargin`<br/>`setCheckedIconMarginResource`<br/>`getCheckedIconMargin` | `8dp`
 **Gravity**   | `checkedIconGravity` | `setCheckedIconGravity`<br/>`getCheckedIconGravity`                                  | `TOP_END`
 
-#### States
+### States
 
 Cards can have the following states:
 
@@ -93,31 +83,92 @@ State                                 | Description                         | Re
 **Checked** (`android:state_checked`) | `true` if a card is checked         | `setChecked`<br/>`setOnCheckedChangeListener`<br/>`isChecked`
 **Dragged** (`app:state_dragged`)     | `true` when a card is being dragged | `setDragged`<br/>`isDragged`
 
-#### Styles
+### Styles
 
-Element           | Style
------------------ | ------------------------------------
-**Default style** | `Widget.Material3.CardView.Outlined`
+Element              | Style                                                                   | Theme attribute
+-------------------- | ----------------------------------------------------------------------- | ---------------
+**Default style**    | `Widget.Material3.CardView.Outlined`                                    | `?attr/materialCardViewStyle`
+**Additional style** | `Widget.Material3.CardView.Elevated`,`Widget.Material3.CardView.Filled` | `?attr/materialCardViewOutlinedStyle`,`?attr/materialCardViewFilledStyle`,`?attr/materialCardViewElevatedStyle`
 
-Default style theme attribute: `?attr/materialCardViewStyle`
-
-Additional style theme attributes: `?attr/materialCardViewOutlinedStyle`,
-`?attr/materialCardViewFilledStyle`, `?attr/materialCardViewElevatedStyle`
-
-See the full list of
+For the full list, see
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/values/styles.xml)
 and
 [attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/res/values/attrs.xml).
 
-### Variants of cards
+## Variants of cards
+
+There are three types of cards:
+
+*   Elevated
+*   Filled
+*   Outlined
+
+Each provides the same legibility and functionality, so the type you use depends
+on style alone.
 
 <details>
-  <summary><h4>Outlined card</h4></summary>
+  <summary><h3>Elevated card</h3></summary>
+
+Elevated cards have a drop shadow, providing more separation from the background
+than filled cards, but less than outlined cards.
+
+On mobile, an outlined or a filled card’s default elevation is `0dp`, with a
+raised dragged elevation of `8dp`. The Material Android library also provides an
+elevated card style, which has an elevation of `1dp`, with a raised dragged
+elevation of `2dp`.
+
+The following example shows an elevated card.
+
+<img src="assets/cards/cards_elevated.png" alt="Elevated card with content, a title, a secondary title, text, and two action buttons in purple" height ="500"/>
+
+In the layout:
+
+```xml
+<com.google.android.material.card.MaterialCardView
+    ...
+    style="?attr/materialCardViewElevatedStyle">
+
+    ...
+
+</com.google.android.material.card.MaterialCardView>
+```
+
+</details>
+
+<details>
+  <summary><h3>Filled card</h3></summary>
+
+Filled cards provide subtle separation from the background. This has less
+emphasis than elevated or outlined cards.
+
+The following example shows a filled card.
+
+<img src="assets/cards/cards_filled.png" alt="Filled card with content, a title, supporting text, and buttons in purple" height ="500"/>
+
+In the layout:
+
+```xml
+<com.google.android.material.card.MaterialCardView
+    ...
+    style="?attr/materialCardViewFilledStyle">
+
+    ...
+
+</com.google.android.material.card.MaterialCardView>
+```
+
+</details>
+
+<details>
+  <summary><h3>Outlined card</h3></summary>
+
+Outlined cards have a visual boundary around the container. This can provide
+greater emphasis than the other types.
 
 The following example shows an outlined card.
 
 <img src="assets/cards/cards_outlined.png" alt="Outlined card with photo, a title, a secondary title, text, and Action 1 and
-Action 2 buttons in purple" width="540" height ="798"/>
+Action 2 buttons in purple" height ="500"/>
 
 ```xml
 <com.google.android.material.card.MaterialCardView
@@ -200,85 +251,188 @@ Action 2 buttons in purple" width="540" height ="798"/>
 
 </details>
 
-<details>
-  <summary><h4>Filled card</h4></summary>
+## Code implementation
 
-The following example shows an filled card.
+Before you can use a Material card, you need to add a dependency to the Material
+components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
 
-<img src="assets/cards/cards_filled.png" alt="Filled card with content, a title, supporting text, and buttons in purple" width="540" height ="798"/>
+Cards support [checking](#making-cards-checkable) and
+[dragging](#making-cards-draggable), but those behaviors are not implemented by
+default.
 
-In the layout:
+**Note:** All the optional elements of a card's content (with the exception of
+the checked icon) are implemented through the use of other views/components, as
+shown in the [Card theming example](#card-example) section.
 
-```xml
-<com.google.android.material.card.MaterialCardView
-    ...
-    style="?attr/materialCardViewFilledStyle">
+### Making cards checkable
 
-    ...
+<img src="assets/cards/cards_checked.png" alt="Outlined card with a checked button and a light purple overlay; secondary
+title and Action 1 and Action 2 buttons" width="500"/>
 
-</com.google.android.material.card.MaterialCardView>
-```
-
-</details>
-
-<details>
-  <summary><h4>Elevated card</h4></summary>
-
-The following example shows an elevated card.
-
-<img src="assets/cards/cards_elevated.png" alt="Elevated card with content, a title, a secondary title, text, and two action buttons in purple" width="540" height ="798"/>
+When a card is checked, it will show a checked icon and change its foreground
+color. There is no default behavior for enabling/disabling the checked state. An
+example of how to do it in response to a long click is shown below.
 
 In the layout:
 
 ```xml
 <com.google.android.material.card.MaterialCardView
     ...
-    style="?attr/materialCardViewElevatedStyle">
+    android:clickable="true"
+    android:focusable="true"
+    android:checkable="true">
 
     ...
 
 </com.google.android.material.card.MaterialCardView>
 ```
 
-</details>
+In code:
+
+```kt
+card.setOnLongClickListener {
+    card.setChecked(!card.isChecked)
+    true
+}
+```
+
+### Making cards draggable
+
+<img src="assets/cards/cards_dragged.png" alt="Outlined card with a light grey overlay; secondary title and Action 1 and
+Action 2 buttons, being dragged" width="500"/>
+
+Cards have an `app:state_dragged` with foreground and elevation changes to
+convey motion. We recommend using
+[`ViewDragHelper`](https://developer.android.com/reference/androidx/customview/widget/ViewDragHelper)
+to set the dragged state:
+
+```kt
+private inner class ViewDragHelperCallback : ViewDragHelper.Callback() {
+
+    override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
+        if (capturedChild is MaterialCardView) {
+            (view as MaterialCardView).setDragged(true)
+        }
+    }
+
+    override fun onViewReleased(releaseChild: View, xVel: Float, yVel: Float) {
+        if (releaseChild is MaterialCardView) {
+            (view as MaterialCardView).setDragged(false)
+        }
+    }
+}
+```
+
+Alternatively, the
+[Material catalog](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/card)
+has an implementation example that you can copy, which uses a custom class
+called
+[`DraggableCoordinatorLayout`](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/draggable/DraggableCoordinatorLayout.java).
+It is used as the parent container.
+
+In the layout:
+
+```xml
+<io.material.catalog.draggable.DraggableCoordinatorLayout
+    android:id="@+id/parentContainer"
+    ...>
+
+    <com.google.android.material.card.MaterialCardView
+        ...>
+
+        ...
+
+    </com.google.android.material.card.MaterialCardView>
+
+</io.material.catalog.draggable.DraggableCoordinatorLayout>
+```
+
+In code:
+
+```kt
+parentContainer.addDraggableChild(card)
+
+parentContainer.setViewDragListener(object : DraggableCoordinatorLayout.ViewDragListener {
+
+    override fun onViewCaptured(view: View, pointerId: Int) {
+        card.isDragged = true
+    }
+
+    override fun onViewReleased(view: View, vX: Float, vY: Float) {
+        card.isDragged = false
+    }
+})
+```
+
+Finally, make sure the behavior is accessible by setting an
+[`AccessibilityDelegate`](https://developer.android.com/reference/android/view/View.AccessibilityDelegate)
+on the card. The code below demonstrates how to allow the user to move the card
+to two different positions on the screen.
+
+```kt
+private val cardDelegate = object : AccessibilityDelegate() {
+    override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
+        super.onInitializeAccessibilityNodeInfo(host, info)
+
+        val layoutParams = card!!.layoutParams as CoordinatorLayout.LayoutParams
+        val gravity = layoutParams.gravity
+        val isOnTop = gravity and Gravity.TOP == Gravity.TOP
+        val isOnBottom = gravity and Gravity.BOTTOM == Gravity.BOTTOM
+
+        if (!isOnTop) {
+            info.addAction(AccessibilityAction(R.id.move_card_top_action, getString(R.string.card_action_move_top)))
+        }
+        if (!isOnBottom) {
+            info.addAction(AccessibilityAction(R.id.move_card_bottom_action, getString(R.string.card_action_move_bottom)))
+        }
+    }
+
+    override fun performAccessibilityAction(host: View, action: Int, arguments: Bundle): Boolean {
+        val gravity: Int
+        if (action == R.id.move_card_top_action) {
+            gravity = Gravity.TOP
+        } else if (action == R.id.move_card_bottom_action) {
+            gravity = Gravity.BOTTOM
+        } else {
+            return super.performAccessibilityAction(host, action, arguments)
+        }
+
+        val layoutParams = card!!.layoutParams as CoordinatorLayout.LayoutParams
+        if (layoutParams.gravity != gravity) {
+            layoutParams.gravity = gravity
+            card!!.requestLayout()
+        }
+
+        return true
+    }
+}
+```
+
+**Note:** Cards also support a swipe-to-dismiss behavior through the use of
+['SwipeDismissBehavior'](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/behavior/SwipeDismissBehavior.java).
+You can see an example
+[here](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/card/CardSwipeDismissFragment.java).
+
+### Making cards accessible
+
+The contents within a card should follow their own accessibility guidelines,
+such as images having content descriptions set on them.
+
+If you have a draggable card, you should set an
+[`AccessibilityDelegate`](https://developer.android.com/reference/android/view/View.AccessibilityDelegate)
+on it, so that the behavior can be accessible via screen readers such as
+TalkBack. See the [draggable card section](#making-cards-draggable) for more
+info.
 
 ## Customizing cards
 
-<details>
-<summary><h3>Styling cards</h3></summary>
+### Theming cards
 
-On mobile, an outlined or a filled
-[card’s](https://material.io/components/cards/#specs) default elevation is
-`0dp`, with a raised dragged elevation of `8dp`. The Material Android library
-also provides an elevated card style, which has an elevation of `1dp`, with a
-raised dragged elevation of `2dp`.
+Cards support the customization of color, typography, and shape.
 
-<img src="assets/cards/cards_basic.png" alt="Outlined card with a secondary title and Action 1 and Action 2 buttons in
-purple" width="540" height ="390"/>
-
-<h4 id="card-examples">Card examples</h4>
-
-API and source code:
-
-*   `MaterialCardView`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/card/MaterialCardView)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/MaterialCardView.java)
-
-**Note:** You don't need to specify a style tag as long as you are using a
-Material Components Theme. If not, set the style to
-`Widget.Material3.CardView.Outlined`, `Widget.Material3.CardView.Filled` or
-`Widget.Material3.CardView.Elevated`.
-
-</details>
-
-<details>
-  <summary><h3>Theming cards</h3></summary>
-
-A card supports
-[Material Theming](https://material.io/components/cards/#theming) and can be
-customized in terms of color, typography and shape.
-
-#### Card theming example
+<h4 id="card-example">Card theming example</h4>
 
 API and source code
 
@@ -286,12 +440,16 @@ API and source code
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/card/MaterialCardView)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/MaterialCardView.java)
 
-The following example shows a card with Material Theming.
+**Note:** You don't need to specify a style tag as long as you are using a
+Material components theme. If not, set the style to
+`Widget.Material3.CardView.Outlined`, `Widget.Material3.CardView.Filled` or
+`Widget.Material3.CardView.Elevated`.
 
-![Card with Shrine theme with photo, title, secondary title, text and Action 1
-and 2 buttons in black](assets/cards/cards_theming.png)
+The following example shows a card with Material theming.
 
-#### Implementing card theming
+<img src="assets/cards/cards_theming.png" alt="Card with Shrine theme with photo, title, secondary title, text and Action 1 and Action 2 buttons in black." height ="500"/>
+
+##### Implementing card theming
 
 Use theme attributes and a style in `res/values/styles.xml` to apply the theme
 to all cards. This will affect other components:
@@ -377,174 +535,3 @@ In `res/values/styles.xml`:
 relevant styles/attributes for these components need to be included. For more
 information, see the article on
 [buttons](https://material.io/develop/android/components/buttons/).
-
-</details>
-
-<details>
-  <summary><h3>Making cards accessible</h3></summary>
-
-The contents within a card should follow their own accessibility guidelines,
-such as images having content descriptions set on them.
-
-If you have a draggable card, you should set an
-[`AccessibilityDelegate`](https://developer.android.com/reference/android/view/View.AccessibilityDelegate)
-on it, so that the behavior can be accessible via screen readers such as
-TalkBack. See the [draggable card section](#making-cards-draggable) below for
-more info.
-
-</details>
-
-<details>
-  <summary><h3>Making cards checkable</h3></summary>
-
-<img src="assets/cards/cards_checked.png" alt="Outlined card with a checked button and a light purple overlay; secondary
-title and Action 1 and Action 2 buttons" width="540" height ="390"/>
-
-When a card is checked, it will show a checked icon and change its foreground
-color. There is no default behavior for enabling/disabling the checked state. An
-example of how to do it in response to a long click is shown below.
-
-In the layout:
-
-```xml
-<com.google.android.material.card.MaterialCardView
-    ...
-    android:clickable="true"
-    android:focusable="true"
-    android:checkable="true">
-
-    ...
-
-</com.google.android.material.card.MaterialCardView>
-```
-
-In code:
-
-```kt
-card.setOnLongClickListener {
-    card.setChecked(!card.isChecked)
-    true
-}
-```
-
-</details>
-
-<details>
-  <summary><h3>Making cards draggable</h3></summary>
-
-<img src="assets/cards/cards_dragged.png" alt="Outlined card with a light grey overlay; secondary title and Action 1 and
-Action 2 buttons, being dragged" width="540" height ="390"/>
-
-Cards have an `app:state_dragged` with foreground and elevation changes to
-convey motion. We recommend using
-[`ViewDragHelper`](https://developer.android.com/reference/androidx/customview/widget/ViewDragHelper)
-to set the dragged state:
-
-```kt
-private inner class ViewDragHelperCallback : ViewDragHelper.Callback() {
-
-    override fun onViewCaptured(capturedChild: View, activePointerId: Int) {
-        if (capturedChild is MaterialCardView) {
-            (view as MaterialCardView).setDragged(true)
-        }
-    }
-
-    override fun onViewReleased(releaseChild: View, xVel: Float, yVel: Float) {
-        if (releaseChild is MaterialCardView) {
-            (view as MaterialCardView).setDragged(false)
-        }
-    }
-}
-```
-
-Alternatively, the
-[Material Catalog](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/card)
-has an implementation example that you can copy, which uses a custom class
-called
-[`DraggableCoordinatorLayout`](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/draggable/DraggableCoordinatorLayout.java).
-It is used as the parent container in the layout:
-
-In the layout:
-
-```xml
-<io.material.catalog.draggable.DraggableCoordinatorLayout
-    android:id="@+id/parentContainer"
-    ...>
-
-    <com.google.android.material.card.MaterialCardView
-        ...>
-
-        ...
-
-    </com.google.android.material.card.MaterialCardView>
-
-</io.material.catalog.draggable.DraggableCoordinatorLayout>
-```
-
-In code:
-
-```kt
-parentContainer.addDraggableChild(card)
-
-parentContainer.setViewDragListener(object : DraggableCoordinatorLayout.ViewDragListener {
-
-    override fun onViewCaptured(view: View, pointerId: Int) {
-        card.isDragged = true
-    }
-
-    override fun onViewReleased(view: View, vX: Float, vY: Float) {
-        card.isDragged = false
-    }
-})
-```
-
-Finally, make sure the behavior is accessible by setting an
-[`AccessibilityDelegate`](https://developer.android.com/reference/android/view/View.AccessibilityDelegate)
-on the card. The code below demonstrates how to allow the user to move the card
-to two different positions on the screen.
-
-```kt
-private val cardDelegate = object : AccessibilityDelegate() {
-    override fun onInitializeAccessibilityNodeInfo(host: View, info: AccessibilityNodeInfo) {
-        super.onInitializeAccessibilityNodeInfo(host, info)
-
-        val layoutParams = card!!.layoutParams as CoordinatorLayout.LayoutParams
-        val gravity = layoutParams.gravity
-        val isOnTop = gravity and Gravity.TOP == Gravity.TOP
-        val isOnBottom = gravity and Gravity.BOTTOM == Gravity.BOTTOM
-
-        if (!isOnTop) {
-            info.addAction(AccessibilityAction(R.id.move_card_top_action, getString(R.string.card_action_move_top)))
-        }
-        if (!isOnBottom) {
-            info.addAction(AccessibilityAction(R.id.move_card_bottom_action, getString(R.string.card_action_move_bottom)))
-        }
-    }
-
-    override fun performAccessibilityAction(host: View, action: Int, arguments: Bundle): Boolean {
-        val gravity: Int
-        if (action == R.id.move_card_top_action) {
-            gravity = Gravity.TOP
-        } else if (action == R.id.move_card_bottom_action) {
-            gravity = Gravity.BOTTOM
-        } else {
-            return super.performAccessibilityAction(host, action, arguments)
-        }
-
-        val layoutParams = card!!.layoutParams as CoordinatorLayout.LayoutParams
-        if (layoutParams.gravity != gravity) {
-            layoutParams.gravity = gravity
-            card!!.requestLayout()
-        }
-
-        return true
-    }
-}
-```
-
-**Note:** Cards also support a swipe-to-dismiss behavior through the use of
-['SwipeDismissBehavior'](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/behavior/SwipeDismissBehavior.java).
-You can see an example
-[here](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/card/CardSwipeDismissFragment.java).
-
-</details>
