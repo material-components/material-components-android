@@ -45,7 +45,7 @@ revert back to the previous style.
 ## M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
-[`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md##material3expressive-themes).
+[`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
 The bottom app bar is being deprecated and should be replaced with the
 [docked toolbar](DockedToolbar.md), which functions similarly, but is shorter
