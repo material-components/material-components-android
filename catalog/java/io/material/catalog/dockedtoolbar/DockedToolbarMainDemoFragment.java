@@ -22,6 +22,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,14 +53,14 @@ public class DockedToolbarMainDemoFragment extends DemoFragment {
     dockedToolbar = view.findViewById(R.id.docked_toolbar);
     ((AppCompatActivity) requireActivity()).setSupportActionBar(toolbar);
 
-    setupSnackbarAndButtonParentOnClick(view.findViewById(R.id.docked_toolbar_left_arrow_button));
-    setupSnackbarAndButtonParentOnClick(view.findViewById(R.id.docked_toolbar_right_arrow_button));
-    setupSnackbarAndButtonParentOnClick(view.findViewById(R.id.docked_toolbar_add_button));
-    setupSnackbarAndButtonParentOnClick(view.findViewById(R.id.docked_toolbar_tab_button));
-    setupSnackbarAndButtonParentOnClick(view.findViewById(R.id.docked_toolbar_star_button));
-    setupSnackbarAndButtonParentOnClick(view.findViewById(R.id.docked_toolbar_alarm_button));
-    setupSnackbarAndButtonParentOnClick(view.findViewById(R.id.docked_toolbar_search_button));
-    setupSnackbarAndButtonParentOnClick(view.findViewById(R.id.docked_toolbar_settings_button));
+    setupSnackbarAndButtonParentOnClickAndTooltip(view.findViewById(R.id.docked_toolbar_left_arrow_button));
+    setupSnackbarAndButtonParentOnClickAndTooltip(view.findViewById(R.id.docked_toolbar_right_arrow_button));
+    setupSnackbarAndButtonParentOnClickAndTooltip(view.findViewById(R.id.docked_toolbar_add_button));
+    setupSnackbarAndButtonParentOnClickAndTooltip(view.findViewById(R.id.docked_toolbar_tab_button));
+    setupSnackbarAndButtonParentOnClickAndTooltip(view.findViewById(R.id.docked_toolbar_star_button));
+    setupSnackbarAndButtonParentOnClickAndTooltip(view.findViewById(R.id.docked_toolbar_alarm_button));
+    setupSnackbarAndButtonParentOnClickAndTooltip(view.findViewById(R.id.docked_toolbar_search_button));
+    setupSnackbarAndButtonParentOnClickAndTooltip(view.findViewById(R.id.docked_toolbar_settings_button));
 
     LinearLayout bodyContainer = view.findViewById(R.id.body_container);
 
@@ -86,7 +87,7 @@ public class DockedToolbarMainDemoFragment extends DemoFragment {
                 talkbackEnabled ? dockedToolbar.getMeasuredHeight() : 0));
   }
 
-  private void setupSnackbarAndButtonParentOnClick(View view) {
+  private void setupSnackbarAndButtonParentOnClickAndTooltip(View view) {
     view.setOnClickListener(
         v ->
             Snackbar.make(
@@ -95,6 +96,7 @@ public class DockedToolbarMainDemoFragment extends DemoFragment {
                     Snackbar.LENGTH_SHORT)
                 .setAnchorView(dockedToolbar)
                 .show());
+    TooltipCompat.setTooltipText(view, view.getContentDescription());
 
     // Since each button is being wrapped by a FrameLayout, we set a click listener on each button's
     // parent so that any item that is in the overflow menu has its click action properly set up.
