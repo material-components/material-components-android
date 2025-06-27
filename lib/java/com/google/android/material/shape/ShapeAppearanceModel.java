@@ -536,7 +536,11 @@ public class ShapeAppearanceModel {
       context.getTheme().applyStyle(shapeAppearanceOverlayResId, /* force= */ true);
     }
     TypedArray a = context.obtainStyledAttributes(R.styleable.ShapeAppearance);
+    return builder(a, defaultCornerSize);
+  }
 
+  @NonNull
+  private static Builder builder(TypedArray a, @NonNull CornerSize defaultCornerSize) {
     try {
       int cornerFamily = a.getInt(R.styleable.ShapeAppearance_cornerFamily, CornerFamily.ROUNDED);
       int cornerFamilyTopLeft =
