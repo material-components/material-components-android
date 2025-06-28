@@ -539,6 +539,7 @@
     <item name="innerCornerSize">8dp</item>
     <item name="buttonSizeChange">@null</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.ButtonGroup.Connected.Small.Container.Shape</item>
+    <item name="buttonSizeChange">@null</item>
   </style>
 
   <style name="Widget.Material3.MaterialButtonToggleGroup" parent="Widget.MaterialComponents.MaterialButtonToggleGroup">
