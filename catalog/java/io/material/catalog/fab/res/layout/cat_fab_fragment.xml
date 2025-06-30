@@ -61,10 +61,4 @@
       android:text="@string/rotate_fabs_label"/>
   </LinearLayout>
 
-
-  <io.material.catalog.feature.BottomWindowInsetView
-      android:layout_width="wrap_content"
-      android:layout_height="0dp"
-      />
-
 </LinearLayout>
