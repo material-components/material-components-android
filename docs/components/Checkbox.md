@@ -12,30 +12,13 @@ path: /catalog/checkboxes/
 [Checkboxes](https://m3.material.io/components/checkbox/overview) let users
 select one or more items from a list, or turn an item on or off.
 
-<img src="assets/checkbox/checkbox_hero.png" alt="Checkbox hero: Meal options" header, "Additions" checkbox, "Pickles" "Lettuce" "Tomato" checkboxes with “Lettuce” checked" width="800">
+<img src="assets/checkbox/checkbox_hero.png" alt="Checkbox hero: Meal options" header, "Additions" checkbox, "Pickles" "Lettuce" "Tomato" checkboxes with “Lettuce” checked" width="900">
 
 **Note:** Images use various dynamic color schemes.
 
-Before you can use Material checkboxes, you need to add a dependency to the
-Material components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
-
-```xml
-<CheckBox
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="@string/label"/>
-```
-
-**Note:** `<CheckBox>` is auto-inflated as
-`<com.google.android.material.button.MaterialCheckBox>` via
-`MaterialComponentsViewInflater` when using a `Theme.Material3.*`
-theme.
-
 ## Design & API documentation
 
-*   [Material 3 (M3) spec] (https://m3.material.io/components/checkbox/overview)
+*   [Material 3 (M3) spec](https://m3.material.io/components/checkbox/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/checkbox/package-summary)
 
 ## Anatomy
@@ -45,7 +28,8 @@ theme.
 1.  Container
 2.  Icon
 
-More details on anatomy items in the [component guidelines](https://m3.material.io/components/checkbox/guidelines#c04665de-5bf3-4706-87ae-68ad7e2b7fda).
+More details on anatomy items in the
+[component guidelines](https://m3.material.io/components/checkbox/guidelines#c04665de-5bf3-4706-87ae-68ad7e2b7fda).
 
 ## Key properties
 
@@ -54,13 +38,13 @@ More details on anatomy items in the [component guidelines](https://m3.material.
 The checkbox is composed of an `app:buttonCompat` drawable (the container) and
 an `app:buttonIcon` drawable (the icon) layered on top of it.
 
-Element                      | Attribute                                  | Related method(s)                                          | Default value
---------------------------   | ------------------------------------------ | ---------------------------------------------------------- | -------------
-**Button tint**              | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/color/m3_checkbox_button_tint.xml))
-**Button icon drawable**     | `app:buttonIcon`                           | `setButtonIconDrawable`<br/>`getButtonIconDrawable`        | [@mtrl_checkbox_button_icon](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/drawable/mtrl_checkbox_button_icon.xml)
-**Button icon tint**         | `app:buttonIconTint`                       | `setButtonIconTintList`<br/>`getButtonIconTintList`        | `?attr/colorOnPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/color/m3_checkbox_button_icon_tint.xml))
-**Min size**                 | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`               | `?attr/minTouchTargetSize`
-**Centered icon if no text** | `app:centerIfNoTextEnabled`                | `setCenterIfNoTextEnabled`<br/>`isCenterIfNoTextEnabled`   | `true`
+Element                      | Attribute                                  | Related method(s)                                        | Default value
+---------------------------- | ------------------------------------------ | -------------------------------------------------------- | -------------
+**Button tint**              | `app:buttonTint`                           | `setButtonTintList`<br/>`getButtonTintList`              | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/color/m3_checkbox_button_tint.xml))
+**Button icon drawable**     | `app:buttonIcon`                           | `setButtonIconDrawable`<br/>`getButtonIconDrawable`      | [@mtrl_checkbox_button_icon](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/drawable/mtrl_checkbox_button_icon.xml)
+**Button icon tint**         | `app:buttonIconTint`                       | `setButtonIconTintList`<br/>`getButtonIconTintList`      | `?attr/colorOnPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/color/m3_checkbox_button_icon_tint.xml))
+**Min size**                 | `android:minWidth`<br/>`android:minHeight` | `(set/get)MinWidth`<br/>`(set/get)MinHeight`             | `?attr/minTouchTargetSize`
+**Centered icon if no text** | `app:centerIfNoTextEnabled`                | `setCenterIfNoTextEnabled`<br/>`isCenterIfNoTextEnabled` | `true`
 
 **Note:** If setting a custom `app:buttonCompat`, make sure to also set
 `app:buttonIcon` if an icon is desired. The checkbox does not support having a
@@ -90,11 +74,9 @@ error. Checkboxes have enabled, disabled, hover, focused, and pressed states.
 
 ### Styles
 
-Element           | Style
------------------ | ---------------------------------------------------
-**Default style** | `Widget.Material3.CompoundButton.CheckBox`
-
-Default style theme attribute: `?attr/checkboxStyle`
+Element           | Style                                      | Theme attribute
+----------------- | ------------------------------------------ | ---------------
+**Default style** | `Widget.Material3.CompoundButton.CheckBox` | `?attr/checkboxStyle`
 
 For the full list, see
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/values/styles.xml)
@@ -102,6 +84,26 @@ and
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/checkbox/res/values/attrs.xml).
 
 ## Code implementation
+
+Before you can use Material checkboxes, you need to add a dependency to the
+Material components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
+
+### Adding checkbox
+
+```xml
+<CheckBox
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/label"/>
+```
+
+**Note:** `<CheckBox>` is auto-inflated as
+`<com.google.android.material.button.MaterialCheckBox>` via
+`MaterialComponentsViewInflater` when using a `Theme.Material3.*` theme.
+
+### Checkbox example
 
 The following example shows a list of checkboxes with a parent/children
 relationship.
@@ -221,14 +223,14 @@ private fun setParentState(
 
 ```
 
-## Making checkboxes accessible
+### Making checkbox accessible
 
 Checkboxes support content labeling for accessibility and are readable by most
 screen readers, such as TalkBack. Text rendered in checkboxes is automatically
 provided to accessibility services. Additional content labels are usually
 unnecessary.
 
-## Selecting a checkbox
+### Selecting checkbox
 
 In the layout:
 
@@ -261,7 +263,7 @@ checkbox.addOnCheckedStateChangedListener { checkBox, state ->
 }
 ```
 
-## Setting the error state on checkbox
+### Setting error state on checkbox
 
 In the layout:
 
@@ -287,7 +289,10 @@ checkbox.errorAccessibilityLabel = "Error: custom error announcement."
 
 ```
 
-## Making a checkbox indeterminate
+### Making checkbox indeterminate
+
+![Checkbox states - unselected, selected(hover), and indeterminate checkboxes](assets/checkbox/checkbox_checked_unchecked_.png)
+Unselected, selected (hover), and indeterminate checkboxes
 
 In the layout:
 
@@ -310,16 +315,16 @@ checkbox.addOnCheckedStateChangedListener { checkBox, state ->
 }
 ```
 
-## Customizing checkboxes
+## Customizing checkbox
 
-### Theming checkboxes
+### Theming checkbox
 
 Checkboxes support the customization of color and typography.
 
 **Note:** Checkboxes do not support shape theming and are only rounded square
 checkboxes.
 
-#### Checkboxes theming example
+#### Checkbox theming example
 
 API and source code:
 
