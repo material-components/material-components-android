@@ -18,7 +18,6 @@ package com.google.android.material.floatingactionbutton;
 
 import com.google.android.material.test.R;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.google.android.material.floatingactionbutton.FloatingActionButton.SIZE_MINI;
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static org.junit.Assert.assertEquals;
@@ -37,7 +36,7 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = LOLLIPOP)
+@Config(sdk = Config.OLDEST_SDK)
 public class FabTest {
 
   private static final double DELTA = 0.01;

@@ -227,7 +227,7 @@ public class MaterialCheckBoxTest {
   }
 
   @Test
-  @Config(sdk = VERSION_CODES.LOLLIPOP)
+  @Config(sdk = Config.OLDEST_SDK)
   public void testThemeableAppButtonTint() {
     testThemeableButtonTint((CheckBox) checkboxes.findViewById(R.id.test_checkbox_app_button_tint));
   }

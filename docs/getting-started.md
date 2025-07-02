@@ -55,6 +55,9 @@ to find the latest version of the library.
 **Note:** In order to use the new `Material3` themes and component styles, you
 should depend on version `1.5.0` or later.
 
+**Note:** In order to use the new `Material3Expressive` themes and component
+styles, you should depend on version `1.14.0` or later.
+
 ### New Namespace and AndroidX
 
 If your app currently depends on the original Design Support Library, you can
@@ -70,6 +73,28 @@ the `com.android.support:design:28.0.0` dependency.
 
 **Note:** You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
+
+### Non-Transitive R Classes (referencing library resources programmatically)
+
+Starting with version `1.13.0-alpha12`, the Material library is built with AGP
+8.7.3 (or later) and `android.nonTransitiveRClass=true`, meaning
+[R classes are no longer transitive](https://developer.android.com/build/optimize-your-build#use-non-transitive-r-classes)
+and resources must be fully qualified with their library path when used
+programmatically.
+
+For example, since `colorPrimary` is defined in the AppCompat library, you must
+refer to it as `androidx.appcompat.R.attr.colorPrimary` as opposed to
+`com.google.android.material.R.attr.colorPrimary` or `R.attr.colorPrimary`.
+
+For a Material defined resource like `colorOnPrimary`, you must refer to it as
+`com.google.android.material.R.attr.colorOnPrimary`.
+
+To opt out of this new behavior, set `android.nonTransitiveRClass=false` in your
+`gradle.properties` file. Then you can access any resource without a fully
+qualified path (i.e., simply `R.<resource-type>.<resource-name>`).
+
+**Note:** This is relevant for all types of library resources, not just
+attribute references.
 
 ## 3. Android SDK compilation
 

@@ -18,7 +18,7 @@
   <item android:state_enabled="false" android:state_checked="true"
       android:alpha="@dimen/material_emphasis_disabled_background"
       android:color="@macro/m3_comp_button_outlined_selected_disabled_container_color"/>
-  <item android:state_checked="true" android:color="?attr/colorContainerChecked"/>
+  <item android:state_checkable="true" android:state_checked="true" android:color="?attr/colorContainerChecked"/>
   <item android:state_checkable="true" android:color="?attr/colorContainerUnchecked"/>
   <item android:color="?attr/colorContainer" />
 </selector>

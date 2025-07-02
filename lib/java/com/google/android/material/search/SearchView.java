@@ -235,6 +235,10 @@ public class SearchView extends FrameLayout
     setUpClearButton();
     setUpContentOnTouchListener();
     setUpInsetListeners();
+
+    // Necessary to enable keyboard navigation to the searchview contents due to toolbar being a
+    // keyboard navigation cluster from API 26+
+    setToolbarTouchscreenBlocksFocus(false);
   }
 
   @Override
@@ -986,9 +990,9 @@ public class SearchView extends FrameLayout
   }
 
   /**
-   * Sets the 'touchscreenBlocksFocus' attribute of the nested toolbar. The attribute defaults to
-   * 'true' for API level 26+. We need to set it to 'false' if keyboard navigation is needed for the
-   * search results.
+   * Sets the 'touchscreenBlocksFocus' attribute of the nested toolbar. This is set to 'false' by
+   * default, which allows keyboard navigation between the search view toolbar and the search
+   * results.
    */
   public void setToolbarTouchscreenBlocksFocus(boolean touchscreenBlocksFocus) {
     toolbar.setTouchscreenBlocksFocus(touchscreenBlocksFocus);

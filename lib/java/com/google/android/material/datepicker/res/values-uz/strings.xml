@@ -42,9 +42,9 @@
   <string name="mtrl_picker_a11y_prev_month">Avvalgi oyga oʻzgartirish</string>
   <string name="mtrl_picker_a11y_next_month">Keyingi oyga oʻzgartirish</string>
   <string name="mtrl_picker_toggle_to_year_selection">Yillik rejimga oʻtish</string>
+  <string name="mtrl_picker_pane_title_year_view">Yil rejimi</string>
   <string name="mtrl_picker_toggle_to_day_selection">Taqvim rejimiga oʻtish</string>
-  <string name="mtrl_picker_toggled_to_year_selection">Yil rejimiga almashdi</string>
-  <string name="mtrl_picker_toggled_to_day_selection">Taqvim rejimiga almashdi</string>
+  <string name="mtrl_picker_pane_title_calendar_view">Taqvim rejimi</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Joriy tanlov: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Boshlanish sanasini tanlash: %1$s – Tugash sanasini tanlash: %2$s</string>

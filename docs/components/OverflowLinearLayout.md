@@ -1,7 +1,16 @@
-# Overflow Linear Layout
+<!--docs:
+title: "Overflow linear layout"
+layout: detail
+section: components
+excerpt:  "The overflow linear layout is usually used with the FloatingToolbar and DockedToolbar."
+iconId: overflow
+path: /catalog/overflow-linear-layout/
+-->
 
-The `OverflowLinearLayout` is usually used with the [FloatingToolbar](https://github.com/material-components/material-components-android/tree/master//docs/components/FloatingToolbar.md)
-and the [DockedToolbar](https://github.com/material-components/material-components-android/tree/master//docs/components/DockedToolbar.md).
+# Overflow linear layout
+
+The `OverflowLinearLayout` is usually used with the
+[floatingtoolbar](FloatingToolbar.md) and the [dockedtoolbar](DockedToolbar.md).
 It allows for its children to be automatically hidden/shown depending on its
 parent's max size. The hidden children are put in an overflow menu, and an
 overflow button is added as the last child of its parent layout.
@@ -11,7 +20,43 @@ decisions, you'll need to add/remove the desired view(s), instead of changing
 their visibility, as the `OverflowLinearLayout` will determine the final
 visibility value of its children.
 
-## Using Overflow Linear Layout
+## Key properties
+
+### `OverflowLinearLayout` attributes
+
+Element                  | Attribute                | Related methods                                                                         | Default value
+------------------------ | ------------------------ | --------------------------------------------------------------------------------------- | -------------
+**Overflow button icon** | `app:overflowButtonIcon` | `setOverflowButtonIcon`<br/>`setOverflowButtonIconResource`<br/>`getOverflowButtonIcon` | `@drawable/abc_ic_menu_overflow_material`
+
+### `OverflowLinearLayout_Layout` attributes
+
+Attributes for the children of `OverflowLinearLayout`:
+
+| Element     | Attribute                 | Related methods | Default value |
+| ----------- | ------------------------- | --------------- | ------------- |
+| **Overflow  | `app:layout_overflowText` | N/A             | `null`        |
+: menu's item :                           :                 :               :
+: text**      :                           :                 :               :
+| **Overflow  | `app:layout_overflowIcon` | N/A             | `null`        |
+: menu's item :                           :                 :               :
+: icon**      :                           :                 :               :
+
+### `OverflowLinearLayout` styles
+
+Element             | Style                                     | Theme attribute
+------------------- | ----------------------------------------- | ---------------
+**Style**           | `Widget.Material3.OverflowLinearLayout`   | `?attr/overflowLinearLayoutStyle`
+**Button overflow** | `overflowLinearLayoutOverflowButtonStyle` | `?attr/overflowLinearLayoutOverflowButtonStyle`
+**Popup overflow**  | `overflowLinearLayoutPopupMenuStyle`      | `?attr/overflowLinearLayoutPopupMenuStyle`
+
+For the full list, see
+[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/overflow/res/values/styles.xml)
+and
+[overflow linear layout attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/overflow/res/values/attrs.xml)
+
+## Code implementation
+
+### Adding overflow linear layout
 
 A common usage looks like:
 
@@ -36,64 +81,29 @@ When using `OverflowLinearLayout`, you should set `app:layout_overflowText` on
 on each child, as that will show as the text of the menu item that corresponds
 to the hidden child. Optionally, you can also set `app:layout_overflowIcon`.
 
-See
-[FloatingToolbar](https://github.com/material-components/material-components-android/tree/master//docs/components/FloatingToolbar.md)
-and [DockedToolbar](https://github.com/material-components/material-components-android/tree/master//docs/components/DockedToolbar.md)
+See [floatingtoolbar](FloatingToolbar.md) and [dockedtoolbar](DockedToolbar.md)
 for example usages with those components.
 
 API and source code:
 
-* `OverflowLinearLayout`
-  * [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/overflow/OverflowLinearLayout.java)
+*   `OverflowLinearLayout`
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/overflow/OverflowLinearLayout.java)
 
-### Making Overflow Linear Layout accessible
+### Making overflow linear layout accessible
 
 As mentioned above, you should set `app:layout_overflowText` on each direct
 child of `OverflowLinearLayout` that may be overflowed, so that the overflow
 menu items have text that can be read by screen readers.
 
-## Attributes and styles
+## Customizing overflow linear layout
 
-### `OverflowLinearLayout` attributes
+### Theming overflow linear layout
 
- **Element**              | **Attribute**            | **Related methods**                                                                     | **Default value**
---------------------------|--------------------------|-----------------------------------------------------------------------------------------|-------------------------------------------
- **Overflow button icon** | `app:overflowButtonIcon` | `setOverflowButtonIcon`<br/>`setOverflowButtonIconResource`<br/>`getOverflowButtonIcon` | `@drawable/abc_ic_menu_overflow_material`
+Overflow linear layout supports
+[Material theming](https://m3.material.io/foundations/customization), which can
+customize color, shape and typography.
 
-### `OverflowLinearLayout_Layout` attributes
-
-Attributes for the children of `OverflowLinearLayout`:
-
- **Element**                        | **Attribute**                   | **Related methods** | **Default value**
-------------------------------------|---------------------------------|---------------------|-------------------
- **Overflow menu's item text**      | `app:layout_overflowText`       | N/A                 | `null`
- **Overflow menu's item icon**      | `app:layout_overflowIcon`       | N/A                 | `null`
-
-### `OverflowLinearLayout` Styles
-
- **Element** | **Style**
--------------|-------------------------------------------------------
- **Style**   | `Widget.Material3.OverflowLinearLayout`
-
-Style theme attribute: `?attr/overflowLinearLayoutStyle`
-
-Button overflow theme attribute: `?attr/overflowLinearLayoutOverflowButtonStyle`
-(defaults to `?attr/materialIconButtonStyle`)
-
-Popup overflow menu theme attribute: `?attr/overflowLinearLayoutPopupMenuStyle`
-(defaults to `?attr/popupMenuStyle`)
-
-See the full list of
-[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/overflow/res/values/styles.xml) and
-[overflow linear layout attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/overflow/res/values/attrs.xml)
-
-## Theming an Overflow Linear Layout
-
-Overflow Linear Layout supports
-[Material Theming](https://m3.material.io/foundations/customization),
-which can customize color, shape and typography.
-
-### Implementing overflow linear layout theming
+#### Implementing overflow linear layout theming
 
 Use theme attributes and a style in `res/values/styles.xml` which apply to all
 overflow linear layouts and affect other components:
@@ -137,8 +147,8 @@ all overflow linear layouts but do not affect other components:
 </style>
 ```
 
-Or use the style in the layout, which affects only this specific overflow
-linear layout:
+Or use the style in the layout, which affects only this specific overflow linear
+layout:
 
 ```xml
 

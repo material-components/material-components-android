@@ -18,7 +18,6 @@ package com.google.android.material.floatingactionbutton;
 
 import com.google.android.material.test.R;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -41,7 +40,7 @@ import org.robolectric.annotation.Config;
 import org.robolectric.annotation.LooperMode;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = LOLLIPOP)
+@Config(sdk = Config.OLDEST_SDK)
 @LooperMode(LooperMode.Mode.PAUSED)
 public class ExtendedFloatingActionButtonTest {
 

@@ -19,6 +19,7 @@ package io.material.catalog.card;
 import io.material.catalog.R;
 
 import androidx.recyclerview.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -98,6 +99,25 @@ class SelectableCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
       subtitleView.setText(item.subtitle);
       if (selectionTracker != null) {
         bindSelectedState();
+        materialCardView.setOnKeyListener(
+            (v, keyCode, event) -> {
+              if (event.getAction() == KeyEvent.ACTION_DOWN
+                  && (keyCode == KeyEvent.KEYCODE_ENTER
+                      || keyCode == KeyEvent.KEYCODE_DPAD_CENTER)) {
+                Long selectionKey = details.getSelectionKey();
+                if (selectionKey != null) {
+                  if (selectionTracker.isSelected(selectionKey)) {
+                    selectionTracker.deselect(selectionKey);
+                  } else {
+                    selectionTracker.select(selectionKey);
+                  }
+                  return true;
+                }
+              }
+              return false;
+            });
+      } else {
+        materialCardView.setOnKeyListener(null);
       }
     }
 
@@ -187,8 +207,7 @@ class SelectableCardsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     long position;
 
-    Details() {
-    }
+    Details() {}
 
     @Override
     public int getPosition() {

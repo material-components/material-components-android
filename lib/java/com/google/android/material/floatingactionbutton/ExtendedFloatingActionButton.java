@@ -43,6 +43,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import androidx.annotation.AnimatorRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -461,6 +462,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     originalTextCsl = getTextColors();
   }
 
+  ColorStateList getOriginalTextColor() {
+    return originalTextCsl;
+  }
+
+  @ColorInt
+  int getCurrentOriginalTextColor() {
+    return originalTextCsl.getColorForState(getDrawableState(), 0);
+  }
+
   /**
    * Update the text color without affecting the original, client-set color.
    */
@@ -484,7 +494,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   public Behavior<ExtendedFloatingActionButton> getBehavior() {
     return behavior;
   }
-
 
   /**
    * Extends or shrinks the fab depending on the value of {@param extended}.
@@ -1418,7 +1427,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
       if (spec.hasPropertyValues("labelOpacity")) {
         PropertyValuesHolder[] labelOpacityValues = spec.getPropertyValues("labelOpacity");
-        float startValue = extending ? 0F : 1F;
+        final int originalAlpha = Color.alpha(getCurrentOriginalTextColor());
+        final int currentAlpha = Color.alpha(getCurrentTextColor());
+        float startValue = originalAlpha != 0 ? (float) currentAlpha / originalAlpha : 0f;
         float endValue = extending ? 1F : 0F;
         labelOpacityValues[0].setFloatValues(startValue, endValue);
         spec.setPropertyValues("labelOpacity", labelOpacityValues);

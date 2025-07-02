@@ -27,12 +27,12 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
-import android.view.ViewOverlay;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -361,6 +361,29 @@ public class ViewUtils {
     return absoluteElevation;
   }
 
+  /**
+   * @deprecated Use {@link View#getOverlay()} instead.
+   */
+  @Deprecated
+  @Nullable
+  public static ViewOverlayImpl getOverlay(@Nullable View view) {
+    if (view == null) {
+      return null;
+    }
+
+    return new ViewOverlayImpl() {
+      @Override
+      public void add(@NonNull Drawable drawable) {
+        view.getOverlay().add(drawable);
+      }
+
+      @Override
+      public void remove(@NonNull Drawable drawable) {
+        view.getOverlay().remove(drawable);
+      }
+    };
+  }
+
   /** Returns the content view that is the parent of the provided view. */
   @Nullable
   public static ViewGroup getContentView(@Nullable View view) {
@@ -387,11 +410,14 @@ public class ViewUtils {
 
   /**
    * Returns the content view overlay that can be used to add drawables on top of all other views.
+   *
+   * @deprecated Use {@link View#getOverlay()} on the result of {@link
+   *     ViewUtils#getContentView(View)} instead.
    */
+  @Deprecated
   @Nullable
-  public static ViewOverlay getContentViewOverlay(@NonNull View view) {
-    ViewGroup contentView = getContentView(view);
-    return contentView != null ? contentView.getOverlay() : null;
+  public static ViewOverlayImpl getContentViewOverlay(@NonNull View view) {
+    return getOverlay(getContentView(view));
   }
 
   public static void addOnGlobalLayoutListener(

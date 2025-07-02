@@ -23,6 +23,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.TooltipCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,6 +81,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
             }
             propagateCheckedButtonState(boldButtons, isChecked);
           });
+      TooltipCompat.setTooltipText(boldButton, boldButton.getContentDescription());
     }
 
     // Initialize group of italics format buttons.
@@ -100,6 +102,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
             }
             propagateCheckedButtonState(italicButtons, isChecked);
           });
+      TooltipCompat.setTooltipText(italicButton, italicButton.getContentDescription());
     }
 
     // Initialize group of underline format buttons.
@@ -117,6 +120,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
             }
             propagateCheckedButtonState(underlineButtons, isChecked);
           });
+      TooltipCompat.setTooltipText(underlineButton, underlineButton.getContentDescription());
     }
 
     // Initialize color text format buttons.
@@ -125,6 +129,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     colorTextButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_color_text));
     for (MaterialButton colorTextButton : colorTextButtons) {
       colorTextButton.setOnClickListener(v -> bodyText.setTextColor(getRandomColor()));
+      TooltipCompat.setTooltipText(colorTextButton, colorTextButton.getContentDescription());
     }
 
     // Initialize color fill format buttons.
@@ -133,6 +138,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     colorFillButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_color_fill));
     for (MaterialButton colorFillButton : colorFillButtons) {
       colorFillButton.setOnClickListener(v -> view.setBackgroundColor(getRandomColor()));
+      TooltipCompat.setTooltipText(colorFillButton, colorFillButton.getContentDescription());
     }
 
     // Initialize strikethrough format buttons.
@@ -150,6 +156,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
             }
             propagateCheckedButtonState(strikethroughButtons, isChecked);
           });
+      TooltipCompat.setTooltipText(strikethroughButton, strikethroughButton.getContentDescription());
     }
 
     // Initialize left align format buttons.
@@ -158,6 +165,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     leftAlignButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_left_align));
     for (MaterialButton leftAlignButton : leftAlignButtons) {
       leftAlignButton.setOnClickListener(v -> bodyText.setGravity(Gravity.LEFT));
+      TooltipCompat.setTooltipText(leftAlignButton, leftAlignButton.getContentDescription());
     }
 
     // Initialize center align format buttons.
@@ -166,6 +174,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     centerAlignButtons.addAll(initializeFormatButtons(floatingToolbars, R.id.floating_toolbar_vibrant_button_center_align));
     for (MaterialButton centerButton : centerAlignButtons) {
       centerButton.setOnClickListener(v -> bodyText.setGravity(Gravity.CENTER_HORIZONTAL));
+      TooltipCompat.setTooltipText(centerButton, centerButton.getContentDescription());
     }
 
     // Initialize right align format buttons.
@@ -175,6 +184,7 @@ public class FloatingToolbarMainDemoFragment extends DemoFragment {
     for (MaterialButton rightAlignButton : rightAlignButtons) {
       // Check if is RTL since icon won't change direction.
       rightAlignButton.setOnClickListener(v -> bodyText.setGravity(Gravity.RIGHT));
+      TooltipCompat.setTooltipText(rightAlignButton, rightAlignButton.getContentDescription());
     }
 
     // Initialize orientation configuration selection controls.

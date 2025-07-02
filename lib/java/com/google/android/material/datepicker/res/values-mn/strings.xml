@@ -42,9 +42,9 @@
   <string name="mtrl_picker_a11y_prev_month">Өмнөх сар луу өөрчлөх</string>
   <string name="mtrl_picker_a11y_next_month">Дараагийн сар луу өөрчлөх</string>
   <string name="mtrl_picker_toggle_to_year_selection">Жилийн харагдах байдал руу сэлгэх</string>
+  <string name="mtrl_picker_pane_title_year_view">Жилийн харагдах байдал</string>
   <string name="mtrl_picker_toggle_to_day_selection">Календарийн харагдах байдал руу сэлгэх</string>
-  <string name="mtrl_picker_toggled_to_year_selection">Жилийн харагдах байдал руу сэлгэсэн</string>
-  <string name="mtrl_picker_toggled_to_day_selection">Календарийн харагдах байдал руу сэлгэсэн</string>
+  <string name="mtrl_picker_pane_title_calendar_view">Календарийн харагдах байдал</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Одоогийн сонголт: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Эхлэх огнооны сонголт: %1$s – Дуусах огнооны сонголт: %2$s</string>

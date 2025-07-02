@@ -28,6 +28,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.TintTypedArray;
+import androidx.appcompat.widget.TooltipCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -98,6 +99,7 @@ public class OverflowLinearLayout extends LinearLayout {
         (MaterialButton)
             LayoutInflater.from(context)
                 .inflate(R.layout.m3_overflow_linear_layout_overflow_button, this, false);
+    TooltipCompat.setTooltipText(overflowButton, getResources().getString(R.string.m3_overflow_linear_layout_button_tooltip_text));
     setOverflowButtonIcon(overflowButtonDrawable);
     if (overflowButton.getContentDescription() == null) {
       overflowButton.setContentDescription(

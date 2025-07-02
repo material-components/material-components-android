@@ -9,42 +9,39 @@ path: /catalog/bottom-sheet-behavior/
 
 # Bottom sheets
 
-[Bottom sheets](https://m3.material.io/components/bottom-sheets/overview) are
-surfaces containing supplementary content that are anchored to the bottom of the
-screen. There are two variants of bottom sheets.
+[Bottom sheets](https://m3.material.io/components/bottom-sheets/overview) show
+secondary content anchored to the bottom of the screen. There are two variants
+of bottom sheets.
 
 ![Bottom sheets types](assets/bottomsheet/bottomsheets_types.png)
 
-1. Standard
-2. Modal
+1.  Standard bottom sheet
+2.  Modal bottom sheet
+
+**Note:** Images use various dynamic color schemes.
 
 ## Design & API documentation
 
-*   [Material 3 (M3) spec](https://material.io/components/bottom-sheets/overview)
+*   [Material 3 (M3) spec](https://m3.material.io/components/bottom-sheets/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/bottomsheet/package-summary)
 
-## Using bottom sheets
+## Anatomy
 
-Before you can use Material bottom sheets, you need to add a dependency to the
-Material Components for Android library. For more information, see the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
-
-<img src="assets/bottomsheet/bottomsheet_hero.png" alt="Example bottom sheet: modal bottom sheet" width="650"/>
-
-### Anatomy
+Modal bottom sheets are above a scrim while standard bottom sheets don't have a
+scrim. Besides this, both types of bottom sheets have the same specs.
 
 ![Bottom sheet anatomy](assets/bottomsheet/bottomsheet_anatomy.png)
 
-1.  Sheet
-2.  Drag Handle
-3.  Scrim (in modal bottom sheets)
+1.  Container
+2.  Drag handle (optional)
+3.  Scrim
 
-More details on anatomy items in the [component guidelines](https://m3.material.io/components/bottom-sheets/guidelines#0dd76c6d-7f76-4ff4-b325-0abf28b00029).
+More details on anatomy items in the
+[component guidelines](https://m3.material.io/components/bottom-sheets/guidelines#0dd76c6d-7f76-4ff4-b325-0abf28b00029).
 
-### Key properties
+## Key properties
 
-#### Sheet attributes
+### Sheet attributes
 
 Element        | Attribute             | Related method(s)                 | Default value
 -------------- | --------------------- | --------------------------------- | -------------
@@ -54,7 +51,7 @@ Element        | Attribute             | Related method(s)                 | Def
 **Max width**  | `android:maxWidth`    | `setMaxWidth`<br/>`getMaxWidth`   | `640dp`
 **Max height** | `android:maxHeight`   | `setMaxHeight`<br/>`getMaxHeight` | N/A
 
-#### Behavior attributes
+### Behavior attributes
 
 More information about these attributes and how to use them in the
 [setting behavior](#setting-behavior) section.
@@ -77,27 +74,22 @@ Attribute                | Related method(s)                 | Default value
 ------------------------ | --------------------------------- | -------------
 `app:behavior_saveFlags` | `setSaveFlags`<br/>`getSaveFlags` | `SAVE_NONE`
 
-#### Styles
+### Styles
 
-**Element**               | **Default value**
-------------------------- | -------------------------------------------
-**Default style (modal)** | `@style/Widget.Material3.BottomSheet.Modal`
-
-Default style theme attribute:`?attr/bottomSheetStyle`
+Element                   | Default value                               | Theme attribute
+------------------------- | ------------------------------------------- | ---------------
+**Default style (modal)** | `@style/Widget.Material3.BottomSheet.Modal` | `?attr/bottomSheetStyle`
 
 **Note**: The `?attr/bottomSheetStyle` default style theme attribute is for
-modal
-bottom sheets only. There is no default style theme attribute for standard
+modal bottom sheets only. There is no default style theme attribute for standard
 bottom sheets, because `BottomSheetBehavior`s don't have a designated associated
 `View`.
 
-#### Theme overlays
+### Theme overlays
 
-**Element**               | **Theme overlay**
-------------------------- | ------------------------------------------
-**Default theme overlay** | `ThemeOverlay.Material3.BottomSheetDialog`
-
-Default theme overlay attribute: `?attr/bottomSheetDialogTheme`
+Element                   | Theme overlay                              | Attribute
+------------------------- | ------------------------------------------ | ---------
+**Default theme overlay** | `ThemeOverlay.Material3.BottomSheetDialog` | `?attr/bottomSheetDialogTheme`
 
 For the full list, see
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/res/values/styles.xml),
@@ -105,10 +97,9 @@ For the full list, see
 and
 [themes and theme overlays](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/res/values/themes.xml).
 
-### Variants of bottom sheets
+## Variants of bottom sheets
 
-<details>
-  <summary><h4>Standard bottom sheet</h4></summary>
+### Standard bottom sheet
 
 Standard bottom sheets co-exist with the screen’s main UI region and allow for
 simultaneously viewing and interacting with both regions. They are commonly used
@@ -128,13 +119,13 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetBehavior.java)
 
-##### Standard bottom sheet example
+#### Standard bottom sheet example
 
 The following example shows a standard bottom sheet in its collapsed and
 expanded states:
 
-Collapsed  <div style="width:400px"></div>                                                                                | Expanded <div style="width:400px"></div>
-:-----------------------------------------------------------------------------------------: | :--------:
+Collapsed <div style="width:400px"></div>                                                                             | Expanded <div style="width:400px"></div>
+--------------------------------------------------------------------------------------------------------------------- | ----------------------------------------
 <img src="assets/bottomsheet/bottomsheet_standard1.png" alt="Standard collapsed bottom sheet example." height="500"/> | <img src="assets/bottomsheet/bottomsheet_standard2.png" alt="Standard expanded bottom sheet example." height="500"/>
 
 `BottomSheetBehavior` works in tandem with `CoordinatorLayout` to let you
@@ -204,10 +195,7 @@ val standardBottomSheetBehavior = BottomSheetBehavior.from(standardBottomSheet)
 More information about using the behavior to set attributes is in the
 [setting behavior](#setting-behavior) section.
 
-</details>
-
-<details>
-  <summary><h4>Modal bottom sheet</h4></summary>
+### Modal bottom sheet
 
 Modal bottom sheets present a set of choices while blocking interaction with the
 rest of the screen. They are an alternative to inline menus and simple dialogs
@@ -229,13 +217,13 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetDialogFragment)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetDialogFragment.java)
 
-##### Modal bottom sheet example
+#### Modal bottom sheet example
 
 The following example shows a modal bottom sheet in its collapsed and expanded
 states:
 
-Collapsed            <div style="width:400px"></div>                                                                | Expanded <div style="width:400px"></div>
-:-----------------------------------------------------------------------------------: | :--------:
+Collapsed <div style="width:400px"></div>                                                                       | Expanded <div style="width:400px"></div>
+--------------------------------------------------------------------------------------------------------------- | ----------------------------------------
 <img src="assets/bottomsheet/bottomsheet_modal1.png" alt="Modal collapsed bottom sheet example." height="500"/> | <img src="assets/bottomsheet/bottomsheet_modal2.png" alt="Modal expanded bottom sheet example." height="500"/>
 
 First, subclass `BottomSheetDialogFragment` and overwrite `onCreateView` to
@@ -268,12 +256,13 @@ modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
 you need to use `Activity.getSupportFragmentManager()`.
 
 **Note:** Don't call `setOnCancelListener` or `setOnDismissListener` on a
-`BottomSheetDialogFragment`. You can override
-`onCancel(DialogInterface)` or `onDismiss(DialogInterface)` if necessary.
+`BottomSheetDialogFragment`. You can override `onCancel(DialogInterface)` or
+`onDismiss(DialogInterface)` if necessary.
 
 `BottomSheetDialogFragment` wraps the view in a `BottomSheetDialog`, which has
 its own `BottomSheetBehavior`. You can define your own `BottomSheetBehavior`
 through overriding `onCreateDialog`.
+
 **Note:** If overriding `onCreateDialog`, you should not override
 `onCreateView`.
 
@@ -298,139 +287,181 @@ class ModalBottomSheet : BottomSheetDialogFragment() {
   }
 }
 ```
-</details>
 
-### Usage
+## Code implementation
 
-#### Standard bottom sheet basic usage
+Before you can use Material bottom sheets, you need to add a dependency to the
+Material components for Android library. For more information, see the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
 
-```xml
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-  ...>
+<details>
+  <summary><h3>Listening to state and slide changes</h3></summary>
 
-  <FrameLayout
-    ...
-    android:id="@+id/standard_bottom_sheet"
-    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-    <!-- Bottom sheet contents. -->
-
-  </FrameLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-```
-
-#### Modal bottom sheet basic usage
+A `BottomSheetCallback` can be added to a `BottomSheetBehavior`:
 
 ```kt
-class ModalBottomSheet : BottomSheetDialogFragment() {
+val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.modal_bottom_sheet_content, container, false)
+    override fun onStateChanged(bottomSheet: View, newState: Int) {
+        // Do something for new state.
+    }
 
-    companion object {
-        const val TAG = "ModalBottomSheet"
+    override fun onSlide(bottomSheet: View, slideOffset: Float) {
+        // Do something for slide offset.
     }
 }
 
-class MainActivity : AppCompatActivity() {
-    ...
-    val modalBottomSheet = ModalBottomSheet()
-    modalBottomSheet.show(supportFragmentManager, ModalBottomSheet.TAG)
-    ...
-}
+// To add the callback:
+bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
+
+// To remove the callback:
+bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
 ```
 
-## Customizing bottom sheets
+</details>
 
 <details>
-  <summary><h3>Theming bottom sheets</h3></summary>
+  <summary><h3>Handling insets and fullscreen</h3></summary>
 
-Bottom sheets support
-[Material Theming](https://material.io/components/sheets-bottom#theming), which
-can customize color and shape.
+`BottomSheetBehavior` can automatically handle insets (such as for
+[edge to edge](https://developer.android.com/training/gestures/edge-to-edge)) by
+specifying any of these to true on the view:
 
-#### Bottom sheet theming example
+*   `app:paddingBottomSystemWindowInsets`
+*   `app:paddingLeftSystemWindowInsets`
+*   `app:paddingRightSystemWindowInsets`
+*   `app:paddingTopSystemWindowInsets`
 
-API and source code:
-
-*   `BottomSheetBehavior`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetBehavior.java)
-*   `BottomSheetDialogFragment`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetDialogFragment)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetDialogFragment.java)
-
-The following example shows a bottom sheet with Material Theming, in its
-collapsed and expanded states.
-
-<img src="assets/bottomsheet/bottomsheet_theming.png" alt="Bottom sheet with pink background color. Collapsed on the left and expanded on the right." height="550"/>
-
-#### Implementing bottom sheet theming
-
-Setting the theme attribute `bottomSheetDialogTheme` to your custom
-`ThemeOverlay` will affect all bottom sheets.
-
-In `res/values/themes.xml`:
+On API 21 and above the modal bottom sheet will be rendered fullscreen (edge to
+edge) if the navigation bar is transparent and `enableEdgeToEdge` is true. To
+enable edge-to-edge by default for modal bottom sheets, you can override
+`?attr/bottomSheetDialogTheme` like the below example (`enableEdgeToEdge` is
+already true in `ThemeOverlay.Material3.BottomSheetDialog`):
 
 ```xml
-<style name="Theme.App" parent="Theme.Material3.*">
+<style name="AppTheme" parent="Theme.Material3.*">
   ...
   <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
 </style>
 
 <style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-    <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
+    <item name="android:navigationBarColor">@android:color/transparent<item>
 </style>
 ```
 
-In `res/values/styles.xml`:
+Insets can be added automatically if any of the padding attributes above are set
+to true in the style, either by updating the style passed to the constructor, or
+by updating the default style specified by the `?attr/bottomSheetDialogTheme`
+attribute in your theme.
 
-```xml
-<style name="ModalBottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
-    <item name="backgroundTint">@color/shrine_pink_light</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
-</style>
+`BottomSheetDialog` will also add padding to the top when the bottom sheet
+slides under the status bar, to prevent content from being drawn underneath it.
 
-<style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
-    <item name="cornerFamily">cut</item>
-    <item name="cornerSize">24dp</item>
-</style>
-```
-
-**Note:** The benefit of using a custom `ThemeOverlay` is that any changes to
-your main theme, such as updated colors, will be reflected in the bottom sheet,
-as long as they're not overridden in your custom theme overlay. If you use a
-custom `Theme` instead, by extending from one of the
-`Theme.Material3.*.BottomSheetDialog` variants, you will have more control over
-exactly what attributes are included in each, but it also means you'll have to
-duplicate any changes that you've made in your main theme into your custom
-theme.
+`BottomSheetDialog` also supports
+[Protections](https://developer.android.com/reference/androidx/core/view/insets/Protection).
+If using
+[Gradient Protections](https://developer.android.com/reference/androidx/core/view/insets/GradientProtection),
+`BottomSheetBehavior` provides a `getDefaultBottomGradientProtection()` method
+that will return a bottom `GradientProtection` that is the color
+`?attr/colorSurfaceContainerLow` for Material3 or later, or `?attr/colorSurface`
+if otherwise not defined.
 
 </details>
 
 <details>
-  <summary><h3>Making bottom sheets accessible</h3></summary>
+  <summary><h3>Predictive back</h3></summary>
 
-The contents within a bottom sheet should follow their own accessibility
-guidelines, such as setting content descriptions for images.
+#### Modal bottom sheets
 
-To support dragging bottom sheets with accessibility services such as TalkBack,
-Voice Access, Switch Access, etc., we provide a convenient widget,
-`BottomSheetDragHandleView`, which will automatically receive and handle
-accessibility commands to expand and collapse the attached bottom sheet when
-the accessibility mode is enabled. The handle also supports tapping to cycle
-through expanded and collapsed states as well as double tapping to hide. To
-use`BottomSheetDragHandleView`, you can add it to the top of your bottom sheet
-content. It will show a customizable visual indicator for all users. See the
-example in the below section for how to add a drag handle to your bottom sheet.
+The modal `BottomSheetDialogFragment` and `BottomSheetDialog` components
+automatically support
+[predictive back](/third_party/java_src/android_libs/material_components/docs/foundations/PredictiveBack.md).
+No further integration is required on the app side other than the general
+predictive back prerequisites and migration steps mentioned
+[here](/third_party/java_src/android_libs/material_components/docs/foundations/PredictiveBack.md#usage).
 
-**Note:** `BottomSheetDragHandleView` has a default min width and height of 48dp
-to conform to the minimum touch target requirement. So you will need to preserve
-at least 48dp at the top to place a drag handle.
+Visit the
+[predictive back design guidelines](https://m3.material.io/components/bottom-sheets/guidelines#3d7735e2-73ea-4f3e-bd42-e70161fc1085)
+to see how the component behaves when a user swipes back.
+
+#### Standard (Non-Modal) bottom sheets
+
+To set up predictive back for standard (non-modal) bottom sheets using
+`BottomSheetBehavior`, create an AndroidX back callback that forwards
+`BackEventCompat` objects to your `BottomSheetBehavior`:
+
+```kt
+val bottomSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false) {
+  override fun handleOnBackStarted(backEvent: BackEventCompat) {
+    bottomSheetBehavior.startBackProgress(backEvent)
+  }
+
+  override fun handleOnBackProgressed(backEvent: BackEventCompat) {
+    bottomSheetBehavior.updateBackProgress(backEvent)
+  }
+
+  override fun handleOnBackPressed() {
+    bottomSheetBehavior.handleBackInvoked()
+  }
+
+  override fun handleOnBackCancelled() {
+    bottomSheetBehavior.cancelBackProgress()
+  }
+}
+```
+
+And then add and enable the back callback as follows:
+
+```kt
+getOnBackPressedDispatcher().addCallback(this, bottomSheetBackCallback)
+
+bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
+  override fun onStateChanged(bottomSheet: View, newState: Int) {
+    when (newState) {
+      STATE_EXPANDED, STATE_HALF_EXPANDED -> bottomSheetBackCallback.setEnabled(true)
+      STATE_COLLAPSED, STATE_HIDDEN -> bottomSheetBackCallback.setEnabled(false)
+      else -> {
+        // Do nothing, only change callback enabled for "stable" states.
+      }
+    }
+  }
+
+  override fun onSlide(bottomSheet: View, slideOffset: Float) {}
+})
+```
+
+</details>
+
+<details>
+  <summary><h3>Setting state</h3></summary>
+
+Standard and modal bottom sheets have the following states:
+
+*   `STATE_COLLAPSED`: The bottom sheet is visible but only showing its peek
+    height. This state is usually the 'resting position' of a bottom sheet, and
+    should have enough height to indicate there is extra content for the user to
+    interact with.
+*   `STATE_EXPANDED`: The bottom sheet is visible at its maximum height and it
+    is neither dragging nor settling
+*   `STATE_HALF_EXPANDED`: The bottom sheet is half-expanded (only applicable if
+    `behavior_fitToContents` has been set to false), and is neither dragging nor
+    settling (see below).
+*   `STATE_HIDDEN`: The bottom sheet is no longer visible and can only be
+    re-shown programmatically.
+*   `STATE_DRAGGING`: The user is actively dragging the bottom sheet up or down.
+*   `STATE_SETTLING`: The bottom sheet is settling to a specific height after a
+    drag/swipe gesture. This will be the peek height, expanded height, or 0, in
+    case the user action caused the bottom sheet to hide.
+
+**Note:** `STATE_SETTLING` and `STATE_DRAGGING` should not be set
+programmatically.
+
+You can set a state on the bottom sheet:
+
+```kt
+bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
+```
 
 </details>
 
@@ -478,88 +509,6 @@ the [behavior attributes](#behavior-attributes) section.
 </details>
 
 <details>
-  <summary><h3>Retaining behavior on configuration change</h3></summary>
-
-In order to save and restore specific behaviors of the bottom sheet on
-configuration change, the following flags can be set (or combined with bitwise
-OR operations):
-
-*   `SAVE_PEEK_HEIGHT`: `app:behavior_peekHeight` is preserved.
-*   `SAVE_HIDEABLE`: `app:behavior_hideable` is preserved.
-*   `SAVE_SKIP_COLLAPSED`: `app:behavior_skipCollapsed` is preserved.
-*   `SAVE_FIT_TO_CONTENTS`: `app:behavior_fitToContents` is preserved.
-*   `SAVE_ALL`: All aforementioned attributes are preserved.
-*   `SAVE_NONE`: No attribute is preserved. This is the default value.
-
-Behaviors can also be set in code:
-
-```kt
-bottomSheetBehavior.saveFlags = BottomSheetBehavior.SAVE_ALL
-```
-
-Or in xml using the `app:behavior_saveFlags` attribute.
-
-</details>
-
-<details>
-  <summary><h3>Setting state</h3></summary>
-
-Standard and modal bottom sheets have the following states:
-
-*   `STATE_COLLAPSED`: The bottom sheet is visible but only showing its peek
-    height. This state is usually the 'resting position' of a bottom sheet, and
-    should have enough height to indicate there is extra content for the user to
-    interact with.
-*   `STATE_EXPANDED`: The bottom sheet is visible at its maximum height and it
-    is neither dragging nor settling
-*   `STATE_HALF_EXPANDED`: The bottom sheet is half-expanded (only applicable if
-    `behavior_fitToContents` has been set to false), and is neither dragging nor
-    settling (see below).
-*   `STATE_HIDDEN`: The bottom sheet is no longer visible and can only be
-    re-shown programmatically.
-*   `STATE_DRAGGING`: The user is actively dragging the bottom sheet up or down.
-*   `STATE_SETTLING`: The bottom sheet is settling to a specific height after a
-    drag/swipe gesture. This will be the peek height, expanded height, or 0, in
-    case the user action caused the bottom sheet to hide.
-
-**Note:** `STATE_SETTLING` and `STATE_DRAGGING` should not be set
-programmatically.
-
-You can set a state on the bottom sheet:
-
-```kt
-bottomSheetBehavior.state = BottomSheetBehavior.STATE_COLLAPSED
-```
-
-</details>
-
-<details>
-  <summary><h3>Listening to state and slide changes</h3></summary>
-
-A `BottomSheetCallback` can be added to a `BottomSheetBehavior`:
-
-```kt
-val bottomSheetCallback = object : BottomSheetBehavior.BottomSheetCallback() {
-
-    override fun onStateChanged(bottomSheet: View, newState: Int) {
-        // Do something for new state.
-    }
-
-    override fun onSlide(bottomSheet: View, slideOffset: Float) {
-        // Do something for slide offset.
-    }
-}
-
-// To add the callback:
-bottomSheetBehavior.addBottomSheetCallback(bottomSheetCallback)
-
-// To remove the callback:
-bottomSheetBehavior.removeBottomSheetCallback(bottomSheetCallback)
-```
-
-</details>
-
-<details>
   <summary><h3>Handling insets and fullscreen</h3></summary>
 
 `BottomSheetBehavior` can automatically handle insets (such as for
@@ -572,8 +521,8 @@ specifying any of these to true on the view:
 *   `app:paddingTopSystemWindowInsets`
 
 On API 21 and above the modal bottom sheet will be rendered fullscreen (edge to
-edge) if the navigation bar is transparent and `enableEdgeToEdge` is true.
-To enable edge-to-edge by default for modal bottom sheets, you can override
+edge) if the navigation bar is transparent and `enableEdgeToEdge` is true. To
+enable edge-to-edge by default for modal bottom sheets, you can override
 `?attr/bottomSheetDialogTheme` like the below example (`enableEdgeToEdge` is
 already true in `ThemeOverlay.Material3.BottomSheetDialog`):
 
@@ -587,6 +536,7 @@ already true in `ThemeOverlay.Material3.BottomSheetDialog`):
     <item name="android:navigationBarColor">@android:color/transparent<item>
 </style>
 ```
+
 Insets can be added automatically if any of the padding attributes above are set
 to true in the style, either by updating the style passed to the constructor, or
 by updating the default style specified by the `?attr/bottomSheetDialogTheme`
@@ -595,75 +545,89 @@ attribute in your theme.
 `BottomSheetDialog` will also add padding to the top when the bottom sheet
 slides under the status bar, to prevent content from being drawn underneath it.
 
-`BottomSheetDialog` also supports
-[Protections](https://developer.android.com/reference/androidx/core/view/insets/Protection).
-If using
-[Gradient Protections](https://developer.android.com/reference/androidx/core/view/insets/GradientProtection),
-`BottomSheetBehavior` provides a `getDefaultBottomGradientProtection()` method
-that will return a bottom `GradientProtection` that is the color
-`?attr/colorSurfaceContainerLow` for Material3 or later, or `?attr/colorSurface`
-if otherwise not defined.
-
 </details>
 
 <details>
-  <summary><h3>Predictive back</h3></summary>
+  <summary><h3>Making bottom sheets accessible</h3></summary>
 
-#### Modal bottom sheets
+The contents within a bottom sheet should follow their own accessibility
+guidelines, such as setting content descriptions for images.
 
-The modal `BottomSheetDialogFragment` and `BottomSheetDialog` components
-automatically support [Predictive Back](/third_party/java_src/android_libs/material_components/docs/foundations/PredictiveBack.md). No
-further integration is required on the app side other than the general
-Predictive Back prerequisites and migration steps mentioned
-[here](/third_party/java_src/android_libs/material_components/docs/foundations/PredictiveBack.md#usage).
+To support dragging bottom sheets with accessibility services such as TalkBack,
+Voice Access, Switch Access, etc., we provide a convenient widget,
+`BottomSheetDragHandleView`, which will automatically receive and handle
+accessibility commands to expand and collapse the attached bottom sheet when the
+accessibility mode is enabled. The handle also supports tapping to cycle through
+expanded and collapsed states as well as double tapping to hide. To
+use`BottomSheetDragHandleView`, you can add it to the top of your bottom sheet
+content. It will show a customizable visual indicator for all users. See the
+example in the below section for how to add a drag handle to your bottom sheet.
 
-Visit the
-[Predictive Back design guidelines](https://m3.material.io/components/bottom-sheets/guidelines#3d7735e2-73ea-4f3e-bd42-e70161fc1085)
-to see how the component behaves when a user swipes back.
+**Note:** `BottomSheetDragHandleView` has a default min width and height of 48dp
+to conform to the minimum touch target requirement. So you will need to preserve
+at least 48dp at the top to place a drag handle.
 
-#### Standard (Non-Modal) bottom sheets
-
-To set up Predictive Back for standard (non-modal) bottom sheets using
-`BottomSheetBehavior`, create an AndroidX back callback that forwards
-`BackEventCompat` objects to your `BottomSheetBehavior`:
-
-```kt
-val bottomSheetBackCallback = object : OnBackPressedCallback(/* enabled= */false) {
-  override fun handleOnBackStarted(backEvent: BackEventCompat) {
-    bottomSheetBehavior.startBackProgress(backEvent)
-  }
-
-  override fun handleOnBackProgressed(backEvent: BackEventCompat) {
-    bottomSheetBehavior.updateBackProgress(backEvent)
-  }
-
-  override fun handleOnBackPressed() {
-    bottomSheetBehavior.handleBackInvoked()
-  }
-
-  override fun handleOnBackCancelled() {
-    bottomSheetBehavior.cancelBackProgress()
-  }
-}
-```
-
-And then add and enable the back callback as follows:
-
-```kt
-getOnBackPressedDispatcher().addCallback(this, bottomSheetBackCallback)
-
-bottomSheetBehavior.addBottomSheetCallback(object : BottomSheetCallback() {
-  override fun onStateChanged(bottomSheet: View, newState: Int) {
-    when (newState) {
-      STATE_EXPANDED, STATE_HALF_EXPANDED -> bottomSheetBackCallback.setEnabled(true)
-      STATE_COLLAPSED, STATE_HIDDEN -> bottomSheetBackCallback.setEnabled(false)
-      else -> {
-        // Do nothing, only change callback enabled for "stable" states.
-      }
-    }
-  }
-
-  override fun onSlide(bottomSheet: View, slideOffset: Float) {}
-})
-```
 </details>
+
+## Customizing bottom sheets
+
+### Theming bottom sheets
+
+Bottom sheets support the customization of color and shape.
+
+#### Bottom sheet theming example
+
+API and source code:
+
+*   `BottomSheetBehavior`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetBehavior.java)
+*   `BottomSheetDialogFragment`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetDialogFragment)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetDialogFragment.java)
+
+The following example shows a bottom sheet with Material theming, in its
+collapsed and expanded states.
+
+<img src="assets/bottomsheet/bottomsheet_theming.png" alt="Bottom sheet with pink background color. Collapsed on the left and expanded on the right." height="550"/>
+
+##### Implementing bottom sheet theming
+
+Setting the theme attribute `bottomSheetDialogTheme` to your custom
+`ThemeOverlay` will affect all bottom sheets.
+
+In `res/values/themes.xml`:
+
+```xml
+<style name="Theme.App" parent="Theme.Material3.*">
+  ...
+  <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
+</style>
+
+<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
+    <item name="bottomSheetStyle">@style/ModalBottomSheetDialog</item>
+</style>
+```
+
+In `res/values/styles.xml`:
+
+```xml
+<style name="ModalBottomSheetDialog" parent="Widget.Material3.BottomSheet.Modal">
+    <item name="backgroundTint">@color/shrine_pink_light</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.App.LargeComponent</item>
+</style>
+
+<style name="ShapeAppearance.App.LargeComponent" parent="ShapeAppearance.Material3.LargeComponent">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">24dp</item>
+</style>
+```
+
+**Note:** The benefit of using a custom `ThemeOverlay` is that any changes to
+your main theme, such as updated colors, will be reflected in the bottom sheet,
+as long as they're not overridden in your custom theme overlay. If you use a
+custom `Theme` instead, by extending from one of the
+`Theme.Material3.*.BottomSheetDialog` variants, you will have more control over
+exactly what attributes are included in each, but it also means you'll have to
+duplicate any changes that you've made in your main theme into your custom
+theme.

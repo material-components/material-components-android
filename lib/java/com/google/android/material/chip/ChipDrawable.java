@@ -1326,10 +1326,10 @@ public class ChipDrawable extends MaterialShapeDrawable
     drawable.setVisible(isVisible(), false);
 
     if (drawable == closeIcon) {
+      drawable.setTintList(closeIconTint); // call before `setState` to prevent state reset
       if (drawable.isStateful()) {
         drawable.setState(getCloseIconState());
       }
-      drawable.setTintList(closeIconTint);
       return;
     }
     if (drawable == chipIcon && hasChipIconTint) {
