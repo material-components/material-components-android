@@ -76,7 +76,7 @@ public class MaskableFrameLayoutTest {
   }
 
   @RequiresApi(api = VERSION_CODES.LOLLIPOP_MR1)
-  @Config(sdk = VERSION_CODES.LOLLIPOP_MR1)
+  @Config(sdk = VERSION_CODES.M)
   @Test
   public void testForceCompatClipping_shouldNotUseViewOutlineProvider() {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
@@ -90,7 +90,7 @@ public class MaskableFrameLayoutTest {
   }
 
   @RequiresApi(api = VERSION_CODES.LOLLIPOP_MR1)
-  @Config(sdk = VERSION_CODES.LOLLIPOP_MR1)
+  @Config(sdk = VERSION_CODES.M)
   @Test
   public void testRoundedCornersApi22_usesViewOutlineProvider() {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);
@@ -102,7 +102,7 @@ public class MaskableFrameLayoutTest {
   }
 
   @RequiresApi(api = VERSION_CODES.LOLLIPOP_MR1)
-  @Config(sdk = VERSION_CODES.LOLLIPOP_MR1)
+  @Config(sdk = VERSION_CODES.M)
   @Test
   public void testCutCornersApi22_doesNotUseViewOutlineProvider() {
     MaskableFrameLayout maskableFrameLayout = createMaskableFrameLayoutWithSize(50, 50);

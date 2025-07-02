@@ -35,6 +35,7 @@
         android:layout_gravity="center_horizontal">
 
       <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/mtrl_picker_edit_text_range_start"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="@string/mtrl_picker_text_input_date_range_start_hint"
@@ -55,6 +56,7 @@
         android:layout_gravity="center_horizontal">
 
       <com.google.android.material.textfield.TextInputEditText
+          android:id="@+id/mtrl_picker_edit_text_range_end"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:hint="@string/mtrl_picker_text_input_date_range_end_hint"

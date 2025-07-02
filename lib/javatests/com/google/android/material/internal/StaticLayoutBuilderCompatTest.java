@@ -39,7 +39,7 @@ public class StaticLayoutBuilderCompatTest {
           + "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, "
           + "vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a";
 
-  @Config(maxSdk = VERSION_CODES.P)
+  @Config(minSdk = Config.OLDEST_SDK, maxSdk = VERSION_CODES.P)
   @Test
   public void createStaticLayout_withMaxLines_LongString() throws Exception {
     int maxLines = 3;

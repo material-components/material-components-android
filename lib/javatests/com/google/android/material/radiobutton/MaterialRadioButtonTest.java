@@ -52,7 +52,7 @@ public class MaterialRadioButtonTest {
   }
 
   @Test
-  @Config(sdk = VERSION_CODES.LOLLIPOP)
+  @Config(sdk = Config.OLDEST_SDK)
   public void testThemeableAppButtonTint() {
     testThemeableButtonTint(
         (RadioButton) radioButtons.findViewById(R.id.test_radiobutton_app_button_tint));

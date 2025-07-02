@@ -21,6 +21,7 @@ import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
+import android.text.SpannableString;
 import androidx.test.core.app.ApplicationProvider;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -85,6 +86,15 @@ public class UtcDatesTest {
     String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
 
     assertEquals("년.월.일.", hint);
+  }
+
+  @Test
+  public void verbatimTextInputHintForUK() {
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy", Locale.UK);
+    String hint = UtcDates.getDefaultTextInputHint(context.getResources(), sdf);
+    SpannableString hintSpannable = UtcDates.getVerbatimTextInputHint(hint);
+
+    assertEquals("dd/mm/yyyy", hintSpannable.toString());
   }
 
   @Test

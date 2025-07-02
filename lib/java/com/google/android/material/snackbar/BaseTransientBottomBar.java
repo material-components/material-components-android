@@ -500,7 +500,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private boolean shouldUpdateGestureInset() {
-    return extraBottomMarginGestureInset > 0 && !gestureInsetBottomIgnored && isSwipeDismissable();
+    return extraBottomMarginGestureInset > 0
+        && !gestureInsetBottomIgnored
+        && isSwipeDismissable()
+        && getAnchorView() == null;
   }
 
   private boolean isSwipeDismissable() {

@@ -9,27 +9,26 @@ path: /catalog/bottom-app-bars/
 
 # Bottom app bars
 
-A [bottom app bar](https://material.io/components/bottom-app-bar/) displays
+**Note:** The **bottom app bar** is being deprecated and should be replaced with
+the [docked toolbar](DockedToolbar.md), which functions similarly, but is
+shorter and has more flexibility.
+
+A [bottom app bar](https://m2.material.io/components/app-bars-bottom) displays
 navigation and key actions at the bottom of mobile screens.
 
 ![Purple bottom app bar with floating action button](assets/bottomappbar/bottom-app-bar-hero.png)
 
-## Design & API documentation
-
-*   [Material 3 (M3) spec](https://material.io/components/bottom-app-bar/overview)
-*   [API Reference](https://developer.android.com/reference/com/google/android/material/bottomappbar/package-summary)
-
-## Using bottom app bars
-
-Before you can use Material bottom app bars, you need to add a dependency to the
-Material Components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
+**Note:** Images use various dynamic color schemes.
 
 Bottom app bars provide access to up to four actions, including the
 [floating action button](FloatingActionButton.md) (FAB).
 
-### Anatomy
+## Design & API documentation
+
+*   [Material 2 (M2) spec](https://m2.material.io/components/app-bars-bottom)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/bottomappbar/package-summary)
+
+## Anatomy
 
 ![Bottom app bar anatomy diagram](assets/bottomappbar/bottom-app-bar-anatomy.png)
 
@@ -43,11 +42,28 @@ Bottom app bars provide access to up to four actions, including the
 reflect the current M3 style. Use `Widget.Material3.BottomAppBar.Legacy` to
 revert back to the previous style.
 
-More details on anatomy items in the [component guidelines](https://m3.material.io/components/bottom-app-bar/guidelines#a1332bc2-701f-4234-93e9-ccc2470434d6).
+## M3 Expressive update
 
-### Key properties
+Before you can use `Material3Expressive` component styles, follow the
+[`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-#### Container attributes
+The bottom app bar is being deprecated and should be replaced with the
+[docked toolbar](DockedToolbar.md), which functions similarly, but is shorter
+and has more flexibility.
+
+**Types and naming:**
+
+*   Added **docked toolbar** to replace **bottom app bar**
+
+    *   Size: Shorter height
+    *   Color: Standard or vibrant
+    *   Flexibility: More layout and element options
+
+*   **Bottom app bar** is still available, but not recommended
+
+## Key properties
+
+### Container attributes
 
 Element       | Attribute                | Related method(s)                          | Default value
 ------------- | ------------------------ | ------------------------------------------ | -------------
@@ -56,14 +72,14 @@ Element       | Attribute                | Related method(s)                    
 **Height**    | `android:minHeight`      | `setMinimumHeight`<br>`getMinimumHeight`   | `80dp`
 **Shadows**   | `app:addElevationShadow` | N/A                                        | `false`
 
-#### Navigation icon attributes
+### Navigation icon attributes
 
 Element   | Attribute                | Related method(s)                          | Default value
 --------- | ------------------------ | ------------------------------------------ | -------------
 **Icon**  | `app:navigationIcon`     | `setNavigationIcon`<br>`getNavigationIcon` | `null`
 **Color** | `app:navigationIconTint` | `setNavigationIconTint`                    | `?attr/colorOnSurfaceVariant` (as `Drawable` tint)
 
-#### FAB attributes
+### FAB attributes
 
 Element                          | Attribute                          | Related method(s)                                                      | Default value
 -------------------------------- | ---------------------------------- | ---------------------------------------------------------------------- | -------------
@@ -80,7 +96,7 @@ See the
 [FAB documentation](https://github.com/material-components/material-components-android/tree/master/docs/components/FloatingActionButton.md)
 for more attributes.
 
-#### Action item(s) attributes
+### Action item(s) attributes
 
 Element            | Attribute               | Related method(s)                                  | Default value
 ------------------ | ----------------------- | -------------------------------------------------- | -------------
@@ -88,7 +104,7 @@ Element            | Attribute               | Related method(s)                
 **Icon color**     | N/A                     | N/A                                                | `?attr/colorControlNormal` (as `Drawable` tint)
 **Alignment mode** | `app:menuAlignmentMode` | `setMenuAlignmentMode` <br> `getMenuAlignmentMode` | `start`
 
-#### Overflow menu attributes
+### Overflow menu attributes
 
 Element             | Attribute                                                                                          | Related method(s)                      | Default value
 ------------------- | -------------------------------------------------------------------------------------------------- | -------------------------------------- | -------------
@@ -96,18 +112,23 @@ Element             | Attribute                                                 
 **Theme**           | `app:popupTheme`                                                                                   | `setPopupTheme`<br>`getPopupTheme`     | `@style/ThemeOverlay.Material3.*`
 **Item typography** | `textAppearanceSmallPopupMenu` and `textAppearanceLargePopupMenu` in `app:popupTheme` or app theme | N/A                                    | `?attr/textAppearanceTitleMedium`
 
-#### Styles
+### Styles
 
-Element           | Style
------------------ | -------------------------------
-**Default style** | `Widget.Material3.BottomAppBar`
-
-Default style theme attribute: `bottomAppBarStyle`
+Element           | Style                           | Theme attribute
+----------------- | ------------------------------- | -------------------
+**Default style** | `Widget.Material3.BottomAppBar` | `bottomAppBarStyle`
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomappbar/res/values/styles.xml)
 and
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomappbar/res/values/attrs.xml).
+
+## Code implementation
+
+Before you can use Material bottom app bars, you need to add a dependency to the
+Material Components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
 
 ### Bottom app bar examples
 
@@ -116,7 +137,7 @@ icons, and an embedded FAB.
 
 <img src="assets/bottomappbar/bottomappbar_basic.png" alt="Purple bottom app bar with grey icons and purple inset floating action button." width="650"/>
 
-In the layout:
+**In the layout:**
 
 ```xml
 <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -155,7 +176,7 @@ In the layout:
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
-In `menu/bottom_app_bar.xml`:
+**In `menu/bottom_app_bar.xml`:**
 
 ```xml
 <menu
@@ -184,7 +205,7 @@ In `menu/bottom_app_bar.xml`:
 </menu>
 ```
 
-  In menu/navigation icon drawables:
+**In menu/navigation icon drawables:**
 
 ```xml
 <vector
@@ -194,7 +215,7 @@ In `menu/bottom_app_bar.xml`:
 </vector>
 ```
 
-In code:
+**In code:**
 
 ```kt
 bottomAppBar.setNavigationOnClickListener {
@@ -220,14 +241,96 @@ bottomAppBar.setOnMenuItemClickListener { menuItem ->
 }
 ```
 
+### Making bottom app bars accessible
+
+Android's bottom app bar component APIs provide support for the navigation icon,
+action items, overflow menu and more to tell the user what each action performs.
+While optional, their use is strongly encouraged.
+
+#### Content descriptions
+
+When using navigation icons, action items and other elements of bottom app bars,
+you should set a content description for them so that screen readers like
+TalkBack are able to announce their purpose or action.
+
+For an overall content description of the bottom app bar, set an
+`android:contentDescription` or use the `setContentDescription` method on the
+`BottomAppBar`.
+
+For the navigation icon, use the `app:navigationContentDescription` attribute or
+`setNavigationContentDescription` method.
+
+For action items and items within the overflow menu, set the content description
+in the menu:
+
+```xml
+<menu ...>
+    ...
+    <item
+          ...
+          android:contentDescription="@string/content_description_one" />
+    <item
+          ...
+          android:contentDescription="@string/content_description_two" />
+</menu>
+```
+
+#### Talkback
+
+Bottom app bar can optionally hide on scroll with the `app:hideOnScroll`
+attribute. When this attribute is set to true, scrolling will hide the bottom
+app bar and prevent it from being seen by any screen readers which may be
+confusing for users. To prevent this, the hide behavior is automatically
+disabled when Talkback is enabled. Although discouraged for accessibility, you
+can optionally force the hide behavior by calling
+`bottomAppBar.disableHideOnTouchExploration(false)`.
+
+Depending on your layout, disabling the hide behavior may potentially cause
+content to be obscured behind the bar. Make sure to add the appropriate bottom
+padding of the height of the bottom app bar to the content. See below for an
+example:
+
+```
+val am = context.getSystemService(AccessibilityManager::class.java)
+if (am != null && am.isTouchExplorationEnabled) {
+    bar.setHideOnScroll(false)
+    bar.post {
+        content.setPadding(
+            content.paddingLeft,
+            content.paddingTop,
+            content.paddingRight,
+            content.paddingBottom + bar.measuredHeight
+        )
+    }
+}
+```
+
+### Applying scrolling behavior to bottom app bars
+
+The following example shows the bottom app bar hiding when scrolling the
+scrollable content down, and appearing when scrolling up.
+
+```xml
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    ...>
+
+    ...
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        ...
+        app:hideOnScroll="true"
+        />
+
+    ...
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
+
 ## Customizing bottom app bars
 
-<details>
-  <summary><h3>Theming bottom app bars</h3></summary>
+### Theming bottom app bars
 
-Bottom app bars support
-[Material Theming](https://m3.material.io/components/bottom-app-bar/#specs) which
-can customize color, typography and shape.
+Bottom app bars support the customization of color, typography, and shape.
 
 #### Bottom app bar theming example
 
@@ -244,11 +347,11 @@ API and source code:
 *   `BottomAppBarCutCornersTopEdge`:
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/catalog/java/io/material/catalog/bottomappbar/BottomAppBarCutCornersTopEdge.java)
 
-The following example shows a bottom app bar with Material Theming.
+The following example shows a bottom app bar with Material theming.
 
 <img src="assets/bottomappbar/bottomappbar_theming.png" alt="Pink bottom app bar with pink diamond inset FAB and brown icons." width="600"/>
 
-#### Implementing bottom app bar theming
+##### Implementing bottom app bar theming
 
 Use theme attributes in `res/values/styles.xml`, which applies the theme to all
 bottom app bars and FABs and affects other components:
@@ -319,94 +422,3 @@ Use the styles in the layout, which affects only this bottom app bar and FAB:
     style="@style/Widget.App.FloatingActionButton"
     />
 ```
-</details>
-
-<details>
-<summary><h3>Making bottom app bars accessible</h3></summary>
-
-Android's bottom app bar component APIs provide support for the navigation icon,
-action items, overflow menu and more to tell the user what each action performs.
-While optional, their use is strongly encouraged.
-
-#### Content descriptions
-
-When using navigation icons, action items and other elements of bottom app bars,
-you should set a content description for them so that screen readers like
-TalkBack are able to announce their purpose or action.
-
-For an overall content description of the bottom app bar, set an
-`android:contentDescription` or use the `setContentDescription` method on the
-`BottomAppBar`.
-
-For the navigation icon, use the `app:navigationContentDescription` attribute or
-`setNavigationContentDescription` method.
-
-For action items and items within the overflow menu, set the content description
-in the menu:
-
-```xml
-<menu ...>
-    ...
-    <item
-          ...
-          android:contentDescription="@string/content_description_one" />
-    <item
-          ...
-          android:contentDescription="@string/content_description_two" />
-</menu>
-```
-
-#### Talkback
-
-Bottom app bar can optionally hide on scroll with the `app:hideOnScroll`
-attribute. When this attribute is set to true, scrolling will hide the bottom
-app bar and prevent it from being seen by any screen readers which may be
-confusing for users. To prevent this, the hide behavior is automatically
-disabled when Talkback is enabled. Although discouraged for accessibility, you
-can optionally force the hide behavior by calling
-`bottomAppBar.disableHideOnTouchExploration(false)`.
-
-Depending on your layout, disabling the hide behavior may potentially cause
-content to be obscured behind the bar. Make sure to add the appropriate bottom
-padding of the height of the bottom app bar to the content. See below for an
-example:
-
-```
-val am = context.getSystemService(AccessibilityManager::class.java)
-if (am != null && am.isTouchExplorationEnabled) {
-    bar.setHideOnScroll(false)
-    bar.post {
-        content.setPadding(
-            content.paddingLeft,
-            content.paddingTop,
-            content.paddingRight,
-            content.paddingBottom + bar.measuredHeight
-        )
-    }
-}
-```
-
-</details>
-
-<details>
-  <summary><h3>Applying scrolling behavior to the bottom app bar</h3></summary>
-
-The following example shows the bottom app bar hiding when scrolling the
-scrollable content down, and appearing when scrolling up.
-
-```xml
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    ...>
-
-    ...
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        ...
-        app:hideOnScroll="true"
-        />
-
-    ...
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-```
-</details>

@@ -7,44 +7,319 @@ iconId: button
 path: /catalog/floating-action-button/
 -->
 
-# Floating action buttons
+# Floating action buttons (FABs)
 
 A
-[floating action button (FAB)](https://material.io/components/buttons-floating-action-button)
-represents the primary action of a screen.
+[floating action button (FAB)](https://m3.material.io/components/floating-action-button)
+represents the primary action of a screen. There are three variants of a FAB.
 
-!["A FAB on a screen"](assets/fabs/fab_hero.png)
+![FAB types](assets/fabs/FAB_types.png)
 
-**Contents**
+1.  FAB
+2.  Medium FAB
+3.  Large FAB
 
-*   [Design and API Documentation](#design-and-api-documentation)
-*   [Using FABs](#using-fabs)
-*   [FABs](#fabs)
-*   [Small FABs](#small-fabs)
-*   [Large FABs](#large-fabs)
-*   [Extended FABs](#extended-fabs)
-*   [Theming FABs](#theming-fabs)
+**Note:** Images use various dynamic color schemes.
 
-## Design and API Documentation
-
-*   [Google Material3 Spec](https://material.io/components/floating-action-button/overview)
-*   [API reference](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/package-summary)
-
-## Using FABs
-
-A FAB performs the primary, or most common, action on a screen. It appears in
+A FAB performs the primary or the most common action on a screen. It appears in
 front of all screen content, typically as a boxy shape with an icon in its
 center.
+
+## Design & API documentation
+
+*   [Material 3 (M3) spec](https://m3.material.io/components/floating-action-button/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/package-summary)
+
+## Anatomy
+
+![FAB anatomy diagram](assets/fabs/FAB_anatomy.png)
+
+1.  Container
+2.  Icon
+
+More details on anatomy items in the
+[component guidelines](https://m3.material.io/components/floating-action-button/guidelines#9a56f806-8840-4910-8f53-3cb2a6c81c86).
+
+## M3 Expressive update
+
+Before you can use `Material3Expressive` component styles, follow the
+[`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
+
+![Four FABs showing the colors available after the expressive update.](assets/fabs/FAB_expressive.png)
+FABs have updated colors and sizes
+
+The FAB has new sizes to match the extended FAB and more color options. The
+small FAB is deprecated.
+[More on M3 Expressive](https://m3.material.io/blog/building-with-m3-expressive)
+
+**Types and naming:**
+
+*   Added **medium** FAB size
+*   Deprecated **small** FAB size
+*   FAB and large FAB sizes are unchanged
+*   FAB types are based on size, not color
+
+**Color:**
+
+*   Added tone color styles:
+    *   Primary
+    *   Secondary
+    *   Tertiary
+*   Renamed existing tonal color styles to match their token names:
+    *   **Primary** to **Primary container**
+    *   **Secondary** to **Secondary container**
+    *   **Tertiary** to **Tertiary container**
+    *   The values haven't changed
+*   Deprecated surface color FABs
+
+## Key properties
+
+### Container attributes
+
+Element                       | Attribute                                      | Related method(s)                                                                     | Default value
+----------------------------- | ---------------------------------------------- | ------------------------------------------------------------------------------------- | -------------
+**Color**                     | `app:backgroundTint`                           | `setBackgroundTintList`<br/>`getBackgroundTintList`                                   | `?attr/colorPrimaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
+**Stroke**                    | `app:borderWidth`                              | N/A                                                                                   | `0dp`
+**Size**                      | `app:fabSize`<br>`app:fabCustomSize`           | `setSize`<br/>`setCustomSize`<br/>`clearCustomSize`<br/>`getSize`<br/>`getCustomSize` | `auto`
+**Shape**                     | `shapeAppearance`<br/>`shapeAppearanceOverlay` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                               | `ShapeAppearanceOverlay.Material3.FloatingActionButton`<br/>
+**Elevation**                 | `app:elevation`                                | `setElevation`<br/>`getCompatElevation`                                               | `6dp`
+**Hovered/Focused elevation** | `app:hoveredFocusedTranslationZ`               | `setCompatHoveredFocusedTranslationZ`<br/>`getCompatHoveredFocusedTranslationZ`       | `2dp`
+**Pressed elevation**         | `app:pressedTranslationZ`                      | `setCompatPressedTranslationZ`<br/>`getCompatPressedTranslationZ`                     | `6dp`
+**Ripple**                    | `app:rippleColor`                              | `setRippleColor`<br/>`getRippleColor`<br/>`getRippleColorStateList`                   | variations of `?attr/colorOnPrimaryContainer`, see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_ripple_color_selector.xml)
+**Motion**                    | `app:showMotionSpec`<br>`app:hideMotionSpec`   | `set*MotionSpec`<br/>`set*MotionSpecResource`<br/>`get*MotionSpec`                    | `@null`
+
+### Icon attributes
+
+Element   | Attribute       | Related method(s)                                           | Default value
+--------- | --------------- | ----------------------------------------------------------- | -------------
+**Icon**  | `app:srcCompat` | `setImageDrawable`<br/>`setImageResource`<br/>`getDrawable` | `null`
+**Color** | `app:tint`      | `setImageTintList`<br/>`getImageTintList`                   | `?attr/colorOnPrimaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_foreground_color_selector.xml))
+
+### Styles
+
+Element           | Style                                           | Theme attribute
+----------------- | ----------------------------------------------- | ---------------
+**Default style** | `Widget.Material3.FloatingActionButton.Primary` | `?attr/floatingActionButtonStyle`
+
+See the full list of
+[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/values/styles.xml)
+and
+[attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/values/attrs.xml).
+
+## Variants of FAB
+
+There are three FAB sizes:
+
+1.  FAB
+2.  Medium FAB (most recommended)
+3.  Large FAB
+
+Choose the FAB size based on the visual hierarchy of your layout.
+
+![FAB sizes](assets/fabs/FABs_sizes.png)FABs have multiple sizes that scale with
+window size
+
+<details>
+
+<summary><h3>FAB</h3></summary>
+
+FABs are the default size and style for a primary action button. The FAB is the
+smallest size, and is best used in compact windows where other actions may be
+present on screen.
+
+API and source code:
+
+*   `FloatingActionButton`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
+
+#### FAB example
+
+The following example shows a regular FAB with a plus icon.
+
+<img src="assets/fabs/fab_regular.png" alt="56dp boxy purple FAB with dark plus icon" height="500"/>
+
+In the layout:
+
+```xml
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    ...
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <!-- Main content -->
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      android:id="@+id/floating_action_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|end"
+      android:layout_margin="16dp"
+      android:contentDescription="@string/fab_content_desc"
+      app:srcCompat="@drawable/ic_plus_24"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
+
+In code:
+
+```kt
+fab.setOnClickListener {
+    // Respond to FAB click
+}
+```
+
+</details>
+
+<details>
+
+<summary><h3>Medium FAB</h3></summary>
+
+A medium FAB is recommended for most situations, and works best in compact and
+medium windows. Use it for important actions without taking up too much space.
+
+API and source code:
+
+*   `FloatingActionButton`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
+
+#### Medium FAB example
+
+The following example shows a small FAB with a plus icon.
+
+<img src="assets/fabs/FAB_medium.png" alt="Purple medium FAB on a mobile device screen." height="500"/>
+
+In the layout:
+
+```xml
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    ...
+    >
+
+  <!-- Main content -->
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      ...
+      style="?attr/floatingActionButtonMediumStyle"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
+
+In code:
+
+```kt
+fab.setOnClickListener {
+    // Respond to FAB click
+}
+```
+
+</details>
+
+<details>
+
+<summary><h3>Large FAB</h3></summary>
+
+A large FAB is useful in any window size when the layout calls for a clear and
+prominent primary action, but is best suited for expanded and larger window
+sizes, where its size helps draw attention.
+
+API and source code:
+
+*   `FloatingActionButton`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
+
+#### Large FAB example
+
+The following example shows a large FAB with a plus icon.
+
+<img src="assets/fabs/FAB_large.png" alt="96dp boxy purple FAB with dark plus icon" height="500"/>
+
+In the layout:
+
+```xml
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    ...
+    >
+
+  <!-- Main content -->
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      ...
+      style="?attr/floatingActionButtonLargeStyle"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
+
+In code:
+
+```kt
+fab.setOnClickListener {
+    // Respond to FAB click
+}
+```
+
+</details>
+
+<details>
+
+<summary><h3>Small FAB (deprecated)</h3></summary>
+
+A small FAB should be used on smaller screens.
+
+Small FABs can also be used to create visual continuity with other screen
+elements.
+
+API and source code:
+
+*   `FloatingActionButton`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
+
+#### Small FAB example
+
+The following example shows a small FAB with a plus icon.
+
+<img src="assets/fabs/fab_mini.png" alt="40dp boxy purple FAB with dark plus icon" height="500"/>
+
+In the layout:
+
+```xml
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    ...
+    >
+
+  <!-- Main content -->
+
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
+      ...
+      style="?attr/floatingActionButtonSmallStyle"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+```
+
+In code:
+
+```kt
+fab.setOnClickListener {
+    // Respond to FAB click
+}
+```
+
+</details>
+
+## Code implementation
 
 Before you can use Material FABs, you need to add a dependency to the Material
 Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-**Note:** If the `FloatingActionButton` is a child of a `CoordinatorLayout`, you get
-certain behaviors for free. It will automatically shift so that any displayed
-`Snackbar`s do not cover it, and will automatically hide when covered by an
-`AppBarLayout` or `BottomSheetBehavior`.
+**Note:** If the `FloatingActionButton` is a child of a `CoordinatorLayout`, you
+get certain behaviors for free. It will automatically shift so that any
+displayed `Snackbar`s do not cover it, and will automatically hide when covered
+by an `AppBarLayout` or `BottomSheetBehavior`.
 
 ### Making FABs accessible
 
@@ -54,12 +329,11 @@ screen readers like TalkBack are able to announce their purpose or action. Text
 rendered in Extended FABs is automatically provided to accessibility services,
 so additional content labels are usually unnecessary.
 
-### Visibility
+### Animating visibility of FAB
 
 Use the `show` and `hide` methods to animate the visibility of a
-`FloatingActionButton` or an `ExtendedFloatingActionButton`. The show animation
-grows the widget and fades it in, while the hide animation shrinks the widget
-and fades it out.
+`FloatingActionButton`. The show animation grows the widget and fades it in,
+while the hide animation shrinks the widget and fades it out.
 
 ```kt
 // To show:
@@ -68,18 +342,67 @@ fab.show()
 fab.hide()
 ```
 
-### Extending and Shrinking
+## Customizing FABs
 
-Use the `extend` and `shrink` methods to animate showing and hiding the text of
-an `ExtendedFloatingActionButton`. The extend animation extends the FAB to show
-the text and the icon. The shrink animation shrinks the FAB to show just the
-icon.
+### Theming FABs
 
-```kt
-// To extend:
-extendedFab.extend()
-// To shrink:
-extendedFab.shrink()
+#### FAB theming example
+
+API and source code:
+
+*   `FloatingActionButton`
+    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
+
+The following example shows multiple FABs with Material Theming in different
+sizes that scale with window size.
+
+![FABs in multiple sizes that scale with window size](assets/fabs/FAB_3sizes.png)
+
+##### Implementing FAB theming
+
+Use theme attributes and styles in `res/values/styles.xml` to add themes to all
+FABs. This affects other components:
+
+```xml
+<style name="Theme.App" parent="Theme.Material3.*">
+    ...
+    <item name="colorPrimaryContainer">@color/purple_500</item>
+    <item name="colorOnPrimaryContainer">@color/purple_700</item>
+</style>
+```
+
+Use a default style theme attribute, styles and a theme overlay. This themes all
+FABs in your app but does not affect other components:
+
+```xml
+<style name="Theme.App" parent="Theme.Material3.*">
+    ...
+    <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
+    <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
+</style>
+
+<style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+</style>
+
+<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
+</style>
+
+<style name="ThemeOverlay.App.FloatingActionButton" parent="">
+    <item name="colorContainer">@color/purple_500</item>
+    <item name="colorOnContainer">@color/purple_700</item>
+</style>
+```
+
+Use one of the styles in the layout. That affects only this FAB:
+
+```xml
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    ...
+    style="@style/Widget.App.FloatingActionButton"
+/>
 ```
 
 ### Sizing FABs
@@ -127,404 +450,3 @@ If you'd like to use the large FAB, apply one of these style attributes:
 *   `?attr/floatingActionButtonLargeSecondaryStyle`
 *   `?attr/floatingActionButtonLargeTertiaryStyle`
 *   `?attr/floatingActionButtonLargeSurfaceStyle`
-
-### Types
-
-There are four types of FABS: 1\. [FABs](#fabs), 2\. [Small FABs](#small-fabs),
-3\. [Large FABs](#large-fabs)
-
-![FAB types](assets/fabs/FAB_types.png)
-
-And 4\. [Extended FABs](#extended-fabs)
-
-![Extended FAB type](assets/fabs/extendedFAB_types.png)
-
-## FABs
-
-FABs are the default size and style for a primary action button.
-
-API and source code:
-
-*   `FloatingActionButton`
-    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
-
-### FAB example
-
-The following example shows a regular FAB with a plus icon.
-
-![56dp boxy purple FAB with dark plus icon](assets/fabs/fab_regular.png)
-
-In the layout:
-
-```xml
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    ...
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-  <!-- Main content -->
-
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-      android:id="@+id/floating_action_button"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="bottom|end"
-      android:layout_margin="16dp"
-      android:contentDescription="@string/fab_content_desc"
-      app:srcCompat="@drawable/ic_plus_24"/>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-```
-
-In code:
-
-```kt
-fab.setOnClickListener {
-    // Respond to FAB click
-}
-```
-
-#### Anatomy
-
-![Regular FAB anatomy diagram](assets/fabs/FAB_anatomy-long.png)
-
-A regular FAB has a container and an icon.
-
-1.  Container
-1.  Icon
-
-## Small FABs
-
-A small FAB should be used on smaller screens.
-
-Small FABs can also be used to create visual continuity with other screen
-elements.
-
-API and source code:
-
-*   `FloatingActionButton`
-    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
-
-### Small FAB example
-
-The following example shows a small FAB with a plus icon.
-
-![40dp boxy purple FAB with dark plus icon](assets/fabs/fab_mini.png)
-
-In the layout:
-
-```xml
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    ...
-    >
-
-  <!-- Main content -->
-
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-      ...
-      style="?attr/floatingActionButtonSmallStyle"/>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-```
-
-In code:
-
-```kt
-fab.setOnClickListener {
-    // Respond to FAB click
-}
-```
-
-#### Anatomy
-
-![Small FAB anatomy diagram](assets/fabs/miniFAB_anatomy-long.png)
-
-A small FAB has a container and an icon.
-
-1.  Container
-1.  Icon
-
-## Large FABs
-
-A large FAB is useful when the layout calls for a clear and primary action that
-the user is most likely to take, and where a larger footprint would help them to
-engage. For example, when appearing on taller and larger device screens.
-
-API and source code:
-
-*   `FloatingActionButton`
-  *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
-  *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
-
-### Large FAB example
-
-The following example shows a large FAB with a plus icon.
-
-![96dp boxy purple FAB with dark plus icon](assets/fabs/fab_large.png)
-
-In the layout:
-
-```xml
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    ...
-    >
-
-  <!-- Main content -->
-
-  <com.google.android.material.floatingactionbutton.FloatingActionButton
-      ...
-      style="?attr/floatingActionButtonLargeStyle"/>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-```
-
-In code:
-
-```kt
-fab.setOnClickListener {
-    // Respond to FAB click
-}
-```
-
-#### Anatomy
-
-![Large FAB anatomy diagram](assets/fabs/largeFAB_anatomy-long.png)
-
-A large FAB has a container and an icon.
-
-1.  Container
-1.  Icon
-
-### Regular, small, medium, and large FAB key properties
-
-#### Container attributes
-
-Element                       | Attribute                                      | Related method(s)                                                                     | Default value
------------------------------ | ---------------------------------------------- | ------------------------------------------------------------------------------------- | -------------
-**Color**                     | `app:backgroundTint`                           | `setBackgroundTintList`<br/>`getBackgroundTintList`                                   | `?attr/colorPrimaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
-**Stroke**                    | `app:borderWidth`                              | N/A                                                                                   | `0dp`
-**Size**                      | `app:fabSize`<br>`app:fabCustomSize`           | `setSize`<br/>`setCustomSize`<br/>`clearCustomSize`<br/>`getSize`<br/>`getCustomSize` | `auto`
-**Shape**                     | `shapeAppearance`<br/>`shapeAppearanceOverlay` | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                               | `ShapeAppearanceOverlay.Material3.FloatingActionButton`<br/>
-**Elevation**                 | `app:elevation`                                | `setElevation`<br/>`getCompatElevation`                                               | `6dp`
-**Hovered/Focused elevation** | `app:hoveredFocusedTranslationZ`               | `setCompatHoveredFocusedTranslationZ`<br/>`getCompatHoveredFocusedTranslationZ`       | `2dp`
-**Pressed elevation**         | `app:pressedTranslationZ`                      | `setCompatPressedTranslationZ`<br/>`getCompatPressedTranslationZ`                     | `6dp`
-**Ripple**                    | `app:rippleColor`                              | `setRippleColor`<br/>`getRippleColor`<br/>`getRippleColorStateList`                   | variations of `?attr/colorOnPrimaryContainer`, see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_ripple_color_selector.xml)
-**Motion**                    | `app:showMotionSpec`<br>`app:hideMotionSpec`   | `set*MotionSpec`<br/>`set*MotionSpecResource`<br/>`get*MotionSpec`                    | `@null`
-
-#### Icon attributes
-
-Element   | Attribute       | Related method(s)                                           | Default value
---------- | --------------- | ----------------------------------------------------------- | -------------
-**Icon**  | `app:srcCompat` | `setImageDrawable`<br/>`setImageResource`<br/>`getDrawable` | `null`
-**Color** | `app:tint`      | `setImageTintList`<br/>`getImageTintList`                   | `?attr/colorOnPrimaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_foreground_color_selector.xml))
-
-#### Styles
-
-Element           | Style
------------------ | ------------------------------------------------
-**Default style** | `Widget.Material3.FloatingActionButton.Primary`
-
-Default style theme attribute: `?attr/floatingActionButtonStyle`
-
-See the full list of
-[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/values/styles.xml)
-and
-[attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/values/attrs.xml).
-
-## Extended FABs
-
-The extended FAB is wider, and it includes a text label.
-
-**Note:** `ExtendedFloatingActionButton` is a child class of
-[`MaterialButton`](Button.md), rather than `FloatingActionButton`. This means
-that several attributes which are applicable to `FloatingActionButton` have
-different naming in `ExtendedFloatingActionButton`. For example,
-`FloatingActionButton` uses `app:srcCompat` to set the icon drawable, whereas
-`ExtendedFloatingActionButton` uses `app:icon`. See the
-[attributes tables](#anatomy-and-key-properties) below for more details.
-
-API and source code:
-
-*   `ExtendedFloatingActionButton`
-    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton.java)
-
-### Sizing Extended FABs
-
-The `ExtendedFloatingActionButton` will be sized dynamically based on its
-contents (icon and label) and paddings. If a bigger fixed size is preferred, you
-may use `android:minWidth` and `android:minHeight` attributes.
-
-In Material3 themes, styles in 3 different sizes are provided:
-
-*   Small - `?attr/extendedFloatingActionButtonSmallStyle` (or
-    `?attr/extendedFloatingActionButton`,
-    `?attr/extendedFloatingActionButtonPrimaryStyle`,
-    `?attr/extendedFloatingActionButtonSecondaryStyle`,
-    `?attr/extendedFloatingActionButtonTertiaryStyle`,
-    `?attr/extendedFloatingActionButtonSurfaceStyle`)
-*   Medium - `?attr/extendedFloatingActionButtonMediumStyle`
-*   Large - `?attr/extendedFloatingActionButtonLargeStyle`
-
-**Note:** If you are using the extending/collapsing feature with custom height,
-please also consider to set the `collapsedSize` attribute to the same height.
-
-### Extended FAB example
-
-The following example shows an extended FAB with a plus icon.
-
-![Purple FAB with plus icon and "Extended" label](assets/fabs/fab_extended.png)
-
-In the layout:
-
-```xml
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    ...
-    >
-
-  <!-- Main content -->
-
-  <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-    android:id="@+id/extended_fab"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_margin="16dp"
-    android:layout_gravity="bottom|end"
-    android:contentDescription="@string/extended_fab_content_desc"
-    android:text="@string/extended_fab_label"
-    app:icon="@drawable/ic_plus_24px"/>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
-```
-
-In code:
-
-```kt
-extendedFab.setOnClickListener {
-    // Respond to Extended FAB click
-}
-```
-
-### Anatomy and key properties
-
-![Extended FAB anatomy diagram](assets/fabs/extended-FAB_anatomy-long.png)
-
-An extended FAB has a text label, a transparent container and an optional icon.
-
-1.  Container
-2.  Text label
-3.  Icon (Optional)
-
-#### Container attributes
-
-Element                       | Attribute                                                                                  | Related method(s)                                                  | Default value
------------------------------ | ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------ | -------------
-**Color**                     | `app:backgroundTint`                                                                       | `setBackgroundTintList`<br/>`getBackgroundTintList`                | `?attr/colorPrimaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_background_color_selector.xml))
-**Stroke color**              | `app:strokeColor`                                                                          | `setStrokeColor`<br/>`getStrokeColor`                              | `null`
-**Stroke width**              | `app:strokeWidth`                                                                          | `setStrokeWidth`<br/>`getStrokeWidth`                              | `0dp`
-**Size**                      | `app:collapsedSize`                                                                        | N/A                                                                |
-**Extend Strategy**           | `app:extendStrategy`                                                                       | N/A                                                                | `wrap_content`
-**Shape**                     | `app:shapeAppearance`<br/>`app:shapeAppearanceOverlay`                                     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`            | `ShapeAppearanceOverlay.Material3.FloatingActionButton`<br/>
-**Elevation**                 | `app:elevation`                                                                            | `setElevation`<br/>`getElevation`                                  | `6dp`
-**Hovered/Focused elevation** | `app:hoveredFocusedTranslationZ`                                                           | N/A                                                                | `2dp`
-**Pressed elevation**         | `app:pressedTranslationZ`                                                                  | N/A                                                                | `6dp`
-**Ripple**                    | `app:rippleColor`                                                                          |                                                                    | variations of `?attr/colorOnPrimaryContainer`, see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_ripple_color_selector.xml)
-**Motion**                    | `app:showMotionSpec`<br>`app:hideMotionSpec`<br/>`extendMotionSpec`<br/>`shrinkMotionSpec` | `set*MotionSpec`<br/>`set*MotionSpecResource`<br/>`get*MotionSpec` | see [animators](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/animator)
-
-#### Icon attributes
-
-Element                           | Attribute         | Related method(s)                                         | Default value
---------------------------------- | ----------------- | --------------------------------------------------------- | -------------
-**Icon**                          | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
-**Color**                         | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnPrimaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_foreground_color_selector.xml))
-**Size**                          | `app:iconSize`    | `setIconSize`<br/>`getIconSize`                           | `24dp`
-**Padding between icon and text** | `app:iconPadding` | `setIconPadding`<br/>`getIconPadding`                     | `12dp`
-
-#### Text label
-
-Element        | Attribute                | Related method(s)                 | Default value
--------------- | ------------------------ | --------------------------------- | -------------
-**Text label** | `android:text`           | `setText`<br/>`getText`           | `null`
-**Color**      | `android:textColor`      | `setTextColor`<br/>`getTextColor` | `?attr/colorPrimaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_foreground_color_selector.xml))
-**Typography** | `android:textAppearance` | `setTextAppearance`               | `?attr/textAppearanceLabelLarge`
-
-#### Styles
-
-Element                                   | Style
------------------------------------------ | -----
-**Default style**                         | `Widget.Material3.ExtendedFloatingActionButton.Icon.Primary`
-**Text-only when**<br/>**extended style** | `Widget.Material3.ExtendedFloatingActionButton.Primary`
-
-Default style theme attribute: `?attr/extendedFloatingActionButtonStyle`
-
-See the full list of
-[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/values/styles.xml)
-and
-[attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/res/values/attrs.xml).
-
-## Theming FABs
-
-### FAB theming example
-
-API and source code:
-
-*   `FloatingActionButton`
-    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
-*   `ExtendedFloatingActionButton`
-    *   [Class description](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton.java)
-
-The following example shows a regular, small, and extended FAB with Material
-Theming.
-
-!["3 square pink FABs with cut corners with brown plus icons: 56dp, 40dp, 56dp
-with "Extended" label"](assets/fabs/fab_theming.png)
-
-#### Implementing FAB theming
-
-Use theme attributes and styles in `res/values/styles.xml` to add themes to all
-FABs. This affects other components:
-
-```xml
-<style name="Theme.App" parent="Theme.Material3.*">
-    ...
-    <item name="colorPrimaryContainer">@color/purple_500</item>
-    <item name="colorOnPrimaryContainer">@color/purple_700</item>
-</style>
-```
-
-Use a default style theme attribute, styles and a theme overlay. This themes all
-FABs in your app but does not affect other components:
-
-```xml
-<style name="Theme.App" parent="Theme.Material3.*">
-    ...
-    <item name="extendedFloatingActionButtonStyle">@style/Widget.App.ExtendedFloatingActionButton</item>
-    <item name="floatingActionButtonStyle">@style/Widget.App.FloatingActionButton</item>
-</style>
-
-<style name="Widget.App.ExtendedFloatingActionButton" parent="Widget.Material3.ExtendedFloatingActionButton.Icon.Primary">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
-</style>
-
-<style name="Widget.App.FloatingActionButton" parent="Widget.Material3.FloatingActionButton.Primary">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.App.FloatingActionButton</item>
-</style>
-
-<style name="ThemeOverlay.App.FloatingActionButton" parent="">
-    <item name="colorContainer">@color/purple_500</item>
-    <item name="colorOnContainer">@color/purple_700</item>
-</style>
-```
-
-Use one of the styles in the layout. That affects only this FAB:
-
-```xml
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    ...
-    style="@style/Widget.App.FloatingActionButton"
-/>
-```

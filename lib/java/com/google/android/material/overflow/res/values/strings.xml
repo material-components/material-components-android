@@ -20,4 +20,8 @@
     description="Content description for the overflow button of the layout. [CHAR LIMIT=NONE]">
     Overflow menu
   </string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text"
+    description="Text to show in tooltip for the overflow button on hover or long-press. [CHAR LIMIT=NONE]">
+    More options
+  </string>
 </resources>

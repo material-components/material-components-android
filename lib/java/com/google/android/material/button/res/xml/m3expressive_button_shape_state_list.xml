@@ -18,7 +18,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
   <item android:state_pressed="true"
       app:shapeAppearance="?attr/containerShapePressed"/>
-  <item android:state_checked="true"
+  <item android:state_checkable="true" android:state_checked="true"
       app:shapeAppearance="?attr/containerShapeChecked"/>
   <item app:shapeAppearance="?attr/containerShapeDefault"/>
 </selector>

@@ -42,9 +42,9 @@
   <string name="mtrl_picker_a11y_prev_month">前月に変更</string>
   <string name="mtrl_picker_a11y_next_month">翌月に変更</string>
   <string name="mtrl_picker_toggle_to_year_selection">年表示に切り替え</string>
+  <string name="mtrl_picker_pane_title_year_view">年表示</string>
   <string name="mtrl_picker_toggle_to_day_selection">カレンダー表示に切り替え</string>
-  <string name="mtrl_picker_toggled_to_year_selection">年表示に切り替えました</string>
-  <string name="mtrl_picker_toggled_to_day_selection">カレンダー表示に切り替えました</string>
+  <string name="mtrl_picker_pane_title_calendar_view">カレンダー表示</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">現在の選択: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">開始日を選択: %1$s – 終了日を選択: %2$s</string>

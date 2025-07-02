@@ -42,9 +42,9 @@
   <string name="mtrl_picker_a11y_prev_month">Skift til forrige måned</string>
   <string name="mtrl_picker_a11y_next_month">Skift til næste måned</string>
   <string name="mtrl_picker_toggle_to_year_selection">Skift til årsvisning</string>
+  <string name="mtrl_picker_pane_title_year_view">Årsvisning</string>
   <string name="mtrl_picker_toggle_to_day_selection">Skift til kalendervisning</string>
-  <string name="mtrl_picker_toggled_to_year_selection">Skiftede til årsvisning</string>
-  <string name="mtrl_picker_toggled_to_day_selection">Skiftede til kalendervisning</string>
+  <string name="mtrl_picker_pane_title_calendar_view">Kalendervisning</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Aktuelt valg: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Valg af startdato: %1$s – Valg af slutdato: %2$s</string>

@@ -42,9 +42,9 @@
   <string name="mtrl_picker_a11y_prev_month">Pomicanje na prethodni mjesec</string>
   <string name="mtrl_picker_a11y_next_month">Prijelaz na sljedeći mjesec</string>
   <string name="mtrl_picker_toggle_to_year_selection">Prebacite se na prikaz godine</string>
+  <string name="mtrl_picker_pane_title_year_view">Prikaz godine</string>
   <string name="mtrl_picker_toggle_to_day_selection">Prelazak na prikaz kalendara</string>
-  <string name="mtrl_picker_toggled_to_year_selection">Prebačeno na prikaz godine</string>
-  <string name="mtrl_picker_toggled_to_day_selection">Prebačeno na prikaz kalendara</string>
+  <string name="mtrl_picker_pane_title_calendar_view">Prikaz kalendara</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Trenutačan odabir: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Odabir datuma početka: %1$s – Odabir datuma završetka: %2$s</string>

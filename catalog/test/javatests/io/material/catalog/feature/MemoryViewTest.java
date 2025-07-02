@@ -40,7 +40,7 @@ import org.robolectric.shadows.ShadowPath.Point;
 
 /** Tests for {@link MemoryView}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 21)
+@Config(sdk = Config.OLDEST_SDK)
 public class MemoryViewTest {
 
   private static final int BYTES_IN_MB = 1024 * 1024;

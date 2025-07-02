@@ -33,6 +33,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:touchscreenBlocksFocus="false"
         android:fitsSystemWindows="true">
 
       <androidx.appcompat.widget.Toolbar
@@ -40,6 +41,7 @@
           style="?attr/catalogToolbarStyle"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:touchscreenBlocksFocus="false"
           app:navigationIcon="@drawable/ic_drawer_menu_24px"
           app:title="@string/cat_navigationdrawer_title"/>
     </com.google.android.material.appbar.AppBarLayout>

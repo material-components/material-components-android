@@ -23,7 +23,6 @@ import static org.junit.Assert.assertThrows;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AnimationUtils;
@@ -45,7 +44,7 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 import org.robolectric.shadow.api.Shadow;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = VERSION_CODES.LOLLIPOP)
+@Config(sdk = Config.OLDEST_SDK)
 @DoNotInstrument
 public class MotionUtilsTest {
 

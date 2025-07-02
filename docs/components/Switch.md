@@ -10,40 +10,17 @@ path: /catalog/switches/
 # Switch
 
 [Switches](https://m3.material.io/components/switch/overview) toggle the state
-of a single setting on or off. They are the preferred way to adjust settings on
-mobile devices.
-[Selection controls](https://m3.material.io/components/#selection) allow the
-user to select options.
+of a single setting on or off.
 
 ![White "Settings" menu with purple header and switches to turn on options, such
 as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
 
 **Note:** Images use various dynamic color schemes.
 
-A `Switch` represents a button with two states, on and off. Switches are most
-often used on mobile devices to enable and disable options in an options menu. A
-switch consists of a track and thumb; the thumb moves along the track to
-indicate its current state.
+Switches are best used to adjust settings and other standalone options. They
+make a binary selection, like on and off or true and false.
 
-Before you can use Material switches, you need to add a dependency on the
-Material components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
-
-Use switch to:
-
-*   Toggle a single item on or off, on mobile and tablet
-*   Immediately activate or deactivate something
-
-**Note:** The `MaterialSwitch` widget provides a complete implementation of
-Material Design's switch component. It extends from the support library's
-`SwitchCompat` widget, but not from the framework `Switch` widget. As such, it
-does not auto-inflate, unlike other selection controls, and must be explicitly
-specified in layouts.
-
-**Note:** For the old `SwitchMaterial` documentation, please refer to
-[Switch (deprecated)](#switch-deprecated) and
-[Theming switch (deprecated)](#theming-switch-deprecated).
+The effects of a switch should start immediately, without needing to save.
 
 ## Design & API documentation
 
@@ -116,11 +93,9 @@ pressed. Rows are on or off](assets/switch/switch_states.png)
 
 ### Styles
 
-Element           | Style
------------------ | ------------------------------------------------
-**Default style** | `Widget.Material3.CompoundButton.MaterialSwitch`
-
-Default style theme attribute: `?attr/materialSwitchStyle`
+Element           | Style                                            | Theme attribute
+----------------- | ------------------------------------------------ | ---------------
+**Default style** | `Widget.Material3.CompoundButton.MaterialSwitch` | `?attr/materialSwitchStyle`
 
 For the full list, see
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/materialswitch/res/values/styles.xml)
@@ -128,6 +103,33 @@ and
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/materialswitch/res/values/attrs.xml).
 
 ## Code implementation
+
+Before you can use Material switches, you need to add a dependency on the
+Material components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
+
+**Note:** The `MaterialSwitch` widget provides a complete implementation of
+Material Design's switch component. It extends from the support library's
+`SwitchCompat` widget, but not from the framework `Switch` widget. As such, it
+does not auto-inflate, unlike other selection controls, and must be explicitly
+specified in layouts.
+
+**Note:** For the old `SwitchMaterial` documentation, please refer to
+[Switch (deprecated)](#switch-deprecated) and
+[Theming switch (deprecated)](#theming-switch-deprecated).
+
+### Adding switch
+
+A `Switch` represents a button with two states, on and off. Switches are most
+often used on mobile devices to enable and disable options in an options menu. A
+switch consists of a track and thumb; the thumb moves along the track to
+indicate its current state.
+
+Use switches to:
+
+* Toggle a single item on or off
+* Immediately activate or deactivate something
 
 The following example shows a list of five switches.
 
@@ -172,7 +174,7 @@ materialSwitch.setOnCheckedChangeListener { buttonView, isChecked
 }
 ```
 
-## Making switch accessible
+### Making switch accessible
 
 Switches support content labeling for accessibility and are readable by most
 screen readers, such as Talkback. Text rendered in switches is automatically

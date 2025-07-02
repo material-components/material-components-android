@@ -20,6 +20,7 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.widget.TooltipCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,14 +54,14 @@ public class DockedToolbarThreeItemDemoFragment extends DemoFragment {
     Button leftArrowButton = content.findViewById(R.id.docked_toolbar_left_arrow_button);
     Button rightArrowButton = content.findViewById(R.id.docked_toolbar_right_arrow_button);
     Button addButton = content.findViewById(R.id.docked_toolbar_add_button);
-    setupSnackbarOnClick(leftArrowButton);
-    setupSnackbarOnClick(rightArrowButton);
-    setupSnackbarOnClick(addButton);
+    setupSnackbarOnClickAndTooltip(leftArrowButton);
+    setupSnackbarOnClickAndTooltip(rightArrowButton);
+    setupSnackbarOnClickAndTooltip(addButton);
 
     return view;
   }
 
-  private void setupSnackbarOnClick(@NonNull View view) {
+  private void setupSnackbarOnClickAndTooltip(@NonNull View view) {
     view.setOnClickListener(
         v ->
             Snackbar.make(
@@ -69,6 +70,7 @@ public class DockedToolbarThreeItemDemoFragment extends DemoFragment {
                     Snackbar.LENGTH_SHORT)
                 .setAnchorView(dockedToolbar)
                 .show());
+    TooltipCompat.setTooltipText(view, view.getContentDescription());
   }
 
   @LayoutRes

@@ -24,6 +24,7 @@
   <FrameLayout
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:focusable="false"
     android:layout_weight="1">
     <Button
       android:id="@+id/docked_toolbar_left_arrow_button"
@@ -38,6 +39,7 @@
   <FrameLayout
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:focusable="false"
     android:layout_weight="1">
     <Button
       android:id="@+id/docked_toolbar_add_button"
@@ -53,6 +55,7 @@
   <FrameLayout
     android:layout_width="0dp"
     android:layout_height="wrap_content"
+    android:focusable="false"
     android:layout_weight="1">
     <Button
       android:id="@+id/docked_toolbar_right_arrow_button"

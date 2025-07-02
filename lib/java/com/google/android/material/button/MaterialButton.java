@@ -575,6 +575,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     if (originalPaddingEnd == UNSET) {
       originalPaddingEnd = getPaddingEnd();
     }
+    isInHorizontalButtonGroup = isInHorizontalButtonGroup();
   }
 
   void recoverOriginalLayoutParams() {
@@ -605,7 +606,6 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       MaterialShapeUtils.setParentAbsoluteElevation(
           this, materialButtonHelper.getMaterialShapeDrawable());
     }
-    isInHorizontalButtonGroup = isInHorizontalButtonGroup();
   }
 
   @Override

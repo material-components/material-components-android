@@ -251,6 +251,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     }
     recyclerView.scrollToPosition(monthsPagerAdapter.getPosition(current));
     setUpForAccessibility();
+    updateAccessibilityPaneTitle(root);
     return root;
   }
 
@@ -415,12 +416,23 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   void toggleVisibleSelector() {
     if (calendarSelector == CalendarSelector.YEAR) {
       setSelector(CalendarSelector.DAY);
-      recyclerView.announceForAccessibility(
-          getString(R.string.mtrl_picker_toggled_to_day_selection));
     } else if (calendarSelector == CalendarSelector.DAY) {
       setSelector(CalendarSelector.YEAR);
-      yearSelector.announceForAccessibility(
-          getString(R.string.mtrl_picker_toggled_to_year_selection));
+    }
+    updateAccessibilityPaneTitle(getView());
+  }
+
+  private void updateAccessibilityPaneTitle(@Nullable View view) {
+    if (view == null) {
+      return;
+    }
+
+    if (calendarSelector == CalendarSelector.YEAR) {
+      ViewCompat.setAccessibilityPaneTitle(
+          view, getString(R.string.mtrl_picker_pane_title_year_view));
+    } else if (calendarSelector == CalendarSelector.DAY) {
+      ViewCompat.setAccessibilityPaneTitle(
+          view, getString(R.string.mtrl_picker_pane_title_calendar_view));
     }
   }
 

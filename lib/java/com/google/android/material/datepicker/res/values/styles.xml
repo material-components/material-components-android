@@ -279,10 +279,16 @@
   <style name="Widget.Material3.MaterialCalendar.DayOfWeekLabel" parent="Widget.MaterialComponents.MaterialCalendar.DayOfWeekLabel">
     <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_weekdays_label_text_type</item>
     <item name="android:textColor">@macro/m3_comp_date_picker_modal_weekdays_label_text_color</item>
+    <item name="autoSizeTextType">uniform</item>
+    <item name="autoSizeMaxTextSize">16sp</item>
+    <item name="autoSizeMinTextSize">2sp</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.DayTextView" parent="Widget.MaterialComponents.MaterialCalendar.DayTextView">
     <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_date_label_text_type</item>
+    <item name="autoSizeTextType">uniform</item>
+    <item name="autoSizeMaxTextSize">16sp</item>
+    <item name="autoSizeMinTextSize">2sp</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.MonthTextView" parent="Widget.MaterialComponents.MaterialCalendar.MonthTextView">
