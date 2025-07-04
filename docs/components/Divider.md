@@ -10,26 +10,13 @@ path: /catalog/dividers/
 # Dividers
 
 [Dividers](https://m3.material.io/components/divider/overview) are thin lines
-that group content in lists or other containers. There are two variants of
-dividers.
+that group content in lists or other containers. Dividers are one way to
+visually group components and create hierarchy. They can also be used to imply
+nested parent/child relationships.
 
-<table>
- <tr>
-   <td><img src="assets/dividers/divider_fullwidth.png" alt="divider with full width"></td>
-   <td><img src="assets/dividers/divider_inset.png" alt="Inset"></td>
- </tr>
- <tr>
-   <td style="text-align: center;">Full-width</td>
-   <td style="text-align: center;">Inset</td>
- </tr>
-</table>
+![Divider with full width](assets/dividers/divider_fullwidth.png)
 
 **Note:** Images use various dynamic color schemes.
-
-Before you can use Material dividers, you need to add a dependency to the
-Material components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
 
 ## Design & API documentation
 
@@ -40,9 +27,10 @@ page.
 
 ![Anatomy of a divider](assets/dividers/divider_anatomy.png)
 
-1. Divider
+1.  Divider
 
-More details on anatomy items in the [component guidelines](https://m3.material.io/components/divider/guidelines#b56e93b4-b56d-4e12-bd9f-68ce55132cc4).
+More details on anatomy items in the
+[component guidelines](https://m3.material.io/components/divider/guidelines#b56e93b4-b56d-4e12-bd9f-68ce55132cc4).
 
 ## Key properties
 
@@ -58,20 +46,47 @@ Element                 | Attribute               | Related method(s)           
 
 ### Styles
 
-Element           | Style
------------------ | -------------------------------------------
-**Default style** | `Widget.Material3.MaterialDivider`
-
-Default style theme attribute: `?attr/materialDividerStyle`
+Element           | Style                              | Theme attribute
+----------------- | ---------------------------------- | ---------------
+**Default style** | `Widget.Material3.MaterialDivider` | `?attr/materialDividerStyle`
 
 For the full list, see
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/res/values/styles.xml)
 and
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/divider/res/values/attrs.xml).
 
+## Types of divider
+
+There are two types of dividers:
+
+*   Full width
+*   Inset
+
+### Full width divider
+
+<img src="assets/dividers/divider_full_width_type.png" alt="Full width divider" height="350">
+Full width dividers to indicate separation of content
+
+Full width dividers separate larger sections of unrelated content. They also
+separate interactive areas from non-interactive areas. They can be used directly
+on a surface or inside other components like cards or lists.
+
+### Inset divider
+
+<img src="assets/dividers/divider_inset.png" alt="Inset divider" height="400">
+Inset divider to indicate separation of content
+
+Inset dividers separate related content within a section. They are equally
+indented from both sides of the screen by default.
+
 ## Code implementation
 
-### `MaterialDivider`
+Before you can use Material dividers, you need to add a dependency to the
+Material components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
+
+### Adding `MaterialDivider`
 
 API and source code:
 
@@ -114,7 +129,8 @@ Or in code:
 divider.setDividerInsetStart(insetStart)
 divider.setDividerInsetEnd(insetEnd)
 ```
-### `MaterialDividerItemDecoration`
+
+### Adding `MaterialDividerItemDecoration`
 
 API and source code:
 
@@ -159,7 +175,7 @@ In code:
 divider.setLastItemDecorated(false)
 ```
 
-## Making dividers accessible
+### Making dividers accessible
 
 The divider is a decorative element. There are no special accessibility
 precautions for the divider.
