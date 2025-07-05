@@ -33,6 +33,7 @@ import android.widget.RadioGroup;
 import androidx.annotation.AttrRes;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
+import androidx.fragment.app.Fragment;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.CalendarConstraints;
 import com.google.android.material.datepicker.CompositeDateValidator;
@@ -163,12 +164,17 @@ public class DatePickerMainDemoFragment extends DemoFragment {
             builder.setCalendarConstraints(constraintsBuilder.build());
             MaterialDatePicker<?> picker = builder.build();
             addSnackBarListeners(picker);
-            picker.show(getChildFragmentManager(), picker.toString());
+            picker.show(getChildFragmentManager(), "MaterialDatePicker");
           } catch (IllegalArgumentException e) {
             snackbar.setText(e.getMessage());
             snackbar.show();
           }
         });
+
+    Fragment fragment = getChildFragmentManager().findFragmentByTag("MaterialDatePicker");
+    if (fragment instanceof MaterialDatePicker<?>) {
+      addSnackBarListeners((MaterialDatePicker<?>) fragment);
+    }
 
     return view;
   }
