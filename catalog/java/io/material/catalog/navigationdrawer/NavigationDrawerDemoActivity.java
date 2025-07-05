@@ -27,6 +27,7 @@ import android.view.ViewGroup;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
@@ -82,6 +83,7 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
             drawerOnBackPressedCallback.setEnabled(false);
           }
         });
+    drawerLayout.setScrimColor(ContextCompat.getColor(this, R.color.mtrl_scrim_color));
 
     NavigationView navigationViewStart = view.findViewById(R.id.navigation_view_start);
     initNavigationView(navigationViewStart);
