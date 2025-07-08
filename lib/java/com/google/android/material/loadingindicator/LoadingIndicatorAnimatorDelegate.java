@@ -121,14 +121,21 @@ class LoadingIndicatorAnimatorDelegate {
 
   /** Updates the indicator's rotation based on current playtime. */
   private void updateIndicatorRotation(int playtime) {
+    float morphFactorBase = morphFactorTarget - 1;
+    float morphFactorPerShape = morphFactor - morphFactorBase;
+    float timeFactorPerShape = (float) playtime / DURATION_PER_SHAPE_IN_MS;
+    if (timeFactorPerShape == 1f) {
+      // The animation on repeat is called before the playtime restart. So if playtime reaches the
+      // end, we take it as restarted as 0.
+      timeFactorPerShape = 0f;
+    }
     // Initial rotation.
-    indicatorState.rotationDegree = CONSTANT_ROTATION_PER_SHAPE_DEGREES * (morphFactorTarget - 1);
-    // Constant rotation for the current shape.
-    indicatorState.rotationDegree +=
-        CONSTANT_ROTATION_PER_SHAPE_DEGREES * ((float) playtime / DURATION_PER_SHAPE_IN_MS);
-    // Rotation driven by spring animation.
     indicatorState.rotationDegree =
-        (CONSTANT_ROTATION_PER_SHAPE_DEGREES + EXTRA_ROTATION_PER_SHAPE_DEGREES) * morphFactor;
+        (CONSTANT_ROTATION_PER_SHAPE_DEGREES + EXTRA_ROTATION_PER_SHAPE_DEGREES) * morphFactorBase;
+    // Constant rotation.
+    indicatorState.rotationDegree += CONSTANT_ROTATION_PER_SHAPE_DEGREES * timeFactorPerShape;
+    // Rotation driven by spring animation.
+    indicatorState.rotationDegree += EXTRA_ROTATION_PER_SHAPE_DEGREES * morphFactorPerShape;
 
     indicatorState.rotationDegree %= 360;
   }
