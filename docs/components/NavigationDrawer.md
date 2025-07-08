@@ -494,6 +494,21 @@ optional but recommended.
 For more information on content labels, go to the
 [Android accessibility help guide](https://support.google.com/accessibility/android/answer/7158690).
 
+Important: Ensure that there is a way to close the navigation drawer through
+keyboard navigation by listening for the `esc` key in your activity and closing
+open drawers.
+
+```java
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
+    if (keyCode == KeyEvent.KEYCODE_ESCAPE && drawerLayout.isDrawerOpen(navigationView)) {
+      drawerLayout.closeDrawer(navigationView);
+      return true;
+    }
+    return super.onKeyDown(keyCode, keyEvent);
+  }
+```
+
 </details>
 
 <details>

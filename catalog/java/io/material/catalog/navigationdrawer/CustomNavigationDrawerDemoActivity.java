@@ -25,6 +25,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.LayoutParams;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
@@ -191,5 +193,16 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
         sideContainerBackHelper.cancelBackProgress();
       }
     };
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
+    if (keyCode == KeyEvent.KEYCODE_ESCAPE
+        && (drawerLayout.isDrawerOpen(GravityCompat.START)
+            || drawerLayout.isDrawerOpen(GravityCompat.END))) {
+      drawerLayout.closeDrawers();
+      return true;
+    }
+    return super.onKeyDown(keyCode, keyEvent);
   }
 }
