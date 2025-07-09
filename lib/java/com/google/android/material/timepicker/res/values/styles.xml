@@ -146,10 +146,9 @@
     <item name="backgroundTint">@macro/m3_comp_time_picker_container_color</item>
   </style>
 
-  <style name="Widget.Material3.MaterialTimePicker.ImageButton" parent="Widget.MaterialComponents.TimePicker.ImageButton">
+  <style name="Widget.Material3.MaterialTimePicker.ImageButton" parent="Widget.Material3.Button.IconButton">
     <item name="iconTint">@color/m3_timepicker_secondary_text_button_text_color</item>
     <item name="rippleColor">@color/m3_timepicker_secondary_text_button_ripple_color</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker.Display" parent="Widget.MaterialComponents.TimePicker.Display">
