@@ -4,20 +4,20 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:2.1.0'
+    classpath 'org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:2.2.0'
   }
 }
 
 plugins {
   id 'com.android.application'
   id 'org.jetbrains.kotlin.android' version "2.1.21"
-  id 'org.jetbrains.kotlin.plugin.compose' version "2.1.0"
+  id 'org.jetbrains.kotlin.plugin.compose' version "2.2.0"
 }
 
 dependencies {
 
   // Align kotlin versions
-  implementation(platform('org.jetbrains.kotlin:kotlin-bom:2.1.0'))
+  implementation(platform('org.jetbrains.kotlin:kotlin-bom:2.2.0'))
 
   api libs.dagger
   annotationProcessor libs.dagger.compiler
