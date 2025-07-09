@@ -9,8 +9,8 @@ path: /catalog/buttons/
 
 # Toggle button groups
 
-Note:Segmented buttons are being deprecated in the Material 3 expressive update.
-For those who have updated, use the
+**Note:** Segmented buttons are being deprecated in the Material 3 expressive
+update. For those who have updated, use the
 [connected button group](https://github.com/material-components/material-components-android/tree/master/docs/components/ButtonGroup.md)
 instead, which has mostly the same functionality but with an updated visual
 design.
