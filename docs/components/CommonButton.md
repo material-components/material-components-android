@@ -57,7 +57,7 @@ More details on anatomy items in the
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-<img src="assets/buttons/commonbutton_expressive.png" alt="4 button changes in the expressive update."height="600"/>
+<img src="assets/buttons/commonbutton_expressive.png" alt="4 button changes in the expressive update." height="600"/>
 
 1.  Five sizes
 2.  Toggle (selection)
