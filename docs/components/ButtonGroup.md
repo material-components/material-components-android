@@ -80,15 +80,10 @@ Element                         | Attribute                | Related method(s)  
 
 ### Additional attributes of child buttons
 
-| Element        | Attribute                 | Related   | Default value      |
-:                :                           : method(s) :                    :
-| -------------- | ------------------------- | --------- | ------------------ |
-| **Title of the | `app:layout_overflowText` | N/A       | button's `text`    |
-: overflow menu  :                           :           : value, if not      :
-: item**         :                           :           : specified or empty :
-| **Icon of the  | `app:layout_overflowIcon` | N/A       | `null`             |
-: overflow menu  :                           :           :                    :
-: item**         :                           :           :                    :
+Element                             | Attribute                | Related method(s) | Default value
+----------------------------------- | -------------------------| ----------------- | -------------
+**Title of the overflow menu item** | `app:layout_overflowText`| N/A               | button's `text` value, if not specified or empty
+**Icon of the  overflow menu item** | `app:layout_overflowIcon`| N/A               | `null`
 
 ### Styles and theme attributes
 

@@ -199,10 +199,9 @@ Element              | Attribute              | Related method(s) | Default valu
 
 ### Selected range
 
-| Element   | Attribute            | Related   | Default value               |
-:           :                      : method(s) :                             :
-| --------- | -------------------- | --------- | --------------------------- |
-| **Color** | `app:rangeFillColor` | N/A       | `?attr/colorSurfaceVariant` |
+Element   | Attribute            | Related  method(s) | Default value
+--------- | -------------------- | ------------------ | ---------------------------
+**Color** | `app:rangeFillColor` | N/A                | `?attr/colorSurfaceVariant`
 
 ### Cancel button
 
