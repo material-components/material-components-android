@@ -43,6 +43,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.TimeZone;
 
 /**
  * A {@link DateSelector} that uses a {@link Pair} of {@link Long} objects to represent a selected
@@ -97,7 +98,9 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   @Override
   @NonNull
   public Pair<Long, Long> getSelection() {
-    return new Pair<>(selectedStartItem, selectedEndItem);
+    return new Pair<>(
+        selectedStartItem == null ? null : selectedStartItem - TimeZone.getDefault().getRawOffset(),
+        selectedEndItem == null ? null : selectedEndItem - TimeZone.getDefault().getRawOffset());
   }
 
   @NonNull
