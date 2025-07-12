@@ -509,45 +509,6 @@ the [behavior attributes](#behavior-attributes) section.
 </details>
 
 <details>
-  <summary><h3>Handling insets and fullscreen</h3></summary>
-
-`BottomSheetBehavior` can automatically handle insets (such as for
-[edge to edge](https://developer.android.com/training/gestures/edge-to-edge)) by
-specifying any of these to true on the view:
-
-*   `app:paddingBottomSystemWindowInsets`
-*   `app:paddingLeftSystemWindowInsets`
-*   `app:paddingRightSystemWindowInsets`
-*   `app:paddingTopSystemWindowInsets`
-
-On API 21 and above the modal bottom sheet will be rendered fullscreen (edge to
-edge) if the navigation bar is transparent and `enableEdgeToEdge` is true. To
-enable edge-to-edge by default for modal bottom sheets, you can override
-`?attr/bottomSheetDialogTheme` like the below example (`enableEdgeToEdge` is
-already true in `ThemeOverlay.Material3.BottomSheetDialog`):
-
-```xml
-<style name="AppTheme" parent="Theme.Material3.*">
-  ...
-  <item name="bottomSheetDialogTheme">@style/ThemeOverlay.App.BottomSheetDialog</item>
-</style>
-
-<style name="ThemeOverlay.App.BottomSheetDialog" parent="ThemeOverlay.Material3.BottomSheetDialog">
-    <item name="android:navigationBarColor">@android:color/transparent<item>
-</style>
-```
-
-Insets can be added automatically if any of the padding attributes above are set
-to true in the style, either by updating the style passed to the constructor, or
-by updating the default style specified by the `?attr/bottomSheetDialogTheme`
-attribute in your theme.
-
-`BottomSheetDialog` will also add padding to the top when the bottom sheet
-slides under the status bar, to prevent content from being drawn underneath it.
-
-</details>
-
-<details>
   <summary><h3>Making bottom sheets accessible</h3></summary>
 
 The contents within a bottom sheet should follow their own accessibility
