@@ -1,5 +1,5 @@
 <!--docs:
-title: "Docked Toolbar"
+title: "Docked toolbar"
 layout: detail
 section: components
 excerpt: "Docked toolbars show actions related to the current page"
@@ -7,30 +7,97 @@ iconId: docked_toolbar
 path: /catalog/docked-toolbar/
 -->
 
-# Docked Toolbar
+# Docked toolbar
 
-Docked Toolbar provides a way to show actions related to the current page.
-Docked Toolbar is one variant of Toolbars. Toolbars can also be undocked, ie. [Floating Toolbars](FloatingToolbar.md).
+Docked toolbar provides a way to show actions related to the current page.
 
 ![Docked toolbar](assets/dockedtoolbar/docked_toolbar.png)
 
-**Contents**
+**Note:** Images use various dynamic color schemes.
 
-*   [Design and API Documentation](#design-and-api-documentation)
-*   [Using Docked Toolbar](#using-docked-toolbar)
-*   [Theming](#theming-a-docked-toolbar)
+## Design & API documentation
 
-## Design and API Documentation
+*   [Material 3 (M3) spec](https://m3.material.io/components/toolbars/overview)
+*   API reference in progress
 
-*   Google Material3 Spec in progress
-*   API Reference in progress
+## Anatomy
 
-## Using Docked Toolbar
+<img src="assets/dockedtoolbar/docked_toolbar_anatomy.png" alt="Docked toolbar anatomy diagram" height="350">
 
-Before you can use the Docked Toolbar, you need to add a dependency to
-the Material Components for Android library. For more information, go to the
+1.  Container
+2.  Elements
+
+More details on anatomy items in the
+[component guidelines](https://m3.material.io/components/toolbars/guidelines#d6b7bcb1-295d-41e6-a051-37f12e1c96ab).
+
+## M3 Expressive update
+
+Before you can use `Material3Expressive` component styles, follow the
+[`Material3Expressive themes` setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
+
+<img src="assets/dockedtoolbar/dockedtoolbar_expressive.png" alt="Docked toolbar" height="350">
+Docked with embedded primary action instead of FAB
+
+The **bottom app bar** is being deprecated and should be replaced with the
+**docked toolbar**, which functions similarly, but is shorter and has more
+flexibility.
+[More on M3 Expressive](https://m3.material.io/blog/building-with-m3-expressive)
+
+**Types and naming**
+
+*   Added **docked toolbar** to replace **bottom app bar**
+
+    *   Size: Shorter height
+    *   Color: Standard or vibrant
+    *   Flexibility: More layout and element options
+
+*   **Bottom app bar** is still available, but not recommended
+
+## Key properties
+
+### Container attributes
+
+Element                  | Attribute                             | Related methods | Default value
+------------------------ | ------------------------------------- | --------------- | -------------
+**Color**                | `app:backgroundTint`                  | N/A             | `?attr/colorSurfaceContainer`
+**Shape**                | `app:shapeAppearance`                 | N/A             | `0% rounded`
+**Top inset padding**    | `app:paddingTopSystemWindowInsets`    | N/A             | `unset`
+**Bottom inset padding** | `app:paddingBottomSystemWindowInsets` | N/A             | `unset`
+
+**Note:** `DockedToolbarLayout` automatically adds top or bottom inset based on
+its gravity inside a `CoordinatorLayout`, if `app:paddingTopSystemWindowInsets`
+or `app:paddingBottomSystemWindowInsets` is not set. If not using a docked
+toolbar inside a `CoordinatorLayout`, set these attributes explicitly to add
+inset padding.
+
+### Styles
+
+Element           | Style                                    | Theme attribute
+----------------- | ---------------------------------------- | ---------------
+**Default style** | `Widget.Material3.DockedToolbar`         | `?attr/dockedToolbarStyle`
+**Vibrant style** | `Widget.Material3.DockedToolbar.Vibrant` | `?attr/dockedToolbarVibrantStyle`
+
+The default style is the standard style.
+
+Docked toolbar also recommends a special style for specific components for when
+they are inside of a docked toolbar. Currently, the docked toolbar styles also
+include a theme overlay for `?attr/materialButtonStyle`,
+`?attr/materialIconButtonStyle`, and `?attr/borderlessButtonStyle` to style
+buttons inside of a docked toolbar.
+
+For the full list, see
+[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dockedtoolbar/res/values/styles.xml)
+and
+[docked toolbar attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dockedtoolbar/res/values/attrs.xml)
+
+## Code implementation
+
+Before you can use the docked toolbar, you need to add a dependency to the
+Material components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
+
+### Adding docked toolbar
 
 Here's what a typical layout would look like:
 
@@ -126,17 +193,17 @@ Here's what a typical layout would look like:
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
-A Docked Toolbar is a `FrameLayout` that provides additional styling.
-You may add children to it as you would to a `FrameLayout`. It's recommended to
-have its children wrapped by an `OverflowLinearLayout` that will handle
-automatically adding items to an overflow menu when there's not enough screen
-space to show all the items.
+A docked toolbar is a `FrameLayout` that provides additional styling. You may
+add children to it as you would to a `FrameLayout`. It's recommended to have its
+children wrapped by an `OverflowLinearLayout` that will handle automatically
+adding items to an overflow menu when there's not enough screen space to show
+all the items.
 
 When using `OverflowLinearLayout`, you should also set `app:layout_overflowText`
 on each child as that will be the text of the menu item that corresponds to the
 hidden child. Optionally, you can also set `app:layout_overflowIcon`. See
 [OverflowLinearLayout](https://github.com/material-components/material-components-android/tree/master/docs/components/OverflowLinearLayout.md)
-for more info.
+for more information.
 
 Note: if the child view that is clickable is not a direct child of
 `OverflowLinearLayout`, such as the case of the example above, make sure to
@@ -160,7 +227,7 @@ through the `app:layout_behavior` attribute:
 </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
 ```
 
-[Top App Bars](TopAppBar.md) and [Bottom App Bars](BottomAppBar.md) are also
+[Top app bars](TopAppBar.md) and [Bottom app bars](BottomAppBar.md) are also
 implementations of a docked toolbar which offer more in terms of functionality,
 but are less flexible than the `DockedToolbarLayout` implementation.
 
@@ -169,16 +236,16 @@ API and source code:
 *   `DockedToolbar`
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dockedtoolbar/DockedToolbarLayout.java)
 
-### Making Docked Toolbar accessible
+### Making docked toolbar accessible
 
-You should set a `contentDescription` on all the actions in the Docked Toolbar
+You should set a `contentDescription` on all the actions in the docked toolbar
 so that screen readers like TalkBack can properly announce what each action
 represents.
 
-You can also control the ordering of the Talkback focus through the
+You can also control the ordering of the TalkBack focus through the
 `accessibilityTraversalBefore` and `accessibilityTraversalAfter` flags.
 
-For example, if you want the Docked Toolbar to gain Talkback focus first, you
+For example, if you want the docked toolbar to gain TalkBack focus first, you
 can set these accessibility flags like below:
 
 ```xml
@@ -208,17 +275,17 @@ can set these accessibility flags like below:
   </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
 ```
 
-#### Talkback
+#### TalkBack
 
 Docked toolbars can optionally use the `CoordinatorLayout.Behavior`
 `HideViewOnScrollBehavior` to hide the docked toolbar on scroll. This behavior
-is disabled when Talkback is enabled disabled due to screen readers not being
+is disabled when TalkBack is enabled disabled due to screen readers not being
 able to see it if the docked toolbar is hidden when scrolled.
 
-If using a docked toolbar in a layout that obscures any content when
-hide on scroll is disabled, make sure to add the appropriate padding to the
-content. For example, if the docked toolbar is on the bottom and it is
-obscuring the content, bottom padding should be added to the content.
+If using a docked toolbar in a layout that obscures any content when hide on
+scroll is disabled, make sure to add the appropriate padding to the content. For
+example, if the docked toolbar is on the bottom and it is obscuring the content,
+bottom padding should be added to the content.
 
 See below for an example:
 
@@ -237,64 +304,19 @@ if (am != null && am.isTouchExplorationEnabled) {
 }
 ```
 
-### Anatomy and key properties
+## Customizing docked toolbar
 
-The following is an anatomy diagram for the docked toolbar:
+### Theming docked toolbar
 
-![Docked toolbar anatomy diagram](assets/dockedtoolbar/docked_toolbar_anatomy.png)
+Docked toolbars support the customization of color and typography.
 
-1.  Container
-2.  Content
+#### Docked toolbar theming example
 
-#### Container attributes
+The following example shows a docked toolbar with Material theming.
 
-**Element**             | **Attribute**                        | **Related methods** | **Default value**
------------------------ | ------------------------------------ | ------------------- | -----------------
-**Color**               | `app:backgroundTint`                 | N/A                 | `?attr/colorSurfaceContainer`
-**Shape**               | `app:shapeAppearance`                | N/A                 | `0% rounded`
-**Top inset padding**   | `app:paddingTopSystemWindowInsets`    | N/A                 | `unset`
-**Bottom inset padding**| `app:paddingBottomSystemWindowInsets` | N/A                 | `unset`
+<img src="assets/dockedtoolbar/docked_toolbar_theming.png" alt="Docked toolbar theming example" width="600">
 
-**Note:** `DockedToolbarLayout` automatically adds top or bottom inset based on
-its gravity inside a `CoordinatorLayout`, if `app:paddingTopSystemWindowInsets`
-or `app:paddingBottomSystemWindowInsets` is not set. If not using a Docked
-Toolbar inside a `CoordinatorLayout`, set these attributes explicitly to add
-inset padding.
-
-#### Styles
-
-**Element**       | **Style**
------------------ | ----------------------------------------
-**Default style** | `Widget.Material3.DockedToolbar`
-**Vibrant style** | `Widget.Material3.DockedToolbar.Vibrant`
-
-Standard style theme attribute: `?attr/dockedToolbarStyle`
-Vibrant style theme attribute: `?attr/dockedToolbarVibrantStyle`
-
-The default style is the standard style.
-
-Docked Toolbar also recommends a special style for specific components for when
-they are inside of a docked toolbar. Currently, the Docked Toolbar styles also
-include a theme overlay for `?attr/materialButtonStyle`,
-`?attr/materialIconButtonStyle`, and `?attr/borderlessButtonStyle` to
-style buttons inside of a Docked Toolbar.
-
-See the full list of
-[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dockedtoolbar/res/values/styles.xml) and
-[docked toolbar attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/dockedtoolbar/res/values/attrs.xml)
-
-## Theming a Docked Toolbar
-
-Docked Toolbar supports [Material Theming](https://m3.material.io/foundations/customization),
-which can customize color and typography.
-
-### Docked Toolbar theming example
-
-The following example shows a Docked Toolbar with Material Theming.
-
-![Docked Toolbar theming example](assets/dockedtoolbar/docked_toolbar_theming.png)
-
-#### Implementing docked toolbar theming
+##### Implementing docked toolbar theming
 
 Use theme attributes and a style in `res/values/styles.xml` which apply to all
 docked toolbars and affect other components:
