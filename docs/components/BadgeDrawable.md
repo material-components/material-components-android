@@ -22,19 +22,6 @@ variants of badges.
 
 **Note:** Images use various dynamic color schemes.
 
-Before you can use Material badges, you need to add a dependency to the Material
-components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
-
-**Note:** This component is still under development and may not support the full
-range of customization Material Android components generally support, for
-instance, themed attributes.
-
-A `BadgeDrawable` represents dynamic information such as a number of pending
-requests in a [`BottomNavigationView`](BottomNavigation.md) or
-[`TabLayout`](Tabs.md).
-
 ## Design & API documentation
 
 *   [Material 3 (M3) spec](https://m3.material.io/components/badges/overview)
@@ -76,6 +63,21 @@ More details on anatomy items in the
 label will be `app:badgeText`.
 
 ## Code implementation
+
+Before you can use Material badges, you need to add a dependency to the Material
+components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
+
+**Note:** This component is still under development and may not support the full
+range of customization Material Android components generally support, for
+instance, themed attributes.
+
+A `BadgeDrawable` represents dynamic information such as a number of pending
+requests in a [`BottomNavigationView`](BottomNavigation.md) or
+[`TabLayout`](Tabs.md).
+
+### Adding badges
 
 ![Two variants of badges](assets/badge/badges_hero.png)
 
