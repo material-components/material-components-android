@@ -42,7 +42,9 @@ More details on anatomy items in the
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-<video src="assets/progressindicator/Progress_Indicator_Overview.mp4" width="760" height="400" controls></video>
+![Progress indicators have a new rounded, colorful style, and more
+configurations to choose from, including a wavy shape and variable track
+height](assets/progressindicator/order_details.gif)
 
 Progress indicators have a new rounded, colorful style, and more configurations
 to choose from, including a wavy shape and variable track height
@@ -136,8 +138,8 @@ recommended**):
 
 Material design offers two visually distinct types of progress indicators:
 
-1. Linear
-2. Circular
+1.  Linear
+2.  Circular
 
 **Note:** Only one type should represent each kind of activity in an app. For
 example, if a refresh action displays a circular indicator on one screen, that
@@ -151,7 +153,7 @@ tracked:
 *   **Indeterminate progress indicators** move along a fixed track, growing and
     shrinking in size. Use it when progress and wait time is unknown.
 
-<video src="assets/progressindicator/determinate_indeterminate.mp4" width="760" height="400" controls></video>
+![Determinate and indeterminate progress indicators](assets/progressindicator/determinate_indeterminate.gif)
 
 1.  Determinate
 2.  Indeterminate
@@ -180,10 +182,8 @@ API and source code:
 
 The following example shows a determinate linear progress indicator.
 
-<img src="assets/progressindicator/linear_determinate.gif" alt="Determinate
-linear progress indicator animation: purple indicator fills up
-grey
-track" width="600"/>
+![Determinate linear progress indicator animation: purple indicator fills up
+grey track](assets/progressindicator/linear_determinate.gif)
 
 In the layout:
 
@@ -194,10 +194,8 @@ In the layout:
 
 The following example shows an indeterminate linear progress indicator.
 
-<img src="assets/progressindicator/linear_indeterminate.gif" alt="Indeterminate
-linear progress indicator animation: purple indicator travels
-along grey
-track" width="600"/>
+![Indeterminate linear progress indicator animation: purple indicator travels
+along grey track](assets/progressindicator/linear_indeterminate.gif)
 
 In the layout:
 
@@ -213,11 +211,17 @@ For linear progress indicator, there are two indeterminate animation types:
 
 *   `disjoint` - animates as repeated cycles with two disjoint segments in the
     same color at a time.
-    <img src=" assets/progressindicator/linear_multicolor_disjoint.gif" alt="Disjointed indeterminate linear progress indicator animation: red indicator travels along track 2x then switches to yellow" width="600"/>
+
+    ![Disjointed indeterminate linear progress indicator animation: red
+    indicator travels along track 2x then switches to
+    yellow](assets/progressindicator/linear_multicolor_disjoint.gif)
 
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
     different colors.
-    <img src=" assets/progressindicator/linear_multicolor_contiguous.gif" alt="Contiguous indeterminate linear progress indicator animation: red, yellow, blue indicators move sequentially and cover track" width="600"/>
+
+    ![Contiguous indeterminate linear progress indicator animation: red, yellow,
+    blue indicators move sequentially and cover
+    track](assets/progressindicator/linear_multicolor_contiguous.gif)
 
 **Note:** There is a minimum requirement of 3 indicator colors to use the
 **contiguous** animation. Otherwise, an IllegalArgumentException will be thrown.
