@@ -32,6 +32,8 @@
   <public name="waveAmplitude" type="attr"/>
   <public name="waveSpeed" type="attr"/>
   <public name="indeterminateAnimatorDurationScale" type="attr"/>
+  <public name="waveAmplitudeRampProgressMin" type="attr" />
+  <public name="waveAmplitudeRampProgressMax" type="attr" />
 
   <!-- LinearProgressIndicator attributes -->
   <public name="indeterminateAnimationType" type="attr"/>

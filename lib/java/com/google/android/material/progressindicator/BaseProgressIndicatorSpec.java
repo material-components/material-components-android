@@ -18,6 +18,8 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.progressindicator.DeterminateDrawable.FULL_AMPLITUDE_PROGRESS_MAX;
+import static com.google.android.material.progressindicator.DeterminateDrawable.FULL_AMPLITUDE_PROGRESS_MIN;
 import static com.google.android.material.resources.MaterialResources.getDimensionPixelSize;
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
@@ -102,6 +104,14 @@ public abstract class BaseProgressIndicatorSpec {
   @FloatRange(from = 0.1f, to = 10f)
   public float indeterminateAnimatorDurationScale;
 
+  /** The normalized progress, at which the full wave amplitude will be ramped up. */
+  @FloatRange(from = 0f, to = 1f)
+  public float waveAmplitudeRampProgressMin;
+
+  /** The normalized progress, at which the full wave amplitude will be ramped down. */
+  @FloatRange(from = 0f, to = 1f)
+  public float waveAmplitudeRampProgressMax;
+
   /**
    * Instantiates BaseProgressIndicatorSpec.
    *
@@ -164,6 +174,14 @@ public abstract class BaseProgressIndicatorSpec {
     waveSpeed = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_waveSpeed, 0);
     indeterminateAnimatorDurationScale =
         a.getFloat(R.styleable.BaseProgressIndicator_indeterminateAnimatorDurationScale, 1);
+    waveAmplitudeRampProgressMin =
+        a.getFloat(
+                R.styleable.BaseProgressIndicator_waveAmplitudeRampProgressMin,
+                FULL_AMPLITUDE_PROGRESS_MIN);
+    waveAmplitudeRampProgressMax =
+        a.getFloat(
+                R.styleable.BaseProgressIndicator_waveAmplitudeRampProgressMax,
+                FULL_AMPLITUDE_PROGRESS_MAX);
 
     loadIndicatorColors(context, a);
     loadTrackColor(context, a);
@@ -247,7 +265,7 @@ public abstract class BaseProgressIndicatorSpec {
         && ((!isDeterminate && wavelengthIndeterminate > 0)
             || (isDeterminate && wavelengthDeterminate > 0));
   }
-  
+
   /**
    * Returns the track corner radius in pixels.
    *

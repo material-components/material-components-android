@@ -78,6 +78,8 @@ Element                                   | Attribute                           
 **Wave amplitude**                        | `app:waveAmplitude`                      | `setWaveAmplitude`<br>`getWaveAmplitude`                                           | 0
 **Wave speed**                            | `app:waveSpeed`                          | `setWaveSpeed`<br>`getWaveSpeed`                                                   | 0
 **Indeterminate animator duration scale** | `app:indeterminateAnimatorDurationScale` | `setIndeterminateAnimatorDurationScale`                                            | 1
+**Wave amplitude ramp up progress**       | `app:waveAmplitudeRampProgressMin`       | `setWaveAmplitudeRampProgressRange`                                                | 0.1
+**Wave amplitude ramp down progress**     | `app:waveAmplitudeRampProgressMax`       | `setWaveAmplitudeRampProgressRange`                                                | 0.9
 
 ### Linear type specific attributes
 

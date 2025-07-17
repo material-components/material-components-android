@@ -449,9 +449,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    * attached to a window and whether it and its ancestors are visible.
    */
   boolean visibleToUser() {
-    return isAttachedToWindow()
-        && getWindowVisibility() == View.VISIBLE
-        && isEffectivelyVisible();
+    return isAttachedToWindow() && getWindowVisibility() == View.VISIBLE && isEffectivelyVisible();
   }
 
   /**
@@ -474,8 +472,8 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    * #isShown()} on parent changes that result from {@link
    * android.view.ViewGroup#attachViewToParent(View, int, ViewGroup.LayoutParams)}, which *can*
    * change our effective visibility. So this method errs on the side of assuming visibility unless
-   * we can conclusively prove otherwise (but may result in some false positives, if this view
-   * ends up being attached to a non-visible hierarchy after being detached in a visible state).
+   * we can conclusively prove otherwise (but may result in some false positives, if this view ends
+   * up being attached to a non-visible hierarchy after being detached in a visible state).
    */
   boolean isEffectivelyVisible() {
     View current = this;
@@ -819,6 +817,28 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   public void setWaveSpeed(@Px int waveSpeed) {
     spec.waveSpeed = waveSpeed;
     getProgressDrawable().setEnforcedDrawing(spec.waveSpeed != 0);
+  }
+
+  /**
+   * Sets the progress for ramping up the full wave amplitude. If progress is outside the range,
+   * track is flat.
+   *
+   * @param progress The progress to ramp up wave amplitude.
+   */
+  public void setWaveAmplitudeRampProgressMin(float progress) {
+    getProgressDrawable().setWaveAmplitudeRampProgressMin(progress);
+    invalidate();
+  }
+
+  /**
+   * Sets the progress for ramping down the full wave amplitude. If progress is outside the range,
+   * track is flat.
+   *
+   * @param progress The progress to ramp down wave amplitude.
+   */
+  public void setWaveAmplitudeRampProgressMax(float progress) {
+    getProgressDrawable().setWaveAmplitudeRampProgressMax(progress);
+    invalidate();
   }
 
   /**

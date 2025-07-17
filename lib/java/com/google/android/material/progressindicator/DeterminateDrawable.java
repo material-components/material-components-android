@@ -40,8 +40,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   // Constants for drawing progress.
   private static final int MAX_DRAWABLE_LEVEL = 10000;
   // Constants for amplitude animation.
-  private static final float FULL_AMPLITUDE_FRACTION_MIN = 0.1f;
-  private static final float FULL_AMPLITUDE_FRACTION_MAX = 0.9f;
+  static final float FULL_AMPLITUDE_PROGRESS_MIN = 0.1f;
+  static final float FULL_AMPLITUDE_PROGRESS_MAX = 0.9f;
 
   // The constant for spring force stiffness.
   private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
@@ -288,8 +288,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   }
 
   private float getAmplitudeFractionFromLevel(int level) {
-    return level >= FULL_AMPLITUDE_FRACTION_MIN * MAX_DRAWABLE_LEVEL
-            && level <= FULL_AMPLITUDE_FRACTION_MAX * MAX_DRAWABLE_LEVEL
+    return level >= baseSpec.waveAmplitudeRampProgressMin * MAX_DRAWABLE_LEVEL
+            && level <= baseSpec.waveAmplitudeRampProgressMax * MAX_DRAWABLE_LEVEL
         ? 1f
         : 0f;
   }
@@ -401,6 +401,16 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     } else if (!enforced && phaseAnimator.isRunning()) {
       phaseAnimator.cancel();
     }
+  }
+
+  void setWaveAmplitudeRampProgressMin(float progress) {
+    baseSpec.waveAmplitudeRampProgressMin = progress;
+    invalidateSelf();
+  }
+
+  void setWaveAmplitudeRampProgressMax(float progress) {
+    baseSpec.waveAmplitudeRampProgressMax = progress;
+    invalidateSelf();
   }
 
   // ******************* Properties *******************
