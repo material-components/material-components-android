@@ -21,6 +21,7 @@
     style="@style/Widget.Material3.BottomSheet"
     android:layout_width="match_parent"
     android:layout_height="400dp"
+    android:clickable="true"
     app:behavior_hideable="false"
     app:behavior_peekHeight="200dp"
     app:layout_behavior="@string/bottom_sheet_behavior">
