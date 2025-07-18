@@ -315,7 +315,6 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
     if (shapeAppearance instanceof StateListShapeAppearanceModel) {
       materialButtonHelper.setCornerSpringForce(createSpringForce());
-      materialButtonHelper.setShapeAppearance(shapeAppearance);
     }
     setOpticalCenterEnabled(opticalCenterEnabled);
 
