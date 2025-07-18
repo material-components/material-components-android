@@ -39,7 +39,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  * This class models the edges and corners of a shape, which are used by {@link
  * MaterialShapeDrawable} to generate and render the shape for a view's background.
  */
-public class ShapeAppearanceModel {
+public class ShapeAppearanceModel implements ShapeAppearance {
   public static final int NUM_CORNERS = 4;
 
   /** Builder to create instances of {@link ShapeAppearanceModel}s. */
@@ -776,14 +776,21 @@ public class ShapeAppearanceModel {
    * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
    * the corner size for all corners updated.
    */
+  @Override
   @NonNull
   public ShapeAppearanceModel withCornerSize(float cornerSize) {
     return toBuilder().setAllCornerSizes(cornerSize).build();
   }
 
+  @Override
   @NonNull
   public ShapeAppearanceModel withCornerSize(@NonNull CornerSize cornerSize) {
     return toBuilder().setAllCornerSizes(cornerSize).build();
+  }
+
+  @Override
+  public boolean isStateful() {
+    return false;
   }
 
   /**
@@ -849,6 +856,18 @@ public class ShapeAppearanceModel {
         && topLeftCorner instanceof RoundedCornerTreatment
         && bottomRightCorner instanceof RoundedCornerTreatment
         && bottomLeftCorner instanceof RoundedCornerTreatment;
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getDefaultShape() {
+    return this;
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getShapeForState(@NonNull int[] stateSet) {
+    return this;
   }
 
   @NonNull

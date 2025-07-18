@@ -80,6 +80,7 @@ import androidx.resourceinspection.annotation.Attribute;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearance;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
 import com.google.android.material.shape.StateListShapeAppearanceModel;
@@ -298,23 +299,23 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     StateListShapeAppearanceModel stateListShapeAppearanceModel =
         StateListShapeAppearanceModel.create(
             context, attributes, R.styleable.MaterialButton_shapeAppearance);
-    ShapeAppearanceModel shapeAppearanceModel =
+    ShapeAppearance shapeAppearance =
         stateListShapeAppearanceModel != null
-            ? stateListShapeAppearanceModel.getDefaultShape(/* withCornerSizeOverrides= */ true)
+            ? stateListShapeAppearanceModel
             : ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
     boolean opticalCenterEnabled =
         attributes.getBoolean(R.styleable.MaterialButton_opticalCenterEnabled, false);
 
     // Loads and sets background drawable attributes
-    materialButtonHelper = new MaterialButtonHelper(this, shapeAppearanceModel);
+    materialButtonHelper = new MaterialButtonHelper(this, shapeAppearance);
     materialButtonHelper.loadFromAttributes(attributes);
 
     // Sets the checked state after the MaterialButtonHelper is initialized.
     setCheckedInternal(attributes.getBoolean(R.styleable.MaterialButton_android_checked, false));
 
-    if (stateListShapeAppearanceModel != null) {
+    if (shapeAppearance instanceof StateListShapeAppearanceModel) {
       materialButtonHelper.setCornerSpringForce(createSpringForce());
-      materialButtonHelper.setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
+      materialButtonHelper.setShapeAppearance(shapeAppearance);
     }
     setOpticalCenterEnabled(opticalCenterEnabled);
 
@@ -1396,7 +1397,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     if (isUsingOriginalBackground()) {
-      materialButtonHelper.setShapeAppearanceModel(shapeAppearanceModel);
+      materialButtonHelper.setShapeAppearance(shapeAppearanceModel);
     } else {
       throw new IllegalStateException(
           "Attempted to set ShapeAppearanceModel on a MaterialButton which has an overwritten"
@@ -1425,45 +1426,44 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   /**
-   * Sets the {@link StateListShapeAppearanceModel} used for this {@link MaterialButton}'s original
+   * Sets the {@link ShapeAppearance} used for this {@link MaterialButton}'s original
    * drawables.
    *
    * @throws IllegalStateException if the MaterialButton's background has been overwritten.
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
-  public void setStateListShapeAppearanceModel(
-      @NonNull StateListShapeAppearanceModel stateListShapeAppearanceModel) {
+  public void setShapeAppearance(
+      @NonNull ShapeAppearance shapeAppearance) {
     if (isUsingOriginalBackground()) {
-      if (materialButtonHelper.getCornerSpringForce() == null
-          && stateListShapeAppearanceModel.isStateful()) {
+      if (materialButtonHelper.getCornerSpringForce() == null && shapeAppearance.isStateful()) {
         materialButtonHelper.setCornerSpringForce(createSpringForce());
       }
-      materialButtonHelper.setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
+      materialButtonHelper.setShapeAppearance(shapeAppearance);
     } else {
       throw new IllegalStateException(
-          "Attempted to set StateListShapeAppearanceModel on a MaterialButton which has an"
+          "Attempted to set ShapeAppearance on a MaterialButton which has an"
               + " overwritten background.");
     }
   }
 
   /**
-   * Returns the {@link StateListShapeAppearanceModel} used for this {@link MaterialButton}'s
+   * Returns the {@link ShapeAppearance} used for this {@link MaterialButton}'s
    * original drawables.
    *
-   * <p>This {@link StateListShapeAppearanceModel} can be modified to change the component's shape.
+   * <p>This {@link ShapeAppearance} can be modified to change the component's shape.
    *
    * @throws IllegalStateException if the MaterialButton's background has been overwritten.
    * @hide
    */
-  @Nullable
+  @NonNull
   @RestrictTo(LIBRARY_GROUP)
-  public StateListShapeAppearanceModel getStateListShapeAppearanceModel() {
+  public ShapeAppearance getShapeAppearance() {
     if (isUsingOriginalBackground()) {
-      return materialButtonHelper.getStateListShapeAppearanceModel();
+      return materialButtonHelper.getShapeAppearance();
     } else {
       throw new IllegalStateException(
-          "Attempted to get StateListShapeAppearanceModel from a MaterialButton which has an"
+          "Attempted to get ShapeAppearance from a MaterialButton which has an"
               + " overwritten background.");
     }
   }

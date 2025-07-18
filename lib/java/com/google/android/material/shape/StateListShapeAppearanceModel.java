@@ -48,7 +48,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class StateListShapeAppearanceModel {
+public class StateListShapeAppearanceModel implements ShapeAppearance {
   public static final int CORNER_TOP_LEFT = 0x1;
   public static final int CORNER_TOP_RIGHT = 0x2;
   public static final int CORNER_BOTTOM_LEFT = 0x4;
@@ -285,6 +285,12 @@ public class StateListShapeAppearanceModel {
   }
 
   @NonNull
+  @Override
+  public ShapeAppearanceModel getDefaultShape() {
+    return getDefaultShape(/* withCornerSizeOverrides= */ true);
+  }
+
+  @NonNull
   public ShapeAppearanceModel getDefaultShape(boolean withCornerSizeOverrides) {
     if (!withCornerSizeOverrides
         || (topLeftCornerSizeOverride == null
@@ -310,7 +316,8 @@ public class StateListShapeAppearanceModel {
   }
 
   @NonNull
-  protected ShapeAppearanceModel getShapeForState(@NonNull int[] stateSet) {
+  @Override
+  public ShapeAppearanceModel getShapeForState(@NonNull int[] stateSet) {
     int idx = indexOfStateSet(stateSet);
     if (idx < 0) {
       idx = indexOfStateSet(StateSet.WILD_CARD);
@@ -359,6 +366,23 @@ public class StateListShapeAppearanceModel {
     return new Builder(this);
   }
 
+  @NonNull
+  @Override
+  public ShapeAppearanceModel withCornerSize(float cornerSize) {
+    // If withCornerSize is called on a StateListAppearanceModel, return a stateless
+    // ShapeAppearanceModel with the given corner size.
+    return getDefaultShape().withCornerSize(cornerSize);
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel withCornerSize(@NonNull CornerSize cornerSize) {
+    // If withCornerSize is called on a StateListAppearanceModel, return a stateless
+    // ShapeAppearanceModel with the given corner size.
+    return getDefaultShape().withCornerSize(cornerSize);
+  }
+
+  @Override
   public boolean isStateful() {
     return stateCount > 1
         || (topLeftCornerSizeOverride != null && topLeftCornerSizeOverride.isStateful())

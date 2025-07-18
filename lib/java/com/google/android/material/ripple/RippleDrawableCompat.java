@@ -99,7 +99,7 @@ public class RippleDrawableCompat extends Drawable implements Shapeable, TintAwa
 
   public void setStateListShapeAppearanceModel(
       @NonNull StateListShapeAppearanceModel stateListShapeAppearanceModel) {
-    drawableState.delegate.setStateListShapeAppearanceModel(stateListShapeAppearanceModel);
+    drawableState.delegate.setShapeAppearance(stateListShapeAppearanceModel);
   }
 
   @Nullable
