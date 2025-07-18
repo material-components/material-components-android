@@ -94,6 +94,7 @@ public class LinearProgressIndicator
     super(context, attrs, defStyleAttr, DEF_STYLE_RES);
 
     initializeDrawables();
+    initialized = true;
   }
 
   // **************** Inherited functions ****************

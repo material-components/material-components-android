@@ -132,6 +132,9 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   // The visibility state that the component will be in after hide animation finishes.
   private int visibilityAfterHide = View.INVISIBLE;
 
+  // Whether the component has been fully initialized (including drawable initialization).
+  boolean initialized;
+
   // **************** Constructors ****************
 
   protected BaseProgressIndicator(
@@ -394,10 +397,6 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   @Override
   public void setProgressDrawable(@Nullable Drawable drawable) {
-    if (drawable == null) {
-      super.setProgressDrawable(null);
-      return;
-    }
     if (drawable instanceof DeterminateDrawable) {
       DeterminateDrawable<S> determinateDrawable = (DeterminateDrawable<S>) drawable;
       determinateDrawable.hideNow();
@@ -406,6 +405,8 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
       // progress then secondary progress. Since secondary progress is not used here. We need to set
       // the level actively to overcome the affects from secondary progress.
       determinateDrawable.setLevelByFraction((float) getProgress() / getMax());
+    } else if (!initialized) {
+      super.setProgressDrawable(drawable);
     } else {
       throw new IllegalArgumentException("Cannot set framework drawable as progress drawable.");
     }
@@ -419,12 +420,10 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   @Override
   public void setIndeterminateDrawable(@Nullable Drawable drawable) {
-    if (drawable == null) {
-      super.setIndeterminateDrawable(null);
-      return;
-    }
     if (drawable instanceof IndeterminateDrawable) {
       ((DrawableWithAnimatedVisibilityChange) drawable).hideNow();
+      super.setIndeterminateDrawable(drawable);
+    } else if (!initialized) {
       super.setIndeterminateDrawable(drawable);
     } else {
       throw new IllegalArgumentException(
