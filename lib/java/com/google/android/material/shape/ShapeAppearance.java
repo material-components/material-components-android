@@ -56,4 +56,10 @@ public interface ShapeAppearance {
    * Returns a {@link ShapeAppearanceModel} for the given state set.
    */
   @NonNull ShapeAppearanceModel getShapeForState(@NonNull int[] stateSet);
+
+  /**
+   * Returns a list of the {@link ShapeAppearanceModel} of all states. If this
+   * ShapeAppearance is stateless, this will be a list of just the default shape.
+   */
+  @NonNull ShapeAppearanceModel[] getShapeAppearanceModels();
 }

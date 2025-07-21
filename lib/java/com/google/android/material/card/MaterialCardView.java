@@ -666,7 +666,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     setClipToOutline(shapeAppearanceModel.isRoundRect(getBoundsAsRectF()));
-    cardViewHelper.setShapeAppearanceModel(shapeAppearanceModel);
+    cardViewHelper.setShapeAppearance(shapeAppearanceModel);
   }
 
   /**
@@ -677,7 +677,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   @NonNull
   @Override
   public ShapeAppearanceModel getShapeAppearanceModel() {
-    return cardViewHelper.getShapeAppearanceModel();
+    return cardViewHelper.getShapeAppearance().getDefaultShape();
   }
 
   private void forceRippleRedrawIfNeeded() {

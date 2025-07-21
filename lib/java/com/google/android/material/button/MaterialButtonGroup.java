@@ -548,14 +548,12 @@ public class MaterialButtonGroup extends LinearLayout {
         // When horizontal (ltr), keeps the left two original corners for the first button.
         if (isFirstVisible) {
           cornerPositionBitsToKeep |=
-              StateListShapeAppearanceModel.CORNER_TOP_LEFT
-                  | StateListShapeAppearanceModel.CORNER_BOTTOM_LEFT;
+              ShapeAppearanceModel.CORNER_TOP_LEFT | ShapeAppearanceModel.CORNER_BOTTOM_LEFT;
         }
         // When horizontal (ltr), keeps the right two original corners for the last button.
         if (isLastVisible) {
           cornerPositionBitsToKeep |=
-              StateListShapeAppearanceModel.CORNER_TOP_RIGHT
-                  | StateListShapeAppearanceModel.CORNER_BOTTOM_RIGHT;
+              ShapeAppearanceModel.CORNER_TOP_RIGHT | ShapeAppearanceModel.CORNER_BOTTOM_RIGHT;
         }
         // If rtl, swap the position bits of left corners and right corners.
         if (isRtl) {
@@ -566,14 +564,12 @@ public class MaterialButtonGroup extends LinearLayout {
         // When vertical, keeps the top two original corners for the first button.
         if (isFirstVisible) {
           cornerPositionBitsToKeep |=
-              StateListShapeAppearanceModel.CORNER_TOP_LEFT
-                  | StateListShapeAppearanceModel.CORNER_TOP_RIGHT;
+              ShapeAppearanceModel.CORNER_TOP_LEFT | ShapeAppearanceModel.CORNER_TOP_RIGHT;
         }
         // When vertical, keeps the bottom two original corners for the last button.
         if (isLastVisible) {
           cornerPositionBitsToKeep |=
-              StateListShapeAppearanceModel.CORNER_BOTTOM_LEFT
-                  | StateListShapeAppearanceModel.CORNER_BOTTOM_RIGHT;
+              ShapeAppearanceModel.CORNER_BOTTOM_LEFT | ShapeAppearanceModel.CORNER_BOTTOM_RIGHT;
         }
       }
       // Overrides the corners that don't need to keep with unary operator.

@@ -19,6 +19,11 @@ package com.google.android.material.shape;
 import com.google.android.material.R;
 
 import static android.content.res.Resources.ID_NULL;
+import static com.google.android.material.shape.ShapeAppearanceModel.CORNER_BOTTOM_LEFT;
+import static com.google.android.material.shape.ShapeAppearanceModel.CORNER_BOTTOM_RIGHT;
+import static com.google.android.material.shape.ShapeAppearanceModel.CORNER_TOP_LEFT;
+import static com.google.android.material.shape.ShapeAppearanceModel.CORNER_TOP_RIGHT;
+import static com.google.android.material.shape.ShapeAppearanceModel.containsFlag;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -49,11 +54,6 @@ import org.xmlpull.v1.XmlPullParserException;
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class StateListShapeAppearanceModel implements ShapeAppearance {
-  public static final int CORNER_TOP_LEFT = 0x1;
-  public static final int CORNER_TOP_RIGHT = 0x2;
-  public static final int CORNER_BOTTOM_LEFT = 0x4;
-  public static final int CORNER_BOTTOM_RIGHT = 0x8;
-
   private static final int INITIAL_CAPACITY = 10;
 
   /** Builder for {@link StateListShapeAppearanceModel}. */
@@ -133,10 +133,6 @@ public class StateListShapeAppearanceModel implements ShapeAppearance {
         bottomRightCornerSizeOverride = cornerSizeOverride;
       }
       return this;
-    }
-
-    private boolean containsFlag(int flagSet, int flag) {
-      return (flagSet | flag) == flagSet;
     }
 
     @NonNull
@@ -343,6 +339,12 @@ public class StateListShapeAppearanceModel implements ShapeAppearance {
           bottomRightCornerSizeOverride.getCornerSizeForState(stateSet));
     }
     return builder.build();
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel[] getShapeAppearanceModels() {
+    return shapeAppearanceModels;
   }
 
   private int indexOfStateSet(int[] stateSet) {
