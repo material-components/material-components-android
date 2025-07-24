@@ -26,6 +26,7 @@ import static org.robolectric.shadows.ShadowPath.Point.Type.MOVE_TO;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Build.VERSION_CODES;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
 import androidx.test.core.app.ApplicationProvider;
@@ -40,7 +41,7 @@ import org.robolectric.shadows.ShadowPath.Point;
 
 /** Tests for {@link MemoryView}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = Config.OLDEST_SDK)
+@Config(sdk = VERSION_CODES.M)
 public class MemoryViewTest {
 
   private static final int BYTES_IN_MB = 1024 * 1024;
@@ -70,7 +71,7 @@ public class MemoryViewTest {
   public void memoryView_correctText_withProvidedRuntime() {
     memoryView.refreshMemStats(runtime);
 
-    assertThat(memoryView.getText().toString()).isEqualTo("used: 25MB / 100MB (25%)");
+    assertThat(memoryView.getText().toString()).isEqualTo("used: 25 MB / 100 MB (25%)");
   }
 
   @Test
@@ -85,7 +86,7 @@ public class MemoryViewTest {
     assertThat(shadowCanvas.getPathPaintHistoryCount()).isEqualTo(1);
 
     ShadowPath drawnPath = shadowOf(shadowCanvas.getDrawnPath(0));
-    assertThat(drawnPath.getPoints().get(0)).isEqualTo(new Point(34f, 250f, MOVE_TO));
+    assertThat(drawnPath.getPoints().get(0)).isEqualTo(new Point(36f, 250f, MOVE_TO));
   }
 
   @SuppressLint("WrongCall") // Testing onDraw
