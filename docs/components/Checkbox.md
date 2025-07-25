@@ -12,7 +12,7 @@ path: /catalog/checkboxes/
 [Checkboxes](https://m3.material.io/components/checkbox/overview) let users
 select one or more items from a list, or turn an item on or off.
 
-<img src="assets/checkbox/checkbox_hero.png" alt="Checkbox hero: Meal options" header, "Additions" checkbox, "Pickles" "Lettuce" "Tomato" checkboxes with “Lettuce” checked" width="900">
+<img src="assets/checkbox/checkbox_hero.png" alt="Checkbox hero: meal options header, additions checkbox, pickles, lettuce, tomato, checkboxes with lettuce checked" width="900">
 
 **Note:** Images use various dynamic color schemes.
 

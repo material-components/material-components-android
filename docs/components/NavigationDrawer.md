@@ -9,7 +9,7 @@ path: /catalog/navigation-drawer/
 
 # Navigation drawers
 
-Note: The navigation drawer is being deprecated in the Material 3 expressive
+**Note:** The navigation drawer is being deprecated in the Material 3 expressive
 update. For those who have updated, use an [expanded navigation rail](https://m3.material.io/components/navigation-rail/overview), which has
 mostly the same functionality of the navigation drawer and adapts better across
 window size classes.
@@ -18,7 +18,7 @@ window size classes.
 provide access to destinations in your app. There are two variants of navigation
 drawers.
 
-<img src="assets/navigationdrawer/navigation_drawer_overview.png" alt="A standard (left) and modal (right) Navigation drawer" height="450">
+<img src="assets/navigationdrawer/navigation_drawer_overview.png" alt="A standard (left) and modal (right) navigation drawer" height="450">
 
 1.  Standard navigation drawer
 2.  Modal navigation drawer
@@ -123,10 +123,9 @@ Element           | Attribute                                                   
 
 ### `NavigationView` styles
 
-| Element   | Style                             | Theme attribute             |
-| --------- | --------------------------------- | --------------------------- |
-| **Default | `Widget.Material3.NavigationView` | `?attr/navigationViewStyle` |
-: style**   :                                   :                             :
+Element           | Style                             | Theme attribute
+----------------- | --------------------------------- | ---------------------------
+**Default style** | `Widget.Material3.NavigationView` | `?attr/navigationViewStyle`
 
 ### `DrawerLayout` styles
 
@@ -154,7 +153,7 @@ API and source code:
 
 The following example shows a permanently visible standard navigation drawer.
 
-<img src="assets/navigationdrawer/navigation-drawer-standard.png" alt="Nav drawer with "Header title", "Header text", “Subtitle”, and 3 items with icons on left of screen." height="300">
+<img src="assets/navigationdrawer/navigation-drawer-standard.png" alt="nav drawer with header title,header text, subtitle, and 3 items with icons on left of screen." height="300">
 
 In the layout:
 
@@ -223,9 +222,7 @@ API and source code:
 
 The following example shows a modal navigation drawer.
 
-<img src="assets/navigationdrawer/navigation-drawer-modal.png" alt="A screen with a modal navigation drawer open. The drawer container "Header
-title", "Header text", and 6
-items." height="600">
+<img src="assets/navigationdrawer/navigation-drawer-modal.png" alt="A screen with a modal navigation drawer open. The drawer container, header title, header text, and six items." height="600">
 
 In the layout:
 

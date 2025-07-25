@@ -153,7 +153,7 @@ API and source code:
 
 The following example shows an overflow menu.
 
-<img src="assets/menu/menus_overflow.png" alt="Composite image: purple "Menus" bar, and purple "Menus" bar with white menu and 3 options" height="300">
+<img src="assets/menu/menus_overflow.png" alt="Composite image: purple menus bar, and purple Menus bar with white menu and 3 options" height="300">
 
 In code:
 
@@ -273,7 +273,7 @@ with a `res/menu/context_menu.xml`:
 
 The following example shows a popup menu that displays when a button is clicked.
 
-<img src="assets/menu/menus_popup.png" alt="White menu container with 3 options open below a purple "Show menu" button" height="300">
+<img src="assets/menu/menus_popup.png" alt="White menu container with 3 options open below a purple, show menu button" height="300">
 
 In code:
 
@@ -332,7 +332,7 @@ work in future versions.
 
 The following example shows a popup menu with icons.
 
-<img src="assets/menu/menus_popup_icons.png" alt="White menu window with 3 options open below a purple "Show menu" button. Each
+<img src="assets/menu/menus_popup_icons.png" alt="White menu window with 3 options open below a purple, show menu button. Each
 option has an icon." height="350">
 
 In code:
@@ -393,7 +393,7 @@ In `res/menu/popup_menu.xml`:
 The following example shows a list popup window menu that appears when a button
 is clicked.
 
-<img src="assets/menu/menus_list_popup_window.png" alt="White menu container with 3 options below a purple "Show menu" button" height="350">
+<img src="assets/menu/menus_list_popup_window.png" alt="White menu container with 3 options below a purple, show menu button" height="350">
 
 In code:
 
@@ -477,7 +477,7 @@ using `Theme.Material3.*` themes.
 
 The following is an example of a filled exposed dropdown menu:
 
-<img src="assets/menu/menus_exposed_dropdown_filled.png" alt="2 menu states with text field element: 1) has "item 1", 2) has "item 1" and a 4-item menu container." height="400">
+<img src="assets/menu/menus_exposed_dropdown_filled.png" alt="2 menu states with text field element: 1) has item 1, 2) has item 1 and a 4-item menu container." height="400">
 
 In the layout:
 
