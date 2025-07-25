@@ -324,7 +324,10 @@ public class SideSheetMainDemoFragment extends DemoFragment {
                   context, androidx.appcompat.R.attr.isLightTheme, true);
           Window window = sheetDialog.getWindow();
           sheetDialog.setFitsSystemWindows(!edgeToEdgeEnabled);
-          window.setNavigationBarColor(Color.TRANSPARENT);
+          if (VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+            // In API 35 the call to setNavigationBarColor is deprecated, doesn't affect gesture navigation and nav bar is set to match window background.
+            window.setNavigationBarColor(Color.TRANSPARENT);
+          }
           WindowCompat.getInsetsController(window, window.getDecorView())
               .setAppearanceLightStatusBars(edgeToEdgeEnabled && isLightTheme);
 

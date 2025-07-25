@@ -100,8 +100,11 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
     super.onCreate(savedInstanceState);
     Window window = getWindow();
     if (window != null) {
-      // The status bar should always be transparent because of the window animation.
-      window.setStatusBarColor(0);
+      if (VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+        // The status bar should always be transparent because of the window animation.
+        // Starting with API 35, the call to setStatusBarColor() is deprecated and no longer works, since the status bar is always transparent.
+        window.setStatusBarColor(0);
+      }
 
       window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
       if (VERSION.SDK_INT < VERSION_CODES.M) {

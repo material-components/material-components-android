@@ -93,9 +93,12 @@ public class EdgeToEdgeUtils {
 
     int statusBarColor = getStatusBarColor(window.getContext(), edgeToEdgeEnabled);
     int navigationBarColor = getNavigationBarColor(window.getContext(), edgeToEdgeEnabled);
-
-    window.setStatusBarColor(statusBarColor);
-    window.setNavigationBarColor(navigationBarColor);
+    if (VERSION.SDK_INT < Build.VERSION_CODES.VANILLA_ICE_CREAM) {
+        // Starting with API 35, the call to setStatusBarColor() is deprecated and no longer works, since the status bar is always transparent.
+        window.setStatusBarColor(statusBarColor);
+        // In API 35 the call to setNavigationBarColor is deprecated, doesn't affect gesture navigation and nav bar is set to match window background.
+        window.setNavigationBarColor(navigationBarColor);
+    }
 
     setLightStatusBar(
         window,
