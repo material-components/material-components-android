@@ -31,7 +31,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.button.MaterialButtonGroup;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
@@ -96,23 +96,23 @@ public class CatalogPreferencesDialogFragment extends BottomSheetDialogFragment
     TextView description = view.findViewById(R.id.preference_description);
     description.setEnabled(isEnabled);
     description.setText(preference.description);
-    MaterialButtonToggleGroup buttonToggleGroup = view.findViewById(R.id.preference_options);
+    MaterialButtonGroup buttonGroup = view.findViewById(R.id.preference_options);
     int selectedOptionId = preference.getSelectedOption(view.getContext()).id;
     for (Option option : preference.getOptions()) {
-      MaterialButton button = createOptionButton(layoutInflater, buttonToggleGroup, option);
+      MaterialButton button = createOptionButton(layoutInflater, buttonGroup, option);
       button.setEnabled(isEnabled);
-      buttonToggleGroup.addView(button);
+      buttonGroup.addView(button);
+      button.setCheckable(true);
       button.setChecked(selectedOptionId == option.id);
+      button.setOnClickListener(v -> {
+        for (int i = 0; i < buttonGroup.getChildCount(); i++) {
+          ((MaterialButton) buttonGroup.getChildAt(i)).setChecked(false);
+        }
+        button.setChecked(true);
+        preference.setSelectedOption(buttonGroup.getContext(), buttonIdToOptionId.get(button.getId()));
+      });
     }
-    buttonToggleGroup.setEnabled(isEnabled);
-    if (isEnabled) {
-      buttonToggleGroup.addOnButtonCheckedListener(
-          (group, checkedId, isChecked) -> {
-            if (isChecked) {
-              preference.setSelectedOption(group.getContext(), buttonIdToOptionId.get(checkedId));
-            }
-          });
-    }
+    buttonGroup.setEnabled(isEnabled);
     return view;
   }
 

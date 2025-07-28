@@ -30,12 +30,12 @@
     android:layout_marginBottom="4dp"
     android:textAppearance="?attr/textAppearanceHeadline6"/>
 
-  <com.google.android.material.button.MaterialButtonToggleGroup
+  <com.google.android.material.button.MaterialButtonGroup
     android:id="@+id/preference_options"
+    style="@style/Widget.Material3Expressive.MaterialButtonGroup.Connected"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginBottom="8dp"
-    app:selectionRequired="true"
-    app:singleSelection="true" />
+    app:overflowMode="menu"/>
 
 </LinearLayout>
