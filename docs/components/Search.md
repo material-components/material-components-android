@@ -25,16 +25,6 @@ a search icon.
 
 **Note:** Images use various dynamic color schemes.
 
-Before you can use the Material Search components, you need to add a dependency
-to the Material components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
-
-Note: Material Search was introduced in `1.8.0`. To use Material Search, make
-sure you're depending on
-[library version `1.8.0`](https://github.com/material-components/material-components-android/releases/tag/1.8.0)
-or later.
-
 ## Design & API documentation
 
 *   [Material 3 (M3) spec](https://m3.material.io/components/search/overview)
@@ -91,17 +81,11 @@ Element                                  | Attribute                     | Relat
 
 #### Styles
 
-Element                        | Style
------------------------------- | -------------------------------------
-**Search Bar Default style**   | `Widget.Material3.SearchBar`
-**Search View Toolbar style**  | `Widget.Material3.SearchView.Toolbar`
-**Search View Toolbar height** | `@dimen/m3_searchview_height`
-
-Default search bar style theme attribute: `?attr/materialSearchBarStyle`.
-
-Search view toolbar theme attribute: `?attr/materialSearchViewToolbarStyle`.
-Search view toolbar height theme attribute:
-`?attr/materialSearchViewToolbarHeight`.
+Element                        | Style                                 | Theme attribute
+------------------------------ | ------------------------------------- | ---------------
+**Search Bar Default style**   | `Widget.Material3.SearchBar`          | `?attr/materialSearchBarStyle`
+**Search View Toolbar style**  | `Widget.Material3.SearchView.Toolbar` | `?attr/materialSearchViewToolbarStyle`
+**Search View Toolbar height** | `@dimen/m3_searchview_height`         | `?attr/materialSearchViewToolbarHeight`
 
 ### Search view
 
@@ -121,13 +105,21 @@ Element                            | Attribute                    | Related meth
 
 #### Styles
 
-Element                       | Style
------------------------------ | -----------------------------
-**Search View Default style** | `Widget.Material3.SearchView`
-
-Default search view style theme attribute: `?attr/materialSearchViewStyle`.
+| Element  | Style                         | Theme attribute                 |
+| -------- | ----------------------------- | ------------------------------- |
+| **Search View Default style** | `Widget.Material3.SearchView` | `?attr/materialSearchViewStyle` |
 
 ## Code implementation
+
+Before you can use the Material Search components, you need to add a dependency
+to the Material components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
+
+Note: Material Search was introduced in `1.8.0`. To use Material Search, make
+sure you're depending on
+[library version `1.8.0`](https://github.com/material-components/material-components-android/releases/tag/1.8.0)
+or later.
 
 API and source code
 
@@ -135,7 +127,7 @@ API and source code
 
 *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/search/SearchView.java)
 
-#### Search bar
+### Adding Search bar
 
 The `SearchBar` component provides an implementation of the floating search
 field. It extends `Toolbar`, so it supports a navigation icon, menu items, and
@@ -173,7 +165,7 @@ API and source code:
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/search/SearchBar)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/search/SearchBar.java)
 
-#### Search view
+### Adding Search view
 
 The `SearchView` component provides an implementation of a full-screen search
 view which can be used to display back navigation, a search hint and text, menu
@@ -212,7 +204,7 @@ searchView
         });
 ```
 
-## Making search components accessible
+### Making search components accessible
 
 You should set a content description on a search bar and search view components
 via the `android:contentDescription` attribute or `setContentDescription` method
@@ -220,7 +212,7 @@ so that screen readers such as TalkBack are able to announce their purpose or
 action. Text rendered in these components are automatically provided to
 accessibility services, so additional content labels are usually unnecessary.
 
-## Transition listeners
+### Transition listeners
 
 If you want to get callbacks for when the `SearchView` transitions between its
 different animation states, you can add an `SearchView.TransitionListener` via
@@ -235,7 +227,7 @@ searchView.addTransitionListener(
     });
 ```
 
-## Predictive back
+### Predictive back
 
 The `SearchView` component automatically supports
 [predictive back](/third_party/java_src/android_libs/material_components/docs/foundations/PredictiveBack.md)
@@ -250,8 +242,7 @@ to see how the component behaves when a user swipes back.
 
 ## Customizing search bar
 
-<details>
-<summary><h3>Expand and collapse animations</h3></summary>
+### Expand and collapse animations
 
 One of the biggest advantages of using the `SearchView` in conjunction with an
 `SearchBar` is that you will get the expand and collapse animations for free. If
@@ -259,10 +250,7 @@ you are just using a standalone `SearchView` without an `SearchBar`, then
 showing or hiding the `SearchView` will result in slide up and slide down
 transitions.
 
-</details>
-
-<details>
-<summary><h3>Soft input modes</h3></summary>
+### Soft input modes
 
 The recommended `windowSoftInputMode` when using an `SearchBar` and an
 `SearchView` is `adjustNothing`. There are a couple reasons for this:
@@ -287,10 +275,7 @@ Lastly, if you don't want the soft keyboard to show automatically when the
 `SearchView` is shown, you can set `app:autoShowKeyboard="false"` on your
 `SearchView`.
 
-</details>
-
-<details>
-<summary><h3>Translucent status bar</h3></summary>
+### Translucent status bar
 
 `SearchBar` and `SearchView` come with support for a translucent status bar.
 
@@ -304,20 +289,14 @@ the `SearchView`. If you are using either `FLAG_TRANSLUCENT_STATUS`
 `SearchView` will automatically add an extra spacer surface so that it fills the
 space underneath the translucent status bar.
 
-</details>
-
-<details>
-<summary><h3>Menu to back arrow animation</h3></summary>
+### Menu to back arrow animation
 
 If you are using the `SearchBar` with a `NavigationDrawer`, you can set the
 `app:useDrawerArrowDrawable` attribute to `true` on your `SearchView` to enable
 the "hamburger" menu to back arrow icon animation. This animation will happen
 during the expand and collapse of the `SearchView`.
 
-</details>
-
-<details>
-<summary><h3>Search prefix</h3></summary>
+### Search prefix
 
 If you would like to show some prefix text before the main search `EditText`,
 you can make use of the `app:searchPrefixText` attribute. For example, setting
@@ -328,10 +307,7 @@ Additionally, with this pattern it is common to hide the back button to reduce
 clutter, as navigation can be handled outside of the search view. This can be
 accomplished by setting `app:hideNavigationIcon="true"` on your `SearchView`.
 
-</details>
-
-<details>
-<summary><h3>Search history, suggestions, and results</h3></summary>
+### Search history, suggestions, and results
 
 `SearchView` is a view group component, meaning you can nest content inside of
 it such as:
@@ -351,11 +327,7 @@ it such as:
 
   </com.google.android.material.search.SearchView>
 ```
-
-</details>
-
-<details>
-<summary><h3>Scrolling behavior</h3></summary>
+### Scrolling behavior
 
 The `SearchBar` can either be used as a fixed, scroll-away, or lift on scroll
 search field.
@@ -399,10 +371,7 @@ view. On the `SearchBar`, set `app:liftOnScroll=true` and set a
 See the [putting it all together](#putting-it-all-together) section below for an
 example of how to set up this behavior.
 
-</details>
-
-<details>
-<summary><h3 id="putting-it-all-together">Putting it all together</h3></summary>
+### Putting it all together
 
 Putting it all together and using the scroll-away mode, the `SearchBar` and
 `SearchView` widgets can be used in your layout as such:
@@ -487,11 +456,7 @@ Alternatively, an example of the lift on scroll mode is below:
   </com.google.android.material.search.SearchView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
-
-</details>
-
-<details>
-<summary><h3>Toolbar transitions</h3></summary>
+### Toolbar transitions
 
 The `SearchBar` component also provides transitions to and from a `Toolbar`,
 e.g., for a contextual multi-select flow. These transitions are implemented as
@@ -511,5 +476,3 @@ if (searchBar.collapse(contextualToolbar, appBarLayout)) {
   return;
 }
 ```
-
-</details>
