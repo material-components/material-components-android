@@ -24,7 +24,6 @@ import static com.google.android.material.textfield.IndicatorViewController.COUN
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -1465,7 +1464,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   @Override
-  @TargetApi(VERSION_CODES.O)
+  @RequiresApi(VERSION_CODES.O)
   public void dispatchProvideAutofillStructure(@NonNull ViewStructure structure, int flags) {
     if (editText == null) {
       super.dispatchProvideAutofillStructure(structure, flags);
@@ -4524,6 +4523,19 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     }
 
     applyBoxAttributes();
+
+    if (getEndIconMode() == END_ICON_DROPDOWN_MENU) {
+      if (editText instanceof AutoCompleteTextView && !isEditable(editText)) {
+        // For non-editable dropdowns, the end icon is not clickable and focusable, because the
+        // whole field is a single touch target. The dropdown can be toggled programmatically by
+        // calling performClick() on the end icon.
+        getEndIconView().setFocusable(false);
+        getEndIconView().setClickable(false);
+      } else {
+        getEndIconView().setFocusable(true);
+        getEndIconView().setClickable(true);
+      }
+    }
   }
 
   private boolean isOnError() {

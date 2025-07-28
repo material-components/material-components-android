@@ -33,8 +33,8 @@ import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.ListPopupWindow;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
@@ -51,6 +51,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -198,6 +199,43 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
       modalListPopup.dismiss();
     } else {
       super.dismissDropDown();
+    }
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+    if (shouldShowPopup(keyCode)) {
+      TextInputLayout textInputLayout = findTextInputLayoutAncestor();
+      if (textInputLayout != null) {
+        // A click on the end icon will show the dropdown and animate the icon
+        // Note that View.performClick() is a programmatic action that works even if the view is
+        // not clickable.
+        textInputLayout.getEndIconView().performClick();
+      }
+      return true;
+    }
+    return super.onKeyDown(keyCode, event);
+  }
+
+  /**
+   * Determines whether the dropdown should be shown based on the key press.
+   *
+   * <p>If the view is editable and single-line, the dropdown is shown only for the Enter or D-pad
+   * Center keys.
+   *
+   * <p>If the view is not editable, the dropdown is shown if the user presses the Enter, D-pad
+   * Center, or Space keys.
+   */
+  @VisibleForTesting
+  boolean shouldShowPopup(int keyCode) {
+    boolean isEnterKey =
+        keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER;
+    boolean isSpaceKey = keyCode == KeyEvent.KEYCODE_SPACE;
+    boolean isEditable = getKeyListener() != null;
+    if (isEditable) {
+      return isEnterKey && getMaxLines() == 1;
+    } else {
+      return isEnterKey || isSpaceKey;
     }
   }
 
