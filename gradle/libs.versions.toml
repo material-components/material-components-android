@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin                  = "8.7.3"
+androidGradlePlugin                  = "8.11.1"
 
 # Main library dependencies.
 # Versions defined for :lib are required to follow library versioning - stable
