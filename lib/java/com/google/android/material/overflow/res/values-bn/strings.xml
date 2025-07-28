@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">ওভারফ্লো মেনু</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">আরও বিকল্প</string>
 </resources>

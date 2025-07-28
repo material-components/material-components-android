@@ -42,9 +42,9 @@
   <string name="mtrl_picker_a11y_prev_month">מעבר לחודש הקודם</string>
   <string name="mtrl_picker_a11y_next_month">מעבר לחודש הבא</string>
   <string name="mtrl_picker_toggle_to_year_selection">מעבר לתצוגה שנתית</string>
-  <string name="mtrl_picker_pane_title_year_view">Year view</string>
+  <string name="mtrl_picker_pane_title_year_view">תצוגה שנתית</string>
   <string name="mtrl_picker_toggle_to_day_selection">מעבר לתצוגת יומן</string>
-  <string name="mtrl_picker_pane_title_calendar_view">Calendar view</string>
+  <string name="mtrl_picker_pane_title_calendar_view">תצוגת יומן</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">הבחירה הנוכחית: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">בחירת תאריך ההתחלה: %1$s – בחירת תאריך הסיום: %2$s</string>

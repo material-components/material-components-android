@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">Trình đơn mục bổ sung</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">Tuỳ chọn khác</string>
 </resources>

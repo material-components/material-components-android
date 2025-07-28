@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">ਓਵਰਫ਼ਲੋ ਮੀਨੂ</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">ਹੋਰ ਵਿਕਲਪ</string>
 </resources>

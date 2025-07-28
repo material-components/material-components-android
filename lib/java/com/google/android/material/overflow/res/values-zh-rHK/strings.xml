@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">展開式選單</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">更多選項</string>
 </resources>

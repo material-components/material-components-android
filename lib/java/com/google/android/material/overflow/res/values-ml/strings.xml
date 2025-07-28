@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">ഓവർഫ്ലോ മെനു</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">കൂടുതൽ ഓപ്ഷനുകൾ</string>
 </resources>

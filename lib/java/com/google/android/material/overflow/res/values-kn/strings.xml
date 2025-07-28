@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">ಓವರ್‌ಫ್ಲೋ ಮೆನು</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">ಇನ್ನಷ್ಟು ಆಯ್ಕೆಗಳು</string>
 </resources>

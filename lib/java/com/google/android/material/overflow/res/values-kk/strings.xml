@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">Қосымша мәзір</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">Басқа опциялар</string>
 </resources>

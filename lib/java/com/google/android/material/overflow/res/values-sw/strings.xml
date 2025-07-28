@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">Menyu ya vipengee vya ziada</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">Chaguo zaidi</string>
 </resources>

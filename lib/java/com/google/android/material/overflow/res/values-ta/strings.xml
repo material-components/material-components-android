@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">கூடுதல் விருப்பங்கள்</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">கூடுதல் விருப்பங்கள்</string>
 </resources>

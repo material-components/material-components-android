@@ -16,4 +16,5 @@
 -->
 <resources>
   <string name="m3_overflow_linear_layout_button_content_description">Luzapen-menua</string>
+  <string name="m3_overflow_linear_layout_button_tooltip_text">Aukera gehiago</string>
 </resources>
