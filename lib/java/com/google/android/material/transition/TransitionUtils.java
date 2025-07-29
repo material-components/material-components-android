@@ -27,6 +27,7 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
 import androidx.annotation.AttrRes;
