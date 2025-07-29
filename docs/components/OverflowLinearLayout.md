@@ -34,12 +34,8 @@ Attributes for the children of `OverflowLinearLayout`:
 
 | Element     | Attribute                 | Related methods | Default value |
 | ----------- | ------------------------- | --------------- | ------------- |
-| **Overflow  | `app:layout_overflowText` | N/A             | `null`        |
-: menu's item :                           :                 :               :
-: text**      :                           :                 :               :
-| **Overflow  | `app:layout_overflowIcon` | N/A             | `null`        |
-: menu's item :                           :                 :               :
-: icon**      :                           :                 :               :
+| **Overflow menu's item text**      | `app:layout_overflowText` | N/A             | `null`        |
+| **Overflow menu's item icon** | `app:layout_overflowIcon` | N/A             | `null`        |
 
 ### `OverflowLinearLayout` styles
 
