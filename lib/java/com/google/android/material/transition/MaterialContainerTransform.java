@@ -22,6 +22,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static androidx.core.util.Preconditions.checkNotNull;
 import static com.google.android.material.transition.TransitionUtils.calculateArea;
 import static com.google.android.material.transition.TransitionUtils.convertToRelativeCornerSizes;
+import static com.google.android.material.transition.TransitionUtils.copyViewImage;
 import static com.google.android.material.transition.TransitionUtils.createColorShader;
 import static com.google.android.material.transition.TransitionUtils.defaultIfNull;
 import static com.google.android.material.transition.TransitionUtils.findAncestorById;
@@ -935,11 +936,11 @@ public final class MaterialContainerTransform extends Transition {
     final TransitionDrawable transitionDrawable =
         new TransitionDrawable(
             getPathMotion(),
-            startView,
+            copyViewImage(sceneRoot, startView, startView.getParent() != null ? startView.getParent() : startView),
             startBounds,
             startShapeAppearanceModel,
             getElevationOrDefault(startElevation, startView),
-            endView,
+            copyViewImage(sceneRoot, endView, endView.getParent() != null ? endView.getParent() : endView),
             endBounds,
             endShapeAppearanceModel,
             getElevationOrDefault(endElevation, endView),
