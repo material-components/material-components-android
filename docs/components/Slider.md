@@ -12,7 +12,7 @@ path: /catalog/sliders/
 [Sliders](https://m3.material.io/components/sliders/) let users make selections
 from a range of values. There are three variants of sliders.
 
-!["Slider examples of both standard, centered, and range sliders."](assets/slider/slider_types.png)
+!["Slider examples of both standard, centered, and range sliders."](assets/slider/slider-types.png)
 
 1.  Standard
 2.  Centered
@@ -27,7 +27,7 @@ from a range of values. There are three variants of sliders.
 
 ## Anatomy
 
-![Slider anatomy diagram](assets/slider/slider_anatomy.png)
+![Slider anatomy diagram](assets/slider/slider-anatomy.png)
 
 1.  Value indicator (optional)
 2.  Stop indicators (optional)
@@ -39,7 +39,9 @@ from a range of values. There are three variants of sliders.
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/sliders/guidelines#b3701f5e-128a-4807-bca7-033402b4266a).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive themes` setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
@@ -58,6 +60,17 @@ an inset icon.
 *   Orientation: Horizontal, vertical
 *   Optional inset icon (standard slider only)
 *   Sizes: XS (existing default), S, M, L, XL
+
+### M3 Expressive styles
+
+The expressive slider comes with 5 pre-defined styles varying in track thickness
+and corner size:
+
+- `Widget.Material3Expressive.Slider.Xsmall` (default)
+- `Widget.Material3Expressive.Slider.Small`
+- `Widget.Material3Expressive.Slider.Medium`
+- `Widget.Material3Expressive.Slider.Large`
+- `Widget.Material3Expressive.Slider.Xlarge`
 
 ## Key properties
 
@@ -190,7 +203,7 @@ API and source code:
 
 **Add a `Standard slider` to a layout:**
 
-<img src="assets/slider/slider_standard.png" alt="Standard slider"width=400>
+<img src="assets/slider/slider-standard.png" alt="Standard slider"width=400>
 
 ```xml
 <com.google.android.material.slider.Slider
@@ -208,7 +221,7 @@ API and source code:
 Stop indicators show which predetermined values can be chosen on the slider. The
 slider handle snaps to the closest stop.
 
-<img src="assets/slider/slider_standard_stopindicator.png" alt="A discrete slider with a thumb that can be dragged to change the selected value."width=400/>
+<img src="assets/slider/slider-standard-stopindicator.png" alt="A discrete slider with a thumb that can be dragged to change the selected value."width=400/>
 
 ```xml
 <com.google.android.material.slider.Slider
@@ -243,7 +256,7 @@ this when zero, or the default value, is in the middle of the range.
 
 **Add a `centered slider` to a layout:**
 
-<img src="assets/slider/slider_centered_horizontal.png" alt="Centered slider." width="300">
+<img src="assets/slider/slider-centered-horizontal.png" alt="Centered slider." width="300">
 
 ```xml
 <com.google.android.material.slider.Slider
@@ -268,7 +281,7 @@ maximum value.
 
 **Add a `range slider` to a layout:**
 
-<img src="assets/slider/slider_range.png" alt="Range slider." width="300">
+<img src="assets/slider/slider-range.png" alt="Range slider." width="300">
 
 ```xml
 <com.google.android.material.slider.RangeSlider
@@ -286,7 +299,7 @@ maximum value.
 Stop indicators show which predetermined values can be chosen on the slider. The
 slider handle snaps to the closest stop.
 
-<img src="assets/slider/slider_discrete_range.png" alt="Discrete range slider." width="400"/>
+<img src="assets/slider/slider-discrete-range.png" alt="Discrete range slider." width="400"/>
 
 ```xml
 <com.google.android.material.slider.RangeSlider
@@ -360,7 +373,7 @@ indicate magnitude (e.g.: 1.5K, 3M, 12B). That can be achieved through the
 
 The following example shows a slider for a price range in USD currency.
 
-<img src="assets/slider/slider_price.png" alt="Range slider with range of $0 to $10. Left thumb is set at $2, right thumb
+<img src="assets/slider/slider-price.png" alt="Range slider with range of $0 to $10. Left thumb is set at $2, right thumb
 at $7." width="400"/>
 
 In code:
@@ -392,7 +405,7 @@ API and source code:
 
 The following example shows a range slider with Material theming.
 
-!["Slider theming example with pink and brown colors."](assets/slider/slider_theming.png)
+!["Slider theming example with pink and brown colors."](assets/slider/slider-theming.png)
 
 ##### Implementing slider theming
 

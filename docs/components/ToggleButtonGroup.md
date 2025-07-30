@@ -33,7 +33,7 @@ buttons that can be placed in a toggle button group:
 
 A toggle button has a shared stroked container, icons and/or text labels.
 
-![Toggle button group anatomy](assets/buttons/togglebuttongroup_anatomy.png)
+![Toggle button group anatomy](assets/buttons/togglebuttongroup-anatomy.png)
 
 1.  Container
 2.  Icon (optional for unselected state)
@@ -42,12 +42,19 @@ A toggle button has a shared stroked container, icons and/or text labels.
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/segmented-buttons/guidelines#75ec9219-0196-4c59-bd6a-ed9a1b481013).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 The segmented button is being deprecated. Use the
 [connected button group](https://github.com/material-components/material-components-android/tree/master/docs/components/ButtonGroup.md)
 instead.
 [More on M3 Expressive](https://m3.material.io/blog/building-with-m3-expressive)
+
+### M3 Expressive style
+
+Default style in the expressive themes:
+`Widget.Material3Expressive.MaterialButtonToggleGroup`
 
 ## Key properties
 
@@ -216,7 +223,7 @@ The following example shows an icon that can be used independently or in items
 of a `RecyclerView`.
 
 ![Toggle icon example showing 4 images, heart icon in the upper-right corner of
-each image](assets/buttons/android_toggle_button.png)
+each image](assets/buttons/android-toggle-button.png)
 
 In the layout:
 

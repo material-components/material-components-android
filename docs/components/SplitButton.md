@@ -14,7 +14,7 @@ menu to give people more options related to an action. It is a specialized type
 of the connected button group. The trailing button is checkable with an animated
 icon.
 
-![Split button hero ](assets/buttons/splitbutton_hero.png)
+![Split button hero ](assets/buttons/splitbutton-hero.png)
 
 **Note:** Images use various dynamic color schemes.
 
@@ -25,7 +25,7 @@ icon.
 
 ## Anatomy
 
-![Anatomy of a split button](assets/buttons/splitbutton_anatomy.png)
+![Anatomy of a split button](assets/buttons/splitbutton-anatomy.png)
 
 1.  Leading button
 2.  Icon
@@ -35,19 +35,22 @@ icon.
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/split-button/guidelines#551f6e11-0f95-41c2-9398-cd4066755806).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-<img src="assets/buttons/splitbutton_expressive.png" alt="5 sizes of split buttons." height="400"/>
+<img src="assets/buttons/splitbutton-expressive.png" alt="5 sizes of split buttons." height="400"/>
 Split buttons have the same five recommended sizes as label and icon buttons
 
 The split button has a separate menu button that spins and changes shape when
 activated. It can be used alongside other buttons of the same size.
 [More on M3 Expressive](https://m3.material.io/blog/building-with-m3-expressive)
 
-New component added to catalog.
+Split button is a new component added in expressive, a special type of connected
+button group.
 
 **Sizes:**
 
@@ -107,7 +110,7 @@ page.
 
 The leading button in split buttons can have an icon, label text, or both. The
 trailing button should always have a menu icon.
-![Examples of using split button](assets/buttons/split_button.png)
+![Examples of using split button](assets/buttons/split-button.png)
 
 1.  Label + icon
 2.  Label

@@ -12,7 +12,7 @@ path: /catalog/buttons/
 [Icon buttons](https://m3.material.io/components/icon-buttons/overview) help
 people take minor actions with one tap. There are two variants of icon buttons.
 
-![2 types of icon buttons](assets/buttons/iconbuttons_types.png)
+![2 types of icon buttons](assets/buttons/iconbutton-types.png)
 
 1.  Default icon button
 2.  Toggle icon button
@@ -26,7 +26,7 @@ people take minor actions with one tap. There are two variants of icon buttons.
 
 ## Anatomy
 
-![Anatomy of an icon button ](assets/buttons/iconbuttons_anatomy.png)
+![Anatomy of an icon button ](assets/buttons/iconbuttons-anatomy.png)
 
 1.  Icon
 2.  Container
@@ -34,12 +34,14 @@ people take minor actions with one tap. There are two variants of icon buttons.
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/icon-buttons/guidelines#1f6f6121-e403-4d82-aa6a-5ab276f4bc4c).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-<img src="assets/buttons/iconbuttons_expressive.png" alt="Icon buttons can vary in size, shape, and width." height="400"/>
+<img src="assets/buttons/iconbuttons-expressive.png" alt="Icon buttons can vary in size, shape, and width." height="400"/>
 
 1.  Five sizes
 2.  Two shapes
@@ -75,6 +77,174 @@ when pressed.
 *   Default
 *   Wide
 
+### M3 Expressive styles
+
+#### Icon button shapes
+
+<details><summary><h5>Round</h5></summary>
+
+|Default <div style="width:250px"></div>| Checked <div style="width:250px"></div>|Unchecked <div style="width:250px"></div>|
+| ------ | ---- | ---- |
+|![Default expressive round filled icon only button in light theme](assets/buttons/iconbutton-round-default-light-theme.png)|![Checked expressive round filled icon only button in light theme](assets/buttons/iconbutton-round-checked-light-theme.png)|![Unchecked expressive round filled icon only button in light theme](assets/buttons/iconbutton-round-unchecked-light-theme.png)|
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"/>
+```
+
+</details>
+
+<details><summary><h5>Square</h5></summary>
+
+|Default <div style="width:250px"></div>| Checked <div style="width:250px"></div>|Unchecked <div style="width:250px"></div>|
+| ------ | ---- | ---- |
+|![Default expressive square filled icon only button in light theme](assets/buttons/iconbutton-square-default-light-theme.png)|![Checked expressive square filled icon only button in light theme](assets/buttons/iconbutton-square-checked-light-theme.png)|![Unchecked expressive square filled icon only button in light theme](assets/buttons/iconbutton-square-unchecked-light-theme.png)|
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.{Small}.Square"/>
+```
+
+</details>
+
+#### Icon button in different sizes
+
+There are five icon button size variants: Extra small, small, medium, large, and
+extra large.
+
+<details><summary><h5>Extra small</h5></summary>
+
+**Note:** Images below show the icon only buttons in different sizes relatively.
+The actual sizes in px on mobile devices depends on the screen pixel density.
+
+<img src="assets/buttons/iconbutton-extra-small-light-theme.png" alt="Extra small filled icon only button example in light theme" height="80">
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Xsmall"/>
+```
+
+</details>
+
+<details><summary><h5>Small</h5></summary>
+
+<img src="assets/buttons/iconbutton-small-light-theme.png" alt="Small filled icon only button example in light theme" height="120">
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Small"/>
+```
+
+</details>
+
+<details><summary><h5>Medium</h5></summary>
+
+<img src="assets/buttons/iconbutton-medium-light-theme.png" alt="Medium filled icon only button example in light theme" height="160">
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Medium"/>
+```
+
+</details>
+
+<details><summary><h5>Large</h5></summary>
+
+<img src="assets/buttons/iconbutton-large-light-theme.png" alt="Large filled icon only button example in light theme" height="200">
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Large"/>
+```
+
+</details>
+
+<details><summary><h5>Extra large</h5></summary>
+
+<img src="assets/buttons/iconbutton-extra-large-light-theme.png" alt="Extra large filled icon only button example in light theme" height="240">
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.Xlarge"/>
+```
+
+</details>
+
+#### Icon button in different width and height ratio
+
+Each icon button has three width options: narrow, uniform (default), and wide.
+
+<details><summary><h5>Narrow</h5></summary>
+
+![Narrow filled icon only button example in light theme](assets/buttons/iconbutton-narrow-light-theme.png)
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.{Small}.Narrow"/>
+```
+
+</details>
+
+<details><summary><h5>Default</h5></summary>
+
+![Default filled icon only button example in light theme](assets/buttons/iconbutton-default-light-theme.png)
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"/>
+```
+
+</details>
+
+<details><summary><h5>Wide</h5></summary>
+
+![Wide filled icon only button example in light theme](assets/buttons/iconbutton-wide-light-theme.png)
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:icon="@drawable/icon"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.IconButton.{Small}.Wide"/>
+```
+
+</details>
+
 ## Key properties
 
 ### Styles and theme attributes
@@ -93,10 +263,135 @@ and
 
 ## Variants of icon buttons
 
+There are four icon button color styles, in order of emphasis:
+
+![Diagram of default and toggle icon buttons in 4 color styles.](assets/buttons/iconbuttons-color.png)
+
+1.  Filled
+2.  Tonal
+3.  Outlined
+4.  Standard
+
+For the highest emphasis, use the filled style. For the lowest emphasis, use
+standard.
+
 ### Default icon button
 
 *   Default icon buttons can open other elements, such as a menu or search.
 *   Default icon buttons should use filled icons.
+
+Single icons can be used for additional, supplementary actions. They're best for
+areas of a compact layout, such as a toolbar.
+
+The default dimensions allow for a touch target of `48dp`. If using an icon
+bigger than the default size, the padding dimensions should be adjusted to
+preserve the circular shape. `android:inset*` dimensions can also be adjusted if
+less empty space is desired around the icon.
+
+Always include an `android:contentDescription` so that icon only buttons are
+readable for screen readers.
+
+![Default icon button.](assets/buttons/iconbuttons-default.png)
+Standard, filled unselected, filled selected, filled tonal, and outlined icon
+buttons
+
+**Note:** The examples below show how to create an icon button using `Button`
+which will be inflated to `MaterialButton` when using a Material theme. There is
+a known performance issue where `MaterialButton` takes longer to initialize when
+compared to `ImageButton` or `AppCompatImageButton`, in large part because
+`MaterialButton` extends from `AppCompatButton` which supports more than just
+icon buttons. Consider using those pure icon button alternatives if the extra
+latency causes a noticeable issue for your app.
+
+#### Adding icon button
+
+<details><summary><h5>Filled</h5></summary>
+
+|Default <div style="width:250px"></div>|Checked <div style="width:250px"></div>|Unchecked <div style="width:250px"></div>|
+| ------ | ---- | ---- |
+|![Default expressive filled icon only button in light theme](assets/buttons/iconbutton-default-light-theme.png)|![Checked expressive filled icon only button in light theme](assets/buttons/iconbutton-checked-light-theme.png) |![Unchecked filled icon button in light theme](assets/buttons/iconbutton-unchecked-light-theme.png)|
+|![Default expressive filled icon only button in dark theme](assets/buttons/iconbutton-default-dark-theme.png)|![Checked expressive filled icon only button in dark theme](assets/buttons/iconbutton-checked-dark-theme.png)|![filled icon only unchecked button_dark](assets/buttons/iconbutton-unchecked-dark-theme.png)|
+
+By default, the standard icon only button is uncheckable. To make it checkable,
+enable the `android:checkable` attribute in style or layout.
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/icon_description"
+    android:checkable="true"
+    app:icon="@drawable/icon"/>
+```
+
+</details>
+
+<details><summary><h5>Standard</h5></summary>
+
+|Default <div style="width:250px"></div>|Checked <div style="width:250px"></div>|Unchecked <div style="width:250px"></div>|
+| ------ | ---- | ---- |
+|![Default expressive standard icon only button in light theme](assets/buttons/iconbutton-standard-default-light-theme.png)|![Checked expressive standard icon only button in light theme](assets/buttons/iconbutton-standard-checked-light-theme.png)|![standard icon only unchecked button_light](assets/buttons/iconbutton-standard-unchecked-light-theme.png)|
+|![Default expressive standard icon only button in dark theme](assets/buttons/iconbutton-standard-default-dark-theme.png)|![Checked expressive standard icon only button in dark theme](assets/buttons/iconbutton-standard-checked-dark-theme.png)|![standard icon only unchecked button_dark](assets/buttons/iconbutton-standard-unchecked-dark-theme.png)|
+
+By default, the standard icon only button is uncheckable. To make it checkable,
+enable the `android:checkable` attribute in style or layout.
+
+```xml
+<Button
+    style="?attr/materialIconButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/icon_description"
+    android:checkable="true"
+    app:icon="@drawable/icon"/>
+```
+
+</details>
+
+<details><summary><h5>Filled tonal</h5></summary>
+
+|Default <div style="width:250px"></div>|Checked <div style="width:250px"></div> |Unchecked <div style="width:250px"></div>|
+| ------ | ---- | ---- |
+|![Default expressive filled tonal icon only button in light theme](assets/buttons/iconbutton-filledtonal-default-light-theme.png)|![Checked expressive filled tonal icon only button in light theme](assets/buttons/iconbutton-filledtonal-checked-light-theme.png) |![filled tonal icon only unchecked button_light](assets/buttons/iconbutton-filledtonal-unchecked-light-theme.png)|
+|![Default expressive filled tonal icon only button in dark theme](assets/buttons/iconbutton-filledtonal-default-dark-theme.png)|![Checked expressive filled tonal icon only button in dark theme](assets/buttons/iconbutton-filledtonal-checked-dark-theme.png)|![filled tonal icon only unchecked button_dark](assets/buttons/iconbutton-filledtonal-unchecked-dark-theme.png)|
+
+By default, the standard icon only button is uncheckable. To make it checkable,
+enable the `android:checkable` attribute in style or layout.
+
+```xml
+<Button
+    style="?attr/materialIconButtonFilledTonalStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/icon_description"
+    android:checkable="true"
+    app:icon="@drawable/icon"/>
+```
+
+</details>
+
+<details><summary><h5>Outlined</h5></summary>
+
+|Default <div style="width:250px"></div>| Checked <div style="width:250px"></div>|Unchecked <div style="width:250px"></div>|
+| ------ | ---- | ---- |
+|![Default expressive outlined icon only button in light theme](assets/buttons/iconbutton-outlined-default-light-theme.png)|![Checked expressive outlined icon only button in light theme](assets/buttons/iconbutton-outlined-checked-light-theme.png)|![outlined icon only unchecked button_light](assets/buttons/iconbutton-outlined-unchecked-light-theme.png)|
+|![Default expressive outlined icon only button in dark theme](assets/buttons/iconbutton-outlined-default-dark-theme.png)|![Checked expressive outlined icon only button in dark theme](assets/buttons/iconbutton-outlined-checked-dark-theme.png)|![outlined icon only unchecked button_dark](assets/buttons/iconbutton-outlined-unchecked-dark-theme.png)|
+
+By default, the standard icon only button is uncheckable. To make it checkable,
+enable the `android:checkable` attribute in style or layout.
+
+```xml
+<Button
+    style="?attr/materialIconButtonOutlinedStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/icon_description"
+    android:checkable="true"
+    app:icon="@drawable/icon"/>
+```
+
+</details>
 
 ### Toggle icon button
 
@@ -110,120 +405,7 @@ and
 *   Toggle buttons should use an outlined icon when unselected, and a filled
     version of the icon when selected.
 
-**There are four icon button color styles, in order of emphasis:**
-
-1.  Filled
-2.  Tonal
-3.  Outlined
-4.  Standard
-
-For the highest emphasis, use the filled style. For the lowest emphasis, use
-standard.
-
-![Diagram of default and toggle icon buttons in 4 color styles.](assets/buttons/iconbuttons_color.png)
-
-The default (left) and toggle (right) icon buttons are available in all four
-color styles
-
-## Code implementation
-
-**Note:** The examples below show how to create an icon button using `Button`
-which will be inflated to `MaterialButton` when using a Material theme. There is
-a known performance issue where `MaterialButton` takes longer to initialize when
-compared to `ImageButton` or `AppCompatImageButton`, in large part because
-`MaterialButton` extends from `AppCompatButton` which supports more than just
-icon buttons. Consider using those pure icon button alternatives if the extra
-latency causes a noticeable issue for your app.
-
-![Code implementation for icon buttons.](assets/buttons/iconbuttons_codeimplementation.png)
-Standard, filled unselected, filled selected, filled tonal, and outlined icon
-buttons
-
-### Adding standard icon button
-
-The following example shows a standard icon button.
-
-!["Standard icon button example for Android over a white background."](assets/buttons/icon-button-standard.png)
-
-In the layout:
-
-```xml
-<Button
-    style="?attr/materialIconButtonStyle"
-    android:id="@+id/iconButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:contentDescription="@string/standard_icon_btn_desc"
-    app:icon="@drawable/ic_icon_24dp"
-/>
-```
-
-In code:
-
-```kt
-iconButton.addOnButtonCheckedListener { iconButton, checkedId, isChecked ->
-    // Respond to button selection
-}
-```
-
-### Adding filled icon button
-
-The following example shows a contained icon button that is filled.
-
-!["Filled icon button example for Android over a white background."](assets/buttons/filled-icon-button.png)
-
-In the layout:
-
-```xml
-<Button
-    style="?attr/materialIconButtonFilledStyle"
-    android:id="@+id/iconButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:contentDescription="@string/filled_icon_btn_desc"
-    app:icon="@drawable/ic_icon_24dp"
-/>
-```
-
-### Adding filled tonal icon button
-
-The following example shows a tonal icon button.
-
-!["Filled tonal icon button example for Android over a white background."](assets/buttons/filled-tonal-icon-button.png)
-
-In the layout:
-
-```xml
-<Button
-    style="?attr/materialIconButtonFilledTonalStyle"
-    android:id="@+id/iconButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:contentDescription="@string/filled_tonal_icon_btn_desc"
-    app:icon="@drawable/ic_icon_24dp"
-/>
-```
-
-### Adding outlined icon button
-
-The following example shows an outlined icon button.
-
-!["Outlined icon button example for Android over a white background."](assets/buttons/outlined-icon-button.png)
-
-In the layout:
-
-```xml
-<Button
-    style="?attr/materialIconButtonOutlinedStyle"
-    android:id="@+id/iconButton"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:contentDescription="@string/outlined_icon_btn_desc"
-    app:icon="@drawable/ic_icon_24dp"
-/>
-```
-
-### Adding toggle icon button
+#### Adding toggle icon button
 
 In toggle buttons, use the outlined style of an icon for the unselected state,
 and the filled style for the selected state.
@@ -248,6 +430,8 @@ outlined and filled icons for the toggle icon button:
         android:contentDescription="Toggle icon button"
         android:checkable="true"/>
 ```
+
+## Code implementation
 
 ### Making buttons accessible
 
