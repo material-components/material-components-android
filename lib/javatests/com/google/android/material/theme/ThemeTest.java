@@ -210,6 +210,12 @@ public class ThemeTest {
           .addAll(MATERIAL_NON_BRIDGE_WIDGET_STYLE_ATTRIBUTES)
           .build();
 
+  private static final ImmutableList<Integer> MATERIAL_BRIDGE_SHAPE_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.shapeAppearanceSmallComponent,
+          R.attr.shapeAppearanceMediumComponent,
+          R.attr.shapeAppearanceLargeComponent);
+
   /**
    * These are all the attributes where the light bridge theme should match the light full theme and
    * the dark bridge theme should match the dark full theme.
@@ -218,6 +224,7 @@ public class ThemeTest {
       ImmutableList.<Integer>builder()
           .addAll(MATERIAL_BRIDGE_COLOR_ATTRIBUTES)
           .addAll(MATERIAL_BRIDGE_WIDGET_STYLE_ATTRIBUTES)
+          .addAll(MATERIAL_BRIDGE_SHAPE_ATTRIBUTES)
           .addAll(MATERIAL_MOTION_ATTRIBUTES)
           .addAll(DEPRECATED_TYPOGRAPHY_ATTRIBUTES)
           .build();
@@ -230,6 +237,7 @@ public class ThemeTest {
       ImmutableList.<Integer>builder()
           .addAll(MATERIAL_FULL_COLOR_ATTRIBUTES)
           .addAll(MATERIAL_MOTION_ATTRIBUTES)
+          .addAll(MATERIAL_BRIDGE_SHAPE_ATTRIBUTES)
           .addAll(MATERIAL_COMMON_WIDGET_STYLE_ATTRIBUTES)
           .build();
 
@@ -360,6 +368,32 @@ public class ThemeTest {
           .addAll(M3_ACTIVE_TYPOGRAPHY_ATTRIBUTES)
           .addAll(DEPRECATED_TYPOGRAPHY_ATTRIBUTES)
           .addAll(DEFAULT_FRAMEWORK_TEXT_STYLE_ATTRIBUTES)
+          .build();
+
+  private static final ImmutableList<Integer> M3_SHAPE_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.shapeCornerFamily,
+          R.attr.shapeCornerSizeExtraSmall,
+          R.attr.shapeCornerSizeSmall,
+          R.attr.shapeCornerSizeMedium,
+          R.attr.shapeCornerSizeLarge,
+          R.attr.shapeCornerSizeLargeIncreased,
+          R.attr.shapeCornerSizeExtraLarge,
+          R.attr.shapeCornerSizeExtraLargeIncreased,
+          R.attr.shapeCornerSizeExtraExtraLarge,
+          R.attr.shapeAppearanceCornerExtraSmall,
+          R.attr.shapeAppearanceCornerSmall,
+          R.attr.shapeAppearanceCornerMedium,
+          R.attr.shapeAppearanceCornerLarge,
+          R.attr.shapeAppearanceCornerLargeIncreased,
+          R.attr.shapeAppearanceCornerExtraLarge,
+          R.attr.shapeAppearanceCornerExtraLargeIncreased,
+          R.attr.shapeAppearanceCornerExtraExtraLarge);
+
+  private static final ImmutableList<Integer> M3_FULL_SHAPE_ATTRIBUTES =
+      ImmutableList.<Integer>builder()
+          .addAll(MATERIAL_BRIDGE_SHAPE_ATTRIBUTES)
+          .addAll(M3_SHAPE_ATTRIBUTES)
           .build();
 
   private static final ImmutableList<Integer> M3_ACTIVE_MOTION_ATTRIBUTES =
@@ -504,6 +538,7 @@ public class ThemeTest {
       ImmutableList.<Integer>builder()
           .addAll(M3_FULL_COLOR_ATTRIBUTES)
           .addAll(M3_FULL_TYPOGRAPHY_ATTRIBUTES)
+          .addAll(M3_FULL_SHAPE_ATTRIBUTES)
           .addAll(M3_FULL_MOTION_ATTRIBUTES)
           .addAll(M3_COMMON_WIDGET_STYLE_ATTRIBUTES)
           .addAll(M3_SHAPE_ATTRIBUTES)
@@ -630,6 +665,12 @@ public class ThemeTest {
                 R.style.Theme_Material3_Dark,
                 R.style.Theme_Material3_Light,
                 M3_FULL_TYPOGRAPHY_ATTRIBUTES))
+        // Compare M3 Light and Dark themes - they should have the same shape styles.
+        .addAll(
+            createTestData(
+                R.style.Theme_Material3_Dark,
+                R.style.Theme_Material3_Light,
+                M3_FULL_SHAPE_ATTRIBUTES))
         // Compare M3 Light and Dark themes - they should have the same motion styles.
         .addAll(
             createTestData(
