@@ -476,6 +476,26 @@ public class ThemeTest {
           R.attr.toolbarStyle,
           R.attr.toolbarSurfaceStyle);
 
+  /** These are shape styles that should be the same for *all* M3 full themes. */
+  private static final ImmutableList<Integer> M3_SHAPE_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.shapeCornerFamily,
+          R.attr.shapeCornerSizeExtraSmall,
+          R.attr.shapeCornerSizeSmall,
+          R.attr.shapeCornerSizeMedium,
+          R.attr.shapeCornerSizeLarge,
+          R.attr.shapeCornerSizeLargeIncreased,
+          R.attr.shapeCornerSizeExtraExtraLarge,
+          R.attr.shapeCornerSizeExtraLargeIncreased,
+          R.attr.shapeCornerSizeExtraExtraLarge,
+          R.attr.shapeAppearanceCornerExtraSmall,
+          R.attr.shapeAppearanceCornerSmall,
+          R.attr.shapeAppearanceCornerMedium,
+          R.attr.shapeAppearanceCornerLarge,
+          R.attr.shapeAppearanceCornerLargeIncreased,
+          R.attr.shapeAppearanceCornerExtraLarge,
+          R.attr.shapeAppearanceCornerExtraLargeIncreased);
+
   /**
    * These are all the attributes where full themes should match {@code Theme.Material3.Light} or
    * {@code Theme_Material3_Dark}.
@@ -486,6 +506,7 @@ public class ThemeTest {
           .addAll(M3_FULL_TYPOGRAPHY_ATTRIBUTES)
           .addAll(M3_FULL_MOTION_ATTRIBUTES)
           .addAll(M3_COMMON_WIDGET_STYLE_ATTRIBUTES)
+          .addAll(M3_SHAPE_ATTRIBUTES)
           .build();
 
   @Parameters(name = "{0}")
@@ -615,6 +636,10 @@ public class ThemeTest {
                 R.style.Theme_Material3_Dark,
                 R.style.Theme_Material3_Light,
                 M3_FULL_MOTION_ATTRIBUTES))
+        // Compare M3 Light and Dark themes - they should have the same shape styles.
+        .addAll(
+            createTestData(
+                R.style.Theme_Material3_Dark, R.style.Theme_Material3_Light, M3_SHAPE_ATTRIBUTES))
         .build();
   }
 
