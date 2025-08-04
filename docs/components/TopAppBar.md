@@ -596,6 +596,22 @@ layout configuration.
 
 <details>
 
+<summary><h3>Adding a circle to the navigation button</h3></summary>
+
+If you would like to add a circle background to the navigation icon, set the
+`android:theme="@style/ThemeOverlay.Material3.Toolbar.CircleNavigationButton"`
+theme overlay on your `Toolbar` or `MaterialToolbar`.
+
+By default, the theme overlay above uses `?attr/colorSurfaceContainer` for the
+circle color. This can be customized by extending the theme overlay and setting
+the `toolbarNavigationButtonCircleColor` attribute.
+
+<img src="assets/topappbar/topappbar_circle_nav_button.png" alt="Top app bar with circle navigation button background." width="600"/>
+
+</details>
+
+<details>
+
 <summary><h3>Applying scrolling behavior to app bars</h3></summary>
 
 When scrolling up, the collapsing top app bar transforms into a regular top app

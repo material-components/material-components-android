@@ -37,6 +37,9 @@
   <!-- Style to use for Surface Toolbars in this theme. -->
   <attr name="toolbarSurfaceStyle" format="reference"/>
 
+  <!-- Color of the circle when using ThemeOverlay.Material3.Toolbar.CircleNavigationButton. -->
+  <attr name="toolbarNavigationButtonCircleColor" format="color"/>
+
   <declare-styleable name="AppBarLayout">
     <!-- Deprecated. Elevation is now controlled via a state list animator. -->
     <attr name="elevation"/>

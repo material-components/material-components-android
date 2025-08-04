@@ -22,6 +22,7 @@
   <public name="collapsingToolbarLayoutMediumSize" type="attr"/>
   <public name="collapsingToolbarLayoutLargeSize" type="attr"/>
   <public name="toolbarSurfaceStyle" type="attr"/>
+  <public name="toolbarNavigationButtonCircleColor" type="attr"/>
   <public name="layout_scrollInterpolator" type="attr"/>
   <public name="layout_scrollEffect" type="attr"/>
   <public name="behavior_overlapTop" type="attr"/>
@@ -64,12 +65,14 @@
   <public name="Widget.Material3.Toolbar" type="style"/>
   <public name="Widget.Material3.Toolbar.Surface" type="style"/>
   <public name="Widget.Material3.Toolbar.OnSurface" type="style"/>
+  <public name="Widget.Material3.Toolbar.Button.Navigation.Circle" type="style"/>
   <public name="Widget.Material3.ActionBar.Solid" type="style"/>
   <public name="Widget.Material3.Light.ActionBar.Solid" type="style"/>
   <public name="Widget.Material3.ActionMode" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Toolbar.Primary" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Toolbar.Surface" type="style"/>
   <public name="ThemeOverlay.Material3.Toolbar.Surface" type="style"/>
+  <public name="ThemeOverlay.Material3.Toolbar.CircleNavigationButton" type="style"/>
   <public name="TextAppearance.Design.CollapsingToolbar.Expanded" type="style"/>
   <public name="TextAppearance.Material3.ActionBar.Subtitle" type="style"/>
   <public name="TextAppearance.Material3.ActionBar.Title" type="style"/>

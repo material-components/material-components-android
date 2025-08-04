@@ -154,6 +154,15 @@
     <item name="colorControlNormal">@macro/m3_comp_app_bar_trailing_icon_color</item>
   </style>
 
+  <style name="ThemeOverlay.Material3.Toolbar.CircleNavigationButton" parent="">
+    <item name="toolbarNavigationButtonCircleColor">?attr/colorSurfaceContainer</item>
+    <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.Toolbar.Button.Navigation.Circle</item>
+  </style>
+
+  <style name="Widget.Material3.Toolbar.Button.Navigation.Circle" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <item name="android:background">@drawable/m3_toolbar_navigation_circle_background</item>
+  </style>
+
   <!-- Style for a M3 ActionBar (inherited from AppCompat due to different
        desired configuration compared to MaterialComponents ActionBars). -->
   <style name="Base.Widget.Material3.ActionBar.Solid" parent="Widget.AppCompat.ActionBar.Solid">

@@ -33,4 +33,5 @@
   <dimen name="m3_appbar_scrim_height_trigger_medium">112dp</dimen>
   <dimen name="m3_appbar_scrim_height_trigger_large">112dp</dimen>
   <dimen name="m3_toolbar_text_size_title">20dp</dimen>
+  <dimen name="m3_toolbar_button_circle_size">40dp</dimen>
 </resources>
