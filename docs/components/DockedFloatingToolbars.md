@@ -12,7 +12,7 @@ path: /catalog/docked-and-floating-toolbars/
 Docked & floating toolbars display frequently used actions relevant to the
 current page.
 
-![Docked & floating toolbars](assets/dockedandfloatingtoolbars/docked_and_floating_toolbar_types.png)
+![Docked & floating toolbars](assets/dockedandfloatingtoolbars/docked-and-floating-toolbar-types.png)
 
 1.  [Docked toolbar](DockedToolbar.md): Spans the full width of the window. It’s
     best used for global actions that remain the same across multiple pages.
@@ -28,7 +28,7 @@ current page.
 
 ## Anatomy
 
-![Docked & floating toolbars anatomy diagram](assets/dockedandfloatingtoolbars/docked_and_floating_toolbar_anatomy.png)
+![Docked & floating toolbars anatomy diagram](assets/dockedandfloatingtoolbars/docked-and-floating-toolbar-anatomy.png)
 
 1.  Container
 2.  Elements
@@ -41,7 +41,7 @@ More details on anatomy items in the
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive themes` setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-<img src="assets/dockedtoolbar/floating_and_docked_toolbar_expressive.png" alt="The floating and docked toolbar" width="700">
+<img src="assets/dockedandfloatingtoolbars/floating-and-docked-toolbar-expressive.png" alt="The floating and docked toolbar" width="700">
 
 1.  Floating, vibrant color scheme and paired with FAB
 2.  Docked with embedded primary action instead of FAB

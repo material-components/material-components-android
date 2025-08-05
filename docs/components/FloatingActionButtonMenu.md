@@ -14,12 +14,12 @@ A
 opens from a FAB to show 2–6 related actions floating on screen. There is one
 FAB menu size for all sizes of FABs.
 
-![FAB menu one type.](assets/fabmenu/fabmenu_type.png)
+![FAB menu one type.](assets/fabmenu/fabmenu-type.png)
 
 Fab menu is not used with extended FABs and it is available in primary,
 secondary, and tertiary color sets.
 
-![A FAB menu on a screen.](assets/fabmenu/fabmenu_hero.png)
+![A FAB menu on a screen.](assets/fabmenu/fabmenu-hero.png)
 
 Use the FAB menu to show multiple related actions in a prominent, expressive
 style. It should always appear in the same place as the FAB that opened it.
@@ -31,7 +31,7 @@ style. It should always appear in the same place as the FAB that opened it.
 
 ## Anatomy
 
-![FAB menu anatomy diagram](assets/fabmenu/fabmenu_anatomy.png)
+![FAB menu anatomy diagram](assets/fabmenu/fabmenu-anatomy.png)
 
 1.  Close button
 2.  Menu item
@@ -45,7 +45,7 @@ The FAB menu adds more options to the FAB. It should replace the speed dial and
 any usage of stacked small FABs.
 [More on M3 Expressive](https://m3.material.io/blog/building-with-m3-expressive)
 
-<img src="assets/fabmenu/fabmenu_expressive.png" alt="All size FAB menu expressive" width="700"/>
+<img src="assets/fabmenu/fabmenu-expressive.png" alt="All size FAB menu expressive" width="700"/>
 The FAB menu uses contrasting color and large items to focus attention. It can
 open from any size FAB.
 

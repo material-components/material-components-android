@@ -114,7 +114,7 @@ A loading indicator can be added to a layout:
     android:layout_height="wrap_content"/>
 ```
 
-![Animation of uncontained loading indicator](assets/loadingindicator/loading_indicator.gif)
+![Animation of uncontained loading indicator](assets/loadingindicator/loading-indicator.gif)
 
 ```xml
 <!-- Loading indicator with a container -->
@@ -124,7 +124,7 @@ A loading indicator can be added to a layout:
     android:layout_height="wrap_content"/>
 ```
 
-![Animation of contained loading indicator](assets/loadingindicator/loading_indicator_contained.gif)
+![Animation of contained loading indicator](assets/loadingindicator/loading-indicator-contained.gif)
 
 ### Making loading indicators accessible
 

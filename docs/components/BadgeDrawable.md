@@ -13,7 +13,7 @@ path: /catalog/badging/
 counts, or status information on navigation items and icons. There are two
 variants of badges.
 
-<img src="assets/badge/small_badge_hero.png" alt="Small badge" height="250"/> | <img src="assets/badge/large_badge_hero.png" alt="Large badge" height="250"/>
+<img src="assets/badge/small-badge-hero.png" alt="Small badge" height="250"/> | <img src="assets/badge/large-badge-hero.png" alt="Large badge" height="250"/>
 ----------------------------------------------------------------------------- | -----------------------------------------------------------------------------
 1                                                                             | 2
 
@@ -29,7 +29,7 @@ variants of badges.
 
 ## Anatomy
 
-<img src="assets/badge/badges_anatomy.png" alt="Small and large badges anatomy" width="800"/>
+<img src="assets/badge/badges-anatomy.png" alt="Small and large badges anatomy" width="800"/>
 
 1.  Small badge
 2.  Large badge container
@@ -79,7 +79,7 @@ requests in a [`BottomNavigationView`](BottomNavigation.md) or
 
 ### Adding badges
 
-![Two variants of badges](assets/badge/badges_hero.png)
+![Two variants of badges](assets/badge/badges-hero.png)
 
 1.  Small badge on a navigation item
 2.  Large badge on a navigation item

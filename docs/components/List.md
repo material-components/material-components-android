@@ -12,7 +12,7 @@ path: /catalog/lists/
 [Lists](https://m3.material.io/components/lists) are continuous, vertical
 indexes of text or images.
 
-![Different types of list items](assets/lists/list_hero.png) List items can have
+![Different types of list items](assets/lists/list-hero.png) List items can have
 supporting text and values
 
 **Note:** Images use various dynamic color schemes.
@@ -24,7 +24,7 @@ supporting text and values
 
 ## Anatomy
 
-![Anatomy of a list](assets/lists/lists_anatomy.png)
+![Anatomy of a list](assets/lists/lists-anatomy.png)
 
 1.  Leading video thumbnail (optional)
 2.  Container
@@ -44,7 +44,7 @@ More details on anatomy items in the
 
 List items come in three sizes:
 
-![Three sizes of list items](assets/lists/lists_sizes.png)
+![Three sizes of list items](assets/lists/lists-sizes.png)
 
 1.  **One-line list** items contain a maximum of one line of text.
 2.  **Two-line list** items contain a maximum of two lines of text.
@@ -63,7 +63,7 @@ Components for Android library. For more information, go to the
 [Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
 page.
 
-![Example of a list](assets/lists/lists_hero.png)
+![Example of a list](assets/lists/lists-hero.png)
 
 *   Use lists to help users find a specific item and act on it
 *   Order list items in logical ways (like alphabetical or numerical)

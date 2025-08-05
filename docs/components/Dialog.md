@@ -13,7 +13,7 @@ path: /catalog/dialogs/
 a task and can contain critical information, require decisions, or involve
 multiple tasks. There are two variants of dialogs.
 
-<img src="assets/dialogs/dialogs_types_hero.png" alt="Examples of the two types of dialogs." height="400"/>
+<img src="assets/dialogs/dialogs-types-hero.png" alt="Examples of the two types of dialogs." height="400"/>
 
 1.  Basic dialog
 2.  Full-screen dialog
@@ -29,7 +29,7 @@ multiple tasks. There are two variants of dialogs.
 
 #### Basic dialogs
 
-<img src="assets/dialogs/basic_dialogs_anatomy.png" alt="anatomy" height="500"/>
+<img src="assets/dialogs/basic-dialogs-anatomy.png" alt="anatomy" height="500"/>
 
 1.  Container
 2.  Icon (optional)
@@ -41,7 +41,7 @@ multiple tasks. There are two variants of dialogs.
 
 #### Full-screen dialogs
 
-<img src="assets/dialogs/full-screen_dialogs_anatomy.png" alt="Anatomy" height="350"/>
+<img src="assets/dialogs/full-screen-dialogs-anatomy.png" alt="Anatomy" height="350"/>
 
 1.  Container
 2.  Header
@@ -150,7 +150,7 @@ confirmation.
 
 The following example shows a basic dialog.
 
-<img src="assets/dialogs/dialogs_basic.png" alt="Dialog with title, and text and purple buttons to cancel, decline or accept" height="300"/>
+<img src="assets/dialogs/dialogs-basic.png" alt="Dialog with title, and text and purple buttons to cancel, decline or accept" height="300"/>
 
 In code:
 
@@ -232,7 +232,7 @@ API and source code:
 
 The following example shows a dialog with Material theming.
 
-<img src="assets/dialogs/dialogs_theming.png" alt="Dialog with title and text buttons in brown and selected radio button in pink" height="300"/>
+<img src="assets/dialogs/dialogs-theming.png" alt="Dialog with title and text buttons in brown and selected radio button in pink" height="300"/>
 
 ##### Implementing dialog theming
 

@@ -135,7 +135,7 @@ page.
 The following example shows a bottom app bar with a navigation icon, 3 action
 icons, and an embedded FAB.
 
-<img src="assets/bottomappbar/bottomappbar_basic.png" alt="Purple bottom app bar with grey icons and purple inset floating action button." width="650"/>
+<img src="assets/bottomappbar/bottomappbar-basic.png" alt="Purple bottom app bar with grey icons and purple inset floating action button." width="650"/>
 
 **In the layout:**
 
@@ -349,7 +349,7 @@ API and source code:
 
 The following example shows a bottom app bar with Material theming.
 
-<img src="assets/bottomappbar/bottomappbar_theming.png" alt="Pink bottom app bar with pink diamond inset FAB and brown icons." width="600"/>
+<img src="assets/bottomappbar/bottomappbar-theming.png" alt="Pink bottom app bar with pink diamond inset FAB and brown icons." width="600"/>
 
 ##### Implementing bottom app bar theming
 
