@@ -72,6 +72,8 @@
   <declare-styleable name="StateListSizeChange">
     <!-- The change on width. Dimension for absolute value; fraction for relative value. -->
     <attr name="widthChange" format="dimension|fraction"/>
+    <!-- The change on height. Dimension for absolute value; fraction for relative value. -->
+    <attr name="heightChange" format="dimension|fraction"/>
   </declare-styleable>
 
   <!-- The size of extra small corners. -->
