@@ -26,5 +26,6 @@
   <public name="marginLeftSystemWindowInsets" type="attr"/>
   <public name="marginRightSystemWindowInsets" type="attr"/>
   <public name="marginTopSystemWindowInsets" type="attr"/>
+  <public name="marginBottomSystemWindowInsets" type="attr"/>
   <public name="Widget.Design.ScrimInsetsFrameLayout" type="style"/>
 </resources>

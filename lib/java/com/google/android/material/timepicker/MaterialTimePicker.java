@@ -51,7 +51,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityEventCompat;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.resources.MaterialAttributes;
@@ -170,7 +169,7 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
 
   /** Sets the hour of day in the range [0, 23]. */
   public void setHour(@IntRange(from = 0, to = 23) int hour) {
-    time.setHour(hour);
+    time.setHourOfDay(hour);
     if (activePresenter != null) {
       activePresenter.invalidate();
     }
@@ -215,7 +214,7 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     // On some Android APIs the dialog won't wrap content by default. Explicitly update here.
     window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     // This has to be done after requestFeature() is called on API <= 23.
-    background.setElevation(ViewCompat.getElevation(window.getDecorView()));
+    background.setElevation(window.getDecorView().getElevation());
 
     return dialog;
   }
@@ -249,7 +248,11 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     if (time == null) {
       time = new TimeModel();
     }
-    int defaultInputMode = time.format == CLOCK_24H ? INPUT_MODE_KEYBOARD : INPUT_MODE_CLOCK;
+
+    boolean forceKeyboardInputMode =
+        getResources().getBoolean(R.bool.timepicker_force_input_mode_keyboard);
+    int defaultInputMode =
+        forceKeyboardInputMode || time.format == CLOCK_24H ? INPUT_MODE_KEYBOARD : INPUT_MODE_CLOCK;
     inputMode = bundle.getInt(INPUT_MODE_EXTRA, defaultInputMode);
     titleResId = bundle.getInt(TITLE_RES_EXTRA, 0);
     titleText = bundle.getCharSequence(TITLE_TEXT_EXTRA);
@@ -300,14 +303,11 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
 
     cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
     cancelButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            for (OnClickListener listener : negativeButtonListeners) {
-              listener.onClick(v);
-            }
-            dismiss();
+        v -> {
+          for (OnClickListener listener : negativeButtonListeners) {
+            listener.onClick(v);
           }
+          dismiss();
         });
     if (negativeButtonTextResId != 0) {
       cancelButton.setText(negativeButtonTextResId);
@@ -318,12 +318,9 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     updateCancelButtonVisibility();
 
     modeButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            inputMode = (inputMode == INPUT_MODE_CLOCK) ? INPUT_MODE_KEYBOARD : INPUT_MODE_CLOCK;
-            updateInputMode(modeButton);
-          }
+        v -> {
+          inputMode = (inputMode == INPUT_MODE_CLOCK) ? INPUT_MODE_KEYBOARD : INPUT_MODE_CLOCK;
+          updateInputMode(modeButton);
         });
 
     return root;
@@ -564,14 +561,11 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     private TimeModel time = new TimeModel();
 
     @Nullable private Integer inputMode;
-    @StringRes
-    private int titleTextResId = 0;
+    @StringRes private int titleTextResId = 0;
     private CharSequence titleText;
-    @StringRes
-    private int positiveButtonTextResId = 0;
+    @StringRes private int positiveButtonTextResId = 0;
     private CharSequence positiveButtonText;
-    @StringRes
-    private int negativeButtonTextResId = 0;
+    @StringRes private int negativeButtonTextResId = 0;
     private CharSequence negativeButtonText;
     private int overrideThemeResId = 0;
 

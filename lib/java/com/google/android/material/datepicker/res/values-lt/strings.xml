@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -41,8 +41,10 @@
   <string name="mtrl_picker_toggle_to_text_input_mode">Perjungti į teksto įvesties režimą</string>
   <string name="mtrl_picker_a11y_prev_month">Pakeisti į ankstesnį mėnesį</string>
   <string name="mtrl_picker_a11y_next_month">Pakeisti į kitą mėnesį</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Palieskite, kad perjungtumėte į metų rodinį</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Palieskite, kad perjungtumėte į Kalendoriaus rodinį</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Perjungti į metų rodinį</string>
+  <string name="mtrl_picker_pane_title_year_view">Metų rodinys</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Perjungti į Kalendoriaus rodinį</string>
+  <string name="mtrl_picker_pane_title_calendar_view">Kalendoriaus rodinys</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Dabartinis pasirinkimas: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Pradžios datos pasirinkimas: %1$s – Pabaigos datos pasirinkimas: %2$s</string>

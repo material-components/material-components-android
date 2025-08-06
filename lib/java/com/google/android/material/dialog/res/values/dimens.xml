@@ -16,10 +16,11 @@
 -->
 
 <resources>
-  <dimen name="mtrl_alert_dialog_background_inset_start">24dp</dimen>
-  <dimen name="mtrl_alert_dialog_background_inset_top">80dp</dimen>
-  <dimen name="mtrl_alert_dialog_background_inset_end">24dp</dimen>
-  <dimen name="mtrl_alert_dialog_background_inset_bottom">80dp</dimen>
+<!-- Inset values for devices with a small height; the true default inset values are in res/values-h480dp -->
+  <dimen name="mtrl_alert_dialog_background_inset_start">10dp</dimen>
+  <dimen name="mtrl_alert_dialog_background_inset_top">10dp</dimen>
+  <dimen name="mtrl_alert_dialog_background_inset_end">10dp</dimen>
+  <dimen name="mtrl_alert_dialog_background_inset_bottom">10dp</dimen>
   <!-- 16dp from abc_dialog_material_background.xml -->
   <dimen name="appcompat_dialog_background_inset">16dp</dimen>
 
@@ -33,4 +34,9 @@
   <dimen name="m3_alert_dialog_action_top_padding">14dp</dimen>
   <!-- equals 24dp - @dimen/m3_btn_padding_bottom (6dp) - @dimen/m3_btn_inset (4dp) -->
   <dimen name="m3_alert_dialog_action_bottom_padding">14dp</dimen>
+
+  <!-- Dialog container top padding. -->
+  <dimen name="m3expressive_alert_dialog_top_padding">24dp</dimen>
+  <!-- Dialog container bottom padding. -->
+  <dimen name="m3expressive_alert_dialog_bottom_padding">24dp</dimen>
 </resources>

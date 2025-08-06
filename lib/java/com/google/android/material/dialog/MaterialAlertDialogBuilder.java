@@ -49,7 +49,6 @@ import androidx.annotation.Px;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.appcompat.view.ContextThemeWrapper;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -72,7 +71,9 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  */
 public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
 
-  @AttrRes private static final int DEF_STYLE_ATTR = R.attr.alertDialogStyle;
+  @AttrRes
+  private static final int DEF_STYLE_ATTR = androidx.appcompat.R.attr.alertDialogStyle;
+
   @StyleRes private static final int DEF_STYLE_RES = R.style.MaterialAlertDialog_MaterialComponents;
 
   @AttrRes
@@ -158,7 +159,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
      * as it locks in attributes and affects layout. */
     View decorView = window.getDecorView();
     if (background instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) background).setElevation(ViewCompat.getElevation(decorView));
+      ((MaterialShapeDrawable) background).setElevation(decorView.getElevation());
     }
 
     Drawable insetDrawable = MaterialDialogs.insetDrawable(background, backgroundInsets);

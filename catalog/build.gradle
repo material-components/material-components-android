@@ -1,53 +1,71 @@
-apply plugin: 'com.android.application'
+buildscript {
+  repositories {
+    google()
+    mavenCentral()
+  }
+  dependencies {
+    classpath 'org.jetbrains.kotlin.plugin.compose:org.jetbrains.kotlin.plugin.compose.gradle.plugin:2.2.0'
+  }
+}
+
+plugins {
+  id 'com.android.application'
+  id 'org.jetbrains.kotlin.android' version "2.1.21"
+  id 'org.jetbrains.kotlin.plugin.compose' version "2.2.0"
+}
 
 dependencies {
 
   // Align kotlin versions
-  implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
+  implementation(platform('org.jetbrains.kotlin:kotlin-bom:2.2.0'))
 
-  api 'com.google.dagger:dagger:2.51.1'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.51.1'
+  api libs.dagger
+  annotationProcessor libs.dagger.compiler
 
-  api 'com.google.dagger:dagger-android:2.51.1'
-  api 'com.google.dagger:dagger-android-support:2.51.1'
-  annotationProcessor 'com.google.dagger:dagger-android-processor:2.51.1'
+  api libs.dagger.android
+  api libs.dagger.android.support
+  annotationProcessor libs.dagger.android.processor
 
-  api 'androidx.multidex:multidex:2.0.1'
-  api 'androidx.constraintlayout:constraintlayout:2.1.0'
-  api 'androidx.gridlayout:gridlayout:1.0.0'
-  api "androidx.multidex:multidex:2.0.1"
-  api "androidx.recyclerview:recyclerview:1.2.1"
-  api 'androidx.window:window:1.0.0-beta04'
-  api "androidx.window:window-java:1.0.0-beta04"
-  api "androidx.preference:preference:1.1.1"
+  api libs.androidx.multidex
+  api libs.androidx.constraintlayout
+  api libs.androidx.gridlayout
+  api libs.androidx.recyclerview
+  api libs.androidx.window
+  api libs.androidx.window.java
+  api libs.androidx.preference
 
-  api 'com.google.guava:guava:33.2.1-android'
+  api libs.androidx.activity.compose
+  api libs.androidx.compose.material.icons.core
+  api libs.androidx.compose.material.icons.extended
+  api libs.androidx.compose.material3
+
+  api libs.guava
   modules {
     module("com.google.guava:listenablefuture") {
       replacedBy("com.google.guava:guava", "listenablefuture is part of guava")
     }
   }
 
-  api 'com.github.bumptech.glide:glide:4.16.0'
+  api libs.glide
 
   api project(':lib')
 
-  api compatibility("recyclerViewSelection")
+  api libs.androidx.recyclerview.selection
 
-  implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
+  implementation libs.errorprone.annotations
 
-  androidTestImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
-  androidTestImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
-  androidTestImplementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
-  androidTestImplementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
-  androidTestImplementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
+  androidTestImplementation libs.androidx.test.core
+  androidTestImplementation libs.androidx.test.runner
+  androidTestImplementation libs.androidx.test.rules
+  androidTestImplementation libs.androidx.espresso.core
+  androidTestImplementation libs.androidx.espresso.contrib
 
-  testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
-  testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
-  testImplementation "junit:junit:4.13.2"
-  testImplementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
-  testImplementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
-  testImplementation "org.robolectric:robolectric:${project.rootProject.ext.robolectricVersion}"
+  testImplementation libs.androidx.test.core
+  testImplementation libs.androidx.test.runner
+  testImplementation libs.junit
+  testImplementation libs.truth
+  testImplementation libs.mockito.core
+  testImplementation libs.robolectric
 }
 
 def srcDirs = [
@@ -71,18 +89,22 @@ def srcDirs = [
   'dialog',
   'divider',
   'draggable',
+  'dockedtoolbar',
   'elevation',
   'imageview',
   'fab',
   'feature',
+  'floatingtoolbar',
   'font',
   'internal',
+  'loadingindicator',
   'main',
   'materialswitch',
   'menu',
   'musicplayer',
   'navigationrail',
   'navigationdrawer',
+  'overflow',
   'preferences',
   'progressindicator',
   'radiobutton',
@@ -101,6 +123,7 @@ def srcDirs = [
 ]
 
 android {
+  namespace "io.material.catalog"
   defaultConfig {
     manifestPlaceholders = [
       application_name             : 'CatalogApplication',
@@ -129,6 +152,13 @@ android {
       java.excludes = [
         '**/build/**',
       ]
+      kotlin.srcDir 'java'
+      kotlin.includes = srcDirs.collect {
+        'io/material/catalog/' + it + '/**/*.kt'
+      }
+      kotlin.excludes = [
+        '**/build/**',
+      ]
       res.srcDirs = ['java/io/material/catalog/res']
       srcDirs.forEach {
         res.srcDirs += 'java/io/material/catalog/' + it + '/res'
@@ -142,6 +172,12 @@ android {
   compileOptions {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
+  }
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+  buildFeatures {
+    compose true
   }
   androidResources {
     additionalParameters '--no-version-vectors'

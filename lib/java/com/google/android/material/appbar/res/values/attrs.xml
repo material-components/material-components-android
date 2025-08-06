@@ -37,13 +37,16 @@
   <!-- Style to use for Surface Toolbars in this theme. -->
   <attr name="toolbarSurfaceStyle" format="reference"/>
 
+  <!-- Color of the circle when using ThemeOverlay.Material3.Toolbar.CircleNavigationButton. -->
+  <attr name="toolbarNavigationButtonCircleColor" format="color"/>
+
   <declare-styleable name="AppBarLayout">
     <!-- Deprecated. Elevation is now controlled via a state list animator. -->
     <attr name="elevation"/>
     <attr name="android:background"/>
     <!-- The initial expanded state for the AppBarLayout. This only takes effect when this
          view is a direct child of a CoordinatorLayout. -->
-    <attr name="expanded" format="boolean"/>
+    <attr name="expanded" />
     <attr name="android:keyboardNavigationCluster"/>
     <attr name="android:touchscreenBlocksFocus"/>
     <!-- Whether the {@link AppBarLayout} should lift on scroll. If set to
@@ -134,27 +137,35 @@
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout">
-    <!--  Specifies extra space on the start, top, end and bottom
+    <!-- Specifies extra space on the start, top, end and bottom
           sides of the the expanded title text. Margin values should be positive. -->
     <attr name="expandedTitleMargin" format="dimension"/>
-    <!--  Specifies extra space on the start side of the the expanded title text.
+    <!-- Specifies extra space on the start side of the the expanded title text.
           Margin values should be positive. -->
     <attr name="expandedTitleMarginStart" format="dimension"/>
-    <!--  Specifies extra space on the top side of the the expanded title text.
+    <!-- Specifies extra space on the top side of the the expanded title text.
           Margin values should be positive. -->
     <attr name="expandedTitleMarginTop" format="dimension"/>
-    <!--  Specifies extra space on the end side of the the expanded title text.
+    <!-- Specifies extra space on the end side of the the expanded title text.
           Margin values should be positive. -->
     <attr name="expandedTitleMarginEnd" format="dimension"/>
-    <!--  Specifies extra space on the bottom side of the the expanded title text.
+    <!-- Specifies extra space on the bottom side of the the expanded title text.
           Margin values should be positive. -->
     <attr name="expandedTitleMarginBottom" format="dimension"/>
+    <!-- Specifies space between the title and subtitle. -->
+    <attr name="expandedTitleSpacing" format="dimension"/>
     <!-- The text appearance of the CollapsingToolbarLayout's title when it is fully
          'expanded' -->
     <attr name="expandedTitleTextAppearance" format="reference"/>
     <!-- The text appearance of the CollapsingToolbarLayouts title when it is fully
          'collapsed' -->
     <attr name="collapsedTitleTextAppearance" format="reference"/>
+    <!-- The text appearance of the CollapsingToolbarLayout's subtitle when it is fully
+         'expanded' -->
+    <attr name="expandedSubtitleTextAppearance" format="reference"/>
+    <!-- The text appearance of the CollapsingToolbarLayouts subtitle when it is fully
+         'collapsed' -->
+    <attr name="collapsedSubtitleTextAppearance" format="reference"/>
     <!-- The text ellipsize of the collapsedToolbarLayout title -->
     <attr name="titleTextEllipsize" format="enum">
       <enum name="start" value="0" />
@@ -168,6 +179,12 @@
     <!-- The text color of the CollapsingToolbarLayouts title when it is fully
          'collapsed' -->
     <attr name="collapsedTitleTextColor" format="color|reference"/>
+    <!-- The text color of the CollapsingToolbarLayout's subtitle when it is fully
+         'expanded' -->
+    <attr name="expandedSubtitleTextColor" format="color|reference"/>
+    <!-- The text color of the CollapsingToolbarLayouts subtitle when it is fully
+         'collapsed' -->
+    <attr name="collapsedSubtitleTextColor" format="color|reference"/>
     <!-- The drawable to use as a scrim on top of the CollapsingToolbarLayouts content when
          it has been scrolled sufficiently off screen. -->
     <attr name="contentScrim" format="color"/>
@@ -237,6 +254,8 @@
     <attr name="titleEnabled" format="boolean"/>
     <!-- The title to show when titleEnabled is set to true. -->
     <attr name="title"/>
+    <!-- The title to show when titleEnabled is set to true. -->
+    <attr name="subtitle"/>
     <!-- Mode to specify the effect used to collapse and expand the title text. -->
     <attr name="titleCollapseMode">
       <!-- The expanded title will continuously scale and translate to its final collapsed position. -->
@@ -244,8 +263,11 @@
       <!-- The expanded title will fade out and translate, and the collapsed title will fade in. -->
       <enum name="fade" value="1"/>
     </attr>
-    <!-- The maximum number of lines to display in the expanded state. Experimental Feature. -->
+    <!-- The maximum number of lines to display the title in the expanded state. Experimental Feature. -->
     <attr name="maxLines" format="integer" />
+    <attr name="titleMaxLines" format="integer"/>
+    <!-- The maximum number of lines to display the subtitle in the expanded state. Experimental Feature. -->
+    <attr name="subtitleMaxLines" format="integer" />
     <!-- Whether the system window inset top should be applied regardless of
          what the layout_height is set to. Experimental Feature. -->
     <attr name="forceApplySystemWindowInsetTop" format="boolean" />
@@ -256,6 +278,16 @@
     <!-- The interpolator to use when animating the title position from collapsed to expanded and
          vice versa. -->
     <attr name="titlePositionInterpolator" format="reference"/>
+    <!-- The mode in which the gravity of the collapsed title is calculated. -->
+    <attr name="collapsedTitleGravityMode">
+      <!-- Calculate the gravity based on the entire size of the container, regardless of how
+           much space is taken by other views in the container. The title will be pushed to the side
+           if overlapping with another view. -->
+      <enum name="entireSpace" value="0"/>
+      <!-- Calculate gravity based on the available space in the container after laying out
+           other views in the container. -->
+      <enum name="availableSpace" value="1"/>
+    </attr>
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">

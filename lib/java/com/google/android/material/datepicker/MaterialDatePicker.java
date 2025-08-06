@@ -33,7 +33,7 @@ import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.fragment.app.Fragment;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -50,6 +50,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.graphics.Insets;
 import androidx.core.util.Pair;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
@@ -95,6 +96,8 @@ public class MaterialDatePicker<S> extends DialogFragment {
   private static final String NEGATIVE_BUTTON_CONTENT_DESCRIPTION_KEY =
       "NEGATIVE_BUTTON_CONTENT_DESCRIPTION_KEY";
   private static final String INPUT_MODE_KEY = "INPUT_MODE_KEY";
+  private static final String CALENDAR_FRAGMENT_TAG = "CALENDAR_FRAGMENT_TAG";
+  private static final String TEXT_INPUT_FRAGMENT_TAG = "TEXT_INPUT_FRAGMENT_TAG";
 
   static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
   static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
@@ -292,7 +295,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
 
     background.initializeElevationOverlay(context);
     background.setFillColor(ColorStateList.valueOf(backgroundColor));
-    background.setElevation(ViewCompat.getElevation(dialog.getWindow().getDecorView()));
+    background.setElevation(dialog.getWindow().getDecorView().getElevation());
     return dialog;
   }
 
@@ -459,21 +462,23 @@ public class MaterialDatePicker<S> extends DialogFragment {
     final View headerLayout = requireView().findViewById(R.id.fullscreen_header);
     EdgeToEdgeUtils.applyEdgeToEdge(window, true, ViewUtils.getBackgroundColor(headerLayout), null);
     final int originalPaddingTop = headerLayout.getPaddingTop();
+    final int originalPaddingLeft = headerLayout.getPaddingLeft();
+    final int originalPaddingRight = headerLayout.getPaddingRight();
     final int originalHeaderHeight = headerLayout.getLayoutParams().height;
     ViewCompat.setOnApplyWindowInsetsListener(
         headerLayout,
         new OnApplyWindowInsetsListener() {
           @Override
           public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-            int topInset = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top;
+            Insets inset = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             if (originalHeaderHeight >= 0) {
-              headerLayout.getLayoutParams().height = originalHeaderHeight + topInset;
+              headerLayout.getLayoutParams().height = originalHeaderHeight + inset.top;
               headerLayout.setLayoutParams(headerLayout.getLayoutParams());
             }
             headerLayout.setPadding(
-                headerLayout.getPaddingLeft(),
-                originalPaddingTop + topInset,
-                headerLayout.getPaddingRight(),
+                originalPaddingLeft + inset.left,
+                originalPaddingTop + inset.top,
+                originalPaddingRight + inset.right,
                 headerLayout.getPaddingBottom());
             return insets;
           }
@@ -499,22 +504,27 @@ public class MaterialDatePicker<S> extends DialogFragment {
 
   private void startPickerFragment() {
     int themeResId = getThemeResId(requireContext());
-    calendar =
-        MaterialCalendar.newInstance(
-            getDateSelector(), themeResId, calendarConstraints, dayViewDecorator);
+    String currentTag =
+        inputMode == INPUT_MODE_TEXT ? TEXT_INPUT_FRAGMENT_TAG : CALENDAR_FRAGMENT_TAG;
 
-    pickerFragment =
-        inputMode == INPUT_MODE_TEXT
-            ? MaterialTextInputPicker.newInstance(
-                getDateSelector(), themeResId, calendarConstraints)
-            : calendar;
-    updateTitle();
-    updateHeader(getHeaderText());
+    Fragment foundFragment = getChildFragmentManager().findFragmentByTag(currentTag);
+    @SuppressWarnings("unchecked")
+    PickerFragment<S> fragment =
+        foundFragment instanceof PickerFragment ? (PickerFragment<S>) foundFragment : null;
 
-    FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-    fragmentTransaction.replace(R.id.mtrl_calendar_frame, pickerFragment);
-    fragmentTransaction.commitNow();
+    if (fragment == null) {
+      if (inputMode == INPUT_MODE_TEXT) {
+        fragment =
+            MaterialTextInputPicker.newInstance(getDateSelector(), themeResId, calendarConstraints);
+      } else {
+        calendar =
+            MaterialCalendar.newInstance(
+                getDateSelector(), themeResId, calendarConstraints, dayViewDecorator);
+        fragment = calendar;
+      }
+    }
 
+    pickerFragment = fragment;
     pickerFragment.addOnSelectionChangedListener(
         new OnSelectionChangedListener<S>() {
           @Override
@@ -528,6 +538,14 @@ public class MaterialDatePicker<S> extends DialogFragment {
             confirmButton.setEnabled(false);
           }
         });
+
+    updateTitle();
+    updateHeader(getHeaderText());
+
+    getChildFragmentManager()
+        .beginTransaction()
+        .replace(R.id.mtrl_calendar_frame, pickerFragment, currentTag)
+        .commitNow();
   }
 
   private void initHeaderToggle(Context context) {

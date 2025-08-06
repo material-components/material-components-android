@@ -72,7 +72,8 @@ final class LinearIndeterminateContiguousAnimatorDelegate
     if (animator == null) {
       // Instantiates an animator with the linear interpolator to control the animation progress.
       animator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 0, 1);
-      animator.setDuration(DURATION_PER_CYCLE_IN_MS);
+      animator.setDuration(
+          (long) (DURATION_PER_CYCLE_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
       animator.setInterpolator(null);
       animator.setRepeatCount(ValueAnimator.INFINITE);
       animator.addListener(
@@ -86,6 +87,12 @@ final class LinearIndeterminateContiguousAnimatorDelegate
             }
           });
     }
+  }
+
+  private void updateAnimatorsDuration() {
+    maybeInitializeAnimators();
+    animator.setDuration(
+        (long) (DURATION_PER_CYCLE_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
   }
 
   @Override
@@ -103,6 +110,7 @@ final class LinearIndeterminateContiguousAnimatorDelegate
 
   @Override
   public void invalidateSpecValues() {
+    updateAnimatorsDuration();
     resetPropertiesForNewStart();
   }
 

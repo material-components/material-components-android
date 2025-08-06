@@ -18,9 +18,6 @@ package com.google.android.material.animation;
 import android.animation.Animator;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.DecelerateInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -82,33 +79,10 @@ public class MotionTiming {
   static MotionTiming createFromAnimator(@NonNull ValueAnimator animator) {
     MotionTiming timing =
         new MotionTiming(
-            animator.getStartDelay(), animator.getDuration(), getInterpolatorCompat(animator));
+            animator.getStartDelay(), animator.getDuration(), animator.getInterpolator());
     timing.repeatCount = animator.getRepeatCount();
     timing.repeatMode = animator.getRepeatMode();
     return timing;
-  }
-
-  /**
-   * This compat implementation enables pre-21 support for
-   * {@code @interpolator/mtrl_fast_out_linear_in}, {@code @interpolator/mtrl_fast_out_slow_in}, and
-   * {@code @interpolator/mtrl_linear_out_slow_in}. Because the respective
-   * {@code @android:interpolator/} resources are not available in pre-21, we use
-   * {@code @android:interpolator/accelerate_quad},
-   * {@code @android:interpolator/accelerate_decelerate}, and
-   * {@code @android:interpolator/decelerate_quad} respectively. This method maps those compat
-   * interpolators back to Material interpolators, which can be instantiated dynamically.
-   */
-  private static TimeInterpolator getInterpolatorCompat(@NonNull ValueAnimator animator) {
-    @Nullable TimeInterpolator interpolator = animator.getInterpolator();
-    if (interpolator instanceof AccelerateDecelerateInterpolator || interpolator == null) {
-      return AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
-    } else if (interpolator instanceof AccelerateInterpolator) {
-      return AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
-    } else if (interpolator instanceof DecelerateInterpolator) {
-      return AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR;
-    } else {
-      return interpolator;
-    }
   }
 
   @Override

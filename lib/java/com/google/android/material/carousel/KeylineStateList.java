@@ -20,6 +20,8 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.core.math.MathUtils;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.carousel.KeylineState.Keyline;
@@ -43,7 +45,8 @@ import java.util.Map;
  * handle reversing a KeylineState when being laid out right-to-left before constructing a
  * KeylineStateList.
  */
-class KeylineStateList {
+@RestrictTo(Scope.LIBRARY_GROUP)
+public class KeylineStateList {
 
   private static final int NO_INDEX = -1;
 
@@ -133,6 +136,7 @@ class KeylineStateList {
    *     container as possible.
    * @return a {@link KeylineState} that has been shifted according on the scroll offset.
    */
+  @NonNull
   public KeylineState getShiftedState(
       float scrollOffset, float minScrollOffset, float maxScrollOffset) {
     return getShiftedState(scrollOffset, minScrollOffset, maxScrollOffset, false);
@@ -376,7 +380,7 @@ class KeylineStateList {
 
   @NonNull
   private static KeylineState shiftKeylineStateForPadding(
-      @NonNull KeylineState keylineState, float padding, float carouselSize, boolean leftShift,
+      @NonNull KeylineState keylineState, float padding, int carouselSize, boolean leftShift,
       float childMargins, CarouselStrategy.StrategyType strategyType) {
     switch (strategyType) {
       case CONTAINED:
@@ -390,7 +394,7 @@ class KeylineStateList {
 
   @NonNull
   private static KeylineState shiftKeylineStateForPaddingUncontained(
-      @NonNull KeylineState keylineState, float padding, float carouselSize, boolean leftShift) {
+      @NonNull KeylineState keylineState, float padding, int carouselSize, boolean leftShift) {
     List<Keyline> tmpKeylines = new ArrayList<>(keylineState.getKeylines());
     KeylineState.Builder builder =
         new KeylineState.Builder(keylineState.getItemSize(), carouselSize);
@@ -424,7 +428,7 @@ class KeylineStateList {
   }
 
   private static KeylineState shiftKeylineStateForPaddingContained(
-      KeylineState keylineState, float padding, float carouselSize, boolean leftShift,
+      KeylineState keylineState, float padding, int carouselSize, boolean leftShift,
       float childMargins) {
 
     List<Keyline> tmpKeylines = new ArrayList<>(keylineState.getKeylines());
@@ -499,7 +503,7 @@ class KeylineStateList {
     List<KeylineState> steps = new ArrayList<>();
     steps.add(defaultState);
     int firstNonAnchorKeylineIndex = findFirstNonAnchorKeylineIndex(defaultState);
-    float carouselSize =
+    int carouselSize =
         carousel.isHorizontal() ? carousel.getContainerWidth() : carousel.getContainerHeight();
 
     // If the first focal item is already at the left of the container or there are no in bounds
@@ -606,7 +610,7 @@ class KeylineStateList {
     List<KeylineState> steps = new ArrayList<>();
     steps.add(defaultState);
     int lastNonAnchorKeylineIndex = findLastNonAnchorKeylineIndex(defaultState);
-    float carouselSize =
+    int carouselSize =
         carousel.isHorizontal() ? carousel.getContainerWidth() : carousel.getContainerHeight();
 
     // If the focal end item is already at the end of the container and is fully visible or there
@@ -700,7 +704,7 @@ class KeylineStateList {
    * @return a new {@link KeylineState} with the shifted keylines
    */
   private static KeylineState shiftKeylinesAndCreateKeylineState(
-      KeylineState state, float startOffset, float carouselSize) {
+      KeylineState state, float startOffset, int carouselSize) {
     return moveKeylineAndCreateKeylineState(
         state,
         0,
@@ -731,7 +735,7 @@ class KeylineStateList {
       float startOffset,
       int newFirstFocalIndex,
       int newLastFocalIndex,
-      float carouselSize) {
+      int carouselSize) {
 
     List<Keyline> tmpKeylines = new ArrayList<>(state.getKeylines());
     Keyline item = tmpKeylines.remove(keylineSrcIndex);

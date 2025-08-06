@@ -38,12 +38,16 @@
   <public name="floatingActionButtonSmallSecondaryStyle" type="attr"/>
   <public name="floatingActionButtonSmallTertiaryStyle" type="attr"/>
   <public name="floatingActionButtonSmallSurfaceStyle" type="attr"/>
+  <public name="floatingActionButtonMediumStyle" type="attr"/>
   <public name="floatingActionButtonLargeStyle" type="attr"/>
   <public name="floatingActionButtonLargePrimaryStyle" type="attr"/>
   <public name="floatingActionButtonLargeSecondaryStyle" type="attr"/>
   <public name="floatingActionButtonLargeTertiaryStyle" type="attr"/>
   <public name="floatingActionButtonLargeSurfaceStyle" type="attr"/>
   <public name="extendedFloatingActionButtonStyle" type="attr"/>
+  <public name="extendedFloatingActionButtonSmallStyle" type="attr"/>
+  <public name="extendedFloatingActionButtonMediumStyle" type="attr"/>
+  <public name="extendedFloatingActionButtonLargeStyle" type="attr"/>
   <public name="extendedFloatingActionButtonPrimaryStyle" type="attr"/>
   <public name="extendedFloatingActionButtonSecondaryStyle" type="attr"/>
   <public name="extendedFloatingActionButtonTertiaryStyle" type="attr"/>

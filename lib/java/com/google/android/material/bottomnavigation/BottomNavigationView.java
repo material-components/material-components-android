@@ -20,19 +20,16 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -40,7 +37,6 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.navigation.NavigationBarMenuView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.shape.MaterialShapeDrawable;
 
 /**
  * Represents a standard bottom navigation bar for application. It is an implementation of <a
@@ -128,14 +124,17 @@ public class BottomNavigationView extends NavigationBarView {
           attributes.getDimensionPixelSize(R.styleable.BottomNavigationView_android_minHeight, 0));
     }
 
-    if (attributes.getBoolean(R.styleable.BottomNavigationView_compatShadowEnabled, true)
-        && shouldDrawCompatibilityTopDivider()) {
-      addCompatibilityTopDivider(context);
-    }
-
     attributes.recycle();
 
     applyWindowInsets();
+  }
+
+  @SuppressLint("ClickableViewAccessibility")
+  @Override
+  public boolean onTouchEvent(@NonNull MotionEvent event) {
+    super.onTouchEvent(event);
+    // Consume all events to avoid views under the BottomNavigationView from receiving touch events.
+    return true;
   }
 
   private void applyWindowInsets() {
@@ -225,32 +224,6 @@ public class BottomNavigationView extends NavigationBarView {
   @NonNull
   protected NavigationBarMenuView createNavigationBarMenuView(@NonNull Context context) {
     return new BottomNavigationMenuView(context);
-  }
-
-  /**
-   * Returns true a divider must be added in place of shadows to maintain compatibility in pre-21
-   * legacy backgrounds.
-   */
-  private boolean shouldDrawCompatibilityTopDivider() {
-    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
-        && !(getBackground() instanceof MaterialShapeDrawable);
-  }
-
-  /**
-   * Adds a divider in place of shadows to maintain compatibility in pre-21 legacy backgrounds. If a
-   * pre-21 background has been updated to a MaterialShapeDrawable, MaterialShapeDrawable will draw
-   * shadows instead.
-   */
-  private void addCompatibilityTopDivider(@NonNull Context context) {
-    View divider = new View(context);
-    divider.setBackgroundColor(
-        ContextCompat.getColor(context, R.color.design_bottom_navigation_shadow_color));
-    FrameLayout.LayoutParams dividerParams =
-        new FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_shadow_height));
-    divider.setLayoutParams(dividerParams);
-    addView(divider);
   }
 
   /**

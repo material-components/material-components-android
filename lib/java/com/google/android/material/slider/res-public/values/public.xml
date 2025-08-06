@@ -17,6 +17,8 @@
 <resources>
   <public name="sliderStyle" type="attr"/>
 
+  <public name="centered" type="attr" />
+  <public name="continuousModeTickCount" type="attr" />
   <public name="haloColor" type="attr" />
   <public name="haloRadius" type="attr" />
   <public name="labelBehavior" type="attr" />
@@ -35,10 +37,19 @@
   <public name="tickRadiusActive" type="attr" />
   <public name="tickRadiusInactive" type="attr" />
   <public name="tickVisible" type="attr" />
+  <public name="tickVisibilityMode" type="attr" />
   <public name="trackColorActive" type="attr" />
   <public name="trackColorInactive" type="attr" />
   <public name="trackHeight" type="attr" />
+  <public name="trackCornerSize" type="attr" />
   <public name="trackInsideCornerSize" type="attr" />
+  <public name="trackIconActiveStart" type="attr" />
+  <public name="trackIconActiveEnd" type="attr" />
+  <public name="trackIconActiveColor" type="attr" />
+  <public name="trackIconInactiveStart" type="attr" />
+  <public name="trackIconInactiveEnd" type="attr" />
+  <public name="trackIconInactiveColor" type="attr" />
+  <public name="trackIconSize" type="attr" />
   <public name="values" type="attr" />
 
   <public name="Widget.MaterialComponents.Slider" type="style"/>

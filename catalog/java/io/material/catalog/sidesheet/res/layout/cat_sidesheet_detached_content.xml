@@ -13,62 +13,68 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:padding="24dp"
-  android:clickable="true"
-  android:focusable="true"
-  android:gravity="center_horizontal"
-  android:orientation="vertical">
+  android:fitsSystemWindows="true">
 
-  <Button
-    android:id="@+id/detached_close_icon_button"
-    style="?attr/materialIconButtonStyle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:contentDescription="@string/cat_sidesheet_close_button_content_desc"
-    app:icon="@drawable/ic_close_vd_theme_24px"
-    app:iconTint="?attr/colorOnSurfaceVariant"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintBaseline_toBaselineOf="@id/detached_side_sheet_title_text"
-    tools:ignore="ContentDescription" />
+  <androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
-  <TextView
-    android:id="@+id/detached_side_sheet_title_text"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:paddingBottom="24dp"
-    android:text="@string/cat_sidesheet_standard_detached_title"
-    android:textAppearance="?attr/textAppearanceTitleLarge"
-    app:layout_constraintEnd_toStartOf="@id/detached_close_icon_button"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent" />
+    <Button
+      android:id="@+id/detached_close_icon_button"
+      style="?attr/materialIconButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_sidesheet_close_button_content_desc"
+      app:icon="@drawable/ic_close_vd_theme_24px"
+      app:iconTint="?attr/colorOnSurfaceVariant"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintBaseline_toBaselineOf="@id/detached_side_sheet_title_text"
+      tools:ignore="ContentDescription" />
 
-  <TextView
-    android:id="@+id/detached_side_sheet_state_text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:paddingBottom="4dp"
-    android:text="@string/cat_sidesheet_state_settling"
-    android:textAppearance="?attr/textAppearanceBodyLarge"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/detached_side_sheet_title_text" />
+    <TextView
+      android:id="@+id/detached_side_sheet_title_text"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:paddingBottom="24dp"
+      android:text="@string/cat_sidesheet_standard_detached_title"
+      android:textAppearance="?attr/textAppearanceTitleLarge"
+      app:layout_constraintEnd_toStartOf="@id/detached_close_icon_button"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent" />
 
-  <TextView
-    android:id="@+id/detached_side_sheet_slide_offset_text"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:text="@string/cat_sidesheet_slide_offset_text"
-    android:textAppearance="?attr/textAppearanceBodyLarge"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/detached_side_sheet_state_text" />
+    <TextView
+      android:id="@+id/detached_side_sheet_state_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:paddingBottom="4dp"
+      android:text="@string/cat_sidesheet_state_settling"
+      android:textAppearance="?attr/textAppearanceBodyLarge"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/detached_side_sheet_title_text" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+      android:id="@+id/detached_side_sheet_slide_offset_text"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:text="@string/cat_sidesheet_slide_offset_text"
+      android:textAppearance="?attr/textAppearanceBodyLarge"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@id/detached_side_sheet_state_text" />
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -32,6 +32,7 @@ import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -42,6 +43,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import androidx.annotation.AnimatorRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,7 +52,6 @@ import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -102,6 +103,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   private static final int SHRINK = 2;
   /** Strategy to extend the FAB. */
   private static final int EXTEND = 3;
+
+  private boolean animationEnabled = true;
 
   /**
    * The strategy type determines what motion strategy to apply on the FAB.
@@ -291,7 +294,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
           @Override
           public int getWidth() {
             return getMeasuredWidth()
-                - getCollapsedPadding() * 2
+                - ExtendedFloatingActionButton.this.getPaddingStart()
+                - ExtendedFloatingActionButton.this.getPaddingEnd()
                 + extendedPaddingStart
                 + extendedPaddingEnd;
           }
@@ -458,6 +462,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     originalTextCsl = getTextColors();
   }
 
+  ColorStateList getOriginalTextColor() {
+    return originalTextCsl;
+  }
+
+  @ColorInt
+  int getCurrentOriginalTextColor() {
+    return originalTextCsl.getColorForState(getDrawableState(), 0);
+  }
+
   /**
    * Update the text color without affecting the original, client-set color.
    */
@@ -481,7 +494,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   public Behavior<ExtendedFloatingActionButton> getBehavior() {
     return behavior;
   }
-
 
   /**
    * Extends or shrinks the fab depending on the value of {@param extended}.
@@ -530,6 +542,11 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       extendedPaddingStart = getPaddingStart();
       extendedPaddingEnd = getPaddingEnd();
     }
+  }
+
+  @Override
+  public CharSequence getAccessibilityClassName() {
+    return FloatingActionButton.ACCESSIBIILTY_FAB_ROLE;
   }
 
   /**
@@ -910,8 +927,22 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
   }
 
+  /**
+   * Set whether or not animations are enabled.
+   */
+  public void setAnimationEnabled(boolean animationEnabled) {
+    this.animationEnabled = animationEnabled;
+  }
+
+  /** Return whether or not animations are enabled. */
+  public boolean isAnimationEnabled() {
+    return animationEnabled;
+  }
+
   private boolean shouldAnimateVisibilityChange() {
-    return (isLaidOut() || (!isOrWillBeShown() && animateShowBeforeLayout)) && !isInEditMode();
+    return animationEnabled
+        && (isLaidOut() || (!isOrWillBeShown() && animateShowBeforeLayout))
+        && !isInEditMode();
   }
 
   /**
@@ -962,7 +993,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   /**
    * A Property wrapper around the <code>paddingStart</code> functionality handled by the {@link
-   * ViewCompat#setPaddingRelative(View, int, int, int, int)}.
+   * View#setPaddingRelative(int, int, int, int)}.
    */
   static final Property<View, Float> PADDING_START =
       new Property<View, Float>(Float.class, "paddingStart") {
@@ -984,7 +1015,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
   /**
    * A Property wrapper around the <code>paddingEnd</code> functionality handled by the {@link
-   * ViewCompat#setPaddingRelative(View, int, int, int, int)}.
+   * View#setPaddingRelative(int, int, int, int)}.
    */
   static final Property<View, Float> PADDING_END =
       new Property<View, Float>(Float.class, "paddingEnd") {
@@ -1327,6 +1358,17 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       }
       layoutParams.width = size.getLayoutParams().width;
       layoutParams.height = size.getLayoutParams().height;
+
+      if (extending) { // extending
+        silentlyUpdateTextColor(originalTextCsl);
+      } else if (getText() != null && getText() != "") { // shrinking
+        // We only update the text to transparent if it exists, otherwise, updating the
+        // text color to transparent affects the elevation of the view.
+        // It's okay for the text to be set afterwards and not be transparent, as it is cut off
+        // by forcing the layout param dimens.
+        silentlyUpdateTextColor(ColorStateList.valueOf(Color.TRANSPARENT));
+      }
+
       setPaddingRelative(
           size.getPaddingStart(),
           getPaddingTop(),
@@ -1385,7 +1427,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
       if (spec.hasPropertyValues("labelOpacity")) {
         PropertyValuesHolder[] labelOpacityValues = spec.getPropertyValues("labelOpacity");
-        float startValue = extending ? 0F : 1F;
+        final int originalAlpha = Color.alpha(getCurrentOriginalTextColor());
+        final int currentAlpha = Color.alpha(getCurrentTextColor());
+        float startValue = originalAlpha != 0 ? (float) currentAlpha / originalAlpha : 0f;
         float endValue = extending ? 1F : 0F;
         labelOpacityValues[0].setFloatValues(startValue, endValue);
         spec.setPropertyValues("labelOpacity", labelOpacityValues);

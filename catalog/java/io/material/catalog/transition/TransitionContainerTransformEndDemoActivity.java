@@ -20,14 +20,12 @@ import io.material.catalog.R;
 
 import static io.material.catalog.transition.TransitionContainerTransformStartDemoActivity.configurationHelper;
 
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
@@ -36,7 +34,6 @@ import io.material.catalog.feature.DemoActivity;
 /**
  * An activity that displays the Container Transform activity transition demo for the Catalog app.
  */
-@RequiresApi(VERSION_CODES.LOLLIPOP)
 public class TransitionContainerTransformEndDemoActivity extends DemoActivity {
 
   @Override
@@ -72,7 +69,7 @@ public class TransitionContainerTransformEndDemoActivity extends DemoActivity {
     // and some of the start views don't have a background and the end view doesn't have a
     // background.
     transform.setAllContainerColors(
-        MaterialColors.getColor(findViewById(android.R.id.content), R.attr.colorSurface));
+        MaterialColors.getColor(findViewById(android.R.id.content), com.google.android.material.R.attr.colorSurface));
     transform.addTarget(android.R.id.content);
     configurationHelper.configure(transform, entering);
     return transform;

@@ -42,31 +42,57 @@ import androidx.appcompat.view.ContextThemeWrapper;
  */
 public class MaterialThemeOverlay {
 
-  private MaterialThemeOverlay() {
-  }
+  private MaterialThemeOverlay() {}
 
   private static final int[] ANDROID_THEME_OVERLAY_ATTRS =
-      new int[] {android.R.attr.theme, R.attr.theme};
+      new int[] {android.R.attr.theme, androidx.appcompat.R.attr.theme};
 
   private static final int[] MATERIAL_THEME_OVERLAY_ATTR = new int[] {R.attr.materialThemeOverlay};
 
   /**
-   * Uses the materialThemeOverlay attribute to create a themed context. This allows us to use
-   * MaterialThemeOverlay with a default style, and gives us some protection against losing our
-   * ThemeOverlay by clients who set android:theme or app:theme. If android:theme or app:theme is
-   * specified by the client, any attributes defined there will take precedence over attributes
-   * defined in materialThemeOverlay.
+   * Uses the materialThemeOverlay attribute to create a themed context.
+   *
+   * <p>This allows us to use MaterialThemeOverlay with a default style, and gives us some
+   * protection against losing our ThemeOverlay by clients who set android:theme or app:theme.
+   * If android:theme or app:theme is specified by the client, any attributes defined there
+   * will take precedence over attributes defined in materialThemeOverlay.
    */
   @NonNull
   public static Context wrap(
       @NonNull Context context,
-      @Nullable AttributeSet attrs,
+      @Nullable AttributeSet set,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
+    return wrap(context, set, defStyleAttr, defStyleRes, new int[] {});
+  }
+
+  /**
+   * Uses the materialThemeOverlay attribute and optionalAttr attributes to create a combined
+   * themed context.
+   *
+   * <p>The final theme overlay will apply materialThemeOverlay first, then the optionalAttr
+   * overlays in order.
+   *
+   * <p>This facilitates creating locally scoped, re-usable overlays for component variants. For
+   * example, if buttons can be one of two colors and one of three shapes, instead of creating a
+   * style for each color-shape combination, an overlay can be created for each color and
+   * each shape. The button can then wrap its context and pass both overlay attributes to
+   * optionalAttrs before reading color and shape values.
+   *
+   * @see #wrap(Context, AttributeSet, int, int)
+   */
+  @NonNull
+  public static Context wrap(
+      @NonNull Context context,
+      @Nullable AttributeSet set,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes,
+      @NonNull int[] optionalAttrs) {
     int materialThemeOverlayId =
-        obtainMaterialThemeOverlayId(context, attrs, defStyleAttr, defStyleRes);
-    boolean contextHasOverlay = context instanceof ContextThemeWrapper
-        && ((ContextThemeWrapper) context).getThemeResId() == materialThemeOverlayId;
+        obtainMaterialThemeOverlayId(context, set, defStyleAttr, defStyleRes);
+    boolean contextHasOverlay =
+        context instanceof ContextThemeWrapper
+            && ((ContextThemeWrapper) context).getThemeResId() == materialThemeOverlayId;
 
     if (materialThemeOverlayId == 0 || contextHasOverlay) {
       return context;
@@ -74,9 +100,17 @@ public class MaterialThemeOverlay {
 
     Context contextThemeWrapper = new ContextThemeWrapper(context, materialThemeOverlayId);
 
+    int[] optionalOverlayIds =
+        obtainMaterialOverlayIds(context, set, optionalAttrs, defStyleAttr, defStyleRes);
+    for (int optionalOverlayId : optionalOverlayIds) {
+      if (optionalOverlayId != 0) {
+        contextThemeWrapper.getTheme().applyStyle(optionalOverlayId, true);
+      }
+    }
+
     // We want values set in android:theme or app:theme to always override values supplied by
     // materialThemeOverlay, so we'll wrap the context again if either of those are set.
-    int androidThemeOverlayId = obtainAndroidThemeOverlayId(context, attrs);
+    int androidThemeOverlayId = obtainAndroidThemeOverlayId(context, set);
     if (androidThemeOverlayId != 0) {
       contextThemeWrapper.getTheme().applyStyle(androidThemeOverlayId, true);
     }
@@ -106,16 +140,33 @@ public class MaterialThemeOverlay {
   @StyleRes
   private static int obtainMaterialThemeOverlayId(
       @NonNull Context context,
-      @Nullable AttributeSet attrs,
+      @Nullable AttributeSet set,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
-    TypedArray a =
-        context.obtainStyledAttributes(
-            attrs, MATERIAL_THEME_OVERLAY_ATTR, defStyleAttr, defStyleRes);
-    int materialThemeOverlayId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
-    a.recycle();
+    return obtainMaterialOverlayIds(
+        context, set, MATERIAL_THEME_OVERLAY_ATTR, defStyleAttr, defStyleRes)[0];
+  }
 
-    return materialThemeOverlayId;
+  /**
+   * Retrieves the values of an array of Material overlay attributes, taking into account {@code
+   * defStyleAttr} and {@code defStyleRes} because Material overlay attributes should work from
+   * default styles.
+   */
+  @NonNull
+  private static int[] obtainMaterialOverlayIds(
+      @NonNull Context context,
+      @Nullable AttributeSet set,
+      @NonNull int[] attrs,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes) {
+    int[] overlayIds = new int[attrs.length];
+    if (attrs.length > 0) {
+      TypedArray a = context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
+      for (int i = 0; i < attrs.length; i++) {
+        overlayIds[i] = a.getResourceId(i, /* defaultVal= */ 0);
+      }
+      a.recycle();
+    }
+    return overlayIds;
   }
 }
-

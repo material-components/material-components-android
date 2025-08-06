@@ -20,6 +20,8 @@ import io.material.catalog.R;
 
 import static android.view.View.NO_ID;
 
+import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,6 +30,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 import androidx.activity.BackEventCompat;
@@ -41,7 +44,9 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.sidesheet.SideSheetBehavior;
 import com.google.android.material.sidesheet.SideSheetCallback;
 import com.google.android.material.sidesheet.SideSheetDialog;
@@ -254,7 +259,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
     setUpModalSheet(
         getDetachedModalThemeOverlayResId(),
         R.layout.cat_sidesheet_content,
-        R.id.m3_side_sheet,
+        com.google.android.material.R.id.m3_side_sheet,
         R.id.side_sheet_title_text,
         R.string.cat_sidesheet_modal_detached_title,
         showDetachedModalSheetButton,
@@ -264,7 +269,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
   private void setUpModalSheet() {
     setUpModalSheet(
         R.layout.cat_sidesheet_content,
-        R.id.m3_side_sheet,
+        com.google.android.material.R.id.m3_side_sheet,
         R.id.side_sheet_title_text,
         R.string.cat_sidesheet_modal_title,
         showModalSheetButton,
@@ -288,6 +293,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
         closeIconButtonIdRes);
   }
 
+  @SuppressWarnings("RestrictTo")
   private void setUpModalSheet(
       @StyleRes int sheetThemeOverlayRes,
       @LayoutRes int sheetContentLayoutRes,
@@ -298,19 +304,29 @@ public class SideSheetMainDemoFragment extends DemoFragment {
       @IdRes int closeIconButtonIdRes) {
     showSheetButton.setOnClickListener(
         v1 -> {
+          Context context = requireContext();
           SideSheetDialog sheetDialog =
               sheetThemeOverlayRes == NO_ID
-                  ? new SideSheetDialog(requireContext())
-                  : new SideSheetDialog(requireContext(), sheetThemeOverlayRes);
+                  ? new SideSheetDialog(context)
+                  : new SideSheetDialog(context, sheetThemeOverlayRes);
 
           sheetDialog.setContentView(sheetContentLayoutRes);
+
           View modalSheetContent = sheetDialog.findViewById(sheetContentRootIdRes);
           if (modalSheetContent != null) {
             TextView modalSideSheetTitle = modalSheetContent.findViewById(sheetTitleIdRes);
             modalSideSheetTitle.setText(sheetTitleStringRes);
           }
-          new WindowPreferencesManager(requireContext())
-              .applyEdgeToEdgePreference(sheetDialog.getWindow());
+
+          boolean edgeToEdgeEnabled = new WindowPreferencesManager(context).isEdgeToEdgeEnabled();
+          boolean isLightTheme =
+              MaterialAttributes.resolveBoolean(
+                  context, androidx.appcompat.R.attr.isLightTheme, true);
+          Window window = sheetDialog.getWindow();
+          sheetDialog.setFitsSystemWindows(!edgeToEdgeEnabled);
+          window.setNavigationBarColor(Color.TRANSPARENT);
+          WindowCompat.getInsetsController(window, window.getDecorView())
+              .setAppearanceLightStatusBars(edgeToEdgeEnabled && isLightTheme);
 
           sheetDialog
               .getBehavior()

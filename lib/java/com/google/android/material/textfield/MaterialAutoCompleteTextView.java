@@ -29,14 +29,12 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.appcompat.widget.ListPopupWindow;
 import android.text.InputType;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewParent;
@@ -53,7 +51,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -92,7 +90,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
   public MaterialAutoCompleteTextView(
       @NonNull Context context, @Nullable AttributeSet attributeSet) {
-    this(context, attributeSet, R.attr.autoCompleteTextViewStyle);
+    this(context, attributeSet, androidx.appcompat.R.attr.autoCompleteTextViewStyle);
   }
 
   public MaterialAutoCompleteTextView(
@@ -107,7 +105,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
             attributeSet,
             R.styleable.MaterialAutoCompleteTextView,
             defStyleAttr,
-            R.style.Widget_AppCompat_AutoCompleteTextView);
+            androidx.appcompat.R.style.Widget_AppCompat_AutoCompleteTextView);
 
     // Due to a framework bug, setting android:inputType="none" on xml has no effect. Therefore,
     // we check it here in case the autoCompleteTextView should be non-editable.
@@ -201,6 +199,43 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
       modalListPopup.dismiss();
     } else {
       super.dismissDropDown();
+    }
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+    if (shouldShowPopup(keyCode)) {
+      TextInputLayout textInputLayout = findTextInputLayoutAncestor();
+      if (textInputLayout != null) {
+        // A click on the end icon will show the dropdown and animate the icon
+        // Note that View.performClick() is a programmatic action that works even if the view is
+        // not clickable.
+        textInputLayout.getEndIconView().performClick();
+      }
+      return true;
+    }
+    return super.onKeyDown(keyCode, event);
+  }
+
+  /**
+   * Determines whether the dropdown should be shown based on the key press.
+   *
+   * <p>If the view is editable and single-line, the dropdown is shown only for the Enter or D-pad
+   * Center keys.
+   *
+   * <p>If the view is not editable, the dropdown is shown if the user presses the Enter, D-pad
+   * Center, or Space keys.
+   */
+  @VisibleForTesting
+  boolean shouldShowPopup(int keyCode) {
+    boolean isEnterKey =
+        keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER;
+    boolean isSpaceKey = keyCode == KeyEvent.KEYCODE_SPACE;
+    boolean isEditable = getKeyListener() != null;
+    if (isEditable) {
+      return isEnterKey && getMaxLines() == 1;
+    } else {
+      return isEnterKey || isSpaceKey;
     }
   }
 
@@ -554,7 +589,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
     @Nullable
     private Drawable getSelectedItemDrawable() {
-      if (!hasSelectedColor() || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      if (!hasSelectedColor()) {
         return null;
       }
 
@@ -569,7 +604,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
         // pressed states, but not to other states like focused and hovered. To solve that, we
         // create the selectedItemRippleOverlaidColor that will work in those missing states, making
         // the selected list item stateful as expected.
-        DrawableCompat.setTintList(colorDrawable, selectedItemRippleOverlaidColor);
+        colorDrawable.setTintList(selectedItemRippleOverlaidColor);
         return new RippleDrawable(pressedRippleColor, colorDrawable, null);
       } else {
         return colorDrawable;
@@ -578,9 +613,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
     @Nullable
     private ColorStateList createItemSelectedColorStateList() {
-      if (!hasSelectedColor()
-          || !hasSelectedRippleColor()
-          || VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      if (!hasSelectedColor() || !hasSelectedRippleColor()) {
         return null;
       }
       int[] stateHovered = new int[] {android.R.attr.state_hovered, -android.R.attr.state_pressed};

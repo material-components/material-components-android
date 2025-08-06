@@ -26,21 +26,16 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION_CODES;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Pair;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ToolbarUtils;
@@ -95,7 +90,7 @@ public class MaterialToolbar extends Toolbar {
   }
 
   public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, R.attr.toolbarStyle);
+    this(context, attrs, androidx.appcompat.R.attr.toolbarStyle);
   }
 
   public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -126,19 +121,6 @@ public class MaterialToolbar extends Toolbar {
     a.recycle();
 
     initBackground(context);
-  }
-
-  @Override
-  public void inflateMenu(int i) {
-    // Pause dispatching item changes during inflation to improve performance.
-    Menu menu = getMenu();
-    if (menu instanceof MenuBuilder) {
-      ((MenuBuilder) menu).stopDispatchingItemsChanged();
-    }
-    super.inflateMenu(i);
-    if (menu instanceof MenuBuilder) {
-      ((MenuBuilder) menu).startDispatchingItemsChanged();
-    }
   }
 
   @Override
@@ -273,7 +255,6 @@ public class MaterialToolbar extends Toolbar {
     MaterialShapeUtils.setParentAbsoluteElevation(this);
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -311,7 +292,7 @@ public class MaterialToolbar extends Toolbar {
     Drawable navigationIcon = getNavigationIcon();
     if (navigationIcon != null) {
       Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
-      DrawableCompat.setTintList(wrappedNavigationIcon, null);
+      wrappedNavigationIcon.setTintList(null);
       setNavigationIcon(navigationIcon);
     }
   }
@@ -386,7 +367,7 @@ public class MaterialToolbar extends Toolbar {
       MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
       materialShapeDrawable.setFillColor(backgroundColorStateList);
       materialShapeDrawable.initializeElevationOverlay(context);
-      materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
+      materialShapeDrawable.setElevation(getElevation());
       setBackground(materialShapeDrawable);
     }
   }
@@ -395,7 +376,7 @@ public class MaterialToolbar extends Toolbar {
   private Drawable maybeTintNavigationIcon(@Nullable Drawable navigationIcon) {
     if (navigationIcon != null && navigationIconTint != null) {
       Drawable wrappedNavigationIcon = DrawableCompat.wrap(navigationIcon.mutate());
-      DrawableCompat.setTint(wrappedNavigationIcon, navigationIconTint);
+      wrappedNavigationIcon.setTint(navigationIconTint);
       return wrappedNavigationIcon;
     } else {
       return navigationIcon;

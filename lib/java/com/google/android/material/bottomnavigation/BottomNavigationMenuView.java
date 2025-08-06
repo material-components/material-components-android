@@ -24,7 +24,6 @@ import static java.lang.Math.min;
 
 import android.content.Context;
 import android.content.res.Resources;
-import androidx.appcompat.view.menu.MenuBuilder;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,10 +70,9 @@ public class BottomNavigationMenuView extends NavigationBarMenuView {
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    final MenuBuilder menu = getMenu();
     final int width = MeasureSpec.getSize(widthMeasureSpec);
     // Use visible item count to calculate widths
-    final int visibleCount = menu.getVisibleItems().size();
+    final int visibleCount = getCurrentVisibleContentItemCount();
     // Use total item counts to measure children
     final int totalCount = getChildCount();
     tempChildWidths.clear();

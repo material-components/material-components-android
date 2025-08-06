@@ -27,15 +27,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
 import android.util.Pair;
 import android.view.Gravity;
@@ -48,7 +45,6 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.ArgbEvaluatorCompat;
 import com.google.android.material.animation.ChildrenAlphaProperty;
@@ -136,10 +132,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     List<Animator> animations = new ArrayList<>();
     List<AnimatorListener> listeners = new ArrayList<>();
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      createElevationAnimation(
-          dependency, child, expanded, isAnimating, spec, animations, listeners);
-    }
+    createElevationAnimation(
+        dependency, child, expanded, isAnimating, spec, animations, listeners);
 
     RectF childBounds = tmpRectF1;
     createTranslationAnimation(
@@ -195,7 +189,6 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
 
   protected abstract FabTransformationSpec onCreateMotionSpec(Context context, boolean expanded);
 
-  @TargetApi(VERSION_CODES.LOLLIPOP)
   private void createElevationAnimation(
       View dependency,
       @NonNull View child,
@@ -204,7 +197,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       @NonNull FabTransformationSpec spec,
       @NonNull List<Animator> animations,
       List<AnimatorListener> unusedListeners) {
-    float translationZ = ViewCompat.getElevation(child) - ViewCompat.getElevation(dependency);
+    float translationZ = child.getElevation() - dependency.getElevation();
     Animator animator;
 
     if (expanded) {
@@ -381,7 +374,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
 
     float revealCenterX = calculateRevealCenterX(dependency, child, spec.positioning);
     float revealCenterY = calculateRevealCenterY(dependency, child, spec.positioning);
-    ((FloatingActionButton) dependency).getContentRect(tmpRect);
+    ((FloatingActionButton) dependency).getMeasuredContentRect(tmpRect);
     float dependencyRadius = tmpRect.width() / 2f;
 
     Animator animator;
@@ -732,7 +725,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   }
 
   private int getBackgroundTint(@NonNull View view) {
-    ColorStateList tintList = ViewCompat.getBackgroundTintList(view);
+    ColorStateList tintList = view.getBackgroundTintList();
     if (tintList != null) {
       return tintList.getColorForState(view.getDrawableState(), tintList.getDefaultColor());
     } else {
@@ -748,16 +741,13 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       int revealCenterY,
       float fromRadius,
       @NonNull List<Animator> animations) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      // No setter for circular reveal in L+.
-      if (delay > 0) {
-        Animator animator =
-            ViewAnimationUtils.createCircularReveal(
-                child, revealCenterX, revealCenterY, fromRadius, fromRadius);
-        animator.setStartDelay(0);
-        animator.setDuration(delay);
-        animations.add(animator);
-      }
+    if (delay > 0) {
+      Animator animator =
+          ViewAnimationUtils.createCircularReveal(
+              child, revealCenterX, revealCenterY, fromRadius, fromRadius);
+      animator.setStartDelay(0);
+      animator.setDuration(delay);
+      animations.add(animator);
     }
   }
 
@@ -771,16 +761,13 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       int revealCenterY,
       float toRadius,
       @NonNull List<Animator> animations) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      // Circular reveal in L+ doesn't stick around.
-      if (delay + duration < totalDuration) {
-        Animator animator =
-            ViewAnimationUtils.createCircularReveal(
-                child, revealCenterX, revealCenterY, toRadius, toRadius);
-        animator.setStartDelay(delay + duration);
-        animator.setDuration(totalDuration - (delay + duration));
-        animations.add(animator);
-      }
+    if (delay + duration < totalDuration) {
+      Animator animator =
+          ViewAnimationUtils.createCircularReveal(
+              child, revealCenterX, revealCenterY, toRadius, toRadius);
+      animator.setStartDelay(delay + duration);
+      animator.setDuration(totalDuration - (delay + duration));
+      animations.add(animator);
     }
   }
 

@@ -28,7 +28,9 @@ import androidx.annotation.NonNull;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.progressindicator.CircularProgressIndicator;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
+import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
+import java.util.Locale;
 
 /**
  * This is the fragment to demo simple use cases of {@link LinearProgressIndicator} and {@link
@@ -78,7 +80,7 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider thicknessSlider = view.findViewById(R.id.thicknessSlider);
     thicknessSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newThickness = Math.round(value * pixelsInDp);
+          int newThickness = (int) (value * pixelsInDp);
           if (linearIndicator.getTrackThickness() != newThickness) {
             linearIndicator.setTrackThickness(newThickness);
           }
@@ -90,7 +92,7 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider cornerSlider = view.findViewById(R.id.cornerSlider);
     cornerSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newCornerRadius = Math.round(value * pixelsInDp);
+          int newCornerRadius = (int) (value * pixelsInDp);
           if (linearIndicator.getTrackCornerRadius() != newCornerRadius) {
             linearIndicator.setTrackCornerRadius(newCornerRadius);
           }
@@ -102,7 +104,7 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider gapSlider = view.findViewById(R.id.gapSlider);
     gapSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newGapSize = Math.round(value * pixelsInDp);
+          int newGapSize = (int) (value * pixelsInDp);
           if (linearIndicator.getIndicatorTrackGapSize() != newGapSize) {
             linearIndicator.setIndicatorTrackGapSize(newGapSize);
           }
@@ -123,7 +125,7 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider linearStopIndicatorSlider = view.findViewById(R.id.linearStopIndicatorSizeSlider);
     linearStopIndicatorSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newStopIndicatorSize = Math.round(value * pixelsInDp);
+          int newStopIndicatorSize = (int) (value * pixelsInDp);
           if (linearIndicator.getTrackStopIndicatorSize() != newStopIndicatorSize) {
             linearIndicator.setTrackStopIndicatorSize(newStopIndicatorSize);
           }
@@ -132,10 +134,26 @@ public class ProgressIndicatorMainDemoFragment extends ProgressIndicatorDemoFrag
     Slider circularSizeSlider = view.findViewById(R.id.circularSizeSlider);
     circularSizeSlider.addOnChangeListener(
         (slider, value, fromUser) -> {
-          int newCornerRadius = Math.round(value * pixelsInDp);
+          int newCornerRadius = (int) (value * pixelsInDp);
           if (circularIndicator.getIndicatorSize() != newCornerRadius) {
             circularIndicator.setIndicatorSize(newCornerRadius);
           }
+        });
+
+    Slider indeterminateAnimatorDurationScaleSlider =
+        view.findViewById(R.id.indeterminateDurationScaleSlider);
+    indeterminateAnimatorDurationScaleSlider.setLabelFormatter(new LabelFormatter() {
+      @NonNull
+      @Override
+      public String getFormattedValue(float value) {
+        return String.format(Locale.US, "%,.2f", (float) Math.pow(10, value));
+      }
+    });
+    indeterminateAnimatorDurationScaleSlider.addOnChangeListener(
+        (slider, value, fromUser) -> {
+          float scale = (float) Math.pow(10, value);
+          linearIndicator.setIndeterminateAnimatorDurationScale(scale);
+          circularIndicator.setIndeterminateAnimatorDurationScale(scale);
         });
   }
 

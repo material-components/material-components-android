@@ -25,29 +25,21 @@ import static java.util.Calendar.HOUR;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.PM;
 
-import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
-import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import androidx.annotation.ColorInt;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.timepicker.TimePickerView.OnSelectionChange;
-import java.lang.reflect.Field;
 import java.util.Locale;
 
 class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPresenter {
@@ -104,7 +96,11 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     TextView hourLabel = hourTextInput.findViewById(R.id.material_label);
 
     minuteLabel.setText(res.getString(R.string.material_timepicker_minute));
+    minuteLabel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
     hourLabel.setText(res.getString(R.string.material_timepicker_hour));
+    hourLabel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
     minuteTextInput.setTag(R.id.selection_type, MINUTE);
     hourTextInput.setTag(R.id.selection_type, HOUR);
 
@@ -126,13 +122,13 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     minuteTextInput.addInputFilter(time.getMinuteInputValidator());
 
     hourEditText = hourTextInput.getTextInput().getEditText();
+    hourEditText.setAccessibilityDelegate(
+        setTimeUnitAccessiblityLabel(
+            timePickerView.getResources(), R.string.material_timepicker_hour));
     minuteEditText = minuteTextInput.getTextInput().getEditText();
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      // Our XML drawable is not colored for pre-lollipop, set color programmatically.
-      int primaryColor = MaterialColors.getColor(timePickerView, R.attr.colorPrimary);
-      setCursorDrawableColor(hourEditText, primaryColor);
-      setCursorDrawableColor(minuteEditText, primaryColor);
-    }
+    minuteEditText.setAccessibilityDelegate(
+        setTimeUnitAccessiblityLabel(
+            timePickerView.getResources(), R.string.material_timepicker_minute));
 
     controller = new TimePickerTextInputKeyController(hourTextInput, minuteTextInput, time);
     hourTextInput.setChipDelegate(
@@ -142,10 +138,12 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
               View host, AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
             info.setContentDescription(
-                host.getResources()
-                    .getString(
-                        time.getHourContentDescriptionResId(),
-                        String.valueOf(time.getHourForDisplay())));
+                res.getString(R.string.material_timepicker_hour)
+                    + " " // Adds a pause between the hour label and the hour value.
+                    + host.getResources()
+                        .getString(
+                            time.getHourContentDescriptionResId(),
+                            String.valueOf(time.getHourForDisplay())));
           }
         });
     minuteTextInput.setChipDelegate(
@@ -155,12 +153,25 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
               View host, AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
             info.setContentDescription(
-                host.getResources()
-                    .getString(R.string.material_minute_suffix, String.valueOf(time.minute)));
+                res.getString(R.string.material_timepicker_minute)
+                    + " " // Adds a pause between the minute label and the minute value.
+                    + host.getResources()
+                        .getString(R.string.material_minute_suffix, String.valueOf(time.minute)));
           }
         });
 
     initialize();
+  }
+
+  private View.AccessibilityDelegate setTimeUnitAccessiblityLabel(
+      Resources res, int contentDescriptionResId) {
+    return new View.AccessibilityDelegate() {
+      @Override
+      public void onInitializeAccessibilityNodeInfo(View v, AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(v, info);
+        info.setText(res.getString(contentDescriptionResId));
+      }
+    };
   }
 
   @Override
@@ -245,32 +256,6 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   @Override
   public void invalidate() {
     setTime(time);
-  }
-
-  /*
-   * android:textColorDrawable doesn't have an app compat version to be able to use theme attributes
-   * for colors. We have to apply a color filter manually. This method is only meant to be used
-   * before API 21.
-   */
-  private static void setCursorDrawableColor(EditText view, @ColorInt int color) {
-    try {
-      Context context = view.getContext();
-      Field cursorDrawableResField = TextView.class.getDeclaredField("mCursorDrawableRes");
-      cursorDrawableResField.setAccessible(true);
-      int cursorDrawableResId = cursorDrawableResField.getInt(view);
-      Field editorField = TextView.class.getDeclaredField("mEditor");
-      editorField.setAccessible(true);
-      Object editor = editorField.get(view);
-      Class<?> clazz = editor.getClass();
-      Field cursorDrawableField = clazz.getDeclaredField("mCursorDrawable");
-      cursorDrawableField.setAccessible(true);
-      Drawable drawable = AppCompatResources.getDrawable(context, cursorDrawableResId);
-      drawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
-      Drawable[] drawables = {drawable, drawable};
-      cursorDrawableField.set(editor, drawables);
-    } catch (Throwable ignored) {
-      // ignore use the drawable default color (black).
-    }
   }
 
   public void resetChecked() {

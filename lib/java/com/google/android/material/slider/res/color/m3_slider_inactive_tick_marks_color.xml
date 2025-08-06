@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="?attr/colorOnSecondaryContainer" android:state_enabled="true" />
-  <!-- When disabled, the tick marks over inactive track should be the same color as the active track. -->
-  <item android:alpha="@dimen/m3_comp_slider_disabled_active_track_opacity"
-        android:color="@macro/m3_comp_slider_disabled_active_track_color" />
+  <item android:alpha="@dimen/m3_comp_slider_inactive_stop_indicator_container_opacity"
+        android:color="@macro/m3_comp_slider_inactive_stop_indicator_container_color"
+        android:state_enabled="true" />
+  <item android:color="@macro/m3_comp_slider_disabled_inactive_stop_indicator_container_color" />
 </selector>

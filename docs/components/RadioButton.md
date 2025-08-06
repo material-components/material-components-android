@@ -1,5 +1,5 @@
 <!--docs:
-title: "Material selection controls: Radio buttons"
+title: "Material selection controls: Radio button"
 layout: detail
 section: components
 excerpt: "Selection controls allow the user to select options."
@@ -7,132 +7,30 @@ iconId: radiobutton
 path: /catalog/radiobuttons/
 -->
 
-# Selection controls: radio buttons
+# Radio button
 
-[Selection controls](https://material.io/components/selection-controls#usage)
-allow the user to select options.
+[Radio buttons](https://m3.material.io/components/radio-button/overview) let
+people select one option from a set of options.
 
-Use radio buttons to:
+<img src="assets/radiobutton/radiobutton_hero.png" alt="Settings menu with radio buttons" width="800"/>
 
-*   Select a single option from a list
-*   Expose all available options
-*   If available options can be collapsed, consider using a dropdown menu
-    instead, as it uses less space.
+**Note:** Images use various dynamic color schemes.
 
-![Settings menu with radio buttons for ringtones](assets/radiobutton/radiobutton_hero.png)
+## Design & API documentation
 
-**Contents**
+*   [Material 3 (M3) spec](https://m3.material.io/components/radio-button/overview)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/radiobutton/package-summary)
 
-*   [Design and API Documentation](#design-and-api-documentation)
-*   [Using radio buttons](#using-radio-buttons)
-*   [Radio button](#radio-button)
-*   [Theming radio buttons](#theming-radio-buttons)
+## Anatomy
 
-## Design and API Documentation
+![Anatomy of radio button](assets/radiobutton/radiobutton_anatomy.png)
 
-*   [Google Material3 Spec](https://material.io/components/radio-button/overview)
-*   [API Reference](https://developer.android.com/reference/com/google/android/material/radiobutton/package-summary)
+1.  Icon (selected)
+2.  Adjacent label text
+3.  Icon (unselected)
 
-## Using radio buttons
-
-Before you can use Material radio buttons, you need to add a dependency to the
-Material Components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
-
-**Note:** `<RadioButton>` is auto-inflated as
-`<com.google.android.material.button.MaterialRadioButton>` via
-`MaterialComponentsViewInflater` when using a `Theme.Material3.*` theme.
-
-### Making radio buttons accessible
-
-Radio buttons support content labeling for accessibility and are readable by
-most screen readers, such as TalkBack. Text rendered in radio buttons is
-automatically provided to accessibility services. Additional content labels are
-usually unnecessary.
-
-### Grouping radio buttons
-
-Changes in the states of one radio button can affect other buttons in the group.
-Specifically, selecting a `RadioButton` in a `RadioGroup` will de-select all
-other buttons in that group. See the
-[example section below](#radio-buttons-example) for implementation details.
-
-## Radio button
-
-A radio button is a circle that is filled in with an inset when selected. Radio
-buttons allow the user to select one option from a set. Use radio buttons when
-the user needs to see all available options. If available options can be
-collapsed, consider using a dropdown menu because it uses less space.
-
-API and source code:
-
-*   `MaterialRadioButton`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/radiobutton/MaterialRadioButton)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/radiobutton/MaterialRadioButton.java)
-*   `RadioGroup`
-    *   [Class definition](https://developer.android.com/reference/android/widget/RadioGroup)
-
-### Radio buttons example
-
-The following example shows a radio button group with five radio buttons.
-
-![Example radio button group with 5 radio buttons, the first one is selected and
-the last one is disabled.](assets/radiobutton/radiobutton_example.png)
-
-In the layout:
-
-```xml
-<RadioGroup
-    android:id="@+id/radioGroup"
-    android:checkedButton="@+id/radio_button_1"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-    <RadioButton
-        android:id="@+id/radio_button_1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/label_1"/>
-    <RadioButton
-        android:id="@+id/radio_button_2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/label_2"/>
-    <RadioButton
-        android:id="@+id/radio_button_3"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/label_3"/>
-    <RadioButton
-        android:id="@+id/radio_button_4"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/label_4"/>
-    <RadioButton
-        android:id="@+id/radio_button_5"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:enabled="false"
-        android:text="@string/label_5"/>
-</RadioGroup>
-```
-
-In code:
-
-```kt
-val checkedRadioButtonId = radioGroup.checkedRadioButtonId // Returns View.NO_ID if nothing is checked.
-radioGroup.setOnCheckedChangeListener { group, checkedId ->
-    // Responds to child RadioButton checked/unchecked
-}
-
-// To check a radio button
-radioButton.isChecked = true
-
-// To listen for a radio button's checked/unchecked state changes
-radioButton.setOnCheckedChangeListener { buttonView, isChecked
-    // Responds to radio button being checked/unchecked
-}
-```
+More details on anatomy items are available in the
+[component guidelines](https://m3.material.io/components/radio-button/guidelines#4c0190e7-49da-43bf-b08b-828f71300425).
 
 ## Key properties
 
@@ -175,24 +73,108 @@ unselected](assets/radiobutton/radiobutton_states.png)
 
 ### Styles
 
-Element           | Style
------------------ | ------------------------------------------------------
-**Default style** | `Widget.Material3.CompoundButton.RadioButton`
+Element           | Style                                         | Theme attribute
+----------------- | --------------------------------------------- | ---------------
+**Default style** | `Widget.Material3.CompoundButton.RadioButton` | `?attr/radioButtonStyle`
 
-Default style theme attribute: `?attr/radioButtonStyle`
-
-See the full list of
+For the full list, see
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/radiobutton/res/values/styles.xml)
 and
 [attrs](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/radiobutton/res/values/attrs.xml).
 
-## Theming radio buttons
+## Code implementation
 
-Radio buttons support
-[Material Theming](https://material.io/components/selection-controls#theming)
-which can customize color and typography.
+Before you can use Material radio buttons, you need to add a dependency to the
+Material components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
 
-### Radio button theming example
+### Adding radio button
+
+A radio button is a circle that is filled in with an inset when selected. Radio
+buttons allow the user to select one option from a set. Use radio buttons when
+the user needs to see all available options. If available options can be
+collapsed, consider using a dropdown menu because it uses less space.
+
+**Note:** `<RadioButton>` is auto-inflated as
+`<com.google.android.material.button.MaterialRadioButton>` via
+`MaterialComponentsViewInflater` when using a `Theme.Material3.*` theme.
+
+<h3 id="radio-button-group-example">Radio button example</h3>
+
+The following example shows a radio button group with three radio buttons.
+
+<img src="assets/radiobutton/radiobutton_example.png" alt="Example radio button group with 3 radio buttons, the first one is selected" width="200"/>
+
+In the layout:
+
+```xml
+<RadioGroup
+    android:checkedButton="@+id/enabled_selected"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RadioButton
+        android:id="@+id/enabled_selected"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:enabled="true"
+        android:paddingStart="@dimen/padding_start"
+        android:text="@string/radiobutton_text"/>
+    <RadioButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="false"
+        android:enabled="true"
+        android:paddingStart="@dimen/padding_start"
+        android:text="@string/radiobutton_text"/>
+    <RadioButton
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="false"
+        android:enabled="true"
+        android:paddingStart="@dimen/padding_start"
+        android:text="@string/radiobutton_text"/>
+</RadioGroup>
+```
+
+In code:
+
+```kt
+val checkedRadioButtonId = radioGroup.checkedRadioButtonId // Returns View.NO_ID if nothing is checked.
+radioGroup.setOnCheckedChangeListener { group, checkedId ->
+    // Responds to child RadioButton checked/unchecked
+}
+
+// To check a radio button
+radioButton.isChecked = true
+
+// To listen for a radio button's checked/unchecked state changes
+radioButton.setOnCheckedChangeListener { buttonView, isChecked
+    // Responds to radio button being checked/unchecked
+}
+```
+
+### Making radio buttons accessible
+
+Radio buttons support content labeling for accessibility and are readable by
+most screen readers, such as Talkback. Text rendered in radio buttons is
+automatically provided to accessibility services. Additional content labels are
+usually unnecessary.
+
+### Grouping radio buttons
+
+Changes in the states of one radio button can affect other buttons in the group.
+Specifically, selecting a `RadioButton` in a `RadioGroup` will deselect all
+other buttons in that group. See the
+[example section](#radio-button-group-example) for implementation details.
+
+## Customizing radio buttons
+
+### Theming radio buttons
+
+Radio buttons support the customization of color and typography.
+
+#### Radio button theming example
 
 API and source code:
 
@@ -202,13 +184,13 @@ API and source code:
 *   `RadioGroup`
     *   [Class definition](https://developer.android.com/reference/android/widget/RadioGroup)
 
-The following example shows a radio button with Material Theming.
+The following example shows a radio button with Material theming.
 
 !["5 radio buttons with brown text; first selected with pink outline and fill,
 last disabled with light brown text and
 button"](assets/radiobutton/radiobutton_theming.png)
 
-#### Implementing radio button theming
+##### Implementing radio button theming
 
 Use theme attributes in `res/values/styles.xml` which applies to all radio
 buttons and affects other components:

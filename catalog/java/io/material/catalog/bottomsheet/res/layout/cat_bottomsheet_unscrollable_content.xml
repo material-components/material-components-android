@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2024 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <!--
+    Since we are providing a close affordance and this sheet does not have
+    states to move between, disable a11y focus with
+    importantForAccessibility=no and disable all announcements with
+    contentDescription=null.
+    -->
+  <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:importantForAccessibility="no"
+    android:contentDescription="@null"/>
+
+  <Button
+    android:id="@+id/close_icon"
+    style="?attr/materialIconButtonFilledTonalStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_marginHorizontal="16dp"
+    android:contentDescription="@string/cat_bottomsheet_close_content_description"
+    app:icon="@drawable/ic_close_24dp"/>
+
+  <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+      android:id="@+id/bottom_drawer_3"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:gravity="center_horizontal"
+      android:paddingHorizontal="16dp"
+      android:paddingVertical="8dp">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"/>
+
+      <com.google.android.material.textfield.TextInputLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          style="?attr/textInputOutlinedStyle">
+          <com.google.android.material.textfield.TextInputEditText
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:hint="@string/cat_bottomsheet_textfield_label"/>
+      </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+  </LinearLayout>

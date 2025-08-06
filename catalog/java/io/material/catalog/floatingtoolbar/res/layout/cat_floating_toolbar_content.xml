@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (C) 2024 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <Button
+    android:id="@+id/floating_toolbar_button_bold"
+    style="?attr/materialIconButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checkable="true"
+    android:contentDescription="@string/cat_floating_toolbar_button_bold_content_description"
+    app:icon="@drawable/ic_format_bold_24px" />
+  <Button
+    style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_italic"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checkable="true"
+    android:contentDescription="@string/cat_floating_toolbar_button_italic_content_description"
+    app:icon="@drawable/ic_format_italic_24px" />
+  <Button
+    style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_underlined"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checkable="true"
+    android:contentDescription="@string/cat_floating_toolbar_button_underlined_content_description"
+    app:icon="@drawable/ic_format_underlined_24px" />
+  <Button
+    style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_color_text"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/cat_floating_toolbar_button_color_text_content_description"
+    app:icon="@drawable/ic_format_color_text_24px"
+    app:layout_overflowText="@string/cat_floating_toolbar_button_color_text_content_description"
+    app:layout_overflowIcon="@drawable/ic_format_color_text_24px" />
+  <Button
+    style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_color_fill"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/cat_floating_toolbar_button_color_fill_content_description"
+    app:icon="@drawable/ic_format_color_fill_24px"
+    app:layout_overflowText="@string/cat_floating_toolbar_button_color_fill_content_description"
+    app:layout_overflowIcon="@drawable/ic_format_color_fill_24px" />
+  <Button
+    style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_strikethrough"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checkable="true"
+    android:contentDescription="@string/cat_floating_toolbar_button_strikethrough_content_description"
+    app:icon="@drawable/ic_format_strikethrough_24px"
+    app:layout_overflowText="@string/cat_floating_toolbar_button_strikethrough_content_description"
+    app:layout_overflowIcon="@drawable/ic_format_strikethrough_24px" />
+  <Button
+    style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_left_align"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/cat_floating_toolbar_button_left_align_content_description"
+    app:icon="@drawable/ic_format_align_left_24px"
+    app:layout_overflowText="@string/cat_floating_toolbar_button_left_align_content_description"
+    app:layout_overflowIcon="@drawable/ic_format_align_left_24px" />
+  <Button
+    style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_center_align"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/cat_floating_toolbar_button_center_align_content_description"
+    app:icon="@drawable/ic_format_align_center_24px"
+    app:layout_overflowText="@string/cat_floating_toolbar_button_center_align_content_description"
+    app:layout_overflowIcon="@drawable/ic_format_align_center_24px" />
+  <Button
+    style="?attr/materialIconButtonStyle"
+    android:id="@+id/floating_toolbar_button_right_align"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/cat_floating_toolbar_button_right_align_content_description"
+    app:icon="@drawable/ic_format_align_right_24px"
+    app:layout_overflowText="@string/cat_floating_toolbar_button_right_align_content_description"
+    app:layout_overflowIcon="@drawable/ic_format_align_right_24px" />
+</merge>

@@ -26,12 +26,12 @@
         <objectAnimator
             android:duration="@integer/mtrl_btn_anim_duration_ms"
             android:propertyName="translationZ"
-            android:valueTo="@dimen/m3_comp_extended_fab_primary_pressed_container_elevation"
+            android:valueTo="@dimen/m3_extended_fab_translation_z_pressed"
             android:valueType="floatType"/>
         <objectAnimator
             android:duration="0"
             android:propertyName="elevation"
-            android:valueTo="@dimen/m3_comp_extended_fab_primary_container_elevation"
+            android:valueTo="@dimen/m3_comp_extended_fab_primary_container_container_elevation"
             android:valueType="floatType"/>
       </set>
     </item>
@@ -44,12 +44,12 @@
         <objectAnimator
             android:duration="@integer/mtrl_btn_anim_duration_ms"
             android:propertyName="translationZ"
-            android:valueTo="@dimen/m3_comp_extended_fab_primary_hover_container_elevation"
+            android:valueTo="@dimen/m3_extended_fab_translation_z_hovered"
             android:valueType="floatType"/>
         <objectAnimator
             android:duration="0"
             android:propertyName="elevation"
-            android:valueTo="@dimen/m3_comp_extended_fab_primary_container_elevation"
+            android:valueTo="@dimen/m3_comp_extended_fab_primary_container_container_elevation"
             android:valueType="floatType"/>
       </set>
     </item>
@@ -62,12 +62,12 @@
         <objectAnimator
             android:duration="@integer/mtrl_btn_anim_duration_ms"
             android:propertyName="translationZ"
-            android:valueTo="@dimen/m3_comp_extended_fab_primary_focus_container_elevation"
+            android:valueTo="@dimen/m3_extended_fab_translation_z_focused"
             android:valueType="floatType"/>
         <objectAnimator
             android:duration="0"
             android:propertyName="elevation"
-            android:valueTo="@dimen/m3_comp_extended_fab_primary_container_elevation"
+            android:valueTo="@dimen/m3_comp_extended_fab_primary_container_container_elevation"
             android:valueType="floatType"/>
       </set>
     </item>
@@ -79,12 +79,12 @@
             android:duration="@integer/mtrl_btn_anim_duration_ms"
             android:propertyName="translationZ"
             android:startDelay="@integer/mtrl_btn_anim_delay_ms"
-            android:valueTo="@dimen/mtrl_extended_fab_translation_z_base"
+            android:valueTo="@dimen/m3_extended_fab_translation_z_base"
             android:valueType="floatType"/>
         <objectAnimator
             android:duration="0"
             android:propertyName="elevation"
-            android:valueTo="@dimen/m3_comp_extended_fab_primary_container_elevation"
+            android:valueTo="@dimen/m3_comp_extended_fab_primary_container_container_elevation"
             android:valueType="floatType"/>
       </set>
     </item>
@@ -95,12 +95,12 @@
         <objectAnimator
             android:duration="0"
             android:propertyName="translationZ"
-            android:valueTo="@dimen/mtrl_extended_fab_disabled_translation_z"
+            android:valueTo="@dimen/m3_extended_fab_disabled_translation_z"
             android:valueType="floatType"/>
         <objectAnimator
             android:duration="0"
             android:propertyName="elevation"
-            android:valueTo="@dimen/mtrl_extended_fab_disabled_elevation"
+            android:valueTo="@dimen/m3_extended_fab_disabled_elevation"
             android:valueType="floatType"/>
       </set>
     </item>

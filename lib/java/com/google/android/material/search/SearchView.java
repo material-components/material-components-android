@@ -26,7 +26,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
@@ -48,6 +47,7 @@ import android.view.accessibility.AccessibilityEvent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.BackEventCompat;
 import androidx.annotation.ColorInt;
@@ -56,12 +56,12 @@ import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.Insets;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -145,6 +145,7 @@ public class SearchView extends FrameLayout
   final MaterialToolbar toolbar;
   final Toolbar dummyToolbar;
   final TextView searchPrefix;
+  final LinearLayout textContainer;
   final EditText editText;
   final ImageButton clearButton;
   final View divider;
@@ -216,6 +217,7 @@ public class SearchView extends FrameLayout
     toolbar = findViewById(R.id.open_search_view_toolbar);
     dummyToolbar = findViewById(R.id.open_search_view_dummy_toolbar);
     searchPrefix = findViewById(R.id.open_search_view_search_prefix);
+    textContainer = findViewById(R.id.open_search_view_text_container);
     editText = findViewById(R.id.open_search_view_edit_text);
     clearButton = findViewById(R.id.open_search_view_clear_button);
     divider = findViewById(R.id.open_search_view_divider);
@@ -233,6 +235,10 @@ public class SearchView extends FrameLayout
     setUpClearButton();
     setUpContentOnTouchListener();
     setUpInsetListeners();
+
+    // Necessary to enable keyboard navigation to the searchview contents due to toolbar being a
+    // keyboard navigation cluster from API 26+
+    setToolbarTouchscreenBlocksFocus(false);
   }
 
   @Override
@@ -251,7 +257,6 @@ public class SearchView extends FrameLayout
     updateSoftInputMode();
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
@@ -286,6 +291,9 @@ public class SearchView extends FrameLayout
   public void startBackProgress(@NonNull BackEventCompat backEvent) {
     if (isHiddenOrHiding() || searchBar == null) {
       return;
+    }
+    if (searchBar != null) {
+      searchBar.setPlaceholderText(editText.getText().toString());
     }
     searchViewAnimationHelper.startBackProgress(backEvent);
   }
@@ -474,7 +482,7 @@ public class SearchView extends FrameLayout
           DrawableCompat.wrap(
               AppCompatResources.getDrawable(getContext(), navigationIcon).mutate());
       if (toolbar.getNavigationIconTint() != null) {
-        DrawableCompat.setTint(navigationIconDrawable, toolbar.getNavigationIconTint());
+        navigationIconDrawable.setTint(toolbar.getNavigationIconTint());
       }
       DrawableCompat.setLayoutDirection(navigationIconDrawable, getLayoutDirection());
       toolbar.setNavigationIcon(
@@ -511,9 +519,13 @@ public class SearchView extends FrameLayout
           boolean isRtl = ViewUtils.isLayoutRtl(toolbar);
           int paddingLeft = isRtl ? initialPadding.end : initialPadding.start;
           int paddingRight = isRtl ? initialPadding.start : initialPadding.end;
-          toolbar.setPadding(
-              paddingLeft + insets.getSystemWindowInsetLeft(), initialPadding.top,
-              paddingRight + insets.getSystemWindowInsetRight(), initialPadding.bottom);
+          Insets systemBarCutoutInsets =
+              insets.getInsets(
+                  WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+          paddingLeft += systemBarCutoutInsets.left;
+          paddingRight += systemBarCutoutInsets.right;
+
+          toolbar.setPadding(paddingLeft, initialPadding.top, paddingRight, initialPadding.bottom);
           return insets;
         });
   }
@@ -526,7 +538,11 @@ public class SearchView extends FrameLayout
     ViewCompat.setOnApplyWindowInsetsListener(
         statusBarSpacer,
         (v, insets) -> {
-          int systemWindowInsetTop = insets.getSystemWindowInsetTop();
+          int systemWindowInsetTop =
+              insets.getInsets(
+                      WindowInsetsCompat.Type.systemBars()
+                          | WindowInsetsCompat.Type.displayCutout())
+                  .top;
           setUpStatusBarSpacer(systemWindowInsetTop);
           if (!statusBarSpacerEnabledOverride) {
             setStatusBarSpacerEnabledInternal(systemWindowInsetTop > 0);
@@ -542,8 +558,11 @@ public class SearchView extends FrameLayout
     ViewCompat.setOnApplyWindowInsetsListener(
         divider,
         (v, insets) -> {
-          layoutParams.leftMargin = leftMargin + insets.getSystemWindowInsetLeft();
-          layoutParams.rightMargin = rightMargin + insets.getSystemWindowInsetRight();
+          Insets systemBarCutoutInsets =
+              insets.getInsets(
+                  WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
+          layoutParams.leftMargin = leftMargin + systemBarCutoutInsets.left;
+          layoutParams.rightMargin = rightMargin + systemBarCutoutInsets.right;
           return insets;
         });
   }
@@ -824,6 +843,10 @@ public class SearchView extends FrameLayout
     }
 
     updateListeningForBackCallbacks(state);
+
+    if (searchBar != null && state == TransitionState.HIDDEN) {
+      searchBar.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+    }
   }
 
   private void updateModalForAccessibility(@NonNull TransitionState state) {
@@ -877,7 +900,12 @@ public class SearchView extends FrameLayout
         || currentTransitionState.equals(TransitionState.HIDING)) {
       return;
     }
-    searchViewAnimationHelper.hide();
+    if (searchBar != null && searchBar.isAttachedToWindow()) {
+      searchBar.setPlaceholderText(editText.getText().toString());
+      searchBar.post(searchViewAnimationHelper::hide);
+    } else {
+      searchViewAnimationHelper.hide();
+    }
   }
 
   /** Updates the visibility of the {@link SearchView} without an animation. */
@@ -935,9 +963,6 @@ public class SearchView extends FrameLayout
     editText.post(
         () -> {
           editText.clearFocus();
-          if (searchBar != null) {
-            searchBar.requestFocus();
-          }
           ViewUtils.hideKeyboard(editText, useWindowInsetsController);
         });
   }
@@ -965,14 +990,12 @@ public class SearchView extends FrameLayout
   }
 
   /**
-   * Sets the 'touchscreenBlocksFocus' attribute of the nested toolbar. The attribute defaults to
-   * 'true' for API level 26+. We need to set it to 'false' if keyboard navigation is needed for the
-   * search results.
+   * Sets the 'touchscreenBlocksFocus' attribute of the nested toolbar. This is set to 'false' by
+   * default, which allows keyboard navigation between the search view toolbar and the search
+   * results.
    */
   public void setToolbarTouchscreenBlocksFocus(boolean touchscreenBlocksFocus) {
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      toolbar.setTouchscreenBlocksFocus(touchscreenBlocksFocus);
-    }
+    toolbar.setTouchscreenBlocksFocus(touchscreenBlocksFocus);
   }
 
   @SuppressLint("InlinedApi") // View Compat will handle the differences.

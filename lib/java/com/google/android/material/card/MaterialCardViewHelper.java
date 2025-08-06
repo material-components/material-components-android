@@ -23,6 +23,7 @@ import static com.google.android.material.card.MaterialCardView.CHECKED_ICON_GRA
 
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -32,8 +33,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
@@ -49,17 +48,19 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import androidx.cardview.widget.CardView;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.card.MaterialCardView.CheckedIconGravity;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.RoundedCornerTreatment;
+import com.google.android.material.shape.ShapeAppearance;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.StateListShapeAppearanceModel;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -92,6 +93,8 @@ class MaterialCardViewHelper {
 
   private static final int CHECKED_ICON_LAYER_INDEX = 2;
 
+  private static final int NOT_SET = -1;
+
   // We need to create a dummy drawable to avoid LayerDrawable crashes on API 28-.
   private static final Drawable CHECKED_ICON_NONE =
       VERSION.SDK_INT <= VERSION_CODES.P ? new ColorDrawable() : null;
@@ -104,6 +107,7 @@ class MaterialCardViewHelper {
 
   // Will always wrapped in an InsetDrawable
   @NonNull private final MaterialShapeDrawable foregroundContentDrawable;
+  private float cardCornerRadius = NOT_SET;
 
   @Dimension private int checkedIconMargin;
   @Dimension private int checkedIconSize;
@@ -115,11 +119,10 @@ class MaterialCardViewHelper {
   @Nullable private Drawable checkedIcon;
   @Nullable private ColorStateList rippleColor;
   @Nullable private ColorStateList checkedIconTint;
-  @Nullable private ShapeAppearanceModel shapeAppearanceModel;
+  @NonNull private ShapeAppearance shapeAppearanceModel;
   @Nullable private ColorStateList strokeColor;
   @Nullable private Drawable rippleDrawable;
   @Nullable private LayerDrawable clickableForegroundDrawable;
-  @Nullable private MaterialShapeDrawable compatRippleDrawable;
   @Nullable private MaterialShapeDrawable foregroundShapeDrawable;
 
   private boolean isBackgroundOverwritten = false;
@@ -139,23 +142,29 @@ class MaterialCardViewHelper {
       int defStyleAttr,
       @StyleRes int defStyleRes) {
     materialCardView = card;
+
+    TypedArray cardViewAttributes =
+        card.getContext()
+            .obtainStyledAttributes(
+                attrs,
+                androidx.cardview.R.styleable.CardView,
+                defStyleAttr,
+                androidx.cardview.R.style.CardView);
     bgDrawable = new MaterialShapeDrawable(card.getContext(), attrs, defStyleAttr, defStyleRes);
     bgDrawable.initializeElevationOverlay(card.getContext());
     bgDrawable.setShadowColor(Color.DKGRAY);
     ShapeAppearanceModel.Builder shapeAppearanceModelBuilder =
         bgDrawable.getShapeAppearanceModel().toBuilder();
 
-    TypedArray cardViewAttributes =
-        card.getContext()
-            .obtainStyledAttributes(attrs, R.styleable.CardView, defStyleAttr, R.style.CardView);
-    if (cardViewAttributes.hasValue(R.styleable.CardView_cardCornerRadius)) {
-      // If cardCornerRadius is set, let it override the shape appearance.
-      shapeAppearanceModelBuilder.setAllCornerSizes(
-          cardViewAttributes.getDimension(R.styleable.CardView_cardCornerRadius, 0));
+    if (cardViewAttributes.hasValue(androidx.cardview.R.styleable.CardView_cardCornerRadius)) {
+      // If cardCornerRadius is set, remember it so we can let it override the shape appearance
+      cardCornerRadius = cardViewAttributes.getDimension(
+          androidx.cardview.R.styleable.CardView_cardCornerRadius, 0);
+      shapeAppearanceModelBuilder.setAllCornerSizes(cardCornerRadius);
     }
 
     foregroundContentDrawable = new MaterialShapeDrawable();
-    setShapeAppearanceModel(shapeAppearanceModelBuilder.build());
+    setShapeAppearance(shapeAppearanceModelBuilder.build());
 
     iconFadeAnimInterpolator =
         MotionUtils.resolveThemeInterpolator(
@@ -203,7 +212,8 @@ class MaterialCardViewHelper {
     if (rippleColor == null) {
       rippleColor =
           ColorStateList.valueOf(
-              MaterialColors.getColor(materialCardView, R.attr.colorControlHighlight));
+              MaterialColors.getColor(
+                  materialCardView, androidx.appcompat.R.attr.colorControlHighlight));
     }
 
     ColorStateList foregroundColor =
@@ -222,6 +232,24 @@ class MaterialCardViewHelper {
     fgDrawable =
         shouldUseClickableForeground() ? getClickableForeground() : foregroundContentDrawable;
     materialCardView.setForeground(insetDrawable(fgDrawable));
+
+    // Card corner radius overrides the shape appearance in precedence.
+    if (cardCornerRadius == NOT_SET) {
+      StateListShapeAppearanceModel stateListShapeAppearanceModel =
+          StateListShapeAppearanceModel.create(
+              materialCardView.getContext(),
+              attributes,
+              R.styleable.MaterialCardView_shapeAppearance);
+      if (stateListShapeAppearanceModel != null) {
+        SpringForce springForce = createSpringForce(materialCardView.getContext());
+        bgDrawable.setCornerSpringForce(springForce);
+        foregroundContentDrawable.setCornerSpringForce(springForce);
+        if (foregroundShapeDrawable != null) {
+          foregroundShapeDrawable.setCornerSpringForce(springForce);
+        }
+        setShapeAppearance(stateListShapeAppearanceModel);
+      }
+    }
   }
 
   boolean isBackgroundOverwritten() {
@@ -331,7 +359,9 @@ class MaterialCardViewHelper {
   }
 
   void setCornerRadius(float cornerRadius) {
-    setShapeAppearanceModel(shapeAppearanceModel.withCornerSize(cornerRadius));
+    cardCornerRadius = cornerRadius;
+    setShapeAppearance(
+        shapeAppearanceModel.getDefaultShape().withCornerSize(cornerRadius));
     fgDrawable.invalidateSelf();
     if (shouldAddCornerPaddingOutsideCardBackground()
         || shouldAddCornerPaddingInsideCardBackground()) {
@@ -420,7 +450,7 @@ class MaterialCardViewHelper {
   void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
     this.checkedIconTint = checkedIconTint;
     if (checkedIcon != null) {
-      DrawableCompat.setTintList(checkedIcon, checkedIconTint);
+      checkedIcon.setTintList(checkedIconTint);
     }
   }
 
@@ -442,7 +472,7 @@ class MaterialCardViewHelper {
   void setCheckedIcon(@Nullable Drawable checkedIcon) {
     if (checkedIcon != null) {
       this.checkedIcon = DrawableCompat.wrap(checkedIcon).mutate();
-      DrawableCompat.setTintList(this.checkedIcon, checkedIconTint);
+      this.checkedIcon.setTintList(checkedIconTint);
       setChecked(materialCardView.isChecked());
     } else {
       this.checkedIcon = CHECKED_ICON_NONE;
@@ -474,10 +504,9 @@ class MaterialCardViewHelper {
 
   void recalculateCheckedIconPosition(int measuredWidth, int measuredHeight) {
     if (clickableForegroundDrawable != null) {
-      boolean isPreLollipop = VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
       int verticalPaddingAdjustment = 0;
       int horizontalPaddingAdjustment = 0;
-      if (isPreLollipop || materialCardView.getUseCompatPadding()) {
+      if (materialCardView.getUseCompatPadding()) {
         verticalPaddingAdjustment = (int) Math.ceil(2f * calculateVerticalBackgroundPadding());
         horizontalPaddingAdjustment = (int) Math.ceil(2f * calculateHorizontalBackgroundPadding());
       }
@@ -524,24 +553,18 @@ class MaterialCardViewHelper {
     }
   }
 
-  void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+  void setShapeAppearance(@NonNull ShapeAppearance shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
-    bgDrawable.setShapeAppearanceModel(shapeAppearanceModel);
-    bgDrawable.setShadowBitmapDrawingEnable(!bgDrawable.isRoundRect());
-    if (foregroundContentDrawable != null) {
-      foregroundContentDrawable.setShapeAppearanceModel(shapeAppearanceModel);
-    }
-
+    bgDrawable.setShapeAppearance(shapeAppearanceModel);
+    foregroundContentDrawable.setShapeAppearance(shapeAppearanceModel);
     if (foregroundShapeDrawable != null) {
-      foregroundShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+      foregroundShapeDrawable.setShapeAppearance(shapeAppearanceModel);
     }
-
-    if (compatRippleDrawable != null) {
-      compatRippleDrawable.setShapeAppearanceModel(shapeAppearanceModel);
-    }
+    bgDrawable.setShadowBitmapDrawingEnable(!bgDrawable.isRoundRect());
   }
 
-  ShapeAppearanceModel getShapeAppearanceModel() {
+  @NonNull
+  ShapeAppearance getShapeAppearance() {
     return shapeAppearanceModel;
   }
 
@@ -573,8 +596,7 @@ class MaterialCardViewHelper {
   private Drawable insetDrawable(Drawable originalDrawable) {
     int insetVertical = 0;
     int insetHorizontal = 0;
-    boolean isPreLollipop = Build.VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
-    if (isPreLollipop || materialCardView.getUseCompatPadding()) {
+    if (materialCardView.getUseCompatPadding()) {
       // Calculate the shadow padding used by CardView
       insetVertical = (int) Math.ceil(calculateVerticalBackgroundPadding());
       insetHorizontal = (int) Math.ceil(calculateHorizontalBackgroundPadding());
@@ -623,12 +645,11 @@ class MaterialCardViewHelper {
   }
 
   private boolean canClipToOutline() {
-    return VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && bgDrawable.isRoundRect();
+    return bgDrawable.isRoundRect();
   }
 
   private float getParentCardViewCalculatedCornerPadding() {
-    if (materialCardView.getPreventCornerOverlap()
-        && (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || materialCardView.getUseCompatPadding())) {
+    if (materialCardView.getPreventCornerOverlap() && materialCardView.getUseCompatPadding()) {
       return (float) ((1 - COS_45) * materialCardView.getCardViewRadius());
     }
     return 0f;
@@ -644,15 +665,7 @@ class MaterialCardViewHelper {
         && materialCardView.getUseCompatPadding();
   }
 
-  /**
-   * Calculates the amount of padding required between the card background shape and the card
-   * content such that the entire content is within the bounds of the card background shape.
-   *
-   * <p>This should only be called when either {@link
-   * #shouldAddCornerPaddingOutsideCardBackground()} or {@link
-   * #shouldAddCornerPaddingInsideCardBackground()} returns true.
-   */
-  private float calculateActualCornerPadding() {
+  private float getMaxCornerPadding(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     return Math.max(
         Math.max(
             calculateCornerPaddingForCornerTreatment(
@@ -667,6 +680,26 @@ class MaterialCardViewHelper {
             calculateCornerPaddingForCornerTreatment(
                 shapeAppearanceModel.getBottomLeftCorner(),
                 bgDrawable.getBottomLeftCornerResolvedSize())));
+  }
+
+  /**
+   * Calculates the amount of padding required between the card background shape and the card
+   * content such that the entire content is within the bounds of the card background shape.
+   *
+   * <p>This should only be called when either {@link
+   * #shouldAddCornerPaddingOutsideCardBackground()} or {@link
+   * #shouldAddCornerPaddingInsideCardBackground()} returns true.
+   */
+  private float calculateActualCornerPadding() {
+    float maxCornerPadding = 0;
+    ShapeAppearanceModel[] shapeAppearanceModels =
+        shapeAppearanceModel.getShapeAppearanceModels();
+    for (ShapeAppearanceModel shapeAppearanceModel : shapeAppearanceModels) {
+      if (shapeAppearanceModel != null) {
+        maxCornerPadding = Math.max(maxCornerPadding, getMaxCornerPadding(shapeAppearanceModel));
+      }
+    }
+    return maxCornerPadding;
   }
 
   private float calculateCornerPaddingForCornerTreatment(CornerTreatment treatment, float size) {
@@ -707,36 +740,14 @@ class MaterialCardViewHelper {
 
   @NonNull
   private Drawable createForegroundRippleDrawable() {
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-      foregroundShapeDrawable = createForegroundShapeDrawable();
-      //noinspection NewApi
-      return new RippleDrawable(rippleColor, null, foregroundShapeDrawable);
-    }
-
-    return createCompatRippleDrawable();
-  }
-
-  @NonNull
-  private Drawable createCompatRippleDrawable() {
-    StateListDrawable rippleDrawable = new StateListDrawable();
-    compatRippleDrawable = createForegroundShapeDrawable();
-    compatRippleDrawable.setFillColor(rippleColor);
-    rippleDrawable.addState(new int[] {android.R.attr.state_pressed}, compatRippleDrawable);
-    return rippleDrawable;
+    foregroundShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+    return new RippleDrawable(rippleColor, null, foregroundShapeDrawable);
   }
 
   private void updateRippleColor() {
-    //noinspection NewApi
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE && rippleDrawable != null) {
+    if (rippleDrawable != null) {
       ((RippleDrawable) rippleDrawable).setColor(rippleColor);
-    } else if (compatRippleDrawable != null) {
-      compatRippleDrawable.setFillColor(rippleColor);
     }
-  }
-
-  @NonNull
-  private MaterialShapeDrawable createForegroundShapeDrawable() {
-    return new MaterialShapeDrawable(shapeAppearanceModel);
   }
 
   public void setChecked(boolean checked) {
@@ -771,5 +782,13 @@ class MaterialCardViewHelper {
 
   private boolean isCheckedIconBottom() {
     return (checkedIconGravity & Gravity.BOTTOM) == Gravity.BOTTOM;
+  }
+
+  @NonNull
+  private SpringForce createSpringForce(@NonNull Context context) {
+    return MotionUtils.resolveThemeSpringForce(
+        context,
+        R.attr.motionSpringFastSpatial,
+        R.style.Motion_Material3_Spring_Standard_Fast_Spatial);
   }
 }

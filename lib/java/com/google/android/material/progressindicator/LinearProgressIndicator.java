@@ -33,6 +33,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.Objects;
 
 /**
  * This class implements the linear type progress indicators.
@@ -57,8 +58,7 @@ import java.lang.annotation.RetentionPolicy;
  * developer guidance</a> and <a
  * href="https://material.io/components/progress-indicators/overview">design guidelines</a>.
  */
-public class LinearProgressIndicator
-    extends BaseProgressIndicator<LinearProgressIndicatorSpec> {
+public class LinearProgressIndicator extends BaseProgressIndicator<LinearProgressIndicatorSpec> {
   public static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_LinearProgressIndicator;
 
   /**
@@ -93,6 +93,7 @@ public class LinearProgressIndicator
     super(context, attrs, defStyleAttr, DEF_STYLE_RES);
 
     initializeDrawables();
+    initialized = true;
   }
 
   // **************** Inherited functions ****************
@@ -121,11 +122,11 @@ public class LinearProgressIndicator
     int contentHeight = h - (getPaddingTop() + getPaddingBottom());
     Drawable drawable = getIndeterminateDrawable();
     if (drawable != null) {
-      drawable.setBounds(/*left=*/ 0, /*top=*/ 0, contentWidth, contentHeight);
+      drawable.setBounds(/* left= */ 0, /* top= */ 0, contentWidth, contentHeight);
     }
     drawable = getProgressDrawable();
     if (drawable != null) {
-      drawable.setBounds(/*left=*/ 0, /*top=*/ 0, contentWidth, contentHeight);
+      drawable.setBounds(/* left= */ 0, /* top= */ 0, contentWidth, contentHeight);
     }
   }
 
@@ -169,6 +170,59 @@ public class LinearProgressIndicator
   }
 
   /**
+   * Returns the radius of the rounded inner corner for the indicator and track in pixels.
+   *
+   * @see #setTrackInnerCornerRadius(int)
+   * @see #setTrackInnerCornerRadiusFraction(int)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackInnerCornerRadius
+   */
+  @Px
+  public int getTrackInnerCornerRadius() {
+    return spec.trackInnerCornerRadius;
+  }
+
+  /**
+   * Sets the radius of the rounded inner corner for the indicator and track in pixels.
+   *
+   * @param trackInnerCornerRadius The new corner radius in pixels.
+   * @see #setTrackInnerCornerRadiusFraction(float)
+   * @see #getTrackInnerCornerRadius()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackInnerCornerRadius
+   */
+  public void setTrackInnerCornerRadius(@Px int trackInnerCornerRadius) {
+    if (spec.trackInnerCornerRadius != trackInnerCornerRadius) {
+      spec.trackInnerCornerRadius =
+          Math.round(min(trackInnerCornerRadius, spec.trackThickness / 2f));
+      spec.useRelativeTrackInnerCornerRadius = false;
+      spec.hasInnerCornerRadius = true;
+      spec.validateSpec();
+      invalidate();
+    }
+  }
+
+  /**
+   * Sets the radius of the rounded inner corner for the indicator and track in fraction of the
+   * track thickness.
+   *
+   * @param trackInnerCornerRadiusFraction The new corner radius in fraction of the track thickness.
+   * @see #setTrackInnerCornerRadius(int)
+   * @see #getTrackInnerCornerRadius()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackInnerCornerRadius
+   */
+  public void setTrackInnerCornerRadiusFraction(float trackInnerCornerRadiusFraction) {
+    if (spec.trackInnerCornerRadiusFraction != trackInnerCornerRadiusFraction) {
+      spec.trackInnerCornerRadiusFraction = min(trackInnerCornerRadiusFraction, 0.5f);
+      spec.useRelativeTrackInnerCornerRadius = true;
+      spec.hasInnerCornerRadius = true;
+      spec.validateSpec();
+      invalidate();
+    }
+  }
+
+  /**
    * Returns the size of the stop indicator at the end of the track in pixels.
    *
    * @see #setTrackStopIndicatorSize(int)
@@ -190,8 +244,35 @@ public class LinearProgressIndicator
    */
   public void setTrackStopIndicatorSize(@Px int trackStopIndicatorSize) {
     if (spec.trackStopIndicatorSize != trackStopIndicatorSize) {
-      spec.trackStopIndicatorSize = min(trackStopIndicatorSize, spec.trackThickness);
+      spec.trackStopIndicatorSize = trackStopIndicatorSize;
       spec.validateSpec();
+      invalidate();
+    }
+  }
+
+  /**
+   * Returns the padding of the stop indicator at the end of the track in pixels.
+   *
+   * @see #setTrackStopIndicatorPadding(int)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackStopIndicatorPadding
+   */
+  @Nullable
+  public Integer getTrackStopIndicatorPadding() {
+    return spec.trackStopIndicatorPadding;
+  }
+
+  /**
+   * Sets the padding of the stop indicator at the end of the track in pixels.
+   *
+   * @param trackStopIndicatorPadding The new stop indicator padding in pixels.
+   * @see #getTrackStopIndicatorPadding()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#LinearProgressIndicator_trackStopIndicatorPadding
+   */
+  public void setTrackStopIndicatorPadding(@Nullable Integer trackStopIndicatorPadding) {
+    if (!Objects.equals(spec.trackStopIndicatorPadding, trackStopIndicatorPadding)) {
+      spec.trackStopIndicatorPadding = trackStopIndicatorPadding;
       invalidate();
     }
   }

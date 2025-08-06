@@ -20,8 +20,6 @@ import io.material.catalog.R;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.fragment.app.Fragment;
@@ -65,15 +63,13 @@ public abstract class FeatureDemoUtils {
       @Nullable String sharedElementName) {
     FragmentTransaction transaction = activity.getSupportFragmentManager().beginTransaction();
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && sharedElement != null
-        && sharedElementName != null) {
+    if (sharedElement != null && sharedElementName != null) {
       Fragment currentFragment = getCurrentFragment(activity);
 
       Context context = currentFragment.requireContext();
       MaterialContainerTransform transform =
           new MaterialContainerTransform(context, /* entering= */ true);
-      transform.setContainerColor(MaterialColors.getColor(sharedElement, R.attr.colorSurface));
+      transform.setContainerColor(MaterialColors.getColor(sharedElement, com.google.android.material.R.attr.colorSurface));
       transform.setFadeMode(MaterialContainerTransform.FADE_MODE_THROUGH);
       fragment.setSharedElementEnterTransition(transform);
       transaction.addSharedElement(sharedElement, sharedElementName);
@@ -94,10 +90,10 @@ public abstract class FeatureDemoUtils {
       }
     } else {
       transaction.setCustomAnimations(
-          R.anim.abc_grow_fade_in_from_bottom,
-          R.anim.abc_fade_out,
-          R.anim.abc_fade_in,
-          R.anim.abc_shrink_fade_out_from_bottom);
+          androidx.appcompat.R.anim.abc_grow_fade_in_from_bottom,
+          androidx.appcompat.R.anim.abc_fade_out,
+          androidx.appcompat.R.anim.abc_fade_in,
+          androidx.appcompat.R.anim.abc_shrink_fade_out_from_bottom);
     }
 
     transaction

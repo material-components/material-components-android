@@ -28,4 +28,6 @@
   <dimen name="m3_searchview_elevation">@dimen/m3_comp_search_view_container_elevation</dimen>
   <dimen name="m3_searchview_divider_size">1dp</dimen>
 
+  <dimen name="m3_searchbar_parent_width_breakpoint">312dp</dimen>
+
 </resources>

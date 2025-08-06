@@ -25,8 +25,6 @@
       android:layout_height="wrap_content"
       android:paddingTop="32dp"
       android:paddingBottom="32dp"
-      android:paddingLeft="16dp"
-      android:paddingRight="16dp"
       android:clipToPadding="false"
       android:orientation="vertical">
 
@@ -52,5 +50,13 @@
         android:elevation="@dimen/design_appbar_elevation"
         app:subtitle="Surface Elevated"
         app:title="Toolbar"/>
+
+    <com.google.android.material.appbar.MaterialToolbar
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="32dp"
+      android:theme="@style/ThemeOverlay.Material3.Toolbar.CircleNavigationButton"
+      app:subtitle="Circle Navigation Button"
+      app:title="Toolbar" />
   </LinearLayout>
 </ScrollView>

@@ -66,7 +66,7 @@ public class TextInputEditText extends AppCompatEditText {
   }
 
   public TextInputEditText(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, R.attr.editTextStyle);
+    this(context, attrs, androidx.appcompat.R.attr.editTextStyle);
   }
 
   public TextInputEditText(

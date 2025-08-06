@@ -309,7 +309,7 @@ public class DialogMainDemoFragment extends DemoFragment {
 
   @StyleRes
   protected int getCenteredTitleThemeOverlay() {
-    return R.style.ThemeOverlay_Material3_MaterialAlertDialog_Centered;
+    return com.google.android.material.R.style.ThemeOverlay_Material3Expressive_MaterialAlertDialog_Centered;
   }
 
   @StyleRes

@@ -56,7 +56,7 @@ public class SingleDateSelectorTest {
 
   @Before
   public void setupMonthAdapters() {
-    ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
+    ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_Material3_Light);
     activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     context = activity.getApplicationContext();
     res = context.getResources();
@@ -343,6 +343,21 @@ public class SingleDateSelectorTest {
 
     assertThat(textInputLayout.getEditText().isFocused()).isTrue();
     assertThat(shadowIMM.isSoftInputVisible()).isTrue();
+  }
+
+  @Test
+  public void textField_shouldSetCursorToEndOfText() {
+    Calendar calendar = UtcDates.getUtcCalendar();
+    calendar.set(2025, Calendar.FEBRUARY, 1);
+    singleDateSelector.setSelection(calendar.getTimeInMillis());
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout textInputLayout = root.findViewById(R.id.mtrl_picker_text_input_date);
+    EditText editText = textInputLayout.getEditText();
+
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(editText.getSelectionStart()).isEqualTo(editText.getText().length());
   }
 
   private View getRootView() {

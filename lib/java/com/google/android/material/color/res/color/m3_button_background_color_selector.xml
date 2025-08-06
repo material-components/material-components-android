@@ -15,6 +15,9 @@
   ~ limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="?attr/colorContainer" android:state_enabled="true"/>
-  <item android:alpha="@dimen/material_emphasis_disabled_background" android:color="?attr/colorOnSurface"/>
+  <item android:state_enabled="false"
+    android:alpha="@dimen/material_emphasis_disabled_background" android:color="?attr/colorOnSurface"/>
+  <item android:state_checkable="true" android:state_checked="true" android:color="?attr/colorContainerChecked"/>
+  <item android:state_checkable="true" android:color="?attr/colorContainerUnchecked"/>
+  <item android:color="?attr/colorContainer" />
 </selector>

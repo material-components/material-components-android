@@ -23,6 +23,7 @@ import static com.google.android.material.timepicker.TimeFormat.CLOCK_12H;
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
 
 import android.os.Bundle;
+import androidx.fragment.app.Fragment;
 import androidx.appcompat.widget.SwitchCompat;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -124,16 +125,26 @@ public class TimePickerMainDemoFragment extends DemoFragment {
       }
 
       MaterialTimePicker materialTimePicker = materialTimePickerBuilder.build();
-      materialTimePicker.show(requireFragmentManager(), "fragment_tag");
-
-      materialTimePicker.addOnPositiveButtonClickListener(dialog -> {
-        int newHour = materialTimePicker.getHour();
-        int newMinute = materialTimePicker.getMinute();
-        TimePickerMainDemoFragment.this.onTimeSet(newHour, newMinute);
-      });
+      materialTimePicker.showNow(requireFragmentManager(), "fragment_tag");
+      setUpClickListener();
     });
 
+    setUpClickListener();
     return view;
+  }
+
+  private void setUpClickListener() {
+    Fragment fragment = getParentFragmentManager().findFragmentByTag("fragment_tag");
+    if (fragment instanceof MaterialTimePicker) {
+      MaterialTimePicker materialTimePicker = (MaterialTimePicker) fragment;
+      materialTimePicker.clearOnPositiveButtonClickListeners();
+      materialTimePicker.addOnPositiveButtonClickListener(
+          dialog -> {
+            int newHour = materialTimePicker.getHour();
+            int newMinute = materialTimePicker.getMinute();
+            TimePickerMainDemoFragment.this.onTimeSet(newHour, newMinute);
+          });
+    }
   }
 
   private void showFrameworkTimepicker() {

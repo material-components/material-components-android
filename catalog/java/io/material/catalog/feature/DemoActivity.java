@@ -18,8 +18,6 @@ package io.material.catalog.feature;
 
 import io.material.catalog.R;
 
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
@@ -28,7 +26,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
@@ -95,20 +92,18 @@ public abstract class DemoActivity extends BaseCatalogActivity {
   }
 
   protected boolean shouldSetUpContainerTransform() {
-    return VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && getIntent().getStringExtra(EXTRA_TRANSITION_NAME) != null;
+    return getIntent().getStringExtra(EXTRA_TRANSITION_NAME) != null;
   }
 
   protected boolean shouldApplyEdgeToEdgePreference() {
     return true;
   }
 
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   private MaterialContainerTransform buildContainerTransform(boolean entering) {
     MaterialContainerTransform transform = new MaterialContainerTransform(this, entering);
     transform.addTarget(android.R.id.content);
     transform.setContainerColor(
-        MaterialColors.getColor(findViewById(android.R.id.content), R.attr.colorSurface));
+        MaterialColors.getColor(findViewById(android.R.id.content), com.google.android.material.R.attr.colorSurface));
     transform.setFadeMode(MaterialContainerTransform.FADE_MODE_THROUGH);
     return transform;
   }

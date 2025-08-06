@@ -24,18 +24,17 @@
   android:clipToPadding="false"
   android:clipChildren="false">
 
-  <ImageButton
+  <Button
     android:id="@+id/nav_button"
-    style="?attr/borderlessButtonStyle"
-    android:layout_width="@dimen/mtrl_min_touch_target_size"
-    android:layout_height="@dimen/mtrl_min_touch_target_size"
+    style="?attr/materialIconButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_gravity="start"
     android:layout_marginStart="4dp"
     android:layout_marginLeft="4dp"
     android:layout_marginBottom="16dp"
-    android:background="?attr/actionBarItemBackground"
-    android:src="@drawable/ic_drawer_menu_24px"
-    android:contentDescription="@string/cat_adaptive_nav_button"/>
+    android:contentDescription="@string/cat_adaptive_nav_button"
+    app:icon="@drawable/ic_drawer_menu_24px"/>
 
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
     android:id="@+id/nav_fab"

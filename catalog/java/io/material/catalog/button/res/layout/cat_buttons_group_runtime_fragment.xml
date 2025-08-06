@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2025 The Android Open Source Project
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:paddingTop="8dp"
+  android:gravity="center_horizontal"
+  android:orientation="vertical"
+  android:paddingHorizontal="8dp">
+  <com.google.android.material.button.MaterialButtonGroup
+    android:id="@+id/cat_dynamic_button_group_label_only"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    app:overflowMode="menu"/>
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+    <Button
+      style="?attr/materialButtonTonalStyle"
+      android:id="@+id/cat_add_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="4dp"
+      android:text="@string/cat_button_group_runtime_add_button" />
+    <Button
+      style="?attr/materialButtonTonalStyle"
+      android:id="@+id/cat_remove_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginHorizontal="4dp"
+      android:text="@string/cat_button_group_runtime_remove_button" />
+  </LinearLayout>
+  <com.google.android.material.materialswitch.MaterialSwitch
+    android:id="@+id/last_checkable_switch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checked="true"
+    android:text="@string/cat_button_group_set_last_button_checkable_label"/>
+  <com.google.android.material.materialswitch.MaterialSwitch
+    android:id="@+id/last_checked_switch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:enabled="false"
+    android:text="@string/cat_button_group_set_last_button_checked_label"/>
+  <com.google.android.material.materialswitch.MaterialSwitch
+    android:id="@+id/last_enabled_switch"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:checked="true"
+    android:text="@string/cat_button_group_set_last_button_enabled_label"/>
+</LinearLayout>

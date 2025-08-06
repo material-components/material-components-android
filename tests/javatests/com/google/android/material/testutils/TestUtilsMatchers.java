@@ -330,7 +330,7 @@ public class TestUtilsMatchers {
         // Since the FAB background is round, and may contain the shadow, we'll look at
         // just the center half rect of the content area
         final Rect area = new Rect();
-        fab.getContentRect(area);
+        fab.getMeasuredContentRect(area);
 
         final int rectHeightQuarter = area.height() / 4;
         final int rectWidthQuarter = area.width() / 4;
@@ -404,7 +404,7 @@ public class TestUtilsMatchers {
 
         final FloatingActionButton fab = (FloatingActionButton) view;
         final Rect area = new Rect();
-        fab.getContentRect(area);
+        fab.getMeasuredContentRect(area);
 
         if (area.height() != size) {
           failedCheckDescription =
@@ -439,7 +439,7 @@ public class TestUtilsMatchers {
         final ViewGroup parent = (ViewGroup) view.getParent();
 
         final Rect area = new Rect();
-        fab.getContentRect(area);
+        fab.getMeasuredContentRect(area);
 
         final int absGravity =
             GravityCompat.getAbsoluteGravity(gravity, ViewCompat.getLayoutDirection(view));

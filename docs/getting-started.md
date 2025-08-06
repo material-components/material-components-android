@@ -5,7 +5,7 @@ section: docs
 path: /docs/getting-started/
 -->
 
-# Getting started with Material Components for Android
+# Getting started with Material components for Android
 
 ## 1. Migration guidance
 
@@ -55,6 +55,9 @@ to find the latest version of the library.
 **Note:** In order to use the new `Material3` themes and component styles, you
 should depend on version `1.5.0` or later.
 
+**Note:** In order to use the new `Material3Expressive` themes and component
+styles, you should depend on version `1.14.0` or later.
+
 ### New Namespace and AndroidX
 
 If your app currently depends on the original Design Support Library, you can
@@ -71,17 +74,37 @@ the `com.android.support:design:28.0.0` dependency.
 **Note:** You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
 
+### Non-Transitive R Classes (referencing library resources programmatically)
+
+Starting with version `1.13.0-alpha12`, the Material library is built with AGP
+8.7.3 (or later) and `android.nonTransitiveRClass=true`, meaning
+[R classes are no longer transitive](https://developer.android.com/build/optimize-your-build#use-non-transitive-r-classes)
+and resources must be fully qualified with their library path when used
+programmatically.
+
+For example, since `colorPrimary` is defined in the AppCompat library, you must
+refer to it as `androidx.appcompat.R.attr.colorPrimary` as opposed to
+`com.google.android.material.R.attr.colorPrimary` or `R.attr.colorPrimary`.
+
+For a Material defined resource like `colorOnPrimary`, you must refer to it as
+`com.google.android.material.R.attr.colorOnPrimary`.
+
+To opt out of this new behavior, set `android.nonTransitiveRClass=false` in your
+`gradle.properties` file. Then you can access any resource without a fully
+qualified path (i.e., simply `R.<resource-type>.<resource-name>`).
+
+**Note:** This is relevant for all types of library resources, not just
+attribute references.
+
 ## 3. Android SDK compilation
 
 In order to use the latest versions of Material Components for Android and the
 AndroidX Jetpack libraries, you will have to install the latest version of
 Android Studio and update your app to meet the following requirements:
 
--   `compileSdkVersion` -> `34` or later (see the
-    [Android 14 app migration guide](https://developer.android.com/about/versions/14/migration))
--   `minSdkVersion` -> `19` or later (see this
-    [AndroidX blog post](https://android-developers.googleblog.com/2023/10/androidx-minsdkversion-19.html)
-    for more info)
+-   `compileSdkVersion` -> `35` or later (see the
+    [Android 15 app migration guide](https://developer.android.com/about/versions/15/migration))
+-   `minSdkVersion` -> `21` or later
 
 ## 4. Java 8 compilation
 
@@ -92,13 +115,13 @@ for more information on Java 8 support and how to enable it for your app.
 
 ## 5. Gradle, AGP, and Android Studio
 
-When using MDC-Android version `1.7.0` and above, you will need to make sure
+When using MDC-Android version `1.13.0` and above, you will need to make sure
 your project is built with the following minimum requirements, in order to
 support the latest build features such as XML `macro`:
 
--   [Gradle version 7.3.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
--   [Android Gradle Plugin (AGP) version 7.2.0](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
--   [Android Studio Chipmunk, version 2021.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
+-   [Gradle version 8.9](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+-   [Android Gradle Plugin (AGP) version 8.7.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+-   [Android Studio Ladybug, version 2024.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
 
 ## 6. `AppCompatActivity`
 
@@ -126,6 +149,31 @@ an `AppCompat` or `MaterialComponents` theme and add some new theme attributes
 to your theme. See the
 [**AppCompat or MaterialComponents themes**](#appcompat-or-materialcomponents-themes)
 section for more details.
+
+### **`Material3Expressive` themes**
+
+**Note:** You must depend on library version `1.14.0-alpha01` or later to use
+`Theme.Material3Expressive.*` themes, which are required for
+`Widget.Material3Expressive.*` component styles.
+
+Here are the `Material3Expressive` themes you can use to get the latest
+component styles and theme-level attributes, as well as their `Material3`
+equivalents when applicable.
+
+`Material3Expressive`                                          | `Material3`
+-------------------------------------------------------------- | -----------
+`Theme.Material3Expressive.Light`                              | `Theme.Material3.Light`
+`Theme.Material3Expressive.Light.NoActionBar`                  | `Theme.Material3.Light.NoActionBar`
+`Theme.Material3Expressive.Dark`                               | `Theme.Material3.Dark`
+`Theme.Material3Expressive.Dark.NoActionBar`                   | `Theme.Material3.Dark.NoActionBar`
+`Theme.Material3Expressive.DayNight`                           | `Theme.Material3.DayNight`
+`Theme.Material3Expressive.DayNight.NoActionBar`               | `Theme.Material3.DayNight.NoActionBar`
+`Theme.Material3Expressive.DynamicColors.Light`                | `Theme.Material3.DynamicColors.Light`
+`Theme.Material3Expressive.DynamicColors.Light.NoActionBar`    | `Theme.Material3.DynamicColors.Light.NoActionBar`
+`Theme.Material3Expressive.DynamicColors.Dark`                 | `Theme.Material3.DynamicColors.Dark`
+`Theme.Material3Expressive.DynamicColors.Dark.NoActionBar`     | `Theme.Material3.DynamicColors.Dark.NoActionBar`
+`Theme.Material3Expressive.DynamicColors.DayNight`             | `Theme.Material3.DynamicColors.DayNight`
+`Theme.Material3Expressive.DynamicColors.DayNight.NoActionBar` | `Theme.Material3.DynamicColors.DayNight.NoActionBar`
 
 ### **`Material3` themes**
 

@@ -15,8 +15,33 @@
   ~ limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="@dimen/m3_ripple_pressed_alpha" android:color="?attr/colorOnContainer" android:state_pressed="true"/>
-  <item android:alpha="@dimen/m3_ripple_focused_alpha" android:color="?attr/colorOnContainer" android:state_focused="true"/>
-  <item android:alpha="@dimen/m3_ripple_hovered_alpha" android:color="?attr/colorOnContainer" android:state_hovered="true"/>
-  <item android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnContainer"/>
+  <!-- Uncheckable -->
+  <item android:state_checkable="false" android:state_pressed="true"
+    android:alpha="@dimen/m3_ripple_pressed_alpha" android:color="?attr/colorOnContainer"/>
+  <item android:state_checkable="false" android:state_focused="true"
+    android:alpha="@dimen/m3_ripple_focused_alpha" android:color="?attr/colorOnContainer"/>
+  <item android:state_checkable="false" android:state_hovered="true"
+    android:alpha="@dimen/m3_ripple_hovered_alpha" android:color="?attr/colorOnContainer"/>
+  <item android:state_checkable="false"
+    android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnContainer"/>
+
+  <!-- Checkable, checked -->
+  <item android:state_pressed="true" android:state_checked="true"
+    android:alpha="@dimen/m3_ripple_pressed_alpha" android:color="?attr/colorOnContainerChecked"/>
+  <item android:state_focused="true" android:state_checked="true"
+    android:alpha="@dimen/m3_ripple_focused_alpha" android:color="?attr/colorOnContainerChecked"/>
+  <item android:state_hovered="true" android:state_checked="true"
+    android:alpha="@dimen/m3_ripple_hovered_alpha" android:color="?attr/colorOnContainerChecked"/>
+  <item android:state_checked="true"
+    android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnContainerChecked"/>
+
+  <!-- Checkable, unchecked -->
+  <item android:state_pressed="true"
+    android:alpha="@dimen/m3_ripple_pressed_alpha" android:color="?attr/colorOnContainerUnchecked"/>
+  <item android:state_focused="true"
+    android:alpha="@dimen/m3_ripple_focused_alpha" android:color="?attr/colorOnContainerUnchecked"/>
+  <item android:state_hovered="true"
+    android:alpha="@dimen/m3_ripple_hovered_alpha" android:color="?attr/colorOnContainerUnchecked"/>
+  <item
+    android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnContainerUnchecked"/>
 </selector>

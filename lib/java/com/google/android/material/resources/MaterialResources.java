@@ -200,9 +200,12 @@ public class MaterialResources {
       return defValue;
     }
 
-    TypedArray a = context.obtainStyledAttributes(textAppearance, R.styleable.TextAppearance);
+    TypedArray a =
+        context.obtainStyledAttributes(
+            textAppearance, androidx.appcompat.R.styleable.TextAppearance);
     TypedValue v = new TypedValue();
-    boolean available = a.getValue(R.styleable.TextAppearance_android_textSize, v);
+    boolean available =
+        a.getValue(androidx.appcompat.R.styleable.TextAppearance_android_textSize, v);
     a.recycle();
 
     if (!available) {
@@ -273,7 +276,7 @@ public class MaterialResources {
    * contain values, the first given index takes precedence and is returned.
    */
   @StyleableRes
-  public static int getIndexWithValue(
+  static int getIndexWithValue(
       @NonNull TypedArray attributes, @StyleableRes int a, @StyleableRes int b) {
     if (attributes.hasValue(a)) {
       return a;

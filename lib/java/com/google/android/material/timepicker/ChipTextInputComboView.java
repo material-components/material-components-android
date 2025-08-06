@@ -41,6 +41,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.internal.ViewUtils;
@@ -123,7 +124,20 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     chip.setText(formattedText);
     if (!isEmpty(formattedText)) {
       editText.removeTextChangedListener(watcher);
+
       editText.setText(formattedText);
+      ViewCompat.setAccessibilityDelegate(
+          editText,
+          new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+              super.onInitializeAccessibilityNodeInfo(host, info);
+              info.setText(formattedText);
+              info.setHintText(label.getText());
+            }
+          });
+
       editText.addTextChangedListener(watcher);
     }
   }

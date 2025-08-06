@@ -47,7 +47,7 @@ import org.robolectric.annotation.LooperMode;
 @LooperMode(LooperMode.Mode.LEGACY)
 /** Tests for {@link com.google.android.material.button.MaterialButtonToggleGroup}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 21)
+@Config(sdk = Config.OLDEST_SDK)
 public class MaterialButtonToggleGroupTest {
 
   private static final float CORNER_SIZE = 10f;

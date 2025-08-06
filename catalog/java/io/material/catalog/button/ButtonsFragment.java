@@ -19,6 +19,7 @@ package io.material.catalog.button;
 import io.material.catalog.R;
 
 import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -57,13 +58,56 @@ public class ButtonsFragment extends DemoLandingFragment {
   @Override
   public List<Demo> getAdditionalDemos() {
     return Arrays.asList(
-        new Demo(R.string.cat_buttons_toggle_group) {
+        getButtonGroupDemo(),
+        getButtonToggleGroupDemo(),
+        getSplitButtonDemo(),
+        new Demo(R.string.cat_buttons_group_distribution) {
           @Nullable
           @Override
           public Fragment createFragment() {
-            return new ButtonToggleGroupDemoFragment();
+            return new ButtonGroupDistributionDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_buttons_group_runtime) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new ButtonGroupRuntimeDemoFragment();
           }
         });
+  }
+
+  @NonNull
+  protected Demo getButtonGroupDemo() {
+    return new Demo(R.string.cat_buttons_group) {
+      @Nullable
+      @Override
+      public Fragment createFragment() {
+        return new ButtonGroupDemoFragment();
+      }
+    };
+  }
+
+  @NonNull
+  protected Demo getButtonToggleGroupDemo() {
+    return new Demo(R.string.cat_buttons_toggle_group) {
+      @Nullable
+      @Override
+      public Fragment createFragment() {
+        return new ButtonToggleGroupDemoFragment();
+      }
+    };
+  }
+
+  @NonNull
+  protected Demo getSplitButtonDemo() {
+    return new Demo(R.string.cat_split_button) {
+      @Nullable
+      @Override
+      public Fragment createFragment() {
+        return new SplitButtonDemoFragment();
+      }
+    };
   }
 
   /** The Dagger module for {@link ButtonsFragment} dependencies. */

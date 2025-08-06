@@ -20,11 +20,15 @@
   <public name="materialSearchBarStyle" type="attr"/>
   <public name="materialSearchViewStyle" type="attr"/>
   <public name="materialSearchViewPrefixStyle" type="attr"/>
+  <public name="materialSearchViewToolbarStyle" type="attr"/>
+  <public name="materialSearchViewToolbarHeight" type="attr"/>
   <public name="defaultMarginsEnabled" type="attr"/>
   <public name="defaultScrollFlagsEnabled" type="attr"/>
+  <public name="adaptiveMaxWidthEnabled" type="attr"/>
   <public name="hideNavigationIcon" type="attr"/>
   <public name="forceDefaultNavigationOnClickListener" type="attr"/>
   <public name="tintNavigationIcon" type="attr"/>
+  <public name="textCentered" type="attr"/>
   <public name="Widget.Material3.SearchBar" type="style"/>
   <public name="Widget.Material3.SearchBar.Outlined" type="style"/>
   <public name="Widget.Material3.SearchView" type="style"/>
@@ -38,4 +42,10 @@
   <public name="Widget.Material3.Search.ActionButton.Overflow" type="style"/>
   <public name="Widget.Material3.Search.Toolbar.Button.Navigation" type="style"/>
   <public name="searchbar_scrolling_view_behavior" type="string"/>
+  <public name="Widget.Material3Expressive.SearchBar" type="style"/>
+  <public name="Widget.Material3Expressive.SearchBar.CenteredText" type="style"/>
+  <public name="Widget.Material3Expressive.SearchBar.Outlined" type="style"/>
+  <public name="Widget.Material3Expressive.SearchView" type="style"/>
+  <public name="Widget.Material3Expressive.SearchBar.CenteredText.AppBarWithSearch" type="style"/>
+  <public name="Widget.Material3Expressive.SearchBar.AppBarWithSearch" type="style"/>
 </resources>

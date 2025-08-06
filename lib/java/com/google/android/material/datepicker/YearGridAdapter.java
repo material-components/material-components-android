@@ -72,6 +72,7 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
       }
     }
     style.styleItem(viewHolder.textView);
+    viewHolder.textView.setSelected(style == styles.selectedYear);
     viewHolder.textView.setOnClickListener(createYearClickListener(year));
   }
 
@@ -85,6 +86,7 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
         Month moveTo = calendarConstraints.clamp(current);
         materialCalendar.setCurrentMonth(moveTo);
         materialCalendar.setSelector(CalendarSelector.DAY);
+        materialCalendar.sendAccessibilityFocusEventToMonthDropdown();
       }
     };
   }

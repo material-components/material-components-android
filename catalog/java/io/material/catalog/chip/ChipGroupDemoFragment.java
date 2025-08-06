@@ -19,7 +19,9 @@ package io.material.catalog.chip;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+import androidx.appcompat.widget.PopupMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
@@ -34,7 +36,6 @@ import io.material.catalog.feature.DemoFragment;
 public class ChipGroupDemoFragment extends DemoFragment {
 
   private MaterialSwitch singleSelectionSwitch;
-  private MaterialSwitch selectionRequiredSwitch;
 
   @Nullable
   @Override
@@ -43,7 +44,7 @@ public class ChipGroupDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(getChipGroupContent(), viewGroup, false /* attachToRoot */);
 
     singleSelectionSwitch = view.findViewById(R.id.single_selection);
-    selectionRequiredSwitch = view.findViewById(R.id.selection_required);
+    MaterialSwitch selectionRequiredSwitch = view.findViewById(R.id.selection_required);
 
     ChipGroup reflowGroup = view.findViewById(R.id.reflow_group);
     ChipGroup scrollGroup = view.findViewById(R.id.scroll_group);
@@ -53,8 +54,8 @@ public class ChipGroupDemoFragment extends DemoFragment {
           reflowGroup.setSingleSelection(isChecked);
           scrollGroup.setSingleSelection(isChecked);
 
-          initChipGroup(reflowGroup);
-          initChipGroup(scrollGroup);
+          initChipGroup(reflowGroup, false);
+          initChipGroup(scrollGroup, true);
         });
 
     selectionRequiredSwitch.setOnCheckedChangeListener(
@@ -62,19 +63,20 @@ public class ChipGroupDemoFragment extends DemoFragment {
           reflowGroup.setSelectionRequired(isChecked);
           scrollGroup.setSelectionRequired(isChecked);
 
-          initChipGroup(reflowGroup);
-          initChipGroup(scrollGroup);
+          initChipGroup(reflowGroup, false);
+          initChipGroup(scrollGroup, true);
         });
 
-    initChipGroup(reflowGroup);
-    initChipGroup(scrollGroup);
+    initChipGroup(reflowGroup, false);
+    initChipGroup(scrollGroup, true);
 
     FloatingActionButton fab = view.findViewById(R.id.cat_chip_group_refresh);
     fab.setOnClickListener(
         v -> {
           // Reload the chip group UI.
-          initChipGroup(reflowGroup);
-          initChipGroup(scrollGroup);
+          reflowGroup.setSingleLine(true);
+          initChipGroup(reflowGroup, false);
+          initChipGroup(scrollGroup, true);
         });
     return view;
   }
@@ -91,18 +93,57 @@ public class ChipGroupDemoFragment extends DemoFragment {
         : R.layout.cat_chip_group_item_filter;
   }
 
-  private void initChipGroup(ChipGroup chipGroup) {
+  private void initChipGroup(ChipGroup chipGroup, boolean showMenu) {
     chipGroup.removeAllViews();
+
+    Chip viewAllChip = new Chip(chipGroup.getContext());
+    viewAllChip.setText(viewAllChip.getResources().getString(R.string.cat_chip_text_all));
+    viewAllChip.setChipIconResource(R.drawable.ic_drawer_menu_open_24px);
+    viewAllChip.setChipIconTint(viewAllChip.getTextColors());
+    viewAllChip.setChipIconVisible(true);
+    viewAllChip.setCheckable(!showMenu);
+    chipGroup.addView(viewAllChip);
+
+    PopupMenu menu;
+    if (showMenu) {
+      menu = new PopupMenu(viewAllChip.getContext(), viewAllChip);
+      viewAllChip.setOnClickListener(v -> menu.show());
+    } else {
+      menu = null;
+      viewAllChip.setOnClickListener(
+          v -> {
+            chipGroup.setSingleLine(!chipGroup.isSingleLine());
+            viewAllChip.setChecked(!chipGroup.isSingleLine());
+            chipGroup.requestLayout();
+          });
+    }
 
     boolean singleSelection = singleSelectionSwitch.isChecked();
     String[] textArray = getResources().getStringArray(R.array.cat_chip_group_text_array);
-    for (String text : textArray) {
+    for (int i = 0; i < textArray.length; i++) {
       Chip chip =
           (Chip) getLayoutInflater().inflate(getChipGroupItem(singleSelection), chipGroup, false);
-      chip.setText(text);
-      chip.setCloseIconVisible(true);
-      chip.setOnCloseIconClickListener(v -> chipGroup.removeView(chip));
+      chip.setId(i);
+      chip.setText(textArray[i]);
       chipGroup.addView(chip);
+
+      if (menu != null) {
+        menu.getMenu().add(Menu.NONE, i, i, textArray[i]);
+        menu.getMenu().setGroupCheckable(Menu.NONE, true, singleSelection);
+        menu.setOnMenuItemClickListener(
+            menuItem -> {
+              Chip targetChip = (Chip) chipGroup.getChildAt(menuItem.getOrder() + 1);
+              targetChip.setChecked(!targetChip.isChecked());
+              menuItem.setChecked(targetChip.isChecked());
+              return true;
+            });
+        chip.setCloseIconVisible(false);
+        chip.setOnCheckedChangeListener(
+            (buttonView, isChecked) -> menu.getMenu().getItem(chip.getId()).setChecked(isChecked));
+      } else {
+        chip.setCloseIconVisible(true);
+        chip.setOnCloseIconClickListener(v -> chipGroup.removeView(chip));
+      }
     }
   }
 }

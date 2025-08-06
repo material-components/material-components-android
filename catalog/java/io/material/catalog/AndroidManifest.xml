@@ -110,6 +110,10 @@
       android:name="io.material.catalog.search.SearchRecyclerDemoActivity"
       android:windowSoftInputMode="adjustNothing"
       android:exported="true" />
+    <activity
+      android:name="io.material.catalog.search.SearchBarWithAppBarIconsDemoActivity"
+      android:windowSoftInputMode="adjustNothing"
+      android:exported="true" />
   </application>
 
 </manifest>

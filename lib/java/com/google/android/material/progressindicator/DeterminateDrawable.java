@@ -23,7 +23,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint.Style;
-import android.graphics.Rect;
 import android.widget.ProgressBar;
 import androidx.annotation.NonNull;
 import androidx.core.math.MathUtils;
@@ -41,8 +40,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   // Constants for drawing progress.
   private static final int MAX_DRAWABLE_LEVEL = 10000;
   // Constants for amplitude animation.
-  private static final float FULL_AMPLITUDE_FRACTION_MIN = 0.1f;
-  private static final float FULL_AMPLITUDE_FRACTION_MAX = 0.9f;
+  static final float FULL_AMPLITUDE_PROGRESS_MIN = 0.1f;
+  static final float FULL_AMPLITUDE_PROGRESS_MAX = 0.9f;
 
   // The constant for spring force stiffness.
   private static final float SPRING_FORCE_STIFFNESS = SpringForce.STIFFNESS_VERY_LOW;
@@ -289,8 +288,8 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   }
 
   private float getAmplitudeFractionFromLevel(int level) {
-    return level >= FULL_AMPLITUDE_FRACTION_MIN * MAX_DRAWABLE_LEVEL
-            && level <= FULL_AMPLITUDE_FRACTION_MAX * MAX_DRAWABLE_LEVEL
+    return level >= baseSpec.waveAmplitudeRampProgressMin * MAX_DRAWABLE_LEVEL
+            && level <= baseSpec.waveAmplitudeRampProgressMax * MAX_DRAWABLE_LEVEL
         ? 1f
         : 0f;
   }
@@ -322,8 +321,6 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
 
   @Override
   public void draw(@NonNull Canvas canvas) {
-    Rect clipBounds = new Rect();
-
     if (getBounds().isEmpty() || !isVisible() || !canvas.getClipBounds(clipBounds)) {
       // Escape if bounds are empty, clip bounds are empty, or currently hidden.
       return;
@@ -404,6 +401,16 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     } else if (!enforced && phaseAnimator.isRunning()) {
       phaseAnimator.cancel();
     }
+  }
+
+  void setWaveAmplitudeRampProgressMin(float progress) {
+    baseSpec.waveAmplitudeRampProgressMin = progress;
+    invalidateSelf();
+  }
+
+  void setWaveAmplitudeRampProgressMax(float progress) {
+    baseSpec.waveAmplitudeRampProgressMax = progress;
+    invalidateSelf();
   }
 
   // ******************* Properties *******************

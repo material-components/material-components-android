@@ -30,6 +30,7 @@ import android.view.View;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.ColorUtils;
 import androidx.core.util.Preconditions;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.MotionSpec;
@@ -157,33 +158,13 @@ abstract class BaseMotionStrategy implements MotionStrategy {
 
                 @Override
                 public Float get(ExtendedFloatingActionButton object) {
-                  // The alpha of the currently drawn text
-                  int originalOpacity =
-                      Color.alpha(
-                          object.originalTextCsl.getColorForState(
-                              object.getDrawableState(), fab.originalTextCsl.getDefaultColor()));
-                  final float currentOpacity = Color.alpha(object.getCurrentTextColor()) / 255F;
-                  return lerp(0F, 1F, currentOpacity / originalOpacity);
+                  final int originalAlpha = Color.alpha(object.getCurrentOriginalTextColor());
+                  final int currentAlpha = Color.alpha(object.getCurrentTextColor());
+                  return originalAlpha != 0 ? (float) currentAlpha / originalAlpha : 0f;
                 }
 
                 @Override
                 public void set(ExtendedFloatingActionButton object, Float value) {
-                  // Since `value` is always between 0 (gone) and 1 (visible), interpolate between
-                  // 0 (gone) and the color's original alpha to avoid overshooting the text alpha.
-                  int originalColor =
-                      object.originalTextCsl.getColorForState(
-                          object.getDrawableState(), fab.originalTextCsl.getDefaultColor());
-
-                  final float interpolatedValue =
-                      lerp(0F, Color.alpha(originalColor) / 255F, value);
-                  int alphaColor =
-                      Color.argb(
-                          (int) (interpolatedValue * 255),
-                          Color.red(originalColor),
-                          Color.green(originalColor),
-                          Color.blue(originalColor));
-                  ColorStateList csl = ColorStateList.valueOf(alphaColor);
-
                   // Setting the text color back to the original CSL in an onAnimationEnd callback
                   // causes the view to blink after the animation ends. To avoid this, reset the
                   // text color on the last frame of this animation instead.
@@ -193,8 +174,19 @@ abstract class BaseMotionStrategy implements MotionStrategy {
                   // would jump in and jank the animation, but would conserve the user's updated
                   // color.
                   if (value == 1F) { // last frame and visible
-                    object.silentlyUpdateTextColor(object.originalTextCsl);
+                    object.silentlyUpdateTextColor(object.getOriginalTextColor());
                   } else {
+                    final int originalColor = object.getCurrentOriginalTextColor();
+
+                    // Since `value` is always between 0 (gone) and 1 (visible), interpolate
+                    // between 0 (gone) and the color's original alpha to avoid overshooting
+                    // the text alpha.
+                    final int targetAlpha =
+                        Math.round(lerp(0f, Color.alpha(originalColor), value));
+                    final int targetColor =
+                        ColorUtils.setAlphaComponent(originalColor, targetAlpha);
+
+                    final ColorStateList csl = ColorStateList.valueOf(targetColor);
                     object.silentlyUpdateTextColor(csl);
                   }
                 }

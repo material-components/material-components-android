@@ -20,8 +20,10 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
@@ -42,8 +44,7 @@ public class ChipRecyclerviewDemoFragment extends DemoFragment {
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    View view = layoutInflater.inflate(getChipContent(), viewGroup, false /* attachToRoot
-  */);
+    View view = layoutInflater.inflate(getChipContent(), viewGroup, false /* attachToRoot */);
 
     recyclerView = view.findViewById(R.id.chip_recyclerview_parent);
     layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
@@ -58,6 +59,10 @@ public class ChipRecyclerviewDemoFragment extends DemoFragment {
   /** A RecyclerView adapter that displays the checkable chips. */
   public static class ChipAdapter extends RecyclerView.Adapter<ChipAdapter.MyViewHolder> {
     private final Set<Integer> checkedChipId = new HashSet<>(getItemCount());
+    private PopupMenu menu;
+
+    private static final int VIEW_TYPE_NORMAL = 0;
+    private static final int VIEW_TYPE_ALL = 1;
 
     /** Provide a reference to the views for each data item. */
     public static class MyViewHolder extends RecyclerView.ViewHolder {
@@ -91,15 +96,58 @@ public class ChipRecyclerviewDemoFragment extends DemoFragment {
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-      holder.chip.setTag(position);
-      holder.chip.setChecked(checkedChipId.contains(position));
-      holder.chip.setText(
-          holder.chip.getResources().getString(R.string.cat_chip_text) + " " + position);
+      Chip chip = holder.chip;
+      String text = chip.getResources().getString(R.string.cat_chip_text);
+      chip.setTag(position);
+      if (getItemViewType(position) == VIEW_TYPE_ALL) {
+        chip.setCheckable(false);
+        chip.setText(chip.getResources().getString(R.string.cat_chip_text_all));
+        chip.setChipIconResource(R.drawable.ic_drawer_menu_open_24px);
+        chip.setChipIconTint(chip.getTextColors());
+        chip.setChipIconVisible(true);
+
+        if (menu == null) {
+          menu = new PopupMenu(chip.getContext(), chip);
+          for (int i = 1; i < getItemCount(); i++) {
+            menu.getMenu().add(Menu.NONE, i, i, text + " " + i);
+          }
+          menu.getMenu().setGroupCheckable(Menu.NONE, true, false);
+          menu.setOnMenuItemClickListener(
+              menuItem -> {
+                int id = menuItem.getItemId();
+                if (!checkedChipId.remove(id)) {
+                  checkedChipId.add(id);
+                  menuItem.setChecked(true);
+                } else {
+                  menuItem.setChecked(false);
+                }
+                notifyItemChanged(id);
+                return true;
+              });
+        }
+        chip.setOnClickListener(v -> menu.show());
+      } else {
+        chip.setChecked(checkedChipId.contains(position));
+        chip.setText(text + " " + position);
+        chip.setOnCheckedChangeListener(
+            (buttonView, isChecked) ->
+                menu.getMenu().getItem((Integer) chip.getTag() - 1).setChecked(isChecked));
+      }
     }
 
     @Override
     public int getItemCount() {
-      return 30;
+      return 31;
+    }
+
+    @Override
+    public long getItemId(int position) {
+      return position;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+      return position == 0 ? VIEW_TYPE_ALL : VIEW_TYPE_NORMAL;
     }
   }
 

@@ -1,23 +1,28 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  api compatibility("appcompat")
-  api compatibility("core")
+  api libs.androidx.appcompat
+  api libs.androidx.core
 
   api project(fromPath("lib"))
 
-  implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
+  implementation libs.errorprone.annotations
 }
 
 android {
+  namespace "com.google.android.material.testapp.custom"
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDirs = [ '.' ]
-    main.java.excludes = [
-      '**/build/**',
+    // Manually add src files. Gradle 8 doesn't work well with
+    // a flat source directory (src = [ '.' ]) where java source, a gradle
+    // file, and a build output directory are all in the same location.
+    main.java.srcDirs = [
+      'CustomSnackbar.java',
+      'CustomSnackbarMainContent.java',
+      'CustomTextView.java',
+      'NavigationTestView.java',
+      'TestFloatingBehavior.java'
     ]
-    // Only include things in this directory, not subdirectories
-    main.java.includes = [ '*.java' ]
     main.res.srcDirs = [ 'res' ]
   }
   defaultConfig {

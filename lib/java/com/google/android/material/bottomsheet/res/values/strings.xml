@@ -17,11 +17,19 @@
 <resources>
   <!-- The class name for the BottomSheetBehavior -->
   <string name="bottom_sheet_behavior" translatable="false">com.google.android.material.bottomsheet.BottomSheetBehavior</string>
-  <string description="A description of an action that a user of an accessibility service can perform to expand a bottomsheet halfway to its full height. [CHAR LIMIT=25]"
+  <string description="A description of an action that a user of an accessibility service can perform to expand a bottom sheet halfway to its full height. [CHAR LIMIT=25]"
     name="bottomsheet_action_expand_halfway">Expand halfway</string>
+  <string description="A description of an action that a user of an accessibility service can perform to expand a bottom sheet. [CHAR LIMIT=25]"
+    name="bottomsheet_action_expand">Expand</string>
+  <string description="A description of an action that a user of an accessibility service can perform to collapse a bottom sheet. [CHAR LIMIT=25]"
+    name="bottomsheet_action_collapse">Collapse</string>
 
   <string description="The content description of bottom sheet drag handles [CHAR LIMIT=NONE]" name="bottomsheet_drag_handle_content_description">Drag handle</string>
-  <string description="A description of an accessibility action to expand the bottom sheet [CHAR LIMIT=NONE]" name="bottomsheet_action_expand">Expand the bottom sheet</string>
-  <string description="A description of an accessibility action to collapse the bottom sheet [CHAR LIMIT=NONE]" name="bottomsheet_action_collapse">Collapse the bottom sheet</string>
-  <string description="An accessibility feedback when the bottom sheet drag handle is clicked [CHAR LIMIT=NONE]" name="bottomsheet_drag_handle_clicked">Drag handle double-tapped</string>
+  <string description="A description of an accessibility action to expand the bottom sheet [CHAR LIMIT=NONE]" name="bottomsheet_action_expand_description">Expand the bottom sheet</string>
+  <string description="A description of an accessibility action to half expand the bottom sheet [CHAR LIMIT=NONE]" name="bottomsheet_action_half_expand_description">Half expand the bottom sheet</string>
+  <string description="A description of an accessibility action to collapse the bottom sheet [CHAR LIMIT=NONE]" name="bottomsheet_action_collapse_description">Collapse the bottom sheet</string>
+
+  <string description="Accessibility label describing the state when the bottom sheet is collapsed [CHAR LIMIT=NONE]" name="bottomsheet_state_collapsed">Collapsed</string>
+  <string description="Accessibility label describing the state when the bottom sheet is half expanded to its full height [CHAR LIMIT=NONE]" name="bottomsheet_state_half_expanded">Half expanded</string>
+  <string description="Accessibility label describing the state when the bottom sheet is expanded [CHAR LIMIT=NONE]" name="bottomsheet_state_expanded">Expanded</string>
 </resources>

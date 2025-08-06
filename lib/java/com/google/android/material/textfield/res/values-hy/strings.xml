@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2025 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 <resources>
   <string name="character_counter_content_description">Մուտքագրված նիշեր՝ %1$d/%2$d</string>
   <string name="character_counter_overflowed_content_description">Նիշերի առավելագույն քանակը գերազանցվել է (%1$d/%2$d)</string>
-  <string name="password_toggle_content_description">Ցուցադրել գաղտնաբառը</string>
+  <string name="password_toggle_content_description">Ցույց տալ գաղտնաբառը</string>
   <string name="clear_text_end_icon_content_description">Ջնջել տեքստը</string>
   <string name="exposed_dropdown_menu_content_description">Ցույց տալ իջնող ընտրացանկը</string>
   <string name="error_icon_content_description">Սխալ</string>

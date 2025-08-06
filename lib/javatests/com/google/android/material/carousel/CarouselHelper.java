@@ -457,7 +457,7 @@ class CarouselHelper {
     float smallMask = getKeylineMaskPercentage(smallSize, largeSize);
     float mediumMask = getKeylineMaskPercentage(mediumSize, largeSize);
 
-    return new KeylineState.Builder(450F, 1320F)
+    return new KeylineState.Builder(450F, 1320)
         .addKeyline(5F, extraSmallMask, extraSmallSize)
         .addKeylineRange(38F, smallMask, smallSize, 2)
         .addKeyline(166F, mediumMask, mediumSize)
@@ -478,7 +478,7 @@ class CarouselHelper {
     float smallMask = getKeylineMaskPercentage(smallSize, largeSize);
     float mediumMask = getKeylineMaskPercentage(mediumSize, largeSize);
 
-    return new KeylineState.Builder(100F, 200F)
+    return new KeylineState.Builder(100F, 200)
         .addKeyline(9F, smallMask, smallSize)
         .addKeyline(25F, mediumMask, mediumSize)
         .addKeyline(66F, 0F, largeSize, true)

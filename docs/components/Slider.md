@@ -9,46 +9,221 @@ path: /catalog/sliders/
 
 # Slider
 
-[Sliders](https://m3.material.io/components/sliders/) allow users to make
-selections from a range of values.
+[Sliders](https://m3.material.io/components/sliders/) let users make selections
+from a range of values. There are three variants of sliders.
 
-!["Slider animation."](assets/slider/slider_hero.gif)
+!["Slider examples of both standard, centered, and range sliders."](assets/slider/slider-types.png)
 
-**Contents**
+1.  Standard
+2.  Centered
+3.  Range
 
-*   [Design and API Documentation](#design-and-api-documentation)
-*   [Using sliders](#using-sliders)
-*   [Continuous slider](#continuous-slider)
-*   [Discrete slider](#discrete-slider)
-*   [Theming sliders](#theming-sliders)
+**Note:** Images use various dynamic color schemes.
 
-## Design and API Documentation
+## Design & API documentation
 
-*   [Google Material3 Spec](https://material.io/components/sliders/overview)
-*   [API Reference](https://developer.android.com/reference/com/google/android/material/slider/package-summary)
+*   [Material 3 (M3) spec](https://m3.material.io/components/sliders/overview/)
+*   [API reference](https://developer.android.com/reference/com/google/android/material/slider/package-summary)
 
-## Using sliders
+## Anatomy
 
-Before you can use Material sliders, you need to add a dependency to the
-Material Components for Android library. For more information, go to the
-[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
-page.
+![Slider anatomy diagram](assets/slider/slider-anatomy.png)
 
-### Usage
+1.  Value indicator (optional)
+2.  Stop indicators (optional)
+3.  Active track
+4.  Handle
+5.  Inactive track
+6.  Inset icon (optional)
 
-![Continuous slider](assets/slider/slider_continuous.png){width="600"}
-![Discrete slider](assets/slider/slider_discrete.png){width="600"}
+More details on anatomy items in the
+[component guidelines](https://m3.material.io/components/sliders/guidelines#b3701f5e-128a-4807-bca7-033402b4266a).
 
-Add a `Slider` to a layout:
+## M3 Expressive
+
+### M3 Expressive update
+
+Before you can use `Material3Expressive` component styles, follow the
+[`Material3Expressive themes` setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
+
+The slider includes expressive configurations for orientation, shape sizes, and
+an inset icon.
+[More on M3 Expressive](https://m3.material.io/blog/building-with-m3-expressive)
+
+**Types and naming:**
+
+*   Changed **continuous** slider to **standard** slider
+*   The **discrete** slider is now the **stops** configuration
+
+**New configurations:**
+
+*   Orientation: Horizontal, vertical
+*   Optional inset icon (standard slider only)
+*   Sizes: XS (existing default), S, M, L, XL
+
+### M3 Expressive styles
+
+The expressive slider comes with 5 pre-defined styles varying in track thickness
+and corner size:
+
+- `Widget.Material3Expressive.Slider.Xsmall` (default)
+- `Widget.Material3Expressive.Slider.Small`
+- `Widget.Material3Expressive.Slider.Medium`
+- `Widget.Material3Expressive.Slider.Large`
+- `Widget.Material3Expressive.Slider.Xlarge`
+
+## Key properties
+
+### Track attributes
+
+Element                                    | Attribute                     | Related method(s)                                             | Default value
+------------------------------------------ | ----------------------------- | ------------------------------------------------------------- | -------------
+**Orientation**                            | `android:orientation`         | `setOrientation`<br/>`isVertical`                             | `horizontal`
+**Min value**                              | `android:valueFrom`           | `setValueFrom`<br/>`getValueFrom`                             | N/A
+**Max value**                              | `android:valueTo`             | `setValueTo`<br/>`getValueTo`                                 | N/A
+**Step size (discrete)**                   | `android:stepSize`            | `setStepSize`<br/>`getStepSize`                               | N/A
+**Initial selected value (Slider)**        | `android:value`               | `setValue`<br/>`getValue`                                     | N/A
+**Initial selected values (RangeSlider)**  | `app:values`                  | `setValues`<br/>`getValues`                                   | N/A
+**Centered**                               | `app:centered`                | `setCentered`<br/>`isCentered`                                | `false`
+**Continuous mode tick count**             | `app:continuousModeTickCount` | `setContinuousModeTickCount`<br/>`getContinuousModeTickCount` | 0
+**Height**                                 | `app:trackHeight`             | `setTrackHeight`<br/>`getTrackHeight`                         | `16dp`
+**Color**                                  | `app:trackColor`              | `setTrackTintList`<br/>`getTrackTintList`                     | `null`
+**Color for track's active part**          | `app:trackColorActive`        | `setTrackActiveTintList`<br/>`getTrackActiveTintList`         | `?attr/colorPrimary`
+**Color for track's inactive part**        | `app:trackColorInactive`      | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList`     | `?attr/colorSurfaceContainerHighest`
+**Corner size**                            | `app:trackCornerSize`         | `setTrackCornerSize`<br/>`getTrackCornerSize`                 | `trackHeight / 2`
+**Inside corner size**                     | `app:trackInsideCornerSize`   | `setTrackInsideCornerSize`<br/>`getTrackInsideCornerSize`     | `2dp`
+**Stop indicator size**                    | `app:trackStopIndicatorSize`  | `setTrackStopIndicatorSize`<br/>`getTrackStopIndicatorSize`   | `4dp`
+**Minimum separation for adjacent thumbs** | `app:minSeparation`           | `setMinSeparation`<br/>`getMinSeparation`                     | `0dp`
+**Active start icon**                      | `app:trackIconActiveStart`    | `setTrackIconActiveStart`<br/>`getTrackIconActiveStart`       | `null`
+**Active end icon**                        | `app:trackIconActiveEnd`      | `setTrackIconActiveEnd`<br/>`getTrackIconActiveEnd`           | `null`
+**Active icon color**                      | `app:trackIconActiveColor`    | `setTrackIconActiveColor`<br/>`getTrackIconActiveColor`       | N/A
+**Inactive start icon**                    | `app:trackIconInactiveStart`  | `setTrackIconInactiveStart`<br/>`getTrackIconInactiveStart`   | `null`
+**Inactive end icon**                      | `app:trackIconInactiveEnd`    | `setTrackIconInactiveEnd`<br/>`getTrackIconInactiveEnd`       | `null`
+**Inactive icon color**                    | `app:trackIconInactiveColor`  | `setTrackIconInactiveColor`<br/>`getTrackIconInactiveColor`   | N/A
+**Icon size**                              | `app:trackIconSize`           | `setTrackIconSize`<br/>`getTrackIconSize`                     | N/A
+
+**Note:** `app:trackColor` takes precedence over `app:trackColorActive` and
+`app:trackColorInative`. It's a shorthand for setting both values to the same
+thing.
+
+**Note:** `app:trackStopIndicatorSize` takes precedence over
+`app:tickRadiusActive` and `app:tickRadiusInactive`.
+
+**Note:** `vertical` orientation still uses `height` in the same way as for
+`horizontal` orientation. In this context, `height` can be seen as track
+thickness.
+
+### Thumb attributes
+
+Element          | Attribute               | Related method(s)                                                                 | Default value
+---------------- | ----------------------- | --------------------------------------------------------------------------------- | -------------
+**Color**        | `app:thumbColor`        | `setThumbTintList`<br/>`getThumbTintList`                                         | `?attr/colorPrimary`
+**Width**        | `app:thumbWidth`        | `setThumbWidth`<br/>`setThumbWidthResource`<br/>`getThumbWidth`                   | `4dp`
+**Height**       | `app:thumbHeight`       | `setThumbHeight`<br/>`setThumbHeightResource`<br/>`getThumbHeight`                | `44dp`
+**Radius**       | `app:thumbRadius`       | `setThumbRadiusResource`<br/>`setThumbRadius`<br/>`getThumbRadius`                | N/A
+**Elevation**    | `app:thumbElevation`    | `setThumbElevationResource`<br/>`setThumbElevation`<br/>`getThumbElevation`       | `2dp`
+**Halo color**   | `app:haloColor`         | `setHaloTintList`<br/>`getHaloTintList`                                           | `@android:color/transparent`
+**Halo radius**  | `app:haloRadius`        | `setHaloRadiusResource`<br/>`setHaloRadius`<br/>`getHaloRadius`                   | N/A
+**Stroke color** | `app:thumbStrokeColor`  | `setThumbStrokeColor`<br/>`setThumbStrokeColorResource`<br/>`getThumbStrokeColor` | `null`
+**Stroke width** | `app:thumbStrokeWidth`  | `setThumbStrokeWidth`<br/>`setThumbStrokeWidthResource`<br/>`getThumbStrokeWidth` | `0dp`
+**Gap size**     | `app:thumbTrackGapSize` | `setThumbTrackGapSize`<br/>`getThumbTrackGapSize`                                 | `6dp`
+
+**Note:** `app:thumbWidth` and `app:thumbHeight` take precedence over
+`app:thumbRadius`.
+
+### Value label attributes
+
+Element       | Attribute           | Related method(s)                           | Default value
+------------- | ------------------- | ------------------------------------------- | -------------
+**Style**     | `app:labelStyle`    | N/A                                         | `@style/Widget.Material3.Tooltip`
+**Formatter** | N/A                 | `setLabelFormatter`<br/>`hasLabelFormatter` | `null`
+**Behavior**  | `app:labelBehavior` | `setLabelBehavior`<br/>`getLabelBehavior`   | `floating`
+
+**Note:** The value label is a
+[Tooltip](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tooltip/TooltipDrawable.java).
+
+### Tick mark attributes
+
+Element                             | Attribute                | Related method(s)                                       | Default value
+----------------------------------- | ------------------------ | ------------------------------------------------------- | -------------
+**Color**                           | `app:tickColor`          | `setTickTintList`<br/>`getTickTintList`                 | `null`
+**Color for tick's active part**    | `app:tickColorActive`    | `setTickActiveTintList`<br/>`getTickActiveTintList`     | `?attr/colorSurfaceContainerHighest`
+**Color for tick's inactive part**  | `app:tickColorInactive`  | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary`
+**Radius for tick's active part**   | `app:tickRadiusActive`   | `setTickActiveRadius`<br/>`getTickActiveRadius`         | `null` (1/2 trackStopIndicatorSize)
+**Radius for tick's inactive part** | `app:tickRadiusInactive` | `setTickInactiveRadius`<br/>`getTickInactiveRadius`     | `null` (1/2 trackStopIndicatorSize)
+**Tick visible** (deprecated)       | `app:tickVisible`        | `setTickVisible`<br/>`isTickVisible()`                  | `true`
+**Tick visibility mode**            | `app:tickVisibilityMode` | `setTickVisibilityMode`<br/>`getTickVisibilityMode()`   | `autoLimit`
+
+**Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
+`app:tickColorInactive`. It's a shorthand for setting both values to the same
+thing.
+
+**Note:** `app:tickVisible` is deprecated in favor of `app:tickVisibilityMode`.
+
+### Styles
+
+Element           | Style                     | Theme attribute
+----------------- | ------------------------- | -------------------
+**Default style** | `Widget.Material3.Slider` | `?attr/sliderStyle`
+
+For the full list, see
+[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/res/values/styles.xml)
+and
+[attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/res/values/attrs.xml).
+
+### Non-text contrast update
+
+In order to comply with the latest accessibility requirements, the `Slider` has
+been updated with additional attributes:
+
+-   `app:thumbTrackGapSize`: size of the gap between the thumb and the track,
+    6dp by default.
+-   `app:trackInsideCornerSize`: size of the corners towards the thumb when a
+    gap is present, 2dp by default.
+-   `app:trackStopIndicatorSize`: size of the stop at the start/end of the
+    track, 4dp by default.
+
+`*.Legacy` styles have been added to revert to the previous behavior (**not
+recommended**):
+
+-   `Widget.Material3.Slider.Legacy`
+
+## Variants of sliders
+
+### Standard slider
+
+Standard sliders select one value from a range of values. Use this when the
+slider should start from zero or the beginning of a sequence.
+
+API and source code:
+
+*   `Slider`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/Slider)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/Slider.java)
+
+**Add a `Standard slider` to a layout:**
+
+<img src="assets/slider/slider-standard.png" alt="Standard slider"width=400>
 
 ```xml
-<!-- Continuous slider -->
 <com.google.android.material.slider.Slider
-    ...
+    android:id="@+id/slider"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/slider_desc"
+    android:value="20.0"
     android:valueFrom="0.0"
-    android:valueTo="100.0"  />
+    android:valueTo="100.0" />
+```
 
-<!-- Discrete slider -->
+**Add a `standard slider with stop indicator` to a layout:**
+
+Stop indicators show which predetermined values can be chosen on the slider. The
+slider handle snaps to the closest stop.
+
+<img src="assets/slider/slider-standard-stopindicator.png" alt="A discrete slider with a thumb that can be dragged to change the selected value."width=400/>
+
+```xml
 <com.google.android.material.slider.Slider
     ...
     android:valueFrom="0.0"
@@ -56,7 +231,7 @@ Add a `Slider` to a layout:
     android:stepSize="10.0"  />
 ```
 
-Observe changes to a slider:
+**Observe changes to a slider:**
 
 ```kt
 slider.addOnSliderTouchListener(object : Slider.OnSliderTouchListener {
@@ -74,26 +249,59 @@ slider.addOnChangeListener { slider, value, fromUser ->
 }
 ```
 
-API and source code:
+### Centered slider
 
-*   `Slider`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/Slider)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/Slider.java)
+Centered sliders select a value from a positive and negative value range. Use
+this when zero, or the default value, is in the middle of the range.
 
-![Range slider](assets/slider/slider_range.png)
+**Add a `centered slider` to a layout:**
 
-A slider with two thumbs is called a range slider.
-Add a `RangeSlider` to a layout:
+<img src="assets/slider/slider-centered-horizontal.png" alt="Centered slider." width="300">
 
 ```xml
-<!-- Continuous slider -->
-<com.google.android.material.slider.RangeSlider
-    ...
-    android:valueFrom="0.0"
-    android:valueTo="100.0"
-    app:values="@array/initial_slider_values"  />
+<com.google.android.material.slider.Slider
+    android:id="@+id/slider"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:contentDescription="@string/slider_desc"
+    android:value="0.0"
+    android:valueFrom="-100.0"
+    android:valueTo="100.0" />
+```
 
-<!-- Discrete slider -->
+### Range slider
+
+A slider with two thumbs is called a range slider. Range sliders select two
+values on one slider to create a range. Use this when defining a minimum and
+maximum value.
+
+*   `RangeSlider`
+    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/RangeSlider)
+    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/RangeSlider.java)
+
+**Add a `range slider` to a layout:**
+
+<img src="assets/slider/slider-range.png" alt="Range slider." width="300">
+
+```xml
+<com.google.android.material.slider.RangeSlider
+  android:id="@+id/range_slider"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:contentDescription="@string/slider_desc"
+  app:values="@array/initial_slider_values"
+  android:valueFrom="0.0"
+  android:valueTo="100.0" />
+```
+
+**Add a `range slider with stop indicator` to a layout:**
+
+Stop indicators show which predetermined values can be chosen on the slider. The
+slider handle snaps to the closest stop.
+
+<img src="assets/slider/slider-discrete-range.png" alt="Discrete range slider." width="400"/>
+
+```xml
 <com.google.android.material.slider.RangeSlider
     ...
     android:valueFrom="0.0"
@@ -113,7 +321,7 @@ And in `values/arrays.xml`:
 </resources>
 ```
 
-Observe changes to a range slider:
+**Observe changes to a range slider:**
 
 ```kt
 rangeSlider.addOnSliderTouchListener(object : RangeSlider.OnSliderTouchListener {
@@ -131,11 +339,12 @@ rangeSlider.addOnChangeListener { rangeSlider, value, fromUser ->
 }
 ```
 
-API and source code:
+## Code implementation
 
-*   `RangeSlider`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/RangeSlider)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/RangeSlider.java)
+Before you can use Material sliders, you need to add a dependency to the
+Material components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
 
 ### Making sliders accessible
 
@@ -156,25 +365,6 @@ slider.
 The minimum touch target size of the thumb is 48dp by default. If a different
 size is needed, please set `minTouchTargetSize` in the style or the layout.
 
-### Adding/removing the value label
-
-By default, the slider will show a value label above the thumb when it's
-selected. You can change how it's drawn via the `app:labelBehavior` attribute or
-`setLabelBehavior` method.
-
-The modes of `app:labelBehavior` are:
-
-*   `floating` (default) - draws the label floating above the bounds of this
-    view
-*   `withinBounds` - draws the label floating within the bounds of this view
-*   `gone` - prevents the label from being drawn
-*   `visible` - always draws the label
-
-Note: there's a known issue where the label doesn't scroll along with the screen
-when the slider is in a scrollable container and `app:labelBehavior=visible`. To
-work around that you should either use a different mode or hide the label on
-scroll.
-
 ### Setting a `LabelFormatter`
 
 By using a `LabelFormatter` you can display the selected value using letters to
@@ -183,8 +373,8 @@ indicate magnitude (e.g.: 1.5K, 3M, 12B). That can be achieved through the
 
 The following example shows a slider for a price range in USD currency.
 
-!["Range slider with range of $0 to $10. Left thumb is set at $2, right thumb
-at $7."](assets/slider/slider_price.png){width="400"}
+<img src="assets/slider/slider-price.png" alt="Range slider with range of $0 to $10. Left thumb is set at $2, right thumb
+at $7." width="400"/>
 
 In code:
 
@@ -197,218 +387,27 @@ rangeSlider.setLabelFormatter { value: Float ->
 }
 ```
 
-### Types
+## Customizing sliders
 
-There are two types of sliders: 1\. [Continuous slider](#continuous-slider), 2\.
-[Discrete slider](#discrete-slider)
-
-!["Slider examples of both continuous and discrete sliders."](assets/slider/slider_types.png)
-
-## Continuous slider
-
-Continuous sliders allow users to make meaningful selections that don’t require
-a specific value.
-
-The following example shows a continuous slider.
-
-!["Continuous slider."](assets/slider/slider_continuous.png)
-
-In the layout:
-
-```xml
-<com.google.android.material.slider.Slider
-    android:id="@+id/slider"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:contentDescription="@string/slider_desc"
-    android:value="20.0"
-    android:valueFrom="0.0"
-    android:valueTo="100.0" />
-```
-
-### Continuous range slider
-
-The following example shows a continuous range slider.
-
-!["Continuous range slider."](assets/slider/slider_range.png)
-
-In the layout:
-
-```xml
-<com.google.android.material.slider.RangeSlider
-  android:id="@+id/range_slider"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  android:contentDescription="@string/slider_desc"
-  app:values="@array/initial_slider_values"
-  android:valueFrom="0.0"
-  android:valueTo="100.0" />
-```
-
-## Discrete slider
-
-Discrete sliders display a numeric value label upon pressing the thumb, which
-allows a user to input an exact value.
-
-The following example shows a discrete slider.
-
-!["Discrete single point slider."](assets/slider/slider_discrete.png)
-
-In the layout:
-
-```xml
-<com.google.android.material.slider.Slider
-    ...
-    android:stepSize="10.0" />
-```
-
-### Discrete range slider
-
-The following example shows a discrete range slider.
-
-!["Discrete range slider."](assets/slider/slider_discrete_range.png){width="400"}
-
-In the layout:
-
-```xml
-<com.google.android.material.slider.RangeSlider
-    ...
-    android:stepSize="10.0"  />
-```
-
-### Anatomy and key properties
-
-A slider has a track, one or two thumbs, and an optional value label. A discrete
-slider also has tick marks.
-
-![Slider anatomy diagram](assets/slider/slider_anatomy.png)
-
-1.  Value label (optional)
-2.  Active track stop indicator
-3.  Active track
-4.  Thumb
-5.  Inactive track
-6.  Inactive track stop indicator
-
-#### Track attributes
-
-| Element                                    | Attribute                    | Related method(s)                                           | Default value                        |
-|--------------------------------------------|------------------------------|-------------------------------------------------------------|--------------------------------------|
-| **Min value**                              | `android:valueFrom`          | `setValueFrom`<br/>`getValueFrom`                           | N/A                                  |
-| **Max value**                              | `android:valueTo`            | `setValueTo`<br/>`getValueTo`                               | N/A                                  |
-| **Step size (discrete)**                   | `android:stepSize`           | `setStepSize`<br/>`getStepSize`                             | N/A                                  |
-| **Initial selected value (Slider)**        | `android:value`              | `setValue`<br/>`getValue`                                   | N/A                                  |
-| **Initial selected values (RangeSlider)**  | `app:values`                 | `setValues`<br/>`getValues`                                 | N/A                                  |
-| **Height**                                 | `app:trackHeight`            | `setTrackHeight`<br/>`getTrackHeight`                       | `16dp`                               |
-| **Color**                                  | `app:trackColor`             | `setTrackTintList`<br/>`getTrackTintList`                   | `null`                               |
-| **Color for track's active part**          | `app:trackColorActive`       | `setTrackActiveTintList`<br/>`getTrackActiveTintList`       | `?attr/colorPrimary`                 |
-| **Color for track's inactive part**        | `app:trackColorInactive`     | `setTrackInactiveTintList`<br/>`getTrackInactiveTintList`   | `?attr/colorSurfaceContainerHighest` |
-| **Inside corner size**                     | `app:trackInsideCornerSize`  | `setTrackInsideCornerSize`<br/>`getTrackInsideCornerSize`   | `2dp`                                |
-| **Stop indicator size**                    | `app:trackStopIndicatorSize` | `setTrackStopIndicatorSize`<br/>`getTrackStopIndicatorSize` | `4dp`                                |
-| **Minimum separation for adjacent thumbs** | `app:minSeparation`          | `setMinSeparation`<br/>`getMinSeparation`                   | `0dp`                                |
-
-**Note:** `app:trackColor` takes precedence over `app:trackColorActive` and
-`app:trackColorInative`. It's a shorthand for setting both values to the same
-thing.
-
-**Note:** `app:trackStopIndicatorSize` takes precedence over
-`app:tickRadiusActive` and `app:tickRadiusInactive`.
-
-#### Thumb attributes
-
-| Element          | Attribute               | Related method(s)                                                                 | Default value                |
-|------------------|-------------------------|-----------------------------------------------------------------------------------|------------------------------|
-| **Color**        | `app:thumbColor`        | `setThumbTintList`<br/>`getThumbTintList`                                         | `?attr/colorPrimary`         |
-| **Width**        | `app:thumbWidth`        | `setThumbWidth`<br/>`setThumbWidthResource`<br/>`getThumbWidth`                   | `4dp`                        |
-| **Height**       | `app:thumbHeight`       | `setThumbHeight`<br/>`setThumbHeightResource`<br/>`getThumbHeight`                | `44dp`                       |
-| **Radius**       | `app:thumbRadius`       | `setThumbRadiusResource`<br/>`setThumbRadius`<br/>`getThumbRadius`                | N/A                          |
-| **Elevation**    | `app:thumbElevation`    | `setThumbElevationResource`<br/>`setThumbElevation`<br/>`getThumbElevation`       | `2dp`                        |
-| **Halo color**   | `app:haloColor`         | `setHaloTintList`<br/>`getHaloTintList`                                           | `@android:color/transparent` |
-| **Halo radius**  | `app:haloRadius`        | `setHaloRadiusResource`<br/>`setHaloRadius`<br/>`getHaloRadius`                   | N/A                          |
-| **Stroke color** | `app:thumbStrokeColor`  | `setThumbStrokeColor`<br/>`setThumbStrokeColorResource`<br/>`getThumbStrokeColor` | `null`                       |
-| **Stroke width** | `app:thumbStrokeWidth`  | `setThumbStrokeWidth`<br/>`setThumbStrokeWidthResource`<br/>`getThumbStrokeWidth` | `0dp`                        |
-| **Gap size**     | `app:thumbTrackGapSize` | `setThumbTrackGapSize`<br/>`getThumbTrackGapSize`                                 | `6dp`                        |
-
-**Note:** `app:thumbWidth` and `app:thumbHeight` take precedence over `app:thumbRadius`.
-
-#### Value label attributes
-
-Element       | Attribute           | Related method(s)                           | Default value
-------------- | ------------------- | ------------------------------------------- | -------------
-**Style**     | `app:labelStyle`    | N/A                                         | `@style/Widget.Material3.Tooltip`
-**Formatter** | N/A                 | `setLabelFormatter`<br/>`hasLabelFormatter` | `null`
-**Behavior**  | `app:labelBehavior` | `setLabelBehavior`<br/>`getLabelBehavior`   | `floating`
-
-**Note:** The value label is a
-[Tooltip](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tooltip/TooltipDrawable.java).
-
-#### Tick mark attributes
-
-| Element                             | Attribute                | Related method(s)                                       | Default value                        |
-|-------------------------------------|--------------------------|---------------------------------------------------------|--------------------------------------|
-| **Color**                           | `app:tickColor`          | `setTickTintList`<br/>`getTickTintList`                 | `null`                               |
-| **Color for tick's active part**    | `app:tickColorActive`    | `setTickActiveTintList`<br/>`getTickActiveTintList`     | `?attr/colorSurfaceContainerHighest` |
-| **Color for tick's inactive part**  | `app:tickColorInactive`  | `setTickInactiveTintList`<br/>`getTickInactiveTintList` | `?attr/colorPrimary`                 |
-| **Radius for tick's active part**   | `app:tickRadiusActive`   | `setTickActiveRadius`<br/>`getTickActiveRadius`         | `null` (1/2 trackStopIndicatorSize)  |
-| **Radius for tick's inactive part** | `app:tickRadiusInactive` | `setTickInactiveRadius`<br/>`getTickInactiveRadius`     | `null` (1/2 trackStopIndicatorSize)  |
-| **Tick visible**                    | `app:tickVisible`        | `setTickVisible`<br/>`isTickVisible()`                  | `true`                               |
-
-**Note:** `app:tickColor` takes precedence over `app:tickColorActive` and
-`app:tickColorInative`. It's a shorthand for setting both values to the same
-thing.
-
-#### Styles
-
-Element           | Style
------------------ | -------------------------
-**Default style** | `Widget.Material3.Slider`
-
-Default style theme attribute: `?attr/sliderStyle`
-
-See the full list of
-[styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/res/values/styles.xml)
-and
-[attributes](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/res/values/attrs.xml).
-
-#### Non-Text Contrast update
-
-In order to comply with the latest accessibility requirements, the
-`Slider` has been updated with additional attributes:
-
-- `app:thumbTrackGapSize`: size of the gap between the thumb and the
-  track, 6dp by default.
-- `app:trackInsideCornerSize`: size of the corners towards the thumb when a gap
-  is present, 2dp by default.
-- `app:trackStopIndicatorSize`: size of the stop at the start/end of the track,
-  4dp by default.
-
-`*.Legacy` styles have been added to revert to the previous behavior (**not
-recommended**):
-
-- `Widget.Material3.Slider.Legacy`
-
-## Theming sliders
+### Theming sliders
 
 Sliders support
 [Material Theming](https://material.io/components/sliders#theming) which can
 customize color and typography.
 
-### Slider theming example
+#### Slider theming example
 
 API and source code:
 
 *   `Slider`
     *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/Slider)
     *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/Slider.java)
-*   `RangeSlider`
-    *   [Class definition](https://developer.android.com/reference/com/google/android/material/slider/RangeSlider)
-    *   [Class source](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/slider/RangeSlider.java)
 
-The following example shows a range slider with Material Theming.
+The following example shows a range slider with Material theming.
 
-!["Slider theming example with pink and brown colors."](assets/slider/slider_theming.png)
+!["Slider theming example with pink and brown colors."](assets/slider/slider-theming.png)
 
-#### Implementing slider theming
+##### Implementing slider theming
 
 Use theme attributes and styles in `res/values/styles.xml` which applies to all
 sliders and affects other components:

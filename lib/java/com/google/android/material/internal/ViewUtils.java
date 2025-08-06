@@ -27,8 +27,7 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.ColorStateListDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -37,7 +36,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
@@ -332,7 +330,7 @@ public class ViewUtils {
   public static void requestApplyInsetsWhenAttached(@NonNull View view) {
     if (view.isAttachedToWindow()) {
       // We're already attached, just request as normal.
-      ViewCompat.requestApplyInsets(view);
+      view.requestApplyInsets();
     } else {
       // We're not attached to the hierarchy, add a listener to request when we are.
       view.addOnAttachStateChangeListener(
@@ -340,7 +338,7 @@ public class ViewUtils {
             @Override
             public void onViewAttachedToWindow(@NonNull View v) {
               v.removeOnAttachStateChangeListener(this);
-              ViewCompat.requestApplyInsets(v);
+              v.requestApplyInsets();
             }
 
             @Override
@@ -357,22 +355,33 @@ public class ViewUtils {
     float absoluteElevation = 0;
     ViewParent viewParent = view.getParent();
     while (viewParent instanceof View) {
-      absoluteElevation += ViewCompat.getElevation((View) viewParent);
+      absoluteElevation += ((View) viewParent).getElevation();
       viewParent = viewParent.getParent();
     }
     return absoluteElevation;
   }
 
   /**
-   * Backward-compatible {@link View#getOverlay()}. TODO(b/144937975): Remove and use the official
-   * version from androidx when it's available.
+   * @deprecated Use {@link View#getOverlay()} instead.
    */
+  @Deprecated
   @Nullable
   public static ViewOverlayImpl getOverlay(@Nullable View view) {
     if (view == null) {
       return null;
     }
-    return new ViewOverlayApi18(view);
+
+    return new ViewOverlayImpl() {
+      @Override
+      public void add(@NonNull Drawable drawable) {
+        view.getOverlay().add(drawable);
+      }
+
+      @Override
+      public void remove(@NonNull Drawable drawable) {
+        view.getOverlay().remove(drawable);
+      }
+    };
   }
 
   /** Returns the content view that is the parent of the provided view. */
@@ -401,7 +410,11 @@ public class ViewUtils {
 
   /**
    * Returns the content view overlay that can be used to add drawables on top of all other views.
+   *
+   * @deprecated Use {@link View#getOverlay()} on the result of {@link
+   *     ViewUtils#getContentView(View)} instead.
    */
+  @Deprecated
   @Nullable
   public static ViewOverlayImpl getContentViewOverlay(@NonNull View view) {
     return getOverlay(getContentView(view));

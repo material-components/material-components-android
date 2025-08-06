@@ -72,7 +72,7 @@
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:gravity="center_vertical"
         android:paddingStart="@dimen/m3_navigation_rail_label_padding_horizontal"
         android:paddingEnd="@dimen/m3_navigation_rail_label_padding_horizontal"
         android:textSize="@dimen/mtrl_navigation_rail_text_size" />
@@ -81,8 +81,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
+        android:gravity="center_vertical"
         android:ellipsize="end"
-        android:maxLines="1"
         android:textSize="@dimen/mtrl_navigation_rail_active_text_size"
         android:paddingStart="@dimen/m3_navigation_rail_label_padding_horizontal"
         android:paddingEnd="@dimen/m3_navigation_rail_label_padding_horizontal"

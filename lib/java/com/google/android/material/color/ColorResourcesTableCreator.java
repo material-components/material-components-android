@@ -16,12 +16,13 @@
 
 package com.google.android.material.color;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import android.content.Context;
 import android.util.Pair;
 import androidx.annotation.ColorInt;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -77,7 +78,7 @@ final class ColorResourcesTableCreator {
       colorResource =
           new ColorResource(
               entry.getKey(),
-              context.getResources().getResourceName(entry.getKey()),
+              context.getResources().getResourceEntryName(entry.getKey()),
               entry.getValue());
       if (!context
           .getResources()
@@ -338,16 +339,37 @@ final class ColorResourcesTableCreator {
     PackageChunk(PackageInfo packageInfo, List<ColorResource> colorResources) {
       this.packageInfo = packageInfo;
 
-      // Placeholder String type, since only XML color resources will be replaced at runtime.
-      typeStrings = new StringPoolChunk(false, "?1", "?2", "?3", "?4", "?5", "color");
+      typeStrings = new StringPoolChunk(false, generateTypeStrings(colorResources));
+      keyStrings = new StringPoolChunk(true, generateKeyStrings(colorResources));
+      typeSpecChunk = new TypeSpecChunk(colorResources);
+
+      header = new ResChunkHeader(HEADER_TYPE_PACKAGE, HEADER_SIZE, getChunkSize());
+    }
+
+    private String[] generateTypeStrings(List<ColorResource> colorResources) {
+      if (!colorResources.isEmpty()) {
+        byte colorTypeId = colorResources.get(0).typeId;
+        String[] types = new String[colorTypeId];
+
+        // Placeholder String type, since only XML color resources will be replaced at runtime.
+        for (int i = 0; i < colorTypeId - 1; i++) {
+          types[i] = "?" + (i + 1);
+        }
+
+        types[colorTypeId - 1] = "color";
+
+        return types;
+      } else {
+        return new String[0];
+      }
+    }
+
+    private String[] generateKeyStrings(List<ColorResource> colorResources) {
       String[] keys = new String[colorResources.size()];
       for (int i = 0; i < colorResources.size(); i++) {
         keys[i] = colorResources.get(i).name;
       }
-      keyStrings = new StringPoolChunk(true, keys);
-      typeSpecChunk = new TypeSpecChunk(colorResources);
-
-      header = new ResChunkHeader(HEADER_TYPE_PACKAGE, HEADER_SIZE, getChunkSize());
+      return keys;
     }
 
     void writeTo(ByteArrayOutputStream outputStream) throws IOException {
@@ -609,13 +631,36 @@ final class ColorResourcesTableCreator {
     return bytes;
   }
 
-  private static byte[] stringToByteArrayUtf8(String value) {
-    byte[] rawBytes = value.getBytes(Charset.forName("UTF-8"));
-    byte stringLength = (byte) rawBytes.length;
-    byte[] bytes = new byte[rawBytes.length + 3];
-    System.arraycopy(rawBytes, 0, bytes, 2, stringLength);
-    bytes[0] = bytes[1] = stringLength;
-    bytes[bytes.length - 1] = 0; // EOS
-    return bytes;
+  private static byte[] stringToByteArrayUtf8(String str) {
+    byte[] strBytes = str.getBytes(UTF_8);
+    byte[] strLengthBytes = encodeLengthUtf8((short) str.length());
+    byte[] encStrLengthBytes = encodeLengthUtf8((short) strBytes.length);
+
+    return concat(
+        strLengthBytes,
+        encStrLengthBytes,
+        strBytes,
+        new byte[] { 0 }  // EOS
+    );
+  }
+
+  private static byte[] encodeLengthUtf8(short length) {
+    return length > 0x7F
+        ? new byte[] { (byte) (((length >> 8) & 0x7F) | 0x80), (byte) (length & 0xFF) }
+        : new byte[] { (byte) (length & 0xFF) };
+  }
+
+  private static byte[] concat(byte[]... arrays) {
+    int length = 0;
+    for (byte[] array : arrays) {
+      length += array.length;
+    }
+    byte[] result = new byte[length];
+    int pos = 0;
+    for (byte[] array : arrays) {
+      System.arraycopy(array, 0, result, pos, array.length);
+      pos += array.length;
+    }
+    return result;
   }
 }

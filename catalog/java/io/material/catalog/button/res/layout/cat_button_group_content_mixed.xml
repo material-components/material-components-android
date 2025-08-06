@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2024 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+  <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp"
+    android:paddingBottom="8dp"
+    android:text="@string/cat_icon_and_label_mixed"
+    android:textAppearance="?attr/textAppearanceSubtitle1" />
+  <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:spacing="4dp"
+    app:overflowMode="menu">
+    <Button
+      style="?attr/materialIconButtonFilledStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_add_circle"
+      app:icon="@drawable/ic_add_circle_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_add_circle_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_add_circle" />
+    <Button
+      style="?attr/materialIconButtonFilledStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_favorite"
+      app:icon="@drawable/ic_favorite_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_favorite_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_favorite" />
+    <Button
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:insetLeft="4dp"
+      android:insetRight="4dp"
+      android:text="@string/cat_button_label_custom" />
+    <Button
+      style="?attr/materialIconButtonFilledStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_settings"
+      app:icon="@drawable/ic_settings_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_settings_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_settings" />
+    <Button
+      style="?attr/materialIconButtonFilledStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_delete_forever"
+      app:icon="@drawable/ic_delete_forever_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_delete_forever_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_delete_forever" />
+  </com.google.android.material.button.MaterialButtonGroup>
+  <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:spacing="4dp"
+    app:overflowMode="menu">
+    <Button
+      style="?attr/materialIconButtonFilledTonalStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_add_circle"
+      app:icon="@drawable/ic_add_circle_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_add_circle_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_add_circle" />
+    <Button
+      style="?attr/materialIconButtonFilledTonalStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_favorite"
+      app:icon="@drawable/ic_favorite_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_favorite_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_favorite" />
+    <Button
+      style="?attr/materialButtonTonalStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:insetLeft="4dp"
+      android:insetRight="4dp"
+      android:text="@string/cat_button_label_custom" />
+    <Button
+      style="?attr/materialIconButtonFilledTonalStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_settings"
+      app:icon="@drawable/ic_settings_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_settings_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_settings" />
+    <Button
+      style="?attr/materialIconButtonFilledTonalStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_delete_forever"
+      app:icon="@drawable/ic_delete_forever_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_delete_forever_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_delete_forever" />
+  </com.google.android.material.button.MaterialButtonGroup>
+  <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:spacing="4dp"
+    app:overflowMode="menu">
+    <Button
+      style="?attr/materialIconButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_add_circle"
+      app:icon="@drawable/ic_add_circle_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_add_circle_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_add_circle" />
+    <Button
+      style="?attr/materialIconButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_favorite"
+      app:icon="@drawable/ic_favorite_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_favorite_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_favorite" />
+    <Button
+      style="?attr/materialButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:insetLeft="4dp"
+      android:insetRight="4dp"
+      android:text="@string/cat_button_label_custom" />
+    <Button
+      style="?attr/materialIconButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_settings"
+      app:icon="@drawable/ic_settings_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_settings_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_settings" />
+    <Button
+      style="?attr/materialIconButtonOutlinedStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_delete_forever"
+      app:icon="@drawable/ic_delete_forever_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_delete_forever_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_delete_forever" />
+  </com.google.android.material.button.MaterialButtonGroup>
+  <com.google.android.material.button.MaterialButtonGroup
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp"
+    android:gravity="center"
+    android:spacing="4dp"
+    app:overflowMode="menu">
+    <Button
+      style="?attr/materialIconButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_add_circle"
+      app:icon="@drawable/ic_add_circle_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_add_circle_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_add_circle" />
+    <Button
+      style="?attr/materialIconButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_favorite"
+      app:icon="@drawable/ic_favorite_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_favorite_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_favorite" />
+    <Button
+      style="?attr/borderlessButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:insetLeft="4dp"
+      android:insetRight="4dp"
+      android:text="@string/cat_button_label_custom" />
+    <Button
+      style="?attr/materialIconButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_settings"
+      app:icon="@drawable/ic_settings_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_settings_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_settings" />
+    <Button
+      style="?attr/materialIconButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:contentDescription="@string/cat_icon_button_label_delete_forever"
+      app:icon="@drawable/ic_delete_forever_checkable_24px"
+      app:layout_overflowIcon="@drawable/ic_delete_forever_checkable_24px"
+      app:layout_overflowText="@string/cat_icon_button_label_delete_forever" />
+  </com.google.android.material.button.MaterialButtonGroup>
+</merge>

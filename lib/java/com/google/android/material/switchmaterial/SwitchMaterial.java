@@ -63,7 +63,7 @@ public class SwitchMaterial extends SwitchCompat {
   }
 
   public SwitchMaterial(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, R.attr.switchStyle);
+    this(context, attrs, androidx.appcompat.R.attr.switchStyle);
   }
 
   public SwitchMaterial(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -120,7 +120,8 @@ public class SwitchMaterial extends SwitchCompat {
   private ColorStateList getMaterialThemeColorsThumbTintList() {
     if (materialThemeColorsThumbTintList == null) {
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
-      int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
+      int colorControlActivated =
+          MaterialColors.getColor(this, androidx.appcompat.R.attr.colorControlActivated);
       float thumbElevation = getResources().getDimension(R.dimen.mtrl_switch_thumb_elevation);
       if (elevationOverlayProvider.isThemeElevationOverlayEnabled()) {
         thumbElevation += ViewUtils.getParentAbsoluteElevation(this);
@@ -145,7 +146,8 @@ public class SwitchMaterial extends SwitchCompat {
     if (materialThemeColorsTrackTintList == null) {
       int[] switchTrackColorsList = new int[ENABLED_CHECKED_STATES.length];
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
-      int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
+      int colorControlActivated =
+          MaterialColors.getColor(this, androidx.appcompat.R.attr.colorControlActivated);
       int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
       switchTrackColorsList[0] =
           MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_MEDIUM);

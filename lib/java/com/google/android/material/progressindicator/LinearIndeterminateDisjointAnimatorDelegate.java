@@ -92,7 +92,8 @@ final class LinearIndeterminateDisjointAnimatorDelegate
     if (animator == null) {
       // Instantiates an animator with the linear interpolator to control the animation progress.
       animator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 0, 1);
-      animator.setDuration(TOTAL_DURATION_IN_MS);
+      animator.setDuration(
+          (long) (TOTAL_DURATION_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
       animator.setInterpolator(null);
       animator.setRepeatCount(ValueAnimator.INFINITE);
       animator.addListener(
@@ -107,7 +108,8 @@ final class LinearIndeterminateDisjointAnimatorDelegate
     }
     if (completeEndAnimator == null) {
       completeEndAnimator = ObjectAnimator.ofFloat(this, ANIMATION_FRACTION, 1);
-      completeEndAnimator.setDuration(TOTAL_DURATION_IN_MS);
+      completeEndAnimator.setDuration(
+          (long) (TOTAL_DURATION_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
       completeEndAnimator.setInterpolator(null);
       completeEndAnimator.addListener(
           new AnimatorListenerAdapter() {
@@ -121,6 +123,14 @@ final class LinearIndeterminateDisjointAnimatorDelegate
             }
           });
     }
+  }
+
+  private void updateAnimatorsDuration() {
+    maybeInitializeAnimators();
+    animator.setDuration(
+        (long) (TOTAL_DURATION_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
+    completeEndAnimator.setDuration(
+        (long) (TOTAL_DURATION_IN_MS * baseSpec.indeterminateAnimatorDurationScale));
   }
 
   @Override
@@ -147,6 +157,7 @@ final class LinearIndeterminateDisjointAnimatorDelegate
 
   @Override
   public void invalidateSpecValues() {
+    updateAnimatorsDuration();
     resetPropertiesForNewStart();
   }
 

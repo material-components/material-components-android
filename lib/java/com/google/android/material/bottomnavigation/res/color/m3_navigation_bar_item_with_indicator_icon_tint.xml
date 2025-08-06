@@ -16,21 +16,21 @@
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <!-- Active item -->
-  <item android:color="@macro/m3_comp_navigation_bar_active_pressed_icon_color"
+  <item android:color="?attr/colorOnSecondaryContainer"
         android:state_pressed="true" android:state_checked="true"/>
-  <item android:color="@macro/m3_comp_navigation_bar_active_focus_icon_color"
+  <item android:color="?attr/colorOnSecondaryContainer"
         android:state_focused="true" android:state_checked="true"/>
-  <item android:color="@macro/m3_comp_navigation_bar_active_hover_icon_color"
+  <item android:color="?attr/colorOnSecondaryContainer"
         android:state_hovered="true" android:state_checked="true"/>
-  <item android:color="@macro/m3_comp_navigation_bar_active_icon_color"
+  <item android:color="?attr/colorOnSecondaryContainer"
         android:state_checked="true"/>
 
   <!-- Inactive item -->
-  <item android:color="@macro/m3_comp_navigation_bar_inactive_pressed_icon_color"
+  <item android:color="?attr/colorOnSurface"
         android:state_pressed="true"/>
-  <item android:color="@macro/m3_comp_navigation_bar_inactive_focus_icon_color"
+  <item android:color="?attr/colorOnSurface"
         android:state_focused="true"/>
-  <item android:color="@macro/m3_comp_navigation_bar_inactive_hover_icon_color"
+  <item android:color="?attr/colorOnSurface"
         android:state_hovered="true"/>
-  <item android:color="@macro/m3_comp_navigation_bar_inactive_icon_color"/>
+  <item android:color="?attr/colorOnSurfaceVariant"/>
 </selector>

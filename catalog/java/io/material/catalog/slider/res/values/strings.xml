@@ -18,8 +18,13 @@
   <string name="cat_slider_title" description="Title for the screen that showcases demonstrative usages of the Slider widget [CHAR LIMIT=NONE]">Slider</string>
   <string name="cat_slider_demo_continuous_title" description="Title for the continuous Slider widget demo [CHAR LIMIT=NONE]">Continuous Slider demo</string>
   <string name="cat_slider_demo_discrete_title" description="Title for the discrete Slider widget demo [CHAR LIMIT=NONE]">Discrete Slider demo</string>
+  <string name="cat_slider_demo_centered_title" description="Title for the centered Slider widget demo [CHAR LIMIT=NONE]">Centered Slider demo</string>
   <string name="cat_slider_demo_scroll_container_title" description="Title for the Slider inside scrolling container demo [CHAR LIMIT=NONE]">Slider in scrolling container demo</string>
-  <string name="cat_slider_demo_label_behavior_title" description="Tile for the Slider with different label behaviors demo [CHAR LIMIT=NONE]">Slider label behavior demo</string>
+  <string name="cat_slider_demo_label_behavior_title" description="Title for the Slider with different label behaviors demo [CHAR LIMIT=NONE]">Slider label behavior demo</string>
+  <string name="cat_slider_demo_corner_title" description="Title for the Slider with different corner sizes demo [CHAR LIMIT=NONE]">Slider custom corners demo</string>
+  <string name="cat_slider_demo_icon_title" description="Title for the Slider with different track icons demo [CHAR LIMIT=NONE]">Slider track icons demo</string>
+  <string name="cat_slider_demo_vertical_title" description="Title for the vertical Slider demo [CHAR LIMIT=NONE]">Slider vertical demo</string>
+  <string name="cat_slider_demo_vertical_scroll_container_title" description="Title for the vertical Slider inside scrolling container demo [CHAR LIMIT=NONE]">Vertical Slider in scrolling container demo</string>
 
   <string name="cat_slider_description" description="Body text describing the Slider widget within the design system [CHAR LIMIT=NONE]">
     Sliders let users select from a range of values by moving the slider thumb.
@@ -29,7 +34,10 @@
     Discrete sliders allow users to select a specific value from a range.
   </string>
 
-  <string name="cat_slider_enabled" description="">Enabled</string>
+  <string name="cat_slider_enabled" description="The label for a switch controlling enabled state[CHAR LIMIT=NONE]">Enabled</string>
+  <string name="cat_slider_add_tick" description="The label for a button that adds a tick to the slider[CHAR LIMIT=NONE]">Add Tick</string>
+  <string name="cat_slider_remove_tick" description="The label for a button that removes a tick from the slider[CHAR LIMIT=NONE]">Remove Tick</string>
+  <string name="cat_slider_vertical" description="The label for a switch controlling vertical orientation [CHAR LIMIT=NONE]">Vertical</string>
   <string name="cat_slider_set" description="The label for a set button [CHAR LIMIT=NONE]">Set</string>
   <string name="cat_slider_title_1" description="The title for the first demonstration slider [CHAR LIMIT=NONE]">This one goes to eleven</string>
   <string name="cat_slider_title_2" description="The title for a demonstration slider [CHAR LIMIT=NONE]">From 100 to 1000</string>

@@ -67,6 +67,10 @@
       description="Text label above a slider for adjusting circular indicator's size [CHAR LIMIT=NONE]">
     Circular Indicator Size (20 - 200) dp
   </string>
+  <string name="cat_progress_indicator_indeterminate_animator_duration_scale"
+      description="Text label above a slider for adjusting indeterminate indicator's animator duration scale [CHAR LIMIT=NONE]">
+    Indeterminate animator duration scape (x0.1 - x10.0)
+  </string>
   <string name="cat_progress_indicator_hide_behavior"
       description="Hint label of a dropdown to select hide behavior [CHAR LIMIT=NONE]">
     Hide Behavior

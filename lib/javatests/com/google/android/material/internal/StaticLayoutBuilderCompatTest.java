@@ -16,7 +16,6 @@
 
 package com.google.android.material.internal;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.os.Build.VERSION_CODES;
@@ -40,7 +39,7 @@ public class StaticLayoutBuilderCompatTest {
           + "Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, "
           + "vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a";
 
-  @Config(minSdk = LOLLIPOP, maxSdk = VERSION_CODES.P)
+  @Config(minSdk = Config.OLDEST_SDK, maxSdk = VERSION_CODES.P)
   @Test
   public void createStaticLayout_withMaxLines_LongString() throws Exception {
     int maxLines = 3;

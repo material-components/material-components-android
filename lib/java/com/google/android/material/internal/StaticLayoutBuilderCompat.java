@@ -52,7 +52,7 @@ import java.lang.reflect.Constructor;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-final class StaticLayoutBuilderCompat {
+public final class StaticLayoutBuilderCompat {
 
   static final int DEFAULT_HYPHENATION_FREQUENCY =
       VERSION.SDK_INT >= VERSION_CODES.M ? StaticLayout.HYPHENATION_FREQUENCY_NORMAL : 0;
@@ -236,6 +236,7 @@ final class StaticLayoutBuilderCompat {
     return this;
   }
 
+  @NonNull
   /** A method that allows to create a StaticLayout with maxLines on all supported API levels. */
   public StaticLayout build() throws StaticLayoutBuilderCompatException {
     if (source == null) {
@@ -361,12 +362,19 @@ final class StaticLayoutBuilderCompat {
     }
   }
 
+  @NonNull
   public StaticLayoutBuilderCompat setIsRtl(boolean isRtl) {
     this.isRtl = isRtl;
     return this;
   }
 
-  static class StaticLayoutBuilderCompatException extends Exception {
+  /**
+   * Class representing a StaticLayoutBuilder exception from initializing a StaticLayout.
+   *
+   * @hide
+   */
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public static class StaticLayoutBuilderCompatException extends Exception {
 
     StaticLayoutBuilderCompatException(Throwable cause) {
       super("Error thrown initializing StaticLayout " + cause.getMessage(), cause);

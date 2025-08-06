@@ -32,10 +32,13 @@ import io.material.catalog.color.ColorsFragment;
 import io.material.catalog.datepicker.DatePickerDemoLandingFragment;
 import io.material.catalog.dialog.DialogDemoLandingFragment;
 import io.material.catalog.divider.DividerFragment;
+import io.material.catalog.dockedtoolbar.DockedToolbarFragment;
 import io.material.catalog.elevation.ElevationFragment;
 import io.material.catalog.fab.FabFragment;
+import io.material.catalog.floatingtoolbar.FloatingToolbarFragment;
 import io.material.catalog.font.FontFragment;
 import io.material.catalog.imageview.ShapeableImageViewFragment;
+import io.material.catalog.loadingindicator.LoadingIndicatorFragment;
 import io.material.catalog.materialswitch.SwitchFragment;
 import io.material.catalog.menu.MenuFragment;
 import io.material.catalog.navigationdrawer.NavigationDrawerFragment;
@@ -69,9 +72,12 @@ import io.material.catalog.transition.TransitionFragment;
       DatePickerDemoLandingFragment.Module.class,
       DialogDemoLandingFragment.Module.class,
       DividerFragment.Module.class,
+      DockedToolbarFragment.Module.class,
       ElevationFragment.Module.class,
       FabFragment.Module.class,
+      FloatingToolbarFragment.Module.class,
       FontFragment.Module.class,
+      LoadingIndicatorFragment.Module.class,
       MenuFragment.Module.class,
       NavigationDrawerFragment.Module.class,
       NavigationRailFragment.Module.class,

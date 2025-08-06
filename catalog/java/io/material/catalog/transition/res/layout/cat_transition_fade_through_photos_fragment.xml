@@ -40,8 +40,7 @@
     android:gravity="center_horizontal"
     app:columnCount="2"
     app:orientation="vertical"
-    app:rowCount="3"
-    tools:targetApi="lollipop">
+    app:rowCount="3">
 
     <ImageView
       android:layout_width="0dp"

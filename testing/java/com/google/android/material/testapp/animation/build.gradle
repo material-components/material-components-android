@@ -17,24 +17,19 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api compatibility("appcompat")
-  api compatibility("core")
+  api libs.androidx.appcompat
+  api libs.androidx.core
 
   api project(fromPath("lib"))
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
 
-  api 'androidx.multidex:multidex:2.0.0'
+  api libs.androidx.multidex
 }
 
 android {
+  namespace "com.google.android.material.testapp.animation"
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDirs = [ '.' ]
-    main.java.excludes = [
-      '**/build/**',
-    ]
-    // Only include things in this directory, not subdirectories
-    main.java.includes = [ '*.java' ]
     main.res.srcDirs = [ 'res' ]
   }
   defaultConfig {

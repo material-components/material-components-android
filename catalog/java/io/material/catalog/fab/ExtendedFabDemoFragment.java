@@ -25,6 +25,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
@@ -44,6 +47,14 @@ public class ExtendedFabDemoFragment extends DemoFragment {
     View root =
         layoutInflater.inflate(
             R.layout.cat_extended_fab_fragment, viewGroup, false /* attachToRoot */);
+
+    ViewCompat.setOnApplyWindowInsetsListener(
+        root,
+        (v, insets) -> {
+          Insets navBarInsets = insets.getInsets(WindowInsetsCompat.Type.navigationBars());
+          v.setPadding(0, 0, 0, navBarInsets.bottom);
+          return insets;
+        });
 
     ViewGroup content = root.findViewById(R.id.content);
     View.inflate(getContext(), getExtendedFabContent(), content);

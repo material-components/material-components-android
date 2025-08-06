@@ -2,17 +2,18 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api compatibility("annotation")
-  api compatibility("appcompat")
+  api libs.androidx.annotation
+  api libs.androidx.appcompat
 
   api project(fromPath("lib"))
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
   api project(fromPath("testing/java/com/google/android/material/testapp/custom"))
 
-  api 'androidx.multidex:multidex:2.0.0'
+  api libs.androidx.multidex
 }
 
 android {
+  namespace "com.google.android.material.testapp"
   defaultConfig {
     multiDexEnabled true
     minSdkVersion 21
@@ -21,12 +22,31 @@ android {
 
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDirs = [ '.' ]
-    main.java.excludes = [
-      '**/build/**',
+    // Manually add src files. Gradle 8 doesn't work well with
+    // a flat source directory (src = [ '.' ]) where java source, a gradle
+    // file, and a build output directory are all in the same location.
+    main.java.srcDirs = [
+      'AppBarHorizontalScrollingActivity.java',
+      'AppBarLayoutCollapsePinActivity.java',
+      'AppBarWithScrollbarsActivity.java',
+      'BottomNavigationViewActivity.java',
+      'BottomSheetBehaviorActivity.java',
+      'BottomSheetBehaviorWithInsetsActivity.java',
+      'BottomSheetDialogActivity.java',
+      'CoordinatorLayoutActivity.java',
+      'DynamicCoordinatorLayoutActivity.java',
+      'ExpandableTransformationActivity.java',
+      'ExposedDropdownMenuActivity.java',
+      'FloatingActionButtonActivity.java',
+      'NavigationViewActivity.java',
+      'SnackbarActivity.java',
+      'SnackbarWithFabActivity.java',
+      'SnackbarWithTranslucentNavBarActivity.java',
+      'TabLayoutPoolingActivity.java',
+      'TabLayoutWithViewPagerActivity.java',
+      'TextInputLayoutActivity.java',
+      'TextInputLayoutWithIconsActivity.java'
     ]
-    // Only include things in this directory, not subdirectories
-    main.java.includes = [ '*.java' ]
     main.res.srcDirs = [ 'res' ]
   }
 

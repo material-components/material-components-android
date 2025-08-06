@@ -21,12 +21,27 @@
     <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_picker_background_inset</item>
     <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_picker_background_inset</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    <item name="android:datePickerMode">spinner</item>
   </style>
 
   <style name="MaterialAlertDialog.MaterialComponents.Picker.Date.Calendar" parent="android:Widget.DeviceDefault.DatePicker">
     <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_picker_background_inset</item>
     <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_picker_background_inset</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    <item name="android:datePickerMode">calendar</item>
+    <item name="android:calendarTextColor">?attr/colorOnSurface</item>
+    <item name="android:headerBackground">?attr/colorPrimary</item>
+    <item name="android:headerMonthTextAppearance">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Header.Text</item>
+    <item name="android:headerDayOfMonthTextAppearance">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Header.Text.Day</item>
+    <item name="android:headerYearTextAppearance">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Header.Text</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Header.Text" parent="TextAppearance.MaterialComponents.Headline6">
+    <item name="android:textColor">?attr/colorOnPrimary</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Header.Text.Day" parent="TextAppearance.MaterialComponents.Headline1">
+    <item name="android:textColor">?attr/colorOnPrimary</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar" parent="android:Widget">
@@ -264,10 +279,16 @@
   <style name="Widget.Material3.MaterialCalendar.DayOfWeekLabel" parent="Widget.MaterialComponents.MaterialCalendar.DayOfWeekLabel">
     <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_weekdays_label_text_type</item>
     <item name="android:textColor">@macro/m3_comp_date_picker_modal_weekdays_label_text_color</item>
+    <item name="autoSizeTextType">uniform</item>
+    <item name="autoSizeMaxTextSize">16sp</item>
+    <item name="autoSizeMinTextSize">2sp</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.DayTextView" parent="Widget.MaterialComponents.MaterialCalendar.DayTextView">
     <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_date_label_text_type</item>
+    <item name="autoSizeTextType">uniform</item>
+    <item name="autoSizeMaxTextSize">16sp</item>
+    <item name="autoSizeMinTextSize">2sp</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.MonthTextView" parent="Widget.MaterialComponents.MaterialCalendar.MonthTextView">

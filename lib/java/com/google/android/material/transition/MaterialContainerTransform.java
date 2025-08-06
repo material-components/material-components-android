@@ -64,14 +64,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import androidx.core.view.ViewCompat;
 import androidx.transition.ArcMotion;
 import androidx.transition.PathMotion;
 import androidx.transition.Transition;
 import androidx.transition.TransitionValues;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.canvas.CanvasCompat.CanvasOperation;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
@@ -986,13 +984,13 @@ public final class MaterialContainerTransform extends Transition {
             endView.setAlpha(1);
 
             // Remove the transition drawable from the root ViewOverlay
-            ViewUtils.getOverlay(drawingView).remove(transitionDrawable);
+            drawingView.getOverlay().remove(transitionDrawable);
           }
 
           @Override
           public void onAnimationStart(@NonNull Animator animation) {
             // Add the transition drawable to the root ViewOverlay
-            ViewUtils.getOverlay(drawingView).add(transitionDrawable);
+            drawingView.getOverlay().add(transitionDrawable);
 
             // Hide the actual views at the beginning of the transition
             startView.setAlpha(0);
@@ -1030,7 +1028,7 @@ public final class MaterialContainerTransform extends Transition {
   }
 
   private static float getElevationOrDefault(float elevation, View view) {
-    return elevation != ELEVATION_NOT_SET ? elevation : ViewCompat.getElevation(view);
+    return elevation != ELEVATION_NOT_SET ? elevation : view.getElevation();
   }
 
   private static RectF calculateDrawableBounds(

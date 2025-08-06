@@ -21,6 +21,7 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,6 +122,17 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
           }
           return true;
         });
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
+    if (keyCode == KeyEvent.KEYCODE_ESCAPE
+        && (drawerLayout.isDrawerOpen(GravityCompat.START)
+            || drawerLayout.isDrawerOpen(GravityCompat.END))) {
+      drawerLayout.closeDrawers();
+      return true;
+    }
+    return super.onKeyDown(keyCode, keyEvent);
   }
 
   @Override

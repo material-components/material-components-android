@@ -22,7 +22,6 @@
   <public name="trackThickness" type="attr" />
   <public name="trackCornerRadius" type="attr" />
   <public name="indicatorTrackGapSize" type="attr"/>
-  <public name="indicatorColor" type="attr" />
   <public name="showAnimationBehavior" type="attr"/>
   <public name="hideAnimationBehavior" type="attr"/>
   <public name="showDelay" type="attr"/>
@@ -32,13 +31,17 @@
   <public name="wavelengthIndeterminate" type="attr"/>
   <public name="waveAmplitude" type="attr"/>
   <public name="waveSpeed" type="attr"/>
+  <public name="indeterminateAnimatorDurationScale" type="attr"/>
+  <public name="waveAmplitudeRampProgressMin" type="attr" />
+  <public name="waveAmplitudeRampProgressMax" type="attr" />
 
   <!-- LinearProgressIndicator attributes -->
   <public name="indeterminateAnimationType" type="attr"/>
   <public name="indicatorDirectionLinear" type="attr"/>
+  <public name="trackInnerCornerRadius" type="attr"/>
+  <public name="trackStopIndicatorPadding" type="attr"/>
 
   <!-- CircularProgressIndicator attributes -->
-  <public name="indicatorSize" type="attr"/>
   <public name="indicatorInset" type="attr"/>
   <public name="indicatorDirectionCircular" type="attr"/>
   <public name="indeterminateAnimationTypeCircular" type="attr"/>

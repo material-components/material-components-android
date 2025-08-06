@@ -24,12 +24,12 @@ import static com.google.android.material.textfield.IndicatorViewController.COUN
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -48,6 +48,8 @@ import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.TintTypedArray;
 import android.text.Editable;
+import android.text.StaticLayout;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
@@ -94,6 +96,8 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.internal.CollapsingTextHelper;
 import com.google.android.material.internal.DescendantOffsetUtils;
+import com.google.android.material.internal.StaticLayoutBuilderCompat;
+import com.google.android.material.internal.StaticLayoutBuilderCompat.StaticLayoutBuilderCompatException;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.motion.MotionUtils;
@@ -198,6 +202,8 @@ import java.util.LinkedHashSet;
  */
 public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListener {
 
+  private static final String TAG = "TextInputLayout";
+
   private static final int DEF_STYLE_RES = R.style.Widget_Design_TextInputLayout;
 
   /** Duration for the label's scale up and down animations. */
@@ -219,6 +225,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   @NonNull private final FrameLayout inputFrame;
   @NonNull private final StartCompoundLayout startLayout;
   @NonNull private final EndCompoundLayout endLayout;
+  private final int extraSpaceBetweenPlaceholderAndHint;
   EditText editText;
   private CharSequence originalHint;
 
@@ -520,6 +527,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
             .getDimensionPixelOffset(R.dimen.mtrl_textinput_box_label_cutout_padding);
     boxCollapsedPaddingTopPx =
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingTop, 0);
+    extraSpaceBetweenPlaceholderAndHint =
+        getResources().getDimensionPixelSize(R.dimen.m3_multiline_hint_filled_text_extra_space);
 
     boxStrokeWidthDefaultPx =
         a.getDimensionPixelSize(
@@ -688,6 +697,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     endLayout = new EndCompoundLayout(this, a);
 
     final boolean enabled = a.getBoolean(R.styleable.TextInputLayout_android_enabled, true);
+    setHintMaxLines(a.getInt(R.styleable.TextInputLayout_hintMaxLines, 1));
 
     a.recycle();
 
@@ -848,22 +858,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
   private void updateEditTextBoxBackground() {
     Drawable editTextBoxBackground = getEditTextBoxBackground();
-
-    // On pre-Lollipop, setting a LayerDrawable as a background always replaces the original view
-    // paddings with its own, so we preserve the original paddings and restore them after setting
-    // a new background.
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
-        && editTextBoxBackground instanceof LayerDrawable) {
-      int paddingLeft = editText.getPaddingLeft();
-      int paddingTop = editText.getPaddingTop();
-      int paddingRight = editText.getPaddingRight();
-      int paddingBottom = editText.getPaddingBottom();
-
-      editText.setBackground(editTextBoxBackground);
-      editText.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-    } else {
-      editText.setBackground(editTextBoxBackground);
-    }
+    editText.setBackground(editTextBoxBackground);
   }
 
   @Nullable
@@ -872,7 +867,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       return boxBackground;
     }
 
-    int rippleColor = MaterialColors.getColor(editText, R.attr.colorControlHighlight);
+    int rippleColor =
+        MaterialColors.getColor(
+            editText, androidx.appcompat.R.attr.colorControlHighlight);
     if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE) {
       return getOutlinedBoxBackgroundWithRipple(
           getContext(), boxBackground, rippleColor, EDIT_TEXT_BACKGROUND_RIPPLE_STATE);
@@ -893,21 +890,15 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     int pressedBackgroundColor = MaterialColors.layer(rippleColor, surfaceColor, 0.1f);
     int[] rippleBackgroundColors = new int[] { pressedBackgroundColor, Color.TRANSPARENT };
     rippleBackground.setFillColor(new ColorStateList(states, rippleBackgroundColors));
-
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      rippleBackground.setTint(surfaceColor);
-      int[] colors = new int[] {pressedBackgroundColor, surfaceColor};
-      ColorStateList rippleColorStateList = new ColorStateList(states, colors);
-      MaterialShapeDrawable mask =
-          new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
-      mask.setTint(Color.WHITE);
-      Drawable rippleDrawable = new RippleDrawable(rippleColorStateList, rippleBackground, mask);
-      Drawable[] layers = {rippleDrawable, boxBackground};
-      editTextBackground = new LayerDrawable(layers);
-    } else {
-      Drawable[] layers = {rippleBackground, boxBackground};
-      editTextBackground = new LayerDrawable(layers);
-    }
+    rippleBackground.setTint(surfaceColor);
+    int[] colors = new int[] {pressedBackgroundColor, surfaceColor};
+    ColorStateList rippleColorStateList = new ColorStateList(states, colors);
+    MaterialShapeDrawable mask =
+        new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
+    mask.setTint(Color.WHITE);
+    Drawable rippleDrawable = new RippleDrawable(rippleColorStateList, rippleBackground, mask);
+    Drawable[] layers = {rippleDrawable, boxBackground};
+    editTextBackground = new LayerDrawable(layers);
     return editTextBackground;
   }
 
@@ -919,18 +910,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     int pressedBackgroundColor = MaterialColors.layer(rippleColor, boxBackgroundColor, 0.1f);
     int[] colors = new int[] { pressedBackgroundColor, boxBackgroundColor };
 
-    Drawable editTextBackground;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      ColorStateList rippleColorStateList = new ColorStateList(states, colors);
-      editTextBackground = new RippleDrawable(rippleColorStateList, boxBackground, boxBackground);
-    } else {
-      MaterialShapeDrawable rippleBackground =
-          new MaterialShapeDrawable(boxBackground.getShapeAppearanceModel());
-      rippleBackground.setFillColor(new ColorStateList(states, colors));
-      Drawable[] layers = {boxBackground, rippleBackground};
-      editTextBackground = new LayerDrawable(layers);
-    }
-    return editTextBackground;
+    ColorStateList rippleColorStateList = new ColorStateList(states, colors);
+    return new RippleDrawable(rippleColorStateList, boxBackground, boxBackground);
   }
 
   private void setDropDownMenuBackgroundIfNeeded() {
@@ -938,8 +919,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       return;
     }
     AutoCompleteTextView autoCompleteTextView = (AutoCompleteTextView) editText;
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
-        && autoCompleteTextView.getDropDownBackground() == null) {
+    if (autoCompleteTextView.getDropDownBackground() == null) {
       if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
         autoCompleteTextView.setDropDownBackgroundDrawable(
             getOrCreateOutlinedDropDownMenuBackground());
@@ -1022,7 +1002,15 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       return;
     }
     // Both dense and default styles end up with the same vertical padding.
-    if (MaterialResources.isFontScaleAtLeast2_0(getContext())) {
+    if (!isHintTextSingleLine()) {
+      editText.setPaddingRelative(
+          editText.getPaddingStart(),
+          (int) (collapsingTextHelper.getCollapsedTextHeight()
+              + extraSpaceBetweenPlaceholderAndHint),
+          editText.getPaddingEnd(),
+          getResources()
+              .getDimensionPixelSize(R.dimen.material_filled_edittext_font_1_3_padding_bottom));
+    } else if (MaterialResources.isFontScaleAtLeast2_0(getContext())) {
       editText.setPaddingRelative(
           editText.getPaddingStart(),
           getResources()
@@ -1476,7 +1464,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   @Override
-  @TargetApi(VERSION_CODES.O)
+  @RequiresApi(VERSION_CODES.O)
   public void dispatchProvideAutofillStructure(@NonNull ViewStructure structure, int flags) {
     if (editText == null) {
       super.dispatchProvideAutofillStructure(structure, flags);
@@ -1547,9 +1535,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     // Use the EditText's typeface, text size, and letter spacing for our expanded text.
     collapsingTextHelper.setTypefaces(this.editText.getTypeface());
     collapsingTextHelper.setExpandedTextSize(this.editText.getTextSize());
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      collapsingTextHelper.setExpandedLetterSpacing(this.editText.getLetterSpacing());
-    }
+    collapsingTextHelper.setExpandedLetterSpacing(this.editText.getLetterSpacing());
 
     final int editTextGravity = this.editText.getGravity();
     collapsingTextHelper.setCollapsedTextGravity(
@@ -2013,6 +1999,28 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   /**
+   * Sets the max number of lines for the hint text.
+   *
+   * @param hintMaxLines the number of lines to limit the hint text to
+   */
+  public void setHintMaxLines(int hintMaxLines) {
+    collapsingTextHelper.setCollapsedMaxLines(hintMaxLines);
+    collapsingTextHelper.setExpandedMaxLines(hintMaxLines);
+    requestLayout();
+  }
+
+  /**
+   * Gets the max number of lines for the hint text.
+   */
+  public int getHintMaxLines() {
+    return collapsingTextHelper.getExpandedMaxLines();
+  }
+
+  private boolean isHintTextSingleLine() {
+    return getHintMaxLines() == 1;
+  }
+
+  /**
    * Whether the error functionality is enabled or not in this layout. Enabling this functionality
    * before setting an error message via {@link #setError(CharSequence)}, will mean that this layout
    * will not change size when an error is displayed.
@@ -2444,7 +2452,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     if (placeholderTextView == null) {
       placeholderTextView = new AppCompatTextView(getContext());
       placeholderTextView.setId(R.id.textinput_placeholder);
-      placeholderTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+      placeholderTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+      placeholderTextView.setAccessibilityLiveRegion(ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
 
       placeholderFadeIn = createPlaceholderFadeTransition();
       placeholderFadeIn.setStartDelay(PLACEHOLDER_START_DELAY);
@@ -2452,6 +2461,17 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
       setPlaceholderTextAppearance(placeholderTextAppearance);
       setPlaceholderTextColor(placeholderTextColor);
+
+      ViewCompat.setAccessibilityDelegate(
+          placeholderTextView,
+          new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+              super.onInitializeAccessibilityNodeInfo(host, info);
+              info.setVisibleToUser(false);
+            }
+          });
     }
 
     // If placeholder text is null, disable placeholder.
@@ -2522,7 +2542,6 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       TransitionManager.beginDelayedTransition(inputFrame, placeholderFadeIn);
       placeholderTextView.setVisibility(VISIBLE);
       placeholderTextView.bringToFront();
-      announceForAccessibility(placeholderText);
     }
   }
 
@@ -2870,7 +2889,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     if (useDefaultColor) {
       // Probably caused by our theme not extending from Theme.Design*. Instead
       // we manually set something appropriate
-      TextViewCompat.setTextAppearance(textView, R.style.TextAppearance_AppCompat_Caption);
+      TextViewCompat.setTextAppearance(
+          textView, androidx.appcompat.R.style.TextAppearance_AppCompat_Caption);
       textView.setTextColor(ContextCompat.getColor(getContext(), R.color.design_error));
     }
   }
@@ -2882,7 +2902,14 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
     switch (boxBackgroundMode) {
       case BOX_BACKGROUND_OUTLINE:
-        return (int) (collapsingTextHelper.getCollapsedTextHeight() / 2);
+        if (isHintTextSingleLine()) {
+          return (int) (collapsingTextHelper.getCollapsedTextHeight() / 2);
+        }
+        return Math.max(
+            0,
+            (int)
+                (collapsingTextHelper.getCollapsedTextHeight()
+                    - collapsingTextHelper.getCollapsedSingleLineHeight() / 2));
       case BOX_BACKGROUND_NONE:
         return (int) collapsingTextHelper.getCollapsedTextHeight();
       case BOX_BACKGROUND_FILLED:
@@ -2948,7 +2975,11 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
     Rect bounds = tmpBoundsRect;
 
-    float labelHeight = collapsingTextHelper.getExpandedTextHeight();
+    float labelHeight =
+        isHintTextSingleLine()
+            ? collapsingTextHelper.getExpandedTextSingleLineHeight()
+            : collapsingTextHelper.getExpandedTextFullSingleLineHeight()
+                * collapsingTextHelper.getExpandedLineCount();
 
     bounds.left = rect.left + editText.getCompoundPaddingLeft();
     bounds.top = calculateExpandedLabelTop(rect, labelHeight);
@@ -2962,7 +2993,11 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     if (isSingleLineFilledTextField()) {
       return (int) (rect.centerY() - labelHeight / 2);
     }
-    return rect.top + editText.getCompoundPaddingTop();
+    int bottomLineSpacing =
+        boxBackgroundMode == BOX_BACKGROUND_NONE && !isHintTextSingleLine()
+            ? (int) (collapsingTextHelper.getExpandedTextSingleLineHeight() / 2)
+            : 0;
+    return rect.top + editText.getCompoundPaddingTop() - bottomLineSpacing;
   }
 
   private int calculateExpandedLabelBottom(
@@ -3292,6 +3327,70 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     }
     updatePlaceholderMeasurementsBasedOnEditText();
     endLayout.updateSuffixTextViewPadding();
+
+    if (!isHintTextSingleLine()) {
+      updateCollapsingTextDimens(
+          editText.getMeasuredWidth()
+              - editText.getCompoundPaddingLeft()
+              - editText.getCompoundPaddingRight());
+    }
+  }
+
+  private void updateCollapsingTextDimens(int availableWidth) {
+    collapsingTextHelper.updateTextHeights(availableWidth);
+    Rect rect = tmpRect;
+    DescendantOffsetUtils.getDescendantRect(this, editText, rect);
+    collapsingTextHelper.setCollapsedBounds(calculateCollapsedTextBounds(rect));
+    updateInputLayoutMargins();
+    adjustFilledEditTextPaddingForLargeFont();
+    updateEditTextHeight(availableWidth);
+  }
+
+  private void updateEditTextHeight(int availableWidth) {
+    if (editText == null) {
+      return;
+    }
+
+    float minHeight = collapsingTextHelper.getExpandedTextHeight();
+    float newMinHeight = 0;
+
+    if (placeholderText != null) {
+      TextPaint textPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
+      textPaint.set(placeholderTextView.getPaint());
+      textPaint.setTextSize(placeholderTextView.getTextSize());
+      textPaint.setTypeface(placeholderTextView.getTypeface());
+      textPaint.setLetterSpacing(placeholderTextView.getLetterSpacing());
+      try {
+        StaticLayout placeholderLayout =
+            StaticLayoutBuilderCompat.obtain(placeholderText, textPaint, availableWidth)
+                .setIsRtl(getLayoutDirection() == LAYOUT_DIRECTION_RTL)
+                .setIncludePad(true)
+                .setLineSpacing(
+                    placeholderTextView.getLineSpacingExtra(),
+                    placeholderTextView.getLineSpacingMultiplier())
+                .setStaticLayoutBuilderConfigurer(
+                    builder -> {
+                      if (VERSION.SDK_INT >= VERSION_CODES.M) {
+                        builder.setBreakStrategy(placeholderTextView.getBreakStrategy());
+                      }
+                    })
+                .build();
+        float extraHeight = 0;
+        if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+          extraHeight = collapsingTextHelper.getCollapsedTextHeight()
+              + boxCollapsedPaddingTopPx + extraSpaceBetweenPlaceholderAndHint;
+        }
+        newMinHeight = placeholderLayout.getHeight() + extraHeight;
+      } catch (StaticLayoutBuilderCompatException e) {
+        Log.e(TAG, e.getCause().getMessage(), e);
+      }
+    }
+
+    minHeight = Math.max(minHeight, newMinHeight);
+
+    if (editText.getMeasuredHeight() < minHeight) {
+      editText.setMinimumHeight(Math.round(minHeight));
+    }
   }
 
   private boolean updateEditTextHeightBasedOnIcon() {
@@ -3502,7 +3601,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
    *
    * <p>Subsequent calls to {@link #setStartIconDrawable(Drawable)} will automatically mutate the
    * drawable and apply the specified tint and tint mode using {@link
-   * DrawableCompat#setTintList(Drawable, ColorStateList)}.
+   * Drawable#setTintList(ColorStateList)}.
    *
    * @param startIconTintList the tint to apply, may be null to clear tint
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconTint
@@ -3722,9 +3821,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   /**
-   * Sets {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * Sets {@link ScaleType} for the start icon's ImageButton.
    *
-   * @param scaleType {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * @param scaleType {@link ScaleType} for the start icon's ImageButton.
    * @attr ref android.support.design.button.R.styleable#TextInputLayout_startIconScaleType
    * @see #getStartIconScaleType()
    */
@@ -3733,9 +3832,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   /**
-   * Returns the {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * Returns the {@link ScaleType} for the start icon's ImageButton.
    *
-   * @return Returns the {@link ImageView.ScaleType} for the start icon's ImageButton.
+   * @return Returns the {@link ScaleType} for the start icon's ImageButton.
    * @attr ref android.support.design.button.R.styleable#TextInputLayout_startIconScaleType
    * @see #setStartIconScaleType(ScaleType)
    */
@@ -3745,9 +3844,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   /**
-   * Sets {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * Sets {@link ScaleType} for the end icon's ImageButton.
    *
-   * @param scaleType {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * @param scaleType {@link ScaleType} for the end icon's ImageButton.
    * @attr ref android.support.design.button.R.styleable#TextInputLayout_endIconScaleType
    * @see #getEndIconScaleType()
    */
@@ -3756,9 +3855,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   /**
-   * Returns the {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * Returns the {@link ScaleType} for the end icon's ImageButton.
    *
-   * @return Returns the {@link ImageView.ScaleType} for the end icon's ImageButton.
+   * @return Returns the {@link ScaleType} for the end icon's ImageButton.
    * @attr ref android.support.design.button.R.styleable#TextInputLayout_endIconScaleType
    * @see #setEndIconScaleType(ScaleType)
    */
@@ -3811,7 +3910,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
    *
    * <p>Subsequent calls to {@link #setEndIconDrawable(Drawable)} will automatically mutate the
    * drawable and apply the specified tint and tint mode using {@link
-   * DrawableCompat#setTintList(Drawable, ColorStateList)}.
+   * Drawable#setTintList(ColorStateList)}.
    *
    * @param endIconTintList the tint to apply, may be null to clear tint
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconTint
@@ -4281,7 +4380,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       return;
     }
     final RectF cutoutBounds = tmpRectF;
-    collapsingTextHelper.getCollapsedTextActualBounds(
+    collapsingTextHelper.getCollapsedTextBottomTextBounds(
         cutoutBounds, editText.getWidth(), editText.getGravity());
     if (cutoutBounds.width() <= 0 || cutoutBounds.height() <= 0) {
       return;
@@ -4293,6 +4392,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     // drawing area.
     cutoutBounds.offset(
         -getPaddingLeft(), -getPaddingTop() - cutoutBounds.height() / 2 + boxStrokeWidthPx);
+    cutoutBounds.top = 0;
     ((CutoutDrawable) boxBackground).setCutout(cutoutBounds);
   }
 
@@ -4423,6 +4523,19 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     }
 
     applyBoxAttributes();
+
+    if (getEndIconMode() == END_ICON_DROPDOWN_MENU) {
+      if (editText instanceof AutoCompleteTextView && !isEditable(editText)) {
+        // For non-editable dropdowns, the end icon is not clickable and focusable, because the
+        // whole field is a single touch target. The dropdown can be toggled programmatically by
+        // calling performClick() on the end icon.
+        getEndIconView().setFocusable(false);
+        getEndIconView().setClickable(false);
+      } else {
+        getEndIconView().setFocusable(true);
+        getEndIconView().setClickable(true);
+      }
+    }
   }
 
   private boolean isOnError() {
@@ -4450,9 +4563,11 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
   @RequiresApi(VERSION_CODES.Q)
   private void updateCursorColor() {
-    ColorStateList color = cursorColor != null
-        ? cursorColor
-        : MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorControlActivated);
+    ColorStateList color =
+        cursorColor != null
+            ? cursorColor
+            : MaterialColors.getColorStateListOrNull(
+                getContext(), androidx.appcompat.R.attr.colorControlActivated);
 
     if (editText == null || editText.getTextCursorDrawable() == null) {
       // If there's no cursor, return.
@@ -4463,7 +4578,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     if (isOnError() && cursorErrorColor != null) {
       color = cursorErrorColor;
     }
-    DrawableCompat.setTintList(cursorDrawable, color);
+    cursorDrawable.setTintList(color);
   }
 
   private void expandHint(boolean animate) {
