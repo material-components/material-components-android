@@ -27,6 +27,7 @@
   <string name="mtrl_list_item_three_line">Three Line Item</string>
   <string name="mtrl_list_item_secondary_text">Secondary Text</string>
   <string name="mtrl_list_item_tertiary_text">Tertiary Text</string>
-
+  <string name="cat_lists_custom_content_demo_title" description="Label for the demo that shows custom list content. [CHAR_LIMIT=100]">Custom Content Demo</string>
+  <string name="cat_list_item_icon_content_description" description="Description for sample icon in custom list item demo. [CHAR_LIMIT=100]">List item icon</string>
 </resources>
 

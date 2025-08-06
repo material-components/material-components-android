@@ -444,6 +444,7 @@ public class ThemeTest {
           R.attr.floatingToolbarStyle,
           R.attr.floatingToolbarVibrantStyle,
           R.attr.linearProgressIndicatorStyle,
+          R.attr.listItemLayoutStyle,
           R.attr.materialIconButtonStyle,
           R.attr.materialButtonOutlinedStyle,
           R.attr.materialButtonStyle,
@@ -494,7 +495,12 @@ public class ThemeTest {
           R.attr.shapeAppearanceCornerLarge,
           R.attr.shapeAppearanceCornerLargeIncreased,
           R.attr.shapeAppearanceCornerExtraLarge,
-          R.attr.shapeAppearanceCornerExtraLargeIncreased);
+          R.attr.shapeAppearanceCornerExtraLargeIncreased,
+          R.attr.listItemShapeAppearanceFirst,
+          R.attr.listItemShapeAppearanceLast,
+          R.attr.listItemShapeAppearanceMiddle,
+          R.attr.listItemShapeAppearanceSingle,
+          R.attr.listItemShapeAppearanceChecked);
 
   /**
    * These are all the attributes where full themes should match {@code Theme.Material3.Light} or
