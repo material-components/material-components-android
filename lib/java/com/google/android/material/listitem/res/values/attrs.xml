@@ -15,8 +15,10 @@
   ~ limitations under the License.
 -->
 <resources>
-  <!-- Style to use for ListItemLayouts in this theme. -->
+  <!-- Style to use for ListItemLayouts. -->
   <attr name="listItemLayoutStyle" format="reference"/>
+  <!-- Style to use for segmented ListItemLayouts. -->
+  <attr name="listItemLayoutSegmentedStyle" format="reference"/>
 
   <!-- Shape appearance of a single item in the list. -->
   <attr name="listItemShapeAppearanceSingle" format="reference"/>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.material.catalog.lists;
+package io.material.catalog.listitem;
 
 import io.material.catalog.R;
 
@@ -45,6 +45,7 @@ public class ListsFragment extends DemoLandingFragment {
   }
 
   @Override
+  @NonNull
   public Demo getMainDemo() {
     return new Demo() {
       @Override
@@ -59,10 +60,10 @@ public class ListsFragment extends DemoLandingFragment {
   public List<Demo> getAdditionalDemos() {
     List<Demo> additionalDemos = new ArrayList<>();
     additionalDemos.add(
-        new Demo(R.string.cat_lists_custom_content_demo_title) {
+        new Demo(R.string.cat_lists_segmented_demo_title) {
           @Override
           public Fragment createFragment() {
-            return new ListsCustomContentDemoFragment();
+            return new SegmentedListDemoFragment();
           }
         });
     return additionalDemos;

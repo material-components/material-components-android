@@ -22,8 +22,17 @@
     <item name="android:minHeight">52dp</item>
   </style>
 
+  <!-- Style for segmented ListItemLayout. -->
+  <style name="Widget.Material3.ListItemLayout.Segmented">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemLayout.Segmented</item>
+  </style>
+
   <style name="ThemeOverlay.Material3.ListItemLayout" parent="">
     <item name="materialCardViewStyle">@style/Widget.Material3.CardView.ListItemLayout</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.ListItemLayout.Segmented">
+    <item name="materialCardViewStyle">@style/Widget.Material3.CardView.ListItemLayout.Segmented</item>
   </style>
 
   <style name="Widget.Material3.CardView.ListItemLayout" parent="Widget.Material3.CardView.Filled">
@@ -34,6 +43,10 @@
     <item name="shapeAppearance">@xml/m3_list_item_shape_state_list</item>
     <item name="cardCornerRadius">@null</item>
     <item name="android:duplicateParentState">true</item>
+  </style>
+
+  <style name="Widget.Material3.CardView.ListItemLayout.Segmented">
+    <item name="cardBackgroundColor">@color/m3_segmented_list_item_background_color_selector</item>
   </style>
 
   <style name="ShapeAppearance.Material3.ListItem.First" parent="">
