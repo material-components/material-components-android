@@ -66,6 +66,13 @@ public class ListsFragment extends DemoLandingFragment {
             return new SegmentedListDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_lists_multi_section_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new MultiSectionListDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

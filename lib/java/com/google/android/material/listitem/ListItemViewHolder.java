@@ -59,6 +59,15 @@ public class ListItemViewHolder extends ViewHolder {
   public void bind() {
     int position = getBindingAdapterPosition();
     int itemCount = getBindingAdapter().getItemCount();
+    bind(position, itemCount);
+  }
+
+  /**
+   * Binds the corresponding {@link ListItemLayout} according given position and item count.
+   * If there are several sections in the list, the position and item count given should be relative
+   * to its section.
+   */
+  public void bind(int position, int itemCount) {
     if (position == RecyclerView.NO_POSITION || itemCount == 0) {
       return;
     }
