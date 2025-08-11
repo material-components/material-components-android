@@ -21,6 +21,19 @@
     <attr name="indicatorSize" />
     <attr name="containerWidth" format="dimension" />
     <attr name="containerHeight" format="dimension" />
+    <!--
+      The time, in milliseconds, that the loading indicator will wait to show
+      once show() is called. If set to zero or negative values (-1 as default),
+      the show action will start immediately.
+    -->
+    <attr name="showDelay" />
+    <!--
+      The minimum time, in milliseconds, that the requested hide action will
+      wait to start once show action is started. If set to zero or negative
+      values (-1 as default), the requested hide action will start immediately.
+      This value is capped to a limit defined in LoadingIndicator class.
+    -->
+    <attr name="minHideDelay" />
   </declare-styleable>
 
   <attr name="loadingIndicatorStyle" format="reference"/>
