@@ -192,6 +192,10 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     clockFace.setValues(values, contentDescription);
   }
 
+  void setStopParams(int stopCount, int numberStopCount, int stopOffset) {
+    clockHandView.setStopParams(stopCount, numberStopCount, stopOffset);
+  }
+
   @Override
   public void setHandRotation(float rotation) {
     clockHandView.setHandRotation(rotation);
