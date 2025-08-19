@@ -18,8 +18,6 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
-import static java.lang.Math.min;
-
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -59,6 +57,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   private DrawingDelegate<S> drawingDelegate;
 
   // Animation.
+  private final SpringForce springForce;
   private final SpringAnimation springAnimation;
   // Active indicator for the progress.
   private final ActiveIndicator activeIndicator;
@@ -84,11 +83,13 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     activeIndicator.isDeterminate = true;
 
     // Initializes a spring animator for progress animation.
+    springForce = new SpringForce();
+
+    springForce.setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY);
+    springForce.setStiffness(SPRING_FORCE_STIFFNESS);
+
     springAnimation = new SpringAnimation(this, INDICATOR_LENGTH_IN_LEVEL);
-    springAnimation.setSpring(
-        new SpringForce()
-            .setDampingRatio(SpringForce.DAMPING_RATIO_NO_BOUNCY)
-            .setStiffness(SPRING_FORCE_STIFFNESS));
+    springAnimation.setSpring(springForce);
 
     // Initializes a linear animator to enforce phase animation when progress is unchanged.
     phaseAnimator = new ValueAnimator();
@@ -230,9 +231,7 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
       skipAnimationOnLevelChange = true;
     } else {
       skipAnimationOnLevelChange = false;
-      springAnimation
-          .getSpring()
-          .setStiffness(SPRING_FORCE_STIFFNESS / systemAnimatorDurationScale);
+      springForce.setStiffness(SPRING_FORCE_STIFFNESS / systemAnimatorDurationScale);
     }
 
     return changed;
@@ -261,29 +260,10 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
       setIndicatorFraction((float) level / MAX_DRAWABLE_LEVEL);
       setAmplitudeFraction(nextAmplitudeFraction);
     } else {
-      // Update min visible change to the recommended value.
-      updateSpringMinVisibleChange();
       springAnimation.setStartValue(getIndicatorFraction() * MAX_DRAWABLE_LEVEL);
       springAnimation.animateToFinalPosition(level);
     }
     return true;
-  }
-
-  /**
-   * Updates the minimum visible change of the spring animation controlling the indicator length
-   * (progress) to the recommended value based on the track's length.
-   */
-  private void updateSpringMinVisibleChange() {
-    int width = getBounds().width();
-    int height = getBounds().height();
-    if (drawingDelegate instanceof LinearDrawingDelegate) {
-      // Track length is the width of the drawable.
-      springAnimation.setMinimumVisibleChange((float) MAX_DRAWABLE_LEVEL / width);
-    } else {
-      // Track length is the perimeter of the circle fit in the drawable.
-      springAnimation.setMinimumVisibleChange(
-          (float) (MAX_DRAWABLE_LEVEL / (min(height, width) * Math.PI)));
-    }
   }
 
   @Override
@@ -294,17 +274,6 @@ public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
   @Override
   public int getIntrinsicHeight() {
     return drawingDelegate.getPreferredHeight();
-  }
-
-  /** Returns the spring force of the spring animation for the progress. */
-  @NonNull
-  public SpringForce getSpringForce() {
-    return springAnimation.getSpring();
-  }
-
-  /** Sets the spring force of the spring animation for the progress. */
-  public void setSpringForce(@NonNull SpringForce spring) {
-    springAnimation.setSpring(spring);
   }
 
   /**
