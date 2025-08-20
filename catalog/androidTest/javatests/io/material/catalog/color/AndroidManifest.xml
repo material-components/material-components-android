@@ -26,10 +26,6 @@
     android:name="androidx.startup.InitializationProvider"
     android:exported="false"
     tools:node="remove"/>
-    <provider
-    android:name="androidx.lifecycle.ProcessLifecycleOwnerInitializer"
-    android:exported="false"
-    tools:node="remove"/>
   </application>
 
   <instrumentation
