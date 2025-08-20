@@ -39,12 +39,17 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     RecyclerView view =
-        (RecyclerView) layoutInflater.inflate(R.layout.cat_lists_bright_background_fragment, viewGroup, false);
+        (RecyclerView)
+            layoutInflater.inflate(R.layout.cat_lists_bright_background_fragment, viewGroup, false);
 
     view.setLayoutManager(new LinearLayoutManager(getContext()));
-    List<CustomCardData> data = new ArrayList<>();
+    List<CustomListItemData> data = new ArrayList<>();
     for (int i = 0; i < 20; i++) {
-      data.add(new CustomCardData(i+1));
+      data.add(
+          new CustomListItemData(
+              String.format(view.getContext().getString(R.string.cat_list_item_text), i + 1),
+              i,
+              20));
     }
 
     view.setAdapter(new ListsAdapter(data));
@@ -56,7 +61,7 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
   /** An Adapter that shows custom list items */
   public static class ListsAdapter extends ListsMainDemoFragment.ListsAdapter {
 
-    public ListsAdapter(@NonNull List<CustomCardData> items) {
+    public ListsAdapter(@NonNull List<CustomListItemData> items) {
       super(items);
     }
 
@@ -65,7 +70,11 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
     public CustomItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
       ViewGroup item =
           (ViewGroup)
-              LayoutInflater.from(parent.getContext()).inflate(R.layout.cat_list_item_segmented_viewholder, parent, /* attachToRoot= */ false);
+              LayoutInflater.from(parent.getContext())
+                  .inflate(
+                      R.layout.cat_list_item_segmented_viewholder,
+                      parent,
+                      /* attachToRoot= */ false);
       return new CustomItemViewHolder(item);
     }
   }

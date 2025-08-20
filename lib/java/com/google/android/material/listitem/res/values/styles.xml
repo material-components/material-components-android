@@ -19,7 +19,6 @@
   <style name="Widget.Material3.ListItemLayout" parent="">
     <item name="enforceMaterialTheme">true</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemLayout</item>
-    <item name="android:minHeight">52dp</item>
   </style>
 
   <!-- Style for segmented ListItemLayout. -->
@@ -36,6 +35,7 @@
   </style>
 
   <style name="Widget.Material3.CardView.ListItemLayout" parent="Widget.Material3.CardView.Filled">
+    <item name="android:minHeight">52dp</item>
     <item name="cardElevation">0dp</item>
     <item name="checkedIcon">@null</item>
     <item name="cardForegroundColor">@null</item>

@@ -15,9 +15,11 @@
   limitations under the License.
   -->
 <com.google.android.material.listitem.ListItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
-  style="?attr/listItemLayoutSegmentedStyle">
+  style="?attr/listItemLayoutSegmentedStyle"
+  android:paddingHorizontal="8dp">
   <com.google.android.material.card.MaterialCardView
     android:id="@+id/cat_list_item_card_view"
     android:layout_width="match_parent"
@@ -30,33 +32,26 @@
       android:orientation="horizontal"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:gravity="center_vertical">
+      android:gravity="center_vertical"
+      tools:ignore="UseCompoundDrawables">
 
       <ImageView
         android:id="@+id/cat_list_item_start_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_star_icon_24px"
         android:contentDescription="@string/cat_list_item_icon_content_description" />
 
       <TextView
         android:id="@+id/cat_list_item_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
-      <ImageView
-        android:id="@+id/cat_list_item_end_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:contentDescription="@string/cat_list_item_icon_content_description" />
+        android:layout_weight="1"
+        android:textAppearance="?attr/textAppearanceBodyLarge"/>
 
     </LinearLayout>
   </com.google.android.material.card.MaterialCardView>

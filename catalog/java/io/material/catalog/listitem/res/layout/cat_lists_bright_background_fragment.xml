@@ -21,6 +21,6 @@
   android:id="@+id/recycler_view"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
-  android:padding="8dp"
+  android:paddingVertical="8dp"
   android:clipToPadding="false"
   android:background="?attr/colorSurfaceContainerHighest" />

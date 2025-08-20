@@ -28,7 +28,6 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -51,21 +50,33 @@ public class MultiSectionListDemoFragment extends DemoFragment {
     RecyclerView view =
         (RecyclerView) layoutInflater.inflate(R.layout.cat_lists_bright_background_fragment, viewGroup, false);
     view.setLayoutManager(new LinearLayoutManager(getContext()));
-    List<CustomCardData> data = new ArrayList<>();
+    List<CustomListItemData> data = new ArrayList<>();
     int itemCount = 0;
-    data.add(new CustomCardData(0, 0, 1));
+    data.add(
+        new CustomListItemData(
+            String.format(view.getContext().getString(R.string.cat_list_item_text), 0), 0, 1));
     itemCount += 1;
 
-    data.add(new CustomCardData("Subheader 1"));
+    data.add(new CustomListItemData("Subheader 1"));
 
     for (int i = 0; i < 3; i++) {
-      data.add(new CustomCardData(itemCount + i, i, 3));
+      data.add(
+          new CustomListItemData(
+              String.format(
+                  view.getContext().getString(R.string.cat_list_item_text), itemCount + i),
+              i,
+              3));
     }
 
-    data.add(new CustomCardData("Subheader 2"));
+    data.add(new CustomListItemData("Subheader 2"));
 
     for (int i = 0; i < 5; i++) {
-      data.add(new CustomCardData(itemCount + i, i, 5));
+      data.add(
+          new CustomListItemData(
+              String.format(
+                  view.getContext().getString(R.string.cat_list_item_text), itemCount + i),
+              i,
+              5));
     }
 
     view.setAdapter(new ListsAdapter(data));
@@ -79,9 +90,9 @@ public class MultiSectionListDemoFragment extends DemoFragment {
 
     private static final int VIEW_TYPE_SUBHEADING= 1;
     private static final int VIEW_TYPE_LIST_ITEM = 2;
-    private final List<CustomCardData> items;
+    private final List<CustomListItemData> items;
 
-    public ListsAdapter(@NonNull List<CustomCardData> items) {
+    public ListsAdapter(@NonNull List<CustomListItemData> items) {
       this.items = items;
     }
 
@@ -94,7 +105,9 @@ public class MultiSectionListDemoFragment extends DemoFragment {
               (ViewGroup)
                   LayoutInflater.from(parent.getContext())
                       .inflate(
-                          R.layout.cat_list_item_segmented_viewholder, parent, /* attachToRoot= */ false);
+                          R.layout.cat_list_item_segmented_viewholder,
+                          parent,
+                          /* attachToRoot= */ false);
           return new CustomItemViewHolder(item);
         case VIEW_TYPE_SUBHEADING:
           TextView subheader =
@@ -109,7 +122,7 @@ public class MultiSectionListDemoFragment extends DemoFragment {
 
     @Override
     public int getItemViewType(int position) {
-      CustomCardData data = getItemAt(position);
+      CustomListItemData data = getItemAt(position);
       if (data.subheading != null) {
         return VIEW_TYPE_SUBHEADING;
       }
@@ -119,7 +132,7 @@ public class MultiSectionListDemoFragment extends DemoFragment {
     @Override
     public void onBindViewHolder(
         @NonNull ViewHolder viewHolder, int position) {
-      CustomCardData data = getItemAt(position);
+      CustomListItemData data = getItemAt(position);
       if (getItemViewType(position) == VIEW_TYPE_SUBHEADING) {
         ((SubheaderViewHolder) viewHolder).bind(data);
       } else if (getItemViewType(position) == VIEW_TYPE_LIST_ITEM) {
@@ -133,26 +146,8 @@ public class MultiSectionListDemoFragment extends DemoFragment {
     }
 
     @NonNull
-    public CustomCardData getItemAt(int i) {
+    public CustomListItemData getItemAt(int i) {
       return items.get(i);
-    }
-  }
-
-  static class CustomCardData {
-    int cardNumber;
-    boolean checked;
-    int indexInSection;
-    int sectionCount;
-    String subheading;
-
-    public CustomCardData(int cardNumber, int indexInSection, int sectionCount) {
-      this.cardNumber = cardNumber;
-      this.indexInSection = indexInSection;
-      this.sectionCount = sectionCount;
-    }
-
-    public CustomCardData(String subheading) {
-      this.subheading = subheading;
     }
   }
 
@@ -178,25 +173,19 @@ public class MultiSectionListDemoFragment extends DemoFragment {
   /** A ViewHolder that shows custom list items */
   public static class CustomItemViewHolder extends ListItemViewHolder {
 
-    private final ImageView startButton;
-    private final ImageView endButton;
-    private final TextView text;
+    private final TextView textView;
     private final MaterialCardView cardView;
 
 
     public CustomItemViewHolder(@NonNull View itemView) {
       super(itemView);
-      startButton = itemView.findViewById(R.id.cat_list_item_start_icon);
-      endButton = itemView.findViewById(R.id.cat_list_item_end_icon);
-      text = itemView.findViewById(R.id.cat_list_item_text);
+      textView = itemView.findViewById(R.id.cat_list_item_text);
       cardView = itemView.findViewById(R.id.cat_list_item_card_view);
     }
 
-    public void bind(@NonNull CustomCardData data) {
+    public void bind(@NonNull CustomListItemData data) {
       super.bind(data.indexInSection, data.sectionCount);
-      text.setText(String.valueOf(data.cardNumber));
-      startButton.setImageResource(R.drawable.logo_avatar_anonymous_40dp);
-      endButton.setImageResource(R.drawable.ic_drag_handle_vd_theme_24px);
+      textView.setText(data.text);
 
       cardView.setChecked(data.checked);
       cardView.setOnClickListener(
@@ -219,7 +208,7 @@ public class MultiSectionListDemoFragment extends DemoFragment {
       text = itemView.findViewById(R.id.cat_list_subheader_text);
     }
 
-    public void bind(@NonNull CustomCardData data) {
+    public void bind(@NonNull CustomListItemData data) {
       text.setText(data.subheading);
     }
   }

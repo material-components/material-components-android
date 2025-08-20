@@ -61,12 +61,12 @@ public class ListItemLayout extends FrameLayout {
   }
 
   public ListItemLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    this(context, attrs, defStyleAttr, R.style.Widget_Material3_ListItemLayout);
+    this(context, attrs, defStyleAttr, R.attr.listItemLayoutStyle);
   }
 
   public ListItemLayout(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    super(wrap(context, attrs, defStyleAttr, defStyleRes));
+    super(wrap(context, attrs, defStyleAttr, defStyleRes), attrs, defStyleAttr);
   }
 
   @Override
