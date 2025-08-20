@@ -56,6 +56,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.CornerSize;
+import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.shape.ShapeAppearance;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.StateListCornerSize;
@@ -720,6 +721,30 @@ public class MaterialButtonGroup extends LinearLayout {
     }
   }
 
+  void onButtonHeightChanged(@NonNull MaterialButton button, int increaseSize) {
+    int buttonIndex = indexOfChild(button);
+    if (buttonIndex < 0) {
+      return;
+    }
+    MaterialButton prevVisibleButton = getPrevVisibleChildButton(buttonIndex);
+    MaterialButton nextVisibleButton = getNextVisibleChildButton(buttonIndex);
+    if (prevVisibleButton == null && nextVisibleButton == null) {
+      return;
+    }
+    if (prevVisibleButton == null) {
+      nextVisibleButton.setDisplayedHeightDecrease(increaseSize);
+    }
+    if (nextVisibleButton == null) {
+      prevVisibleButton.setDisplayedHeightDecrease(increaseSize);
+    }
+    if (prevVisibleButton != null && nextVisibleButton != null) {
+      // If there are two neighbors, each neighbor will absorb half of the expanded amount.
+      prevVisibleButton.setDisplayedHeightDecrease(increaseSize / 2);
+      // We want to avoid one pixel missing due to the casting, when increaseSize is odd.
+      nextVisibleButton.setDisplayedHeightDecrease((increaseSize + 1) / 2);
+    }
+  }
+
   /**
    * Adjusts the max amount of size to expand for each child button. So that it won't squeeze its
    * neighbors too much to cause text truncation; and the expansion amount per edge is same for all
@@ -732,36 +757,51 @@ public class MaterialButtonGroup extends LinearLayout {
       return;
     }
     int widthIncreaseOnSingleEdge = Integer.MAX_VALUE;
+    int heightIncreaseOnSingleEdge = Integer.MAX_VALUE;
     for (int i = firstVisibleChildIndex; i <= lastVisibleChildIndex; i++) {
       if (!isChildVisible(i)) {
         continue;
       }
-      // Calculates the allowed width increase for each child button with consideration of the max
-      // allowed width decrease of its neighbors.
+      // Calculates the allowed width and height increase for each child button with consideration
+      // of the max allowed width and height decrease of its neighbors.
       int widthIncrease = getButtonAllowedWidthIncrease(i);
+      int heightIncrease = getButtonAllowedHeightIncrease(i);
 
       // If the button expands on both edges, the width increase on each edge should be half of
-      // the total width increase. Calculates the minimum width increase on each edge, so that all
-      // buttons won't squeeze their neighbors too much.
+      // the total width increase. Calculates the minimum width and height increase on each edge, so
+      // that all buttons won't squeeze their neighbors too much.
       widthIncreaseOnSingleEdge =
           min(
               widthIncreaseOnSingleEdge,
               i != firstVisibleChildIndex && i != lastVisibleChildIndex
                   ? widthIncrease / 2
                   : widthIncrease);
+      heightIncreaseOnSingleEdge =
+          min(
+              heightIncreaseOnSingleEdge,
+              i != firstVisibleChildIndex && i != lastVisibleChildIndex
+                  ? heightIncrease / 2
+                  : heightIncrease);
     }
     for (int i = firstVisibleChildIndex; i <= lastVisibleChildIndex; i++) {
       if (!isChildVisible(i)) {
         continue;
       }
       getChildButton(i).setSizeChange(buttonSizeChange);
-      // If the button expands on both edges, the total width increase should be double of the
-      // width increase on each edge.
+      // If the button expands on both horizontal edges, the total width increase should be double
+      // of the width increase on each edge.
       getChildButton(i)
           .setWidthChangeMax(
               i == firstVisibleChildIndex || i == lastVisibleChildIndex
                   ? widthIncreaseOnSingleEdge
                   : widthIncreaseOnSingleEdge * 2);
+      // If the button expands on both vertical edges, the total height increase should be double of
+      // the height increase on each edge.
+      getChildButton(i)
+          .setHeightChangeMax(
+              i == firstVisibleChildIndex || i == lastVisibleChildIndex
+                  ? heightIncreaseOnSingleEdge
+                  : heightIncreaseOnSingleEdge * 2);
     }
   }
 
@@ -785,6 +825,28 @@ public class MaterialButtonGroup extends LinearLayout {
     int nextButtonAllowedWidthDecrease =
         nextVisibleButton == null ? 0 : nextVisibleButton.getAllowedWidthDecrease();
     return min(widthIncrease, prevButtonAllowedWidthDecrease + nextButtonAllowedWidthDecrease);
+  }
+
+  /**
+   * Returns the allowed height increase for a child button.
+   *
+   * <p>The allowed height increase is the smaller amount of the max height increase of the button
+   * in all states and the total allowed height decrease of its neighbors.
+   */
+  private int getButtonAllowedHeightIncrease(int index) {
+    if (!isChildVisible(index) || buttonSizeChange == null) {
+      return 0;
+    }
+    MaterialButton currentButton = getChildButton(index);
+    int heightIncrease = max(0, buttonSizeChange.getMaxHeightChange(currentButton.getHeight()));
+    // Checking neighbors' allowed height decrease.
+    MaterialButton prevVisibleButton = getPrevVisibleChildButton(index);
+    int prevButtonAllowedHeightDecrease =
+        prevVisibleButton == null ? 0 : prevVisibleButton.getAllowedHeightDecrease();
+    MaterialButton nextVisibleButton = getNextVisibleChildButton(index);
+    int nextButtonAllowedHeightDecrease =
+        nextVisibleButton == null ? 0 : nextVisibleButton.getAllowedHeightDecrease();
+    return min(heightIncrease, prevButtonAllowedHeightDecrease + nextButtonAllowedHeightDecrease);
   }
 
   // ================ Getters and setters ===================
