@@ -30,8 +30,8 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
+import androidx.appcompat.widget.TooltipCompat;
 import android.text.TextUtils;
-import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -398,9 +398,12 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
         initializeOrRetrieveActivePresenterForMode(inputMode, timePickerView, textInputStub);
     activePresenter.show();
     activePresenter.invalidate();
-    Pair<Integer, Integer> buttonData = dataForMode(inputMode);
-    modeButton.setIconResource(buttonData.first);
-    modeButton.setContentDescription(getResources().getString(buttonData.second));
+    ModeButtonData modeButtonData = getModeButtonData(inputMode);
+    modeButton.setIconResource(modeButtonData.iconResId);
+    modeButton.setContentDescription(
+        getResources().getString(modeButtonData.contentDescriptionResId));
+    TooltipCompat.setTooltipText(
+        modeButton, getResources().getString(modeButtonData.tooltipTextResId));
     modeButton.sendAccessibilityEvent(
         AccessibilityEventCompat.CONTENT_CHANGE_TYPE_CONTENT_DESCRIPTION);
   }
@@ -432,15 +435,21 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     return timePickerTextInputPresenter;
   }
 
-  private Pair<Integer, Integer> dataForMode(@InputMode int mode) {
+  private ModeButtonData getModeButtonData(@InputMode int mode) {
     switch (mode) {
       case INPUT_MODE_KEYBOARD:
-        return new Pair<>(clockIcon, R.string.material_timepicker_clock_mode_description);
+        return new ModeButtonData(
+            clockIcon,
+            R.string.material_timepicker_clock_mode_description,
+            R.string.material_timepicker_clock_mode_tooltip);
       case INPUT_MODE_CLOCK:
-        return new Pair<>(keyboardIcon, R.string.material_timepicker_text_input_mode_description);
+        return new ModeButtonData(
+            keyboardIcon,
+            R.string.material_timepicker_text_input_mode_description,
+            R.string.material_timepicker_text_input_mode_tooltip);
+      default:
+        throw new IllegalArgumentException("no button data for mode: " + mode);
     }
-
-    throw new IllegalArgumentException("no icon for mode: " + mode);
   }
 
   @Nullable
@@ -675,6 +684,21 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     @NonNull
     public MaterialTimePicker build() {
       return MaterialTimePicker.newInstance(this);
+    }
+  }
+
+  private static final class ModeButtonData {
+    @DrawableRes final int iconResId;
+    @StringRes final int contentDescriptionResId;
+    @StringRes final int tooltipTextResId;
+
+    ModeButtonData(
+        @DrawableRes int iconResId,
+        @StringRes int contentDescriptionResId,
+        @StringRes int tooltipTextResId) {
+      this.iconResId = iconResId;
+      this.contentDescriptionResId = contentDescriptionResId;
+      this.tooltipTextResId = tooltipTextResId;
     }
   }
 }
