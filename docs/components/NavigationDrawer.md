@@ -497,12 +497,12 @@ open drawers.
 
 ```java
   @Override
-  public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
-    if (keyCode == KeyEvent.KEYCODE_ESCAPE && drawerLayout.isDrawerOpen(navigationView)) {
+  public boolean dispatchKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ESCAPE && drawerLayout.isDrawerOpen(navigationView)) {
       drawerLayout.closeDrawer(navigationView);
       return true;
     }
-    return super.onKeyDown(keyCode, keyEvent);
+    return super.dispatchKeyEvent(keyEvent);
   }
 ```
 
