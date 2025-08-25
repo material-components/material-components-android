@@ -14,7 +14,7 @@ represent an input, attribute, or action. Chips help people enter information,
 make selections, filter content, or trigger actions. There are four variants of
 chips.
 
-![Examples of the four different chip types](assets/chips/chip_types.png)
+![Examples of the four different chip types](assets/chips/chip-types.png)
 
 1.  Assist chip
 2.  Filter chip
@@ -34,7 +34,7 @@ chips.
 
 <summary><h4>Assist</h4></summary>
 
-![Anatomy of assist chip](assets/chips/assist_anatomy.png)
+![Anatomy of assist chip](assets/chips/assist-anatomy.png)
 
 1.  Container
 2.  Label text
@@ -45,7 +45,7 @@ chips.
 
 <summary><h4>Filter</h4></summary>
 
-![Anatomy of a filter chip](assets/chips/filter_anatomy.png)
+![Anatomy of a filter chip](assets/chips/filter-anatomy.png)
 
 1.  Container
 2.  Label text
@@ -57,7 +57,7 @@ chips.
 
 <summary><h4>Input</h4></summary>
 
-![Anatomy of a input chip](assets/chips/input_anatomy.png)
+![Anatomy of a input chip](assets/chips/input-anatomy.png)
 
 1.  Container
 2.  Label text
@@ -69,7 +69,7 @@ chips.
 
 <summary><h4>Suggestion</h4></summary>
 
-![Anatomy of a suggestion chip](assets/chips/suggestion_anatomy.png)
+![Anatomy of a suggestion chip](assets/chips/suggestion-anatomy.png)
 
 1.  Container
 2.  Label text
@@ -184,12 +184,12 @@ Assist chips represent smart or automated actions that can span multiple apps,
 such as opening a calendar event from the home screen. Assist chips function as
 though the user asked an assistant to complete the action.
 
-#### Assist chip example
+#### Default
 
 The following example shows an activated assist chip.
 
 !["A selected action chip with its corresponding action, a visible popup textbox
-stating the chip has been activated."](assets/chips/chips_selected_assist.png)
+stating the chip has been activated."](assets/chips/chips-selected-assist.png)
 
 In the layout:
 
@@ -203,12 +203,29 @@ In the layout:
 
 <com.google.android.material.chip.Chip
   android:id="@+id/chip_1"
-  style="@style/Widget.Material3.Chip.Assist"
   android:layout_width="wrap_content"
   android:layout_height="wrap_content"
   android:text="@string/chip_text_1"
   app:chipIcon="@drawable/circle_1"
   app:ensureMinTouchTargetSize="true"/>
+```
+
+#### Elevated
+
+!["Assist elevated chip in light theme"](assets/chips/chip-assist-elevated-light-theme.png)
+
+!["Assist elevated chip in dark theme"](assets/chips/chip-assist-elevated-dark-theme.png)
+
+Assist chips also come in an `Elevated` style variant, to be used when placed
+against a background that needs protection, such as an image.
+
+```xml
+<com.google.android.material.chip.Chip
+    style="@style/Widget.Material3.Chip.Assist.Elevated"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/chip_text"
+    app:chipIcon="@drawable/ic_action_24"/>
 ```
 
 </details>
@@ -222,12 +239,12 @@ Filter chips use tags or descriptive words to filter content.
 Filter chips clearly delineate and display options in a compact area. They are a
 good alternative to toggle buttons or checkboxes.
 
-#### Filter chip example
+#### Default
 
 The following example shows filter chips.
 
 !["6 white "Filter" chips spread across 2 lines: "Filters" 1 and 3 selected and
-are light purple and include checkmarks."](assets/chips/chips_filter.png)
+are light purple and include checkmarks."](assets/chips/chips-filter.png)
 
 In the layout:
 
@@ -271,6 +288,23 @@ In the layout:
 </com.google.android.material.chip.ChipGroup>
 ```
 
+#### Elevated
+
+!["Filter elevated chip in light theme"](assets/chips/chip-filter-elevated-light-theme.png)
+
+!["Filter elevated chip in dark theme"](assets/chips/chip-filter-elevated-dark-theme.png)
+
+Filter chips also come in an `Elevated` style variant, to be used when placed
+against a background that needs protection, such as an image.
+
+```xml
+<com.google.android.material.chip.Chip
+    style="@style/Widget.Material3.Chip.Filter.Elevated"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/chip_text" />
+```
+
 </details>
 
 <details>
@@ -285,7 +319,7 @@ that input by converting text into chips.
 
 The following example shows input chips.
 
-!["Input chips with texts Input 1 to 6."](assets/chips/chips_input.png)
+!["Input chips with texts Input 1 to 6."](assets/chips/chips-input.png)
 
 In the layout:
 
@@ -294,19 +328,19 @@ In the layout:
     ...>
   <com.google.android.material.chip.Chip
       android:id="@+id/chip_1"
-      style="@style/Widget.Material3.Chip.Input"
+      style="?attr/chipStandaloneStyle"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/text_input_1"/>
 
   <com.google.android.material.chip.Chip
       ...
-      style="@style/Widget.Material3.Chip.Input"
+      style="?attr/chipStandaloneStyle"
       android:text="@string/text_input_2"/>
 
   <com.google.android.material.chip.Chip
       ...
-      style="@style/Widget.Material3.Chip.Input"
+      style="?attr/chipStandaloneStyle"
       android:text="@string/text_input_3"/>
 
 </com.google.android.material.chip.ChipGroup>
@@ -321,14 +355,14 @@ In the layout:
 Suggestion chips help narrow a user’s intent by presenting dynamically generated
 suggestions, such as offering possible responses or providing search filters.
 
-#### Suggestion chip example
-
-The following example shows suggestion chips.
+The following example shows suggestion chips in default and elevated styles.
 
 !["3 suggestion chips, where suggestion 1 is unselected with a solid border and
 white background, suggestion 2 is selected with no border and a light purple
 background, and suggestion 3 is an unselected elevated suggestion with no border
-and a light grey background."](assets/chips/chips_suggestion.png)
+and a light grey background."](assets/chips/chips-suggestion.png)
+
+#### Default
 
 In the layout:
 
@@ -344,13 +378,25 @@ In the layout:
     ...
     style="@style/Widget.Material3.Chip.Suggestion"
     android:text="@string/chip_text_2"/>
-  <com.google.android.material.chip.Chip
-    ...
-    style="@style/Widget.Material3.Chip.Suggestion.Elevated"
-    android:text="@string/chip_text_3"/>
 
 </com.google.android.material.chip.ChipGroup>
 ```
+
+#### Elevated
+
+Suggestion chips also come in an `Elevated` style variant. These chips
+should be used when placed against a background that needs protection, such
+as an image.
+
+```xml
+<com.google.android.material.chip.Chip
+    style="@style/Widget.Material3.Chip.Suggestion.Elevated"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/chip_text_3" />
+```
+
+**Note:** Suggestion chips are usually placed within a `ChipGroup`.
 
 </details>
 
@@ -448,7 +494,7 @@ opposed to a `ViewGroup` such as `RecyclerView`. A `ChipGroup` contains a set of
 A `ChipGroup` rearranges chips across multiple rows by default.
 
 !["6 white "Filter" chips spread across 2 lines: "Filters" 1 and 3 selected and
-are light purple and include checkmarks."](assets/chips/chips_filter.png)
+are light purple and include checkmarks."](assets/chips/chips-filter.png)
 
 ```xml
 <com.google.android.material.chip.ChipGroup
@@ -466,7 +512,7 @@ A `ChipGroup` can also constrain its chips to a single row using the
 `ChipGroup` with a `HorizontalScrollView`.
 
 !["Single line of white chips: chips 1, 2, and 3 are fully visible, chip 4 is
-partly visible"](assets/chips/chips_singleline.png)
+partly visible"](assets/chips/chips-singleline.png)
 
 ```xml
 <HorizontalScrollView
@@ -497,7 +543,7 @@ for lower amounts.
 The following image shows a group of chips with
 `app:chipSpacingHorizontal="42dp"`.
 
-!["6 white chips in 2 rows with 42dp horizontal spacing"](assets/chips/chips_spacing.png)
+!["6 white chips in 2 rows with 42dp horizontal spacing"](assets/chips/chips-spacing.png)
 
 </details>
 
@@ -563,7 +609,7 @@ For example, consider an editable e-mail address field that converts addresses
 to chips as they are typed and validated. We can combine `ChipDrawable` with
 spans to add a chip to an `EditText`:
 
-!["Standalone chip inside a text field"](assets/chips/chips_standalone.png)
+!["Standalone chip inside a text field"](assets/chips/chips-standalone.png)
 
 ```kt
 chip.setBounds(0, 0, chip.intrinsicWidth, chip.intrinsicHeight)
@@ -594,7 +640,7 @@ API and source code:
 
 The following example shows chips with Material theming.
 
-!["3 chips with brown text and icons, white fill, and pink outlines"](assets/chips/chips_theming.png)
+!["3 chips with brown text and icons, white fill, and pink outlines"](assets/chips/chips-theming.png)
 
 ##### Implementing chip theming
 

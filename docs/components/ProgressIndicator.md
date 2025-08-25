@@ -14,7 +14,7 @@ express an unspecified wait time or display the length of a process. Progress
 indicators show the status of a process in real time. There are two variants of
 progress indicators.
 
-![Composite image of linear and circular progress indicator types](assets/progressindicator/progressindicators_types.png)
+![Composite image of linear and circular progress indicator types](assets/progressindicator/progressindicators-types.png)
 
 1.  Linear progress indicator
 2.  Circular progress indicator
@@ -28,7 +28,7 @@ progress indicators.
 
 ## Anatomy
 
-![Progress indicator anatomy composite](assets/progressindicator/progressindicators_anatomy.png)
+![Progress indicator anatomy composite](assets/progressindicator/progressindicators-anatomy.png)
 
 1.  Active indicator
 2.  Track
@@ -37,14 +37,16 @@ progress indicators.
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/progress-indicators/guidelines#f4cc8d62-23b8-47e5-8ffa-5684ef4f1975).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
 ![Progress indicators have a new rounded, colorful style, and more
 configurations to choose from, including a wavy shape and variable track
-height](assets/progressindicator/order_details.gif)
+height](assets/progressindicator/order-details.gif)
 
 Progress indicators have a new rounded, colorful style, and more configurations
 to choose from, including a wavy shape and variable track height
@@ -53,6 +55,199 @@ to choose from, including a wavy shape and variable track height
 
 *   Track height: Thick (8dp)
 *   Shape: Wavy
+
+### M3 Expressive styles
+
+<details>
+<summary><h4>Wavy</h4></summary>
+
+Wavy progress indicators offer both determinate and indeterminate variants, but
+also allow you to customize their appearance with various wave parameters for
+more expressive visuals.
+
+![Wavy indicator](assets/progressindicator/wavy-indicator.gif)
+
+Wavy linear indicators increase the height of the overall container
+
+**Note**: The wavy shape can make longer processes feel less static and is
+best used when a more expressive style is appropriate. When using the wavy shape
+, the overall height of the component changes. At very small sizes, the wavy
+shape may not be as visible.
+
+There are two variants of wavy progress indicators: **Linear** and **Circular**
+
+##### Linear
+
+###### Indeterminate
+
+![Expressive wavy indeterminate linear progress
+indicator](assets/progressindicator/wavy-indeterminate-linear.gif)
+
+A new variant with wavy tracks is added in expressive. There's no dedicated
+theme attribute for this variant added in either `Material3` themes or
+`Material3Expressive` themes. It has to be configured by setting the style
+as below.
+
+```xml
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:id="@+id/linear_progress_indicator"
+    style="@style/Widget.Material3Expressive.LinearProgressIndicator.Wavy"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true" />
+```
+
+###### Thick indeterminate
+
+![Expressive wavy thick indeterminate linear progress
+indicator](assets/progressindicator/wavy-thick-indeterminate-linear.gif)
+
+A variant with a thicker track can be configured via `trackThickness` attribute
+as below. The recommended value is `8dp`. To keep the track fully rounded, the
+`trackCornerRadius` should be set to `4dp`.
+
+```xml
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:id="@+id/linear_progress_indicator"
+    style="@style/Widget.Material3Expressive.LinearProgressIndicator.Wavy"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true"
+    app:trackCornerRadius="4dp"
+    app:trackThickness="8dp" />
+```
+
+It can also be configured via the attributes like `waveLength`, `waveAmplitude`,
+etc, for more waviness or thicker track customization.
+
+##### Circular
+
+###### Indeterminate
+
+![Expressive wavy indeterminate circular progress indicator](assets/progressindicator/wavy-indeterminate-circular.gif)
+
+A new variant with wavy tracks is added in Expressive. There's no theme
+attribute for this variant added in either `Material3` themes or
+`Material3Expressive` themes. It has to be configured by setting the style
+as below.
+
+```xml
+<com.google.android.material.progressindicator.CircularProgressIndicator
+    android:id="@+id/circular_progress_indicator"
+    style="@style/Widget.Material3Expressive.CircularProgressIndicator.Wavy"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true" />
+```
+
+###### Thick indeterminate
+
+![Expressive wavy thick indeterminate circular progress indicator](assets/progressindicator/wavy-thick-indeterminate-circular.gif)
+
+A variant with a thicker track can be configured via `trackThickness` attribute
+as below. The recommended value is `8dp`. To keep the track fully rounded,
+the `trackCornerRadius` should be set to `4dp`. The `indicatorSize` is also
+recommended to increase to `52dp`.
+
+```xml
+<com.google.android.material.progressindicator.CircularProgressIndicator
+    android:id="@+id/circular_progress_indicator"
+    style="@style/Widget.Material3Expressive.CircularProgressIndicator.Wavy"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true"
+    app:indicatorSize="52dp"
+    app:trackCornerRadius="4dp"
+    app:trackThickness="8dp" />
+```
+
+It can also be configured via the attributes like `waveLength`, `waveAmplitude`,
+etc. for more waviness or thicker track customization.
+
+</details>
+
+<details><summary><h4>Flat</h4></summary>
+
+There are two variants of flat progress indicators: **Linear** and **Circular**.
+
+##### Linear
+
+###### Indeterminate
+
+![Expressive flat indeterminate linear progress indicator](assets/progressindicator/flat-indeterminate-linear.gif)
+
+The default `LinearProgressIndicator` style in `Material3Expressive`
+themes is the same as the `Material3` themes with a 4dp thick flat track,
+`colorPrimary` for indicator color and `colorPrimaryContainer` for track color.
+
+```xml
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:id="@+id/linear_progress_indicator"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true" />
+```
+
+###### Thick indeterminate
+
+![Expressive flat thick indeterminate linear progress
+indicator](assets/progressindicator/flat-thick-indeterminate-linear.gif)
+
+To have a thick flat track, it can be configured via `trackThickness` attribute
+as below. The recommended value is `8dp`. To keep the track fully rounded,
+the `trackCornerRadius` should be set to `4dp`.
+
+```xml
+<com.google.android.material.progressindicator.LinearProgressIndicator
+    android:id="@+id/linear_progress_indicator"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true"
+    app:trackCornerRadius="4dp"
+    app:trackThickness="8dp" />
+```
+
+##### Circular
+
+###### Indeterminate
+
+![Expressive flat indeterminate circular progress indicator](assets/progressindicator/flat-indeterminate-circular.gif)
+
+The default `CircularProgressIndicator` style in `Material3Expressive`
+themes is same as the `Material3` themes with a 4dp track, `colorPrimary`
+indicator color and `colorPrimaryContainer` track color. However, in the
+indeterminate mode, it has a new animation and the inactive track is also
+visible by default.
+
+```xml
+<com.google.android.material.progressindicator.CircularProgressIndicator
+    android:id="@+id/circular_progress_indicator"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:indeterminate="true" />
+```
+
+###### Thick indeterminate
+
+![Expressive flat thick indeterminate circular progress indicator](assets/progressindicator/flat-thick-indeterminate-circular.gif)
+
+To have a thick flat track, it can be configured via `trackThickness` attribute
+as below. The recommended value for `trackThickness` is `8dp`. To keep the track
+fully rounded, the `trackCornerRadius` should be set to `4dp`. The
+`indicatorSize` is also recommended to increase to `44dp`.
+
+```xml
+<com.google.android.material.progressindicator.CircularProgressIndicator
+    android:id="@+id/circular_progress_indicator"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:indeterminate="true"
+    app:indicatorSize="44dp"
+    app:trackCornerRadius="4dp"
+    app:trackThickness="8dp" />
+```
+
+</details>
 
 ## Key properties
 
@@ -155,7 +350,7 @@ tracked:
 *   **Indeterminate progress indicators** move along a fixed track, growing and
     shrinking in size. Use it when progress and wait time is unknown.
 
-![Determinate and indeterminate progress indicators](assets/progressindicator/determinate_indeterminate.gif)
+![Determinate and indeterminate progress indicators](assets/progressindicator/determinate-indeterminate.gif)
 
 1.  Determinate
 2.  Indeterminate
@@ -185,7 +380,7 @@ API and source code:
 The following example shows a determinate linear progress indicator.
 
 ![Determinate linear progress indicator animation: purple indicator fills up
-grey track](assets/progressindicator/linear_determinate.gif)
+grey track](assets/progressindicator/linear-determinate.gif)
 
 In the layout:
 
@@ -197,7 +392,7 @@ In the layout:
 The following example shows an indeterminate linear progress indicator.
 
 ![Indeterminate linear progress indicator animation: purple indicator travels
-along grey track](assets/progressindicator/linear_indeterminate.gif)
+along grey track](assets/progressindicator/linear-indeterminate.gif)
 
 In the layout:
 
@@ -216,14 +411,14 @@ For linear progress indicator, there are two indeterminate animation types:
 
     ![Disjointed indeterminate linear progress indicator animation: red
     indicator travels along track 2x then switches to
-    yellow](assets/progressindicator/linear_multicolor_disjoint.gif)
+    yellow](assets/progressindicator/linear-multicolor-disjoint.gif)
 
 *   `contiguous` - animates as repeated cycles with three adjacent segments in
     different colors.
 
     ![Contiguous indeterminate linear progress indicator animation: red, yellow,
     blue indicators move sequentially and cover
-    track](assets/progressindicator/linear_multicolor_contiguous.gif)
+    track](assets/progressindicator/linear-multicolor-contiguous.gif)
 
 **Note:** There is a minimum requirement of 3 indicator colors to use the
 **contiguous** animation. Otherwise, an IllegalArgumentException will be thrown.
@@ -268,7 +463,7 @@ In the layout:
 
 The following example shows an indeterminate circular progress indicator.
 
-<img src="assets/progressindicator/circular_indeterminate.gif" alt="
+<img src="assets/progressindicator/circular-indeterminate.gif" alt="
 Indeterminate circular progress indicator animation: purple indicator follows
 a circle clockwise from the
 top" width="600"/>
@@ -378,7 +573,7 @@ The following example shows a circular progress indicator with Material theming.
 
 !["Circular progress indicator animation: pink circle segment circles center,
 then pink circle segment fills
-circle"](assets/progressindicator/circular_theming.gif)
+circle"](assets/progressindicator/circular-theming.gif)
 
 #### Implementing progress indicator theming
 
