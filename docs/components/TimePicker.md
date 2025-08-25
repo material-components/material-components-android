@@ -12,7 +12,7 @@ path: /catalog/time-pickers/
 [Time pickers](https://m3.material.io/components/time-pickers/overview/) help
 users select and set a specific time. There are two variants of time pickers.
 
-<img src="assets/timepicker/timepicker_types.png" alt="Time picker in a mobile UI that has both a numeric display and a clock dial display of the time." height="500">
+<img src="assets/timepicker/timepicker-types.png" alt="Time picker in a mobile UI that has both a numeric display and a clock dial display of the time." height="500">
 
 1.  Time picker dial
 2.  Time picker input
@@ -29,7 +29,7 @@ users select and set a specific time. There are two variants of time pickers.
 <details>
   <summary><h4>Time picker dial</h4></summary>
 
-![Time picker dial anatomy](assets/timepicker/timepickerdial_anatomy.png)
+![Time picker dial anatomy](assets/timepicker/timepickerdial-anatomy.png)
 
 1.  Headline
 2.  Time selector separator
@@ -51,7 +51,7 @@ users select and set a specific time. There are two variants of time pickers.
 <details>
   <summary><h4>Time picker input</h4></summary>
 
-![Time picker input anatomy](assets/timepicker/timepickerinput_anatomy.png)
+![Time picker input anatomy](assets/timepicker/timepickerinput-anatomy.png)
 
 1.  Headline
 2.  Time selector separator
@@ -112,14 +112,14 @@ and
 
 ### Time picker dial
 
-<img src="assets/timepicker/timepicker_type_dial.png" alt="Time picker dial example" width="700">
+<img src="assets/timepicker/timepicker-type-dial.png" alt="Time picker dial example" width="700">
 
 Dial time pickers let people set a time by moving a handle around the dial. They
 are often used for setting an alarm or calendar event.
 
 ### Time picker input
 
-<img src="assets/timepicker/timepicker_type_input.png" alt="Time picker input example" height="500">
+<img src="assets/timepicker/timepicker-type-input.png" alt="Time picker input example" height="500">
 
 Input time pickers allow people to set a time using a keyboard. This option is
 accessible from any mobile time picker interface via the keyboard icon.
@@ -133,7 +133,7 @@ page.
 
 ### Adding time picker
 
-<img src="assets/timepicker/timepicker_formats.png" alt="Image of a time picker in 12H format and one in 24H format." height="500">
+<img src="assets/timepicker/timepicker-formats.png" alt="Image of a time picker in 12H format and one in 24H format." height="500">
 
 API and source code:
 
@@ -229,7 +229,7 @@ Time pickers support the customization of color and typography.
 
 The following example shows a time picker with Material theming.
 
-<img src="assets/timepicker/timepicker_theming.png" alt="Time Picker pink interactive display, grey background, and brown icons and text." height="500">
+<img src="assets/timepicker/timepicker-theming.png" alt="Time Picker pink interactive display, grey background, and brown icons and text." height="500">
 
 Use theme attributes and styles in `res/values/styles.xml`, which styles all
 time pickers and affects other components:

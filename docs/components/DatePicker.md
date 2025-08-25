@@ -12,7 +12,7 @@ path: /catalog/date-pickers/
 [Date pickers](https://material.io/components/date-pickers) let users select a
 date or range of dates.There are three variants of date pickers.
 
-<img src="assets/datepicker/datepickers_types.png" alt="Date picker and range picker examples."/>
+<img src="assets/datepicker/datepickers-types.png" alt="Date picker and range picker examples."/>
 
 1.  Docked date picker
 2.  Modal date picker
@@ -31,7 +31,7 @@ date or range of dates.There are three variants of date pickers.
 
 <summary><h4>Docked date picker</h4></summary>
 
-<img src="assets/datepicker/dockeddatepicker_anatomy1.png" alt="10 elements of a docked date picker." height="600"/>
+<img src="assets/datepicker/dockeddatepicker-anatomy1.png" alt="10 elements of a docked date picker." height="600"/>
 
 1.  Outlined text field
 2.  Menu button: Month selection
@@ -44,7 +44,7 @@ date or range of dates.There are three variants of date pickers.
 9.  Text buttons
 10. Container
 
-<img src="assets/datepicker/dockeddatepicker_anatomy2.png" alt="8 elements of a docked date picker." height="600"/>
+<img src="assets/datepicker/dockeddatepicker-anatomy2.png" alt="8 elements of a docked date picker." height="600"/>
 
 1.  Outlined text field
 2.  Menu button: Month selection (pressed)
@@ -61,7 +61,7 @@ date or range of dates.There are three variants of date pickers.
 
 <summary><h4>Modal date picker</h4></summary>
 
-<img src="assets/datepicker/modaldatepicker_anatomy1.png" alt="13 elements of a modal date picker." height="600"/>
+<img src="assets/datepicker/modaldatepicker-anatomy1.png" alt="13 elements of a modal date picker." height="600"/>
 
 1.  Headline
 2.  Supporting text
@@ -71,12 +71,13 @@ date or range of dates.There are three variants of date pickers.
 6.  Icon buttons
 7.  Weekdays
 8.  Today’s date
-9.  Unselected date 10.Text buttons
-10. Selected date
-11. Menu button
-12. Divider
+9.  Unselected date
+10. Text buttons
+11. Selected date
+12. Menu button
+13. Divider
 
-<img src="assets/datepicker/modaldatepicker_anatomy2.png" alt="10 elements of a modal date picker." height="600"/>
+<img src="assets/datepicker/modaldatepicker-anatomy2.png" alt="10 elements of a modal date picker." height="600"/>
 
 1.  Headline
 2.  Supporting text
@@ -86,9 +87,10 @@ date or range of dates.There are three variants of date pickers.
 6.  Unselected year
 7.  Selected year
 8.  Text buttons
-9.  Divider 10 Menu button
+9.  Divider
+10. Menu button
 
-<img src="assets/datepicker/modaldatepicker_anatomy3.png" alt="15 elements of a modal date picker." height="650"/>
+<img src="assets/datepicker/modaldatepicker-anatomy3.png" alt="15 elements of a modal date picker." height="650"/>
 
 1.  Headline
 2.  Supporting text
@@ -112,7 +114,7 @@ date or range of dates.There are three variants of date pickers.
 
 <summary><h4>Modal date input</h4></summary>
 
-<img src="assets/datepicker/modaldateinput_anatomy.png" alt="8 elements of a modal date input."/>
+<img src="assets/datepicker/modaldateinput-anatomy.png" alt="8 elements of a modal date input."/>
 
 1.  Headline
 2.  Supporting text
@@ -267,7 +269,7 @@ app:layout_constraintTop_toTopOf="parent"
 app:endIconMode="custom"
 app:endIconDrawable="@drawable/ic_android_black_24dp"
 app:endIconContentDescription="Open Date Picker"
-style="@style/Widget.Material3.TextInputLayout.OutlinedBox">
+style="?attr/textInputOutlinedStyle">
 
 <com.google.android.material.textfield.TextInputEditText
 android:id="@+id/booking_date_edit_text"
@@ -358,7 +360,7 @@ datePicker.show()
 The following example shows a **modal date range picker** with a date range
 selected.
 
-  <img src="assets/datepicker/datepickers_range_example.png" alt="Date range picker with September, 20 to September, 24 selected" height="700"/>
+  <img src="assets/datepicker/datepickers-range-example.png" alt="Date range picker with September, 20 to September, 24 selected" height="700"/>
 
 In code:
 
@@ -599,7 +601,7 @@ API and source code:
 
 The following example shows a date picker with Material theming.
 
-<img src="assets/datepicker/datepickers_hero.png" alt="Mobile date picker for September 2021 with '21' selected." height="637"/>
+<img src="assets/datepicker/datepickers-hero.png" alt="Mobile date picker for September 2021 with '21' selected." height="637"/>
 
 Use theme attributes and styles in `res/values/styles.xml`, which apply to all
 date pickers and affect other components:
