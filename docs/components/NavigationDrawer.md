@@ -18,7 +18,7 @@ window size classes.
 provide access to destinations in your app. There are two variants of navigation
 drawers.
 
-<img src="assets/navigationdrawer/navigation_drawer_overview.png" alt="A standard (left) and modal (right) navigation drawer" height="450">
+<img src="assets/navigationdrawer/navigation-drawer-overview.png" alt="A standard (left) and modal (right) navigation drawer" height="450">
 
 1.  Standard navigation drawer
 2.  Modal navigation drawer
@@ -32,7 +32,7 @@ drawers.
 
 ## Anatomy
 
-<img src="assets/navigationdrawer/navigation_drawer_anatomy.png" alt="Navigation drawer anatomy diagram" width="800">
+<img src="assets/navigationdrawer/navigation-drawer-anatomy.png" alt="Navigation drawer anatomy diagram" width="800">
 
 1.  Container
 2.  Headline

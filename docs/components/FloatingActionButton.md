@@ -13,7 +13,7 @@ A
 [floating action button (FAB)](https://m3.material.io/components/floating-action-button)
 represents the primary action of a screen. There are three variants of a FAB.
 
-![FAB types](assets/fabs/FAB_types.png)
+![FAB types](assets/fabs/fab-types.png)
 
 1.  FAB
 2.  Medium FAB
@@ -32,7 +32,7 @@ center.
 
 ## Anatomy
 
-![FAB anatomy diagram](assets/fabs/FAB_anatomy.png)
+![FAB anatomy diagram](assets/fabs/fab-anatomy.png)
 
 1.  Container
 2.  Icon
@@ -40,12 +40,14 @@ center.
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/floating-action-button/guidelines#9a56f806-8840-4910-8f53-3cb2a6c81c86).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-![Four FABs showing the colors available after the expressive update.](assets/fabs/FAB_expressive.png)
+![Four FABs showing the colors available after the expressive update.](assets/fabs/fab-expressive.png)
 FABs have updated colors and sizes
 
 The FAB has new sizes to match the extended FAB and more color options. The
@@ -71,6 +73,78 @@ small FAB is deprecated.
     *   **Tertiary** to **Tertiary container**
     *   The values haven't changed
 *   Deprecated surface color FABs
+
+### M3 Expressive styles
+
+#### Theme overlays
+
+To avoid a scenario of exploding style combinations, the colors will be handled
+via theme overlays instead of creating distinct styles for each size/palette
+combination for FABs and extended FABs.
+
+M3 Expressive library provides six theme overlays to be used:
+
+-   `ThemeOverlay.Material3Expressive.FloatingActionButton.Primary`
+-   `ThemeOverlay.Material3Expressive.FloatingActionButton.Secondary`
+-   `ThemeOverlay.Material3Expressive.FloatingActionButton.Tertiary`
+-   `ThemeOverlay.Material3Expressive.FloatingActionButton.PrimaryContainer`
+-   `ThemeOverlay.Material3Expressive.FloatingActionButton.SecondaryContainer`
+-   `ThemeOverlay.Material3Expressive.FloatingActionButton.TertiaryContainer`
+
+The theme overlay for a given FAB or extended FAB can be specified within the
+component XML by adding, for example,
+`app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary`.
+
+**Note:** The images below show FAB examples in light mode (left) and in dark
+mode (right) using the primary theme overlay.
+
+#### M3 Expressive FAB
+
+<img src="assets/fabs/fab-expressive-light.png" alt="Expressive FAB in light mode." width="75"> <div style="width:400px"></div> | <img src="assets/fabs/fab-expressive-dark.png" alt="Expressive FAB in dark mode." width="75"> <div style="width:400px"></div>
+------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------------------------------------------------------------------------------------------
+
+```xml
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+      style="?attr/floatingActionButtonStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:contentDescription="@string/m3_expressive_primary_fab_content_description"
+      app:srcCompat="@drawable/gs_edit_fill1_vd_theme_24"
+      app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary" />
+```
+
+#### M3 Expressive medium FAB
+
+<img src="assets/fabs/fab-expressive-medium-light.png" alt="Expressive Medium FAB in light mode." width="150"> <div style="width:400px"></div> | <img src="assets/fabs/fab-expressive-medium-dark.png" alt="Expressive Medium FAB in dark mode" width="150"> <div style="width:400px"></div>
+---------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------
+
+```xml
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+            style="?attr/floatingActionButtonMediumStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:contentDescription="@string/m3_expressive_primary_medium_fab_content_description"
+            app:srcCompat="@drawable/gs_edit_fill1_vd_theme_24"
+            app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary" />
+```
+
+#### M3 Expressive large FAB
+
+<img src="assets/fabs/fab-expressive-large-light.png" alt="Expressive Large FAB in light mode." width="175"> <div style="width:400px"></div> | <img src="assets/fabs/fab-expressive-large-dark.png" alt="Expressive Large FAB in dark mode" width="175"> <div style="width:400px"></div>
+-------------------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------
+
+```xml
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+      style="?attr/floatingActionButtonLargeStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:contentDescription="@string/m3_expressive_primary_large_fab_content_description"
+      app:srcCompat="@drawable/gs_edit_fill1_vd_theme_24"
+      app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary" />
+```
 
 ## Key properties
 
@@ -116,7 +190,7 @@ There are three FAB sizes:
 
 Choose the FAB size based on the visual hierarchy of your layout.
 
-![FAB sizes](assets/fabs/FABs_sizes.png)FABs have multiple sizes that scale with
+![FAB sizes](assets/fabs/fabs-sizes.png)FABs have multiple sizes that scale with
 window size
 
 <details>
@@ -137,7 +211,7 @@ API and source code:
 
 The following example shows a regular FAB with a plus icon.
 
-<img src="assets/fabs/fab_regular.png" alt="56dp boxy purple FAB with dark plus icon" height="500"/>
+<img src="assets/fabs/fab-regular.png" alt="56dp boxy purple FAB with dark plus icon" height="500"/>
 
 In the layout:
 
@@ -186,9 +260,9 @@ API and source code:
 
 #### Medium FAB example
 
-The following example shows a small FAB with a plus icon.
+The following example shows a medium FAB with a plus icon.
 
-<img src="assets/fabs/FAB_medium.png" alt="Purple medium FAB on a mobile device screen." height="500"/>
+<img src="assets/fabs/fab-medium.png" alt="Purple medium FAB on a mobile device screen." height="500"/>
 
 In the layout:
 
@@ -234,7 +308,7 @@ API and source code:
 
 The following example shows a large FAB with a plus icon.
 
-<img src="assets/fabs/FAB_large.png" alt="96dp boxy purple FAB with dark plus icon" height="500"/>
+<img src="assets/fabs/fab-large.png" alt="96dp boxy purple FAB with dark plus icon" height="500"/>
 
 In the layout:
 
@@ -281,7 +355,7 @@ API and source code:
 
 The following example shows a small FAB with a plus icon.
 
-<img src="assets/fabs/fab_mini.png" alt="40dp boxy purple FAB with dark plus icon" height="500"/>
+<img src="assets/fabs/fab-mini.png" alt="40dp boxy purple FAB with dark plus icon" height="500"/>
 
 In the layout:
 
@@ -357,7 +431,7 @@ API and source code:
 The following example shows multiple FABs with Material Theming in different
 sizes that scale with window size.
 
-![FABs in multiple sizes that scale with window size](assets/fabs/FAB_3sizes.png)
+![FABs in multiple sizes that scale with window size](assets/fabs/fab-3sizes.png)
 
 ##### Implementing FAB theming
 
