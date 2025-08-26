@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.Checkable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
@@ -43,6 +44,9 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
   private boolean checked;
   private boolean checkable = true;
   private boolean pressable = true;
+
+  @Nullable
+  private OnFocusableChangedListener onFocusableChangedListener;
 
   public CheckableImageButton(Context context) {
     this(context, null);
@@ -101,6 +105,16 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
   }
 
   @Override
+  public void setFocusable(boolean focusable) {
+    boolean originalFocusable = isFocusable();
+    super.setFocusable(focusable);
+
+    if (originalFocusable != focusable && onFocusableChangedListener != null) {
+      onFocusableChangedListener.onFocusableChanged(this, focusable);
+    }
+  }
+
+  @Override
   public int[] onCreateDrawableState(int extraSpace) {
     if (checked) {
       return mergeDrawableStates(
@@ -131,6 +145,12 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
     setChecked(savedState.checked);
   }
 
+  @Override
+  protected void onDetachedFromWindow() {
+    onFocusableChangedListener = null;
+    super.onDetachedFromWindow();
+  }
+
   /** Sets image button to be checkable or not. */
   public void setCheckable(boolean checkable) {
     if (this.checkable != checkable) {
@@ -152,6 +172,26 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
   /** Returns whether the image button is pressable. */
   public boolean isPressable() {
     return pressable;
+  }
+
+  /** Register a callback to be invoked when the focusable state of this view changes. */
+  public void setOnFocusableChangedListener(
+      @Nullable OnFocusableChangedListener onFocusableChangedListener) {
+    this.onFocusableChangedListener = onFocusableChangedListener;
+  }
+
+  /**
+   * Interface definition for a callback to be invoked when the focusable state of this view
+   * changes.
+   */
+  public interface OnFocusableChangedListener {
+    /**
+     * Called when the focusable state of a view has changed.
+     *
+     * @param view The view whose focusable state has changed.
+     * @param focusable The new focusable state of view.
+     */
+    void onFocusableChanged(@NonNull View view, boolean focusable);
   }
 
   static class SavedState extends AbsSavedState {

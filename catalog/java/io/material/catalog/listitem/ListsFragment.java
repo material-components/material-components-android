@@ -14,11 +14,12 @@
  * limitations under the License.
  */
 
-package io.material.catalog.lists;
+package io.material.catalog.listitem;
 
 import io.material.catalog.R;
 
 import androidx.fragment.app.Fragment;
+import androidx.annotation.NonNull;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -27,6 +28,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A landing fragment that links to List demos for the Catalog app. */
 public class ListsFragment extends DemoLandingFragment {
@@ -42,6 +45,7 @@ public class ListsFragment extends DemoLandingFragment {
   }
 
   @Override
+  @NonNull
   public Demo getMainDemo() {
     return new Demo() {
       @Override
@@ -49,6 +53,27 @@ public class ListsFragment extends DemoLandingFragment {
         return new ListsMainDemoFragment();
       }
     };
+  }
+
+  @Override
+  @NonNull
+  public List<Demo> getAdditionalDemos() {
+    List<Demo> additionalDemos = new ArrayList<>();
+    additionalDemos.add(
+        new Demo(R.string.cat_lists_segmented_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SegmentedListDemoFragment();
+          }
+        });
+    additionalDemos.add(
+        new Demo(R.string.cat_lists_multi_section_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new MultiSectionListDemoFragment();
+          }
+        });
+    return additionalDemos;
   }
 
   /** The Dagger module for {@link ListsFragment} dependencies. */

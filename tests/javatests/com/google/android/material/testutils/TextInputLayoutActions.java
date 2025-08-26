@@ -1025,4 +1025,24 @@ public class TextInputLayoutActions {
       }
     };
   }
+
+  /** Sets end icon content description on {@link TextInputLayout} */
+  public static ViewAction setEndIconContentDescription(final CharSequence contentDescription) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "set end icon content description";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        ((TextInputLayout) view).setEndIconContentDescription(contentDescription);
+      }
+    };
+  }
 }

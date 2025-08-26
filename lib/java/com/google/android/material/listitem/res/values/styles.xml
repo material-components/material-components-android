@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <!-- Style for ListItemLayout. -->
+  <style name="Widget.Material3.ListItemLayout" parent="">
+    <item name="enforceMaterialTheme">true</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemLayout</item>
+  </style>
+
+  <!-- Style for segmented ListItemLayout. -->
+  <style name="Widget.Material3.ListItemLayout.Segmented">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemLayout.Segmented</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.ListItemLayout" parent="">
+    <item name="materialCardViewStyle">@style/Widget.Material3.CardView.ListItemLayout</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.ListItemLayout.Segmented">
+    <item name="materialCardViewStyle">@style/Widget.Material3.CardView.ListItemLayout.Segmented</item>
+  </style>
+
+  <style name="Widget.Material3.CardView.ListItemLayout" parent="Widget.Material3.CardView.Filled">
+    <item name="android:minHeight">52dp</item>
+    <item name="cardElevation">0dp</item>
+    <item name="checkedIcon">@null</item>
+    <item name="cardForegroundColor">@null</item>
+    <item name="cardBackgroundColor">@color/m3_list_item_background_color_selector</item>
+    <item name="shapeAppearance">@xml/m3_list_item_shape_state_list</item>
+    <item name="cardCornerRadius">@null</item>
+    <item name="android:duplicateParentState">true</item>
+  </style>
+
+  <style name="Widget.Material3.CardView.ListItemLayout.Segmented">
+    <item name="cardBackgroundColor">@color/m3_segmented_list_item_background_color_selector</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.ListItem.First" parent="">
+    <item name="cornerFamily">?attr/shapeCornerFamily</item>
+    <item name="cornerSizeTopLeft">?attr/shapeCornerSizeLarge</item>
+    <item name="cornerSizeTopRight">?attr/shapeCornerSizeLarge</item>
+    <item name="cornerSizeBottomLeft">?attr/shapeCornerSizeExtraSmall</item>
+    <item name="cornerSizeBottomRight">?attr/shapeCornerSizeExtraSmall</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.ListItem.Middle" parent="">
+    <item name="cornerFamily">?attr/shapeCornerFamily</item>
+    <item name="cornerSize">?attr/shapeCornerSizeExtraSmall</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.ListItem.Last" parent="">
+    <item name="cornerFamily">?attr/shapeCornerFamily</item>
+    <item name="cornerSizeTopLeft">?attr/shapeCornerSizeExtraSmall</item>
+    <item name="cornerSizeTopRight">?attr/shapeCornerSizeExtraSmall</item>
+    <item name="cornerSizeBottomLeft">?attr/shapeCornerSizeLarge</item>
+    <item name="cornerSizeBottomRight">?attr/shapeCornerSizeLarge</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.ListItem.Single" parent="">
+    <item name="cornerFamily">?attr/shapeCornerFamily</item>
+    <item name="cornerSize">?attr/shapeCornerSizeLarge</item>
+  </style>
+
+  <style name="ShapeAppearance.Material3.ListItem.Checked" parent="">
+    <item name="cornerFamily">?attr/shapeCornerFamily</item>
+    <item name="cornerSize">?attr/shapeCornerSizeLarge</item>
+  </style>
+
+</resources>

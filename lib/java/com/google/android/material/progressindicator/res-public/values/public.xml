@@ -24,8 +24,6 @@
   <public name="indicatorTrackGapSize" type="attr"/>
   <public name="showAnimationBehavior" type="attr"/>
   <public name="hideAnimationBehavior" type="attr"/>
-  <public name="showDelay" type="attr"/>
-  <public name="minHideDelay" type="attr"/>
   <public name="wavelength" type="attr"/>
   <public name="wavelengthDeterminate" type="attr"/>
   <public name="wavelengthIndeterminate" type="attr"/>

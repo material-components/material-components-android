@@ -300,6 +300,8 @@
     <item name="floatingToolbarStyle">@style/Widget.Material3.FloatingToolbar</item>
     <item name="floatingToolbarVibrantStyle">@style/Widget.Material3.FloatingToolbar.Vibrant</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="listItemLayoutStyle">@style/Widget.Material3.ListItemLayout</item>
+    <item name="listItemLayoutSegmentedStyle">@style/Widget.Material3.ListItemLayout.Segmented</item>
     <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
@@ -430,6 +432,11 @@
     <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
     <item name="shapeAppearanceCornerExtraLargeIncreased">@style/ShapeAppearance.Material3.Corner.ExtraLargeIncreased</item>
     <item name="shapeAppearanceCornerExtraExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge</item>
+    <item name="listItemShapeAppearanceSingle">@style/ShapeAppearance.Material3.ListItem.Single</item>
+    <item name="listItemShapeAppearanceFirst">@style/ShapeAppearance.Material3.ListItem.First</item>
+    <item name="listItemShapeAppearanceMiddle">@style/ShapeAppearance.Material3.ListItem.Middle</item>
+    <item name="listItemShapeAppearanceLast">@style/ShapeAppearance.Material3.ListItem.Last</item>
+    <item name="listItemShapeAppearanceChecked">@style/ShapeAppearance.Material3.ListItem.Checked</item>
 
     <!-- Deprecated shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
@@ -616,6 +623,8 @@
     <item name="floatingToolbarStyle">@style/Widget.Material3.FloatingToolbar</item>
     <item name="floatingToolbarVibrantStyle">@style/Widget.Material3.FloatingToolbar.Vibrant</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="listItemLayoutStyle">@style/Widget.Material3.ListItemLayout</item>
+    <item name="listItemLayoutSegmentedStyle">@style/Widget.Material3.ListItemLayout.Segmented</item>
     <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
@@ -746,6 +755,11 @@
     <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
     <item name="shapeAppearanceCornerExtraLargeIncreased">@style/ShapeAppearance.Material3.Corner.ExtraLargeIncreased</item>
     <item name="shapeAppearanceCornerExtraExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge</item>
+    <item name="listItemShapeAppearanceSingle">@style/ShapeAppearance.Material3.ListItem.Single</item>
+    <item name="listItemShapeAppearanceFirst">@style/ShapeAppearance.Material3.ListItem.First</item>
+    <item name="listItemShapeAppearanceMiddle">@style/ShapeAppearance.Material3.ListItem.Middle</item>
+    <item name="listItemShapeAppearanceLast">@style/ShapeAppearance.Material3.ListItem.Last</item>
+    <item name="listItemShapeAppearanceChecked">@style/ShapeAppearance.Material3.ListItem.Checked</item>
 
     <!-- Deprecated shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>

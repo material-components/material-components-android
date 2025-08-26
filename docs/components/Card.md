@@ -12,7 +12,7 @@ path: /catalog/cards/
 [Cards](https://m3.material.io/components/cards/overview) contain content and
 actions about a single subject. There are three variants of cards.
 
-<img src="assets/cards/cards_types.png" alt="Three types of cards." height ="300">
+<img src="assets/cards/cards-types.png" alt="Three types of cards." height ="300">
 
 1.  Elevated card
 2.  Filled card
@@ -27,7 +27,7 @@ actions about a single subject. There are three variants of cards.
 
 ## Anatomy
 
-<img src="assets/cards/card_anatomy.png" alt="A card with labeled sections for container, headline, subhead, supporting text, image, and buttons" height ="500"/>
+<img src="assets/cards/card-anatomy.png" alt="A card with labeled sections for container, headline, subhead, supporting text, image, and buttons" height ="500"/>
 
 1.  Container
 2.  Headline
@@ -119,7 +119,7 @@ elevation of `2dp`.
 
 The following example shows an elevated card.
 
-<img src="assets/cards/cards_elevated.png" alt="Elevated card with content, a title, a secondary title, text, and two action buttons in purple" height ="500"/>
+<img src="assets/cards/cards-elevated.png" alt="Elevated card with content, a title, a secondary title, text, and two action buttons in purple" height ="500"/>
 
 In the layout:
 
@@ -143,7 +143,7 @@ emphasis than elevated or outlined cards.
 
 The following example shows a filled card.
 
-<img src="assets/cards/cards_filled.png" alt="Filled card with content, a title, supporting text, and buttons in purple" height ="500"/>
+<img src="assets/cards/cards-filled.png" alt="Filled card with content, a title, supporting text, and buttons in purple" height ="500"/>
 
 In the layout:
 
@@ -167,7 +167,7 @@ greater emphasis than the other types.
 
 The following example shows an outlined card.
 
-<img src="assets/cards/cards_outlined.png" alt="Outlined card with photo, a title, a secondary title, text, and Action 1 and
+<img src="assets/cards/cards-outlined.png" alt="Outlined card with photo, a title, a secondary title, text, and Action 1 and
 Action 2 buttons in purple" height ="500"/>
 
 ```xml
@@ -268,7 +268,7 @@ shown in the [Card theming example](#card-example) section.
 
 ### Making cards checkable
 
-<img src="assets/cards/cards_checked.png" alt="Outlined card with a checked button and a light purple overlay; secondary
+<img src="assets/cards/cards-checked.png" alt="Outlined card with a checked button and a light purple overlay; secondary
 title and Action 1 and Action 2 buttons" width="500"/>
 
 When a card is checked, it will show a checked icon and change its foreground
@@ -300,7 +300,7 @@ card.setOnLongClickListener {
 
 ### Making cards draggable
 
-<img src="assets/cards/cards_dragged.png" alt="Outlined card with a light grey overlay; secondary title and Action 1 and
+<img src="assets/cards/cards-dragged.png" alt="Outlined card with a light grey overlay; secondary title and Action 1 and
 Action 2 buttons, being dragged" width="500"/>
 
 Cards have an `app:state_dragged` with foreground and elevation changes to
@@ -447,7 +447,7 @@ Material components theme. If not, set the style to
 
 The following example shows a card with Material theming.
 
-<img src="assets/cards/cards_theming.png" alt="Card with Shrine theme with photo, title, secondary title, text and Action 1 and Action 2 buttons in black." height ="500"/>
+<img src="assets/cards/cards-theming.png" alt="Card with Shrine theme with photo, title, secondary title, text and Action 1 and Action 2 buttons in black." height ="500"/>
 
 ##### Implementing card theming
 

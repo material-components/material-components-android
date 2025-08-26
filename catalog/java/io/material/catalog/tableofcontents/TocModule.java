@@ -38,6 +38,7 @@ import io.material.catalog.fab.FabFragment;
 import io.material.catalog.floatingtoolbar.FloatingToolbarFragment;
 import io.material.catalog.font.FontFragment;
 import io.material.catalog.imageview.ShapeableImageViewFragment;
+import io.material.catalog.listitem.ListsFragment;
 import io.material.catalog.loadingindicator.LoadingIndicatorFragment;
 import io.material.catalog.materialswitch.SwitchFragment;
 import io.material.catalog.menu.MenuFragment;
@@ -78,6 +79,7 @@ import io.material.catalog.transition.TransitionFragment;
       FloatingToolbarFragment.Module.class,
       FontFragment.Module.class,
       LoadingIndicatorFragment.Module.class,
+      ListsFragment.Module.class,
       MenuFragment.Module.class,
       NavigationDrawerFragment.Module.class,
       NavigationRailFragment.Module.class,

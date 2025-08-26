@@ -27,6 +27,9 @@
   <string name="mtrl_list_item_three_line">Three Line Item</string>
   <string name="mtrl_list_item_secondary_text">Secondary Text</string>
   <string name="mtrl_list_item_tertiary_text">Tertiary Text</string>
-
+  <string name="cat_lists_segmented_demo_title" description="Label for the demo that shows segmented list content. [CHAR_LIMIT=100]">Segmented Demo</string>
+  <string name="cat_list_item_icon_content_description" description="Description for sample icon in custom list item demo. [CHAR_LIMIT=100]">List item icon</string>
+  <string name="cat_lists_multi_section_demo_title" description="Label for the demo that shows multi-section list content. [CHAR_LIMIT=100]">Multi-section List Demo</string>
+  <string name="cat_list_item_text" description="Label for the list item that denotes the number of the list item. [CHAR_LIMIT=100]">List item %d</string>
 </resources>
 

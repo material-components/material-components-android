@@ -77,14 +77,14 @@
       once show() is called. If set to zero or negative values (-1 as default),
       the show action will start immediately.
     -->
-    <attr name="showDelay" format="integer" />
+    <attr name="showDelay" />
     <!--
       The minimum time, in milliseconds, that the requested hide action will
       wait to start once show action is started. If set to zero or negative
       values (-1 as default), the requested hide action will start immediately.
       This value is capped to a limit defined in ProgressIndicator class.
     -->
-    <attr name="minHideDelay" format="integer" />
+    <attr name="minHideDelay" />
     <!--
       The size of the gap between the progress indicator and track.
     -->

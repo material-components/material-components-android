@@ -16,7 +16,7 @@ variants of app bars.
 **Note**: The top app bar component is renamed to app bar in the design
 language.
 
-<img src="assets/topappbar/topappbar_variants.png" alt="Four types of app bars." width="600"/>
+<img src="assets/topappbar/topappbar-variants.png" alt="Four types of app bars." width="600"/>
 
 1.  Search app bar
 2.  Small
@@ -40,7 +40,7 @@ There are two variants that are being deprecated and are no longer recommended:
 1.  **Medium** - Replace with medium flexible.
 2.  **Large** - Replace with large flexible.
 
-<img src="assets/topappbar/appbars_deprecated.png" alt="Two deprecated app bars" width="650"/>
+<img src="assets/topappbar/appbars-deprecated.png" alt="Two deprecated app bars" width="650"/>
 
 1.  Medium
 2.  Large
@@ -52,7 +52,7 @@ There are two variants that are being deprecated and are no longer recommended:
 
 ## Anatomy
 
-<img src="assets/topappbar/topappbar_anatomy.png" alt="Regular app bar anatomy diagram." width="600"/>
+<img src="assets/topappbar/topappbar-anatomy.png" alt="Regular app bar anatomy diagram." width="600"/>
 
 1.  Container
 2.  Leading button
@@ -223,7 +223,7 @@ Use in dense layouts or when a page is scrolled.
 The following example shows a small top app bar with a page title, a navigation
 icon, two actions, and an overflow menu.
 
-<img src="assets/topappbar/topappbar_small.png" alt="Small top app bar with light purple background, grey icons, and page title." width="600"/>
+<img src="assets/topappbar/topappbar-small.png" alt="Small top app bar with light purple background, grey icons, and page title." width="600"/>
 
 In the layout:
 
@@ -346,9 +346,9 @@ shown in this [guide](https://developer.android.com/training/appbar).
 Use to display a larger headline. It can collapse into a small app bar on
 scroll.
 
-<img src="assets/topappbar/medium_flexible_light.png" alt="Medium flexible app bar in light theme." width="550"/>
+<img src="assets/topappbar/medium-flexible-light.png" alt="Medium flexible app bar in light theme." width="550"/>
 
-<img src="assets/topappbar/medium_flexible_dark.png" alt="Medium flexible app bar in dark theme." width="550"/>
+<img src="assets/topappbar/medium-flexible-dark.png" alt="Medium flexible app bar in dark theme." width="550"/>
 
 The
 [medium flexible top app bar](https://m3.material.io/components/app-bars/specs#51ac0fae-61c2-4abc-b8f9-1167bf54e875)
@@ -407,9 +407,9 @@ To properly draw the subtitle in expanded mode. Please use the following:
 
 Use to emphasize the headline of the page.
 
-<img src="assets/topappbar/large_flexible_light.png" alt="Large flexible app bar in light theme." width="550"/>
+<img src="assets/topappbar/large-flexible-light.png" alt="Large flexible app bar in light theme." width="550"/>
 
-<img src="assets/topappbar/large_flexible_dark.png" alt="Large flexible app bar in dark theme." width="550"/>
+<img src="assets/topappbar/large-flexible-dark.png" alt="Large flexible app bar in dark theme." width="550"/>
 
 The
 [large flexible top app bar](https://m3.material.io/components/app-bars/specs#51ac0fae-61c2-4abc-b8f9-1167bf54e875)
@@ -477,7 +477,7 @@ aligning the title in the app bars. To center align them, you only need to set
 the `app:titleCentered` and/or `app:subtitleCentered` attributes to `true` on
 your `MaterialToolbar`.
 
-<img src="assets/topappbar/topappbar_centered.png" alt="Center aligned top app bar with light purple background, grey icons, and page title." width="600"/>
+<img src="assets/topappbar/topappbar-centered.png" alt="Center aligned top app bar with light purple background, grey icons, and page title." width="600"/>
 
 </details>
 
@@ -488,7 +488,7 @@ your `MaterialToolbar`.
 A collapsing top app bar with an image background, a page title, a navigation
 icon, two action icons, and an overflow menu:
 
-<img src="assets/topappbar/topappbar_collapsing_image.png" alt="App bar with image background and white icons. The page title is on a new line below the icons" width="600"/>
+<img src="assets/topappbar/topappbar-collapsing-image.png" alt="App bar with image background and white icons. The page title is on a new line below the icons" width="600"/>
 
 In the layout:
 
@@ -606,7 +606,7 @@ By default, the theme overlay above uses `?attr/colorSurfaceContainer` for the
 circle color. This can be customized by extending the theme overlay and setting
 the `toolbarNavigationButtonCircleColor` attribute.
 
-<img src="assets/topappbar/topappbar_circle_nav_button.png" alt="Top app bar with circle navigation button background." width="600"/>
+<img src="assets/topappbar/topappbar-circle-nav-button.png" alt="Top app bar with circle navigation button background." width="600"/>
 
 </details>
 
@@ -747,7 +747,7 @@ or use the `setContentDescription` method for the `ImageView`.
 
 <summary><h3>Status bar and edge-to-edge</h3></summary>
 
-<img src="assets/topappbar/topappbar_small.png" alt="Small top app bar with edge-to-edge status bar." width="600"/>
+<img src="assets/topappbar/topappbar-small.png" alt="Small top app bar with edge-to-edge status bar." width="600"/>
 
 A common configuration for modern top app bars, as seen above, is to have a
 seamless color shared with the status bar. The best way to achieve this is to
@@ -807,7 +807,7 @@ API and source code:
 
 A regular top app bar with Material theming:
 
-!["Top app bar theming with pink and brown colors"](assets/topappbar/topappbar_theming.png)
+!["Top app bar theming with pink and brown colors"](assets/topappbar/topappbar-theming.png)
 
 ##### Implementing app bar theming
 
@@ -877,7 +877,7 @@ Contextual action bars provide actions for selected items.
 
 <summary><h3>Anatomy</h3></summary>
 
-![Contextual action bar anatomy diagram](assets/topappbar/contextual_action_bar_anatomy.png)
+![Contextual action bar anatomy diagram](assets/topappbar/contextual-action-bar-anatomy.png)
 
 1.  Close button (instead of a navigation icon)
 2.  Contextual title
@@ -1055,7 +1055,7 @@ In menu/navigation icons:
 
 There are two deprecated app bars that are no longer recommended:
 
-<img src="assets/topappbar/topappbar_deprecated.png" alt="Deprecated top app bar" width="600"/>
+<img src="assets/topappbar/topappbar-deprecated.png" alt="Deprecated top app bar" width="600"/>
 
 1.  Medium
 2.  Large
@@ -1070,7 +1070,7 @@ imagery, or to provide a stronger presence to the top app bar.
 The following example shows a medium collapsing top app bar with a page title, a
 navigation icon, an action icon, and an overflow menu.
 
-<img src="assets/topappbar/topappbar_medium.png" alt="Medium top app bar with light background and grey icons with the page title on a new line below the icons." width="600"/>
+<img src="assets/topappbar/topappbar-medium.png" alt="Medium top app bar with light background and grey icons with the page title on a new line below the icons." width="600"/>
 
 In the layout:
 
@@ -1113,7 +1113,7 @@ In the layout:
 The following example shows a large collapsing top app bar with a page title, a
 navigation icon, an action icon, and an overflow menu.
 
-<img src="assets/topappbar/topappbar_large.png" alt="Large top app bar with light background and grey icons with the page title on
+<img src="assets/topappbar/topappbar-large.png" alt="Large top app bar with light background and grey icons with the page title on
 a new line below the icons" width="600"/>
 
 In the layout:
