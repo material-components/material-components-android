@@ -18,6 +18,7 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.progressindicator.DeterminateDrawable.MAX_DRAWABLE_LEVEL;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
@@ -43,6 +44,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.dynamicanimation.animation.DynamicAnimation.OnAnimationEndListener;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -958,6 +960,25 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
               + " View.");
     }
     visibilityAfterHide = visibility;
+  }
+
+  private final OnAnimationEndListener hideAfterMaxProgressListener =
+      (animation, canceled, value, velocity) -> {
+        if (getProgressDrawable() != null
+            && getProgressDrawable().getLevel() == MAX_DRAWABLE_LEVEL) {
+          hide();
+        }
+      };
+
+  public void setHideAfterMaxProgress(boolean hideAfterMaxProgress) {
+    if (getProgressDrawable() == null) {
+      return;
+    }
+    if (hideAfterMaxProgress) {
+      getProgressDrawable().addSpringAnimationEndListener(hideAfterMaxProgressListener);
+    } else {
+      getProgressDrawable().removeSpringAnimationEndListener(hideAfterMaxProgressListener);
+    }
   }
 
   /**

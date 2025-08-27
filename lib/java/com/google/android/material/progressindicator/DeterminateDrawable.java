@@ -40,7 +40,7 @@ import com.google.android.material.progressindicator.DrawingDelegate.ActiveIndic
 public final class DeterminateDrawable<S extends BaseProgressIndicatorSpec>
     extends DrawableWithAnimatedVisibilityChange {
   // Constants for drawing progress.
-  private static final int MAX_DRAWABLE_LEVEL = 10000;
+  static final int MAX_DRAWABLE_LEVEL = 10000;
   // Constants for amplitude animation.
   static final float FULL_AMPLITUDE_PROGRESS_MIN = 0.1f;
   static final float FULL_AMPLITUDE_PROGRESS_MAX = 0.9f;
