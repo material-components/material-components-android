@@ -22,7 +22,6 @@ import static android.text.TextUtils.isEmpty;
 import static com.google.android.material.timepicker.TimePickerView.GENERIC_VIEW_ACCESSIBILITY_CLASS_NAME;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -37,7 +36,6 @@ import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -45,7 +43,6 @@ import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.textfield.TextInputLayout;
@@ -62,15 +59,6 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
   private final EditText editText;
   private TextWatcher watcher;
   private TextView label;
-  private CharSequence chipText = "";
-
-  private boolean hasError = false;
-  private ColorStateList originalChipBackgroundColor;
-  private ColorStateList originalChipTextColor;
-  private ColorStateList originalEditTextColor;
-  private ColorStateList originalEditTextCursorColor;
-  private ColorStateList originalLabelColor;
-  @ColorInt private int originalChipStrokeColor;
 
   public ChipTextInputComboView(@NonNull Context context) {
     this(context, null);
@@ -117,14 +105,10 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
   @Override
   public void setChecked(boolean checked) {
     chip.setChecked(checked);
-    if (checked) {
-      chip.setText("");
-      chip.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-    } else {
-      chip.setText(chipText);
-      chip.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
-    }
     editText.setVisibility(checked ? VISIBLE : INVISIBLE);
+    // TODO(b/247609386) Should not hide chip, we need the background in M3 (but not M2...).
+    // Instead, the text in chip should be hidden.
+    chip.setVisibility(checked ? GONE : VISIBLE);
     if (isChecked()) {
       ViewUtils.requestFocusAndShowKeyboard(editText, /* useWindowInsetsController= */ false);
     }
@@ -137,13 +121,22 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
 
   public void setText(CharSequence text) {
     String formattedText = formatText(text);
-    chipText = formattedText;
     chip.setText(formattedText);
     if (!isEmpty(formattedText)) {
       editText.removeTextChangedListener(watcher);
 
       editText.setText(formattedText);
-      setAccessibilityDelegate(editText, chipText.toString(), label.getText());
+      ViewCompat.setAccessibilityDelegate(
+          editText,
+          new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+              super.onInitializeAccessibilityNodeInfo(host, info);
+              info.setText(formattedText);
+              info.setHintText(label.getText());
+            }
+          });
 
       editText.addTextChangedListener(watcher);
     }
@@ -151,7 +144,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
 
   @VisibleForTesting
   CharSequence getChipText() {
-    return chipText;
+    return chip.getText();
   }
 
   private String formatText(CharSequence text) {
@@ -191,59 +184,6 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     ViewCompat.setAccessibilityDelegate(chip, clickActionDelegate);
   }
 
-  public void setError(boolean hasError) {
-    if (this.hasError == hasError) {
-      return;
-    }
-    this.hasError = hasError;
-
-    if (hasError) {
-      applyErrorColors();
-    } else {
-      clearErrorColors();
-    }
-  }
-
-  private void applyErrorColors() {
-    originalChipBackgroundColor = chip.getChipBackgroundColor();
-    originalChipTextColor = chip.getTextColors();
-    originalEditTextColor = editText.getTextColors();
-    originalLabelColor = label.getTextColors();
-    originalChipStrokeColor = textInputLayout.getBoxStrokeColor();
-
-    // TODO(b/394610420): tokens and ColorStateList with error state
-    ColorStateList colorErrorContainer =
-        MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorErrorContainer);
-    ColorStateList colorOnErrorContainer =
-        MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorOnErrorContainer);
-    if (colorErrorContainer != null && colorOnErrorContainer != null) {
-      chip.setChipBackgroundColor(colorErrorContainer);
-      chip.setTextColor(colorOnErrorContainer);
-      editText.setTextColor(colorOnErrorContainer);
-      textInputLayout.setBoxStrokeColor(colorOnErrorContainer.getDefaultColor());
-      label.setTextColor(colorOnErrorContainer);
-      if (VERSION.SDK_INT >= VERSION_CODES.Q) {
-        originalEditTextCursorColor = textInputLayout.getCursorColor();
-        textInputLayout.setCursorColor(colorOnErrorContainer);
-      }
-    }
-  }
-
-  private void clearErrorColors() {
-    chip.setChipBackgroundColor(originalChipBackgroundColor);
-    chip.setTextColor(originalChipTextColor);
-    editText.setTextColor(originalEditTextColor);
-    textInputLayout.setBoxStrokeColor(originalChipStrokeColor);
-    label.setTextColor(originalLabelColor);
-    if (VERSION.SDK_INT >= VERSION_CODES.Q) {
-      textInputLayout.setCursorColor(originalEditTextCursorColor);
-    }
-  }
-
-  public boolean hasError() {
-    return hasError;
-  }
-
   private class TextFormatter extends TextWatcherAdapter {
 
     private static final String DEFAULT_TEXT = "00";
@@ -251,29 +191,12 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     @Override
     public void afterTextChanged(Editable editable) {
       if (isEmpty(editable)) {
-        chipText = formatText(DEFAULT_TEXT);
+        chip.setText(formatText(DEFAULT_TEXT));
         return;
       }
       String formattedText = formatText(editable);
-      chipText = isEmpty(formattedText) ? formatText(DEFAULT_TEXT) : formattedText;
-      setAccessibilityDelegate(editText, editable.toString(), label.getText());
+      chip.setText(isEmpty(formattedText) ? formatText(DEFAULT_TEXT) : formattedText);
     }
-  }
-
-  private void setAccessibilityDelegate(
-      @NonNull View view, CharSequence text, @Nullable CharSequence hint) {
-    ViewCompat.setAccessibilityDelegate(
-        view,
-        new AccessibilityDelegateCompat() {
-          @Override
-          public void onInitializeAccessibilityNodeInfo(
-              @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
-            super.onInitializeAccessibilityNodeInfo(host, info);
-            info.setText(text);
-            info.setHintText(hint);
-            info.setMaxTextLength(2);
-          }
-        });
   }
 
   @Override
