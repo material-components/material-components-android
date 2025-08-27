@@ -67,7 +67,7 @@ public class MaterialShapeDrawableDrawTest {
   }
 
   @Test
-  public void newDrawableFromContstantState() {
+  public void newDrawableFromConstantState() {
     Drawable copy = copyMaterialShapeDrawable();
 
     copy.draw(new Canvas());

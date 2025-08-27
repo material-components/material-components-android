@@ -53,6 +53,7 @@ public class ActivityUtils {
       }
     }
   }
+
   /**
    * Restarts the RecreatedAppCompatActivity and waits for the new activity to be resumed.
    *

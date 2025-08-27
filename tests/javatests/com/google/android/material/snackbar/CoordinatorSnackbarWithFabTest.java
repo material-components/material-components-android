@@ -24,9 +24,9 @@ import static com.google.android.material.testutils.DesignViewActions.setVisibil
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-import androidx.appcompat.widget.AppCompatTextView;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;

@@ -28,8 +28,8 @@ import org.hamcrest.TypeSafeMatcher;
 public class TextInputLayoutMatchers {
 
   /**
-   * Returns a matcher that matches TextInputLayouts with non-empty content descriptions for the
-   * end icon.
+   * Returns a matcher that matches TextInputLayouts with non-empty content descriptions for the end
+   * icon.
    */
   public static Matcher<View> endIconHasContentDescription() {
     return new TypeSafeMatcher<View>(TextInputLayout.class) {

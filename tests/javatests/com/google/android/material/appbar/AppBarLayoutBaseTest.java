@@ -29,11 +29,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import android.graphics.Color;
-import android.os.Build;
-import android.os.Build.VERSION;
 import android.os.SystemClock;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -42,6 +38,8 @@ import androidx.annotation.IdRes;
 import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
@@ -59,8 +57,6 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
   protected CollapsingToolbarLayout mCollapsingToolbar;
 
   protected Toolbar mToolbar;
-
-  protected TextView mTextView;
 
   protected float mDefaultElevationValue;
 
@@ -106,9 +102,7 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
   }
 
   protected void assertAppBarElevation(float expectedValue) {
-    if (Build.VERSION.SDK_INT >= 21) {
-      assertEquals(expectedValue, ViewCompat.getElevation(mAppBar), 0.05f);
-    }
+    assertEquals(expectedValue, ViewCompat.getElevation(mAppBar), 0.05f);
   }
 
   protected void assertScrimAlpha(@IntRange(from = 0, to = 255) int alpha) {
@@ -131,27 +125,21 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
   }
 
   protected void assertAccessibilityHasScrollForwardAction(boolean hasScrollForward) {
-    if (VERSION.SDK_INT >= 21) {
-      AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
-      ViewCompat.onInitializeAccessibilityNodeInfo(mCoordinatorLayout, info);
-      assertThat(
-              AccessibilityUtils.hasAction(
-                  info,
-                  AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD))
-          .isEqualTo(hasScrollForward);
-    }
+    AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(mCoordinatorLayout, info);
+    assertThat(
+            AccessibilityUtils.hasAction(
+                info, AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_FORWARD))
+        .isEqualTo(hasScrollForward);
   }
 
   protected void assertAccessibilityHasScrollBackwardAction(boolean hasScrollBackward) {
-    if (VERSION.SDK_INT >= 21) {
-      AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
-      ViewCompat.onInitializeAccessibilityNodeInfo(mCoordinatorLayout, info);
-      assertThat(
-              AccessibilityUtils.hasAction(
-                  info,
-                  AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD))
-          .isEqualTo(hasScrollBackward);
-    }
+    AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
+    ViewCompat.onInitializeAccessibilityNodeInfo(mCoordinatorLayout, info);
+    assertThat(
+            AccessibilityUtils.hasAction(
+                info, AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_BACKWARD))
+        .isEqualTo(hasScrollBackward);
   }
 
   protected void assertAccessibilityScrollable(boolean isScrollable) {
