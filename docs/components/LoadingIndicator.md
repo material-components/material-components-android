@@ -67,12 +67,10 @@ Element                       | Attribute             | Related method(s)       
 
 #### Styles
 
-Element             | Style
-------------------- | ---------------------------------------------
-**Default style**   | `Widget.Material3.LoadingIndicator`
-**Contained style** | `Widget.Material3.LoadingIndicator.Contained`
-
-Default theme attribute: `?attr/loadingIndicatorStyle`
+Element             | Style                                         | Theme attribute
+------------------- | ---------------------------------------------  |------------
+**Default style**   | `Widget.Material3.LoadingIndicator`            | `?attr/loadingIndicatorStyle`
+**Contained style** | `Widget.Material3.LoadingIndicator.Contained`  | N/A
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/loadingindicator/res/values/styles.xml)
