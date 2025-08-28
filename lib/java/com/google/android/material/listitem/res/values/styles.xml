@@ -80,4 +80,9 @@
     <item name="cornerSize">?attr/shapeCornerSizeLarge</item>
   </style>
 
+  <!-- Styles for List item content. -->
+  <style name="Widget.Material3.ImageView.ListItem.Leading" parent="">
+    <item name="tint">@color/m3_list_item_leading_icon_color_selector</item>
+  </style>
+
 </resources>
