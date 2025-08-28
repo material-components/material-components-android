@@ -18,14 +18,14 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center_vertical">
+    android:layout_height="match_parent">
 
   <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:paddingTop="8dp"
-      android:gravity="center_horizontal"
+      android:paddingLeft="8dp"
+      android:paddingRight="8dp"
       android:orientation="vertical">
     <TextView
         android:layout_width="wrap_content"
@@ -36,33 +36,38 @@
         android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
     <com.google.android.material.button.MaterialButtonToggleGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:singleSelection="true"
+        app:overflowMode="wrap">
+
+      <Button
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:singleSelection="true">
+        android:layout_gravity="start|top"
+        android:text="@string/cat_button_label_private" />
 
       <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_private" />
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:text="@string/cat_button_label_team"  />
 
       <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_team"  />
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:text="@string/cat_button_label_everyone"  />
 
       <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_everyone"  />
-
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_button_label_custom" />
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:text="@string/cat_button_label_custom" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <TextView
@@ -74,26 +79,27 @@
         android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
     <com.google.android.material.button.MaterialButtonToggleGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:overflowMode="wrap">
+      <Button
+        style="?attr/materialButtonOutlinedStyle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:text="@string/cat_button_label_cheese" />
       <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-        android:layout_weight="1"
-          android:text="@string/cat_button_label_cheese" />
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:text="@string/cat_button_label_tomatoes" />
       <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-        android:layout_weight="1"
-          android:text="@string/cat_button_label_tomatoes" />
-      <Button
-          style="?attr/materialButtonOutlinedStyle"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-        android:layout_weight="1"
-          android:text="@string/cat_button_label_mushrooms" />
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:text="@string/cat_button_label_mushrooms" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <TextView
@@ -106,8 +112,9 @@
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/icon_only_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:overflowMode="wrap">
       <Button
           style="?attr/materialButtonOutlinedStyle"
           android:layout_width="wrap_content"

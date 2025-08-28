@@ -214,6 +214,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @Retention(RetentionPolicy.SOURCE)
   public @interface IconGravity {}
 
+  enum WidthChangeDirection {
+    NONE,
+    START,
+    END,
+    BOTH
+  }
+
   private static final String LOG_TAG = "MaterialButton";
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
@@ -260,6 +267,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @Px int allowedWidthDecrease = UNSET;
   @Nullable StateListSizeChange sizeChange;
   @Px int widthChangeMax;
+  private WidthChangeDirection widthChangeDirection = WidthChangeDirection.BOTH;
   private float displayedWidthIncrease;
   private float displayedWidthDecrease;
   @Nullable private SpringAnimation widthIncreaseSpringAnimation;
@@ -1527,7 +1535,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       // Animate width.
       int widthChange =
           min(
-              widthChangeMax,
+              calculateEffectiveWidthChangeMax(),
               sizeChange
                   .getSizeChangeForState(getDrawableState())
                   .widthChange
@@ -1537,6 +1545,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
         widthIncreaseSpringAnimation.skipToEnd();
       }
     }
+  }
+
+  /** Returns the effective width change max based on the width change direction. */
+  private int calculateEffectiveWidthChangeMax() {
+    switch (widthChangeDirection) {
+      case BOTH:
+        return this.widthChangeMax;
+      case START:
+      case END:
+        return this.widthChangeMax / 2;
+      case NONE:
+    }
+    return 0;
   }
 
   private boolean isInHorizontalButtonGroup() {
@@ -1554,6 +1575,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   void setWidthChangeMax(@Px int widthChangeMax) {
     if (this.widthChangeMax != widthChangeMax) {
       this.widthChangeMax = widthChangeMax;
+      maybeAnimateSize(/* skipAnimation= */ true);
+    }
+  }
+
+  void setWidthChangeDirection(@NonNull WidthChangeDirection widthChangeDirection) {
+    if (this.widthChangeDirection != widthChangeDirection) {
+      this.widthChangeDirection = widthChangeDirection;
       maybeAnimateSize(/* skipAnimation= */ true);
     }
   }

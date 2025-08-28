@@ -371,6 +371,8 @@ clipped or wrapped.
 
 #### Overflow mode - menu
 
+![Button group overflow menu mode](assets/buttons/buttongroup-overflow-menu.png)
+
 Setting `overflowMode=menu` dynamically hides child buttons that don't fit in
 the current screen width in a popup menu. An icon button will be added
 automatically at the end of the button group for toggling the popup menu, once
@@ -389,6 +391,40 @@ selection.
 **Note:** This feature assumes all child buttons should be visible in the group
 or as a menu item in the overflow menu. Visibility of all child buttons will be
 managed by the button group when setting `overflowMode=menu`.
+
+#### Overflow mode - wrap
+
+![Button group overflow wrap mode](assets/buttons/buttongroup-overflow-wrap.png)
+
+Setting `overflowMode=wrap` will cause the buttons to wrap to the next line when
+they don't fit on the current line. This can be useful when you want to display
+all buttons without hiding them in a menu, but you have a limited amount of
+horizontal space. The buttons will maintain their shape and size as defined in
+the layout.
+
+This mode is useful in cases:
+
+*   **Responsive layouts:** When you want buttons to adapt to different screen
+    sizes by wrapping to the next line instead of being hidden.
+*   **Content-heavy interfaces:** When you have many buttons and want to ensure
+    they are all visible, even on smaller screens.
+*   **Accessibility:** When you need to display all buttons but there's not
+    enough space.
+
+##### Configuration
+
+Do not use the `wrap` overflow mode with `layout_width="wrap_content"`,
+`orientation="vertical"`, or `layout_weight` in child buttons, due to undefined
+expected behaviors. The `layout_width` can be set to a fixed dp size or
+`match_parent`. The height of the group is determined by the number of wrapped
+rows and spacing. So the value of `layout_height` will be ignored.
+
+##### Wrapping gravity
+
+In order to make the child buttons wrapped to the correct position, they must
+have `layout_gravity` set. When `start|top` is used, the `android:gravity` in
+`MaterialButtonGroup` can be ignored. If `end|top` is used, the
+`android:gravity` in `MaterialButtonGroup` must be set to `end` as well.
 
 ### Making buttons accessible
 
