@@ -30,7 +30,7 @@
   <TextView
     android:id="@+id/material_label"
     android:focusable="false"
-    android:layout_width="wrap_content"
+    android:layout_width="@dimen/material_clock_display_width"
     android:layout_height="wrap_content" />
 
 </com.google.android.material.textfield.TextInputLayout>

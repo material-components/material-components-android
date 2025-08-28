@@ -113,6 +113,7 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
   static final String OVERRIDE_THEME_RES_ID = "TIME_PICKER_OVERRIDE_THEME_RES_ID";
 
   private MaterialButton modeButton;
+  private Button okButton;
   private Button cancelButton;
 
   @InputMode private int inputMode = INPUT_MODE_CLOCK;
@@ -275,6 +276,8 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     timePickerView.setOnDoubleTapListener(this);
     textInputStub = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
+    okButton = root.findViewById(R.id.material_timepicker_ok_button);
+    cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
     TextView headerTitle = root.findViewById(R.id.header_title);
 
     if (titleResId != 0) {
@@ -284,16 +287,19 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     }
 
     updateInputMode(modeButton);
-    Button okButton = root.findViewById(R.id.material_timepicker_ok_button);
     okButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            for (OnClickListener listener : positiveButtonListeners) {
-              listener.onClick(v);
+        v -> {
+          if (activePresenter instanceof TimePickerTextInputPresenter) {
+            TimePickerTextInputPresenter presenter = (TimePickerTextInputPresenter) activePresenter;
+            if (presenter.hasError()) {
+              presenter.vibrateAndMaybeBeep(root.getContext());
+              return;
             }
-            dismiss();
           }
+          for (OnClickListener listener : positiveButtonListeners) {
+            listener.onClick(v);
+          }
+          dismiss();
         });
     if (positiveButtonTextResId != 0) {
       okButton.setText(positiveButtonTextResId);
@@ -301,7 +307,6 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
       okButton.setText(positiveButtonText);
     }
 
-    cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
     cancelButton.setOnClickListener(
         v -> {
           for (OnClickListener listener : negativeButtonListeners) {
@@ -430,6 +435,7 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
       timePickerTextInputPresenter = new TimePickerTextInputPresenter(textInputView, time);
     }
 
+    timePickerTextInputPresenter.clearError();
     timePickerTextInputPresenter.clearCheck();
 
     return timePickerTextInputPresenter;

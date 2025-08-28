@@ -22,6 +22,8 @@
 
   <uses-sdk />
 
+  <uses-permission android:name="android.permission.VIBRATE"/>
+
   <application
     android:name="io.material.catalog.application.${application_name}"
     android:allowBackup="true"
