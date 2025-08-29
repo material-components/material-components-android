@@ -22,8 +22,8 @@ import androidx.annotation.ColorInt;
 /**
  * Custom drawable class that provides a reliable way for testing various tinting scenarios across a
  * range of platform versions. ColorDrawable doesn't support tinting on Kitkat. Using
- * GradientDrawable allows doing reliable tests at the level of individual channels
- * (alpha / red / green / blue) for tinted and untinted icons in the testIconTinting method.
+ * GradientDrawable allows doing reliable tests at the level of individual channels (alpha / red /
+ * green / blue) for tinted and untinted icons in the testIconTinting method.
  */
 public class TestDrawable extends GradientDrawable {
   private int width;

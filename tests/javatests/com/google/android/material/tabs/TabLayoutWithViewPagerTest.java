@@ -381,7 +381,7 @@ public class TabLayoutWithViewPagerTest {
     verifyViewPagerSelection();
   }
 
-    @Test
+  @Test
   @SmallTest
   public void testBadge() {
     setupTabLayoutWithViewPager();

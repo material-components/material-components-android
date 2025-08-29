@@ -57,16 +57,17 @@ public class SnackbarTouchTest {
         Snackbar.make(container, "Test Snackbar", Snackbar.LENGTH_INDEFINITE)
             .setAction("Do Action", mock(View.OnClickListener.class));
 
-    activity.runOnUiThread(new Runnable() {
-      @Override
-      public void run() {
-        CheckBox checkBox = new CheckBox(activity);
-        checkBox.setText("test checkbox");
-        container.addView(checkBox);
-        checkBox.setLayoutParams(
-            new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-      }
-    });
+    activity.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            CheckBox checkBox = new CheckBox(activity);
+            checkBox.setText("test checkbox");
+            container.addView(checkBox);
+            checkBox.setLayoutParams(
+                new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+          }
+        });
 
     snackbar.show();
   }

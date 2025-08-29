@@ -383,7 +383,7 @@ public class TextInputLayoutTest {
   @Test
   public void testDrawableStateChanged() {
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout layout = (TextInputLayout) activity.findViewById(R.id.textinput);
+    final TextInputLayout layout = activity.findViewById(R.id.textinput);
 
     // Force a drawable state change.
     layout.drawableStateChanged();
@@ -1091,10 +1091,10 @@ public class TextInputLayoutTest {
   }
 
   private static ViewAssertion isShapeAppearanceModel(
-      @NonNull ShapeAppearanceModel shapeAppearanceModelt) {
+      @NonNull ShapeAppearanceModel shapeAppearanceModel) {
     return (view, noViewFoundException) -> {
       assertThat(view).isInstanceOf(TextInputLayout.class);
-      assertEquals(shapeAppearanceModelt, ((TextInputLayout) view).getShapeAppearanceModel());
+      assertEquals(shapeAppearanceModel, ((TextInputLayout) view).getShapeAppearanceModel());
     };
   }
 

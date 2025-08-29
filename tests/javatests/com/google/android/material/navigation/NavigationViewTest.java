@@ -15,7 +15,6 @@
  */
 package com.google.android.material.navigation;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -64,11 +63,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.os.Build;
-import android.os.Build.VERSION;
 import android.os.Parcelable;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SwitchCompat;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -77,6 +72,7 @@ import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
@@ -84,6 +80,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionItemInfoCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
@@ -166,12 +163,8 @@ public class NavigationViewTest {
     // Open our drawer
     onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
 
-    if (Build.VERSION.SDK_INT >= 21) {
-      if (navigationView.hasSystemWindowInsets()) {
-        assertFalse(navigationView.willNotDraw());
-      } else {
-        assertTrue(navigationView.willNotDraw());
-      }
+    if (navigationView.hasSystemWindowInsets()) {
+      assertFalse(navigationView.willNotDraw());
     } else {
       assertTrue(navigationView.willNotDraw());
     }
@@ -206,9 +199,7 @@ public class NavigationViewTest {
               withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
               isDescendantOfA(withId(R.id.start_drawer)));
       onView(menuItemMatcher).check(matches(withTextSize(newTextSize)));
-      if (VERSION.SDK_INT >= LOLLIPOP) {
-        onView(menuItemMatcher).check(matches(withTypefaceStyle(Typeface.NORMAL)));
-      }
+      onView(menuItemMatcher).check(matches(withTypefaceStyle(Typeface.NORMAL)));
     }
   }
 
@@ -586,8 +577,7 @@ public class NavigationViewTest {
           expectedToBeChecked ? checkedItemForeground : uncheckedItemForeground;
       final @ColorInt int expectedItemBackground =
           expectedToBeChecked ? checkedItemBackground : uncheckedItemBackground;
-      final int expectedItemTypefaceStyle =
-          expectedToBeChecked ? Typeface.BOLD : Typeface.NORMAL;
+      final int expectedItemTypefaceStyle = expectedToBeChecked ? Typeface.BOLD : Typeface.NORMAL;
 
       // For the background fill check we need to select a view that has its background
       // set by the current implementation (see disclaimer in testBackground)
@@ -606,9 +596,7 @@ public class NavigationViewTest {
       onView(menuItemTextMatcher).check(matches(withTextColor(expectedItemForeground)));
 
       // Check typeface style
-      if (VERSION.SDK_INT >= LOLLIPOP) {
-        onView(menuItemTextMatcher).check(matches(withTypefaceStyle(expectedItemTypefaceStyle)));
-      }
+      onView(menuItemTextMatcher).check(matches(withTypefaceStyle(expectedItemTypefaceStyle)));
     }
   }
 
