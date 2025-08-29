@@ -43,6 +43,7 @@ import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import com.google.android.material.internal.EdgeToEdgeUtils;
 import com.google.android.material.motion.MaterialBackOrchestrator;
 import com.google.android.material.sidesheet.Sheet.StableSheetState;
 
@@ -101,7 +102,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
     Window window = getWindow();
     if (window != null) {
       // The status bar should always be transparent because of the window animation.
-      window.setStatusBarColor(0);
+      EdgeToEdgeUtils.setStatusBarColor(window, 0);
 
       window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
       if (VERSION.SDK_INT < VERSION_CODES.M) {

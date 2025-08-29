@@ -136,7 +136,7 @@ public class BottomSheetDialog extends AppCompatDialog {
     Window window = getWindow();
     if (window != null) {
       // The status bar should always be transparent because of the window animation.
-      window.setStatusBarColor(0);
+      EdgeToEdgeUtils.setStatusBarColor(window, 0);
 
       window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
       if (VERSION.SDK_INT < VERSION_CODES.M) {
@@ -187,8 +187,8 @@ public class BottomSheetDialog extends AppCompatDialog {
     Window window = getWindow();
     if (window != null) {
       // If the navigation bar is transparent at all the BottomSheet should be edge to edge.
-      boolean drawEdgeToEdge =
-          edgeToEdgeEnabled && Color.alpha(window.getNavigationBarColor()) < 255;
+      boolean drawEdgeToEdge = edgeToEdgeEnabled
+          && Color.alpha(EdgeToEdgeUtils.getNavigationBarColor(window)) < 255;
       if (container != null) {
         container.setFitsSystemWindows(!drawEdgeToEdge);
       }
