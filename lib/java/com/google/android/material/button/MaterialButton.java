@@ -221,6 +221,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     BOTH
   }
 
+  enum HeightChangeDirection {
+    NONE,
+    TOP,
+    BOTTOM,
+    BOTH
+  }
+
   private static final String LOG_TAG = "MaterialButton";
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
@@ -1695,6 +1702,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   void setHeightChangeMax(@Px int heightChangeMax) {
     if (this.heightChangeMax != heightChangeMax) {
       this.heightChangeMax = heightChangeMax;
+      maybeAnimateSize(/* skipAnimation= */ true);
+    }
+  }
+
+  void setHeightChangeDirection(@NonNull HeightChangeDirection heightChangeDirection) {
+    if (this.heightChangeDirection != heightChangeDirection) {
+      this.heightChangeDirection = heightChangeDirection;
       maybeAnimateSize(/* skipAnimation= */ true);
     }
   }
