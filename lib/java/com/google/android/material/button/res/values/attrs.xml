@@ -145,9 +145,11 @@
       <!-- No handling to child buttons that not fit to the group.
            This can be used when the button group is wrapped in a ScrollView. -->
       <enum name="none" value="0" />
-      <!-- Buttons that not fit to the group/screen will be hidden in the group
+      <!-- Buttons that don't fit to the group/screen will be hidden in the group
            and contained in a popup menu. -->
       <enum name="menu" value="1" />
+      <!-- Buttons that don't fit in the first row will be shown in another row below. -->
+      <enum name="wrap" value="2" />
     </attr>
     <!-- The icon of the overflow button of a button group. -->
     <attr name="overflowButtonIcon" />

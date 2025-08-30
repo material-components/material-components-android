@@ -13,7 +13,7 @@ path: /catalog/switches/
 of a single setting on or off.
 
 ![White "Settings" menu with purple header and switches to turn on options, such
-as "Wi-fi" and "Bluetooth"](assets/switch/switch_hero.png)
+as "Wi-fi" and "Bluetooth"](assets/switch/switch-hero.png)
 
 **Note:** Images use various dynamic color schemes.
 
@@ -29,7 +29,7 @@ The effects of a switch should start immediately, without needing to save.
 
 ## Anatomy
 
-![Switch anatomy diagram](assets/switch/switch_anatomy.png)
+![Switch anatomy diagram](assets/switch/switch-anatomy.png)
 
 1.  Track
 2.  Handle (formerly "thumb")
@@ -89,7 +89,7 @@ Switches can be on or off. Switches have enabled, hover, focused, and pressed
 states.
 
 ![Switch states in an array. Columns are enabled, disabled, hover, focused,
-pressed. Rows are on or off](assets/switch/switch_states.png)
+pressed. Rows are on or off](assets/switch/switch-states.png)
 
 ### Styles
 
@@ -133,7 +133,7 @@ Use switches to:
 
 The following example shows a list of five switches.
 
-<img src="assets/switch/switch_example.png" alt="Example of 5 switches, the first one is toggled and the last one is disabled." height="350"/>
+<img src="assets/switch/switch-example.png" alt="Example of 5 switches, the first one is toggled and the last one is disabled." height="350"/>
 
 In the layout:
 
@@ -203,7 +203,7 @@ customize the new styles.
 
 The following example shows a list of switches with Material theming.
 
-<img src="assets/switch/switch_theming.png" alt="5 switches with brown text: first switch is on and has pink thumb and track" height="350"/>
+<img src="assets/switch/switch-theming.png" alt="5 switches with brown text: first switch is on and has pink thumb and track" height="350"/>
 
 ##### Implementing switch theming
 
@@ -252,7 +252,7 @@ Use the styles in the layout, which affects only this switch:
 
 The following example shows a list of five switches.
 
-<img src="assets/switch/switch_example_deprecated.png" alt="Example of 5 switches, the first one is toggled and the last one is disabled." height="350"/>
+<img src="assets/switch/switch-example-deprecated.png" alt="Example of 5 switches, the first one is toggled and the last one is disabled." height="350"/>
 
 In the layout:
 
@@ -295,7 +295,7 @@ switchmaterial.setOnCheckedChangeListener { buttonView, isChecked
 
 ### Anatomy
 
-<img src="assets/switch/switch_anatomy_deprecated.png" alt="Switch anatomy deprecated diagram" width="500"/>
+<img src="assets/switch/switch-anatomy-deprecated.png" alt="Switch anatomy deprecated diagram" width="500"/>
 
 1.  Thumb
 2.  Track
@@ -356,7 +356,7 @@ interaction may obstruct the element completely.
 For desktop, the radial reaction isn't needed.
 
 ![Switch states in an array. Columns are enabled, disabled, hover, focused,
-pressed. Rows are on or off](assets/switch/switch_states_deprecated.png)
+pressed. Rows are on or off](assets/switch/switch-states-deprecated.png)
 
 #### Styles
 
@@ -385,7 +385,7 @@ API and source code:
 
 The following example shows a list of switches with Material theming.
 
-<img src="assets/switch/switch_theming_deprecated.png" alt="5 switches with brown text: first switch is on and has pink thumb and track" height="350"/>
+<img src="assets/switch/switch-theming-deprecated.png" alt="5 switches with brown text: first switch is on and has pink thumb and track" height="350"/>
 
 ##### Implementing switch theming
 

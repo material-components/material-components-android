@@ -12,7 +12,7 @@ path: /catalog/floating-action-button/
 [Extended floating action buttons (extended FABs)](https://m3.material.io/components/extended-fab)
 help people take primary actions. There are three variants of the extended FAB.
 
-<img src="assets/fabs/EFAB_types.png" alt="Types of extended FABs"/>
+<img src="assets/fabs/efab-types.png" alt="Types of extended FABs"/>
 
 1.  Small extended FAB
 2.  Medium extended FAB
@@ -27,7 +27,7 @@ help people take primary actions. There are three variants of the extended FAB.
 
 ## Anatomy
 
-<img src="assets/fabs/EFAB_anatomy.png" alt="Anatomy of extended FABs"/>
+<img src="assets/fabs/efab-anatomy.png" alt="Anatomy of extended FABs"/>
 
 1.  Container
 2.  Text label
@@ -36,13 +36,15 @@ help people take primary actions. There are three variants of the extended FAB.
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/extended-fab/guidelines#1dc1f503-edff-4e3f-b2a6-c76cee1b8369).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
 ![The deprecated original extended FAB and the small, medium, and large extended
-FABs from the expressive update.](assets/fabs/EFAB_expressive.png) The original
+FABs from the expressive update.](assets/fabs/efab-expressive.png) The original
 extended FAB is replaced with a set of small, medium, and large extended FABs
 with new typography
 
@@ -66,6 +68,59 @@ replaced with the small extended FAB. Surface FABs are also being deprecated.
 *   Updates:
 
     *   Adjusted typography to be larger
+
+### M3 Expressive styles
+
+#### M3 Expressive small extended FAB
+
+<img src="assets/fabs/small-efabs-light.png" alt="Expressive Small Extended FAB in light mode" width="150"> <div style="width:400px"></div> | <img src="assets/fabs/small-efabs-dark.png" alt="Expressive Small Extended FAB in dark mode" width="150"> <div style="width:400px"></div>
+------------------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------
+
+```xml
+<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+      style="?attr/extendedFloatingActionButtonSmallStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:contentDescription="@string/m3_expressive_primary_small_extended_fab_content_description"
+      android:text="@string/m3_expressive_extended_fab_label"
+      app:icon="@drawable/gs_edit_fill1_vd_theme_24"
+      app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary" />
+```
+
+#### M3 Expressive medium extended FAB
+
+<img src="assets/fabs/medium-efabs-light.png" alt="Expressive Medium Extended FAB in light mode" width="225"> <div style="width:400px"></div> | <img src="assets/fabs/medium-efabs-dark.png" alt="Expressive Medium Extended FAB in dark mode" width="225"> <div style="width:400px"></div>
+--------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------
+
+```xml
+<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+      style="?attr/extendedFloatingActionButtonMediumStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:contentDescription="@string/m3_expressive_primary_medium_extended_fab_content_description"
+      android:text="@string/m3_expressive_extended_fab_label"
+      app:icon="@drawable/gs_edit_fill1_vd_theme_24"
+      app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary" />
+```
+
+#### M3 Expressive large extended FAB
+
+<img src="assets/fabs/large-efabs-light.png" alt="Expressive Large Extended FAB in light mode" width="275"> <div style="width:400px"></div> | <img src="assets/fabs/large-efabs-dark.png" alt="Expressive Large Extended FAB in dark mode" width="275"> <div style="width:400px"></div>
+------------------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------
+
+```xml
+<com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+      style="?attr/extendedFloatingActionButtonLargeStyle"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:contentDescription="@string/m3_expressive_primary_large_extended_fab_content_description"
+      android:text="@string/m3_expressive_extended_fab_label"
+      app:icon="@drawable/gs_edit_fill1_vd_theme_24"
+      app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.FloatingActionButton.Primary" />
+```
 
 ## Key properties
 
@@ -118,7 +173,7 @@ and
 
 There are three types of extended FABs: small, medium, and large.
 
-![EFAB sizes](assets/fabs/EFAB_sizes.png)
+![EFAB sizes](assets/fabs/efab-sizes.png)
 
 Choose an appropriately-sized extended FAB to add the right amount of emphasis
 for an action.
@@ -160,7 +215,7 @@ API and source code:
 
 The following example shows an extended FAB with a plus icon.
 
-<img src="assets/fabs/fab_extended.png" alt="Purple FAB with plus icon and Extended label" height="400"/>
+<img src="assets/fabs/fab-extended.png" alt="Purple FAB with plus icon and Extended label" height="400"/>
 
 In the layout:
 
@@ -243,7 +298,7 @@ The following example shows a regular, small, and extended FAB with Material
 Theming.
 
 !["3 square pink FABs with cut corners with brown plus icons: 56dp, 40dp, 56dp
-with "Extended" label"](assets/fabs/fab_theming.png)
+with "Extended" label"](assets/fabs/fab-theming.png)
 
 ##### Implementing FAB theming
 

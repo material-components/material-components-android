@@ -14,7 +14,7 @@ enter and edit text. There are two variants of text fields.
 
 !["Text field types. Fixed: grey back, dark gray indicator turns purple.
 Outlined: clear back, gray outline turns
-purple"](assets/textfields/text_field_hero.png)
+purple"](assets/textfields/text-field-hero.png)
 
 1.  Filled text field
 2.  Outlined text field
@@ -30,7 +30,7 @@ purple"](assets/textfields/text_field_hero.png)
 
 #### Filled text field
 
-![Filled text field anatomy](assets/textfields/textfields_filled_anatomy.png)
+![Filled text field anatomy](assets/textfields/textfields-filled-anatomy.png)
 
 1.  Container
 2.  Leading icon (optional)
@@ -45,7 +45,7 @@ purple"](assets/textfields/text_field_hero.png)
 
 #### Outlined text field
 
-![Outlined text field anatomy](assets/textfields/textfields_outlined_anatomy.png)
+![Outlined text field anatomy](assets/textfields/textfields-outlined-anatomy.png)
 
 1.  Container outline (enabled)
 2.  Leading icon (optional)
@@ -305,7 +305,7 @@ surrounded by other content and components.
 
 The following example shows a filled text field with a label.
 
-<img src="assets/textfields/textfields_filled.png" alt="Filled text field with a label." width="700"/>
+<img src="assets/textfields/textfields-filled.png" alt="Filled text field with a label." width="700"/>
 
 In the layout:
 
@@ -352,7 +352,7 @@ helps simplify the layout.
 
 The following example shows an outlined text field.
 
-<img src="assets/textfields/textfields_outlined.png" alt="Outlined text field examples" width="700"/>
+<img src="assets/textfields/textfields-outlined.png" alt="Outlined text field examples" width="700"/>
 
 In the layout:
 
@@ -395,7 +395,7 @@ page.
 <details>
 <summary><h3>Adding text field</h3></summary>
 
-!["Text fields on a screen"](assets/textfields/textfields_hero.png)
+!["Text fields on a screen"](assets/textfields/textfields-hero.png)
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -478,7 +478,7 @@ val editText = TextInputEditText(textInputLayout.context)
 <details>
 <summary><h3>Adding a leading icon to a text field</h3></summary>
 
-<img src="assets/textfields/textfields_leading_icon.png" alt="Text field with a leading icon." width="700"/>
+<img src="assets/textfields/textfields-leading-icon.png" alt="Text field with a leading icon." width="700"/>
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -498,7 +498,7 @@ val editText = TextInputEditText(textInputLayout.context)
 
 **Password toggle:**
 
-<img src="assets/textfields/textfields_trailing_icon_password_toggle.png" alt="Text field with an exposed dropdown menu." width="700"/>
+<img src="assets/textfields/textfields-trailing-icon-password-toggle.png" alt="Text field with an exposed dropdown menu." width="700"/>
 
 When the `TextInputEditText` is set to display a password, an icon can be added
 to toggle between masking the password or displaying the password as plain-text.
@@ -518,7 +518,7 @@ to toggle between masking the password or displaying the password as plain-text.
 
 **Clear text:**
 
-<img src="assets/textfields/textfields_trailing_icon_clear_text.png" alt="Text field with a clear text trailing icon." width="700"/>
+<img src="assets/textfields/textfields-trailing-icon-clear-text.png" alt="Text field with a clear text trailing icon." width="700"/>
 
 An icon can be set to display when text is present. The icon can be pressed to
 clear the input text.
@@ -535,7 +535,7 @@ clear the input text.
 
 **Custom icon:**
 
-<img src="assets/textfields/textfields_trailing_icon_custom.png" alt="Text field with a custom trailing icon." width="700"/>
+<img src="assets/textfields/textfields-trailing-icon-custom.png" alt="Text field with a custom trailing icon." width="700"/>
 
 It is possible to set a custom `Drawable` as the text field's trailing icon via
 `app:endIconMode="custom"`. You should specify a drawable and content
@@ -602,7 +602,7 @@ For the full list, see
 <details>
 <summary><h3>Implementing an exposed dropdown menu</h3></summary>
 
-<img src="assets/menu/menus_exposed_dropdown_outlined.png" alt="Text field with an exposed dropdown menu." height="400"/>
+<img src="assets/textfields/menus-exposed-dropdown-outlined.png" alt="Text field with an exposed dropdown menu." height="400"/>
 
 In the layout:
 
@@ -657,7 +657,7 @@ And a custom item layout (`list_item.xml`):
 <details>
 <summary><h3>Adding helper text to a text field</h3></summary>
 
-<img src="assets/textfields/textfields_helper_text.png" alt="Text field with helper text." width="700"/>
+<img src="assets/textfields/textfields-helper-text.png" alt="Text field with helper text." width="700"/>
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -675,7 +675,7 @@ And a custom item layout (`list_item.xml`):
 <details>
 <summary><h3>Adding a counter to a text field</h3></summary>
 
-<img src="assets/textfields/textfields_counter.png" alt="Text field with a counter." width="700"/>
+<img src="assets/textfields/textfields-counter.png" alt="Text field with a counter." width="700"/>
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -693,7 +693,7 @@ And a custom item layout (`list_item.xml`):
 <details>
 <summary><h3>Adding errors to a text field</h3></summary>
 
-<img src="assets/textfields/textfields_error.png" alt="Text field with an error." width="700"/>
+<img src="assets/textfields/textfields-error.png" alt="Text field with an error." width="700"/>
 
 In the layout:
 
@@ -725,7 +725,7 @@ non-null helper text will replace any existing error text.
 <details>
 <summary><h3>Adding a prefix/suffix to a text field</h3></summary>
 
-<img src="assets/textfields/textfields_prefix_suffix.png" alt="Text field with a prefix/suffix." width="700"/>
+<img src="assets/textfields/textfields-prefix-suffix.png" alt="Text field with a prefix/suffix." width="700"/>
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
@@ -797,7 +797,7 @@ The following example shows filled and outlined text field types with Material
 theming.
 
 !["Filled and outlined text field theming with pink and brown colors and cut
-corners"](assets/textfields/textfields_theming.png)
+corners"](assets/textfields/textfields-theming.png)
 
 ##### Implementing text field theming
 

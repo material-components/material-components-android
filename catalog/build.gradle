@@ -98,6 +98,7 @@ def srcDirs = [
   'font',
   'internal',
   'loadingindicator',
+  'listitem',
   'main',
   'materialswitch',
   'menu',

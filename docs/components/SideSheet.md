@@ -13,7 +13,7 @@ path: /catalog/side-sheet-behavior/
 surfaces containing supplementary content that are anchored to the side of the
 screen. There are two variants of side sheets.
 
-<img src="assets/sidesheet/sidesheet_hero.png" alt="Side sheet hero image" width="650"/>
+<img src="assets/sidesheet/sidesheet-hero.png" alt="Side sheet hero image" width="650"/>
 
 1.  Standard side sheet
 2.  Modal side sheet
@@ -29,7 +29,7 @@ screen. There are two variants of side sheets.
 
 #### Standard side sheet
 
-<img src="assets/sidesheet/standard_sidesheet_anatomy.png" alt="standard side sheet anatomy" height="500"/>
+<img src="assets/sidesheet/standard-sidesheet-anatomy.png" alt="standard side sheet anatomy" height="500"/>
 
 1.  Divider (optional)
 2.  Headline
@@ -38,7 +38,7 @@ screen. There are two variants of side sheets.
 
 #### Modal side sheet
 
-<img src="assets/sidesheet/modal_sidesheet_anatomy.png" alt="modal side sheet anatomy" height="500"/>
+<img src="assets/sidesheet/modal-sidesheet-anatomy.png" alt="modal side sheet anatomy" height="500"/>
 
 1.  Back icon button (optional)
 2.  Header

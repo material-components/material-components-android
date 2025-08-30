@@ -123,6 +123,13 @@ class TimePickerView extends ConstraintLayout implements TimePickerControls {
     hourView = findViewById(R.id.material_hour_tv);
     clockHandView = findViewById(R.id.material_clock_hand);
 
+    clockFace.setOnEnterKeyPressedListener(
+        () -> {
+          if (hourView.isChecked() && onSelectionChangeListener != null) {
+            onSelectionChangeListener.onSelectionChanged(MINUTE);
+          }
+        });
+
     setupDoubleTap();
 
     setUpDisplay();

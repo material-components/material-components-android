@@ -11,7 +11,7 @@ path: /catalog/docked-toolbar/
 
 Docked toolbar provides a way to show actions related to the current page.
 
-![Docked toolbar](assets/dockedtoolbar/docked_toolbar.png)
+![Docked toolbar](assets/dockedtoolbar/docked-toolbar.png)
 
 **Note:** Images use various dynamic color schemes.
 
@@ -22,7 +22,7 @@ Docked toolbar provides a way to show actions related to the current page.
 
 ## Anatomy
 
-<img src="assets/dockedtoolbar/docked_toolbar_anatomy.png" alt="Docked toolbar anatomy diagram" height="350">
+<img src="assets/dockedtoolbar/docked-toolbar-anatomy.png" alt="Docked toolbar anatomy diagram" height="350">
 
 1.  Container
 2.  Elements
@@ -30,12 +30,14 @@ Docked toolbar provides a way to show actions related to the current page.
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/toolbars/guidelines#d6b7bcb1-295d-41e6-a051-37f12e1c96ab).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive themes` setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-<img src="assets/dockedtoolbar/dockedtoolbar_expressive.png" alt="Docked toolbar" height="350">
+<img src="assets/dockedtoolbar/dockedtoolbar-expressive.png" alt="Docked toolbar" height="350">
 Docked with embedded primary action instead of FAB
 
 The **bottom app bar** is being deprecated and should be replaced with the
@@ -52,6 +54,14 @@ flexibility.
     *   Flexibility: More layout and element options
 
 *   **Bottom app bar** is still available, but not recommended
+
+### M3 Expressive styles
+
+The standard style for the docked toolbar is defined as below:
+
+```xml
+<item name="dockedToolbarStyle">@style/Widget.Material3Expressive.DockedToolbar</item>
+```
 
 ## Key properties
 
@@ -314,7 +324,7 @@ Docked toolbars support the customization of color and typography.
 
 The following example shows a docked toolbar with Material theming.
 
-<img src="assets/dockedtoolbar/docked_toolbar_theming.png" alt="Docked toolbar theming example" width="600">
+<img src="assets/dockedtoolbar/docked-toolbar-theming.png" alt="Docked toolbar theming example" width="600">
 
 ##### Implementing docked toolbar theming
 

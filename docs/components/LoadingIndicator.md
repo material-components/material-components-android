@@ -55,22 +55,22 @@ indicator.
 
 #### Attributes
 
-Element              | Attribute             | Related method(s)                             | Default value
--------------------- | --------------------- | --------------------------------------------- | -------------
-**Indicator color**  | `app:indicatorColor`  | `setIndicatorColor`</br>`getIndicatorColor`   | `colorPrimary`
-**Container color**  | `app:containerColor`  | `setContainerColor`</br>`getContainerColor`   | `transparent`
-**Indicator size**   | `app:indicatorSize`   | `setIndicatorSize`</br>`getIndicatorSize`     | 38dp
-**Container width**  | `app:containerWidth`  | `setContainerWidth`</br>`getContainerWidth`   | 48dp
-**Container height** | `app:containerHeight` | `setContainerHeight`</br>`getContainerHeight` | 48dp
+Element                       | Attribute             | Related method(s)                             | Default value
+----------------------------- | --------------------- | --------------------------------------------- | -------------
+**Indicator color**           | `app:indicatorColor`  | `setIndicatorColor`</br>`getIndicatorColor`   | `colorPrimary`
+**Container color**           | `app:containerColor`  | `setContainerColor`</br>`getContainerColor`   | `transparent`
+**Indicator size**            | `app:indicatorSize`   | `setIndicatorSize`</br>`getIndicatorSize`     | 38dp
+**Container width**           | `app:containerWidth`  | `setContainerWidth`</br>`getContainerWidth`   | 48dp
+**Container height**          | `app:containerHeight` | `setContainerHeight`</br>`getContainerHeight` | 48dp
+**Delay (in ms) to show**     | `app:showDelay`       | N/A                                           | 0
+**Min delay (in ms) to hide** | `app:minHideDelay`    | N/A                                           | 0
 
 #### Styles
 
-Element             | Style
-------------------- | ---------------------------------------------
-**Default style**   | `Widget.Material3.LoadingIndicator`
-**Contained style** | `Widget.Material3.LoadingIndicator.Contained`
-
-Default theme attribute: `?attr/loadingIndicatorStyle`
+Element             | Style                                         | Theme attribute
+------------------- | ---------------------------------------------  |------------
+**Default style**   | `Widget.Material3.LoadingIndicator`            | `?attr/loadingIndicatorStyle`
+**Contained style** | `Widget.Material3.LoadingIndicator.Contained`  | N/A
 
 See the full list of
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/loadingindicator/res/values/styles.xml)
@@ -114,7 +114,7 @@ A loading indicator can be added to a layout:
     android:layout_height="wrap_content"/>
 ```
 
-![Animation of uncontained loading indicator](assets/loadingindicator/loading_indicator.gif)
+![Animation of uncontained loading indicator](assets/loadingindicator/loading-indicator.gif)
 
 ```xml
 <!-- Loading indicator with a container -->
@@ -124,7 +124,7 @@ A loading indicator can be added to a layout:
     android:layout_height="wrap_content"/>
 ```
 
-![Animation of contained loading indicator](assets/loadingindicator/loading_indicator_contained.gif)
+![Animation of contained loading indicator](assets/loadingindicator/loading-indicator-contained.gif)
 
 ### Making loading indicators accessible
 

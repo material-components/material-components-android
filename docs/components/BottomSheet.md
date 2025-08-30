@@ -13,7 +13,7 @@ path: /catalog/bottom-sheet-behavior/
 secondary content anchored to the bottom of the screen. There are two variants
 of bottom sheets.
 
-![Bottom sheets types](assets/bottomsheet/bottomsheets_types.png)
+![Bottom sheets types](assets/bottomsheet/bottomsheets-types.png)
 
 1.  Standard bottom sheet
 2.  Modal bottom sheet
@@ -30,7 +30,7 @@ of bottom sheets.
 Modal bottom sheets are above a scrim while standard bottom sheets don't have a
 scrim. Besides this, both types of bottom sheets have the same specs.
 
-![Bottom sheet anatomy](assets/bottomsheet/bottomsheet_anatomy.png)
+![Bottom sheet anatomy](assets/bottomsheet/bottomsheet-anatomy.png)
 
 1.  Container
 2.  Drag handle (optional)
@@ -126,7 +126,7 @@ expanded states:
 
 Collapsed <div style="width:400px"></div>                                                                             | Expanded <div style="width:400px"></div>
 --------------------------------------------------------------------------------------------------------------------- | ----------------------------------------
-<img src="assets/bottomsheet/bottomsheet_standard1.png" alt="Standard collapsed bottom sheet example." height="500"/> | <img src="assets/bottomsheet/bottomsheet_standard2.png" alt="Standard expanded bottom sheet example." height="500"/>
+<img src="assets/bottomsheet/bottomsheet-standard1.png" alt="Standard collapsed bottom sheet example." height="500"/> | <img src="assets/bottomsheet/bottomsheet-standard2.png" alt="Standard expanded bottom sheet example." height="500"/>
 
 `BottomSheetBehavior` works in tandem with `CoordinatorLayout` to let you
 display content on a bottom sheet, perform enter/exit animations, respond to
@@ -224,7 +224,7 @@ states:
 
 Collapsed <div style="width:400px"></div>                                                                       | Expanded <div style="width:400px"></div>
 --------------------------------------------------------------------------------------------------------------- | ----------------------------------------
-<img src="assets/bottomsheet/bottomsheet_modal1.png" alt="Modal collapsed bottom sheet example." height="500"/> | <img src="assets/bottomsheet/bottomsheet_modal2.png" alt="Modal expanded bottom sheet example." height="500"/>
+<img src="assets/bottomsheet/bottomsheet-modal1.png" alt="Modal collapsed bottom sheet example." height="500"/> | <img src="assets/bottomsheet/bottomsheet-modal2.png" alt="Modal expanded bottom sheet example." height="500"/>
 
 First, subclass `BottomSheetDialogFragment` and overwrite `onCreateView` to
 provide a layout for the contents of the sheet (in this example, it's
@@ -550,7 +550,7 @@ API and source code:
 The following example shows a bottom sheet with Material theming, in its
 collapsed and expanded states.
 
-<img src="assets/bottomsheet/bottomsheet_theming.png" alt="Bottom sheet with pink background color. Collapsed on the left and expanded on the right." height="550"/>
+<img src="assets/bottomsheet/bottomsheet-theming.png" alt="Bottom sheet with pink background color. Collapsed on the left and expanded on the right." height="550"/>
 
 ##### Implementing bottom sheet theming
 

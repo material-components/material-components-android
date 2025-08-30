@@ -20,21 +20,34 @@ import com.google.android.material.R;
 
 import static android.view.View.GONE;
 import static com.google.android.material.timepicker.TimeFormat.CLOCK_12H;
+import static com.google.android.material.timepicker.TimeFormat.CLOCK_24H;
 import static java.util.Calendar.AM;
 import static java.util.Calendar.HOUR;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.PM;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.accessibility.AccessibilityManager;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.internal.TextWatcherAdapter;
@@ -43,6 +56,13 @@ import com.google.android.material.timepicker.TimePickerView.OnSelectionChange;
 import java.util.Locale;
 
 class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPresenter {
+
+  private static final int MINUTES_MAX_VALUE = 59;
+  private static final int HOURS_MAX_VALUE_12H = 12;
+  private static final int HOURS_MAX_VALUE_24H = 23;
+  private static final int VIBRATION_LENGTH = 200;
+  private static final int MINUTES_MAX_LENGTH = 2;
+  private static final int HOURS_MAX_LENGTH = 2;
 
   private final LinearLayout timePickerView;
   private final TimeModel time;
@@ -53,12 +73,23 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
           try {
             if (TextUtils.isEmpty(s)) {
               time.setMinute(0);
+              clearMinuteError();
+              return;
+            }
+            if (s.length() > MINUTES_MAX_LENGTH) {
+              s = s.delete(MINUTES_MAX_LENGTH, s.length()); // lock to 2 digits
+              vibrateAndMaybeBeep(minuteEditText.getContext());
               return;
             }
             int minute = Integer.parseInt(s.toString());
+            if (minute > MINUTES_MAX_VALUE) {
+              setMinuteError();
+            } else {
+              clearMinuteError();
+            }
             time.setMinute(minute);
           } catch (NumberFormatException ok) {
-            // ignore invalid input
+            setMinuteError();
           }
         }
       };
@@ -70,21 +101,42 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
           try {
             if (TextUtils.isEmpty(s)) {
               time.setHour(0);
+              clearHourError();
+              return;
+            }
+            if (s.length() > HOURS_MAX_LENGTH) {
+              s = s.delete(HOURS_MAX_LENGTH, s.length()); // lock to 2 digits
+              vibrateAndMaybeBeep(hourEditText.getContext());
               return;
             }
             int hour = Integer.parseInt(s.toString());
+            if ((time.format == CLOCK_12H && hour > HOURS_MAX_VALUE_12H)
+                || (time.format == CLOCK_24H && hour > HOURS_MAX_VALUE_24H)) {
+              setHourError();
+            } else {
+              clearHourError();
+            }
             time.setHour(hour);
           } catch (NumberFormatException ok) {
-            // ignore invalid input
+            setHourError();
           }
         }
       };
   private final ChipTextInputComboView minuteTextInput;
   private final ChipTextInputComboView hourTextInput;
   private final TimePickerTextInputKeyController controller;
-  private final EditText hourEditText;
   private final EditText minuteEditText;
+  private final EditText hourEditText;
+  private final TextView minuteLabel;
+  private final TextView hourLabel;
+  private final String minuteText;
+  private final String hourText;
+  private final String minuteErrorText;
+  private final String hourErrorText;
+  private final String hourError24hText;
+
   private MaterialButtonToggleGroup toggle;
+  private ToneGenerator toneGenerator;
 
   public TimePickerTextInputPresenter(final LinearLayout timePickerView, final TimeModel time) {
     this.timePickerView = timePickerView;
@@ -92,14 +144,20 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     Resources res = timePickerView.getResources();
     minuteTextInput = timePickerView.findViewById(R.id.material_minute_text_input);
     hourTextInput = timePickerView.findViewById(R.id.material_hour_text_input);
-    TextView minuteLabel = minuteTextInput.findViewById(R.id.material_label);
-    TextView hourLabel = hourTextInput.findViewById(R.id.material_label);
+    minuteLabel = minuteTextInput.findViewById(R.id.material_label);
+    hourLabel = hourTextInput.findViewById(R.id.material_label);
 
     minuteLabel.setText(res.getString(R.string.material_timepicker_minute));
     minuteLabel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 
     hourLabel.setText(res.getString(R.string.material_timepicker_hour));
     hourLabel.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+
+    minuteText = res.getString(R.string.material_timepicker_minute);
+    hourText = res.getString(R.string.material_timepicker_hour);
+    minuteErrorText = res.getString(R.string.material_timepicker_minute_error);
+    hourErrorText = res.getString(R.string.material_timepicker_hour_error);
+    hourError24hText = res.getString(R.string.material_timepicker_hour_error_24h);
 
     minuteTextInput.setTag(R.id.selection_type, MINUTE);
     hourTextInput.setTag(R.id.selection_type, HOUR);
@@ -108,26 +166,17 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
       setupPeriodToggle();
     }
 
-    OnClickListener onClickListener =
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            onSelectionChanged((int) v.getTag(R.id.selection_type));
-          }
-        };
-
+    OnClickListener onClickListener = v -> onSelectionChanged((int) v.getTag(R.id.selection_type));
     hourTextInput.setOnClickListener(onClickListener);
     minuteTextInput.setOnClickListener(onClickListener);
-    hourTextInput.addInputFilter(time.getHourInputValidator());
-    minuteTextInput.addInputFilter(time.getMinuteInputValidator());
 
     hourEditText = hourTextInput.getTextInput().getEditText();
     hourEditText.setAccessibilityDelegate(
-        setTimeUnitAccessiblityLabel(
+        setTimeUnitAccessibilityLabel(
             timePickerView.getResources(), R.string.material_timepicker_hour));
     minuteEditText = minuteTextInput.getTextInput().getEditText();
     minuteEditText.setAccessibilityDelegate(
-        setTimeUnitAccessiblityLabel(
+        setTimeUnitAccessibilityLabel(
             timePickerView.getResources(), R.string.material_timepicker_minute));
 
     controller = new TimePickerTextInputKeyController(hourTextInput, minuteTextInput, time);
@@ -163,7 +212,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     initialize();
   }
 
-  private View.AccessibilityDelegate setTimeUnitAccessiblityLabel(
+  private View.AccessibilityDelegate setTimeUnitAccessibilityLabel(
       Resources res, int contentDescriptionResId) {
     return new View.AccessibilityDelegate() {
       @Override
@@ -191,6 +240,72 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     minuteEditText.removeTextChangedListener(minuteTextWatcher);
   }
 
+  @SuppressLint("FlaggedApi")
+  private void setMinuteError() {
+    minuteTextInput.setError(true);
+    minuteLabel.setText(minuteErrorText);
+    minuteLabel.announceForAccessibility(minuteLabel.getText());
+    vibrateAndMaybeBeep(minuteLabel.getContext());
+  }
+
+  @SuppressLint("FlaggedApi")
+  private void setHourError() {
+    hourTextInput.setError(true);
+    hourLabel.setText(time.format == CLOCK_24H ? hourError24hText : hourErrorText);
+    hourLabel.announceForAccessibility(hourLabel.getText());
+    vibrateAndMaybeBeep(hourLabel.getContext());
+  }
+
+  private void clearMinuteError() {
+    minuteTextInput.setError(false);
+    minuteLabel.setText(minuteText);
+  }
+
+  private void clearHourError() {
+    hourTextInput.setError(false);
+    hourLabel.setText(hourText);
+  }
+
+  boolean hasError() {
+    return minuteTextInput.hasError() || hourTextInput.hasError();
+  }
+
+  void clearError() {
+    clearMinuteError();
+    clearHourError();
+  }
+
+  void vibrateAndMaybeBeep(@NonNull Context context) {
+    vibrate(context);
+    if (!isTouchExplorationEnabled(context)) {
+      beep();
+    }
+  }
+
+  @SuppressLint("MissingPermission")
+  private void vibrate(@NonNull Context context) {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+        || ContextCompat.checkSelfPermission(context, Manifest.permission.VIBRATE)
+            == PackageManager.PERMISSION_GRANTED) {
+      Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+      if (vibrator != null) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+          vibrator.vibrate(
+              VibrationEffect.createOneShot(VIBRATION_LENGTH, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+          vibrator.vibrate(VIBRATION_LENGTH);
+        }
+      }
+    }
+  }
+
+  private void beep() {
+    if (toneGenerator == null) {
+      toneGenerator = new ToneGenerator(AudioManager.STREAM_SYSTEM, 100);
+    }
+    toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP);
+  }
+
   private void setTime(TimeModel time) {
     removeTextWatchers();
     Locale current = timePickerView.getResources().getConfiguration().locale;
@@ -199,20 +314,21 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     minuteTextInput.setText(minuteFormatted);
     hourTextInput.setText(hourFormatted);
     addTextWatchers();
-    updateSelection();
+    onSelectionChanged(time.selection);
   }
 
   private void setupPeriodToggle() {
     toggle = timePickerView.findViewById(R.id.material_clock_period_toggle);
 
-    toggle.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-      if (!isChecked) {
-        return;
-      }
+    toggle.addOnButtonCheckedListener(
+        (group, checkedId, isChecked) -> {
+          if (!isChecked) {
+            return;
+          }
 
-      int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
-      time.setPeriod(period);
-    });
+          int period = checkedId == R.id.material_clock_period_pm_button ? PM : AM;
+          time.setPeriod(period);
+        });
 
     toggle.setVisibility(View.VISIBLE);
     updateSelection();
@@ -266,5 +382,11 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   public void clearCheck() {
     minuteTextInput.setChecked(false);
     hourTextInput.setChecked(false);
+  }
+
+  private static boolean isTouchExplorationEnabled(@NonNull Context context) {
+    AccessibilityManager accessibilityManager =
+        (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+    return accessibilityManager != null && accessibilityManager.isTouchExplorationEnabled();
   }
 }

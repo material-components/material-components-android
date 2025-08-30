@@ -42,7 +42,7 @@ There are four [carousel layouts](#layouts-of-carousel):
 <summary>The multi-browse layout shows at least one large, medium, and small
 carousel item.</summary>
 
-![Anatomy of Multi-browse carousel](assets/carousel/multibrowse_anatomy.png)
+![Anatomy of Multi-browse carousel](assets/carousel/multibrowse-anatomy.png)
 
 1.  Container
 2.  Large carousel item
@@ -58,7 +58,7 @@ carousel item.</summary>
 <summary>The uncontained layout shows items that scroll to the edge of the
 container.</summary>
 
-![Anatomy of uncontained carousel](assets/carousel/uncontained_anatomy.png)
+![Anatomy of uncontained carousel](assets/carousel/uncontained-anatomy.png)
 
 1.  Container
 2.  Large carousel item
@@ -74,7 +74,7 @@ container.</summary>
 <summary>The hero layout shows at least one large item and one small
 item.</summary>
 
-![Anatomy of hero carousel](assets/carousel/hero_anatomy.png)
+![Anatomy of hero carousel](assets/carousel/hero-anatomy.png)
 
 1.  Container
 2.  Large carousel item
@@ -88,7 +88,7 @@ item.</summary>
 <summary>The center-aligned hero layout shows at least one large item and two
 small items.</summary>
 
-![Anatomy of center-aligned hero carousel](assets/carousel/centeralignedhero_anatomy.png)
+![Anatomy of center-aligned hero carousel](assets/carousel/centeralignedhero-anatomy.png)
 
 1.  Container
 2.  Large carousel item
@@ -102,7 +102,7 @@ small items.</summary>
 
 <summary>The full-screen layout shows one edge-to-edge large item.</summary>
 
-<img src="assets/carousel/fullscreen_anatomy.png" alt="Anatomy of full-screen carousel" height="650"/>
+<img src="assets/carousel/fullscreen-anatomy.png" alt="Anatomy of full-screen carousel" height="650"/>
 
 1.  Container
 2.  Large carousel item

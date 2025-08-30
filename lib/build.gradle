@@ -69,6 +69,7 @@ def srcDirs = [
   'com/google/android/material/imageview',
   'com/google/android/material/internal',
   'com/google/android/material/loadingindicator',
+  'com/google/android/material/listitem',
   'com/google/android/material/materialswitch',
   'com/google/android/material/math',
   'com/google/android/material/menu',

@@ -26,8 +26,10 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import static java.lang.Math.min;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +44,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.progressindicator.AnimatorDurationScaleProvider;
 import java.util.Arrays;
 
@@ -49,8 +52,32 @@ import java.util.Arrays;
 public final class LoadingIndicator extends View implements Drawable.Callback {
   static final int DEF_STYLE_RES = R.style.Widget_Material3_LoadingIndicator;
 
+  /**
+   * The maximum time, in milliseconds, that the requested hide action is allowed to wait once
+   * {@link #show()} is called.
+   */
+  static final int MAX_HIDE_DELAY = 1000;
+
   @NonNull private final LoadingIndicatorDrawable drawable;
   @NonNull private final LoadingIndicatorSpec specs;
+
+  /**
+   * The time, in milliseconds, that the loading indicator will wait to show once the component
+   * becomes visible. If set to zero (as default) or negative values, the show action will start
+   * immediately.
+   */
+  private final int showDelay;
+
+  /**
+   * The minimum time, in milliseconds, that the requested hide action will wait to start once
+   * {@link #show()} is called. If set to zero or negative values, the requested hide action will
+   * start as soon as {@link #hide()} is called. This value is capped to {@link #MAX_HIDE_DELAY}.
+   *
+   * @see #showDelay
+   */
+  private final int minHideDelay;
+
+  private long lastShowStartTime = -1L;
 
   public LoadingIndicator(@NonNull Context context) {
     this(context, null);
@@ -74,7 +101,79 @@ public final class LoadingIndicator extends View implements Drawable.Callback {
     drawable.setCallback(this);
 
     specs = drawable.getDrawingDelegate().specs;
+
+    TypedArray a =
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, R.styleable.LoadingIndicator, defStyleAttr, DEF_STYLE_RES);
+    showDelay = a.getInt(R.styleable.LoadingIndicator_showDelay, -1);
+    int minHideDelayUncapped = a.getInt(R.styleable.LoadingIndicator_minHideDelay, -1);
+    minHideDelay = min(minHideDelayUncapped, MAX_HIDE_DELAY);
+    a.recycle();
+
     setAnimatorDurationScaleProvider(new AnimatorDurationScaleProvider());
+  }
+
+  /**
+   * Shows the loading indicator. If {@code showDelay} has been set to a positive value, wait until
+   * the delay elapsed before starting the show action. Otherwise start showing immediately.
+   */
+  public void show() {
+    if (showDelay > 0) {
+      removeCallbacks(delayedShow);
+      postDelayed(delayedShow, showDelay);
+    } else {
+      delayedShow.run();
+    }
+  }
+
+  /**
+   * Sets the visibility to {@code VISIBLE}. If this changes the visibility it will invoke {@code
+   * onVisibilityChanged} and handle the visibility with animation of the drawables.
+   *
+   * @see #onVisibilityChanged(View, int)
+   */
+  private void internalShow() {
+    if (minHideDelay > 0) {
+      // The hide delay is positive, saves the time of starting show action.
+      lastShowStartTime = SystemClock.uptimeMillis();
+    }
+    setVisibility(VISIBLE);
+  }
+
+  /**
+   * Hides the loading indicator. If {@code minHideDelay} has been set to a positive value, wait
+   * until the delay elapsed before starting the hide action. Otherwise start hiding immediately.
+   */
+  public void hide() {
+    if (getVisibility() != VISIBLE) {
+      // No need to hide, as the component is still invisible.
+      removeCallbacks(delayedShow);
+      return;
+    }
+
+    removeCallbacks(delayedHide);
+    long timeElapsedSinceShowStart = SystemClock.uptimeMillis() - lastShowStartTime;
+    boolean enoughTimeElapsed = timeElapsedSinceShowStart >= minHideDelay;
+    if (enoughTimeElapsed) {
+      delayedHide.run();
+      return;
+    }
+    postDelayed(delayedHide, /* delayMillis= */ minHideDelay - timeElapsedSinceShowStart);
+  }
+
+  /**
+   * If the component uses {@link DrawableWithAnimatedVisibilityChange} and needs to be hidden with
+   * animation, it will trigger the drawable to start the hide animation. Otherwise, it will
+   * directly set the visibility to {@code INVISIBLE}.
+   *
+   * @see #hide()
+   */
+  private void internalHide() {
+    getDrawable().setVisible(/* visible= */ false, /* restart= */ false, /* animate= */ true);
+
+    if (!getDrawable().isVisible()) {
+      setVisibility(INVISIBLE);
+    }
   }
 
   @Override
@@ -140,6 +239,14 @@ public final class LoadingIndicator extends View implements Drawable.Callback {
     super.onWindowVisibilityChanged(visibility);
     drawable.setVisible(
         visibleToUser(), /* restart= */ false, /* animate= */ visibility == VISIBLE);
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    if (visibleToUser()) {
+      internalShow();
+    }
   }
 
   @Override
@@ -318,4 +425,33 @@ public final class LoadingIndicator extends View implements Drawable.Callback {
       @NonNull AnimatorDurationScaleProvider animatorDurationScaleProvider) {
     drawable.animatorDurationScaleProvider = animatorDurationScaleProvider;
   }
+
+  // ************************ In-place defined parameters ****************************
+
+  /**
+   * The runnable, which executes the start action. This is used to schedule delayed show actions.
+   *
+   * @see #show()
+   */
+  private final Runnable delayedShow =
+      new Runnable() {
+        @Override
+        public void run() {
+          internalShow();
+        }
+      };
+
+  /**
+   * The runnable, which executes the hide action. This is used to schedule delayed hide actions.
+   *
+   * @see #hide()
+   */
+  private final Runnable delayedHide =
+      new Runnable() {
+        @Override
+        public void run() {
+          internalHide();
+          lastShowStartTime = -1L;
+        }
+      };
 }

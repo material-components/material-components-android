@@ -94,8 +94,8 @@ public class EdgeToEdgeUtils {
     int statusBarColor = getStatusBarColor(window.getContext(), edgeToEdgeEnabled);
     int navigationBarColor = getNavigationBarColor(window.getContext(), edgeToEdgeEnabled);
 
-    window.setStatusBarColor(statusBarColor);
-    window.setNavigationBarColor(navigationBarColor);
+    setStatusBarColor(window, statusBarColor);
+    setNavigationBarColor(window, navigationBarColor);
 
     setLightStatusBar(
         window,
@@ -146,6 +146,12 @@ public class EdgeToEdgeUtils {
     return MaterialColors.getColor(context, android.R.attr.statusBarColor, Color.BLACK);
   }
 
+  public static void setStatusBarColor(@NonNull Window window, @ColorInt int color) {
+    if (VERSION.SDK_INT < VERSION_CODES.VANILLA_ICE_CREAM) {
+      window.setStatusBarColor(color);
+    }
+  }
+
   private static int getNavigationBarColor(Context context, boolean isEdgeToEdgeEnabled) {
     // Light navigation bars are only supported on O_MR1+. So we need to use a translucent black
     // navigation bar instead to ensure the text/icon contrast of it.
@@ -158,6 +164,19 @@ public class EdgeToEdgeUtils {
       return TRANSPARENT;
     }
     return MaterialColors.getColor(context, android.R.attr.navigationBarColor, Color.BLACK);
+  }
+
+  public static int getNavigationBarColor(@NonNull Window window) {
+    if (VERSION.SDK_INT < VERSION_CODES.VANILLA_ICE_CREAM) {
+      return window.getNavigationBarColor();
+    }
+    return Color.TRANSPARENT;
+  }
+
+  public static void setNavigationBarColor(@NonNull Window window, @ColorInt int color) {
+    if (VERSION.SDK_INT < VERSION_CODES.VANILLA_ICE_CREAM) {
+      window.setNavigationBarColor(color);
+    }
   }
 
   private static boolean isUsingLightSystemBar(int systemBarColor, boolean isLightBackground) {

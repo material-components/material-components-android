@@ -187,7 +187,7 @@ public class MaterialButtonToggleGroup extends MaterialButtonGroup {
   }
 
   @Override
-  boolean isOverflowSupported() {
+  boolean isOverflowMenuSupported() {
     return false;
   }
 

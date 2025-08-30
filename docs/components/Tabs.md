@@ -13,7 +13,7 @@ path: /catalog/tabs/
 different screens, data sets, and other interactions. There are two variants of
 tabs.
 
-![Types of tabs](assets/tabs/Tabs_types.png)
+![Types of tabs](assets/tabs/tabs-types.png)
 
 1.  Primary tabs
 2.  Secondary tabs
@@ -35,7 +35,7 @@ content and establish hierarchy.
 
 #### Primary tabs
 
-![Primary tabs anatomy](assets/tabs/primary_tabs_anatomy.png)
+![Primary tabs anatomy](assets/tabs/primary-tabs-anatomy.png)
 
 1.  Container
 2.  Badge (optional)
@@ -46,7 +46,7 @@ content and establish hierarchy.
 
 #### Secondary tabs
 
-![Secondary tabs anatomy](assets/tabs/secondary_tabs_anatomy.png)
+![Secondary tabs anatomy](assets/tabs/secondary-tabs-anatomy.png)
 
 1.  Container
 2.  Badge (optional)
@@ -133,7 +133,7 @@ page.
 
 ### Adding tabs
 
-![Three fixed tabs with one tab selected.](assets/tabs/tabs_basic.png)
+![Three fixed tabs with one tab selected.](assets/tabs/tabs-basic.png)
 
 A
 [`TabLayout`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)
@@ -296,7 +296,7 @@ TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
 ### Adding badges to tabs
 
 ![Example of 3 fixed tabs with badges: a red badge with "1", a red badge with
-"88", and a red badge with "999".](assets/tabs/tabs_badged.png)
+"88", and a red badge with "999".](assets/tabs/tabs-badged.png)
 
 Tabs support badging with the
 [`BadgeDrawable`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/badge/BadgeDrawable.java)
@@ -322,7 +322,7 @@ only tabs available.
 
 The following example shows a row of fixed tabs.
 
-![Example of 3 fixed tabs.](assets/tabs/tabs_fixed.png)
+![Example of 3 fixed tabs.](assets/tabs/tabs-fixed.png)
 
 In the layout:
 
@@ -365,7 +365,7 @@ that some tabs will remain off-screen until scrolled.
 
 The following example shows a row of scrollable tabs.
 
-![Example of 6 scrollable tabs, with the 6th partially cut off by screensize.](assets/tabs/tabs_scrollable.png)
+![Example of 6 scrollable tabs, with the 6th partially cut off by screensize.](assets/tabs/tabs-scrollable.png)
 
 In the layout:
 
@@ -429,7 +429,7 @@ API and source code:
 The following example shows a row of scrollable tabs with Material theming.
 
 ![Example of 4 scrollable tabs with light pink background. The selected text is
-dark pink, the unselected text is grey.](assets/tabs/tabs_theming.png)
+dark pink, the unselected text is grey.](assets/tabs/tabs-theming.png)
 
 ##### Implementing tabs theming
 

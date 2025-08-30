@@ -13,12 +13,12 @@ path: /catalog/buttons/
 take actions, and make choices, with a single tap. There are two variants of
 common buttons.
 
-![2 types of common buttons](assets/buttons/commonbutton_types.png)
+![2 types of common buttons](assets/buttons/commonbutton-types.png)
 
 1.  Default button
 2.  Toggle button
 
-![Diagram of button styles and toggle behaviors](assets/buttons/commonbutton_styles.png)
+![Diagram of button styles and toggle behaviors](assets/buttons/commonbutton-styles.png)
 
 There are five button styles, in order of emphasis:
 
@@ -43,7 +43,7 @@ C. Toggle (selected) <br>
 
 ## Anatomy
 
-![Elevated button anatomy diagram](assets/buttons/commonbutton_anatomy.png)
+![Elevated button anatomy diagram](assets/buttons/commonbutton-anatomy.png)
 
 1.  Container
 2.  Label text
@@ -52,12 +52,14 @@ C. Toggle (selected) <br>
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/buttons/guidelines#653b660b-e9d8-48ad-9f53-67fb3d76e09e).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-<img src="assets/buttons/commonbutton_expressive.png" alt="4 button changes in the expressive update." height="600"/>
+<img src="assets/buttons/commonbutton-expressive.png" alt="4 button changes in the expressive update" height="600"/>
 
 1.  Five sizes
 2.  Toggle (selection)
@@ -92,6 +94,240 @@ can change shape when selected
 
 *   16dp (recommended to match padding of new sizes)
 *   24dp (deprecated)
+
+### M3 Expressive styles
+
+#### Buttons
+
+<details><summary><h5>Filled</h5></summary>
+
+Default <div style="width:250px"></div>                                                                    | Checked <div style="width:250px"></div>                                                            | Unchecked <div style="width:250px"></div>
+---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -----------------------------------------
+![Default expressive filled button example in dark theme](assets/buttons/default-filled-button-dark.png)   | ![Checked expressive filled button in dark theme](assets/buttons/checked-filled-button-dark.png)   | ![Unchecked expressive filled button in light theme](assets/buttons/unchecked-button-light.png)
+![Default expressive filled button example in light theme](assets/buttons/default-filled-button-light.png) | ![Checked expressive filled button in light theme](assets/buttons/checked-filled-button-light.png) | ![Unchecked expressive filled button in dark theme](assets/buttons/unchecked-button-dark.png)
+
+By default, the filled button is uncheckable. To make it checkable, enable the
+`android:checkable` attribute in style or layout.
+
+```xml
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    android:checkable="true"/>
+```
+
+</details>
+
+<details><summary><h5>Filled tonal</h5></summary>
+
+Default <div style="width:250px"></div>                                                                 | Checked <div style="width:250px"></div>                                                                 | Unchecked <div style="width:250px"></div>
+------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -----------------------------------------
+![Default expressive filled tonal button in light theme](assets/buttons/default-filled-tonal-light.png) | ![Checked expressive filled tonal button in dark theme](assets/buttons/checked-filled-tonal-dark.png)   | ![Unchecked expressive filled tonal button in light theme](assets/buttons/unchecked-filled-tonal-light.png)
+![Default expressive filled tonal button in dark theme](assets/buttons/default-filled-tonal-dark.png)   | ![Checked expressive filled tonal button in light theme](assets/buttons/checked-filled-tonal-light.png) | ![Unchecked expressive filled tonal button in dark theme](assets/buttons/unchecked-filled-tonal-dark.png)
+
+By default, the tonal button is uncheckable. To make it checkable, enable the
+`android:checkable` attribute in style or layout.
+
+```xml
+<Button
+    style="?attr/materialButtonTonalStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    android:checkable="true"/>
+```
+
+</details>
+
+<details><summary><h5>Outlined</h5></summary>
+
+Default <div style="width:250px"></div>                                                                       | Checked <div style="width:250px"></div>                                                                | Unchecked <div style="width:250px"></div>
+------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -----------------------------------------
+![Default expressive outlined button button in light theme](assets/buttons/default-outlined-button-light.png) | ![Checked expressive outlined button in dark theme](assets/buttons/checked-outlined-button-dark.png)   | ![Unchecked expressive outlined button in light theme](assets/buttons/unchecked-outlined-button-light.png)
+![Default expressive outlined button button in dark theme](assets/buttons/default-outlined-button-dark.png)   | ![Checked expressive outlined button in light theme](assets/buttons/checked-outlined-button-light.png) | ![Unchecked expressive outlined button in dark theme](assets/buttons/unchecked-outlined-button-dark.png)
+
+By default, the outlined button is uncheckable. To make it checkable, enable the
+`android:checkable` attribute in style or layout.
+
+```xml
+<Button
+    style="?attr/materialButtonOutlinedStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    android:checkable="true"/>
+```
+
+</details>
+
+<details><summary><h5>Text</h5></summary>
+
+<img src="assets/buttons/text-button-dark.png" alt="Expressive text button in dark theme with dark text and no outline" width="175"> <div style="width:400px"></div> | <img src="assets/buttons/text-button-light.png" alt="Expressive text button in light theme with light text and no outline" width="175"> <div style="width:400px"></div>
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+The text button appears as only text until pressed. It does not have a solid
+fill or outline by default.
+
+```xml
+<Button
+    style="?attr/borderlessButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"/>
+```
+
+</details>
+
+<details><summary><h5>Elevated</h5></summary>
+
+Default <div style="width:250px"></div>                                                         | Checked <div style="width:250px"></div>                                                         | Unchecked <div style="width:250px"></div>
+----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | -----------------------------------------
+![Default expressive elevated button in light theme](assets/buttons/default-elevated-light.png) | ![Checked expressive elevated button in dark theme](assets/buttons/checked-elevated-dark.png)   | ![Unchecked expressive elevated button in light theme](assets/buttons/unchecked-elevated-light.png)
+![Default expressive elevated button in dark theme](assets/buttons/default-elevated-dark.png)   | ![Checked expressive elevated button in light theme](assets/buttons/checked-elevated-light.png) | ![Unchecked expressive elevated button in dark theme](assets/buttons/unchecked-elevated-dark.png)
+
+By default, the elevated button is uncheckable. To make it checkable, enable the
+`android:checkable` attribute in style or layout.
+
+```xml
+<Button
+    style="?attr/materialButtonElevatedStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    android:checkable="true"/>
+```
+
+</details>
+
+<details><summary><h5>Filled button with icons</h5></summary>
+
+Default <div style="width:250px"></div>                                                                      | Checked <div style="width:250px"></div>                                                                      | Unchecked <div style="width:250px"></div>
+------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | -----------------------------------------
+![Default expressive filled icon button in light theme](assets/buttons/default-filled-icon-button-light.png) | ![Checked expressive filled icon button in dark theme](assets/buttons/checked-filled-icon-button-dark.png)   | ![Unchecked expressive filled icon button in light theme](assets/buttons/unchecked-filled-icon-button-light.png)
+![Default expressive filled icon button in dark theme](assets/buttons/default-filled-icon-button-dark.png)   | ![Checked expressive filled icon button in light theme](assets/buttons/checked-filled-icon-button-light.png) | ![Unchecked expressive filled icon button in dark theme](assets/buttons/unchecked-filled-icon-button-dark.png)
+
+Icons visually communicate the button’s action and help draw attention. They
+should be placed on the leading side of the button, before the label text.
+
+```xml
+<Button
+    style="@style/Widget.Material3Expressive.Button.Icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    app:icon="@drawable/ic_dialogs_24px"
+    android:checkable="true"/>
+```
+
+</details>
+
+#### Shapes
+
+<details><summary><h5>Round</h5></summary>
+
+Default <div style="width:250px"></div>                                                                    | Checked <div style="width:250px"></div>                                                                     | Unchecked <div style="width:250px"></div>
+---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | -----------------------------------------
+![Default expressive round filled button with icon in light theme](assets/buttons/default-round-shape.png) | ![Checked expressive round filled button with icon in light theme](assets/buttons/checked-round-shaped.png) | ![Unchecked expressive square round button with icon in light theme](assets/buttons/unchecked-round-shape.png)
+
+```xml
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"/>
+```
+
+</details>
+
+<details><summary><h5>Square</h5></summary>
+
+Default <div style="width:250px"></div>                                                                      | Checked <div style="width:250px"></div>                                                                      | Unchecked <div style="width:250px"></div>
+------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | -----------------------------------------
+![Default expressive square filled button with icon in light theme](assets/buttons/default-square-shape.png) | ![Checked expressive square filled button with icon in light theme](assets/buttons/checked-square-shape.png) | ![Unchecked expressive square filled button with icon in light theme](assets/buttons/unchecked-square-shape.png)
+
+```xml
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.{Small}.Square"/>
+```
+
+</details>
+
+#### Sizes
+
+**Note:** Images below show the label buttons in different sizes relatively. The
+actual sizes in px on mobile devices depends on the screen pixel density.
+
+<details><summary><h5>Extra small</h5></summary>
+
+<img src="assets/buttons/extrasmall.png" width=214.5 height=96/>
+
+```xml
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Xsmall"/>
+```
+
+</details>
+
+<details><summary><h5>Small</h5></summary>
+
+<img src="assets/buttons/small-size.png" width=228.5 height=96/>
+
+```xml
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"/>
+```
+
+</details>
+
+<details><summary><h5>Medium</h5></summary>
+
+<img src="assets/buttons/medium-size.png" width=284 height=107/>
+
+```xml
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Medium"/>
+```
+
+</details>
+
+<details><summary><h5>Large</h5></summary>
+
+<img src="assets/buttons/large-size.png" width=475 height=192.5/>
+
+```xml
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Large"/>
+```
+
+</details>
+
+<details><summary><h5>Extra Large</h5></summary>
+
+<img src="assets/buttons/extra-large-size.png" width=632 height=277.5/>
+
+```xml
+<Button
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_text"
+    app:materialSizeOverlay="@style/SizeOverlay.Material3Expressive.Button.Xlarge"/>
+```
+
+</details>
 
 ## Key properties
 
@@ -388,7 +624,7 @@ page.
 *   The default and toggle buttons use different colors
 *   Toggle buttons don’t use the text style
 
-![5 types of common buttons](assets/buttons/commonbuttons_types.png)
+![5 types of common buttons](assets/buttons/commonbuttons-types.png)
 
 1.  Elevated button
 2.  Filled button
@@ -421,7 +657,7 @@ In the layout:
 
 ```xml
 <Button
-    style="@style/Widget.Material3.Button.ElevatedButton"
+    style="?attr/materialButtonElevatedStyle"
     android:id="@+id/elevatedButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -441,8 +677,8 @@ elevatedButton.setOnClickListener {
 
 The following example shows an elevated button with an icon.
 
-!["Elevated button with purple text 'Elevated button', grey border and '+' icon
-over a white background."](assets/buttons/elevated-button-icon.png)
+![Elevated button with purple text, elevated button, grey border and plus icon
+over a white background](assets/buttons/elevated-button-icon.png)
 
 In the layout:
 
@@ -462,7 +698,8 @@ In the layout:
 
 [Filled button's](https://m3.material.io/components/buttons#filled-button)
 contrasting surface color makes it the most prominent button after the FAB. It’s
-used for final or unblocking actions in a flow.
+used for final or unblocking actions in a flow such as **Save**, **Join now,**
+or **Confirm**.
 
 **Note:** The filled button is the default style if the style is not set.
 
@@ -477,8 +714,8 @@ API and source code:
 The following example shows a filled button with a text label and a filled
 container.
 
-!["Filled button with white text 'Filled button' and purple container over a
-white background."](assets/buttons/filled-button.png)
+!["Filled button with white text, filled button, and purple container over a
+white background"](assets/buttons/filled-button.png)
 
 In the layout:
 
@@ -507,8 +744,8 @@ filledButton.setOnClickListener {
 
 The following example shows a filled button with an icon.
 
-!["Filled button with white text 'Filled button', purple container and '+' icon
-over a white background."](assets/buttons/filled-button-icon.png)
+![Filled button with white text, filled button, purple container and plus icon
+over a white background](assets/buttons/filled-button-icon.png)
 
 In the layout:
 
@@ -532,6 +769,11 @@ visually prominent than a regular filled button. They’re still used for final 
 unblocking actions in a flow, but may be better when these actions don’t require
 quite so much emphasis.
 
+A tonal-style filled button can be used as an alternative middle-ground between
+filled and outlined buttons. They use secondary color mapping and are useful in
+contexts where a lower-priority button requires slightly more emphasis than an
+outline would give, such as **Next** in an onboarding flow.
+
 ##### Filled tonal button examples
 
 API and source code:
@@ -543,14 +785,14 @@ API and source code:
 The following example shows a filled tonal button with a text label and a filled
 container.
 
-!["Filled tonal button with white text 'Filled tonal button' and purple
-container over a white background."](assets/buttons/filled-button-tonal.png)
+!["Filled tonal button with white text, filled tonal button, and purple
+container over a white background"](assets/buttons/filled-button-tonal.png)
 
 In the layout:
 
 ```xml
 <Button
-    style="@style/Widget.Material3.Button.TonalButton"
+    style="?attr/materialButtonTonalStyle"
     android:id="@+id/filledTonalButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -570,9 +812,8 @@ filledTonalButton.setOnClickListener {
 
 The following example shows a filled tonal button with an icon.
 
-!["Filled tonal button with white text 'Filled tonal button', purple container
-and '+' icon over a white
-background."](assets/buttons/filled-button-tonal-icon.png)
+![Filled tonal button with white text filled tonal button, purple container and
+plus icon over a white background](assets/buttons/filled-button-tonal-icon.png)
 
 In the layout:
 
@@ -595,6 +836,9 @@ are for actions that need attention but aren’t the primary action, such as “
 all” or “Add to cart.” This is also the button used to give someone the
 opportunity to change their mind or escape a flow.
 
+Outlined buttons pair well with filled buttons to indicate a secondary,
+alternate action.
+
 ##### Outlined button examples
 
 API and source code:
@@ -606,8 +850,8 @@ API and source code:
 The following example shows an outlined button with a text label and stroked
 container.
 
-!["Outlined button with purple text 'Outlined button' and grey border over a
-white background."](assets/buttons/outlined-button.png)
+!["Outlined button with purple text, outlined button, and grey border over a
+white background"](assets/buttons/outlined-button.png)
 
 In the layout:
 
@@ -633,8 +877,8 @@ outlinedButton.setOnClickListener {
 
 The following example shows an outlined button with an icon.
 
-!["Outlined button with purple text 'Outlined button', grey border and '+' icon
-over a white background."](assets/buttons/outlined-button-icon.png)
+![Outlined button with purple text, outlined button, grey border and plus icon
+over a white background](assets/buttons/outlined-button-icon.png)
 
 In the layout:
 
@@ -666,13 +910,13 @@ API and source code:
 
 The following example shows a text button with a text label.
 
-!["Text button with purple text 'Text button' over a white background."](assets/buttons/text-button.png)
+![Text button with purple text, text button over a white background](assets/buttons/text-button.png)
 
 In the layout:
 
 ```xml
 <Button
-    style="@style/Widget.Material3.Button.TextButton"
+    style="?attr/borderlessButtonStyle"
     android:id="@+id/textButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -692,8 +936,8 @@ textButton.setOnClickListener {
 
 The following example shows a text button with an icon.
 
-!["Text button with purple text 'Text button' and '+' icon over a white
-background."](assets/buttons/text-button-icon.png)
+![Text button with purple text, text button, and plus icon over a white
+background](assets/buttons/text-button-icon.png)
 
 In the layout:
 

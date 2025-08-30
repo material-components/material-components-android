@@ -14,7 +14,7 @@ method that allows people to quickly find information across an app. Users input
 a query into the search bar or text field of the search view and then see
 related results.
 
-![Search bar light](assets/search/search_hero.png)
+![Search bar light](assets/search/search-hero.png)
 
 1.  Search bar
 2.  Search view
@@ -34,7 +34,7 @@ a search icon.
 
 #### Search bar
 
-![Search bar anatomy diagram](assets/search/search_bar_anatomy.png)
+![Search bar anatomy diagram](assets/search/search-bar-anatomy.png)
 
 1.  Container
 2.  Leading icon button
@@ -43,7 +43,7 @@ a search icon.
 
 #### Search view
 
-![Search view anatomy diagram](assets/search/search_view_anatomy.png)
+![Search view anatomy diagram](assets/search/search-view-anatomy.png)
 
 1.  Container
 2.  Header
@@ -55,6 +55,95 @@ a search icon.
 
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/search/guidelines#ea5fe21e-f47d-421c-ab40-c45811329e00).
+
+## M3 Expressive
+
+### M3 Expressive update
+
+SearchBar updates
+
+*   New Centered Search Text attribute
+*   New Maximum Width
+*   New Lift on Scroll Color attribute
+*   Padding and inset updates
+
+### M3 Expressive styles
+
+<img src="assets/search/appbar-with-search.png" alt="AppBar with Search Bar" height="150">
+
+<img src="assets/search/appbar-with-search-lifted.png" alt="Lifted AppBar with SearchBar" height="150">
+
+The default style for `SearchBar` is:
+
+```xml
+<item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar</item>
+```
+
+You can also set a centered style with:
+
+```xml
+<item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar.CenteredText</item>
+```
+
+The recommended way to display a `SearchBar` is now inside of an `AppBarLayout`.
+You can specify
+`android:theme="ThemeOverlay.Material3Expressive.AppBarWithSearch"`
+on your `AppBarLayout` to style your `AppBarLayout` and `SearchBar`
+automatically as an AppBar with Search.
+
+The default `SearchBar` style for this theme overlay is the centered text
+configuration. If you would like to specify a start-aligned text `SearchBar`,
+you must additionally set the following style explicitly on the `SearchBar`:
+`@style/Widget.Material3Expressive.SearchBar.AppBarWithSearch`.
+
+If migrating your `SearchBar` layout to the AppBar with Search configuration is
+difficult due to the manual addition of `MaterialButton`s, there is a mitigation
+in place to keep the same inputs. See
+[SearchBar in MaterialToolbar](#searchbar-in-materialtoolbar).
+
+#### SearchBar in MaterialToolbar
+
+As the new AppBar with Search configuration moves icons from inside of the
+`SearchBar` to outside of it, clients are expected to add their own
+`MaterialButton`s replacing these icons inside of the `AppBarLayout`.
+
+As this may not always be easy for existing clients, an approach using a
+`MaterialToolbar` is supported to add icons outside of the `SearchBar` with the
+same inputs.
+
+Simply wrap the `SearchBar` inside of a `MaterialToolbar` and apply the leading
+and trailing icons to the `MaterialToolbar` instead of the `SearchBar` in the
+same manner.
+
+For example:
+
+```xml
+  <com.google.android.material.appbar.AppBarLayout
+      android:id="@+id/app_bar_layout"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fitsSystemWindows="true"
+      app:materialThemeOverlay="@style/ThemeOverlay.Material3Expressive.AppBarWithSearch"
+      app:statusBarForeground="?attr/colorSurface">
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_home_checkable_24px"
+        app:layout_scrollFlags="enterAlways|scroll|snap"
+        app:navigationContentDescription="@string/home_icon_description"
+        app:menu="@menu/search_menu">
+      <com.google.android.material.search.SearchBar
+          android:id="@+id/search_bar"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginEnd="8dp"
+          android:layout_marginStart="8dp"
+          android:hint="@string/searchbar_hint">
+      </com.google.android.material.search.SearchBar>
+    </com.google.android.material.appbar.MaterialToolbar>
+  </com.google.android.material.appbar.AppBarLayout>
+```
 
 ## Key properties
 
