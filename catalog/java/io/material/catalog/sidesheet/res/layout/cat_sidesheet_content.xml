@@ -25,9 +25,10 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:clickable="true"
-    android:focusable="true"
+    android:focusable="false"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="KeyboardInaccessibleWidget">
 
     <Button
       android:id="@+id/close_icon_button"

@@ -14,8 +14,7 @@
   limitations under the License.
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
-  xmlns:tools="http://schemas.android.com/tools">
+  xmlns:app="http://schemas.android.com/apk/res-auto">
   <FrameLayout
     android:id="@+id/standard_side_sheet_container"
     style="@style/Widget.Material3.SideSheet"

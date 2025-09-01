@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.GravityInt;
@@ -243,6 +244,13 @@ public class SideSheetMainDemoFragment extends DemoFragment {
         standardSideSheetCloseIconButton, standardSideSheetCloseIconButton.getContentDescription());
 
     setupBackHandling(sideSheet, sideSheetBehavior);
+
+    setupClickableContentText(
+        sideSheet,
+        R.id.cat_demo_content_text_1,
+        R.id.cat_demo_content_text_2,
+        R.id.cat_demo_content_text_3,
+        R.id.cat_demo_content_text_4);
 
     sideSheetViews.add(sideSheet);
 
@@ -457,5 +465,20 @@ public class SideSheetMainDemoFragment extends DemoFragment {
         behavior.cancelBackProgress();
       }
     };
+  }
+
+  private void setupClickableContentText(@NonNull View view, @IdRes int... textIds) {
+    for (int id : textIds) {
+      View textView = view.findViewById(id);
+      if (textView != null) {
+        textView.setOnClickListener(
+            v ->
+                Toast.makeText(
+                        view.getContext(),
+                        R.string.cat_demo_content_text_was_clicked,
+                        Toast.LENGTH_SHORT)
+                    .show());
+      }
+    }
   }
 }
