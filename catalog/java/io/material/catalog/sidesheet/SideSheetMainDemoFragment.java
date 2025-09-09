@@ -34,7 +34,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.GravityInt;
@@ -53,6 +52,7 @@ import com.google.android.material.sidesheet.SideSheetBehavior;
 import com.google.android.material.sidesheet.SideSheetCallback;
 import com.google.android.material.sidesheet.SideSheetDialog;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 import io.material.catalog.preferences.CatalogPreferencesHelper;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import java.util.ArrayList;
@@ -245,12 +245,7 @@ public class SideSheetMainDemoFragment extends DemoFragment {
 
     setupBackHandling(sideSheet, sideSheetBehavior);
 
-    setupClickableContentText(
-        sideSheet,
-        R.id.cat_demo_content_text_1,
-        R.id.cat_demo_content_text_2,
-        R.id.cat_demo_content_text_3,
-        R.id.cat_demo_content_text_4);
+    DemoUtils.setupClickableContentText(sideSheet);
 
     sideSheetViews.add(sideSheet);
 
@@ -465,20 +460,5 @@ public class SideSheetMainDemoFragment extends DemoFragment {
         behavior.cancelBackProgress();
       }
     };
-  }
-
-  private void setupClickableContentText(@NonNull View view, @IdRes int... textIds) {
-    for (int id : textIds) {
-      View textView = view.findViewById(id);
-      if (textView != null) {
-        textView.setOnClickListener(
-            v ->
-                Toast.makeText(
-                        view.getContext(),
-                        R.string.cat_demo_content_text_was_clicked,
-                        Toast.LENGTH_SHORT)
-                    .show());
-      }
-    }
   }
 }

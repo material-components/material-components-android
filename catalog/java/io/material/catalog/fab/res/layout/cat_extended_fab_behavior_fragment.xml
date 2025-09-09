@@ -14,49 +14,53 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
   <com.google.android.material.appbar.AppBarLayout
-      android:id="@+id/app_bar"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:fitsSystemWindows="true">
+    android:id="@+id/app_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
-        style="?attr/collapsingToolbarLayoutLargeStyle"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
-        app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
+      style="?attr/collapsingToolbarLayoutLargeStyle"
+      android:layout_width="match_parent"
+      android:layout_height="?attr/collapsingToolbarLayoutLargeSize"
+      app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
       <androidx.appcompat.widget.Toolbar
-          android:id="@+id/toolbar"
-          style="?attr/catalogToolbarWithCloseButtonStyle"
-          android:layout_width="match_parent"
-          android:layout_height="?attr/actionBarSize"
-          app:layout_collapseMode="pin"
-          app:title="Collapsing Title" />
+        android:id="@+id/toolbar"
+        style="?attr/catalogToolbarWithCloseButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_collapseMode="pin"
+        app:title="Collapsing Title" />
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.core.widget.NestedScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <include layout="@layout/cat_topappbar_filler_text_view" />
+    <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:lineSpacingMultiplier="1.2"
+      android:text="@string/cat_fab_lorem_ipsum" />
   </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_margin="8dp"
-      android:contentDescription="@string/cat_extended_fab_content_desc"
-      android:text="@string/extended_fab_label"
-      app:icon="@drawable/ic_add_24px"
-      app:layout_anchor="@id/app_bar"
-      app:layout_anchorGravity="bottom|right|end" />
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:contentDescription="@string/cat_extended_fab_content_desc"
+    android:text="@string/extended_fab_label"
+    app:icon="@drawable/ic_add_24px"
+    app:layout_anchor="@id/app_bar"
+    app:layout_anchorGravity="bottom|right|end" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

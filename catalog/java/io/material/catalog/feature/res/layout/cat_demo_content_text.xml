@@ -23,23 +23,34 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginTop="24dp"
+    android:lineSpacingMultiplier="1.2"
     android:text="@string/cat_demo_content_text_part_1" />
   <TextView
     android:id="@+id/cat_demo_content_text_2"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="16dp"
+    android:lineSpacingMultiplier="1.2"
     android:text="@string/cat_demo_content_text_part_2" />
   <TextView
     android:id="@+id/cat_demo_content_text_3"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="16dp"
+    android:lineSpacingMultiplier="1.2"
     android:text="@string/cat_demo_content_text_part_3" />
   <TextView
     android:id="@+id/cat_demo_content_text_4"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
+    android:layout_marginTop="16dp"
+    android:lineSpacingMultiplier="1.2"
     android:text="@string/cat_demo_content_text_part_4" />
+  <TextView
+    android:id="@+id/cat_demo_content_text_5"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:lineSpacingMultiplier="1.2"
+    android:text="@string/cat_demo_content_text_part_5" />
 </merge>
