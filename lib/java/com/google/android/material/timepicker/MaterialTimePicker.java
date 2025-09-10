@@ -29,6 +29,7 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.widget.TooltipCompat;
 import android.text.TextUtils;
@@ -112,9 +113,11 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
   static final String NEGATIVE_BUTTON_TEXT_EXTRA = "TIME_PICKER_NEGATIVE_BUTTON_TEXT";
   static final String OVERRIDE_THEME_RES_ID = "TIME_PICKER_OVERRIDE_THEME_RES_ID";
 
+  private ViewGroup root;
   private MaterialButton modeButton;
   private Button okButton;
   private Button cancelButton;
+  private TextView headerTitle;
 
   @InputMode private int inputMode = INPUT_MODE_CLOCK;
 
@@ -270,23 +273,16 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
-    ViewGroup root =
-        (ViewGroup) layoutInflater.inflate(R.layout.material_timepicker_dialog, viewGroup);
+    root = (ViewGroup) layoutInflater.inflate(R.layout.material_timepicker_dialog, viewGroup);
     timePickerView = root.findViewById(R.id.material_timepicker_view);
     timePickerView.setOnDoubleTapListener(this);
     textInputStub = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
     okButton = root.findViewById(R.id.material_timepicker_ok_button);
     cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
-    TextView headerTitle = root.findViewById(R.id.header_title);
+    headerTitle = root.findViewById(R.id.header_title);
 
-    if (titleResId != 0) {
-      headerTitle.setText(titleResId);
-    } else if (!TextUtils.isEmpty(titleText)) {
-      headerTitle.setText(titleText);
-    }
-
-    updateInputMode(modeButton);
+    updateInputMode(inputMode, /* force= */ true);
     okButton.setOnClickListener(
         v -> {
           if (activePresenter instanceof TimePickerTextInputPresenter) {
@@ -323,10 +319,7 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     updateCancelButtonVisibility();
 
     modeButton.setOnClickListener(
-        v -> {
-          inputMode = (inputMode == INPUT_MODE_CLOCK) ? INPUT_MODE_KEYBOARD : INPUT_MODE_CLOCK;
-          updateInputMode(modeButton);
-        });
+        v -> updateInputMode(inputMode == INPUT_MODE_CLOCK ? INPUT_MODE_KEYBOARD : INPUT_MODE_CLOCK));
 
     return root;
   }
@@ -385,13 +378,28 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
   @RestrictTo(LIBRARY_GROUP)
   @Override
   public void onDoubleTap() {
-    inputMode = INPUT_MODE_KEYBOARD;
-    updateInputMode(modeButton);
+    updateInputMode(INPUT_MODE_KEYBOARD);
     timePickerTextInputPresenter.resetChecked();
   }
 
-  private void updateInputMode(MaterialButton modeButton) {
-    if (modeButton == null || timePickerView == null || textInputStub == null) {
+  private void updateInputMode(@InputMode int inputMode) {
+    updateInputMode(inputMode, /* force= */ false);
+  }
+
+  private void updateInputMode(@InputMode int inputMode, boolean force) {
+    if (!force && this.inputMode == inputMode) {
+      return;
+    }
+
+    this.inputMode = inputMode;
+
+    updateActivePresenter(inputMode);
+    updateModeButton(inputMode);
+    updateHeader(inputMode);
+  }
+
+  private void updateActivePresenter(@InputMode int inputMode) {
+    if (timePickerView == null || textInputStub == null) {
       return;
     }
 
@@ -403,14 +411,65 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
         initializeOrRetrieveActivePresenterForMode(inputMode, timePickerView, textInputStub);
     activePresenter.show();
     activePresenter.invalidate();
-    ModeButtonData modeButtonData = getModeButtonData(inputMode);
-    modeButton.setIconResource(modeButtonData.iconResId);
-    modeButton.setContentDescription(
-        getResources().getString(modeButtonData.contentDescriptionResId));
-    TooltipCompat.setTooltipText(
-        modeButton, getResources().getString(modeButtonData.tooltipTextResId));
+  }
+
+  private void updateModeButton(@InputMode int inputMode) {
+    if (modeButton == null) {
+      return;
+    }
+
+    @DrawableRes final int iconResId;
+    @StringRes final int contentDescriptionResId;
+    @StringRes final int tooltipTextResId;
+
+    switch (inputMode) {
+      case INPUT_MODE_KEYBOARD:
+        iconResId = clockIcon;
+        contentDescriptionResId = R.string.material_timepicker_clock_mode_description;
+        tooltipTextResId = R.string.material_timepicker_clock_mode_tooltip;
+        break;
+      case INPUT_MODE_CLOCK:
+        iconResId = keyboardIcon;
+        contentDescriptionResId = R.string.material_timepicker_text_input_mode_description;
+        tooltipTextResId = R.string.material_timepicker_text_input_mode_tooltip;
+        break;
+      default:
+        throw new IllegalArgumentException("Unexpected input mode: " + inputMode);
+    }
+
+    modeButton.setIconResource(iconResId);
+    modeButton.setContentDescription(getString(contentDescriptionResId));
+    TooltipCompat.setTooltipText(modeButton, getString(tooltipTextResId));
     modeButton.sendAccessibilityEvent(
         AccessibilityEventCompat.CONTENT_CHANGE_TYPE_CONTENT_DESCRIPTION);
+  }
+
+  private void updateHeader(int inputMode) {
+    if (root == null || headerTitle == null) {
+      return;
+    }
+
+    final CharSequence title;
+
+    if (titleResId != 0) {
+      title = getString(titleResId);
+    } else if (!TextUtils.isEmpty(titleText)) {
+      title = titleText;
+    } else {
+      switch (inputMode) {
+        case INPUT_MODE_KEYBOARD:
+          title = getString(R.string.material_timepicker_enter_time);
+          break;
+        case INPUT_MODE_CLOCK:
+          title = getString(R.string.material_timepicker_select_time);
+          break;
+        default:
+          throw new IllegalArgumentException("Unexpected input mode: " + inputMode);
+      }
+    }
+
+    headerTitle.setText(title);
+    ViewCompat.setAccessibilityPaneTitle(root, title);
   }
 
   private void updateCancelButtonVisibility() {
@@ -439,23 +498,6 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     timePickerTextInputPresenter.clearCheck();
 
     return timePickerTextInputPresenter;
-  }
-
-  private ModeButtonData getModeButtonData(@InputMode int mode) {
-    switch (mode) {
-      case INPUT_MODE_KEYBOARD:
-        return new ModeButtonData(
-            clockIcon,
-            R.string.material_timepicker_clock_mode_description,
-            R.string.material_timepicker_clock_mode_tooltip);
-      case INPUT_MODE_CLOCK:
-        return new ModeButtonData(
-            keyboardIcon,
-            R.string.material_timepicker_text_input_mode_description,
-            R.string.material_timepicker_text_input_mode_tooltip);
-      default:
-        throw new IllegalArgumentException("no button data for mode: " + mode);
-    }
   }
 
   @Nullable
