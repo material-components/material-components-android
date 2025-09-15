@@ -49,6 +49,9 @@
     <attr name="android:text"/>
     <!-- Default appearance of text: color, typeface, size, and style. -->
     <attr name="android:textAppearance"/>
+    <!-- Font variation settings. app namespace takes precedence over android. -->
+    <attr name="fontVariationSettings"/>
+    <attr name="android:fontVariationSettings"/>
     <!-- Text color. Overrides the color set in the textAppearance -->
     <attr name="android:textColor"/>
     <!-- Text size. Overrides the size set in the textAppearance -->
