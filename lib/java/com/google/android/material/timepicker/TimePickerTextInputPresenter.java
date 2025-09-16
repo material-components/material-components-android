@@ -32,7 +32,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.media.AudioManager;
-import android.media.ToneGenerator;
 import android.os.Build;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
@@ -136,7 +135,6 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   private final String hourError24hText;
 
   private MaterialButtonToggleGroup toggle;
-  private ToneGenerator toneGenerator;
 
   public TimePickerTextInputPresenter(final LinearLayout timePickerView, final TimeModel time) {
     this.timePickerView = timePickerView;
@@ -278,7 +276,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   void vibrateAndMaybeBeep(@NonNull Context context) {
     vibrate(context);
     if (!isTouchExplorationEnabled(context)) {
-      beep();
+      beep(context);
     }
   }
 
@@ -299,11 +297,11 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     }
   }
 
-  private void beep() {
-    if (toneGenerator == null) {
-      toneGenerator = new ToneGenerator(AudioManager.STREAM_SYSTEM, 100);
+  private void beep(@NonNull Context context) {
+    AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+    if (audioManager != null) {
+      audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_INVALID);
     }
-    toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP);
   }
 
   private void setTime(TimeModel time) {
