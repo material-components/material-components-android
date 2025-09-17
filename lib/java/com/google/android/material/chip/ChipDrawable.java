@@ -372,7 +372,11 @@ public class ChipDrawable extends MaterialShapeDrawable
           a,
           R.styleable.Chip_fontVariationSettings,
           R.styleable.Chip_android_fontVariationSettings);
-      textAppearance.setFontVariationSettings(a.getString(fontVariationSettingsIndex));
+      // If fontVariationSettings are not present, avoid resolving the resource as null and
+      // overwriting the text appearance's fontVariationSettings.
+      if (a.hasValue(fontVariationSettingsIndex)) {
+        textAppearance.setFontVariationSettings(a.getString(fontVariationSettingsIndex));
+      }
     }
 
     setTextAppearance(textAppearance);
