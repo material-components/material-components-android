@@ -120,8 +120,7 @@ public class TextInputLayoutIconsTest {
         .perform(setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE));
 
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput_no_icon);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_no_icon);
 
     // Assert the end icon is the password toggle icon
     assertEquals(TextInputLayout.END_ICON_PASSWORD_TOGGLE, textInputLayout.getEndIconMode());
@@ -134,8 +133,7 @@ public class TextInputLayoutIconsTest {
         .perform(typeText(INPUT_TEXT));
 
     final Activity activity = activityTestRule.getActivity();
-    final EditText textInput =
-        activity.findViewById(R.id.textinput_edittext_pwd);
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
 
     // Assert that the password is disguised
     assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
@@ -150,8 +148,7 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testPasswordToggleDisable() {
     final Activity activity = activityTestRule.getActivity();
-    final EditText textInput =
-        activity.findViewById(R.id.textinput_edittext_pwd);
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
 
     // Set some text on the EditText
     onView(withId(R.id.textinput_edittext_pwd))
@@ -173,8 +170,7 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testPasswordToggleDisableWhenVisible() {
     final Activity activity = activityTestRule.getActivity();
-    final EditText textInput =
-        activity.findViewById(R.id.textinput_edittext_pwd);
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
 
     // Type some text on the EditText
     onView(withId(R.id.textinput_edittext_pwd))
@@ -195,8 +191,7 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testPasswordToggleIsHiddenAfterReenable() {
     final Activity activity = activityTestRule.getActivity();
-    final EditText textInput =
-        activity.findViewById(R.id.textinput_edittext_pwd);
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
 
     // Type some text on the EditText and then click the toggle button
     onView(withId(R.id.textinput_edittext_pwd))
@@ -249,10 +244,10 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testPasswordToggleIsAccessible() {
     onView(
-        allOf(
-            withId(R.id.text_input_end_icon),
-            withContentDescription(R.string.password_toggle_content_description),
-            isDescendantOfA(withId(R.id.textinput_password))))
+            allOf(
+                withId(R.id.text_input_end_icon),
+                withContentDescription(R.string.password_toggle_content_description),
+                isDescendantOfA(withId(R.id.textinput_password))))
         .check(accessibilityAssertion());
   }
 
@@ -294,8 +289,7 @@ public class TextInputLayoutIconsTest {
         .perform(setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT));
 
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput_no_icon);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_no_icon);
 
     // Assert the end icon is the clear button icon
     assertEquals(TextInputLayout.END_ICON_CLEAR_TEXT, textInputLayout.getEndIconMode());
@@ -307,8 +301,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_edittext_clear))
         .perform(typeText(INPUT_TEXT));
     final Activity activity = activityTestRule.getActivity();
-    final EditText textInput =
-        activity.findViewById(R.id.textinput_edittext_clear);
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_clear);
 
     // Click clear button
     onView(withId(R.id.textinput_clear)).perform(clickIcon(true));
@@ -370,20 +363,18 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testClearTextEndIconIsAccessible() {
     onView(
-        allOf(
-            withId(R.id.text_input_end_icon),
-            withContentDescription(R.string.clear_text_end_icon_content_description),
-            isDescendantOfA(withId(R.id.textinput_clear))))
+            allOf(
+                withId(R.id.text_input_end_icon),
+                withContentDescription(R.string.clear_text_end_icon_content_description),
+                isDescendantOfA(withId(R.id.textinput_clear))))
         .check(accessibilityAssertion());
   }
 
   @Test
   public void testSwitchEndIconFromPasswordToggleToClearText() {
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayoutPassword =
-        activity.findViewById(R.id.textinput_password);
-    final TextInputLayout textInputLayoutClear =
-        activity.findViewById(R.id.textinput_clear);
+    final TextInputLayout textInputLayoutPassword = activity.findViewById(R.id.textinput_password);
+    final TextInputLayout textInputLayoutClear = activity.findViewById(R.id.textinput_clear);
     String clearTextContentDesc = textInputLayoutClear.getEndIconContentDescription().toString();
 
     // Set end icon as the clear button on the text field that has the password toggle set
@@ -442,11 +433,9 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testSetCustomEndIconProgrammatically() {
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputCustomEndIcon =
-        activity.findViewById(R.id.textinput_custom);
+    final TextInputLayout textInputCustomEndIcon = activity.findViewById(R.id.textinput_custom);
     String expectedContentDesc = textInputCustomEndIcon.getEndIconContentDescription().toString();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput_no_icon);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_no_icon);
 
     // Set end icon mode to custom end icon
     onView(withId(R.id.textinput_no_icon))
@@ -463,8 +452,7 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testCustomEndIconOnClickListener() {
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputCustomEndIcon =
-        activity.findViewById(R.id.textinput_custom);
+    final TextInputLayout textInputCustomEndIcon = activity.findViewById(R.id.textinput_custom);
     // Set custom on click listener
     onView(withId(R.id.textinput_custom))
         .perform(
@@ -558,7 +546,7 @@ public class TextInputLayoutIconsTest {
   }
 
   @Test
-  public void  testSetStartIconProgrammatically() {
+  public void testSetStartIconProgrammatically() {
     final Activity activity = activityTestRule.getActivity();
     final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_no_icon);
     Drawable drawable = new ColorDrawable(Color.BLACK);
@@ -644,34 +632,32 @@ public class TextInputLayoutIconsTest {
     assertEquals("Start icon on long click", textInputLayout.getEditText().getText().toString());
   }
 
-  /**
-   * Simple test that uses AccessibilityChecks to check that the start icon is 'accessible'.
-   */
+  /** Simple test that uses AccessibilityChecks to check that the start icon is 'accessible'. */
   @Test
   public void testStartIconToggleIsAccessible() {
     onView(
-        allOf(
-            withId(R.id.text_input_start_icon),
-            isDescendantOfA(withId(R.id.textinput_starticon))))
+            allOf(
+                withId(R.id.text_input_start_icon),
+                isDescendantOfA(withId(R.id.textinput_starticon))))
         .check(accessibilityAssertion());
   }
 
   @Test
-  public  void testErrorIconAppears() {
+  public void testErrorIconAppears() {
     // Set error
     onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
 
     // Check the icon is visible
     onView(
-        allOf(
-            withId(R.id.text_input_error_icon),
-            withContentDescription(R.string.error_icon_content_description),
-            isDescendantOfA(withId(R.id.textinput_no_icon))))
+            allOf(
+                withId(R.id.text_input_error_icon),
+                withContentDescription(R.string.error_icon_content_description),
+                isDescendantOfA(withId(R.id.textinput_no_icon))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
   }
 
   @Test
-  public  void testErrorIconDisappears() {
+  public void testErrorIconDisappears() {
     // Set error
     onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
 
@@ -715,16 +701,16 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_password)).perform(setError("Error"));
     // Check icon showing is error icon only
     onView(
-        allOf(
-            withId(R.id.text_input_error_icon),
-            withContentDescription(R.string.error_icon_content_description),
-            isDescendantOfA(withId(R.id.textinput_password))))
+            allOf(
+                withId(R.id.text_input_error_icon),
+                withContentDescription(R.string.error_icon_content_description),
+                isDescendantOfA(withId(R.id.textinput_password))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
     onView(
-        allOf(
-            withId(R.id.text_input_end_icon),
-            withContentDescription(R.string.password_toggle_content_description),
-            isDescendantOfA(withId(R.id.textinput_password))))
+            allOf(
+                withId(R.id.text_input_end_icon),
+                withContentDescription(R.string.password_toggle_content_description),
+                isDescendantOfA(withId(R.id.textinput_password))))
         .check(matches(withEffectiveVisibility(Visibility.GONE)));
 
     // Unset error
@@ -732,24 +718,23 @@ public class TextInputLayoutIconsTest {
 
     // Check end icon is back
     onView(
-        allOf(
-            withId(R.id.text_input_error_icon),
-            withContentDescription(R.string.error_icon_content_description),
-            isDescendantOfA(withId(R.id.textinput_password))))
+            allOf(
+                withId(R.id.text_input_error_icon),
+                withContentDescription(R.string.error_icon_content_description),
+                isDescendantOfA(withId(R.id.textinput_password))))
         .check(matches(withEffectiveVisibility(Visibility.GONE)));
     onView(
-        allOf(
-            withId(R.id.text_input_end_icon),
-            withContentDescription(R.string.password_toggle_content_description),
-            isDescendantOfA(withId(R.id.textinput_password))))
+            allOf(
+                withId(R.id.text_input_end_icon),
+                withContentDescription(R.string.password_toggle_content_description),
+                isDescendantOfA(withId(R.id.textinput_password))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
   }
 
   @Test
   public void testErrorIconMaintainsDisguisedInputText() {
     final Activity activity = activityTestRule.getActivity();
-    final EditText editText =
-        activity.findViewById(R.id.textinput_edittext_pwd);
+    final EditText editText = activity.findViewById(R.id.textinput_edittext_pwd);
     // Set some text on the EditText
     onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
     // Assert that the password is disguised
@@ -768,8 +753,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_no_icon)).perform(setPrefixText("$"));
 
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput_no_icon);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_no_icon);
 
     // Assert the prefix is set
     assertEquals("$", textInputLayout.getPrefixText().toString());
@@ -781,8 +765,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_prefix)).perform(setPrefixText(null));
 
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput_prefix);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_prefix);
 
     // Assert the prefix is null
     assertNull(textInputLayout.getPrefixText());
@@ -794,9 +777,9 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_prefix)).perform(click());
 
     // Assert prefix is visible
-    onView(allOf(
-            withId(R.id.textinput_prefix_text),
-            isDescendantOfA(withId(R.id.textinput_prefix))))
+    onView(
+            allOf(
+                withId(R.id.textinput_prefix_text), isDescendantOfA(withId(R.id.textinput_prefix))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
   }
 
@@ -806,18 +789,18 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_prefix)).perform(click());
 
     // Assert prefix is visible
-    onView(allOf(
-        withId(R.id.textinput_prefix_text),
-        isDescendantOfA(withId(R.id.textinput_prefix))))
+    onView(
+            allOf(
+                withId(R.id.textinput_prefix_text), isDescendantOfA(withId(R.id.textinput_prefix))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
 
     // Click on another text field
     onView(withId(R.id.textinput_no_icon)).perform(click());
 
     // Assert prefix is not visible
-    onView(allOf(
-        withId(R.id.textinput_prefix_text),
-        isDescendantOfA(withId(R.id.textinput_prefix))))
+    onView(
+            allOf(
+                withId(R.id.textinput_prefix_text), isDescendantOfA(withId(R.id.textinput_prefix))))
         .check(matches(withEffectiveVisibility(Visibility.GONE)));
   }
 
@@ -830,9 +813,9 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_no_icon)).perform(click());
 
     // Assert suffix is still visible
-    onView(allOf(
-        withId(R.id.textinput_prefix_text),
-        isDescendantOfA(withId(R.id.textinput_prefix))))
+    onView(
+            allOf(
+                withId(R.id.textinput_prefix_text), isDescendantOfA(withId(R.id.textinput_prefix))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
   }
 
@@ -842,8 +825,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_no_icon)).perform(setSuffixText("/100"));
 
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput_no_icon);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_no_icon);
 
     // Assert the prefix is set
     assertEquals("/100", textInputLayout.getSuffixText().toString());
@@ -855,8 +837,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_suffix)).perform(setSuffixText(null));
 
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput_suffix);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_suffix);
 
     // Assert the suffix is null
     assertNull(textInputLayout.getSuffixText());
@@ -868,9 +849,9 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_suffix)).perform(click());
 
     // Assert suffix is visible
-    onView(allOf(
-        withId(R.id.textinput_suffix_text),
-        isDescendantOfA(withId(R.id.textinput_suffix))))
+    onView(
+            allOf(
+                withId(R.id.textinput_suffix_text), isDescendantOfA(withId(R.id.textinput_suffix))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
   }
 
@@ -880,18 +861,18 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_suffix)).perform(click());
 
     // Assert prefix is visible
-    onView(allOf(
-        withId(R.id.textinput_suffix_text),
-        isDescendantOfA(withId(R.id.textinput_suffix))))
+    onView(
+            allOf(
+                withId(R.id.textinput_suffix_text), isDescendantOfA(withId(R.id.textinput_suffix))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
 
     // Click on another text field
     onView(withId(R.id.textinput_no_icon)).perform(click());
 
     // Assert suffix is not visible
-    onView(allOf(
-        withId(R.id.textinput_suffix_text),
-        isDescendantOfA(withId(R.id.textinput_suffix))))
+    onView(
+            allOf(
+                withId(R.id.textinput_suffix_text), isDescendantOfA(withId(R.id.textinput_suffix))))
         .check(matches(withEffectiveVisibility(Visibility.GONE)));
   }
 
@@ -904,9 +885,9 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_no_icon)).perform(click());
 
     // Assert suffix is still visible
-    onView(allOf(
-        withId(R.id.textinput_suffix_text),
-        isDescendantOfA(withId(R.id.textinput_suffix))))
+    onView(
+            allOf(
+                withId(R.id.textinput_suffix_text), isDescendantOfA(withId(R.id.textinput_suffix))))
         .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
   }
 
@@ -940,35 +921,33 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testStartIconIconSize() {
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput_starticon);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_starticon);
 
-    onView(
-        withId(R.id.textinput_starticon)).perform(setStartIconMinSize(50));
+    onView(withId(R.id.textinput_starticon)).perform(setStartIconMinSize(50));
     assertEquals(50, textInputLayout.getStartIconMinSize());
   }
 
   @Test
   public void testStartIconInvalidIconSize() {
-    assertThrows(IllegalArgumentException.class, () -> onView(
-        withId(R.id.textinput_starticon)).perform(setStartIconMinSize(-1)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> onView(withId(R.id.textinput_starticon)).perform(setStartIconMinSize(-1)));
   }
 
   @Test
   public void testEndIconIconSize() {
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout textInputLayout =
-        activity.findViewById(R.id.textinput_suffix);
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_suffix);
 
-    onView(
-        withId(R.id.textinput_suffix)).perform(setEndIconMinSize(50));
+    onView(withId(R.id.textinput_suffix)).perform(setEndIconMinSize(50));
     assertEquals(50, textInputLayout.getEndIconMinSize());
   }
 
   @Test
   public void testEndIconInvalidIconSize() {
-    assertThrows(IllegalArgumentException.class, () -> onView(
-        withId(R.id.textinput_suffix)).perform(setEndIconMinSize(-1)));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> onView(withId(R.id.textinput_suffix)).perform(setEndIconMinSize(-1)));
   }
 
   @Test

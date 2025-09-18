@@ -257,15 +257,15 @@ public class FloatingActionButtonTest {
   @Test
   @MediumTest
   public void testOnClickListener() {
-      final View.OnClickListener listener = mock(View.OnClickListener.class);
-      final View view = activityTestRule.getActivity().findViewById(R.id.fab_standard);
-      view.setOnClickListener(listener);
+    final View.OnClickListener listener = mock(View.OnClickListener.class);
+    final View view = activityTestRule.getActivity().findViewById(R.id.fab_standard);
+    view.setOnClickListener(listener);
 
-      // Click on the fab
-      onView(withId(R.id.fab_standard)).perform(click());
+    // Click on the fab
+    onView(withId(R.id.fab_standard)).perform(click());
 
-      // And verify that the listener was invoked once
-      verify(listener, times(1)).onClick(view);
+    // And verify that the listener was invoked once
+    verify(listener, times(1)).onClick(view);
   }
 
   @Test
