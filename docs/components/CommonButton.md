@@ -103,8 +103,8 @@ can change shape when selected
 
 Default <div style="width:250px"></div>                                                                    | Checked <div style="width:250px"></div>                                                            | Unchecked <div style="width:250px"></div>
 ---------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- | -----------------------------------------
-![Default expressive filled button example in dark theme](assets/buttons/default-filled-button-dark.png)   | ![Checked expressive filled button in dark theme](assets/buttons/checked-filled-button-dark.png)   | ![Unchecked expressive filled button in light theme](assets/buttons/unchecked-button-light.png)
-![Default expressive filled button example in light theme](assets/buttons/default-filled-button-light.png) | ![Checked expressive filled button in light theme](assets/buttons/checked-filled-button-light.png) | ![Unchecked expressive filled button in dark theme](assets/buttons/unchecked-button-dark.png)
+![Default expressive filled button example in dark theme](assets/buttons/default-filled-button-dark.png)   | ![Checked expressive filled button in dark theme](assets/buttons/checked-filled-button-dark.png)   | ![Unchecked expressive filled button in light theme](assets/buttons/default-filled-button-dark.png)
+![Default expressive filled button example in light theme](assets/buttons/default-filled-button-light.png) | ![Checked expressive filled button in light theme](assets/buttons/checked-filled-button-light.png) | ![Unchecked expressive filled button in dark theme](assets/buttons/default-filled-button-light.png)
 
 By default, the filled button is uncheckable. To make it checkable, enable the
 `android:checkable` attribute in style or layout.
@@ -163,7 +163,7 @@ By default, the outlined button is uncheckable. To make it checkable, enable the
 
 <details><summary><h5>Text</h5></summary>
 
-<img src="assets/buttons/text-button-dark.png" alt="Expressive text button in dark theme with dark text and no outline" width="175"> <div style="width:400px"></div> | <img src="assets/buttons/text-button-light.png" alt="Expressive text button in light theme with light text and no outline" width="175"> <div style="width:400px"></div>
+<img src="assets/buttons/text-button-dark.png" alt="Expressive text button in dark theme with dark text and no outline" width="175"> <div style="width:380px"></div> | <img src="assets/buttons/text-button-light.png" alt="Expressive text button in light theme with light text and no outline" width="175"> <div style="width:380px"></div>
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 The text button appears as only text until pressed. It does not have a solid
@@ -204,8 +204,8 @@ By default, the elevated button is uncheckable. To make it checkable, enable the
 
 Default <div style="width:250px"></div>                                                                      | Checked <div style="width:250px"></div>                                                                      | Unchecked <div style="width:250px"></div>
 ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | -----------------------------------------
-![Default expressive filled icon button in light theme](assets/buttons/default-filled-icon-button-light.png) | ![Checked expressive filled icon button in dark theme](assets/buttons/checked-filled-icon-button-dark.png)   | ![Unchecked expressive filled icon button in light theme](assets/buttons/unchecked-filled-icon-button-light.png)
-![Default expressive filled icon button in dark theme](assets/buttons/default-filled-icon-button-dark.png)   | ![Checked expressive filled icon button in light theme](assets/buttons/checked-filled-icon-button-light.png) | ![Unchecked expressive filled icon button in dark theme](assets/buttons/unchecked-filled-icon-button-dark.png)
+![Default expressive filled icon button in light theme](assets/buttons/default-filled-icon-button-light.png) | ![Checked expressive filled icon button in dark theme](assets/buttons/checked-filled-icon-button-dark.png)   | ![Unchecked expressive filled icon button in light theme](assets/buttons/default-filled-icon-button-light.png)
+![Default expressive filled icon button in dark theme](assets/buttons/default-filled-icon-button-dark.png)   | ![Checked expressive filled icon button in light theme](assets/buttons/checked-filled-icon-button-light.png) | ![Unchecked expressive filled icon button in dark theme](assets/buttons/default-filled-icon-button-dark.png)
 
 Icons visually communicate the button’s action and help draw attention. They
 should be placed on the leading side of the button, before the label text.
@@ -228,7 +228,7 @@ should be placed on the leading side of the button, before the label text.
 
 Default <div style="width:250px"></div>                                                                    | Checked <div style="width:250px"></div>                                                                     | Unchecked <div style="width:250px"></div>
 ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | -----------------------------------------
-![Default expressive round filled button with icon in light theme](assets/buttons/default-round-shape.png) | ![Checked expressive round filled button with icon in light theme](assets/buttons/checked-round-shaped.png) | ![Unchecked expressive square round button with icon in light theme](assets/buttons/unchecked-round-shape.png)
+![Default expressive round filled button with icon in light theme](assets/buttons/default-round-shape.png) | ![Checked expressive round filled button with icon in light theme](assets/buttons/checked-round-shape.png) | ![Unchecked expressive square round button with icon in light theme](assets/buttons/default-round-shape.png)
 
 ```xml
 <Button
@@ -243,7 +243,7 @@ Default <div style="width:250px"></div>                                         
 
 Default <div style="width:250px"></div>                                                                      | Checked <div style="width:250px"></div>                                                                      | Unchecked <div style="width:250px"></div>
 ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | -----------------------------------------
-![Default expressive square filled button with icon in light theme](assets/buttons/default-square-shape.png) | ![Checked expressive square filled button with icon in light theme](assets/buttons/checked-square-shape.png) | ![Unchecked expressive square filled button with icon in light theme](assets/buttons/unchecked-square-shape.png)
+![Default expressive square filled button with icon in light theme](assets/buttons/default-square-shape.png) | ![Checked expressive square filled button with icon in light theme](assets/buttons/checked-square-shape.png) | ![Unchecked expressive square filled button with icon in light theme](assets/buttons/default-square-shape.png)
 
 ```xml
 <Button
