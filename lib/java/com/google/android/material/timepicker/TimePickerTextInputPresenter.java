@@ -280,6 +280,20 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     }
   }
 
+  void accessibilityFocusOnError() {
+    if (hourTextInput.hasError()) {
+      requestAccessibilityFocusAndAnnounce(hourTextInput, hourLabel);
+    } else if (minuteTextInput.hasError()) {
+      requestAccessibilityFocusAndAnnounce(minuteTextInput, minuteLabel);
+    }
+  }
+
+  private void requestAccessibilityFocusAndAnnounce(
+      @NonNull ChipTextInputComboView viewToFocus, @NonNull TextView labelToAnnounce) {
+    viewToFocus.requestAccessibilityFocus();
+    labelToAnnounce.announceForAccessibility(labelToAnnounce.getText());
+  }
+
   @SuppressLint("MissingPermission")
   private void vibrate(@NonNull Context context) {
     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M

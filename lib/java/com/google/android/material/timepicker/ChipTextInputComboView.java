@@ -33,6 +33,7 @@ import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.Checkable;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -152,6 +153,14 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
   @VisibleForTesting
   CharSequence getChipText() {
     return chipText;
+  }
+
+  void requestAccessibilityFocus() {
+    if (editText.getVisibility() == View.VISIBLE) {
+      editText.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+    } else {
+      chip.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+    }
   }
 
   private String formatText(CharSequence text) {
