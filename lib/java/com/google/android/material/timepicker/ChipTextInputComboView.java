@@ -221,6 +221,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     originalChipStrokeColor = textInputLayout.getBoxStrokeColor();
 
     // TODO(b/394610420): tokens and ColorStateList with error state
+    int colorError = MaterialColors.getColor(this, androidx.appcompat.R.attr.colorError);
     ColorStateList colorErrorContainer =
         MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorErrorContainer);
     ColorStateList colorOnErrorContainer =
@@ -229,8 +230,8 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
       chip.setChipBackgroundColor(colorErrorContainer);
       chip.setTextColor(colorOnErrorContainer);
       editText.setTextColor(colorOnErrorContainer);
-      textInputLayout.setBoxStrokeColor(colorOnErrorContainer.getDefaultColor());
-      label.setTextColor(colorOnErrorContainer);
+      textInputLayout.setBoxStrokeColor(colorError);
+      label.setTextColor(colorError);
       if (VERSION.SDK_INT >= VERSION_CODES.Q) {
         originalEditTextCursorColor = textInputLayout.getCursorColor();
         textInputLayout.setCursorColor(colorOnErrorContainer);
