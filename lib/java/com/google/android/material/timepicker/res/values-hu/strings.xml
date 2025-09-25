@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Időpont kiválasztása</string>
   <string name="material_timepicker_minute">Perc</string>
   <string name="material_timepicker_hour">Óra</string>
+  <string name="material_timepicker_minute_error">A perc 0–59 lehet</string>
+  <string name="material_timepicker_hour_error">Az óra 1–12 lehet</string>
+  <string name="material_timepicker_hour_error_24h">Az óra 0–23 lehet</string>
   <string name="material_hour_suffix">%1$s óra</string>
   <string name="material_hour_24h_suffix">%1$s óra</string>
   <string name="material_minute_suffix">%1$s perc</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Mégse</string>
   <string name="material_timepicker_text_input_mode_description">Időbevitelhez váltson szövegbeviteli módba.</string>
   <string name="material_timepicker_clock_mode_description">Időbevitelhez váltson óramódba.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Váltás szövegbeviteli módra</string>
+  <string name="material_timepicker_clock_mode_tooltip">Váltás óra módra</string>
 </resources>

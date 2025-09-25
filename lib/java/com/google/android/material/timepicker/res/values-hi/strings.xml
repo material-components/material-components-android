@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">समय चुनें</string>
   <string name="material_timepicker_minute">मिनट</string>
   <string name="material_timepicker_hour">घंटा</string>
+  <string name="material_timepicker_minute_error">मिनट, 0 से 59 के बीच होना चाहिए</string>
+  <string name="material_timepicker_hour_error">घंटा, 1 से 12 के बीच होना चाहिए</string>
+  <string name="material_timepicker_hour_error_24h">घंटा, 0 से 23 के बीच होना चाहिए</string>
   <string name="material_hour_suffix">%1$s बजे</string>
   <string name="material_hour_24h_suffix">%1$s घंटे</string>
   <string name="material_minute_suffix">%1$s मिनट</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">रद्द करें</string>
   <string name="material_timepicker_text_input_mode_description">समय इनपुट के लिए लेख इनपुट मोड पर जाएं.</string>
   <string name="material_timepicker_clock_mode_description">समय इनपुट के लिए घड़ी मोड पर जाएं.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">टेक्स्ट इनपुट मोड पर स्विच करें</string>
+  <string name="material_timepicker_clock_mode_tooltip">क्लॉक मोड पर स्विच करें</string>
 </resources>

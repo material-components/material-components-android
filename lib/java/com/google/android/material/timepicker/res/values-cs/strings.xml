@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Vyberte čas</string>
   <string name="material_timepicker_minute">Minuta</string>
   <string name="material_timepicker_hour">Hodina</string>
+  <string name="material_timepicker_minute_error">Minuty musí být 0–59</string>
+  <string name="material_timepicker_hour_error">Hodiny musí být 1–12</string>
+  <string name="material_timepicker_hour_error_24h">Hodiny musí být 0–23</string>
   <string name="material_hour_suffix">%1$s</string>
   <string name="material_hour_24h_suffix">%1$s hodin</string>
   <string name="material_minute_suffix">%1$s min</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Zrušit</string>
   <string name="material_timepicker_text_input_mode_description">Chcete-li zadat čas, přepněte na režim textu.</string>
   <string name="material_timepicker_clock_mode_description">Chcete-li zadat čas, přepněte na režim hodin.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Přepnout na režim zadávání textu</string>
+  <string name="material_timepicker_clock_mode_tooltip">Přepnout na režim hodin</string>
 </resources>

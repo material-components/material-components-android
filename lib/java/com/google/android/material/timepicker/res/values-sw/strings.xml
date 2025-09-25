@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Chagua wakati</string>
   <string name="material_timepicker_minute">Dakika</string>
   <string name="material_timepicker_hour">Saa</string>
+  <string name="material_timepicker_minute_error">Sharti iwe dakika 0–59</string>
+  <string name="material_timepicker_hour_error">Sharti iwe saa 1–12</string>
+  <string name="material_timepicker_hour_error_24h">Sharti iwe saa 0–23</string>
   <string name="material_hour_suffix">Saa %1$s kamili</string>
   <string name="material_hour_24h_suffix">Saa %1$s</string>
   <string name="material_minute_suffix">Dakika %1$s</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Ghairi</string>
   <string name="material_timepicker_text_input_mode_description">Badilisha iwe katika hali ya maandishi wakati wa kuweka muda.</string>
   <string name="material_timepicker_clock_mode_description">Badilisha umbo liwe la saa ya mishale wakati wa kuweka muda.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Badilisha utumie mipangilio ya kuingiza data ya maandishi</string>
+  <string name="material_timepicker_clock_mode_tooltip">Badilisha utumie hali ya saa</string>
 </resources>

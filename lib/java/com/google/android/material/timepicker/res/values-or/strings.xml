@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Select time</string>
   <string name="material_timepicker_minute">Minute</string>
   <string name="material_timepicker_hour">Hour</string>
+  <string name="material_timepicker_minute_error">Minute must be 0–59</string>
+  <string name="material_timepicker_hour_error">Hour must be 1–12</string>
+  <string name="material_timepicker_hour_error_24h">Hour must be 0–23</string>
   <string name="material_hour_suffix">%1$s o\'clock</string>
   <string name="material_hour_24h_suffix">%1$s hours</string>
   <string name="material_minute_suffix">%1$s minutes</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Cancel</string>
   <string name="material_timepicker_text_input_mode_description">ସମୟ ଇନପୁଟ୍‍ ପାଇଁ ଟେକ୍ସଟ୍‍ ଇନପୁଟ୍‌କୁ ବଦଳାନ୍ତୁ।</string>
   <string name="material_timepicker_clock_mode_description">ସମୟ ଇନପୁଟ୍‍ ପାଇଁ ଘଣ୍ଟା ମୋଡ୍‌କୁ ବଦଳାନ୍ତୁ।</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Switch to text input mode</string>
+  <string name="material_timepicker_clock_mode_tooltip">Switch to clock mode</string>
 </resources>

@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Khetha isikhathi</string>
   <string name="material_timepicker_minute">Iminithi</string>
   <string name="material_timepicker_hour">Ihora</string>
+  <string name="material_timepicker_minute_error">Umzuzu ube ngu-0–59</string>
+  <string name="material_timepicker_hour_error">Ihora libe ngu-1–12</string>
+  <string name="material_timepicker_hour_error_24h">Ihora libe ngu-0–23</string>
   <string name="material_hour_suffix">%1$s ezimpondweni</string>
   <string name="material_hour_24h_suffix">amahora angu-%1$s</string>
   <string name="material_minute_suffix">amaminithi angu-%1$s</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Khansela</string>
   <string name="material_timepicker_text_input_mode_description">Shintshela kumodi yokufaka umbhalo ngokufaka isikhathi.</string>
   <string name="material_timepicker_clock_mode_description">Shintshela kumodi yewashi ngokufakwa kwesikhathi.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Shintshela kumodi yokufaka umbhalo</string>
+  <string name="material_timepicker_clock_mode_tooltip">Shintshela kumodi yewashi</string>
 </resources>

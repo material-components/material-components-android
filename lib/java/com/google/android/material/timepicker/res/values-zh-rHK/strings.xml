@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">選取時間</string>
   <string name="material_timepicker_minute">分鐘</string>
   <string name="material_timepicker_hour">小時</string>
+  <string name="material_timepicker_minute_error">分鐘必須介乎 0 至 59</string>
+  <string name="material_timepicker_hour_error">小時必須介乎 1 至 12</string>
+  <string name="material_timepicker_hour_error_24h">小時必須介乎 0 至 23</string>
   <string name="material_hour_suffix">%1$s 點</string>
   <string name="material_hour_24h_suffix">%1$s 個鐘</string>
   <string name="material_minute_suffix">%1$s 分</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">取消</string>
   <string name="material_timepicker_text_input_mode_description">切換至文字輸入模式即可輸入時間。</string>
   <string name="material_timepicker_clock_mode_description">切換至時鐘模式即可輸入時間。</string>
+  <string name="material_timepicker_text_input_mode_tooltip">切換至文字輸入模式</string>
+  <string name="material_timepicker_clock_mode_tooltip">切換至時鐘模式</string>
 </resources>

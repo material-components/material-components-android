@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">בחר שעה</string>
   <string name="material_timepicker_minute">דקה</string>
   <string name="material_timepicker_hour">שעה</string>
+  <string name="material_timepicker_minute_error">הדקה חייבת להיות 0 עד 59</string>
+  <string name="material_timepicker_hour_error">השעה חייבת להיות 1 עד 12</string>
+  <string name="material_timepicker_hour_error_24h">השעה חייבת להיות 0 עד 23</string>
   <string name="material_hour_suffix">השעה %1$s</string>
   <string name="material_hour_24h_suffix">%1$s שעות</string>
   <string name="material_minute_suffix">%1$s דקות</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">ביטול</string>
   <string name="material_timepicker_text_input_mode_description">העבר למצב קלט טקסט לצורך הזנת השעה</string>
   <string name="material_timepicker_clock_mode_description">העבר למצב שעון לצורך הזנת השעה</string>
+  <string name="material_timepicker_text_input_mode_tooltip">מעבר לשיטת קלט טקסט</string>
+  <string name="material_timepicker_clock_mode_tooltip">מעבר למצב שעון</string>
 </resources>

@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">సమయాన్ని ఎంచుకోండి</string>
   <string name="material_timepicker_minute">నిమిషం</string>
   <string name="material_timepicker_hour">గంట</string>
+  <string name="material_timepicker_minute_error">నిమిషం 0–59 మధ్య ఉండాలి</string>
+  <string name="material_timepicker_hour_error">గంట 1–12 మధ్య ఉండాలి</string>
+  <string name="material_timepicker_hour_error_24h">గంట 0–23 మధ్య ఉండాలి</string>
   <string name="material_hour_suffix">%1$s అవుతుంది</string>
   <string name="material_hour_24h_suffix">%1$s గంటలు</string>
   <string name="material_minute_suffix">%1$s నిమిషాలు</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">రద్దు చేయండి</string>
   <string name="material_timepicker_text_input_mode_description">సమయాన్ని నమోదు చేయడం కోసం వచన నమోదు మోడ్‌కి మారండి.</string>
   <string name="material_timepicker_clock_mode_description">సమయాన్ని నమోదు చేయడం కోసం గడియారం మోడ్‌కు మారండి.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">టెక్స్ట్ ఇన్‌పుట్ మోడ్‌కు మారుస్తుంది</string>
+  <string name="material_timepicker_clock_mode_tooltip">గడియారం మోడ్‌కు మారుస్తుంది</string>
 </resources>

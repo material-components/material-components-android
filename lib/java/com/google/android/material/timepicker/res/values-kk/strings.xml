@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Уақытты таңдау</string>
   <string name="material_timepicker_minute">Mинут</string>
   <string name="material_timepicker_hour">Сағат</string>
+  <string name="material_timepicker_minute_error">Минут 0–59 болуы керек.</string>
+  <string name="material_timepicker_hour_error">Минут 1–12 болуы керек.</string>
+  <string name="material_timepicker_hour_error_24h">Минут 0–23 болуы керек.</string>
   <string name="material_hour_suffix">Сағат: %1$s</string>
   <string name="material_hour_24h_suffix">Сағат: %1$s</string>
   <string name="material_minute_suffix">%1$s минут</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Бас тарту</string>
   <string name="material_timepicker_text_input_mode_description">Уақытты енгізу үшін мәтін енгізу режиміне өтіңіз.</string>
   <string name="material_timepicker_clock_mode_description">Уақытты енгізу үшін сағат режиміне өтіңіз.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Мәтін енгізу режиміне ауысу</string>
+  <string name="material_timepicker_clock_mode_tooltip">Сағат режиміне ауысу</string>
 </resources>

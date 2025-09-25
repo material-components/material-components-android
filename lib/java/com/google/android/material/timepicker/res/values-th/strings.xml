@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">เลือกเวลา</string>
   <string name="material_timepicker_minute">นาที</string>
   <string name="material_timepicker_hour">ชั่วโมง</string>
+  <string name="material_timepicker_minute_error">นาทีต้องเป็น 0-59</string>
+  <string name="material_timepicker_hour_error">ชั่วโมงต้องเป็น 1-12</string>
+  <string name="material_timepicker_hour_error_24h">ชั่วโมงต้องเป็น 0-23</string>
   <string name="material_hour_suffix">%1$s นาฬิกา</string>
   <string name="material_hour_24h_suffix">%1$s ชั่วโมง</string>
   <string name="material_minute_suffix">%1$s นาที</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">ยกเลิก</string>
   <string name="material_timepicker_text_input_mode_description">สลับไปโหมดป้อนข้อความเพื่อป้อนเวลา</string>
   <string name="material_timepicker_clock_mode_description">สลับไปโหมดนาฬิกาเพื่อป้อนเวลา</string>
+  <string name="material_timepicker_text_input_mode_tooltip">เปลี่ยนเป็นโหมดการป้อนข้อความ</string>
+  <string name="material_timepicker_clock_mode_tooltip">เปลี่ยนเป็นโหมดนาฬิกา</string>
 </resources>
