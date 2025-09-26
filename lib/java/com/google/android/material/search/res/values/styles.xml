@@ -62,6 +62,7 @@
     <item name="android:paddingStart">4dp</item>
     <item name="android:paddingEnd">4dp</item>
     <item name="android:minHeight">64dp</item>
+    <item name="android:touchscreenBlocksFocus">false</item>
   </style>
 
   <style name="Widget.Material3Expressive.Toolbar.AppBarWithSearch">
@@ -69,6 +70,7 @@
     <item name="android:layout_marginEnd">0dp</item>
     <item name="layout_scrollFlags">scroll|snap|enterAlways</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Search</item>
+    <item name="android:touchscreenBlocksFocus">false</item>
   </style>
 
   <style name="ThemeOverlay.Material3Expressive.AppBarWithSearch" parent="">
@@ -96,6 +98,9 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Search</item>
     <item name="liftOnScroll">false</item>
     <item name="liftOnScrollColor">?attr/colorSurfaceContainerHighest</item>
+    <!-- Necessary to enable keyboard navigation across searchbar and other elements due to toolbar
+         being a keyboard navigation cluster from API 26+ -->
+    <item name="android:touchscreenBlocksFocus">false</item>
 
     <!-- On newer API levels, hide shadows while keeping elevation. -->
     <item name="android:outlineAmbientShadowColor" tools:targetApi="p">@android:color/transparent</item>
