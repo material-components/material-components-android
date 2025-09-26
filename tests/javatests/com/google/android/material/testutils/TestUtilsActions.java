@@ -23,7 +23,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static org.hamcrest.Matchers.any;
 
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION_CODES;
 import android.os.Parcelable;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -33,7 +32,6 @@ import android.widget.TextView;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.test.espresso.UiController;
@@ -506,7 +504,6 @@ public class TestUtilsActions {
   }
 
   /** Sets system ui visibility to edge to edge config and waits for the change to complete. */
-  @RequiresApi(VERSION_CODES.LOLLIPOP)
   public static ViewAction setSystemUiVisibilityEdgeToEdge() {
     return setSystemUiVisibility(
         View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);

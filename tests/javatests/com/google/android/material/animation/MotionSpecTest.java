@@ -22,20 +22,15 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.res.TypedArray;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Property;
 import android.view.View;
 import android.view.animation.PathInterpolator;
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.testapp.animation.R;
@@ -96,11 +91,7 @@ public class MotionSpecTest {
 
     assertEquals(3, alpha.getDelay());
     assertEquals(5, alpha.getDuration());
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      assertThat(alpha.getInterpolator(), instanceOf(PathInterpolator.class));
-    } else {
-      assertThat(alpha.getInterpolator(), instanceOf(FastOutLinearInInterpolator.class));
-    }
+    assertThat(alpha.getInterpolator(), instanceOf(PathInterpolator.class));
     assertEquals(7, alpha.getRepeatCount());
     assertEquals(ValueAnimator.RESTART, alpha.getRepeatMode());
   }
@@ -111,8 +102,8 @@ public class MotionSpecTest {
         MotionSpec.createFromResource(
             activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
     View view = new View(activityTestRule.getActivity());
-    Animator alphaAnimator = spec.getAnimator("alpha", view, View.ALPHA);
-    PropertyValuesHolder propertyValuesHolder = ((ObjectAnimator) alphaAnimator).getValues()[0];
+    ObjectAnimator alphaAnimator = spec.getAnimator("alpha", view, View.ALPHA);
+    PropertyValuesHolder propertyValuesHolder = alphaAnimator.getValues()[0];
     assertTrue(fromAndToValuesMatch(propertyValuesHolder, "0.2", "0.8"));
   }
 
@@ -125,11 +116,7 @@ public class MotionSpecTest {
 
     assertEquals(11, translation.getDelay());
     assertEquals(13, translation.getDuration());
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      assertThat(translation.getInterpolator(), instanceOf(PathInterpolator.class));
-    } else {
-      assertThat(translation.getInterpolator(), instanceOf(FastOutSlowInInterpolator.class));
-    }
+    assertThat(translation.getInterpolator(), instanceOf(PathInterpolator.class));
     assertEquals(17, translation.getRepeatCount());
     assertEquals(ValueAnimator.REVERSE, translation.getRepeatMode());
   }
@@ -140,9 +127,8 @@ public class MotionSpecTest {
         MotionSpec.createFromResource(
             activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
     View view = new View(activityTestRule.getActivity());
-    Animator translationAnimator = spec.getAnimator("translation", view, View.TRANSLATION_X);
-    PropertyValuesHolder propertyValuesHolder =
-        ((ObjectAnimator) translationAnimator).getValues()[0];
+    ObjectAnimator translationAnimator = spec.getAnimator("translation", view, View.TRANSLATION_X);
+    PropertyValuesHolder propertyValuesHolder = translationAnimator.getValues()[0];
     assertTrue(fromAndToValuesMatch(propertyValuesHolder, "0", "101"));
   }
 
@@ -152,9 +138,8 @@ public class MotionSpecTest {
         MotionSpec.createFromResource(
             activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
     View view = new View(activityTestRule.getActivity());
-    Animator translationAnimator = spec.getAnimator("foo", view, View.TRANSLATION_X);
-    PropertyValuesHolder propertyValuesHolder =
-        ((ObjectAnimator) translationAnimator).getValues()[0];
+    ObjectAnimator translationAnimator = spec.getAnimator("foo", view, View.TRANSLATION_X);
+    PropertyValuesHolder propertyValuesHolder = translationAnimator.getValues()[0];
     assertTrue(fromAndToValuesMatch(propertyValuesHolder, "0.0", "0.0"));
   }
 
@@ -164,8 +149,8 @@ public class MotionSpecTest {
         MotionSpec.createFromResource(
             activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
     ColorDrawable drawable = new ColorDrawable();
-    Animator alphaAnimator = spec.getAnimator("alpha", drawable, ALPHA);
-    PropertyValuesHolder propertyValuesHolder = ((ObjectAnimator) alphaAnimator).getValues()[0];
+    ObjectAnimator alphaAnimator = spec.getAnimator("alpha", drawable, ALPHA);
+    PropertyValuesHolder propertyValuesHolder = alphaAnimator.getValues()[0];
     assertTrue(fromAndToValuesMatch(propertyValuesHolder, "0.2", "0.8"));
   }
 
@@ -173,7 +158,7 @@ public class MotionSpecTest {
       new Property<Object, Integer>(Integer.class, "alpha") {
         @Override
         public void set(Object object, Integer value) {
-          ((ColorDrawable) object).setAlpha(value.intValue());
+          ((ColorDrawable) object).setAlpha(value);
         }
 
         @Override
