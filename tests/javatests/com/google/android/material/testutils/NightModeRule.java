@@ -23,9 +23,7 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-/**
- * Runs tests for multiple night modes.
- */
+/** Runs tests for multiple night modes. */
 public final class NightModeRule implements TestRule {
 
   private static final int[] DEFAULT_NIGHT_MODES_TO_TEST = {

@@ -69,7 +69,6 @@ public class ExposedDropdownMenuTest {
   public final ActivityTestRule<ExposedDropdownMenuActivity> activityTestRule =
       new ActivityTestRule<>(ExposedDropdownMenuActivity.class);
 
-
   @Test
   public void testMenuIsNonEditableWithInputTypeNone() {
     final Activity activity = activityTestRule.getActivity();
@@ -147,8 +146,7 @@ public class ExposedDropdownMenuTest {
 
     editText.setSimpleItemSelectedRippleColor(ColorStateList.valueOf(Color.BLUE));
 
-    assertThat(
-        editText.getSimpleItemSelectedRippleColor(), is(ColorStateList.valueOf(Color.BLUE)));
+    assertThat(editText.getSimpleItemSelectedRippleColor(), is(ColorStateList.valueOf(Color.BLUE)));
   }
 
   @Test
@@ -196,7 +194,6 @@ public class ExposedDropdownMenuTest {
     onView(withId(R.id.filled_dropdown)).perform(click());
     onView(withId(R.id.filled_dropdown)).perform(skipAnimations());
 
-
     // Hide dropdown.
     onView(withId(R.id.filled_dropdown)).perform(click());
     onView(withId(R.id.filled_dropdown)).perform(skipAnimations());
@@ -238,9 +235,11 @@ public class ExposedDropdownMenuTest {
 
   @Test
   public void testEndIconIsAccessible() {
-    onView(allOf(withId(R.id.text_input_end_icon),
-        withContentDescription(R.string.exposed_dropdown_menu_content_description),
-        isDescendantOfA(withId(R.id.filled_dropdown))))
+    onView(
+            allOf(
+                withId(R.id.text_input_end_icon),
+                withContentDescription(R.string.exposed_dropdown_menu_content_description),
+                isDescendantOfA(withId(R.id.filled_dropdown))))
         .check(accessibilityAssertion());
   }
 
