@@ -94,11 +94,12 @@
   <string description="A description of an action that a user of an accessibility service can perform to deselect the card. [CHAR LIMIT=25]"
     name="cat_card_action_deselect">Deselect</string>
 
+  <string description="A description for the dismiss accessibility action [CHAR LIMIT=NONE]" name="cat_card_dismiss_action">Dismiss</string>
   <string description="a transient text that appears on screen when a card is dismissed [CHAR LIMIT=30]"
       name="cat_card_dismissed">Card Dismissed</string>
   <string description="A label in a button to dismiss the last action [CHAR LIMIT=15]"
       name="cat_card_undo">Undo</string>
-  <string description="A label in a button to dismiss the last action [CHAR LIMIT=30]"
-      name="cat_card_swipe_to_dismiss">Swipe this card to dismiss it</string>
+  <string description="Text on a card indicating it can be dismissed via swipe or DEL key [CHAR_LIMIT=120]"
+      name="cat_card_swipe_to_dismiss">Swipe or press the Delete key to dismiss this card</string>
   <string name="cat_card_swipe_dismiss" description="the title of a screen where you can swipe to dismiss a card [CHAR LIMIT=20]">Card Swipe Dismiss</string>
 </resources>
