@@ -883,7 +883,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     drawableState.shadowCompatOffset = (int) Math.ceil(z * SHADOW_OFFSET_MULTIPLIER);
     // Recalculate fillPaint tint filter based on z, elevationOverlayProvider, etc.
     updateTintFilter();
-    invalidateSelfIgnoreShape();
+    if (shouldCalculatePath()) {
+      invalidateSelf();
+    } else {
+      invalidateSelfIgnoreShape();
+    }
   }
 
   /**
@@ -1124,17 +1128,24 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     final int prevStrokeAlpha = strokePaint.getAlpha();
     strokePaint.setAlpha(modulateAlpha(prevStrokeAlpha, drawableState.alpha));
 
+    boolean shouldCalculatePathFromShapeAppearanceModel = shouldCalculatePath();
+
     if (hasFill()) {
       if (pathDirty) {
-        calculatePath(getBoundsAsRectF(), path);
+        if (shouldCalculatePathFromShapeAppearanceModel) {
+          calculatePath(getBoundsAsRectF(), path);
+        }
         pathDirty = false;
       }
       maybeDrawCompatShadow(canvas);
       drawFillShape(canvas);
     }
     if (hasStroke()) {
-      if(strokePathDirty){
-        calculateStrokePath();
+      if (strokePathDirty) {
+        updateStrokeShapeAppearanceModels();
+        if (shouldCalculatePathFromShapeAppearanceModel) {
+          calculateStrokePath();
+        }
         strokePathDirty = false;
       }
       drawStrokeShape(canvas);
@@ -1142,6 +1153,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     fillPaint.setAlpha(prevAlpha);
     strokePaint.setAlpha(prevStrokeAlpha);
+  }
+
+  private boolean shouldCalculatePath() {
+    return hasCompatShadow() || !isRoundRect();
   }
 
   private void maybeDrawCompatShadow(@NonNull Canvas canvas) {
@@ -1157,14 +1172,21 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       return;
     }
 
+    Rect drawableBounds = getBounds();
     // The extra height is the amount that the path draws outside of the bounds of the shape. This
     // happens for some shapes like TriangleEdgeTreatment when it draws a triangle outside.
-    int pathExtraWidth = (int) (pathBounds.width() - getBounds().width());
-    int pathExtraHeight = (int) (pathBounds.height() - getBounds().height());
+    int pathExtraWidth = (int) (pathBounds.width() - drawableBounds.width());
+    int pathExtraHeight = (int) (pathBounds.height() - drawableBounds.height());
 
     if (pathExtraWidth < 0 || pathExtraHeight < 0) {
       throw new IllegalStateException(
-          "Invalid shadow bounds. Check that the treatments result in a valid path.");
+          "Invalid shadow bounds. Check that the treatments result in a valid path."
+              + " extra width: "
+              + pathExtraWidth
+              + " extra height: "
+              + pathExtraHeight
+              + " path bounds: "
+              + pathBounds);
     }
 
     // Drawing the shadow in a bitmap lets us use the clear paint rather than using clipPath to
@@ -1178,8 +1200,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     // Top Left of shadow (left - shadowCompatRadius, top - shadowCompatRadius) should be drawn at
     // (0, 0) on shadowCanvas. Offset is handled by prepareCanvasForShadow and drawCompatShadow.
-    float shadowLeft = getBounds().left - drawableState.shadowCompatRadius - pathExtraWidth;
-    float shadowTop = getBounds().top - drawableState.shadowCompatRadius - pathExtraHeight;
+    float shadowLeft = drawableBounds.left - drawableState.shadowCompatRadius - pathExtraWidth;
+    float shadowTop = drawableBounds.top - drawableState.shadowCompatRadius - pathExtraHeight;
     shadowCanvas.translate(-shadowLeft, -shadowTop);
     drawCompatShadow(shadowCanvas);
     canvas.drawBitmap(shadowLayer, shadowLeft, shadowTop, null);
@@ -1374,7 +1396,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /** Calculates the path that can be used to draw the stroke entirely inside the shape */
   private void calculateStrokePath() {
-    updateStrokeShapeAppearanceModels();
     pathProvider.calculatePath(
         strokeShapeAppearanceModel,
         springAnimatedStrokeCornerSizes,
