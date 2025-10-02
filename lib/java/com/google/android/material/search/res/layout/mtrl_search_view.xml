@@ -31,6 +31,8 @@
       android:layout_height="match_parent"
       android:focusable="true"
       android:focusableInTouchMode="true"
+      android:touchscreenBlocksFocus="true"
+      android:keyboardNavigationCluster="true"
       android:visibility="gone">
 
     <LinearLayout
