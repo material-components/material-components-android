@@ -61,6 +61,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
   private final Chip chip;
   private final TextInputLayout textInputLayout;
   private final EditText editText;
+  private final AccessibilityDelegateCompat editTextAccessibilityDelegate;
   private TextWatcher watcher;
   private TextView label;
   private CharSequence chipText = "";
@@ -100,6 +101,17 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
     label.setLabelFor(editText.getId());
     editText.setSaveEnabled(false);
     editText.setLongClickable(false);
+    editTextAccessibilityDelegate =
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setText(((EditText) host).getText());
+            info.setHintText(label.getText());
+            info.setMaxTextLength(2);
+          }
+        };
   }
 
   private void updateHintLocales() {
@@ -144,8 +156,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
       editText.removeTextChangedListener(watcher);
 
       editText.setText(formattedText);
-      setAccessibilityDelegate(editText, chipText.toString(), label.getText());
-
+      ViewCompat.setAccessibilityDelegate(editText, editTextAccessibilityDelegate);
       editText.addTextChangedListener(watcher);
     }
   }
@@ -266,24 +277,7 @@ class ChipTextInputComboView extends FrameLayout implements Checkable {
       }
       String formattedText = formatText(editable);
       chipText = isEmpty(formattedText) ? formatText(DEFAULT_TEXT) : formattedText;
-      setAccessibilityDelegate(editText, editable.toString(), label.getText());
     }
-  }
-
-  private void setAccessibilityDelegate(
-      @NonNull View view, CharSequence text, @Nullable CharSequence hint) {
-    ViewCompat.setAccessibilityDelegate(
-        view,
-        new AccessibilityDelegateCompat() {
-          @Override
-          public void onInitializeAccessibilityNodeInfo(
-              @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
-            super.onInitializeAccessibilityNodeInfo(host, info);
-            info.setText(text);
-            info.setHintText(hint);
-            info.setMaxTextLength(2);
-          }
-        });
   }
 
   @Override
