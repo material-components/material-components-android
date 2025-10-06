@@ -123,8 +123,8 @@ By default, the filled button is uncheckable. To make it checkable, enable the
 
 Default <div style="width:250px"></div>                                                                 | Checked <div style="width:250px"></div>                                                                 | Unchecked <div style="width:250px"></div>
 ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- | -----------------------------------------
-![Default expressive filled tonal button in light theme](assets/buttons/default-filled-tonal-light.png) | ![Checked expressive filled tonal button in dark theme](assets/buttons/checked-filled-tonal-dark.png)   | ![Unchecked expressive filled tonal button in light theme](assets/buttons/unchecked-filled-tonal-light.png)
-![Default expressive filled tonal button in dark theme](assets/buttons/default-filled-tonal-dark.png)   | ![Checked expressive filled tonal button in light theme](assets/buttons/checked-filled-tonal-light.png) | ![Unchecked expressive filled tonal button in dark theme](assets/buttons/unchecked-filled-tonal-dark.png)
+![Default expressive filled tonal button in light theme](assets/buttons/default-filled-tonal-light.png) | ![Checked expressive filled tonal button in dark theme](assets/buttons/checked-filled-tonal-dark.png)   | ![Unchecked expressive filled tonal button in light theme](assets/buttons/default-filled-tonal-light.png)
+![Default expressive filled tonal button in dark theme](assets/buttons/default-filled-tonal-dark.png)   | ![Checked expressive filled tonal button in light theme](assets/buttons/checked-filled-tonal-light.png) | ![Unchecked expressive filled tonal button in dark theme](assets/buttons/default-filled-tonal-dark.png)
 
 By default, the tonal button is uncheckable. To make it checkable, enable the
 `android:checkable` attribute in style or layout.
@@ -144,8 +144,8 @@ By default, the tonal button is uncheckable. To make it checkable, enable the
 
 Default <div style="width:250px"></div>                                                                       | Checked <div style="width:250px"></div>                                                                | Unchecked <div style="width:250px"></div>
 ------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | -----------------------------------------
-![Default expressive outlined button button in light theme](assets/buttons/default-outlined-button-light.png) | ![Checked expressive outlined button in dark theme](assets/buttons/checked-outlined-button-dark.png)   | ![Unchecked expressive outlined button in light theme](assets/buttons/unchecked-outlined-button-light.png)
-![Default expressive outlined button button in dark theme](assets/buttons/default-outlined-button-dark.png)   | ![Checked expressive outlined button in light theme](assets/buttons/checked-outlined-button-light.png) | ![Unchecked expressive outlined button in dark theme](assets/buttons/unchecked-outlined-button-dark.png)
+![Default expressive outlined button button in light theme](assets/buttons/default-outlined-button-light.png) | ![Checked expressive outlined button in dark theme](assets/buttons/checked-outlined-button-dark.png)   | ![Unchecked expressive outlined button in light theme](assets/buttons/default-outlined-button-light.png)
+![Default expressive outlined button button in dark theme](assets/buttons/default-outlined-button-dark.png)   | ![Checked expressive outlined button in light theme](assets/buttons/checked-outlined-button-light.png) | ![Unchecked expressive outlined button in dark theme](assets/buttons/default-outlined-button-dark.png)
 
 By default, the outlined button is uncheckable. To make it checkable, enable the
 `android:checkable` attribute in style or layout.
@@ -163,7 +163,7 @@ By default, the outlined button is uncheckable. To make it checkable, enable the
 
 <details><summary><h5>Text</h5></summary>
 
-<img src="assets/buttons/text-button-dark.png" alt="Expressive text button in dark theme with dark text and no outline" width="175"> <div style="width:380px"></div> | <img src="assets/buttons/text-button-light.png" alt="Expressive text button in light theme with light text and no outline" width="175"> <div style="width:380px"></div>
+<img src="assets/buttons/text-button-dark.png" alt="Expressive text button in dark theme with dark text and no outline" width="175"> <div style="width:400px"></div> | <img src="assets/buttons/text-button-light.png" alt="Expressive text button in light theme with light text and no outline" width="175"> <div style="width:400px"></div>
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 The text button appears as only text until pressed. It does not have a solid
@@ -183,8 +183,8 @@ fill or outline by default.
 
 Default <div style="width:250px"></div>                                                         | Checked <div style="width:250px"></div>                                                         | Unchecked <div style="width:250px"></div>
 ----------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- | -----------------------------------------
-![Default expressive elevated button in light theme](assets/buttons/default-elevated-light.png) | ![Checked expressive elevated button in dark theme](assets/buttons/checked-elevated-dark.png)   | ![Unchecked expressive elevated button in light theme](assets/buttons/unchecked-elevated-light.png)
-![Default expressive elevated button in dark theme](assets/buttons/default-elevated-dark.png)   | ![Checked expressive elevated button in light theme](assets/buttons/checked-elevated-light.png) | ![Unchecked expressive elevated button in dark theme](assets/buttons/unchecked-elevated-dark.png)
+![Default expressive elevated button in light theme](assets/buttons/default-elevated-light.png) | ![Checked expressive elevated button in dark theme](assets/buttons/checked-elevated-dark.png)   | ![Unchecked expressive elevated button in light theme](assets/buttons/default-elevated-light.png)
+![Default expressive elevated button in dark theme](assets/buttons/default-elevated-dark.png)   | ![Checked expressive elevated button in light theme](assets/buttons/checked-elevated-light.png) | ![Unchecked expressive elevated button in dark theme](assets/buttons/default-elevated-dark.png)
 
 By default, the elevated button is uncheckable. To make it checkable, enable the
 `android:checkable` attribute in style or layout.
@@ -228,7 +228,7 @@ should be placed on the leading side of the button, before the label text.
 
 Default <div style="width:250px"></div>                                                                    | Checked <div style="width:250px"></div>                                                                     | Unchecked <div style="width:250px"></div>
 ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | -----------------------------------------
-![Default expressive round filled button with icon in light theme](assets/buttons/default-round-shape.png) | ![Checked expressive round filled button with icon in light theme](assets/buttons/checked-round-shape.png) | ![Unchecked expressive square round button with icon in light theme](assets/buttons/default-round-shape.png)
+![Default expressive round filled button with icon in light theme](assets/buttons/default-filled-button-light.png) | ![Checked expressive round filled button with icon in light theme](assets/buttons/checked-filled-button-light.png) | ![Unchecked expressive square round button with icon in light theme](assets/buttons/default-filled-button-light.png)
 
 ```xml
 <Button
@@ -243,7 +243,7 @@ Default <div style="width:250px"></div>                                         
 
 Default <div style="width:250px"></div>                                                                      | Checked <div style="width:250px"></div>                                                                      | Unchecked <div style="width:250px"></div>
 ------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ | -----------------------------------------
-![Default expressive square filled button with icon in light theme](assets/buttons/default-square-shape.png) | ![Checked expressive square filled button with icon in light theme](assets/buttons/checked-square-shape.png) | ![Unchecked expressive square filled button with icon in light theme](assets/buttons/default-square-shape.png)
+![Default expressive square filled button with icon in light theme](assets/buttons/checked-filled-button-light.png) | ![Checked expressive square filled button with icon in light theme](assets/buttons/default-filled-button-light.png) | ![Unchecked expressive square filled button with icon in light theme](assets/buttons/checked-filled-button-light.png)
 
 ```xml
 <Button
@@ -262,7 +262,7 @@ actual sizes in px on mobile devices depends on the screen pixel density.
 
 <details><summary><h5>Extra small</h5></summary>
 
-<img src="assets/buttons/extrasmall.png" width=214.5 height=96/>
+<img src="assets/buttons/extrasmall.png" width=201 height=144/>
 
 ```xml
 <Button
@@ -276,7 +276,7 @@ actual sizes in px on mobile devices depends on the screen pixel density.
 
 <details><summary><h5>Small</h5></summary>
 
-<img src="assets/buttons/small-size.png" width=228.5 height=96/>
+<img src="assets/buttons/small-size.png" width=225 height=144/>
 
 ```xml
 <Button
@@ -289,7 +289,7 @@ actual sizes in px on mobile devices depends on the screen pixel density.
 
 <details><summary><h5>Medium</h5></summary>
 
-<img src="assets/buttons/medium-size.png" width=284 height=107/>
+<img src="assets/buttons/medium-size.png" width=288 height=168/>
 
 ```xml
 <Button
@@ -303,7 +303,7 @@ actual sizes in px on mobile devices depends on the screen pixel density.
 
 <details><summary><h5>Large</h5></summary>
 
-<img src="assets/buttons/large-size.png" width=475 height=192.5/>
+<img src="assets/buttons/large-size.png" width=501 height=288/>
 
 ```xml
 <Button
@@ -317,7 +317,7 @@ actual sizes in px on mobile devices depends on the screen pixel density.
 
 <details><summary><h5>Extra Large</h5></summary>
 
-<img src="assets/buttons/extra-large-size.png" width=632 height=277.5/>
+<img src="assets/buttons/extra-large-size.png" width=670 height=408/>
 
 ```xml
 <Button
