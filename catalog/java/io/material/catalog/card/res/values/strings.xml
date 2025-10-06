@@ -99,7 +99,7 @@
       name="cat_card_dismissed">Card Dismissed</string>
   <string description="A label in a button to dismiss the last action [CHAR LIMIT=15]"
       name="cat_card_undo">Undo</string>
-  <string description="Text on a card indicating it can be dismissed via swipe or DEL key [CHAR_LIMIT=120]"
-      name="cat_card_swipe_to_dismiss">Swipe or press the Delete key to dismiss this card</string>
+  <string description="Text on a card indicating it can be dismissed via swipe or Delete (Mac) / Backspace (Windows) [CHAR_LIMIT=120]"
+      name="cat_card_swipe_to_dismiss">Swipe or press Delete (Mac) / Backspace (Windows) to dismiss this card</string>
   <string name="cat_card_swipe_dismiss" description="the title of a screen where you can swipe to dismiss a card [CHAR LIMIT=20]">Card Swipe Dismiss</string>
 </resources>
