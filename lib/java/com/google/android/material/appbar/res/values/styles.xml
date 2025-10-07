@@ -126,6 +126,8 @@
     <item name="titleTextAppearance">@macro/m3_comp_app_bar_small_title_font</item>
     <item name="subtitleTextAppearance">?attr/textAppearanceTitleMedium</item>
     <item name="contentInsetStartWithNavigation">0dp</item>
+    <item name="android:keyboardNavigationCluster" tools:targetApi="o">false</item>
+    <item name="android:touchscreenBlocksFocus">false</item>
 
     <!-- On newer API levels, hide shadows while keeping elevation. -->
     <item name="android:outlineAmbientShadowColor" tools:targetApi="p">@android:color/transparent</item>
@@ -206,8 +208,8 @@
   <style name="Widget.Design.AppBarLayout" parent="android:Widget">
     <item name="android:background">?attr/colorPrimary</item>
     <item name="android:stateListAnimator">@animator/design_appbar_state_list_animator</item>
-    <item name="android:keyboardNavigationCluster" tools:targetApi="o">true</item>
-    <item name="android:touchscreenBlocksFocus">true</item>
+    <item name="android:keyboardNavigationCluster" tools:targetApi="o">false</item>
+    <item name="android:touchscreenBlocksFocus">false</item>
   </style>
 
   <style name="Widget.MaterialComponents.AppBarLayout.Primary" parent="Widget.Design.AppBarLayout"/>
@@ -239,6 +241,8 @@
     <!-- Overrides minimum height in landscape to avoid headline6 and subtitle1 height concerns. -->
     <item name="android:minHeight">@dimen/mtrl_toolbar_default_height</item>
     <item name="maxButtonHeight">@dimen/mtrl_toolbar_default_height</item>
+    <item name="android:keyboardNavigationCluster" tools:targetApi="o">false</item>
+    <item name="android:touchscreenBlocksFocus">false</item>
   </style>
 
   <style name="Widget.MaterialComponents.Toolbar.Primary">
