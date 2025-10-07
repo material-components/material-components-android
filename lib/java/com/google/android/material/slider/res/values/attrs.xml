@@ -28,6 +28,9 @@
     <attr name="continuousModeTickCount" format="integer" />
     <!-- The color of the slider's halo. -->
     <attr name="haloColor" format="color" />
+    <!-- The color of the slider's halo effect. The attribute only has an effect on API 31
+         and above. -->
+    <attr name="haloEffectColor" format="color" />
     <!-- The radius of the halo. -->
     <attr name="haloRadius" format="dimension" />
     <!-- Determines if Slider should increase its default height to include space for the label. -->
