@@ -301,18 +301,6 @@ so that screen readers such as TalkBack are able to announce their purpose or
 action. Text rendered in these components are automatically provided to
 accessibility services, so additional content labels are usually unnecessary.
 
-`SearchView` also automatically handles its siblings' accessibility when shown,
-i.e., setting views that are not nested within the SearchView as not important
-for accessibility. These values are restored when the `SearchView` is hidden.
-
-**Note** `SearchView` handles its siblings' accessibility by saving the original
-values when `SearchView` is shown, and restoring them when it's hidden. If
-changing the view hierarchy of the `SearchView`'s root view, make sure to call
-`setModalForAccessibility(false)` to restore the original a11y values. Eg. if
-removing the `SearchView` when open, you must call
-`setModalForAccessibility(false)` before removal to ensure that the original
-a11y values are restored since `SearchView.hide()` will never be called.
-
 ### Transition listeners
 
 If you want to get callbacks for when the `SearchView` transitions between its
