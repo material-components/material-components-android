@@ -23,7 +23,7 @@ import org.junit.rules.TestRule;
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
-public class DisableAnimationsRule  implements TestRule {
+public class DisableAnimationsRule implements TestRule {
 
   @Override
   public Statement apply(Statement base, Description description) {
@@ -40,4 +40,3 @@ public class DisableAnimationsRule  implements TestRule {
     };
   }
 }
-

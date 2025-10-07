@@ -25,17 +25,17 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.core.IsEqual.equalTo;
 
 import android.app.Activity;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.espresso.action.CoordinatesProvider;
 import androidx.test.espresso.action.GeneralLocation;
@@ -171,7 +171,7 @@ public final class MaterialDatePickerTestUtils {
     onView(
             allOf(
                 isDescendantOfA(withTagValue(equalTo(MaterialCalendar.MONTHS_VIEW_GROUP_TAG))),
-                withTagValue(IsEqual.<Object>equalTo(month)),
+                withTagValue(IsEqual.equalTo(month)),
                 withText(String.valueOf(day))))
         .perform(click());
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();

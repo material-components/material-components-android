@@ -24,7 +24,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import androidx.appcompat.view.menu.MenuItemImpl;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
@@ -37,6 +36,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
@@ -380,10 +380,7 @@ public class TestUtilsMatchers {
         if (!(viewParent instanceof View)) {
           return false;
         }
-        if (parentMatcher.matches(viewParent)) {
-          return true;
-        }
-        return false;
+        return parentMatcher.matches(viewParent);
       }
     };
   }
@@ -544,10 +541,11 @@ public class TestUtilsMatchers {
 
       @Override
       public boolean matchesSafely(View view) {
-        return Build.VERSION.SDK_INT < 21 || ViewCompat.getZ(view) > 0f;
+        return ViewCompat.getZ(view) > 0f;
       }
     };
   }
+
   /**
    * Returns a matcher that matches views which have a translationZ-value greater than 0. Also
    * matches if the platform we're running on does not support translationZ-values.
@@ -561,7 +559,7 @@ public class TestUtilsMatchers {
 
       @Override
       public boolean matchesSafely(View view) {
-        return Build.VERSION.SDK_INT < 21 || ViewCompat.getTranslationZ(view) > 0f;
+        return ViewCompat.getTranslationZ(view) > 0f;
       }
     };
   }

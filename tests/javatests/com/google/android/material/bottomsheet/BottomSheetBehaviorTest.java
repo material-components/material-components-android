@@ -234,7 +234,7 @@ public class BottomSheetBehaviorTest {
         }
         int duration = ViewConfiguration.getPressedStateDuration();
         if (duration > 0) {
-          uiController.loopMainThreadForAtLeast((long) duration);
+          uiController.loopMainThreadForAtLeast(duration);
         }
       } finally {
         downEvent.recycle();
@@ -483,7 +483,7 @@ public class BottomSheetBehaviorTest {
   @MediumTest
   public void testSkipCollapsed_smallSwipe_remainsExpanded() throws Throwable {
     testSkipCollapsed_smallSwipe(
-        BottomSheetBehavior.STATE_EXPANDED, /* swipeViewHeightPercentage = */ 0.5f);
+        BottomSheetBehavior.STATE_EXPANDED, /* swipeViewHeightPercentage= */ 0.5f);
   }
 
   @Test
@@ -491,14 +491,14 @@ public class BottomSheetBehaviorTest {
   public void testSkipCollapsedFullyExpanded_smallSwipe_remainsExpanded() throws Throwable {
     getBehavior().setFitToContents(false);
     testSkipCollapsed_smallSwipe(
-        BottomSheetBehavior.STATE_HALF_EXPANDED, /* swipeViewHeightPercentage = */ 0.5f);
+        BottomSheetBehavior.STATE_HALF_EXPANDED, /* swipeViewHeightPercentage= */ 0.5f);
   }
 
   @Test
   @MediumTest
   public void testSkipCollapsed_smallSwipePastThreshold_getsHidden() throws Throwable {
     testSkipCollapsed_smallSwipe(
-        BottomSheetBehavior.STATE_HIDDEN, /* swipeViewHeightPercentage = */ 0.75f);
+        BottomSheetBehavior.STATE_HIDDEN, /* swipeViewHeightPercentage= */ 0.75f);
   }
 
   @Test
@@ -506,7 +506,7 @@ public class BottomSheetBehaviorTest {
   public void testSkipCollapsedFullyExpanded_smallSwipePastThreshold_getsHidden() throws Throwable {
     getBehavior().setFitToContents(false);
     testSkipCollapsed_smallSwipe(
-        BottomSheetBehavior.STATE_HIDDEN, /* swipeViewHeightPercentage = */ 0.75f);
+        BottomSheetBehavior.STATE_HIDDEN, /* swipeViewHeightPercentage= */ 0.75f);
   }
 
   @Test
@@ -969,7 +969,7 @@ public class BottomSheetBehaviorTest {
     disabledParent.addView(enabledChild);
 
     View scrollingChild = getBehavior().findScrollingChild(disabledParent);
-    assertThat(scrollingChild, is((View) enabledChild));
+    assertThat(scrollingChild, is(enabledChild));
   }
 
   @Test
@@ -999,8 +999,7 @@ public class BottomSheetBehaviorTest {
     }
   }
 
-  private void checkSlideOffset(final int state, float slideOffset)
-      throws Throwable {
+  private void checkSlideOffset(final int state, float slideOffset) throws Throwable {
     registerIdlingResourceCallback();
     try {
       activityTestRule.runOnUiThread(() -> getBehavior().setState(state));
@@ -1052,15 +1051,12 @@ public class BottomSheetBehaviorTest {
         state == BottomSheetBehavior.STATE_EXPANDED
             || state == BottomSheetBehavior.STATE_HALF_EXPANDED;
     boolean hasDismissAction = state != BottomSheetBehavior.STATE_HIDDEN && behavior.isHideable();
-    assertThat(
-        hasCustomAccessibilityAction(behavior.expandActionIds),
-        equalTo(hasExpandAction));
+    assertThat(hasCustomAccessibilityAction(behavior.expandActionIds), equalTo(hasExpandAction));
     assertThat(
         hasCustomAccessibilityAction(behavior.expandHalfwayActionIds),
         equalTo(hasHalfExpandAction));
     assertThat(
-        hasCustomAccessibilityAction(behavior.collapseActionIds),
-        equalTo(hasCollapseAction));
+        hasCustomAccessibilityAction(behavior.collapseActionIds), equalTo(hasCollapseAction));
     assertThat(
         AccessibilityUtils.hasAction(bottomSheet, AccessibilityNodeInfoCompat.ACTION_DISMISS),
         equalTo(hasDismissAction));

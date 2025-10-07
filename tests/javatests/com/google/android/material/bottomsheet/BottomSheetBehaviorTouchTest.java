@@ -97,7 +97,7 @@ public class BottomSheetBehaviorTouchTest {
   public void testTouchCoordinatorLayout() {
     final CoordinatorLayoutActivity activity = activityTestRule.getActivity();
     down = false;
-    Espresso.onView(sameInstance((View) activity.mCoordinatorLayout))
+    Espresso.onView(sameInstance(activity.mCoordinatorLayout))
         .perform(ViewActions.click()) // Click outside the bottom sheet
         .check(
             (view, e) -> {
