@@ -64,23 +64,10 @@ public final class SliderKeyTestRtl extends SliderKeyTestCommon {
   }
 
   @Test
-  public void testMoveThumbFocus_dPad_correctThumbHasFocus() {
-    slider.requestFocus();
-
-    KeyEventBuilder left = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_LEFT);
-    KeyEventBuilder right = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_RIGHT);
-
-    // We start at far right in RTL so go left first, then go back right.
-    sendKeyEventThereAndBack(left, right);
-  }
-
-  @Test
-  public void testActivateThirdThumb_moveRight_movesThirdThumbRight() {
+  public void testFocusThirdThumb_moveRight_movesThirdThumbRight() {
     slider.requestFocus();
 
     slider.setFocusedThumbIndex(2);
-
-    activateFocusedThumb();
 
     KeyEventBuilder right = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_RIGHT);
     for (int i = 0; i < 3; i++) {
@@ -92,11 +79,9 @@ public final class SliderKeyTestRtl extends SliderKeyTestCommon {
   }
 
   @Test
-  public void testActivateThirdThumb_moveLeft_movesThirdThumbLeft() {
+  public void testFocusThirdThumb_moveLeft_movesThirdThumbLeft() {
     slider.requestFocus();
     slider.setFocusedThumbIndex(2);
-
-    activateFocusedThumb();
 
     KeyEventBuilder left = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_LEFT);
     for (int i = 0; i < 20; i++) {

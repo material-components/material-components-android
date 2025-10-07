@@ -3788,16 +3788,7 @@ abstract class BaseSlider<
       return super.onKeyDown(keyCode, event);
     }
 
-    // If there's only one thumb, we can select it right away.
-    if (values.size() == 1) {
-      activeThumbIdx = 0;
-    }
-
-    // If there is no active thumb, key events will be used to pick the thumb to change.
-    if (activeThumbIdx == -1) {
-      Boolean handled = onKeyDownNoActiveThumb(keyCode, event);
-      return handled != null ? handled : super.onKeyDown(keyCode, event);
-    }
+    activeThumbIdx = focusedThumbIdx;
 
     isLongPress |= event.isLongPress();
     Float increment = calculateIncrementForKey(keyCode);
@@ -3808,64 +3799,19 @@ abstract class BaseSlider<
       }
       return true;
     }
-    switch (keyCode) {
-      case KeyEvent.KEYCODE_TAB:
-        if (event.hasNoModifiers()) {
-          return moveFocus(1);
-        }
 
-        if (event.isShiftPressed()) {
-          return moveFocus(-1);
-        }
-        return false;
-      case KeyEvent.KEYCODE_DPAD_CENTER:
-      case KeyEvent.KEYCODE_ENTER:
-        activeThumbIdx = -1;
-        postInvalidate();
-        return true;
-      default:
-        // Nothing to do in this case.
+    if (keyCode == KeyEvent.KEYCODE_TAB) {
+      if (event.hasNoModifiers()) {
+        return moveFocus(1);
+      }
+
+      if (event.isShiftPressed()) {
+        return moveFocus(-1);
+      }
+      return false;
     }
 
     return super.onKeyDown(keyCode, event);
-  }
-
-  @Nullable
-  private Boolean onKeyDownNoActiveThumb(int keyCode, @NonNull KeyEvent event) {
-    switch (keyCode) {
-      case KeyEvent.KEYCODE_TAB:
-        if (event.hasNoModifiers()) {
-          return moveFocus(1);
-        }
-
-        if (event.isShiftPressed()) {
-          return moveFocus(-1);
-        }
-        return false;
-      case KeyEvent.KEYCODE_DPAD_LEFT:
-        moveFocusInAbsoluteDirection(-1);
-        return true;
-      case KeyEvent.KEYCODE_MINUS:
-        moveFocus(-1);
-        return true;
-      case KeyEvent.KEYCODE_DPAD_RIGHT:
-        moveFocusInAbsoluteDirection(1);
-        return true;
-      case KeyEvent.KEYCODE_EQUALS:
-      // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
-      case KeyEvent.KEYCODE_PLUS:
-        moveFocus(1);
-        return true;
-      case KeyEvent.KEYCODE_DPAD_CENTER:
-      case KeyEvent.KEYCODE_ENTER:
-        activeThumbIdx = focusedThumbIdx;
-        postInvalidate();
-        return true;
-      default:
-        // Nothing to do in this case.
-    }
-
-    return null;
   }
 
   @Override
@@ -3903,9 +3849,7 @@ abstract class BaseSlider<
       // Move focus to next or previous view.
       return false;
     }
-    if (activeThumbIdx != -1) {
-      activeThumbIdx = focusedThumbIdx;
-    }
+    activeThumbIdx = focusedThumbIdx;
     updateHaloHotspot();
     postInvalidate();
     return true;
@@ -3978,7 +3922,12 @@ abstract class BaseSlider<
       activeThumbIdx = -1;
       accessibilityHelper.clearKeyboardFocusForVirtualView(focusedThumbIdx);
     } else {
-      focusThumbOnFocusGained(direction);
+      // If activeThumbIdx != -1, a touch gesture is in progress and has already
+      // picked the thumb to focus. Don't interfere.
+      if (activeThumbIdx == -1) {
+        focusThumbOnFocusGained(direction);
+        activeThumbIdx = focusedThumbIdx;
+      }
       accessibilityHelper.requestKeyboardFocusForVirtualView(focusedThumbIdx);
     }
   }
