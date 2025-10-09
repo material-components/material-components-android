@@ -56,17 +56,18 @@ Element        | Attribute             | Related method(s)                 | Def
 More information about these attributes and how to use them in the
 [setting behavior](#setting-behavior) section.
 
-Behavior                                    | Related method(s)                                                         | Default value
-------------------------------------------- | ------------------------------------------------------------------------- | -------------
-`app:behavior_peekHeight`                   | `setPeekHeight`<br/>`getPeekHeight`                                       | `auto`
-`app:behavior_hideable`                     | `setHideable`<br/>`isHideable`                                            | `false` for standard<br/>`true` for modal
-`app:behavior_skipCollapsed`                | `setSkipCollapsed`<br/>`getSkipCollapsed`                                 | `false`
-`app:behavior_fitToContents`                | `setFitToContents`<br/>`isFitToContents`                                  | `true`
-`app:behavior_draggable`                    | `setDraggable`<br/>`isDraggable`                                          | `true`
-`app:behavior_draggableOnNestedScroll`      | `setDraggableOnNestedScroll`<br/>`isDraggableOnNestedScroll`              | `true`
-`app:behavior_halfExpandedRatio`            | `setHalfExpandedRatio`<br/>`getHalfExpandedRatio`                         | `0.5`
-`app:behavior_expandedOffset`               | `setExpandedOffset`<br/>`getExpandedOffset`                               | `0dp`
-`app:behavior_significantVelocityThreshold` | `setSignificantVelocityThreshold` <br/> `getSignificantVelocityThreshold` | `500 pixels/s`
+Behavior                                          | Related method(s)                                                         | Default value
+------------------------------------------------- | ------------------------------------------------------------------------- | -------------
+`app:behavior_peekHeight`                         | `setPeekHeight`<br/>`getPeekHeight`                                       | `auto`
+`app:behavior_hideable`                           | `setHideable`<br/>`isHideable`                                            | `false` for standard<br/>`true` for modal
+`app:behavior_skipCollapsed`                      | `setSkipCollapsed`<br/>`getSkipCollapsed`                                 | `false`
+`app:behavior_fitToContents`                      | `setFitToContents`<br/>`isFitToContents`                                  | `true`
+`app:behavior_draggable`                          | `setDraggable`<br/>`isDraggable`                                          | `true`
+`app:behavior_draggableOnNestedScroll`            | `setDraggableOnNestedScroll`<br/>`isDraggableOnNestedScroll`              | `true`
+`app:behavior_halfExpandedRatio`                  | `setHalfExpandedRatio`<br/>`getHalfExpandedRatio`                         | `0.5`
+`app:behavior_expandedOffset`                     | `setExpandedOffset`<br/>`getExpandedOffset`                               | `0dp`
+`app:behavior_significantVelocityThreshold`       | `setSignificantVelocityThreshold` <br/> `getSignificantVelocityThreshold` | `500 pixels/s`
+`app:behavior_multipleScrollingChildrenSupported` | N/A                                                                       | `false`
 
 To save behavior on configuration change:
 

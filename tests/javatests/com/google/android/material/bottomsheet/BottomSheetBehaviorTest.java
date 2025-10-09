@@ -23,7 +23,6 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.fail;
 
 import android.content.Context;
@@ -798,6 +797,99 @@ public class BottomSheetBehaviorTest {
 
   @Test
   @MediumTest
+  public void testNestedScrollMultiple() throws Throwable {
+    final ViewGroup bottomSheet = getBottomSheet();
+    final BottomSheetBehavior<?> behavior = getBehavior();
+    final NestedScrollView scroll1 = new NestedScrollView(activityTestRule.getActivity());
+    final NestedScrollView scroll2 = new NestedScrollView(activityTestRule.getActivity());
+    // Set up nested scrolling area
+    activityTestRule.runOnUiThread(
+        () -> {
+          bottomSheet.addView(
+              scroll1,
+              new ViewGroup.LayoutParams(
+                  bottomSheet.getWidth()/2, ViewGroup.LayoutParams.MATCH_PARENT));
+          bottomSheet.addView(
+              scroll2,
+              new ViewGroup.LayoutParams(
+                  bottomSheet.getWidth()/2, ViewGroup.LayoutParams.MATCH_PARENT));
+          View view1 = new View(activityTestRule.getActivity());
+          View view2 = new View(activityTestRule.getActivity());
+          // Make sure that both NestedScrollViews are always scrollable
+          view1.setMinimumHeight(bottomSheet.getHeight() + 1000);
+          view2.setMinimumHeight(bottomSheet.getHeight() + 1000);
+          scroll1.addView(view1);
+          scroll2.addView(view2);
+
+          assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+          // The scroll offset is 0 at first
+          assertThat(scroll1.getScrollY(), is(0));
+          assertThat(scroll2.getScrollY(), is(0));
+        });
+    // Swipe down to up on left side to scroll the left scrollview
+    Espresso.onView(ViewMatchers.withId(R.id.coordinator))
+        .perform(
+            new GeneralSwipeAction(
+                Swipe.SLOW,
+                view -> new float[] {0, view.getHeight() - 1},
+                view -> new float[] {0, 1},
+                Press.FINGER));
+    registerIdlingResourceCallback();
+    try {
+      Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+          .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+      activityTestRule.runOnUiThread(
+          () -> {
+            assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_EXPANDED));
+            // This confirms that the nested scrolling area was scrolled continuously after
+            // the bottom sheet is expanded.
+            assertThat(scroll1.getScrollY(), is(not(0)));
+            assertThat(scroll2.getScrollY(), is(0));
+          });
+    } finally {
+      unregisterIdlingResourceCallback();
+    }
+
+    // Swipe up to down on right side to collapse bottom sheet
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        .perform(
+            DesignViewActions.withCustomConstraints(
+                new GeneralSwipeAction(
+                    Swipe.FAST,
+                    // Manually calculate the starting coordinates to make sure that the touch
+                    // actually falls onto the view on Gingerbread
+                    view -> {
+                      int[] location = new int[2];
+                      view.getLocationInWindow(location);
+                      return new float[] {view.getWidth() - 1, location[1] + 1};
+                    },
+                    // Manually calculate the ending coordinates to make sure that the bottom
+                    // sheet is collapsed, not hidden
+                    view -> {
+                      return new float[] {
+                          // x: right side of the bottom sheet
+                          view.getWidth() - 1,
+                          // y: just above the peek height
+                          view.getHeight() - behavior.getPeekHeight()
+                      };
+                    },
+                    Press.FINGER),
+                ViewMatchers.isDisplayingAtLeast(5)));
+
+    registerIdlingResourceCallback();
+    try {
+      activityTestRule.runOnUiThread(
+          () -> {
+            assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+            assertThat(scroll1.getScrollY(), is(not(0)));
+          });
+    } finally {
+      unregisterIdlingResourceCallback();
+    }
+  }
+
+  @Test
+  @MediumTest
   public void testDragOutside() {
     // Swipe up outside of the bottom sheet
     Espresso.onView(ViewMatchers.withId(R.id.coordinator))
@@ -960,21 +1052,29 @@ public class BottomSheetBehaviorTest {
 
   @Test
   @SmallTest
-  public void testFindScrollingChildEnabled() {
+  public void testFindScrollingChildrenEnabled() {
     Context context = activityTestRule.getActivity();
+    FrameLayout parent = new FrameLayout(context);
+
     NestedScrollView disabledParent = new NestedScrollView(context);
     disabledParent.setNestedScrollingEnabled(false);
-    NestedScrollView enabledChild = new NestedScrollView(context);
-    enabledChild.setNestedScrollingEnabled(true);
-    disabledParent.addView(enabledChild);
+    parent.addView(disabledParent);
+    NestedScrollView enabledChild1 = new NestedScrollView(context);
+    enabledChild1.setNestedScrollingEnabled(true);
+    disabledParent.addView(enabledChild1);
 
-    View scrollingChild = getBehavior().findScrollingChild(disabledParent);
-    assertThat(scrollingChild, is((View) enabledChild));
+    NestedScrollView enabledChild2 = new NestedScrollView(context);
+    enabledChild2.setNestedScrollingEnabled(true);
+    parent.addView(enabledChild2);
+
+    getBehavior().populateScrollingChildren(parent);
+    assertThat(getBehavior().nestedScrollingChildrenRef.get(0).get(), equalTo(enabledChild1));
+    assertThat(getBehavior().nestedScrollingChildrenRef.get(1).get(), equalTo(enabledChild2));
   }
 
   @Test
   @SmallTest
-  public void testWontFindScrollingChildInvisible() {
+  public void testWontFindScrollingChildrenInvisible() {
     Context context = activityTestRule.getActivity();
     FrameLayout parent = new FrameLayout(context);
     NestedScrollView invisibleChild = new NestedScrollView(context);
@@ -982,8 +1082,8 @@ public class BottomSheetBehaviorTest {
     invisibleChild.setVisibility(View.INVISIBLE);
     parent.addView(invisibleChild);
 
-    View scrollingChild = getBehavior().findScrollingChild(parent);
-    assertThat(scrollingChild, nullValue());
+    getBehavior().populateScrollingChildren(parent);
+    assertThat(getBehavior().nestedScrollingChildrenRef.isEmpty(), is(true));
   }
 
   private void checkSetState(final int state, Matcher<View> matcher) throws Throwable {
