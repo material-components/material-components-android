@@ -126,6 +126,27 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
         (AccessibilityManager) parent.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
   }
 
+  // TODO: Delete this once custom Robolectric shadows no longer depend on this method being present
+  // (and instead properly utilize BaseTransientBottomBar hierarchy).
+  @Override
+  public void show() {
+    super.show();
+  }
+
+  // TODO: Delete this once custom Robolectric shadows no longer depend on this method being present
+  // (and instead properly utilize BaseTransientBottomBar hierarchy).
+  @Override
+  public void dismiss() {
+    super.dismiss();
+  }
+
+  // TODO: Delete this once custom Robolectric shadows no longer depend on this method being present
+  // (and instead properly utilize BaseTransientBottomBar hierarchy).
+  @Override
+  public boolean isShown() {
+    return super.isShown();
+  }
+
   /**
    * Make a Snackbar to display a message
    *
