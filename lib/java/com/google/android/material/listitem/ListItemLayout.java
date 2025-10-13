@@ -18,6 +18,8 @@ package com.google.android.material.listitem;
 import com.google.android.material.R;
 
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -30,7 +32,6 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.customview.widget.ViewDragHelper;
-import java.lang.ref.WeakReference;
 
 /**
  * A container layout for a List item.
@@ -61,7 +62,13 @@ public class ListItemLayout extends FrameLayout {
 
   @Nullable private ViewDragHelper viewDragHelper;
   @Nullable private GestureDetector gestureDetector;
-  private WeakReference<ListItemRevealLayout> swipeToRevealLayoutRef;
+
+  private int revealViewOffset;
+  private int originalContentViewLeft;
+
+  private View contentView;
+  @Nullable private View swipeToRevealLayout;
+  private boolean originalClipToPadding;
 
   public ListItemLayout(@NonNull Context context) {
     this(context, null);
@@ -115,32 +122,54 @@ public class ListItemLayout extends FrameLayout {
   @Override
   public void addView(View child, int index, ViewGroup.LayoutParams params) {
     super.addView(child, index, params);
-    if (swipeToRevealLayoutRef != null
-        && swipeToRevealLayoutRef.get() != null
-        && child instanceof ListItemRevealLayout) {
+    if (swipeToRevealLayout != null && child instanceof ListItemRevealLayout) {
       throw new UnsupportedOperationException(
           "Only one ListItemRevealLayout is supported in a ListItemLayout.");
-    } else if (child instanceof ListItemRevealLayout) {
-      swipeToRevealLayoutRef = new WeakReference<>((ListItemRevealLayout) child);
+    } else if (child instanceof RevealableListItem) {
+      swipeToRevealLayout = child;
+      originalClipToPadding = getClipToPadding();
+      setClipToPadding(false);
+      // Start the reveal view at a desired width of 0
+      ((RevealableListItem) child).setRevealedWidth(0);
+      // Make sure reveal view has lower elevation
+      child.setElevation(getElevation() - 1);
     }
   }
 
   @Override
   public void onViewRemoved(View child) {
     super.onViewRemoved(child);
-    if (child instanceof ListItemRevealLayout) {
+    if (child == swipeToRevealLayout) {
       viewDragHelper = null;
       gestureDetector = null;
-      swipeToRevealLayoutRef = null;
+      swipeToRevealLayout = null;
+      setClipToPadding(originalClipToPadding);
+    }
+  }
+
+  private void ensureContentViewIfRevealLayoutExists() {
+    if (contentView != null || swipeToRevealLayout == null) {
+      return;
+    }
+
+    int childCount = getChildCount();
+    for (int i = 0; i < childCount; i++) {
+      if (getChildAt(i) instanceof SwipeableListItem) {
+        if (contentView != null) {
+          throw new UnsupportedOperationException(
+              "Only one SwipeableListItem view is allowed in a ListItemLayout.");
+        }
+        contentView = getChildAt(i);
+      }
     }
   }
 
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
-    if (ensureSwipeToRevealSetupIfNeeded() && viewDragHelper != null && gestureDetector != null) {
+    if (ensureSwipeToRevealSetupIfNeeded()) {
       // TODO - b/447218120: Check that at least one child is a ListItemRevealLayout and the other
       //  is List content.
-      // Process the event
+      // Process the event regardless of the event type.
       viewDragHelper.processTouchEvent(ev);
       gestureDetector.onTouchEvent(ev);
 
@@ -176,7 +205,7 @@ public class ListItemLayout extends FrameLayout {
    * variables are initialized if true.
    */
   private boolean ensureSwipeToRevealSetupIfNeeded() {
-    if (swipeToRevealLayoutRef == null || swipeToRevealLayoutRef.get() == null) {
+    if (swipeToRevealLayout == null) {
       return false;
     }
     if (viewDragHelper == null || gestureDetector == null) {
@@ -186,7 +215,49 @@ public class ListItemLayout extends FrameLayout {
               new ViewDragHelper.Callback() {
                 @Override
                 public boolean tryCaptureView(@NonNull View child, int pointerId) {
+                  if (swipeToRevealLayout != null && contentView != null) {
+                    viewDragHelper.captureChildView(contentView, pointerId);
+                  }
                   return false;
+                }
+
+                @Override
+                public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
+                  // TODO:b/443153708 - Support RTL
+                  LayoutParams lp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
+                  return max(
+                      min(left, originalContentViewLeft),
+                      originalContentViewLeft
+                          - ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
+                          - lp.leftMargin
+                          - lp.rightMargin);
+                }
+
+                @Override
+                public int getViewHorizontalDragRange(@NonNull View child) {
+                  return ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth();
+                }
+
+                @Override
+                public void onViewPositionChanged(
+                    @NonNull View changedView, int left, int top, int dx, int dy) {
+                  super.onViewPositionChanged(changedView, left, top, dx, dy);
+                  // TODO:b/443153708 - Support RTL
+                  revealViewOffset = left - originalContentViewLeft;
+
+                  LayoutParams revealViewLp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
+                  LayoutParams contentViewLp = (LayoutParams) contentView.getLayoutParams();
+
+                  // Desired width is how much we've displaced the content view minus any margins.
+                  int revealViewDesiredWidth =
+                      max(
+                          0,
+                          originalContentViewLeft
+                              - contentView.getLeft()
+                              - contentViewLp.rightMargin // only end margin matters here
+                              - revealViewLp.leftMargin
+                              - revealViewLp.rightMargin);
+                  ((RevealableListItem) swipeToRevealLayout).setRevealedWidth(revealViewDesiredWidth);
                 }
               });
 
@@ -207,6 +278,29 @@ public class ListItemLayout extends FrameLayout {
                 }
               });
     }
+
+    ensureContentViewIfRevealLayoutExists();
+
     return true;
+  }
+
+  @Override
+  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    super.onLayout(changed, left, top, right, bottom);
+    if (contentView != null && swipeToRevealLayout != null) {
+      originalContentViewLeft = contentView.getLeft();
+      int originalContentViewRight = contentView.getRight();
+      contentView.offsetLeftAndRight(revealViewOffset);
+      // We always lay out swipeToRevealLayout such that the right is aligned to where the original
+      // content view's right was. Note that if the content view had a right margin, it will
+      // effectively be passed onto the reveal view.
+      LayoutParams lp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
+      // TODO:b/443153708 - Support RTL
+      swipeToRevealLayout.layout(
+          originalContentViewRight - lp.rightMargin - swipeToRevealLayout.getMeasuredWidth(),
+          swipeToRevealLayout.getTop(),
+          originalContentViewRight - lp.rightMargin,
+          swipeToRevealLayout.getBottom());
+    }
   }
 }

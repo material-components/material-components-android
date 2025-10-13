@@ -20,7 +20,7 @@
   android:layout_height="wrap_content"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:paddingHorizontal="8dp">
-  <com.google.android.material.card.MaterialCardView
+  <com.google.android.material.listitem.ListItemCardView
     android:id="@+id/cat_list_item_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -55,5 +55,5 @@
         android:textAppearance="?attr/textAppearanceBodyLarge"/>
 
     </LinearLayout>
-  </com.google.android.material.card.MaterialCardView>
+  </com.google.android.material.listitem.ListItemCardView>
 </com.google.android.material.listitem.ListItemLayout>

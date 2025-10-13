@@ -18,23 +18,9 @@
   <!-- Style for ListItemLayout. -->
   <style name="Widget.Material3.ListItemLayout" parent="">
     <item name="enforceMaterialTheme">true</item>
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemLayout</item>
   </style>
 
-  <!-- Style for segmented ListItemLayout. -->
-  <style name="Widget.Material3.ListItemLayout.Segmented">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemLayout.Segmented</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.ListItemLayout" parent="">
-    <item name="materialCardViewStyle">@style/Widget.Material3.CardView.ListItemLayout</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.ListItemLayout.Segmented">
-    <item name="materialCardViewStyle">@style/Widget.Material3.CardView.ListItemLayout.Segmented</item>
-  </style>
-
-  <style name="Widget.Material3.CardView.ListItemLayout" parent="Widget.Material3.CardView.Filled">
+  <style name="Widget.Material3.ListItemCardView" parent="Widget.Material3.CardView.Filled">
     <item name="android:minHeight">52dp</item>
     <item name="cardElevation">0dp</item>
     <item name="checkedIcon">@null</item>
@@ -45,7 +31,7 @@
     <item name="android:duplicateParentState">true</item>
   </style>
 
-  <style name="Widget.Material3.CardView.ListItemLayout.Segmented">
+  <style name="Widget.Material3.ListItemCardView.Segmented">
     <item name="cardBackgroundColor">@color/m3_segmented_list_item_background_color_selector</item>
   </style>
 

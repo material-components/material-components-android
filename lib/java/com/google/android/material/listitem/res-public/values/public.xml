@@ -16,13 +16,13 @@
   -->
 <resources>
   <public name="listItemLayoutStyle" type="attr"/>
-  <public name="listItemLayoutSegmentedStyle" type="attr"/>
+  <public name="listItemCardViewStyle" type="attr"/>
+  <public name="listItemCardViewSegmentedStyle" type="attr"/>
 
   <public name="Widget.Material3.ListItemLayout" type="style"/>
-  <public name="ThemeOverlay.Material3.ListItemLayout" type="style"/>
   <public name="ThemeOverlay.Material3.ListItemLayout.Segmented" type="style"/>
-  <public name="Widget.Material3.CardView.ListItemLayout" type="style"/>
-  <public name="Widget.Material3.CardView.ListItemLayout.Segmented" type="style"/>
+  <public name="Widget.Material3.ListItemCardView" type="style"/>
+  <public name="Widget.Material3.ListItemCardView.Segmented" type="style"/>
   <public name="ShapeAppearance.Material3.ListItem.First" type="style"/>
   <public name="ShapeAppearance.Material3.ListItem.Middle" type="style"/>
   <public name="ShapeAppearance.Material3.ListItem.Last" type="style"/>
