@@ -3479,7 +3479,7 @@ abstract class BaseSlider<
         break;
       case LABEL_VISIBLE:
         if (isEnabled() && isSliderVisibleOnScreen()) {
-          ensureLabelsAdded();
+          ensureLabelsAdded(/* showLabelOnAllThumbs= */ true);
         } else {
           ensureLabelsRemoved();
         }
@@ -3487,7 +3487,7 @@ abstract class BaseSlider<
       case LABEL_FLOATING:
       case LABEL_WITHIN_BOUNDS:
         if (activeThumbIdx != -1 && isEnabled()) {
-          ensureLabelsAdded();
+          ensureLabelsAdded(/* showLabelOnAllThumbs= */ false);
         } else {
           ensureLabelsRemoved();
         }
@@ -3572,7 +3572,7 @@ abstract class BaseSlider<
     }
   }
 
-  private void ensureLabelsAdded() {
+  private void ensureLabelsAdded(boolean showLabelOnAllThumbs) {
     // If the labels are not animating in, start an animator to show them. ensureLabelsAdded will
     // be called multiple times by BaseSlider's draw method, making this check necessary to avoid
     // creating and starting an animator for each draw call.
@@ -3585,13 +3585,14 @@ abstract class BaseSlider<
 
     Iterator<TooltipDrawable> labelItr = labels.iterator();
 
-    for (int i = 0; i < values.size() && labelItr.hasNext(); i++) {
-      if (i == focusedThumbIdx) {
-        // We position the focused thumb last so it's displayed on top, so skip it for now.
-        continue;
+    if (showLabelOnAllThumbs) {
+      for (int i = 0; i < values.size() && labelItr.hasNext(); i++) {
+        if (i == focusedThumbIdx) {
+          // We position the focused thumb last so it's displayed on top, so skip it for now.
+          continue;
+        }
+        setValueForLabel(labelItr.next(), values.get(i));
       }
-
-      setValueForLabel(labelItr.next(), values.get(i));
     }
 
     if (!labelItr.hasNext()) {
