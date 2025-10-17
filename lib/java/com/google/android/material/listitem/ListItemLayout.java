@@ -160,6 +160,7 @@ public class ListItemLayout extends FrameLayout {
               "Only one SwipeableListItem view is allowed in a ListItemLayout.");
         }
         contentView = getChildAt(i);
+        originalContentViewLeft = contentView.getLeft();
       }
     }
   }
@@ -215,6 +216,7 @@ public class ListItemLayout extends FrameLayout {
               new ViewDragHelper.Callback() {
                 @Override
                 public boolean tryCaptureView(@NonNull View child, int pointerId) {
+                  ensureContentViewIfRevealLayoutExists();
                   if (swipeToRevealLayout != null && contentView != null) {
                     viewDragHelper.captureChildView(contentView, pointerId);
                   }
@@ -257,7 +259,8 @@ public class ListItemLayout extends FrameLayout {
                               - contentViewLp.rightMargin // only end margin matters here
                               - revealViewLp.leftMargin
                               - revealViewLp.rightMargin);
-                  ((RevealableListItem) swipeToRevealLayout).setRevealedWidth(revealViewDesiredWidth);
+                  ((RevealableListItem) swipeToRevealLayout)
+                      .setRevealedWidth(revealViewDesiredWidth);
                 }
               });
 
