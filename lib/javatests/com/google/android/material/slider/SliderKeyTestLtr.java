@@ -72,4 +72,28 @@ public final class SliderKeyTestLtr extends SliderKeyTestCommon {
 
     assertThat(slider.getValues()).doesNotContain(3.0f);
   }
+
+  @Test
+  public void testKeyPress_dPadLeft_decrementsValue() {
+    slider.requestFocus();
+    slider.setValues(50f);
+    slider.setStepSize(1f);
+
+    KeyEventBuilder left = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_LEFT);
+    left.dispatchEvent(slider);
+
+    assertThat(slider.getValues().get(0)).isEqualTo(49f);
+  }
+
+  @Test
+  public void testKeyPress_dPadRight_incrementsValue() {
+    slider.requestFocus();
+    slider.setValues(50f);
+    slider.setStepSize(1f);
+
+    KeyEventBuilder right = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_RIGHT);
+    right.dispatchEvent(slider);
+
+    assertThat(slider.getValues().get(0)).isEqualTo(51f);
+  }
 }

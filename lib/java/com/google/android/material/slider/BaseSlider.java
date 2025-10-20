@@ -3877,20 +3877,18 @@ abstract class BaseSlider<
     // Otherwise choose the smallest valid increment.
     float increment = isLongPress ? calculateStepIncrement(20) : calculateStepIncrement();
     switch (keyCode) {
+      // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
+      case KeyEvent.KEYCODE_PLUS:
       case KeyEvent.KEYCODE_DPAD_UP:
-        return isVertical() ? increment : null;
+      case KeyEvent.KEYCODE_EQUALS:
+        return increment;
       case KeyEvent.KEYCODE_DPAD_DOWN:
-        return isVertical() ? -increment : null;
+      case KeyEvent.KEYCODE_MINUS:
+        return -increment;
       case KeyEvent.KEYCODE_DPAD_LEFT:
         return isRtl() ? increment : -increment;
       case KeyEvent.KEYCODE_DPAD_RIGHT:
         return isRtl() ? -increment : increment;
-      case KeyEvent.KEYCODE_MINUS:
-        return -increment;
-      case KeyEvent.KEYCODE_EQUALS:
-      // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
-      case KeyEvent.KEYCODE_PLUS:
-        return increment;
       default:
         return null;
     }

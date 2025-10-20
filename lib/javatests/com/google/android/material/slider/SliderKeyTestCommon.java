@@ -127,30 +127,6 @@ public abstract class SliderKeyTestCommon {
   }
 
   @Test
-  public void testFocusDefaultThumb_clickUpDPad_unhandled() {
-    slider.requestFocus();
-
-    KeyEventBuilder up = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_UP);
-    boolean handledDown = slider.dispatchKeyEvent(up.buildDown());
-    boolean handledUp = slider.dispatchKeyEvent(up.buildUp());
-
-    assertThat(handledDown).isFalse();
-    assertThat(handledUp).isFalse();
-  }
-
-  @Test
-  public void testFocusDefaultThumb_clickDownDPad_unhandled() {
-    slider.requestFocus();
-
-    KeyEventBuilder down = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_DOWN);
-    boolean handledDown = slider.dispatchKeyEvent(down.buildDown());
-    boolean handledUp = slider.dispatchKeyEvent(down.buildUp());
-
-    assertThat(handledDown).isFalse();
-    assertThat(handledUp).isFalse();
-  }
-
-  @Test
   public void testFocusFirstThumb_shiftTab_unhandled() {
     slider.requestFocus();
 
@@ -177,6 +153,30 @@ public abstract class SliderKeyTestCommon {
 
     assertThat(handledDown).isFalse();
     assertThat(handledUp).isFalse();
+  }
+
+  @Test
+  public void testKeyPress_dPadUp_incrementsValue() {
+    slider.requestFocus();
+    slider.setValues(50f);
+    slider.setStepSize(1f);
+
+    KeyEventBuilder up = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_UP);
+    up.dispatchEvent(slider);
+
+    assertThat(slider.getValues().get(0)).isEqualTo(51f);
+  }
+
+  @Test
+  public void testKeyPress_dPadDown_decrementsValue() {
+    slider.requestFocus();
+    slider.setValues(50f);
+    slider.setStepSize(1f);
+
+    KeyEventBuilder down = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_DOWN);
+    down.dispatchEvent(slider);
+
+    assertThat(slider.getValues().get(0)).isEqualTo(49f);
   }
 
   protected void sendKeyEventThereAndBack(KeyEventBuilder there, KeyEventBuilder back) {
