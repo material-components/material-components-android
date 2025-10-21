@@ -54,7 +54,7 @@ import java.util.function.Function;
 // A java_library Bazel rule with an Android constraint cannot skip these warnings without this
 // annotation; another solution would be to create an android_library rule and supply
 // AndroidManifest with an SDK set higher than 14.
-@SuppressWarnings({"AndroidJdkLibsChecker", "NewApi"})
+@SuppressWarnings("NewApi")
 @RestrictTo(LIBRARY_GROUP)
 public final class DynamicColor {
   public final String name;
