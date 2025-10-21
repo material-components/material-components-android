@@ -186,6 +186,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   // Variables for corner morph.
   private boolean boundsIsEmpty = true;
+  private boolean isRoundRectCornerMorph = true;
   @NonNull private ShapeAppearanceModel strokeShapeAppearanceModel;
   @Nullable private SpringForce cornerSpringForce;
   @NonNull SpringAnimation[] cornerSpringAnimations = new SpringAnimation[NUM_CORNERS];
@@ -1346,10 +1347,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         // a round rect, use the top left corner size for drawing the round rect.
         return shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds);
       }
-    } else if (areAllElementsEqual(cornerSizeOverrides)
-        && shapeAppearanceModel.hasRoundedCorners()) {
-      // If there are corner size overrides and they're all the same, use the first one for drawing
-      // the round rect.
+    } else if (isRoundRectCornerMorph) {
+      // If the shape being morphed is a round rect, use the first one for drawing the round rect.
       return cornerSizeOverrides[0];
     }
     // Returns a negative corner size to indicate the current shape cannot be drawn as a round rect.
@@ -1568,6 +1567,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
     ShapeAppearanceModel shapeAppearanceModel =
         drawableState.shapeAppearance.getShapeForState(state);
+    if(areAllElementsEqual(springAnimatedCornerSizes)){
+      isRoundRectCornerMorph = shapeAppearanceModel.isRoundRect(getBoundsAsRectF());
+    }
     for (int i = 0; i < NUM_CORNERS; i++) {
       float targetCornerSize =
           pathProvider.getCornerSizeForIndex(i, shapeAppearanceModel).getCornerSize(bounds);
@@ -1676,11 +1678,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @RestrictTo(LIBRARY_GROUP)
   public boolean isRoundRect() {
     ShapeAppearanceModel shapeAppearanceModel =
-        drawableState.shapeAppearance.getDefaultShape();
+        drawableState.shapeAppearance.getShapeForState(getState());
     return shapeAppearanceModel.isRoundRect(getBoundsAsRectF())
-        || (springAnimatedCornerSizes != null
-        && areAllElementsEqual(springAnimatedCornerSizes)
-        && shapeAppearanceModel.hasRoundedCorners());
+        && (springAnimatedCornerSizes == null || isRoundRectCornerMorph);
   }
 
   /**
