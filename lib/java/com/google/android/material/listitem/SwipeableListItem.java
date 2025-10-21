@@ -15,8 +15,13 @@
  */
 package com.google.android.material.listitem;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import androidx.annotation.IntDef;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Interface for the part of a ListItem that is able to be swiped.
@@ -25,4 +30,46 @@ import androidx.annotation.RestrictTo.Scope;
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public interface SwipeableListItem {
+  /** The state at which the {@link SwipeableListItem} is being dragged. */
+  public static final int STATE_DRAGGING = 1;
+
+  /** The state at which the {@link SwipeableListItem} is settling to the nearest settling point. */
+  public static final int STATE_SETTLING = 2;
+
+  /**
+   * The state at which the associated {@link RevealableListItem} is closed and nothing is revealed.
+   */
+  public static final int STATE_CLOSED = 3;
+
+  /**
+   * The state at which the associated {@link RevealableListItem} is revealed to its intrinsic
+   * width.
+   */
+  public static final int STATE_OPEN = 4;
+
+  /**
+   * States that the {@link SwipeableListItem} can be in.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({
+    STATE_DRAGGING,
+    STATE_SETTLING,
+    STATE_CLOSED,
+    STATE_OPEN,
+  })
+  @Retention(RetentionPolicy.SOURCE)
+  @interface SwipeState {}
+
+  /**
+   * Stable states that the {@link SwipeableListItem} can be in. These are states that the
+   * {@link SwipeableListItem} can settle to.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({STATE_CLOSED, STATE_OPEN})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface StableSwipeState {}
 }

@@ -258,6 +258,7 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
 
   @Override
   public void setRevealedWidth(int revealedWidth) {
+    revealedWidth = max(0, revealedWidth);
     if (this.revealedWidth == revealedWidth) {
       return;
     }

@@ -17,10 +17,15 @@ package com.google.android.material.listitem;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.listitem.SwipeableListItem.STATE_CLOSED;
+import static com.google.android.material.listitem.SwipeableListItem.STATE_DRAGGING;
+import static com.google.android.material.listitem.SwipeableListItem.STATE_OPEN;
+import static com.google.android.material.listitem.SwipeableListItem.STATE_SETTLING;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
+import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -28,10 +33,14 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Interpolator;
+import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.customview.widget.ViewDragHelper;
+import com.google.android.material.listitem.SwipeableListItem.StableSwipeState;
+import com.google.android.material.listitem.SwipeableListItem.SwipeState;
 
 /**
  * A container layout for a List item.
@@ -57,6 +66,11 @@ public class ListItemLayout extends FrameLayout {
   private static final int[] MIDDLE_STATE_SET = { android.R.attr.state_middle };
   private static final int[] LAST_STATE_SET = { android.R.attr.state_last };
   private static final int[] SINGLE_STATE_SET = {android.R.attr.state_single};
+  private static final int SETTLING_DURATION = 350;
+  private static final int DEFAULT_SIGNIFICANT_VEL_THRESHOLD = 500;
+  // The overshoot that the user can swipe the reveal view by before it settles
+  // back to the closest stable swipe state.
+  private final int swipeMaxOvershoot;
 
   @Nullable private int[] positionState;
 
@@ -69,6 +83,37 @@ public class ListItemLayout extends FrameLayout {
   private View contentView;
   @Nullable private View swipeToRevealLayout;
   private boolean originalClipToPadding;
+
+  private int swipeState = STATE_CLOSED;
+  private final StateSettlingTracker stateSettlingTracker = new StateSettlingTracker();
+
+  // Cubic bezier curve approximating a spring with damping = 0.6 and stiffness = 800
+  private static final TimeInterpolator CUBIC_BEZIER_INTERPOLATOR =
+      new PathInterpolator(0.42f, 1.67f, 0.21f, 0.9f);
+
+  private class StateSettlingTracker {
+    @StableSwipeState private int targetSwipeState;
+    private boolean isContinueSettlingRunnablePosted;
+
+    private final Runnable continueSettlingRunnable =
+        () -> {
+          isContinueSettlingRunnablePosted = false;
+          if (viewDragHelper != null && viewDragHelper.continueSettling(true)) {
+            continueSettlingToState(targetSwipeState);
+          } else if (swipeState == STATE_SETTLING) {
+            setSwipeStateInternal(targetSwipeState);
+          }
+          // In other cases, settling has been interrupted by certain UX interactions. Do nothing.
+        };
+
+    private void continueSettlingToState(@StableSwipeState int targetSwipeState) {
+      this.targetSwipeState = targetSwipeState;
+      if (!isContinueSettlingRunnablePosted) {
+        post(continueSettlingRunnable);
+        isContinueSettlingRunnablePosted = true;
+      }
+    }
+  }
 
   public ListItemLayout(@NonNull Context context) {
     this(context, null);
@@ -85,6 +130,8 @@ public class ListItemLayout extends FrameLayout {
   public ListItemLayout(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(wrap(context, attrs, defStyleAttr, defStyleRes), attrs, defStyleAttr);
+    context = getContext();
+    swipeMaxOvershoot = getResources().getDimensionPixelSize(R.dimen.m3_list_max_swipe_overshoot);
   }
 
   @Override
@@ -232,12 +279,14 @@ public class ListItemLayout extends FrameLayout {
                       originalContentViewLeft
                           - ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
                           - lp.leftMargin
-                          - lp.rightMargin);
+                          - lp.rightMargin
+                          - swipeMaxOvershoot);
                 }
 
                 @Override
                 public int getViewHorizontalDragRange(@NonNull View child) {
-                  return ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth();
+                  return ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
+                      + swipeMaxOvershoot;
                 }
 
                 @Override
@@ -262,6 +311,33 @@ public class ListItemLayout extends FrameLayout {
                   ((RevealableListItem) swipeToRevealLayout)
                       .setRevealedWidth(revealViewDesiredWidth);
                 }
+
+                @Override
+                public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
+                  startSettling(contentView, calculateTargetSwipeState(xvel, releasedChild));
+                }
+
+                private int calculateTargetSwipeState(float xvel, View swipeView) {
+                  if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
+                    return STATE_CLOSED;
+                  }
+                  if (xvel < -DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the left
+                    return STATE_OPEN;
+                  }
+                  if (Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())
+                      < Math.abs(swipeView.getLeft() - getSwipeViewClosedOffset())) {
+                    // Settle to the closest point if velocity is not significant
+                    return STATE_OPEN;
+                  }
+                  return STATE_CLOSED;
+                }
+
+                @Override
+                public void onViewDragStateChanged(int state) {
+                  if (state == ViewDragHelper.STATE_DRAGGING) {
+                    setSwipeStateInternal(STATE_DRAGGING);
+                  }
+                }
               });
 
       gestureDetector =
@@ -285,6 +361,64 @@ public class ListItemLayout extends FrameLayout {
     ensureContentViewIfRevealLayoutExists();
 
     return true;
+  }
+
+  private int getSwipeRevealViewRevealedOffset() {
+    if (swipeToRevealLayout == null) {
+      return 0;
+    }
+    LayoutParams lp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
+    return originalContentViewLeft
+        - ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
+        - lp.leftMargin
+        - lp.rightMargin;
+  }
+
+  private int getSwipeViewClosedOffset() {
+    return originalContentViewLeft;
+  }
+
+  private int getOffsetForSwipeState(@StableSwipeState int swipeState) {
+    if (swipeToRevealLayout == null) {
+      throw new IllegalArgumentException(
+          "Cannot get offset for swipe without a SwipeableListItem and a RevealableListItem.");
+    }
+    switch (swipeState) {
+      case STATE_CLOSED:
+        return getSwipeViewClosedOffset();
+      case STATE_OPEN:
+        return getSwipeRevealViewRevealedOffset();
+      default:
+        throw new IllegalArgumentException("Invalid state to get swipe offset: " + swipeState);
+    }
+  }
+
+  private void startSettling(View contentView, @StableSwipeState int targetSwipeState) {
+    if (viewDragHelper == null) {
+      return;
+    }
+    int left = getOffsetForSwipeState(targetSwipeState);
+    // If we are going to the revealed state, we want to settle with a 'bounce' so we use a cubic
+    // bezier interpolator. Otherwise, we are closing and we don't want a bounce.
+    boolean settling =
+        (targetSwipeState == STATE_OPEN)
+            ? viewDragHelper.smoothSlideViewTo(
+                contentView,
+                left,
+                contentView.getTop(),
+                SETTLING_DURATION,
+                (Interpolator) CUBIC_BEZIER_INTERPOLATOR)
+            : viewDragHelper.smoothSlideViewTo(contentView, left, contentView.getTop());
+    if (settling) {
+      setSwipeStateInternal(STATE_SETTLING);
+      stateSettlingTracker.continueSettlingToState(targetSwipeState);
+    } else {
+      setSwipeStateInternal(targetSwipeState);
+    }
+  }
+
+  private void setSwipeStateInternal(@SwipeState int swipeState) {
+    this.swipeState = swipeState;
   }
 
   @Override
