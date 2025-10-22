@@ -26,15 +26,10 @@ import static java.util.Calendar.HOUR;
 import static java.util.Calendar.MINUTE;
 import static java.util.Calendar.PM;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.media.AudioManager;
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -46,7 +41,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
+import androidx.core.view.HapticFeedbackConstantsCompat;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.internal.TextWatcherAdapter;
@@ -59,7 +55,6 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
   private static final int MINUTES_MAX_VALUE = 59;
   private static final int HOURS_MAX_VALUE_12H = 12;
   private static final int HOURS_MAX_VALUE_24H = 23;
-  private static final int VIBRATION_LENGTH = 200;
   private static final int MINUTES_MAX_LENGTH = 2;
   private static final int HOURS_MAX_LENGTH = 2;
 
@@ -77,7 +72,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
             }
             if (s.length() > MINUTES_MAX_LENGTH) {
               s = s.delete(MINUTES_MAX_LENGTH, s.length()); // lock to 2 digits
-              vibrateAndMaybeBeep(minuteEditText.getContext());
+              vibrateAndMaybeBeep(minuteEditText);
               return;
             }
             int minute = Integer.parseInt(s.toString());
@@ -105,7 +100,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
             }
             if (s.length() > HOURS_MAX_LENGTH) {
               s = s.delete(HOURS_MAX_LENGTH, s.length()); // lock to 2 digits
-              vibrateAndMaybeBeep(hourEditText.getContext());
+              vibrateAndMaybeBeep(hourEditText);
               return;
             }
             int hour = Integer.parseInt(s.toString());
@@ -243,7 +238,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     minuteTextInput.setError(true);
     minuteLabel.setText(minuteErrorText);
     minuteLabel.announceForAccessibility(minuteLabel.getText());
-    vibrateAndMaybeBeep(minuteLabel.getContext());
+    vibrateAndMaybeBeep(minuteLabel);
   }
 
   @SuppressLint("FlaggedApi")
@@ -251,7 +246,7 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     hourTextInput.setError(true);
     hourLabel.setText(time.format == CLOCK_24H ? hourError24hText : hourErrorText);
     hourLabel.announceForAccessibility(hourLabel.getText());
-    vibrateAndMaybeBeep(hourLabel.getContext());
+    vibrateAndMaybeBeep(hourLabel);
   }
 
   private void clearMinuteError() {
@@ -273,10 +268,10 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     clearHourError();
   }
 
-  void vibrateAndMaybeBeep(@NonNull Context context) {
-    vibrate(context);
-    if (!isTouchExplorationEnabled(context)) {
-      beep(context);
+  void vibrateAndMaybeBeep(@NonNull View view) {
+    vibrate(view);
+    if (!isTouchExplorationEnabled(view.getContext())) {
+      beep(view.getContext());
     }
   }
 
@@ -294,21 +289,8 @@ class TimePickerTextInputPresenter implements OnSelectionChange, TimePickerPrese
     labelToAnnounce.announceForAccessibility(labelToAnnounce.getText());
   }
 
-  @SuppressLint("MissingPermission")
-  private void vibrate(@NonNull Context context) {
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
-        || ContextCompat.checkSelfPermission(context, Manifest.permission.VIBRATE)
-            == PackageManager.PERMISSION_GRANTED) {
-      Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-      if (vibrator != null) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-          vibrator.vibrate(
-              VibrationEffect.createOneShot(VIBRATION_LENGTH, VibrationEffect.DEFAULT_AMPLITUDE));
-        } else {
-          vibrator.vibrate(VIBRATION_LENGTH);
-        }
-      }
-    }
+  private void vibrate(@NonNull View view) {
+    ViewCompat.performHapticFeedback(view, HapticFeedbackConstantsCompat.REJECT);
   }
 
   private void beep(@NonNull Context context) {
