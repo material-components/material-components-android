@@ -67,11 +67,17 @@ public class StateListSizeChangeTest {
     SizeChange defaultSizeChange = stateListSizeChange.getDefaultSizeChange();
 
     assertEquals(PERCENT, pressedSizeChange.widthChange.type);
+    assertEquals(PERCENT, pressedSizeChange.heightChange.type);
     assertEquals(0.15, pressedSizeChange.widthChange.amount, FLOAT_TOLERANCE);
+    assertEquals(0.15, pressedSizeChange.heightChange.amount, FLOAT_TOLERANCE);
     assertEquals(PIXELS, unspecifiedStateSizeChange.widthChange.type);
+    assertEquals(PIXELS, unspecifiedStateSizeChange.heightChange.type);
     assertEquals(0, unspecifiedStateSizeChange.widthChange.amount, FLOAT_TOLERANCE);
+    assertEquals(0, unspecifiedStateSizeChange.heightChange.amount, FLOAT_TOLERANCE);
     assertEquals(PIXELS, defaultSizeChange.widthChange.type);
+    assertEquals(PIXELS, defaultSizeChange.heightChange.type);
     assertEquals(0, defaultSizeChange.widthChange.amount, FLOAT_TOLERANCE);
+    assertEquals(0, defaultSizeChange.heightChange.amount, FLOAT_TOLERANCE);
   }
 
   @Test
@@ -91,11 +97,17 @@ public class StateListSizeChangeTest {
     SizeChange defaultSizeChange = stateListSizeChange.getDefaultSizeChange();
 
     assertEquals(PERCENT, pressedSizeChange.widthChange.type);
+    assertEquals(PERCENT, pressedSizeChange.heightChange.type);
     assertEquals(0.15, pressedSizeChange.widthChange.amount, FLOAT_TOLERANCE);
+    assertEquals(0.15, pressedSizeChange.heightChange.amount, FLOAT_TOLERANCE);
     assertEquals(PERCENT, unspecifiedStateSizeChange.widthChange.type);
+    assertEquals(PERCENT, unspecifiedStateSizeChange.heightChange.type);
     assertEquals(0.15, unspecifiedStateSizeChange.widthChange.amount, FLOAT_TOLERANCE);
+    assertEquals(0.15, unspecifiedStateSizeChange.heightChange.amount, FLOAT_TOLERANCE);
     assertEquals(PERCENT, defaultSizeChange.widthChange.type);
+    assertEquals(PERCENT, defaultSizeChange.heightChange.type);
     assertEquals(0.15, defaultSizeChange.widthChange.amount, FLOAT_TOLERANCE);
+    assertEquals(0.15, defaultSizeChange.heightChange.amount, FLOAT_TOLERANCE);
   }
 
   private AttributeSet setupAttributeSetForTest() {
