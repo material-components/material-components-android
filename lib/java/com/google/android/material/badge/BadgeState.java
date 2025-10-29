@@ -1,4 +1,8 @@
-/*
+
+
+
+
+ /*
  * Copyright (C) 2021 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,12 +58,14 @@ import java.util.Locale;
  *
  * @hide
  */
-@RestrictTo(LIBRARY_GROUP)
-public final class BadgeState {
-  /**
-   * Maximum number of characters a badge supports displaying by default. It could be changed using
-   * {@link BadgeDrawable#setMaxCharacterCount(int)}.
-   */
+
+@RestrictTo(LIBRARY_GROUP
+public final class BadgeState 
+{
+ /\ * Maximum number of characters a badge supports displaying by default. It could be changed using
+   * {@link BadgeDrawable#setMaxCharacterCount 
+    {int} </
+   
   private static final int DEFAULT_MAX_BADGE_CHARACTER_COUNT = 4;
 
   private static final String BADGE_RESOURCE_TAG = "badge";
@@ -76,7 +82,8 @@ public final class BadgeState {
       @XmlRes int badgeResId,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes,
-      @Nullable State storedState) {
+      @Nullable State storedState
+    
     if (storedState == null) {
       storedState = new State();
     }
@@ -126,6 +133,7 @@ public final class BadgeState {
     // Only set the badge number if it exists in the style.
     // Defaulting it to 0 means the badge will incorrectly show text when the user may want a
     // numberless badge.
+    
     if (storedState.number != State.NOT_SET) {
       currentState.number = storedState.number;
     } else if (a.hasValue(R.styleable.Badge_number)) {
@@ -140,7 +148,9 @@ public final class BadgeState {
             : storedState.backgroundColor;
 
     // Only set the badge text color if this attribute has explicitly been set, otherwise use the
-    // text color specified in the TextAppearance.
+    // text color specified in the TextAppearance
+    
+    .
     if (storedState.badgeTextColor != null) {
       currentState.badgeTextColor = storedState.badgeTextColor;
     } else if (a.hasValue(R.styleable.Badge_badgeTextColor)) {
@@ -170,6 +180,7 @@ public final class BadgeState {
     // Set the offsets when the badge has text. Default to using the badge "dot" offsets
     // (horizontalOffsetWithoutText and verticalOffsetWithoutText) if there is no offsets defined
     // for badges with text.
+    
     currentState.horizontalOffsetWithText =
         storedState.horizontalOffsetWithText == null
             ? a.getDimensionPixelOffset(
@@ -402,7 +413,6 @@ public final class BadgeState {
       Context context, @NonNull TypedArray a, @StyleableRes int index) {
     return MaterialResources.getColorStateList(context, a, index).getDefaultColor();
   }
-
   /**
    * Internal {@link Parcelable} state used to represent, save, and restore {@link BadgeDrawable}
    * states.
@@ -491,25 +501,36 @@ public final class BadgeState {
     }
 
     @Override
-    public void writeToParcel(@NonNull Parcel dest, int flags) {
-      dest.writeInt(badgeResId);
-      dest.writeSerializable(backgroundColor);
-      dest.writeSerializable(badgeTextColor);
-      dest.writeInt(alpha);
-      dest.writeInt(number);
-      dest.writeInt(maxCharacterCount);
+    public void writeToParcel(@NonNull Parcel dest, int flags) 
+    {
+      dest.writeInt(badgeResId)
+      dest.writeSerializable(backgroundColor)
+      dest.writeSerializable(badgeTextColor)
+      dest.writeInt(alpha)
+      dest.writeInt(number)
+      dest.writeInt(maxCharacterCount)
       dest.writeString(
-          contentDescriptionNumberless == null ? null : contentDescriptionNumberless.toString());
-      dest.writeInt(contentDescriptionQuantityStrings);
-      dest.writeSerializable(badgeGravity);
-      dest.writeSerializable(horizontalOffsetWithoutText);
-      dest.writeSerializable(verticalOffsetWithoutText);
-      dest.writeSerializable(horizontalOffsetWithText);
-      dest.writeSerializable(verticalOffsetWithText);
-      dest.writeSerializable(additionalHorizontalOffset);
-      dest.writeSerializable(additionalVerticalOffset);
-      dest.writeSerializable(isVisible);
-      dest.writeSerializable(numberLocale);
-    }
-  }
-}
+        
+        :  contentDescriptionNumberless == null ? null 
+        
+        : contentDescriptionNumberless.toString());
+      
+         dest.writeInt(contentDescriptionQuantityStrings
+      dest.writeSerializable(badgeGravity
+      dest.writeSerializable(horizontalOffsetWithoutText
+      dest.writeSerializable(verticalOffsetWithoutText
+      dest.writeSerializable(horizontalOffsetWithText
+      dest.writeSerializable(verticalOffsetWithText
+      dest.writeSerializable(additionalHorizontalOffset
+      dest.writeSerializable(additionalVerticalOffset
+      dest.writeSerializable(isVisible
+      dest.writeSerializable(numberLocale
+
+
+
+
+
+
+
+
+                             
