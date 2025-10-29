@@ -119,8 +119,6 @@ public class MaterialSplitButton extends MaterialButtonGroup {
 
       buttonChild.addOnCheckedChangeListener(
           (button, isChecked) -> {
-            // Play sound effect when checked state changes.
-            button.playSoundEffect(SoundEffectConstants.CLICK);
             // Update content description when checked state changes.
             ViewCompat.setStateDescription(
                 buttonChild,

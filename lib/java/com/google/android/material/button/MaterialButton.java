@@ -49,6 +49,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
@@ -1346,11 +1347,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public boolean performClick() {
-    if (isEnabled() && materialButtonHelper.isToggleCheckedStateOnClick()) {
+    final boolean checkable = isCheckable() && materialButtonHelper.isToggleCheckedStateOnClick();
+    if (checkable) {
       toggle();
     }
 
-    return super.performClick();
+    final boolean handled = super.performClick();
+    if (checkable && !handled) {
+      // View only makes a sound effect if the onClickListener was
+      // called, so for checkable button we'll need to make one here instead.
+      playSoundEffect(SoundEffectConstants.CLICK);
+    }
+
+    return handled;
   }
 
   /**
