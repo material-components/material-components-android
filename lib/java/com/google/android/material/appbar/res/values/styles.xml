@@ -128,6 +128,7 @@
     <item name="contentInsetStartWithNavigation">0dp</item>
     <item name="android:keyboardNavigationCluster" tools:targetApi="o">false</item>
     <item name="android:touchscreenBlocksFocus">false</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Toolbar</item>
 
     <!-- On newer API levels, hide shadows while keeping elevation. -->
     <item name="android:outlineAmbientShadowColor" tools:targetApi="p">@android:color/transparent</item>
@@ -151,7 +152,18 @@
     <item name="android:background">@macro/m3_comp_app_bar_container_color</item>
   </style>
 
-  <style name="ThemeOverlay.Material3.Toolbar.Surface" parent="">
+  <style name="ThemeOverlay.Material3.Toolbar" parent="">
+    <!-- Overridding the AppCompat / Android drawable attributes for correct ripple colors. -->
+    <item name="selectableItemBackground">@drawable/m3_selectable_item_background</item>
+    <item name="android:selectableItemBackground">@drawable/m3_selectable_item_background</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_selectable_item_background_borderless</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_selectable_item_background_borderless</item>
+    <item name="actionBarItemBackground">@drawable/m3_action_bar_item_background</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_action_bar_item_background</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Toolbar.Surface">
     <item name="actionMenuTextColor">@macro/m3_comp_app_bar_trailing_icon_color</item>
     <item name="colorControlNormal">@macro/m3_comp_app_bar_trailing_icon_color</item>
   </style>
