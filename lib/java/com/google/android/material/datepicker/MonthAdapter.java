@@ -343,4 +343,61 @@ class MonthAdapter extends BaseAdapter {
   boolean isLastInRow(int position) {
     return (position + 1) % month.daysInWeek == 0;
   }
+
+  /**
+   * Returns true if the day at the given adapter position is within the current month, and valid
+   * according to the {@link CalendarConstraints}.
+   */
+  boolean isDayPositionValid(int position) {
+    Long day = getItem(position);
+    return day != null && calendarConstraints.getDateValidator().isValid(day);
+  }
+
+  /**
+   * Finds the closest valid day to the given position searching forward.
+   *
+   * @param position The starting position.
+   * @return The position of the next valid day, or -1 if none is found before reaching the
+   *     end of the month.
+   */
+  int findNextValidDayPosition(int position) {
+    for (int i = position + 1; i <= lastPositionInMonth(); i++) {
+      if (isDayPositionValid(i)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * Finds the closest valid day to the given position searching backward.
+   *
+   * @param position The starting position.
+   * @return The position of the previous valid day, or -1 if none is found before reaching the
+   *     start of the month.
+   */
+  int findPreviousValidDayPosition(int position) {
+    for (int i = position - 1; i >= firstPositionInMonth(); i--) {
+      if (isDayPositionValid(i)) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  /**
+   * Returns the adapter position of the first day in the month that is valid, or -1 if no days
+   * are valid.
+   */
+  int findFirstValidDayPosition() {
+    return findNextValidDayPosition(firstPositionInMonth() - 1);
+  }
+
+  /**
+   * Returns the adapter position of the last day in the month that is valid, or -1 if no days are
+   * valid.
+   */
+  int findLastValidDayPosition() {
+    return findPreviousValidDayPosition(lastPositionInMonth() + 1);
+  }
 }

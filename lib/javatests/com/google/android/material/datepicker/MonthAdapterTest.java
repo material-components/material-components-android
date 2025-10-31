@@ -388,6 +388,90 @@ public class MonthAdapterTest {
     assertFalse(monthAdapter.isEndOfRange(month.getDay(9)));
   }
 
+  @Test
+  public void isDayPositionValid_withValidator() {
+    Locale.setDefault(Locale.US);
+    Month month = Month.create(2019, Calendar.FEBRUARY);
+    long dateValidFrom = month.getDay(15);
+    CalendarConstraints constraints =
+        new CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointForward.from(dateValidFrom))
+            .build();
+    MonthAdapter adapter = new MonthAdapter(month, new SingleDateSelector(), constraints, null);
+
+    assertThat(adapter.isDayPositionValid(adapter.dayToPosition(14))).isFalse();
+    assertThat(adapter.isDayPositionValid(adapter.dayToPosition(15))).isTrue();
+  }
+
+  @Test
+  public void findNextValidDayPosition_withValidator() {
+    Locale.setDefault(Locale.US);
+    Month month = Month.create(2019, Calendar.FEBRUARY);
+    long dateValidFrom = month.getDay(15);
+    CalendarConstraints constraints =
+        new CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointForward.from(dateValidFrom))
+            .build();
+    MonthAdapter adapter = new MonthAdapter(month, new SingleDateSelector(), constraints, null);
+
+    // Search forward from day 28 (last valid day), expecting no results.
+    assertThat(adapter.findNextValidDayPosition(adapter.dayToPosition(28))).isEqualTo(-1);
+    // Search forward from day 14 (valid) to day 15 (valid).
+    assertThat(adapter.findNextValidDayPosition(adapter.dayToPosition(14)))
+        .isEqualTo(adapter.dayToPosition(15));
+  }
+
+  @Test
+  public void findPreviousValidDayPosition_withValidator() {
+    Locale.setDefault(Locale.US);
+    Month month = Month.create(2019, Calendar.FEBRUARY);
+    long dateValidFrom = month.getDay(15);
+    CalendarConstraints constraints =
+        new CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointForward.from(dateValidFrom))
+            .build();
+    MonthAdapter adapter = new MonthAdapter(month, new SingleDateSelector(), constraints, null);
+
+    // Search backward from day 15 (first valid day), expecting no results.
+    assertThat(adapter.findPreviousValidDayPosition(adapter.dayToPosition(15))).isEqualTo(-1);
+    // Search backward from day 16 (valid) to day 15 (valid).
+    assertThat(adapter.findPreviousValidDayPosition(adapter.dayToPosition(16)))
+        .isEqualTo(adapter.dayToPosition(15));
+  }
+
+  @Test
+  public void findFirstValidDayPosition_withValidator() {
+    Locale.setDefault(Locale.US);
+    Month month = Month.create(2019, Calendar.FEBRUARY);
+    long dateValidFrom = month.getDay(15);
+    CalendarConstraints constraints =
+        new CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointForward.from(dateValidFrom))
+            .build();
+    MonthAdapter adapter = new MonthAdapter(month, new SingleDateSelector(), constraints, null);
+
+    assertThat(adapter.findFirstValidDayPosition()).isEqualTo(adapter.dayToPosition(15));
+  }
+
+  @Test
+  public void findLastValidDayPosition_withValidator() {
+    Locale.setDefault(Locale.US);
+    Month month = Month.create(2019, Calendar.FEBRUARY);
+    long dateValidFrom = month.getDay(15);
+    long dateValidTo = month.getDay(18);
+    CalendarConstraints constraints =
+        new CalendarConstraints.Builder()
+            .setValidator(
+                CompositeDateValidator.allOf(
+                    Arrays.asList(
+                        DateValidatorPointForward.from(dateValidFrom),
+                        DateValidatorPointBackward.before(dateValidTo))))
+            .build();
+    MonthAdapter adapter = new MonthAdapter(month, new SingleDateSelector(), constraints, null);
+
+    assertThat(adapter.findLastValidDayPosition()).isEqualTo(adapter.dayToPosition(18));
+  }
+
   private MonthAdapter createRangeMonthAdapter(Month month, Pair<Long, Long> selection) {
     DateSelector<Pair<Long, Long>> dateSelector = new RangeDateSelector();
     dateSelector.setSelection(selection);
