@@ -185,7 +185,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private boolean shadowBitmapDrawingEnable = true;
 
   // Variables for corner morph.
-  private boolean boundsIsEmpty = true;
   private boolean isRoundRectCornerMorph = true;
   @NonNull private ShapeAppearanceModel strokeShapeAppearanceModel;
   @Nullable private SpringForce cornerSpringForce;
@@ -1111,10 +1110,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     strokePathDirty = true;
     super.onBoundsChange(bounds);
     if (drawableState.shapeAppearance.isStateful() && !bounds.isEmpty()) {
-      // We only want to skip the corner morph animation if this is the first non-empty bounds.
-      updateShape(getState(), /* skipAnimation= */ boundsIsEmpty);
+      // When bounds change, we want to snap to the new shape without animation.
+      updateShape(getState(), /* skipAnimation= */ true);
     }
-    boundsIsEmpty = bounds.isEmpty();
   }
 
   @Override
