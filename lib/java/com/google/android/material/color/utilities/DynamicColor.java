@@ -49,8 +49,7 @@ import java.util.function.Function;
  *
  * @hide
  */
-// Prevent lint for Function.apply not being available on Android before API level 14 (4.0.1).
-// "AndroidJdkLibsChecker" for Function, "NewApi" for Function.apply().
+// Suppress NewApi for Function.apply not being available on Android before API level 14 (4.0.1).
 // A java_library Bazel rule with an Android constraint cannot skip these warnings without this
 // annotation; another solution would be to create an android_library rule and supply
 // AndroidManifest with an SDK set higher than 14.
