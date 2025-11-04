@@ -108,6 +108,7 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.tooltip.TooltipDrawable;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
@@ -361,6 +362,9 @@ abstract class BaseSlider<
   private float touchDownAxis1;
   private float touchDownAxis2;
   private MotionEvent lastEvent;
+  @NonNull private final Rect viewRect = new Rect();
+  @NonNull List<Rect> exclusionRects = new ArrayList<>();
+  @NonNull private List<Float> previousDownTouchEventValues = new ArrayList<>();
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
   private float valueFrom;
@@ -3210,6 +3214,23 @@ abstract class BaseSlider<
   }
 
   @Override
+  public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    super.onLayout(changed, left, top, right, bottom);
+
+    viewRect.left = 0;
+    viewRect.top = 0;
+    viewRect.right = right - left;
+    viewRect.bottom = bottom - top;
+
+    if (!exclusionRects.contains(viewRect)) {
+      exclusionRects.add(viewRect);
+    }
+
+    // Make sure that the slider takes precedence over back navigation gestures.
+    ViewCompat.setSystemGestureExclusionRects(this, exclusionRects);
+  }
+
+  @Override
   public boolean onTouchEvent(@NonNull MotionEvent event) {
     if (!isEnabled()) {
       return false;
@@ -3225,6 +3246,8 @@ abstract class BaseSlider<
       case MotionEvent.ACTION_DOWN:
         touchDownAxis1 = eventCoordinateAxis1;
         touchDownAxis2 = eventCoordinateAxis2;
+        previousDownTouchEventValues.clear();
+        previousDownTouchEventValues = getValues();
 
         // If we're inside a vertical scrolling container,
         // we should start dragging in ACTION_MOVE
@@ -3284,7 +3307,6 @@ abstract class BaseSlider<
         invalidate();
         break;
       case MotionEvent.ACTION_UP:
-      case MotionEvent.ACTION_CANCEL:
         thumbIsPressed = false;
         // We need to handle a tap if the last event was down at the same point.
         if (lastEvent != null
@@ -3303,6 +3325,16 @@ abstract class BaseSlider<
           activeThumbIdx = -1;
           onStopTrackingTouch();
         }
+        invalidate();
+        break;
+      case MotionEvent.ACTION_CANCEL:
+        thumbIsPressed = false;
+        // Make sure that we reset the state of the slider if a cancel event happens.
+        snapThumbToPreviousDownTouchEventValue();
+        updateHaloHotspot();
+        resetThumbWidth();
+        activeThumbIdx = -1;
+        onStopTrackingTouch();
         invalidate();
         break;
       default:
@@ -3419,6 +3451,7 @@ abstract class BaseSlider<
     return snapThumbToValue(activeThumbIdx, value);
   }
 
+  @CanIgnoreReturnValue
   private boolean snapThumbToValue(int idx, float value) {
     focusedThumbIdx = idx;
 
@@ -3433,6 +3466,17 @@ abstract class BaseSlider<
 
     dispatchOnChangedFromUser(idx);
     return true;
+  }
+
+  private void snapThumbToPreviousDownTouchEventValue() {
+    if (activeThumbIdx != -1 && !previousDownTouchEventValues.isEmpty()) {
+      for (int i = 0; i < values.size(); i++) {
+        if (i == activeThumbIdx) {
+          snapThumbToValue(i, previousDownTouchEventValues.get(i));
+          break;
+        }
+      }
+    }
   }
 
   /** Thumbs cannot cross each other, clamp the value to a bound or the value next to it. */
