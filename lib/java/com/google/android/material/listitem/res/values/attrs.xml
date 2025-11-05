@@ -22,6 +22,11 @@
   <!-- Style to use for segmented ListItemCardView. -->
   <attr name="listItemCardViewSegmentedStyle" format="reference"/>
 
+  <declare-styleable name="ListItemCardView">
+    <!-- Whether or not to enable the swipe to action. -->
+    <attr name="swipeToPrimaryActionEnabled" format="boolean"/>
+  </declare-styleable>
+
   <!-- Shape appearance of a single item in the list. -->
   <attr name="listItemShapeAppearanceSingle" format="reference"/>
   <!-- Shape appearance of the first item in the list. -->

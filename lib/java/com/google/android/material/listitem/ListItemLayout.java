@@ -21,6 +21,7 @@ import static com.google.android.material.listitem.SwipeableListItem.STATE_CLOSE
 import static com.google.android.material.listitem.SwipeableListItem.STATE_DRAGGING;
 import static com.google.android.material.listitem.SwipeableListItem.STATE_OPEN;
 import static com.google.android.material.listitem.SwipeableListItem.STATE_SETTLING;
+import static com.google.android.material.listitem.SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -68,9 +69,6 @@ public class ListItemLayout extends FrameLayout {
   private static final int[] SINGLE_STATE_SET = {android.R.attr.state_single};
   private static final int SETTLING_DURATION = 350;
   private static final int DEFAULT_SIGNIFICANT_VEL_THRESHOLD = 500;
-  // The overshoot that the user can swipe the reveal view by before it settles
-  // back to the closest stable swipe state.
-  private final int swipeMaxOvershoot;
 
   @Nullable private int[] positionState;
 
@@ -84,7 +82,8 @@ public class ListItemLayout extends FrameLayout {
   @Nullable private View swipeToRevealLayout;
   private boolean originalClipToPadding;
 
-  private int swipeState = STATE_CLOSED;
+  @SwipeState private int swipeState = STATE_CLOSED;
+  @StableSwipeState private int lastStableSwipeState = STATE_CLOSED;
   private final StateSettlingTracker stateSettlingTracker = new StateSettlingTracker();
 
   // Cubic bezier curve approximating a spring with damping = 0.6 and stiffness = 800
@@ -124,14 +123,14 @@ public class ListItemLayout extends FrameLayout {
   }
 
   public ListItemLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    this(context, attrs, defStyleAttr, R.attr.listItemLayoutStyle);
+    this(context, attrs, defStyleAttr, R.style.Widget_Material3_ListItemLayout);
   }
 
   public ListItemLayout(
       @NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(wrap(context, attrs, defStyleAttr, defStyleRes), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
-    swipeMaxOvershoot = getResources().getDimensionPixelSize(R.dimen.m3_list_max_swipe_overshoot);
   }
 
   @Override
@@ -215,8 +214,6 @@ public class ListItemLayout extends FrameLayout {
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
     if (ensureSwipeToRevealSetupIfNeeded()) {
-      // TODO - b/447218120: Check that at least one child is a ListItemRevealLayout and the other
-      //  is List content.
       // Process the event regardless of the event type.
       viewDragHelper.processTouchEvent(ev);
       gestureDetector.onTouchEvent(ev);
@@ -272,26 +269,46 @@ public class ListItemLayout extends FrameLayout {
 
                 @Override
                 public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
+                  if (!(contentView instanceof SwipeableListItem
+                      && swipeToRevealLayout instanceof RevealableListItem)) {
+                    return 0;
+                  }
                   // TODO:b/443153708 - Support RTL
-                  LayoutParams lp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
+                  MarginLayoutParams revealViewLp =
+                      (LayoutParams) swipeToRevealLayout.getLayoutParams();
+                  MarginLayoutParams contentViewLp = (LayoutParams) contentView.getLayoutParams();
+                  int leftPositionClamp =
+                      ((SwipeableListItem) contentView).isSwipeToPrimaryActionEnabled()
+                          ? originalContentViewLeft
+                              - contentView.getMeasuredWidth()
+                              - contentViewLp.rightMargin
+                          : // left margin is accounted for in originalContentViewLeft
+                          originalContentViewLeft
+                              - ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
+                              - revealViewLp.leftMargin
+                              - revealViewLp.rightMargin;
                   return max(
                       min(left, originalContentViewLeft),
-                      originalContentViewLeft
-                          - ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
-                          - lp.leftMargin
-                          - lp.rightMargin
-                          - swipeMaxOvershoot);
+                      leftPositionClamp - ((SwipeableListItem) contentView).getSwipeMaxOvershoot());
                 }
 
                 @Override
                 public int getViewHorizontalDragRange(@NonNull View child) {
-                  return ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
-                      + swipeMaxOvershoot;
+                  if (contentView instanceof SwipeableListItem
+                      && swipeToRevealLayout instanceof RevealableListItem) {
+                    return ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
+                        + ((SwipeableListItem) contentView).getSwipeMaxOvershoot();
+                  }
+                  return 0;
                 }
 
                 @Override
                 public void onViewPositionChanged(
                     @NonNull View changedView, int left, int top, int dx, int dy) {
+                  if (!(contentView instanceof SwipeableListItem
+                      && swipeToRevealLayout instanceof RevealableListItem)) {
+                    return;
+                  }
                   super.onViewPositionChanged(changedView, left, top, dx, dy);
                   // TODO:b/443153708 - Support RTL
                   revealViewOffset = left - originalContentViewLeft;
@@ -314,19 +331,46 @@ public class ListItemLayout extends FrameLayout {
 
                 @Override
                 public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
-                  startSettling(contentView, calculateTargetSwipeState(xvel, releasedChild));
+                  if (contentView instanceof SwipeableListItem
+                      && swipeToRevealLayout instanceof RevealableListItem) {
+                    startSettling(contentView, calculateTargetSwipeState(xvel, releasedChild));
+                  }
                 }
 
                 private int calculateTargetSwipeState(float xvel, View swipeView) {
+                  if (!((SwipeableListItem) swipeView).isSwipeToPrimaryActionEnabled()) {
+                    if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
+                      return STATE_CLOSED;
+                    }
+                    if (xvel < -DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the left
+                      return STATE_OPEN;
+                    }
+                    // Settle to the closest point if velocity is not significant
+                    return Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())
+                            < Math.abs(swipeView.getLeft() - getSwipeViewClosedOffset())
+                        ? STATE_OPEN
+                        : STATE_CLOSED;
+                  }
+
+                  // Swipe to action is supported
                   if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
-                    return STATE_CLOSED;
+                    return lastStableSwipeState == STATE_SWIPE_PRIMARY_ACTION
+                        ? STATE_OPEN
+                        : STATE_CLOSED;
                   }
                   if (xvel < -DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the left
-                    return STATE_OPEN;
+                    return lastStableSwipeState == STATE_CLOSED
+                        ? STATE_OPEN
+                        : STATE_SWIPE_PRIMARY_ACTION;
+                  }
+
+                  // Settle to the closest point if velocity is not significant
+                  if (Math.abs(swipeView.getLeft() - getSwipeToActionOffset())
+                      < Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())) {
+                    return STATE_SWIPE_PRIMARY_ACTION;
                   }
                   if (Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())
                       < Math.abs(swipeView.getLeft() - getSwipeViewClosedOffset())) {
-                    // Settle to the closest point if velocity is not significant
                     return STATE_OPEN;
                   }
                   return STATE_CLOSED;
@@ -378,6 +422,17 @@ public class ListItemLayout extends FrameLayout {
     return originalContentViewLeft;
   }
 
+  private int getSwipeToActionOffset() {
+    if (contentView == null) {
+      return 0;
+    }
+    LayoutParams lp = (LayoutParams) contentView.getLayoutParams();
+    return originalContentViewLeft
+        - contentView.getMeasuredWidth()
+        - lp.leftMargin
+        - lp.rightMargin;
+  }
+
   private int getOffsetForSwipeState(@StableSwipeState int swipeState) {
     if (swipeToRevealLayout == null) {
       throw new IllegalArgumentException(
@@ -388,6 +443,8 @@ public class ListItemLayout extends FrameLayout {
         return getSwipeViewClosedOffset();
       case STATE_OPEN:
         return getSwipeRevealViewRevealedOffset();
+      case STATE_SWIPE_PRIMARY_ACTION:
+        return getSwipeToActionOffset();
       default:
         throw new IllegalArgumentException("Invalid state to get swipe offset: " + swipeState);
     }
@@ -418,7 +475,19 @@ public class ListItemLayout extends FrameLayout {
   }
 
   private void setSwipeStateInternal(@SwipeState int swipeState) {
+    // If swipe to action is not supported but the swipe state to be set in
+    // STATE_SWIPE_PRIMARY_ACTION, we do nothing.
+    if (swipeState == STATE_SWIPE_PRIMARY_ACTION
+        && !(contentView instanceof SwipeableListItem
+            && ((SwipeableListItem) contentView).isSwipeToPrimaryActionEnabled())) {
+      return;
+    }
     this.swipeState = swipeState;
+    if (swipeState == STATE_CLOSED
+        || swipeState == STATE_OPEN
+        || swipeState == STATE_SWIPE_PRIMARY_ACTION) {
+      this.lastStableSwipeState = swipeState;
+    }
   }
 
   @Override

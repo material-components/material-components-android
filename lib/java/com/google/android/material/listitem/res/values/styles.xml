@@ -29,6 +29,7 @@
     <item name="shapeAppearance">@xml/m3_list_item_shape_state_list</item>
     <item name="cardCornerRadius">@null</item>
     <item name="android:duplicateParentState">true</item>
+    <item name="swipeToPrimaryActionEnabled">false</item>
   </style>
 
   <style name="Widget.Material3.ListItemCardView.Segmented">

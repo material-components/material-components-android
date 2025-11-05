@@ -19,7 +19,7 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 
-/** 
+/**
  * Interface for the part of a ListItem that is able to be revealed when swiped.
  *
  * @hide

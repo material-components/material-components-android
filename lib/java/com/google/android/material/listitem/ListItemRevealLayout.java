@@ -22,7 +22,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import com.google.android.material.animation.AnimationUtils;
+import java.lang.ref.WeakReference;
 
 /**
  * Layout that is intended to be used as the {@link android.view.ViewGroup} that is revealed when a
@@ -45,6 +48,8 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
   private int revealedWidth = 0;
   private int[] originalChildWidths;
   private int[] originalChildHeights;
+  @Nullable private WeakReference<View> siblingSwipeableView;
+
 
   // TODO:b/443149411 - Make the min child width customizable
   private static final int MIN_CHILD_WIDTH = 15;
@@ -72,46 +77,34 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
       saveOriginalChildSizes(childCount);
     }
 
+    if (siblingSwipeableView == null || siblingSwipeableView.get() == null) {
+      siblingSwipeableView = new WeakReference<>(findSiblingSwipeableView());
+    }
+    int overswipeAllowance =
+        siblingSwipeableView.get() != null
+            ? ((SwipeableListItem) siblingSwipeableView.get()).getSwipeMaxOvershoot()
+            : 0;
+    int fullRevealableWidth = calculateFullRevealableWidth();
+    setVisibility(revealedWidth == 0 ? INVISIBLE : VISIBLE);
+
     if (revealedWidth == 0) {
       // If the desired width is 0, we want to measure the width as 0 so this layout is not
       // shown at all
-      setVisibility(INVISIBLE);
       setMeasuredDimension(0, intrinsicHeight);
+    } else if (childCount == 0) {
+      // If there's no children, just set to desired width without doing anything.
+      setMeasuredDimension(revealedWidth, intrinsicHeight);
+    } else if (revealedWidth > intrinsicWidth + overswipeAllowance
+        && fullRevealableWidth > intrinsicWidth) {
+      measureByGrowingPrimarySwipeAction(fullRevealableWidth);
     } else {
-      setVisibility(VISIBLE);
-      float ratio = (float) revealedWidth / intrinsicWidth;
-      int realWidth = 0;
-      int adjustedPaddingLeft = (int) (getPaddingLeft() * ratio);
-      int adjustedPaddingRight = (int) (getPaddingRight() * ratio);
-      for (int i = 0; i < childCount; i++) {
-        View child = getChildAt(i);
-        if (child.getVisibility() == GONE) {
-          continue;
-        }
-        // We want to keep the intrinsic child ratios the same
-        int childWidth = max(MIN_CHILD_WIDTH, (int) (originalChildWidths[i] * ratio));
-        child.measure(
-            MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY),
-            MeasureSpec.makeMeasureSpec(originalChildHeights[i], MeasureSpec.EXACTLY));
-        final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
-        int adjustedLeftMargin = (int) (lp.leftMargin * ratio);
-        int adjustedRightMargin = (int) (lp.rightMargin * ratio);
-        realWidth += childWidth + adjustedLeftMargin + adjustedRightMargin;
-      }
-      // revealedWidth and realWidth should be the same apart from the minimum child restrictions,
-      // but because of rounding, revealedWidth may be a few pixels bigger. Thus we take the
-      // max.
-      setMeasuredDimension(
-          max(revealedWidth, realWidth + adjustedPaddingLeft + adjustedPaddingRight),
-          intrinsicHeight);
+      measureByPreservingSwipeActionRatios(childCount);
     }
-    // TODO: b/447226989 - Handle the case for when desired width is greater than intrinsic width
-    // and we want the last child to grow in width
   }
 
   @Override
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
-    float ratio = (float) revealedWidth / intrinsicWidth;
+    float ratio = revealedWidth >= intrinsicWidth ? 1f : (float) revealedWidth / intrinsicWidth;
     int currentLeft = (int) (getPaddingLeft() * ratio);
     final int paddingTop = getPaddingTop();
     final int count = getChildCount();
@@ -196,6 +189,83 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
             maxHeight, heightMeasureSpec, (childState << MEASURED_HEIGHT_STATE_SHIFT));
   }
 
+  private void measureByGrowingPrimarySwipeAction(int fullRevealableWidth) {
+    // Expand only the last visible child and shrink other visible children to the min child size
+    // We keep the margins the same even as we shrink the other children
+    Integer lastVisibleChildIndex = findLastVisibleChildIndex();
+    if (lastVisibleChildIndex != null) {
+      int targetWidthMinusLastChild = getPaddingStart() + getPaddingEnd();
+      // when progress is 0, we are at the intrinsic width
+      // when progress is 1, we are at fully swiped width
+      float progress =
+          (float) (revealedWidth - intrinsicWidth) / (fullRevealableWidth - intrinsicWidth);
+      for (int i = 0; i < lastVisibleChildIndex; i++) {
+        View child = getChildAt(i);
+        if (child.getVisibility() == GONE) {
+          continue;
+        }
+        child.measure(
+            MeasureSpec.makeMeasureSpec(
+                AnimationUtils.lerp(
+                    max(originalChildWidths[i], MIN_CHILD_WIDTH), MIN_CHILD_WIDTH, progress),
+                MeasureSpec.EXACTLY),
+            MeasureSpec.makeMeasureSpec(originalChildHeights[i], MeasureSpec.EXACTLY));
+        final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+        targetWidthMinusLastChild += lp.leftMargin + lp.rightMargin + MIN_CHILD_WIDTH;
+      }
+      View lastChild = getChildAt(lastVisibleChildIndex);
+      final MarginLayoutParams lp = (MarginLayoutParams) lastChild.getLayoutParams();
+      int lastChildTargetWidth =
+          fullRevealableWidth - targetWidthMinusLastChild - lp.rightMargin - lp.leftMargin;
+      // This is not an intended use case, but if for some reason the revealed width is set to be
+      // larger than the full revealable width (the swipe view width), we'll just add the extra
+      // width to the last child.
+      int extraLastChildWidth = Math.max((revealedWidth - fullRevealableWidth), 0);
+      lastChild.measure(
+          MeasureSpec.makeMeasureSpec(
+              AnimationUtils.lerp(
+                      originalChildWidths[lastVisibleChildIndex], lastChildTargetWidth, progress)
+                  + extraLastChildWidth,
+              MeasureSpec.EXACTLY),
+          MeasureSpec.makeMeasureSpec(
+              originalChildHeights[lastVisibleChildIndex], MeasureSpec.EXACTLY));
+    }
+    setMeasuredDimension(revealedWidth, intrinsicHeight);
+  }
+
+  private void measureByPreservingSwipeActionRatios(int childCount) {
+    // This measures all children to keep the same intrinsic ratios no matter what the measure
+    // policy is. This case covers all other cases, including the case where fullRevealableWidth
+    // is smaller than the intrinsic width, which means that there's not enough room to even grow
+    // past the intrinsic width (eg. the swipe sibling is smaller than the intrinsic width) so
+    // the expand last child policy should default to this measure policy.
+    float ratio = (float) revealedWidth / intrinsicWidth;
+    int realWidth = 0;
+    int adjustedPaddingLeft = (int) (getPaddingLeft() * ratio);
+    int adjustedPaddingRight = (int) (getPaddingRight() * ratio);
+    for (int i = 0; i < childCount; i++) {
+      View child = getChildAt(i);
+      if (child.getVisibility() == GONE) {
+        continue;
+      }
+      // We want to keep the intrinsic child ratios the same
+      int childWidth = max(MIN_CHILD_WIDTH, (int) (originalChildWidths[i] * ratio));
+      child.measure(
+          MeasureSpec.makeMeasureSpec(childWidth, MeasureSpec.EXACTLY),
+          MeasureSpec.makeMeasureSpec(originalChildHeights[i], MeasureSpec.EXACTLY));
+      final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
+      int adjustedLeftMargin = (int) (lp.leftMargin * ratio);
+      int adjustedRightMargin = (int) (lp.rightMargin * ratio);
+      realWidth += childWidth + adjustedLeftMargin + adjustedRightMargin;
+    }
+    // revealedWidth and realWidth should be the same apart from the minimum child restrictions,
+    // but because of rounding, revealedWidth may be a few pixels bigger. Thus we take the
+    // max.
+    setMeasuredDimension(
+        max(revealedWidth, realWidth + adjustedPaddingLeft + adjustedPaddingRight),
+        intrinsicHeight);
+  }
+
   private void saveOriginalChildSizes(int childCount) {
     originalChildWidths = new int[childCount];
     originalChildHeights = new int[childCount];
@@ -264,5 +334,43 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
     }
     this.revealedWidth = revealedWidth;
     requestLayout();
+  }
+
+  private int calculateFullRevealableWidth() {
+    if (siblingSwipeableView != null && siblingSwipeableView.get() != null) {
+      return siblingSwipeableView.get().getMeasuredWidth();
+    } else if (getParent() instanceof View) {
+      return ((View) getParent()).getMeasuredWidth();
+    } else {
+      return intrinsicWidth;
+    }
+  }
+
+  // Returns the sibling SwipeableListItem if it exists.
+  @Nullable
+  private View findSiblingSwipeableView() {
+    if (!(getParent() instanceof ViewGroup)) {
+      return null;
+    }
+    ViewGroup parent = (ViewGroup) getParent();
+    int childCount = parent.getChildCount();
+    for (int i = 0; i < childCount; i++) {
+      View child = parent.getChildAt(i);
+      if (child instanceof SwipeableListItem) {
+        return child;
+      }
+    }
+    return null;
+  }
+
+  @Nullable
+  private Integer findLastVisibleChildIndex() {
+    int childCount = getChildCount();
+    for (int i = childCount - 1; i >= 0; i--) {
+      if (getChildAt(i).getVisibility() != GONE) {
+        return i;
+      }
+    }
+    return null;
   }
 }
