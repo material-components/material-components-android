@@ -1563,8 +1563,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
     ShapeAppearanceModel shapeAppearanceModel =
         drawableState.shapeAppearance.getShapeForState(state);
-    if (areAllElementsEqual(springAnimatedCornerSizes)) {
-      isRoundRectCornerMorph = shapeAppearanceModel.isRoundRect(getBoundsAsRectF());
+    isRoundRectCornerMorph =
+        areAllElementsEqual(springAnimatedCornerSizes)
+            && shapeAppearanceModel.isRoundRect(getBoundsAsRectF());
+    if (!isRoundRectCornerMorph) {
+      pathDirty = true;
+      strokePathDirty = true;
     }
     for (int i = 0; i < NUM_CORNERS; i++) {
       float targetCornerSize =
