@@ -161,7 +161,6 @@ icons, and an embedded FAB.
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        style="@style/Widget.Material3.BottomAppBar"
         app:navigationIcon="@drawable/ic_drawer_menu_24px"
         app:menu="@menu/bottom_app_bar"
         />

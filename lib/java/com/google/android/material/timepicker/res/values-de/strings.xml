@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Uhrzeit auswählen</string>
   <string name="material_timepicker_minute">Minute</string>
   <string name="material_timepicker_hour">Stunde</string>
+  <string name="material_timepicker_minute_error">Zulässige Werte: 0–59</string>
+  <string name="material_timepicker_hour_error">Zulässige Werte: 1–12</string>
+  <string name="material_timepicker_hour_error_24h">Zulässige Werte: 0–23</string>
   <string name="material_hour_suffix">%1$s Uhr</string>
   <string name="material_hour_24h_suffix">%1$s Stunden</string>
   <string name="material_minute_suffix">%1$s Minuten</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Abbrechen</string>
   <string name="material_timepicker_text_input_mode_description">In den Texteingabemodus wechseln, um die Uhrzeit einzugeben.</string>
   <string name="material_timepicker_clock_mode_description">In den Uhrzeitmodus wechseln, um die Uhrzeit einzugeben.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">In den Texteingabemodus wechseln</string>
+  <string name="material_timepicker_clock_mode_tooltip">In den Uhrmodus wechseln</string>
 </resources>

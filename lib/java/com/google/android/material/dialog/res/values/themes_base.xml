@@ -280,7 +280,8 @@
     <item name="floatingToolbarVibrantStyle">@style/Widget.Material3.FloatingToolbar.Vibrant</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
     <item name="listItemLayoutStyle">@style/Widget.Material3.ListItemLayout</item>
-    <item name="listItemLayoutSegmentedStyle">@style/Widget.Material3.ListItemLayout.Segmented</item>
+    <item name="listItemCardViewStyle">@style/Widget.Material3.ListItemCardView</item>
+    <item name="listItemCardViewSegmentedStyle">@style/Widget.Material3.ListItemCardView.Segmented</item>
     <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
@@ -600,7 +601,8 @@
     <item name="floatingToolbarVibrantStyle">@style/Widget.Material3.FloatingToolbar.Vibrant</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
     <item name="listItemLayoutStyle">@style/Widget.Material3.ListItemLayout</item>
-    <item name="listItemLayoutSegmentedStyle">@style/Widget.Material3.ListItemLayout.Segmented</item>
+    <item name="listItemCardViewStyle">@style/Widget.Material3.ListItemCardView</item>
+    <item name="listItemCardViewSegmentedStyle">@style/Widget.Material3.ListItemCardView.Segmented</item>
     <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>

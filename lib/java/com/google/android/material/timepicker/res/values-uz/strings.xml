@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Vaqtni tanlang</string>
   <string name="material_timepicker_minute">Daqiqa</string>
   <string name="material_timepicker_hour">Soat</string>
+  <string name="material_timepicker_minute_error">Daqiqa 0–59 boʻlsin</string>
+  <string name="material_timepicker_hour_error">Soat 1–12 boʻlsin</string>
+  <string name="material_timepicker_hour_error_24h">Soat 0–23 boʻlsin</string>
   <string name="material_hour_suffix">%1$s soat</string>
   <string name="material_hour_24h_suffix">%1$s soat</string>
   <string name="material_minute_suffix">%1$s daqiqa</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Bekor qilish</string>
   <string name="material_timepicker_text_input_mode_description">Vaqtni kiritish uchun matn kiritish rejimiga o‘ting.</string>
   <string name="material_timepicker_clock_mode_description">Vaqtni kiritish uchun soat rejimiga o‘ting.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Matn kiritish rejimiga oʻtish</string>
+  <string name="material_timepicker_clock_mode_tooltip">Soat rejimiga oʻtish</string>
 </resources>

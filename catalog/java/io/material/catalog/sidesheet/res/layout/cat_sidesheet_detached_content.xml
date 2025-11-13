@@ -24,10 +24,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:focusable="false"
     android:clickable="true"
-    android:focusable="true"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="KeyboardInaccessibleWidget">
 
     <Button
       android:id="@+id/detached_close_icon_button"

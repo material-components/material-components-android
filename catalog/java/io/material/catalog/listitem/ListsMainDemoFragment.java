@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -127,11 +128,12 @@ public class ListsMainDemoFragment extends DemoFragment {
     private final TextView textView;
     private final MaterialCardView cardView;
 
-
+    private final ImageView leadingIcon;
     public CustomItemViewHolder(@NonNull View itemView) {
       super(itemView);
       textView = itemView.findViewById(R.id.cat_list_item_text);
       cardView = itemView.findViewById(R.id.cat_list_item_card_view);
+      leadingIcon = itemView.findViewById(R.id.cat_list_item_start_icon);
     }
 
     public void bind(@NonNull CustomListItemData data) {
@@ -143,6 +145,7 @@ public class ListsMainDemoFragment extends DemoFragment {
             Toast.makeText(v.getContext(), R.string.mtrl_list_item_clicked, Toast.LENGTH_SHORT)
                 .show();
             cardView.toggle();
+            leadingIcon.setSelected(cardView.isChecked());
             data.checked = !data.checked;
           });
     }

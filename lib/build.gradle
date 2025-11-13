@@ -14,6 +14,7 @@ dependencies {
   api libs.androidx.coordinatorlayout
   api libs.androidx.constraintlayout
   api libs.androidx.core
+  api libs.androidx.customview
   api libs.androidx.drawerlayout
   api libs.androidx.dynamicanimation
   api libs.androidx.fragment

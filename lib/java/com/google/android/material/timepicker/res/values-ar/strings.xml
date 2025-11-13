@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">اختيار الوقت</string>
   <string name="material_timepicker_minute">دقيقة</string>
   <string name="material_timepicker_hour">الساعة</string>
+  <string name="material_timepicker_minute_error">الدقيقة: بين 0 و59</string>
+  <string name="material_timepicker_hour_error">الساعة: بين 1 و12</string>
+  <string name="material_timepicker_hour_error_24h">الساعة: بين 0 و23</string>
   <string name="material_hour_suffix">الساعة %1$s</string>
   <string name="material_hour_24h_suffix">%1$s ساعة</string>
   <string name="material_minute_suffix">%1$s دقيقة</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">إلغاء</string>
   <string name="material_timepicker_text_input_mode_description">يُرجى التبديل إلى وضع إدخال النص لإدخال الوقت.</string>
   <string name="material_timepicker_clock_mode_description">يُرجى التبديل إلى وضع الساعة لإدخال الوقت.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">التبديل إلى وضع \"إدخال النص\"</string>
+  <string name="material_timepicker_clock_mode_tooltip">التبديل إلى وضع \"الساعة\"</string>
 </resources>

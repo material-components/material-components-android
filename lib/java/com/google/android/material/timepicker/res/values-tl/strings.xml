@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Pumili ng oras</string>
   <string name="material_timepicker_minute">Minuto</string>
   <string name="material_timepicker_hour">Oras</string>
+  <string name="material_timepicker_minute_error">Dapat 0–59 ang minuto</string>
+  <string name="material_timepicker_hour_error">Dapat 1–12 ang oras</string>
+  <string name="material_timepicker_hour_error_24h">Dapat 0–23 ang oras</string>
   <string name="material_hour_suffix">%1$s o\'clock</string>
   <string name="material_hour_24h_suffix">%1$s (na) oras</string>
   <string name="material_minute_suffix">%1$s (na) minuto</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Kanselahin</string>
   <string name="material_timepicker_text_input_mode_description">Lumipat sa pamamaraan ng pag-input ng text para sa input na oras.</string>
   <string name="material_timepicker_clock_mode_description">Lumipat sa mode ng orasan para sa input na oras.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Lumipat sa pamamaraan ng pag-input ng text</string>
+  <string name="material_timepicker_clock_mode_tooltip">Lumipat sa clock mode</string>
 </resources>

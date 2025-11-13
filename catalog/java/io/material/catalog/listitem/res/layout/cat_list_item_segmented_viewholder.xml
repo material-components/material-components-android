@@ -14,45 +14,70 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<com.google.android.material.listitem.ListItemLayout xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:tools="http://schemas.android.com/tools"
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content"
-  style="?attr/listItemLayoutSegmentedStyle"
-  android:paddingHorizontal="8dp">
-  <com.google.android.material.card.MaterialCardView
-    android:id="@+id/cat_list_item_card_view"
-    android:layout_width="match_parent"
+<com.google.android.material.listitem.ListItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
-    android:checkable="true"
-    android:clickable="true"
-    android:focusable="true">
+    android:layout_width="match_parent"
+    android:paddingHorizontal="8dp">
 
-    <LinearLayout
-      android:orientation="horizontal"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:gravity="center_vertical"
-      tools:ignore="UseCompoundDrawables">
-
-      <ImageView
-        android:id="@+id/cat_list_item_start_icon"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:src="@drawable/ic_star_icon_24px"
-        android:contentDescription="@string/cat_list_item_icon_content_description" />
-
-      <TextView
-        android:id="@+id/cat_list_item_text"
-        android:layout_width="0dp"
+    <com.google.android.material.listitem.ListItemCardView
+        android:id="@+id/cat_list_item_card_view"
+        android:checkable="true"
+        android:clickable="true"
+        android:focusable="true"
+        style="?attr/listItemCardViewSegmentedStyle"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:textAppearance="?attr/textAppearanceBodyLarge"/>
+        android:layout_width="match_parent"
+        app:swipeToPrimaryActionEnabled="true">
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+            <ImageView
+                android:id="@+id/cat_list_item_start_icon"
+                style="@style/Widget.Material3.ImageView.ListItem.Leading"
+                android:contentDescription="@string/cat_list_item_icon_content_description"
+                android:layout_height="20dp"
+                android:layout_width="20dp"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                app:srcCompat="@drawable/ic_star_icon_checkable_24px" />
+            <TextView
+                android:id="@+id/cat_list_item_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textAppearance="?attr/textAppearanceBodyLarge" />
+        </LinearLayout>
+    </com.google.android.material.listitem.ListItemCardView>
 
-    </LinearLayout>
-  </com.google.android.material.card.MaterialCardView>
+    <com.google.android.material.listitem.ListItemRevealLayout
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content">
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialIconButtonFilledStyle"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginStart="2dp"
+            android:layout_width="wrap_content"
+            app:icon="@drawable/ic_add_24px"
+            app:iconGravity="top" />
+        <com.google.android.material.button.MaterialButton
+            style="?attr/materialIconButtonFilledStyle"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:layout_height="56dp"
+            android:layout_marginEnd="2dp"
+            android:layout_width="wrap_content"
+            app:icon="@drawable/ic_add_24px"
+            app:iconGravity="top" />
+    </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>

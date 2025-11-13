@@ -16,6 +16,7 @@ androidXCore                         = "1.16.0"
 androidXComposeMaterialIconsCore     = "1.7.8"
 androidXComposeMaterialIconsExtended = "1.7.8"
 androidXComposeMaterial3             = "1.4.0-alpha14"
+androidXCustomView                   = "1.2.0"
 androidXDrawerLayout                 = "1.1.1"
 androidXDynamicAnimation             = "1.1.0"
 androidXEspresso                     = "3.1.0"
@@ -58,6 +59,7 @@ androidx-core = { group = "androidx.core", name = "core", version.ref = "android
 androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "androidXComposeMaterialIconsCore" }
 androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "androidXComposeMaterialIconsExtended" }
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidXComposeMaterial3" }
+androidx-customview = { group = "androidx.customview", name = "customview", version.ref = "androidXCustomView" }
 androidx-drawerlayout = { group = "androidx.drawerlayout", name = "drawerlayout", version.ref = "androidXDrawerLayout" }
 androidx-dynamicanimation = { group = "androidx.dynamicanimation", name = "dynamicanimation", version.ref = "androidXDynamicAnimation" }
 androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "androidXFragment" }

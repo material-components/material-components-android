@@ -16,7 +16,7 @@
 -->
 <resources>
   <string name="error_a11y_label">Қате: жарамсыз</string>
-  <string name="mtrl_checkbox_state_description_checked">Құсбелгі қойылды.</string>
+  <string name="mtrl_checkbox_state_description_checked">Белгіленді</string>
   <string name="mtrl_checkbox_state_description_unchecked">Құсбелгі қойылмады.</string>
   <string name="mtrl_checkbox_state_description_indeterminate">Құсбелгі жартылай қойылды.</string>
 </resources>

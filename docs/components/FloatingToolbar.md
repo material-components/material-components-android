@@ -33,12 +33,14 @@ Vertical floating toolbar                                                       
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/toolbars/guidelines#d6b7bcb1-295d-41e6-a051-37f12e1c96ab).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive themes` setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-<img src="assets/floatingtoolbar/floatingtoolbar_expressive.png" alt="The floating toolbar expressive.png" width="700"/>
+<img src="assets/floatingtoolbar/floatingtoolbar-expressive.png" alt="The floating toolbar expressive.png" width="700"/>
 Floating toolbar show controls relevant to the current page
 
 The **floating toolbar** was created for more versatility, greater amounts of
@@ -53,6 +55,57 @@ actions, and more variety in where it's placed.
     *   Color: Standard or vibrant
     *   Flexibility: Can hold many elements and components. Can be paired with
         FAB.
+
+### M3 Expressive styles
+
+There are two styles for the floating toolbar specifying different color
+schemes:
+
+```xml
+<item name="floatingToolbarStyle">@style/Widget.Material3Expressive.FloatingToolbar</item>
+<item name="floatingToolbarVibrantStyle">@style/Widget.Material3Expressive.FloatingToolbar.Vibrant</item>
+```
+
+Standard Floating Toolbar                                                          | Vibrant Floating Toolbar
+---------------------------------------------------------------------------------- | ------------------------
+![Standard floating toolbar](assets/floatingtoolbar/standard-floating-toolbar.png) | ![Vibrant floating toolbar](assets/floatingtoolbar/vibrant-floating-toolbar.png)
+
+By default, if a style is not specified, a `FloatingToolbar` will use
+`floatingToolbarStyle` from the theme.
+
+There are also styles specific to components inside the floating toolbar that
+are recommended to be used. Currently, the recommendation exists for icon
+buttons: `Widget.Material3Expressive.FloatingToolbar.IconButton` and
+`Widget.Material3Expressive.FloatingToolbar.IconButton.Vibrant`.
+
+Example usage:
+
+```xml
+<com.google.android.material.floatingtoolbar.FloatingToolbarLayout
+    android:id="@+id/floating_toolbar_bottom"
+    android:layout_margin="16dp"
+    style="?attr/floatingToolbarVibrantStyle"
+    android:layout_gravity="center|bottom"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <com.google.android.material.overflow.OverflowLinearLayout
+      android:id="@+id/floating_toolbar_child_bottom"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:orientation="horizontal">
+
+      <Button
+          android:id="@+id/floating_toolbar_vibrant_button_bold"
+          style="@style/Widget.Material3Expressive.FloatingToolbar.IconButton.Vibrant"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checkable="true"
+          android:contentDescription="@string/floating_toolbar_button_bold_content_description"
+          app:icon="@drawable/ic_format_bold_24px" />
+      ...
+```
 
 ## Key properties
 
@@ -171,12 +224,11 @@ Here's what a typical layout would look like:
   </com.google.android.material.floatingtoolbar.FloatingToolbarLayout>
 ```
 
-A Floating Toolbar is a `FrameLayout` that provides additional styling and
-functionality.
-You may add children to it as you would to a `FrameLayout`. It's recommended to
-have its children wrapped by an `OverflowLinearLayout` that will handle
-automatically adding items to an overflow button when there's not enough screen
-space to show all the items.
+A floating toolbar is a `FrameLayout` that provides additional styling and
+functionality. You may add children to it as you would to a `FrameLayout`. It's
+recommended to have its children wrapped by an `OverflowLinearLayout` that will
+handle automatically adding items to an overflow button when there's not enough
+screen space to show all the items.
 
 When using `OverflowLinearLayout`, you should also set `app:layout_overflowText`
 as that will be the text of the menu item that corresponds to the hidden child.
@@ -184,7 +236,7 @@ Optionally, you can also set `app:layout_overflowIcon`. See
 [OverflowLinearLayout](https://github.com/material-components/material-components-android/tree/master//docs/components/Overflow.md)
 for more info.
 
-Note: if the child view that is clickable is not a direct child of
+**Note:** if the child view that is clickable is not a direct child of
 `OverflowLinearLayout`, such as the case of the example above, make sure to
 propagate the parent's click to the child. That is so overflowed items in the
 overflowed menu respond properly to being clicked. Alternatively, you can also

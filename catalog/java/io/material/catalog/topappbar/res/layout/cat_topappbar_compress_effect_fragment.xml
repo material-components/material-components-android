@@ -118,10 +118,7 @@
         android:textOn="@string/cat_topappbar_compress_hide_toolbar_toggle_label"
         android:textOff="@string/cat_topappbar_compress_show_toolbar_toggle_label" />
 
-      <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_topappbar_lorem_ipsum"/>
+        <include layout="@layout/cat_topappbar_filler_text_view"/>
 
     </LinearLayout>
 

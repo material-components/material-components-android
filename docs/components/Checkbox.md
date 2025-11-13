@@ -12,7 +12,7 @@ path: /catalog/checkboxes/
 [Checkboxes](https://m3.material.io/components/checkbox/overview) let users
 select one or more items from a list, or turn an item on or off.
 
-<img src="assets/checkbox/checkbox_hero.png" alt="Checkbox hero: meal options header, additions checkbox, pickles, lettuce, tomato, checkboxes with lettuce checked" width="900">
+<img src="assets/checkbox/checkbox-hero.png" alt="Checkbox hero: meal options header, additions checkbox, pickles, lettuce, tomato, checkboxes with lettuce checked" width="900">
 
 **Note:** Images use various dynamic color schemes.
 
@@ -23,7 +23,7 @@ select one or more items from a list, or turn an item on or off.
 
 ## Anatomy
 
-![Checkbox anatomy diagram](assets/checkbox/checkbox_anatomy.png)
+![Checkbox anatomy diagram](assets/checkbox/checkbox-anatomy.png)
 
 1.  Container
 2.  Icon
@@ -64,7 +64,7 @@ Element        | Attribute                | Related method(s)                  |
 Checkboxes can be selected, unselected, or indeterminate, and those states on
 error. Checkboxes have enabled, disabled, hover, focused, and pressed states.
 
-<img src="assets/checkbox/checkbox_states.png" alt="Checkbox states in an array. Columns are enabled, disabled, hover, focused, pressed. Rows are selected, unselected, or indeterminite, and selected on error, unselected on error, or indeterminate on error." width="700">
+<img src="assets/checkbox/checkbox-states.png" alt="Checkbox states in an array. Columns are enabled, disabled, hover, focused, pressed. Rows are selected, unselected, or indeterminite, and selected on error, unselected on error, or indeterminate on error." width="700">
 
 1.  Enabled
 2.  Disabled
@@ -112,7 +112,7 @@ The first checkbox (the parent) will be selected if all children are selected,
 not selected if all of the children are not selected, and indeterminate if only
 some of the children are selected.
 
-<img src="assets/checkbox/checkbox_example.png" alt="Example of 5 checkboxes, the first one is the parent and the ones below it are the children." height="350">
+<img src="assets/checkbox/checkbox-example.png" alt="Example of 5 checkboxes, the first one is the parent and the ones below it are the children." height="350">
 
 In the layout:
 
@@ -291,7 +291,7 @@ checkbox.errorAccessibilityLabel = "Error: custom error announcement."
 
 ### Making checkbox indeterminate
 
-![Checkbox states - unselected, selected(hover), and indeterminate checkboxes](assets/checkbox/checkbox_checked_unchecked_.png)
+![Checkbox states - unselected, selected(hover), and indeterminate checkboxes](assets/checkbox/checkbox-checked-unchecked.png)
 Unselected, selected (hover), and indeterminate checkboxes
 
 In the layout:
@@ -334,7 +334,7 @@ API and source code:
 
 The following example shows a checkbox with Material theming.
 
-<img src="assets/checkbox/checkbox_theming.png" alt="A parent checkbox and
+<img src="assets/checkbox/checkbox-theming.png" alt="A parent checkbox and
 children checkboxes. They container is pink, the outline is brown, and the icon
 is white." height="350">
 

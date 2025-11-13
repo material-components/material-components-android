@@ -24,8 +24,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:clickable="true"
+    android:focusable="false"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:ignore="KeyboardInaccessibleWidget">
 
     <Button
       android:id="@+id/vertically_scrolling_side_sheet_close_icon_button"
@@ -79,11 +82,7 @@
           android:text="@string/cat_sidesheet_slide_offset_text"
           android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-        <TextView
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:paddingTop="24dp"
-          android:text="@string/cat_sidesheet_filler_text" />
+        <include layout="@layout/cat_demo_content_text" />
       </LinearLayout>
     </androidx.core.widget.NestedScrollView>
   </androidx.constraintlayout.widget.ConstraintLayout>

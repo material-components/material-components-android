@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Izberite uro</string>
   <string name="material_timepicker_minute">Minuta</string>
   <string name="material_timepicker_hour">Ura</string>
+  <string name="material_timepicker_minute_error">Minuta mora biti 0–59</string>
+  <string name="material_timepicker_hour_error">Ura mora biti 1–12</string>
+  <string name="material_timepicker_hour_error_24h">Ura mora biti 0–23</string>
   <string name="material_hour_suffix">%1$s</string>
   <string name="material_hour_24h_suffix">%1$s h</string>
   <string name="material_minute_suffix">%1$s min</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Prekliči</string>
   <string name="material_timepicker_text_input_mode_description">Preklopite na način za vnašanje besedila, da vnesete čas.</string>
   <string name="material_timepicker_clock_mode_description">Preklopite na način ure, da vnesete čas.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Preklop na način za vnos besedila</string>
+  <string name="material_timepicker_clock_mode_tooltip">Preklop na način ure</string>
 </resources>

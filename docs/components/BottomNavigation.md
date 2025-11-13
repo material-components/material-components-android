@@ -9,13 +9,19 @@ path: /catalog/bottom-navigation/
 
 # Bottom navigation (Navigation bar)
 
-**Note:** Bottom navigation has been renamed to navigation bar.
-
 [Navigation bar](https://m3.material.io/components/navigation-bar/overview) lets
 people switch between UI views on smaller devices.
 
-<img src="assets/bottomnav/navigationbar_hero.png" alt="Navigation bar with 4 icons.">
+**Note:** The design name of this component has been changed from **Bottom
+navigation** to **Navigation bar**. However, Material's Android implementation
+remains as `BottomNavigationView`.
+
+<img src="assets/bottomnav/bottomnav-hero.png" alt="Navigation bar with 4 icons.">
 Navigation bar on compact and medium window sizes
+
+Navigation bars can have three to five destinations. The nav bar is positioned
+at the bottom of screens for convenient access. Each destination is represented
+by an icon and label text.
 
 **Note:** Images use various dynamic color schemes.
 
@@ -26,7 +32,7 @@ Navigation bar on compact and medium window sizes
 
 ## Anatomy
 
-![Navigation bar anatomy diagram](assets/bottomnav/navigationbar_anatomy.png)
+![Navigation bar anatomy diagram](assets/bottomnav/bottomnav-anatomy.png)
 
 1.  Container
 2.  Icon
@@ -39,7 +45,9 @@ Navigation bar on compact and medium window sizes
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/navigation-bar/guidelines#895b5b49-a166-4d30-90be-c71a4c970f04).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
@@ -48,13 +56,34 @@ A new expressive style for the bottom navigation bar has been introduced that's
 shorter and supports horizontal navigation items in medium-sized windows.
 [More on M3 Expressive](https://m3.material.io/blog/building-with-m3-expressive)
 
-<img src="assets/bottomnav/navigationbar_expressive.png" alt="Flexible horizontal navigation bar" width="700"/>
-The updated expressive navigation bar is shorter and can be used in medium
-windows with horizontal nav items
+<img src="assets/bottomnav/bottomnav-expressive.png" alt="Flexible horizontal navigation bar" width="700"/>
 
 **Color:**
 
 *   Active label changed from **on-surface-variant** to **secondary**
+
+### M3 Expressive styles
+
+Changes from M3:
+
+*   Height: From 80dp to 64dp
+*   Color: New expressive colors!
+*   Top item padding: From 12dp to 6dp
+*   Bottom item padding: From 16dp to 6dp
+*   Label text is no longer bolded when selected
+*   Active indicator: From 64dp to 56dp
+*   New horizontal item configuration on medium and larger window sizes (greater
+    than or equal to 600dp):
+    *   Icon moves from top to start of item
+    *   Instead of being a set width based on the item count, item width is
+        based on content with a max width
+    *   Item gravity: From top center to center
+
+The default style for bottom navigation bar is:
+
+```xml
+<item name="bottomNavigationStyle">@style/Widget.Material3Expressive.BottomNavigationView</item>
+```
 
 ## Key properties
 
@@ -304,7 +333,7 @@ Here's an example:
   app:menu="@menu/bottom_navigation_menu"/>
 ```
 
-<img src="assets/bottomnav/bottomnav_horizontal.png" alt="Horizontal navigation bar larger screens" height="100"/>
+<img src="assets/bottomnav/bottomnav-horizontal.png" alt="Horizontal navigation bar larger screens" height="100"/>
 
 ### Making navigation bar accessible
 

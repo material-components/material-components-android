@@ -196,13 +196,13 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
   }
 
   @Override
-  public boolean onKeyDown(int keyCode, KeyEvent keyEvent) {
-    if (keyCode == KeyEvent.KEYCODE_ESCAPE
+  public boolean dispatchKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ESCAPE
         && (drawerLayout.isDrawerOpen(GravityCompat.START)
             || drawerLayout.isDrawerOpen(GravityCompat.END))) {
       drawerLayout.closeDrawers();
       return true;
     }
-    return super.onKeyDown(keyCode, keyEvent);
+    return super.dispatchKeyEvent(keyEvent);
   }
 }

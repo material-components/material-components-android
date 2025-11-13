@@ -34,6 +34,8 @@
     <item name="fabAlignmentMode">center</item>
     <item name="menuAlignmentMode">auto</item>
     <item name="addElevationShadow">true</item>
+    <item name="android:keyboardNavigationCluster" tools:targetApi="o">false</item>
+    <item name="android:touchscreenBlocksFocus">false</item>
   </style>
 
   <style name="Widget.MaterialComponents.BottomAppBar.Colored" parent="Widget.MaterialComponents.BottomAppBar">

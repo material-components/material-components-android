@@ -111,6 +111,7 @@ def srcDirs = [
   'shapetheming',
   'sidesheet',
   'slider',
+  'snackbar',
   'tableofcontents',
   'tabs',
   'textfield',

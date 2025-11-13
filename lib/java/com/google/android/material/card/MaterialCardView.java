@@ -98,6 +98,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
   private static final int[] CHECKABLE_STATE_SET = {android.R.attr.state_checkable};
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DRAGGED_STATE_SET = {R.attr.state_dragged};
+  private static final int[] HOVERED_STATE_SET = {android.R.attr.state_hovered};
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CardView;
   private static final String LOG_TAG = "MaterialCardView";
@@ -492,7 +493,7 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
 
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
-    final int[] drawableState = super.onCreateDrawableState(extraSpace + 3);
+    final int[] drawableState = super.onCreateDrawableState(extraSpace + 8);
     if (isCheckable()) {
       mergeDrawableStates(drawableState, CHECKABLE_STATE_SET);
     }
@@ -503,6 +504,28 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
 
     if (isDragged()) {
       mergeDrawableStates(drawableState, DRAGGED_STATE_SET);
+    }
+
+    if (isDuplicateParentStateEnabled()) {
+      if (isPressed()) {
+        mergeDrawableStates(drawableState, PRESSED_STATE_SET);
+      }
+
+      if (isHovered()) {
+        mergeDrawableStates(drawableState, HOVERED_STATE_SET);
+      }
+
+      if (isEnabled()) {
+        mergeDrawableStates(drawableState, ENABLED_STATE_SET);
+      }
+
+      if (isFocused()) {
+        mergeDrawableStates(drawableState, FOCUSED_STATE_SET);
+      }
+
+      if (isSelected()) {
+        mergeDrawableStates(drawableState, SELECTED_STATE_SET);
+      }
     }
 
     return drawableState;

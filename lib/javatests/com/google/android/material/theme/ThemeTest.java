@@ -445,6 +445,8 @@ public class ThemeTest {
           R.attr.floatingToolbarVibrantStyle,
           R.attr.linearProgressIndicatorStyle,
           R.attr.listItemLayoutStyle,
+          R.attr.listItemCardViewStyle,
+          R.attr.listItemCardViewSegmentedStyle,
           R.attr.materialIconButtonStyle,
           R.attr.materialButtonOutlinedStyle,
           R.attr.materialButtonStyle,

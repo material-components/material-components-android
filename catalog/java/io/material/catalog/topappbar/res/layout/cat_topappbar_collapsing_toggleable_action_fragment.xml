@@ -63,9 +63,9 @@
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.core.widget.NestedScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <include layout="@layout/cat_topappbar_filler_text_view"/>
   </androidx.core.widget.NestedScrollView>

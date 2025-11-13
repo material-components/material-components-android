@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">ಸಮಯವನ್ನು ಆಯ್ಕೆಮಾಡಿ</string>
   <string name="material_timepicker_minute">ನಿಮಿಷ</string>
   <string name="material_timepicker_hour">ಗಂಟೆ</string>
+  <string name="material_timepicker_minute_error">ನಿಮಿಷವು 0–59 ಆಗಿರಬೇಕು</string>
+  <string name="material_timepicker_hour_error">ಗಂಟೆಯು 1–12 ಆಗಿರಬೇಕು</string>
+  <string name="material_timepicker_hour_error_24h">ಗಂಟೆಯು 0–23 ಆಗಿರಬೇಕು</string>
   <string name="material_hour_suffix">%1$s ಗಂಟೆ</string>
   <string name="material_hour_24h_suffix">%1$s ಗಂಟೆಗಳು</string>
   <string name="material_minute_suffix">%1$s ನಿಮಿಷಗಳು</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">ರದ್ದುಮಾಡಿ</string>
   <string name="material_timepicker_text_input_mode_description">ಸಮಯವನ್ನು ನಮೂದಿಸಲು ಪಠ್ಯದ ನಮೂನೆಗೆ ಬದಲಿಸಿ.</string>
   <string name="material_timepicker_clock_mode_description">ಸಮಯವನ್ನು ನಮೂದಿಸಲು ಗಡಿಯಾರದ ನಮೂನೆಗೆ ಬದಲಿಸಿ.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">ಪಠ್ಯ ಇನ್‌ಪುಟ್ ಮೋಡ್‌ಗೆ ಬದಲಿಸಿ</string>
+  <string name="material_timepicker_clock_mode_tooltip">ಗಡಿಯಾರ ಮೋಡ್‌ಗೆ ಬದಲಿಸಿ</string>
 </resources>

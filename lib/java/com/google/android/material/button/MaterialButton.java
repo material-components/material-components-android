@@ -214,6 +214,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @Retention(RetentionPolicy.SOURCE)
   public @interface IconGravity {}
 
+  enum WidthChangeDirection {
+    NONE,
+    START,
+    END,
+    BOTH
+  }
+
   private static final String LOG_TAG = "MaterialButton";
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
@@ -221,7 +228,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @AttrRes private static final int MATERIAL_SIZE_OVERLAY_ATTR = R.attr.materialSizeOverlay;
   private static final float OPTICAL_CENTER_RATIO = 0.11f;
 
-  private static final int UNSET = -1;
+  private static final int UNSET = Integer.MIN_VALUE;
 
   @NonNull private final MaterialButtonHelper materialButtonHelper;
 
@@ -260,6 +267,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @Px int allowedWidthDecrease = UNSET;
   @Nullable StateListSizeChange sizeChange;
   @Px int widthChangeMax;
+  private WidthChangeDirection widthChangeDirection = WidthChangeDirection.BOTH;
   private float displayedWidthIncrease;
   private float displayedWidthDecrease;
   @Nullable private SpringAnimation widthIncreaseSpringAnimation;
@@ -631,6 +639,24 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   @Override
+  public void setText(CharSequence text, BufferType type) {
+    originalWidth = UNSET;
+    super.setText(text, type);
+  }
+
+  @Override
+  public void setTextAppearance(Context context, int resId) {
+    originalWidth = UNSET;
+    super.setTextAppearance(context, resId);
+  }
+
+  @Override
+  public void setTextSize(int unit, float size) {
+    originalWidth = UNSET;
+    super.setTextSize(unit, size);
+  }
+
+  @Override
   public void setTextAlignment(int textAlignment) {
     super.setTextAlignment(textAlignment);
     updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
@@ -790,6 +816,14 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     super.setBackgroundDrawable(background);
   }
 
+  @Override
+  public void setCompoundDrawablePadding(@Px int padding) {
+    if (getCompoundDrawablePadding() != padding) {
+      originalWidth = UNSET;
+    }
+    super.setCompoundDrawablePadding(padding);
+  }
+
   /**
    * Sets the padding between the button icon and the button text, if icon is present.
    *
@@ -830,6 +864,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
 
     if (this.iconSize != iconSize) {
+      originalWidth = UNSET;
       this.iconSize = iconSize;
       updateIcon(/* needsIconReset= */ true);
     }
@@ -858,6 +893,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    */
   public void setIcon(@Nullable Drawable icon) {
     if (this.icon != icon) {
+      originalWidth = UNSET;
       this.icon = icon;
       updateIcon(/* needsIconReset= */ true);
       updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
@@ -1527,7 +1563,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       // Animate width.
       int widthChange =
           min(
-              widthChangeMax,
+              calculateEffectiveWidthChangeMax(),
               sizeChange
                   .getSizeChangeForState(getDrawableState())
                   .widthChange
@@ -1537,6 +1573,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
         widthIncreaseSpringAnimation.skipToEnd();
       }
     }
+  }
+
+  /** Returns the effective width change max based on the width change direction. */
+  private int calculateEffectiveWidthChangeMax() {
+    switch (widthChangeDirection) {
+      case BOTH:
+        return this.widthChangeMax;
+      case START:
+      case END:
+        return this.widthChangeMax / 2;
+      case NONE:
+    }
+    return 0;
   }
 
   private boolean isInHorizontalButtonGroup() {
@@ -1554,6 +1603,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   void setWidthChangeMax(@Px int widthChangeMax) {
     if (this.widthChangeMax != widthChangeMax) {
       this.widthChangeMax = widthChangeMax;
+      maybeAnimateSize(/* skipAnimation= */ true);
+    }
+  }
+
+  void setWidthChangeDirection(@NonNull WidthChangeDirection widthChangeDirection) {
+    if (this.widthChangeDirection != widthChangeDirection) {
+      this.widthChangeDirection = widthChangeDirection;
       maybeAnimateSize(/* skipAnimation= */ true);
     }
   }

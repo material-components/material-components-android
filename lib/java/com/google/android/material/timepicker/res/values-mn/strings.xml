@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Цаг сонгох</string>
   <string name="material_timepicker_minute">Минут</string>
   <string name="material_timepicker_hour">Цаг</string>
+  <string name="material_timepicker_minute_error">Минут нь 0–59 байх ёстой</string>
+  <string name="material_timepicker_hour_error">Цаг нь 1–12 байх ёстой</string>
+  <string name="material_timepicker_hour_error_24h">Цаг нь 0–23 байх ёстой</string>
   <string name="material_hour_suffix">%1$s цаг</string>
   <string name="material_hour_24h_suffix">%1$s цаг</string>
   <string name="material_minute_suffix">%1$s минут</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Цуцлах</string>
   <string name="material_timepicker_text_input_mode_description">Цагийг оруулахын тулд текст оруулах горимд шилжүүлнэ үү.</string>
   <string name="material_timepicker_clock_mode_description">Цагийг оруулахын тулд цагийн горимд шилжүүлнэ үү.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Текст оруулах горим руу сэлгэх</string>
+  <string name="material_timepicker_clock_mode_tooltip">Цагны горим руу сэлгэх</string>
 </resources>

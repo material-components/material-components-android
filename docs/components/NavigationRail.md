@@ -13,7 +13,7 @@ path: /catalog/navigation-rail/
 lets people switch between UI views on mid-sized devices. There are two types of
 navigation rail.
 
-<img src="assets/navigationrail/navigation_rail_hero.png" alt="The navigation rail container is 80 dp wide by default." height="400"/>
+<img src="assets/navigationrail/navigation-rail-hero.png" alt="The navigation rail container is 80 dp wide by default." height="400"/>
 
 1.  Collapsed navigation rail
 2.  Expanded navigation rail
@@ -27,7 +27,7 @@ navigation rail.
 
 ## Anatomy
 
-<img src="assets/navigationrail/navigation_rail_anatomy.png" alt="Navigation rail anatomy diagram">
+<img src="assets/navigationrail/navigation-rail-anatomy.png" alt="Navigation rail anatomy diagram">
 Collapsed and expanded navigation rail elements:
 
 1.  Container
@@ -43,12 +43,14 @@ Collapsed and expanded navigation rail elements:
 More details on anatomy items in the
 [component guidelines](https://m3.material.io/components/navigation-rail/guidelines#b51e4558-351f-4368-af8d-bbf1f63f68b4).
 
-## M3 Expressive update
+## M3 Expressive
+
+### M3 Expressive update
 
 Before you can use `Material3Expressive` component styles, follow the
 [`Material3Expressive` themes setup instructions](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md#material3expressive-themes).
 
-<img src="assets/navigationrail/navigation_rail_expressive.png" alt="collapsed and expanded navigation rails" width="500">
+<img src="assets/navigationrail/navigation-rail-expressive.png" alt="collapsed and expanded navigation rails" width="500">
 The collapsed and expanded navigation rails match visually and can transition
 into each other
 
@@ -78,6 +80,28 @@ The expanded nav rail is meant to replace the navigation drawer.
 
 *   Active label on vertical items changed from **on surface variant** to
     **secondary**
+
+### M3 Expressive styles
+
+Measurement changes from M3:
+
+*   Width: from 80dp to 96dp
+*   Color: new expressive colors!
+*   Item minimum height: from 60dp to 64dp
+*   Item spacing: from 0dp to 4dp
+*   Elevation: from 0dp to 3dp
+*   Top item padding: from 4dp to 6dp
+*   Bottom item padding: from 12dp to 4dp
+*   Top margin of navigation rail content: from 8dp to 44dp
+*   Padding between optional header view and navigation rail items: from 8dp to
+    40dp
+*   Label text is no longer bolded when selected
+
+The default style for navigation rail is:
+
+```xml
+<item name="navigationRailStyle">@style/Widget.Material3Expressive.NavigationRailView</item>
+```
 
 ## Key properties
 
@@ -319,7 +343,7 @@ navigationRail.setOnNavigationItemReselectedListener { item ->
 
 Which results in:
 
-![The navigation rail container is 72 dp wide by default.](assets/navigationrail/navigation_rail_demo.png)
+![The navigation rail container is 72 dp wide by default.](assets/navigationrail/navigation-rail-demo.png)
 
 By default, navigation rail adds top and bottom padding according to top and
 bottom window insets—helping the header layout and menu items dodge system
@@ -336,7 +360,7 @@ bottom insets independently by using `app:paddingTopSystemWindowInsets` and
 
 The following example shows a navigation rail with four icons.
 
-<img src="assets/navigationrail/navigation_rail_example.png" alt="Example navigation rail with four icons" height="500"/>
+<img src="assets/navigationrail/navigation-rail-example.png" alt="Example navigation rail with four icons" height="500"/>
 
 *   Alarms
 *   Schedule
@@ -425,7 +449,7 @@ off' as it could result in a strange animation due to the `Transition`.
 
 Collapsed navigation rail <div style="width:420px"></div>                                              | Expanded navigation rail <div style="width:420px"></div>
 :----------------------------------------------------------------------------------------------------: | :------------------------------------------------------:
-<img src="assets/navigationrail/collapsed_nav_rail.png" alt="Collapsed navigation rail" height="560"/> | <img src="assets/navigationrail/expanded_nav_rail.png" alt="Expanded navigation rail" height="560"/>
+<img src="assets/navigationrail/collapsed-nav-rail.png" alt="Collapsed navigation rail" height="560"/> | <img src="assets/navigationrail/expanded-nav-rail.png" alt="Expanded navigation rail" height="560"/>
 
 </details>
 
@@ -436,7 +460,7 @@ Rail icons can include badges on the upper right corner of the icon. Badges
 convey dynamic information about the associated destination, such as counts or
 status.
 
-![Navigation rail with badges](assets/navigationrail/navigation_rail_badges.png)
+![Navigation rail with badges](assets/navigationrail/navigation-rail-badges.png)
 
 Initialize and show a `BadgeDrawable` associated with `menuItemId`. Subsequent
 calls to this method will reuse the existing `BadgeDrawable`:
@@ -476,7 +500,7 @@ The rail provides a convenient container for anchoring a header view, such as a
 `FloatingActionButton` or a logo, to the top of the rail, using the
 `app:headerLayout` attribute.
 
-<img src="assets/navigationrail/navigation_rail_fab.png" alt="Navigation rail with a FAB in the header" height="550"/>
+<img src="assets/navigationrail/navigation-rail-fab.png" alt="Navigation rail with a FAB in the header" height="550"/>
 
 ```xml
 <com.google.android.material.navigationrail.NavigationRailView
@@ -520,7 +544,7 @@ API and source code:
 
 The following example shows a navigation rail with Material theming.
 
-![Navigation rail theming example](assets/navigationrail/navigation_rail_theming.png)
+![Navigation rail theming example](assets/navigationrail/navigation-rail-theming.png)
 
 ##### Implementing navigation rail theming
 

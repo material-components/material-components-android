@@ -108,6 +108,7 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.tooltip.TooltipDrawable;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.math.BigDecimal;
@@ -361,6 +362,9 @@ abstract class BaseSlider<
   private float touchDownAxis1;
   private float touchDownAxis2;
   private MotionEvent lastEvent;
+  @NonNull private final Rect viewRect = new Rect();
+  @NonNull List<Rect> exclusionRects = new ArrayList<>();
+  @NonNull private List<Float> previousDownTouchEventValues = new ArrayList<>();
   private LabelFormatter formatter;
   private boolean thumbIsPressed = false;
   private float valueFrom;
@@ -398,9 +402,15 @@ abstract class BaseSlider<
   @NonNull private final RectF iconRectF = new RectF();
   @NonNull private final Rect iconRect = new Rect();
   @NonNull private final Matrix rotationMatrix = new Matrix();
-  @NonNull private final MaterialShapeDrawable defaultThumbDrawable = new MaterialShapeDrawable();
+  @NonNull private final List<MaterialShapeDrawable> defaultThumbDrawables = new ArrayList<>();
+
   @Nullable private Drawable customThumbDrawable;
   @NonNull private List<Drawable> customThumbDrawablesForValues = Collections.emptyList();
+
+  private float thumbElevation;
+  private float thumbStrokeWidth;
+  @Nullable private ColorStateList thumbStrokeColor;
+  @NonNull private ColorStateList thumbTintList;
 
   private float touchPosition;
   @SeparationUnit private int separationUnit = UNIT_PX;
@@ -494,10 +504,6 @@ abstract class BaseSlider<
     setFocusable(true);
     setClickable(true);
 
-    // Set up the thumb drawable to always show the compat shadow.
-    defaultThumbDrawable.setShadowCompatibilityMode(
-        MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
-
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
     accessibilityHelper = new AccessibilityHelper(this);
@@ -544,12 +550,12 @@ abstract class BaseSlider<
 
     valueFrom = a.getFloat(R.styleable.Slider_android_valueFrom, 0.0f);
     valueTo = a.getFloat(R.styleable.Slider_android_valueTo, 1.0f);
-    setValues(valueFrom);
     setCentered(a.getBoolean(R.styleable.Slider_centered, false));
     stepSize = a.getFloat(R.styleable.Slider_android_stepSize, 0.0f);
     continuousModeTickCount = a.getInt(R.styleable.Slider_continuousModeTickCount, 0);
 
-    float defaultMinTouchTargetSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
+    float defaultMinTouchTargetSize =
+        MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
     minTouchTargetSize =
         (int)
             Math.ceil(
@@ -578,8 +584,10 @@ abstract class BaseSlider<
                 context, R.color.material_slider_active_track_color));
     ColorStateList thumbColor =
         MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbColor);
-    defaultThumbDrawable.setFillColor(thumbColor);
-
+    setThumbTintList(
+        thumbColor != null
+            ? thumbColor
+            : AppCompatResources.getColorStateList(context, R.color.material_slider_thumb_color));
     if (a.hasValue(R.styleable.Slider_thumbStrokeColor)) {
       setThumbStrokeColor(
           MaterialResources.getColorStateList(context, a, R.styleable.Slider_thumbStrokeColor));
@@ -659,6 +667,8 @@ abstract class BaseSlider<
     if (!a.getBoolean(R.styleable.Slider_android_enabled, true)) {
       setEnabled(false);
     }
+
+    setValues(valueFrom);
 
     a.recycle();
   }
@@ -899,12 +909,37 @@ abstract class BaseSlider<
 
     this.values = values;
     dirtyConfig = true;
+    updateDefaultThumbDrawables();
     // Only update the focused thumb index. The active thumb index will be updated on touch.
     focusedThumbIdx = 0;
     updateHaloHotspot();
     createLabelPool();
     dispatchOnChangedProgrammatically();
     postInvalidate();
+  }
+
+  private void updateDefaultThumbDrawables() {
+    if (defaultThumbDrawables.size() != values.size()) {
+     defaultThumbDrawables.clear();
+     for (int i = 0; i < values.size(); i++) {
+       // Create default thumbs to make sure each one is an independent drawable.
+       defaultThumbDrawables.add(createNewDefaultThumb());
+     }
+    }
+  }
+
+  private MaterialShapeDrawable createNewDefaultThumb() {
+    MaterialShapeDrawable thumb = new MaterialShapeDrawable();
+    thumb.setShadowCompatibilityMode(MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS);
+    thumb.setFillColor(getThumbTintList());
+    thumb.setShapeAppearanceModel(
+        ShapeAppearanceModel.builder().setAllCorners(ROUNDED, thumbWidth / 2f).build());
+    thumb.setBounds(0, 0, thumbWidth, thumbHeight);
+    thumb.setElevation(getThumbElevation());
+    thumb.setStrokeWidth(getThumbStrokeWidth());
+    thumb.setStrokeTint(getThumbStrokeColor());
+    thumb.setState(getDrawableState());
+    return thumb;
   }
 
   private void createLabelPool() {
@@ -1093,12 +1128,17 @@ abstract class BaseSlider<
   }
 
   private void adjustCustomThumbDrawableBounds(Drawable drawable) {
+    adjustCustomThumbDrawableBounds(thumbWidth, drawable);
+  }
+
+  private void adjustCustomThumbDrawableBounds(
+      @IntRange(from = 0) @Px int width, Drawable drawable) {
     int originalWidth = drawable.getIntrinsicWidth();
     int originalHeight = drawable.getIntrinsicHeight();
     if (originalWidth == -1 && originalHeight == -1) {
-      drawable.setBounds(0, 0, thumbWidth, thumbHeight);
+      drawable.setBounds(0, 0, width, thumbHeight);
     } else {
-      float scaleRatio = (float) max(thumbWidth, thumbHeight) / max(originalWidth, originalHeight);
+      float scaleRatio = (float) max(width, thumbHeight) / max(originalWidth, originalHeight);
       drawable.setBounds(
           0, 0, (int) (originalWidth * scaleRatio), (int) (originalHeight * scaleRatio));
     }
@@ -1201,7 +1241,7 @@ abstract class BaseSlider<
    * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
    */
   public float getThumbElevation() {
-    return defaultThumbDrawable.getElevation();
+    return thumbElevation;
   }
 
   /**
@@ -1211,7 +1251,13 @@ abstract class BaseSlider<
    * @attr ref com.google.android.material.R.styleable#Slider_thumbElevation
    */
   public void setThumbElevation(float elevation) {
-    defaultThumbDrawable.setElevation(elevation);
+    if (elevation == thumbElevation) {
+      return;
+    }
+    thumbElevation = elevation;
+    for (int i = 0; i < defaultThumbDrawables.size(); i++) {
+      defaultThumbDrawables.get(i).setElevation(thumbElevation);
+    }
   }
 
   /**
@@ -1296,16 +1342,26 @@ abstract class BaseSlider<
     }
 
     thumbWidth = width;
-
-    defaultThumbDrawable.setShapeAppearanceModel(
-        ShapeAppearanceModel.builder().setAllCorners(ROUNDED, thumbWidth / 2f).build());
-    defaultThumbDrawable.setBounds(0, 0, thumbWidth, thumbHeight);
-
+    // Update custom thumbs, if any.
     if (customThumbDrawable != null) {
-      adjustCustomThumbDrawableBounds(customThumbDrawable);
+      adjustCustomThumbDrawableBounds(width, customThumbDrawable);
     }
-    for (Drawable customDrawable : customThumbDrawablesForValues) {
-      adjustCustomThumbDrawableBounds(customDrawable);
+    for (int i = 0; i < customThumbDrawablesForValues.size(); i++) {
+      adjustCustomThumbDrawableBounds(width, customThumbDrawablesForValues.get(i));
+    }
+    // Update default thumb(s).
+    setThumbWidth(width, /* thumbIndex= */ null);
+  }
+
+  private void setThumbWidth(@IntRange(from = 0) @Px int width, @Nullable Integer thumbIndex) {
+    for (int i = 0; i < defaultThumbDrawables.size(); i++) {
+      if (thumbIndex == null || i == thumbIndex) {
+        defaultThumbDrawables
+            .get(i)
+            .setShapeAppearanceModel(
+                ShapeAppearanceModel.builder().setAllCorners(ROUNDED, thumbWidth / 2f).build());
+        defaultThumbDrawables.get(i).setBounds(0, 0, width, thumbHeight);
+      }
     }
 
     updateWidgetLayout(false);
@@ -1355,7 +1411,9 @@ abstract class BaseSlider<
 
     thumbHeight = height;
 
-    defaultThumbDrawable.setBounds(0, 0, thumbWidth, thumbHeight);
+    for (int i = 0; i < defaultThumbDrawables.size(); i++) {
+      defaultThumbDrawables.get(i).setBounds(0, 0, thumbWidth, thumbHeight);
+    }
 
     if (customThumbDrawable != null) {
       adjustCustomThumbDrawableBounds(customThumbDrawable);
@@ -1390,7 +1448,15 @@ abstract class BaseSlider<
    * @see #getThumbStrokeColor()
    */
   public void setThumbStrokeColor(@Nullable ColorStateList thumbStrokeColor) {
-    defaultThumbDrawable.setStrokeColor(thumbStrokeColor);
+    if (thumbStrokeColor == this.thumbStrokeColor) {
+      return;
+    }
+
+    this.thumbStrokeColor = thumbStrokeColor;
+    for (int i = 0; i < defaultThumbDrawables.size(); i++) {
+      defaultThumbDrawables.get(i).setStrokeColor(thumbStrokeColor);
+    }
+
     postInvalidate();
   }
 
@@ -1418,8 +1484,9 @@ abstract class BaseSlider<
    * @see #setThumbStrokeColor(ColorStateList)
    * @see #setThumbStrokeColorResource(int)
    */
+  @Nullable
   public ColorStateList getThumbStrokeColor() {
-    return defaultThumbDrawable.getStrokeColor();
+    return thumbStrokeColor;
   }
 
   /**
@@ -1432,7 +1499,15 @@ abstract class BaseSlider<
    * @see #getThumbStrokeWidth()
    */
   public void setThumbStrokeWidth(float thumbStrokeWidth) {
-    defaultThumbDrawable.setStrokeWidth(thumbStrokeWidth);
+    if (thumbStrokeWidth == this.thumbStrokeWidth) {
+      return;
+    }
+
+    this.thumbStrokeWidth = thumbStrokeWidth;
+    for (int i = 0; i < defaultThumbDrawables.size(); i++) {
+      defaultThumbDrawables.get(i).setStrokeWidth(thumbStrokeWidth);
+    }
+
     postInvalidate();
   }
 
@@ -1460,7 +1535,7 @@ abstract class BaseSlider<
    * @see #setThumbStrokeWidthResource(int)
    */
   public float getThumbStrokeWidth() {
-    return defaultThumbDrawable.getStrokeWidth();
+    return thumbStrokeWidth;
   }
 
   /**
@@ -1708,7 +1783,7 @@ abstract class BaseSlider<
    */
   @NonNull
   public ColorStateList getThumbTintList() {
-    return defaultThumbDrawable.getFillColor();
+    return thumbTintList;
   }
 
   /**
@@ -1718,11 +1793,15 @@ abstract class BaseSlider<
    * @attr ref com.google.android.material.R.styleable#Slider_thumbColor
    */
   public void setThumbTintList(@NonNull ColorStateList thumbColor) {
-    if (thumbColor.equals(defaultThumbDrawable.getFillColor())) {
+    if (thumbColor.equals(thumbTintList)) {
       return;
     }
 
-    defaultThumbDrawable.setFillColor(thumbColor);
+    thumbTintList = thumbColor;
+    for (int i = 0; i < defaultThumbDrawables.size(); i++) {
+      defaultThumbDrawables.get(i).setFillColor(thumbTintList);
+    }
+
     invalidate();
   }
 
@@ -3080,7 +3159,7 @@ abstract class BaseSlider<
       } else if (i < customThumbDrawablesForValues.size()) {
         drawThumbDrawable(canvas, width, yCenter, value, customThumbDrawablesForValues.get(i));
       } else {
-        // Clear out the track behind the thumb if we're in a disable state since the thumb is
+        // Clear out the track behind the thumb if we're in a disabled state since the thumb is
         // transparent.
         if (!isEnabled()) {
           canvas.drawCircle(
@@ -3089,7 +3168,7 @@ abstract class BaseSlider<
               getThumbRadius(),
               thumbPaint);
         }
-        drawThumbDrawable(canvas, width, yCenter, value, defaultThumbDrawable);
+        drawThumbDrawable(canvas, width, yCenter, value, defaultThumbDrawables.get(i));
       }
     }
   }
@@ -3135,6 +3214,23 @@ abstract class BaseSlider<
   }
 
   @Override
+  public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    super.onLayout(changed, left, top, right, bottom);
+
+    viewRect.left = 0;
+    viewRect.top = 0;
+    viewRect.right = right - left;
+    viewRect.bottom = bottom - top;
+
+    if (!exclusionRects.contains(viewRect)) {
+      exclusionRects.add(viewRect);
+    }
+
+    // Make sure that the slider takes precedence over back navigation gestures.
+    ViewCompat.setSystemGestureExclusionRects(this, exclusionRects);
+  }
+
+  @Override
   public boolean onTouchEvent(@NonNull MotionEvent event) {
     if (!isEnabled()) {
       return false;
@@ -3150,6 +3246,8 @@ abstract class BaseSlider<
       case MotionEvent.ACTION_DOWN:
         touchDownAxis1 = eventCoordinateAxis1;
         touchDownAxis2 = eventCoordinateAxis2;
+        previousDownTouchEventValues.clear();
+        previousDownTouchEventValues = getValues();
 
         // If we're inside a vertical scrolling container,
         // we should start dragging in ACTION_MOVE
@@ -3209,7 +3307,6 @@ abstract class BaseSlider<
         invalidate();
         break;
       case MotionEvent.ACTION_UP:
-      case MotionEvent.ACTION_CANCEL:
         thumbIsPressed = false;
         // We need to handle a tap if the last event was down at the same point.
         if (lastEvent != null
@@ -3224,16 +3321,20 @@ abstract class BaseSlider<
         if (activeThumbIdx != -1) {
           snapTouchPosition();
           updateHaloHotspot();
-          // Reset the thumb width.
-          if (hasGapBetweenThumbAndTrack()
-              && defaultThumbWidth != -1
-              && defaultThumbTrackGapSize != -1) {
-            setThumbWidth(defaultThumbWidth);
-            setThumbTrackGapSize(defaultThumbTrackGapSize);
-          }
+          resetThumbWidth();
           activeThumbIdx = -1;
           onStopTrackingTouch();
         }
+        invalidate();
+        break;
+      case MotionEvent.ACTION_CANCEL:
+        thumbIsPressed = false;
+        // Make sure that we reset the state of the slider if a cancel event happens.
+        snapThumbToPreviousDownTouchEventValue();
+        updateHaloHotspot();
+        resetThumbWidth();
+        activeThumbIdx = -1;
+        onStopTrackingTouch();
         invalidate();
         break;
       default:
@@ -3248,14 +3349,26 @@ abstract class BaseSlider<
   }
 
   private void updateThumbWidthWhenPressed() {
-    // Update thumb width and track gap size when pressed.
-    if (hasGapBetweenThumbAndTrack()) {
+    // Update default thumb width and track gap size when pressed.
+    if (hasGapBetweenThumbAndTrack()
+        && customThumbDrawable == null
+        && customThumbDrawablesForValues.isEmpty()) {
       defaultThumbWidth = thumbWidth;
       defaultThumbTrackGapSize = thumbTrackGapSize;
       int pressedThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
       int delta = thumbWidth - pressedThumbWidth;
-      setThumbWidth(pressedThumbWidth);
+      // Only the currently pressed thumb should change width.
+      setThumbWidth(pressedThumbWidth, /* thumbIndex= */ activeThumbIdx);
       setThumbTrackGapSize(thumbTrackGapSize - delta / 2);
+    }
+  }
+
+  private void resetThumbWidth() {
+    // Reset the default thumb width.
+    if (hasGapBetweenThumbAndTrack() && defaultThumbWidth != -1 && defaultThumbTrackGapSize != -1) {
+      // Only the currently pressed thumb should change width.
+      setThumbWidth(defaultThumbWidth, /* thumbIndex= */ activeThumbIdx);
+      setThumbTrackGapSize(defaultThumbTrackGapSize);
     }
   }
 
@@ -3338,6 +3451,7 @@ abstract class BaseSlider<
     return snapThumbToValue(activeThumbIdx, value);
   }
 
+  @CanIgnoreReturnValue
   private boolean snapThumbToValue(int idx, float value) {
     focusedThumbIdx = idx;
 
@@ -3352,6 +3466,17 @@ abstract class BaseSlider<
 
     dispatchOnChangedFromUser(idx);
     return true;
+  }
+
+  private void snapThumbToPreviousDownTouchEventValue() {
+    if (activeThumbIdx != -1 && !previousDownTouchEventValues.isEmpty()) {
+      for (int i = 0; i < values.size(); i++) {
+        if (i == activeThumbIdx) {
+          snapThumbToValue(i, previousDownTouchEventValues.get(i));
+          break;
+        }
+      }
+    }
   }
 
   /** Thumbs cannot cross each other, clamp the value to a bound or the value next to it. */
@@ -3479,7 +3604,7 @@ abstract class BaseSlider<
         break;
       case LABEL_VISIBLE:
         if (isEnabled() && isSliderVisibleOnScreen()) {
-          ensureLabelsAdded();
+          ensureLabelsAdded(/* showLabelOnAllThumbs= */ true);
         } else {
           ensureLabelsRemoved();
         }
@@ -3487,7 +3612,7 @@ abstract class BaseSlider<
       case LABEL_FLOATING:
       case LABEL_WITHIN_BOUNDS:
         if (activeThumbIdx != -1 && isEnabled()) {
-          ensureLabelsAdded();
+          ensureLabelsAdded(/* showLabelOnAllThumbs= */ false);
         } else {
           ensureLabelsRemoved();
         }
@@ -3572,7 +3697,7 @@ abstract class BaseSlider<
     }
   }
 
-  private void ensureLabelsAdded() {
+  private void ensureLabelsAdded(boolean showLabelOnAllThumbs) {
     // If the labels are not animating in, start an animator to show them. ensureLabelsAdded will
     // be called multiple times by BaseSlider's draw method, making this check necessary to avoid
     // creating and starting an animator for each draw call.
@@ -3585,13 +3710,14 @@ abstract class BaseSlider<
 
     Iterator<TooltipDrawable> labelItr = labels.iterator();
 
-    for (int i = 0; i < values.size() && labelItr.hasNext(); i++) {
-      if (i == focusedThumbIdx) {
-        // We position the focused thumb last so it's displayed on top, so skip it for now.
-        continue;
+    if (showLabelOnAllThumbs) {
+      for (int i = 0; i < values.size() && labelItr.hasNext(); i++) {
+        if (i == focusedThumbIdx) {
+          // We position the focused thumb last so it's displayed on top, so skip it for now.
+          continue;
+        }
+        setValueForLabel(labelItr.next(), values.get(i));
       }
-
-      setValueForLabel(labelItr.next(), values.get(i));
     }
 
     if (!labelItr.hasNext()) {
@@ -3765,8 +3891,10 @@ abstract class BaseSlider<
         label.setState(getDrawableState());
       }
     }
-    if (defaultThumbDrawable.isStateful()) {
-      defaultThumbDrawable.setState(getDrawableState());
+    for (int i = 0; i < defaultThumbDrawables.size(); i++) {
+      if (defaultThumbDrawables.get(i).isStateful()) {
+        defaultThumbDrawables.get(i).setState(getDrawableState());
+      }
     }
     haloPaint.setColor(getColorForState(haloColor));
     haloPaint.setAlpha(HALO_ALPHA);
@@ -3788,16 +3916,7 @@ abstract class BaseSlider<
       return super.onKeyDown(keyCode, event);
     }
 
-    // If there's only one thumb, we can select it right away.
-    if (values.size() == 1) {
-      activeThumbIdx = 0;
-    }
-
-    // If there is no active thumb, key events will be used to pick the thumb to change.
-    if (activeThumbIdx == -1) {
-      Boolean handled = onKeyDownNoActiveThumb(keyCode, event);
-      return handled != null ? handled : super.onKeyDown(keyCode, event);
-    }
+    activeThumbIdx = focusedThumbIdx;
 
     isLongPress |= event.isLongPress();
     Float increment = calculateIncrementForKey(keyCode);
@@ -3808,64 +3927,20 @@ abstract class BaseSlider<
       }
       return true;
     }
-    switch (keyCode) {
-      case KeyEvent.KEYCODE_TAB:
-        if (event.hasNoModifiers()) {
-          return moveFocus(1);
-        }
 
-        if (event.isShiftPressed()) {
-          return moveFocus(-1);
-        }
-        return false;
-      case KeyEvent.KEYCODE_DPAD_CENTER:
-      case KeyEvent.KEYCODE_ENTER:
-        activeThumbIdx = -1;
-        postInvalidate();
-        return true;
-      default:
-        // Nothing to do in this case.
+    if (keyCode == KeyEvent.KEYCODE_TAB) {
+      resetThumbWidth();
+      if (event.hasNoModifiers()) {
+        return moveFocus(1);
+      }
+
+      if (event.isShiftPressed()) {
+        return moveFocus(-1);
+      }
+      return false;
     }
 
     return super.onKeyDown(keyCode, event);
-  }
-
-  @Nullable
-  private Boolean onKeyDownNoActiveThumb(int keyCode, @NonNull KeyEvent event) {
-    switch (keyCode) {
-      case KeyEvent.KEYCODE_TAB:
-        if (event.hasNoModifiers()) {
-          return moveFocus(1);
-        }
-
-        if (event.isShiftPressed()) {
-          return moveFocus(-1);
-        }
-        return false;
-      case KeyEvent.KEYCODE_DPAD_LEFT:
-        moveFocusInAbsoluteDirection(-1);
-        return true;
-      case KeyEvent.KEYCODE_MINUS:
-        moveFocus(-1);
-        return true;
-      case KeyEvent.KEYCODE_DPAD_RIGHT:
-        moveFocusInAbsoluteDirection(1);
-        return true;
-      case KeyEvent.KEYCODE_EQUALS:
-      // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
-      case KeyEvent.KEYCODE_PLUS:
-        moveFocus(1);
-        return true;
-      case KeyEvent.KEYCODE_DPAD_CENTER:
-      case KeyEvent.KEYCODE_ENTER:
-        activeThumbIdx = focusedThumbIdx;
-        postInvalidate();
-        return true;
-      default:
-        // Nothing to do in this case.
-    }
-
-    return null;
   }
 
   @Override
@@ -3903,9 +3978,8 @@ abstract class BaseSlider<
       // Move focus to next or previous view.
       return false;
     }
-    if (activeThumbIdx != -1) {
-      activeThumbIdx = focusedThumbIdx;
-    }
+    activeThumbIdx = focusedThumbIdx;
+    updateThumbWidthWhenPressed();
     updateHaloHotspot();
     postInvalidate();
     return true;
@@ -3932,20 +4006,18 @@ abstract class BaseSlider<
     // Otherwise choose the smallest valid increment.
     float increment = isLongPress ? calculateStepIncrement(20) : calculateStepIncrement();
     switch (keyCode) {
+      // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
+      case KeyEvent.KEYCODE_PLUS:
       case KeyEvent.KEYCODE_DPAD_UP:
-        return isVertical() ? increment : null;
+      case KeyEvent.KEYCODE_EQUALS:
+        return increment;
       case KeyEvent.KEYCODE_DPAD_DOWN:
-        return isVertical() ? -increment : null;
+      case KeyEvent.KEYCODE_MINUS:
+        return -increment;
       case KeyEvent.KEYCODE_DPAD_LEFT:
         return isRtl() ? increment : -increment;
       case KeyEvent.KEYCODE_DPAD_RIGHT:
         return isRtl() ? -increment : increment;
-      case KeyEvent.KEYCODE_MINUS:
-        return -increment;
-      case KeyEvent.KEYCODE_EQUALS:
-      // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
-      case KeyEvent.KEYCODE_PLUS:
-        return increment;
       default:
         return null;
     }
@@ -3975,10 +4047,18 @@ abstract class BaseSlider<
       boolean gainFocus, int direction, @Nullable Rect previouslyFocusedRect) {
     super.onFocusChanged(gainFocus, direction, previouslyFocusedRect);
     if (!gainFocus) {
+      resetThumbWidth();
       activeThumbIdx = -1;
       accessibilityHelper.clearKeyboardFocusForVirtualView(focusedThumbIdx);
     } else {
-      focusThumbOnFocusGained(direction);
+      // If activeThumbIdx != -1, a touch gesture is in progress and has already
+      // picked the thumb to focus. Don't interfere.
+      if (activeThumbIdx == -1) {
+        focusThumbOnFocusGained(direction);
+        activeThumbIdx = focusedThumbIdx;
+      }
+      resetThumbWidth();
+      updateThumbWidthWhenPressed();
       accessibilityHelper.requestKeyboardFocusForVirtualView(focusedThumbIdx);
     }
   }

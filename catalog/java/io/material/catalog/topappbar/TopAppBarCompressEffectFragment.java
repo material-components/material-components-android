@@ -77,6 +77,8 @@ public class TopAppBarCompressEffectFragment extends DemoFragment {
       }
     });
 
+    DemoUtils.setupClickableContentText(view);
+
     return view;
   }
 

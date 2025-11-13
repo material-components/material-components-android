@@ -36,6 +36,7 @@ import android.text.style.BackgroundColorSpan;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -90,13 +91,42 @@ public class MenuMainDemoFragment extends DemoFragment {
     iconMenuButton.setOnClickListener(v -> showMenu(v, R.menu.menu_with_icons));
 
     TextView contextMenuTextView = view.findViewById(R.id.context_menu_tv);
-    registerForContextMenu(contextMenuTextView);
+    setupContextMenuWithKeyboard(contextMenuTextView);
 
     Button listPopupWindowButton = view.findViewById(R.id.list_popup_window);
     ListPopupWindow listPopupWindow = initializeListPopupMenu(listPopupWindowButton);
     listPopupWindowButton.setOnClickListener(v -> listPopupWindow.show());
 
     return view;
+  }
+
+  private void setupContextMenuWithKeyboard(View view) {
+    registerForContextMenu(view);
+    view.setOnKeyListener(
+        (v, keyCode, event) -> {
+          if (event.getAction() != KeyEvent.ACTION_DOWN) {
+            return false;
+          }
+
+          if (keyCode == KeyEvent.KEYCODE_SPACE) {
+            return true;
+          }
+
+          if (keyCode == KeyEvent.KEYCODE_ENTER || keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+            if (event.isCtrlPressed()) {
+              // Use showContextMenu(x, y) to show the context menu as a floating menu
+              // on newer Android versions, similar to long-press. Fall back to
+              // showContextMenu() on older versions, which will appear as a dialog.
+              if (VERSION.SDK_INT >= VERSION_CODES.N) {
+                v.showContextMenu(v.getWidth() / 2f, v.getHeight() / 2f);
+              } else {
+                v.showContextMenu();
+              }
+            }
+            return true;
+          }
+          return false;
+        });
   }
 
   @SuppressWarnings("RestrictTo")

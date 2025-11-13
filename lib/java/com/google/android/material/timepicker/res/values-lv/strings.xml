@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Laika atlasīšana</string>
   <string name="material_timepicker_minute">Minūte</string>
   <string name="material_timepicker_hour">Stunda</string>
+  <string name="material_timepicker_minute_error">Minūtes vērtība: 0–59</string>
+  <string name="material_timepicker_hour_error">Stundas vērtība: 1–12</string>
+  <string name="material_timepicker_hour_error_24h">Stundas vērtība: 0–23</string>
   <string name="material_hour_suffix">plkst. %1$s</string>
   <string name="material_hour_24h_suffix">%1$s stundas</string>
   <string name="material_minute_suffix">%1$s min</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Atcelt</string>
   <string name="material_timepicker_text_input_mode_description">Lai ievadītu laiku, ieslēdziet teksta ievades režīmu.</string>
   <string name="material_timepicker_clock_mode_description">Lai ievadītu laiku, ieslēdziet pulksteņa režīmu.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Pārslēgties uz teksta ievades režīmu</string>
+  <string name="material_timepicker_clock_mode_tooltip">Pārslēgties uz pulksteņa režīmu</string>
 </resources>

@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Tijd selecteren</string>
   <string name="material_timepicker_minute">Minuut</string>
   <string name="material_timepicker_hour">Uur</string>
+  <string name="material_timepicker_minute_error">Minuut moet 0 - 59 zijn</string>
+  <string name="material_timepicker_hour_error">Uur moet 1 - 12 zijn</string>
+  <string name="material_timepicker_hour_error_24h">Uur moet 0 - 23 zijn</string>
   <string name="material_hour_suffix">%1$s uur</string>
   <string name="material_hour_24h_suffix">%1$s uur</string>
   <string name="material_minute_suffix">%1$s minuten</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Annuleren</string>
   <string name="material_timepicker_text_input_mode_description">Schakel naar de tekstinvoermodus om de tijd in te voeren.</string>
   <string name="material_timepicker_clock_mode_description">Schakel naar de klokmodus om de tijd in te voeren.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Overschakelen naar tekstinvoerstand</string>
+  <string name="material_timepicker_clock_mode_tooltip">Overschakelen naar klokmodus</string>
 </resources>

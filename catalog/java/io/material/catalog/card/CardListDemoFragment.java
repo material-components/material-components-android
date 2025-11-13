@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate;
 import androidx.recyclerview.widget.ItemTouchHelper;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -93,10 +94,10 @@ public class CardListDemoFragment extends DemoFragment {
               public boolean performAccessibilityAction(View host, int action, Bundle args) {
                 int fromPosition = recyclerView.getChildLayoutPosition(host);
                 if (action == R.id.move_card_down_action) {
-                  swapCards(fromPosition, fromPosition + 1, cardAdapter);
+                  cardAdapter.swapCards(fromPosition, fromPosition + 1);
                   return true;
                 } else if (action == R.id.move_card_up_action) {
-                  swapCards(fromPosition, fromPosition - 1, cardAdapter);
+                  cardAdapter.swapCards(fromPosition, fromPosition - 1);
                   return true;
                 }
 
@@ -118,9 +119,12 @@ public class CardListDemoFragment extends DemoFragment {
     return cardNumbers;
   }
 
-  private static class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+  private static class CardAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
+      implements OnKeyboardDragListener {
 
     private final int[] cardNumbers;
+
+    @Nullable private ViewHolder draggedViewHolder;
 
     private ItemTouchHelper itemTouchHelper;
 
@@ -133,12 +137,12 @@ public class CardListDemoFragment extends DemoFragment {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
       LayoutInflater inflater = LayoutInflater.from(parent.getContext());
       View view = inflater.inflate(R.layout.cat_card_list_item, parent, /* attachToRoot= */ false);
-      return new CardViewHolder(view);
+      return new CardViewHolder(view, this);
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-      ((CardViewHolder) viewHolder).bind(cardNumbers[position], itemTouchHelper);
+      ((CardViewHolder) viewHolder).bind(cardNumbers[position]);
     }
 
     @Override
@@ -150,27 +154,113 @@ public class CardListDemoFragment extends DemoFragment {
       this.itemTouchHelper = itemTouchHelper;
     }
 
-  private static class CardViewHolder extends RecyclerView.ViewHolder {
-
-      private final TextView titleView;
-      private final View dragHandleView;
-
-      private CardViewHolder(View itemView) {
-        super(itemView);
-        titleView = itemView.findViewById(R.id.cat_card_list_item_title);
-        dragHandleView = itemView.findViewById(R.id.cat_card_list_item_drag_handle);
+    void swapCards(int fromPosition, int toPosition) {
+      if (fromPosition < 0
+          || fromPosition >= cardNumbers.length
+          || toPosition < 0
+          || toPosition >= cardNumbers.length) {
+        return;
       }
 
-      private void bind(int cardNumber, final ItemTouchHelper itemTouchHelper) {
-        titleView.setText(String.format(Locale.getDefault(), "Card #%02d", cardNumber));
+      int fromNumber = cardNumbers[fromPosition];
+      cardNumbers[fromPosition] = cardNumbers[toPosition];
+      cardNumbers[toPosition] = fromNumber;
+      notifyItemMoved(fromPosition, toPosition);
+    }
+
+    void cancelDrag() {
+      if (draggedViewHolder != null) {
+        ((MaterialCardView) draggedViewHolder.itemView).setDragged(false);
+        draggedViewHolder = null;
+      }
+    }
+
+    @Override
+    public void onDragStarted(@NonNull ViewHolder viewHolder) {
+      itemTouchHelper.startDrag(viewHolder);
+    }
+
+    @Override
+    public void onKeyboardDragToggle(@NonNull ViewHolder viewHolder) {
+      boolean isCurrentlyDragged = draggedViewHolder == viewHolder;
+      cancelDrag();
+      if (!isCurrentlyDragged) {
+        draggedViewHolder = viewHolder;
+        ((MaterialCardView) viewHolder.itemView).setDragged(true);
+      }
+    }
+
+    @Override
+    public boolean onKeyboardMoved(int keyCode) {
+      if (draggedViewHolder == null) {
+        return false;
+      }
+
+      int fromPosition = draggedViewHolder.getBindingAdapterPosition();
+      if (fromPosition == RecyclerView.NO_POSITION) {
+        return false;
+      }
+
+      switch (keyCode) {
+        case KeyEvent.KEYCODE_DPAD_UP:
+          swapCards(fromPosition, fromPosition - 1);
+          return true;
+        case KeyEvent.KEYCODE_DPAD_DOWN:
+          swapCards(fromPosition, fromPosition + 1);
+          return true;
+        default:
+          return false;
+      }
+    }
+
+    private static class CardViewHolder extends RecyclerView.ViewHolder {
+
+      private final TextView titleView;
+
+      private CardViewHolder(View itemView, OnKeyboardDragListener listener) {
+        super(itemView);
+
+        MaterialCardView cardView = (MaterialCardView) itemView;
+        cardView.setFocusable(true);
+        cardView.setOnKeyListener(
+            (v, keyCode, event) -> {
+              if (event.getAction() != KeyEvent.ACTION_DOWN) {
+                return false;
+              }
+
+              switch (keyCode) {
+                case KeyEvent.KEYCODE_ENTER:
+                case KeyEvent.KEYCODE_DPAD_CENTER:
+                  listener.onKeyboardDragToggle(this);
+                  return true;
+                case KeyEvent.KEYCODE_DPAD_UP:
+                case KeyEvent.KEYCODE_DPAD_DOWN:
+                  return listener.onKeyboardMoved(keyCode);
+                default:
+                  return false;
+              }
+            });
+
+        View dragHandleView = itemView.findViewById(R.id.cat_card_list_item_drag_handle);
         dragHandleView.setOnTouchListener(
             (v, event) -> {
-              if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                itemTouchHelper.startDrag(CardViewHolder.this);
-                return true;
+              switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                  listener.onDragStarted(this);
+                  return true;
+                case MotionEvent.ACTION_UP:
+                  v.performClick();
+                  break;
+                default: // fall out
               }
               return false;
             });
+
+        titleView = itemView.findViewById(R.id.cat_card_list_item_title);
+      }
+
+      private void bind(int cardNumber) {
+        titleView.setText(String.format(Locale.getDefault(), "Card #%02d", cardNumber));
       }
     }
   }
@@ -199,10 +289,9 @@ public class CardListDemoFragment extends DemoFragment {
         @NonNull RecyclerView recyclerView,
         @NonNull ViewHolder viewHolder,
         @NonNull ViewHolder target) {
-      int fromPosition = viewHolder.getAdapterPosition();
-      int toPosition = target.getAdapterPosition();
-
-      swapCards(fromPosition, toPosition, cardAdapter);
+      int fromPosition = viewHolder.getBindingAdapterPosition();
+      int toPosition = target.getBindingAdapterPosition();
+      cardAdapter.swapCards(fromPosition, toPosition);
       return true;
     }
 
@@ -214,6 +303,7 @@ public class CardListDemoFragment extends DemoFragment {
       super.onSelectedChanged(viewHolder, actionState);
 
       if (actionState == ItemTouchHelper.ACTION_STATE_DRAG && viewHolder != null) {
+        cardAdapter.cancelDrag();
         dragCardView = (MaterialCardView) viewHolder.itemView;
         dragCardView.setDragged(true);
       } else if (actionState == ItemTouchHelper.ACTION_STATE_IDLE && dragCardView != null) {
@@ -223,10 +313,11 @@ public class CardListDemoFragment extends DemoFragment {
     }
   }
 
-  private static void swapCards(int fromPosition, int toPosition, CardAdapter cardAdapter) {
-    int fromNumber = cardAdapter.cardNumbers[fromPosition];
-    cardAdapter.cardNumbers[fromPosition] = cardAdapter.cardNumbers[toPosition];
-    cardAdapter.cardNumbers[toPosition] = fromNumber;
-    cardAdapter.notifyItemMoved(fromPosition, toPosition);
+  private interface OnKeyboardDragListener {
+    void onDragStarted(@NonNull ViewHolder viewHolder);
+
+    void onKeyboardDragToggle(@NonNull ViewHolder viewHolder);
+
+    boolean onKeyboardMoved(int keyCode);
   }
 }

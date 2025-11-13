@@ -52,6 +52,7 @@ import com.google.android.material.sidesheet.SideSheetBehavior;
 import com.google.android.material.sidesheet.SideSheetCallback;
 import com.google.android.material.sidesheet.SideSheetDialog;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 import io.material.catalog.preferences.CatalogPreferencesHelper;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import java.util.ArrayList;
@@ -243,6 +244,8 @@ public class SideSheetMainDemoFragment extends DemoFragment {
         standardSideSheetCloseIconButton, standardSideSheetCloseIconButton.getContentDescription());
 
     setupBackHandling(sideSheet, sideSheetBehavior);
+
+    DemoUtils.setupClickableContentText(sideSheet);
 
     sideSheetViews.add(sideSheet);
 
