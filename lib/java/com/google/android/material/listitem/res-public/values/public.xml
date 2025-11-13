@@ -28,7 +28,13 @@
   <public name="ShapeAppearance.Material3.ListItem.Last" type="style"/>
   <public name="ShapeAppearance.Material3.ListItem.Single" type="style"/>
   <public name="ShapeAppearance.Material3.ListItem.Checked" type="style"/>
-  <public name="Widget.Material3.ImageView.ListItem.Leading" type="style"/>
+  <public name="Widget.Material3.ImageView.ListItem.LeadingIcon" type="style"/>
+  <public name="Widget.Material3.ImageView.ListItem.TrailingIcon" type="style"/>
+  <public name="Widget.Material3.ShapeableImageView.ListItem.LeadingImage" type="style"/>
+  <public name="Widget.Material3.TextView.ListItem.Overline" type="style"/>
+  <public name="Widget.Material3.TextView.ListItem.LabelText" type="style"/>
+  <public name="Widget.Material3.TextView.ListItem.SupportingText" type="style"/>
+  <public name="Widget.Material3.TextView.ListItem.TrailingSupportingText" type="style"/>
 
   <public name="listItemShapeAppearanceSingle" type="attr"/>
   <public name="listItemShapeAppearanceFirst" type="attr"/>

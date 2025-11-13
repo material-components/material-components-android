@@ -23,11 +23,11 @@
     android:paddingHorizontal="8dp">
 
     <com.google.android.material.listitem.ListItemCardView
+        style="?attr/listItemCardViewSegmentedStyle"
         android:id="@+id/cat_list_item_card_view"
         android:checkable="true"
         android:clickable="true"
         android:focusable="true"
-        style="?attr/listItemCardViewSegmentedStyle"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         app:swipeToPrimaryActionEnabled="true">
@@ -38,22 +38,37 @@
             android:orientation="horizontal"
             tools:ignore="UseCompoundDrawables">
             <ImageView
+                style="@style/Widget.Material3.ImageView.ListItem.LeadingIcon"
                 android:id="@+id/cat_list_item_start_icon"
-                style="@style/Widget.Material3.ImageView.ListItem.Leading"
                 android:contentDescription="@string/cat_list_item_icon_content_description"
                 android:layout_height="20dp"
                 android:layout_width="20dp"
-                android:layout_marginBottom="16dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 app:srcCompat="@drawable/ic_star_icon_checkable_24px" />
+          <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:layout_marginStart="12dp">
             <TextView
+                style="@style/Widget.Material3.TextView.ListItem.LabelText"
                 android:id="@+id/cat_list_item_text"
                 android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:textAppearance="?attr/textAppearanceBodyLarge" />
+                android:layout_width="wrap_content"/>
+            <TextView
+              style="@style/Widget.Material3.TextView.ListItem.SupportingText"
+              android:layout_height="wrap_content"
+              android:layout_width="wrap_content"
+              android:text="@string/cat_list_item_supporting_text"/>
+          </LinearLayout>
+          <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cat_list_item_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
+            android:importantForAccessibility="no"
+            android:layout_marginStart="12dp"/>
         </LinearLayout>
     </com.google.android.material.listitem.ListItemCardView>
 
@@ -64,20 +79,20 @@
             style="?attr/materialIconButtonFilledStyle"
             android:insetLeft="0dp"
             android:insetRight="0dp"
-            android:layout_height="56dp"
+            android:layout_height="match_parent"
+            android:layout_width="64dp"
             android:layout_marginEnd="2dp"
             android:layout_marginStart="2dp"
-            android:layout_width="wrap_content"
             app:icon="@drawable/ic_add_24px"
-            app:iconGravity="top" />
+            app:iconGravity="textStart" />
         <com.google.android.material.button.MaterialButton
             style="?attr/materialIconButtonFilledStyle"
             android:insetLeft="0dp"
             android:insetRight="0dp"
-            android:layout_height="56dp"
+            android:layout_height="match_parent"
+            android:layout_width="64dp"
             android:layout_marginEnd="2dp"
-            android:layout_width="wrap_content"
             app:icon="@drawable/ic_add_24px"
-            app:iconGravity="top" />
+            app:iconGravity="textStart" />
     </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>

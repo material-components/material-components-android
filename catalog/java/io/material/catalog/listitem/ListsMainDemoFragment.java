@@ -34,6 +34,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.listitem.ListItemViewHolder;
 import io.material.catalog.feature.DemoFragment;
 import java.util.ArrayList;
@@ -127,6 +128,7 @@ public class ListsMainDemoFragment extends DemoFragment {
 
     private final TextView textView;
     private final MaterialCardView cardView;
+    private final MaterialCheckBox checkBox;
 
     private final ImageView leadingIcon;
     public CustomItemViewHolder(@NonNull View itemView) {
@@ -134,6 +136,7 @@ public class ListsMainDemoFragment extends DemoFragment {
       textView = itemView.findViewById(R.id.cat_list_item_text);
       cardView = itemView.findViewById(R.id.cat_list_item_card_view);
       leadingIcon = itemView.findViewById(R.id.cat_list_item_start_icon);
+      checkBox = itemView.findViewById(R.id.cat_list_item_checkbox);
     }
 
     public void bind(@NonNull CustomListItemData data) {
@@ -145,6 +148,7 @@ public class ListsMainDemoFragment extends DemoFragment {
             Toast.makeText(v.getContext(), R.string.mtrl_list_item_clicked, Toast.LENGTH_SHORT)
                 .show();
             cardView.toggle();
+            checkBox.setChecked(cardView.isChecked());
             leadingIcon.setSelected(cardView.isChecked());
             data.checked = !data.checked;
           });
