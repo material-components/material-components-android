@@ -21,7 +21,6 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import com.google.android.material.animation.AnimationUtils;
@@ -53,6 +52,8 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
 
   // TODO:b/443149411 - Make the min child width customizable
   private static final int MIN_CHILD_WIDTH = 15;
+  private int originalWidthMeasureSpec = UNSET;
+  private int originalHeightMeasureSpec = UNSET;
 
   public ListItemRevealLayout(Context context) {
     this(context, null);
@@ -70,7 +71,11 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     int childCount = getChildCount();
-    if (intrinsicWidth == UNSET) {
+    if (shouldRemeasureIntrinsicSizes(originalHeightMeasureSpec, heightMeasureSpec, intrinsicHeight)
+        || shouldRemeasureIntrinsicSizes(
+            originalWidthMeasureSpec, widthMeasureSpec, intrinsicWidth)) {
+      originalHeightMeasureSpec = heightMeasureSpec;
+      originalWidthMeasureSpec = widthMeasureSpec;
       measureIntrinsicSize(widthMeasureSpec, heightMeasureSpec);
       // At this point all the children are measured and we have our intrinsic sizes, so we can
       // go through and save the original intrinsic child sizes
@@ -139,6 +144,26 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
       // Update 'currentLeft' to position the next child to the right of this one.
       currentLeft += adjustedLeftMargin + childWidth + adjustedRightMargin;
     }
+  }
+
+  private boolean shouldRemeasureIntrinsicSizes(
+      int originalMeasureSpec, int newMeasureSpec, int intrinsicSize) {
+    // We only want to measure the intrinsic size if we don't know it yet, OR if the measure spec
+    // has changed and it might be different than the existing intrinsic measured size. We assume
+    // that if the MeasureSpec mode is UNSPECIFIED, we can use the existing intrinsic sizes. This
+    // is to prevent unnecessary re-measuring when our parent continually gives us an unspecified
+    // measure spec.
+    if (intrinsicSize == UNSET) {
+      return true;
+    }
+    if (originalMeasureSpec == newMeasureSpec) {
+      return false;
+    }
+    int mode = MeasureSpec.getMode(newMeasureSpec);
+    // We don't want to re-measure if the new measure spec is UNSPECIFIED, or if it's EXACTLY
+    // the same as the intrinsic size.
+    return mode != MeasureSpec.UNSPECIFIED
+        && (mode != MeasureSpec.EXACTLY || MeasureSpec.getSize(newMeasureSpec) != intrinsicSize);
   }
 
   void measureIntrinsicSize(int widthMeasureSpec, int heightMeasureSpec) {
@@ -298,15 +323,6 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
   @Override
   protected LayoutParams generateLayoutParams(LayoutParams p) {
     return new MarginLayoutParams(p);
-  }
-
-  @Override
-  public void setLayoutParams(@NonNull LayoutParams params) {
-    if (getLayoutParams() != null && params.width != getLayoutParams().width) {
-      // If not equal to previous layout params width, reset intrinsic width
-      resetIntrinsicWidth();
-    }
-    super.setLayoutParams(params);
   }
 
   /**
