@@ -35,6 +35,9 @@
   <public name="Widget.Material3.TextView.ListItem.LabelText" type="style"/>
   <public name="Widget.Material3.TextView.ListItem.SupportingText" type="style"/>
   <public name="Widget.Material3.TextView.ListItem.TrailingSupportingText" type="style"/>
+  <public name="Widget.Material3.Checkbox.ListItem" type="style"/>
+  <public name="Widget.Material3.Switch.ListItem" type="style"/>
+  <public name="Widget.Material3.RadioButton.ListItem" type="style"/>
 
   <public name="listItemShapeAppearanceSingle" type="attr"/>
   <public name="listItemShapeAppearanceFirst" type="attr"/>

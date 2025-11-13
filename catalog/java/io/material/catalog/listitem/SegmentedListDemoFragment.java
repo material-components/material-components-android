@@ -18,20 +18,30 @@ package io.material.catalog.listitem;
 
 import io.material.catalog.R;
 
+import static android.widget.Adapter.NO_SELECTION;
+
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.listitem.ListItemViewHolder;
 import java.util.ArrayList;
 import java.util.List;
 
 /** A fragment that displays a segmented List demos for the Catalog app. */
 public class SegmentedListDemoFragment extends ListsMainDemoFragment {
 
+  private ListsAdapter adapter;
   @NonNull
   @Override
   public View onCreateDemoView(
@@ -52,17 +62,20 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
               20));
     }
 
-    view.setAdapter(new ListsAdapter(data));
+    adapter = new ListsAdapter(data);
+    view.setAdapter(adapter);
     view.addItemDecoration(new MarginItemDecoration(getContext()));
 
     return view;
   }
 
   /** An Adapter that shows custom list items */
-  public static class ListsAdapter extends ListsMainDemoFragment.ListsAdapter {
+  public class ListsAdapter extends Adapter<CustomItemViewHolder> {
+    private int selectedPosition = NO_SELECTION;
+    private final List<CustomListItemData> items;
 
     public ListsAdapter(@NonNull List<CustomListItemData> items) {
-      super(items);
+      this.items = items;
     }
 
     @NonNull
@@ -76,6 +89,64 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
                       parent,
                       /* attachToRoot= */ false);
       return new CustomItemViewHolder(item);
+    }
+    @Override
+    public void onBindViewHolder(
+        @NonNull CustomItemViewHolder viewHolder, int position) {
+      CustomListItemData data = getItemAt(position);
+      viewHolder.bind(data);
+    }
+    @Override
+    public int getItemCount() {
+      return items.size();
+    }
+    @NonNull
+    public CustomListItemData getItemAt(int i) {
+      return items.get(i);
+    }
+    /**
+     * Set exclusive selected position.
+     */
+    public void setSelectedPosition(int selectedPosition) {
+      this.selectedPosition = selectedPosition;
+    }
+    /**
+     * Return exclusive selected position.
+     */
+    public int getSelectedPosition() {
+      return selectedPosition;
+    }
+  }
+  /** A ViewHolder that shows custom list items */
+  public class CustomItemViewHolder extends ListItemViewHolder {
+    private final TextView textView;
+    private final MaterialCardView cardView;
+    private final RadioButton radioButton;
+    private final ImageView leadingIcon;
+    public CustomItemViewHolder(@NonNull View itemView) {
+      super(itemView);
+      textView = itemView.findViewById(R.id.cat_list_item_text);
+      cardView = itemView.findViewById(R.id.cat_list_item_card_view);
+      leadingIcon = itemView.findViewById(R.id.cat_list_item_start_icon);
+      radioButton = itemView.findViewById(R.id.cat_list_item_radio_button);
+    }
+    public void bind(@NonNull CustomListItemData data) {
+      super.bind();
+      textView.setText(data.text);
+      cardView.setChecked(data.indexInSection == adapter.getSelectedPosition());
+      radioButton.setChecked(cardView.isChecked());
+      leadingIcon.setSelected(cardView.isChecked());
+      cardView.setOnClickListener(
+          v -> {
+            int previouslySelectedPosition = adapter.getSelectedPosition();
+            adapter.setSelectedPosition(data.indexInSection);
+            Toast.makeText(v.getContext(), R.string.mtrl_list_item_clicked, Toast.LENGTH_SHORT)
+                .show();
+            adapter.notifyItemChanged(data.indexInSection);
+            if (previouslySelectedPosition != NO_SELECTION) {
+              adapter.notifyItemChanged(previouslySelectedPosition);
+            }
+          });
     }
   }
 }

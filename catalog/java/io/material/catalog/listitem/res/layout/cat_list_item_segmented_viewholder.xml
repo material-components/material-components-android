@@ -61,13 +61,11 @@
               android:layout_width="wrap_content"
               android:text="@string/cat_list_item_supporting_text"/>
           </LinearLayout>
-          <com.google.android.material.checkbox.MaterialCheckBox
-            android:id="@+id/cat_list_item_checkbox"
+          <com.google.android.material.radiobutton.MaterialRadioButton
+            style="@style/Widget.Material3.RadioButton.ListItem"
+            android:id="@+id/cat_list_item_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="false"
-            android:focusable="false"
-            android:importantForAccessibility="no"
             android:layout_marginStart="12dp"/>
         </LinearLayout>
     </com.google.android.material.listitem.ListItemCardView>

@@ -59,12 +59,18 @@
           android:layout_width="wrap_content"
           android:text="@string/cat_list_item_supporting_text"/>
       </LinearLayout>
+      <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/cat_list_item_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.Switch.ListItem"
+        android:layout_marginStart="12dp"/>
       <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/cat_list_item_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:clickable="false"
-        android:focusable="false"
+        style="@style/Widget.Material3.Checkbox.ListItem"
+        android:visibility="gone"
         android:layout_marginStart="12dp"/>
     </LinearLayout>
   </com.google.android.material.listitem.ListItemCardView>
