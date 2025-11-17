@@ -59,6 +59,7 @@
               style="@style/Widget.Material3.TextView.ListItem.SupportingText"
               android:layout_height="wrap_content"
               android:layout_width="wrap_content"
+              android:textAlignment="viewStart"
               android:text="@string/cat_list_item_supporting_text"/>
           </LinearLayout>
           <com.google.android.material.radiobutton.MaterialRadioButton
@@ -90,7 +91,7 @@
             android:layout_height="match_parent"
             android:layout_width="64dp"
             android:layout_marginEnd="2dp"
-            app:icon="@drawable/ic_add_24px"
+            app:icon="@drawable/ic_star_icon_checkable_24px"
             app:iconGravity="textStart" />
     </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>

@@ -23,8 +23,8 @@ import static com.google.android.material.listitem.SwipeableListItem.STATE_OPEN;
 import static com.google.android.material.listitem.SwipeableListItem.STATE_SETTLING;
 import static com.google.android.material.listitem.SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
+import static java.lang.Math.abs;
 import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
@@ -273,23 +273,34 @@ public class ListItemLayout extends FrameLayout {
                       && swipeToRevealLayout instanceof RevealableListItem)) {
                     return 0;
                   }
-                  // TODO:b/443153708 - Support RTL
-                  MarginLayoutParams revealViewLp =
-                      (LayoutParams) swipeToRevealLayout.getLayoutParams();
-                  MarginLayoutParams contentViewLp = (LayoutParams) contentView.getLayoutParams();
-                  int leftPositionClamp =
-                      ((SwipeableListItem) contentView).isSwipeToPrimaryActionEnabled()
-                          ? originalContentViewLeft
-                              - contentView.getMeasuredWidth()
-                              - contentViewLp.rightMargin
-                          : // left margin is accounted for in originalContentViewLeft
-                          originalContentViewLeft
-                              - ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
-                              - revealViewLp.leftMargin
-                              - revealViewLp.rightMargin;
-                  return max(
-                      min(left, originalContentViewLeft),
-                      leftPositionClamp - ((SwipeableListItem) contentView).getSwipeMaxOvershoot());
+                  boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+                  RevealableListItem revealableItem = (RevealableListItem) swipeToRevealLayout;
+                  SwipeableListItem swipeableItem = (SwipeableListItem) contentView;
+
+                  int maxSwipeDistance;
+                  if (swipeableItem.isSwipeToPrimaryActionEnabled()) {
+                    MarginLayoutParams contentViewLp =
+                        (MarginLayoutParams) contentView.getLayoutParams();
+                    maxSwipeDistance =
+                        contentView.getMeasuredWidth() + contentViewLp.getMarginEnd();
+                  } else {
+                    MarginLayoutParams revealViewLp =
+                        (MarginLayoutParams) swipeToRevealLayout.getLayoutParams();
+                    maxSwipeDistance =
+                        revealableItem.getIntrinsicWidth()
+                            + revealViewLp.getMarginStart()
+                            + revealViewLp.getMarginEnd();
+                  }
+
+                  int maxSwipeBoundary =
+                      originalContentViewLeft
+                          + ((isRtl ? 1 : -1)
+                              * (maxSwipeDistance + swipeableItem.getSwipeMaxOvershoot()));
+
+                  final int startBound = isRtl ? originalContentViewLeft : maxSwipeBoundary;
+                  final int endBound = isRtl ? maxSwipeBoundary : originalContentViewLeft;
+
+                  return Math.max(startBound, Math.min(left, endBound));
                 }
 
                 @Override
@@ -310,7 +321,6 @@ public class ListItemLayout extends FrameLayout {
                     return;
                   }
                   super.onViewPositionChanged(changedView, left, top, dx, dy);
-                  // TODO:b/443153708 - Support RTL
                   revealViewOffset = left - originalContentViewLeft;
 
                   LayoutParams revealViewLp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
@@ -320,19 +330,23 @@ public class ListItemLayout extends FrameLayout {
                   int revealViewDesiredWidth =
                       max(
                           0,
-                          originalContentViewLeft
-                              - contentView.getLeft()
-                              - contentViewLp.rightMargin // only end margin matters here
-                              - revealViewLp.leftMargin
-                              - revealViewLp.rightMargin);
+                          abs(originalContentViewLeft - contentView.getLeft())
+                              - contentViewLp.getMarginEnd() // only end margin matters here
+                              - revealViewLp.getMarginStart()
+                              - revealViewLp.getMarginEnd());
+
                   ((RevealableListItem) swipeToRevealLayout)
                       .setRevealedWidth(revealViewDesiredWidth);
 
+                  boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
                   int fullSwipedOffset = getSwipeToActionOffset();
                   int disappearingOffset =
                       (fullSwipedOffset + getSwipeRevealViewRevealedOffset()) / 2;
+
                   // If we're past the reveal view offset, we should start disappearing.
-                  if (revealViewOffset <= disappearingOffset) {
+                  if (isRtl
+                      ? revealViewOffset >= disappearingOffset
+                      : revealViewOffset <= disappearingOffset) {
                     contentView.setAlpha(
                         (float) (revealViewOffset - fullSwipedOffset)
                             / (disappearingOffset - fullSwipedOffset));
@@ -348,6 +362,9 @@ public class ListItemLayout extends FrameLayout {
                 }
 
                 private int calculateTargetSwipeState(float xvel, View swipeView) {
+                  if (getLayoutDirection() == LAYOUT_DIRECTION_RTL) {
+                    xvel *= -1;
+                  }
                   if (!((SwipeableListItem) swipeView).isSwipeToPrimaryActionEnabled()) {
                     if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
                       return STATE_CLOSED;
@@ -422,10 +439,15 @@ public class ListItemLayout extends FrameLayout {
       return 0;
     }
     LayoutParams lp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
+    int revealViewTotalWidth =
+        ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
+            + lp.leftMargin
+            + lp.rightMargin;
+
     return originalContentViewLeft
-        - ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
-        - lp.leftMargin
-        - lp.rightMargin;
+        + (getLayoutDirection() == LAYOUT_DIRECTION_RTL
+            ? revealViewTotalWidth
+            : -revealViewTotalWidth);
   }
 
   private int getSwipeViewClosedOffset() {
@@ -438,9 +460,8 @@ public class ListItemLayout extends FrameLayout {
     }
     LayoutParams lp = (LayoutParams) contentView.getLayoutParams();
     return originalContentViewLeft
-        - contentView.getMeasuredWidth()
-        - lp.leftMargin
-        - lp.rightMargin;
+        + (getLayoutDirection() == LAYOUT_DIRECTION_RTL ? 1 : -1)
+            * (contentView.getMeasuredWidth() + lp.leftMargin + lp.rightMargin);
   }
 
   private int getOffsetForSwipeState(@StableSwipeState int swipeState) {
@@ -512,15 +533,24 @@ public class ListItemLayout extends FrameLayout {
       originalContentViewLeft = contentView.getLeft();
       int originalContentViewRight = contentView.getRight();
       contentView.offsetLeftAndRight(revealViewOffset);
-      // We always lay out swipeToRevealLayout such that the right is aligned to where the original
-      // content view's right was. Note that if the content view had a right margin, it will
+
+      // We always lay out swipeToRevealLayout such that the end is aligned to where the original
+      // content view's end was. Note that if the content view had an end margin, it will
       // effectively be passed onto the reveal view.
       LayoutParams lp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
-      // TODO:b/443153708 - Support RTL
+      int swipeToRevealLeft;
+      int swipeToRevealRight;
+      if (getLayoutDirection() == LAYOUT_DIRECTION_RTL) {
+        swipeToRevealLeft = originalContentViewLeft + lp.leftMargin;
+        swipeToRevealRight = swipeToRevealLeft + swipeToRevealLayout.getMeasuredWidth();
+      } else {
+        swipeToRevealRight = originalContentViewRight - lp.rightMargin;
+        swipeToRevealLeft = swipeToRevealRight - swipeToRevealLayout.getMeasuredWidth();
+      }
       swipeToRevealLayout.layout(
-          originalContentViewRight - lp.rightMargin - swipeToRevealLayout.getMeasuredWidth(),
+          swipeToRevealLeft,
           swipeToRevealLayout.getTop(),
-          originalContentViewRight - lp.rightMargin,
+          swipeToRevealRight,
           swipeToRevealLayout.getBottom());
     }
   }
