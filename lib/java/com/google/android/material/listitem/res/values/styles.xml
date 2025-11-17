@@ -37,6 +37,11 @@
     <item name="swipeToPrimaryActionEnabled">false</item>
   </style>
 
+  <style name="Widget.Material3.ListItemRevealLayout" parent="">
+    <item name="enforceMaterialTheme">true</item>
+    <item name="minChildWidth">@dimen/m3_list_reveal_min_child_width</item>
+  </style>
+
   <style name="Widget.Material3.ListItemCardView.Segmented">
     <item name="cardBackgroundColor">@color/m3_segmented_list_item_background_color_selector</item>
   </style>

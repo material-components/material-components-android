@@ -20,11 +20,13 @@
   <public name="listItemCardViewSegmentedStyle" type="attr"/>
 
   <public name="state_swiped" type="attr" />
+  <public name="minChildWidth" type="attr"/>
 
   <public name="Widget.Material3.ListItemLayout" type="style"/>
   <public name="ThemeOverlay.Material3.ListItemLayout.Segmented" type="style"/>
   <public name="Widget.Material3.ListItemCardView" type="style"/>
   <public name="Widget.Material3.ListItemCardView.Segmented" type="style"/>
+  <public name="Widget.Material3.ListItemRevealLayout" type="style"/>
   <public name="ShapeAppearance.Material3.ListItem.First" type="style"/>
   <public name="ShapeAppearance.Material3.ListItem.Middle" type="style"/>
   <public name="ShapeAppearance.Material3.ListItem.Last" type="style"/>
