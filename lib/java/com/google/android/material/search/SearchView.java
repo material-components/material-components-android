@@ -749,6 +749,12 @@ public class SearchView extends FrameLayout
     return toolbar;
   }
 
+  /** Returns the container view containing the non-scrim content of the {@link SearchView}. */
+  @NonNull
+  public View getSearchContainer() {
+    return rootView;
+  }
+
   /** Returns the main {@link EditText} which can be used for hint and search text. */
   @NonNull
   public EditText getEditText() {
@@ -959,6 +965,17 @@ public class SearchView extends FrameLayout
   void requestFocusAndShowKeyboardIfNeeded() {
     if (autoShowKeyboard) {
       requestFocusAndShowKeyboard();
+    } else if (!isInTouchMode()) {
+      // We still want to request focus if we are in non-touch mode so that focus doesn't go
+      // behind the searchview.
+      editText.postDelayed(
+          () -> {
+            if (editText.requestFocus()) {
+              // Workaround for talkback issue when clear button is clicked
+              editText.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+            }
+          },
+          TALKBACK_FOCUS_CHANGE_DELAY_MS);
     }
   }
 
