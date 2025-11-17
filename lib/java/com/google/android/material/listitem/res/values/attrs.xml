@@ -27,6 +27,11 @@
     <attr name="swipeToPrimaryActionEnabled" format="boolean"/>
   </declare-styleable>
 
+  <declare-styleable name="ListItemCardViewStates">
+    <!-- State when a ListItemCardView is being swiped. -->
+    <attr name="state_swiped" format="boolean" />
+  </declare-styleable>
+
   <!-- Shape appearance of a single item in the list. -->
   <attr name="listItemShapeAppearanceSingle" format="reference"/>
   <!-- Shape appearance of the first item in the list. -->

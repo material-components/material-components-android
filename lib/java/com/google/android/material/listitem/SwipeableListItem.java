@@ -80,6 +80,9 @@ public interface SwipeableListItem {
   @Retention(RetentionPolicy.SOURCE)
   @interface StableSwipeState {}
 
+  /** Called whenever the swipe state of the SwipeableListItem changes. */
+  void onSwipeStateChanged(@SwipeState int swipeState);
+
   /**
    * Returns the overshoot, in pixels, that the SwipeableListItem is able to be swiped past the
    * {@link #STATE_OPEN} or {@link #STATE_SWIPE_PRIMARY_ACTION} states by, before settling.

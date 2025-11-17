@@ -327,6 +327,16 @@ public class ListItemLayout extends FrameLayout {
                               - revealViewLp.rightMargin);
                   ((RevealableListItem) swipeToRevealLayout)
                       .setRevealedWidth(revealViewDesiredWidth);
+
+                  int fullSwipedOffset = getSwipeToActionOffset();
+                  int disappearingOffset =
+                      (fullSwipedOffset + getSwipeRevealViewRevealedOffset()) / 2;
+                  // If we're past the reveal view offset, we should start disappearing.
+                  if (revealViewOffset <= disappearingOffset) {
+                    contentView.setAlpha(
+                        (float) (revealViewOffset - fullSwipedOffset)
+                            / (disappearingOffset - fullSwipedOffset));
+                  }
                 }
 
                 @Override
@@ -475,11 +485,14 @@ public class ListItemLayout extends FrameLayout {
   }
 
   private void setSwipeStateInternal(@SwipeState int swipeState) {
+    if (swipeState == this.swipeState) {
+      return;
+    }
     // If swipe to action is not supported but the swipe state to be set in
     // STATE_SWIPE_PRIMARY_ACTION, we do nothing.
-    if (swipeState == STATE_SWIPE_PRIMARY_ACTION
-        && !(contentView instanceof SwipeableListItem
-            && ((SwipeableListItem) contentView).isSwipeToPrimaryActionEnabled())) {
+    if (!(contentView instanceof SwipeableListItem)
+        || (swipeState == STATE_SWIPE_PRIMARY_ACTION
+            && !((SwipeableListItem) contentView).isSwipeToPrimaryActionEnabled())) {
       return;
     }
     this.swipeState = swipeState;
@@ -488,6 +501,8 @@ public class ListItemLayout extends FrameLayout {
         || swipeState == STATE_SWIPE_PRIMARY_ACTION) {
       this.lastStableSwipeState = swipeState;
     }
+
+    ((SwipeableListItem) contentView).onSwipeStateChanged(swipeState);
   }
 
   @Override

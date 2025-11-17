@@ -14,8 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
   <item android:state_checkable="true" android:state_checked="true"
     android:color="?attr/colorSecondaryContainer"/>
-  <item android:color="?attr/colorSurfaceBright"/>
+  <item app:state_swiped="true" android:color="?attr/colorSurface"/>
+  <item android:color="?attr/colorSurface"/>
 </selector>

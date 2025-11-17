@@ -35,6 +35,10 @@ import com.google.android.material.internal.ThemeEnforcement;
  */
 public class ListItemCardView extends MaterialCardView implements SwipeableListItem {
 
+  private static final int[] SWIPED_STATE_SET = {R.attr.state_swiped};
+
+  private boolean isSwiped = false;
+
   private final int swipeMaxOvershoot;
   private boolean swipeToPrimaryActionEnabled;
 
@@ -83,5 +87,20 @@ public class ListItemCardView extends MaterialCardView implements SwipeableListI
   @Override
   public boolean isSwipeToPrimaryActionEnabled() {
     return swipeToPrimaryActionEnabled;
+  }
+
+  @Override
+  protected int[] onCreateDrawableState(int extraSpace) {
+    final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+    if (isSwiped) {
+      mergeDrawableStates(drawableState, SWIPED_STATE_SET);
+    }
+    return drawableState;
+  }
+
+  @Override
+  public void onSwipeStateChanged(int swipeState) {
+    isSwiped = swipeState != STATE_CLOSED;
+    refreshDrawableState();
   }
 }
