@@ -472,6 +472,67 @@ public class MonthAdapterTest {
     assertThat(adapter.findLastValidDayPosition()).isEqualTo(adapter.dayToPosition(18));
   }
 
+  @Test
+  public void findNearestValidDayPositionInRow_givenValid_returnsSelf() {
+    Locale.setDefault(Locale.US);
+    Month month = Month.create(2019, Calendar.FEBRUARY);
+    long dateValidFrom = month.getDay(15);
+    CalendarConstraints constraints =
+        new CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointForward.from(dateValidFrom))
+            .build();
+    MonthAdapter adapter = new MonthAdapter(month, new SingleDateSelector(), constraints, null);
+
+    assertThat(adapter.findNearestValidDayPositionInRow(adapter.dayToPosition(15)))
+        .isEqualTo(adapter.dayToPosition(15));
+  }
+
+  @Test
+  public void findNearestValidDayPositionInRow_findsRight() {
+    Locale.setDefault(Locale.US);
+    Month month = Month.create(2019, Calendar.FEBRUARY);
+    long dateValidFrom = month.getDay(15);
+    CalendarConstraints constraints =
+        new CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointForward.from(dateValidFrom))
+            .build();
+    MonthAdapter adapter = new MonthAdapter(month, new SingleDateSelector(), constraints, null);
+
+    // Day 14 is invalid, day 15 is valid.
+    assertThat(adapter.findNearestValidDayPositionInRow(adapter.dayToPosition(14)))
+        .isEqualTo(adapter.dayToPosition(15));
+  }
+
+  @Test
+  public void findNearestValidDayPositionInRow_findsLeft() {
+    Locale.setDefault(Locale.US);
+    Month month = Month.create(2019, Calendar.FEBRUARY);
+    long dateValidUpTo = month.getDay(14);
+    CalendarConstraints constraints =
+        new CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointBackward.before(dateValidUpTo))
+            .build();
+    MonthAdapter adapter = new MonthAdapter(month, new SingleDateSelector(), constraints, null);
+
+    // Day 15 is invalid, day 14 is valid.
+    assertThat(adapter.findNearestValidDayPositionInRow(adapter.dayToPosition(15)))
+        .isEqualTo(adapter.dayToPosition(14));
+  }
+
+  @Test
+  public void findNearestValidDayPositionInRow_noValidDateInRow_returnsInvalid() {
+    Locale.setDefault(Locale.US);
+    Month month = Month.create(2019, Calendar.FEBRUARY);
+    long dateValidFrom = month.getDay(25);
+    CalendarConstraints constraints =
+        new CalendarConstraints.Builder()
+            .setValidator(DateValidatorPointForward.from(dateValidFrom))
+            .build();
+    MonthAdapter adapter = new MonthAdapter(month, new SingleDateSelector(), constraints, null);
+
+    assertThat(adapter.findNearestValidDayPositionInRow(3)).isEqualTo(-1);
+  }
+
   private MonthAdapter createRangeMonthAdapter(Month month, Pair<Long, Long> selection) {
     DateSelector<Pair<Long, Long>> dateSelector = new RangeDateSelector();
     dateSelector.setSelection(selection);

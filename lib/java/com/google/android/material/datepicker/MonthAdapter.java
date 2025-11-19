@@ -400,4 +400,34 @@ class MonthAdapter extends BaseAdapter {
   int findLastValidDayPosition() {
     return findPreviousValidDayPosition(lastPositionInMonth() + 1);
   }
+
+  /**
+   * Finds the nearest valid day to the given position in the same row.
+   *
+   * @param position The starting position.
+   * @return The position of the nearest valid day in the same row, or -1 if no valid day is found
+   *     in the row.
+   */
+  int findNearestValidDayPositionInRow(int position) {
+    if (isDayPositionValid(position)) {
+      return position;
+    }
+
+    long rowId = getItemId(position);
+    for (int i = 1; i < month.daysInWeek; i++) {
+      int rightPosition = position + i;
+      if (rightPosition < getCount()
+          && getItemId(rightPosition) == rowId
+          && isDayPositionValid(rightPosition)) {
+        return rightPosition;
+      }
+      int leftPosition = position - i;
+      if (leftPosition >= 0
+          && getItemId(leftPosition) == rowId
+          && isDayPositionValid(leftPosition)) {
+        return leftPosition;
+      }
+    }
+    return -1;
+  }
 }
