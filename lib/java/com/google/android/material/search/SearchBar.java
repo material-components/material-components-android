@@ -1061,6 +1061,9 @@ public class SearchBar extends Toolbar {
       if (!initialized && dependency instanceof AppBarLayout) {
         initialized = true;
         AppBarLayout appBarLayout = (AppBarLayout) dependency;
+        // Necessary to enable keyboard navigation across searchbar and other elements due to
+        // toolbar being a keyboard navigation cluster from API 26+
+        appBarLayout.setTouchscreenBlocksFocus(false);
         setAppBarLayoutTransparent(appBarLayout);
       }
       return changed;

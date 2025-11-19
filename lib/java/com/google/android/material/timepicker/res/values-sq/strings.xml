@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Zgjidh orën</string>
   <string name="material_timepicker_minute">Minuta</string>
   <string name="material_timepicker_hour">Ora</string>
+  <string name="material_timepicker_minute_error">Min. duhet të jetë 0-59</string>
+  <string name="material_timepicker_hour_error">Orët duhet të jenë 1-12</string>
+  <string name="material_timepicker_hour_error_24h">Ora duhet të jetë 0-23</string>
   <string name="material_hour_suffix">%1$s fiks</string>
   <string name="material_hour_24h_suffix">%1$s orë</string>
   <string name="material_minute_suffix">%1$s minuta</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Anulo</string>
   <string name="material_timepicker_text_input_mode_description">Kalo te modaliteti i hyrjes së tekstit për hyrjen e kohës.</string>
   <string name="material_timepicker_clock_mode_description">Kalo te modaliteti i orës për hyrjen e kohës.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Kalo te modaliteti i hyrjes së tekstit</string>
+  <string name="material_timepicker_clock_mode_tooltip">Kalo te modaliteti i orës</string>
 </resources>

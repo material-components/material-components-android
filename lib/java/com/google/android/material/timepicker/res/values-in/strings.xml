@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Pilih waktu</string>
   <string name="material_timepicker_minute">Menit</string>
   <string name="material_timepicker_hour">Jam</string>
+  <string name="material_timepicker_minute_error">Menit harus antara 0—59</string>
+  <string name="material_timepicker_hour_error">Jam harus antara 1—12</string>
+  <string name="material_timepicker_hour_error_24h">Jam harus antara 0—23</string>
   <string name="material_hour_suffix">Pukul %1$s</string>
   <string name="material_hour_24h_suffix">%1$s jam</string>
   <string name="material_minute_suffix">%1$s menit</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Batal</string>
   <string name="material_timepicker_text_input_mode_description">Beralih ke mode masukan teks untuk masukan waktu.</string>
   <string name="material_timepicker_clock_mode_description">Beralih ke mode jam untuk masukan waktu.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Beralih ke mode input teks</string>
+  <string name="material_timepicker_clock_mode_tooltip">Beralih ke mode jam</string>
 </resources>

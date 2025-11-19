@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Виберіть час</string>
   <string name="material_timepicker_minute">Хвилина</string>
   <string name="material_timepicker_hour">Година</string>
+  <string name="material_timepicker_minute_error">Укажіть від 0 до 59 хв</string>
+  <string name="material_timepicker_hour_error">Укажіть від 1 до 12 год</string>
+  <string name="material_timepicker_hour_error_24h">Укажіть від 0 до 23 год</string>
   <string name="material_hour_suffix">%1$s год</string>
   <string name="material_hour_24h_suffix">%1$s год</string>
   <string name="material_minute_suffix">%1$s хв</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Скасувати</string>
   <string name="material_timepicker_text_input_mode_description">Перейти в текстовий режим, щоб ввести час.</string>
   <string name="material_timepicker_clock_mode_description">Перейти в режим годинника, щоб ввести час.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Перейти в режим введення тексту</string>
+  <string name="material_timepicker_clock_mode_tooltip">Перейти в режим годинника</string>
 </resources>

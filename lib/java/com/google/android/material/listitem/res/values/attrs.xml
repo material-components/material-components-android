@@ -17,8 +17,27 @@
 <resources>
   <!-- Style to use for ListItemLayouts. -->
   <attr name="listItemLayoutStyle" format="reference"/>
-  <!-- Style to use for segmented ListItemLayouts. -->
-  <attr name="listItemLayoutSegmentedStyle" format="reference"/>
+  <!-- Style to use for ListItemCardView. -->
+  <attr name="listItemCardViewStyle" format="reference"/>
+  <!-- Style to use for segmented ListItemCardView. -->
+  <attr name="listItemCardViewSegmentedStyle" format="reference"/>
+  <!-- Style to use for the ListitemRevealLayout -->
+  <attr name="listItemRevealLayoutStyle" format="reference"/>
+
+  <declare-styleable name="ListItemCardView">
+    <!-- Whether or not to enable the swipe to action. -->
+    <attr name="swipeToPrimaryActionEnabled" format="boolean"/>
+  </declare-styleable>
+
+  <declare-styleable name="ListItemCardViewStates">
+    <!-- State when a ListItemCardView is being swiped. -->
+    <attr name="state_swiped" format="boolean" />
+  </declare-styleable>
+
+  <declare-styleable name="ListItemRevealLayout">
+    <!-- Minimum width any children are measured as. -->
+    <attr name="minChildWidth" format="dimension" />
+  </declare-styleable>
 
   <!-- Shape appearance of a single item in the list. -->
   <attr name="listItemShapeAppearanceSingle" format="reference"/>

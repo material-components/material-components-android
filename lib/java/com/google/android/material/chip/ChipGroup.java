@@ -169,8 +169,6 @@ public class ChipGroup extends FlowLayout {
           }
         });
     super.setOnHierarchyChangeListener(passThroughListener);
-
-    setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
   }
 
   @Override

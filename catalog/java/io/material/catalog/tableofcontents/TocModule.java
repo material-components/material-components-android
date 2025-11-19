@@ -51,6 +51,7 @@ import io.material.catalog.search.SearchFragment;
 import io.material.catalog.shapetheming.ShapeThemingFragment;
 import io.material.catalog.sidesheet.SideSheetFragment;
 import io.material.catalog.slider.SliderFragment;
+import io.material.catalog.snackbar.SnackbarFragment;
 import io.material.catalog.tabs.TabsFragment;
 import io.material.catalog.textfield.TextFieldFragment;
 import io.material.catalog.timepicker.TimePickerDemoLandingFragment;
@@ -90,6 +91,7 @@ import io.material.catalog.transition.TransitionFragment;
       ShapeThemingFragment.Module.class,
       SideSheetFragment.Module.class,
       SliderFragment.Module.class,
+      SnackbarFragment.Module.class,
       SwitchFragment.Module.class,
       TabsFragment.Module.class,
       TextFieldFragment.Module.class,

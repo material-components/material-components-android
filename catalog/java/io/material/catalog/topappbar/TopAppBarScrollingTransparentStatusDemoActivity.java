@@ -24,6 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
+import io.material.catalog.feature.DemoUtils;
 
 /**
  * An Activity that displays a scrolling Top App Bar demo for the Catalog app, with a transparent
@@ -41,6 +42,8 @@ public class TopAppBarScrollingTransparentStatusDemoActivity
 
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
+
+    DemoUtils.setupClickableContentText(view);
 
     return view;
   }

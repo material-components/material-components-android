@@ -63,7 +63,15 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isShiftPressed
+import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -160,6 +168,7 @@ class FabMenuDemoFragment : DemoFragment() {
 fun FabMenuDemoContent(onItemClick: (String) -> Unit, onExpandedChange: (Boolean) -> Unit) {
   val listState = rememberLazyListState()
   val fabVisible by remember { derivedStateOf { listState.firstVisibleItemIndex == 0 } }
+  val focusRequester = remember { FocusRequester() }
 
   Box {
     val items = remember {
@@ -194,7 +203,8 @@ fun FabMenuDemoContent(onItemClick: (String) -> Unit, onExpandedChange: (Boolean
               .animateFloatingActionButton(
                 visible = fabVisible || fabMenuExpanded,
                 alignment = Alignment.BottomEnd,
-              ),
+              )
+              .focusRequester(focusRequester),
           checked = fabMenuExpanded,
           onCheckedChange = { fabMenuExpanded = !fabMenuExpanded },
         ) {
@@ -229,7 +239,24 @@ fun FabMenuDemoContent(onItemClick: (String) -> Unit, onExpandedChange: (Boolean
                     )
                   )
               }
-            },
+            }
+              .then(
+              if (i == 0) {
+                Modifier.onKeyEvent {
+                  // Navigating back from the first item should go back to the FAB menu button.
+                  if (
+                    it.type == KeyEventType.KeyDown &&
+                    (it.key == Key.DirectionUp || (it.isShiftPressed && it.key == Key.Tab))
+                  ) {
+                    focusRequester.requestFocus()
+                    return@onKeyEvent true
+                  }
+                  return@onKeyEvent false
+                }
+              } else {
+                Modifier
+              }
+            ),
           onClick = {
             fabMenuExpanded = false
             onItemClick(item.second)

@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Zamanı seçin</string>
   <string name="material_timepicker_minute">Dakika</string>
   <string name="material_timepicker_hour">Saat</string>
+  <string name="material_timepicker_minute_error">Dakika 0-59 arasında olmalıdır</string>
+  <string name="material_timepicker_hour_error">Saat 1-12 arasında olmalıdır</string>
+  <string name="material_timepicker_hour_error_24h">Saat 0-23 arasında olmalıdır</string>
   <string name="material_hour_suffix">Saat %1$s</string>
   <string name="material_hour_24h_suffix">%1$s saat</string>
   <string name="material_minute_suffix">%1$s dakika</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">İptal</string>
   <string name="material_timepicker_text_input_mode_description">Zaman girişi için metin girişi moduna geçin.</string>
   <string name="material_timepicker_clock_mode_description">Zaman girişi için saat moduna geçin.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Metin giriş moduna geç</string>
+  <string name="material_timepicker_clock_mode_tooltip">Saat moduna geç</string>
 </resources>

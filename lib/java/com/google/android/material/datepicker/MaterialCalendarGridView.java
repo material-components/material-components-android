@@ -31,17 +31,20 @@ import android.widget.GridView;
 import android.widget.ListAdapter;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.util.Pair;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.internal.ViewUtils;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Calendar;
 
 final class MaterialCalendarGridView extends GridView {
 
   private final Calendar dayCompute = UtcDates.getUtcCalendar();
   private final boolean nestedScrollable;
+  @Nullable private MaterialCalendar.OnMonthNavigationListener onMonthNavigationListener;
 
   public MaterialCalendarGridView(Context context) {
     this(context, null);
@@ -77,32 +80,143 @@ final class MaterialCalendarGridView extends GridView {
     getAdapter().notifyDataSetChanged();
   }
 
-  @Override
-  public void setSelection(int position) {
-    if (position < getAdapter().firstPositionInMonth()) {
-      super.setSelection(getAdapter().firstPositionInMonth());
-    } else {
-      super.setSelection(position);
-    }
+  void setOnMonthNavigationListener(
+      @Nullable MaterialCalendar.OnMonthNavigationListener onMonthNavigationListener) {
+    this.onMonthNavigationListener = onMonthNavigationListener;
   }
 
   @Override
+  public void setSelection(int position) {
+    int firstValidDayPosition = getAdapter().findFirstValidDayPosition();
+    super.setSelection(Math.max(position, firstValidDayPosition));
+  }
+
+  @CanIgnoreReturnValue
+  @Override
   public boolean onKeyDown(int keyCode, KeyEvent event) {
-    boolean result = super.onKeyDown(keyCode, event);
-    if (!result) {
-      return false;
+    int position = getSelectedItemPosition();
+    if (position == INVALID_POSITION) {
+      return super.onKeyDown(keyCode, event);
     }
-    int selectedPosition = getSelectedItemPosition();
-    if (selectedPosition == INVALID_POSITION
-        || (selectedPosition >= getAdapter().firstPositionInMonth()
-            && selectedPosition <= getAdapter().lastPositionInMonth())) {
+
+    boolean isRtl = ViewUtils.isLayoutRtl(this);
+    switch (keyCode) {
+      case KeyEvent.KEYCODE_DPAD_LEFT:
+        return handleHorizontalNavigation(position, isRtl);
+      case KeyEvent.KEYCODE_DPAD_RIGHT:
+        return handleHorizontalNavigation(position, !isRtl);
+      case KeyEvent.KEYCODE_TAB:
+        return handleTabNavigation(position, event);
+      default:
+        if (!super.onKeyDown(keyCode, event)) {
+          return false;
+        }
+
+        MonthAdapter adapter = getAdapter();
+        int selectedPosition = getSelectedItemPosition();
+        // If navigation succeeded but landed on a disabled day, select the nearest valid day.
+        if (selectedPosition != INVALID_POSITION && !adapter.isDayPositionValid(selectedPosition)) {
+          return handleVerticalNavigationOnDisabledDay(keyCode, selectedPosition);
+        }
+        return true;
+    }
+  }
+
+  /**
+   * Handles key events when vertical navigation lands on a disabled day.
+   *
+   * <p>If {@code super.onKeyDown()} moves the selection to a disabled day, it attempts to select
+   * the closest enabled day in the same row. If no enabled day is found in that row, it continues
+   * searching in the same column—row by row—for a row containing a valid day.
+   */
+  @CanIgnoreReturnValue
+  @VisibleForTesting
+  boolean handleVerticalNavigationOnDisabledDay(int keyCode, int selectedPosition) {
+    MonthAdapter adapter = getAdapter();
+    // Try to select the nearest valid day in the same row.
+    if (trySelectNearestValidDayPosition(selectedPosition)) {
       return true;
     }
+
     if (KeyEvent.KEYCODE_DPAD_UP == keyCode) {
-      setSelection(getAdapter().firstPositionInMonth());
+      int previousPositionInColumn = selectedPosition - getNumColumns();
+      while (previousPositionInColumn >= adapter.firstPositionInMonth()) {
+        // Search previous rows for a valid day.
+        if (trySelectNearestValidDayPosition(previousPositionInColumn)) {
+          return true;
+        }
+        previousPositionInColumn -= getNumColumns();
+      }
+    } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+      int nextPositionInColumn = selectedPosition + getNumColumns();
+      while (nextPositionInColumn <= adapter.lastPositionInMonth()) {
+        // Search next rows for a valid day.
+        if (trySelectNearestValidDayPosition(nextPositionInColumn)) {
+          return true;
+        }
+        nextPositionInColumn += getNumColumns();
+      }
+    }
+    return false;
+  }
+
+  private boolean trySelectNearestValidDayPosition(int position) {
+    MonthAdapter adapter = getAdapter();
+    int nearestPosition = adapter.findNearestValidDayPositionInRow(position);
+    if (nearestPosition != -1) {
+      setSelection(nearestPosition);
       return true;
     }
     return false;
+  }
+
+  /**
+   * Finds the next or previous valid day and selects it.
+   *
+   * <p>If a valid day is found in the current month, it is selected. If no enabled day is found in
+   * the current month in the given direction, month navigation will be triggered if a listener is
+   * set.
+   *
+   * @param position The current position.
+   * @param forward {@code true} to navigate forward, {@code false} to navigate backward.
+   * @return {@code true} if the event was handled.
+   */
+  private boolean handleHorizontalNavigation(int position, boolean forward) {
+    int nextPosition =
+        forward
+            ? getAdapter().findNextValidDayPosition(position)
+            : getAdapter().findPreviousValidDayPosition(position);
+    if (nextPosition != -1) {
+      setSelection(nextPosition);
+      return true;
+    }
+
+    // Reached edge of month, trigger month navigation.
+    if (!forward && onMonthNavigationListener != null) {
+      return onMonthNavigationListener.onMonthNavigationPrevious();
+    } else if (forward && onMonthNavigationListener != null) {
+      return onMonthNavigationListener.onMonthNavigationNext();
+    }
+    return true;
+  }
+
+  /**
+   * Finds the next/previous valid day in sequence. If no valid day is found in the current month,
+   * returns {@code false} to allow focus to move out of the {@link MaterialCalendarGridView}.
+   */
+  private boolean handleTabNavigation(int position, KeyEvent event) {
+    int nextPosition =
+        event.isShiftPressed()
+            ? getAdapter().findPreviousValidDayPosition(position)
+            : getAdapter().findNextValidDayPosition(position);
+    if (nextPosition == -1) {
+      // If no next focusable item in this month, return false to let the system move focus
+      // out of the GridView.
+      return false;
+    }
+
+    setSelection(nextPosition);
+    return true;
   }
 
   @NonNull
@@ -228,10 +342,14 @@ final class MaterialCalendarGridView extends GridView {
   }
 
   private void gainFocus(int direction, Rect previouslyFocusedRect) {
-    if (direction == FOCUS_UP) {
-      setSelection(getAdapter().lastPositionInMonth());
-    } else if (direction == FOCUS_DOWN) {
-      setSelection(getAdapter().firstPositionInMonth());
+    int position = -1;
+    if (direction == FOCUS_UP || direction == FOCUS_BACKWARD) {
+      position = getAdapter().findLastValidDayPosition();
+    } else if (direction == FOCUS_DOWN || direction == FOCUS_FORWARD) {
+      position = getAdapter().findFirstValidDayPosition();
+    }
+    if (position != -1) {
+      setSelection(position);
     } else {
       super.onFocusChanged(true, direction, previouslyFocusedRect);
     }

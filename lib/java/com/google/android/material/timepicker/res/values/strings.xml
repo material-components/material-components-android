@@ -21,6 +21,10 @@
   <string name="material_timepicker_select_time" description="Title for the dialog with a time picker. [CHAR_LIMIT=32]">Select time</string>
   <string name="material_timepicker_minute" description="The label for a text field to select the minute on the hour [CHAR_LIMIT=24]">Minute</string>
   <string name="material_timepicker_hour" description="The label for a text field to select the hour on the time [CHAR_LIMIT=24]">Hour</string>
+  <string name="material_timepicker_minute_error" description="The label for a text field to show an error on the selection of the minute [CHAR_LIMIT=24]">Minute must be 0–59</string>
+  <string name="material_timepicker_hour_error" description="The label for a text field to show an error on the selection of the hour [CHAR_LIMIT=24]">Hour must be 1–12</string>
+  <string name="material_timepicker_hour_error_24h" description="The label for a text field to show an error on the selection of the 24-hour [CHAR_LIMIT=24]">Hour must be 0–23</string>
+
   <string name="material_clock_display_divider" translatable="false">:</string>
 
   <string name="material_hour_suffix" description="Spoken suffix for an hour in the clock [CHAR_LIMIT=10]"><xliff:g id="number">%1$s</xliff:g> o\'clock</string>
@@ -38,4 +42,9 @@
   <string name="material_timepicker_text_input_mode_description">Switch to text input mode for the time input.</string>
   <!-- Accessibility string used for describing the button in time picker that changes the dialog to circular clock mode. [CHAR LIMIT=NONE] -->
   <string name="material_timepicker_clock_mode_description">Switch to clock mode for the time input.</string>
+
+  <!-- Tooltip text for the button that switches the time picker to text input mode. [CHAR LIMIT=NONE] -->
+  <string name="material_timepicker_text_input_mode_tooltip">Switch to text input mode</string>
+  <!-- Tooltip text for the button that switches the time picker to clock mode. [CHAR LIMIT=NONE] -->
+  <string name="material_timepicker_clock_mode_tooltip">Switch to clock mode</string>
 </resources>

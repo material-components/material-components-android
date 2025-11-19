@@ -51,6 +51,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton.OnPressedChangeListener;
+import com.google.android.material.button.MaterialButton.WidthChangeDirection;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
@@ -64,6 +65,7 @@ import com.google.android.material.shape.StateListSizeChange;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -136,13 +138,19 @@ public class MaterialButtonGroup extends LinearLayout {
   public static final int OVERFLOW_MODE_MENU = 1;
 
   /**
+   * A value for {@code overflowMode}. It indicates that the buttons that don't fit to the group
+   * size will be displayed in another row under it.
+   */
+  public static final int OVERFLOW_MODE_WRAP = 2;
+
+  /**
    * The interface for the overflow mode attribute.
    *
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
   @Retention(RetentionPolicy.SOURCE)
-  @IntDef({OVERFLOW_MODE_NONE, OVERFLOW_MODE_MENU})
+  @IntDef({OVERFLOW_MODE_NONE, OVERFLOW_MODE_MENU, OVERFLOW_MODE_WRAP})
   public @interface OverflowMode {}
 
   private int overflowMode = OVERFLOW_MODE_NONE;
@@ -175,15 +183,18 @@ public class MaterialButtonGroup extends LinearLayout {
 
   private boolean childShapesDirty = true;
 
+  // Variables for overflow menu mode.
   private final int overflowMenuItemIconPadding;
   private boolean buttonOverflowInitialized;
   private MaterialButton overflowButton;
   private PopupMenu popupMenu;
   private final Map<Integer, Button> popupMenuItemToButtonMapping = new HashMap<>();
   private final Map<Button, MenuItem> buttonToMenuItemMapping = new HashMap<>();
-
   private final List<Button> tempOverflowButtonsList = new ArrayList<>();
   private final List<Button> overflowButtonsList = new ArrayList<>();
+
+  // Variables for overflow wrap mode.
+  private final List<Integer> rowButtonFirstIndices = new ArrayList<>();
 
   public MaterialButtonGroup(@NonNull Context context) {
     this(context, null);
@@ -240,16 +251,17 @@ public class MaterialButtonGroup extends LinearLayout {
     setEnabled(attributes.getBoolean(R.styleable.MaterialButtonGroup_android_enabled, true));
     setOverflowMode(
         attributes.getInt(R.styleable.MaterialButtonGroup_overflowMode, OVERFLOW_MODE_NONE));
+    // Initializes the overflow menu mode.
     overflowMenuItemIconPadding =
         getResources()
             .getDimensionPixelOffset(R.dimen.m3_btn_group_overflow_item_icon_horizontal_padding);
-    if (isOverflowSupported()) {
+    if (isOverflowMenuSupported()) {
       initializeButtonOverflow(context, attributes);
     }
     attributes.recycle();
   }
 
-  boolean isOverflowSupported() {
+  boolean isOverflowMenuSupported() {
     return true;
   }
 
@@ -364,9 +376,24 @@ public class MaterialButtonGroup extends LinearLayout {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     adjustChildMarginsAndUpdateLayout();
+    int wrappedHeight = 0;
+    if (overflowMode == OVERFLOW_MODE_WRAP) {
+      if (getOrientation() == VERTICAL) {
+        throw new IllegalArgumentException(
+            "The wrap overflow mode is not compatible to the vertical orientation.");
+      }
+      if (MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST) {
+        throw new IllegalArgumentException(
+            "The wrap overflow mode is not compatible with wrap_content layout width.");
+      }
+      wrappedHeight = maybeWrapButtons(widthMeasureSpec, heightMeasureSpec);
+    }
     maybeUpdateOverflowMenu(widthMeasureSpec, heightMeasureSpec);
     updateChildShapes();
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    if (overflowMode == OVERFLOW_MODE_WRAP && wrappedHeight != getMeasuredHeight()) {
+      setMeasuredDimension(getMeasuredWidth(), wrappedHeight);
+    }
   }
 
   @Override
@@ -377,6 +404,92 @@ public class MaterialButtonGroup extends LinearLayout {
       adjustChildSizeChange();
     }
   }
+
+  // =================== Utility functions for overflow wrap mode. =======================
+
+  private int maybeWrapButtons(int widthMeasureSpec, int heightMeasureSpec) {
+    rowButtonFirstIndices.clear();
+    int availableWidth = MeasureSpec.getSize(widthMeasureSpec);
+    List<Integer> currentRowButtonIndices = new ArrayList<>();
+    int rowWidth = 0;
+    int rowHeight = 0;
+    List<Integer> rowWidthList = new ArrayList<>();
+    int prevRowsHeight = 0;
+    for (int childIndex = 0; childIndex < getChildCount(); childIndex++) {
+      if (!isChildVisible(childIndex)) {
+        continue;
+      }
+      MaterialButton child = getChildButton(childIndex);
+      measureChild(child, widthMeasureSpec, heightMeasureSpec);
+      int childWidth = child.getMeasuredWidth();
+      int childHeight = child.getMeasuredHeight();
+      if (childWidth <= 0) {
+        continue;
+      }
+      LinearLayout.LayoutParams params = buildLayoutParams(child);
+      int rowWidthWithCurrentChild =
+          rowWidth + childWidth + (currentRowButtonIndices.isEmpty() ? 0 : spacing);
+      // Saves the info of the current row and resets it, if the current row is empty or the
+      // current button doesn't fit in the current row.
+      if (rowWidthWithCurrentChild > availableWidth || currentRowButtonIndices.isEmpty()) {
+        // Saves the width of the current row (the current button is excluded).
+        if (!currentRowButtonIndices.isEmpty()) {
+          rowWidthList.add(rowWidth);
+        }
+        // Updates the total height of all rows above the next row.
+        prevRowsHeight += rowHeight + (rowButtonFirstIndices.isEmpty() ? 0 : spacing);
+        // Saves the first button index of the current row.
+        rowButtonFirstIndices.add(childIndex);
+        // Adjusts the start margin of the first child in the row, as a part of the linear layout
+        // behavior, the start margin will be also applied to the rest children in the same row.
+        params.setMarginStart(-rowWidth);
+        // Resets for the next row.
+        currentRowButtonIndices.clear();
+        rowWidth = 0;
+        rowHeight = 0;
+      }
+      // Adds the current button in the current row.
+      rowWidth += childWidth + (rowWidth == 0 ? 0 : spacing);
+      rowHeight = max(rowHeight, childHeight);
+      currentRowButtonIndices.add(childIndex);
+      params.topMargin += prevRowsHeight;
+      child.setLayoutParams(params);
+    }
+    // Add the width of the last row.
+    rowWidthList.add(rowWidth);
+    // At this point, all rows are aligned at the start edge. We need to offset each row to make
+    // them aligned properly according to the gravity.
+    int lastOffset = 0;
+    int maxRowWidth = Collections.max(rowWidthList);
+    for (int i = 0; i < rowButtonFirstIndices.size(); i++) {
+      int rowFirstButtonIndex = rowButtonFirstIndices.get(i);
+      rowWidth = rowWidthList.get(i);
+      MaterialButton childButton = getChildButton(rowFirstButtonIndex);
+
+      LinearLayout.LayoutParams params = buildLayoutParams(childButton);
+      int horizontalRelativeGravity = params.gravity & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK;
+      int horizontalAbsoluteGravity =
+          Gravity.getAbsoluteGravity(horizontalRelativeGravity, getLayoutDirection());
+      int offset = maxRowWidth - rowWidth;
+      // If no offset or expecting left aligned, skip to adjust.
+      if (horizontalRelativeGravity == Gravity.START) {
+        continue;
+      }
+      // Half the difference if expecting center aligned.
+      if (horizontalAbsoluteGravity == Gravity.CENTER_HORIZONTAL) {
+        offset /= 2;
+      }
+      // The offset of the previous row will be applied to the current row. So we need to counter
+      // measure it from the current row offset.
+      params.setMarginStart(params.getMarginStart() + offset - lastOffset);
+      childButton.setLayoutParams(params);
+      lastOffset = offset;
+    }
+
+    return prevRowsHeight + rowHeight + getPaddingTop() + getPaddingBottom();
+  }
+
+  // =================== Utility functions for overflow menu mode. =======================
 
   private void maybeUpdateOverflowMenu(int widthMeasureSpec, int heightMeasureSpec) {
     if (!buttonOverflowInitialized) {
@@ -517,6 +630,8 @@ public class MaterialButtonGroup extends LinearLayout {
     }
   }
 
+  // =================== Utility functions for connected shape morph. =======================
+
   /**
    * Sets all corner radii override to inner corner size except for leftmost and rightmost corners.
    */
@@ -578,9 +693,10 @@ public class MaterialButtonGroup extends LinearLayout {
           originalStateListShapeBuilder
               .setCornerSizeOverride(innerCornerSize, cornerPositionBitsToOverride)
               .build();
-      button.setShapeAppearance(newStateListShape.isStateful()
-          ? newStateListShape
-          : newStateListShape.getDefaultShape(/* withCornerSizeOverrides= */ true));
+      button.setShapeAppearance(
+          newStateListShape.isStateful()
+              ? newStateListShape
+              : newStateListShape.getDefaultShape(/* withCornerSizeOverrides= */ true));
     }
   }
 
@@ -609,6 +725,8 @@ public class MaterialButtonGroup extends LinearLayout {
             (ShapeAppearanceModel) originalChildShapeAppearanceModels.get(index))
         : ((StateListShapeAppearanceModel) originalStateList).toBuilder();
   }
+
+  // =================== Utility functions for spacing. =======================
 
   /**
    * We keep track of which views are pressed and checked to draw them last. This prevents visual
@@ -642,25 +760,29 @@ public class MaterialButtonGroup extends LinearLayout {
     }
 
     for (int i = firstVisibleChildIndex + 1; i < getChildCount(); i++) {
-      // Only adjusts margins if both adjacent children are MaterialButtons
-      MaterialButton currentButton = getChildButton(i);
-      MaterialButton previousButton = getChildButton(i - 1);
-
-      // Calculates the margin adjustment to be the smaller of the two adjacent stroke widths
       int smallestStrokeWidth = 0;
-      if (spacing <= 0) {
-        smallestStrokeWidth = min(currentButton.getStrokeWidth(), previousButton.getStrokeWidth());
-        // Enables the flag to draw additional layer of surface color under the stroke, which may
-        // overlap with its neighbors and results unintended color when the stroke color is
-        // semi-transparent.
-        currentButton.setShouldDrawSurfaceColorStroke(true);
-        previousButton.setShouldDrawSurfaceColorStroke(true);
-      } else {
-        currentButton.setShouldDrawSurfaceColorStroke(false);
-        previousButton.setShouldDrawSurfaceColorStroke(false);
+      View currentChild = getChildAt(i);
+      View previousChild = getChildAt(i - 1);
+      if (currentChild instanceof MaterialButton && previousChild instanceof MaterialButton) {
+        // Only adjusts margins for the outline, if both adjacent children are MaterialButtons
+        MaterialButton currentButton = (MaterialButton) currentChild;
+        MaterialButton previousButton = (MaterialButton) previousChild;
+        // Calculates the margin adjustment to be the smaller of the two adjacent stroke widths
+        if (spacing <= 0) {
+          smallestStrokeWidth =
+              min(currentButton.getStrokeWidth(), previousButton.getStrokeWidth());
+          // Enables the flag to draw additional layer of surface color under the stroke, which may
+          // overlap with its neighbors and results unintended color when the stroke color is
+          // semi-transparent.
+          currentButton.setShouldDrawSurfaceColorStroke(true);
+          previousButton.setShouldDrawSurfaceColorStroke(true);
+        } else {
+          currentButton.setShouldDrawSurfaceColorStroke(false);
+          previousButton.setShouldDrawSurfaceColorStroke(false);
+        }
       }
 
-      LinearLayout.LayoutParams params = buildLayoutParams(currentButton);
+      LinearLayout.LayoutParams params = buildLayoutParams(currentChild);
       if (getOrientation() == HORIZONTAL) {
         params.setMarginEnd(0);
         params.setMarginStart(spacing - smallestStrokeWidth);
@@ -671,7 +793,7 @@ public class MaterialButtonGroup extends LinearLayout {
         params.setMarginStart(0);
       }
 
-      currentButton.setLayoutParams(params);
+      currentChild.setLayoutParams(params);
     }
 
     resetChildMargins(firstVisibleChildIndex);
@@ -696,13 +818,17 @@ public class MaterialButtonGroup extends LinearLayout {
     params.rightMargin = 0;
   }
 
+  // ================== Utility functions for width morph. =======================
+
   void onButtonWidthChanged(@NonNull MaterialButton button, int increaseSize) {
     int buttonIndex = indexOfChild(button);
     if (buttonIndex < 0) {
       return;
     }
-    MaterialButton prevVisibleButton = getPrevVisibleChildButton(buttonIndex);
-    MaterialButton nextVisibleButton = getNextVisibleChildButton(buttonIndex);
+    MaterialButton prevVisibleButton =
+        getPrevVisibleChildButton(buttonIndex, /* inSameRow= */ true);
+    MaterialButton nextVisibleButton =
+        getNextVisibleChildButton(buttonIndex, /* inSameRow= */ true);
     if (prevVisibleButton == null && nextVisibleButton == null) {
       return;
     }
@@ -728,14 +854,39 @@ public class MaterialButtonGroup extends LinearLayout {
   private void adjustChildSizeChange() {
     int firstVisibleChildIndex = getFirstVisibleChildIndex();
     int lastVisibleChildIndex = getLastVisibleChildIndex();
-    if (firstVisibleChildIndex == -1 || buttonSizeChange == null || getChildCount() == 0) {
+    if (firstVisibleChildIndex == -1 || buttonSizeChange == null) {
+      return;
+    }
+    if (overflowMode == OVERFLOW_MODE_WRAP) {
+      for (int i = 0; i < rowButtonFirstIndices.size(); i++) {
+        adjustChildSizeChangeInRange(
+            rowButtonFirstIndices.get(i),
+            i == rowButtonFirstIndices.size() - 1
+                ? getChildCount() - 1
+                : rowButtonFirstIndices.get(i + 1) - 1);
+      }
+    } else {
+      adjustChildSizeChangeInRange(firstVisibleChildIndex, lastVisibleChildIndex);
+    }
+  }
+
+  private void adjustChildSizeChangeInRange(int start, int end) {
+    if (start == end) {
+      getChildButton(start).setWidthChangeDirection(WidthChangeDirection.NONE);
       return;
     }
     int widthIncreaseOnSingleEdge = Integer.MAX_VALUE;
-    for (int i = firstVisibleChildIndex; i <= lastVisibleChildIndex; i++) {
+    // First pass: find the max width increase on single edge.
+    for (int i = start; i <= end; i++) {
       if (!isChildVisible(i)) {
         continue;
       }
+      // Sets the width change direction for each child button.
+      getChildButton(i)
+          .setWidthChangeDirection(
+              i == start
+                  ? WidthChangeDirection.END
+                  : i == end ? WidthChangeDirection.START : WidthChangeDirection.BOTH);
       // Calculates the allowed width increase for each child button with consideration of the max
       // allowed width decrease of its neighbors.
       int widthIncrease = getButtonAllowedWidthIncrease(i);
@@ -746,22 +897,18 @@ public class MaterialButtonGroup extends LinearLayout {
       widthIncreaseOnSingleEdge =
           min(
               widthIncreaseOnSingleEdge,
-              i != firstVisibleChildIndex && i != lastVisibleChildIndex
-                  ? widthIncrease / 2
-                  : widthIncrease);
+              i != start && i != end ? widthIncrease / 2 : widthIncrease);
     }
-    for (int i = firstVisibleChildIndex; i <= lastVisibleChildIndex; i++) {
+    // Second pass: set the width change for each child button.
+    for (int i = start; i <= end; i++) {
       if (!isChildVisible(i)) {
         continue;
       }
-      getChildButton(i).setSizeChange(buttonSizeChange);
-      // If the button expands on both edges, the total width increase should be double of the
-      // width increase on each edge.
-      getChildButton(i)
-          .setWidthChangeMax(
-              i == firstVisibleChildIndex || i == lastVisibleChildIndex
-                  ? widthIncreaseOnSingleEdge
-                  : widthIncreaseOnSingleEdge * 2);
+      MaterialButton child = getChildButton(i);
+      child.setSizeChange(buttonSizeChange);
+      // Assuming buttons can be expanded in both directions, the total width increase should be
+      // double of the single edge increase.
+      child.setWidthChangeMax(widthIncreaseOnSingleEdge * 2);
     }
   }
 
@@ -778,10 +925,10 @@ public class MaterialButtonGroup extends LinearLayout {
     MaterialButton currentButton = getChildButton(index);
     int widthIncrease = max(0, buttonSizeChange.getMaxWidthChange(currentButton.getWidth()));
     // Checking neighbors' allowed width decrease.
-    MaterialButton prevVisibleButton = getPrevVisibleChildButton(index);
+    MaterialButton prevVisibleButton = getPrevVisibleChildButton(index, /* inSameRow= */ true);
     int prevButtonAllowedWidthDecrease =
         prevVisibleButton == null ? 0 : prevVisibleButton.getAllowedWidthDecrease();
-    MaterialButton nextVisibleButton = getNextVisibleChildButton(index);
+    MaterialButton nextVisibleButton = getNextVisibleChildButton(index, /* inSameRow= */ true);
     int nextButtonAllowedWidthDecrease =
         nextVisibleButton == null ? 0 : nextVisibleButton.getAllowedWidthDecrease();
     return min(widthIncrease, prevButtonAllowedWidthDecrease + nextButtonAllowedWidthDecrease);
@@ -1044,23 +1191,70 @@ public class MaterialButtonGroup extends LinearLayout {
 
   @Nullable
   private MaterialButton getNextVisibleChildButton(int index) {
+    return getNextVisibleChildButton(index, /* inSameRow= */ false);
+  }
+
+  @Nullable
+  private MaterialButton getNextVisibleChildButton(int index, boolean inSameRow) {
     int childCount = getChildCount();
+    int nextVisibleButtonIndex = -1;
     for (int i = index + 1; i < childCount; i++) {
       if (isChildVisible(i)) {
-        return getChildButton(i);
+        nextVisibleButtonIndex = i;
+        break;
       }
     }
-    return null;
+    if (inSameRow && !rowButtonFirstIndices.isEmpty()) {
+      for (int i = 0; i < rowButtonFirstIndices.size(); i++) {
+        int start = rowButtonFirstIndices.get(i);
+        int end =
+            i == rowButtonFirstIndices.size() - 1
+                ? childCount - 1
+                : rowButtonFirstIndices.get(i + 1) - 1;
+        // Returns null if the current button and the found next visible button are not in the same
+        // row as required.
+        if (index >= start
+            && index <= end
+            && (nextVisibleButtonIndex < start || nextVisibleButtonIndex > end)) {
+          return null;
+        }
+      }
+    }
+
+    return nextVisibleButtonIndex == -1 ? null : getChildButton(nextVisibleButtonIndex);
   }
 
   @Nullable
   private MaterialButton getPrevVisibleChildButton(int index) {
+    return getPrevVisibleChildButton(index, /* inSameRow= */ false);
+  }
+
+  @Nullable
+  private MaterialButton getPrevVisibleChildButton(int index, boolean inSameRow) {
+    int childCount = getChildCount();
+    int prevVisibleButtonIndex = -1;
     for (int i = index - 1; i >= 0; i--) {
       if (isChildVisible(i)) {
-        return getChildButton(i);
+        prevVisibleButtonIndex = i;
+        break;
       }
     }
-    return null;
+    if (inSameRow && !rowButtonFirstIndices.isEmpty()) {
+      for (int i = 0; i < rowButtonFirstIndices.size(); i++) {
+        int start = rowButtonFirstIndices.get(i);
+        int nextStart =
+            i == rowButtonFirstIndices.size() - 1 ? childCount : rowButtonFirstIndices.get(i + 1);
+        // Returns null if the current button and the found prev visible button are not in the same
+        // row as required.
+        if (index >= start
+            && index < nextStart
+            && (prevVisibleButtonIndex < start || prevVisibleButtonIndex >= nextStart)) {
+          return null;
+        }
+      }
+    }
+
+    return prevVisibleButtonIndex == -1 ? null : getChildButton(prevVisibleButtonIndex);
   }
 
   private void updateChildOrder() {

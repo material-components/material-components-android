@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Välj tid</string>
   <string name="material_timepicker_minute">Minut</string>
   <string name="material_timepicker_hour">Timme</string>
+  <string name="material_timepicker_minute_error">Minuten måste vara 0–59</string>
+  <string name="material_timepicker_hour_error">Timmen måste vara 1–12</string>
+  <string name="material_timepicker_hour_error_24h">Timmen måste vara 0–23</string>
   <string name="material_hour_suffix">Klockan %1$s</string>
   <string name="material_hour_24h_suffix">%1$s timmar</string>
   <string name="material_minute_suffix">%1$s minuter</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Avbryt</string>
   <string name="material_timepicker_text_input_mode_description">Byt till textinmatningsläget och ange tid.</string>
   <string name="material_timepicker_clock_mode_description">Byt till klockläget och ange tid.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Byt till textinmatningsläge</string>
+  <string name="material_timepicker_clock_mode_tooltip">Byt till klockläge</string>
 </resources>

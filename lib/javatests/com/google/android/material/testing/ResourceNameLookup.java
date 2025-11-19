@@ -32,7 +32,6 @@ public final class ResourceNameLookup {
 
   private ResourceNameLookup() {}
 
-  @SuppressWarnings("AndroidJdkLibsChecker")
   @TargetApi(VERSION_CODES.N)
   public static ImmutableMap<Integer, String> createResourceNameMap(Class<?>... resourceClasses) {
     ImmutableMap.Builder<Integer, String> resNameMapBuilder =

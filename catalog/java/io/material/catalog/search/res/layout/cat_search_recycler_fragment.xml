@@ -39,7 +39,8 @@
       android:layout_height="wrap_content"
       android:fitsSystemWindows="true"
       app:liftOnScroll="false"
-      app:statusBarForeground="?attr/colorSurface">
+      app:statusBarForeground="?attr/colorSurface"
+      android:touchscreenBlocksFocus="false">
 
     <com.google.android.material.search.SearchBar
         android:id="@+id/open_search_bar"

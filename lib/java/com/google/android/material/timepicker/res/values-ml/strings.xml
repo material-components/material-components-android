@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">സമയം തിരഞ്ഞെടുക്കുക</string>
   <string name="material_timepicker_minute">മിനിറ്റ്</string>
   <string name="material_timepicker_hour">മണിക്കൂര്‍</string>
+  <string name="material_timepicker_minute_error">മിനിറ്റ് 0–59 ആയിരിക്കണം</string>
+  <string name="material_timepicker_hour_error">മണിക്കൂർ 1–12 ആയിരിക്കണം</string>
+  <string name="material_timepicker_hour_error_24h">മണിക്കൂർ 0–23 ആയിരിക്കണം</string>
   <string name="material_hour_suffix">%1$s മണി</string>
   <string name="material_hour_24h_suffix">%1$s മണി</string>
   <string name="material_minute_suffix">%1$s മിനിറ്റ്</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">റദ്ദാക്കുക</string>
   <string name="material_timepicker_text_input_mode_description">സമയം നൽകുന്നതിന് ടെക്സ്റ്റ് ഇൻപുട്ട് ‌മോ‌ഡിലേക്ക് ‌മാറുക.</string>
   <string name="material_timepicker_clock_mode_description">‌സമയം നൽകുന്നതിന് ക്ലോക്ക് മോഡിലേക്ക് ‌മാറുക.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">ടെക്‌സ്‌റ്റ് ഇൻപുട്ട് മോഡിലേക്ക് മാറുക</string>
+  <string name="material_timepicker_clock_mode_tooltip">ക്ലോക്ക് മോഡിലേക്ക് മാറുക</string>
 </resources>

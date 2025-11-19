@@ -30,6 +30,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 
 /** A base fragment that displays a collapsing Top App Bar demo for the Catalog app. */
 public abstract class BaseTopAppBarCollapsingDemoFragment extends DemoFragment {
@@ -52,6 +53,8 @@ public abstract class BaseTopAppBarCollapsingDemoFragment extends DemoFragment {
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.setSupportActionBar(toolbar);
+
+    DemoUtils.setupClickableContentText(view);
 
     return view;
   }

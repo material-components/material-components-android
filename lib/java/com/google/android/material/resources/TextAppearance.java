@@ -378,6 +378,8 @@ public class TextAppearance {
     textPaint.setTextSize(textSize);
 
     if (VERSION.SDK_INT >= VERSION_CODES.O) {
+      // Workaround for b/353609778
+      textPaint.setFontVariationSettings(null);
       textPaint.setFontVariationSettings(fontVariationSettings);
     }
 

@@ -18,24 +18,9 @@
   <!-- Style for ListItemLayout. -->
   <style name="Widget.Material3.ListItemLayout" parent="">
     <item name="enforceMaterialTheme">true</item>
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemLayout</item>
   </style>
 
-  <!-- Style for segmented ListItemLayout. -->
-  <style name="Widget.Material3.ListItemLayout.Segmented">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemLayout.Segmented</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.ListItemLayout" parent="">
-    <item name="materialCardViewStyle">@style/Widget.Material3.CardView.ListItemLayout</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.ListItemLayout.Segmented">
-    <item name="materialCardViewStyle">@style/Widget.Material3.CardView.ListItemLayout.Segmented</item>
-  </style>
-
-  <style name="Widget.Material3.CardView.ListItemLayout" parent="Widget.Material3.CardView.Filled">
-    <item name="android:minHeight">52dp</item>
+  <style name="Widget.Material3.ListItemCardView" parent="Widget.Material3.CardView.Filled">
     <item name="cardElevation">0dp</item>
     <item name="checkedIcon">@null</item>
     <item name="cardForegroundColor">@null</item>
@@ -43,9 +28,21 @@
     <item name="shapeAppearance">@xml/m3_list_item_shape_state_list</item>
     <item name="cardCornerRadius">@null</item>
     <item name="android:duplicateParentState">true</item>
+    <item name="rippleColor">@color/m3_list_item_ripple_color_selector</item>
+    <!-- TODO(b/439647658) - Replace with tokens -->
+    <item name="contentPaddingTop">10dp</item>
+    <item name="contentPaddingBottom">10dp</item>
+    <item name="contentPaddingLeft">16dp</item>
+    <item name="contentPaddingRight">16dp</item>
+    <item name="swipeToPrimaryActionEnabled">false</item>
   </style>
 
-  <style name="Widget.Material3.CardView.ListItemLayout.Segmented">
+  <style name="Widget.Material3.ListItemRevealLayout" parent="">
+    <item name="enforceMaterialTheme">true</item>
+    <item name="minChildWidth">@dimen/m3_list_reveal_min_child_width</item>
+  </style>
+
+  <style name="Widget.Material3.ListItemCardView.Segmented">
     <item name="cardBackgroundColor">@color/m3_segmented_list_item_background_color_selector</item>
   </style>
 
@@ -78,6 +75,64 @@
   <style name="ShapeAppearance.Material3.ListItem.Checked" parent="">
     <item name="cornerFamily">?attr/shapeCornerFamily</item>
     <item name="cornerSize">?attr/shapeCornerSizeLarge</item>
+  </style>
+
+  <!-- Styles for List item content. -->
+  <style name="Widget.Material3.ImageView.ListItem.LeadingIcon" parent="android:Widget">
+    <item name="tint">@color/m3_list_item_leading_icon_color_selector</item>
+  </style>
+
+  <style name="Widget.Material3.ImageView.ListItem.TrailingIcon" parent="android:Widget">
+    <item name="tint">@color/m3_list_item_trailing_icon_color_selector</item>
+  </style>
+
+  <style name="Widget.Material3.ShapeableImageView.ListItem.LeadingImage" parent="Widget.MaterialComponents.ShapeableImageView">
+    <item name="shapeAppearance">?attr/shapeAppearanceCornerSmall</item>
+    <item name="strokeColor">@null</item>
+  </style>
+
+  <style name="Widget.Material3.TextView.ListItem.Overline" parent="Widget.MaterialComponents.TextView">
+    <item name="android:textColor">@color/m3_list_item_overline_color_selector</item>
+    <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
+  </style>
+
+  <style name="Widget.Material3.TextView.ListItem.LabelText" parent="Widget.MaterialComponents.TextView">
+    <item name="android:textColor">@color/m3_list_item_label_text_color_selector</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+  </style>
+
+  <style name="Widget.Material3.TextView.ListItem.SupportingText" parent="Widget.MaterialComponents.TextView">
+    <item name="android:textColor">@color/m3_list_item_supporting_text_color_selector</item>
+    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+  </style>
+
+  <style name="Widget.Material3.TextView.ListItem.TrailingSupportingText" parent="Widget.MaterialComponents.TextView">
+    <item name="android:textColor">@color/m3_list_item_trailing_supporting_text_color_selector</item>
+    <item name="android:textAppearance">?attr/textAppearanceLabelSmall</item>
+  </style>
+
+  <style name="Widget.Material3.Checkbox.ListItem" parent="Widget.Material3.CompoundButton.CheckBox">
+    <item name="android:focusable">false</item>
+    <item name="android:clickable">false</item>
+    <item name="android:importantForAccessibility">no</item>
+    <item name="android:background">@null</item>
+    <item name="buttonTint">@color/m3_list_item_checkbox_button_tint_selector</item>
+  </style>
+
+  <style name="Widget.Material3.Switch.ListItem" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+    <item name="android:focusable">false</item>
+    <item name="android:clickable">false</item>
+    <item name="android:importantForAccessibility">no</item>
+    <item name="android:background">@null</item>
+    <item name="trackTint">@color/m3_list_item_switch_track_tint_selector</item>
+  </style>
+
+  <style name="Widget.Material3.RadioButton.ListItem" parent="Widget.Material3.CompoundButton.RadioButton">
+    <item name="android:focusable">false</item>
+    <item name="android:clickable">false</item>
+    <item name="android:importantForAccessibility">no</item>
+    <item name="android:background">@null</item>
+    <item name="buttonTint">@color/m3_list_item_radio_button_tint_selector</item>
   </style>
 
 </resources>

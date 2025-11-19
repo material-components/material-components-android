@@ -14,7 +14,7 @@ that group content in lists or other containers. Dividers are one way to
 visually group components and create hierarchy. They can also be used to imply
 nested parent/child relationships.
 
-![Divider with full width](assets/dividers/divider_fullwidth.png)
+![Divider with full width](assets/dividers/divider-fullwidth.png)
 
 **Note:** Images use various dynamic color schemes.
 
@@ -25,7 +25,7 @@ nested parent/child relationships.
 
 ## Anatomy
 
-![Anatomy of a divider](assets/dividers/divider_anatomy.png)
+![Anatomy of a divider](assets/dividers/divider-anatomy.png)
 
 1.  Divider
 
@@ -64,7 +64,7 @@ There are two types of dividers:
 
 ### Full width divider
 
-<img src="assets/dividers/divider_full_width_type.png" alt="Full width divider" height="350">
+<img src="assets/dividers/divider-full-width-type.png" alt="Full width divider" height="350">
 Full width dividers to indicate separation of content
 
 Full width dividers separate larger sections of unrelated content. They also
@@ -73,7 +73,7 @@ on a surface or inside other components like cards or lists.
 
 ### Inset divider
 
-<img src="assets/dividers/divider_inset.png" alt="Inset divider" height="400">
+<img src="assets/dividers/divider-inset.png" alt="Inset divider" height="400">
 Inset divider to indicate separation of content
 
 Inset dividers separate related content within a section. They are equally
@@ -102,7 +102,7 @@ into clear groups.
 
 The full-bleed divider is displayed below:
 
-![Gray full-bleed divider example](assets/dividers/divider_view.png)
+![Gray full-bleed divider example](assets/dividers/divider-view.png)
 
 On the layout:
 
@@ -130,6 +130,31 @@ divider.setDividerInsetStart(insetStart)
 divider.setDividerInsetEnd(insetEnd)
 ```
 
+### Adding heavy divider
+
+![Heavy divider example](assets/dividers/heavy-divider.png)
+
+Heavy dividers are used for indicating a visual break or stop between major
+sections in a long page. They are used as an additional level of visual
+differentiation and hierarchy within a layout.
+
+Note: Make sure to set `android:layout_height="wrap_content"` on the
+`MaterialDivider` to ensure that the correct size is set for the divider.
+
+```xml
+<com.google.android.material.divider.MaterialDivider
+    style="?attr/materialDividerHeavyStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp" />
+```
+
+Note: Heavy dividers are automatically used as the default for dividers set to
+`?attr/materialDividerHeavyStyle`, which points to
+`@style/Widget.Material3.MaterialDivider.Heavy`. To get the heavy divider,
+you should set the divider style to `?attr/materialDividerHeavyStyle`.
+
 ### Adding `MaterialDividerItemDecoration`
 
 API and source code:
@@ -142,9 +167,13 @@ The `MaterialDividerItemDecoration` is a `RecyclerView.ItemDecoration`, similar
 to a `DividerItemDecoration`, that can be used as a divider between items of a
 `LinearLayoutManager`. It supports both horizontal and vertical orientations.
 
+Divider in a vertically oriented RecyclerView:
+
+![Vertical divider example](assets/dividers/vertical-divider.png)
+
 A list with full-bleed dividers is displayed below:
 
-<img src="assets/dividers/divider_itemdecoration.png" alt="Vertical list of five items with five gray dividers after each item" height="300">
+<img src="assets/dividers/divider-itemdecoration.png" alt="Vertical list of five items with five gray dividers after each item" height="300">
 
 In code:
 
@@ -156,7 +185,7 @@ recyclerView.addItemDecoration(divider)
 By default, dividers will be full-bleed. To achieve the look of an inset or
 middle divider:
 
-<img src="assets/dividers/divider_itemdecoration_inset.png" alt="Vertical list of five items with five gray dividers that have a start inset" height="300">
+<img src="assets/dividers/divider-itemdecoration-inset.png" alt="Vertical list of five items with five gray dividers that have a start inset" height="300">
 
 In code:
 
@@ -167,7 +196,7 @@ divider.setDividerInsetEnd(insetEnd)
 
 Optionally, you can hide the last divider of a list:
 
-<img src="assets/dividers/divider_itemdecoration_hiddendivider.png" alt="Vertical list of five items with four gray dividers" height="300">
+<img src="assets/dividers/divider-itemdecoration-hiddendivider.png" alt="Vertical list of five items with four gray dividers" height="300">
 
 In code:
 
@@ -199,7 +228,7 @@ API and source code:
 
 The following example shows a divider with Material theming.
 
-<img src="assets/dividers/divider_theming.png" alt="Pink full-bleed divider" width="850">
+<img src="assets/dividers/divider-theming.png" alt="Pink full-bleed divider" width="850">
 
 ##### Implementing divider theming
 

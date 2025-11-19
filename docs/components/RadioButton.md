@@ -12,7 +12,7 @@ path: /catalog/radiobuttons/
 [Radio buttons](https://m3.material.io/components/radio-button/overview) let
 people select one option from a set of options.
 
-<img src="assets/radiobutton/radiobutton_hero.png" alt="Settings menu with radio buttons" width="800"/>
+<img src="assets/radiobutton/radiobutton-hero.png" alt="Settings menu with radio buttons" width="800"/>
 
 **Note:** Images use various dynamic color schemes.
 
@@ -23,7 +23,7 @@ people select one option from a set of options.
 
 ## Anatomy
 
-![Anatomy of radio button](assets/radiobutton/radiobutton_anatomy.png)
+![Anatomy of radio button](assets/radiobutton/radiobutton-anatomy.png)
 
 1.  Icon (selected)
 2.  Adjacent label text
@@ -69,7 +69,7 @@ disabled, hover, focused, and pressed states.
 
 ![Radio button states in an array. Columns are enabled, disabled, hover,
 focused, pressed. Rows are selected or
-unselected](assets/radiobutton/radiobutton_states.png)
+unselected](assets/radiobutton/radiobutton-states.png)
 
 ### Styles
 
@@ -104,7 +104,7 @@ collapsed, consider using a dropdown menu because it uses less space.
 
 The following example shows a radio button group with three radio buttons.
 
-<img src="assets/radiobutton/radiobutton_example.png" alt="Example radio button group with 3 radio buttons, the first one is selected" width="200"/>
+<img src="assets/radiobutton/radiobutton-example.png" alt="Example radio button group with 3 radio buttons, the first one is selected" width="200"/>
 
 In the layout:
 
@@ -188,7 +188,7 @@ The following example shows a radio button with Material theming.
 
 !["5 radio buttons with brown text; first selected with pink outline and fill,
 last disabled with light brown text and
-button"](assets/radiobutton/radiobutton_theming.png)
+button"](assets/radiobutton/radiobutton-theming.png)
 
 ##### Implementing radio button theming
 

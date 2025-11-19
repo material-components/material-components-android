@@ -55,6 +55,9 @@
     <!-- The vertical velocity threshold considered significant enough to warrant a
          vertical swipe. -->
     <attr name="behavior_significantVelocityThreshold" format="dimension"/>
+    <!-- Whether or not the bottom sheet should support multiple scrolling children. If false,
+         the bottom sheet will only support the first scrolling child. -->
+     <attr name="behavior_multipleScrollingChildrenSupported" format="boolean"/>
     <!-- Shape appearance style reference for BottomSheet. Attribute declaration is in the shape
          package. -->
      <attr name="shapeAppearance"/>

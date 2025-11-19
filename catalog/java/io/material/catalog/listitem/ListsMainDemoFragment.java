@@ -18,6 +18,9 @@ package io.material.catalog.listitem;
 
 import io.material.catalog.R;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.content.Context;
 import android.graphics.Rect;
 import android.os.Bundle;
@@ -28,12 +31,15 @@ import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.listitem.ListItemViewHolder;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import io.material.catalog.feature.DemoFragment;
 import java.util.ArrayList;
 import java.util.List;
@@ -126,23 +132,42 @@ public class ListsMainDemoFragment extends DemoFragment {
 
     private final TextView textView;
     private final MaterialCardView cardView;
-
-
+    private final MaterialCheckBox checkBox;
+    private final MaterialSwitch materialSwitch;
+    private final ImageView leadingIcon;
     public CustomItemViewHolder(@NonNull View itemView) {
       super(itemView);
       textView = itemView.findViewById(R.id.cat_list_item_text);
       cardView = itemView.findViewById(R.id.cat_list_item_card_view);
+      leadingIcon = itemView.findViewById(R.id.cat_list_item_start_icon);
+      checkBox = itemView.findViewById(R.id.cat_list_item_checkbox);
+      materialSwitch = itemView.findViewById(R.id.cat_list_item_switch);
     }
 
     public void bind(@NonNull CustomListItemData data) {
       super.bind();
       textView.setText(data.text);
+      leadingIcon.setSelected(data.checked);
+      // We are arbitrarily showing 5 items with the switch and the rest with the checkbox to show
+      // a more varied example.
+      if (data.indexInSection < 5) {
+        checkBox.setVisibility(GONE);
+        materialSwitch.setVisibility(VISIBLE);
+        materialSwitch.setChecked(data.checked);
+      } else {
+        checkBox.setVisibility(VISIBLE);
+        materialSwitch.setVisibility(GONE);
+        checkBox.setChecked(data.checked);
+      }
       cardView.setChecked(data.checked);
       cardView.setOnClickListener(
           v -> {
             Toast.makeText(v.getContext(), R.string.mtrl_list_item_clicked, Toast.LENGTH_SHORT)
                 .show();
             cardView.toggle();
+            checkBox.setChecked(cardView.isChecked());
+            materialSwitch.setChecked(cardView.isChecked());
+            leadingIcon.setSelected(cardView.isChecked());
             data.checked = !data.checked;
           });
     }

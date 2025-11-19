@@ -12,7 +12,7 @@ path: /catalog/menus/
 [Menus](https://m3.material.io/components/menus/overview) display a list of choices on
 temporary surfaces. There are two variants of menus.
 
-<img src="assets/menu/menus_types.png" alt="Composite image of example dropdown and exposed dropdown menu types" width="900">
+<img src="assets/menu/menus-types.png" alt="Composite image of example dropdown and exposed dropdown menu types" width="900">
 
 1. Dropdown menu
 2. Exposed dropdown menu
@@ -33,7 +33,7 @@ buttons.
 
 #### Dropdown menu
 
-<img src="assets/menu/menus_anatomy.png" alt="Menus anatomy diagrams" height="400">
+<img src="assets/menu/menus-anatomy.png" alt="Menus anatomy diagrams" height="400">
 
 1.  List item
 2.  Leading icon
@@ -44,7 +44,7 @@ buttons.
 
 #### Exposed dropdown menu
 
-<img src="assets/menu/menus_exposed_dropdown_anatomy.png" alt="Exposed dropdown menu anatomy diagrams" height="400">
+<img src="assets/menu/menus-exposed-dropdown-anatomy.png" alt="Exposed dropdown menu anatomy diagrams" height="400">
 
 1.  Text
 2.  Container
@@ -112,12 +112,12 @@ Element                                   | Attribute                           
 
 #### Styles
 
-Element            | Style
------------------- | -----
-**Filled style**   | `Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu`
-**Outlined style** | `Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu`
-**Filled dense**   | `Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu`
-**Outlined dense** | `Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu`
+Element            | Style | Theme attribute
+------------------ | ------|-----------|
+**Filled style**   | `Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu`|`?attr/textInputFilledExposedDropdownMenuStyle`
+**Outlined style** | `Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu`|`?attr/textInputOutlinedExposedDropdownMenuStyle`
+**Filled dense**   | `Widget.Material3.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu`|N/A
+**Outlined dense** | `Widget.Material3.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu`|N/A
 
 Default style theme attribute: `?attr/textInputStyle`
 
@@ -153,7 +153,7 @@ API and source code:
 
 The following example shows an overflow menu.
 
-<img src="assets/menu/menus_overflow.png" alt="Composite image: purple menus bar, and purple Menus bar with white menu and 3 options" height="300">
+<img src="assets/menu/menus-overflow.png" alt="Composite image: purple menus bar, and purple Menus bar with white menu and 3 options" height="300">
 
 In code:
 
@@ -186,7 +186,7 @@ In `res/menu/overflow_menu.xml`:
 The following example shows a context menu that appears when a `TextView` is
 pressed for a designated amount of time.
 
-<img src="assets/menu/menus_context.png" alt="White menu window with two options floating over a white background with grey text" height="300">
+<img src="assets/menu/menus-context.png" alt="White menu window with two options floating over a white background with grey text" height="300">
 
 In code:
 
@@ -273,7 +273,7 @@ with a `res/menu/context_menu.xml`:
 
 The following example shows a popup menu that displays when a button is clicked.
 
-<img src="assets/menu/menus_popup.png" alt="White menu container with 3 options open below a purple, show menu button" height="300">
+<img src="assets/menu/menus-popup.png" alt="White menu container with 3 options open below a purple, show menu button" height="300">
 
 In code:
 
@@ -332,7 +332,7 @@ work in future versions.
 
 The following example shows a popup menu with icons.
 
-<img src="assets/menu/menus_popup_icons.png" alt="White menu window with 3 options open below a purple, show menu button. Each
+<img src="assets/menu/menus-popup-icons.png" alt="White menu window with 3 options open below a purple, show menu button. Each
 option has an icon." height="350">
 
 In code:
@@ -393,7 +393,7 @@ In `res/menu/popup_menu.xml`:
 The following example shows a list popup window menu that appears when a button
 is clicked.
 
-<img src="assets/menu/menus_list_popup_window.png" alt="White menu container with 3 options below a purple, show menu button" height="350">
+<img src="assets/menu/menus-list-popup-window.png" alt="White menu container with 3 options below a purple, show menu button" height="350">
 
 In code:
 
@@ -477,14 +477,14 @@ using `Theme.Material3.*` themes.
 
 The following is an example of a filled exposed dropdown menu:
 
-<img src="assets/menu/menus_exposed_dropdown_filled.png" alt="2 menu states with text field element: 1) has item 1, 2) has item 1 and a 4-item menu container." height="400">
+<img src="assets/menu/menus-exposed-dropdown-filled.png" alt="2 menu states with text field element: 1) has item 1, 2) has item 1 and a 4-item menu container." height="400">
 
 In the layout:
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/menu"
-    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    style="?attr/materialButtonOutlinedStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/label">
@@ -533,7 +533,7 @@ And a custom item layout (`list_item.xml`):
 To use the exposed dropdown menu with an outlined text field, set the `style` to
 `@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu`:
 
-<img src="assets/menu/menus_exposed_dropdown_outlined.png" alt="Menu with purple outlined text field element and 4 items. Item 1 selected." height="400">
+<img src="assets/menu/menus-exposed-dropdown-outlined.png" alt="Menu with purple outlined text field element and 4 items. Item 1 selected." height="400">
 
 #### Non editable variation
 
@@ -574,7 +574,7 @@ A typical exposed dropdown menu looks like this:
 ```xml
 <com.google.android.material.textfield.TextInputLayout
     android:id="@+id/menu"
-    style="@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu"
+    style="?attr/textInputFilledExposedDropdownMenuStyle"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/label">
@@ -626,7 +626,7 @@ API and source code:
 
 The following example shows a menu with Material theming.
 
-![White menu container with brown text showing 3 options](assets/menu/menus_theming.png)
+![White menu container with brown text showing 3 options](assets/menu/menus-theming.png)
 
 ##### Implementing menu theming
 
@@ -702,7 +702,7 @@ Material theming.
 
 ![Composite image of "Show menu" button and options: gray button with pink
 underline, and white button with pink
-outline](assets/menu/menus_exposed_dropdown_theming.png)
+outline](assets/menu/menus-exposed-dropdown-theming.png)
 
 ##### Implementing exposed dropdown menu theming
 

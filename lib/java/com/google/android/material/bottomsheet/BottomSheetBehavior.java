@@ -86,6 +86,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -246,6 +247,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private float maximumVelocity;
 
   private int significantVelocityThreshold;
+  private boolean multipleScrollingChildrenSupported;
 
   /** Peek height set by the user. */
   private int peekHeight;
@@ -336,7 +338,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @Nullable WeakReference<View> accessibilityDelegateViewRef;
   @Nullable WeakReference<View> dragHandleViewRef;
 
-  @Nullable WeakReference<View> nestedScrollingChildRef;
+  @VisibleForTesting @NonNull
+  final List<WeakReference<View>> nestedScrollingChildrenRef = new ArrayList<>();
 
   @NonNull private final ArrayList<BottomSheetCallback> callbacks = new ArrayList<>();
 
@@ -346,6 +349,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   int activePointerId;
 
   private int initialY = INVALID_POSITION;
+
+  private WeakReference<View> currentTouchedScrollChildRef;
 
   boolean touchingScrollingChild;
 
@@ -429,6 +434,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         a.getInt(
             R.styleable.BottomSheetBehavior_Layout_behavior_significantVelocityThreshold,
             DEFAULT_SIGNIFICANT_VEL_THRESHOLD));
+
+    multipleScrollingChildrenSupported =
+        a.getBoolean(
+            R.styleable.BottomSheetBehavior_Layout_behavior_multipleScrollingChildrenSupported,
+            false);
 
     // Reading out if we are handling padding, so we can apply it to the content.
     paddingBottomSystemWindowInsets =
@@ -618,7 +628,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     updateDrawableForTargetState(state, /* animate= */ false);
 
-    nestedScrollingChildRef = new WeakReference<>(findScrollingChild(child));
+    nestedScrollingChildrenRef.clear();
+    if (multipleScrollingChildrenSupported) {
+      populateScrollingChildren(child);
+    } else {
+      nestedScrollingChildrenRef.add(new WeakReference<>(findScrollingChild(child)));
+    }
 
     for (int i = 0; i < callbacks.size(); i++) {
       callbacks.get(i).onLayout(child);
@@ -646,6 +661,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       case MotionEvent.ACTION_UP:
       case MotionEvent.ACTION_CANCEL:
         touchingScrollingChild = false;
+        currentTouchedScrollChildRef = null;
         activePointerId = MotionEvent.INVALID_POINTER_ID;
         // Reset the ignore flag
         if (ignoreEvents) {
@@ -656,10 +672,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       case MotionEvent.ACTION_DOWN:
         int initialX = (int) event.getX();
         initialY = (int) event.getY();
+        currentTouchedScrollChildRef =
+            new WeakReference<>(
+                findScrollingChildContainingCoordinates(
+                    parent, (int) event.getX(), (int) event.getY()));
         // Only intercept nested scrolling events here if the view not being moved by the
         // ViewDragHelper.
         if (state != STATE_SETTLING) {
-          if (isTouchingScrollingChild(parent, initialX, initialY)) {
+          if (currentTouchedScrollChildRef.get() != null) {
             activePointerId = event.getPointerId(event.getActionIndex());
             if (!isTouchingDragHandle(parent, initialX, initialY)) {
               touchingScrollingChild = true;
@@ -677,18 +697,41 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         && viewDragHelper.shouldInterceptTouchEvent(event)) {
       return true;
     }
+
     // We have to handle cases that the ViewDragHelper does not capture the bottom sheet because
     // it is not the top most view of its parent. This is not necessary when the touch event is
     // happening over the scrolling content as nested scrolling logic handles that case.
-    View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
     return action == MotionEvent.ACTION_MOVE
-        && scroll != null
+        && hasScrollingChild()
         && !ignoreEvents
         && state != STATE_DRAGGING
-        && !parent.isPointInChildBounds(scroll, (int) event.getX(), (int) event.getY())
+        && !isTouchingScrollingChild(parent, event)
         && viewDragHelper != null
         && initialY != INVALID_POSITION
         && Math.abs(initialY - event.getY()) > viewDragHelper.getTouchSlop();
+  }
+
+  private boolean hasScrollingChild() {
+  for (WeakReference<View> ref : nestedScrollingChildrenRef) {
+      if (ref.get() != null) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  @Nullable
+  private View getSingleScrollingChildOrNull() {
+    return !nestedScrollingChildrenRef.isEmpty() ? nestedScrollingChildrenRef.get(0).get() : null;
+  }
+
+  private boolean isTouchingScrollingChild(CoordinatorLayout parent, MotionEvent event) {
+    if (multipleScrollingChildrenSupported) {
+      return currentTouchedScrollChildRef != null && currentTouchedScrollChildRef.get() != null;
+    }
+    View scroll = getSingleScrollingChildOrNull();
+    return scroll != null
+        && parent.isPointInChildBounds(scroll, (int) event.getX(), (int) event.getY());
   }
 
   @Override
@@ -735,6 +778,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
   }
 
+  private boolean isViewScrollingChild(View v) {
+    for (WeakReference<View> ref : nestedScrollingChildrenRef) {
+      if (ref.get() == v) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   @Override
   public void onNestedPreScroll(
       @NonNull CoordinatorLayout coordinatorLayout,
@@ -748,8 +800,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       // Ignore fling here. The ViewDragHelper handles it.
       return;
     }
-    View scrollingChild = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
-    if (isNestedScrollingCheckEnabled() && target != scrollingChild) {
+    boolean isTargetScrollingChild = isViewScrollingChild(target);
+    if (isNestedScrollingCheckEnabled() && !isTargetScrollingChild) {
       return;
     }
     int currentTop = child.getTop();
@@ -757,7 +809,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (dy > 0) { // Upward swipe
       if (!nestedScrolled
           && !draggableOnNestedScroll
-          && target == scrollingChild
+          && isTargetScrollingChild
           && target.canScrollVertically(1)) {
         // Prevent dragging if draggableOnNestedScroll=false and we can scroll the scrolling child.
         draggableOnNestedScrollLastDragIgnored = true;
@@ -779,7 +831,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       }
     } else if (dy < 0) { // Downward swipe
       boolean canScrollUp = target.canScrollVertically(-1);
-      if (!nestedScrolled && !draggableOnNestedScroll && target == scrollingChild && canScrollUp) {
+      if (!nestedScrolled && !draggableOnNestedScroll && isTargetScrollingChild && canScrollUp) {
         // Prevent dragging if draggableOnNestedScroll=false and we can scroll the scrolling child.
         draggableOnNestedScrollLastDragIgnored = true;
         return;
@@ -817,10 +869,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       setStateInternal(STATE_EXPANDED);
       return;
     }
-    if (isNestedScrollingCheckEnabled()
-        && (nestedScrollingChildRef == null
-            || target != nestedScrollingChildRef.get()
-            || !nestedScrolled)) {
+    if (isNestedScrollingCheckEnabled() && (!isViewScrollingChild(target) || !nestedScrolled)) {
       return;
     }
     @StableState int targetState;
@@ -903,8 +952,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       float velocityX,
       float velocityY) {
 
-    if (isNestedScrollingCheckEnabled() && nestedScrollingChildRef != null) {
-      return target == nestedScrollingChildRef.get()
+    if (isNestedScrollingCheckEnabled() && hasScrollingChild()) {
+      return isViewScrollingChild(target)
           && ((state != STATE_EXPANDED && !draggableOnNestedScrollLastDragIgnored)
               || super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY));
     } else {
@@ -1543,11 +1592,27 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return 0;
   }
 
-  private boolean isTouchingScrollingChild(
+  /**
+   * Returns the scrolling child that contains the given coordinates, if any. If no scrolling child
+   * contains those coordinates, returns null.
+   */
+  @Nullable
+  private View findScrollingChildContainingCoordinates(
       @NonNull CoordinatorLayout parent, int xCoordinate, int yCoordinate) {
-    View scrollingChild = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
-    return scrollingChild != null
-        && parent.isPointInChildBounds(scrollingChild, xCoordinate, yCoordinate);
+    if (nestedScrollingChildrenRef.isEmpty()) {
+      return null;
+    }
+
+    // Check to see if point is in any scrolling child.
+    for (WeakReference<View> ref : nestedScrollingChildrenRef) {
+      View scrollingChild = ref.get();
+      if (scrollingChild != null
+          && parent.isPointInChildBounds(scrollingChild, xCoordinate, yCoordinate)) {
+        return scrollingChild;
+      }
+    }
+
+    return null;
   }
 
   private boolean isTouchingDragHandle(
@@ -1608,6 +1673,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private void reset() {
     activePointerId = ViewDragHelper.INVALID_POINTER;
     initialY = INVALID_POSITION;
+    currentTouchedScrollChildRef = null;
     if (velocityTracker != null) {
       velocityTracker.recycle();
       velocityTracker = null;
@@ -1730,6 +1796,23 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       }
     }
     return null;
+  }
+
+  @VisibleForTesting
+  void populateScrollingChildren(View view) {
+    if (view.getVisibility() != View.VISIBLE) {
+      return;
+    }
+    if (view.isNestedScrollingEnabled()) {
+      nestedScrollingChildrenRef.add(new WeakReference<>(view));
+      return;
+    }
+    if (view instanceof ViewGroup) {
+      ViewGroup group = (ViewGroup) view;
+      for (int i = 0; i < group.getChildCount(); i++) {
+        populateScrollingChildren(group.getChildAt(i));
+      }
+    }
   }
 
   private boolean shouldHandleDraggingWithHelper() {
@@ -1919,7 +2002,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             return false;
           }
           if (state == STATE_EXPANDED && activePointerId == pointerId) {
-            View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
+            View scroll;
+            if (multipleScrollingChildrenSupported) {
+              scroll =
+                  currentTouchedScrollChildRef != null ? currentTouchedScrollChildRef.get() : null;
+            } else {
+              scroll = getSingleScrollingChildOrNull();
+            }
             if (scroll != null && scroll.canScrollVertically(-1)) {
               // Let the content scroll up
               return false;

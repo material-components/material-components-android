@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2025 The Android Open Source Project
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+      http://www.apache.org/licenses/LICENSE-2.0
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:orientation="vertical"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+
+  <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+      android:id="@+id/bottom_drawer_2"
+      android:layout_width="match_parent"
+      android:layout_height="600dp"
+      android:orientation="vertical">
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_person_add_24dp"
+        app:drawableStartCompat="@drawable/ic_person_add_24dp"
+        android:text="@string/cat_bottomsheet_label_add_people"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_link_24dp"
+        app:drawableStartCompat="@drawable/ic_link_24dp"
+        android:text="@string/cat_bottomsheet_label_copy_link"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_open_in_browser_24dp"
+        app:drawableStartCompat="@drawable/ic_open_in_browser_24dp"
+        android:text="@string/cat_bottomsheet_label_open_in"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_folder_24dp"
+        app:drawableStartCompat="@drawable/ic_folder_24dp"
+        android:gravity="center_vertical"
+        android:text="@string/cat_bottomsheet_label_move"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_offline_pin_24dp"
+        app:drawableStartCompat="@drawable/ic_offline_pin_24dp"
+        android:text="@string/cat_bottomsheet_label_available_offline"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_star_24dp"
+        app:drawableStartCompat="@drawable/ic_star_24dp"
+        android:text="@string/cat_bottomsheet_label_star"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_edit_24dp"
+        app:drawableStartCompat="@drawable/ic_edit_24dp"
+        android:text="@string/cat_bottomsheet_label_rename"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_delete_24dp"
+        app:drawableStartCompat="@drawable/ic_delete_24dp"
+        android:text="@string/cat_bottomsheet_label_remove"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_person_add_24dp"
+        app:drawableStartCompat="@drawable/ic_person_add_24dp"
+        android:text="@string/cat_bottomsheet_label_add_people"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_link_24dp"
+        app:drawableStartCompat="@drawable/ic_link_24dp"
+        android:text="@string/cat_bottomsheet_label_copy_link"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_open_in_browser_24dp"
+        app:drawableStartCompat="@drawable/ic_open_in_browser_24dp"
+        android:text="@string/cat_bottomsheet_label_open_in"/>
+
+      <TextView
+        style="@style/selectableTextView"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        app:drawableLeftCompat="@drawable/ic_folder_24dp"
+        app:drawableStartCompat="@drawable/ic_folder_24dp"
+        android:gravity="center_vertical"
+        android:text="@string/cat_bottomsheet_label_move"/>
+
+    </LinearLayout>
+  </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

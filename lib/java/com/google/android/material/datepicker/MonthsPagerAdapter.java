@@ -27,10 +27,15 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.datepicker.MaterialCalendar.OnDayClickListener;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Manages the instances of {@link MaterialCalendarGridView} that represent each month in a {@link
@@ -38,18 +43,36 @@ import com.google.android.material.datepicker.MaterialCalendar.OnDayClickListene
  */
 class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHolder> {
 
+  private static final int POSITION_UNSPECIFIED = 0;
+
+  /**
+   * Annotation for constants indicating the direction of focus for keyboard navigation between
+   * months. This determines whether focus should land on the first or last enabled day of the month
+   * when it becomes visible.
+   *
+   * @hide
+   */
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  @Retention(RetentionPolicy.SOURCE)
+  @IntDef({POSITION_UNSPECIFIED, View.FOCUS_FORWARD, View.FOCUS_BACKWARD})
+  @interface KeyboardFocusDirection {}
+
   @NonNull private final CalendarConstraints calendarConstraints;
   private final DateSelector<?> dateSelector;
   @Nullable private final DayViewDecorator dayViewDecorator;
   private final OnDayClickListener onDayClickListener;
+  @Nullable private final MaterialCalendar.OnMonthNavigationListener onMonthNavigationListener;
   private final int itemHeight;
+  @Nullable private Month visibleMonth;
+  @KeyboardFocusDirection private int keyboardFocusDirection = POSITION_UNSPECIFIED;
 
   MonthsPagerAdapter(
       @NonNull Context context,
       DateSelector<?> dateSelector,
       @NonNull CalendarConstraints calendarConstraints,
       @Nullable DayViewDecorator dayViewDecorator,
-      OnDayClickListener onDayClickListener) {
+      OnDayClickListener onDayClickListener,
+      @Nullable MaterialCalendar.OnMonthNavigationListener onMonthNavigationListener) {
     Month firstPage = calendarConstraints.getStart();
     Month lastPage = calendarConstraints.getEnd();
     Month currentPage = calendarConstraints.getOpenAt();
@@ -70,6 +93,8 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
     this.dateSelector = dateSelector;
     this.dayViewDecorator = dayViewDecorator;
     this.onDayClickListener = onDayClickListener;
+    this.onMonthNavigationListener = onMonthNavigationListener;
+    this.visibleMonth = currentPage;
     setHasStableIds(true);
   }
 
@@ -130,6 +155,44 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
             }
           }
         });
+    monthGrid.setOnMonthNavigationListener(onMonthNavigationListener);
+
+    boolean isFullscreen = MaterialDatePicker.isFullscreen(viewHolder.itemView.getContext());
+    if (isFullscreen || month.equals(visibleMonth)) {
+      monthGrid.setFocusable(true);
+      monthGrid.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+    } else {
+      monthGrid.setFocusable(false);
+      monthGrid.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+    }
+
+    if (!isFullscreen && month.equals(visibleMonth)) {
+      setInitialKeyboardFocus(monthGrid);
+    }
+  }
+
+  private void setInitialKeyboardFocus(@NonNull MaterialCalendarGridView monthGrid) {
+    @KeyboardFocusDirection int direction = keyboardFocusDirection;
+    keyboardFocusDirection = POSITION_UNSPECIFIED;
+    monthGrid.post(
+        () -> {
+          if (monthGrid.hasFocus() && direction != POSITION_UNSPECIFIED) {
+            int initialPosition =
+                getInitialDayPositionForDirection(monthGrid.getAdapter(), direction);
+            monthGrid.setSelection(initialPosition);
+          }
+        });
+  }
+
+  private int getInitialDayPositionForDirection(
+      @NonNull MonthAdapter monthAdapter, @KeyboardFocusDirection int direction) {
+    if (direction == View.FOCUS_BACKWARD) {
+      int lastPosition = monthAdapter.findLastValidDayPosition();
+      return lastPosition == -1 ? monthAdapter.lastPositionInMonth() : lastPosition;
+    } else {
+      int firstPosition = monthAdapter.findFirstValidDayPosition();
+      return firstPosition == -1 ? monthAdapter.firstPositionInMonth() : firstPosition;
+    }
   }
 
   @Override
@@ -154,5 +217,31 @@ class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHol
 
   int getPosition(@NonNull Month month) {
     return calendarConstraints.getStart().monthsUntil(month);
+  }
+
+  /**
+   * Sets the direction for keyboard focus to determine whether the first or last day of the month
+   * should receive keyboard focus when the grid for that month is instantiated.
+   */
+  void setKeyboardFocusDirection(@KeyboardFocusDirection int keyboardFocusDirection) {
+    this.keyboardFocusDirection = keyboardFocusDirection;
+  }
+
+  /**
+   * Updates the currently visible month and notifies the adapter to redraw the affected month
+   * views.
+   *
+   * <p>This is crucial for managing keyboard focus in non-fullscreen mode. By ensuring only the
+   * grid for the {@code visibleMonth} is focusable, this prevents keyboard focus from landing on
+   * an adjacent month view when navigating with TAB.
+   */
+  void setVisibleMonth(@Nullable Month month) {
+    if (month != null && !month.equals(this.visibleMonth)) {
+      int oldPosition = getPosition(this.visibleMonth);
+      this.visibleMonth = month;
+      int newPosition = getPosition(this.visibleMonth);
+      notifyItemChanged(oldPosition);
+      notifyItemChanged(newPosition);
+    }
   }
 }

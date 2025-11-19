@@ -41,6 +41,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnTouchModeChangeListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
@@ -171,6 +172,21 @@ public class SearchView extends FrameLayout
   private boolean statusBarSpacerEnabledOverride;
   @NonNull private TransitionState currentTransitionState = TransitionState.HIDDEN;
   private Map<View, Integer> childImportantForAccessibilityMap;
+  private final OnTouchModeChangeListener touchModeChangeListener =
+      new OnTouchModeChangeListener() {
+        @Override
+        public void onTouchModeChanged(boolean isInTouchMode) {
+          // If we enter non touch mode and the SearchView is showing in the currently focused
+          // window, request focus on the EditText to prevent focusing views behind SearchView.
+          if (!isInTouchMode
+              && hasWindowFocus()
+              && isShowing()
+              && editText != null
+              && !editText.isFocused()) {
+            editText.post(editText::requestFocus);
+          }
+        }
+      };
 
   public SearchView(@NonNull Context context) {
     this(context, null);
@@ -271,6 +287,7 @@ public class SearchView extends FrameLayout
     TransitionState state = getCurrentTransitionState();
     updateModalForAccessibility(state);
     updateListeningForBackCallbacks(state);
+    getViewTreeObserver().addOnTouchModeChangeListener(touchModeChangeListener);
   }
 
   @Override
@@ -279,6 +296,7 @@ public class SearchView extends FrameLayout
 
     setModalForAccessibility(/* isSearchViewModal= */ false);
     backOrchestrator.stopListeningForBackCallbacks();
+    getViewTreeObserver().removeOnTouchModeChangeListener(touchModeChangeListener);
   }
 
   @Override
@@ -731,6 +749,12 @@ public class SearchView extends FrameLayout
     return toolbar;
   }
 
+  /** Returns the container view containing the non-scrim content of the {@link SearchView}. */
+  @NonNull
+  public View getSearchContainer() {
+    return rootView;
+  }
+
   /** Returns the main {@link EditText} which can be used for hint and search text. */
   @NonNull
   public EditText getEditText() {
@@ -941,6 +965,17 @@ public class SearchView extends FrameLayout
   void requestFocusAndShowKeyboardIfNeeded() {
     if (autoShowKeyboard) {
       requestFocusAndShowKeyboard();
+    } else if (!isInTouchMode()) {
+      // We still want to request focus if we are in non-touch mode so that focus doesn't go
+      // behind the searchview.
+      editText.postDelayed(
+          () -> {
+            if (editText.requestFocus()) {
+              // Workaround for talkback issue when clear button is clicked
+              editText.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+            }
+          },
+          TALKBACK_FOCUS_CHANGE_DELAY_MS);
     }
   }
 

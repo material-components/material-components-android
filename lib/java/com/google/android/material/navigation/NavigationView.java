@@ -74,6 +74,7 @@ import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ContextUtils;
+import com.google.android.material.internal.EdgeToEdgeUtils;
 import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
@@ -1130,8 +1131,8 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
               Rect displayBounds = WindowUtils.getCurrentWindowBounds(activity);
 
               boolean isBehindSystemNav = displayBounds.height() - getHeight() == tmpLocation[1];
-              boolean hasNonZeroAlpha =
-                  Color.alpha(activity.getWindow().getNavigationBarColor()) != 0;
+              boolean hasNonZeroAlpha = Color.alpha(
+                  EdgeToEdgeUtils.getNavigationBarColor(activity.getWindow())) != 0;
               setDrawBottomInsetForeground(
                   isBehindSystemNav && hasNonZeroAlpha && isBottomInsetScrimEnabled());
 
