@@ -47,6 +47,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -121,7 +122,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @NonNull private final MotionStrategy extendStrategy;
   private final MotionStrategy showStrategy = new ShowStrategy(changeVisibilityTracker);
   private final MotionStrategy hideStrategy = new HideStrategy(changeVisibilityTracker);
-  private final int collapsedSize;
+  private int collapsedSize;
 
   private int extendedPaddingStart;
   private int extendedPaddingEnd;
@@ -1035,19 +1036,23 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
         }
       };
 
+  int getCollapsedPadding() {
+    return (getCollapsedSize() - getIconSize()) / 2;
+  }
+
   /**
    * Shrink to the smaller value between paddingStart and paddingEnd, such that when shrunk the icon
    * will be centered.
    */
-  @VisibleForTesting
-  int getCollapsedSize() {
+  @Px
+  public int getCollapsedSize() {
     return collapsedSize < 0
         ? min(getPaddingStart(), getPaddingEnd()) * 2 + getIconSize()
         : collapsedSize;
   }
 
-  int getCollapsedPadding() {
-    return (getCollapsedSize() - getIconSize()) / 2;
+  public void setCollapsedSize(@Px int collapsedSize) {
+    this.collapsedSize = collapsedSize;
   }
 
   /**
