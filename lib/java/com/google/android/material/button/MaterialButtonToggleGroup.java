@@ -535,7 +535,6 @@ public class MaterialButtonToggleGroup extends MaterialButtonGroup {
     if (skipCheckedStateTracker) {
       return;
     }
-    button.playSoundEffect(SoundEffectConstants.CLICK);
     checkInternal(button.getId(), isChecked);
   }
 }
