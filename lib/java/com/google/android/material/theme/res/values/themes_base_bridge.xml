@@ -27,10 +27,15 @@
 
   <style name="Platform.MaterialComponents.Light" parent="Theme.AppCompat.Light"/>
 
-  <!-- All new attributes should be set in the following four Base.V14 themes. -->
+  <!-- Themes in the "Base.Theme" family vary based on the current platform
+       version to provide the correct basis on each device. You probably don't
+       want to use them directly in your apps.
+
+       Themes in the "Theme.MaterialComponents" family are meant to be extended or used
+       directly by apps. -->
   <eat-comment/>
 
-  <style name="Base.V14.Theme.MaterialComponents.Bridge" parent="Platform.MaterialComponents">
+  <style name="Base.Theme.MaterialComponents.Bridge" parent="Platform.MaterialComponents">
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_dark_default_color_primary_variant</item>
@@ -113,7 +118,7 @@
     <item name="elevationOverlayColor">?attr/colorOnSurface</item>
   </style>
 
-  <style name="Base.V14.Theme.MaterialComponents.Light.Bridge" parent="Platform.MaterialComponents.Light">
+  <style name="Base.Theme.MaterialComponents.Light.Bridge" parent="Platform.MaterialComponents.Light">
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
@@ -196,7 +201,7 @@
     <item name="elevationOverlayColor">?attr/colorOnSurface</item>
   </style>
 
-  <style name="Base.V14.Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Theme.AppCompat.Light.DarkActionBar">
+  <style name="Base.Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Theme.AppCompat.Light.DarkActionBar">
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
@@ -260,19 +265,5 @@
     <item name="elevationOverlayEnabled">false</item>
     <item name="elevationOverlayColor">?attr/colorOnSurface</item>
   </style>
-
-  <!-- Themes in the "Base.Theme" family vary based on the current platform
-       version to provide the correct basis on each device. You probably don't
-       want to use them directly in your apps.
-
-       Themes in the "Theme.MaterialComponents" family are meant to be extended or used
-       directly by apps. -->
-  <eat-comment/>
-
-  <style name="Base.Theme.MaterialComponents.Bridge" parent="Base.V14.Theme.MaterialComponents.Bridge"/>
-
-  <style name="Base.Theme.MaterialComponents.Light.Bridge" parent="Base.V14.Theme.MaterialComponents.Light.Bridge"/>
-
-  <style name="Base.Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Base.V14.Theme.MaterialComponents.Light.DarkActionBar.Bridge"/>
 
 </resources>
