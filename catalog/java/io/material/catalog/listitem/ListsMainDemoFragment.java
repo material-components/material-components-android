@@ -46,6 +46,10 @@ import java.util.List;
 
 /** A fragment that displays the main List demos for the Catalog app. */
 public class ListsMainDemoFragment extends DemoFragment {
+
+  private static final String KEY_LIST_DATA = "key_list_data";
+  private ArrayList<CustomListItemData> listData;
+
   @NonNull
   @Override
   public View onCreateDemoView(
@@ -56,16 +60,20 @@ public class ListsMainDemoFragment extends DemoFragment {
         (RecyclerView) layoutInflater.inflate(R.layout.cat_lists_fragment, viewGroup, false);
 
     view.setLayoutManager(new LinearLayoutManager(getContext()));
-    List<CustomListItemData> data = new ArrayList<>();
-    for (int i = 0; i < 20; i++) {
-      data.add(
-          new CustomListItemData(
-              String.format(view.getContext().getString(R.string.cat_list_item_text), i + 1),
-              i,
-              20));
+    if (bundle != null) {
+      listData = bundle.getParcelableArrayList(KEY_LIST_DATA);
+    } else {
+      listData = new ArrayList<>();
+      for (int i = 0; i < 20; i++) {
+        listData.add(
+            new CustomListItemData(
+                String.format(view.getContext().getString(R.string.cat_list_item_text), i + 1),
+                i,
+                20));
+      }
     }
 
-    view.setAdapter(new ListsAdapter(data));
+    view.setAdapter(new ListsAdapter(listData));
     view.addItemDecoration(new MarginItemDecoration(getContext()));
 
     return view;
@@ -171,5 +179,11 @@ public class ListsMainDemoFragment extends DemoFragment {
             data.checked = !data.checked;
           });
     }
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putParcelableArrayList(KEY_LIST_DATA, listData);
   }
 }

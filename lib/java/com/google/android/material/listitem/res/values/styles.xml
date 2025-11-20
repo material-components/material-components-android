@@ -80,10 +80,16 @@
   <!-- Styles for List item content. -->
   <style name="Widget.Material3.ImageView.ListItem.LeadingIcon" parent="android:Widget">
     <item name="tint">@color/m3_list_item_leading_icon_color_selector</item>
+    <item name="android:importantForAccessibility">no</item>
+    <item name="android:focusable">false</item>
+    <item name="android:clickable">false</item>
   </style>
 
   <style name="Widget.Material3.ImageView.ListItem.TrailingIcon" parent="android:Widget">
     <item name="tint">@color/m3_list_item_trailing_icon_color_selector</item>
+    <item name="android:importantForAccessibility">no</item>
+    <item name="android:focusable">false</item>
+    <item name="android:clickable">false</item>
   </style>
 
   <style name="Widget.Material3.ShapeableImageView.ListItem.LeadingImage" parent="Widget.MaterialComponents.ShapeableImageView">
@@ -114,7 +120,6 @@
   <style name="Widget.Material3.Checkbox.ListItem" parent="Widget.Material3.CompoundButton.CheckBox">
     <item name="android:focusable">false</item>
     <item name="android:clickable">false</item>
-    <item name="android:importantForAccessibility">no</item>
     <item name="android:background">@null</item>
     <item name="buttonTint">@color/m3_list_item_checkbox_button_tint_selector</item>
   </style>
@@ -122,7 +127,6 @@
   <style name="Widget.Material3.Switch.ListItem" parent="Widget.Material3.CompoundButton.MaterialSwitch">
     <item name="android:focusable">false</item>
     <item name="android:clickable">false</item>
-    <item name="android:importantForAccessibility">no</item>
     <item name="android:background">@null</item>
     <item name="trackTint">@color/m3_list_item_switch_track_tint_selector</item>
   </style>
@@ -130,7 +134,6 @@
   <style name="Widget.Material3.RadioButton.ListItem" parent="Widget.Material3.CompoundButton.RadioButton">
     <item name="android:focusable">false</item>
     <item name="android:clickable">false</item>
-    <item name="android:importantForAccessibility">no</item>
     <item name="android:background">@null</item>
     <item name="buttonTint">@color/m3_list_item_radio_button_tint_selector</item>
   </style>

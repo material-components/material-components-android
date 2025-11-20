@@ -15,8 +15,11 @@
  */
 package io.material.catalog.listitem;
 
-/** A sample data class used to represent List Items **/
-class CustomListItemData {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+/** A sample data class used to represent List Items * */
+class CustomListItemData implements Parcelable {
   String text;
   boolean checked;
   int indexInSection;
@@ -32,4 +35,39 @@ class CustomListItemData {
   public CustomListItemData(String subheading) {
     this.subheading = subheading;
   }
+
+  protected CustomListItemData(Parcel in) {
+    text = in.readString();
+    checked = in.readByte() != 0;
+    indexInSection = in.readInt();
+    sectionCount = in.readInt();
+    subheading = in.readString();
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(text);
+    dest.writeByte((byte) (checked ? 1 : 0));
+    dest.writeInt(indexInSection);
+    dest.writeInt(sectionCount);
+    dest.writeString(subheading);
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  public static final Creator<CustomListItemData> CREATOR =
+      new Creator<CustomListItemData>() {
+        @Override
+        public CustomListItemData createFromParcel(Parcel in) {
+          return new CustomListItemData(in);
+        }
+
+        @Override
+        public CustomListItemData[] newArray(int size) {
+          return new CustomListItemData[size];
+        }
+      };
 }

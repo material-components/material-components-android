@@ -41,7 +41,12 @@ import java.util.List;
 /** A fragment that displays a segmented List demos for the Catalog app. */
 public class SegmentedListDemoFragment extends ListsMainDemoFragment {
 
+  private static final String KEY_LIST_DATA = "key_list_data";
+  private static final String KEY_SELECTED_POSITION = "key_selected_position";
+
+  private ArrayList<CustomListItemData> listData;
   private ListsAdapter adapter;
+
   @NonNull
   @Override
   public View onCreateDemoView(
@@ -53,16 +58,23 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
             layoutInflater.inflate(R.layout.cat_lists_bright_background_fragment, viewGroup, false);
 
     view.setLayoutManager(new LinearLayoutManager(getContext()));
-    List<CustomListItemData> data = new ArrayList<>();
-    for (int i = 0; i < 20; i++) {
-      data.add(
-          new CustomListItemData(
-              String.format(view.getContext().getString(R.string.cat_list_item_text), i + 1),
-              i,
-              20));
+    if (bundle != null) {
+      listData = bundle.getParcelableArrayList(KEY_LIST_DATA);
+    } else {
+      listData = new ArrayList<>();
+      for (int i = 0; i < 20; i++) {
+        listData.add(
+            new CustomListItemData(
+                String.format(view.getContext().getString(R.string.cat_list_item_text), i + 1),
+                i,
+                20));
+      }
     }
 
-    adapter = new ListsAdapter(data);
+    adapter = new ListsAdapter(listData);
+    if (bundle != null) {
+      adapter.setSelectedPosition(bundle.getInt(KEY_SELECTED_POSITION, NO_SELECTION));
+    }
     view.setAdapter(adapter);
     view.addItemDecoration(new MarginItemDecoration(getContext()));
 
@@ -148,5 +160,12 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
             }
           });
     }
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putParcelableArrayList(KEY_LIST_DATA, listData);
+    outState.putInt(KEY_SELECTED_POSITION, adapter.getSelectedPosition());
   }
 }
