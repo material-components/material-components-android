@@ -37,13 +37,80 @@
     <item name="swipeToPrimaryActionEnabled">false</item>
   </style>
 
+  <style name="Widget.Material3.ListItemCardView.Segmented">
+    <item name="cardBackgroundColor">@color/m3_segmented_list_item_background_color_selector</item>
+  </style>
+
   <style name="Widget.Material3.ListItemRevealLayout" parent="">
     <item name="enforceMaterialTheme">true</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemRevealLayout</item>
     <item name="minChildWidth">@dimen/m3_list_reveal_min_child_width</item>
   </style>
 
-  <style name="Widget.Material3.ListItemCardView.Segmented">
-    <item name="cardBackgroundColor">@color/m3_segmented_list_item_background_color_selector</item>
+  <style name="Widget.Material3Expressive.ListItemRevealLayout" parent="Widget.Material3.ListItemRevealLayout">
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.ListItemRevealLayout</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.ListItemRevealLayout">
+    <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton.ListItemRevealLayout</item>
+    <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled.ListItemRevealLayout</item>
+    <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3.Button.IconButton.Filled.Tonal.ListItemRevealLayout</item>
+    <item name="materialIconButtonOutlinedStyle">@style/Widget.Material3.Button.IconButton.Outlined.ListItemRevealLayout</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3Expressive.ListItemRevealLayout">
+    <item name="materialIconButtonStyle">@style/Widget.Material3Expressive.Button.IconButton.ListItemRevealLayout</item>
+    <item name="materialIconButtonFilledStyle">@style/Widget.Material3Expressive.Button.IconButton.Filled.ListItemRevealLayout</item>
+    <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3Expressive.Button.IconButton.Tonal.ListItemRevealLayout</item>
+    <item name="materialIconButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.IconButton.Outlined.ListItemRevealLayout</item>
+  </style>
+
+  <style name="Widget.Material3.Button.IconButton.ListItemRevealLayout">
+    <item name="iconGravity">textStart</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
+  </style>
+
+  <style name="Widget.Material3.Button.IconButton.Filled.ListItemRevealLayout">
+    <item name="iconGravity">textStart</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
+  </style>
+
+  <style name="Widget.Material3.Button.IconButton.Filled.Tonal.ListItemRevealLayout">
+    <item name="iconGravity">textStart</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
+  </style>
+
+  <style name="Widget.Material3.Button.IconButton.Outlined.ListItemRevealLayout">
+    <item name="iconGravity">textStart</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
+  </style>
+
+  <style name="Widget.Material3Expressive.Button.IconButton.ListItemRevealLayout">
+    <item name="iconGravity">textStart</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
+  </style>
+
+  <style name="Widget.Material3Expressive.Button.IconButton.Filled.ListItemRevealLayout">
+    <item name="iconGravity">textStart</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
+  </style>
+
+  <style name="Widget.Material3Expressive.Button.IconButton.Tonal.ListItemRevealLayout">
+    <item name="iconGravity">textStart</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
+  </style>
+
+  <style name="Widget.Material3Expressive.Button.IconButton.Outlined.ListItemRevealLayout">
+    <item name="iconGravity">textStart</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
   </style>
 
   <style name="ShapeAppearance.Material3.ListItem.First" parent="">

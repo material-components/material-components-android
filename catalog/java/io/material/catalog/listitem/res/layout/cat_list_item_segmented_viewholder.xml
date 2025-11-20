@@ -75,23 +75,17 @@
         android:layout_height="match_parent"
         android:layout_width="wrap_content">
         <com.google.android.material.button.MaterialButton
-            style="?attr/materialIconButtonFilledStyle"
-            android:insetLeft="0dp"
-            android:insetRight="0dp"
+            style="?attr/materialIconButtonFilledTonalStyle"
             android:layout_height="match_parent"
             android:layout_width="64dp"
             android:layout_marginEnd="2dp"
             android:layout_marginStart="2dp"
-            app:icon="@drawable/ic_add_24px"
-            app:iconGravity="textStart" />
+            app:icon="@drawable/ic_add_24px" />
         <com.google.android.material.button.MaterialButton
-            style="?attr/materialIconButtonFilledStyle"
-            android:insetLeft="0dp"
-            android:insetRight="0dp"
-            android:layout_height="match_parent"
-            android:layout_width="64dp"
-            android:layout_marginEnd="2dp"
-            app:icon="@drawable/ic_star_icon_checkable_24px"
-            app:iconGravity="textStart" />
+          style="?attr/materialIconButtonFilledStyle"
+          android:layout_height="match_parent"
+          android:layout_width="64dp"
+          android:layout_marginEnd="2dp"
+          app:icon="@drawable/ic_star_icon_checkable_24px" />
     </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>
