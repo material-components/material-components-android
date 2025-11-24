@@ -97,6 +97,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private MaterialButton monthDropSelect;
   private AccessibilityManager accessibilityManager;
   @Nullable private PagerSnapHelper pagerSnapHelper;
+  private boolean isFullscreen;
 
   @NonNull
   public static <T> MaterialCalendar<T> newInstance(
@@ -161,7 +162,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
     int layout;
     final int orientation;
-    if (MaterialDatePicker.isFullscreen(themedContext)) {
+    isFullscreen = MaterialDatePicker.isFullscreen(themedContext);
+    if (isFullscreen) {
       layout = R.layout.mtrl_calendar_vertical;
       orientation = LinearLayoutManager.VERTICAL;
     } else {
@@ -233,12 +235,12 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             new OnMonthNavigationListener() {
               @Override
               public boolean onMonthNavigationPrevious() {
-                return handleNavigateToMonthForKeyboard(/* forward= */ false, themedContext);
+                return handleNavigateToMonthForKeyboard(/* forward= */ false);
               }
 
               @Override
               public boolean onMonthNavigationNext() {
-                return handleNavigateToMonthForKeyboard(/* forward= */ true, themedContext);
+                return handleNavigateToMonthForKeyboard(/* forward= */ true);
               }
             });
     recyclerView.setAdapter(monthsPagerAdapter);
@@ -254,7 +256,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       yearSelector.addItemDecoration(createItemDecoration());
     }
 
-    if (!MaterialDatePicker.isFullscreen(themedContext)) {
+    if (!isFullscreen) {
       pagerSnapHelper = new PagerSnapHelper();
       pagerSnapHelper.attachToRecyclerView(recyclerView);
     }
@@ -354,11 +356,10 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
    *
    * @param forward {@code true} to navigate to the next month, {@code false} to navigate to the
    *     previous month.
-   * @param context The context.
    * @return {@code true} if the event was handled.
    */
-  private boolean handleNavigateToMonthForKeyboard(boolean forward, @NonNull Context context) {
-    if (MaterialDatePicker.isFullscreen(context)) {
+  private boolean handleNavigateToMonthForKeyboard(boolean forward) {
+    if (isFullscreen) {
       return false;
     }
 
@@ -416,13 +417,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   }
 
   private void updateCurrentVisibleMonth() {
-    Context context = getContext();
-    if (context == null || MaterialDatePicker.isFullscreen(context)) {
-      return;
-    }
-
     MonthsPagerAdapter adapter = (MonthsPagerAdapter) recyclerView.getAdapter();
-    if (adapter != null) {
+    if (adapter != null && !isFullscreen) {
       adapter.setVisibleMonth(current);
     }
   }
