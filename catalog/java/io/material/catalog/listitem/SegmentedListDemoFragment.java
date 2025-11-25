@@ -19,6 +19,7 @@ package io.material.catalog.listitem;
 import io.material.catalog.R;
 
 import static android.widget.Adapter.NO_SELECTION;
+import static com.google.android.material.listitem.SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION;
 
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,8 +34,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.listitem.ListItemCardView;
+import com.google.android.material.listitem.ListItemCardView.SwipeCallback;
+import com.google.android.material.listitem.ListItemLayout;
 import com.google.android.material.listitem.ListItemViewHolder;
+import com.google.android.material.listitem.SwipeableListItem;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,9 +136,10 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
   /** A ViewHolder that shows custom list items */
   public class CustomItemViewHolder extends ListItemViewHolder {
     private final TextView textView;
-    private final MaterialCardView cardView;
+    private final ListItemCardView cardView;
     private final RadioButton radioButton;
     private final ImageView leadingIcon;
+
     public CustomItemViewHolder(@NonNull View itemView) {
       super(itemView);
       textView = itemView.findViewById(R.id.cat_list_item_text);
@@ -157,6 +162,26 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
             adapter.notifyItemChanged(data.indexInSection);
             if (previouslySelectedPosition != NO_SELECTION) {
               adapter.notifyItemChanged(previouslySelectedPosition);
+            }
+          });
+
+      cardView.addSwipeCallback(
+          new SwipeCallback() {
+            @Override
+            public void onSwipe(int swipeOffset) {}
+
+            @Override
+            public void onSwipeStateChanged(int newState) {
+              if (newState == STATE_SWIPE_PRIMARY_ACTION) {
+                Toast.makeText(
+                        cardView.getContext(),
+                        R.string.cat_list_item_primary_action,
+                        Toast.LENGTH_SHORT)
+                    .show();
+                itemView.postDelayed(
+                    () -> ((ListItemLayout) itemView).setSwipeState(SwipeableListItem.STATE_CLOSED),
+                    500);
+              }
             }
           });
     }

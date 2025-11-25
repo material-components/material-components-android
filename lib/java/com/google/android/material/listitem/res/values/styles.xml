@@ -35,6 +35,7 @@
     <item name="contentPaddingLeft">16dp</item>
     <item name="contentPaddingRight">16dp</item>
     <item name="swipeToPrimaryActionEnabled">false</item>
+    <item name="swipeEnabled">true</item>
   </style>
 
   <style name="Widget.Material3.ListItemCardView.Segmented">

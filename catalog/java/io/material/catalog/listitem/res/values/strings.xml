@@ -31,6 +31,7 @@
   <string name="cat_list_item_icon_content_description" description="Description for sample icon in custom list item demo. [CHAR_LIMIT=100]">List item icon</string>
   <string name="cat_lists_multi_section_demo_title" description="Label for the demo that shows multi-section list content. [CHAR_LIMIT=100]">Multi-section List Demo</string>
   <string name="cat_list_item_text" description="Label for the list item that denotes the number of the list item. [CHAR_LIMIT=100]">List item %d</string>
+  <string name="cat_list_item_primary_action" description="Label denoting that the list item's primary action was triggered. [CHAR_LIMIT=NONE]">Primary action triggered</string>
   <string name="cat_list_item_supporting_text" description="Placeholder for supporting text for the list item. [CHAR_LIMIT=100]">Supporting text</string>
   <string name="cat_list_item_overline_text" description="Placeholder for supporting overline for the list item. [CHAR_LIMIT=100]">Overline</string>
   <string name="cat_list_item_trailing_text" description="Placeholder for trailing supporting text for the list item. [CHAR_LIMIT=100]">100+</string>

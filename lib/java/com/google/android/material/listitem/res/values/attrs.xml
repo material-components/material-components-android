@@ -27,6 +27,8 @@
   <declare-styleable name="ListItemCardView">
     <!-- Whether or not to enable the swipe to action. -->
     <attr name="swipeToPrimaryActionEnabled" format="boolean"/>
+    <!-- Whether or not to enable swiping, if a sibling RevealableListItem exists. -->
+    <attr name="swipeEnabled" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="ListItemCardViewStates">

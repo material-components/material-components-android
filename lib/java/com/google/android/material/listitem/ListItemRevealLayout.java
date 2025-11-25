@@ -28,6 +28,7 @@ import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.internal.ThemeEnforcement;
 import java.lang.ref.WeakReference;
 
@@ -257,6 +258,10 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
             MeasureSpec.makeMeasureSpec(originalChildHeights[i], MeasureSpec.EXACTLY));
         final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
         targetWidthMinusLastChild += lp.leftMargin + lp.rightMargin + minChildWidth;
+
+        if (child instanceof MaterialButton && ((MaterialButton) child).getIcon() != null) {
+          ((MaterialButton) child).getIcon().setAlpha(AnimationUtils.lerp(255, 0, progress));
+        }
       }
       View lastChild = getChildAt(lastVisibleChildIndex);
       final MarginLayoutParams lp = (MarginLayoutParams) lastChild.getLayoutParams();
@@ -279,6 +284,14 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
   }
 
   private void measureByPreservingSwipeActionRatios(int childCount) {
+    // Calculate alpha for any MaterialButtons in the ListItemRevealLayout
+    // The icon should start fading in at 25% of the intrinsic width, and finish fading in at 50% of
+    // the intrinsic width.
+    int materialButtonAlpha =
+        (int)
+            AnimationUtils.lerp(
+                0, 255, (float) intrinsicWidth / 4, (float) intrinsicWidth / 2, revealedWidth);
+
     // This measures all children to keep the same intrinsic ratios no matter what the measure
     // policy is. This case covers all other cases, including the case where fullRevealableWidth
     // is smaller than the intrinsic width, which means that there's not enough room to even grow
@@ -302,6 +315,10 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
       int adjustedLeftMargin = (int) (lp.leftMargin * ratio);
       int adjustedRightMargin = (int) (lp.rightMargin * ratio);
       realWidth += childWidth + adjustedLeftMargin + adjustedRightMargin;
+
+      if (child instanceof MaterialButton && ((MaterialButton) child).getIcon() != null) {
+        ((MaterialButton) child).getIcon().setAlpha(materialButtonAlpha);
+      }
     }
     // revealedWidth and realWidth should be the same apart from the minimum child restrictions,
     // but because of rounding, revealedWidth may be a few pixels bigger. Thus we take the

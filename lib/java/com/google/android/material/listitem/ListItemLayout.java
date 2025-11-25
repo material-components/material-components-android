@@ -40,6 +40,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.customview.widget.ViewDragHelper;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.listitem.SwipeableListItem.StableSwipeState;
 import com.google.android.material.listitem.SwipeableListItem.SwipeState;
 
@@ -261,6 +262,10 @@ public class ListItemLayout extends FrameLayout {
                 @Override
                 public boolean tryCaptureView(@NonNull View child, int pointerId) {
                   ensureContentViewIfRevealLayoutExists();
+                  if (contentView instanceof SwipeableListItem
+                      && !((SwipeableListItem) contentView).isSwipeEnabled()) {
+                    return false;
+                  }
                   if (swipeToRevealLayout != null && contentView != null) {
                     viewDragHelper.captureChildView(contentView, pointerId);
                   }
@@ -321,36 +326,7 @@ public class ListItemLayout extends FrameLayout {
                     return;
                   }
                   super.onViewPositionChanged(changedView, left, top, dx, dy);
-                  revealViewOffset = left - originalContentViewLeft;
-
-                  LayoutParams revealViewLp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
-                  LayoutParams contentViewLp = (LayoutParams) contentView.getLayoutParams();
-
-                  // Desired width is how much we've displaced the content view minus any margins.
-                  int revealViewDesiredWidth =
-                      max(
-                          0,
-                          abs(originalContentViewLeft - contentView.getLeft())
-                              - contentViewLp.getMarginEnd() // only end margin matters here
-                              - revealViewLp.getMarginStart()
-                              - revealViewLp.getMarginEnd());
-
-                  ((RevealableListItem) swipeToRevealLayout)
-                      .setRevealedWidth(revealViewDesiredWidth);
-
-                  boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
-                  int fullSwipedOffset = getSwipeToActionOffset();
-                  int disappearingOffset =
-                      (fullSwipedOffset + getSwipeRevealViewRevealedOffset()) / 2;
-
-                  // If we're past the reveal view offset, we should start disappearing.
-                  if (isRtl
-                      ? revealViewOffset >= disappearingOffset
-                      : revealViewOffset <= disappearingOffset) {
-                    contentView.setAlpha(
-                        (float) (revealViewOffset - fullSwipedOffset)
-                            / (disappearingOffset - fullSwipedOffset));
-                  }
+                  updateSwipeProgress(left);
                 }
 
                 @Override
@@ -481,6 +457,39 @@ public class ListItemLayout extends FrameLayout {
     }
   }
 
+  private void updateSwipeProgress(int left) {
+    if (!(contentView instanceof SwipeableListItem
+        && swipeToRevealLayout instanceof RevealableListItem)) {
+      return;
+    }
+    revealViewOffset = left - originalContentViewLeft;
+
+    LayoutParams revealViewLp = (LayoutParams) swipeToRevealLayout.getLayoutParams();
+    LayoutParams contentViewLp = (LayoutParams) contentView.getLayoutParams();
+
+    // Desired width is how much we've displaced the content view minus any margins.
+    int revealViewDesiredWidth =
+        max(
+            0,
+            abs(originalContentViewLeft - contentView.getLeft())
+                - contentViewLp.getMarginEnd() // only end margin matters here
+                - revealViewLp.getMarginStart()
+                - revealViewLp.getMarginEnd());
+
+    ((RevealableListItem) swipeToRevealLayout).setRevealedWidth(revealViewDesiredWidth);
+    ((SwipeableListItem) contentView).onSwipe(revealViewOffset);
+
+    int fullSwipedOffset = getSwipeToActionOffset();
+    int fadeOutThreshold = (fullSwipedOffset + getSwipeRevealViewRevealedOffset()) / 2;
+    float contentViewAlpha =
+        AnimationUtils.lerp(
+            /* startValue= */ 1f,
+            /* endValue= */ 0f,
+            /* fraction= */ (float) (revealViewOffset - fadeOutThreshold)
+                / (fullSwipedOffset - fadeOutThreshold));
+    contentView.setAlpha(contentViewAlpha);
+  }
+
   private void startSettling(View contentView, @StableSwipeState int targetSwipeState) {
     if (viewDragHelper == null) {
       return;
@@ -524,6 +533,50 @@ public class ListItemLayout extends FrameLayout {
     }
 
     ((SwipeableListItem) contentView).onSwipeStateChanged(swipeState);
+  }
+
+  /**
+   * Sets the state to swipe the {@link SwipeableListItem} child to.
+   *
+   * @param swipeState The state to swipe to. This must be one of {@link
+   *     SwipeableListItem#STATE_CLOSED}, {@link SwipeableListItem#STATE_OPEN}, or {@link
+   *     SwipeableListItem#STATE_SWIPE_PRIMARY_ACTION}
+   */
+  public void setSwipeState(@StableSwipeState int swipeState) {
+    setSwipeState(swipeState, /* animate= */ true);
+  }
+
+  /**
+   * Sets the state to swipe the {@link SwipeableListItem} child to.
+   *
+   * @param swipeState The state to swipe to. This must be one of {@link
+   *     SwipeableListItem#STATE_CLOSED}, {@link SwipeableListItem#STATE_OPEN}, or {@link
+   *     SwipeableListItem#STATE_SWIPE_PRIMARY_ACTION}
+   * @param animate Whether to animate to the given swipe state.
+   */
+  public void setSwipeState(@StableSwipeState int swipeState, boolean animate) {
+    if (swipeState != STATE_CLOSED
+        && swipeState != STATE_OPEN
+        && swipeState != STATE_SWIPE_PRIMARY_ACTION) {
+      throw new IllegalArgumentException("Invalid swipe state: " + swipeState);
+    } else if (!(contentView instanceof SwipeableListItem)
+        || !(swipeToRevealLayout instanceof RevealableListItem)) {
+      throw new IllegalArgumentException(
+          "ListItemLayout must have a SwipeableListItem child and a RevealableListItem child to be"
+              + " swiped.");
+    }
+
+    if (!animate) {
+      if (viewDragHelper != null) {
+        viewDragHelper.abort();
+      }
+      int finalLeft = getOffsetForSwipeState(swipeState);
+      contentView.offsetLeftAndRight(finalLeft - contentView.getLeft());
+      updateSwipeProgress(finalLeft);
+      setSwipeStateInternal(swipeState);
+    } else {
+      startSettling(contentView, swipeState);
+    }
   }
 
   @Override

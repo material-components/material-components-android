@@ -16,15 +16,8 @@
 package com.google.android.material.listitem;
 
 import androidx.annotation.Px;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 
-/**
- * Interface for the part of a ListItem that is able to be revealed when swiped.
- *
- * @hide
- */
-@RestrictTo(Scope.LIBRARY_GROUP)
+/** Interface for the part of a ListItem that is able to be revealed when swiped. */
 public interface RevealableListItem {
 
   /**
