@@ -25,11 +25,13 @@ class CustomListItemData implements Parcelable {
   int indexInSection;
   int sectionCount;
   String subheading;
+  boolean expanded;
 
   public CustomListItemData(String text, int indexInSection, int sectionCount) {
     this.text = text;
     this.indexInSection = indexInSection;
     this.sectionCount = sectionCount;
+    this.expanded = false;
   }
 
   public CustomListItemData(String subheading) {
@@ -42,6 +44,7 @@ class CustomListItemData implements Parcelable {
     indexInSection = in.readInt();
     sectionCount = in.readInt();
     subheading = in.readString();
+    expanded = in.readByte() != 0;
   }
 
   @Override
@@ -51,6 +54,7 @@ class CustomListItemData implements Parcelable {
     dest.writeInt(indexInSection);
     dest.writeInt(sectionCount);
     dest.writeString(subheading);
+    dest.writeByte((byte) (expanded ? 1 : 0));
   }
 
   @Override
