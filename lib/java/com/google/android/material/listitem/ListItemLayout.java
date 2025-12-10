@@ -28,17 +28,21 @@ import static java.lang.Math.max;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.customview.widget.ViewDragHelper;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.listitem.SwipeableListItem.StableSwipeState;
@@ -82,6 +86,8 @@ public class ListItemLayout extends FrameLayout {
   private View contentView;
   @Nullable private View swipeToRevealLayout;
   private boolean originalClipToPadding;
+
+  @Nullable private AccessibilityDelegate swipeAccessibilityDelegate;
 
   @SwipeState private int swipeState = STATE_CLOSED;
   @StableSwipeState private int lastStableSwipeState = STATE_CLOSED;
@@ -169,17 +175,20 @@ public class ListItemLayout extends FrameLayout {
   @Override
   public void addView(View child, int index, ViewGroup.LayoutParams params) {
     super.addView(child, index, params);
-    if (swipeToRevealLayout != null && child instanceof ListItemRevealLayout) {
+    if (swipeToRevealLayout != null && child instanceof RevealableListItem) {
       throw new UnsupportedOperationException(
-          "Only one ListItemRevealLayout is supported in a ListItemLayout.");
+          "Only one RevealableListItem is supported in a ListItemLayout.");
     } else if (child instanceof RevealableListItem) {
       swipeToRevealLayout = child;
-      originalClipToPadding = getClipToPadding();
-      setClipToPadding(false);
       // Start the reveal view at a desired width of 0
       ((RevealableListItem) child).setRevealedWidth(0);
       // Make sure reveal view has lower elevation
       child.setElevation(getElevation() - 1);
+    } else if (contentView != null && child instanceof SwipeableListItem) {
+      throw new UnsupportedOperationException(
+          "Only one SwipeableListItem view is allowed in a ListItemLayout.");
+    } else if (child instanceof SwipeableListItem) {
+      contentView = child;
     }
   }
 
@@ -187,28 +196,16 @@ public class ListItemLayout extends FrameLayout {
   public void onViewRemoved(View child) {
     super.onViewRemoved(child);
     if (child == swipeToRevealLayout) {
+      swipeToRevealLayout = null;
+    } else if (child == contentView) {
+      contentView = null;
+    }
+
+    if (swipeToRevealLayout == null || contentView == null) {
       viewDragHelper = null;
       gestureDetector = null;
-      swipeToRevealLayout = null;
+      swipeAccessibilityDelegate = null;
       setClipToPadding(originalClipToPadding);
-    }
-  }
-
-  private void ensureContentViewIfRevealLayoutExists() {
-    if (contentView != null || swipeToRevealLayout == null) {
-      return;
-    }
-
-    int childCount = getChildCount();
-    for (int i = 0; i < childCount; i++) {
-      if (getChildAt(i) instanceof SwipeableListItem) {
-        if (contentView != null) {
-          throw new UnsupportedOperationException(
-              "Only one SwipeableListItem view is allowed in a ListItemLayout.");
-        }
-        contentView = getChildAt(i);
-        originalContentViewLeft = contentView.getLeft();
-      }
     }
   }
 
@@ -251,163 +248,219 @@ public class ListItemLayout extends FrameLayout {
    * variables are initialized if true.
    */
   private boolean ensureSwipeToRevealSetupIfNeeded() {
-    if (swipeToRevealLayout == null) {
+    if (swipeToRevealLayout == null || contentView == null) {
       return false;
     }
-    if (viewDragHelper == null || gestureDetector == null) {
-      viewDragHelper =
-          ViewDragHelper.create(
-              this,
-              new ViewDragHelper.Callback() {
-                @Override
-                public boolean tryCaptureView(@NonNull View child, int pointerId) {
-                  ensureContentViewIfRevealLayoutExists();
-                  if (contentView instanceof SwipeableListItem
-                      && !((SwipeableListItem) contentView).isSwipeEnabled()) {
-                    return false;
-                  }
-                  if (swipeToRevealLayout != null && contentView != null) {
-                    viewDragHelper.captureChildView(contentView, pointerId);
-                  }
-                  return false;
-                }
-
-                @Override
-                public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
-                  if (!(contentView instanceof SwipeableListItem
-                      && swipeToRevealLayout instanceof RevealableListItem)) {
-                    return 0;
-                  }
-                  boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
-                  RevealableListItem revealableItem = (RevealableListItem) swipeToRevealLayout;
-                  SwipeableListItem swipeableItem = (SwipeableListItem) contentView;
-
-                  int maxSwipeDistance;
-                  if (swipeableItem.isSwipeToPrimaryActionEnabled()) {
-                    MarginLayoutParams contentViewLp =
-                        (MarginLayoutParams) contentView.getLayoutParams();
-                    maxSwipeDistance =
-                        contentView.getMeasuredWidth() + contentViewLp.getMarginEnd();
-                  } else {
-                    MarginLayoutParams revealViewLp =
-                        (MarginLayoutParams) swipeToRevealLayout.getLayoutParams();
-                    maxSwipeDistance =
-                        revealableItem.getIntrinsicWidth()
-                            + revealViewLp.getMarginStart()
-                            + revealViewLp.getMarginEnd();
-                  }
-
-                  int maxSwipeBoundary =
-                      originalContentViewLeft
-                          + ((isRtl ? 1 : -1)
-                              * (maxSwipeDistance + swipeableItem.getSwipeMaxOvershoot()));
-
-                  final int startBound = isRtl ? originalContentViewLeft : maxSwipeBoundary;
-                  final int endBound = isRtl ? maxSwipeBoundary : originalContentViewLeft;
-
-                  return Math.max(startBound, Math.min(left, endBound));
-                }
-
-                @Override
-                public int getViewHorizontalDragRange(@NonNull View child) {
-                  if (contentView instanceof SwipeableListItem
-                      && swipeToRevealLayout instanceof RevealableListItem) {
-                    return ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
-                        + ((SwipeableListItem) contentView).getSwipeMaxOvershoot();
-                  }
-                  return 0;
-                }
-
-                @Override
-                public void onViewPositionChanged(
-                    @NonNull View changedView, int left, int top, int dx, int dy) {
-                  if (!(contentView instanceof SwipeableListItem
-                      && swipeToRevealLayout instanceof RevealableListItem)) {
-                    return;
-                  }
-                  super.onViewPositionChanged(changedView, left, top, dx, dy);
-                  updateSwipeProgress(left);
-                }
-
-                @Override
-                public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
-                  if (contentView instanceof SwipeableListItem
-                      && swipeToRevealLayout instanceof RevealableListItem) {
-                    startSettling(contentView, calculateTargetSwipeState(xvel, releasedChild));
-                  }
-                }
-
-                private int calculateTargetSwipeState(float xvel, View swipeView) {
-                  if (getLayoutDirection() == LAYOUT_DIRECTION_RTL) {
-                    xvel *= -1;
-                  }
-                  if (!((SwipeableListItem) swipeView).isSwipeToPrimaryActionEnabled()) {
-                    if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
-                      return STATE_CLOSED;
-                    }
-                    if (xvel < -DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the left
-                      return STATE_OPEN;
-                    }
-                    // Settle to the closest point if velocity is not significant
-                    return Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())
-                            < Math.abs(swipeView.getLeft() - getSwipeViewClosedOffset())
-                        ? STATE_OPEN
-                        : STATE_CLOSED;
-                  }
-
-                  // Swipe to action is supported
-                  if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
-                    return lastStableSwipeState == STATE_SWIPE_PRIMARY_ACTION
-                        ? STATE_OPEN
-                        : STATE_CLOSED;
-                  }
-                  if (xvel < -DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the left
-                    return lastStableSwipeState == STATE_CLOSED
-                        ? STATE_OPEN
-                        : STATE_SWIPE_PRIMARY_ACTION;
-                  }
-
-                  // Settle to the closest point if velocity is not significant
-                  if (Math.abs(swipeView.getLeft() - getSwipeToActionOffset())
-                      < Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())) {
-                    return STATE_SWIPE_PRIMARY_ACTION;
-                  }
-                  if (Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())
-                      < Math.abs(swipeView.getLeft() - getSwipeViewClosedOffset())) {
-                    return STATE_OPEN;
-                  }
-                  return STATE_CLOSED;
-                }
-
-                @Override
-                public void onViewDragStateChanged(int state) {
-                  if (state == ViewDragHelper.STATE_DRAGGING) {
-                    setSwipeStateInternal(STATE_DRAGGING);
-                  }
-                }
-              });
-
-      gestureDetector =
-          new GestureDetector(
-              getContext(),
-              new SimpleOnGestureListener() {
-                @Override
-                public boolean onScroll(
-                    MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                  if (getParent() != null) {
-                    // Disallow intercepting touch event on the parent so that it doesn't interfere
-                    // with the swipe gesture. This value gets reset to false at the end of the
-                    // gesture.
-                    getParent().requestDisallowInterceptTouchEvent(true);
-                  }
-                  return false;
-                }
-              });
+    if (viewDragHelper == null) {
+      viewDragHelper = createViewDragHelper();
+    }
+    if (gestureDetector == null) {
+      gestureDetector = createGestureDetector();
+    }
+    if (swipeAccessibilityDelegate == null) {
+      swipeAccessibilityDelegate = createSwipeAccessibilityDelegate();
+      contentView.setAccessibilityDelegate(swipeAccessibilityDelegate);
     }
 
-    ensureContentViewIfRevealLayoutExists();
+    // If swipe to reveal is enabled, we want to disable clipping to padding so that the swipe view
+    // can be swiped. If the original clip to padding value is true, we save the value so if swipe
+    // is ever disabled, we can restore the original value.
+    if (getClipToPadding()) {
+      originalClipToPadding = getClipToPadding();
+      setClipToPadding(false);
+    }
 
     return true;
+  }
+
+  private ViewDragHelper createViewDragHelper() {
+    return ViewDragHelper.create(
+        this,
+        new ViewDragHelper.Callback() {
+          @Override
+          public boolean tryCaptureView(@NonNull View child, int pointerId) {
+            if (contentView instanceof SwipeableListItem
+                && !((SwipeableListItem) contentView).isSwipeEnabled()) {
+              return false;
+            }
+            if (swipeToRevealLayout != null && contentView != null) {
+              viewDragHelper.captureChildView(contentView, pointerId);
+            }
+            return false;
+          }
+
+          @Override
+          public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
+            if (!(contentView instanceof SwipeableListItem
+                && swipeToRevealLayout instanceof RevealableListItem)) {
+              return 0;
+            }
+            boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+            RevealableListItem revealableItem = (RevealableListItem) swipeToRevealLayout;
+            SwipeableListItem swipeableItem = (SwipeableListItem) contentView;
+
+            int maxSwipeDistance;
+            if (swipeableItem.isSwipeToPrimaryActionEnabled()) {
+              MarginLayoutParams contentViewLp = (MarginLayoutParams) contentView.getLayoutParams();
+              maxSwipeDistance = contentView.getMeasuredWidth() + contentViewLp.getMarginEnd();
+            } else {
+              MarginLayoutParams revealViewLp =
+                  (MarginLayoutParams) swipeToRevealLayout.getLayoutParams();
+              maxSwipeDistance =
+                  revealableItem.getIntrinsicWidth()
+                      + revealViewLp.getMarginStart()
+                      + revealViewLp.getMarginEnd();
+            }
+
+            int maxSwipeBoundary =
+                originalContentViewLeft
+                    + ((isRtl ? 1 : -1)
+                        * (maxSwipeDistance + swipeableItem.getSwipeMaxOvershoot()));
+
+            final int startBound = isRtl ? originalContentViewLeft : maxSwipeBoundary;
+            final int endBound = isRtl ? maxSwipeBoundary : originalContentViewLeft;
+
+            return Math.max(startBound, Math.min(left, endBound));
+          }
+
+          @Override
+          public int getViewHorizontalDragRange(@NonNull View child) {
+            if (contentView instanceof SwipeableListItem
+                && swipeToRevealLayout instanceof RevealableListItem) {
+              return ((RevealableListItem) swipeToRevealLayout).getIntrinsicWidth()
+                  + ((SwipeableListItem) contentView).getSwipeMaxOvershoot();
+            }
+            return 0;
+          }
+
+          @Override
+          public void onViewPositionChanged(
+              @NonNull View changedView, int left, int top, int dx, int dy) {
+            if (!(contentView instanceof SwipeableListItem
+                && swipeToRevealLayout instanceof RevealableListItem)) {
+              return;
+            }
+            super.onViewPositionChanged(changedView, left, top, dx, dy);
+            updateSwipeProgress(left);
+          }
+
+          @Override
+          public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
+            if (contentView instanceof SwipeableListItem
+                && swipeToRevealLayout instanceof RevealableListItem) {
+              startSettling(contentView, calculateTargetSwipeState(xvel, releasedChild));
+            }
+          }
+
+          private int calculateTargetSwipeState(float xvel, View swipeView) {
+            if (getLayoutDirection() == LAYOUT_DIRECTION_RTL) {
+              xvel *= -1;
+            }
+            if (!((SwipeableListItem) swipeView).isSwipeToPrimaryActionEnabled()) {
+              if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
+                return STATE_CLOSED;
+              }
+              if (xvel < -DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the left
+                return STATE_OPEN;
+              }
+              // Settle to the closest point if velocity is not significant
+              return Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())
+                      < Math.abs(swipeView.getLeft() - getSwipeViewClosedOffset())
+                  ? STATE_OPEN
+                  : STATE_CLOSED;
+            }
+
+            // Swipe to action is supported
+            if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
+              return lastStableSwipeState == STATE_SWIPE_PRIMARY_ACTION ? STATE_OPEN : STATE_CLOSED;
+            }
+            if (xvel < -DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the left
+              return lastStableSwipeState == STATE_CLOSED ? STATE_OPEN : STATE_SWIPE_PRIMARY_ACTION;
+            }
+
+            // Settle to the closest point if velocity is not significant
+            if (Math.abs(swipeView.getLeft() - getSwipeToActionOffset())
+                < Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())) {
+              return STATE_SWIPE_PRIMARY_ACTION;
+            }
+            if (Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())
+                < Math.abs(swipeView.getLeft() - getSwipeViewClosedOffset())) {
+              return STATE_OPEN;
+            }
+            return STATE_CLOSED;
+          }
+
+          @Override
+          public void onViewDragStateChanged(int state) {
+            if (state == ViewDragHelper.STATE_DRAGGING) {
+              setSwipeStateInternal(STATE_DRAGGING);
+            }
+          }
+        });
+  }
+
+  private GestureDetector createGestureDetector() {
+    return new GestureDetector(
+        getContext(),
+        new SimpleOnGestureListener() {
+          @Override
+          public boolean onScroll(
+              MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+            if (getParent() != null) {
+              // Disallow intercepting touch event on the parent so that it doesn't interfere
+              // with the swipe gesture. This value gets reset to false at the end of the
+              // gesture.
+              getParent().requestDisallowInterceptTouchEvent(true);
+            }
+            return false;
+          }
+        });
+  }
+
+  private AccessibilityDelegate createSwipeAccessibilityDelegate() {
+    return new AccessibilityDelegate() {
+      @Override
+      public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
+        super.onInitializeAccessibilityNodeInfo(host, info);
+        AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+        if (swipeToRevealLayout instanceof ViewGroup) {
+          ViewGroup revealViewGroup = (ViewGroup) swipeToRevealLayout;
+          for (int i = 0; i < revealViewGroup.getChildCount(); i++) {
+            View child = revealViewGroup.getChildAt(i);
+            if (shouldAddAccessibilityAction(child)) {
+              infoCompat.addAction(
+                  new AccessibilityActionCompat(
+                      getAccessibilityActionId(child), child.getContentDescription()));
+            }
+          }
+        }
+      }
+
+      private boolean shouldAddAccessibilityAction(View child) {
+        return child.isClickable()
+            && child.getContentDescription() != null
+            && child.isEnabled()
+            && child.getVisibility() == View.VISIBLE;
+      }
+
+      @Override
+      public boolean performAccessibilityAction(View host, int action, Bundle args) {
+        if (swipeToRevealLayout instanceof ViewGroup) {
+          ViewGroup revealViewGroup = (ViewGroup) swipeToRevealLayout;
+          for (int i = 0; i < revealViewGroup.getChildCount(); i++) {
+            View child = revealViewGroup.getChildAt(i);
+            if (getAccessibilityActionId(child) == action) {
+              return child.performClick();
+            }
+          }
+        }
+        return super.performAccessibilityAction(host, action, args);
+      }
+
+      private int getAccessibilityActionId(View child) {
+        return child.getId();
+      }
+    };
   }
 
   private int getSwipeRevealViewRevealedOffset() {
@@ -566,23 +619,38 @@ public class ListItemLayout extends FrameLayout {
               + " swiped.");
     }
 
-    if (!animate) {
-      if (viewDragHelper != null) {
-        viewDragHelper.abort();
-      }
-      int finalLeft = getOffsetForSwipeState(swipeState);
-      contentView.offsetLeftAndRight(finalLeft - contentView.getLeft());
-      updateSwipeProgress(finalLeft);
-      setSwipeStateInternal(swipeState);
+    Runnable runnable =
+        () -> {
+          if (!animate) {
+            if (viewDragHelper != null) {
+              viewDragHelper.abort();
+            }
+            int finalLeft = getOffsetForSwipeState(swipeState);
+            contentView.offsetLeftAndRight(finalLeft - contentView.getLeft());
+            updateSwipeProgress(finalLeft);
+            setSwipeStateInternal(swipeState);
+          } else {
+            startSettling(contentView, swipeState);
+          }
+        };
+    if (isLaidOut()) {
+      runnable.run();
     } else {
-      startSettling(contentView, swipeState);
+      // Put it into a post to ensure that all the views have been laid out.
+      post(runnable);
     }
+  }
+
+  /** Returns the current {@link SwipeState} of the ListItemLayout. */
+  @SwipeState
+  public int getSwipeState() {
+    return swipeState;
   }
 
   @Override
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
-    if (contentView != null && swipeToRevealLayout != null) {
+    if (contentView != null && swipeToRevealLayout != null && ensureSwipeToRevealSetupIfNeeded()) {
       originalContentViewLeft = contentView.getLeft();
       int originalContentViewRight = contentView.getRight();
       contentView.offsetLeftAndRight(revealViewOffset);

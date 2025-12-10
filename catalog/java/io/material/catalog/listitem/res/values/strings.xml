@@ -38,5 +38,13 @@
   <string name="cat_list_item_trailing_text" description="Placeholder for trailing supporting text for the list item. [CHAR_LIMIT=100]">100+</string>
   <string name="cat_list_item_leading_image_content_description" description="Description for sample leading image in custom list item demo. [CHAR_LIMIT=100]">Image of cat</string>
   <string name="cat_list_item_expanded_list_item_text" description="Label for expanded list items. [CHAR_LIMIT=100]">Expanded List item</string>
+  <string name="cat_lists_swipe_demo_title" description="Label for the demo that shows swipeable list content. [CHAR_LIMIT=100]">Swipeable List Demo</string>
+  <string name="cat_list_item_swipe_start_content_description" description="Description for button to show the start-aligned swipe-to-reveal actions. [CHAR_LIMIT=NONE]">Show start-aligned swipe-to-reveal actions</string>
+  <string name="cat_list_item_show_end_actions_content_description" description="Description for button to show the end-aligned swipe-to-reveal actions. [CHAR_LIMIT=NONE]">Show end-aligned swipe-to-reveal actions</string>
+  <string name="cat_list_item_hide_end_actions_content_description" description="Description for button to hide the end-aligned swipe-to-reveal actions. [CHAR_LIMIT=NONE]">Hide end-aligned swipe-to-reveal actions</string>
+  <string name="cat_list_item_add_action_clicked" description="Message to denote when the add button is clicked [CHAR_LIMIT=NONE]">Add action clicked</string>
+  <string name="cat_list_item_star_action_clicked" description="Message to denote when the star button is clicked [CHAR_LIMIT=NONE]">Star action clicked</string>
+  <string name="cat_list_item_add_action_content_description" description="Description for the add button. [CHAR_LIMIT=NONE]">Add</string>
+  <string name="cat_list_item_star_action_content_description" description="Description for the star button. [CHAR_LIMIT=NONE]">Star</string>
 </resources>
 

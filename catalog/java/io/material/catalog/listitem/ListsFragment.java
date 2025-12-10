@@ -80,6 +80,13 @@ public class ListsFragment extends DemoLandingFragment {
             return new ExpandableListDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_lists_swipe_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SwipeableListDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

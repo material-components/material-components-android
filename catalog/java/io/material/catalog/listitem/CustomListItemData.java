@@ -17,6 +17,7 @@ package io.material.catalog.listitem;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.google.android.material.listitem.SwipeableListItem;
 
 /** A sample data class used to represent List Items * */
 class CustomListItemData implements Parcelable {
@@ -26,12 +27,14 @@ class CustomListItemData implements Parcelable {
   int sectionCount;
   String subheading;
   boolean expanded;
+  int swipeState;
 
   public CustomListItemData(String text, int indexInSection, int sectionCount) {
     this.text = text;
     this.indexInSection = indexInSection;
     this.sectionCount = sectionCount;
     this.expanded = false;
+    this.swipeState = SwipeableListItem.STATE_CLOSED;
   }
 
   public CustomListItemData(String subheading) {
@@ -45,6 +48,7 @@ class CustomListItemData implements Parcelable {
     sectionCount = in.readInt();
     subheading = in.readString();
     expanded = in.readByte() != 0;
+    swipeState = in.readInt();
   }
 
   @Override
@@ -55,6 +59,7 @@ class CustomListItemData implements Parcelable {
     dest.writeInt(sectionCount);
     dest.writeString(subheading);
     dest.writeByte((byte) (expanded ? 1 : 0));
+    dest.writeInt(swipeState);
   }
 
   @Override

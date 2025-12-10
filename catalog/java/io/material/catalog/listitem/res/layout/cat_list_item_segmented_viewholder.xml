@@ -29,8 +29,7 @@
         android:clickable="true"
         android:focusable="true"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        app:swipeToPrimaryActionEnabled="true">
+        android:layout_width="match_parent">
         <LinearLayout
             android:gravity="center_vertical"
             android:layout_height="wrap_content"
@@ -70,22 +69,4 @@
             android:layout_marginStart="12dp"/>
         </LinearLayout>
     </com.google.android.material.listitem.ListItemCardView>
-
-    <com.google.android.material.listitem.ListItemRevealLayout
-        android:layout_height="match_parent"
-        android:layout_width="wrap_content">
-        <com.google.android.material.button.MaterialButton
-            style="?attr/materialIconButtonFilledTonalStyle"
-            android:layout_height="match_parent"
-            android:layout_width="64dp"
-            android:layout_marginEnd="2dp"
-            android:layout_marginStart="2dp"
-            app:icon="@drawable/ic_add_24px" />
-        <com.google.android.material.button.MaterialButton
-          style="?attr/materialIconButtonFilledStyle"
-          android:layout_height="match_parent"
-          android:layout_width="64dp"
-          android:layout_marginEnd="2dp"
-          app:icon="@drawable/ic_star_icon_checkable_24px" />
-    </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>
