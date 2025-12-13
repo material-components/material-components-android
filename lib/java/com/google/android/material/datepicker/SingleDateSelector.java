@@ -58,7 +58,8 @@ public class SingleDateSelector implements DateSelector<Long> {
     selectedItem = selection;
   }
 
-  private void clearSelection() {
+  @Override
+  public void clearSelection() {
     selectedItem = null;
   }
 
