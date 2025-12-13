@@ -543,7 +543,7 @@ class SearchViewAnimationHelper {
     return getTranslationAnimator(
         show,
         dummyToolbar,
-        getFromTranslationXEnd(dummyToolbar),
+        getFromTranslationXEnd(dummyToolbar) - (searchBar.getPaddingEnd() - dummyToolbar.getPaddingEnd()),
         getFromTranslationY());
   }
 
