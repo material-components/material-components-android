@@ -25,8 +25,6 @@
   <attr name="listItemRevealLayoutStyle" format="reference"/>
 
   <declare-styleable name="ListItemCardView">
-    <!-- Whether or not to enable the swipe to action. -->
-    <attr name="swipeToPrimaryActionEnabled" format="boolean"/>
     <!-- Whether or not to enable swiping, if a sibling RevealableListItem exists. -->
     <attr name="swipeEnabled" format="boolean"/>
   </declare-styleable>
@@ -39,6 +37,15 @@
   <declare-styleable name="ListItemRevealLayout">
     <!-- Minimum width any children are measured as. -->
     <attr name="minChildWidth" format="dimension" />
+    <!-- Defines the behavior when swiping to reveal the primary action of the ListItemRevealLayout. -->
+    <attr name="primaryActionSwipeMode">
+      <!-- The primary action is disabled. -->
+      <enum name="disabled" value="0"/>
+      <!-- Swiping reveals intermediary states before fully revealing the primary action. -->
+      <enum name="indirect" value="1"/>
+      <!-- Swiping directly reveals the primary action without stopping at intermediary states. -->
+      <enum name="direct" value="2"/>
+    </attr>
   </declare-styleable>
 
   <!-- Shape appearance of a single item in the list. -->

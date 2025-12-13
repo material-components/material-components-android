@@ -62,7 +62,6 @@ public class ListItemCardView extends MaterialCardView implements SwipeableListI
   private boolean isSwiped = false;
 
   private final int swipeMaxOvershoot;
-  private boolean swipeToPrimaryActionEnabled;
   private boolean swipeEnabled;
   @NonNull private final LinkedHashSet<SwipeCallback> swipeCallbacks = new LinkedHashSet<>();
 
@@ -89,7 +88,6 @@ public class ListItemCardView extends MaterialCardView implements SwipeableListI
     TintTypedArray attributes =
         ThemeEnforcement.obtainTintedStyledAttributes(
             context, attrs, R.styleable.ListItemCardView, defStyleAttr, defStyleRes);
-    swipeToPrimaryActionEnabled = attributes.getBoolean(R.styleable.ListItemCardView_swipeToPrimaryActionEnabled, false);
     swipeEnabled = attributes.getBoolean(R.styleable.ListItemCardView_swipeEnabled, true);
     attributes.recycle();
   }
@@ -102,6 +100,7 @@ public class ListItemCardView extends MaterialCardView implements SwipeableListI
   /**
    * Whether or not to enabling swiping when there is a sibling {@link RevealableListItem}.
    */
+  @Override
   public void setSwipeEnabled(boolean swipeEnabled) {
     this.swipeEnabled = swipeEnabled;
   }
@@ -109,23 +108,6 @@ public class ListItemCardView extends MaterialCardView implements SwipeableListI
   @Override
   public boolean isSwipeEnabled() {
     return swipeEnabled;
-  }
-
-  /**
-   * Set whether or not to enable the swipe to action. This enables the ListItemCardView to be
-   * swiped fully out of its parent {@link ListItemLayout}, in order to trigger an action.
-   *
-   * <p>Users should add a {@link SwipeCallback} via {@link #addSwipeCallback} to listen for swipe
-   * state changes and trigger an action.
-   */
-  public void setSwipeToPrimaryActionEnabled(boolean swipeToPrimaryActionEnabled) {
-    this.swipeToPrimaryActionEnabled = swipeToPrimaryActionEnabled;
-  }
-
-  /** Returns whether or not the swipe to action is enabled. */
-  @Override
-  public boolean isSwipeToPrimaryActionEnabled() {
-    return swipeToPrimaryActionEnabled;
   }
 
   @Override

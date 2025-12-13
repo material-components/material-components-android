@@ -59,6 +59,9 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
   private int originalWidthMeasureSpec = UNSET;
   private int originalHeightMeasureSpec = UNSET;
 
+  @PrimaryActionSwipeMode
+  private int primaryActionSwipeMode;
+
   public ListItemRevealLayout(Context context) {
     this(context, null);
   }
@@ -86,6 +89,9 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
         attributes.getDimensionPixelSize(
             R.styleable.ListItemRevealLayout_minChildWidth,
             getResources().getDimensionPixelSize(R.dimen.m3_list_reveal_min_child_width));
+    primaryActionSwipeMode = attributes.getInt(
+        R.styleable.ListItemRevealLayout_primaryActionSwipeMode,
+        PRIMARY_ACTION_SWIPE_DISABLED);
     attributes.recycle();
   }
 
@@ -120,7 +126,8 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
     } else if (childCount == 0) {
       // If there's no children, just set to desired width without doing anything.
       setMeasuredDimension(revealedWidth, intrinsicHeight);
-    } else if (revealedWidth > intrinsicWidth + overswipeAllowance
+    } else if (primaryActionSwipeMode != PRIMARY_ACTION_SWIPE_DISABLED
+        && revealedWidth > intrinsicWidth + overswipeAllowance
         && fullRevealableWidth > intrinsicWidth) {
       measureByGrowingPrimarySwipeAction(fullRevealableWidth);
     } else {
@@ -446,5 +453,23 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
       }
     }
     return null;
+  }
+
+  /**
+   * Sets the swipe-to-primary-action behavior of this RevealableListItem when swiping with a
+   * sibling {@link SwipeableListItem}.
+   *
+   * <p>Use {@link SwipeableListItem#onSwipeStateChanged(int)} to listen for when the primary
+   * action is triggered to initiate the action.
+   */
+  @Override
+  public void setPrimaryActionSwipeMode(@PrimaryActionSwipeMode int primaryActionSwipeMode) {
+    this.primaryActionSwipeMode = primaryActionSwipeMode;
+  }
+
+  @Override
+  @PrimaryActionSwipeMode
+  public int getPrimaryActionSwipeMode() {
+    return primaryActionSwipeMode;
   }
 }

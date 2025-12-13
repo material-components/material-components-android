@@ -21,8 +21,8 @@
 
   <public name="state_swiped" type="attr" />
   <public name="minChildWidth" type="attr"/>
-  <public name="swipeToPrimaryActionEnabled" type="attr"/>
   <public name="swipeEnabled" type="attr"/>
+  <public name="primaryActionSwipeMode" type="attr"/>
 
   <public name="Widget.Material3.ListItemLayout" type="style"/>
   <public name="ThemeOverlay.Material3.ListItemLayout.Segmented" type="style"/>

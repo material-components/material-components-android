@@ -34,7 +34,6 @@
     <item name="contentPaddingBottom">10dp</item>
     <item name="contentPaddingLeft">16dp</item>
     <item name="contentPaddingRight">16dp</item>
-    <item name="swipeToPrimaryActionEnabled">false</item>
     <item name="swipeEnabled">true</item>
   </style>
 
@@ -46,6 +45,7 @@
     <item name="enforceMaterialTheme">true</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.ListItemRevealLayout</item>
     <item name="minChildWidth">@dimen/m3_list_reveal_min_child_width</item>
+    <item name="primaryActionSwipeMode">disabled</item>
   </style>
 
   <style name="Widget.Material3Expressive.ListItemRevealLayout" parent="Widget.Material3.ListItemRevealLayout">

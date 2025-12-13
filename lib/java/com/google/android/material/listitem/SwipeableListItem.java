@@ -93,9 +93,6 @@ public interface SwipeableListItem {
    */
   boolean isSwipeEnabled();
 
-  /**
-   * Whether or not to allow the SwipeableListItem can be fully swiped to trigger the primary
-   * action.
-   */
-  boolean isSwipeToPrimaryActionEnabled();
+  /** Sets whether or not to allow the SwipeableListItem to be swiped. */
+  void setSwipeEnabled(boolean swipeEnabled);
 }

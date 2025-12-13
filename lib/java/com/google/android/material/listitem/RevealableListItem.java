@@ -15,10 +15,45 @@
  */
 package com.google.android.material.listitem;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import androidx.annotation.IntDef;
 import androidx.annotation.Px;
+import androidx.annotation.RestrictTo;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /** Interface for the part of a ListItem that is able to be revealed when swiped. */
 public interface RevealableListItem {
+
+  /** Disable the primary action. */
+  int PRIMARY_ACTION_SWIPE_DISABLED = 0;
+
+  /**
+   * When swiping with a sibling {@link SwipeableListItem}, allow swiping to intermediary states
+   * before the primary action.
+   */
+  int PRIMARY_ACTION_SWIPE_INDIRECT = 1;
+
+  /**
+   * When swiping with a sibling {@link SwipeableListItem}, swipe directly to the primary action.
+   */
+  int PRIMARY_ACTION_SWIPE_DIRECT = 2;
+
+  /**
+   * Mode which defines the behavior when swiping to reveal the primary action of the
+   * RevealableListItem.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({
+      PRIMARY_ACTION_SWIPE_DISABLED,
+      PRIMARY_ACTION_SWIPE_INDIRECT,
+      PRIMARY_ACTION_SWIPE_DIRECT,
+  })
+  @Retention(RetentionPolicy.SOURCE)
+  @interface PrimaryActionSwipeMode {}
 
   /**
    * Sets the revealed width of RevealableListItem, in pixels.
@@ -30,4 +65,17 @@ public interface RevealableListItem {
    * has not yet been measured.
    */
   @Px int getIntrinsicWidth();
+
+  /**
+   * Returns the {@link PrimaryActionSwipeMode} for the RevealableListItem that defines the swipe
+   * to primary action behavior when swiping with a sibling {@link SwipeableListItem}.
+   */
+  @PrimaryActionSwipeMode
+  int getPrimaryActionSwipeMode();
+
+  /**
+   * Sets the {@link PrimaryActionSwipeMode} for the RevealableListItem that defines the swipe
+   * to primary action behavior when swiping with a sibling {@link SwipeableListItem}.
+   */
+  void setPrimaryActionSwipeMode(@PrimaryActionSwipeMode int swipeToPrimaryActionMode);
 }

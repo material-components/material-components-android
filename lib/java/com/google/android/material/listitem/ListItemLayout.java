@@ -300,7 +300,8 @@ public class ListItemLayout extends FrameLayout {
             SwipeableListItem swipeableItem = (SwipeableListItem) contentView;
 
             int maxSwipeDistance;
-            if (swipeableItem.isSwipeToPrimaryActionEnabled()) {
+            if (revealableItem.getPrimaryActionSwipeMode()
+                != RevealableListItem.PRIMARY_ACTION_SWIPE_DISABLED) {
               MarginLayoutParams contentViewLp = (MarginLayoutParams) contentView.getLayoutParams();
               maxSwipeDistance = contentView.getMeasuredWidth() + contentViewLp.getMarginEnd();
             } else {
@@ -353,10 +354,14 @@ public class ListItemLayout extends FrameLayout {
           }
 
           private int calculateTargetSwipeState(float xvel, View swipeView) {
+            if (swipeToRevealLayout == null) {
+              return STATE_CLOSED;
+            }
             if (getLayoutDirection() == LAYOUT_DIRECTION_RTL) {
               xvel *= -1;
             }
-            if (!((SwipeableListItem) swipeView).isSwipeToPrimaryActionEnabled()) {
+            if (((RevealableListItem) swipeToRevealLayout).getPrimaryActionSwipeMode()
+                == RevealableListItem.PRIMARY_ACTION_SWIPE_DISABLED) {
               if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
                 return STATE_CLOSED;
               }
@@ -371,11 +376,18 @@ public class ListItemLayout extends FrameLayout {
             }
 
             // Swipe to action is supported
+            boolean swipeToPrimaryActionDirect =
+                ((RevealableListItem) swipeToRevealLayout).getPrimaryActionSwipeMode()
+                    == RevealableListItem.PRIMARY_ACTION_SWIPE_DIRECT;
             if (xvel > DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the right
-              return lastStableSwipeState == STATE_SWIPE_PRIMARY_ACTION ? STATE_OPEN : STATE_CLOSED;
+              return lastStableSwipeState == STATE_SWIPE_PRIMARY_ACTION
+                  ? (swipeToPrimaryActionDirect ? STATE_CLOSED : STATE_OPEN)
+                  : STATE_CLOSED;
             }
             if (xvel < -DEFAULT_SIGNIFICANT_VEL_THRESHOLD) { // A fast fling to the left
-              return lastStableSwipeState == STATE_CLOSED ? STATE_OPEN : STATE_SWIPE_PRIMARY_ACTION;
+              return lastStableSwipeState == STATE_CLOSED
+                  ? (swipeToPrimaryActionDirect ? STATE_SWIPE_PRIMARY_ACTION : STATE_OPEN)
+                  : STATE_SWIPE_PRIMARY_ACTION;
             }
 
             // Settle to the closest point if velocity is not significant
@@ -385,7 +397,7 @@ public class ListItemLayout extends FrameLayout {
             }
             if (Math.abs(swipeView.getLeft() - getSwipeRevealViewRevealedOffset())
                 < Math.abs(swipeView.getLeft() - getSwipeViewClosedOffset())) {
-              return STATE_OPEN;
+              return swipeToPrimaryActionDirect ? STATE_SWIPE_PRIMARY_ACTION : STATE_OPEN;
             }
             return STATE_CLOSED;
           }
@@ -533,7 +545,11 @@ public class ListItemLayout extends FrameLayout {
     ((SwipeableListItem) contentView).onSwipe(revealViewOffset);
 
     int fullSwipedOffset = getSwipeToActionOffset();
-    int fadeOutThreshold = (fullSwipedOffset + getSwipeRevealViewRevealedOffset()) / 2;
+    int fadeOutThreshold =
+        getSwipeRevealViewRevealedOffset() == getSwipeToActionOffset()
+            ? (fullSwipedOffset + getSwipeViewClosedOffset()) / 2
+            : (fullSwipedOffset + getSwipeRevealViewRevealedOffset()) / 2;
+
     float contentViewAlpha =
         AnimationUtils.lerp(
             /* startValue= */ 1f,
@@ -573,9 +589,10 @@ public class ListItemLayout extends FrameLayout {
     }
     // If swipe to action is not supported but the swipe state to be set in
     // STATE_SWIPE_PRIMARY_ACTION, we do nothing.
-    if (!(contentView instanceof SwipeableListItem)
+    if (!(swipeToRevealLayout instanceof RevealableListItem)
         || (swipeState == STATE_SWIPE_PRIMARY_ACTION
-            && !((SwipeableListItem) contentView).isSwipeToPrimaryActionEnabled())) {
+            && ((RevealableListItem) swipeToRevealLayout).getPrimaryActionSwipeMode()
+                == RevealableListItem.PRIMARY_ACTION_SWIPE_DISABLED)) {
       return;
     }
     this.swipeState = swipeState;

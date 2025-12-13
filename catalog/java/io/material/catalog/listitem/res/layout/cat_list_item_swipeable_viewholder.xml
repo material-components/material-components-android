@@ -28,8 +28,7 @@
     android:clickable="true"
     android:focusable="true"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent"
-    app:swipeToPrimaryActionEnabled="true">
+    android:layout_width="match_parent">
     <LinearLayout
       android:gravity="center_vertical"
       android:layout_height="wrap_content"
@@ -73,7 +72,8 @@
 
   <com.google.android.material.listitem.ListItemRevealLayout
     android:layout_height="match_parent"
-    android:layout_width="wrap_content">
+    android:layout_width="wrap_content"
+    app:primaryActionSwipeMode="indirect">
     <com.google.android.material.button.MaterialButton
       style="?attr/materialIconButtonFilledTonalStyle"
       android:id="@+id/cat_list_action_add_button"
