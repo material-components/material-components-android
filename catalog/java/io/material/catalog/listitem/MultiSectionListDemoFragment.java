@@ -32,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.listitem.ListItemCardView;
 import com.google.android.material.listitem.ListItemViewHolder;
 import io.material.catalog.feature.DemoFragment;
 import java.util.ArrayList;
@@ -105,7 +105,7 @@ public class MultiSectionListDemoFragment extends DemoFragment {
               (ViewGroup)
                   LayoutInflater.from(parent.getContext())
                       .inflate(
-                          R.layout.cat_list_item_segmented_viewholder,
+                          R.layout.cat_list_multisection_viewholder,
                           parent,
                           /* attachToRoot= */ false);
           return new CustomItemViewHolder(item);
@@ -174,8 +174,7 @@ public class MultiSectionListDemoFragment extends DemoFragment {
   public static class CustomItemViewHolder extends ListItemViewHolder {
 
     private final TextView textView;
-    private final MaterialCardView cardView;
-
+    private final ListItemCardView cardView;
 
     public CustomItemViewHolder(@NonNull View itemView) {
       super(itemView);
@@ -186,15 +185,9 @@ public class MultiSectionListDemoFragment extends DemoFragment {
     public void bind(@NonNull CustomListItemData data) {
       super.bind(data.indexInSection, data.sectionCount);
       textView.setText(data.text);
-
-      cardView.setChecked(data.checked);
       cardView.setOnClickListener(
-          v -> {
-            Toast.makeText(v.getContext(), R.string.mtrl_list_item_clicked, Toast.LENGTH_SHORT)
-                .show();
-            cardView.toggle();
-            data.checked = !data.checked;
-          });
+          v -> Toast.makeText(v.getContext(), R.string.mtrl_list_item_clicked, Toast.LENGTH_SHORT)
+              .show());
     }
   }
 

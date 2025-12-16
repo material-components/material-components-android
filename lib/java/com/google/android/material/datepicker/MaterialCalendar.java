@@ -96,6 +96,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private View dayFrame;
   private MaterialButton monthDropSelect;
   private AccessibilityManager accessibilityManager;
+  @Nullable private PagerSnapHelper pagerSnapHelper;
+  private boolean isFullscreen;
 
   @NonNull
   public static <T> MaterialCalendar<T> newInstance(
@@ -160,7 +162,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
     int layout;
     final int orientation;
-    if (MaterialDatePicker.isFullscreen(themedContext)) {
+    isFullscreen = MaterialDatePicker.isFullscreen(themedContext);
+    if (isFullscreen) {
       layout = R.layout.mtrl_calendar_vertical;
       orientation = LinearLayoutManager.VERTICAL;
     } else {
@@ -228,6 +231,17 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
                   }
                 }
               }
+            },
+            new OnMonthNavigationListener() {
+              @Override
+              public boolean onMonthNavigationPrevious() {
+                return handleNavigateToMonthForKeyboard(/* forward= */ false);
+              }
+
+              @Override
+              public boolean onMonthNavigationNext() {
+                return handleNavigateToMonthForKeyboard(/* forward= */ true);
+              }
             });
     recyclerView.setAdapter(monthsPagerAdapter);
 
@@ -242,12 +256,12 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       yearSelector.addItemDecoration(createItemDecoration());
     }
 
+    if (!isFullscreen) {
+      pagerSnapHelper = new PagerSnapHelper();
+      pagerSnapHelper.attachToRecyclerView(recyclerView);
+    }
     if (root.findViewById(R.id.month_navigation_fragment_toggle) != null) {
       addActionsToMonthNavigation(root, monthsPagerAdapter);
-    }
-
-    if (!MaterialDatePicker.isFullscreen(themedContext)) {
-      new PagerSnapHelper().attachToRecyclerView(recyclerView);
     }
     recyclerView.scrollToPosition(monthsPagerAdapter.getPosition(current));
     setUpForAccessibility();
@@ -335,6 +349,43 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   }
 
   /**
+   * Handles navigating to the adjacent month in response to keyboard navigation.
+   *
+   * <p>This method pages horizontally to switch months in non-fullscreen mode. In fullscreen mode,
+   * this method returns {@code false} because months are scrolled vertically.
+   *
+   * @param forward {@code true} to navigate to the next month, {@code false} to navigate to the
+   *     previous month.
+   * @return {@code true} if the event was handled.
+   */
+  private boolean handleNavigateToMonthForKeyboard(boolean forward) {
+    if (isFullscreen) {
+      return false;
+    }
+
+    // Do not navigate if scroll is in progress. Return true to indicate the event was handled,
+    // but in practice navigation is ignored during scroll.
+    if (recyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
+      return true;
+    }
+
+    MonthsPagerAdapter adapter = (MonthsPagerAdapter) recyclerView.getAdapter();
+    if (adapter == null || current == null) {
+      return false;
+    }
+
+    int currentItem = adapter.getPosition(current);
+    int newItem = currentItem + (forward ? 1 : -1);
+
+    if (newItem >= 0 && newItem < adapter.getItemCount()) {
+      adapter.setKeyboardFocusDirection(forward ? View.FOCUS_FORWARD : View.FOCUS_BACKWARD);
+      setCurrentMonth(adapter.getPageMonth(newItem));
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Changes the currently displayed month to {@code moveTo}.
    *
    * @throws IllegalArgumentException If {@code moveTo} is not within the allowed {@link
@@ -361,7 +412,15 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
         postSmoothRecyclerViewScroll(moveToPosition);
       }
     }
+    updateCurrentVisibleMonth();
     updateNavigationButtonsEnabled(moveToPosition);
+  }
+
+  private void updateCurrentVisibleMonth() {
+    MonthsPagerAdapter adapter = (MonthsPagerAdapter) recyclerView.getAdapter();
+    if (adapter != null && !isFullscreen) {
+      adapter.setVisibleMonth(current);
+    }
   }
 
   @Nullable
@@ -377,6 +436,20 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   interface OnDayClickListener {
 
     void onDayClick(long day);
+  }
+
+  /**
+   * Listener for month navigation events.
+   *
+   * <p>This listener is used by {@link MaterialCalendarGridView} to signal when keyboard navigation
+   * reaches the start or end of a month, allowing the calendar to scroll to the previous or next
+   * month.
+   */
+  interface OnMonthNavigationListener {
+
+    boolean onMonthNavigationPrevious();
+
+    boolean onMonthNavigationNext();
   }
 
   /** Returns the pixel height of each {@link android.view.View} representing a day. */
@@ -472,18 +545,34 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
         new OnScrollListener() {
           @Override
           public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-            int currentItem;
-            if (dx < 0) {
-              currentItem = getLayoutManager().findFirstVisibleItemPosition();
-            } else {
-              currentItem = getLayoutManager().findLastVisibleItemPosition();
+            int position =
+                dx < 0
+                    ? getLayoutManager().findFirstVisibleItemPosition()
+                    : getLayoutManager().findLastVisibleItemPosition();
+            if (pagerSnapHelper == null) {
+              current = monthsPagerAdapter.getPageMonth(position);
             }
-            Month moveToMonth = monthsPagerAdapter.getPageMonth(currentItem);
-            current = moveToMonth;
-            monthDropSelect.setText(monthsPagerAdapter.getPageTitle(currentItem));
+            monthDropSelect.setText(monthsPagerAdapter.getPageTitle(position));
+            updateNavigationButtonsEnabled(position);
+          }
 
-            int currentMonthPosition = monthsPagerAdapter.getPosition(moveToMonth);
-            updateNavigationButtonsEnabled(currentMonthPosition);
+          @Override
+          public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+            if (newState != RecyclerView.SCROLL_STATE_IDLE || pagerSnapHelper == null) {
+              return;
+            }
+
+            // If horizontal mode, find the snapped view and set it as the current month.
+            View snapView = pagerSnapHelper.findSnapView(getLayoutManager());
+            if (snapView != null) {
+              int snapPosition = recyclerView.getChildAdapterPosition(snapView);
+              if (snapPosition != RecyclerView.NO_POSITION) {
+                current = monthsPagerAdapter.getPageMonth(snapPosition);
+                monthDropSelect.setText(monthsPagerAdapter.getPageTitle(snapPosition));
+                updateNavigationButtonsEnabled(snapPosition);
+              }
+            }
+            updateCurrentVisibleMonth();
           }
         });
 
@@ -500,6 +589,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           @Override
           public void onClick(View view) {
             int currentItem = getLayoutManager().findFirstVisibleItemPosition();
+            monthsPagerAdapter.setKeyboardFocusDirection(View.FOCUS_FORWARD);
             setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem + 1));
           }
         });
@@ -508,6 +598,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           @Override
           public void onClick(View view) {
             int currentItem = getLayoutManager().findLastVisibleItemPosition();
+            monthsPagerAdapter.setKeyboardFocusDirection(View.FOCUS_BACKWARD);
             setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem - 1));
           }
         });
@@ -517,8 +608,12 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   }
 
   private void updateNavigationButtonsEnabled(int currentMonthPosition) {
-    monthNext.setEnabled(currentMonthPosition + 1 < recyclerView.getAdapter().getItemCount());
-    monthPrev.setEnabled(currentMonthPosition - 1 >= 0);
+    if (monthNext != null) {
+      monthNext.setEnabled(currentMonthPosition + 1 < recyclerView.getAdapter().getItemCount());
+    }
+    if (monthPrev != null) {
+      monthPrev.setEnabled(currentMonthPosition - 1 >= 0);
+    }
   }
 
   private void postSmoothRecyclerViewScroll(final int position) {

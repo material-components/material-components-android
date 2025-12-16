@@ -156,7 +156,7 @@ public abstract class SliderKeyTestCommon {
   }
 
   @Test
-  public void testKeyPress_dPadUp_incrementsValue() {
+  public void testKeyPress_dPadUp_doesNotChangeValue() {
     slider.requestFocus();
     slider.setValues(50f);
     slider.setStepSize(1f);
@@ -164,11 +164,11 @@ public abstract class SliderKeyTestCommon {
     KeyEventBuilder up = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_UP);
     up.dispatchEvent(slider);
 
-    assertThat(slider.getValues().get(0)).isEqualTo(51f);
+    assertThat(slider.getValues().get(0)).isEqualTo(50f);
   }
 
   @Test
-  public void testKeyPress_dPadDown_decrementsValue() {
+  public void testKeyPress_dPadDown_doesNotChangeValue() {
     slider.requestFocus();
     slider.setValues(50f);
     slider.setStepSize(1f);
@@ -176,7 +176,7 @@ public abstract class SliderKeyTestCommon {
     KeyEventBuilder down = new KeyEventBuilder(KeyEvent.KEYCODE_DPAD_DOWN);
     down.dispatchEvent(slider);
 
-    assertThat(slider.getValues().get(0)).isEqualTo(49f);
+    assertThat(slider.getValues().get(0)).isEqualTo(50f);
   }
 
   protected void sendKeyEventThereAndBack(KeyEventBuilder there, KeyEventBuilder back) {

@@ -344,6 +344,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
         R.style.Motion_Material3_Spring_Standard_Fast_Spatial);
   }
 
+  private boolean maybeRunAfterWidthAnimation(Runnable action) {
+    if (widthIncreaseSpringAnimation != null && widthIncreaseSpringAnimation.isRunning()) {
+      post(
+          () -> {
+            action.run();
+            recoverOriginalLayoutParams();
+            requestLayout();
+          });
+      return true;
+    }
+    return false;
+  }
+
   @NonNull
   @SuppressLint("KotlinPropertyAccess")
   String getA11yClassName() {
@@ -864,6 +877,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
 
     if (this.iconSize != iconSize) {
+      if (maybeRunAfterWidthAnimation(() -> setIconSize(iconSize))) {
+        return;
+      }
       originalWidth = UNSET;
       this.iconSize = iconSize;
       updateIcon(/* needsIconReset= */ true);
@@ -893,6 +909,9 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    */
   public void setIcon(@Nullable Drawable icon) {
     if (this.icon != icon) {
+      if (maybeRunAfterWidthAnimation(() -> setIcon(icon))) {
+        return;
+      }
       originalWidth = UNSET;
       this.icon = icon;
       updateIcon(/* needsIconReset= */ true);

@@ -14,9 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-  <item android:state_checkable="true" android:state_checked="true"
-    android:color="?attr/colorSecondaryContainer"/>
-  <item app:state_swiped="true" android:color="?attr/colorSurface"/>
-  <item android:color="?attr/colorSurface"/>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <!-- Disabled state -->
+  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
+  <!-- Selected state -->
+  <item android:color="?attr/colorOnSurface" android:state_selected="true"/>
+  <!-- Default, Enabled state -->
+  <item android:color="?attr/colorOnSurfaceVariant"/>
 </selector>

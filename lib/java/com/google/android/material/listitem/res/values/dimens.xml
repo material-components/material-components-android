@@ -17,4 +17,5 @@
 
 <resources>
   <dimen name="m3_list_max_swipe_overshoot">16dp</dimen>
+  <dimen name="m3_list_reveal_min_child_width">6dp</dimen>
 </resources>

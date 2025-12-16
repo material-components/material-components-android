@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   Copyright 2025 The Android Open Source Project
 
@@ -14,9 +13,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
-  <item android:state_checkable="true" android:state_checked="true"
-    android:color="?attr/colorSecondaryContainer"/>
-  <item app:state_swiped="true" android:color="?attr/colorSurface"/>
-  <item android:color="?attr/colorSurface"/>
-</selector>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="24dp"
+  android:height="24dp"
+  android:viewportWidth="960"
+  android:viewportHeight="960"
+  android:tint="?attr/colorControlNormal">
+  <path
+    android:fillColor="@android:color/white"
+    android:pathData="M480,432L296,616L240,560L480,320L720,560L664,616L480,432Z"/>
+</vector>

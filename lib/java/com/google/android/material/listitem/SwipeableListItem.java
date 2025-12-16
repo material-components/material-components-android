@@ -19,16 +19,12 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import androidx.annotation.IntDef;
 import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
  * Interface for the part of a ListItem that is able to be swiped.
- *
- * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
 public interface SwipeableListItem {
   /** The state at which the {@link SwipeableListItem} is being dragged. */
   int STATE_DRAGGING = 1;
@@ -80,6 +76,12 @@ public interface SwipeableListItem {
   @Retention(RetentionPolicy.SOURCE)
   @interface StableSwipeState {}
 
+  /** Called when the position of the SwipeableListItem changes. */
+  void onSwipe(int swipeOffset);
+
+  /** Called whenever the swipe state of the SwipeableListItem changes. */
+  void onSwipeStateChanged(@SwipeState int swipeState);
+
   /**
    * Returns the overshoot, in pixels, that the SwipeableListItem is able to be swiped past the
    * {@link #STATE_OPEN} or {@link #STATE_SWIPE_PRIMARY_ACTION} states by, before settling.
@@ -87,8 +89,10 @@ public interface SwipeableListItem {
   int getSwipeMaxOvershoot();
 
   /**
-   * Whether or not to allow the SwipeableListItem can be fully swiped to trigger the primary
-   * action.
+   * Whether or not to allow the SwipeableListItem to be swiped.
    */
-  boolean isSwipeToPrimaryActionEnabled();
+  boolean isSwipeEnabled();
+
+  /** Sets whether or not to allow the SwipeableListItem to be swiped. */
+  void setSwipeEnabled(boolean swipeEnabled);
 }

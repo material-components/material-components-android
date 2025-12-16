@@ -23,8 +23,8 @@
   android:paddingHorizontal="8dp">
 
   <com.google.android.material.listitem.ListItemCardView
+    style="?attr/listItemCardViewSegmentedStyle"
     android:id="@+id/cat_list_item_card_view"
-    android:checkable="true"
     android:clickable="true"
     android:focusable="true"
     android:layout_height="wrap_content"
@@ -35,43 +35,37 @@
       android:layout_width="match_parent"
       android:orientation="horizontal"
       tools:ignore="UseCompoundDrawables">
-      <ImageView
-        style="@style/Widget.Material3.ImageView.ListItem.LeadingIcon"
-        android:id="@+id/cat_list_item_start_icon"
-        android:contentDescription="@string/cat_list_item_icon_content_description"
-        android:layout_height="20dp"
-        android:layout_width="20dp"
-        app:srcCompat="@drawable/ic_star_icon_checkable_24px" />
+      <com.google.android.material.imageview.ShapeableImageView
+        style="@style/Widget.Material3.ShapeableImageView.ListItem.LeadingImage"
+        android:id="@+id/cat_list_item_image"
+        android:contentDescription="@string/cat_list_item_leading_image_content_description"
+        android:layout_height="56dp"
+        android:layout_width="56dp"
+        app:srcCompat="@drawable/cat_image"
+        android:scaleType="centerCrop"/>
       <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginStart="12dp">
+        android:layout_marginStart="16dp">
+        <TextView
+          style="@style/Widget.Material3.TextView.ListItem.Overline"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:text="@string/cat_list_item_overline_text"/>
         <TextView
           style="@style/Widget.Material3.TextView.ListItem.LabelText"
           android:id="@+id/cat_list_item_text"
           android:layout_height="wrap_content"
           android:layout_width="wrap_content"/>
-        <TextView
-          style="@style/Widget.Material3.TextView.ListItem.SupportingText"
-          android:layout_height="wrap_content"
-          android:layout_width="wrap_content"
-          android:text="@string/cat_list_item_supporting_text"/>
       </LinearLayout>
-      <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/cat_list_item_switch"
-        android:layout_width="wrap_content"
+      <TextView
+        style="@style/Widget.Material3.TextView.ListItem.TrailingSupportingText"
+        android:id="@+id/cat_list_item_trailing_text"
         android:layout_height="wrap_content"
-        style="@style/Widget.Material3.Switch.ListItem"
-        android:layout_marginStart="12dp"/>
-      <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/cat_list_item_checkbox"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Widget.Material3.Checkbox.ListItem"
-        android:visibility="gone"
-        android:layout_marginStart="12dp"/>
+        android:text="@string/cat_list_item_trailing_text"/>
     </LinearLayout>
   </com.google.android.material.listitem.ListItemCardView>
 </com.google.android.material.listitem.ListItemLayout>

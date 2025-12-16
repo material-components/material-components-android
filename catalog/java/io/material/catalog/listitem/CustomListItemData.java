@@ -15,21 +15,68 @@
  */
 package io.material.catalog.listitem;
 
-/** A sample data class used to represent List Items **/
-class CustomListItemData {
+import android.os.Parcel;
+import android.os.Parcelable;
+import com.google.android.material.listitem.SwipeableListItem;
+
+/** A sample data class used to represent List Items * */
+class CustomListItemData implements Parcelable {
   String text;
   boolean checked;
   int indexInSection;
   int sectionCount;
   String subheading;
+  boolean expanded;
+  int swipeState;
 
   public CustomListItemData(String text, int indexInSection, int sectionCount) {
     this.text = text;
     this.indexInSection = indexInSection;
     this.sectionCount = sectionCount;
+    this.expanded = false;
+    this.swipeState = SwipeableListItem.STATE_CLOSED;
   }
 
   public CustomListItemData(String subheading) {
     this.subheading = subheading;
   }
+
+  protected CustomListItemData(Parcel in) {
+    text = in.readString();
+    checked = in.readByte() != 0;
+    indexInSection = in.readInt();
+    sectionCount = in.readInt();
+    subheading = in.readString();
+    expanded = in.readByte() != 0;
+    swipeState = in.readInt();
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeString(text);
+    dest.writeByte((byte) (checked ? 1 : 0));
+    dest.writeInt(indexInSection);
+    dest.writeInt(sectionCount);
+    dest.writeString(subheading);
+    dest.writeByte((byte) (expanded ? 1 : 0));
+    dest.writeInt(swipeState);
+  }
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  public static final Creator<CustomListItemData> CREATOR =
+      new Creator<CustomListItemData>() {
+        @Override
+        public CustomListItemData createFromParcel(Parcel in) {
+          return new CustomListItemData(in);
+        }
+
+        @Override
+        public CustomListItemData[] newArray(int size) {
+          return new CustomListItemData[size];
+        }
+      };
 }

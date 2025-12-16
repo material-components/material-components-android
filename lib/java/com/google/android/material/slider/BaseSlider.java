@@ -1359,7 +1359,7 @@ abstract class BaseSlider<
         defaultThumbDrawables
             .get(i)
             .setShapeAppearanceModel(
-                ShapeAppearanceModel.builder().setAllCorners(ROUNDED, thumbWidth / 2f).build());
+                ShapeAppearanceModel.builder().setAllCorners(ROUNDED, width / 2f).build());
         defaultThumbDrawables.get(i).setBounds(0, 0, width, thumbHeight);
       }
     }
@@ -2759,22 +2759,37 @@ abstract class BaseSlider<
     float top = yCenter - trackThickness / 2f;
     float bottom = yCenter + trackThickness / 2f;
 
+    int leftGapSize;
+    if (isCentered() && activeRange[0] == 0.5f) {
+      leftGapSize = thumbTrackGapSize;
+    } else {
+      leftGapSize = calculateThumbTrackGapSize(isRtl() || isVertical() ? values.size() - 1 : 0);
+    }
     drawInactiveTrackSection(
         trackSidePadding - getTrackCornerSize(),
-        trackSidePadding + activeRange[0] * width - thumbTrackGapSize,
+        trackSidePadding + activeRange[0] * width - leftGapSize,
         top,
         bottom,
         canvas,
         inactiveTrackLeftRect,
-        FullCornerDirection.LEFT);
+        FullCornerDirection.LEFT,
+        leftGapSize);
+
+    int rightGapSize;
+    if (isCentered() && activeRange[1] == 0.5f) {
+      rightGapSize = thumbTrackGapSize;
+    } else {
+      rightGapSize = calculateThumbTrackGapSize(isRtl() || isVertical() ? 0 : values.size() - 1);
+    }
     drawInactiveTrackSection(
-        trackSidePadding + activeRange[1] * width + thumbTrackGapSize,
+        trackSidePadding + activeRange[1] * width + rightGapSize,
         trackSidePadding + width + getTrackCornerSize(),
         top,
         bottom,
         canvas,
         inactiveTrackRightRect,
-        FullCornerDirection.RIGHT);
+        FullCornerDirection.RIGHT,
+        rightGapSize);
   }
 
   private void drawInactiveTrackSection(
@@ -2784,8 +2799,9 @@ abstract class BaseSlider<
       float bottom,
       @NonNull Canvas canvas,
       RectF rect,
-      FullCornerDirection direction) {
-    if (to - from > getTrackCornerSize() - thumbTrackGapSize) {
+      FullCornerDirection direction,
+      int gapSize) {
+    if (to - from > getTrackCornerSize() - gapSize) {
       rect.set(from, top, to, bottom);
     } else {
       rect.setEmpty();
@@ -2835,21 +2851,21 @@ abstract class BaseSlider<
       int trackCornerSize = getTrackCornerSize();
       switch (direction) {
         case NONE:
-          if (!isCentered()) {
-            left += thumbTrackGapSize;
-            right -= thumbTrackGapSize;
+          if (i > 0) {
+            left += calculateThumbTrackGapSize(i - 1);
+            right -= calculateThumbTrackGapSize(i);
           } else if (activeRange[1] == .5f) { // centered, active track ends at the center
-            left += thumbTrackGapSize;
+            left += calculateThumbTrackGapSize(i);
           } else if (activeRange[0] == .5f) { // centered, active track starts at the center
-            right -= thumbTrackGapSize;
+            right -= calculateThumbTrackGapSize(i);
           }
           break;
         case LEFT:
           left -= trackCornerSize;
-          right -= thumbTrackGapSize;
+          right -= calculateThumbTrackGapSize(i);
           break;
         case RIGHT:
-          left += thumbTrackGapSize;
+          left += calculateThumbTrackGapSize(i);
           right += trackCornerSize;
           break;
         default:
@@ -2965,6 +2981,18 @@ abstract class BaseSlider<
 
   private boolean hasGapBetweenThumbAndTrack() {
     return thumbTrackGapSize > 0;
+  }
+
+  private int calculateThumbTrackGapSize(int index) {
+    if (thumbIsPressed
+        && index == activeThumbIdx
+        && customThumbDrawable == null
+        && customThumbDrawablesForValues.isEmpty()) {
+      int activeThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
+      int delta = thumbWidth - activeThumbWidth;
+      return thumbTrackGapSize - delta / 2;
+    }
+    return thumbTrackGapSize;
   }
 
   // The direction where the track has full corners.
@@ -3106,18 +3134,20 @@ abstract class BaseSlider<
   }
 
   private boolean isOverlappingThumb(float tickCoordinate) {
-    float threshold = thumbTrackGapSize + thumbWidth / 2f;
-    for (float value : values) {
-      float valueToX = valueToX(value);
-      return tickCoordinate >= valueToX - threshold && tickCoordinate <= valueToX + threshold;
+    for (int i = 0; i < values.size(); i++) {
+      float valueToX = valueToX(values.get(i));
+      float threshold = calculateThumbTrackGapSize(i) + thumbWidth / 2f;
+      if (tickCoordinate >= valueToX - threshold && tickCoordinate <= valueToX + threshold) {
+        return true;
+      }
     }
     return false;
   }
 
   private boolean isOverlappingCenterGap(float tickCoordinate) {
-    float threshold = thumbTrackGapSize + thumbWidth / 2f;
     float trackCenter = (trackWidth + trackSidePadding * 2) / 2f;
-    return tickCoordinate >= trackCenter - threshold && tickCoordinate <= trackCenter + threshold;
+    return tickCoordinate >= trackCenter - thumbTrackGapSize
+        && tickCoordinate <= trackCenter + thumbTrackGapSize;
   }
 
   private void maybeDrawStopIndicator(@NonNull Canvas canvas, int yCenter) {
@@ -3137,9 +3167,9 @@ abstract class BaseSlider<
 
   private void drawStopIndicator(@NonNull Canvas canvas, float x, float y) {
     // Prevent drawing indicator on the thumbs.
-    for (float value : values) {
-      float valueToX = valueToX(value);
-      float threshold = thumbTrackGapSize + thumbWidth / 2f;
+    for (int i = 0; i < values.size(); i++) {
+      float valueToX = valueToX(values.get(i));
+      float threshold = calculateThumbTrackGapSize(i) + thumbWidth / 2f;
       if (x >= valueToX - threshold && x <= valueToX + threshold) {
         return;
       }
@@ -3349,17 +3379,15 @@ abstract class BaseSlider<
   }
 
   private void updateThumbWidthWhenPressed() {
-    // Update default thumb width and track gap size when pressed.
+    // Update default thumb width when pressed.
     if (hasGapBetweenThumbAndTrack()
         && customThumbDrawable == null
         && customThumbDrawablesForValues.isEmpty()) {
       defaultThumbWidth = thumbWidth;
       defaultThumbTrackGapSize = thumbTrackGapSize;
       int pressedThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
-      int delta = thumbWidth - pressedThumbWidth;
       // Only the currently pressed thumb should change width.
       setThumbWidth(pressedThumbWidth, /* thumbIndex= */ activeThumbIdx);
-      setThumbTrackGapSize(thumbTrackGapSize - delta / 2);
     }
   }
 
@@ -3368,7 +3396,6 @@ abstract class BaseSlider<
     if (hasGapBetweenThumbAndTrack() && defaultThumbWidth != -1 && defaultThumbTrackGapSize != -1) {
       // Only the currently pressed thumb should change width.
       setThumbWidth(defaultThumbWidth, /* thumbIndex= */ activeThumbIdx);
-      setThumbTrackGapSize(defaultThumbTrackGapSize);
     }
   }
 
@@ -4006,18 +4033,15 @@ abstract class BaseSlider<
     // Otherwise choose the smallest valid increment.
     float increment = isLongPress ? calculateStepIncrement(20) : calculateStepIncrement();
     switch (keyCode) {
-      // Numpad Plus == Shift + Equals, at least in AVD, so fall through.
-      case KeyEvent.KEYCODE_PLUS:
-      case KeyEvent.KEYCODE_DPAD_UP:
-      case KeyEvent.KEYCODE_EQUALS:
-        return increment;
-      case KeyEvent.KEYCODE_DPAD_DOWN:
-      case KeyEvent.KEYCODE_MINUS:
-        return -increment;
       case KeyEvent.KEYCODE_DPAD_LEFT:
         return isRtl() ? increment : -increment;
       case KeyEvent.KEYCODE_DPAD_RIGHT:
         return isRtl() ? -increment : increment;
+      case KeyEvent.KEYCODE_PLUS:
+      case KeyEvent.KEYCODE_EQUALS:
+        return increment;
+      case KeyEvent.KEYCODE_MINUS:
+        return -increment;
       default:
         return null;
     }

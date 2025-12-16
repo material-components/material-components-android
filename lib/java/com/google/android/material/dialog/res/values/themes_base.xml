@@ -40,6 +40,8 @@
 
     <item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar</item>
 
+    <item name="listItemRevealLayoutStyle">@style/Widget.Material3Expressive.ListItemRevealLayout</item>
+
     <!--
       Default as primary container FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
       Please use the corresponding themeoverlay for other color variants via materialThemeOverlay.
@@ -98,6 +100,8 @@
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
 
     <item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar</item>
+
+    <item name="listItemRevealLayoutStyle">@style/Widget.Material3Expressive.ListItemRevealLayout</item>
 
     <!--
       Default as primary container FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
@@ -282,6 +286,7 @@
     <item name="listItemLayoutStyle">@style/Widget.Material3.ListItemLayout</item>
     <item name="listItemCardViewStyle">@style/Widget.Material3.ListItemCardView</item>
     <item name="listItemCardViewSegmentedStyle">@style/Widget.Material3.ListItemCardView.Segmented</item>
+    <item name="listItemRevealLayoutStyle">@style/Widget.Material3.ListItemRevealLayout</item>
     <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
@@ -603,6 +608,7 @@
     <item name="listItemLayoutStyle">@style/Widget.Material3.ListItemLayout</item>
     <item name="listItemCardViewStyle">@style/Widget.Material3.ListItemCardView</item>
     <item name="listItemCardViewSegmentedStyle">@style/Widget.Material3.ListItemCardView.Segmented</item>
+    <item name="listItemRevealLayoutStyle">@style/Widget.Material3.ListItemRevealLayout</item>
     <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
