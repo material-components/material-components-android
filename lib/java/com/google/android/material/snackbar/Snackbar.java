@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.text.TextUtils;
@@ -41,11 +42,13 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.button.MaterialButton;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
 /**
@@ -88,12 +91,16 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public static class Callback extends BaseCallback<Snackbar> {
     /** Indicates that the Snackbar was dismissed via a swipe. */
     public static final int DISMISS_EVENT_SWIPE = BaseCallback.DISMISS_EVENT_SWIPE;
+
     /** Indicates that the Snackbar was dismissed via an action click. */
     public static final int DISMISS_EVENT_ACTION = BaseCallback.DISMISS_EVENT_ACTION;
+
     /** Indicates that the Snackbar was dismissed via a timeout. */
     public static final int DISMISS_EVENT_TIMEOUT = BaseCallback.DISMISS_EVENT_TIMEOUT;
+
     /** Indicates that the Snackbar was dismissed via a call to {@link #dismiss()}. */
     public static final int DISMISS_EVENT_MANUAL = BaseCallback.DISMISS_EVENT_MANUAL;
+
     /** Indicates that the Snackbar was dismissed from a new Snackbar being shown. */
     public static final int DISMISS_EVENT_CONSECUTIVE = BaseCallback.DISMISS_EVENT_CONSECUTIVE;
 
@@ -368,6 +375,82 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     return this;
   }
 
+  /**
+   * Show an optional close icon at the end of the snackbar.
+   *
+   * <p>The close icon is set to {@code View.GONE} by default. Setting the icon to visible will show
+   * the icon at the end of the layout and automatically dismiss the snackbar when clicked. This
+   * method and other related closeIcon setters can only be used within the context of a Material 3
+   * or greater theme.
+   *
+   * <p>When using a close icon, please consider setting the snackbar's duration to {@code
+   * Snackbar.LENGTH_INDEFINITE}.
+   *
+   * <p>This method will automatically remove any end padding from the snackbar layout to properly
+   * align the close icon button. To manually set end padding, use {@link Snackbar#getView()} and
+   * call {@link View#setPaddingRelative(int, int, int, int)} before showing the snackbar.
+   *
+   * @param visible true to make the close icon visible
+   */
+  @NonNull
+  @CanIgnoreReturnValue
+  public Snackbar setCloseIconVisible(boolean visible) {
+    final Button closeButton = getCloseViewOrThrow();
+
+    int newVisibility = visible ? View.VISIBLE : View.GONE;
+    closeButton.setVisibility(newVisibility);
+    closeButton.setOnClickListener(visible ? v -> dismiss() : null);
+    getSnackbarLayout().removeOrRestorePaddingEnd(/* remove= */ visible);
+    return this;
+  }
+
+  /**
+   * Set the tint color of the optional close icon.
+   *
+   * @param tint the tint color to be used for the close icon
+   */
+  @NonNull
+  @CanIgnoreReturnValue
+  public Snackbar setCloseIconTint(@ColorInt int tint) {
+    return setCloseIconTintList(ColorStateList.valueOf(tint));
+  }
+
+  /**
+   * Set the tint list of the optional close icon.
+   *
+   * @param tintList the tint list to be used for the close icon
+   */
+  @NonNull
+  @CanIgnoreReturnValue
+  public Snackbar setCloseIconTintList(@Nullable ColorStateList tintList) {
+    getCloseViewOrThrow().setIconTint(tintList);
+    return this;
+  }
+
+  /**
+   * Set the drawable used for the optional close icon.
+   *
+   * @param icon the drawable for the close icon
+   */
+  @NonNull
+  @CanIgnoreReturnValue
+  public Snackbar setCloseIconDrawable(@Nullable Drawable icon) {
+    getCloseViewOrThrow().setIcon(icon);
+    return this;
+  }
+
+  /**
+   * Set the drawable resource used for the optional close icon.
+   *
+   * @param iconResourceId the drawable resource id for the close icon
+   */
+  @NonNull
+  @CanIgnoreReturnValue
+  public Snackbar setCloseIconResource(@DrawableRes int iconResourceId) {
+    getCloseViewOrThrow().setIconResource(iconResourceId);
+    return this;
+  }
+
   @Override
   @Duration
   public int getDuration() {
@@ -549,5 +632,20 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
   private SnackbarContentLayout getContentLayout() {
     return (SnackbarContentLayout) view.getChildAt(0);
+  }
+
+  @NonNull
+  private MaterialButton getCloseViewOrThrow() {
+    if (!(getContentLayout().getCloseView() instanceof MaterialButton)) {
+      throw new IllegalStateException(
+          "The layout of this snackbar does not include a close MaterialButton. This might be"
+              + " because the context's theme is not a Material 3 or later theme or because the"
+              + " Snackbar's layout has been replaced with a custom layout.");
+    }
+    return (MaterialButton) getContentLayout().getCloseView();
+  }
+
+  private SnackbarBaseLayout getSnackbarLayout() {
+    return view;
   }
 }

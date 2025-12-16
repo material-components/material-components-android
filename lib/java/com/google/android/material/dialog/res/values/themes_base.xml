@@ -321,6 +321,7 @@
     <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.Material3.Button.TextButton.Snackbar</item>
     <item name="snackbarTextViewStyle">@style/Widget.Material3.Snackbar.TextView</item>
+    <item name="snackbarCloseButtonStyle">@style/Widget.Material3.Button.IconButton.Close.Snackbar</item>
     <item name="switchStyle">@style/Widget.Material3.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
     <item name="tabSecondaryStyle">@style/Widget.Material3.TabLayout.Secondary</item>
@@ -643,6 +644,7 @@
     <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.Material3.Button.TextButton.Snackbar</item>
     <item name="snackbarTextViewStyle">@style/Widget.Material3.Snackbar.TextView</item>
+    <item name="snackbarCloseButtonStyle">@style/Widget.Material3.Button.IconButton.Close.Snackbar</item>
     <item name="switchStyle">@style/Widget.Material3.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
     <item name="tabSecondaryStyle">@style/Widget.Material3.TabLayout.Secondary</item>
@@ -859,6 +861,7 @@
     <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
     <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
+    <item name="snackbarCloseButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Icon.Close.Snackbar</item>
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
@@ -916,6 +919,7 @@
     <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
     <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
+    <item name="snackbarCloseButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Icon.Close.Snackbar</item>
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>

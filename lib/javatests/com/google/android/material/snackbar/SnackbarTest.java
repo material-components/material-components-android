@@ -51,8 +51,7 @@ public class SnackbarTest {
     ApplicationProvider.getApplicationContext()
         .setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar);
     activity = Robolectric.buildActivity(AppCompatActivity.class).create().get();
-    accessibilityManager = Shadow.
-        extract(activity.getSystemService(Context.ACCESSIBILITY_SERVICE));
+    accessibilityManager = Shadow.extract(activity.getSystemService(Context.ACCESSIBILITY_SERVICE));
   }
 
   @Test
@@ -60,11 +59,14 @@ public class SnackbarTest {
     accessibilityManager.setTouchExplorationEnabled(true);
 
     CoordinatorLayout view = new CoordinatorLayout(activity);
-    snackbar = Snackbar.make(view, "Test text", Snackbar.LENGTH_LONG).setAction("STUFF!",
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {}
-        });
+    snackbar =
+        Snackbar.make(view, "Test text", Snackbar.LENGTH_LONG)
+            .setAction(
+                "STUFF!",
+                new OnClickListener() {
+                  @Override
+                  public void onClick(View v) {}
+                });
 
     assertThat(snackbar.getDuration()).isEqualTo(Snackbar.LENGTH_INDEFINITE);
   }
@@ -74,12 +76,30 @@ public class SnackbarTest {
     accessibilityManager.setTouchExplorationEnabled(false);
 
     CoordinatorLayout view = new CoordinatorLayout(activity);
-    snackbar = Snackbar.make(view, "Test text", 300).setAction("STUFF!",
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {}
-        });
+    snackbar =
+        Snackbar.make(view, "Test text", 300)
+            .setAction(
+                "STUFF!",
+                new OnClickListener() {
+                  @Override
+                  public void onClick(View v) {}
+                });
 
     assertThat(snackbar.getDuration()).isEqualTo(300);
+  }
+
+  @Test
+  public void testCloseIcon_shouldRemoveLayoutEndPadding() {
+    CoordinatorLayout view = new CoordinatorLayout(activity);
+    snackbar =
+        Snackbar.make(
+                view,
+                "Snackbar with very very very very very very very very long message and"
+                    + " action.",
+                Snackbar.LENGTH_INDEFINITE)
+            .setAction("Action", v -> {})
+            .setCloseIconVisible(true);
+
+    assertThat(snackbar.view.getPaddingEnd()).isEqualTo(0);
   }
 }

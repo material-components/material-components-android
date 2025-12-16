@@ -16,12 +16,5 @@
   -->
 
 <resources>
-  <style name="ThemeOverlay.Catalog.SnackbarWithCustomShape" parent="">
-    <item name="snackbarStyle">@style/Widget.Catalog.Snackbar.PillShape</item>
-  </style>
-  <style name="Widget.Catalog.Snackbar.PillShape" parent="Widget.Material3.Snackbar">
-    <item name="shapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
-    <item name="android:paddingStart">24dp</item>
-    <item name="android:paddingEnd">12dp</item>
-  </style>
+  <dimen name="cat_snackbar_custom_shape_end_padding">12dp</dimen>
 </resources>

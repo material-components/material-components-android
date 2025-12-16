@@ -729,6 +729,15 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TextButton.Snackbar</item>
   </style>
 
+  <style name="Widget.Material3.Button.IconButton.Close.Snackbar" parent="Widget.Material3.Button.IconButton">
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+    <item name="android:paddingStart">12dp</item>
+    <item name="android:paddingEnd">12dp</item>
+    <item name="android:contentDescription">@string/mtrl_button_snackbar_close_content_description</item>
+    <item name="icon">@drawable/mtrl_close_24px</item>
+    <item name="iconTint">?attr/colorOnSurfaceInverse</item>
+  </style>
+
   <!-- M3 outlined button style. -->
   <style name="Widget.Material3.Button.OutlinedButton" parent="Widget.Material3.Button.TextButton">
     <item name="android:paddingLeft">@dimen/m3_btn_padding_left</item>
@@ -947,6 +956,14 @@
   <!-- Button style to show in the Snackbar component. -->
   <style name="Widget.MaterialComponents.Button.TextButton.Snackbar">
     <item name="android:textColor">?attr/colorPrimary</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.TextButton.Icon.Close.Snackbar" parent="Widget.Material3.Button.TextButton.Icon">
+    <item name="android:alpha">@dimen/material_emphasis_high_type</item>
+    <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
+    <item name="android:contentDescription">@string/mtrl_button_snackbar_close_content_description</item>
+    <item name="icon">@drawable/mtrl_close_24px</item>
+    <item name="iconTint">?attr/colorSurface</item>
   </style>
 
   <style name="Widget.MaterialComponents.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.TextButton">

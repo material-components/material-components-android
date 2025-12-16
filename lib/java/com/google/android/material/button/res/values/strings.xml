@@ -20,4 +20,5 @@
   <string name="mtrl_button_collapsed_content_description" description="An announcement for the collapsed menu state of the trailing button in split button [CHAR LIMIT=NONE]">Collapsed</string>
   <!-- Content description for the overflow button. -->
   <string name="mtrl_button_overflow_icon_content_description" description="Content description for the overflow button of the button group. [CHAR LIMIT=NONE]">Overflow menu</string>
+  <string name="mtrl_button_snackbar_close_content_description" description="Content description for the close button of the Snackbar. [CHAR LIMIT=NONE]">Close</string>
 </resources>

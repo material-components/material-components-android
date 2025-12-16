@@ -52,6 +52,11 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/cat_snackbar_custom_shape_button"/>
+    <Button
+      android:id="@+id/with_close_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/cat_snackbar_with_close_button"/>
   </LinearLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

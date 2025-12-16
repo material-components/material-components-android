@@ -71,13 +71,22 @@ Element              | Attribute                  | Related method(s)    | Defau
 **Text color alpha** | `app:actionTextColorAlpha` | N/A                  | `1.0f`
 **Text Color**       | `android:textColor`        | `setTextActionColor` | `?attr/colorPrimaryInverse`
 
+### Close attributes
+
+Element                    | Attribute      | Related method(s)      | Default value
+-------------------------- |----------------|------------------------| -------------
+**Close button style**     | N/A            | N/A                    | `?attr/snackbarCloseButtonStyle`
+**Icon tint**              | `app:iconTint` | `setCloseIconTint`     | `?attr/colorOnSurfaceInverse`
+**Icon**                   | `app:icon`     | `setCloseIconResource` | `@drawable/mtrl_close_24px`
+
 ### Styles
 
-Element                 | Theme attribute           | Default value
------------------------ | ----------------------------- | -----------------
-**Default style**       | `?attr/snackbarStyle`         | `@style/Widget.Material3.Snackbar`
-**Action button style** | `?attr/snackbarButtonStyle`   | `@style/Widget.Material3.Button.TextButton.Snackbar`
-**Text label style**    | `?attr/snackbarTextViewStyle` | `@style/Widget.Material3.Snackbar.TextView`
+Element                   | Theme attribute                  | Default value
+------------------------- |----------------------------------| -----------------
+**Default style**         | `?attr/snackbarStyle`            | `@style/Widget.Material3.Snackbar`
+**Action button style**   | `?attr/snackbarButtonStyle`      | `@style/Widget.Material3.Button.TextButton.Snackbar`
+**Text label style**      | `?attr/snackbarTextViewStyle`    | `@style/Widget.Material3.Snackbar.TextView`
+**Close button style**    | `?attr/snackbarCloseButtonStyle` | `@style/Widget.Material3.Button.IconButton.Close.Snackbar`
 
 For the full list, see
 [styles](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/snackbar/res/values/styles.xml)
@@ -193,6 +202,18 @@ Snackbar.make(contextView, R.string.text_label, Snackbar.LENGTH_LONG)
     .setAction(R.string.action_text) {
         // Responds to click on the action
     }
+    .show()
+```
+
+### Adding a close button
+
+To add a close button to the end of the snackbar, use the `setCloseIconVisible`
+method on the object returned from `make`. Snackbars are automatically dismissed
+when the close button is clicked.
+
+```kt
+Snackbar.make(contextView, R.string.text_label, Snackbar.LENGTH_INDEFINITE)
+    .setCloseIconVisible(true)
     .show()
 ```
 

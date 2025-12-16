@@ -1147,6 +1147,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     @Nullable private Rect originalMargins;
     private boolean addingToTargetParent;
+    private final int originalPaddingEnd;
 
     protected SnackbarBaseLayout(@NonNull Context context) {
       this(context, null);
@@ -1182,6 +1183,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       maxInlineActionWidth =
           a.getDimensionPixelSize(R.styleable.SnackbarLayout_maxActionInlineWidth, -1);
       a.recycle();
+
+      originalPaddingEnd = getPaddingEnd();
 
       setOnTouchListener(consumeAllTouchListener);
       setFocusable(true);
@@ -1324,6 +1327,25 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     private void updateOriginalMargins(MarginLayoutParams params) {
       originalMargins =
           new Rect(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin);
+    }
+
+    /**
+     * Remove or restore end padding from this view.
+     *
+     * The original padding is saved during inflation and removed or replaced depending
+     * on {@code remove}. This is used when calling enabling the Snackbar close icon as the icon
+     * should be flush with the end of the snackbar layout.
+     *
+     * @param remove true to set end padding to zero, false to restore the original
+     *  end padding value
+     */
+    void removeOrRestorePaddingEnd(boolean remove) {
+      setPaddingRelative(
+          getPaddingStart(),
+          getPaddingTop(),
+          remove ? 0 : originalPaddingEnd,
+          getPaddingBottom()
+      );
     }
 
     @NonNull

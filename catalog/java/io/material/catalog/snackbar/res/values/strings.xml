@@ -59,6 +59,13 @@
     Custom shape snackbar
   </string>
   <string name="cat_snackbar_custom_shape_message" description="The message of the snackbar with a custom background shape. [CHAR LIMIT=NONE]">
-    This is a snackbar with a custom shape
+    This is a snackbar with a custom shape with a customized close icon
+  </string>
+
+  <string name="cat_snackbar_with_close_button" description="The label of the button that launches a snackbar with a custom background shape. [CHAR LIMIT=NONE]">
+    Snackbar with close icon
+  </string>
+  <string name="cat_snackbar_with_close_message" description="The message of the snackbar with a custom background shape. [CHAR LIMIT=NONE]">
+    This is a snackbar with a close icon.
   </string>
 </resources>

@@ -19,6 +19,7 @@ package io.material.catalog.snackbar;
 import io.material.catalog.R;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -89,6 +90,7 @@ public class SnackbarMainDemoFragment extends DemoFragment {
                       Snackbar.LENGTH_SHORT)
                   .setAction(R.string.cat_snackbar_action_title, a -> {})
                   .setTextMaxLines(5)
+                  .setCloseIconVisible(true)
                   .show();
             });
 
@@ -103,12 +105,39 @@ public class SnackbarMainDemoFragment extends DemoFragment {
               Context c =
                   new ContextThemeWrapper(
                       v.getContext(), R.style.ThemeOverlay_Catalog_SnackbarWithCustomShape);
-              Snackbar.make(
+              Snackbar snackbar = Snackbar.make(
                       c,
                       coordinatorLayout,
                       getString(R.string.cat_snackbar_custom_shape_message),
                       Snackbar.LENGTH_SHORT)
                   .setAction("Done", a -> {})
+                  .setCloseIconVisible(/* visible= */ true)
+                  .setCloseIconResource(R.drawable.ic_cancel_24)
+                  .setCloseIconTint(Color.GREEN);
+              // Setting the close icon to visible removes the snackbar layout's end padding. To
+              // customize this, get the snackbar's view and set the end padding to a value
+              // that fits nicely with the custom shape and icon.
+              View snackbarLayout = snackbar.getView();
+              snackbarLayout.setPaddingRelative(
+                  snackbarLayout.getPaddingStart(),
+                  snackbarLayout.getPaddingTop(),
+                  getResources().getDimensionPixelSize(
+                      R.dimen.cat_snackbar_custom_shape_end_padding),
+                  snackbarLayout.getPaddingBottom()
+              );
+              snackbar.show();
+            });
+
+    // Snackbar with close icon
+    view.findViewById(R.id.with_close_button)
+        .setOnClickListener(
+            v -> {
+              Snackbar.make(
+                      coordinatorLayout,
+                      R.string.cat_snackbar_with_close_message,
+                      Snackbar.LENGTH_INDEFINITE)
+                  .setAction(R.string.cat_snackbar_action_title, a -> {})
+                  .setCloseIconVisible(true)
                   .show();
             });
   }
