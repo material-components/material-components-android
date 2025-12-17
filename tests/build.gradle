@@ -16,7 +16,7 @@ android {
   defaultConfig {
     testApplicationId "com.google.android.material.tests"
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    minSdkVersion 21
+    minSdkVersion 23
     targetSdkVersion 33
   }
 

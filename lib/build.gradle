@@ -127,7 +127,7 @@ android {
   }
 
   defaultConfig {
-    minSdkVersion 21
+    minSdkVersion 23
   }
 
   publishing {
@@ -168,7 +168,7 @@ publishing {
         description = 'Material Components for Android is a static library ' +
           'that you can add to your Android application in order to use ' +
           'APIs that provide implementations of the Material Design specification. ' +
-          'Compatible on devices running API 21 or later.'
+          'Compatible on devices running API 23 or later.'
         url = 'https://github.com/material-components/material-components-android'
         inceptionYear = '2015'
         licenses {
