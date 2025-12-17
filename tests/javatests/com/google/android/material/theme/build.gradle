@@ -29,13 +29,10 @@ dependencies {
   implementation libs.androidx.annotation
   implementation libs.androidx.appcompat
   implementation libs.androidx.core
-
-  api libs.androidx.multidex
 }
 
 android {
   defaultConfig {
-    multiDexEnabled true
     testApplicationId "com.google.android.material.tests"
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     minSdkVersion 21
