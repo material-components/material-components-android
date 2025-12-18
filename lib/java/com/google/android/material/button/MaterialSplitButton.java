@@ -22,7 +22,6 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -119,8 +118,6 @@ public class MaterialSplitButton extends MaterialButtonGroup {
 
       buttonChild.addOnCheckedChangeListener(
           (button, isChecked) -> {
-            // Play sound effect when checked state changes.
-            button.playSoundEffect(SoundEffectConstants.CLICK);
             // Update content description when checked state changes.
             ViewCompat.setStateDescription(
                 buttonChild,
