@@ -51,6 +51,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/clock_face_margin_start"
+    app:layout_constrainedWidth="true"
+    app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toEndOf="@+id/material_clock_display_and_toggle"
     app:layout_constraintTop_toTopOf="parent" />
 

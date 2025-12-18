@@ -45,7 +45,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewOutlineProvider;
-import android.view.ViewTreeObserver.OnPreDrawListener;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.TextView;
 import androidx.annotation.FloatRange;
@@ -138,22 +137,6 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
 
     setBackgroundColor(
         backgroundColor == null ? defaultBackgroundColor : backgroundColor.getDefaultColor());
-
-    getViewTreeObserver()
-        .addOnPreDrawListener(
-            new OnPreDrawListener() {
-              @Override
-              public boolean onPreDraw() {
-                if (!isShown()) {
-                  return true;
-                }
-                getViewTreeObserver().removeOnPreDrawListener(this);
-                int circleRadius =
-                    getHeight() / 2 - clockHandView.getSelectorRadius() - clockHandPadding;
-                setRadius(circleRadius);
-                return true;
-              }
-            });
 
     a.recycle();
 
@@ -385,8 +368,21 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
     // proportionally to the smaller size
     int size = (int) (clockSize / max3(minimumHeight / height, minimumWidth / width, 1f));
 
+    int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+    if (widthSpecMode != MeasureSpec.UNSPECIFIED) {
+      size = Math.min(size, MeasureSpec.getSize(widthMeasureSpec));
+    }
+
+    int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+    if (heightSpecMode != MeasureSpec.UNSPECIFIED) {
+      size = Math.min(size, MeasureSpec.getSize(heightMeasureSpec));
+    }
+
     int spec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY);
-    setMeasuredDimension(size, size);
+    int circleRadius = size / 2 - clockHandView.getSelectorRadius() - clockHandPadding;
+    if (circleRadius != getRadius()) {
+      setRadius(circleRadius);
+    }
     super.onMeasure(spec, spec);
   }
 
