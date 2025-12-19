@@ -92,4 +92,19 @@
       android:contentDescription="@string/cat_list_item_star_action_content_description"
       app:icon="@drawable/ic_star_icon_checkable_24px" />
   </com.google.android.material.listitem.ListItemRevealLayout>
+  <com.google.android.material.listitem.ListItemRevealLayout
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_gravity="start"
+    app:primaryActionSwipeMode="direct">
+    <com.google.android.material.button.MaterialButton
+      style="?attr/materialIconButtonFilledStyle"
+      android:id="@+id/cat_list_action_search_button"
+      android:layout_height="match_parent"
+      android:layout_width="64dp"
+      android:layout_marginEnd="2dp"
+      android:layout_marginStart="2dp"
+      android:contentDescription="@string/cat_list_item_search_action_content_description"
+      app:icon="@drawable/ic_search_24px" />
+  </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>

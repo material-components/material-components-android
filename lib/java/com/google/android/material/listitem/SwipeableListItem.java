@@ -17,8 +17,11 @@ package com.google.android.material.listitem;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.view.View;
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import com.google.android.material.listitem.RevealableListItem.RevealGravity;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -79,8 +82,17 @@ public interface SwipeableListItem {
   /** Called when the position of the SwipeableListItem changes. */
   void onSwipe(int swipeOffset);
 
-  /** Called whenever the swipe state of the SwipeableListItem changes. */
-  void onSwipeStateChanged(@SwipeState int swipeState);
+  /**
+   * Callback for when the swipe state of the SwipeableListItem changes.
+   *
+   * @param swipeState The new {@link SwipeState} of the SwipeableListItem.
+   * @param revealableListItem The associated {@link RevealableListItem} that is being revealed when
+   *     swiped. If the new state is {@link #STATE_CLOSED}, this will be the last active {@link
+   *     RevealableListItem}.
+   * @param revealGravity The {@link RevealGravity} of the revealableListItem.
+   */
+  <T extends View & RevealableListItem> void onSwipeStateChanged(
+      @SwipeState int swipeState, @NonNull T revealableListItem, @RevealGravity int revealGravity);
 
   /**
    * Returns the overshoot, in pixels, that the SwipeableListItem is able to be swiped past the

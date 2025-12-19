@@ -44,7 +44,9 @@
   <string name="cat_list_item_hide_end_actions_content_description" description="Description for button to hide the end-aligned swipe-to-reveal actions. [CHAR_LIMIT=NONE]">Hide end-aligned swipe-to-reveal actions</string>
   <string name="cat_list_item_add_action_clicked" description="Message to denote when the add button is clicked [CHAR_LIMIT=NONE]">Add action clicked</string>
   <string name="cat_list_item_star_action_clicked" description="Message to denote when the star button is clicked [CHAR_LIMIT=NONE]">Star action clicked</string>
+  <string name="cat_list_item_search_action_clicked" description="Message to denote when the search button is clicked [CHAR_LIMIT=NONE]">Search action clicked</string>
   <string name="cat_list_item_add_action_content_description" description="Description for the add button. [CHAR_LIMIT=NONE]">Add</string>
   <string name="cat_list_item_star_action_content_description" description="Description for the star button. [CHAR_LIMIT=NONE]">Star</string>
+  <string name="cat_list_item_search_action_content_description" description="Description for the search button. [CHAR_LIMIT=NONE]">Search</string>
 </resources>
 

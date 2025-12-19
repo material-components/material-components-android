@@ -19,7 +19,9 @@ package io.material.catalog.listitem;
 import io.material.catalog.R;
 
 import static com.google.android.material.listitem.SwipeableListItem.STATE_CLOSED;
+import static com.google.android.material.listitem.SwipeableListItem.STATE_DRAGGING;
 import static com.google.android.material.listitem.SwipeableListItem.STATE_OPEN;
+import static com.google.android.material.listitem.SwipeableListItem.STATE_SETTLING;
 import static com.google.android.material.listitem.SwipeableListItem.STATE_SWIPE_PRIMARY_ACTION;
 
 import android.graphics.drawable.Drawable;
@@ -27,6 +29,7 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.Adapter;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +42,7 @@ import com.google.android.material.listitem.ListItemCardView;
 import com.google.android.material.listitem.ListItemCardView.SwipeCallback;
 import com.google.android.material.listitem.ListItemLayout;
 import com.google.android.material.listitem.ListItemViewHolder;
-import com.google.android.material.listitem.SwipeableListItem;
+import com.google.android.material.listitem.RevealableListItem;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -127,9 +130,11 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
     private final TextView textView;
     private final ListItemCardView cardView;
     private final ListItemLayout listItemLayout;
+    private final MaterialButton startActionsButton;
     private final MaterialButton endActionsButton;
     private final MaterialButton addActionButton;
     private final MaterialButton starActionButton;
+    private final MaterialButton searchActionButton;
     private final Drawable backArrow;
     private final Drawable forwardArrow;
 
@@ -142,6 +147,8 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
       cardView = itemView.findViewById(R.id.cat_list_item_card_view);
       addActionButton = itemView.findViewById(R.id.cat_list_action_add_button);
       starActionButton = itemView.findViewById(R.id.cat_list_action_star_button);
+      searchActionButton = itemView.findViewById(R.id.cat_list_action_search_button);
+      startActionsButton = itemView.findViewById(R.id.cat_list_item_start_icon);
       endActionsButton = itemView.findViewById(R.id.cat_list_item_end_icon);
 
       addActionButton.setOnClickListener(
@@ -150,12 +157,27 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
       starActionButton.setOnClickListener(
           v -> Toast.makeText(v.getContext(), R.string.cat_list_item_star_action_clicked, Toast.LENGTH_SHORT)
               .show());
+      searchActionButton.setOnClickListener(
+          v ->
+              Toast.makeText(
+                      v.getContext(),
+                      R.string.cat_list_item_search_action_clicked,
+                      Toast.LENGTH_SHORT)
+                  .show());
+      startActionsButton.setOnClickListener(
+          v -> {
+            if (listItemLayout.getSwipeState() == STATE_CLOSED) {
+              listItemLayout.setSwipeState(STATE_SWIPE_PRIMARY_ACTION, Gravity.START);
+            } else {
+              listItemLayout.setSwipeState(STATE_CLOSED, Gravity.START);
+            }
+          });
       endActionsButton.setOnClickListener(
           v -> {
             if (listItemLayout.getSwipeState() == STATE_CLOSED) {
-            listItemLayout.setSwipeState(STATE_OPEN);
+              listItemLayout.setSwipeState(STATE_OPEN, Gravity.END);
             } else {
-              listItemLayout.setSwipeState(STATE_CLOSED);
+              listItemLayout.setSwipeState(STATE_CLOSED, Gravity.END);
             }
           });
       cardView.setOnClickListener(
@@ -170,7 +192,8 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
             public void onSwipe(int swipeOffset) {}
 
             @Override
-            public void onSwipeStateChanged(int newState) {
+            public <T extends View & RevealableListItem> void onSwipeStateChanged(
+                int newState, T activeRevealableListItem, int gravity) {
               if (data == null) {
                 return;
               }
@@ -181,10 +204,12 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
                         Toast.LENGTH_SHORT)
                     .show();
                 itemView.postDelayed(
-                    () -> listItemLayout.setSwipeState(SwipeableListItem.STATE_CLOSED),
-                    500);
+                    () -> listItemLayout.setSwipeState(STATE_CLOSED, gravity), 500);
               }
-              data.swipeState = newState;
+              if (newState != STATE_DRAGGING && newState != STATE_SETTLING) {
+                data.swipeState = newState;
+                data.swipeGravity = gravity;
+              }
               endActionsButton.setIcon(data.swipeState == STATE_CLOSED ? forwardArrow : backArrow);
               endActionsButton.setContentDescription(
                   data.swipeState == STATE_CLOSED
@@ -203,7 +228,7 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
       this.data = data;
       textView.setText(data.text);
       endActionsButton.setIcon(data.swipeState == STATE_CLOSED ? forwardArrow : backArrow);
-      listItemLayout.setSwipeState(data.swipeState, /* animate= */ false);
+      listItemLayout.setSwipeState(data.swipeState, data.swipeGravity, /* animate= */ false);
     }
   }
 

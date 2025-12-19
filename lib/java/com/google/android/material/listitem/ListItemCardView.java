@@ -22,6 +22,7 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
+import android.view.View;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -29,6 +30,7 @@ import androidx.annotation.Px;
 import androidx.annotation.StyleRes;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.listitem.RevealableListItem.RevealGravity;
 import java.util.LinkedHashSet;
 
 /**
@@ -53,8 +55,15 @@ public class ListItemCardView extends MaterialCardView implements SwipeableListI
      * @param newState The new state. This will be one of {@link #STATE_DRAGGING}, {@link
      *     #STATE_SETTLING}, {@link #STATE_CLOSED}, {@link #STATE_OPEN}, or {@link
      *     #STATE_SWIPE_PRIMARY_ACTION}.
+     * @param activeRevealableListItem The associated {@link RevealableListItem} view that is being
+     *     revealed when swiped. If the new state is {@link #STATE_CLOSED}, this will be the last
+     *     active {@link RevealableListItem}.
+     * @param revealGravity The {@link RevealGravity} of the revealableListItem.
      */
-    public abstract void onSwipeStateChanged(@SwipeState int newState);
+    public abstract <T extends View & RevealableListItem> void onSwipeStateChanged(
+        @SwipeState int newState,
+        @NonNull T activeRevealableListItem,
+        @RevealGravity int revealGravity);
   }
 
   private static final int[] SWIPED_STATE_SET = {R.attr.state_swiped};
@@ -140,12 +149,13 @@ public class ListItemCardView extends MaterialCardView implements SwipeableListI
   }
 
   @Override
-  public void onSwipeStateChanged(int swipeState) {
+  public <T extends View & RevealableListItem> void onSwipeStateChanged(
+      int swipeState, T revealableListItem, int revealGravity) {
     isSwiped = swipeState != STATE_CLOSED;
     refreshDrawableState();
 
     for (SwipeCallback callback : swipeCallbacks) {
-      callback.onSwipeStateChanged(swipeState);
+      callback.onSwipeStateChanged(swipeState, revealableListItem, revealGravity);
     }
   }
 }

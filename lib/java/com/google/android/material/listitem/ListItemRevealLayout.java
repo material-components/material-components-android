@@ -89,9 +89,9 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
         attributes.getDimensionPixelSize(
             R.styleable.ListItemRevealLayout_minChildWidth,
             getResources().getDimensionPixelSize(R.dimen.m3_list_reveal_min_child_width));
-    primaryActionSwipeMode = attributes.getInt(
-        R.styleable.ListItemRevealLayout_primaryActionSwipeMode,
-        PRIMARY_ACTION_SWIPE_DISABLED);
+    primaryActionSwipeMode =
+        attributes.getInt(
+            R.styleable.ListItemRevealLayout_primaryActionSwipeMode, PRIMARY_ACTION_SWIPE_DISABLED);
     attributes.recycle();
   }
 
@@ -243,20 +243,35 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
   }
 
   private void measureByGrowingPrimarySwipeAction(int fullRevealableWidth) {
-    // Expand only the last visible child and shrink other visible children to the min child size
-    // We keep the margins the same even as we shrink the other children
-    Integer lastVisibleChildIndex = findLastVisibleChildIndex();
-    if (lastVisibleChildIndex != null) {
-      int targetWidthMinusLastChild = getPaddingStart() + getPaddingEnd();
+    boolean isRtl = getLayoutDirection() == LAYOUT_DIRECTION_RTL;
+    boolean expandFirst = ListItemUtils.isRightAligned(this) == isRtl;
+    Integer targetChildIndex =
+        expandFirst ? findFirstVisibleChildIndex() : findLastVisibleChildIndex();
+
+    if (targetChildIndex != null) {
+      int targetWidthMinusTargetChild = getPaddingStart() + getPaddingEnd();
       // when progress is 0, we are at the intrinsic width
       // when progress is 1, we are at fully swiped width
       float progress =
-          (float) (revealedWidth - intrinsicWidth) / (fullRevealableWidth - intrinsicWidth);
-      for (int i = 0; i < lastVisibleChildIndex; i++) {
+          Math.max(
+              0f,
+              Math.min(
+                  1f,
+                  (float) (revealedWidth - intrinsicWidth)
+                      / (fullRevealableWidth - intrinsicWidth)));
+
+      int childCount = getChildCount();
+      for (int i = 0; i < childCount; i++) {
         View child = getChildAt(i);
         if (child.getVisibility() == GONE) {
           continue;
         }
+
+        // Skip the target child since we will measure it last with the remaining space
+        if (i == targetChildIndex) {
+          continue;
+        }
+
         child.measure(
             MeasureSpec.makeMeasureSpec(
                 AnimationUtils.lerp(
@@ -264,28 +279,34 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
                 MeasureSpec.EXACTLY),
             MeasureSpec.makeMeasureSpec(originalChildHeights[i], MeasureSpec.EXACTLY));
         final MarginLayoutParams lp = (MarginLayoutParams) child.getLayoutParams();
-        targetWidthMinusLastChild += lp.leftMargin + lp.rightMargin + minChildWidth;
+        targetWidthMinusTargetChild += lp.leftMargin + lp.rightMargin + minChildWidth;
 
         if (child instanceof MaterialButton && ((MaterialButton) child).getIcon() != null) {
           ((MaterialButton) child).getIcon().setAlpha(AnimationUtils.lerp(255, 0, progress));
         }
       }
-      View lastChild = getChildAt(lastVisibleChildIndex);
-      final MarginLayoutParams lp = (MarginLayoutParams) lastChild.getLayoutParams();
-      int lastChildTargetWidth =
-          fullRevealableWidth - targetWidthMinusLastChild - lp.rightMargin - lp.leftMargin;
+
+      View targetChild = getChildAt(targetChildIndex);
+      final MarginLayoutParams lp = (MarginLayoutParams) targetChild.getLayoutParams();
+      int targetChildAvailableWidth =
+          fullRevealableWidth - targetWidthMinusTargetChild - lp.rightMargin - lp.leftMargin;
+
       // This is not an intended use case, but if for some reason the revealed width is set to be
       // larger than the full revealable width (the swipe view width), we'll just add the extra
-      // width to the last child.
-      int extraLastChildWidth = Math.max((revealedWidth - fullRevealableWidth), 0);
-      lastChild.measure(
+      // width to the target child.
+      int extraTargetChildWidth = Math.max((revealedWidth - fullRevealableWidth), 0);
+
+      targetChild.measure(
           MeasureSpec.makeMeasureSpec(
               AnimationUtils.lerp(
-                      originalChildWidths[lastVisibleChildIndex], lastChildTargetWidth, progress)
-                  + extraLastChildWidth,
+                      originalChildWidths[targetChildIndex], targetChildAvailableWidth, progress)
+                  + extraTargetChildWidth,
               MeasureSpec.EXACTLY),
-          MeasureSpec.makeMeasureSpec(
-              originalChildHeights[lastVisibleChildIndex], MeasureSpec.EXACTLY));
+          MeasureSpec.makeMeasureSpec(originalChildHeights[targetChildIndex], MeasureSpec.EXACTLY));
+      if (targetChild instanceof MaterialButton
+          && ((MaterialButton) targetChild).getIcon() != null) {
+        ((MaterialButton) targetChild).getIcon().setAlpha(255);
+      }
     }
     setMeasuredDimension(revealedWidth, intrinsicHeight);
   }
@@ -455,12 +476,23 @@ public class ListItemRevealLayout extends ViewGroup implements RevealableListIte
     return null;
   }
 
+  @Nullable
+  private Integer findFirstVisibleChildIndex() {
+    int childCount = getChildCount();
+    for (int i = 0; i < childCount; i++) {
+      if (getChildAt(i).getVisibility() != GONE) {
+        return i;
+      }
+    }
+    return null;
+  }
+
   /**
    * Sets the swipe-to-primary-action behavior of this RevealableListItem when swiping with a
    * sibling {@link SwipeableListItem}.
    *
-   * <p>Use {@link SwipeableListItem#onSwipeStateChanged(int)} to listen for when the primary
-   * action is triggered to initiate the action.
+   * <p>Use {@link SwipeableListItem#onSwipeStateChanged(int, View, int)} to listen for when the
+   * primary action is triggered to initiate the action.
    */
   @Override
   public void setPrimaryActionSwipeMode(@PrimaryActionSwipeMode int primaryActionSwipeMode) {

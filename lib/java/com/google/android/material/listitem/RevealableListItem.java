@@ -17,6 +17,7 @@ package com.google.android.material.listitem;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.view.Gravity;
 import androidx.annotation.IntDef;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
@@ -25,6 +26,17 @@ import java.lang.annotation.RetentionPolicy;
 
 /** Interface for the part of a ListItem that is able to be revealed when swiped. */
 public interface RevealableListItem {
+
+  /***
+   * The gravity of where the RevealableListItem in relation to its sibling
+   * {@link SwipeableListItem}.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({Gravity.START, Gravity.END, Gravity.LEFT, Gravity.RIGHT})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface RevealGravity {}
 
   /** Disable the primary action. */
   int PRIMARY_ACTION_SWIPE_DISABLED = 0;
