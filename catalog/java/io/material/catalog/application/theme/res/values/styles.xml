@@ -32,4 +32,6 @@
     <item name="android:background">?attr/actionBarItemBackground</item>
   </style>
 
+  <style name="Widget.Catalog.Slider" parent="Widget.Material3.Slider"/>
+
 </resources>
