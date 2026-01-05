@@ -98,8 +98,8 @@ public class MultiSectionListDemoFragment extends DemoFragment {
 
     @Nullable
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int position) {
-      switch (getItemViewType(position)) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+      switch (viewType) {
         case VIEW_TYPE_LIST_ITEM:
           ViewGroup item =
               (ViewGroup)
