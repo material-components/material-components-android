@@ -19,6 +19,7 @@ package io.material.catalog.navigationrail;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+import androidx.appcompat.widget.TooltipCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,10 +69,14 @@ public class NavigationRailSubMenuDemoFragment extends DemoFragment {
     efab.setOnClickListener(v ->
       Snackbar.make(v, R.string.cat_navigation_rail_efab_message, Snackbar.LENGTH_SHORT)
           .show());
+    TooltipCompat.setTooltipText(efab, efab.getContentDescription());
 
     ImageView button =
         navigationRailView.getHeaderView().findViewById(R.id.cat_navigation_rail_expand_button);
-    button.setContentDescription(getResources().getString(R.string.cat_navigation_rail_expand_button_description));
+    String expandButtonContentDescription =
+        getResources().getString(R.string.cat_navigation_rail_expand_button_description);
+    button.setContentDescription(expandButtonContentDescription);
+    TooltipCompat.setTooltipText(button, expandButtonContentDescription);
     button.setOnClickListener(
         v -> {
           if (efab.isExtended()) {
@@ -85,6 +90,7 @@ public class NavigationRailSubMenuDemoFragment extends DemoFragment {
             button.setContentDescription(getResources().getString(R.string.cat_navigation_rail_collapse_button_description));
             button.setImageResource(R.drawable.ic_drawer_menu_open_24px);
           }
+          TooltipCompat.setTooltipText(button, button.getContentDescription());
         });
     return view;
   }
