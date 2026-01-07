@@ -18,6 +18,7 @@ package io.material.catalog.navigationdrawer;
 
 import io.material.catalog.R;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
@@ -30,7 +31,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.navigation.NavigationView;
 import io.material.catalog.feature.DemoActivity;
@@ -47,6 +47,7 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
       };
 
   private DrawerLayout drawerLayout;
+  private ActionBarDrawerToggle toggle;
   private MaterialSwitch autoCloseSwitch;
 
   @NonNull
@@ -64,25 +65,26 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
     setSupportActionBar(toolbar);
 
     drawerLayout = view.findViewById(R.id.drawer);
-    drawerLayout.addDrawerListener(
+    toggle =
         new ActionBarDrawerToggle(
             this,
             drawerLayout,
             toolbar,
             R.string.cat_navigationdrawer_button_show_content_description,
-            R.string.cat_navigationdrawer_button_hide_content_description));
-    drawerLayout.addDrawerListener(
-        new SimpleDrawerListener() {
+            R.string.cat_navigationdrawer_button_hide_content_description) {
           @Override
-          public void onDrawerOpened(@NonNull View drawerView) {
+          public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
             drawerOnBackPressedCallback.setEnabled(true);
           }
 
           @Override
-          public void onDrawerClosed(@NonNull View drawerView) {
+          public void onDrawerClosed(View drawerView) {
+            super.onDrawerClosed(drawerView);
             drawerOnBackPressedCallback.setEnabled(false);
           }
-        });
+        };
+    drawerLayout.addDrawerListener(toggle);
 
     NavigationView navigationViewStart = view.findViewById(R.id.navigation_view_start);
     initNavigationView(navigationViewStart);
@@ -138,5 +140,17 @@ public class NavigationDrawerDemoActivity extends DemoActivity {
   @Override
   protected boolean shouldShowDefaultDemoActionBar() {
     return false;
+  }
+
+  @Override
+  protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    toggle.syncState();
+  }
+
+  @Override
+  public void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    toggle.onConfigurationChanged(newConfig);
   }
 }
