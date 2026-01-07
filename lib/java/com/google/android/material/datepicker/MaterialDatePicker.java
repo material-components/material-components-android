@@ -35,6 +35,7 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.TooltipCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -557,6 +558,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
     // This information is not useful; we remove the delegate and use custom content descriptions.
     ViewCompat.setAccessibilityDelegate(headerToggleButton, null);
     updateToggleContentDescription(headerToggleButton);
+    updateToggleTooltip(headerToggleButton);
     headerToggleButton.setOnClickListener(
         v -> {
           // Update confirm button in case in progress selection has been reset
@@ -565,6 +567,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
           headerToggleButton.toggle();
           inputMode = (inputMode == INPUT_MODE_TEXT) ? INPUT_MODE_CALENDAR : INPUT_MODE_TEXT;
           updateToggleContentDescription(headerToggleButton);
+          updateToggleTooltip(headerToggleButton);
           startPickerFragment();
         });
   }
@@ -575,6 +578,16 @@ public class MaterialDatePicker<S> extends DialogFragment {
             ? toggle.getContext().getString(R.string.mtrl_picker_toggle_to_calendar_input_mode)
             : toggle.getContext().getString(R.string.mtrl_picker_toggle_to_text_input_mode);
     headerToggleButton.setContentDescription(contentDescription);
+  }
+
+  private void updateToggleTooltip(@NonNull CheckableImageButton toggle) {
+    String tooltipText =
+        inputMode == INPUT_MODE_TEXT
+            ? toggle
+                .getContext()
+                .getString(R.string.mtrl_picker_toggle_to_calendar_input_mode_tooltip)
+            : toggle.getContext().getString(R.string.mtrl_picker_toggle_to_text_input_mode_tooltip);
+    TooltipCompat.setTooltipText(headerToggleButton, tooltipText);
   }
 
   private DateSelector<S> getDateSelector() {

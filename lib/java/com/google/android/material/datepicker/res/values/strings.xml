@@ -41,9 +41,13 @@
   <string name="mtrl_picker_invalid_format_example" description="Tells a user what an example valid entry looks like. [CHAR_LIMIT=18]">Example: %1$s</string>
 
   <string name="mtrl_picker_toggle_to_calendar_input_mode" description="a11y string to indicate this button changes the input mode to a calendar [CHAR_LIMIT=NONE]">Switch to calendar input mode</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip" description="Tooltip for button to switch to calendar input mode [CHAR_LIMIT=60]">Switch to calendar</string>
   <string name="mtrl_picker_toggle_to_text_input_mode" description="a11y string to indicate this button changes the input mode to a text field [CHAR_LIMIT=NONE]">Switch to text input mode</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip" description="Tooltip for button to switch to text input mode [CHAR_LIMIT=60]">Switch to text input</string>
   <string name="mtrl_picker_a11y_prev_month" description="a11y string to indicate this button moves the calendar to the previous month [CHAR_LIMIT=NONE]">Change to previous month</string>
+  <string name="mtrl_picker_prev_month_tooltip" description="Tooltip for button to navigate to the previous month [CHAR_LIMIT=60]">Previous month</string>
   <string name="mtrl_picker_a11y_next_month" description="a11y string to indicate this button moves the calendar to the next month [CHAR_LIMIT=NONE]">Change to next month</string>
+  <string name="mtrl_picker_next_month_tooltip" description="Tooltip for button to navigate to the next month [CHAR_LIMIT=60]">Next month</string>
   <string name="mtrl_picker_toggle_to_year_selection" description="a11y string to indicate this button switches the user to choosing a year [CHAR_LIMIT=NONE]">Switch to year view</string>
   <string name="mtrl_picker_pane_title_year_view" description="a11y string to announce the title of the date picker pane when it displays a list of selectable years [CHAR_LIMIT=NONE]">Year view</string>
   <string name="mtrl_picker_toggle_to_day_selection" description="a11y string to indicate this button switches the user to choosing a day [CHAR_LIMIT=NONE]">Switch to Calendar view</string>

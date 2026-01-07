@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import androidx.recyclerview.widget.RecyclerView.State;
+import androidx.appcompat.widget.TooltipCompat;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -534,8 +535,10 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
     monthPrev = root.findViewById(R.id.month_navigation_previous);
     monthPrev.setTag(NAVIGATION_PREV_TAG);
+    TooltipCompat.setTooltipText(monthPrev, getString(R.string.mtrl_picker_prev_month_tooltip));
     monthNext = root.findViewById(R.id.month_navigation_next);
     monthNext.setTag(NAVIGATION_NEXT_TAG);
+    TooltipCompat.setTooltipText(monthNext, getString(R.string.mtrl_picker_next_month_tooltip));
 
     yearFrame = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
     dayFrame = root.findViewById(R.id.mtrl_calendar_day_selector_frame);
