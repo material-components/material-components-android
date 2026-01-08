@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2025 The Android Open Source Project
+  ~ Copyright (C) 2026 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -18,4 +18,5 @@
   <string name="mtrl_button_expanded_content_description">Naka-expand</string>
   <string name="mtrl_button_collapsed_content_description">Naka-collapse</string>
   <string name="mtrl_button_overflow_icon_content_description">Overflow menu</string>
+  <string name="mtrl_button_snackbar_close_content_description">Isara</string>
 </resources>
