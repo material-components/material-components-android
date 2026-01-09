@@ -99,12 +99,12 @@
     app:primaryActionSwipeMode="direct">
     <com.google.android.material.button.MaterialButton
       style="?attr/materialIconButtonFilledStyle"
-      android:id="@+id/cat_list_action_search_button"
+      android:id="@+id/cat_list_action_delete_button"
       android:layout_height="match_parent"
       android:layout_width="64dp"
       android:layout_marginEnd="2dp"
       android:layout_marginStart="2dp"
-      android:contentDescription="@string/cat_list_item_search_action_content_description"
-      app:icon="@drawable/ic_search_24px" />
+      android:contentDescription="@string/cat_list_item_delete_action_content_description"
+      app:icon="@drawable/ic_delete_24dp" />
   </com.google.android.material.listitem.ListItemRevealLayout>
 </com.google.android.material.listitem.ListItemLayout>

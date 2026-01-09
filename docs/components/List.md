@@ -215,8 +215,7 @@ Sample `ViewHolder` code for swipe-to-reveal:
     android:layout_height="wrap_content"
     android:checkable="true"
     android:clickable="true"
-    android:focusable="true"
-    app:swipeToPrimaryActionEnabled="true">
+    android:focusable="true">
 
     <LinearLayout
       android:layout_width="match_parent"
@@ -263,7 +262,8 @@ Sample `ViewHolder` code for swipe-to-reveal:
   <!-- RevealableListItem -->
   <com.google.android.material.listitem.ListItemRevealLayout
     android:layout_width="wrap_content"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:primaryActionSwipeMode="indirect">
 
     <com.google.android.material.button.MaterialButton
       style="?attr/materialIconButtonFilledStyle"
@@ -285,12 +285,24 @@ Sample `ViewHolder` code for swipe-to-reveal:
 </com.google.android.material.listitem.ListItemLayout>
 ```
 
-If swipe to trigger primary action is enabled
-(`app:swipeToPrimaryActionEnabled=true` on a `ListItemCardView`), make sure to
-implement the primary action to be triggered through a `SwipeStateCallback`. If
-using the `ListItemRevealLayout` as the `RevealableListItem`, the primary action
-should correspond to the behavior of the last view in the
-`ListItemRevealLayout`.
+You can use `app:primaryActionSwipeMode` on `ListItemRevealLayout` to control
+the behavior of swiping to the primary action. Only use
+`app:primaryActionSwipeMode=direct` if there is only a single action
+representing the primary action in the `ListItemRevealLayout` as a primary
+action swipe mode of `direct` will swipe directly to the primary action swipe
+state.
+
+If `app:primaryActionSwipeMode=indirect`, swiping from a closed state will swipe
+to the open swipe state first, revealing the actions in the
+`ListItemRevealLayout` at their intrinsic size first before users can swipe to
+the primary action swipe state.
+
+If swipe to trigger primary action is enabled at all
+(`app:primaryActionSwipeMode=direct` or `app:primaryActionSwipeMode=indirect`),
+make sure to implement the primary action to be triggered through a
+`SwipeStateCallback`. The primary action should correspond to the behavior of
+the first view in the `ListItemRevealLayout` if it is start-aligned, or the last
+view if it is end-aligned.
 
 ```kt
 listItemCardView.addOnSwipeStateChangedCallback { newState ->
@@ -308,6 +320,13 @@ Do not leave the `ListItemLayout` in the fully swiped state; if using
 touch size. It is meant to visually indicate the primary action is triggered,
 and the swipe state should either be reset or the `ListItemLayout` should be
 dismissed.
+
+Ensure that the primary action that is triggered corresponds to the action
+represented by the growing element in the `ListItemRevealLayout`. This is
+important for clarity and also for a11y, as in some cases (ie.
+`app:primarySwipeActionSwipeMode=direct`) the visual element representing the
+primary action will only be visible until the swipe state is reset or
+`ListItemLayout` should be dismissed.
 
 ### Key properties
 

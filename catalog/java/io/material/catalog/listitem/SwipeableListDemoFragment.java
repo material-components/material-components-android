@@ -103,7 +103,7 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
                       R.layout.cat_list_item_swipeable_viewholder,
                       parent,
                       /* attachToRoot= */ false);
-      return new CustomItemViewHolder(item);
+      return new CustomItemViewHolder(item, this);
     }
 
     @Override
@@ -122,6 +122,11 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
     public CustomListItemData getItemAt(int i) {
       return items.get(i);
     }
+
+    public void removeItemAt(int i) {
+      items.remove(i);
+      notifyItemRemoved(i);
+    }
   }
 
   /** A ViewHolder that shows custom list items */
@@ -134,11 +139,11 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
     private final MaterialButton endActionsButton;
     private final MaterialButton addActionButton;
     private final MaterialButton starActionButton;
-    private final MaterialButton searchActionButton;
+    private final MaterialButton deleteActionButton;
     private final Drawable backArrow;
     private final Drawable forwardArrow;
 
-    public CustomItemViewHolder(@NonNull View itemView) {
+    public CustomItemViewHolder(@NonNull View itemView, @NonNull ListsAdapter adapter) {
       super(itemView);
       backArrow = itemView.getResources().getDrawable(R.drawable.ic_arrow_back_24px);
       forwardArrow = itemView.getResources().getDrawable(R.drawable.ic_arrow_forward_24px);
@@ -147,7 +152,7 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
       cardView = itemView.findViewById(R.id.cat_list_item_card_view);
       addActionButton = itemView.findViewById(R.id.cat_list_action_add_button);
       starActionButton = itemView.findViewById(R.id.cat_list_action_star_button);
-      searchActionButton = itemView.findViewById(R.id.cat_list_action_search_button);
+      deleteActionButton = itemView.findViewById(R.id.cat_list_action_delete_button);
       startActionsButton = itemView.findViewById(R.id.cat_list_item_start_icon);
       endActionsButton = itemView.findViewById(R.id.cat_list_item_end_icon);
 
@@ -157,11 +162,11 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
       starActionButton.setOnClickListener(
           v -> Toast.makeText(v.getContext(), R.string.cat_list_item_star_action_clicked, Toast.LENGTH_SHORT)
               .show());
-      searchActionButton.setOnClickListener(
+      deleteActionButton.setOnClickListener(
           v ->
               Toast.makeText(
                       v.getContext(),
-                      R.string.cat_list_item_search_action_clicked,
+                      R.string.cat_list_item_delete_action_clicked,
                       Toast.LENGTH_SHORT)
                   .show());
       startActionsButton.setOnClickListener(
@@ -203,8 +208,15 @@ public class SwipeableListDemoFragment extends ListsMainDemoFragment {
                         R.string.cat_list_item_primary_action,
                         Toast.LENGTH_SHORT)
                     .show();
-                itemView.postDelayed(
-                    () -> listItemLayout.setSwipeState(STATE_CLOSED, gravity), 500);
+                if (gravity == Gravity.START) {
+                  int position = getBindingAdapterPosition();
+                  if (position != RecyclerView.NO_POSITION) {
+                    adapter.removeItemAt(position);
+                  }
+                } else if (gravity == Gravity.END) {
+                  itemView.postDelayed(
+                      () -> listItemLayout.setSwipeState(STATE_CLOSED, gravity), 500);
+                }
               }
               if (newState != STATE_DRAGGING && newState != STATE_SETTLING) {
                 data.swipeState = newState;
