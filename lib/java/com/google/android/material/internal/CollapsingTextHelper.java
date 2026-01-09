@@ -696,6 +696,17 @@ public final class CollapsingTextHelper {
       currentDrawY = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
 
       setInterpolatedTextSize(fraction);
+
+      if (collapsedLetterSpacing != expandedLetterSpacing) {
+        textPaint.setLetterSpacing(
+            lerp(
+                expandedLetterSpacing,
+                collapsedLetterSpacing,
+                fraction,
+                AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+      } else {
+        textPaint.setLetterSpacing(collapsedLetterSpacing);
+      }
     }
 
     setCollapsedTextBlend(
@@ -710,17 +721,6 @@ public final class CollapsingTextHelper {
               getCurrentExpandedTextColor(), getCurrentCollapsedTextColor(), textBlendFraction));
     } else {
       textPaint.setColor(getCurrentCollapsedTextColor());
-    }
-
-    if (collapsedLetterSpacing != expandedLetterSpacing) {
-      textPaint.setLetterSpacing(
-          lerp(
-              expandedLetterSpacing,
-              collapsedLetterSpacing,
-              fraction,
-              AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-    } else {
-      textPaint.setLetterSpacing(collapsedLetterSpacing);
     }
 
     // Calculates paint parameters for shadow layer.
@@ -1320,11 +1320,11 @@ public final class CollapsingTextHelper {
   }
 
   /**
-   * Returns true if {@code value} is 'close' to it's closest decimal value. Close is currently
+   * Returns true if {@code value1} is 'close' to {@code value2}. Close is currently
    * defined as it's difference being < 0.00001.
    */
-  private static boolean isClose(float value, float targetValue) {
-    return Math.abs(value - targetValue) < 0.00001f;
+  private static boolean isClose(float value1, float value2) {
+    return Math.abs(value1 - value2) < 0.00001f;
   }
 
   public ColorStateList getExpandedTextColor() {
