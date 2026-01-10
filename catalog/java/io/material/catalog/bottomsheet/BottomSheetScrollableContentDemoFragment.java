@@ -18,6 +18,8 @@ package io.material.catalog.bottomsheet;
 
 import io.material.catalog.R;
 
+import static com.google.android.material.bottomsheet.BottomSheetBehavior.getDefaultBottomGradientProtection;
+
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,6 +35,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.internal.ViewUtils;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
+import java.util.Collections;
 
 /**
  * A fragment that displays the a BottomSheet demo with vertical scrollable content for the Catalog
@@ -64,7 +67,8 @@ public class BottomSheetScrollableContentDemoFragment extends DemoFragment {
       BottomSheetDialog bottomSheetDialog =
           new BottomSheetDialog(
               getContext(), R.style.ThemeOverlay_Catalog_BottomSheetDialog_Scrollable);
-      new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
+      new WindowPreferencesManager(requireContext())
+          .applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
       View content =
           LayoutInflater.from(getContext())
               .inflate(R.layout.cat_bottomsheet_scrollable_content, new FrameLayout(getContext()));
@@ -72,17 +76,24 @@ public class BottomSheetScrollableContentDemoFragment extends DemoFragment {
       bottomSheetDialog.getBehavior().setPeekHeight(400);
 
       View bottomSheetContent = content.findViewById(R.id.bottom_drawer_2);
-      ViewUtils.doOnApplyWindowInsets(bottomSheetContent, (v, insets, initialPadding) -> {
-        // Add the inset in the inner NestedScrollView instead to make the edge-to-edge behavior
-        // consistent - i.e., the extra padding will only show at the bottom of all content, i.e.,
-        // only when you can no longer scroll down to show more content.
-        bottomSheetContent.setPaddingRelative(
-            initialPadding.start,
-            initialPadding.top,
-            initialPadding.end,
-            initialPadding.bottom + insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom);
-        return insets;
-      });
+      ViewUtils.doOnApplyWindowInsets(
+          bottomSheetContent,
+          (v, insets, initialPadding) -> {
+            // Add the inset in the inner NestedScrollView instead to make the edge-to-edge behavior
+            // consistent - i.e., the extra padding will only show at the bottom of all content,
+            // i.e.,
+            // only when you can no longer scroll down to show more content.
+            bottomSheetContent.setPaddingRelative(
+                initialPadding.start,
+                initialPadding.top,
+                initialPadding.end,
+                initialPadding.bottom
+                    + insets.getInsets(WindowInsetsCompat.Type.systemBars()).bottom);
+            return insets;
+          });
+      bottomSheetDialog.setProtections(
+          Collections.singletonList(
+              getDefaultBottomGradientProtection(requireContext())));
       return bottomSheetDialog;
     }
   }

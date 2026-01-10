@@ -26,16 +26,16 @@
   <dimen name="mtrl_navigation_rail_icon_margin">14dp</dimen>
   <dimen name="mtrl_navigation_rail_text_bottom_margin">16dp</dimen>
 
-  <dimen name="m3_navigation_rail_elevation">@dimen/m3_comp_navigation_rail_container_elevation</dimen>
-  <dimen name="m3_navigation_rail_icon_size">@dimen/m3_comp_navigation_rail_icon_size</dimen>
-  <dimen name="m3_navigation_rail_default_width">@dimen/m3_comp_navigation_rail_container_width</dimen>
+  <dimen name="m3_navigation_rail_elevation">@dimen/m3_comp_nav_rail_collapsed_container_elevation</dimen>
+  <dimen name="m3_navigation_rail_icon_size">@dimen/m3_comp_nav_rail_item_icon_size</dimen>
+  <dimen name="m3_navigation_rail_default_width">@dimen/m3_comp_nav_rail_collapsed_narrow_container_width</dimen>
   <dimen name="m3_navigation_rail_item_min_height">60dp</dimen>
   <dimen name="m3_navigation_rail_item_padding_top">4dp</dimen>
   <dimen name="m3_navigation_rail_item_padding_top_with_large_font">12dp</dimen>
-  <dimen name="m3_navigation_rail_item_padding_bottom_with_large_font">20dp</dimen>
   <dimen name="m3_navigation_rail_item_padding_bottom">12dp</dimen>
-  <dimen name="m3_navigation_rail_item_active_indicator_width">@dimen/m3_comp_navigation_rail_active_indicator_width</dimen>
-  <dimen name="m3_navigation_rail_item_active_indicator_height">@dimen/m3_comp_navigation_rail_active_indicator_height</dimen>
+  <dimen name="m3_navigation_rail_item_padding_bottom_with_large_font">20dp</dimen>
+  <dimen name="m3_navigation_rail_item_active_indicator_width">@dimen/m3_comp_nav_rail_item_vertical_active_indicator_width</dimen>
+  <dimen name="m3_navigation_rail_item_active_indicator_height">@dimen/m3_comp_nav_rail_item_vertical_active_indicator_height</dimen>
   <dimen name="m3_navigation_rail_item_active_indicator_margin_horizontal">4dp</dimen>
   <dimen name="m3_navigation_rail_label_padding_horizontal">2dp</dimen>
   <dimen name="m3_navigation_rail_icon_label_padding">4dp</dimen>
@@ -47,5 +47,14 @@
   <dimen name="m3_navigation_rail_min_expanded_width">220dp</dimen>
   <dimen name="m3_navigation_rail_max_expanded_width">360dp</dimen>
   <dimen name="m3_navigation_rail_expanded_item_spacing">0dp</dimen>
+
+  <dimen name="m3expressive_nav_rail_item_min_height">@dimen/m3_comp_nav_rail_item_container_height</dimen>
+  <dimen name="m3expressive_nav_rail_min_width">@dimen/m3_comp_nav_rail_collapsed_container_width</dimen>
+  <dimen name="m3expressive_nav_rail_content_margin_top">@dimen/m3_comp_nav_rail_collapsed_top_space</dimen>
+  <dimen name="m3expressive_nav_rail_header_items_margin">@dimen/m3_comp_nav_rail_item_header_space_minimum</dimen>
+  <dimen name="m3expressive_nav_rail_item_vertical_padding">@dimen/m3_comp_nav_rail_item_container_vertical_space</dimen>
+  <dimen name="m3expressive_nav_rail_item_spacing">@dimen/m3_comp_nav_rail_collapsed_item_vertical_space</dimen>
+  <!-- TODO:b/373943921 - integrate tokens when ready -->
+  <dimen name="m3expressive_nav_rail_item_leading_trailing_padding">20dp</dimen>
 
 </resources>

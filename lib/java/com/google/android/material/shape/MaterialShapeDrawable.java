@@ -185,7 +185,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private boolean shadowBitmapDrawingEnable = true;
 
   // Variables for corner morph.
-  private boolean boundsIsEmpty = true;
+  private boolean isRoundRectCornerMorph = true;
   @NonNull private ShapeAppearanceModel strokeShapeAppearanceModel;
   @Nullable private SpringForce cornerSpringForce;
   @NonNull SpringAnimation[] cornerSpringAnimations = new SpringAnimation[NUM_CORNERS];
@@ -194,6 +194,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   // This array holds the corner sizes of the stroke corresponding to the {@link
   // #springAnimatedCornerSizes}.
   @Nullable private float[] springAnimatedStrokeCornerSizes;
+  @Nullable private OnCornerSizeChangeListener onCornerSizeChangeListener;
 
   /**
    * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
@@ -267,6 +268,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
+  public MaterialShapeDrawable(@NonNull ShapeAppearance shapeAppearance) {
+    this(new MaterialShapeDrawableState(shapeAppearance, null));
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
   protected MaterialShapeDrawable(@NonNull MaterialShapeDrawableState drawableState) {
     this.drawableState = drawableState;
     strokePaint.setStyle(Style.STROKE);
@@ -312,6 +319,22 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
+   * Sets the {@link ShapeAppearance} for shapes of this drawable. This can be a {@link
+   * ShapeAppearanceModel} or {@link StateListShapeAppearanceModel}.
+   *
+   * @param shapeAppearance The new {@link ShapeAppearance} object.
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setShapeAppearance(@NonNull ShapeAppearance shapeAppearance) {
+    if (shapeAppearance instanceof ShapeAppearanceModel) {
+      setShapeAppearanceModel((ShapeAppearanceModel) shapeAppearance);
+    } else {
+      setStateListShapeAppearanceModel((StateListShapeAppearanceModel) shapeAppearance);
+    }
+  }
+
+  /**
    * Set the {@link ShapeAppearanceModel} containing the path that will be rendered in this
    * drawable.
    *
@@ -319,8 +342,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    */
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    drawableState.shapeAppearanceModel = shapeAppearanceModel;
-    drawableState.stateListShapeAppearanceModel = null;
+    drawableState.shapeAppearance = shapeAppearanceModel;
     springAnimatedCornerSizes = null;
     springAnimatedStrokeCornerSizes = null;
     invalidateSelf();
@@ -335,7 +357,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @NonNull
   @Override
   public ShapeAppearanceModel getShapeAppearanceModel() {
-    return drawableState.shapeAppearanceModel;
+    return drawableState.shapeAppearance.getDefaultShape();
   }
 
   /**
@@ -348,10 +370,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
-  public void setStateListShapeAppearanceModel(
+  private void setStateListShapeAppearanceModel(
       @NonNull StateListShapeAppearanceModel stateListShapeAppearanceModel) {
-    if (drawableState.stateListShapeAppearanceModel != stateListShapeAppearanceModel) {
-      drawableState.stateListShapeAppearanceModel = stateListShapeAppearanceModel;
+    if (drawableState.shapeAppearance != stateListShapeAppearanceModel) {
+      drawableState.shapeAppearance = stateListShapeAppearanceModel;
       updateShape(getState(), /* skipAnimation= */ true);
       invalidateSelf();
     }
@@ -366,7 +388,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @RestrictTo(LIBRARY_GROUP)
   @Nullable
   public StateListShapeAppearanceModel getStateListShapeAppearanceModel() {
-    return drawableState.stateListShapeAppearanceModel;
+    return drawableState.shapeAppearance instanceof StateListShapeAppearanceModel
+        ? (StateListShapeAppearanceModel) drawableState.shapeAppearance
+        : null;
   }
 
   /**
@@ -620,12 +644,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /** Updates the corners for the given {@link CornerSize}. */
   public void setCornerSize(float cornerSize) {
-    setShapeAppearanceModel(drawableState.shapeAppearanceModel.withCornerSize(cornerSize));
+    setShapeAppearanceModel(drawableState.shapeAppearance.withCornerSize(cornerSize));
   }
 
   /** Updates the corners for the given {@link CornerSize}. */
   public void setCornerSize(@NonNull CornerSize cornerSize) {
-    setShapeAppearanceModel(drawableState.shapeAppearanceModel.withCornerSize(cornerSize));
+    setShapeAppearanceModel(drawableState.shapeAppearance.withCornerSize(cornerSize));
   }
 
   /**
@@ -859,7 +883,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     drawableState.shadowCompatOffset = (int) Math.ceil(z * SHADOW_OFFSET_MULTIPLIER);
     // Recalculate fillPaint tint filter based on z, elevationOverlayProvider, etc.
     updateTintFilter();
-    invalidateSelfIgnoreShape();
+    if (shouldCalculatePath()) {
+      invalidateSelf();
+    } else {
+      invalidateSelfIgnoreShape();
+    }
   }
 
   /**
@@ -965,8 +993,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Returns true if compat shadows should be drawn.
-   * Native elevation shadows can't be drawn for concave paths on API < 29.
+   * Returns true if compat shadows should be drawn. Native elevation shadows can't be drawn for
+   * concave paths on API < 29.
    */
   public boolean requiresCompatShadow() {
     return !isRoundRect() && !path.isConvex() && VERSION.SDK_INT < VERSION_CODES.Q;
@@ -1081,11 +1109,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     pathDirty = true;
     strokePathDirty = true;
     super.onBoundsChange(bounds);
-    if (drawableState.stateListShapeAppearanceModel != null && !bounds.isEmpty()) {
-      // We only want to skip the corner morph animation if this is the first non-empty bounds.
-      updateShape(getState(), /* skipAnimation= */ boundsIsEmpty);
+    if (drawableState.shapeAppearance.isStateful() && !bounds.isEmpty()) {
+      // When bounds change, we want to snap to the new shape without animation.
+      updateShape(getState(), /* skipAnimation= */ true);
     }
-    boundsIsEmpty = bounds.isEmpty();
   }
 
   @Override
@@ -1100,17 +1127,24 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     final int prevStrokeAlpha = strokePaint.getAlpha();
     strokePaint.setAlpha(modulateAlpha(prevStrokeAlpha, drawableState.alpha));
 
+    boolean shouldCalculatePathFromShapeAppearanceModel = shouldCalculatePath();
+
     if (hasFill()) {
       if (pathDirty) {
-        calculatePath(getBoundsAsRectF(), path);
+        if (shouldCalculatePathFromShapeAppearanceModel) {
+          calculatePath(getBoundsAsRectF(), path);
+        }
         pathDirty = false;
       }
       maybeDrawCompatShadow(canvas);
       drawFillShape(canvas);
     }
     if (hasStroke()) {
-      if(strokePathDirty){
-        calculateStrokePath();
+      if (strokePathDirty) {
+        updateStrokeShapeAppearanceModels();
+        if (shouldCalculatePathFromShapeAppearanceModel) {
+          calculateStrokePath();
+        }
         strokePathDirty = false;
       }
       drawStrokeShape(canvas);
@@ -1118,6 +1152,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     fillPaint.setAlpha(prevAlpha);
     strokePaint.setAlpha(prevStrokeAlpha);
+  }
+
+  private boolean shouldCalculatePath() {
+    return hasCompatShadow() || !isRoundRect();
   }
 
   private void maybeDrawCompatShadow(@NonNull Canvas canvas) {
@@ -1133,14 +1171,21 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       return;
     }
 
+    Rect drawableBounds = getBounds();
     // The extra height is the amount that the path draws outside of the bounds of the shape. This
     // happens for some shapes like TriangleEdgeTreatment when it draws a triangle outside.
-    int pathExtraWidth = (int) (pathBounds.width() - getBounds().width());
-    int pathExtraHeight = (int) (pathBounds.height() - getBounds().height());
+    int pathExtraWidth = (int) (pathBounds.width() - drawableBounds.width());
+    int pathExtraHeight = (int) (pathBounds.height() - drawableBounds.height());
 
     if (pathExtraWidth < 0 || pathExtraHeight < 0) {
       throw new IllegalStateException(
-          "Invalid shadow bounds. Check that the treatments result in a valid path.");
+          "Invalid shadow bounds. Check that the treatments result in a valid path."
+              + " extra width: "
+              + pathExtraWidth
+              + " extra height: "
+              + pathExtraHeight
+              + " path bounds: "
+              + pathBounds);
     }
 
     // Drawing the shadow in a bitmap lets us use the clear paint rather than using clipPath to
@@ -1154,8 +1199,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     // Top Left of shadow (left - shadowCompatRadius, top - shadowCompatRadius) should be drawn at
     // (0, 0) on shadowCanvas. Offset is handled by prepareCanvasForShadow and drawCompatShadow.
-    float shadowLeft = getBounds().left - drawableState.shadowCompatRadius - pathExtraWidth;
-    float shadowTop = getBounds().top - drawableState.shadowCompatRadius - pathExtraHeight;
+    float shadowLeft = drawableBounds.left - drawableState.shadowCompatRadius - pathExtraWidth;
+    float shadowTop = drawableBounds.top - drawableState.shadowCompatRadius - pathExtraHeight;
     shadowCanvas.translate(-shadowLeft, -shadowTop);
     drawCompatShadow(shadowCanvas);
     canvas.drawBitmap(shadowLayer, shadowLeft, shadowTop, null);
@@ -1179,7 +1224,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   protected void drawShape(
       @NonNull Canvas canvas, @NonNull Paint paint, @NonNull Path path, @NonNull RectF bounds) {
     drawShape(
-        canvas, paint, path, drawableState.shapeAppearanceModel, springAnimatedCornerSizes, bounds);
+        canvas,
+        paint,
+        path,
+        drawableState.shapeAppearance.getDefaultShape(),
+        springAnimatedCornerSizes,
+        bounds);
   }
 
   /** Draw the path or try to draw a round rect if possible. */
@@ -1207,7 +1257,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         canvas,
         fillPaint,
         path,
-        drawableState.shapeAppearanceModel,
+        drawableState.shapeAppearance.getDefaultShape(),
         springAnimatedCornerSizes,
         getBoundsAsRectF());
   }
@@ -1295,10 +1345,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         // a round rect, use the top left corner size for drawing the round rect.
         return shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(bounds);
       }
-    } else if (areAllElementsEqual(cornerSizeOverrides)
-        && shapeAppearanceModel.hasRoundedCorners()) {
-      // If there are corner size overrides and they're all the same, use the first one for drawing
-      // the round rect.
+    } else if (isRoundRectCornerMorph) {
+      // If the shape being morphed is a round rect, use the first one for drawing the round rect.
       return cornerSizeOverrides[0];
     }
     // Returns a negative corner size to indicate the current shape cannot be drawn as a round rect.
@@ -1335,7 +1383,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @RestrictTo(LIBRARY_GROUP)
   protected final void calculatePathForSize(@NonNull RectF bounds, @NonNull Path path) {
     pathProvider.calculatePath(
-        drawableState.shapeAppearanceModel,
+        drawableState.shapeAppearance.getDefaultShape(),
         springAnimatedCornerSizes,
         drawableState.interpolation,
         bounds,
@@ -1345,7 +1393,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /** Calculates the path that can be used to draw the stroke entirely inside the shape */
   private void calculateStrokePath() {
-    updateStrokeShapeAppearanceModels();
     pathProvider.calculatePath(
         strokeShapeAppearanceModel,
         springAnimatedStrokeCornerSizes,
@@ -1390,7 +1437,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     // Calculates the radius of a round rect, if the stroke shape can be drawn as a round rect.
     float roundRectRadius =
         calculateRoundRectCornerSize(
-            bounds, drawableState.shapeAppearanceModel, springAnimatedCornerSizes);
+            bounds, drawableState.shapeAppearance.getDefaultShape(), springAnimatedCornerSizes);
     if (roundRectRadius >= 0) {
       outline.setRoundRect(getBounds(), roundRectRadius * drawableState.interpolation);
     } else {
@@ -1484,13 +1531,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         || (drawableState.strokeTintList != null && drawableState.strokeTintList.isStateful())
         || (drawableState.strokeColor != null && drawableState.strokeColor.isStateful())
         || (drawableState.fillColor != null && drawableState.fillColor.isStateful())
-        || (drawableState.stateListShapeAppearanceModel != null
-            && drawableState.stateListShapeAppearanceModel.isStateful());
+        || drawableState.shapeAppearance.isStateful();
   }
 
   @Override
   protected boolean onStateChange(int[] state) {
-    if (drawableState.stateListShapeAppearanceModel != null) {
+    if (drawableState.shapeAppearance.isStateful()) {
       updateShape(state);
     }
     boolean paintColorChanged = updateColorsForState(state);
@@ -1508,7 +1554,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private void updateShape(int[] state, boolean skipAnimation) {
     RectF bounds = getBoundsAsRectF();
-    if (drawableState.stateListShapeAppearanceModel == null || bounds.isEmpty()) {
+    if (!drawableState.shapeAppearance.isStateful() || bounds.isEmpty()) {
       return;
     }
     skipAnimation |= cornerSpringForce == null;
@@ -1516,7 +1562,14 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       springAnimatedCornerSizes = new float[NUM_CORNERS];
     }
     ShapeAppearanceModel shapeAppearanceModel =
-        drawableState.stateListShapeAppearanceModel.getShapeForState(state);
+        drawableState.shapeAppearance.getShapeForState(state);
+    isRoundRectCornerMorph =
+        areAllElementsEqual(springAnimatedCornerSizes)
+            && shapeAppearanceModel.isRoundRect(getBoundsAsRectF());
+    if (!isRoundRectCornerMorph) {
+      pathDirty = true;
+      strokePathDirty = true;
+    }
     for (int i = 0; i < NUM_CORNERS; i++) {
       float targetCornerSize =
           pathProvider.getCornerSizeForIndex(i, shapeAppearanceModel).getCornerSize(bounds);
@@ -1582,7 +1635,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       return springAnimatedCornerSizes[ShapeAppearancePathProvider.TOP_LEFT_CORNER_INDEX];
     }
     return drawableState
-        .shapeAppearanceModel
+        .shapeAppearance
+        .getDefaultShape()
         .getTopLeftCornerSize()
         .getCornerSize(getBoundsAsRectF());
   }
@@ -1593,7 +1647,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       return springAnimatedCornerSizes[ShapeAppearancePathProvider.TOP_RIGHT_CORNER_INDEX];
     }
     return drawableState
-        .shapeAppearanceModel
+        .shapeAppearance
+        .getDefaultShape()
         .getTopRightCornerSize()
         .getCornerSize(getBoundsAsRectF());
   }
@@ -1604,7 +1659,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       return springAnimatedCornerSizes[ShapeAppearancePathProvider.BOTTOM_LEFT_CORNER_INDEX];
     }
     return drawableState
-        .shapeAppearanceModel
+        .shapeAppearance
+        .getDefaultShape()
         .getBottomLeftCornerSize()
         .getCornerSize(getBoundsAsRectF());
   }
@@ -1615,7 +1671,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       return springAnimatedCornerSizes[ShapeAppearancePathProvider.BOTTOM_RIGHT_CORNER_INDEX];
     }
     return drawableState
-        .shapeAppearanceModel
+        .shapeAppearance
+        .getDefaultShape()
         .getBottomRightCornerSize()
         .getCornerSize(getBoundsAsRectF());
   }
@@ -1628,10 +1685,56 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    */
   @RestrictTo(LIBRARY_GROUP)
   public boolean isRoundRect() {
-    return drawableState.shapeAppearanceModel.isRoundRect(getBoundsAsRectF())
-        || (springAnimatedCornerSizes != null
-            && areAllElementsEqual(springAnimatedCornerSizes)
-            && drawableState.shapeAppearanceModel.hasRoundedCorners());
+    ShapeAppearanceModel shapeAppearanceModel =
+        drawableState.shapeAppearance.getShapeForState(getState());
+    return shapeAppearanceModel.isRoundRect(getBoundsAsRectF())
+        && (springAnimatedCornerSizes == null || isRoundRectCornerMorph);
+  }
+
+  /**
+   * Sets the {@link OnCornerSizeChangeListener} for this {@link MaterialShapeDrawable}.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setOnCornerSizeChangeListener(
+      @Nullable OnCornerSizeChangeListener onCornerSizeChangeListener) {
+    this.onCornerSizeChangeListener = onCornerSizeChangeListener;
+  }
+
+  /**
+   * Returns the difference in px between the left corners average size and the right corners
+   * average size.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public float getCornerSizeDiffX() {
+    if (springAnimatedCornerSizes != null) {
+      return (springAnimatedCornerSizes[3]
+              + springAnimatedCornerSizes[2]
+              - springAnimatedCornerSizes[1]
+              - springAnimatedCornerSizes[0])
+          / 2;
+    }
+    RectF bounds = getBoundsAsRectF();
+    return (pathProvider.getCornerSizeForIndex(3, getShapeAppearanceModel()).getCornerSize(bounds)
+            + pathProvider.getCornerSizeForIndex(2, getShapeAppearanceModel()).getCornerSize(bounds)
+            - pathProvider.getCornerSizeForIndex(1, getShapeAppearanceModel()).getCornerSize(bounds)
+            - pathProvider
+                .getCornerSizeForIndex(0, getShapeAppearanceModel())
+                .getCornerSize(bounds))
+        / 2;
+  }
+
+  /**
+   * Corner size change listener with optical center shift input.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public interface OnCornerSizeChangeListener {
+    void onCornerSizeChange(float diffX);
   }
 
   private static class SpringAnimatedCornerSizeProperty
@@ -1652,8 +1755,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     @Override
     public void setValue(@NonNull MaterialShapeDrawable drawable, float value) {
-      if (drawable.springAnimatedCornerSizes != null) {
+      if (drawable.springAnimatedCornerSizes != null
+          && drawable.springAnimatedCornerSizes[index] != value) {
         drawable.springAnimatedCornerSizes[index] = value;
+        if (drawable.onCornerSizeChangeListener != null) {
+          drawable.onCornerSizeChangeListener.onCornerSizeChange(drawable.getCornerSizeDiffX());
+        }
         drawable.invalidateSelf();
       }
     }
@@ -1667,8 +1774,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @RestrictTo(LIBRARY_GROUP)
   protected static class MaterialShapeDrawableState extends ConstantState {
 
-    @NonNull ShapeAppearanceModel shapeAppearanceModel;
-    @Nullable StateListShapeAppearanceModel stateListShapeAppearanceModel;
+    @NonNull ShapeAppearance shapeAppearance;
     @Nullable ElevationOverlayProvider elevationOverlayProvider;
 
     @Nullable ColorFilter colorFilter;
@@ -1697,15 +1803,14 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     Style paintStyle = Style.FILL_AND_STROKE;
 
     public MaterialShapeDrawableState(
-        @NonNull ShapeAppearanceModel shapeAppearanceModel,
+        @NonNull ShapeAppearance shapeAppearance,
         @Nullable ElevationOverlayProvider elevationOverlayProvider) {
-      this.shapeAppearanceModel = shapeAppearanceModel;
+      this.shapeAppearance = shapeAppearance;
       this.elevationOverlayProvider = elevationOverlayProvider;
     }
 
     public MaterialShapeDrawableState(@NonNull MaterialShapeDrawableState orig) {
-      shapeAppearanceModel = orig.shapeAppearanceModel;
-      stateListShapeAppearanceModel = orig.stateListShapeAppearanceModel;
+      shapeAppearance = orig.shapeAppearance;
       elevationOverlayProvider = orig.elevationOverlayProvider;
       strokeWidth = orig.strokeWidth;
       colorFilter = orig.colorFilter;

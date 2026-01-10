@@ -19,6 +19,7 @@ package com.google.android.material.behavior;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -26,8 +27,11 @@ import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import androidx.annotation.Dimension;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -38,11 +42,17 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.motion.MotionUtils;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
 
 /**
  * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off the
  * bottom of the screen when scrolling down, and show it when scrolling up.
+ *
+ * <p>If Touch Exploration is enabled, the hide on scroll behavior should be disabled until Touch
+ * Exploration is disabled. Ensure that the content is not obscured due to disabling this behavior
+ * by adding padding to the content.
  *
  * @deprecated Use {@link HideViewOnScrollBehavior} instead.
  *     <p>TODO(b/378132394): Migrate usages of this class to {@link HideViewOnScrollBehavior}.
@@ -88,6 +98,11 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
 
   private int height = 0;
 
+  private AccessibilityManager accessibilityManager;
+  private TouchExplorationStateChangeListener touchExplorationListener;
+
+  private boolean disableOnTouchExploration = true;
+
   /**
    * Positions the scroll state can be set to.
    *
@@ -95,6 +110,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    */
   @RestrictTo(LIBRARY_GROUP)
   @IntDef({STATE_SCROLLED_DOWN, STATE_SCROLLED_UP})
+  @Retention(RetentionPolicy.SOURCE)
   public @interface ScrollState {}
 
   @ScrollState private int currentState = STATE_SCROLLED_UP;
@@ -129,7 +145,37 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
             child.getContext(),
             ENTER_EXIT_ANIM_EASING_ATTR,
             AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+    disableIfTouchExplorationEnabled(child);
     return super.onLayoutChild(parent, child, layoutDirection);
+  }
+
+  private void disableIfTouchExplorationEnabled(V child) {
+    if (accessibilityManager == null) {
+      accessibilityManager = getSystemService(child.getContext(), AccessibilityManager.class);
+    }
+    if (accessibilityManager != null && touchExplorationListener == null) {
+      touchExplorationListener =
+          enabled -> {
+            if (enabled && isScrolledDown()) {
+              slideUp(child);
+            }
+          };
+      accessibilityManager.addTouchExplorationStateChangeListener(touchExplorationListener);
+      child.addOnAttachStateChangeListener(
+          new OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(@NonNull View v) {}
+
+            @Override
+            public void onViewDetachedFromWindow(@NonNull View v) {
+              if (touchExplorationListener != null && accessibilityManager != null) {
+                accessibilityManager.removeTouchExplorationStateChangeListener(
+                    touchExplorationListener);
+                touchExplorationListener = null;
+              }
+            }
+          });
+    }
   }
 
   /**
@@ -236,6 +282,13 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       return;
     }
 
+    // If Touch Exploration is on, we should disable sliding down due to a11y issues.
+    if (disableOnTouchExploration
+        && accessibilityManager != null
+        && accessibilityManager.isTouchExplorationEnabled()) {
+      return;
+    }
+
     if (currentAnimator != null) {
       currentAnimator.cancel();
       child.clearAnimation();
@@ -294,5 +347,15 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   /** Remove all previously added {@link OnScrollStateChangedListener}s. */
   public void clearOnScrollStateChangedListeners() {
     onScrollStateChangedListeners.clear();
+  }
+
+  /** Sets whether or not to disable this behavior if touch exploration is enabled. */
+  public void disableOnTouchExploration(boolean disableOnTouchExploration) {
+    this.disableOnTouchExploration = disableOnTouchExploration;
+  }
+
+  /** Returns whether or not this behavior is disabled if touch exploration is enabled. */
+  public boolean isDisabledOnTouchExploration() {
+    return disableOnTouchExploration;
   }
 }

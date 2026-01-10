@@ -18,5 +18,5 @@
   <string name="error_a11y_label">خطا: نامعتبر</string>
   <string name="mtrl_checkbox_state_description_checked">دارای علامت</string>
   <string name="mtrl_checkbox_state_description_unchecked">بدون علامت</string>
-  <string name="mtrl_checkbox_state_description_indeterminate">برخی موارد علامت دارند</string>
+  <string name="mtrl_checkbox_state_description_indeterminate">ناقص علامت زده‌شده</string>
 </resources>

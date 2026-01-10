@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Vælg tidspunkt</string>
   <string name="material_timepicker_minute">Minut</string>
   <string name="material_timepicker_hour">Time</string>
+  <string name="material_timepicker_minute_error">Minuttal skal være 0-59</string>
+  <string name="material_timepicker_hour_error">Timetal skal være 1-12</string>
+  <string name="material_timepicker_hour_error_24h">Timetal skal være 0-23</string>
   <string name="material_hour_suffix">klokken %1$s</string>
   <string name="material_hour_24h_suffix">%1$s timer</string>
   <string name="material_minute_suffix">%1$s minutter</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Annuller</string>
   <string name="material_timepicker_text_input_mode_description">Skift til teksttilstand for at angive klokkeslæt.</string>
   <string name="material_timepicker_clock_mode_description">Skift til urtilstand for at angive klokkeslæt.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Skift til input-tilstand for tekst</string>
+  <string name="material_timepicker_clock_mode_tooltip">Skift til urtilstand</string>
 </resources>

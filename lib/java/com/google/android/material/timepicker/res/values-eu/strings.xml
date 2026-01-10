@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Hautatu ordua</string>
   <string name="material_timepicker_minute">Minutua</string>
   <string name="material_timepicker_hour">Ordua</string>
+  <string name="material_timepicker_minute_error">Minutuak 0-59 izan behar du</string>
+  <string name="material_timepicker_hour_error">Orduak 1-12 izan behar du</string>
+  <string name="material_timepicker_hour_error_24h">Orduak 0-23 izan behar du</string>
   <string name="material_hour_suffix">%1$s(r)ak dira</string>
   <string name="material_hour_24h_suffix">%1$s ordu</string>
   <string name="material_minute_suffix">%1$s minutu</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Utzi</string>
   <string name="material_timepicker_text_input_mode_description">Ordua idazteko, aldatu testua idazteko metodora.</string>
   <string name="material_timepicker_clock_mode_description">Aldatu erloju modura ordua zehazteko.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Aldatu testua idazteko modura</string>
+  <string name="material_timepicker_clock_mode_tooltip">Aldatu erloju modura</string>
 </resources>

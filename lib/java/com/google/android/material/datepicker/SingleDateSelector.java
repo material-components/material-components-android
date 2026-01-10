@@ -132,9 +132,14 @@ public class SingleDateSelector implements DateSelector<Long> {
             ? format.toPattern()
             : UtcDates.getDefaultTextInputHint(root.getResources(), format);
 
-    dateTextInput.setPlaceholderText(formatHint);
+    dateTextInput.setPlaceholderText(UtcDates.getVerbatimTextInputHint(formatHint));
     if (selectedItem != null) {
       dateEditText.setText(format.format(selectedItem));
+      // Move the cursor to the end of the text field
+      CharSequence text = dateEditText.getText();
+      if (text != null) {
+        dateEditText.setSelection(text.length());
+      }
     }
 
     dateEditText.addTextChangedListener(
@@ -158,7 +163,10 @@ public class SingleDateSelector implements DateSelector<Long> {
           }
         });
 
-    DateSelector.showKeyboardWithAutoHideBehavior(dateEditText);
+    // only show keyboard if touch exploration is disabled
+    if (!DateSelector.isTouchExplorationEnabled(root.getContext())) {
+      DateSelector.showKeyboardWithAutoHideBehavior(dateEditText);
+    }
 
     return root;
   }

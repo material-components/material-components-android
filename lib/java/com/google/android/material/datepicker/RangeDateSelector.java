@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.text.InputType;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
@@ -235,6 +236,11 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     if (selectedStartItem != null) {
       startEditText.setText(format.format(selectedStartItem));
       proposedTextStart = selectedStartItem;
+      // Move the cursor to the end of the text field
+      CharSequence text = startEditText.getText();
+      if (text != null) {
+        startEditText.setSelection(text.length());
+      }
     }
     if (selectedEndItem != null) {
       endEditText.setText(format.format(selectedEndItem));
@@ -246,8 +252,10 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
             ? format.toPattern()
             : UtcDates.getDefaultTextInputHint(root.getResources(), format);
 
-    startTextInput.setPlaceholderText(formatHint);
-    endTextInput.setPlaceholderText(formatHint);
+    SpannableString verbatimHint = UtcDates.getVerbatimTextInputHint(formatHint);
+
+    startTextInput.setPlaceholderText(verbatimHint);
+    endTextInput.setPlaceholderText(verbatimHint);
 
     startEditText.addTextChangedListener(
         new DateFormatTextWatcher(formatHint, format, startTextInput, constraints) {
@@ -281,7 +289,10 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
           }
         });
 
-    DateSelector.showKeyboardWithAutoHideBehavior(startEditText, endEditText);
+    // only show keyboard if touch exploration is disabled
+    if (!DateSelector.isTouchExplorationEnabled(root.getContext())) {
+      DateSelector.showKeyboardWithAutoHideBehavior(startEditText, endEditText);
+    }
 
     return root;
   }

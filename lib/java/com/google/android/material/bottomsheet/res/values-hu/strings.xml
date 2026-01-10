@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Kibontás félig</string>
+  <string name="bottomsheet_action_expand">Kibontás</string>
+  <string name="bottomsheet_action_collapse">Összecsukás</string>
   <string name="bottomsheet_drag_handle_content_description">Csúszka</string>
-  <string name="bottomsheet_action_expand">Az alsó lap kibontása</string>
-  <string name="bottomsheet_action_collapse">Az alsó lap összecsukása</string>
+  <string name="bottomsheet_action_expand_description">Az alsó lap kibontása</string>
+  <string name="bottomsheet_action_half_expand_description">Az alsó lap kibontása félig</string>
+  <string name="bottomsheet_action_collapse_description">Az alsó lap összecsukása</string>
+  <string name="bottomsheet_state_collapsed">Összecsukva</string>
+  <string name="bottomsheet_state_half_expanded">Félig kibontva</string>
+  <string name="bottomsheet_state_expanded">Kibontva</string>
 </resources>

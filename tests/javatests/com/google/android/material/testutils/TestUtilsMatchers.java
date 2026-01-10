@@ -25,6 +25,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import androidx.appcompat.view.menu.MenuItemImpl;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -35,6 +36,7 @@ import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
@@ -330,7 +332,7 @@ public class TestUtilsMatchers {
         // Since the FAB background is round, and may contain the shadow, we'll look at
         // just the center half rect of the content area
         final Rect area = new Rect();
-        fab.getContentRect(area);
+        fab.getMeasuredContentRect(area);
 
         final int rectHeightQuarter = area.height() / 4;
         final int rectWidthQuarter = area.width() / 4;
@@ -404,7 +406,7 @@ public class TestUtilsMatchers {
 
         final FloatingActionButton fab = (FloatingActionButton) view;
         final Rect area = new Rect();
-        fab.getContentRect(area);
+        fab.getMeasuredContentRect(area);
 
         if (area.height() != size) {
           failedCheckDescription =
@@ -439,7 +441,7 @@ public class TestUtilsMatchers {
         final ViewGroup parent = (ViewGroup) view.getParent();
 
         final Rect area = new Rect();
-        fab.getContentRect(area);
+        fab.getMeasuredContentRect(area);
 
         final int absGravity =
             GravityCompat.getAbsoluteGravity(gravity, ViewCompat.getLayoutDirection(view));
@@ -510,6 +512,21 @@ public class TestUtilsMatchers {
       @Override
       public boolean matchesSafely(View view) {
         return view.isPressed();
+      }
+    };
+  }
+
+  /** Returns a matcher that matches {@link View}s that are long-clickable. */
+  public static Matcher<View> isLongClickable() {
+    return new TypeSafeMatcher<View>() {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("is long-clickable");
+      }
+
+      @Override
+      public boolean matchesSafely(View view) {
+        return view.isLongClickable();
       }
     };
   }
@@ -621,6 +638,32 @@ public class TestUtilsMatchers {
       @Override
       public boolean matchesSafely(View view) {
         return ((ExpandableWidget) view).isExpanded();
+      }
+    };
+  }
+
+  /**
+   * Returns a matcher that matches {@link View}s with the specified tooltip text. Only works for
+   * API 26+
+   */
+  public static Matcher<View> withTooltipText(@Nullable final CharSequence text) {
+    return new BoundedMatcher<View, View>(View.class) {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("with tooltip text: ");
+        if (text == null) {
+          description.appendText("null");
+        } else {
+          description.appendText(text.toString());
+        }
+      }
+
+      @Override
+      protected boolean matchesSafely(View item) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+          return false;
+        }
+        return TextUtils.equals(item.getTooltipText(), text);
       }
     };
   }

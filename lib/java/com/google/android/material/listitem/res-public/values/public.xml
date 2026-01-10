@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<resources>
+  <public name="listItemLayoutStyle" type="attr"/>
+  <public name="listItemCardViewStyle" type="attr"/>
+  <public name="listItemCardViewSegmentedStyle" type="attr"/>
+
+  <public name="state_swiped" type="attr" />
+  <public name="minChildWidth" type="attr"/>
+  <public name="swipeEnabled" type="attr"/>
+  <public name="primaryActionSwipeMode" type="attr"/>
+
+  <public name="Widget.Material3.ListItemLayout" type="style"/>
+  <public name="ThemeOverlay.Material3.ListItemLayout.Segmented" type="style"/>
+  <public name="Widget.Material3.ListItemCardView" type="style"/>
+  <public name="Widget.Material3.ListItemCardView.Segmented" type="style"/>
+  <public name="Widget.Material3.ListItemRevealLayout" type="style"/>
+  <public name="Widget.Material3Expressive.ListItemRevealLayout" type="style"/>
+  <public name="ThemeOverlay.Material3.ListItemRevealLayout" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.ListItemRevealLayout" type="style"/>
+  <public name="ShapeAppearance.Material3.ListItem.First" type="style"/>
+  <public name="ShapeAppearance.Material3.ListItem.Middle" type="style"/>
+  <public name="ShapeAppearance.Material3.ListItem.Last" type="style"/>
+  <public name="ShapeAppearance.Material3.ListItem.Single" type="style"/>
+  <public name="ShapeAppearance.Material3.ListItem.Checked" type="style"/>
+  <public name="Widget.Material3.ImageView.ListItem.LeadingIcon" type="style"/>
+  <public name="Widget.Material3.ImageView.ListItem.TrailingIcon" type="style"/>
+  <public name="Widget.Material3.ShapeableImageView.ListItem.LeadingImage" type="style"/>
+  <public name="Widget.Material3.TextView.ListItem.Overline" type="style"/>
+  <public name="Widget.Material3.TextView.ListItem.LabelText" type="style"/>
+  <public name="Widget.Material3.TextView.ListItem.SupportingText" type="style"/>
+  <public name="Widget.Material3.TextView.ListItem.TrailingSupportingText" type="style"/>
+  <public name="Widget.Material3.Checkbox.ListItem" type="style"/>
+  <public name="Widget.Material3.Switch.ListItem" type="style"/>
+  <public name="Widget.Material3.RadioButton.ListItem" type="style"/>
+  <public name="Widget.Material3.Button.IconButton.ListItemRevealLayout" type="style"/>
+  <public name="Widget.Material3.Button.IconButton.Filled.ListItemRevealLayout" type="style"/>
+  <public name="Widget.Material3.Button.IconButton.Filled.Tonal.ListItemRevealLayout" type="style"/>
+  <public name="Widget.Material3.Button.IconButton.Outlined.ListItemRevealLayout" type="style"/>
+  <public name="Widget.Material3Expressive.Button.IconButton.ListItemRevealLayout" type="style"/>
+  <public name="Widget.Material3Expressive.Button.IconButton.Filled.ListItemRevealLayout" type="style"/>
+  <public name="Widget.Material3Expressive.Button.IconButton.Tonal.ListItemRevealLayout" type="style"/>
+  <public name="Widget.Material3Expressive.Button.IconButton.Outlined.ListItemRevealLayout" type="style"/>
+
+  <public name="listItemShapeAppearanceSingle" type="attr"/>
+  <public name="listItemShapeAppearanceFirst" type="attr"/>
+  <public name="listItemShapeAppearanceMiddle" type="attr"/>
+  <public name="listItemShapeAppearanceLast" type="attr"/>
+  <public name="listItemShapeAppearanceChecked" type="attr"/>
+</resources>

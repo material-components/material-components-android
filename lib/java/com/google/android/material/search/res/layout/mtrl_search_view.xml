@@ -29,8 +29,8 @@
       android:id="@+id/open_search_view_root"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:focusable="true"
-      android:focusableInTouchMode="true"
+      android:touchscreenBlocksFocus="true"
+      android:keyboardNavigationCluster="true"
       android:visibility="gone">
 
     <LinearLayout
@@ -74,6 +74,7 @@
             app:navigationContentDescription="@string/searchview_navigation_content_description">
 
           <LinearLayout
+              android:id="@+id/open_search_view_text_container"
               android:layout_width="match_parent"
               android:layout_height="?attr/materialSearchViewToolbarHeight"
               android:gravity="center_vertical"

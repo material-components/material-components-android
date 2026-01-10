@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Half uitvouwen</string>
+  <string name="bottomsheet_action_expand">Uitvouwen</string>
+  <string name="bottomsheet_action_collapse">Samenvouwen</string>
   <string name="bottomsheet_drag_handle_content_description">Handgreep voor slepen</string>
-  <string name="bottomsheet_action_expand">Het blad onderaan uitvouwen</string>
-  <string name="bottomsheet_action_collapse">Het blad onderaan samenvouwen</string>
+  <string name="bottomsheet_action_expand_description">Het blad onderaan uitvouwen</string>
+  <string name="bottomsheet_action_half_expand_description">Het blad onderaan half uitvouwen</string>
+  <string name="bottomsheet_action_collapse_description">Het blad onderaan samenvouwen</string>
+  <string name="bottomsheet_state_collapsed">Samengevouwen</string>
+  <string name="bottomsheet_state_half_expanded">Half uitgevouwen</string>
+  <string name="bottomsheet_state_expanded">Uitgevouwen</string>
 </resources>

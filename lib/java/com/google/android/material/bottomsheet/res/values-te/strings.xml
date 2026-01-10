@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">సగాన్ని విస్తరింపజేయండి</string>
+  <string name="bottomsheet_action_expand">విస్తరించండి</string>
+  <string name="bottomsheet_action_collapse">కుదించండి</string>
   <string name="bottomsheet_drag_handle_content_description">లాగే హ్యాండిల్</string>
-  <string name="bottomsheet_action_expand">దిగువున ఉన్న షీట్‌ను విస్తరిస్తుంది</string>
-  <string name="bottomsheet_action_collapse">దిగువున ఉన్న షీట్‌ను కుదిస్తుంది</string>
+  <string name="bottomsheet_action_expand_description">దిగువున ఉన్న షీట్‌ను విస్తరిస్తుంది</string>
+  <string name="bottomsheet_action_half_expand_description">దిగువున ఉన్న షీట్‌ను సగం విస్తరిస్తుంది</string>
+  <string name="bottomsheet_action_collapse_description">దిగువున ఉన్న షీట్‌ను కుదిస్తుంది</string>
+  <string name="bottomsheet_state_collapsed">కుదించబడింది</string>
+  <string name="bottomsheet_state_half_expanded">సగం విస్తరించబడింది</string>
+  <string name="bottomsheet_state_expanded">విస్తరించబడింది</string>
 </resources>

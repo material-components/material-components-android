@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">반만 펼치기</string>
+  <string name="bottomsheet_action_expand">펼치기</string>
+  <string name="bottomsheet_action_collapse">접기</string>
   <string name="bottomsheet_drag_handle_content_description">드래그 핸들</string>
-  <string name="bottomsheet_action_expand">하단 시트 펼치기</string>
-  <string name="bottomsheet_action_collapse">하단 시트 접기</string>
+  <string name="bottomsheet_action_expand_description">하단 시트 펼치기</string>
+  <string name="bottomsheet_action_half_expand_description">하단 시트 반만 펼치기</string>
+  <string name="bottomsheet_action_collapse_description">하단 시트 접기</string>
+  <string name="bottomsheet_state_collapsed">접힘</string>
+  <string name="bottomsheet_state_half_expanded">반만 펼쳐짐</string>
+  <string name="bottomsheet_state_expanded">펼쳐짐</string>
 </resources>

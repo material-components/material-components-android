@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Развернуть наполовину</string>
+  <string name="bottomsheet_action_expand">Развернуть</string>
+  <string name="bottomsheet_action_collapse">Свернуть</string>
   <string name="bottomsheet_drag_handle_content_description">Маркер перемещения</string>
-  <string name="bottomsheet_action_expand">Развернуть нижний экран</string>
-  <string name="bottomsheet_action_collapse">Свернуть нижний экран</string>
+  <string name="bottomsheet_action_expand_description">Развернуть нижний экран</string>
+  <string name="bottomsheet_action_half_expand_description">Развернуть нижний экран наполовину</string>
+  <string name="bottomsheet_action_collapse_description">Свернуть нижний экран</string>
+  <string name="bottomsheet_state_collapsed">Свернуто</string>
+  <string name="bottomsheet_state_half_expanded">Развернуто наполовину</string>
+  <string name="bottomsheet_state_expanded">Развернуто</string>
 </resources>

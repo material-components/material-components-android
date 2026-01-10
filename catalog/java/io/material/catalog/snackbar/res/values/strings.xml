@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2025 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <string name="cat_snackbar_title" description=" The title of the snackbar catalog demo. [CHAR LIMIT=NONE]">
+    Snackbar
+  </string>
+  <string name="cat_snackbar_description" description="The description of the snackbar catalog demo. [CHAR LIMIT=NONE]">
+    Snackbars show short updates about app processes at the bottom of the screen
+  </string>
+
+  <string name="cat_snackbar_default_button" description="The label of the button that launches a default snackbar. [CHAR LIMIT=NONE]">
+    Default snackbar
+  </string>
+  <string name="cat_snackbar_default_message" description="The message of the default snackbar. [CHAR LIMIT=NONE]">
+    This is a snackbar
+  </string>
+
+  <string name="cat_snackbar_single_line_button" description="The label of the button that launches a single-line snackbar. [CHAR LIMIT=NONE]">
+    Single-line snackbar
+  </string>
+  <string name="cat_snackbar_single_line_message" description="The message of the single-line snackbar. [CHAR LIMIT=NONE]">
+    This is a single-line snackbar that has a long message that should be ellispized.
+  </string>
+
+  <string name="cat_snackbar_with_action_button" description="The label of the button that launches a snackbar with an action. [CHAR LIMIT=NONE]">
+    Snackbar with action
+  </string>
+  <string name="cat_snackbar_with_action_message" description="The message of the snackbar with an action. [CHAR LIMIT=NONE]">
+    Snackbar with action
+  </string>
+  <string name="cat_snackbar_action_title" description="The label of the action button inside the snackbar. [CHAR LIMIT=NONE]">
+    Done
+  </string>
+
+  <string name="cat_snackbar_multi_line_button" description="The label of the button that launches a multi-line snackbar. [CHAR LIMIT=NONE]">
+    Multi-line snackbar
+  </string>
+  <string name="cat_snackbar_multi_line_message" description="The message of the multi-line snackbar. [CHAR LIMIT=NONE]">
+    This is a multi-line snackbar that has a long message which should wrap onto more than one line inside the snackbar.
+  </string>
+
+  <string name="cat_snackbar_custom_shape_button" description="The label of the button that launches a snackbar with a custom background shape. [CHAR LIMIT=NONE]">
+    Custom shape snackbar
+  </string>
+  <string name="cat_snackbar_custom_shape_message" description="The message of the snackbar with a custom background shape. [CHAR LIMIT=NONE]">
+    This is a snackbar with a custom shape with a customized close icon
+  </string>
+
+  <string name="cat_snackbar_with_close_button" description="The label of the button that launches a snackbar with a custom background shape. [CHAR LIMIT=NONE]">
+    Snackbar with close icon
+  </string>
+  <string name="cat_snackbar_with_close_message" description="The message of the snackbar with a custom background shape. [CHAR LIMIT=NONE]">
+    This is a snackbar with a close icon.
+  </string>
+</resources>

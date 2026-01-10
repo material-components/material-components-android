@@ -86,6 +86,7 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
         Month moveTo = calendarConstraints.clamp(current);
         materialCalendar.setCurrentMonth(moveTo);
         materialCalendar.setSelector(CalendarSelector.DAY);
+        materialCalendar.sendAccessibilityFocusEventToMonthDropdown();
       }
     };
   }

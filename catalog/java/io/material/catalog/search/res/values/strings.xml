@@ -69,6 +69,8 @@
           description="Title for trips tab.[CHAR_LIMIT=40]">Trips</string>
   <string name="cat_searchbar_recycler_title"
           description="Title for recycler view demo.[CHAR_LIMIT=100]">RecyclerView Demo</string>
+  <string name="cat_searchbar_appbar_with_icons_title"
+          description="Title for SearchBar in an AppBarLayout with icons demo.[CHAR_LIMIT=NONE]">SearchBar in AppBarLayout with Icons Demo</string>
   <string name="cat_searchbar_recycler_item_title_prefix"
           description="Title for recycler item.[CHAR_LIMIT=40]">Message</string>
 
@@ -86,5 +88,12 @@
   <string name="cat_searchbar_nav_drawer_user"
           description="Label for username display text.[CHAR_LIMIT=NONE]">User</string>
   <string name="cat_searchbar_nav_drawer_email" translatable="false">jdoe@no.where</string>
-
+  <string name="cat_searchbar_home_icon_description"
+          description="Description about a home icon button.[CHAR_LIMIT=NONE]">Home</string>
+  <string name="cat_searchbar_cast_icon_description"
+          description="Description about a cast icon button.[CHAR_LIMIT=NONE]">Cast</string>
+  <string name="cat_searchbar_short_hint"
+      description="Search bar short hint text to open search view [CHAR_LIMIT=40]">Search product</string>
+  <string name="cat_searchbar_menu_switch_title"
+    description="Title of a switch that enables or disables a menu inside of the SearchBar [CHAR_LIMIT=NONE]">Enable menu within SearchBar</string>
 </resources>

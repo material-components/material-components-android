@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Espandi a metà</string>
+  <string name="bottomsheet_action_expand">Espandi</string>
+  <string name="bottomsheet_action_collapse">Comprimi</string>
   <string name="bottomsheet_drag_handle_content_description">Punto di trascinamento</string>
-  <string name="bottomsheet_action_expand">Espandi riquadro inferiore</string>
-  <string name="bottomsheet_action_collapse">Comprimi riquadro inferiore</string>
+  <string name="bottomsheet_action_expand_description">Espandi il riquadro inferiore</string>
+  <string name="bottomsheet_action_half_expand_description">Espandi parzialmente il riquadro inferiore</string>
+  <string name="bottomsheet_action_collapse_description">Comprimi il riquadro inferiore</string>
+  <string name="bottomsheet_state_collapsed">Compresso</string>
+  <string name="bottomsheet_state_half_expanded">Parzialmente espanso</string>
+  <string name="bottomsheet_state_expanded">Espanso</string>
 </resources>

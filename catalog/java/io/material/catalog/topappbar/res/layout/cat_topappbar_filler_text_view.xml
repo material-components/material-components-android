@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   Copyright 2017 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +13,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    android:lineSpacingMultiplier="1.2"
-    android:text="@string/cat_topappbar_lorem_ipsum"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingBottom="36dp"
+  android:orientation="vertical"
+  android:paddingHorizontal="16dp">
+
+  <include layout="@layout/cat_demo_content_text" />
+</LinearLayout>

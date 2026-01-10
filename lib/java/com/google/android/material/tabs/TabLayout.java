@@ -259,6 +259,7 @@ public class TabLayout extends HorizontalScrollView {
 
   /** @hide */
   @IntDef(value = {TAB_LABEL_VISIBILITY_UNLABELED, TAB_LABEL_VISIBILITY_LABELED})
+  @Retention(RetentionPolicy.SOURCE)
   public @interface LabelVisibility {}
 
   /**
@@ -2193,7 +2194,7 @@ public class TabLayout extends HorizontalScrollView {
      *
      * <p>Do not rely on this if using {@link TabLayout#setupWithViewPager(ViewPager)}
      *
-     * @param id, unique id for this tab
+     * @param id unique id for this tab
      */
     @NonNull
     @CanIgnoreReturnValue

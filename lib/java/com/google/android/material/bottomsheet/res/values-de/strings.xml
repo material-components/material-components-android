@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Zur Hälfte maximieren</string>
+  <string name="bottomsheet_action_expand">Maximieren</string>
+  <string name="bottomsheet_action_collapse">Minimieren</string>
   <string name="bottomsheet_drag_handle_content_description">Ziehpunkt</string>
-  <string name="bottomsheet_action_expand">Ansicht am unteren Rand maximieren</string>
-  <string name="bottomsheet_action_collapse">Ansicht am unteren Rand minimieren</string>
+  <string name="bottomsheet_action_expand_description">Ansicht am unteren Rand maximieren</string>
+  <string name="bottomsheet_action_half_expand_description">Ansicht am unteren Rand zur Hälfte maximieren</string>
+  <string name="bottomsheet_action_collapse_description">Ansicht am unteren Rand minimieren</string>
+  <string name="bottomsheet_state_collapsed">Minimiert</string>
+  <string name="bottomsheet_state_half_expanded">Zur Hälfte maximiert</string>
+  <string name="bottomsheet_state_expanded">Maximiert</string>
 </resources>

@@ -26,6 +26,7 @@
   <public name="toggleCheckedStateOnClick" type="attr"/>
   <public name="innerCornerSize" type="attr"/>
   <public name="buttonSizeChange" type="attr"/>
+  <public name="overflowMode" type="attr"/>
   <public name="materialButtonStyle" type="attr"/>
   <public name="materialButtonTonalStyle" type="attr"/>
   <public name="materialButtonOutlinedStyle" type="attr"/>
@@ -36,9 +37,14 @@
   <public name="materialIconButtonOutlinedStyle" type="attr"/>
   <public name="materialButtonGroupStyle" type="attr"/>
   <public name="materialSplitButtonStyle" type="attr"/>
+  <public name="materialSplitButtonLeadingFilledStyle" type="attr"/>
+  <public name="materialSplitButtonLeadingFilledTonalStyle" type="attr"/>
   <public name="materialSplitButtonIconFilledStyle" type="attr"/>
   <public name="materialSplitButtonIconFilledTonalStyle" type="attr"/>
   <public name="materialButtonToggleGroupStyle" type="attr"/>
+  <public name="materialButtonGroupOverflowButtonStyle" type="attr"/>
+  <public name="materialButtonGroupPopupMenuStyle" type="attr"/>
+  <public name="opticalCenterEnabled" type="attr"/>
   <public name="Widget.MaterialComponents.Button" type="style"/>
   <public name="Widget.MaterialComponents.Button.UnelevatedButton" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton" type="style"/>
@@ -67,6 +73,8 @@
   <public name="Widget.Material3.MaterialButtonGroup" type="style"/>
   <public name="Widget.Material3.MaterialButtonGroup.Connected" type="style"/>
   <public name="Widget.Material3.MaterialSplitButton" type="style"/>
+  <public name="Widget.Material3.MaterialSplitButton.LeadingButton.Filled" type="style"/>
+  <public name="Widget.Material3.MaterialSplitButton.LeadingButton.Filled.Tonal" type="style"/>
   <public name="Widget.Material3.MaterialSplitButton.Icon.Filled" type="style"/>
   <public name="Widget.Material3.MaterialSplitButton.Icon.Filled.Tonal" type="style"/>
   <public name="Widget.Material3.MaterialButtonToggleGroup" type="style"/>
@@ -77,4 +85,64 @@
   <public name="ThemeOverlay.Material3.Button.TextButton.Snackbar" type="style"/>
   <public name="ThemeOverlay.Material3.Button.TonalButton" type="style"/>
   <public name="m3_split_button_chevron_avd" type="drawable"/>
+  <public name="Widget.Material3Expressive.Button" type="style"/>
+  <public name="Widget.Material3Expressive.Button.TonalButton" type="style"/>
+  <public name="Widget.Material3Expressive.Button.OutlinedButton" type="style"/>
+  <public name="Widget.Material3Expressive.Button.ElevatedButton" type="style"/>
+  <public name="Widget.Material3Expressive.Button.TextButton" type="style"/>
+  <public name="Widget.Material3Expressive.Button.TextButton.Dialog" type="style"/>
+  <public name="Widget.Material3Expressive.Button.TextButton.Dialog.Icon" type="style"/>
+  <public name="Widget.Material3Expressive.Button.TextButton.Dialog.Flush" type="style"/>
+  <public name="Widget.Material3Expressive.Button.TextButton.Snackbar" type="style"/>
+  <public name="Widget.Material3Expressive.Button.IconButton" type="style"/>
+  <public name="Widget.Material3Expressive.Button.IconButton.Filled" type="style"/>
+  <public name="Widget.Material3Expressive.Button.IconButton.Tonal" type="style"/>
+  <public name="Widget.Material3Expressive.Button.IconButton.Outlined" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.Button.Filled" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.Button.Tonal" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.Button.Outlined" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.Button.TextButton" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.Button.TextButton.Snackbar" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.Button.Elevated" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.Button.IconButton.Standard" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Xsmall" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Xsmall.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Small" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Small.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Medium" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Medium.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Large" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Large.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Xlarge" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.Xlarge.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xsmall" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xsmall.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xsmall.Narrow" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xsmall.Narrow.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xsmall.Wide" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xsmall.Wide.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Small" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Small.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Small.Narrow" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Small.Narrow.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Small.Wide" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Small.Wide.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Medium" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Medium.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Medium.Narrow" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Medium.Narrow.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Medium.Wide" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Medium.Wide.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Large" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Large.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Large.Narrow" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Large.Narrow.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Large.Wide" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Large.Wide.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xlarge" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xlarge.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xlarge.Narrow" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xlarge.Narrow.Square" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xlarge.Wide" type="style"/>
+  <public name="SizeOverlay.Material3Expressive.Button.IconButton.Xlarge.Wide.Square" type="style"/>
 </resources>

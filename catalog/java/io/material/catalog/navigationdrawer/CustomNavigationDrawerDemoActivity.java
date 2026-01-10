@@ -20,11 +20,13 @@ import io.material.catalog.R;
 
 import android.animation.Animator.AnimatorListener;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.content.res.Configuration;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +38,9 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.drawerlayout.widget.DrawerLayout.LayoutParams;
-import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
 import com.google.android.material.motion.MaterialSideContainerBackHelper;
 import com.google.android.material.navigation.DrawerLayoutUtils;
 import io.material.catalog.feature.DemoActivity;
@@ -58,6 +60,7 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
   @Nullable private OnBackAnimationCallback drawerOnBackAnimationCallback;
 
   private DrawerLayout drawerLayout;
+  private ActionBarDrawerToggle toggle;
   private View currentDrawerView;
   private MaterialSideContainerBackHelper sideContainerBackHelper;
 
@@ -75,25 +78,26 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
     setSupportActionBar(toolbar);
 
     drawerLayout = view.findViewById(R.id.drawer);
-    drawerLayout.addDrawerListener(
+    toggle =
         new ActionBarDrawerToggle(
             this,
             drawerLayout,
             toolbar,
             R.string.cat_navigationdrawer_button_show_content_description,
-            R.string.cat_navigationdrawer_button_hide_content_description));
-    drawerLayout.addDrawerListener(
-        new SimpleDrawerListener() {
+            R.string.cat_navigationdrawer_button_hide_content_description) {
           @Override
-          public void onDrawerOpened(@NonNull View drawerView) {
+          public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
             registerBackCallback(drawerView);
           }
 
           @Override
-          public void onDrawerClosed(@NonNull View drawerView) {
+          public void onDrawerClosed(View drawerView) {
+            super.onDrawerClosed(drawerView);
             unregisterBackCallback();
           }
-        });
+        };
+    drawerLayout.addDrawerListener(toggle);
 
     View endDrawer = view.findViewById(R.id.custom_drawer_end);
     view.findViewById(R.id.show_end_drawer_gravity)
@@ -149,6 +153,18 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
     return false;
   }
 
+  @Override
+  protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+    super.onPostCreate(savedInstanceState);
+    toggle.syncState();
+  }
+
+  @Override
+  public void onConfigurationChanged(@NonNull Configuration newConfig) {
+    super.onConfigurationChanged(newConfig);
+    toggle.onConfigurationChanged(newConfig);
+  }
+
   @RequiresApi(VERSION_CODES.UPSIDE_DOWN_CAKE)
   private OnBackAnimationCallback createOnBackAnimationCallback() {
     return new OnBackAnimationCallback() {
@@ -191,5 +207,16 @@ public class CustomNavigationDrawerDemoActivity extends DemoActivity {
         sideContainerBackHelper.cancelBackProgress();
       }
     };
+  }
+
+  @Override
+  public boolean dispatchKeyEvent(KeyEvent keyEvent) {
+    if (keyEvent.getKeyCode() == KeyEvent.KEYCODE_ESCAPE
+        && (drawerLayout.isDrawerOpen(GravityCompat.START)
+            || drawerLayout.isDrawerOpen(GravityCompat.END))) {
+      drawerLayout.closeDrawers();
+      return true;
+    }
+    return super.dispatchKeyEvent(keyEvent);
   }
 }

@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">တစ်ဝက်ချဲ့ရန်</string>
+  <string name="bottomsheet_action_expand">ချဲ့ရန်</string>
+  <string name="bottomsheet_action_collapse">ချုံ့ရန်</string>
   <string name="bottomsheet_drag_handle_content_description">ဖိဆွဲအထိန်း</string>
-  <string name="bottomsheet_action_expand">အောက်ခြေအပိုဆောင်း စာမျက်နှာကို ချဲ့နိုင်သည်</string>
-  <string name="bottomsheet_action_collapse">အောက်ခြေအပိုဆောင်း စာမျက်နှာကို ပိတ်နိုင်သည်</string>
+  <string name="bottomsheet_action_expand_description">အောက်ခြေအပိုဆောင်း စာမျက်နှာကို ချဲ့နိုင်သည်</string>
+  <string name="bottomsheet_action_half_expand_description">အောက်ခြေအပိုဆောင်း စာမျက်နှာကို တစ်ဝက်ချဲ့နိုင်သည်</string>
+  <string name="bottomsheet_action_collapse_description">အောက်ခြေအပိုဆောင်း စာမျက်နှာကို ချုံ့နိုင်သည်</string>
+  <string name="bottomsheet_state_collapsed">ချုံ့ထားသည်</string>
+  <string name="bottomsheet_state_half_expanded">တစ်ဝက်ချဲ့ထားသည်</string>
+  <string name="bottomsheet_state_expanded">ချဲ့ထားသည်</string>
 </resources>

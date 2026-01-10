@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Laajenna puoliväliin</string>
+  <string name="bottomsheet_action_expand">Laajenna</string>
+  <string name="bottomsheet_action_collapse">Tiivistä</string>
   <string name="bottomsheet_drag_handle_content_description">Vetokahva</string>
-  <string name="bottomsheet_action_expand">Laajenna alapaneeli</string>
-  <string name="bottomsheet_action_collapse">Tiivistä alapaneeli</string>
+  <string name="bottomsheet_action_expand_description">Laajenna alapaneeli</string>
+  <string name="bottomsheet_action_half_expand_description">Laajenna alapaneeli puoliksi</string>
+  <string name="bottomsheet_action_collapse_description">Tiivistä alapaneeli</string>
+  <string name="bottomsheet_state_collapsed">Tiivistetty</string>
+  <string name="bottomsheet_state_half_expanded">Puoliksi laajennettu</string>
+  <string name="bottomsheet_state_expanded">Laajennettu</string>
 </resources>

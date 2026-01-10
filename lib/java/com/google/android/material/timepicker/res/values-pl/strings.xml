@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Określ czas</string>
   <string name="material_timepicker_minute">Minuta</string>
   <string name="material_timepicker_hour">Godzina</string>
+  <string name="material_timepicker_minute_error">Zakres minut to 0–59</string>
+  <string name="material_timepicker_hour_error">Zakres godzin to 1–12</string>
+  <string name="material_timepicker_hour_error_24h">Zakres godzin to 0–23</string>
   <string name="material_hour_suffix">%1$s</string>
   <string name="material_hour_24h_suffix">%1$s godz.</string>
   <string name="material_minute_suffix">%1$s minut</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Anuluj</string>
   <string name="material_timepicker_text_input_mode_description">Aby wprowadzić czas, włącz tryb wprowadzania tekstu.</string>
   <string name="material_timepicker_clock_mode_description">Aby wprowadzić czas, włącz tryb zegara.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Przełącz się na tryb wprowadzania tekstu</string>
+  <string name="material_timepicker_clock_mode_tooltip">Przełącz się na tryb zegara</string>
 </resources>

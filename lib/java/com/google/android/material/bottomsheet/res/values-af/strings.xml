@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Vou halfpad uit</string>
+  <string name="bottomsheet_action_expand">Vou uit</string>
+  <string name="bottomsheet_action_collapse">Vou in</string>
   <string name="bottomsheet_drag_handle_content_description">Sleephandvatsel</string>
-  <string name="bottomsheet_action_expand">Vou die onderste blad uit</string>
-  <string name="bottomsheet_action_collapse">Vou die onderste blad in</string>
+  <string name="bottomsheet_action_expand_description">Vou die onderste blad uit</string>
+  <string name="bottomsheet_action_half_expand_description">Vou die onderste blad halfpad uit</string>
+  <string name="bottomsheet_action_collapse_description">Vou die onderste blad in</string>
+  <string name="bottomsheet_state_collapsed">Ingevou</string>
+  <string name="bottomsheet_state_half_expanded">Halfpad uitgevou</string>
+  <string name="bottomsheet_state_expanded">Uitgevou</string>
 </resources>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <!-- Style to use for ListItemLayouts. -->
+  <attr name="listItemLayoutStyle" format="reference"/>
+  <!-- Style to use for ListItemCardView. -->
+  <attr name="listItemCardViewStyle" format="reference"/>
+  <!-- Style to use for segmented ListItemCardView. -->
+  <attr name="listItemCardViewSegmentedStyle" format="reference"/>
+  <!-- Style to use for the ListitemRevealLayout -->
+  <attr name="listItemRevealLayoutStyle" format="reference"/>
+
+  <declare-styleable name="ListItemCardView">
+    <!-- Whether or not to enable swiping, if a sibling RevealableListItem exists. -->
+    <attr name="swipeEnabled" format="boolean"/>
+  </declare-styleable>
+
+  <declare-styleable name="ListItemCardViewStates">
+    <!-- State when a ListItemCardView is being swiped. -->
+    <attr name="state_swiped" format="boolean" />
+  </declare-styleable>
+
+  <declare-styleable name="ListItemRevealLayout">
+    <!-- Minimum width any children are measured as. -->
+    <attr name="minChildWidth" format="dimension" />
+    <!-- Defines the behavior when swiping to reveal the primary action of the ListItemRevealLayout. -->
+    <attr name="primaryActionSwipeMode">
+      <!-- The primary action is disabled. -->
+      <enum name="disabled" value="0"/>
+      <!-- Swiping reveals intermediary states before fully revealing the primary action. -->
+      <enum name="indirect" value="1"/>
+      <!-- Swiping directly reveals the primary action without stopping at intermediary states. -->
+      <enum name="direct" value="2"/>
+    </attr>
+  </declare-styleable>
+
+  <!-- Shape appearance of a single item in the list. -->
+  <attr name="listItemShapeAppearanceSingle" format="reference"/>
+  <!-- Shape appearance of the first item in the list. -->
+  <attr name="listItemShapeAppearanceFirst" format="reference"/>
+  <!-- Shape appearance of middle item in the list. -->
+  <attr name="listItemShapeAppearanceMiddle" format="reference"/>
+  <!-- Shape appearance of the last item in the list. -->
+  <attr name="listItemShapeAppearanceLast" format="reference"/>
+  <!-- Shape appearance of a checked item in the list. -->
+  <attr name="listItemShapeAppearanceChecked" format="reference"/>
+
+</resources>

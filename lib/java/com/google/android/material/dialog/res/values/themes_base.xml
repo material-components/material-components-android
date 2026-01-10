@@ -28,14 +28,124 @@
     <item name="colorOnTertiaryContainer">@color/m3_ref_palette_tertiary30</item>
     <item name="colorOnErrorContainer">@color/m3_ref_palette_error30</item>
 
-    <!-- Widget styles. -->
+    <!-- Dialog themes. -->
+    <item name="alertDialogTheme">@style/ThemeOverlay.Material3Expressive.Dialog.Alert</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3Expressive.MaterialAlertDialog</item>
 
+    <!-- Widget styles. -->
+    <item name="appBarLayoutStyle">@style/Widget.Material3Expressive.AppBarLayout</item>
+    <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
+    <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
+    <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
+
+    <item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar</item>
+
+    <item name="listItemRevealLayoutStyle">@style/Widget.Material3Expressive.ListItemRevealLayout</item>
+
+    <!--
+      Default as primary container FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
+      Please use the corresponding themeoverlay for other color variants via materialThemeOverlay.
+    -->
+    <item name="floatingActionButtonStyle">@style/Widget.Material3Expressive.FloatingActionButton</item>
+    <item name="floatingActionButtonMediumStyle">@style/Widget.Material3Expressive.FloatingActionButton.Medium</item>
+    <item name="floatingActionButtonLargeStyle">@style/Widget.Material3Expressive.FloatingActionButton.Large</item>
+
+    <!--
+      Default as primary container extended FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
+      Please use the corresponding themeoverlay for other color varaints via materialThemeOverlay.
+    -->
+    <item name="extendedFloatingActionButtonSmallStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Small</item>
+    <item name="extendedFloatingActionButtonMediumStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Medium</item>
+    <item name="extendedFloatingActionButtonLargeStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Large</item>
+
+    <item name="materialButtonStyle">@style/Widget.Material3Expressive.Button</item>
+    <item name="materialButtonTonalStyle">@style/Widget.Material3Expressive.Button.TonalButton</item>
+    <item name="materialButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.OutlinedButton</item>
+    <item name="materialButtonElevatedStyle">@style/Widget.Material3Expressive.Button.ElevatedButton</item>
+    <item name="borderlessButtonStyle">@style/Widget.Material3Expressive.Button.TextButton</item>
+    <item name="buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="snackbarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Snackbar</item>
+    <item name="materialIconButtonStyle">@style/Widget.Material3Expressive.Button.IconButton.Standard</item>
+    <item name="materialIconButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.IconButton.Outlined</item>
+    <item name="materialIconButtonFilledStyle">@style/Widget.Material3Expressive.Button.IconButton.Filled</item>
+    <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3Expressive.Button.IconButton.Tonal</item>
+
+    <item name="materialButtonGroupStyle">@style/Widget.Material3Expressive.MaterialButtonGroup</item>
+    <item name="materialButtonToggleGroupStyle">@style/Widget.Material3Expressive.MaterialButtonToggleGroup</item>
+
+    <item name="bottomNavigationStyle">@style/Widget.Material3Expressive.BottomNavigationView</item>
+    <item name="navigationRailStyle">@style/Widget.Material3Expressive.NavigationRailView</item>
+
+    <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
+    <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>
+
+    <!-- Top App Bars. -->
+    <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_comp_app_bar_medium_flexible_container_height</item>
+    <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_comp_app_bar_large_flexible_container_height</item>
+
+    <!-- Action Bar. -->
+    <item name="actionBarSize">@dimen/m3_comp_app_bar_small_container_height</item>
   </style>
 
   <style name="Base.Theme.Material3Expressive.Dark.Dialog" parent="Theme.Material3.Dark.Dialog">
 
-    <!-- Widget styles. -->
+    <!-- Dialog themes. -->
+    <item name="alertDialogTheme">@style/ThemeOverlay.Material3Expressive.Dialog.Alert</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.Material3Expressive.MaterialAlertDialog</item>
 
+    <!-- Widget styles. -->
+    <item name="appBarLayoutStyle">@style/Widget.Material3Expressive.AppBarLayout</item>
+    <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3Expressive.CollapsingToolbar</item>
+    <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Medium</item>
+    <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
+
+    <item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar</item>
+
+    <item name="listItemRevealLayoutStyle">@style/Widget.Material3Expressive.ListItemRevealLayout</item>
+
+    <!--
+      Default as primary container FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
+      Please use the corresponding themeoverlay for other color variants via materialThemeOverlay.
+    -->
+    <item name="floatingActionButtonStyle">@style/Widget.Material3Expressive.FloatingActionButton</item>
+    <item name="floatingActionButtonMediumStyle">@style/Widget.Material3Expressive.FloatingActionButton.Medium</item>
+    <item name="floatingActionButtonLargeStyle">@style/Widget.Material3Expressive.FloatingActionButton.Large</item>
+
+    <!--
+      Default as primary container extended FABs. Unlisted FAB style attributes are not updated in Material3Expressive.
+      Please use the corresponding themeoverlay for other color varaints via materialThemeOverlay.
+    -->
+    <item name="extendedFloatingActionButtonSmallStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Small</item>
+    <item name="extendedFloatingActionButtonMediumStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Medium</item>
+    <item name="extendedFloatingActionButtonLargeStyle">@style/Widget.Material3Expressive.ExtendedFloatingActionButton.Large</item>
+
+    <item name="materialButtonStyle">@style/Widget.Material3Expressive.Button</item>
+    <item name="materialButtonTonalStyle">@style/Widget.Material3Expressive.Button.TonalButton</item>
+    <item name="materialButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.OutlinedButton</item>
+    <item name="materialButtonElevatedStyle">@style/Widget.Material3Expressive.Button.ElevatedButton</item>
+    <item name="borderlessButtonStyle">@style/Widget.Material3Expressive.Button.TextButton</item>
+    <item name="buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="snackbarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Snackbar</item>
+    <item name="materialIconButtonStyle">@style/Widget.Material3Expressive.Button.IconButton.Standard</item>
+    <item name="materialIconButtonOutlinedStyle">@style/Widget.Material3Expressive.Button.IconButton.Outlined</item>
+    <item name="materialIconButtonFilledStyle">@style/Widget.Material3Expressive.Button.IconButton.Filled</item>
+    <item name="materialIconButtonFilledTonalStyle">@style/Widget.Material3Expressive.Button.IconButton.Tonal</item>
+
+    <item name="materialButtonGroupStyle">@style/Widget.Material3Expressive.MaterialButtonGroup</item>
+    <item name="materialButtonToggleGroupStyle">@style/Widget.Material3Expressive.MaterialButtonToggleGroup</item>
+
+    <item name="bottomNavigationStyle">@style/Widget.Material3Expressive.BottomNavigationView</item>
+    <item name="navigationRailStyle">@style/Widget.Material3Expressive.NavigationRailView</item>
+
+    <item name="toolbarStyle">@style/Widget.Material3Expressive.Toolbar</item>
+    <item name="toolbarSurfaceStyle">@style/Widget.Material3Expressive.Toolbar.Surface</item>
+
+    <!-- Top App Bars. -->
+    <item name="collapsingToolbarLayoutMediumSize">@dimen/m3_comp_app_bar_medium_flexible_container_height</item>
+    <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_comp_app_bar_large_flexible_container_height</item>
+
+    <!-- Action Bar. -->
+    <item name="actionBarSize">@dimen/m3_comp_app_bar_small_container_height</item>
   </style>
 
   <style name="Base.Theme.Material3Expressive.Light.Dialog.FixedSize">
@@ -143,8 +253,13 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="dockedToolbarStyle">@style/Widget.Material3.DockedToolbar</item>
+    <item name="dockedToolbarVibrantStyle">@style/Widget.Material3.DockedToolbar.Vibrant</item>
     <item name="drawerLayoutStyle">@style/Widget.Material3.DrawerLayout</item>
     <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
+    <item name="extendedFloatingActionButtonSmallStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Small</item>
+    <item name="extendedFloatingActionButtonMediumStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Medium</item>
+    <item name="extendedFloatingActionButtonLargeStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Large</item>
     <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
     <item name="extendedFloatingActionButtonSecondaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary</item>
     <item name="extendedFloatingActionButtonTertiaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary</item>
@@ -159,6 +274,7 @@
     <item name="floatingActionButtonSmallSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Secondary</item>
     <item name="floatingActionButtonSmallTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Tertiary</item>
     <item name="floatingActionButtonSmallSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Small.Surface</item>
+    <item name="floatingActionButtonMediumStyle">@style/Widget.Material3.FloatingActionButton.Medium</item>
     <item name="floatingActionButtonLargeStyle">?attr/floatingActionButtonLargePrimaryStyle</item>
     <item name="floatingActionButtonLargePrimaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Primary</item>
     <item name="floatingActionButtonLargeSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Secondary</item>
@@ -167,6 +283,10 @@
     <item name="floatingToolbarStyle">@style/Widget.Material3.FloatingToolbar</item>
     <item name="floatingToolbarVibrantStyle">@style/Widget.Material3.FloatingToolbar.Vibrant</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="listItemLayoutStyle">@style/Widget.Material3.ListItemLayout</item>
+    <item name="listItemCardViewStyle">@style/Widget.Material3.ListItemCardView</item>
+    <item name="listItemCardViewSegmentedStyle">@style/Widget.Material3.ListItemCardView.Segmented</item>
+    <item name="listItemRevealLayoutStyle">@style/Widget.Material3.ListItemRevealLayout</item>
     <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
@@ -178,6 +298,8 @@
     <item name="materialButtonElevatedStyle">@style/Widget.Material3.Button.ElevatedButton</item>
     <item name="materialButtonGroupStyle">@style/Widget.Material3.MaterialButtonGroup</item>
     <item name="materialSplitButtonStyle">@style/Widget.Material3.MaterialSplitButton</item>
+    <item name="materialSplitButtonLeadingFilledStyle">@style/Widget.Material3.SplitButton.LeadingButton.Filled</item>
+    <item name="materialSplitButtonLeadingFilledTonalStyle">@style/Widget.Material3.SplitButton.LeadingButton.Filled.Tonal</item>
     <item name="materialSplitButtonIconFilledStyle">@style/Widget.Material3.SplitButton.IconButton.Filled</item>
     <item name="materialSplitButtonIconFilledTonalStyle">@style/Widget.Material3.SplitButton.IconButton.Filled.Tonal</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3.MaterialButtonToggleGroup</item>
@@ -193,11 +315,13 @@
     <item name="materialSwitchStyle">@style/Widget.Material3.CompoundButton.MaterialSwitch</item>
     <item name="navigationRailStyle">@style/Widget.Material3.NavigationRailView</item>
     <item name="navigationViewStyle">@style/Widget.Material3.NavigationView</item>
+    <item name="overflowLinearLayoutStyle">@style/Widget.Material3.OverflowLinearLayout</item>
     <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
     <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.Material3.Button.TextButton.Snackbar</item>
     <item name="snackbarTextViewStyle">@style/Widget.Material3.Snackbar.TextView</item>
+    <item name="snackbarCloseButtonStyle">@style/Widget.Material3.Button.IconButton.Close.Snackbar</item>
     <item name="switchStyle">@style/Widget.Material3.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
     <item name="tabSecondaryStyle">@style/Widget.Material3.TabLayout.Secondary</item>
@@ -280,11 +404,27 @@
 
     <!-- Shape attributes. -->
     <item name="shapeCornerFamily">@integer/m3_sys_shape_corner_full_corner_family</item>
+    <item name="shapeCornerSizeExtraSmall">@dimen/m3_sys_shape_corner_value_extra_small</item>
+    <item name="shapeCornerSizeSmall">@dimen/m3_sys_shape_corner_value_small</item>
+    <item name="shapeCornerSizeMedium">@dimen/m3_sys_shape_corner_value_medium</item>
+    <item name="shapeCornerSizeLarge">@dimen/m3_sys_shape_corner_value_large</item>
+    <item name="shapeCornerSizeLargeIncreased">@dimen/m3_sys_shape_corner_value_large_increased</item>
+    <item name="shapeCornerSizeExtraLarge">@dimen/m3_sys_shape_corner_value_extra_large</item>
+    <item name="shapeCornerSizeExtraLargeIncreased">@dimen/m3_sys_shape_corner_value_extra_large_increased</item>
+    <item name="shapeCornerSizeExtraExtraLarge">@dimen/m3_sys_shape_corner_value_extra_extra_large</item>
     <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
     <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Small</item>
     <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Medium</item>
     <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.Large</item>
+    <item name="shapeAppearanceCornerLargeIncreased">@style/ShapeAppearance.Material3.Corner.LargeIncreased</item>
     <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+    <item name="shapeAppearanceCornerExtraLargeIncreased">@style/ShapeAppearance.Material3.Corner.ExtraLargeIncreased</item>
+    <item name="shapeAppearanceCornerExtraExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge</item>
+    <item name="listItemShapeAppearanceSingle">@style/ShapeAppearance.Material3.ListItem.Single</item>
+    <item name="listItemShapeAppearanceFirst">@style/ShapeAppearance.Material3.ListItem.First</item>
+    <item name="listItemShapeAppearanceMiddle">@style/ShapeAppearance.Material3.ListItem.Middle</item>
+    <item name="listItemShapeAppearanceLast">@style/ShapeAppearance.Material3.ListItem.Last</item>
+    <item name="listItemShapeAppearanceChecked">@style/ShapeAppearance.Material3.ListItem.Checked</item>
 
     <!-- Deprecated shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
@@ -436,8 +576,13 @@
     <item name="collapsingToolbarLayoutStyle">@style/Widget.Material3.CollapsingToolbar</item>
     <item name="collapsingToolbarLayoutMediumStyle">@style/Widget.Material3.CollapsingToolbar.Medium</item>
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3.CollapsingToolbar.Large</item>
+    <item name="dockedToolbarStyle">@style/Widget.Material3.DockedToolbar</item>
+    <item name="dockedToolbarVibrantStyle">@style/Widget.Material3.DockedToolbar.Vibrant</item>
     <item name="drawerLayoutStyle">@style/Widget.Material3.DrawerLayout</item>
     <item name="extendedFloatingActionButtonStyle">?attr/extendedFloatingActionButtonPrimaryStyle</item>
+    <item name="extendedFloatingActionButtonSmallStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Small</item>
+    <item name="extendedFloatingActionButtonMediumStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Medium</item>
+    <item name="extendedFloatingActionButtonLargeStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Large</item>
     <item name="extendedFloatingActionButtonPrimaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Primary</item>
     <item name="extendedFloatingActionButtonSecondaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary</item>
     <item name="extendedFloatingActionButtonTertiaryStyle">@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary</item>
@@ -452,12 +597,19 @@
     <item name="floatingActionButtonSmallSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Secondary</item>
     <item name="floatingActionButtonSmallTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Small.Tertiary</item>
     <item name="floatingActionButtonSmallSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Small.Surface</item>
+    <item name="floatingActionButtonMediumStyle">@style/Widget.Material3.FloatingActionButton.Medium</item>
     <item name="floatingActionButtonLargeStyle">?attr/floatingActionButtonLargePrimaryStyle</item>
     <item name="floatingActionButtonLargePrimaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Primary</item>
     <item name="floatingActionButtonLargeSecondaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Secondary</item>
     <item name="floatingActionButtonLargeTertiaryStyle">@style/Widget.Material3.FloatingActionButton.Large.Tertiary</item>
     <item name="floatingActionButtonLargeSurfaceStyle">@style/Widget.Material3.FloatingActionButton.Large.Surface</item>
+    <item name="floatingToolbarStyle">@style/Widget.Material3.FloatingToolbar</item>
+    <item name="floatingToolbarVibrantStyle">@style/Widget.Material3.FloatingToolbar.Vibrant</item>
     <item name="linearProgressIndicatorStyle">@style/Widget.Material3.LinearProgressIndicator</item>
+    <item name="listItemLayoutStyle">@style/Widget.Material3.ListItemLayout</item>
+    <item name="listItemCardViewStyle">@style/Widget.Material3.ListItemCardView</item>
+    <item name="listItemCardViewSegmentedStyle">@style/Widget.Material3.ListItemCardView.Segmented</item>
+    <item name="listItemRevealLayoutStyle">@style/Widget.Material3.ListItemRevealLayout</item>
     <item name="loadingIndicatorStyle">@style/Widget.Material3.LoadingIndicator</item>
     <item name="materialIconButtonStyle">@style/Widget.Material3.Button.IconButton</item>
     <item name="materialIconButtonFilledStyle">@style/Widget.Material3.Button.IconButton.Filled</item>
@@ -469,6 +621,8 @@
     <item name="materialButtonElevatedStyle">@style/Widget.Material3.Button.ElevatedButton</item>
     <item name="materialButtonGroupStyle">@style/Widget.Material3.MaterialButtonGroup</item>
     <item name="materialSplitButtonStyle">@style/Widget.Material3.MaterialSplitButton</item>
+    <item name="materialSplitButtonLeadingFilledStyle">@style/Widget.Material3.SplitButton.LeadingButton.Filled</item>
+    <item name="materialSplitButtonLeadingFilledTonalStyle">@style/Widget.Material3.SplitButton.LeadingButton.Filled.Tonal</item>
     <item name="materialSplitButtonIconFilledStyle">@style/Widget.Material3.SplitButton.IconButton.Filled</item>
     <item name="materialSplitButtonIconFilledTonalStyle">@style/Widget.Material3.SplitButton.IconButton.Filled.Tonal</item>
     <item name="materialButtonToggleGroupStyle">@style/Widget.Material3.MaterialButtonToggleGroup</item>
@@ -484,11 +638,13 @@
     <item name="materialSwitchStyle">@style/Widget.Material3.CompoundButton.MaterialSwitch</item>
     <item name="navigationRailStyle">@style/Widget.Material3.NavigationRailView</item>
     <item name="navigationViewStyle">@style/Widget.Material3.NavigationView</item>
+    <item name="overflowLinearLayoutStyle">@style/Widget.Material3.OverflowLinearLayout</item>
     <item name="radioButtonStyle">@style/Widget.Material3.CompoundButton.RadioButton</item>
     <item name="sliderStyle">@style/Widget.Material3.Slider</item>
     <item name="snackbarStyle">@style/Widget.Material3.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.Material3.Button.TextButton.Snackbar</item>
     <item name="snackbarTextViewStyle">@style/Widget.Material3.Snackbar.TextView</item>
+    <item name="snackbarCloseButtonStyle">@style/Widget.Material3.Button.IconButton.Close.Snackbar</item>
     <item name="switchStyle">@style/Widget.Material3.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.Material3.TabLayout</item>
     <item name="tabSecondaryStyle">@style/Widget.Material3.TabLayout.Secondary</item>
@@ -571,11 +727,27 @@
 
     <!-- Shape attributes. -->
     <item name="shapeCornerFamily">@integer/m3_sys_shape_corner_full_corner_family</item>
+    <item name="shapeCornerSizeExtraSmall">@dimen/m3_sys_shape_corner_value_extra_small</item>
+    <item name="shapeCornerSizeSmall">@dimen/m3_sys_shape_corner_value_small</item>
+    <item name="shapeCornerSizeMedium">@dimen/m3_sys_shape_corner_value_medium</item>
+    <item name="shapeCornerSizeLarge">@dimen/m3_sys_shape_corner_value_large</item>
+    <item name="shapeCornerSizeLargeIncreased">@dimen/m3_sys_shape_corner_value_large_increased</item>
+    <item name="shapeCornerSizeExtraLarge">@dimen/m3_sys_shape_corner_value_extra_large</item>
+    <item name="shapeCornerSizeExtraLargeIncreased">@dimen/m3_sys_shape_corner_value_extra_large_increased</item>
+    <item name="shapeCornerSizeExtraExtraLarge">@dimen/m3_sys_shape_corner_value_extra_extra_large</item>
     <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.Material3.Corner.ExtraSmall</item>
     <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.Material3.Corner.Small</item>
     <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.Material3.Corner.Medium</item>
     <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.Material3.Corner.Large</item>
+    <item name="shapeAppearanceCornerLargeIncreased">@style/ShapeAppearance.Material3.Corner.LargeIncreased</item>
     <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraLarge</item>
+    <item name="shapeAppearanceCornerExtraLargeIncreased">@style/ShapeAppearance.Material3.Corner.ExtraLargeIncreased</item>
+    <item name="shapeAppearanceCornerExtraExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge</item>
+    <item name="listItemShapeAppearanceSingle">@style/ShapeAppearance.Material3.ListItem.Single</item>
+    <item name="listItemShapeAppearanceFirst">@style/ShapeAppearance.Material3.ListItem.First</item>
+    <item name="listItemShapeAppearanceMiddle">@style/ShapeAppearance.Material3.ListItem.Middle</item>
+    <item name="listItemShapeAppearanceLast">@style/ShapeAppearance.Material3.ListItem.Last</item>
+    <item name="listItemShapeAppearanceChecked">@style/ShapeAppearance.Material3.ListItem.Checked</item>
 
     <!-- Deprecated shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
@@ -689,6 +861,7 @@
     <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
     <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
+    <item name="snackbarCloseButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Icon.Close.Snackbar</item>
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
@@ -746,6 +919,7 @@
     <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
     <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
+    <item name="snackbarCloseButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Icon.Close.Snackbar</item>
     <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
     <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>

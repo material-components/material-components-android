@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">وقت منتخب کریں</string>
   <string name="material_timepicker_minute">منٹ</string>
   <string name="material_timepicker_hour">گھنٹہ</string>
+  <string name="material_timepicker_minute_error">منٹ 0-59 ہونا چاہیے</string>
+  <string name="material_timepicker_hour_error">گھنٹہ 1-12 ہونا چاہیے</string>
+  <string name="material_timepicker_hour_error_24h">گھنٹہ 0-23 ہونا چاہیے</string>
   <string name="material_hour_suffix">%1$s بجے</string>
   <string name="material_hour_24h_suffix">%1$s گھنٹے</string>
   <string name="material_minute_suffix">%1$s منٹ</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">منسوخ کریں</string>
   <string name="material_timepicker_text_input_mode_description">وقت ان پٹ کے لیے ٹیکسٹ ان پٹ وضع پر سوئچ کریں۔</string>
   <string name="material_timepicker_clock_mode_description">وقت ان پٹ کے لیے گھڑی و‏ضع پر سوئچ کریں۔</string>
+  <string name="material_timepicker_text_input_mode_tooltip">ٹیکسٹ اِن پٹ موڈ پر سوئچ کریں</string>
+  <string name="material_timepicker_clock_mode_tooltip">گھڑی موڈ پر سوئچ کریں</string>
 </resources>

@@ -19,11 +19,16 @@ package io.material.catalog.card;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.behavior.SwipeDismissBehavior.OnDismissListener;
 import com.google.android.material.card.MaterialCardView;
@@ -55,20 +60,75 @@ public final class CardSwipeDismissFragment extends DemoFragment {
 
     coordinatorParams.setBehavior(swipeDismissBehavior);
 
-    swipeDismissBehavior.setListener(new OnDismissListener() {
+    OnDismissListener dismissListener = createDismissListener(container, cardContentLayout);
+    swipeDismissBehavior.setListener(dismissListener);
+
+    setDismissOnKeyListener(cardContentLayout, dismissListener);
+    setDismissAccessibilityDelegate(cardContentLayout, dismissListener);
+
+    return view;
+  }
+
+  private OnDismissListener createDismissListener(
+      CoordinatorLayout container, MaterialCardView cardContentLayout) {
+    return new OnDismissListener() {
       @Override
       public void onDismiss(View view) {
         Snackbar.make(container, R.string.cat_card_dismissed, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.cat_card_undo, v -> resetCard(cardContentLayout)).show();
+            .setAction(R.string.cat_card_undo, v -> resetCard(cardContentLayout))
+            .show();
       }
 
       @Override
       public void onDragStateChanged(int state) {
         CardSwipeDismissFragment.onDragStateChanged(state, cardContentLayout);
       }
-    });
+    };
+  }
 
-    return view;
+  private void setDismissOnKeyListener(
+      MaterialCardView cardContentLayout, OnDismissListener dismissListener) {
+    cardContentLayout.setOnKeyListener(
+        (view, keyCode, event) -> {
+          if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL) {
+            dismissCard(view, dismissListener);
+            return true;
+          }
+          return false;
+        });
+  }
+
+  private void setDismissAccessibilityDelegate(
+      MaterialCardView cardContentLayout, OnDismissListener dismissListener) {
+    ViewCompat.setAccessibilityDelegate(
+        cardContentLayout,
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View host, AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.addAction(
+                new AccessibilityActionCompat(
+                    AccessibilityNodeInfoCompat.ACTION_DISMISS,
+                    host.getResources().getString(R.string.cat_card_dismiss_action)));
+          }
+
+          @Override
+          public boolean performAccessibilityAction(View host, int action, Bundle args) {
+            if (action == AccessibilityNodeInfoCompat.ACTION_DISMISS) {
+              dismissCard(host, dismissListener);
+              return true;
+            }
+            return super.performAccessibilityAction(host, action, args);
+          }
+        });
+  }
+
+  private void dismissCard(View card, OnDismissListener dismissListener) {
+    if (card.getVisibility() == View.VISIBLE) {
+      dismissListener.onDismiss(card);
+      card.setVisibility(View.GONE);
+    }
   }
 
   private static void onDragStateChanged(int state, MaterialCardView cardContentLayout) {
@@ -89,6 +149,7 @@ public final class CardSwipeDismissFragment extends DemoFragment {
         .getLayoutParams();
     params.setMargins(0, 0, 0, 0);
     cardContentLayout.setAlpha(1.0f);
+    cardContentLayout.setVisibility(View.VISIBLE);
     cardContentLayout.requestLayout();
   }
 }

@@ -16,5 +16,7 @@
 -->
 <resources>
   <public name="dockedToolbarStyle" type="attr"/>
+  <public name="dockedToolbarVibrantStyle" type="attr"/>
   <public name="Widget.Material3.DockedToolbar" type="style"/>
+  <public name="Widget.Material3.DockedToolbar.Vibrant" type="style"/>
 </resources>

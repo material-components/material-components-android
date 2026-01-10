@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">ਸਮਾਂ ਚੁਣੋ</string>
   <string name="material_timepicker_minute">ਮਿੰਟ</string>
   <string name="material_timepicker_hour">ਘੰਟਾ</string>
+  <string name="material_timepicker_minute_error">ਮਿੰਟ 0–59 ਹੋਣੇ ਲਾਜ਼ਮੀ ਹਨ</string>
+  <string name="material_timepicker_hour_error">ਘੰਟੇ 1–12 ਹੋਣੇ ਲਾਜ਼ਮੀ ਹਨ</string>
+  <string name="material_timepicker_hour_error_24h">ਘੰਟੇ 0–23 ਹੋਣੇ ਲਾਜ਼ਮੀ ਹਨ</string>
   <string name="material_hour_suffix">%1$s ਵਜੇ</string>
   <string name="material_hour_24h_suffix">%1$s ਘੰਟੇ</string>
   <string name="material_minute_suffix">%1$s ਮਿੰਟ</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">ਰੱਦ ਕਰੋ</string>
   <string name="material_timepicker_text_input_mode_description">ਸਮਾਂ ਇਨਪੁੱਟ ਕਰਨ ਲਈ ਲਿਖਤ ਇਨਪੁੱਟ ਮੋਡ \'ਤੇ ਸਵਿੱਚ ਕਰੋ।</string>
   <string name="material_timepicker_clock_mode_description">ਸਮਾਂ ਇਨਪੁੱਟ ਕਰਨ ਲਈ ਘੜੀ ਮੋਡ \'ਤੇ ਸਵਿੱਚ ਕਰੋ।</string>
+  <string name="material_timepicker_text_input_mode_tooltip">ਲਿਖਤ ਇਨਪੁੱਟ ਮੋਡ \'ਤੇ ਸਵਿੱਚ ਕਰੋ</string>
+  <string name="material_timepicker_clock_mode_tooltip">ਘੜੀ ਮੋਡ \'ਤੇ ਸਵਿੱਚ ਕਰੋ</string>
 </resources>

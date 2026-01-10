@@ -50,7 +50,6 @@
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
       android:lineSpacingMultiplier="1.2"
-      android:accessibilityTraversalAfter="@id/docked_toolbar"
       android:text="@string/cat_docked_toolbar_filler_text" />
 
   </LinearLayout>
@@ -61,10 +60,9 @@
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
   android:layout_gravity="bottom"
-  android:accessibilityTraversalBefore="@id/body_text"
   app:layout_behavior="com.google.android.material.behavior.HideViewOnScrollBehavior">
 
-  <LinearLayout
+  <com.google.android.material.overflow.OverflowLinearLayout
     android:id="@+id/docked_toolbar_child"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -72,7 +70,7 @@
     android:orientation="horizontal">
 
     <include layout="@layout/cat_docked_toolbar_content" />
-  </LinearLayout>
+  </com.google.android.material.overflow.OverflowLinearLayout>
 </com.google.android.material.dockedtoolbar.DockedToolbarLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

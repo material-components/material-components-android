@@ -207,7 +207,10 @@ public class CarouselLayoutManager extends LayoutManager
     if (attrs != null) {
       TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Carousel);
       setCarouselAlignment(a.getInt(R.styleable.Carousel_carousel_alignment, ALIGNMENT_START));
-      setOrientation(a.getInt(R.styleable.RecyclerView_android_orientation, HORIZONTAL));
+      setOrientation(
+          a.getInt(
+              androidx.recyclerview.R.styleable.RecyclerView_android_orientation,
+              HORIZONTAL));
       a.recycle();
     }
   }
@@ -457,7 +460,6 @@ public class CarouselLayoutManager extends LayoutManager
         continue;
       }
       View child = recycler.getViewForPosition(i);
-      measureChildWithMargins(child, 0, 0);
       // Add this child to the first index of the RecyclerView.
       addAndLayoutView(
           child, /* index= */ 0, new ChildCalculations(child, center, offsetCenter, range));
@@ -509,7 +511,6 @@ public class CarouselLayoutManager extends LayoutManager
         continue;
       }
       View child = recycler.getViewForPosition(i);
-      measureChildWithMargins(child, 0, 0);
       // Add this child to the last index of the RecyclerView
       addAndLayoutView(
           child, /* index= */ -1, new ChildCalculations(child, center, offsetCenter, range));
@@ -602,6 +603,7 @@ public class CarouselLayoutManager extends LayoutManager
   private void addAndLayoutView(View child, int index, ChildCalculations calculations) {
     float halfItemSize = currentKeylineState.getItemSize() / 2F;
     addView(child, index);
+    measureChildWithMargins(child, 0, 0);
     int start = (int) (calculations.offsetCenter - halfItemSize);
     int end = (int) (calculations.offsetCenter + halfItemSize);
     orientationHelper.layoutDecoratedWithMargins(child, start, end);

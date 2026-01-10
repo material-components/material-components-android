@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Pasirinkite laiką</string>
   <string name="material_timepicker_minute">Minutė</string>
   <string name="material_timepicker_hour">Valanda</string>
+  <string name="material_timepicker_minute_error">Minutė turi būti 0–59</string>
+  <string name="material_timepicker_hour_error">Valanda turi būti 1–12</string>
+  <string name="material_timepicker_hour_error_24h">Valanda turi būti 0–23</string>
   <string name="material_hour_suffix">%1$s val.</string>
   <string name="material_hour_24h_suffix">%1$s val.</string>
   <string name="material_minute_suffix">%1$s min.</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Atšaukti</string>
   <string name="material_timepicker_text_input_mode_description">Laiko įvestį pateikti perjungus į teksto įvesties režimą.</string>
   <string name="material_timepicker_clock_mode_description">Laiko įvestį pateikti perjungus į laikrodžio režimą.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Perjungti į teksto įvesties režimą</string>
+  <string name="material_timepicker_clock_mode_tooltip">Perjungti į laikrodžio režimą</string>
 </resources>

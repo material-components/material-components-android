@@ -15,6 +15,8 @@
  */
 package com.google.android.material.loadingindicator;
 
+import com.google.android.material.R;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -28,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import com.google.android.material.progressindicator.AnimatorDurationScaleProvider;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 
@@ -50,11 +53,15 @@ public final class LoadingIndicatorDrawable extends Drawable implements Drawable
   @NonNull
   public static LoadingIndicatorDrawable create(
       @NonNull Context context, @NonNull LoadingIndicatorSpec specs) {
-    return new LoadingIndicatorDrawable(
-        context,
-        specs,
-        new LoadingIndicatorDrawingDelegate(specs),
-        new LoadingIndicatorAnimatorDelegate(specs));
+    LoadingIndicatorDrawable loadingIndicatorDrawable =
+        new LoadingIndicatorDrawable(
+            context,
+            specs,
+            new LoadingIndicatorDrawingDelegate(specs),
+            new LoadingIndicatorAnimatorDelegate(specs));
+    loadingIndicatorDrawable.setStaticDummyDrawable(
+        VectorDrawableCompat.create(context.getResources(), R.drawable.ic_mtrl_arrow_circle, null));
+    return loadingIndicatorDrawable;
   }
 
   LoadingIndicatorDrawable(
@@ -66,6 +73,7 @@ public final class LoadingIndicatorDrawable extends Drawable implements Drawable
     this.specs = specs;
     this.drawingDelegate = drawingDelegate;
     this.animatorDelegate = animatorDelegate;
+    animatorDurationScaleProvider = new AnimatorDurationScaleProvider();
 
     this.paint = new Paint();
 

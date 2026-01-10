@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Panua nusu</string>
+  <string name="bottomsheet_action_expand">Panua</string>
+  <string name="bottomsheet_action_collapse">Kunja</string>
   <string name="bottomsheet_drag_handle_content_description">Aikoni ya buruta</string>
-  <string name="bottomsheet_action_expand">Panua safu ya chini</string>
-  <string name="bottomsheet_action_collapse">Kunja safu ya chini</string>
+  <string name="bottomsheet_action_expand_description">Panua safu ya chini</string>
+  <string name="bottomsheet_action_half_expand_description">Panua nusu safu ya chini</string>
+  <string name="bottomsheet_action_collapse_description">Kunja safu ya chini</string>
+  <string name="bottomsheet_state_collapsed">Imekunjwa</string>
+  <string name="bottomsheet_state_half_expanded">Imepanuliwa nusu</string>
+  <string name="bottomsheet_state_expanded">Imepanuliwa</string>
 </resources>

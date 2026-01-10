@@ -52,6 +52,7 @@ import android.widget.ScrollView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -77,10 +78,12 @@ import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -177,9 +180,28 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   /**
    * Definition for a callback to be invoked when the lift on scroll elevation and background color
    * change.
+   *
+   * @deprecated Use {@link LiftOnScrollProgressListener} instead
    */
+  @Deprecated
   public interface LiftOnScrollListener {
     void onUpdate(@Dimension float elevation, @ColorInt int backgroundColor);
+  }
+
+  /**
+   * Definition for a callback to be invoked when the lift on scroll progress has changed.
+   */
+  public abstract static class LiftOnScrollProgressListener {
+
+    /**
+     * Update method called when the lift progress is updated.
+     *
+     * @param elevation the elevation of the AppBarLayout
+     * @param backgroundColor the background color of the AppBarLayout
+     * @param progress the progress of the lift animation; 0 is unlifted, 1 is lifted.
+     */
+    public abstract void onUpdate(
+        @Dimension float elevation, @ColorInt int backgroundColor, @FloatRange(from = 0.0f, to = 1.0f) float progress);
   }
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_AppBarLayout;
@@ -203,18 +225,21 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   private boolean lifted;
 
   private boolean liftOnScroll;
+  @Nullable private ColorStateList liftOnScrollColor;
   @IdRes private int liftOnScrollTargetViewId;
   @Nullable private WeakReference<View> liftOnScrollTargetView;
-  private final boolean hasLiftOnScrollColor;
   @Nullable private ValueAnimator liftOnScrollColorAnimator;
   @Nullable private AnimatorUpdateListener liftOnScrollColorUpdateListener;
   private final List<LiftOnScrollListener> liftOnScrollListeners = new ArrayList<>();
+  private final LinkedHashSet<LiftOnScrollProgressListener> liftProgressListeners =
+      new LinkedHashSet<>();
 
   private final long liftOnScrollColorDuration;
   private final TimeInterpolator liftOnScrollColorInterpolator;
 
   private int[] tmpStatesArray;
 
+  @ColorInt private int backgroundOriginalColor;
   @Nullable private Drawable statusBarForeground;
   @Nullable private Integer statusBarForegroundOriginalColor;
 
@@ -248,25 +273,8 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.AppBarLayout, defStyleAttr, DEF_STYLE_RES);
 
-    setBackground(a.getDrawable(R.styleable.AppBarLayout_android_background));
-
-    ColorStateList liftOnScrollColor =
+    liftOnScrollColor =
         MaterialResources.getColorStateList(context, a, R.styleable.AppBarLayout_liftOnScrollColor);
-    hasLiftOnScrollColor = liftOnScrollColor != null;
-
-    ColorStateList originalBackgroundColor = DrawableUtils.getColorStateListOrNull(getBackground());
-    if (originalBackgroundColor != null) {
-      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-      materialShapeDrawable.setFillColor(originalBackgroundColor);
-      // If there is a lift on scroll color specified, we do not initialize the elevation overlay
-      // and set the alpha to zero manually.
-      if (liftOnScrollColor != null) {
-        initializeLiftOnScrollWithColor(
-            materialShapeDrawable, originalBackgroundColor, liftOnScrollColor);
-      } else {
-        initializeLiftOnScrollWithElevation(context, materialShapeDrawable);
-      }
-    }
 
     liftOnScrollColorDuration =
         MotionUtils.resolveThemeDuration(
@@ -288,6 +296,9 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(
           this, a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0));
     }
+
+    // Set the background drawable last to ensure that the background is updated for lift on scroll.
+    setBackground(a.getDrawable(R.styleable.AppBarLayout_android_background));
 
     if (VERSION.SDK_INT >= VERSION_CODES.O) {
       // In O+, we have these values set in the style. Since there is no defStyleAttr for
@@ -322,9 +333,41 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         });
   }
 
+  private Drawable maybeCreateLiftOnScrollBackground(
+      @NonNull Context context, @NonNull Drawable originalBackground) {
+    MaterialShapeDrawable materialShapeDrawable =
+        maybeConvertToMaterialShapeDrawable(originalBackground);
+    if (materialShapeDrawable == null || materialShapeDrawable.getFillColor() == null) {
+      return originalBackground;
+    }
+    backgroundOriginalColor = materialShapeDrawable.getFillColor().getDefaultColor();
+    // If there is a lift on scroll color specified, we do not initialize the elevation overlay
+    // and set the alpha to zero manually.
+    if (liftOnScrollColor != null) {
+      initializeLiftOnScrollWithColor(materialShapeDrawable, liftOnScrollColor);
+    } else {
+      initializeLiftOnScrollWithElevation(context, materialShapeDrawable);
+    }
+    return materialShapeDrawable;
+  }
+
+  @Nullable
+  private MaterialShapeDrawable maybeConvertToMaterialShapeDrawable(Drawable originalBackground) {
+    if (originalBackground instanceof MaterialShapeDrawable) {
+      return (MaterialShapeDrawable) originalBackground;
+    }
+    ColorStateList originalBackgroundColor =
+        DrawableUtils.getColorStateListOrNull(originalBackground);
+    if (originalBackgroundColor == null) {
+      return null;
+    }
+    MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+    materialShapeDrawable.setFillColor(originalBackgroundColor);
+    return materialShapeDrawable;
+  }
+
   private void initializeLiftOnScrollWithColor(
       MaterialShapeDrawable background,
-      @NonNull ColorStateList originalBackgroundColor,
       @NonNull ColorStateList liftOnScrollColor) {
     Integer colorSurface = MaterialColors.getColorOrNull(getContext(), R.attr.colorSurface);
     liftOnScrollColorUpdateListener =
@@ -332,9 +375,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           float liftProgress = (float) valueAnimator.getAnimatedValue();
           int mixedColor =
               MaterialColors.layer(
-                  originalBackgroundColor.getDefaultColor(),
-                  liftOnScrollColor.getDefaultColor(),
-                  liftProgress);
+                  backgroundOriginalColor, liftOnScrollColor.getDefaultColor(), liftProgress);
           background.setFillColor(ColorStateList.valueOf(mixedColor));
           if (statusBarForeground != null
               && statusBarForegroundOriginalColor != null
@@ -349,9 +390,13 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
               }
             }
           }
-        };
 
-    setBackground(background);
+          if (!liftProgressListeners.isEmpty()) {
+            for (LiftOnScrollProgressListener liftProgressListener : liftProgressListeners) {
+              liftProgressListener.onUpdate(0, mixedColor, liftProgress);
+            }
+          }
+        };
   }
 
   private void initializeLiftOnScrollWithElevation(
@@ -367,9 +412,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
           for (LiftOnScrollListener liftOnScrollListener : liftOnScrollListeners) {
             liftOnScrollListener.onUpdate(elevation, background.getResolvedTintColor());
           }
+          for (LiftOnScrollProgressListener liftProgressListener : liftProgressListeners) {
+            liftProgressListener.onUpdate(
+                elevation, background.getResolvedTintColor(), elevation / appBarElevation);
+          }
         };
-
-    setBackground(background);
   }
 
   /**
@@ -415,19 +462,51 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   /**
    * Add a {@link LiftOnScrollListener} that will be called when the lift on scroll elevation and
    * background color of this {@link AppBarLayout} change.
+   *
+   * @deprecated Use {@link #addLiftOnScrollProgressListener(LiftOnScrollProgressListener)} instead.
    */
+  @Deprecated
   public void addLiftOnScrollListener(@NonNull LiftOnScrollListener liftOnScrollListener) {
     liftOnScrollListeners.add(liftOnScrollListener);
   }
 
-  /** Remove a previously added {@link LiftOnScrollListener}. */
+  /**
+   * Remove a previously added {@link LiftOnScrollListener}.
+   *
+   * @deprecated Use {@link #removeLiftOnScrollProgressListener(LiftOnScrollProgressListener)} instead.
+   */
+  @CanIgnoreReturnValue
+  @Deprecated
   public boolean removeLiftOnScrollListener(@NonNull LiftOnScrollListener liftOnScrollListener) {
     return liftOnScrollListeners.remove(liftOnScrollListener);
   }
 
-  /** Remove all previously added {@link LiftOnScrollListener}s. */
+  /**
+   * Remove all previously added {@link LiftOnScrollListener}s.
+   *
+   * @deprecated Use {@link #clearLiftOnScrollProgressListener()} instead.
+   */
+  @Deprecated
   public void clearLiftOnScrollListener() {
     liftOnScrollListeners.clear();
+  }
+
+  /**
+   * Add a {@link LiftOnScrollProgressListener} that will be called when the lift on scroll progress changes
+   */
+  public void addLiftOnScrollProgressListener(@NonNull LiftOnScrollProgressListener liftProgressListener) {
+      liftProgressListeners.add(liftProgressListener);
+  }
+
+  /** Remove a previously added {@link LiftOnScrollProgressListener}. */
+  @CanIgnoreReturnValue
+  public boolean removeLiftOnScrollProgressListener(@NonNull LiftOnScrollProgressListener liftProgressListener) {
+    return liftProgressListeners.remove(liftProgressListener);
+  }
+
+  /** Remove all previously added {@link LiftOnScrollProgressListener}s. */
+  public void clearLiftOnScrollProgressListener() {
+    liftProgressListeners.clear();
   }
 
   /**
@@ -508,6 +587,11 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       return statusBarForegroundColorStateList.getDefaultColor();
     }
     return null;
+  }
+
+  @Override
+  public void setBackground(Drawable background) {
+    super.setBackground(maybeCreateLiftOnScrollBackground(getContext(), background));
   }
 
   @Override
@@ -928,17 +1012,22 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
   public final int getMinimumHeightForVisibleOverlappingContent() {
     final int topInset = getTopInset();
     final int minHeight = getMinimumHeight();
+
+    // If this layout has a min height, use it (doubled) or, if this doesn't clear the threshold,
+    // the min height.
     if (minHeight != 0) {
-      // If this layout has a min height, use it (doubled)
-      return (minHeight * 2) + topInset;
+      int idealHeight = (minHeight * 2) + topInset;
+      return idealHeight < getHeight() ? idealHeight : minHeight + topInset;
     }
 
-    // Otherwise, we'll use twice the min height of our last child
+    // Otherwise, we'll ideally use twice the min height of our last child or, if this doesn't
+    // clear the threshold, the min height of our last child.
     final int childCount = getChildCount();
     final int lastChildMinHeight =
         childCount >= 1 ? getChildAt(childCount - 1).getMinimumHeight() : 0;
     if (lastChildMinHeight != 0) {
-      return (lastChildMinHeight * 2) + topInset;
+      int idealHeight = (lastChildMinHeight * 2) + topInset;
+      return idealHeight < getHeight() ? idealHeight : lastChildMinHeight + topInset;
     }
 
     // If we reach here then we don't have a min height explicitly set. Instead we'll take a
@@ -1026,7 +1115,7 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
       this.lifted = lifted;
       refreshDrawableState();
       if (isLiftOnScrollCompatibleBackground()) {
-        if (hasLiftOnScrollColor) {
+        if (liftOnScrollColor != null) {
           // Only start the liftOnScrollColor based animation because the elevation based
           // animation will happen via the lifted drawable state change and state list animator.
           startLiftOnScrollColorAnimation(lifted ? 0 : 1, lifted ? 1 : 0);
@@ -1096,6 +1185,17 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
     this.liftOnScrollTargetViewId = liftOnScrollTargetViewId;
     // Invalidate cached target view so it will be looked up on next scroll.
     clearLiftOnScrollTargetView();
+  }
+
+  /** Sets the color of the {@link AppBarLayout} when it is fully lifted. */
+  public void setLiftOnScrollColor(@Nullable ColorStateList liftOnScrollColor) {
+    if (this.liftOnScrollColor != liftOnScrollColor) {
+      this.liftOnScrollColor = liftOnScrollColor;
+      // Force recreating the background drawable for the lift on scroll color change. The
+      // background could be potentially switched between liftOnScroll with color and liftOnScroll
+      // with elevation, based on whether the liftOnScroll color is null or not.
+      setBackground(getBackground());
+    }
   }
 
   /**

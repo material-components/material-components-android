@@ -367,6 +367,18 @@ public class ChipDrawable extends MaterialShapeDrawable
           MaterialResources.getColorStateList(context, a, R.styleable.Chip_android_textColor));
     }
 
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+      int fontVariationSettingsIndex = MaterialResources.getIndexWithValue(
+          a,
+          R.styleable.Chip_fontVariationSettings,
+          R.styleable.Chip_android_fontVariationSettings);
+      // If fontVariationSettings are not present, avoid resolving the resource as null and
+      // overwriting the text appearance's fontVariationSettings.
+      if (a.hasValue(fontVariationSettingsIndex)) {
+        textAppearance.setFontVariationSettings(a.getString(fontVariationSettingsIndex));
+      }
+    }
+
     setTextAppearance(textAppearance);
 
     int ellipsize = a.getInt(R.styleable.Chip_android_ellipsize, 0);
@@ -1326,10 +1338,10 @@ public class ChipDrawable extends MaterialShapeDrawable
     drawable.setVisible(isVisible(), false);
 
     if (drawable == closeIcon) {
+      drawable.setTintList(closeIconTint); // call before `setState` to prevent state reset
       if (drawable.isStateful()) {
         drawable.setState(getCloseIconState());
       }
-      drawable.setTintList(closeIconTint);
       return;
     }
     if (drawable == chipIcon && hasChipIconTint) {
@@ -1393,6 +1405,23 @@ public class ChipDrawable extends MaterialShapeDrawable
     if (textAppearance != null) {
       textAppearance.setTextColor(color);
       invalidateSelf();
+    }
+  }
+
+  @Nullable
+  public String getFontVariationSettings() {
+    TextAppearance textAppearance = getTextAppearance();
+    if (textAppearance != null && VERSION.SDK_INT >= VERSION_CODES.O) {
+      return textAppearance.getFontVariationSettings();
+    }
+
+    return null;
+  }
+
+  public void setFontVariationSettings(@Nullable String fontVariationSettings) {
+    TextAppearance textAppearance = getTextAppearance();
+    if (textAppearance != null && VERSION.SDK_INT >= VERSION_CODES.O) {
+      textAppearance.setFontVariationSettings(fontVariationSettings);
     }
   }
 

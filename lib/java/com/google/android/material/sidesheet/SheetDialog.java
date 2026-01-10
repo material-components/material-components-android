@@ -41,7 +41,9 @@ import androidx.annotation.StyleRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import com.google.android.material.internal.EdgeToEdgeUtils;
 import com.google.android.material.motion.MaterialBackOrchestrator;
 import com.google.android.material.sidesheet.Sheet.StableSheetState;
 
@@ -56,6 +58,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
 
   @Nullable private Sheet<C> behavior;
   @Nullable private FrameLayout container;
+  @Nullable private CoordinatorLayout coordinator;
   @Nullable private FrameLayout sheet;
 
   boolean dismissWithAnimation;
@@ -63,6 +66,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
   boolean cancelable = true;
   private boolean canceledOnTouchOutside = true;
   private boolean canceledOnTouchOutsideSet;
+  private boolean fitsSystemWindows = true;
 
   @Nullable private MaterialBackOrchestrator backOrchestrator;
 
@@ -98,7 +102,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
     Window window = getWindow();
     if (window != null) {
       // The status bar should always be transparent because of the window animation.
-      window.setStatusBarColor(0);
+      EdgeToEdgeUtils.setStatusBarColor(window, 0);
 
       window.addFlags(LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
       if (VERSION.SDK_INT < VERSION_CODES.M) {
@@ -119,6 +123,19 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
     }
     if (getWindow() != null) {
       updateListeningForBackCallbacks();
+    }
+  }
+
+  private void updateFitsSystemWindows() {
+    if (container != null) {
+      container.setFitsSystemWindows(fitsSystemWindows);
+    }
+    if (coordinator != null) {
+      coordinator.setFitsSystemWindows(fitsSystemWindows);
+    }
+    Window window = getWindow();
+    if (window != null) {
+      WindowCompat.setDecorFitsSystemWindows(window, fitsSystemWindows);
     }
   }
 
@@ -145,6 +162,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
   public void onAttachedToWindow() {
     super.onAttachedToWindow();
     maybeUpdateWindowAnimationsBasedOnLayoutDirection();
+    updateFitsSystemWindows();
     updateListeningForBackCallbacks();
   }
 
@@ -206,6 +224,19 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
     return dismissWithAnimation;
   }
 
+  /**
+   * Sets whether or not this sheet dialog should account for system screen decorations
+   * such as the status bar and inset its content. Default is true.
+   *
+   * <p>This will forward the {@code fitsSystemWindows} to the sheet dialog's child views via
+   * {@link View#setFitsSystemWindows(boolean)}, as well as the sheet dialog's window via
+   * {@link WindowCompat#setDecorFitsSystemWindows(Window, boolean)}.
+   */
+  public void setFitsSystemWindows(boolean fitsSystemWindows) {
+    this.fitsSystemWindows = fitsSystemWindows;
+    updateFitsSystemWindows();
+  }
+
   /** Creates the container layout which must exist to find the behavior */
   private void ensureContainerAndBehavior() {
     if (container == null) {
@@ -247,7 +278,7 @@ abstract class SheetDialog<C extends SheetCallback> extends AppCompatDialog {
   private View wrapInSheet(
       int layoutResId, @Nullable View view, @Nullable ViewGroup.LayoutParams params) {
     ensureContainerAndBehavior();
-    CoordinatorLayout coordinator = getContainer().findViewById(COORDINATOR_LAYOUT_ID);
+    coordinator = getContainer().findViewById(COORDINATOR_LAYOUT_ID);
 
     if (layoutResId != 0 && view == null) {
       view = getLayoutInflater().inflate(layoutResId, coordinator, false);

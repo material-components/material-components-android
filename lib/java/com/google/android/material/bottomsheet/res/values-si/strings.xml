@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">අඩක් දිග හරින්න</string>
+  <string name="bottomsheet_action_expand">දිග හරින්න</string>
+  <string name="bottomsheet_action_collapse">හකුළන්න</string>
   <string name="bottomsheet_drag_handle_content_description">හැඬලය අදින්න</string>
-  <string name="bottomsheet_action_expand">පහළම පත්‍රය දිග හරින්න</string>
-  <string name="bottomsheet_action_collapse">පහළම පත්‍රය හකුළන්න</string>
+  <string name="bottomsheet_action_expand_description">පහළම පත්‍රය දිග හරින්න</string>
+  <string name="bottomsheet_action_half_expand_description">පහළ පත්‍රය අඩක් පුළුල් කරන්න</string>
+  <string name="bottomsheet_action_collapse_description">පහළම පත්‍රය හකුළන්න</string>
+  <string name="bottomsheet_state_collapsed">හකුළන ලදි</string>
+  <string name="bottomsheet_state_half_expanded">අඩක් දිග හරින ලදි</string>
+  <string name="bottomsheet_state_expanded">දිග හරින ලදි</string>
 </resources>

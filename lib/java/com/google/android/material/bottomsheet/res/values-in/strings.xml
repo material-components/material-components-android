@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Luaskan setengah</string>
+  <string name="bottomsheet_action_expand">Luaskan</string>
+  <string name="bottomsheet_action_collapse">Ciutkan</string>
   <string name="bottomsheet_drag_handle_content_description">Handel geser</string>
-  <string name="bottomsheet_action_expand">Meluaskan sheet bawah</string>
-  <string name="bottomsheet_action_collapse">Menciutkan sheet bawah</string>
+  <string name="bottomsheet_action_expand_description">Meluaskan panel bawah</string>
+  <string name="bottomsheet_action_half_expand_description">Meluaskan sebagian panel bawah</string>
+  <string name="bottomsheet_action_collapse_description">Menciutkan panel bawah</string>
+  <string name="bottomsheet_state_collapsed">Diciutkan</string>
+  <string name="bottomsheet_state_half_expanded">Diluaskan sebagian</string>
+  <string name="bottomsheet_state_expanded">Diluaskan</string>
 </resources>

@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">展開一半</string>
+  <string name="bottomsheet_action_expand">打開</string>
+  <string name="bottomsheet_action_collapse">閂埋</string>
   <string name="bottomsheet_drag_handle_content_description">拖曳控點</string>
-  <string name="bottomsheet_action_expand">展開頁底面板</string>
-  <string name="bottomsheet_action_collapse">收合頁底面板</string>
+  <string name="bottomsheet_action_expand_description">打開頁底面板</string>
+  <string name="bottomsheet_action_half_expand_description">將頁底面板打開一半</string>
+  <string name="bottomsheet_action_collapse_description">閂埋頁底面板</string>
+  <string name="bottomsheet_state_collapsed">閂埋咗</string>
+  <string name="bottomsheet_state_half_expanded">打開咗一半</string>
+  <string name="bottomsheet_state_expanded">打開咗</string>
 </resources>

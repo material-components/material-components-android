@@ -43,9 +43,11 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import androidx.annotation.AnimatorRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -120,7 +122,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @NonNull private final MotionStrategy extendStrategy;
   private final MotionStrategy showStrategy = new ShowStrategy(changeVisibilityTracker);
   private final MotionStrategy hideStrategy = new HideStrategy(changeVisibilityTracker);
-  private final int collapsedSize;
+  private int collapsedSize;
 
   private int extendedPaddingStart;
   private int extendedPaddingEnd;
@@ -293,7 +295,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
           @Override
           public int getWidth() {
             return getMeasuredWidth()
-                - getCollapsedPadding() * 2
+                - ExtendedFloatingActionButton.this.getPaddingStart()
+                - ExtendedFloatingActionButton.this.getPaddingEnd()
                 + extendedPaddingStart
                 + extendedPaddingEnd;
           }
@@ -460,6 +463,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     originalTextCsl = getTextColors();
   }
 
+  ColorStateList getOriginalTextColor() {
+    return originalTextCsl;
+  }
+
+  @ColorInt
+  int getCurrentOriginalTextColor() {
+    return originalTextCsl.getColorForState(getDrawableState(), 0);
+  }
+
   /**
    * Update the text color without affecting the original, client-set color.
    */
@@ -483,7 +495,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   public Behavior<ExtendedFloatingActionButton> getBehavior() {
     return behavior;
   }
-
 
   /**
    * Extends or shrinks the fab depending on the value of {@param extended}.
@@ -1025,19 +1036,23 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
         }
       };
 
+  int getCollapsedPadding() {
+    return (getCollapsedSize() - getIconSize()) / 2;
+  }
+
   /**
    * Shrink to the smaller value between paddingStart and paddingEnd, such that when shrunk the icon
    * will be centered.
    */
-  @VisibleForTesting
-  int getCollapsedSize() {
+  @Px
+  public int getCollapsedSize() {
     return collapsedSize < 0
         ? min(getPaddingStart(), getPaddingEnd()) * 2 + getIconSize()
         : collapsedSize;
   }
 
-  int getCollapsedPadding() {
-    return (getCollapsedSize() - getIconSize()) / 2;
+  public void setCollapsedSize(@Px int collapsedSize) {
+    this.collapsedSize = collapsedSize;
   }
 
   /**
@@ -1417,7 +1432,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
       if (spec.hasPropertyValues("labelOpacity")) {
         PropertyValuesHolder[] labelOpacityValues = spec.getPropertyValues("labelOpacity");
-        float startValue = extending ? 0F : 1F;
+        final int originalAlpha = Color.alpha(getCurrentOriginalTextColor());
+        final int currentAlpha = Color.alpha(getCurrentTextColor());
+        float startValue = originalAlpha != 0 ? (float) currentAlpha / originalAlpha : 0f;
         float endValue = extending ? 1F : 0F;
         labelOpacityValues[0].setFloatValues(startValue, endValue);
         spec.setPropertyValues("labelOpacity", labelOpacityValues);

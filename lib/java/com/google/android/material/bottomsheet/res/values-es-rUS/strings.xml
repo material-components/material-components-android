@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Expandir hasta la mitad</string>
+  <string name="bottomsheet_action_expand">Expandir</string>
+  <string name="bottomsheet_action_collapse">Contraer</string>
   <string name="bottomsheet_drag_handle_content_description">Controlador de arrastre</string>
-  <string name="bottomsheet_action_expand">Expandir la hoja inferior</string>
-  <string name="bottomsheet_action_collapse">Contraer la hoja inferior</string>
+  <string name="bottomsheet_action_expand_description">Expandir la hoja inferior</string>
+  <string name="bottomsheet_action_half_expand_description">Expandir a la mitad la hoja inferior</string>
+  <string name="bottomsheet_action_collapse_description">Contraer la hoja inferior</string>
+  <string name="bottomsheet_state_collapsed">Contraída</string>
+  <string name="bottomsheet_state_half_expanded">Expandida a la mitad</string>
+  <string name="bottomsheet_state_expanded">Expandida</string>
 </resources>

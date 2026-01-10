@@ -23,11 +23,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
 
 /**
- * Backward-compatible implementation of {@link android.view.ViewOverlay}. TODO(b/144937975): Remove
- * and use the official version from androidx when it's available.
- *
+ * @deprecated Use {@link android.view.ViewOverlay} instead.
  * @hide
  */
+@Deprecated
 @RestrictTo(LIBRARY_GROUP)
 public interface ViewOverlayImpl {
 

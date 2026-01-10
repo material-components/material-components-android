@@ -23,6 +23,7 @@ import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import androidx.annotation.NonNull;
@@ -153,5 +154,11 @@ public interface DateSelector<S> extends Parcelable {
             ViewUtils.requestFocusAndShowKeyboard(
                 viewToFocus, /* useWindowInsetsController= */ false),
         100);
+  }
+
+  static boolean isTouchExplorationEnabled(@NonNull Context context) {
+    AccessibilityManager accessibilityManager =
+        (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+    return accessibilityManager != null && accessibilityManager.isTouchExplorationEnabled();
   }
 }

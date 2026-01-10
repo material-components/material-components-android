@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">ขยายรายการครึ่งหนึ่ง</string>
+  <string name="bottomsheet_action_expand">ขยาย</string>
+  <string name="bottomsheet_action_collapse">ยุบ</string>
   <string name="bottomsheet_drag_handle_content_description">แฮนเดิลการลาก</string>
-  <string name="bottomsheet_action_expand">ขยาย Bottom Sheet</string>
-  <string name="bottomsheet_action_collapse">ยุบ Bottom Sheet</string>
+  <string name="bottomsheet_action_expand_description">ขยาย Bottom Sheet</string>
+  <string name="bottomsheet_action_half_expand_description">ขยาย Bottom Sheet ครึ่งหนึ่ง</string>
+  <string name="bottomsheet_action_collapse_description">ยุบ Bottom Sheet</string>
+  <string name="bottomsheet_state_collapsed">ยุบแล้ว</string>
+  <string name="bottomsheet_state_half_expanded">ขยายครึ่งหนึ่งแล้ว</string>
+  <string name="bottomsheet_state_expanded">ขยายแล้ว</string>
 </resources>

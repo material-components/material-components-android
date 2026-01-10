@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Chọn thời gian</string>
   <string name="material_timepicker_minute">Phút</string>
   <string name="material_timepicker_hour">Giờ</string>
+  <string name="material_timepicker_minute_error">Số phút phải từ 0 đến 59</string>
+  <string name="material_timepicker_hour_error">Số giờ phải từ 1 đến 12</string>
+  <string name="material_timepicker_hour_error_24h">Số giờ phải từ 0 đến 23</string>
   <string name="material_hour_suffix">%1$s giờ</string>
   <string name="material_hour_24h_suffix">%1$s giờ</string>
   <string name="material_minute_suffix">%1$s phút</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Huỷ</string>
   <string name="material_timepicker_text_input_mode_description">Chuyển sang chế độ nhập văn bản để nhập thời gian.</string>
   <string name="material_timepicker_clock_mode_description">Chuyển sang chế độ đồng hồ để nhập thời gian.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Chuyển sang chế độ nhập văn bản</string>
+  <string name="material_timepicker_clock_mode_tooltip">Chuyển sang chế độ đồng hồ</string>
 </resources>

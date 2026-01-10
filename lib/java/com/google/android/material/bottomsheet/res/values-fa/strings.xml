@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">گسترده کردن تا نیمه</string>
+  <string name="bottomsheet_action_expand">ازهم باز کردن</string>
+  <string name="bottomsheet_action_collapse">جمع کردن</string>
   <string name="bottomsheet_drag_handle_content_description">دستگیره کشاندن</string>
-  <string name="bottomsheet_action_expand">ازهم بازکردن برگ زیرین</string>
-  <string name="bottomsheet_action_collapse">جمع کردن برگ زیرین</string>
+  <string name="bottomsheet_action_expand_description">ازهم باز کردن برگ زیرین</string>
+  <string name="bottomsheet_action_half_expand_description">نیمه باز کردن برگ زیرین</string>
+  <string name="bottomsheet_action_collapse_description">جمع کردن برگ زیرین</string>
+  <string name="bottomsheet_state_collapsed">جمع شد</string>
+  <string name="bottomsheet_state_half_expanded">تا نیمه باز شد</string>
+  <string name="bottomsheet_state_expanded">ازهم باز شد</string>
 </resources>

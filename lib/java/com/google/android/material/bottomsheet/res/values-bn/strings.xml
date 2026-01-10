@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">অর্ধেক প্রসারিত করুন</string>
+  <string name="bottomsheet_action_expand">বড় করুন</string>
+  <string name="bottomsheet_action_collapse">আড়াল করুন</string>
   <string name="bottomsheet_drag_handle_content_description">টেনে আনার হ্যান্ডেল</string>
-  <string name="bottomsheet_action_expand">স্ক্রিনের নিচে অ্যাটাচ করা শিট বড় করুন</string>
-  <string name="bottomsheet_action_collapse">স্ক্রিনের নিচে অ্যাটাচ করা শিট আড়াল করুন</string>
+  <string name="bottomsheet_action_expand_description">স্ক্রিনের নিচে অ্যাটাচ করা শিট বড় করুন</string>
+  <string name="bottomsheet_action_half_expand_description">স্ক্রিনের নিচে অ্যাটাচ করা শিট অর্ধেকটা বড় করুন</string>
+  <string name="bottomsheet_action_collapse_description">স্ক্রিনের নিচে অ্যাটাচ করা শিট আড়াল করুন</string>
+  <string name="bottomsheet_state_collapsed">আড়াল করা হয়েছে</string>
+  <string name="bottomsheet_state_half_expanded">অর্ধেকটা বড় করা হয়েছে</string>
+  <string name="bottomsheet_state_expanded">বড় করা হয়েছে</string>
 </resources>

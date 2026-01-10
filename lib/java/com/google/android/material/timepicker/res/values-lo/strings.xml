@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">ເລືອກເວ​ລາ</string>
   <string name="material_timepicker_minute">ນາທີ</string>
   <string name="material_timepicker_hour">ຊົ່ວໂມງ</string>
+  <string name="material_timepicker_minute_error">ນາທີຕ້ອງເປັນ 0–59</string>
+  <string name="material_timepicker_hour_error">ຊົ່ວໂມງຕ້ອງເປັນ 1–12</string>
+  <string name="material_timepicker_hour_error_24h">ຊົ່ວໂມງຕ້ອງເປັນ 0–23</string>
   <string name="material_hour_suffix">%1$s ໂມງ</string>
   <string name="material_hour_24h_suffix">%1$s ຊົ່ວໂມງ</string>
   <string name="material_minute_suffix">%1$s ນາທີ</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">ຍົກເລີກ</string>
   <string name="material_timepicker_text_input_mode_description">ສະຫຼັບໄປໃຊ້ໂໝດປ້ອນຂໍ້ຄວາມສຳລັບການປ້ອນເວລາ.</string>
   <string name="material_timepicker_clock_mode_description">ສະຫຼັບໄປໃຊ້ໂໝດໂມງສຳລັບການປ້ອນເວລາ.</string>
+  <string name="material_timepicker_text_input_mode_tooltip">ສະຫຼັບໄປໃຊ້ໂໝດປ້ອນຂໍ້ຄວາມ</string>
+  <string name="material_timepicker_clock_mode_tooltip">ສະຫຼັບໄປຫາໂໝດໂມງ</string>
 </resources>

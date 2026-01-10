@@ -63,7 +63,8 @@ public class MonthsPagerAdapterTest {
                 .setOpenAt(march2016.timeInMillis)
                 .build(),
             /* dayViewDecorator= */ null,
-            /* onDayClickListener= */ null);
+            /* onDayClickListener= */ null,
+            /* onMonthNavigationListener= */ null);
     assertEquals(3, monthsAdapter.getItemCount());
     assertEquals(1, monthsAdapter.getPosition(march2016));
   }
@@ -80,7 +81,8 @@ public class MonthsPagerAdapterTest {
                 .setOpenAt(feb2016.timeInMillis)
                 .build(),
             /* dayViewDecorator= */ null,
-            /* onDayClickListener= */ null);
+            /* onDayClickListener= */ null,
+            /* onMonthNavigationListener= */ null);
     assertEquals(1, monthsAdapter.getItemCount());
     assertEquals(0, monthsAdapter.getPosition(feb2016));
   }
@@ -99,7 +101,8 @@ public class MonthsPagerAdapterTest {
             .setOpenAt(april2016.timeInMillis)
             .build(),
         /* dayViewDecorator= */ null,
-        /* onDayClickListener= */ null);
+        /* onDayClickListener= */ null,
+        /* onMonthNavigationListener= */ null);
   }
 
   @Test
@@ -114,7 +117,8 @@ public class MonthsPagerAdapterTest {
             .setOpenAt(march2016.timeInMillis)
             .build(),
         /* dayViewDecorator= */ null,
-        /* onDayClickListener= */ null);
+        /* onDayClickListener= */ null,
+        /* onMonthNavigationListener= */ null);
   }
 
   @Test
@@ -129,7 +133,8 @@ public class MonthsPagerAdapterTest {
                 .setOpenAt(march2016.timeInMillis)
                 .build(),
             /* dayViewDecorator= */ null,
-            /* onDayClickListener= */ null);
+            /* onDayClickListener= */ null,
+            /* onMonthNavigationListener= */ null);
     assertEquals(
         feb2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 0).toString());
     assertEquals(

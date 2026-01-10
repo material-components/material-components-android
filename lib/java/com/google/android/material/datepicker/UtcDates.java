@@ -21,6 +21,9 @@ import android.annotation.TargetApi;
 import android.content.res.Resources;
 import android.icu.text.DisplayContext;
 import android.os.Build.VERSION_CODES;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.TtsSpan;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import java.text.DateFormat;
@@ -178,6 +181,20 @@ class UtcDates {
     }
 
     return formatHint.replace("d", dayChar).replace("M", monthChar).replace("y", yearChar);
+  }
+
+  /**
+   * Returns a SpannableString with the given format hint that has a TtsSpan.TYPE_VERBATIM span
+   * applied to it in order to ensure that the hint is read verbatim by screen readers.
+   */
+  static SpannableString getVerbatimTextInputHint(String formatHint) {
+    SpannableString spannableHint = new SpannableString(formatHint);
+    spannableHint.setSpan(
+        new TtsSpan.Builder(TtsSpan.TYPE_VERBATIM).build(),
+        0,
+        spannableHint.length(),
+        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+    return spannableHint;
   }
 
   /**

@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Ծավալել կիսով չափ</string>
+  <string name="bottomsheet_action_expand">Ծավալել</string>
+  <string name="bottomsheet_action_collapse">Ծալել</string>
   <string name="bottomsheet_drag_handle_content_description">Տեղափոխման նշիչ</string>
-  <string name="bottomsheet_action_expand">Ծավալել ներքևի էկրանը</string>
-  <string name="bottomsheet_action_collapse">Ծալել ներքևի էկրանը</string>
+  <string name="bottomsheet_action_expand_description">Ծավալել ներքևի էկրանը</string>
+  <string name="bottomsheet_action_half_expand_description">Կիսով չափ ծավալել ներքևի էկրանը</string>
+  <string name="bottomsheet_action_collapse_description">Ծալել ներքևի էկրանը</string>
+  <string name="bottomsheet_state_collapsed">Ծալված է</string>
+  <string name="bottomsheet_state_half_expanded">Կիսով չափ ծավալված է</string>
+  <string name="bottomsheet_state_expanded">Ծավալված է</string>
 </resources>

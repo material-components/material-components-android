@@ -182,6 +182,12 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
     return maskRect;
   }
 
+  /**
+   * Sets an {@link OnMaskChangedListener}.
+   *
+   * @param onMaskChangedListener a listener to receive callbacks for changes in the mask or null
+   *    to clear the listener.
+   */
   @Override
   public void setOnMaskChangedListener(@Nullable OnMaskChangedListener onMaskChangedListener) {
     this.onMaskChangedListener = onMaskChangedListener;

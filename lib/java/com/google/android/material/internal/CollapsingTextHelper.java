@@ -94,7 +94,12 @@ public final class CollapsingTextHelper {
   private int currentOffsetY;
 
   @NonNull private final Rect expandedBounds;
+  // collapsedBounds are valid bounds that text can be drawn inside.
   @NonNull private final Rect collapsedBounds;
+  // collapsedBoundsForPlacement are collapsed bounds that are used for calculating the placement
+  // of the collapsed text, but may not be valid bounds for text. If not set, collapsedBounds will
+  // be used instead for the placement calculations.
+  @Nullable private Rect collapsedBoundsForPlacement;
   @NonNull private final RectF currentBounds;
   private int expandedTextGravity = Gravity.CENTER_VERTICAL;
   private int collapsedTextGravity = Gravity.CENTER_VERTICAL;
@@ -282,6 +287,17 @@ public final class CollapsingTextHelper {
 
   public void setCollapsedBounds(@NonNull Rect bounds) {
     setCollapsedBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
+  }
+
+  public void setCollapsedBoundsForOffsets(int left, int top, int right, int bottom) {
+    if (collapsedBoundsForPlacement == null) {
+      collapsedBoundsForPlacement = new Rect(left, top, right, bottom);
+      boundsChanged = true;
+    }
+    if (!rectEquals(collapsedBoundsForPlacement, left, top, right, bottom)) {
+      collapsedBoundsForPlacement.set(left, top, right, bottom);
+      boundsChanged = true;
+    }
   }
 
   public void getCollapsedTextBottomTextBounds(
@@ -799,31 +815,46 @@ public final class CollapsingTextHelper {
             collapsedTextGravity,
             isRtl ? View.LAYOUT_DIRECTION_RTL : View.LAYOUT_DIRECTION_LTR);
 
+    Rect collapsedPlacementBounds = collapsedBoundsForPlacement != null
+        ? collapsedBoundsForPlacement : collapsedBounds;
+
     switch (collapsedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
       case Gravity.BOTTOM:
-        collapsedDrawY = collapsedBounds.bottom + textPaint.ascent();
+        collapsedDrawY = collapsedPlacementBounds.bottom + textPaint.ascent();
         break;
       case Gravity.TOP:
-        collapsedDrawY = collapsedBounds.top;
+        collapsedDrawY = collapsedPlacementBounds.top;
         break;
       case Gravity.CENTER_VERTICAL:
       default:
         float textOffset = (textPaint.descent() - textPaint.ascent()) / 2;
-        collapsedDrawY = collapsedBounds.centerY() - textOffset;
+        collapsedDrawY = collapsedPlacementBounds.centerY() - textOffset;
         break;
     }
 
     switch (collapsedAbsGravity & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK) {
       case Gravity.CENTER_HORIZONTAL:
-        collapsedDrawX = collapsedBounds.centerX() - (collapsedTextWidth / 2);
+        collapsedDrawX = collapsedPlacementBounds.centerX() - (collapsedTextWidth / 2);
         break;
       case Gravity.RIGHT:
-        collapsedDrawX = collapsedBounds.right - collapsedTextWidth;
+        collapsedDrawX = collapsedPlacementBounds.right - collapsedTextWidth;
         break;
       case Gravity.LEFT:
       default:
-        collapsedDrawX = collapsedBounds.left;
+        collapsedDrawX = collapsedPlacementBounds.left;
         break;
+    }
+
+    // If the collapsed text width and height can fit into the collapsed bounds, try to move it so
+    // it will fit.
+    if (collapsedTextWidth <= collapsedBounds.width()) {
+      collapsedDrawX += max(0, collapsedBounds.left - collapsedDrawX);
+      collapsedDrawX += min(0, collapsedBounds.right - (collapsedDrawX + collapsedTextWidth));
+    }
+    if (getCollapsedFullSingleLineHeight() <= collapsedBounds.height()) {
+      collapsedDrawY += max(0, collapsedBounds.top - collapsedDrawY);
+      collapsedDrawY +=
+          min(0, collapsedBounds.bottom - (collapsedDrawY + getCollapsedTextHeight()));
     }
 
     calculateUsingTextSize(/* fraction= */ 0, forceRecalculate);

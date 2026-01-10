@@ -23,4 +23,10 @@
   <item name="material_emphasis_disabled" format="float" type="dimen">0.38</item>
   <!-- Disabled emphasis of 12% for background containers. -->
   <item name="material_emphasis_disabled_background" format="float" type="dimen">0.12</item>
+
+  <!-- Default values for the control ripple color selector. -->
+  <item name="m3_control_ripple_color_selector_pressed_alpha" format="float" type="dimen">0.1</item>
+  <item name="m3_control_ripple_color_selector_focused_alpha" format="float" type="dimen">0.20</item>
+  <item name="m3_control_ripple_color_selector_hovered_alpha" format="float" type="dimen">0.08</item>
+  <item name="m3_control_ripple_color_selector_default_alpha" format="float" type="dimen">0.16</item>
 </resources>

@@ -30,17 +30,18 @@
     android:layout_weight="1">
 
     <com.google.android.material.button.MaterialButton
-      style="?attr/materialCalendarYearNavigationButton"
       android:id="@+id/month_navigation_fragment_toggle"
+      style="?attr/materialCalendarYearNavigationButton"
       android:layout_width="wrap_content"
       android:layout_height="@dimen/mtrl_calendar_navigation_height"
       android:layout_gravity="start"
+      android:accessibilityLiveRegion="polite"
       android:gravity="center_vertical|start"
       android:insetBottom="0dp"
       android:insetTop="0dp"
       app:icon="@drawable/material_ic_menu_arrow_down_black_24dp"
       app:iconGravity="textEnd"
-      app:iconPadding="4dp"/>
+      app:iconPadding="4dp" />
 
   </FrameLayout>
 

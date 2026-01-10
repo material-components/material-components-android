@@ -32,6 +32,8 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.appcompat.widget.AppCompatDrawableManager;
@@ -837,13 +839,15 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Override
   protected void drawableStateChanged() {
     super.drawableStateChanged();
-    getImpl().onDrawableStateChanged(getDrawableState());
+    if (Build.VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
+      getImpl().onDrawableStateChangedForLollipop();
+    }
   }
 
+  @SuppressWarnings("RedundantOverride")
   @Override
   public void jumpDrawablesToCurrentState() {
     super.jumpDrawablesToCurrentState();
-    getImpl().jumpDrawableToCurrentState();
   }
 
   @Override
@@ -1048,34 +1052,34 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     // dereference of possibly-null reference lp
     @SuppressWarnings("nullness:dereference.of.nullable")
-    private boolean shouldUpdateVisibility(
+    private boolean ignoreUpdateVisibility(
         @NonNull View dependency, @NonNull FloatingActionButton child) {
       final CoordinatorLayout.LayoutParams lp =
           (CoordinatorLayout.LayoutParams) child.getLayoutParams();
       if (!autoHideEnabled) {
-        return false;
+        return true;
       }
 
       if (lp.getAnchorId() != dependency.getId()) {
         // The anchor ID doesn't match the dependency, so we won't automatically
         // show/hide the FAB
-        return false;
+        return true;
       }
 
       //noinspection RedundantIfStatement
       if (child.getUserSetVisibility() != VISIBLE) {
         // The view isn't set to be visible so skip changing its visibility
-        return false;
+        return true;
       }
 
-      return true;
+      return false;
     }
 
     private boolean updateFabVisibilityForAppBarLayout(
         CoordinatorLayout parent,
         @NonNull AppBarLayout appBarLayout,
         @NonNull FloatingActionButton child) {
-      if (!shouldUpdateVisibility(appBarLayout, child)) {
+      if (ignoreUpdateVisibility(appBarLayout, child)) {
         return false;
       }
 
@@ -1101,7 +1105,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     @SuppressWarnings("nullness:dereference.of.nullable")
     private boolean updateFabVisibilityForBottomSheet(
         @NonNull View bottomSheet, @NonNull FloatingActionButton child) {
-      if (!shouldUpdateVisibility(bottomSheet, child)) {
+      if (ignoreUpdateVisibility(bottomSheet, child)) {
         return false;
       }
       CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
@@ -1166,7 +1170,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         @NonNull CoordinatorLayout parent, @NonNull FloatingActionButton fab) {
       final Rect padding = fab.shadowPadding;
 
-      if (padding != null && padding.centerX() > 0 && padding.centerY() > 0) {
+      if (padding.centerX() > 0 && padding.centerY() > 0) {
         final CoordinatorLayout.LayoutParams lp =
             (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
 
@@ -1363,7 +1367,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   /** Add a {@link TransformationCallback} which can watch for changes to this view. */
   public void addTransformationCallback(
       @NonNull TransformationCallback<? extends FloatingActionButton> listener) {
-    getImpl().addTransformationCallback(new TransformationCallbackWrapper(listener));
+    getImpl().addTransformationCallback(new TransformationCallbackWrapper<>(listener));
   }
 
   /**
@@ -1372,7 +1376,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   public void removeTransformationCallback(
       @NonNull TransformationCallback<? extends FloatingActionButton> listener) {
-    getImpl().removeTransformationCallback(new TransformationCallbackWrapper(listener));
+    getImpl().removeTransformationCallback(new TransformationCallbackWrapper<>(listener));
   }
 
   class TransformationCallbackWrapper<T extends FloatingActionButton>
@@ -1449,7 +1453,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   private FloatingActionButtonImpl getImpl() {
     if (impl == null) {
-      impl = new FloatingActionButtonImplLollipop(this, new ShadowDelegateImpl());
+      impl = new FloatingActionButtonImpl(this, new ShadowDelegateImpl());
     }
     return impl;
   }

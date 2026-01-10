@@ -71,6 +71,7 @@ import android.os.Parcelable;
 import android.text.TextPaint;
 import android.util.SparseArray;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
@@ -1030,6 +1031,35 @@ public class TextInputLayoutTest {
     assertEquals(EditText.class.getName(), editText.getClassName());
     assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
     assertEquals("Outer hint", editText.getHint().toString());
+  }
+
+  @UiThreadTest
+  @Test
+  public void testDropdownMenu_nonEditable_endIconIsNotFocusableOrClickable() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_noedittext);
+    final AutoCompleteTextView editText = new AutoCompleteTextView(activity);
+
+    textInputLayout.setEndIconMode(TextInputLayout.END_ICON_DROPDOWN_MENU);
+    editText.setKeyListener(null); // This makes the EditText not-editable
+    textInputLayout.addView(editText);
+
+    assertThat(textInputLayout.getEndIconView().isFocusable()).isFalse();
+    assertThat(textInputLayout.getEndIconView().isClickable()).isFalse();
+  }
+
+  @UiThreadTest
+  @Test
+  public void testDropdownMenu_editable_endIconIsFocusableAndClickable() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_noedittext);
+    final AutoCompleteTextView editText = new AutoCompleteTextView(activity);
+
+    textInputLayout.setEndIconMode(TextInputLayout.END_ICON_DROPDOWN_MENU);
+    textInputLayout.addView(editText);
+
+    assertThat(textInputLayout.getEndIconView().isFocusable()).isTrue();
+    assertThat(textInputLayout.getEndIconView().isClickable()).isTrue();
   }
 
   private static ViewAssertion isHintExpanded(final boolean expanded) {

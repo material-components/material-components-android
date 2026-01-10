@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Stækka til hálfs</string>
+  <string name="bottomsheet_action_expand">Stækka</string>
+  <string name="bottomsheet_action_collapse">Minnka</string>
   <string name="bottomsheet_drag_handle_content_description">Dragkló</string>
-  <string name="bottomsheet_action_expand">Stækka blað neðst</string>
-  <string name="bottomsheet_action_collapse">Minnka blað neðst</string>
+  <string name="bottomsheet_action_expand_description">Stækka blað neðst</string>
+  <string name="bottomsheet_action_half_expand_description">Stækka blað neðst til hálfs</string>
+  <string name="bottomsheet_action_collapse_description">Minnka blað neðst</string>
+  <string name="bottomsheet_state_collapsed">Minnkað</string>
+  <string name="bottomsheet_state_half_expanded">Stækkað til hálfs</string>
+  <string name="bottomsheet_state_expanded">Stækkað</string>
 </resources>

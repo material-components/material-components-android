@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Despregar ata a metade</string>
+  <string name="bottomsheet_action_expand">Despregar</string>
+  <string name="bottomsheet_action_collapse">Contraer</string>
   <string name="bottomsheet_drag_handle_content_description">Controlador de arrastre</string>
-  <string name="bottomsheet_action_expand">Desprega o panel inferior</string>
-  <string name="bottomsheet_action_collapse">Contrae o panel inferior</string>
+  <string name="bottomsheet_action_expand_description">Despregar o panel inferior</string>
+  <string name="bottomsheet_action_half_expand_description">Despregar o panel inferior ata a metade</string>
+  <string name="bottomsheet_action_collapse_description">Contraer o panel inferior</string>
+  <string name="bottomsheet_state_collapsed">Contraído</string>
+  <string name="bottomsheet_state_half_expanded">Despregado ata a metade</string>
+  <string name="bottomsheet_state_expanded">Despregado</string>
 </resources>

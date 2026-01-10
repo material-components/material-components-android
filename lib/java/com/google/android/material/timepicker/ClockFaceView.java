@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Outline;
 import android.graphics.RadialGradient;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -39,10 +40,11 @@ import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver.OnPreDrawListener;
+import android.view.ViewOutlineProvider;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.TextView;
 import androidx.annotation.FloatRange;
@@ -92,6 +94,8 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
 
   private final ColorStateList textColor;
 
+  private OnEnterKeyPressedListener onEnterKeyPressedListener;
+
   public ClockFaceView(@NonNull Context context) {
     this(context, null);
   }
@@ -134,24 +138,18 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
     setBackgroundColor(
         backgroundColor == null ? defaultBackgroundColor : backgroundColor.getDefaultColor());
 
-    getViewTreeObserver()
-        .addOnPreDrawListener(
-            new OnPreDrawListener() {
-              @Override
-              public boolean onPreDraw() {
-                if (!isShown()) {
-                  return true;
-                }
-                getViewTreeObserver().removeOnPreDrawListener(this);
-                int circleRadius =
-                    getHeight() / 2 - clockHandView.getSelectorRadius() - clockHandPadding;
-                setRadius(circleRadius);
-                return true;
-              }
-            });
-
-    setFocusable(false);
     a.recycle();
+
+    setOutlineProvider(
+        new ViewOutlineProvider() {
+          @Override
+          public void getOutline(View view, Outline outline) {
+            outline.setOval(0, 0, view.getWidth(), view.getHeight());
+          }
+        });
+    setFocusable(true);
+    setClipToOutline(true);
+
     valueAccessibilityDelegate =
         new AccessibilityDelegateCompat() {
           @Override
@@ -167,7 +165,7 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
                 CollectionItemInfoCompat.obtain(
                     /* rowIndex= */ 0,
                     /* rowSpan= */ 1,
-                    /* columnIndex =*/ index,
+                    /* columnIndex= */ index,
                     /* columnSpan= */ 1,
                     /* heading= */ false,
                     /* selected= */ host.isSelected()));
@@ -370,9 +368,73 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
     // proportionally to the smaller size
     int size = (int) (clockSize / max3(minimumHeight / height, minimumWidth / width, 1f));
 
+    int widthSpecMode = MeasureSpec.getMode(widthMeasureSpec);
+    if (widthSpecMode != MeasureSpec.UNSPECIFIED) {
+      size = Math.min(size, MeasureSpec.getSize(widthMeasureSpec));
+    }
+
+    int heightSpecMode = MeasureSpec.getMode(heightMeasureSpec);
+    if (heightSpecMode != MeasureSpec.UNSPECIFIED) {
+      size = Math.min(size, MeasureSpec.getSize(heightMeasureSpec));
+    }
+
     int spec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.EXACTLY);
-    setMeasuredDimension(size, size);
+    int circleRadius = size / 2 - clockHandView.getSelectorRadius() - clockHandPadding;
+    if (circleRadius != getRadius()) {
+      setRadius(circleRadius);
+    }
     super.onMeasure(spec, spec);
+  }
+
+  private int getSelectedIndex() {
+    for (int i = 0; i < textViewPool.size(); i++) {
+      TextView textView = textViewPool.valueAt(i);
+      if (textView.isSelected()) {
+        return (int) textView.getTag(R.id.material_value_index);
+      }
+    }
+    return -1;
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    int selectedIndex = getSelectedIndex();
+    if (!isShown() || selectedIndex == -1) {
+      return super.onKeyDown(keyCode, event);
+    }
+
+    int nextIndex;
+    switch (keyCode) {
+      case KeyEvent.KEYCODE_DPAD_RIGHT:
+      case KeyEvent.KEYCODE_DPAD_UP:
+        nextIndex = (selectedIndex + 1) % values.length;
+        break;
+      case KeyEvent.KEYCODE_DPAD_LEFT:
+      case KeyEvent.KEYCODE_DPAD_DOWN:
+        nextIndex = (selectedIndex - 1 + values.length) % values.length;
+        break;
+      case KeyEvent.KEYCODE_ENTER:
+      case KeyEvent.KEYCODE_DPAD_CENTER:
+        if (onEnterKeyPressedListener != null) {
+          onEnterKeyPressedListener.onEnterKeyPressed();
+        }
+        return true;
+      default:
+        return super.onKeyDown(keyCode, event);
+    }
+
+    if (nextIndex != selectedIndex) {
+      int level = (nextIndex / INITIAL_CAPACITY) + LEVEL_1;
+      if (level != getCurrentLevel()) {
+        setCurrentLevel(level);
+      }
+
+      float rotation = (nextIndex % INITIAL_CAPACITY) * (360f / INITIAL_CAPACITY);
+      setHandRotation(rotation);
+      return true;
+    }
+
+    return super.onKeyDown(keyCode, event);
   }
 
   private static float max3(float a, float b, float c) {
@@ -386,5 +448,15 @@ class ClockFaceView extends RadialViewGroup implements OnRotateListener {
 
   void setCurrentLevel(@Level int level) {
     clockHandView.setCurrentLevel(level);
+  }
+
+  public void setOnEnterKeyPressedListener(OnEnterKeyPressedListener onEnterKeyPressedListener) {
+    this.onEnterKeyPressedListener = onEnterKeyPressedListener;
+  }
+
+  /** Listener interface for enter key press events on the clock face. */
+  interface OnEnterKeyPressedListener {
+    /** Called when the enter key is pressed. */
+    void onEnterKeyPressed();
   }
 }

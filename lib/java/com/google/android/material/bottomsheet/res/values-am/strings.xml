@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">ግማሽ መንገድ ዘርጋ</string>
+  <string name="bottomsheet_action_expand">ዘርጋ</string>
+  <string name="bottomsheet_action_collapse">ሰብስብ</string>
   <string name="bottomsheet_drag_handle_content_description">መያዣ ይጎትቱ</string>
-  <string name="bottomsheet_action_expand">የግርጌ ሉሁን ይዘርጉ</string>
-  <string name="bottomsheet_action_collapse">የግርጌ ሉሁን ይሰብስቡ</string>
+  <string name="bottomsheet_action_expand_description">የግርጌ ሉሁን ይዘርጉ</string>
+  <string name="bottomsheet_action_half_expand_description">የታች ሉሁን በግማሽ ይዘርጉ</string>
+  <string name="bottomsheet_action_collapse_description">የግርጌ ሉሁን ይሰብስቡ</string>
+  <string name="bottomsheet_state_collapsed">ተሰብስቧል</string>
+  <string name="bottomsheet_state_half_expanded">በግማሽ ተዘርግቷል</string>
+  <string name="bottomsheet_state_expanded">ተዘርግቷል</string>
 </resources>

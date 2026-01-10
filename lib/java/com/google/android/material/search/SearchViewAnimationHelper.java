@@ -30,12 +30,15 @@ import android.os.Build.VERSION_CODES;
 import androidx.appcompat.graphics.drawable.DrawerArrowDrawable;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup.MarginLayoutParams;
+import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
@@ -92,6 +95,7 @@ class SearchViewAnimationHelper {
   private final FrameLayout toolbarContainer;
   private final Toolbar toolbar;
   private final Toolbar dummyToolbar;
+  private final LinearLayout textContainer;
   private final TextView searchPrefix;
   private final EditText editText;
   private final ImageButton clearButton;
@@ -116,6 +120,7 @@ class SearchViewAnimationHelper {
     this.clearButton = searchView.clearButton;
     this.divider = searchView.divider;
     this.contentContainer = searchView.contentContainer;
+    this.textContainer = searchView.textContainer;
 
     backHelper = new MaterialMainContainerBackHelper(rootView);
   }
@@ -286,7 +291,8 @@ class SearchViewAnimationHelper {
         getDummyToolbarAnimator(show),
         getActionMenuViewsAlphaAnimator(show),
         getEditTextAnimator(show),
-        getSearchPrefixAnimator(show));
+        getSearchPrefixAnimator(show),
+        getTextAnimator(show));
     animatorSet.addListener(
         new AnimatorListenerAdapter() {
           @Override
@@ -297,6 +303,15 @@ class SearchViewAnimationHelper {
           @Override
           public void onAnimationEnd(Animator animation) {
             setContentViewsAlpha(show ? 1 : 0);
+            // Reset edittext and searchbar textview alphas after the animations are finished since
+            // the visibilities for searchview and searchbar have been set accordingly.
+            editText.setAlpha(1);
+            if (searchBar != null) {
+              searchBar.getTextView().setAlpha(1);
+            }
+            // Reset clip bounds so it can react to the screen or layout changes.
+            editText.setClipBounds(null);
+
             // After expanding or collapsing, we should reset the clip bounds so it can react to the
             // screen or layout changes. Otherwise it will result in wrong clipping on the layout.
             rootView.resetClipBoundsAndCornerRadii();
@@ -429,17 +444,19 @@ class SearchViewAnimationHelper {
   }
 
   private void addBackButtonTranslationAnimatorIfNeeded(AnimatorSet animatorSet) {
-    ImageButton backButton = ToolbarUtils.getNavigationIconButton(toolbar);
-    if (backButton == null) {
+    ImageButton searchViewBackButton = ToolbarUtils.getNavigationIconButton(toolbar);
+    if (searchViewBackButton == null) {
       return;
     }
+    ImageButton searchBarBackButton = ToolbarUtils.getNavigationIconButton(searchBar);
 
     ValueAnimator backButtonAnimatorX =
-        ValueAnimator.ofFloat(getFromTranslationXStart(backButton), 0);
-    backButtonAnimatorX.addUpdateListener(MultiViewUpdateListener.translationXListener(backButton));
+        ValueAnimator.ofFloat(
+            getTranslationXBetweenViews(searchBarBackButton, searchViewBackButton), 0);
+    backButtonAnimatorX.addUpdateListener(MultiViewUpdateListener.translationXListener(searchViewBackButton));
 
     ValueAnimator backButtonAnimatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
-    backButtonAnimatorY.addUpdateListener(MultiViewUpdateListener.translationYListener(backButton));
+    backButtonAnimatorY.addUpdateListener(MultiViewUpdateListener.translationYListener(searchViewBackButton));
 
     animatorSet.playTogether(backButtonAnimatorX, backButtonAnimatorY);
   }
@@ -454,9 +471,23 @@ class SearchViewAnimationHelper {
     if (searchView.isAnimatedNavigationIcon()) {
       addDrawerArrowDrawableAnimatorIfNeeded(animatorSet, drawable);
       addFadeThroughDrawableAnimatorIfNeeded(animatorSet, drawable);
+      addBackButtonAnimatorIfNeeded(animatorSet, backButton);
     } else {
       setFullDrawableProgressIfNeeded(drawable);
     }
+  }
+
+  private void addBackButtonAnimatorIfNeeded(AnimatorSet animatorSet, ImageButton backButton) {
+    // If there's no navigation icon on the search bar, we should set the alpha for the button
+    // itself instead of the drawables since the button background has a ripple.
+    if (searchBar == null || searchBar.getNavigationIcon() != null) {
+      return;
+    }
+
+    ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+    animator.addUpdateListener(
+        animation -> backButton.setAlpha((Float) animation.getAnimatedValue()));
+    animatorSet.playTogether(animator);
   }
 
   private void addDrawerArrowDrawableAnimatorIfNeeded(AnimatorSet animatorSet, Drawable drawable) {
@@ -489,29 +520,39 @@ class SearchViewAnimationHelper {
   }
 
   private void addActionMenuViewAnimatorIfNeeded(AnimatorSet animatorSet) {
-    ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
-    if (actionMenuView == null) {
+    ActionMenuView searchViewActionMenuView = ToolbarUtils.getActionMenuView(toolbar);
+    if (searchViewActionMenuView == null) {
       return;
     }
+    ActionMenuView searchBarActionMenuView = ToolbarUtils.getActionMenuView(searchBar);
 
     ValueAnimator actionMenuViewAnimatorX =
-        ValueAnimator.ofFloat(getFromTranslationXEnd(actionMenuView), 0);
+        ValueAnimator.ofFloat(
+            getTranslationXBetweenViews(searchBarActionMenuView, searchViewActionMenuView), 0);
     actionMenuViewAnimatorX.addUpdateListener(
-        MultiViewUpdateListener.translationXListener(actionMenuView));
+        MultiViewUpdateListener.translationXListener(searchViewActionMenuView));
 
     ValueAnimator actionMenuViewAnimatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
     actionMenuViewAnimatorY.addUpdateListener(
-        MultiViewUpdateListener.translationYListener(actionMenuView));
+        MultiViewUpdateListener.translationYListener(searchViewActionMenuView));
 
     animatorSet.playTogether(actionMenuViewAnimatorX, actionMenuViewAnimatorY);
   }
 
   private Animator getDummyToolbarAnimator(boolean show) {
-    return getTranslationAnimator(show, false, dummyToolbar);
+    return getTranslationAnimator(
+        show,
+        dummyToolbar,
+        getFromTranslationXEnd(dummyToolbar),
+        getFromTranslationY());
   }
 
   private Animator getHeaderContainerAnimator(boolean show) {
-    return getTranslationAnimator(show, false, headerContainer);
+    return getTranslationAnimator(
+        show,
+        headerContainer,
+        getFromTranslationXEnd(headerContainer),
+        getFromTranslationY());
   }
 
   private Animator getActionMenuViewsAlphaAnimator(boolean show) {
@@ -531,11 +572,88 @@ class SearchViewAnimationHelper {
   }
 
   private Animator getSearchPrefixAnimator(boolean show) {
-    return getTranslationAnimator(show, true, searchPrefix);
+    return getTranslationAnimatorForText(show, searchPrefix);
   }
 
   private Animator getEditTextAnimator(boolean show) {
-    return getTranslationAnimator(show, true, editText);
+    return getTranslationAnimatorForText(show, editText);
+  }
+
+  private AnimatorSet getTextAnimator(boolean show) {
+    AnimatorSet animatorSet = new AnimatorSet();
+    addTextFadeAnimatorIfNeeded(animatorSet);
+    addEditTextClipAnimator(animatorSet);
+    animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+    animatorSet.setInterpolator(
+        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.LINEAR_INTERPOLATOR));
+    return animatorSet;
+  }
+
+  private void addEditTextClipAnimator(AnimatorSet animatorSet) {
+    // We only want to add a clip animation if the edittext and searchbar text is the same, which
+    // means it is translating instead of fading.
+    if (searchBar == null || !TextUtils.equals(editText.getText(), searchBar.getText())) {
+      return;
+    }
+    Rect editTextClipBounds =
+        new Rect(0, 0, editText.getWidth(), editText.getHeight());
+    ValueAnimator animator =
+        ValueAnimator.ofInt(
+            searchBar.getTextView().getWidth(), editText.getWidth());
+    animator.addUpdateListener(
+        animation -> {
+          editTextClipBounds.right = (int) animation.getAnimatedValue();
+          editText.setClipBounds(editTextClipBounds);
+        });
+    animatorSet.playTogether(animator);
+  }
+
+  private void addTextFadeAnimatorIfNeeded(AnimatorSet animatorSet) {
+    if (searchBar == null || TextUtils.equals(editText.getText(), searchBar.getText())) {
+      return;
+    }
+    // If the searchbar text is not equal to the searchview edittext, we want to fade out the
+    // edittext and fade in the searchbar text
+    ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+    animator.addUpdateListener(
+        animation -> {
+          editText.setAlpha((Float) animation.getAnimatedValue());
+          searchBar.getTextView().setAlpha(1 - (Float) animation.getAnimatedValue());
+        });
+    animatorSet.playTogether(animator);
+  }
+
+  private Animator getTranslationAnimatorForText(boolean show, View v) {
+    TextView textView = searchBar.getPlaceholderTextView();
+    // If the placeholder text is empty, we animate to the searchbar textview instead.
+    // Or if we're showing the searchview, we always animate from the searchbar textview, not
+    // from the placeholder text.
+    if (TextUtils.isEmpty(textView.getText()) || show) {
+      textView = searchBar.getTextView();
+    }
+    int startX =
+        getViewLeftFromSearchViewParent(textView) - (v.getLeft() + textContainer.getLeft());
+    return getTranslationAnimator(show, v, startX, getFromTranslationY());
+  }
+
+  private int getViewLeftFromSearchViewParent(@NonNull View v) {
+    int left = v.getLeft();
+    ViewParent viewParent = v.getParent();
+    while (viewParent instanceof View && viewParent != searchView.getParent()) {
+      left += ((View) viewParent).getLeft();
+      viewParent = viewParent.getParent();
+    }
+    return left;
+  }
+
+  private int getViewTopFromSearchViewParent(@NonNull View v) {
+    int top = v.getTop();
+    ViewParent viewParent = v.getParent();
+    while (viewParent instanceof View && viewParent != searchView.getParent()) {
+      top += ((View) viewParent).getTop();
+      viewParent = viewParent.getParent();
+    }
+    return top;
   }
 
   private Animator getContentAnimator(boolean show) {
@@ -581,12 +699,11 @@ class SearchViewAnimationHelper {
     return animatorScale;
   }
 
-  private Animator getTranslationAnimator(boolean show, boolean anchoredToStart, View view) {
-    int startX = anchoredToStart ? getFromTranslationXStart(view) : getFromTranslationXEnd(view);
+  private Animator getTranslationAnimator(boolean show, View view, int startX, int startY) {
     ValueAnimator animatorX = ValueAnimator.ofFloat(startX, 0);
     animatorX.addUpdateListener(MultiViewUpdateListener.translationXListener(view));
 
-    ValueAnimator animatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
+    ValueAnimator animatorY = ValueAnimator.ofFloat(startY, 0);
     animatorY.addUpdateListener(MultiViewUpdateListener.translationYListener(view));
 
     AnimatorSet animatorSet = new AnimatorSet();
@@ -597,24 +714,39 @@ class SearchViewAnimationHelper {
     return animatorSet;
   }
 
-  private int getFromTranslationXStart(View view) {
-    int marginStart = ((MarginLayoutParams) view.getLayoutParams()).getMarginStart();
-    int paddingStart = searchBar.getPaddingStart();
-    return ViewUtils.isLayoutRtl(searchBar)
-        ? searchBar.getWidth() - searchBar.getRight() + marginStart - paddingStart
-        : searchBar.getLeft() - marginStart + paddingStart;
+  private int getTranslationXBetweenViews(
+      @Nullable View searchBarSubView, @NonNull View searchViewSubView) {
+    // If there is no equivalent for the SearchView subview in the SearchBar, we return the
+    // translation between the SearchBar and the start of the SearchView subview
+    if (searchBarSubView == null) {
+      int marginStart = ((MarginLayoutParams) searchViewSubView.getLayoutParams()).getMarginStart();
+      int paddingStart = searchBar.getPaddingStart();
+      int searchBarLeft = getViewLeftFromSearchViewParent(searchBar);
+      return ViewUtils.isLayoutRtl(searchBar)
+          ? searchBarLeft
+              + searchBar.getWidth()
+              + marginStart
+              - paddingStart
+              - searchView.getRight()
+          : (searchBarLeft - marginStart + paddingStart);
+    }
+    return getViewLeftFromSearchViewParent(searchBarSubView)
+        - getViewLeftFromSearchViewParent(searchViewSubView);
   }
 
   private int getFromTranslationXEnd(View view) {
     int marginEnd = ((MarginLayoutParams) view.getLayoutParams()).getMarginEnd();
+    int viewLeft = getViewLeftFromSearchViewParent(searchBar);
     return ViewUtils.isLayoutRtl(searchBar)
-        ? searchBar.getLeft() - marginEnd
-        : searchBar.getRight() - searchView.getWidth() + marginEnd;
+        ? viewLeft - marginEnd
+        : viewLeft + searchBar.getWidth() + marginEnd - searchView.getWidth();
   }
 
   private int getFromTranslationY() {
-    int toolbarMiddleY = (toolbarContainer.getTop() + toolbarContainer.getBottom()) / 2;
-    int searchBarMiddleY = (searchBar.getTop() + searchBar.getBottom()) / 2;
+    int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getHeight() / 2;
+    int searchBarMiddleY =
+        getViewTopFromSearchViewParent(searchBar)
+            + searchBar.getHeight() / 2;
     return searchBarMiddleY - toolbarMiddleY;
   }
 

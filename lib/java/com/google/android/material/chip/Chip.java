@@ -54,6 +54,7 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.BoolRes;
@@ -77,7 +78,7 @@ import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.chip.ChipDrawable.Delegate;
 import com.google.android.material.internal.MaterialCheckable;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.resources.TextAppearanceFontCallback;
@@ -85,6 +86,7 @@ import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
+import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.List;
 
 /**
@@ -146,9 +148,6 @@ public class Chip extends AppCompatCheckBox
   private static final int[] CHECKABLE_STATE_SET = {android.R.attr.state_checkable};
 
   private static final String NAMESPACE_ANDROID = "http://schemas.android.com/apk/res/android";
-
-  /** Value taken from Android Accessibility Guide */
-  private static final int MIN_TOUCH_TARGET_DP = 48;
 
   @Nullable private ChipDrawable chipDrawable;
   @Nullable private InsetDrawable insetBackgroundDrawable;
@@ -329,8 +328,7 @@ public class Chip extends AppCompatCheckBox
             DEF_STYLE_RES);
     ensureMinTouchTargetSize = a.getBoolean(R.styleable.Chip_ensureMinTouchTargetSize, false);
 
-    float defaultMinTouchTargetSize =
-        (float) Math.ceil(ViewUtils.dpToPx(getContext(), MIN_TOUCH_TARGET_DP));
+    float defaultMinTouchTargetSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
     minTouchTargetSize =
         (int)
             Math.ceil(
@@ -1010,6 +1008,8 @@ public class Chip extends AppCompatCheckBox
         node.setBoundsInParent(getCloseIconTouchBoundsInt());
         node.addAction(AccessibilityActionCompat.ACTION_CLICK);
         node.setEnabled(isEnabled());
+        // Set the class name to Button so that the close icon is treated as a button by TalkBack.
+        node.setClassName(Button.class.getName());
       } else {
         node.setContentDescription("");
         node.setBoundsInParent(EMPTY_BOUNDS);
@@ -1366,6 +1366,33 @@ public class Chip extends AppCompatCheckBox
           TypedValue.applyDimension(unit, size, getResources().getDisplayMetrics()));
     }
     updateTextPaintDrawState();
+  }
+
+  @Nullable
+  @Override
+  public String getFontVariationSettings() {
+    if (chipDrawable != null) {
+      return chipDrawable.getFontVariationSettings();
+    }
+    return super.getFontVariationSettings();
+  }
+
+  @CanIgnoreReturnValue
+  @Override
+  public boolean setFontVariationSettings(@Nullable String fontVariationSettings) {
+    super.setFontVariationSettings(fontVariationSettings);
+    // ChipDrawable will be null if setFontVariationSettings is being called from the parent
+    // TextView's constructor. This override is in place to pass through subsequent calls
+    // to ChipDrawable and not to ensure xml attributes are properly set on ChipDrawable.
+    // ChipDrawable will handle reading xml attributes on its own and ensure font variation
+    // settings are applied itself.
+    if (chipDrawable != null) {
+      chipDrawable.setFontVariationSettings(fontVariationSettings);
+      updateTextPaintDrawState();
+      return true;
+    }
+
+    return false;
   }
 
   private void updateTextPaintDrawState() {

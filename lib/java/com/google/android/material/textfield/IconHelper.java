@@ -21,8 +21,10 @@ import static com.google.android.material.internal.ViewUtils.dpToPx;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.appcompat.widget.TooltipCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -61,7 +63,12 @@ class IconHelper {
     iconView.setFocusable(iconFocusable);
     iconView.setClickable(iconClickable);
     iconView.setPressable(iconClickable);
-    iconView.setLongClickable(iconLongClickable);
+    // Pre-O, the tooltip is set via a long-click listener. If we have a custom OnClickListener but
+    // no custom OnLongClickListener, do not set the view to not be long-clickable, so that the
+    // tooltip can be shown.
+    if (VERSION.SDK_INT >= VERSION_CODES.O || !iconFocusable || iconLongClickable) {
+      iconView.setLongClickable(iconLongClickable);
+    }
     iconView.setImportantForAccessibility(
         iconFocusable
             ? View.IMPORTANT_FOR_ACCESSIBILITY_YES
@@ -171,6 +178,32 @@ class IconHelper {
         return ImageView.ScaleType.CENTER_INSIDE;
       default:
         return ImageView.ScaleType.CENTER;
+    }
+  }
+
+  /**
+   * Updates the tooltip for an icon, handling API-level-specific behavior.
+   *
+   * <p>The tooltip is only set if the icon is focusable.
+   *
+   * <p>On API 26 and above, this method calls {@link
+   * android.view.View#setTooltipText(CharSequence)}. This is safe to use even with a custom {@link
+   * OnLongClickListener}.
+   *
+   * <p>On API levels below 26, this method uses {@link TooltipCompat#setTooltipText(View,
+   * CharSequence)}, but only if a custom {@link OnLongClickListener} has not been set. This is to
+   * avoid overwriting a developer-provided long-press listener. Thus, a custom {@link
+   * OnLongClickListener} will override the tooltip.
+   */
+  static void updateIconTooltip(
+      @NonNull CheckableImageButton iconView,
+      @Nullable OnLongClickListener onLongClickListener,
+      @Nullable CharSequence tooltip) {
+    final CharSequence tooltipText = iconView.isFocusable() ? tooltip : null;
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+      iconView.setTooltipText(tooltipText);
+    } else if (onLongClickListener == null) {
+      TooltipCompat.setTooltipText(iconView, tooltipText);
     }
   }
 }

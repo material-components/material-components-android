@@ -20,6 +20,9 @@
   <string name="material_timepicker_select_time">Vaxt seçin</string>
   <string name="material_timepicker_minute">Dəqiqə</string>
   <string name="material_timepicker_hour">Saat</string>
+  <string name="material_timepicker_minute_error">Dəqiqə 0-59 aralığında olmalıdır</string>
+  <string name="material_timepicker_hour_error">Saat 1-12 aralığında olmalıdır</string>
+  <string name="material_timepicker_hour_error_24h">Saat 0-23 aralığında olmalıdır</string>
   <string name="material_hour_suffix">Saat %1$s</string>
   <string name="material_hour_24h_suffix">%1$s saat</string>
   <string name="material_minute_suffix">%1$s dəqiqə</string>
@@ -30,4 +33,6 @@
   <string name="mtrl_timepicker_cancel">Ləğv edin</string>
   <string name="material_timepicker_text_input_mode_description">Zamanı daxil etmək üçün mətnlə daxiletmə rejiminə keçin</string>
   <string name="material_timepicker_clock_mode_description">Zamanı daxil etmək üçün saat rejiminə keçin</string>
+  <string name="material_timepicker_text_input_mode_tooltip">Mətn daxiletmə rejiminə keçin</string>
+  <string name="material_timepicker_clock_mode_tooltip">Saat rejiminə keçin</string>
 </resources>

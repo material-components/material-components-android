@@ -35,6 +35,7 @@
     android:id="@+id/cat_navigation_rail_efab"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:icon="@drawable/ic_add_24px"
-    android:text="@string/cat_navigation_rail_efab_text"/>
+    android:contentDescription="@string/cat_navigation_rail_fab_content_desc"
+    android:text="@string/cat_navigation_rail_efab_text"
+    app:icon="@drawable/ic_add_24px" />
 </LinearLayout>

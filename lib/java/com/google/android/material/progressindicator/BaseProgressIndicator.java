@@ -18,6 +18,7 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.progressindicator.DeterminateDrawable.MAX_DRAWABLE_LEVEL;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
@@ -43,6 +44,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.dynamicanimation.animation.DynamicAnimation.OnAnimationEndListener;
 import androidx.vectordrawable.graphics.drawable.Animatable2Compat.AnimationCallback;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -131,6 +133,9 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
 
   // The visibility state that the component will be in after hide animation finishes.
   private int visibilityAfterHide = View.INVISIBLE;
+
+  // Whether the component has been fully initialized (including drawable initialization).
+  boolean initialized;
 
   // **************** Constructors ****************
 
@@ -394,10 +399,6 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   @Override
   public void setProgressDrawable(@Nullable Drawable drawable) {
-    if (drawable == null) {
-      super.setProgressDrawable(null);
-      return;
-    }
     if (drawable instanceof DeterminateDrawable) {
       DeterminateDrawable<S> determinateDrawable = (DeterminateDrawable<S>) drawable;
       determinateDrawable.hideNow();
@@ -406,6 +407,8 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
       // progress then secondary progress. Since secondary progress is not used here. We need to set
       // the level actively to overcome the affects from secondary progress.
       determinateDrawable.setLevelByFraction((float) getProgress() / getMax());
+    } else if (!initialized) {
+      super.setProgressDrawable(drawable);
     } else {
       throw new IllegalArgumentException("Cannot set framework drawable as progress drawable.");
     }
@@ -419,12 +422,10 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   @Override
   public void setIndeterminateDrawable(@Nullable Drawable drawable) {
-    if (drawable == null) {
-      super.setIndeterminateDrawable(null);
-      return;
-    }
     if (drawable instanceof IndeterminateDrawable) {
       ((DrawableWithAnimatedVisibilityChange) drawable).hideNow();
+      super.setIndeterminateDrawable(drawable);
+    } else if (!initialized) {
       super.setIndeterminateDrawable(drawable);
     } else {
       throw new IllegalArgumentException(
@@ -449,9 +450,7 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    * attached to a window and whether it and its ancestors are visible.
    */
   boolean visibleToUser() {
-    return isAttachedToWindow()
-        && getWindowVisibility() == View.VISIBLE
-        && isEffectivelyVisible();
+    return isAttachedToWindow() && getWindowVisibility() == View.VISIBLE && isEffectivelyVisible();
   }
 
   /**
@@ -474,8 +473,8 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    * #isShown()} on parent changes that result from {@link
    * android.view.ViewGroup#attachViewToParent(View, int, ViewGroup.LayoutParams)}, which *can*
    * change our effective visibility. So this method errs on the side of assuming visibility unless
-   * we can conclusively prove otherwise (but may result in some false positives, if this view
-   * ends up being attached to a non-visible hierarchy after being detached in a visible state).
+   * we can conclusively prove otherwise (but may result in some false positives, if this view ends
+   * up being attached to a non-visible hierarchy after being detached in a visible state).
    */
   boolean isEffectivelyVisible() {
     View current = this;
@@ -589,7 +588,11 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   public void setIndicatorColor(@ColorInt int... indicatorColors) {
     if (indicatorColors.length == 0) {
       // Uses theme primary color for indicator by default. Indicator color cannot be empty.
-      indicatorColors = new int[] {MaterialColors.getColor(getContext(), R.attr.colorPrimary, -1)};
+      indicatorColors =
+          new int[] {
+            MaterialColors.getColor(
+                getContext(), androidx.appcompat.R.attr.colorPrimary, -1)
+          };
     }
     if (!Arrays.equals(getIndicatorColor(), indicatorColors)) {
       spec.indicatorColors = indicatorColors;
@@ -647,7 +650,36 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
    */
   public void setTrackCornerRadius(@Px int trackCornerRadius) {
     if (spec.trackCornerRadius != trackCornerRadius) {
-      spec.trackCornerRadius = Math.round(min(trackCornerRadius, spec.trackThickness / 2f));
+      spec.trackCornerRadius = min(trackCornerRadius, spec.trackThickness / 2);
+      spec.useRelativeTrackCornerRadius = false;
+      invalidate();
+    }
+  }
+
+  /**
+   * Returns the relative radius of the rounded corner for the indicator and track in pixels.
+   *
+   * @see #setTrackCornerRadiusFraction(float)
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#BaseProgressIndicator_trackCornerRadius
+   */
+  public float getTrackCornerRadiusFraction() {
+    return spec.trackCornerRadiusFraction;
+  }
+
+  /**
+   * Sets the radius of the rounded corner for the indicator and track in fraction of track
+   * thickness.
+   *
+   * @param fraction The fraction of corner radius to track thickness.
+   * @see #getTrackCornerRadiusFraction()
+   * @attr ref
+   *     com.google.android.material.progressindicator.R.styleable#BaseProgressIndicator_trackCornerRadius
+   */
+  public void setTrackCornerRadiusFraction(@FloatRange(from = 0f, to = 0.5f) float fraction) {
+    if (spec.trackCornerRadiusFraction != fraction) {
+      spec.trackCornerRadiusFraction = min(fraction, 0.5f);
+      spec.useRelativeTrackCornerRadius = true;
       invalidate();
     }
   }
@@ -789,6 +821,28 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
   }
 
   /**
+   * Sets the progress for ramping up the full wave amplitude. If progress is outside the range,
+   * track is flat.
+   *
+   * @param progress The progress to ramp up wave amplitude.
+   */
+  public void setWaveAmplitudeRampProgressMin(float progress) {
+    getProgressDrawable().setWaveAmplitudeRampProgressMin(progress);
+    invalidate();
+  }
+
+  /**
+   * Sets the progress for ramping down the full wave amplitude. If progress is outside the range,
+   * track is flat.
+   *
+   * @param progress The progress to ramp down wave amplitude.
+   */
+  public void setWaveAmplitudeRampProgressMax(float progress) {
+    getProgressDrawable().setWaveAmplitudeRampProgressMax(progress);
+    invalidate();
+  }
+
+  /**
    * Returns the show animation behavior used in this progress indicator.
    *
    * @see #setShowAnimationBehavior(int)
@@ -906,6 +960,25 @@ public abstract class BaseProgressIndicator<S extends BaseProgressIndicatorSpec>
               + " View.");
     }
     visibilityAfterHide = visibility;
+  }
+
+  private final OnAnimationEndListener hideAfterMaxProgressListener =
+      (animation, canceled, value, velocity) -> {
+        if (getProgressDrawable() != null
+            && getProgressDrawable().getLevel() == MAX_DRAWABLE_LEVEL) {
+          hide();
+        }
+      };
+
+  public void setHideAfterMaxProgress(boolean hideAfterMaxProgress) {
+    if (getProgressDrawable() == null) {
+      return;
+    }
+    if (hideAfterMaxProgress) {
+      getProgressDrawable().addSpringAnimationEndListener(hideAfterMaxProgressListener);
+    } else {
+      getProgressDrawable().removeSpringAnimationEndListener(hideAfterMaxProgressListener);
+    }
   }
 
   /**

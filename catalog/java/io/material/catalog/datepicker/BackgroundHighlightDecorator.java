@@ -43,11 +43,11 @@ class BackgroundHighlightDecorator extends DayViewDecorator {
   public void initialize(@NonNull Context context) {
     int highlightColor =
         MaterialColors.getColor(
-            context, R.attr.colorTertiary, BackgroundHighlightDecorator.class.getSimpleName());
+            context, com.google.android.material.R.attr.colorTertiary, BackgroundHighlightDecorator.class.getSimpleName());
     backgroundHighlightColor = ColorStateList.valueOf(highlightColor);
     int textColor =
         MaterialColors.getColor(
-            context, R.attr.colorOnTertiary, BackgroundHighlightDecorator.class.getSimpleName());
+            context, com.google.android.material.R.attr.colorOnTertiary, BackgroundHighlightDecorator.class.getSimpleName());
     textHighlightColor = ColorStateList.valueOf(textColor);
   }
 

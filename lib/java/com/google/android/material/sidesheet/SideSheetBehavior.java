@@ -645,7 +645,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       runAfterLayout(
           viewRef.get(),
           () -> {
-            V child = viewRef.get();
+            V child = viewRef != null ? viewRef.get() : null;
             if (child != null) {
               startSettling(child, finalState, false);
             }

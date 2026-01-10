@@ -39,8 +39,20 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
  * This class models the edges and corners of a shape, which are used by {@link
  * MaterialShapeDrawable} to generate and render the shape for a view's background.
  */
-public class ShapeAppearanceModel {
+public class ShapeAppearanceModel implements ShapeAppearance {
   public static final int NUM_CORNERS = 4;
+
+  /** Flag representing top left corner of the shape. */
+  public static final int CORNER_TOP_LEFT = 0x1;
+
+  /** Flag representing top right corner of the shape. */
+  public static final int CORNER_TOP_RIGHT = 0x2;
+
+  /** Flag representing bottom left corner of the shape. */
+  public static final int CORNER_BOTTOM_LEFT = 0x4;
+
+  /** Flag representing bottom right corner of the shape. */
+  public static final int CORNER_BOTTOM_RIGHT = 0x8;
 
   /** Builder to create instances of {@link ShapeAppearanceModel}s. */
   public static final class Builder {
@@ -454,6 +466,24 @@ public class ShapeAppearanceModel {
       return -1;
     }
 
+    @NonNull
+    @CanIgnoreReturnValue
+    public Builder setCornerSizeOverride(int cornerPositionSet, @NonNull CornerSize cornerSize) {
+      if (containsFlag(cornerPositionSet, CORNER_TOP_LEFT)) {
+        setTopLeftCornerSize(cornerSize);
+      }
+      if (containsFlag(cornerPositionSet, CORNER_TOP_RIGHT)) {
+        setTopRightCornerSize(cornerSize);
+      }
+      if (containsFlag(cornerPositionSet, CORNER_BOTTOM_LEFT)) {
+        setBottomLeftCornerSize(cornerSize);
+      }
+      if (containsFlag(cornerPositionSet, CORNER_BOTTOM_RIGHT)) {
+        setBottomRightCornerSize(cornerSize);
+      }
+      return this;
+    }
+
     /** Builds an instance of a {@link ShapeAppearanceModel} */
     @NonNull
     public ShapeAppearanceModel build() {
@@ -533,10 +563,14 @@ public class ShapeAppearanceModel {
     // Note: we need to wrap shape appearance and shape appearance overlay to workaround b/230755281
     context = new ContextThemeWrapper(context, shapeAppearanceResId);
     if (shapeAppearanceOverlayResId != 0) {
-      context = new ContextThemeWrapper(context, shapeAppearanceOverlayResId);
+      context.getTheme().applyStyle(shapeAppearanceOverlayResId, /* force= */ true);
     }
     TypedArray a = context.obtainStyledAttributes(R.styleable.ShapeAppearance);
+    return builder(a, defaultCornerSize);
+  }
 
+  @NonNull
+  private static Builder builder(TypedArray a, @NonNull CornerSize defaultCornerSize) {
     try {
       int cornerFamily = a.getInt(R.styleable.ShapeAppearance_cornerFamily, CornerFamily.ROUNDED);
       int cornerFamilyTopLeft =
@@ -772,14 +806,21 @@ public class ShapeAppearanceModel {
    * Returns a copy of this {@link ShapeAppearanceModel} with the same edges and corners, but with
    * the corner size for all corners updated.
    */
+  @Override
   @NonNull
   public ShapeAppearanceModel withCornerSize(float cornerSize) {
     return toBuilder().setAllCornerSizes(cornerSize).build();
   }
 
+  @Override
   @NonNull
   public ShapeAppearanceModel withCornerSize(@NonNull CornerSize cornerSize) {
     return toBuilder().setAllCornerSizes(cornerSize).build();
+  }
+
+  @Override
+  public boolean isStateful() {
+    return false;
   }
 
   /**
@@ -845,6 +886,28 @@ public class ShapeAppearanceModel {
         && topLeftCorner instanceof RoundedCornerTreatment
         && bottomRightCorner instanceof RoundedCornerTreatment
         && bottomLeftCorner instanceof RoundedCornerTreatment;
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getDefaultShape() {
+    return this;
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getShapeForState(@NonNull int[] stateSet) {
+    return this;
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel[] getShapeAppearanceModels() {
+    return new ShapeAppearanceModel[] { this };
+  }
+
+  static boolean containsFlag(int flagSet, int flag) {
+    return (flagSet | flag) == flagSet;
   }
 
   @NonNull

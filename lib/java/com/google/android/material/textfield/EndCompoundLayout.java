@@ -26,6 +26,7 @@ import static com.google.android.material.textfield.IconHelper.setIconMinSize;
 import static com.google.android.material.textfield.IconHelper.setIconOnClickListener;
 import static com.google.android.material.textfield.IconHelper.setIconOnLongClickListener;
 import static com.google.android.material.textfield.IconHelper.setIconScaleType;
+import static com.google.android.material.textfield.IconHelper.updateIconTooltip;
 import static com.google.android.material.textfield.TextInputLayout.END_ICON_CLEAR_TEXT;
 import static com.google.android.material.textfield.TextInputLayout.END_ICON_CUSTOM;
 import static com.google.android.material.textfield.TextInputLayout.END_ICON_DROPDOWN_MENU;
@@ -181,6 +182,17 @@ class EndCompoundLayout extends LinearLayout {
     addView(suffixTextView);
     addView(endIconFrame);
     addView(errorIconView);
+
+    errorIconView.setOnFocusableChangedListener(
+        (v, focusable) ->
+            updateIconTooltip(
+                errorIconView,
+                errorIconOnLongClickListener,
+                errorIconView.getContentDescription()));
+    endIconView.setOnFocusableChangedListener(
+        (v, focusable) ->
+            updateIconTooltip(
+                endIconView, endIconOnLongClickListener, getEndIconContentDescription()));
 
     textInputLayout.addOnEditTextAttachedListener(onEditTextAttachedListener);
     addOnAttachStateChangeListener(
@@ -363,7 +375,6 @@ class EndCompoundLayout extends LinearLayout {
     setEndIconVisible(endIconMode != END_ICON_NONE);
     EndIconDelegate delegate = getEndIconDelegate();
     setEndIconDrawable(getIconResId(delegate));
-    setEndIconContentDescription(delegate.getIconContentDescriptionResId());
     setEndIconCheckable(delegate.isIconCheckable());
     if (delegate.isBoxBackgroundModeSupported(textInputLayout.getBoxBackgroundMode())) {
       setUpDelegate(delegate);
@@ -375,6 +386,7 @@ class EndCompoundLayout extends LinearLayout {
               + endIconMode);
     }
     setEndIconOnClickListener(delegate.getOnIconClickListener());
+    setEndIconContentDescription(delegate.getIconContentDescriptionResId());
     if (editText != null) {
       delegate.onEditTextAttached(editText);
       setOnFocusChangeListenersIfNeeded(delegate);
@@ -534,6 +546,7 @@ class EndCompoundLayout extends LinearLayout {
   void setEndIconContentDescription(@Nullable CharSequence endIconContentDescription) {
     if (getEndIconContentDescription() != endIconContentDescription) {
       endIconView.setContentDescription(endIconContentDescription);
+      updateIconTooltip(endIconView, endIconOnLongClickListener, endIconContentDescription);
     }
   }
 

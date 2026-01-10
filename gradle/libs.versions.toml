@@ -1,0 +1,101 @@
+[versions]
+androidGradlePlugin                  = "8.11.1"
+
+# Main library dependencies.
+# Versions defined for :lib are required to follow library versioning - stable
+# releases of the library can only use stable dependencies
+androidXActivity                     = "1.8.0"
+androidXActivityCompose              = "1.10.1"
+androidXAnnotation                   = "1.2.0"
+androidXAnnotationExperimental       = "1.0.0"
+androidXAppCompat                    = "1.7.0"
+androidXCardView                     = "1.0.0"
+androidXConstraintLayout             = "2.2.1"
+androidXCoordinatorLayout            = "1.1.0"
+androidXCore                         = "1.16.0"
+androidXComposeMaterialIconsCore     = "1.7.8"
+androidXComposeMaterialIconsExtended = "1.7.8"
+androidXComposeMaterial3             = "1.4.0-alpha14"
+androidXCustomView                   = "1.2.0"
+androidXDrawerLayout                 = "1.1.1"
+androidXDynamicAnimation             = "1.1.0"
+androidXEspresso                     = "3.1.0"
+androidXFragment                     = "1.2.5"
+androidXGridLayout                   = "1.0.0"
+androidXGraphicsShapes               = "1.0.1"
+androidXLifecycle                    = "2.0.0"
+androidXMultidex                     = "2.0.1"
+androidXPreference                   = "1.1.1"
+androidXRecyclerView                 = "1.2.1"
+androidXRecyclerViewSelection        = "1.0.0"
+androidXResourceInspectionAnnotation = "1.0.1"
+androidXResourceInspectionProcessor  = "1.0.1"
+androidXTestCore                     = "1.4.0"
+androidXTransition                   = "1.5.0"
+androidXVectorDrawable               = "1.1.0"
+androidXViewPager2                   = "1.0.0"
+androidXWindow                       = "1.0.0"
+dagger                               = "2.51.1"
+dexmaker                             = "1.2"
+errorProneAnnotations                 = "2.15.0"
+glide                                = "4.16.0"
+guava                                = "33.3.1-android"
+junit                                = "4.13.2"
+kotlinBom                            = "1.8.22"
+mockitoCore                          = "2.25.0"
+robolectric                          = "4.13"
+truth                                = "0.45"
+
+[libraries]
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "androidXActivity" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "androidXActivityCompose" }
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidXAnnotation" }
+androidx-annotation-experimental = { group = "androidx.annotation", name = "annotation-experimental", version.ref = "androidXAnnotationExperimental" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidXAppCompat" }
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "androidXCardView" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidXConstraintLayout" }
+androidx-coordinatorlayout = { group = "androidx.coordinatorlayout", name = "coordinatorlayout", version.ref = "androidXCoordinatorLayout" }
+androidx-core = { group = "androidx.core", name = "core", version.ref = "androidXCore" }
+androidx-compose-material-icons-core = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "androidXComposeMaterialIconsCore" }
+androidx-compose-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "androidXComposeMaterialIconsExtended" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidXComposeMaterial3" }
+androidx-customview = { group = "androidx.customview", name = "customview", version.ref = "androidXCustomView" }
+androidx-drawerlayout = { group = "androidx.drawerlayout", name = "drawerlayout", version.ref = "androidXDrawerLayout" }
+androidx-dynamicanimation = { group = "androidx.dynamicanimation", name = "dynamicanimation", version.ref = "androidXDynamicAnimation" }
+androidx-fragment = { group = "androidx.fragment", name = "fragment", version.ref = "androidXFragment" }
+androidx-gridlayout = { group = "androidx.gridlayout", name = "gridlayout", version.ref = "androidXGridLayout" }
+androidx-lifecycle-runtime = { group = "androidx.lifecycle", name = "lifecycle-runtime", version.ref = "androidXLifecycle" }
+androidx-multidex = { group = "androidx.multidex", name= "multidex", version.ref = "androidXMultidex" }
+androidx-preference = { group = "androidx.preference", name = "preference", version.ref = "androidXPreference" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "androidXRecyclerView" }
+androidx-transition = { group = "androidx.transition", name = "transition", version.ref = "androidXTransition" }
+androidx-vectordrawable = { group = "androidx.vectordrawable", name= "vectordrawable", version.ref = "androidXVectorDrawable" }
+androidx-recyclerview-selection = { group = "androidx.recyclerview", name = "recyclerview-selection", version.ref = "androidXRecyclerViewSelection" }
+androidx-resourceinspection-annotation = { group = "androidx.resourceinspection", name = "resourceinspection-annotation", version.ref = "androidXResourceInspectionAnnotation" }
+androidx-resourceinspection-processor = { group = "androidx.resourceinspection", name = "resourceinspection-processor", version.ref = "androidXResourceInspectionProcessor" }
+androidx-viewpager2 = { group = "androidx.viewpager2", name = "viewpager2", version.ref = "androidXViewPager2" }
+androidx-graphics-shapes = { group = "androidx.graphics", name = "graphics-shapes", version.ref = "androidXGraphicsShapes" }
+androidx-espresso-accessibility = { group = "androidx.test.espresso", name = "espresso-accessibility", version.ref = "androidXEspresso" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidXEspresso" }
+androidx-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "androidXEspresso" }
+androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidXTestCore" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidXTestCore" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidXTestCore" }
+androidx-window = { group = "androidx.window", name = "window", version.ref = "androidXWindow" }
+androidx-window-java = { group = "androidx.window", name = "window-java", version.ref = "androidXWindow" }
+dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+dagger-android = { group = "com.google.dagger", name = "dagger-android", version.ref = "dagger" }
+dagger-android-processor = { group = "com.google.dagger", name = "dagger-android-processor", version.ref = "dagger" }
+dagger-android-support = { group = "com.google.dagger", name = "dagger-android-support", version.ref = "dagger" }
+dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+dexmaker = { group = "com.google.dexmaker", name = "dexmaker", version.ref = "dexmaker" }
+dexmaker-mokito = { group = "com.google.dexmaker", name = "dexmaker-mockito", version.ref = "dexmaker" }
+errorprone-annotations = { group = "com.google.errorprone", name = "error_prone_annotations", version.ref = "errorProneAnnotations" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+guava = { group = "com.google.guava", name = "guava", version.ref = "guava" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlin-bom = { group = "org.jetbrains.kotlin", name = "kotlin-bom", version.ref = "kotlinBom" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }

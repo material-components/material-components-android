@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Zgjeroje deri në gjysmë</string>
+  <string name="bottomsheet_action_expand">Zgjero</string>
+  <string name="bottomsheet_action_collapse">Palos</string>
   <string name="bottomsheet_drag_handle_content_description">Doreza e zvarritjes</string>
-  <string name="bottomsheet_action_expand">Zgjero fletën e poshtme</string>
-  <string name="bottomsheet_action_collapse">Palos fletën e poshtme</string>
+  <string name="bottomsheet_action_expand_description">Zgjero fletën e poshtme</string>
+  <string name="bottomsheet_action_half_expand_description">Zgjero në gjysmë fletën e poshtme</string>
+  <string name="bottomsheet_action_collapse_description">Palos fletën e poshtme</string>
+  <string name="bottomsheet_state_collapsed">Palosur</string>
+  <string name="bottomsheet_state_half_expanded">Zgjeruar në gjysmë</string>
+  <string name="bottomsheet_state_expanded">Zgjeruar</string>
 </resources>

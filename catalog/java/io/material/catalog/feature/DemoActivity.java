@@ -103,7 +103,7 @@ public abstract class DemoActivity extends BaseCatalogActivity {
     MaterialContainerTransform transform = new MaterialContainerTransform(this, entering);
     transform.addTarget(android.R.id.content);
     transform.setContainerColor(
-        MaterialColors.getColor(findViewById(android.R.id.content), R.attr.colorSurface));
+        MaterialColors.getColor(findViewById(android.R.id.content), com.google.android.material.R.attr.colorSurface));
     transform.setFadeMode(MaterialContainerTransform.FADE_MODE_THROUGH);
     return transform;
   }

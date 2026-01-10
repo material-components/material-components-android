@@ -1,4 +1,4 @@
-import org.gradle.internal.os.OperatingSystem
+import javax.inject.Inject
 
 apply plugin: 'com.android.library'
 apply plugin: 'maven-publish'
@@ -6,38 +6,38 @@ apply plugin: 'maven-publish'
 version = mdcLibraryVersion
 
 dependencies {
-  api compatibility("activity")
-  api compatibility("annotation")
-  api compatibility("appcompat")
-  api compatibility("cardview")
-  api compatibility("coordinatorlayout")
-  api compatibility("constraintlayout")
-  api compatibility("core")
-  api compatibility("drawerlayout")
-  api compatibility("dynamicanimation")
-  api compatibility("experimental")
-  api compatibility("fragment")
-  api compatibility("lifecycleRuntime")
-  api compatibility("recyclerview")
-  api compatibility("resourceInspectionAnnotation")
-  api compatibility("transition")
-  api compatibility("vectordrawable")
-  api compatibility("viewpager2")
-  api compatibility("graphicsShapes")
+  api libs.androidx.activity
+  api libs.androidx.annotation
+  api libs.androidx.annotation.experimental
+  api libs.androidx.appcompat
+  api libs.androidx.cardview
+  api libs.androidx.coordinatorlayout
+  api libs.androidx.constraintlayout
+  api libs.androidx.core
+  api libs.androidx.customview
+  api libs.androidx.drawerlayout
+  api libs.androidx.dynamicanimation
+  api libs.androidx.fragment
+  api libs.androidx.lifecycle.runtime
+  api libs.androidx.recyclerview
+  api libs.androidx.resourceinspection.annotation
+  api libs.androidx.transition
+  api libs.androidx.vectordrawable
+  api libs.androidx.viewpager2
+  api libs.androidx.graphics.shapes
 
-  annotationProcessor compatibility("resourceInspectionProcessor")
+  annotationProcessor libs.androidx.resourceinspection.processor
 
   // Align kotlin versions
-  implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.22"))
+  implementation(platform(libs.kotlin.bom))
 
-  implementation "com.google.errorprone:error_prone_annotations:${errorproneVersion}"
-
-  testImplementation "androidx.test:core:${testRunnerVersion}"
-  testImplementation "androidx.test:runner:${testRunnerVersion}"
-  testImplementation "junit:junit:4.13.2"
-  testImplementation "com.google.truth:truth:${truthVersion}"
-  testImplementation "org.mockito:mockito-core:${mockitoCoreVersion}"
-  testImplementation "org.robolectric:robolectric:${robolectricVersion}"
+  implementation libs.errorprone.annotations
+  testImplementation libs.androidx.test.core
+  testImplementation libs.androidx.test.runner
+  testImplementation libs.junit
+  testImplementation libs.truth
+  testImplementation libs.mockito.core
+  testImplementation libs.robolectric
 }
 
 def srcDirs = [
@@ -70,12 +70,14 @@ def srcDirs = [
   'com/google/android/material/imageview',
   'com/google/android/material/internal',
   'com/google/android/material/loadingindicator',
+  'com/google/android/material/listitem',
   'com/google/android/material/materialswitch',
   'com/google/android/material/math',
   'com/google/android/material/menu',
   'com/google/android/material/motion',
   'com/google/android/material/navigation',
   'com/google/android/material/navigationrail',
+  'com/google/android/material/overflow',
   'com/google/android/material/progressindicator',
   'com/google/android/material/radiobutton',
   'com/google/android/material/resources',
@@ -101,6 +103,7 @@ def srcDirs = [
 ]
 
 android {
+  namespace "com.google.android.material"
   sourceSets {
     main.manifest.srcFile 'java/com/google/android/material/AndroidManifest.xml'
     main.java.srcDir 'java'
@@ -124,131 +127,17 @@ android {
   }
 
   defaultConfig {
-    minSdkVersion 21
-  }
-}
-
-task generateJavadocs(type: Javadoc) {
-  if (project.hasProperty("online")) {
-    options.addStringOption("toroot", "/")
-    options.addStringOption("hdf", "android.whichdoc online")
-    options.addStringOption("hdf", "dac")
-    options.addBooleanOption("devsite", true)
-    options.addBooleanOption("yamlV2", true)
-    options.addStringOption("dac_libraryroot", "com/google/android/material")
-    options.addStringOption("dac_dataname", "MATERIAL_DATA")
+    minSdkVersion 23
   }
 
-  if (project.hasProperty("docletPathRoot")) {
-    def docletPathRoot = project.property("docletPathRoot")
-    def outputPath = project.hasProperty("outputPath") ? project.property("outputPath") : "doclava-out"
-    def doclavaJar = project.getProperty("doclavaJar")
-
-    source = android.sourceSets.main.java.source
-    source = source.findAll { it.name.endsWith(".java") }
-
-    title = null
-    destinationDir = new File(outputPath)
-    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    options.addStringOption("federate Android", "https://developer.android.com")
-    options.encoding = "UTF-8"
-    options.doclet = "com.google.doclava.Doclava"
-    options.docletpath = [
-      file(doclavaJar),
-      file(docletPathRoot + "/jsilver/v1_0_0/jsilver.jar")
-    ]
+  publishing {
+    singleVariant("release")
   }
 }
 
 task getVersion {
   doLast {
     println version
-  }
-}
-
-task generateApiXml(type: Javadoc) {
-  if (project.hasProperty("apiName")) {
-    def jdiff = project.property("jdiffJar")
-    def apiName = project.property("apiName")
-    source = android.sourceSets.main.java.source
-    source = source.findAll { it.name.endsWith(".java") }
-    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    options.doclet = "jdiff.JDiff"
-    options.addStringOption("subpackages", ".")
-    options.addStringOption("apiname", apiName)
-    options.docletpath = [
-      file(jdiff),
-    ]
-
-    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
-    options.setNoTimestamp(false)
-  }
-
-  doLast {
-    // Escape incorrect ampersands in API XML file
-    if (OperatingSystem.current().isLinux()) {
-      ["sed", "-i", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
-    } else {
-      ["sed", "-i", "''", "s/ & / \\&amp; /g", "lib/${apiName}.xml"].execute()
-    }
-  }
-}
-
-task generateJdiffReport(type: Javadoc) {
-  if (project.hasProperty('oldApi')) {
-    def outputPath = project.hasProperty('outputPath') ? project.property('outputPath') : 'diffs-out'
-    def jdiff = project.property('jdiffjar')
-    def xerces = project.property('xercesjar')
-    def oldApi = project.property('oldApi')
-    def newApi = project.property('newApi')
-    def newApiDir = project.property('newApiDir')
-    def oldApiDir = project.property('oldApiDir')
-    destinationDir = new File(outputPath)
-    source = android.sourceSets.main.java.source
-    source = source.findAll { it.name.endsWith('.java') }
-    classpath = files('${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar')
-    options.doclet = 'jdiff.JDiff'
-    options.addStringOption('subpackages', '.')
-    options.addStringOption('newapidir', newApiDir)
-    options.addStringOption('oldapidir', oldApiDir)
-    options.addStringOption('oldapi', oldApi)
-    options.addBooleanOption('verbose', true)
-    options.addStringOption('newapi', newApi)
-    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
-    options.setNoTimestamp(false)
-    options.docletpath = [
-      file(jdiff),
-      file(xerces),
-    ]
-  }
-}
-
-def R_CLASS_PATH = "build/generated/not_namespaced_r_class_sources/releaseUnitTest/processReleaseUnitTestResources/r/com/google/android/material/R.java"
-Attribute<String> ARTIFACT_TYPE = Attribute.of("artifactType", String.class)
-afterEvaluate {
-  [generateJavadocs, generateApiXml].forEach { task ->
-    task.dependsOn(':lib:processReleaseUnitTestResources')
-    task.source += R_CLASS_PATH
-
-    def releaseVariant = android.libraryVariants.find { it.name == 'release' }
-    if (releaseVariant == null) {
-      return
-    }
-
-    // Add transitive runtime dependencies to classpath
-    task.classpath += releaseVariant.runtimeConfiguration.incoming.artifactView { aView ->
-      aView.attributes.attribute(ARTIFACT_TYPE, "android-classes")
-    }.files
-
-    // Add project and compile dependencies to classpath
-    releaseVariant.javaCompileProvider.configure { javaCompileProvider ->
-      task.classpath += releaseVariant.getCompileClasspath(null)
-      task.classpath += task.project.files(javaCompileProvider.destinationDir)
-      task.source += javaCompileProvider.source
-    }
-
-    // Doclava does not understand -notimestamp option that is default since Gradle 6.0
-    task.options.setNoTimestamp(false)
   }
 }
 
@@ -261,49 +150,196 @@ task androidSourcesJar(type: Jar) {
   }
 }
 
-afterEvaluate {
-  publishing {
-    repositories {
-      maven {
-        url = "$mavenRepoUrl"
-      }
+publishing {
+  repositories {
+    maven {
+      url = "$mavenRepoUrl"
     }
+  }
 
-    publications {
-      release(MavenPublication) {
-        from components.release
-
-        artifact androidSourcesJar
-
-        groupId = 'com.google.android.material'
-        artifactId = 'material'
-        version project.version
-        pom {
-          name = 'Material Components for Android'
-          description = 'Material Components for Android is a static library ' +
-            'that you can add to your Android application in order to use ' +
-            'APIs that provide implementations of the Material Design specification. ' +
-            'Compatible on devices running API 21 or later.'
-          url = 'https://github.com/material-components/material-components-android'
-          inceptionYear = '2015'
-          licenses {
-            license {
-              name = 'The Apache Software License, Version 2.0'
-              url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-              distribution = 'repo'
-            }
-          }
-          developers {
-            developer {
-              name = 'The Android Open Source Project'
-            }
-          }
-          scm {
-            connection = 'scm:git:https://github.com/material-components/material-components-android.git'
-            url = 'https://github.com/material-components/material-components-android'
+  publications {
+    release(MavenPublication) {
+      artifact androidSourcesJar
+      groupId = 'com.google.android.material'
+      artifactId = 'material'
+      version project.version
+      pom {
+        name = 'Material Components for Android'
+        description = 'Material Components for Android is a static library ' +
+          'that you can add to your Android application in order to use ' +
+          'APIs that provide implementations of the Material Design specification. ' +
+          'Compatible on devices running API 23 or later.'
+        url = 'https://github.com/material-components/material-components-android'
+        inceptionYear = '2015'
+        licenses {
+          license {
+            name = 'The Apache Software License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution = 'repo'
           }
         }
+        developers {
+          developer {
+            name = 'The Android Open Source Project'
+          }
+        }
+        scm {
+          connection = 'scm:git:https://github.com/material-components/material-components-android.git'
+          url = 'https://github.com/material-components/material-components-android'
+        }
+      }
+
+      afterEvaluate {
+        from components.release
       }
     }
+  }
+}
+
+/**
+ * Generate library documentation.
+ *
+ * This task requires a Dackka jar to be run. This can be passed to the task
+ * by running the task from the command line and setting the --dackkaJar
+ * option.
+ *
+ * Example: ./gradlew generateDocumentation --dackkaJar="<path/to/dackka.jar>"
+ *
+ * The resulting documentation will be placed in `lib/build/docs` and contain
+ * documentation for both java and kotlin clients.
+ *
+ * TODO: b/149338266 - Dackka does not support links to resources in documentation.
+ * TODO: b/396171398 - inheritDoc results hav formatting issues with Dackka.
+ */
+tasks.register("generateDocumentation", DackkaRunner) {
+  group = "Publishing"
+  description = "Generate javadocs using dackka"
+  version = mdcLibraryVersion
+  config = layout.buildDirectory.file("resources/dackka_config.json").get().asFile
+  outputDirectory = layout.buildDirectory.dir("docs").get()
+  // Add all the files from the main source set to be documented by dackka
+  sourceDirectories.setFrom(
+    android.sourceSets.main.java.srcDirs.absolutePath
+  )
+  dependenciesClasspath.setFrom(
+    files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"),
+  )
+}
+
+/**
+ * A task that uses Dackka to generate javadoc.
+ */
+abstract class DackkaRunner extends DefaultTask {
+
+  private String dackkaJar;
+
+  /**
+   * Set the path to the Dackka jar to use by setting the --dackkaJar command
+   * line argument when running the gradle task used by this task.
+   *
+   * @param path the path to the dackka jar
+   */
+  @Option(option = "dackkaJar", description = "path to daccka jar")
+  void setDackkaJar(String path) {
+    this.dackkaJar = path
+  }
+
+  @Input
+  String getDackkaJar() {
+    return dackkaJar;
+  }
+
+  /**
+   * The Material library version of these docs.
+   *
+   * This should most likely match mdcLibraryVersion from the projects build
+   * file.
+   */
+  @Input
+  String version;
+
+  /** Source directories to be documented. */
+  @InputFiles
+  final ConfigurableFileCollection sourceDirectories = project.files()
+
+  @InputFiles
+  final ConfigurableFileCollection dependenciesClasspath = project.files();
+
+  /** A file that should be populated with the Dackka configuration. */
+  @OutputFile
+  abstract File config;
+
+  /** The output containing documentation generated by Dackka. */
+  @OutputDirectory
+  abstract Directory outputDirectory;
+
+  @Inject
+  abstract ExecOperations getExecOperations()
+
+  @TaskAction
+  void run() {
+    // Delete any previously generated documentation
+    outputDirectory.asFile.deleteDir()
+    // Populate the Dackka config json file with Material-specific properties
+    writeDackkaConfig()
+    // Run the Dackka jar and generate docs
+    getExecOperations().javaexec {
+      classpath(dackkaJar)
+      args(config.absolutePath)
+    }
+  }
+
+  /** Populate the Dackka config file with project specific values. */
+  private void writeDackkaConfig() {
+    def configContents = """
+    {
+      "modeuleName": "Material Components",
+      "moduleVersion": "$version",
+      "outputDir": "${outputDirectory.asFile.absolutePath}",
+      "offlineMode": "true",
+      "noJdkLink": "true",
+      "sourceSets": [
+        {
+          "moduleDisplayName": "lib",
+          "analysisPlatform": "jvm",
+          "externalDocumentationLinks": [],
+          "sourceSetID": {
+            "scopeId": "com",
+            "sourceSetName": "main"
+          },
+          "sourceRoots": [${sourceDirectories.collect { '"' + it.absolutePath + '"' }.join(", ")}],
+          "samples": [],
+          "includes": [],
+          "classpath": [${dependenciesClasspath.collect { '"' + it.absolutePath + '"'}.join(", ")}],
+          "sourceLinks": [],
+          "documentedVisibilities": ["PUBLIC", "PROTECTED"]
+        }
+      ],
+      "pluginsConfiguration": [
+        {
+          "fqPluginName": "com.google.devsite.DevsitePlugin",
+          "serializationFormat": "JSON",
+          "values": "${getDevsitePluginConfigValues()}"
+        }
+      ]
+    }
+    """.trim();
+
+    config.write(configContents)
+  }
+
+  /** Returns the Dackka Devsite plugin configuration json string. */
+  private String getDevsitePluginConfigValues() {
+    return """
+    {
+      "docRootPath": "reference",
+      "projectPath": "com/google/android/material",
+      "excludedPackages": [ ".*excluded.*" ],
+      "javaDocsPath": "",
+      "kotlinDocsPath": "kotlin",
+      "baseSourceLink": "https://github.com/material-components/material-components-android/blob/${version}/lib/java/%s",
+      "annotationsNotToDisplay": [ "java.lang.Override", "kotlin.ParameterName" ]
+    }
+    """.trim().replace("\n", "").replace('"', '\\\"')
   }
 }

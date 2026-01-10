@@ -4,7 +4,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:7.4.2'
+    classpath libs.android.gradle.plugin
   }
 }
 
@@ -17,39 +17,9 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 34
-  minSdkVersion = 21
+  compileSdkVersion = 35
+  minSdkVersion = 23
   targetSdkVersion = 33
-
-  androidXVersions = [
-    activity                     : '1.8.0',
-    annotation                   : '1.2.0',
-    appCompat                    : '1.6.1',
-    cardView                     : '1.0.0',
-    constraintlayout             : '2.0.1',
-    coordinatorlayout            : '1.1.0',
-    core                         : '1.6.0',
-    drawerlayout                 : '1.2.0',
-    experimental                 : '1.0.0',
-    fragment                     : '1.2.5',
-    lifecycle                    : '2.0.0',
-    recyclerView                 : '1.0.0',
-    recyclerViewSelection        : '1.0.0',
-    resourceInspectionAnnotation : '1.0.1',
-    resourceInspectionProcessor  : '1.0.1',
-    transition                   : '1.5.0',
-    vectorDrawable               : '1.1.0',
-    viewpager2                   : '1.0.0',
-    dynamicanimation             : '1.0.0',
-    graphicsShapes               : '1.0.1',
-  ]
-
-  errorproneVersion = '2.15.0'
-  testRunnerVersion = '1.4.0'
-  espressoVersion = '3.1.0'
-  mockitoCoreVersion = '2.25.0'
-  truthVersion = '0.45'
-  robolectricVersion = '4.9'
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.
@@ -59,7 +29,7 @@ ext {
     ? project.property('mavenRepoUrl') : '/tmp/myRepo/')
 
   // Current version of the library (could be in-development/unreleased).
-  mdcLibraryVersion = '1.13.0-alpha10'
+  mdcLibraryVersion = '1.14.0-alpha08'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
 }
@@ -81,56 +51,6 @@ private def getTransformedProjectPath(projectPath) {
     result += ':' + currentPath
   }
   return result
-}
-
-/**
- * Return the module dependency for the given compatibility library name.
- */
-def compatibility(name) {
-  switch (name) {
-    case "activity":
-      return "androidx.activity:activity:${androidXVersions.activity}"
-    case "annotation":
-      return "androidx.annotation:annotation:${androidXVersions.annotation}"
-    case "appcompat":
-      return "androidx.appcompat:appcompat:${androidXVersions.appCompat}"
-    case "cardview":
-      return "androidx.cardview:cardview:${androidXVersions.cardView}"
-    case "constraintlayout":
-      return "androidx.constraintlayout:constraintlayout:${androidXVersions.constraintlayout}"
-    case "coordinatorlayout":
-      return "androidx.coordinatorlayout:coordinatorlayout:${androidXVersions.coordinatorlayout}"
-    case "core":
-      return "androidx.core:core:${androidXVersions.core}"
-    case "drawerlayout":
-      return "androidx.drawerlayout:drawerlayout:${androidXVersions.drawerlayout}"
-    case "dynamicanimation":
-      return "androidx.dynamicanimation:dynamicanimation:${androidXVersions.dynamicanimation}"
-    case "fragment":
-      return "androidx.fragment:fragment:${androidXVersions.fragment}"
-    case "lifecycleRuntime":
-      return "androidx.lifecycle:lifecycle-runtime:${androidXVersions.lifecycle}"
-    case "recyclerview":
-      return "androidx.recyclerview:recyclerview:${androidXVersions.recyclerView}"
-    case "transition":
-      return "androidx.transition:transition:${androidXVersions.transition}"
-    case "vectordrawable":
-      return "androidx.vectordrawable:vectordrawable:${androidXVersions.vectorDrawable}"
-    case "recyclerViewSelection":
-      return "androidx.recyclerview:recyclerview-selection:${androidXVersions.recyclerViewSelection}"
-    case "resourceInspectionAnnotation":
-      return "androidx.resourceinspection:resourceinspection-annotation:${androidXVersions.resourceInspectionAnnotation}"
-    case "resourceInspectionProcessor":
-      return "androidx.resourceinspection:resourceinspection-processor:${androidXVersions.resourceInspectionProcessor}"
-    case "viewpager2":
-      return "androidx.viewpager2:viewpager2:${androidXVersions.viewpager2}"
-    case "graphicsShapes":
-      return "androidx.graphics:graphics-shapes:${androidXVersions.graphicsShapes}"
-    case "experimental":
-      return "androidx.annotation:annotation-experimental:${androidXVersions.experimental}"
-    default:
-      throw new IllegalArgumentException("No mapping exists for name: $name.")
-  }
 }
 
 /**
@@ -161,12 +81,12 @@ def getArchivesBaseName(name) {
 }
 
 subprojects {
-    tasks.withType(Test) {
-        maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
-        forkEvery = 80
-        maxHeapSize = "2048m"
-        minHeapSize = "1024m"
-    }
+  tasks.withType(Test) {
+    maxParallelForks = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    forkEvery = 80
+    maxHeapSize = "2048m"
+    minHeapSize = "1024m"
+  }
 }
 
 subprojects {

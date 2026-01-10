@@ -37,20 +37,38 @@
         android:id="@+id/orientation_switch_toggle"
         android:paddingTop="16dp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:checked="false"
         android:enabled="true"
         android:text="@string/cat_button_vertical_orientation" />
     <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="16dp"
+        android:layout_gravity="center"
+        android:checked="false"
+        android:enabled="true"
+        android:text="@string/cat_button_toggleable"/>
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switch_enable"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingTop="16dp"
-        android:paddingBottom="16dp"
         android:layout_gravity="center"
         android:checked="true"
         android:enabled="true"
         android:text="@string/cat_button_enable" />
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switch_optical_center"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:checked="false"
+        android:enabled="true"
+        android:text="@string/cat_button_optical_center" />
   </LinearLayout>
 </ScrollView>

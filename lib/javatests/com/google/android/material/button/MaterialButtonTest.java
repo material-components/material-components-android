@@ -21,7 +21,6 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.view.View.MeasureSpec;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -71,7 +70,7 @@ public class MaterialButtonTest {
   }
 
   @Test
-  @Config(sdk = Build.VERSION_CODES.LOLLIPOP)
+  @Config(sdk = Config.OLDEST_SDK)
   public void testShapeRippleDrawableInLollipop() {
     MaterialButton materialButton = new MaterialButton(context);
     ShapeAppearanceModel shapeAppearanceModel = materialButton.getShapeAppearanceModel();

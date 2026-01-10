@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">下半分を展開</string>
+  <string name="bottomsheet_action_expand">開く</string>
+  <string name="bottomsheet_action_collapse">閉じる</string>
   <string name="bottomsheet_drag_handle_content_description">ドラッグ ハンドル</string>
-  <string name="bottomsheet_action_expand">ボトムシートを開く</string>
-  <string name="bottomsheet_action_collapse">ボトムシートを閉じる</string>
+  <string name="bottomsheet_action_expand_description">ボトムシートを開く</string>
+  <string name="bottomsheet_action_half_expand_description">ボトムシートを半分開く</string>
+  <string name="bottomsheet_action_collapse_description">ボトムシートを閉じる</string>
+  <string name="bottomsheet_state_collapsed">閉じた状態です</string>
+  <string name="bottomsheet_state_half_expanded">半分開いた状態です</string>
+  <string name="bottomsheet_state_expanded">開いた状態です</string>
 </resources>

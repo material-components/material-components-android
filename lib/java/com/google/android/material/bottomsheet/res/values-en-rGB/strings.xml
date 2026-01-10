@@ -16,7 +16,13 @@
 -->
 <resources>
   <string name="bottomsheet_action_expand_halfway">Expand halfway</string>
+  <string name="bottomsheet_action_expand">Expand</string>
+  <string name="bottomsheet_action_collapse">Collapse</string>
   <string name="bottomsheet_drag_handle_content_description">Drag handle</string>
-  <string name="bottomsheet_action_expand">Expand the bottom sheet</string>
-  <string name="bottomsheet_action_collapse">Collapse the bottom sheet</string>
+  <string name="bottomsheet_action_expand_description">Expand the bottom sheet</string>
+  <string name="bottomsheet_action_half_expand_description">Half expand the bottom sheet</string>
+  <string name="bottomsheet_action_collapse_description">Collapse the bottom sheet</string>
+  <string name="bottomsheet_state_collapsed">Collapsed</string>
+  <string name="bottomsheet_state_half_expanded">Half expanded</string>
+  <string name="bottomsheet_state_expanded">Expanded</string>
 </resources>

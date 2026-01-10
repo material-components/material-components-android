@@ -15,37 +15,65 @@
   ~ limitations under the License.
 -->
 <resources>
-  <style name="Widget.MaterialComponents.ProgressIndicator" parent="android:Widget">
-    <item name="indicatorColor">?attr/colorPrimary</item>
-    <item name="trackThickness">@dimen/mtrl_progress_track_thickness</item>
-    <item name="android:indeterminateOnly">false</item>
+
+  <!-- Styles for M3 Expressive ProgressIndicator. -->
+
+  <style name="Widget.Material3Expressive.LinearProgressIndicator" parent="Widget.Material3.LinearProgressIndicator"/>
+
+  <style name="Widget.Material3Expressive.LinearProgressIndicator.Wavy">
+    <item name="waveAmplitude">@dimen/m3_comp_progress_indicator_linear_active_indicator_wave_amplitude</item>
+    <item name="wavelength">@dimen/m3_comp_progress_indicator_linear_active_indicator_wave_wavelength</item>
+    <item name="wavelengthIndeterminate">@dimen/m3_comp_progress_indicator_linear_indeterminate_active_indicator_wave_wavelength</item>
   </style>
 
-  <!-- LinearProgressIndicator style -->
-  <style name="Widget.MaterialComponents.LinearProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
-    <item name="indeterminateAnimationType">disjoint</item>
-    <item name="indicatorDirectionLinear">startToEnd</item>
-  </style>
-
-  <!-- CircularProgressIndicator styles -->
-  <style name="Widget.MaterialComponents.CircularProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
-    <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_medium</item>
-    <item name="indicatorSize">@dimen/mtrl_progress_circular_size_medium</item>
-    <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_medium</item>
-    <item name="trackColor">@android:color/transparent</item>
-    <item name="indicatorDirectionCircular">clockwise</item>
+  <style name="Widget.Material3Expressive.CircularProgressIndicator" parent="Widget.Material3.CircularProgressIndicator">
+    <item name="indeterminateAnimationTypeCircular">retreat</item>
     <item name="indeterminateTrackVisible">true</item>
   </style>
-  <style name="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
-  <style name="Widget.MaterialComponents.CircularProgressIndicator.Small">
+
+  <style name="Widget.Material3Expressive.CircularProgressIndicator.Wavy">
+    <item name="indicatorSize">@dimen/m3_comp_progress_indicator_circular_with_wave_size</item>
+    <item name="indicatorInset">0dp</item>
+    <item name="waveAmplitude">@dimen/m3_comp_progress_indicator_circular_active_indicator_wave_amplitude</item>
+    <item name="wavelength">@dimen/m3_comp_progress_indicator_circular_active_indicator_wave_wavelength</item>
+  </style>
+
+  <!-- Styles for M3 ProgressIndicator. -->
+
+  <!-- M3 LinearProgressIndicator style -->
+  <style name="Widget.Material3.LinearProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
+    <item name="trackThickness">@dimen/m3_comp_progress_indicator_linear_track_thickness</item>
+    <item name="trackColor">@macro/m3_comp_progress_indicator_track_color</item>
+    <item name="indicatorColor">@macro/m3_comp_progress_indicator_active_indicator_color</item>
+    <item name="trackCornerRadius">50%</item>
+    <item name="indicatorTrackGapSize">@dimen/m3_comp_progress_indicator_linear_track_active_indicator_space</item>
+    <item name="trackStopIndicatorSize">@dimen/m3_comp_progress_indicator_linear_stop_indicator_size</item>
+  </style>
+
+  <!-- M3 CircularProgressIndicator style -->
+  <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
+    <item name="trackThickness">@dimen/m3_comp_progress_indicator_circular_track_thickness</item>
+    <item name="indicatorSize">@dimen/m3_comp_progress_indicator_circular_size</item>
+    <item name="indicatorColor">@macro/m3_comp_progress_indicator_active_indicator_color</item>
+    <item name="trackColor">@macro/m3_comp_progress_indicator_track_color</item>
+    <item name="trackCornerRadius">50%</item>
+    <item name="indicatorTrackGapSize">@dimen/m3_comp_progress_indicator_circular_track_active_indicator_space</item>
+    <item name="indeterminateTrackVisible">false</item>
+  </style>
+  <style name="Widget.Material3.CircularProgressIndicator.Medium"/>
+  <style name="Widget.Material3.CircularProgressIndicator.Small">
     <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_small</item>
     <item name="indicatorSize">@dimen/mtrl_progress_circular_size_small</item>
     <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_small</item>
+    <item name="trackCornerRadius">50%</item>
+    <item name="indicatorTrackGapSize">3dp</item>
   </style>
-  <style name="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall">
+  <style name="Widget.Material3.CircularProgressIndicator.ExtraSmall">
     <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_extra_small</item>
     <item name="indicatorSize">@dimen/mtrl_progress_circular_size_extra_small</item>
     <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_extra_small</item>
+    <item name="trackCornerRadius">50%</item>
+    <item name="indicatorTrackGapSize">2dp</item>
   </style>
 
   <!-- M3 LinearProgressIndicator Legacy style -->
@@ -79,40 +107,39 @@
     <item name="indicatorTrackGapSize">0dp</item>
   </style>
 
-  <!-- M3 LinearProgressIndicator style -->
-  <style name="Widget.Material3.LinearProgressIndicator" parent="Widget.MaterialComponents.LinearProgressIndicator">
-    <item name="trackThickness">@dimen/m3_comp_progress_indicator_linear_track_thickness</item>
-    <item name="trackColor">@macro/m3_comp_progress_indicator_track_color</item>
-    <item name="indicatorColor">@macro/m3_comp_progress_indicator_active_indicator_color</item>
-    <item name="trackCornerRadius">2dp</item>
-    <item name="indicatorTrackGapSize">@dimen/m3_comp_progress_indicator_linear_track_active_indicator_space</item>
-    <item name="trackStopIndicatorSize">@dimen/m3_comp_progress_indicator_linear_stop_indicator_size</item>
+  <!-- Styles for M2 ProgressIndicator. -->
+
+  <style name="Widget.MaterialComponents.ProgressIndicator" parent="android:Widget">
+    <item name="indicatorColor">?attr/colorPrimary</item>
+    <item name="trackThickness">@dimen/mtrl_progress_track_thickness</item>
+    <item name="android:indeterminateOnly">false</item>
   </style>
 
-  <!-- M3 CircularProgressIndicator style -->
-  <style name="Widget.Material3.CircularProgressIndicator" parent="Widget.MaterialComponents.CircularProgressIndicator">
-    <item name="trackThickness">@dimen/m3_comp_progress_indicator_circular_track_thickness</item>
-    <item name="indicatorSize">@dimen/m3_comp_progress_indicator_circular_size</item>
-    <item name="indicatorColor">@macro/m3_comp_progress_indicator_active_indicator_color</item>
-    <item name="trackColor">@macro/m3_comp_progress_indicator_track_color</item>
-    <item name="trackCornerRadius">2dp</item>
-    <item name="indicatorTrackGapSize">@dimen/m3_comp_progress_indicator_circular_track_active_indicator_space</item>
-    <item name="indeterminateTrackVisible">false</item>
+  <!-- LinearProgressIndicator style -->
+  <style name="Widget.MaterialComponents.LinearProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
+    <item name="indeterminateAnimationType">disjoint</item>
+    <item name="indicatorDirectionLinear">startToEnd</item>
   </style>
-  <style name="Widget.Material3.CircularProgressIndicator.Medium"/>
-  <style name="Widget.Material3.CircularProgressIndicator.Small">
+
+  <!-- CircularProgressIndicator styles -->
+  <style name="Widget.MaterialComponents.CircularProgressIndicator" parent="Widget.MaterialComponents.ProgressIndicator">
+    <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_medium</item>
+    <item name="indicatorSize">@dimen/mtrl_progress_circular_size_medium</item>
+    <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_medium</item>
+    <item name="trackColor">@android:color/transparent</item>
+    <item name="indicatorDirectionCircular">clockwise</item>
+    <item name="indeterminateTrackVisible">true</item>
+  </style>
+  <style name="Widget.MaterialComponents.CircularProgressIndicator.Medium"/>
+  <style name="Widget.MaterialComponents.CircularProgressIndicator.Small">
     <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_small</item>
     <item name="indicatorSize">@dimen/mtrl_progress_circular_size_small</item>
     <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_small</item>
-    <item name="trackCornerRadius">1.5dp</item>
-    <item name="indicatorTrackGapSize">3dp</item>
   </style>
-  <style name="Widget.Material3.CircularProgressIndicator.ExtraSmall">
+  <style name="Widget.MaterialComponents.CircularProgressIndicator.ExtraSmall">
     <item name="trackThickness">@dimen/mtrl_progress_circular_track_thickness_extra_small</item>
     <item name="indicatorSize">@dimen/mtrl_progress_circular_size_extra_small</item>
     <item name="indicatorInset">@dimen/mtrl_progress_circular_inset_extra_small</item>
-    <item name="trackCornerRadius">1.25dp</item>
-    <item name="indicatorTrackGapSize">2dp</item>
   </style>
 
 </resources>

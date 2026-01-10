@@ -19,9 +19,7 @@ package com.google.android.material.behavior;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static com.google.android.material.behavior.HideOnScrollView.EDGE_BOTTOM;
-import static com.google.android.material.behavior.HideOnScrollView.EDGE_LEFT;
-import static com.google.android.material.behavior.HideOnScrollView.EDGE_RIGHT;
+import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -30,8 +28,11 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.OnAttachStateChangeListener;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import android.view.accessibility.AccessibilityManager;
+import android.view.accessibility.AccessibilityManager.TouchExplorationStateChangeListener;
 import androidx.annotation.Dimension;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
@@ -42,20 +43,29 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.behavior.HideOnScrollView.ViewEdge;
 import com.google.android.material.motion.MotionUtils;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
 
 /**
  * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off of the
  * edge of the screen when scrolling down, and show it when scrolling up.
  *
- * <p>Supports hiding the View off of three screen edges: {@link HideOnScrollView#EDGE_RIGHT},
- * {@link HideOnScrollView#EDGE_BOTTOM} and {@link HideOnScrollView#EDGE_LEFT}.
+ * <p>Supports hiding the View off of three screen edges: {@link #EDGE_RIGHT}, {@link #EDGE_BOTTOM},
+ * and {@link #EDGE_LEFT}.
+ *
+ * <p>If Touch Exploration is enabled, the hide on scroll behavior should be disabled until Touch
+ * Exploration is disabled. Ensure that the content is not obscured due to disabling this behavior
+ * by adding padding to the content.
  */
 public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
 
   private HideViewOnScrollDelegate hideOnScrollViewDelegate;
+  private AccessibilityManager accessibilityManager;
+  private TouchExplorationStateChangeListener touchExplorationListener;
+
+  private boolean disableOnTouchExploration = true;
 
   /**
    * Interface definition for a listener to be notified when the bottom view scroll state changes.
@@ -87,6 +97,25 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
   @Nullable private TimeInterpolator enterAnimInterpolator;
   @Nullable private TimeInterpolator exitAnimInterpolator;
 
+  /** The sheet slides out from the right edge of the screen. */
+  public static final int EDGE_RIGHT = 0;
+
+  /** The sheet slides out from the bottom edge of the screen. */
+  public static final int EDGE_BOTTOM = 1;
+
+  /** The sheet slides out from the left edge of the screen. */
+  public static final int EDGE_LEFT = 2;
+
+  /**
+   * The edge of the screen that a sheet slides out from.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({EDGE_RIGHT, EDGE_BOTTOM, EDGE_LEFT})
+  @Retention(RetentionPolicy.SOURCE)
+  @interface ViewEdge {}
+
   /** State of the view when it's scrolled out. */
   public static final int STATE_SCROLLED_OUT = 1;
 
@@ -102,31 +131,49 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
    */
   @RestrictTo(LIBRARY_GROUP)
   @IntDef({STATE_SCROLLED_OUT, STATE_SCROLLED_IN})
+  @Retention(RetentionPolicy.SOURCE)
   public @interface ScrollState {}
 
   @ScrollState private int currentState = STATE_SCROLLED_IN;
   private int additionalHiddenOffset = 0;
   @Nullable private ViewPropertyAnimator currentAnimator;
 
+  private boolean viewEdgeOverride = false;
+
   public HideViewOnScrollBehavior() {}
+
+  public HideViewOnScrollBehavior(@ViewEdge int viewEdge) {
+    this();
+
+    setViewEdge(viewEdge);
+  }
 
   public HideViewOnScrollBehavior(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
   }
 
   private void setViewEdge(@NonNull V view, int layoutDirection) {
+    if (viewEdgeOverride) {
+      return;
+    }
+
     LayoutParams params = (LayoutParams) view.getLayoutParams();
     int viewGravity = params.gravity;
 
     if (isGravityBottom(viewGravity)) {
-      setViewEdge(EDGE_BOTTOM);
+      setViewEdgeInternal(EDGE_BOTTOM);
     } else {
       viewGravity = Gravity.getAbsoluteGravity(viewGravity, layoutDirection);
-      setViewEdge(isGravityLeft(viewGravity) ? EDGE_LEFT : EDGE_RIGHT);
+      setViewEdgeInternal(isGravityLeft(viewGravity) ? EDGE_LEFT : EDGE_RIGHT);
     }
   }
 
   public void setViewEdge(@ViewEdge int viewEdge) {
+    viewEdgeOverride = true;
+    setViewEdgeInternal(viewEdge);
+  }
+
+  private void setViewEdgeInternal(@ViewEdge int viewEdge) {
     if (hideOnScrollViewDelegate == null || hideOnScrollViewDelegate.getViewEdge() != viewEdge) {
       switch (viewEdge) {
         case EDGE_RIGHT:
@@ -161,9 +208,41 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
     return viewGravity == Gravity.LEFT || (viewGravity == (Gravity.LEFT | Gravity.CENTER));
   }
 
+  private void disableIfTouchExplorationEnabled(V child) {
+    if (accessibilityManager == null) {
+      accessibilityManager = getSystemService(child.getContext(), AccessibilityManager.class);
+    }
+
+    if (accessibilityManager != null && touchExplorationListener == null) {
+      touchExplorationListener =
+          enabled -> {
+            if (disableOnTouchExploration && enabled && isScrolledOut()) {
+              slideIn(child);
+            }
+          };
+      accessibilityManager.addTouchExplorationStateChangeListener(touchExplorationListener);
+      child.addOnAttachStateChangeListener(
+          new OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(@NonNull View v) {}
+
+            @Override
+            public void onViewDetachedFromWindow(@NonNull View v) {
+              if (touchExplorationListener != null && accessibilityManager != null) {
+                accessibilityManager.removeTouchExplorationStateChangeListener(
+                    touchExplorationListener);
+                touchExplorationListener = null;
+              }
+            }
+          });
+    }
+  }
+
   @Override
   public boolean onLayoutChild(
       @NonNull CoordinatorLayout parent, @NonNull V child, int layoutDirection) {
+
+    disableIfTouchExplorationEnabled(child);
 
     ViewGroup.MarginLayoutParams marginParams =
         (ViewGroup.MarginLayoutParams) child.getLayoutParams();
@@ -295,16 +374,23 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
       return;
     }
 
+    // If Touch Exploration is on, we prevent sliding out due to a11y issues.
+    if (disableOnTouchExploration
+        && accessibilityManager != null
+        && accessibilityManager.isTouchExplorationEnabled()) {
+      return;
+    }
+
     if (currentAnimator != null) {
       currentAnimator.cancel();
       child.clearAnimation();
     }
     updateCurrentState(child, STATE_SCROLLED_OUT);
-    int targetTranslationY = size + additionalHiddenOffset;
+    int targetTranslation = size + additionalHiddenOffset;
     if (animate) {
-      animateChildTo(child, targetTranslationY, exitAnimDuration, exitAnimInterpolator);
+      animateChildTo(child, targetTranslation, exitAnimDuration, exitAnimInterpolator);
     } else {
-      child.setTranslationY(targetTranslationY);
+      hideOnScrollViewDelegate.setViewTranslation(child, targetTranslation);
     }
   }
 
@@ -355,5 +441,41 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
   /** Remove all previously added {@link OnScrollStateChangedListener}s. */
   public void clearOnScrollStateChangedListeners() {
     onScrollStateChangedListeners.clear();
+  }
+
+  /**
+   * Sets whether or not to disable this behavior if touch exploration is enabled.
+   */
+  public void disableOnTouchExploration(boolean disableOnTouchExploration) {
+    this.disableOnTouchExploration = disableOnTouchExploration;
+  }
+
+  /**
+   * Returns whether or not this behavior is disabled if touch exploration is enabled.
+   */
+  public boolean isDisabledOnTouchExploration() {
+    return disableOnTouchExploration;
+  }
+
+  /**
+   * A utility function to get the {@link HideViewOnScrollBehavior} associated with the {@code
+   * view}.
+   *
+   * @param view The {@link View} with {@link HideViewOnScrollBehavior}.
+   * @return The {@link HideViewOnScrollBehavior} associated with the {@code view}.
+   */
+  @NonNull
+  @SuppressWarnings("unchecked")
+  public static <V extends View> HideViewOnScrollBehavior<V> from(@NonNull V view) {
+    ViewGroup.LayoutParams params = view.getLayoutParams();
+    if (!(params instanceof LayoutParams)) {
+      throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");
+    }
+    CoordinatorLayout.Behavior<?> behavior = ((LayoutParams) params).getBehavior();
+    if (!(behavior instanceof HideViewOnScrollBehavior)) {
+      throw new IllegalArgumentException(
+          "The view is not associated with HideViewOnScrollBehavior");
+    }
+    return (HideViewOnScrollBehavior<V>) behavior;
   }
 }

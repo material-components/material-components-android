@@ -23,11 +23,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.WindowInsetsCompat;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.internal.ViewUtils;
@@ -66,8 +66,11 @@ public class BottomSheetUnscrollableContentDemoFragment extends DemoFragment {
       BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
       new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
       bottomSheetDialog.setContentView(R.layout.cat_bottomsheet_unscrollable_content);
-      View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
-      BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);
+      View bottomSheetInternal = bottomSheetDialog.findViewById(com.google.android.material.R.id.design_bottom_sheet);
+      // BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);
+
+      Button closeButton = bottomSheetDialog.findViewById(R.id.close_icon);
+      closeButton.setOnClickListener(v -> bottomSheetDialog.dismiss());
 
       View bottomSheetContent = bottomSheetInternal.findViewById(R.id.bottom_drawer_3);
       ViewUtils.doOnApplyWindowInsets(bottomSheetContent, (v, insets, initialPadding) -> {

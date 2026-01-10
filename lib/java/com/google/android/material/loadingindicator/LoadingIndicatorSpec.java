@@ -85,7 +85,10 @@ public final class LoadingIndicatorSpec {
   private void loadIndicatorColors(@NonNull Context context, @NonNull TypedArray typedArray) {
     if (!typedArray.hasValue(R.styleable.LoadingIndicator_indicatorColor)) {
       // Uses theme primary color for indicator if not provided in the attribute set.
-      indicatorColors = new int[] {MaterialColors.getColor(context, R.attr.colorPrimary, -1)};
+      indicatorColors =
+          new int[] {
+            MaterialColors.getColor(context, androidx.appcompat.R.attr.colorPrimary, -1)
+          };
       return;
     }
 

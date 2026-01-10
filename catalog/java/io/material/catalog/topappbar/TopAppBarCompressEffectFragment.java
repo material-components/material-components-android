@@ -60,7 +60,7 @@ public class TopAppBarCompressEffectFragment extends DemoFragment {
 
     AppBarLayout appBarLayout = view.findViewById(R.id.appbarlayout);
     appBarLayout.setStatusBarForegroundColor(
-        MaterialColors.getColor(appBarLayout, R.attr.colorSurface));
+        MaterialColors.getColor(appBarLayout, com.google.android.material.R.attr.colorSurface));
 
     TabLayout tabs = view.findViewById(R.id.tabs);
     ToggleButton showHideTabsButton = view.findViewById(R.id.show_hide_tabs_button);
@@ -76,6 +76,8 @@ public class TopAppBarCompressEffectFragment extends DemoFragment {
         activity.getSupportActionBar().hide();
       }
     });
+
+    DemoUtils.setupClickableContentText(view);
 
     return view;
   }
