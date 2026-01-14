@@ -693,11 +693,40 @@ public class MaterialButtonGroup extends LinearLayout {
           originalStateListShapeBuilder
               .setCornerSizeOverride(innerCornerSize, cornerPositionBitsToOverride)
               .build();
+
+      // Pre-calculate the default shape to compare with the current one.
+      ShapeAppearanceModel newModel = newStateListShape.getDefaultShape(/* withCornerSizeOverrides= */ true);
+
+      // Get the current shape of the button.
+      ShapeAppearanceModel currentModel = button.getShapeAppearanceModel();
+
+      // If the corner sizes are effectively the same, skip the update.
+      // This prevents the MaterialShapeDrawable from resetting its state,
+      // which would otherwise interrupt the corner morph animation.
+      if (areCornerSizesEqual(currentModel, newModel)) {
+        continue;
+      }
+
+      // Apply the new shape if it has changed.
       button.setShapeAppearance(
           newStateListShape.isStateful()
               ? newStateListShape
               : newStateListShape.getDefaultShape(/* withCornerSizeOverrides= */ true));
     }
+  }
+
+  /**
+   * Returns true if the corner sizes of the two {@link ShapeAppearanceModel}s are equal.
+   *
+   * <p>This is used to determine if a shape update is necessary, avoiding redundant updates that
+   * could interrupt ongoing animations.
+   */
+  private static boolean areCornerSizesEqual(
+      @NonNull ShapeAppearanceModel s1, @NonNull ShapeAppearanceModel s2) {
+    return s1.getTopLeftCornerSize().equals(s2.getTopLeftCornerSize())
+        && s1.getTopRightCornerSize().equals(s2.getTopRightCornerSize())
+        && s1.getBottomLeftCornerSize().equals(s2.getBottomLeftCornerSize())
+        && s1.getBottomRightCornerSize().equals(s2.getBottomRightCornerSize());
   }
 
   /**
