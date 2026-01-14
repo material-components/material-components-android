@@ -37,7 +37,8 @@
       android:layout_height="wrap_content"
       android:layout_width="match_parent"
       android:orientation="horizontal"
-      tools:ignore="UseCompoundDrawables">
+      tools:ignore="UseCompoundDrawables"
+      android:duplicateParentState="true">
       <ImageView
         style="@style/Widget.Material3.ImageView.ListItem.LeadingIcon"
         android:id="@+id/cat_list_item_start_icon"
@@ -89,7 +90,8 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        android:duplicateParentState="true">
         <ImageView
           style="@style/Widget.Material3.ImageView.ListItem.LeadingIcon"
           android:contentDescription="@string/cat_list_item_icon_content_description"
@@ -125,7 +127,8 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
+        tools:ignore="UseCompoundDrawables"
+        android:duplicateParentState="true">
         <ImageView
           style="@style/Widget.Material3.ImageView.ListItem.LeadingIcon"
           android:contentDescription="@string/cat_list_item_icon_content_description"

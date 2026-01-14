@@ -17,5 +17,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:state_selected="true"
     android:drawable="@drawable/ic_star_icon_fill_24px"/>
+  <item android:state_checked="true"
+    android:drawable="@drawable/ic_star_icon_fill_24px"/>
   <item android:drawable="@drawable/ic_star_icon_24px"/>
 </selector>

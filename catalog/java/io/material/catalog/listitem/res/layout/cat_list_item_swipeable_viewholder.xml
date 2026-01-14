@@ -34,7 +34,8 @@
       android:layout_height="wrap_content"
       android:layout_width="match_parent"
       android:orientation="horizontal"
-      tools:ignore="UseCompoundDrawables">
+      tools:ignore="UseCompoundDrawables"
+      android:duplicateParentState="true">
       <com.google.android.material.button.MaterialButton
         style="?attr/materialIconButtonStyle"
         android:id="@+id/cat_list_item_start_icon"
@@ -47,18 +48,21 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginStart="12dp">
+        android:layout_marginStart="12dp"
+        android:duplicateParentState="true">
         <TextView
           style="@style/Widget.Material3.TextView.ListItem.LabelText"
           android:id="@+id/cat_list_item_text"
           android:layout_height="wrap_content"
-          android:layout_width="wrap_content"/>
+          android:layout_width="wrap_content"
+          android:duplicateParentState="true"/>
         <TextView
           style="@style/Widget.Material3.TextView.ListItem.SupportingText"
           android:layout_height="wrap_content"
           android:layout_width="wrap_content"
           android:textAlignment="viewStart"
-          android:text="@string/cat_list_item_supporting_text"/>
+          android:text="@string/cat_list_item_supporting_text"
+          android:duplicateParentState="true"/>
       </LinearLayout>
       <com.google.android.material.button.MaterialButton
         style="?attr/materialIconButtonStyle"

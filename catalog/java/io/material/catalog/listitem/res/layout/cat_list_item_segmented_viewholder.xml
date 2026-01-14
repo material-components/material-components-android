@@ -35,6 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal"
+            android:duplicateParentState="true"
             tools:ignore="UseCompoundDrawables">
             <ImageView
                 style="@style/Widget.Material3.ImageView.ListItem.LeadingIcon"
@@ -42,31 +43,36 @@
                 android:contentDescription="@string/cat_list_item_icon_content_description"
                 android:layout_height="20dp"
                 android:layout_width="20dp"
-                app:srcCompat="@drawable/ic_star_icon_checkable_24px" />
+                app:srcCompat="@drawable/ic_star_icon_checkable_24px"
+                android:duplicateParentState="true"/>
           <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
+            android:duplicateParentState="true"
             android:layout_marginStart="12dp">
             <TextView
                 style="@style/Widget.Material3.TextView.ListItem.LabelText"
                 android:id="@+id/cat_list_item_text"
                 android:layout_height="wrap_content"
-                android:layout_width="wrap_content"/>
+                android:layout_width="wrap_content"
+                android:duplicateParentState="true"/>
             <TextView
               style="@style/Widget.Material3.TextView.ListItem.SupportingText"
               android:layout_height="wrap_content"
               android:layout_width="wrap_content"
               android:textAlignment="viewStart"
-              android:text="@string/cat_list_item_supporting_text"/>
+              android:text="@string/cat_list_item_supporting_text"
+              android:duplicateParentState="true"/>
           </LinearLayout>
           <com.google.android.material.radiobutton.MaterialRadioButton
             style="@style/Widget.Material3.RadioButton.ListItem"
             android:id="@+id/cat_list_item_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"/>
+            android:layout_marginStart="12dp"
+            android:duplicateParentState="true"/>
         </LinearLayout>
     </com.google.android.material.listitem.ListItemCardView>
 </com.google.android.material.listitem.ListItemLayout>

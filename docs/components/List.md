@@ -118,7 +118,10 @@ expressive lists.
 
 Children of `ListItemLayout` that wish to be affected by the `ListItemLayout`'s
 position state should duplicate the state through setting
-`android:duplicateParentState=true`.
+`android:duplicateParentState=true`. The state should also be passed through to
+child views that should be state-aware, such as for checked, pressed, or hovered
+states. This can be done either through `android:duplicateParentState=true` or
+manually.
 
 `ListItemCardView` is recommended as a `ListItemLayout` child, as it supports
 updating its shape / corners based on states.
@@ -168,7 +171,8 @@ Sample `ViewHolder` code:
       <TextView
         android:id="@+id/list_item_text"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:duplicateParentState="true"/>
 
     </LinearLayout>
   </com.google.android.material.listitem.ListItemCardView>

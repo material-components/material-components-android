@@ -27,8 +27,6 @@ import androidx.recyclerview.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -133,22 +131,16 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
   public class CustomItemViewHolder extends ListItemViewHolder {
     private final TextView textView;
     private final ListItemCardView cardView;
-    private final RadioButton radioButton;
-    private final ImageView leadingIcon;
 
     public CustomItemViewHolder(@NonNull View itemView) {
       super(itemView);
       textView = itemView.findViewById(R.id.cat_list_item_text);
       cardView = itemView.findViewById(R.id.cat_list_item_card_view);
-      leadingIcon = itemView.findViewById(R.id.cat_list_item_start_icon);
-      radioButton = itemView.findViewById(R.id.cat_list_item_radio_button);
     }
     public void bind(@NonNull CustomListItemData data) {
       super.bind();
       textView.setText(data.text);
       cardView.setChecked(data.indexInSection == adapter.getSelectedPosition());
-      radioButton.setChecked(cardView.isChecked());
-      leadingIcon.setSelected(cardView.isChecked());
       cardView.setOnClickListener(
           v -> {
             int previouslySelectedPosition = adapter.getSelectedPosition();

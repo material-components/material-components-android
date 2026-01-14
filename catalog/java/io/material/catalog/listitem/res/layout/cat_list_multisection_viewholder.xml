@@ -34,7 +34,8 @@
       android:layout_height="wrap_content"
       android:layout_width="match_parent"
       android:orientation="horizontal"
-      tools:ignore="UseCompoundDrawables">
+      tools:ignore="UseCompoundDrawables"
+      android:duplicateParentState="true">
       <com.google.android.material.imageview.ShapeableImageView
         style="@style/Widget.Material3.ShapeableImageView.ListItem.LeadingImage"
         android:id="@+id/cat_list_item_image"
@@ -48,7 +49,8 @@
         android:layout_width="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginStart="16dp">
+        android:layout_marginStart="16dp"
+        android:duplicateParentState="true">
         <TextView
           style="@style/Widget.Material3.TextView.ListItem.Overline"
           android:layout_height="wrap_content"

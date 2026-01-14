@@ -29,8 +29,8 @@
   <item android:color="?attr/colorOnSurfaceVariant" android:state_focused="true"/>
   <!-- Disabled state -->
   <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
-  <!-- Selected state -->
-  <item android:color="?attr/colorOnSecondaryContainer" android:state_selected="true"/>
+  <!-- Checked state -->
+  <item android:color="?attr/colorOnSecondaryContainer" android:state_checked="true"/>
   <!-- Hovered state -->
   <item android:color="?attr/colorOnSurfaceVariant" android:state_hovered="true"/>
   <!-- Default, Enabled state -->
