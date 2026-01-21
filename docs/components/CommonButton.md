@@ -356,13 +356,15 @@ Element          | Attribute             | Related method(s)                    
 
 #### Icon attributes
 
-Element                                         | Attribute         | Related method(s)                                         | Default value
------------------------------------------------ | ----------------- | --------------------------------------------------------- | -------------
-**Icon**                                        | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
-**Color**                                       | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_foreground_color_selector.xml))
-**Size**                                        | `app:iconSize`    | `setIconSize`<br/>`getIconSize`                           | `wrap_content`
-**Gravity** (position relative to text label)   | `app:iconGravity` | `setIconGravity`<br/>`getIconGravity`                     | `start`
-**Padding** (space between icon and text label) | `app:iconPadding` | `setIconPadding`<br/>`getIconPadding`                     | `8dp`
+Element                                         | Attribute                  | Related method(s)                                                         | Default value
+----------------------------------------------- |----------------------------|---------------------------------------------------------------------------| -------------
+**Icon**                                        | `app:icon`                 | `setIcon`<br/>`setIconResource`<br/>`getIcon`                             | `null`
+**Color**                                       | `app:iconTint`             | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint`                 | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_foreground_color_selector.xml))
+**Size**                                        | `app:iconSize`             | `setIconSize`<br/>`getIconSize`                                           | `wrap_content`
+**Gravity** (position relative to text label)   | `app:iconGravity`          | `setIconGravity`<br/>`getIconGravity`                                     | `start`
+**Padding** (space between icon and text label) | `app:iconPadding`          | `setIconPadding`<br/>`getIconPadding`                                     | `8dp`
+**Secondary icon**                              | `app:secondaryIcon`        | `setSecondaryIcon`<br/>`setSecondaryIconResource`<br/>`getSecondaryIcon`  | `null`
+**Secondary icon gravity**                      | `app:secondaryIconGravity` | `setSecondaryIconGravity`<br/>`gettSecondaryIconGravity`                  | `end`
 
 #### Styles
 
@@ -405,13 +407,15 @@ Element          | Attribute             | Related method(s)                    
 
 #### Icon attributes
 
-Element                                         | Attribute         | Related method(s)                                         | Default value
------------------------------------------------ | ----------------- | --------------------------------------------------------- | -------------
-**Icon**                                        | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
-**Color**                                       | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_foreground_color_selector.xml))
-**Size**                                        | `app:iconSize`    | `setIconSize`<br/>`getIconSize`                           | `wrap_content`
-**Gravity** (position relative to text label)   | `app:iconGravity` | `setIconGravity`<br/>`getIconGravity`                     | `start`
-**Padding** (space between icon and text label) | `app:iconPadding` | `setIconPadding`<br/>`getIconPadding`                     | `8dp`
+Element                                         | Attribute                  | Related method(s)                                                        | Default value
+----------------------------------------------- |----------------------------|--------------------------------------------------------------------------| -------------
+**Icon**                                        | `app:icon`                 | `setIcon`<br/>`setIconResource`<br/>`getIcon`                            | `null`
+**Color**                                       | `app:iconTint`             | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint`                | `?attr/colorOnPrimary` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_foreground_color_selector.xml))
+**Size**                                        | `app:iconSize`             | `setIconSize`<br/>`getIconSize`                                          | `wrap_content`
+**Gravity** (position relative to text label)   | `app:iconGravity`          | `setIconGravity`<br/>`getIconGravity`                                    | `start`
+**Padding** (space between icon and text label) | `app:iconPadding`          | `setIconPadding`<br/>`getIconPadding`                                    | `8dp`
+**Secondary icon**                              | `app:secondaryIcon`        | `setSecondaryIcon`<br/>`setSecondaryIconResource`<br/>`getSecondaryIcon` | `null`
+**Secondary icon gravity**                      | `app:secondaryIconGravity` | `setSecondaryIconGravity`<br/>`gettSecondaryIconGravity`                 | `end`
 
 #### Styles
 
@@ -456,13 +460,15 @@ Element          | Attribute             | Related method(s)                    
 
 #### Icon attributes
 
-Element                                         | Attribute         | Related method(s)                                         | Default value
------------------------------------------------ | ----------------- | --------------------------------------------------------- | -------------
-**Icon**                                        | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
-**Color**                                       | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnSecondaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_foreground_color_selector.xml))
-**Size**                                        | `app:iconSize`    | `setIconSize`<br/>`getIconSize`                           | `wrap_content`
-**Gravity** (position relative to text label)   | `app:iconGravity` | `setIconGravity`<br/>`getIconGravity`                     | `start`
-**Padding** (space between icon and text label) | `app:iconPadding` | `setIconPadding`<br/>`getIconPadding`                     | `8dp`
+Element                                         | Attribute                  | Related method(s)                                                        | Default value
+----------------------------------------------- |----------------------------|--------------------------------------------------------------------------| -------------
+**Icon**                                        | `app:icon`                 | `setIcon`<br/>`setIconResource`<br/>`getIcon`                            | `null`
+**Color**                                       | `app:iconTint`             | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint`                | `?attr/colorOnSecondaryContainer` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/color/res/color/m3_button_foreground_color_selector.xml))
+**Size**                                        | `app:iconSize`             | `setIconSize`<br/>`getIconSize`                                          | `wrap_content`
+**Gravity** (position relative to text label)   | `app:iconGravity`          | `setIconGravity`<br/>`getIconGravity`                                    | `start`
+**Padding** (space between icon and text label) | `app:iconPadding`          | `setIconPadding`<br/>`getIconPadding`                                    | `8dp`
+**Secondary icon**                              | `app:secondaryIcon`        | `setSecondaryIcon`<br/>`setSecondaryIconResource`<br/>`getSecondaryIcon` | `null`
+**Secondary icon gravity**                      | `app:secondaryIconGravity` | `setSecondaryIconGravity`<br/>`gettSecondaryIconGravity`                 | `end`
 
 #### Styles
 
@@ -505,13 +511,15 @@ Element          | Attribute             | Related method(s)                    
 
 #### Icon attributes
 
-Element                                         | Attribute         | Related method(s)                                         | Default value
------------------------------------------------ | ----------------- | --------------------------------------------------------- | -------------
-**Icon**                                        | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
-**Color**                                       | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_foreground_color_selector.xml))
-**Size**                                        | `app:iconSize`    | `setIconSize`<br/>`getIconSize`                           | `wrap_content`
-**Gravity** (position relative to text label)   | `app:iconGravity` | `setIconGravity`<br/>`getIconGravity`                     | `start`
-**Padding** (space between icon and text label) | `app:iconPadding` | `setIconPadding`<br/>`getIconPadding`                     | `8dp`
+Element                                         | Attribute                  | Related method(s)                                                        | Default value
+----------------------------------------------- |----------------------------|--------------------------------------------------------------------------| -------------
+**Icon**                                        | `app:icon`                 | `setIcon`<br/>`setIconResource`<br/>`getIcon`                            | `null`
+**Color**                                       | `app:iconTint`             | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_foreground_color_selector.xml))
+**Size**                                        | `app:iconSize`             | `setIconSize`<br/>`getIconSize`                                          | `wrap_content`
+**Gravity** (position relative to text label)   | `app:iconGravity`          | `setIconGravity`<br/>`getIconGravity`                                    | `start`
+**Padding** (space between icon and text label) | `app:iconPadding`          | `setIconPadding`<br/>`getIconPadding`                                    | `8dp`
+**Secondary icon**                              | `app:secondaryIcon`        | `setSecondaryIcon`<br/>`setSecondaryIconResource`<br/>`getSecondaryIcon` | `null`
+**Secondary icon gravity**                      | `app:secondaryIconGravity` | `setSecondaryIconGravity`<br/>`gettSecondaryIconGravity`                 | `end`
 
 #### Styles
 
@@ -554,13 +562,15 @@ Element          | Attribute             | Related method(s)                    
 
 #### Icon attributes
 
-Element                                         | Attribute         | Related method(s)                                         | Default value
------------------------------------------------ | ----------------- | --------------------------------------------------------- | -------------
-**Icon**                                        | `app:icon`        | `setIcon`<br/>`setIconResource`<br/>`getIcon`             | `null`
-**Color**                                       | `app:iconTint`    | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint` | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_foreground_color_selector.xml))
-**Size**                                        | `app:iconSize`    | `setIconSize`<br/>`getIconSize`                           | `wrap_content`
-**Gravity** (position relative to text label)   | `app:iconGravity` | `setIconGravity`<br/>`getIconGravity`                     | `start`
-**Padding** (space between icon and text label) | `app:iconPadding` | `setIconPadding`<br/>`getIconPadding`                     | `8dp`
+Element                                         | Attribute                  | Related method(s)                                                        | Default value
+----------------------------------------------- |----------------------------|--------------------------------------------------------------------------| -------------
+**Icon**                                        | `app:icon`                 | `setIcon`<br/>`setIconResource`<br/>`getIcon`                            | `null`
+**Color**                                       | `app:iconTint`             | `setIconTint`<br/>`setIconTintResource`<br/>`getIconTint`                | `?attr/colorOnSurface` (see all [states](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/res/color/m3_text_button_foreground_color_selector.xml))
+**Size**                                        | `app:iconSize`             | `setIconSize`<br/>`getIconSize`                                          | `wrap_content`
+**Gravity** (position relative to text label)   | `app:iconGravity`          | `setIconGravity`<br/>`getIconGravity`                                    | `start`
+**Padding** (space between icon and text label) | `app:iconPadding`          | `setIconPadding`<br/>`getIconPadding`                                    | `8dp`
+**Secondary icon**                              | `app:secondaryIcon`        | `setSecondaryIcon`<br/>`setSecondaryIconResource`<br/>`getSecondaryIcon` | `null`
+**Secondary icon gravity**                      | `app:secondaryIconGravity` | `setSecondaryIconGravity`<br/>`gettSecondaryIconGravity`                 | `end`
 
 #### Styles
 

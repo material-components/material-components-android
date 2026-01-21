@@ -23,6 +23,10 @@
   <public name="iconSize" type="attr"/>
   <public name="iconTint" type="attr"/>
   <public name="iconTintMode" type="attr"/>
+  <public name="secondaryIcon" type="attr"/>
+  <public name="secondaryIconGravity" type="attr"/>
+  <public name="secondaryIconTint" type="attr"/>
+  <public name="secondaryIconTintMode" type="attr"/>
   <public name="toggleCheckedStateOnClick" type="attr"/>
   <public name="innerCornerSize" type="attr"/>
   <public name="buttonSizeChange" type="attr"/>
