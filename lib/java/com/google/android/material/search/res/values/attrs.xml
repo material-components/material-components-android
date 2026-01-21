@@ -114,6 +114,8 @@
     <!-- Whether the automatic back handling behavior should be enabled.
          Default is true. -->
     <attr name="backHandlingEnabled" format="boolean"/>
+    <!-- Whether the divider between the toolbar and content is visible. Default is true. -->
+    <attr name="dividerVisible" format="boolean"/>
   </declare-styleable>
 
 </resources>

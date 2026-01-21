@@ -170,6 +170,7 @@ public class SearchView extends FrameLayout
   @ColorInt private final int backgroundColor;
   private boolean useWindowInsetsController;
   private boolean statusBarSpacerEnabledOverride;
+  private final boolean dividerVisible;
   @NonNull private TransitionState currentTransitionState = TransitionState.HIDDEN;
   private Map<View, Integer> childImportantForAccessibilityMap;
   private final OnTouchModeChangeListener touchModeChangeListener =
@@ -218,6 +219,7 @@ public class SearchView extends FrameLayout
     boolean hideNavigationIcon = a.getBoolean(R.styleable.SearchView_hideNavigationIcon, false);
     autoShowKeyboard = a.getBoolean(R.styleable.SearchView_autoShowKeyboard, true);
     backHandlingEnabled = a.getBoolean(R.styleable.SearchView_backHandlingEnabled, true);
+    dividerVisible = a.getBoolean(R.styleable.SearchView_dividerVisible, true);
 
     a.recycle();
 
@@ -249,6 +251,7 @@ public class SearchView extends FrameLayout
     setUpEditText(textAppearanceResId, text, hint);
     setUpBackButton(useDrawerArrowDrawable, hideNavigationIcon);
     setUpClearButton();
+    setUpDivider();
     setUpContentOnTouchListener();
     setUpInsetListeners();
 
@@ -445,6 +448,10 @@ public class SearchView extends FrameLayout
           @Override
           public void afterTextChanged(Editable s) {}
         });
+  }
+
+  private void setUpDivider() {
+    divider.setVisibility(dividerVisible ? VISIBLE : GONE);
   }
 
   @SuppressLint("ClickableViewAccessibility") // Will be handled by accessibility delegate.

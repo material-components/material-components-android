@@ -87,9 +87,9 @@ You can also set a centered style with:
 
 The recommended way to display a `SearchBar` is now inside of an `AppBarLayout`.
 You can specify
-`android:theme="ThemeOverlay.Material3Expressive.AppBarWithSearch"`
-on your `AppBarLayout` to style your `AppBarLayout` and `SearchBar`
-automatically as an AppBar with Search.
+`android:theme="ThemeOverlay.Material3Expressive.AppBarWithSearch"` on your
+`AppBarLayout` to style your `AppBarLayout` and `SearchBar` automatically as an
+AppBar with Search.
 
 The default `SearchBar` style for this theme overlay is the centered text
 configuration. If you would like to specify a start-aligned text `SearchBar`,
@@ -191,6 +191,7 @@ Element                            | Attribute                    | Related meth
 **Flag for navigation icon**       | `app:hideNavigationIcon`     | --                                          | `true`
 **Flag for `DrawerArrowDrawable`** | `app:useDrawerArrowDrawable` | --                                          | `false`
 **Flag for soft keyboard**         | `app:autoShowKeyboard`       | --                                          | `true`
+**Flag for divider**               | `app:dividerVisible`         | --                                          | `true`
 
 #### Styles
 
@@ -428,6 +429,7 @@ it such as:
 
   </com.google.android.material.search.SearchView>
 ```
+
 ### Scrolling behavior
 
 The `SearchBar` can either be used as a fixed, scroll-away, or lift on scroll
@@ -557,6 +559,7 @@ Alternatively, an example of the lift on scroll mode is below:
   </com.google.android.material.search.SearchView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
+
 ### Toolbar transitions
 
 The `SearchBar` component also provides transitions to and from a `Toolbar`,
