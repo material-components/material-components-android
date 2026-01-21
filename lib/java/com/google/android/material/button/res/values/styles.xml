@@ -644,7 +644,6 @@
     <item name="elevation">@dimen/m3_comp_button_filled_container_elevation</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
-    <item name="secondaryIconTint">@color/m3_button_foreground_color_selector</item>
     <item name="iconSize">18dp</item>
     <item name="iconPadding">@dimen/m3_comp_button_small_icon_label_space</item>
     <item name="backgroundTint">@color/m3_button_background_color_selector</item>
