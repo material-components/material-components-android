@@ -33,7 +33,7 @@
 
   <!-- Style for Vibrant Docked Toolbar. -->
   <style name="Widget.Material3.DockedToolbar.Vibrant">
-    <item name="backgroundTint">@macro/m3_comp_toolbar_vibrant_vibrant_container_color</item>
+    <item name="backgroundTint">@macro/m3_comp_toolbar_vibrant_container_color</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.DockedToolbar.Vibrant</item>
   </style>
 

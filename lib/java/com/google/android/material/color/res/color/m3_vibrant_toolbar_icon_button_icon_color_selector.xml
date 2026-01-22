@@ -27,7 +27,7 @@
   <item android:color="@macro/m3_comp_toolbar_vibrant_pressed_icon_color" android:state_pressed="true"/>
   <item android:color="@macro/m3_comp_toolbar_vibrant_selected_pressed_icon_color" android:state_pressed="true" android:state_checkable="true" android:state_checked="true"/>
   <!-- Checkable, checked state -->
-  <item android:color="@macro/m3_comp_toolbar_vibrant_vibrant_selected_icon_color" android:state_checkable="true" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_toolbar_vibrant_selected_icon_color" android:state_checkable="true" android:state_checked="true"/>
   <!-- Default, Enabled state -->
-  <item android:color="@macro/m3_comp_toolbar_vibrant_vibrant_icon_color"/>
+  <item android:color="@macro/m3_comp_toolbar_vibrant_icon_color"/>
 </selector>
