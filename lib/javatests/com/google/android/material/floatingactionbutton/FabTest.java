@@ -25,9 +25,11 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View.MeasureSpec;
+import androidx.annotation.RequiresApi;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,6 +80,18 @@ public class FabTest {
         fab.getMeasuredWidth() < minSize);
 
     assertTrue(fab.getMeasuredHeight() < minSize);
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setContentDescription_setsTooltipText() {
+    FloatingActionButton fab = new FloatingActionButton(activity);
+    String description = "test description";
+
+    fab.setContentDescription(description);
+
+    assertEquals(description, fab.getTooltipText().toString());
   }
 
   private FloatingActionButton createFabForTest(boolean ensureMinTouchTarget) {
