@@ -32,10 +32,8 @@ import android.graphics.Typeface;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.View.AccessibilityDelegate;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -534,22 +532,10 @@ final class IndicatorViewController {
         helperTextView.setTypeface(typeface);
       }
       helperTextView.setVisibility(View.INVISIBLE);
-      helperTextView.setAccessibilityLiveRegion(View.ACCESSIBILITY_LIVE_REGION_POLITE);
+      helperTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
       setHelperTextAppearance(helperTextTextAppearance);
       setHelperTextViewTextColor(helperTextViewTextColor);
       addIndicator(helperTextView, HELPER_INDEX);
-      helperTextView.setAccessibilityDelegate(
-          new AccessibilityDelegate() {
-            @Override
-            public void onInitializeAccessibilityNodeInfo(
-                View view, AccessibilityNodeInfo accessibilityNodeInfo) {
-              super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfo);
-              View editText = textInputView.getEditText();
-              if (editText != null) {
-                accessibilityNodeInfo.setLabeledBy(editText);
-              }
-            }
-          });
     } else {
       hideHelperText();
       removeIndicator(helperTextView, HELPER_INDEX);

@@ -4665,6 +4665,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       EditText editText = layout.getEditText();
       CharSequence inputText = (editText != null) ? editText.getText() : null;
       CharSequence hintText = layout.getHint();
+      CharSequence helperText = layout.getHelperText();
       CharSequence errorText = layout.getError();
       CharSequence placeholderText = layout.getPlaceholderText();
       int maxCharLimit = layout.getCounterMaxLength();
@@ -4675,6 +4676,10 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       boolean showingError = !TextUtils.isEmpty(errorText);
       boolean contentInvalid = showingError || !TextUtils.isEmpty(counterOverflowDesc);
       String hint = hasHint ? hintText.toString() : "";
+      if (!TextUtils.isEmpty(helperText)
+          && layout.indicatorViewController.helperTextShouldBeShown()) {
+        hint = TextUtils.isEmpty(hint) ? helperText.toString() : (hint + ", " + helperText);
+      }
 
       // Screen readers should follow visual order of the elements of the text field.
       layout.startLayout.setupAccessibilityNodeInfo(info);
@@ -4709,11 +4714,6 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
       if (contentInvalid) {
         info.setError(showingError ? errorText : counterOverflowDesc);
-      }
-
-      View helperTextView = layout.indicatorViewController.getHelperTextView();
-      if (helperTextView != null) {
-        info.setLabelFor(helperTextView);
       }
 
       layout.endLayout.getEndIconDelegate().onInitializeAccessibilityNodeInfo(host, info);
