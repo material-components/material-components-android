@@ -129,6 +129,19 @@ public class StateListSizeChange {
     return maxWidthChange;
   }
 
+  public int getMaxHeightChange(@Px int baseHeight) {
+    int maxHeightChange = -baseHeight;
+    for (int i = 0; i < stateCount; i++) {
+      SizeChange sizeChange = sizeChanges[i];
+      if (sizeChange.heightChange.type == SizeChangeType.PIXELS) {
+        maxHeightChange = (int) max(maxHeightChange, sizeChange.heightChange.amount);
+      } else if (sizeChange.widthChange.type == SizeChangeType.PERCENT) {
+        maxHeightChange = (int) max(maxHeightChange, baseHeight * sizeChange.heightChange.amount);
+      }
+    }
+    return maxHeightChange;
+  }
+
   private int indexOfStateSet(int[] stateSet) {
     final int[][] stateSpecs = this.stateSpecs;
     for (int i = 0; i < stateCount; i++) {
@@ -165,6 +178,8 @@ public class StateListSizeChange {
 
       SizeChangeAmount widthChangeAmount =
           getSizeChangeAmount(a, R.styleable.StateListSizeChange_widthChange, null);
+      SizeChangeAmount heightChangeAmount =
+          getSizeChangeAmount(a, R.styleable.StateListSizeChange_heightChange, null);
 
       a.recycle();
 
@@ -174,12 +189,12 @@ public class StateListSizeChange {
       int[] stateSpec = new int[numAttrs];
       for (int i = 0; i < numAttrs; i++) {
         final int stateResId = attrs.getAttributeNameResource(i);
-        if (stateResId != R.attr.widthChange) {
+        if (stateResId != R.attr.widthChange && stateResId != R.attr.heightChange) {
           stateSpec[j++] = attrs.getAttributeBooleanValue(i, false) ? stateResId : -stateResId;
         }
       }
       stateSpec = StateSet.trimStateSet(stateSpec, j);
-      addStateSizeChange(stateSpec, new SizeChange(widthChangeAmount));
+      addStateSizeChange(stateSpec, new SizeChange(widthChangeAmount, heightChangeAmount));
     }
   }
 
@@ -226,13 +241,16 @@ public class StateListSizeChange {
   /** A collection of all values needed in a size change. */
   public static class SizeChange {
     @Nullable public SizeChangeAmount widthChange;
+    @Nullable public SizeChangeAmount heightChange;
 
-    SizeChange(@Nullable SizeChangeAmount widthChange) {
+    SizeChange(@Nullable SizeChangeAmount widthChange, @Nullable SizeChangeAmount heightChange) {
       this.widthChange = widthChange;
+      this.heightChange = heightChange;
     }
 
     SizeChange(@NonNull SizeChange other) {
       this.widthChange = new SizeChangeAmount(other.widthChange.type, other.widthChange.amount);
+      this.heightChange = new SizeChangeAmount(other.heightChange.type, other.heightChange.amount);
     }
   }
 
