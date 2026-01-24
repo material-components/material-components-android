@@ -28,4 +28,10 @@
       android:icon="@drawable/ic_favorite_vd_theme_24px"
       android:title="@string/cat_topappbar_favorite_menu_item_title"
       app:showAsAction="ifRoom"/>
+  <item
+    android:title="@string/cat_topappbar_settings_menu_item_title"
+    app:showAsAction="never"/>
+  <item
+    android:title="@string/cat_topappbar_help_and_feedback_menu_item_title"
+    app:showAsAction="never"/>
 </menu>
