@@ -1224,6 +1224,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       int height = iconSize != 0 ? iconSize : icon.getIntrinsicHeight();
       icon.setBounds(iconLeft, iconTop, iconLeft + width, iconTop + height);
       icon.setVisible(true, needsIconReset);
+
+      if (VERSION.SDK_INT >= VERSION_CODES.M) {
+        icon.setLayoutDirection(this.getLayoutDirection());
+      }
     }
 
     // Make sure icon gravity is valid before updating it.
