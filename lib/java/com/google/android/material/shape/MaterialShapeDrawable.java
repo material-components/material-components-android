@@ -47,6 +47,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
 import androidx.annotation.AttrRes;
@@ -187,6 +188,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   // Variables for corner morph.
   // Tracks if this is the first non-empty bounds (for skipping initial animation).
   private boolean boundsIsEmpty = true;
+  // Timestamp when state change occurred, used to allow animation during state transitions.
+  private long stateChangeTimestamp = 0;
+  // Duration (ms) to allow animation after state change, accounting for animation frames.
+  private static final long STATE_CHANGE_ANIMATION_WINDOW_MS = 500;
   private boolean isRoundRectCornerMorph = true;
   @NonNull private ShapeAppearanceModel strokeShapeAppearanceModel;
   @Nullable private SpringForce cornerSpringForce;
@@ -1111,10 +1116,18 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     pathDirty = true;
     strokePathDirty = true;
     super.onBoundsChange(bounds);
+
     if (drawableState.shapeAppearance.isStateful() && !bounds.isEmpty()) {
-      // Skip animation only on first non-empty bounds; allow animation on subsequent state changes.
-      updateShape(getState(), /* skipAnimation= */ boundsIsEmpty);
+      // Check if we're within the animation window after a state change.
+      long timeSinceStateChange = SystemClock.elapsedRealtime() - stateChangeTimestamp;
+      boolean isWithinStateChangeWindow = timeSinceStateChange < STATE_CHANGE_ANIMATION_WINDOW_MS;
+
+      // Skip animation if this is the first non-empty bounds OR outside state change window.
+      // Allow animation if we're within the window after a state change.
+      boolean skipAnimation = boundsIsEmpty || !isWithinStateChangeWindow;
+      updateShape(getState(), skipAnimation);
     }
+
     boundsIsEmpty = bounds.isEmpty();
   }
 
@@ -1540,6 +1553,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Override
   protected boolean onStateChange(int[] state) {
     if (drawableState.shapeAppearance.isStateful()) {
+      // Record state change timestamp to allow animation within the time window.
+      stateChangeTimestamp = SystemClock.elapsedRealtime();
       updateShape(state);
     }
     boolean paintColorChanged = updateColorsForState(state);
