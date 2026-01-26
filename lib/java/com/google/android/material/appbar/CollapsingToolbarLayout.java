@@ -545,16 +545,20 @@ public class CollapsingToolbarLayout extends FrameLayout {
     if (screenOrientation != newConfig.orientation
         && extraMultilineHeightEnabled
         && collapsingTitleHelper.getExpansionFraction() == 1f) {
-      ViewParent parent = getParent();
-      if (parent instanceof AppBarLayout) {
-        AppBarLayout appBarLayout = (AppBarLayout) parent;
-        if (appBarLayout.getPendingAction() == AppBarLayout.PENDING_ACTION_NONE) {
-          appBarLayout.setPendingAction(AppBarLayout.PENDING_ACTION_COLLAPSED);
-        }
-      }
+      maybeSetPendingActionCollapsed();
     }
 
     screenOrientation = newConfig.orientation;
+  }
+
+  private void maybeSetPendingActionCollapsed() {
+    ViewParent parent = getParent();
+    if (parent instanceof AppBarLayout) {
+      AppBarLayout appBarLayout = (AppBarLayout) parent;
+      if (appBarLayout.getPendingAction() == AppBarLayout.PENDING_ACTION_NONE) {
+        appBarLayout.setPendingAction(AppBarLayout.PENDING_ACTION_COLLAPSED);
+      }
+    }
   }
 
   @Override
@@ -770,6 +774,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
       } else {
         setMinimumHeight(getHeightWithMargins(toolbarDirectChild));
       }
+    }
+
+    // When extra multiline height is enabled, the height of the CollapsingToolbarLayout can change
+    // dynamically. If the height changes while the view is collapsed, we need to ensure that the
+    // AppBarLayout updates its collapse state to match the new height, otherwise it may try to
+    // scroll to an invalid offset based on the old height.
+    if (extraMultilineHeightEnabled
+        && collapsingTitleHelper.getExpandedMaxLines() > 1
+        && collapsingTitleHelper.getExpansionFraction() == 1f) {
+      maybeSetPendingActionCollapsed();
     }
   }
 
