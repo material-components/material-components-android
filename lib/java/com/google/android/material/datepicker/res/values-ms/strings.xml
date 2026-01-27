@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Gunakan: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Contoh: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Beralih kepada mod input kalendar</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Berallih kepada kalendar</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Beralih kepada mod input teks</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Beralih kepada input teks</string>
   <string name="mtrl_picker_a11y_prev_month">Tukar kepada bulan sebelumnya</string>
+  <string name="mtrl_picker_prev_month_tooltip">Bulan sebelumnya</string>
   <string name="mtrl_picker_a11y_next_month">Tukar kepada bulan seterusnya</string>
+  <string name="mtrl_picker_next_month_tooltip">Bulan seterusnya</string>
   <string name="mtrl_picker_toggle_to_year_selection">Beralih kepada paparan tahun</string>
   <string name="mtrl_picker_pane_title_year_view">Paparan tahun</string>
   <string name="mtrl_picker_toggle_to_day_selection">Beralih kepada paparan Kalendar</string>

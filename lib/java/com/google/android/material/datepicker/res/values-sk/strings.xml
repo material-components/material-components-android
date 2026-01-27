@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Použite: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Príklad: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Prepnúť na kalendárový režim vstupu</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Prepnúť na kalendár</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Prepnúť na textový režim vstupu</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Prepnúť na textový vstup</string>
   <string name="mtrl_picker_a11y_prev_month">Predchádzajúci mesiac</string>
+  <string name="mtrl_picker_prev_month_tooltip">Predchádzajúci mesiac</string>
   <string name="mtrl_picker_a11y_next_month">Ďalší mesiac</string>
+  <string name="mtrl_picker_next_month_tooltip">Nasledujúci mesiac</string>
   <string name="mtrl_picker_toggle_to_year_selection">Prepnúť na zobrazenie rokov</string>
   <string name="mtrl_picker_pane_title_year_view">Zobrazenie roka</string>
   <string name="mtrl_picker_toggle_to_day_selection">Prepnúť na zobrazenie kalendára</string>

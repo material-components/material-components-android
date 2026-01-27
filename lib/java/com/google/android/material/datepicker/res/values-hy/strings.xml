@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Օգտագործեք՝ %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Օրինակ՝ %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Անցնել օրացույցի մուտքագրման ռեժիմ</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Անցնել օրացույցի ներածման ռեժիմին</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Անցնել տեքստի մուտքագրման ռեժիմին</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Անցնել տեքստի ներածման ռեժիմին</string>
   <string name="mtrl_picker_a11y_prev_month">Անցնել նախորդ ամիս</string>
+  <string name="mtrl_picker_prev_month_tooltip">Նախորդ ամիս</string>
   <string name="mtrl_picker_a11y_next_month">Անցնել հաջորդ ամիս</string>
+  <string name="mtrl_picker_next_month_tooltip">Հաջորդ ամիս</string>
   <string name="mtrl_picker_toggle_to_year_selection">Օրացույցը ցույց տալիս ըստ տարիների</string>
   <string name="mtrl_picker_pane_title_year_view">Տարվա դիտակերպ</string>
   <string name="mtrl_picker_toggle_to_day_selection">Ցույց տալ Օրացույցը</string>

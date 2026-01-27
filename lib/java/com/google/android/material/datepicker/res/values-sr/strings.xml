@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Користите: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Пример: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Пређите на режим уноса у Календару</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Пређи на календар</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Пређите на режим уноса текста</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Пређи на унос текста</string>
   <string name="mtrl_picker_a11y_prev_month">Пређите на претходни месец</string>
+  <string name="mtrl_picker_prev_month_tooltip">Претходни месец</string>
   <string name="mtrl_picker_a11y_next_month">Пређите на следећи месец</string>
+  <string name="mtrl_picker_next_month_tooltip">Следећи месец</string>
   <string name="mtrl_picker_toggle_to_year_selection">Пређите на приказ године</string>
   <string name="mtrl_picker_pane_title_year_view">Приказ године</string>
   <string name="mtrl_picker_toggle_to_day_selection">Пређите на приказ календара</string>

@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">ఇలా ఉపయోగించండి: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">ఉదాహరణ: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">క్యాలెండర్ ఇన్‌పుట్ మోడ్‌కు మారుస్తుంది</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">క్యాలెండర్ ఇన్‌ఫుట్ మోడ్‌కు మారండి</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">వచన ఇన్‌పుట్ మోడ్‌కు మారుస్తుంది</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">టెక్స్ట్ ఇన్‌పుట్ మోడ్‌కు మారండి</string>
   <string name="mtrl_picker_a11y_prev_month">మునుపటి నెలకు మార్చుతుంది</string>
+  <string name="mtrl_picker_prev_month_tooltip">మునుపటి నెల</string>
   <string name="mtrl_picker_a11y_next_month">వచ్చే నెలకు మార్చుతుంది</string>
+  <string name="mtrl_picker_next_month_tooltip">తర్వాతి నెల</string>
   <string name="mtrl_picker_toggle_to_year_selection">సంవత్సరం వీక్షణకు మారండి</string>
   <string name="mtrl_picker_pane_title_year_view">సంవత్సర వీక్షణ</string>
   <string name="mtrl_picker_toggle_to_day_selection">క్యాలెండర్ వీక్షణకు మారండి</string>

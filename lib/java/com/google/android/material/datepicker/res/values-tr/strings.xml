@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Tarih biçimi: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Örnek: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Takvim giriş moduna geç</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Takvime geç</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Metin giriş moduna geç</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Metin girişi moduna geç</string>
   <string name="mtrl_picker_a11y_prev_month">Önceki aya değiştir</string>
+  <string name="mtrl_picker_prev_month_tooltip">Önceki ay</string>
   <string name="mtrl_picker_a11y_next_month">Sonraki aya değiştir</string>
+  <string name="mtrl_picker_next_month_tooltip">Gelecek ay</string>
   <string name="mtrl_picker_toggle_to_year_selection">Yıl görünümüne geç</string>
   <string name="mtrl_picker_pane_title_year_view">Yıl görünümü</string>
   <string name="mtrl_picker_toggle_to_day_selection">Takvim görünümüne geç</string>

@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Sử dụng: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Ví dụ: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Chuyển sang chế độ nhập lịch</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Chuyển sang lịch</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Chuyển sang chế độ nhập văn bản</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Chuyển sang nhập văn bản</string>
   <string name="mtrl_picker_a11y_prev_month">Chuyển về tháng trước</string>
+  <string name="mtrl_picker_prev_month_tooltip">Tháng trước</string>
   <string name="mtrl_picker_a11y_next_month">Chuyển sang tháng tiếp theo</string>
+  <string name="mtrl_picker_next_month_tooltip">Tháng tiếp theo</string>
   <string name="mtrl_picker_toggle_to_year_selection">Chuyển sang chế độ xem theo năm</string>
   <string name="mtrl_picker_pane_title_year_view">Chế độ xem theo năm</string>
   <string name="mtrl_picker_toggle_to_day_selection">Chuyển sang chế độ xem theo Lịch</string>

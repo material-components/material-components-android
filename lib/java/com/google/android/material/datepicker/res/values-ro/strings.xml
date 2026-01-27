@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Folosiți: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Exemplu: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Comutați la modul introducere în calendar</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Comutați la calendar</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Comutați la modul de introducere a textului</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Comutați la introducerea textului</string>
   <string name="mtrl_picker_a11y_prev_month">Treceți la luna anterioară</string>
+  <string name="mtrl_picker_prev_month_tooltip">Luna anterioară</string>
   <string name="mtrl_picker_a11y_next_month">Treceți la luna următoare</string>
+  <string name="mtrl_picker_next_month_tooltip">Luna următoare</string>
   <string name="mtrl_picker_toggle_to_year_selection">Treceți la afișarea pe ani</string>
   <string name="mtrl_picker_pane_title_year_view">Afișare pe ani</string>
   <string name="mtrl_picker_toggle_to_day_selection">Treceți la afișarea Calendar</string>

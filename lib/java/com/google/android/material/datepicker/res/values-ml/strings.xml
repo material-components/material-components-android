@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">%1$s ഉപയോഗിക്കുക</string>
   <string name="mtrl_picker_invalid_format_example">ഉദാഹരണം: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">കലണ്ടർ ഇൻപുട്ട് മോഡിലേക്ക് മാറുക</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">കലണ്ടറിലേക്ക് മാറുക</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">ടെക്‌സ്‌റ്റ് ഇൻപുട്ട് മോഡിലേക്ക് മാറുക</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">ടെക്സ്റ്റ് ഇൻപുട്ടിലേക്ക് മാറുക</string>
   <string name="mtrl_picker_a11y_prev_month">മുമ്പത്തെ മാസത്തിലേക്ക് മാറ്റുക</string>
+  <string name="mtrl_picker_prev_month_tooltip">മുമ്പത്തെ മാസം</string>
   <string name="mtrl_picker_a11y_next_month">അടുത്ത മാസത്തിലേക്ക് മാറ്റുക</string>
+  <string name="mtrl_picker_next_month_tooltip">അടുത്ത മാസം</string>
   <string name="mtrl_picker_toggle_to_year_selection">വർഷ കാഴ്‌ചയിലേക്ക് മാറുക</string>
   <string name="mtrl_picker_pane_title_year_view">വർഷ കാഴ്‌ച</string>
   <string name="mtrl_picker_toggle_to_day_selection">കലണ്ടർ കാഴ്‌ചയിലേക്ക് മാറുക</string>

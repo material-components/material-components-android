@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">استخدام: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">مثال: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">التبديل إلى وضع \"الإدخال في التقويم\"</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">التبديل إلى \"تقويم Google\"</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">التبديل إلى وضع \"إدخال النص\"</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">التبديل إلى وضع إدخال النص</string>
   <string name="mtrl_picker_a11y_prev_month">التغيير إلى الشهر السابق</string>
+  <string name="mtrl_picker_prev_month_tooltip">الشهر السابق</string>
   <string name="mtrl_picker_a11y_next_month">التغيير إلى الشهر التالي</string>
+  <string name="mtrl_picker_next_month_tooltip">الشهر التالي</string>
   <string name="mtrl_picker_toggle_to_year_selection">التبديل إلى العرض حسب السنة</string>
   <string name="mtrl_picker_pane_title_year_view">عرض السنة</string>
   <string name="mtrl_picker_toggle_to_day_selection">التبديل إلى عرض \"تقويم Google\"</string>

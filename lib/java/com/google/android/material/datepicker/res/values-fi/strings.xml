@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Käytä muotoa %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Esimerkki: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Vaihda syöttötavaksi kalenteri</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Siirry Kalenteriin</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Valitse syöttötavaksi teksti</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Vaihda tekstinsyöttöön</string>
   <string name="mtrl_picker_a11y_prev_month">Vaihda edelliseen kuukauteen</string>
+  <string name="mtrl_picker_prev_month_tooltip">Edellinen kuukausi</string>
   <string name="mtrl_picker_a11y_next_month">Vaihda seuraavaan kuukauteen</string>
+  <string name="mtrl_picker_next_month_tooltip">Seuraava kuukausi</string>
   <string name="mtrl_picker_toggle_to_year_selection">Vaihda vuosinäkymään</string>
   <string name="mtrl_picker_pane_title_year_view">Vuosinäkymä</string>
   <string name="mtrl_picker_toggle_to_day_selection">Vaihda kalenterinäkymään</string>

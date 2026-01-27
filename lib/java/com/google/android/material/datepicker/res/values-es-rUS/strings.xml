@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Usar: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Ejemplo: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Cambiar al modo de entrada de calendario</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Cambiar a Calendario</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Cambiar al modo de entrada de texto</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Cambiar a entrada de texto</string>
   <string name="mtrl_picker_a11y_prev_month">Cambiar al mes anterior</string>
+  <string name="mtrl_picker_prev_month_tooltip">Mes anterior</string>
   <string name="mtrl_picker_a11y_next_month">Cambiar al mes siguiente</string>
+  <string name="mtrl_picker_next_month_tooltip">Mes siguiente</string>
   <string name="mtrl_picker_toggle_to_year_selection">Cambiar a la vista anual</string>
   <string name="mtrl_picker_pane_title_year_view">Vista de año</string>
   <string name="mtrl_picker_toggle_to_day_selection">Cambiar a la vista de Calendario</string>

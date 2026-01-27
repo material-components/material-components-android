@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Kasutage: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Näide: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Lülitu kalendrisisestusrežiimile</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Lülitu kalendrile</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Lülitu tekstisisestusrežiimile</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Aktiveeri tekstisisestus</string>
   <string name="mtrl_picker_a11y_prev_month">Vaheta eelmisele kuule</string>
+  <string name="mtrl_picker_prev_month_tooltip">Eelmine kuu</string>
   <string name="mtrl_picker_a11y_next_month">Vaheta järgmisele kuule</string>
+  <string name="mtrl_picker_next_month_tooltip">Järgmine kuu</string>
   <string name="mtrl_picker_toggle_to_year_selection">Lülitumine aasta valimise vaatele</string>
   <string name="mtrl_picker_pane_title_year_view">Aastavaade</string>
   <string name="mtrl_picker_toggle_to_day_selection">Lülitumine kalendrivaatele</string>

@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Потрібний формат: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Приклад: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Перейти в режим введення в календарі</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Перейти в режим календаря</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Перейти в режим введення тексту</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Перейти в режим введення тексту</string>
   <string name="mtrl_picker_a11y_prev_month">Перейти до попереднього місяця</string>
+  <string name="mtrl_picker_prev_month_tooltip">Попередній місяць</string>
   <string name="mtrl_picker_a11y_next_month">Перейти до наступного місяця</string>
+  <string name="mtrl_picker_next_month_tooltip">Наступний місяць</string>
   <string name="mtrl_picker_toggle_to_year_selection">Перейти до режиму перегляду року</string>
   <string name="mtrl_picker_pane_title_year_view">Перегляд років</string>
   <string name="mtrl_picker_toggle_to_day_selection">Перейти до режиму перегляду календаря</string>

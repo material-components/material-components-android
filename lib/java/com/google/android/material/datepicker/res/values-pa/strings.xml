@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">ਵਰਤੋ: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">ਉਦਾਹਰਨ: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">ਕੈਲੰਡਰ ਇਨਪੁੱਟ ਮੋਡ \'ਤੇ ਜਾਓ</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">ਕੈਲੰਡਰ ’ਤੇ ਸਵਿੱਚ ਕਰੋ</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">ਲਿਖਤ ਇਨਪੁੱਟ ਮੋਡ \'ਤੇ ਜਾਓ</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">ਲਿਖਤ ਇਨਪੁੱਟ ’ਤੇ ਸਵਿੱਚ ਕਰੋ</string>
   <string name="mtrl_picker_a11y_prev_month">ਪਿਛਲੇ ਮਹੀਨੇ \'ਤੇ ਜਾਓ</string>
+  <string name="mtrl_picker_prev_month_tooltip">ਪਿਛਲਾ ਮਹੀਨਾ</string>
   <string name="mtrl_picker_a11y_next_month">ਅਗਲੇ ਮਹੀਨੇ \'ਤੇ ਜਾਓ</string>
+  <string name="mtrl_picker_next_month_tooltip">ਅਗਲਾ ਮਹੀਨਾ</string>
   <string name="mtrl_picker_toggle_to_year_selection">ਸਾਲ ਦ੍ਰਿਸ਼ \'ਤੇ ਸਵਿੱਚ ਕਰੋ</string>
   <string name="mtrl_picker_pane_title_year_view">ਸਾਲ ਦ੍ਰਿਸ਼</string>
   <string name="mtrl_picker_toggle_to_day_selection">ਕੈਲੰਡਰ ਦ੍ਰਿਸ਼ \'ਤੇ ਸਵਿੱਚ ਕਰੋ</string>

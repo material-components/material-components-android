@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Përdor: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Shembull: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Kalo te modaliteti i \"Hyrjes së kalendarit\"</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Kalo te kalendari</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Kalo te modaliteti i \"Hyrjes së tekstit\"</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Kalo në hyrjen e tekstit</string>
   <string name="mtrl_picker_a11y_prev_month">Ndrysho te muaji i kaluar</string>
+  <string name="mtrl_picker_prev_month_tooltip">Muaji i mëparshëm</string>
   <string name="mtrl_picker_a11y_next_month">Ndrysho te muaji i ardhshëm</string>
+  <string name="mtrl_picker_next_month_tooltip">Muaji i ardhshëm</string>
   <string name="mtrl_picker_toggle_to_year_selection">Kalo te pamja e vitit</string>
   <string name="mtrl_picker_pane_title_year_view">Pamja vjetore</string>
   <string name="mtrl_picker_toggle_to_day_selection">Kalo te pamja e kalendarit</string>

@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">%1$s деген форматты колдонуңуз</string>
   <string name="mtrl_picker_invalid_format_example">Мисалы: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Жылнаамага иш-чара киргизүү режимине которулуу</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Жылнаамага которулуу</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Текст киргизүү режимине которулуу</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Текст киргизүү режимине которулуу</string>
   <string name="mtrl_picker_a11y_prev_month">Мурунку айга өзгөртүү</string>
+  <string name="mtrl_picker_prev_month_tooltip">Мурунку ай</string>
   <string name="mtrl_picker_a11y_next_month">Кийинки айга өзгөртүү</string>
+  <string name="mtrl_picker_next_month_tooltip">Кийинки ай</string>
   <string name="mtrl_picker_toggle_to_year_selection">Жыл көрүнүшүнө которулуу</string>
   <string name="mtrl_picker_pane_title_year_view">\"Жыл боюнча көрүү\" режими</string>
   <string name="mtrl_picker_toggle_to_day_selection">Жылнаама көрүнүшүнө которулуу</string>

@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Tumia: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Mfano: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Tumia programu ya kuingiza data kwenye kalenda</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Badili ili utumie kalenda</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Tumia programu ya kuingiza data ya maandishi</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Badili ili utumie maandishi</string>
   <string name="mtrl_picker_a11y_prev_month">Rudi kwenye mwezi uliotangulia</string>
+  <string name="mtrl_picker_prev_month_tooltip">Mwezi uliopita</string>
   <string name="mtrl_picker_a11y_next_month">Nenda kwenye mwezi unaofuata</string>
+  <string name="mtrl_picker_next_month_tooltip">Mwezi ujao</string>
   <string name="mtrl_picker_toggle_to_year_selection">Badilisha utumie mwonekano wa mwaka</string>
   <string name="mtrl_picker_pane_title_year_view">Mwonekano wa mwaka</string>
   <string name="mtrl_picker_toggle_to_day_selection">Badilisha utumie mwonekano wa Kalenda</string>

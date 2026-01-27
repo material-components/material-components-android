@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">%1$s သုံးရန်</string>
   <string name="mtrl_picker_invalid_format_example">ဥပမာ− %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">ပြက္ခဒိန် ထည့်သွင်းမှုမုဒ်သို့ ပြောင်းရန်</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Calendar သို့ ပြောင်းရန်</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">စာသား ထည့်သွင်းမှုမုဒ်သို့ ပြောင်းရန်</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">စာသားထည့်သွင်းမှုသို့ ပြောင်းရန်</string>
   <string name="mtrl_picker_a11y_prev_month">ယခင်လသို့ ပြောင်းရန်</string>
+  <string name="mtrl_picker_prev_month_tooltip">ယခင်လ</string>
   <string name="mtrl_picker_a11y_next_month">နောက်လသို့ ပြောင်းရန်</string>
+  <string name="mtrl_picker_next_month_tooltip">နောက်လ</string>
   <string name="mtrl_picker_toggle_to_year_selection">‘နှစ်’ မြင်ကွင်းသို့ ပြောင်းရန်</string>
   <string name="mtrl_picker_pane_title_year_view">နှစ်အလိုက် မြင်ကွင်း</string>
   <string name="mtrl_picker_toggle_to_day_selection">‘ပြက္ခဒိန်’ မြင်ကွင်းသို့ ပြောင်းရန်</string>

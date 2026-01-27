@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">올바른 형식: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">예: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">캘린더 입력 모드로 전환</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">캘린더로 전환</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">텍스트 입력 모드로 전환</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">텍스트 입력으로 전환</string>
   <string name="mtrl_picker_a11y_prev_month">이전 달로 변경</string>
+  <string name="mtrl_picker_prev_month_tooltip">지난달</string>
   <string name="mtrl_picker_a11y_next_month">다음 달로 변경</string>
+  <string name="mtrl_picker_next_month_tooltip">다음 달</string>
   <string name="mtrl_picker_toggle_to_year_selection">연도별 뷰로 전환</string>
   <string name="mtrl_picker_pane_title_year_view">연도별 뷰</string>
   <string name="mtrl_picker_toggle_to_day_selection">캘린더 뷰로 전환</string>

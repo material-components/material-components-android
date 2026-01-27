@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Uporabite: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Primer: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Preklop na način vnosa v koledar</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Preklop na koledar</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Preklop na način vnosa besedila</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Preklop na vnos besedila</string>
   <string name="mtrl_picker_a11y_prev_month">Spremeni na prejšnji mesec</string>
+  <string name="mtrl_picker_prev_month_tooltip">Prejšnji mesec</string>
   <string name="mtrl_picker_a11y_next_month">Spremeni na naslednji mesec</string>
+  <string name="mtrl_picker_next_month_tooltip">Naslednji mesec</string>
   <string name="mtrl_picker_toggle_to_year_selection">Preklopi na pogled leta</string>
   <string name="mtrl_picker_pane_title_year_view">Pogled leta</string>
   <string name="mtrl_picker_toggle_to_day_selection">Preklopi na pogled koledarja</string>

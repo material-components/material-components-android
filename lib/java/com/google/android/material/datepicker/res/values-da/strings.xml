@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Brug: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Eksempel: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Skift til input-tilstand for kalender</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Skift til kalender</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Skift til input-tilstand for tekst</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Skift til tekstindtastning</string>
   <string name="mtrl_picker_a11y_prev_month">Skift til forrige måned</string>
+  <string name="mtrl_picker_prev_month_tooltip">Forrige måned</string>
   <string name="mtrl_picker_a11y_next_month">Skift til næste måned</string>
+  <string name="mtrl_picker_next_month_tooltip">Næste måned</string>
   <string name="mtrl_picker_toggle_to_year_selection">Skift til årsvisning</string>
   <string name="mtrl_picker_pane_title_year_view">Årsvisning</string>
   <string name="mtrl_picker_toggle_to_day_selection">Skift til kalendervisning</string>

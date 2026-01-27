@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">使用：%1$s</string>
   <string name="mtrl_picker_invalid_format_example">示例：%1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">切换到日历输入模式</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">改用日历输入模式</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">切换到文本字段输入模式</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">改用文字输入模式</string>
   <string name="mtrl_picker_a11y_prev_month">转到上个月</string>
+  <string name="mtrl_picker_prev_month_tooltip">上个月</string>
   <string name="mtrl_picker_a11y_next_month">转到下个月</string>
+  <string name="mtrl_picker_next_month_tooltip">下个月</string>
   <string name="mtrl_picker_toggle_to_year_selection">切换到年份视图</string>
   <string name="mtrl_picker_pane_title_year_view">年视图</string>
   <string name="mtrl_picker_toggle_to_day_selection">切换到日历视图</string>

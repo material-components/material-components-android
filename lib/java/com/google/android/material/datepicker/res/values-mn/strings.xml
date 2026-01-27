@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Ашиглах формат: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Жишээ нь: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Календарийн орох горим руу сэлгэх</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Календарь луу сэлгэх</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Текстийн орох горим руу сэлгэх</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Текстийн оруулга руу сэлгэх</string>
   <string name="mtrl_picker_a11y_prev_month">Өмнөх сар луу өөрчлөх</string>
+  <string name="mtrl_picker_prev_month_tooltip">Өмнөх сар</string>
   <string name="mtrl_picker_a11y_next_month">Дараагийн сар луу өөрчлөх</string>
+  <string name="mtrl_picker_next_month_tooltip">Дараагийн сар</string>
   <string name="mtrl_picker_toggle_to_year_selection">Жилийн харагдах байдал руу сэлгэх</string>
   <string name="mtrl_picker_pane_title_year_view">Жилийн харагдах байдал</string>
   <string name="mtrl_picker_toggle_to_day_selection">Календарийн харагдах байдал руу сэлгэх</string>

@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">ใช้: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">ตัวอย่าง: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">สลับไปใช้โหมดป้อนข้อมูลปฏิทิน</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">เปลี่ยนเป็นปฏิทิน</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">สลับไปใช้โหมดป้อนข้อมูลข้อความ</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">เปลี่ยนเป็นโหมดการป้อนข้อความ</string>
   <string name="mtrl_picker_a11y_prev_month">เปลี่ยนไปที่เดือนก่อนหน้า</string>
+  <string name="mtrl_picker_prev_month_tooltip">เดือนก่อนหน้า</string>
   <string name="mtrl_picker_a11y_next_month">เปลี่ยนไปที่เดือนถัดไป</string>
+  <string name="mtrl_picker_next_month_tooltip">เดือนถัดไป</string>
   <string name="mtrl_picker_toggle_to_year_selection">เปลี่ยนเป็นมุมมองปี</string>
   <string name="mtrl_picker_pane_title_year_view">มุมมองปี</string>
   <string name="mtrl_picker_toggle_to_day_selection">เปลี่ยนเป็นมุมมองปฏิทิน</string>

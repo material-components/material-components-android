@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Nota: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Dæmi: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Skipta yfir í innfærsluaðferð fyrir dagatal</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Skipta yfir í dagatal</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Skipta yfir í innfærsluaðferð fyrir texta</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Skipta yfir í textainnslátt</string>
   <string name="mtrl_picker_a11y_prev_month">Breyta í fyrri mánuð</string>
+  <string name="mtrl_picker_prev_month_tooltip">Fyrri mánuður</string>
   <string name="mtrl_picker_a11y_next_month">Breyta í næsta mánuð</string>
+  <string name="mtrl_picker_next_month_tooltip">Næsti mánuður</string>
   <string name="mtrl_picker_toggle_to_year_selection">Skipta yfir í ársyfirlit</string>
   <string name="mtrl_picker_pane_title_year_view">Ársyfirlit</string>
   <string name="mtrl_picker_toggle_to_day_selection">Skipta yfir í dagatalsyfirlit</string>

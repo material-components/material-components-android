@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">יש להשתמש בפורמט: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">דוגמה: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">החלפה לשיטת קלט של יומן</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">מעבר אל היומן</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">החלפה לשיטת קלט של טקסט</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">שינוי מצב להזנת קלט</string>
   <string name="mtrl_picker_a11y_prev_month">מעבר לחודש הקודם</string>
+  <string name="mtrl_picker_prev_month_tooltip">החודש הקודם</string>
   <string name="mtrl_picker_a11y_next_month">מעבר לחודש הבא</string>
+  <string name="mtrl_picker_next_month_tooltip">החודש הבא</string>
   <string name="mtrl_picker_toggle_to_year_selection">מעבר לתצוגה שנתית</string>
   <string name="mtrl_picker_pane_title_year_view">תצוגה שנתית</string>
   <string name="mtrl_picker_toggle_to_day_selection">מעבר לתצוגת יומן</string>

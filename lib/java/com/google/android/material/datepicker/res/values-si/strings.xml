@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">භාවිතය: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">උදාහරණය: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">දින දර්ශන ආදාන ප්‍රකාරයට මාරු වන්න</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">දින දර්ශනය වෙත මාරු වන්න</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">පෙළ ආදාන ප්‍රකාරයට මාරු වන්න</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">පාඨ ආදානයට මාරු කරන්න</string>
   <string name="mtrl_picker_a11y_prev_month">කලින් මාසයට වෙනස් කරන්න</string>
+  <string name="mtrl_picker_prev_month_tooltip">පෙර මාසය</string>
   <string name="mtrl_picker_a11y_next_month">ලබන මාසයට වෙනස් කරන්න</string>
+  <string name="mtrl_picker_next_month_tooltip">මීළඟ මාසය</string>
   <string name="mtrl_picker_toggle_to_year_selection">වසර දසුනට මාරු වන්න</string>
   <string name="mtrl_picker_pane_title_year_view">වසර දසුන</string>
   <string name="mtrl_picker_toggle_to_day_selection">දින දර්ශන දසුනට මාරු වන්න</string>

@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">Izmantojiet: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Piemērs: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Pārslēgties uz kalendāra ievades režīmu</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Pārslēgties uz kalendāru</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Pārslēgties uz teksta ievades režīmu</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Pārslēgties uz teksta ievadi</string>
   <string name="mtrl_picker_a11y_prev_month">Pāriet uz iepriekšējo mēnesi</string>
+  <string name="mtrl_picker_prev_month_tooltip">Iepriekšējais mēnesis</string>
   <string name="mtrl_picker_a11y_next_month">Pāriet uz nākamo mēnesi</string>
+  <string name="mtrl_picker_next_month_tooltip">Nākamais mēnesis</string>
   <string name="mtrl_picker_toggle_to_year_selection">Pārslēgties uz gada skatu</string>
   <string name="mtrl_picker_pane_title_year_view">Gada skats</string>
   <string name="mtrl_picker_toggle_to_day_selection">Pārslēgties uz Kalendāra skatu</string>

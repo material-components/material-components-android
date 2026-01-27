@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">%1$s استعمال کریں</string>
   <string name="mtrl_picker_invalid_format_example">مثال: %1$s۔</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">کیلنڈر ان پٹ وضع پر سوئچ کریں</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">کیلنڈر پر سوئچ کریں</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">متنی ان پٹ وضع پر سوئچ کریں</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">ٹیکسٹ ان پٹ پر سوئچ کریں</string>
   <string name="mtrl_picker_a11y_prev_month">گزشتہ ماہ میں منتقل کریں</string>
+  <string name="mtrl_picker_prev_month_tooltip">گزشتہ ماہ</string>
   <string name="mtrl_picker_a11y_next_month">اگلے مہینہ میں منتقل کریں</string>
+  <string name="mtrl_picker_next_month_tooltip">اگلا ماہ</string>
   <string name="mtrl_picker_toggle_to_year_selection">سال کے منظر پر سوئچ کریں</string>
   <string name="mtrl_picker_pane_title_year_view">سال کا منظر</string>
   <string name="mtrl_picker_toggle_to_day_selection">کیلنڈر کے منظر پر سوئچ کریں</string>

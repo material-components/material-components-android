@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">%1$s प्रयोग गर्नुहोस्</string>
   <string name="mtrl_picker_invalid_format_example">उदाहरण: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Calendar को इनपुट मोडमा बदल्नुहोस्</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">पात्रो प्रयोग गर्नुहोस्</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">पाठको इनपुट मोडमा बदल्नुहोस्</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">टेक्स्ट इन्पुट प्रयोग गर्नुहोस्</string>
   <string name="mtrl_picker_a11y_prev_month">अघिल्लो महिनामा सार्नुहोस्</string>
+  <string name="mtrl_picker_prev_month_tooltip">अघिल्लो महिना</string>
   <string name="mtrl_picker_a11y_next_month">अर्को महिनामा सार्नुहोस्</string>
+  <string name="mtrl_picker_next_month_tooltip">अर्को महिना</string>
   <string name="mtrl_picker_toggle_to_year_selection">\"साल\" भ्यू प्रयोग गर्नुहोस्</string>
   <string name="mtrl_picker_pane_title_year_view">साल भ्यू</string>
   <string name="mtrl_picker_toggle_to_day_selection">\"पात्रो\" भ्यू प्रयोग गर्नुहोस्</string>

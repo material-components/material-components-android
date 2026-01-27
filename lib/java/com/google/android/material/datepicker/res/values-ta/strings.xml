@@ -38,9 +38,13 @@
   <string name="mtrl_picker_invalid_format_use">%1$sஐப் பயன்படுத்துக</string>
   <string name="mtrl_picker_invalid_format_example">உதாரணம்: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">கேலெண்டர் உள்ளீட்டு முறைக்கு மாற்றும்</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">கேலெண்டருக்கு மாறும்</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">உரை உள்ளீட்டு முறைக்கு மாற்றும்</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">வார்த்தையை டைப் செய்தலுக்கு மாறும்</string>
   <string name="mtrl_picker_a11y_prev_month">முந்தைய மாதத்தைக் காட்டு</string>
+  <string name="mtrl_picker_prev_month_tooltip">முந்தைய மாதம்</string>
   <string name="mtrl_picker_a11y_next_month">அடுத்த மாதத்தைக் காட்டு</string>
+  <string name="mtrl_picker_next_month_tooltip">அடுத்த மாதம்</string>
   <string name="mtrl_picker_toggle_to_year_selection">ஆண்டுக் காட்சிக்கு மாற்றும்</string>
   <string name="mtrl_picker_pane_title_year_view">ஆண்டுக் காட்சி</string>
   <string name="mtrl_picker_toggle_to_day_selection">கேலெண்டர் காட்சிக்கு மாற்றும்</string>
