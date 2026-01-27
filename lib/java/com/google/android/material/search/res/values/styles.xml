@@ -41,6 +41,17 @@
 
   <style name="Widget.Material3Expressive.SearchView" parent="Widget.Material3.SearchView">
     <item name="dividerVisible">false</item>
+    <item name="backgroundTint">?attr/colorSurfaceContainerLow</item>
+  </style>
+
+  <style name="Widget.Material3Expressive.SearchView.Toolbar" parent="Widget.Material3.SearchView.Toolbar">
+    <item name="android:minHeight">@dimen/m3e_searchview_toolbar_height</item>
+    <item name="maxButtonHeight">@dimen/m3e_searchview_toolbar_height</item>
+    <item name="android:layout_marginStart">@dimen/m3e_searchview_toolbar_margin_horizontal</item>
+    <item name="android:layout_marginEnd">@dimen/m3e_searchview_toolbar_margin_horizontal</item>
+    <item name="android:background">?attr/colorSurfaceContainerHigh</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.SearchBar</item>
   </style>
 
   <style name="Widget.Material3Expressive.SearchBar.CenteredText.AppBarWithSearch">

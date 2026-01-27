@@ -41,6 +41,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ToolbarUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
  * {@code MaterialToolbar} is a {@link Toolbar} that implements certain Material features, such as
@@ -120,7 +121,9 @@ public class MaterialToolbar extends Toolbar {
 
     a.recycle();
 
-    initBackground(context);
+    final ShapeAppearanceModel shapeAppearance =
+        ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
+    initBackground(context, shapeAppearance);
   }
 
   @Override
@@ -356,7 +359,7 @@ public class MaterialToolbar extends Toolbar {
     return subtitleCentered;
   }
 
-  private void initBackground(Context context) {
+  private void initBackground(Context context, ShapeAppearanceModel shapeAppearance) {
     Drawable background = getBackground();
     ColorStateList backgroundColorStateList =
         background == null
@@ -364,7 +367,7 @@ public class MaterialToolbar extends Toolbar {
             : DrawableUtils.getColorStateListOrNull(background);
 
     if (backgroundColorStateList != null) {
-      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearance);
       materialShapeDrawable.setFillColor(backgroundColorStateList);
       materialShapeDrawable.initializeElevationOverlay(context);
       materialShapeDrawable.setElevation(getElevation());

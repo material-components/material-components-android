@@ -345,6 +345,13 @@
            the view. -->
       <enum name="centerInside" value="7" />
     </attr>
+    <!-- Shape appearance style reference for MaterialToolbar. Attribute declaration is in the Shape
+         package. -->
+    <attr name="shapeAppearance"/>
+    <!-- Shape appearance overlay style reference for MaterialToolbar. To be used to augment
+         attributes declared in the shapeAppearance. Attribute declaration is in the Shape
+         package. -->
+    <attr name="shapeAppearanceOverlay"/>
   </declare-styleable>
 
 </resources>
