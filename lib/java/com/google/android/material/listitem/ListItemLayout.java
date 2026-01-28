@@ -43,6 +43,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.Interpolator;
 import android.view.animation.PathInterpolator;
 import android.widget.FrameLayout;
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
@@ -53,6 +54,8 @@ import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.listitem.RevealableListItem.RevealGravity;
 import com.google.android.material.listitem.SwipeableListItem.StableSwipeState;
 import com.google.android.material.listitem.SwipeableListItem.SwipeState;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * A container layout for a List item.
@@ -86,6 +89,23 @@ public class ListItemLayout extends FrameLayout {
   private static final int[] SINGLE_STATE_SET = {android.R.attr.state_single};
   private static final int SETTLING_DURATION = 350;
   private static final int DEFAULT_SIGNIFICANT_VEL_THRESHOLD = 500;
+
+  /** Positions for list items. */
+  @Retention(RetentionPolicy.SOURCE)
+  @IntDef({POSITION_FIRST, POSITION_MIDDLE, POSITION_LAST, POSITION_SINGLE})
+  public @interface Position {}
+
+  /** Position for the first item in a list. */
+  public static final int POSITION_FIRST = 0;
+
+  /** Position for an item in the middle of a list. */
+  public static final int POSITION_MIDDLE = 1;
+
+  /** Position for the last item in a list. */
+  public static final int POSITION_LAST = 2;
+
+  /** Position for an item that is the only item in a list. */
+  public static final int POSITION_SINGLE = 3;
 
   @Nullable private int[] positionState;
 
@@ -168,8 +188,8 @@ public class ListItemLayout extends FrameLayout {
 
   /**
    * Helper method that sets the drawable state of the ListItemLayout according to its position in
-   * the list. This is already called by {@link ListItemViewHolder#bind} if the ListItemLayout is
-   * inside of a {@link ListItemViewHolder}.
+   * the list. This can be called via {@link ListItemViewHolder#bind(int, int)} if the
+   * ListItemLayout is inside of a {@link ListItemViewHolder}.
    *
    * <p>Children of ListItemLayout that wish to be affected by this state should duplicate its
    * parent's state.
@@ -185,6 +205,32 @@ public class ListItemLayout extends FrameLayout {
       positionState = LAST_STATE_SET;
     } else {
       positionState = MIDDLE_STATE_SET;
+    }
+    refreshDrawableState();
+  }
+
+  /**
+   * Helper method that sets the drawable state of the ListItemLayout according to its position in
+   * the list. This is already called by {@link ListItemViewHolder#bind} if the ListItemLayout is
+   * inside of a {@link ListItemViewHolder}.
+   *
+   * <p>Children of ListItemLayout that wish to be affected by this state should duplicate its
+   * parent's state.
+   */
+  public void updateAppearance(@Position int position) {
+    switch (position) {
+      case POSITION_SINGLE:
+        positionState = SINGLE_STATE_SET;
+        break;
+      case POSITION_FIRST:
+        positionState = FIRST_STATE_SET;
+        break;
+      case POSITION_LAST:
+        positionState = LAST_STATE_SET;
+        break;
+      case POSITION_MIDDLE:
+        positionState = MIDDLE_STATE_SET;
+        break;
     }
     refreshDrawableState();
   }

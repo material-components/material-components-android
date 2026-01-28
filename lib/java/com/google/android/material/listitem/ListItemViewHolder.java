@@ -73,4 +73,12 @@ public class ListItemViewHolder extends ViewHolder {
     }
     listItemLayout.updateAppearance(position, itemCount);
   }
+
+  /**
+   * Binds the corresponding {@link ListItemLayout} according to the given {@link
+   * ListItemLayout.Position}.
+   */
+  public void bind(@ListItemLayout.Position int position) {
+    listItemLayout.updateAppearance(position);
+  }
 }
