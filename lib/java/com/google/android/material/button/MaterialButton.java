@@ -222,6 +222,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     BOTH
   }
 
+  enum HeightChangeDirection {
+    NONE,
+    TOP,
+    BOTTOM,
+    BOTH
+  }
+
   private static final String LOG_TAG = "MaterialButton";
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
@@ -261,8 +268,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private int orientation = UNSET;
   private float originalWidth = UNSET;
+  private float originalHeight = UNSET;
   @Px private int originalPaddingStart = UNSET;
+  @Px private int originalPaddingTop = UNSET;
   @Px private int originalPaddingEnd = UNSET;
+  @Px private int originalPaddingBottom = UNSET;
 
   @Nullable private LayoutParams originalLayoutParams;
 
@@ -273,12 +283,18 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   // Fields for size morphing.
   @Px int allowedWidthDecrease = UNSET;
+  @Px int allowedHeightDecrease = UNSET;
   @Nullable StateListSizeChange sizeChange;
   @Px int widthChangeMax;
+  @Px int heightChangeMax;
   private WidthChangeDirection widthChangeDirection = WidthChangeDirection.BOTH;
+  private HeightChangeDirection heightChangeDirection = HeightChangeDirection.BOTH;
   private float displayedWidthIncrease;
   private float displayedWidthDecrease;
+  private float displayedHeightIncrease;
+  private float displayedHeightDecrease;
   @Nullable private SpringAnimation widthIncreaseSpringAnimation;
+  @Nullable private SpringAnimation heightIncreaseSpringAnimation;
 
   public MaterialButton(@NonNull Context context) {
     this(context, null /* attrs */);
@@ -354,9 +370,14 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     updateSecondaryIcon(/* needsIconReset= */ secondaryIcon != null);
   }
 
-  private void initializeSizeAnimation() {
+  private void initializeWidthAnimation() {
     widthIncreaseSpringAnimation = new SpringAnimation(this, WIDTH_INCREASE);
     widthIncreaseSpringAnimation.setSpring(createSpringForce());
+  }
+
+  private void initializeHeightAnimation() {
+    heightIncreaseSpringAnimation = new SpringAnimation(this, HEIGHT_INCREASE);
+    heightIncreaseSpringAnimation.setSpring(createSpringForce());
   }
 
   private SpringForce createSpringForce() {
@@ -588,6 +609,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     if (orientation != curOrientation) {
       orientation = curOrientation;
       originalWidth = UNSET;
+      originalHeight = UNSET;
     }
     if (originalWidth == UNSET) {
       originalWidth = getMeasuredWidth();
@@ -604,6 +626,21 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
         setLayoutParams(newLayoutParams);
       }
     }
+    if (originalHeight == UNSET) {
+      originalHeight = getMeasuredHeight();
+      // The height morph leverage the height of the layout params. However, it's not available if
+      // layout_weight is used. We need to hardcode the height here. The original layout params will
+      // be preserved for the correctness of distribution when buttons are added or removed into the
+      // group programmatically.
+      if (originalLayoutParams == null
+          && getParent() instanceof MaterialButtonGroup
+          && ((MaterialButtonGroup) getParent()).getButtonSizeChange() != null) {
+        originalLayoutParams = (LayoutParams) getLayoutParams();
+        LayoutParams newLayoutParams = new LayoutParams(originalLayoutParams);
+        newLayoutParams.height = (int) originalHeight;
+        setLayoutParams(newLayoutParams);
+      }
+    }
 
     if (allowedWidthDecrease == UNSET) {
       int localIconSizeAndPadding =
@@ -612,12 +649,25 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
               : getIconPadding() + (iconSize == 0 ? icon.getIntrinsicWidth() : iconSize);
       allowedWidthDecrease = getMeasuredWidth() - getTextLayoutWidth() - localIconSizeAndPadding;
     }
+    if (allowedHeightDecrease == UNSET) {
+      int localIconSizeAndPadding =
+          icon == null
+              ? 0
+              : getIconPadding() + (iconSize == 0 ? icon.getIntrinsicHeight() : iconSize);
+      allowedHeightDecrease = getMeasuredHeight() - getTextLayoutHeight() - localIconSizeAndPadding;
+    }
 
     if (originalPaddingStart == UNSET) {
       originalPaddingStart = getPaddingStart();
     }
+    if (originalPaddingTop == UNSET) {
+      originalPaddingTop = getPaddingTop();
+    }
     if (originalPaddingEnd == UNSET) {
       originalPaddingEnd = getPaddingEnd();
+    }
+    if (originalPaddingBottom == UNSET) {
+      originalPaddingBottom = getPaddingBottom();
     }
     isInHorizontalButtonGroup = isInHorizontalButtonGroup();
   }
@@ -627,6 +677,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       setLayoutParams(originalLayoutParams);
       originalLayoutParams = null;
       originalWidth = UNSET;
+      originalHeight = UNSET;
     }
   }
 
@@ -634,6 +685,12 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   public void setWidth(@Px int pixels) {
     originalWidth = UNSET;
     super.setWidth(pixels);
+  }
+
+  @Override
+  public void setHeight(@Px int pixels) {
+    originalHeight = UNSET;
+    super.setHeight(pixels);
   }
 
   @Override
@@ -869,6 +926,16 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       maxWidth = max(maxWidth, getLayout().getLineWidth(line));
     }
     return (int) ceil(maxWidth);
+  }
+
+  private int getTextLayoutHeight() {
+    float maxHeight = 0;
+    int lineCount = getLineCount();
+    for (int line = 0; line < lineCount; line++) {
+      int height = getLayout().getLineBottom(line) - getLayout().getLineTop(line);
+      maxHeight = max(maxHeight, height);
+    }
+    return (int) ceil(maxHeight);
   }
 
   private int getTextHeight() {
@@ -1912,9 +1979,14 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     if (sizeChange == null) {
       return;
     }
+
     if (widthIncreaseSpringAnimation == null) {
-      initializeSizeAnimation();
+      initializeWidthAnimation();
     }
+    if (heightIncreaseSpringAnimation == null) {
+      initializeHeightAnimation();
+    }
+
     if (isInHorizontalButtonGroup) {
       // Animate width.
       int widthChange =
@@ -1927,6 +1999,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       widthIncreaseSpringAnimation.animateToFinalPosition(widthChange);
       if (skipAnimation) {
         widthIncreaseSpringAnimation.skipToEnd();
+      }
+    } else {
+      // Animate height.
+      int heightChange =
+          min(
+              heightChangeMax, // TODO
+              sizeChange
+                  .getSizeChangeForState(getDrawableState())
+                  .heightChange
+                  .getChange(getHeight()));
+      heightIncreaseSpringAnimation.animateToFinalPosition(heightChange);
+      if (skipAnimation) {
+        heightIncreaseSpringAnimation.skipToEnd();
       }
     }
   }
@@ -1998,6 +2083,48 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     invalidate();
   }
 
+  void setHeightChangeMax(@Px int heightChangeMax) {
+    if (this.heightChangeMax != heightChangeMax) {
+      this.heightChangeMax = heightChangeMax;
+      maybeAnimateSize(/* skipAnimation= */ true);
+    }
+  }
+
+  void setHeightChangeDirection(@NonNull HeightChangeDirection heightChangeDirection) {
+    if (this.heightChangeDirection != heightChangeDirection) {
+      this.heightChangeDirection = heightChangeDirection;
+      maybeAnimateSize(/* skipAnimation= */ true);
+    }
+  }
+
+  @Px
+  int getAllowedHeightDecrease() {
+    return allowedHeightDecrease;
+  }
+
+  private float getDisplayedHeightIncrease() {
+    return displayedHeightIncrease;
+  }
+
+  private void setDisplayedHeightIncrease(float heightIncrease) {
+    if (displayedHeightIncrease != heightIncrease) {
+      displayedHeightIncrease = heightIncrease;
+      updatePaddingsAndSizeForHeightAnimation();
+      invalidate();
+      // Report width changed to the parent group.
+      if (getParent() instanceof MaterialButtonGroup) {
+        ((MaterialButtonGroup) getParent())
+            .onButtonHeightChanged(this, (int) displayedHeightIncrease);
+      }
+    }
+  }
+
+  void setDisplayedHeightDecrease(int heightDecrease) {
+    displayedHeightDecrease = min(heightDecrease, allowedHeightDecrease);
+    updatePaddingsAndSizeForHeightAnimation();
+    invalidate();
+  }
+
   /**
    * Sets whether to enable the optical center feature.
    *
@@ -2051,6 +2178,17 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
         getPaddingBottom());
   }
 
+  private void updatePaddingsAndSizeForHeightAnimation() {
+    int heightChange = (int) (displayedHeightIncrease - displayedHeightDecrease);
+    int paddingTopChange = heightChange / 2;
+    getLayoutParams().height = (int) (originalHeight + heightChange);
+    setPaddingRelative(
+        originalPaddingStart,
+        originalPaddingTop + paddingTopChange,
+        originalPaddingEnd,
+        originalPaddingBottom + heightChange - paddingTopChange);
+  }
+
   private int getOpticalCenterShift() {
     if (opticalCenterEnabled && isInHorizontalButtonGroup) {
       MaterialShapeDrawable materialShapeDrawable = materialButtonHelper.getMaterialShapeDrawable();
@@ -2073,6 +2211,18 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
         @Override
         public void setValue(MaterialButton button, float value) {
           button.setDisplayedWidthIncrease(value);
+        }
+      };
+  private static final FloatPropertyCompat<MaterialButton> HEIGHT_INCREASE =
+      new FloatPropertyCompat<MaterialButton>("heightIncrease") {
+        @Override
+        public float getValue(MaterialButton button) {
+          return button.getDisplayedHeightIncrease();
+        }
+
+        @Override
+        public void setValue(MaterialButton button, float value) {
+          button.setDisplayedHeightIncrease(value);
         }
       };
 
