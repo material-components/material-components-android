@@ -532,23 +532,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
   }
 
-  /**
-   * Sets the content description for this view.
-   *
-   * <p>This method also sets the tooltip text to the given content description on API 26 (Android
-   * O) and above. It is not set on lower APIs to avoid overwriting any custom {@link
-   * View.OnLongClickListener}.
-   *
-   * @param contentDescription the content description to set
-   */
-  @Override
-  public void setContentDescription(@Nullable CharSequence contentDescription) {
-    super.setContentDescription(contentDescription);
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      setTooltipText(contentDescription);
-    }
-  }
-
   /** Sets the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearance) {
