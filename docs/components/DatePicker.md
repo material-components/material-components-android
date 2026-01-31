@@ -258,7 +258,7 @@ The following example shows a date picker with a date selected.
 In XML:
 
 ```
-<com.google.android.material.textfield.textinputlayout
+<com.google.android.material.textfield.TextInputLayout
 android:id="@+id/booking_date_input_layout"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
