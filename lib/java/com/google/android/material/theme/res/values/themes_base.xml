@@ -361,7 +361,7 @@
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
 
     <!-- Action Bars. -->
-    <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Light</item>
+    <item name="actionBarPopupTheme">@null</item>
     <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
     <item name="actionBarStyle">@style/Widget.Material3.Light.ActionBar.Solid</item>
     <item name="actionModeStyle">@style/Widget.Material3.ActionMode</item>
@@ -690,7 +690,7 @@
     <item name="collapsingToolbarLayoutLargeSize">@dimen/m3_appbar_size_large</item>
 
     <!-- Action Bars. -->
-    <item name="actionBarPopupTheme">@style/ThemeOverlay.Material3.Dark</item>
+    <item name="actionBarPopupTheme">@null</item>
     <item name="actionBarSize">@dimen/m3_appbar_size_compact</item>
     <item name="actionBarStyle">@style/Widget.Material3.ActionBar.Solid</item>
     <item name="actionModeStyle">@style/Widget.Material3.ActionMode</item>
