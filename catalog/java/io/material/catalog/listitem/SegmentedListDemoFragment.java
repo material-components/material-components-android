@@ -100,26 +100,42 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
                       /* attachToRoot= */ false);
       return new CustomItemViewHolder(item);
     }
+
+    @Override
+    public void onBindViewHolder(@NonNull CustomItemViewHolder viewHolder, int position) {
+      CustomListItemData data = getItemAt(position);
+      viewHolder.bind(data, position, getItemCount());
+    }
+
     @Override
     public void onBindViewHolder(
-        @NonNull CustomItemViewHolder viewHolder, int position) {
-      CustomListItemData data = getItemAt(position);
-      viewHolder.bind(data);
+        @NonNull CustomItemViewHolder viewHolder, int position, @NonNull List<Object> payloads) {
+      if (payloads.isEmpty()) {
+        super.onBindViewHolder(viewHolder, position, payloads);
+      } else {
+        // Partial update: just re-bind.
+        CustomListItemData data = getItemAt(position);
+        viewHolder.bind(data, position, getItemCount());
+      }
     }
+
     @Override
     public int getItemCount() {
       return items.size();
     }
+
     @NonNull
     public CustomListItemData getItemAt(int i) {
       return items.get(i);
     }
+
     /**
      * Set exclusive selected position.
      */
     public void setSelectedPosition(int selectedPosition) {
       this.selectedPosition = selectedPosition;
     }
+
     /**
      * Return exclusive selected position.
      */
@@ -127,6 +143,7 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
       return selectedPosition;
     }
   }
+
   /** A ViewHolder that shows custom list items */
   public class CustomItemViewHolder extends ListItemViewHolder {
     private final TextView textView;
@@ -137,8 +154,9 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
       textView = itemView.findViewById(R.id.cat_list_item_text);
       cardView = itemView.findViewById(R.id.cat_list_item_card_view);
     }
-    public void bind(@NonNull CustomListItemData data) {
-      super.bind();
+
+    public void bind(@NonNull CustomListItemData data, int position, int totalCount) {
+      super.bind(position, totalCount);
       textView.setText(data.text);
       cardView.setChecked(data.indexInSection == adapter.getSelectedPosition());
       cardView.setOnClickListener(
@@ -147,9 +165,10 @@ public class SegmentedListDemoFragment extends ListsMainDemoFragment {
             adapter.setSelectedPosition(data.indexInSection);
             Toast.makeText(v.getContext(), R.string.mtrl_list_item_clicked, Toast.LENGTH_SHORT)
                 .show();
-            adapter.notifyItemChanged(data.indexInSection);
+            // Pass a payload to prevent the RecyclerView default change animation
+            adapter.notifyItemChanged(data.indexInSection, "selection_changed");
             if (previouslySelectedPosition != NO_SELECTION) {
-              adapter.notifyItemChanged(previouslySelectedPosition);
+              adapter.notifyItemChanged(previouslySelectedPosition, "selection_changed");
             }
           });
     }
