@@ -336,12 +336,12 @@ primary action will only be visible until the swipe state is reset or
 
 #### ListItemCardView attributes
 
-Element                                      | Attribute                         | Related methods                                                        | Default value
--------------------------------------------- | --------------------------------- | ---------------------------------------------------------------------- | -------------
-**Color**                                    | `app:cardBackgroundColor`         | `setCardBackgroundColor`<br/>`getCardBackgroundColor`                  | `@color/transparent` (standard style)</br>`?attr/colorSurfaceBright` (segmented style) </br> `?attr/colorSecondaryContainer` (selected)
-**Shape**                                    | `app:shapeAppearance`             | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`                | `?attr/listItemShapeAppearanceSingle` </br> `?attr/listItemShapeAppearanceFirst` </br> `?attr/listItemShapeAppearanceMiddle` </br> `?attr/listItemShapeAppearanceLast`
-**Ripple color**                             | `app:rippleColor`                 | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor`     | `?attr/colorOnSurface` at 10% opacity (8% when hovered)
-**Swipe enabled**                            | `app:swipeEnabled`                | `setSwipeEnabled`<br/>`isSwipeEnabled`                                 | `true`
+Element           | Attribute                 | Related methods                                                    | Default value
+----------------- | ------------------------- | ------------------------------------------------------------------ | -------------
+**Color**         | `app:cardBackgroundColor` | `setCardBackgroundColor`<br/>`getCardBackgroundColor`              | `@color/transparent` (standard style)</br>`?attr/colorSurfaceBright` (segmented style) </br> `?attr/colorSecondaryContainer` (selected)
+**Shape**         | `app:shapeAppearance`     | `setShapeAppearanceModel`<br/>`getShapeAppearanceModel`            | `?attr/listItemShapeAppearanceSingle` </br> `?attr/listItemShapeAppearanceFirst` </br> `?attr/listItemShapeAppearanceMiddle` </br> `?attr/listItemShapeAppearanceLast` </br> `?attr/listItemShapeAppearanceChecked` </br> `?attr/listItemShapeAppearancePressed` </br> `?attr/listItemShapeAppearanceHovered`
+**Ripple color**  | `app:rippleColor`         | `setRippleColor`<br/>`setRippleColorResource`<br/>`getRippleColor` | `?attr/colorOnSurface` at 10% opacity (8% when hovered)
+**Swipe enabled** | `app:swipeEnabled`        | `setSwipeEnabled`<br/>`isSwipeEnabled`                             | `true`
 
 #### ListItemRevealLayout attributes
 

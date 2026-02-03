@@ -422,9 +422,12 @@
     <item name="shapeAppearanceCornerExtraExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge</item>
     <item name="listItemShapeAppearanceSingle">@style/ShapeAppearance.Material3.ListItem.Single</item>
     <item name="listItemShapeAppearanceFirst">@style/ShapeAppearance.Material3.ListItem.First</item>
-    <item name="listItemShapeAppearanceMiddle">@style/ShapeAppearance.Material3.ListItem.Middle</item>
+    <item name="listItemShapeAppearanceMiddle">@macro/m3_comp_list_list_item_container_expressive_shape</item>
     <item name="listItemShapeAppearanceLast">@style/ShapeAppearance.Material3.ListItem.Last</item>
-    <item name="listItemShapeAppearanceChecked">@style/ShapeAppearance.Material3.ListItem.Checked</item>
+    <item name="listItemShapeAppearanceChecked">@macro/m3_comp_list_list_item_selected_container_expressive_shape</item>
+    <item name="listItemShapeAppearancePressed">@macro/m3_comp_list_list_item_pressed_container_expressive_shape</item>
+    <item name="listItemShapeAppearanceFocused">@macro/m3_comp_list_list_item_focused_container_expressive_shape</item>
+    <item name="listItemShapeAppearanceHovered">@macro/m3_comp_list_list_item_pressed_container_expressive_shape</item>
 
     <!-- Deprecated shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
@@ -745,9 +748,12 @@
     <item name="shapeAppearanceCornerExtraExtraLarge">@style/ShapeAppearance.Material3.Corner.ExtraExtraLarge</item>
     <item name="listItemShapeAppearanceSingle">@style/ShapeAppearance.Material3.ListItem.Single</item>
     <item name="listItemShapeAppearanceFirst">@style/ShapeAppearance.Material3.ListItem.First</item>
-    <item name="listItemShapeAppearanceMiddle">@style/ShapeAppearance.Material3.ListItem.Middle</item>
+    <item name="listItemShapeAppearanceMiddle">@macro/m3_comp_list_list_item_container_expressive_shape</item>
     <item name="listItemShapeAppearanceLast">@style/ShapeAppearance.Material3.ListItem.Last</item>
-    <item name="listItemShapeAppearanceChecked">@style/ShapeAppearance.Material3.ListItem.Checked</item>
+    <item name="listItemShapeAppearanceChecked">@macro/m3_comp_list_list_item_selected_container_expressive_shape</item>
+    <item name="listItemShapeAppearancePressed">@macro/m3_comp_list_list_item_pressed_container_expressive_shape</item>
+    <item name="listItemShapeAppearanceFocused">@macro/m3_comp_list_list_item_focused_container_expressive_shape</item>
+    <item name="listItemShapeAppearanceHovered">@macro/m3_comp_list_list_item_pressed_container_expressive_shape</item>
 
     <!-- Deprecated shape styles. -->
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>

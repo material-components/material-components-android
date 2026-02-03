@@ -19,6 +19,12 @@
   <item android:state_checkable="true" android:state_checked="true"
     app:shapeAppearance="?attr/listItemShapeAppearanceChecked"/>
 
+  <item android:state_pressed="true" app:shapeAppearance="?attr/listItemShapeAppearancePressed"/>
+
+  <item android:state_focused="true" app:shapeAppearance="?attr/listItemShapeAppearanceFocused"/>
+
+  <item android:state_hovered="true" app:shapeAppearance="?attr/listItemShapeAppearanceHovered"/>
+
   <item android:state_single="true" app:shapeAppearance="?attr/listItemShapeAppearanceSingle"/>
 
   <item android:state_first="true" app:shapeAppearance="?attr/listItemShapeAppearanceFirst"/>

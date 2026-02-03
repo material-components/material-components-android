@@ -16,10 +16,12 @@
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <!-- Disabled state -->
-  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
+  <item android:alpha="@dimen/m3_comp_list_list_item_disabled_supporting_text_opacity" android:color="@macro/m3_comp_list_list_item_disabled_supporting_text_color" android:state_enabled="false"/>
+  <!-- Disabled and Checked state -->
+  <item android:alpha="@dimen/m3_comp_list_list_item_selected_disabled_supporting_text_opacity" android:color="?attr/colorOnSecondaryContainer" android:state_enabled="false" android:state_checked="true"/>
   <!-- Checked state -->
-  <item android:color="?attr/colorOnSecondaryContainer" android:state_checked="true" />
+  <item android:color="@macro/m3_comp_list_list_item_selected_supporting_text_color" android:state_checked="true" />
   <!-- Default, Enabled state -->
-  <item android:color="?attr/colorOnSurfaceVariant"/>
+  <item android:color="@macro/m3_comp_list_list_item_supporting_text_color"/>
 
 </selector>

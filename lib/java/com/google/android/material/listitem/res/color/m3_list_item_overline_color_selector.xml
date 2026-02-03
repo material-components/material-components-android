@@ -15,13 +15,13 @@
   limitations under the License.
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <!-- Disabled and selected state -->
-  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false" android:state_selected="true"/>
+  <!-- Disabled and checked state -->
+  <item android:alpha="@dimen/m3_comp_list_list_item_selected_disabled_overline_opacity" android:color="?attr/colorOnSurface" android:state_enabled="false" android:checked="true"/>
   <!-- Disabled state -->
-  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
+  <item android:alpha="@dimen/m3_comp_list_list_item_disabled_overline_opacity" android:color="@macro/m3_comp_list_list_item_disabled_overline_color" android:state_enabled="false"/>
   <!-- Checked state -->
-  <item android:color="?attr/colorOnSurface" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_list_list_item_selected_overline_color" android:state_checked="true"/>
   <!-- Default, Enabled state -->
-  <item android:color="?attr/colorOnSurfaceVariant"/>
+  <item android:color="@macro/m3_comp_list_list_item_overline_color"/>
 
 </selector>

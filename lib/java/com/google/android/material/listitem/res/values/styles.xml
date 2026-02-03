@@ -30,10 +30,10 @@
     <item name="android:duplicateParentState">true</item>
     <item name="rippleColor">@color/m3_list_item_ripple_color_selector</item>
     <!-- TODO(b/439647658) - Replace with tokens -->
-    <item name="contentPaddingTop">10dp</item>
-    <item name="contentPaddingBottom">10dp</item>
-    <item name="contentPaddingLeft">16dp</item>
-    <item name="contentPaddingRight">16dp</item>
+    <item name="contentPaddingTop">@dimen/m3_comp_list_list_item_top_space</item>
+    <item name="contentPaddingBottom">@dimen/m3_comp_list_list_item_bottom_space</item>
+    <item name="contentPaddingLeft">@dimen/m3_comp_list_list_item_leading_space</item>
+    <item name="contentPaddingRight">@dimen/m3_comp_list_list_item_trailing_space</item>
     <item name="swipeEnabled">true</item>
   </style>
 
@@ -161,28 +161,28 @@
   </style>
 
   <style name="Widget.Material3.ShapeableImageView.ListItem.LeadingImage" parent="Widget.MaterialComponents.ShapeableImageView">
-    <item name="shapeAppearance">?attr/shapeAppearanceCornerSmall</item>
+    <item name="shapeAppearance">@macro/m3_comp_list_list_item_leading_image_expressive_shape</item>
     <item name="strokeColor">@null</item>
   </style>
 
   <style name="Widget.Material3.TextView.ListItem.Overline" parent="Widget.MaterialComponents.TextView">
     <item name="android:textColor">@color/m3_list_item_overline_color_selector</item>
-    <item name="android:textAppearance">?attr/textAppearanceLabelMedium</item>
+    <item name="android:textAppearance">@macro/m3_comp_list_list_item_overline_type</item>
   </style>
 
   <style name="Widget.Material3.TextView.ListItem.LabelText" parent="Widget.MaterialComponents.TextView">
     <item name="android:textColor">@color/m3_list_item_label_text_color_selector</item>
-    <item name="android:textAppearance">?attr/textAppearanceBodyLarge</item>
+    <item name="android:textAppearance">@macro/m3_comp_list_list_item_label_text_type</item>
   </style>
 
   <style name="Widget.Material3.TextView.ListItem.SupportingText" parent="Widget.MaterialComponents.TextView">
     <item name="android:textColor">@color/m3_list_item_supporting_text_color_selector</item>
-    <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
+    <item name="android:textAppearance">@macro/m3_comp_list_list_item_supporting_text_type</item>
   </style>
 
   <style name="Widget.Material3.TextView.ListItem.TrailingSupportingText" parent="Widget.MaterialComponents.TextView">
     <item name="android:textColor">@color/m3_list_item_trailing_supporting_text_color_selector</item>
-    <item name="android:textAppearance">?attr/textAppearanceLabelSmall</item>
+    <item name="android:textAppearance">@macro/m3_comp_list_list_item_trailing_supporting_text_type</item>
   </style>
 
   <style name="Widget.Material3.Checkbox.ListItem" parent="Widget.Material3.CompoundButton.CheckBox">

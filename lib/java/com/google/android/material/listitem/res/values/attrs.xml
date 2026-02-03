@@ -58,5 +58,11 @@
   <attr name="listItemShapeAppearanceLast" format="reference"/>
   <!-- Shape appearance of a checked item in the list. -->
   <attr name="listItemShapeAppearanceChecked" format="reference"/>
+  <!-- Shape appearance of a pressed item in the list. -->
+  <attr name="listItemShapeAppearancePressed" format="reference"/>
+  <!-- Shape appearance of a hovered item in the list. -->
+  <attr name="listItemShapeAppearanceHovered" format="reference"/>
+  <!-- Shape appearance of a focused item in the list. -->
+  <attr name="listItemShapeAppearanceFocused" format="reference"/>
 
 </resources>

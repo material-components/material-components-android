@@ -16,7 +16,7 @@
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
   <item android:state_checkable="true" android:state_checked="true"
-    android:color="?attr/colorSecondaryContainer"/>
-  <item app:state_swiped="true" android:color="?attr/colorSurface"/>
-  <item android:color="?attr/colorSurface"/>
+    android:color="@macro/m3_comp_list_list_item_selected_container_color"/>
+  <item app:state_swiped="true" android:color="@macro/m3_comp_list_list_item_segmented_container_color"/>
+  <item android:color="@macro/m3_comp_list_list_item_segmented_container_color"/>
 </selector>

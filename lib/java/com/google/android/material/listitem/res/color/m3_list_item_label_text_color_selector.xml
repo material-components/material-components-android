@@ -16,25 +16,25 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <!-- Disabled and selected state -->
-  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false" android:state_selected="true"/>
-  <!-- Hovered and selected state -->
-  <item android:color="?attr/colorOnSecondaryContainer" android:state_hovered="true" android:state_selected="true"/>
-  <!-- Focused and selected state -->
-  <item android:color="?attr/colorOnSecondaryContainer" android:state_focused="true" android:state_selected="true"/>
-  <!-- Pressed and selected state -->
-  <item android:color="?attr/colorOnSecondaryContainer" android:state_pressed="true" android:state_selected="true"/>
+  <!-- Disabled and checked state -->
+  <item android:alpha="@dimen/m3_comp_list_list_item_selected_disabled_label_text_opacity" android:color="@macro/m3_comp_list_list_item_disabled_label_text_color" android:state_enabled="false" android:state_checked="true"/>
+  <!-- Hovered and checked state -->
+  <item android:color="@macro/m3_comp_list_list_item_selected_hover_label_text_color" android:state_hovered="true" android:state_checked="true"/>
+  <!-- Focused and checked state -->
+  <item android:color="@macro/m3_comp_list_list_item_selected_focus_label_text_color" android:state_focused="true" android:state_checked="true"/>
+  <!-- Pressed and checked state -->
+  <item android:color="@macro/m3_comp_list_list_item_selected_pressed_label_text_color" android:state_pressed="true" android:state_checked="true"/>
   <!-- Pressed state -->
-  <item android:color="?attr/colorOnSurface" android:state_pressed="true"/>
+  <item android:color="@macro/m3_comp_list_list_item_pressed_label_text_color" android:state_pressed="true"/>
   <!-- Focused state -->
-  <item android:color="?attr/colorOnSurface" android:state_focused="true"/>
+  <item android:color="@macro/m3_comp_list_list_item_focus_label_text_color" android:state_focused="true"/>
   <!-- Disabled state -->
-  <item android:alpha="@dimen/material_emphasis_disabled" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
+  <item android:alpha="@dimen/m3_comp_list_list_item_disabled_label_text_opacity" android:color="@macro/m3_comp_list_list_item_disabled_label_text_color" android:state_enabled="false"/>
   <!-- Checked state -->
-  <item android:color="?attr/colorOnSecondaryContainer" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_list_list_item_selected_label_text_color" android:state_checked="true"/>
   <!-- Hovered state -->
-  <item android:color="?attr/colorOnSurface" android:state_hovered="true"/>
+  <item android:color="@macro/m3_comp_list_list_item_hover_label_text_color" android:state_hovered="true"/>
   <!-- Default, Enabled state -->
-  <item android:color="?attr/colorOnSurface"/>
+  <item android:color="@macro/m3_comp_list_list_item_label_text_color"/>
 
 </selector>

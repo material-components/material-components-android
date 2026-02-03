@@ -61,4 +61,8 @@
   <public name="listItemShapeAppearanceMiddle" type="attr"/>
   <public name="listItemShapeAppearanceLast" type="attr"/>
   <public name="listItemShapeAppearanceChecked" type="attr"/>
+  <public name="listItemShapeAppearancePressed" type="attr"/>
+  <public name="listItemShapeAppearanceHovered" type="attr"/>
+  <public name="listItemShapeAppearanceFocused" type="attr"/>
+
 </resources>
