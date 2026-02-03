@@ -21,6 +21,8 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources.Theme;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.Window;
 import androidx.annotation.NonNull;
@@ -47,10 +49,12 @@ public final class ThemeUtils {
     // Make sure the theme overlay is applied to the Window decorView similar to Activity#setTheme,
     // to ensure that it will be applied to things like ContextMenu using the DecorContext.
     if (context instanceof Activity) {
-      Theme windowDecorViewTheme = getWindowDecorViewTheme((Activity) context);
-      if (windowDecorViewTheme != null) {
-        windowDecorViewTheme.applyStyle(theme, /* force= */ true);
-      }
+      new Handler(Looper.getMainLooper()).post(() -> {
+        Theme windowDecorViewTheme = getWindowDecorViewTheme((Activity) context);
+        if (windowDecorViewTheme != null) {
+          windowDecorViewTheme.applyStyle(theme, /* force= */ true);
+        }
+      });
     }
   }
 
