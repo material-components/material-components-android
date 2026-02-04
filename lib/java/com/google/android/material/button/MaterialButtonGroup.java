@@ -50,6 +50,7 @@ import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
+import com.google.android.material.button.MaterialButton.HeightChangeDirection;
 import com.google.android.material.button.MaterialButton.OnPressedChangeListener;
 import com.google.android.material.button.MaterialButton.WidthChangeDirection;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -57,6 +58,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.CornerSize;
+import com.google.android.material.shape.RelativeCornerSize;
 import com.google.android.material.shape.ShapeAppearance;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.StateListCornerSize;
@@ -846,6 +848,30 @@ public class MaterialButtonGroup extends LinearLayout {
     }
   }
 
+  void onButtonHeightChanged(@NonNull MaterialButton button, int increaseSize) {
+    int buttonIndex = indexOfChild(button);
+    if (buttonIndex < 0) {
+      return;
+    }
+    MaterialButton prevVisibleButton = getPrevVisibleChildButton(buttonIndex);
+    MaterialButton nextVisibleButton = getNextVisibleChildButton(buttonIndex);
+    if (prevVisibleButton == null && nextVisibleButton == null) {
+      return;
+    }
+    if (prevVisibleButton == null) {
+      nextVisibleButton.setDisplayedHeightDecrease(increaseSize);
+    }
+    if (nextVisibleButton == null) {
+      prevVisibleButton.setDisplayedHeightDecrease(increaseSize);
+    }
+    if (prevVisibleButton != null && nextVisibleButton != null) {
+      // If there are two neighbors, each neighbor will absorb half of the expanded amount.
+      prevVisibleButton.setDisplayedHeightDecrease(increaseSize / 2);
+      // We want to avoid one pixel missing due to the casting, when increaseSize is odd.
+      nextVisibleButton.setDisplayedHeightDecrease((increaseSize + 1) / 2);
+    }
+  }
+
   /**
    * Adjusts the max amount of size to expand for each child button. So that it won't squeeze its
    * neighbors too much to cause text truncation; and the expansion amount per edge is same for all
@@ -872,43 +898,58 @@ public class MaterialButtonGroup extends LinearLayout {
 
   private void adjustChildSizeChangeInRange(int start, int end) {
     if (start == end) {
-      getChildButton(start).setWidthChangeDirection(WidthChangeDirection.NONE);
+      MaterialButton childButton = getChildButton(start);
+      childButton.setWidthChangeDirection(WidthChangeDirection.NONE);
+      childButton.setHeightChangeDirection(HeightChangeDirection.NONE);
       return;
     }
     int widthIncreaseOnSingleEdge = Integer.MAX_VALUE;
-    // First pass: find the max width increase on single edge.
+    int heightIncreaseOnSingleEdge = Integer.MAX_VALUE;
+    // First pass: find the max width and height increase on single edge.
     for (int i = start; i <= end; i++) {
       if (!isChildVisible(i)) {
         continue;
       }
-      // Sets the width change direction for each child button.
-      getChildButton(i)
+      MaterialButton childButton = getChildButton(i);
+      // Sets the width and height change direction for each child button.
+      childButton
           .setWidthChangeDirection(
               i == start
                   ? WidthChangeDirection.END
                   : i == end ? WidthChangeDirection.START : WidthChangeDirection.BOTH);
-      // Calculates the allowed width increase for each child button with consideration of the max
-      // allowed width decrease of its neighbors.
+      childButton
+          .setHeightChangeDirection(
+              i == start
+                  ? HeightChangeDirection.BOTTOM
+                  : i == end ? HeightChangeDirection.TOP : HeightChangeDirection.BOTH);
+      // Calculates the allowed width and height increase for each child button with consideration
+      // of the max allowed width and height decrease of its neighbors.
       int widthIncrease = getButtonAllowedWidthIncrease(i);
+      int heightIncrease = getButtonAllowedHeightIncrease(i);
 
-      // If the button expands on both edges, the width increase on each edge should be half of
-      // the total width increase. Calculates the minimum width increase on each edge, so that all
-      // buttons won't squeeze their neighbors too much.
+      // If the button expands on both edges, the width and height increase on each edge should be
+      // half of the total width/height increase. Calculates the minimum width/height increase on
+      // each edge, so that all buttons won't squeeze their neighbors too much.
       widthIncreaseOnSingleEdge =
           min(
               widthIncreaseOnSingleEdge,
               i != start && i != end ? widthIncrease / 2 : widthIncrease);
+      heightIncreaseOnSingleEdge =
+          min(
+              heightIncreaseOnSingleEdge,
+              i != start && i != end ? heightIncrease / 2 : heightIncrease);
     }
-    // Second pass: set the width change for each child button.
+    // Second pass: set the width and height change for each child button.
     for (int i = start; i <= end; i++) {
       if (!isChildVisible(i)) {
         continue;
       }
       MaterialButton child = getChildButton(i);
       child.setSizeChange(buttonSizeChange);
-      // Assuming buttons can be expanded in both directions, the total width increase should be
-      // double of the single edge increase.
+      // Assuming buttons can be expanded in both directions, the total width/height increase should
+      // be double of the single edge increase.
       child.setWidthChangeMax(widthIncreaseOnSingleEdge * 2);
+      child.setHeightChangeMax(heightIncreaseOnSingleEdge * 2);
     }
   }
 
@@ -932,6 +973,28 @@ public class MaterialButtonGroup extends LinearLayout {
     int nextButtonAllowedWidthDecrease =
         nextVisibleButton == null ? 0 : nextVisibleButton.getAllowedWidthDecrease();
     return min(widthIncrease, prevButtonAllowedWidthDecrease + nextButtonAllowedWidthDecrease);
+  }
+
+  /**
+   * Returns the allowed height increase for a child button.
+   *
+   * <p>The allowed height increase is the smaller amount of the max height increase of the button
+   * in all states and the total allowed height decrease of its neighbors.
+   */
+  private int getButtonAllowedHeightIncrease(int index) {
+    if (!isChildVisible(index) || buttonSizeChange == null) {
+      return 0;
+    }
+    MaterialButton currentButton = getChildButton(index);
+    int heightIncrease = max(0, buttonSizeChange.getMaxHeightChange(currentButton.getHeight()));
+    // Checking neighbors' allowed height decrease.
+    MaterialButton prevVisibleButton = getPrevVisibleChildButton(index);
+    int prevButtonAllowedHeightDecrease =
+        prevVisibleButton == null ? 0 : prevVisibleButton.getAllowedHeightDecrease();
+    MaterialButton nextVisibleButton = getNextVisibleChildButton(index);
+    int nextButtonAllowedHeightDecrease =
+        nextVisibleButton == null ? 0 : nextVisibleButton.getAllowedHeightDecrease();
+    return min(heightIncrease, prevButtonAllowedHeightDecrease + nextButtonAllowedHeightDecrease);
   }
 
   // ================ Getters and setters ===================
