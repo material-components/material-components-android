@@ -15,7 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
-  <style name="Base.V14.Theme.Material3.Light.BottomSheetDialog" parent="Theme.Material3.Light.Dialog">
+  <style name="Base.Theme.Material3.Light.BottomSheetDialog" parent="Theme.Material3.Light.Dialog">
     <item name="android:windowIsFloating">false</item>
     <item name="android:windowSoftInputMode">adjustResize</item>
     <item name="android:windowBackground">@android:color/transparent</item>
@@ -23,7 +23,7 @@
     <item name="bottomSheetStyle">@style/Widget.Material3.BottomSheet.Modal</item>
   </style>
 
-  <style name="Base.V14.Theme.Material3.Dark.BottomSheetDialog" parent="Theme.Material3.Dark.Dialog">
+  <style name="Base.Theme.Material3.Dark.BottomSheetDialog" parent="Theme.Material3.Dark.Dialog">
     <item name="android:windowIsFloating">false</item>
     <item name="android:windowSoftInputMode">adjustResize</item>
     <item name="android:windowBackground">@android:color/transparent</item>
@@ -31,7 +31,8 @@
     <item name="bottomSheetStyle">@style/Widget.Material3.BottomSheet.Modal</item>
   </style>
 
-  <style name="Base.V14.ThemeOverlay.Material3.BottomSheetDialog" parent="Base.ThemeOverlay.Material3.Dialog">
+  <style name="Base.ThemeOverlay.Material3.BottomSheetDialog" parent="Base.ThemeOverlay.Material3.Dialog">
+    <item name="android:statusBarColor">@android:color/transparent</item>
     <item name="android:windowIsFloating">false</item>
     <item name="android:windowSoftInputMode">adjustResize</item>
     <item name="android:windowBackground">@android:color/transparent</item>
@@ -39,13 +40,4 @@
     <item name="bottomSheetStyle">@style/Widget.Material3.BottomSheet.Modal</item>
     <item name="enableEdgeToEdge">true</item>
   </style>
-
-  <style name="Base.V21.ThemeOverlay.Material3.BottomSheetDialog"
-    parent="Base.V14.ThemeOverlay.Material3.BottomSheetDialog">
-    <item name="android:statusBarColor">@android:color/transparent</item>
-  </style>
-
-  <style name="Base.Theme.Material3.Light.BottomSheetDialog" parent="Base.V14.Theme.Material3.Light.BottomSheetDialog"/>
-  <style name="Base.Theme.Material3.Dark.BottomSheetDialog" parent="Base.V14.Theme.Material3.Dark.BottomSheetDialog"/>
-  <style name="Base.ThemeOverlay.Material3.BottomSheetDialog" parent="Base.V21.ThemeOverlay.Material3.BottomSheetDialog"/>
 </resources>

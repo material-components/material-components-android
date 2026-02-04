@@ -203,8 +203,8 @@
     <item name="android:paddingBottom">13dp</item>
   </style>
 
-  <!-- Base styles for AutoCompleteTextView. You should use one of the sub-styles instead. -->
-  <style name="Base.V14.Widget.MaterialComponents.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+  <!-- Base style for AutoCompleteTextView. You should use one of the sub-styles instead. -->
+  <style name="Base.Widget.MaterialComponents.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
     <item name="enforceMaterialTheme">true</item>
     <item name="enforceTextAppearance">true</item>
     <item name="android:background">@null</item>
@@ -218,11 +218,8 @@
     <item name="android:paddingBottom">17dp</item>
     <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
     <item name="android:dropDownVerticalOffset">@dimen/mtrl_exposed_dropdown_menu_popup_vertical_offset</item>
-    <item name="android:popupElevation">@dimen/mtrl_exposed_dropdown_menu_popup_elevation</item>
-  </style>
-
-  <style name="Base.Widget.MaterialComponents.AutoCompleteTextView" parent="Base.V14.Widget.MaterialComponents.AutoCompleteTextView">
     <item name="android:popupBackground">@null</item>
+    <item name="android:popupElevation">@dimen/mtrl_exposed_dropdown_menu_popup_elevation</item>
   </style>
 
   <!-- Styles for the AutocompleteTextView to be used if an ExposedDropdownMenu style is being used. -->
