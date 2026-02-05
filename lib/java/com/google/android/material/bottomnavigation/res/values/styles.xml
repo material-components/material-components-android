@@ -109,6 +109,7 @@
     <item name="android:minHeight">@dimen/design_bottom_navigation_height</item>
     <item name="itemIconGravity">top</item>
     <item name="measureBottomPaddingFromLabelBaseline">false</item>
+    <item name="android:fitsSystemWindows">true</item>
   </style>
 
   <!-- Default style for BottomNavigationViews.
