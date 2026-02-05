@@ -36,6 +36,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import java.util.List;
 
 /** A fragment that displays a Toolbar Top App Bar demo for the Catalog app. */
@@ -76,6 +77,7 @@ public class TopAppBarToolbarDemoFragment extends DemoFragment {
     if (menuItem.getItemId() == R.id.configure_toolbars) {
       BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
       bottomSheetDialog.setContentView(createConfigureToolbarsView(bottomSheetDialog));
+      new WindowPreferencesManager(requireContext()).applyEdgeToEdgePreference(bottomSheetDialog.getWindow());
       bottomSheetDialog.show();
       return true;
     }
