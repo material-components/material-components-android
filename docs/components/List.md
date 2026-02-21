@@ -188,6 +188,13 @@ Eg. for the first item in a section of size 10, make sure you call
 
 ![Example of multi-section list](assets/lists/lists-expressive-multi-section.png)
 
+`ListItemLayout` also supports updating its shape based on a
+`ListItemLayout.Position` value. You can directly change the shape of the
+`ListItemLayout` by calling
+`ListItemLayout.updateAppearance(ListItemLayout.Position)`, where
+`ListItemLayout.Position` can be `POSITION_FIRST`, `POSITION_MIDDLE`,
+`POSITION_LAST`, or `POSITION_SINGLE`.
+
 `ListItemLayout` also supports a swipe-to-reveal functionality via
 `SwipeableListItem` and `RevealableListItem` interfaces. The `SwipeableListItem`
 view must be a direct child of `ListItemLayout`, and have a `RevealableListItem`
