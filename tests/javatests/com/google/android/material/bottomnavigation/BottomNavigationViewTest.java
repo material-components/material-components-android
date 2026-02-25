@@ -35,13 +35,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -69,7 +62,6 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.navigation.NavigationBarItemView;
 import com.google.android.material.navigation.NavigationBarMenuView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationBarView.OnItemReselectedListener;
 import com.google.android.material.navigation.NavigationBarView.OnItemSelectedListener;
 import com.google.android.material.testapp.BottomNavigationViewActivity;
@@ -141,11 +133,22 @@ public class BottomNavigationViewTest {
   @Test
   @LargeTest
   public void testNavigationSelectionListener() {
-    OnItemSelectedListener mockedListener = mock(OnItemSelectedListener.class);
+    final boolean[] selectionResult = new boolean[] {true};
+    final int[] selectedCount = new int[1];
+    final MenuItem[] selectedItem = new MenuItem[1];
+    OnItemSelectedListener mockedListener =
+        new OnItemSelectedListener() {
+          @Override
+          public boolean onNavigationItemSelected(MenuItem item) {
+            selectedCount[0]++;
+            selectedItem[0] = item;
+            return selectionResult[0];
+          }
+        };
     bottomNavigation.setOnItemSelectedListener(mockedListener);
 
     // Make the listener return true to allow selecting the item.
-    when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(true);
+    selectionResult[0] = true;
     onView(
             allOf(
                 withText(menuStringContent.get(R.id.destination_profile)),
@@ -153,8 +156,8 @@ public class BottomNavigationViewTest {
                 isDisplayed()))
         .perform(click());
     // Verify our listener has been notified of the click
-    verify(mockedListener, times(1))
-        .onNavigationItemSelected(bottomNavigation.getMenu().findItem(R.id.destination_profile));
+    assertEquals(1, selectedCount[0]);
+    assertEquals(bottomNavigation.getMenu().findItem(R.id.destination_profile), selectedItem[0]);
     // Verify the item is now selected
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
 
@@ -166,13 +169,13 @@ public class BottomNavigationViewTest {
                 isDisplayed()))
         .perform(click());
     // Verify our listener has been notified of the click
-    verify(mockedListener, times(2))
-        .onNavigationItemSelected(bottomNavigation.getMenu().findItem(R.id.destination_profile));
+    assertEquals(2, selectedCount[0]);
+    assertEquals(bottomNavigation.getMenu().findItem(R.id.destination_profile), selectedItem[0]);
     // Verify the item is still selected
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
 
     // Make the listener return false to disallow selecting the item.
-    when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(false);
+    selectionResult[0] = false;
     onView(
             allOf(
                 withText(menuStringContent.get(R.id.destination_people)),
@@ -180,8 +183,8 @@ public class BottomNavigationViewTest {
                 isDisplayed()))
         .perform(click());
     // Verify our listener has been notified of the click
-    verify(mockedListener, times(1))
-        .onNavigationItemSelected(bottomNavigation.getMenu().findItem(R.id.destination_people));
+    assertEquals(3, selectedCount[0]);
+    assertEquals(bottomNavigation.getMenu().findItem(R.id.destination_people), selectedItem[0]);
     // Verify the previous item is still selected
     assertFalse(bottomNavigation.getMenu().findItem(R.id.destination_people).isChecked());
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
@@ -198,7 +201,7 @@ public class BottomNavigationViewTest {
                 isDisplayed()))
         .perform(click());
     // Verify that our previous listener has not been notified of the click
-    verifyNoMoreInteractions(mockedListener);
+    assertEquals(3, selectedCount[0]);
     // Verify the correct item is now selected.
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_home).isChecked());
   }
@@ -207,34 +210,45 @@ public class BottomNavigationViewTest {
   @Test
   @SmallTest
   public void testSetSelectedItemId() {
-    OnItemSelectedListener mockedListener = mock(OnItemSelectedListener.class);
+    final boolean[] selectionResult = new boolean[] {true};
+    final int[] selectedCount = new int[1];
+    final MenuItem[] selectedItem = new MenuItem[1];
+    OnItemSelectedListener mockedListener =
+        new OnItemSelectedListener() {
+          @Override
+          public boolean onNavigationItemSelected(MenuItem item) {
+            selectedCount[0]++;
+            selectedItem[0] = item;
+            return selectionResult[0];
+          }
+        };
     bottomNavigation.setOnItemSelectedListener(mockedListener);
 
     // Make the listener return true to allow selecting the item.
-    when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(true);
+    selectionResult[0] = true;
     // Programmatically select an item
     bottomNavigation.setSelectedItemId(R.id.destination_profile);
     // Verify our listener has been notified of the click
-    verify(mockedListener, times(1))
-        .onNavigationItemSelected(bottomNavigation.getMenu().findItem(R.id.destination_profile));
+    assertEquals(1, selectedCount[0]);
+    assertEquals(bottomNavigation.getMenu().findItem(R.id.destination_profile), selectedItem[0]);
     // Verify the item is now selected
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
 
     // Select the same item
     bottomNavigation.setSelectedItemId(R.id.destination_profile);
     // Verify our listener has been notified of the click
-    verify(mockedListener, times(2))
-        .onNavigationItemSelected(bottomNavigation.getMenu().findItem(R.id.destination_profile));
+    assertEquals(2, selectedCount[0]);
+    assertEquals(bottomNavigation.getMenu().findItem(R.id.destination_profile), selectedItem[0]);
     // Verify the item is still selected
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
 
     // Make the listener return false to disallow selecting the item.
-    when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(false);
+    selectionResult[0] = false;
     // Programmatically select an item
     bottomNavigation.setSelectedItemId(R.id.destination_people);
     // Verify our listener has been notified of the click
-    verify(mockedListener, times(1))
-        .onNavigationItemSelected(bottomNavigation.getMenu().findItem(R.id.destination_people));
+    assertEquals(3, selectedCount[0]);
+    assertEquals(bottomNavigation.getMenu().findItem(R.id.destination_people), selectedItem[0]);
     // Verify the previous item is still selected
     assertFalse(bottomNavigation.getMenu().findItem(R.id.destination_people).isChecked());
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
@@ -246,7 +260,7 @@ public class BottomNavigationViewTest {
     // Select one of our items
     bottomNavigation.setSelectedItemId(R.id.destination_home);
     // Verify that our previous listener has not been notified of the click
-    verifyNoMoreInteractions(mockedListener);
+    assertEquals(3, selectedCount[0]);
     // Verify the correct item is now selected.
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_home).isChecked());
   }
@@ -255,8 +269,16 @@ public class BottomNavigationViewTest {
   @SmallTest
   public void testNavigationReselectionListener() {
     // Add an OnItemReselectedListener
+    final int[] reselectedCount = new int[1];
+    final MenuItem[] reselectedItem = new MenuItem[1];
     OnItemReselectedListener reselectedListener =
-        mock(NavigationBarView.OnItemReselectedListener.class);
+        new OnItemReselectedListener() {
+          @Override
+          public void onNavigationItemReselected(MenuItem item) {
+            reselectedCount[0]++;
+            reselectedItem[0] = item;
+          }
+        };
     bottomNavigation.setOnItemReselectedListener(reselectedListener);
 
     // Select an item
@@ -269,7 +291,8 @@ public class BottomNavigationViewTest {
     // Verify the item is now selected
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
     // Verify the listener was not called
-    verify(reselectedListener, never()).onNavigationItemReselected(any(MenuItem.class));
+    assertEquals(0, reselectedCount[0]);
+    assertNull(reselectedItem[0]);
 
     // Select the same item again
     onView(
@@ -281,14 +304,25 @@ public class BottomNavigationViewTest {
     // Verify the item is still selected
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
     // Verify the listener was called
-    verify(reselectedListener, times(1))
-        .onNavigationItemReselected(bottomNavigation.getMenu().findItem(R.id.destination_profile));
+    assertEquals(1, reselectedCount[0]);
+    assertEquals(bottomNavigation.getMenu().findItem(R.id.destination_profile), reselectedItem[0]);
 
     // Add an OnItemSelectedListener
-    OnItemSelectedListener selectedListener = mock(OnItemSelectedListener.class);
+    final boolean[] selectionResult = new boolean[] {true};
+    final int[] selectedCount = new int[1];
+    final MenuItem[] selectedItem = new MenuItem[1];
+    OnItemSelectedListener selectedListener =
+        new OnItemSelectedListener() {
+          @Override
+          public boolean onNavigationItemSelected(MenuItem item) {
+            selectedCount[0]++;
+            selectedItem[0] = item;
+            return selectionResult[0];
+          }
+        };
     bottomNavigation.setOnItemSelectedListener(selectedListener);
     // Make the listener return true to allow selecting the item.
-    when(selectedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(true);
+    selectionResult[0] = true;
 
     // Select another item
     onView(
@@ -300,10 +334,9 @@ public class BottomNavigationViewTest {
     // Verify the item is now selected
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_people).isChecked());
     // Verify the correct listeners were called
-    verify(selectedListener, times(1))
-        .onNavigationItemSelected(bottomNavigation.getMenu().findItem(R.id.destination_people));
-    verify(reselectedListener, never())
-        .onNavigationItemReselected(bottomNavigation.getMenu().findItem(R.id.destination_people));
+    assertEquals(1, selectedCount[0]);
+    assertEquals(bottomNavigation.getMenu().findItem(R.id.destination_people), selectedItem[0]);
+    assertEquals(1, reselectedCount[0]); // Reselected count should not increase
 
     // Select the same item again
     onView(
@@ -315,9 +348,9 @@ public class BottomNavigationViewTest {
     // Verify the item is still selected
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_people).isChecked());
     // Verify the correct listeners were called
-    verifyNoMoreInteractions(selectedListener);
-    verify(reselectedListener, times(1))
-        .onNavigationItemReselected(bottomNavigation.getMenu().findItem(R.id.destination_people));
+    assertEquals(1, selectedCount[0]); // Selection count should not increase
+    assertEquals(2, reselectedCount[0]); // Reselected count should increase
+    assertEquals(bottomNavigation.getMenu().findItem(R.id.destination_people), reselectedItem[0]);
 
     // Remove the OnItemReselectedListener
     bottomNavigation.setOnItemReselectedListener(null);
@@ -332,7 +365,7 @@ public class BottomNavigationViewTest {
     // Verify the item is still selected
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_people).isChecked());
     // Verify the reselectedListener was not called
-    verifyNoMoreInteractions(reselectedListener);
+    assertEquals(2, reselectedCount[0]); // Count should remain same
   }
 
   @UiThreadTest
