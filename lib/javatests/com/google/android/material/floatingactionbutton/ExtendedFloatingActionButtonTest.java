@@ -24,12 +24,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.robolectric.Shadows.shadowOf;
 
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Looper;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
+import androidx.annotation.RequiresApi;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.OnChangedCallback;
 import org.junit.Before;
 import org.junit.Test;
@@ -111,6 +113,132 @@ public class ExtendedFloatingActionButtonTest {
     fabForTest.setExtended(true);
 
     assertThat(fabForTest.getMeasuredWidth()).isEqualTo(originalWidth);
+  }
+
+  @Test
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  public void shrink_setsTooltipText() {
+    fabForTest.shrink();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(fabForTest.getTooltipText().toString()).isEqualTo(fabForTest.getText().toString());
+  }
+
+  @Test
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  public void shrink_setsTooltipTextToContentDescription_whenTextEmpty() {
+    fabForTest.shrink();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    fabForTest.setText("");
+    fabForTest.setContentDescription("Content description");
+
+    assertThat(fabForTest.getTooltipText().toString())
+        .isEqualTo(fabForTest.getContentDescription().toString());
+  }
+
+  @Test
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  public void extend_clearsTooltipText() {
+    fabForTest.shrink();
+    shadowOf(Looper.getMainLooper()).idle();
+    fabForTest.extend();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(fabForTest.getTooltipText()).isNull();
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setExtended_false_setsTooltipText() {
+    fabForTest.setExtended(false);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(fabForTest.getTooltipText().toString()).isEqualTo(fabForTest.getText().toString());
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setExtended_true_clearsTooltipText() {
+    fabForTest.setExtended(false);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    fabForTest.setExtended(true);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(fabForTest.getTooltipText()).isNull();
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void onAttachedToWindow_extended_clearsTooltip() {
+    fabForTest.setText("Text");
+    fabForTest.setExtended(true);
+    activity.setContentView(fabForTest);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(fabForTest.getTooltipText()).isNull();
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setText_updatesTooltip_whenShrunk() {
+    fabForTest.shrink();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    String newText = "New Test Text";
+    fabForTest.setText(newText);
+
+    assertThat(fabForTest.getTooltipText().toString()).isEqualTo(newText);
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setContentDescription_updatesTooltip_whenShrunkAndTextEmpty() {
+    fabForTest.shrink();
+    shadowOf(Looper.getMainLooper()).idle();
+    fabForTest.setText("");
+
+    String newDescription = "New Description";
+    fabForTest.setContentDescription(newDescription);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(fabForTest.getTooltipText().toString()).isEqualTo(newDescription);
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setClickable_false_clearsTooltipText() {
+    fabForTest.shrink();
+    shadowOf(Looper.getMainLooper()).idle();
+    fabForTest.setClickable(false);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(fabForTest.getTooltipText()).isNull();
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setClickable_true_setsTooltipText() {
+    fabForTest.shrink();
+    shadowOf(Looper.getMainLooper()).idle();
+    fabForTest.setClickable(false);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    fabForTest.setClickable(true);
+    shadowOf(Looper.getMainLooper()).idle();
+
+    assertThat(fabForTest.getTooltipText().toString()).isEqualTo(fabForTest.getText().toString());
   }
 
   private ExtendedFloatingActionButton createFabForTest() {

@@ -34,6 +34,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Property;
@@ -487,6 +488,69 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     if (isExtended && TextUtils.isEmpty(getText()) && getIcon() != null) {
       isExtended = false;
       shrinkStrategy.performNow();
+    } else {
+      updateTooltip();
+    }
+  }
+
+  /**
+   * Sets the content description for this view.
+   *
+   * <p>On API 26 (Android O) and above, this method also sets the tooltip text to the content
+   * description if appropriate.
+   */
+  @Override
+  public void setContentDescription(@Nullable CharSequence contentDescription) {
+    super.setContentDescription(contentDescription);
+    updateTooltip();
+  }
+
+  /**
+   * Sets the text to be displayed.
+   *
+   * <p>On API 26 (Android O) and above, this method also sets the tooltip text if appropriate.
+   */
+  @Override
+  public void setText(CharSequence text, BufferType type) {
+    super.setText(text, type);
+    updateTooltip();
+  }
+
+  /**
+   * Sets the clickable state of this view.
+   *
+   * <p>On API 26 (Android O) and above, if the view is not clickable, this method also clears the
+   * tooltip text to prevent the view from consuming touch events.
+   */
+  @Override
+  public void setClickable(boolean clickable) {
+    super.setClickable(clickable);
+    updateTooltip();
+  }
+
+  /**
+   * Updates the tooltip text based on the button's extended state, text, and clickability. If the
+   * view is not clickable, tooltip text will be cleared to prevent the view from consuming touch
+   * events on API 26+.
+   *
+   * <p>The tooltip is not set on lower APIs to avoid overwriting any custom {@link
+   * View.OnLongClickListener}.
+   */
+  private void updateTooltip() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+      return;
+    }
+
+    CharSequence newTooltipText;
+    if (isExtended || !isClickable()) {
+      newTooltipText = null;
+    } else {
+      CharSequence text = getText();
+      newTooltipText = TextUtils.isEmpty(text) ? getContentDescription() : text;
+    }
+
+    if (!TextUtils.equals(getTooltipText(), newTooltipText)) {
+      setTooltipText(newTooltipText);
     }
   }
 
@@ -1380,6 +1444,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
           size.getPaddingEnd(),
           getPaddingBottom());
       requestLayout();
+      updateTooltip();
     }
 
     @Override
@@ -1449,6 +1514,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       isExtended = extending;
       isTransforming = true;
       setHorizontallyScrolling(true);
+      updateTooltip();
     }
 
     @Override

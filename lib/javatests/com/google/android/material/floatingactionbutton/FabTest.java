@@ -22,12 +22,15 @@ import static com.google.android.material.floatingactionbutton.FloatingActionBut
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View.MeasureSpec;
+import androidx.annotation.RequiresApi;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -78,6 +81,57 @@ public class FabTest {
         fab.getMeasuredWidth() < minSize);
 
     assertTrue(fab.getMeasuredHeight() < minSize);
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setContentDescription_setsTooltipText() {
+    FloatingActionButton fab = new FloatingActionButton(activity);
+    String description = "test description";
+
+    fab.setClickable(true);
+    fab.setContentDescription(description);
+
+    assertEquals(description, fab.getTooltipText().toString());
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setClickable_false_clearsTooltipText() {
+    FloatingActionButton fab = new FloatingActionButton(activity);
+    fab.setContentDescription("test description");
+
+    fab.setClickable(false);
+
+    assertNull(fab.getTooltipText());
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setClickable_true_setsTooltipText() {
+    FloatingActionButton fab = new FloatingActionButton(activity);
+    String description = "test description";
+    fab.setContentDescription(description);
+    fab.setClickable(false);
+
+    fab.setClickable(true);
+
+    assertEquals(description, fab.getTooltipText().toString());
+  }
+
+  @RequiresApi(VERSION_CODES.O)
+  @Config(sdk = VERSION_CODES.O)
+  @Test
+  public void setContentDescription_notClickable_doesNotSetTooltipText() {
+    FloatingActionButton fab = new FloatingActionButton(activity);
+    fab.setClickable(false);
+
+    fab.setContentDescription("test description");
+
+    assertNull(fab.getTooltipText());
   }
 
   private FloatingActionButton createFabForTest(boolean ensureMinTouchTarget) {
