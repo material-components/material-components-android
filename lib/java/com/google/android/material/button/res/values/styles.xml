@@ -602,6 +602,7 @@
     <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
+    <item name="secondaryIconTint">@color/m3_button_foreground_color_selector</item>
     <item name="backgroundTint">@color/m3_button_background_color_selector</item>
     <item name="opticalCenterEnabled">true</item>
     <item name="materialThemeOverlay">
@@ -618,6 +619,7 @@
     <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:textColor">@color/m3_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_button_foreground_color_selector</item>
+    <item name="secondaryIconTint">@color/m3_button_foreground_color_selector</item>
     <item name="backgroundTint">@color/m3_button_background_color_selector</item>
     <item name="opticalCenterEnabled">true</item>
     <item name="materialThemeOverlay">
@@ -694,6 +696,7 @@
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.TextButton</item>
     <item name="android:textColor">@color/m3_text_button_foreground_color_selector</item>
     <item name="iconTint">@color/m3_text_button_foreground_color_selector</item>
+    <item name="secondaryIconTint">@color/m3_text_button_foreground_color_selector</item>
     <item name="backgroundTint">@color/m3_text_button_background_color_selector</item>
     <item name="rippleColor">@color/m3_text_button_ripple_color_selector</item>
   </style>
@@ -737,6 +740,7 @@
     <item name="android:contentDescription">@string/mtrl_button_snackbar_close_content_description</item>
     <item name="icon">@drawable/mtrl_close_24px</item>
     <item name="iconTint">?attr/colorOnSurfaceInverse</item>
+    <item name="secondaryIconTint">?attr/colorOnSurfaceInverse</item>
   </style>
 
   <!-- M3 outlined button style. -->
@@ -759,6 +763,7 @@
     <item name="android:textColor">@color/m3_text_button_foreground_color_selector</item>
     <item name="elevation">@dimen/m3_comp_button_elevated_container_elevation</item>
     <item name="iconTint">@color/m3_text_button_foreground_color_selector</item>
+    <item name="secondaryIconTint">@color/m3_text_button_foreground_color_selector</item>
     <item name="rippleColor">@color/m3_text_button_ripple_color_selector</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.ElevatedButton</item>
   </style>
@@ -785,6 +790,7 @@
     <item name="android:insetRight">@dimen/m3_btn_inset</item>
     <item name="iconSize">@dimen/m3_btn_icon_only_default_size</item>
     <item name="iconTint">@color/m3_icon_button_icon_color_selector</item>
+    <item name="secondaryIconTint">@color/m3_icon_button_icon_color_selector</item>
     <item name="iconPadding">@dimen/m3_btn_icon_only_icon_padding</item>
     <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.IconButton.Small.Container.Shape.Round</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.Button.IconButton</item>

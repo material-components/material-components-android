@@ -315,8 +315,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
         ViewUtils.parseTintMode(
             attributes.getInt(R.styleable.MaterialButton_secondaryIconTintMode, -1), Mode.SRC_IN);
     secondaryIconTint =
-        MaterialResources.getColorStateList(
-            getContext(), attributes, R.styleable.MaterialButton_secondaryIconTint);
+        attributes.hasValue(R.styleable.MaterialButton_secondaryIconTint)
+            ? MaterialResources.getColorStateList(
+                getContext(), attributes, R.styleable.MaterialButton_secondaryIconTint)
+            : iconTint;
     secondaryIconGravity =
         attributes.getInteger(R.styleable.MaterialButton_secondaryIconGravity, ICON_GRAVITY_END);
     secondaryIcon =
