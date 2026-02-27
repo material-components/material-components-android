@@ -3887,6 +3887,8 @@ abstract class BaseSlider<
     }
     if (accessibilityManager != null && accessibilityManager.isEnabled()) {
       scheduleAccessibilityEventSender(idx);
+      // Invalidate to make sure TalkBack focus bounds are updated
+      accessibilityHelper.invalidateVirtualView(idx);
     }
   }
 
@@ -4374,7 +4376,6 @@ abstract class BaseSlider<
             if (slider.snapThumbToValue(virtualViewId, value)) {
               slider.updateHaloHotspot();
               slider.postInvalidate();
-              invalidateVirtualView(virtualViewId);
               return true;
             }
             return false;
@@ -4403,7 +4404,6 @@ abstract class BaseSlider<
               slider.scheduleTooltipTimeout();
               slider.updateHaloHotspot();
               slider.postInvalidate();
-              invalidateVirtualView(virtualViewId);
               return true;
             }
             return false;
