@@ -27,6 +27,7 @@
     <item name="cardBackgroundColor">@color/m3_list_item_background_color_selector</item>
     <item name="shapeAppearance">@xml/m3_list_item_shape_state_list</item>
     <item name="cardCornerRadius">@null</item>
+    <item name="cardPreventCornerOverlap">false</item>
     <item name="android:duplicateParentState">true</item>
     <item name="rippleColor">@color/m3_list_item_ripple_color_selector</item>
     <!-- TODO(b/439647658) - Replace with tokens -->
