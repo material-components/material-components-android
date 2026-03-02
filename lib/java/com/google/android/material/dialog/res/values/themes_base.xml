@@ -85,6 +85,14 @@
 
     <!-- Action Bar. -->
     <item name="actionBarSize">@dimen/m3_comp_app_bar_small_container_height</item>
+
+    <!-- Motion attributes.-->
+    <item name="motionSpringFastSpatial">@style/Motion.Material3.Spring.Expressive.Fast.Spatial</item>
+    <item name="motionSpringFastEffects">@style/Motion.Material3.Spring.Expressive.Fast.Effects</item>
+    <item name="motionSpringDefaultSpatial">@style/Motion.Material3.Spring.Expressive.Default.Spatial</item>
+    <item name="motionSpringDefaultEffects">@style/Motion.Material3.Spring.Expressive.Default.Effects</item>
+    <item name="motionSpringSlowSpatial">@style/Motion.Material3.Spring.Expressive.Slow.Spatial</item>
+    <item name="motionSpringSlowEffects">@style/Motion.Material3.Spring.Expressive.Slow.Effects</item>
   </style>
 
   <style name="Base.Theme.Material3Expressive.Dark.Dialog" parent="Theme.Material3.Dark.Dialog">
@@ -146,6 +154,14 @@
 
     <!-- Action Bar. -->
     <item name="actionBarSize">@dimen/m3_comp_app_bar_small_container_height</item>
+
+    <!-- Motion attributes.-->
+    <item name="motionSpringFastSpatial">@style/Motion.Material3.Spring.Expressive.Fast.Spatial</item>
+    <item name="motionSpringFastEffects">@style/Motion.Material3.Spring.Expressive.Fast.Effects</item>
+    <item name="motionSpringDefaultSpatial">@style/Motion.Material3.Spring.Expressive.Default.Spatial</item>
+    <item name="motionSpringDefaultEffects">@style/Motion.Material3.Spring.Expressive.Default.Effects</item>
+    <item name="motionSpringSlowSpatial">@style/Motion.Material3.Spring.Expressive.Slow.Spatial</item>
+    <item name="motionSpringSlowEffects">@style/Motion.Material3.Spring.Expressive.Slow.Effects</item>
   </style>
 
   <style name="Base.Theme.Material3Expressive.Light.Dialog.FixedSize">

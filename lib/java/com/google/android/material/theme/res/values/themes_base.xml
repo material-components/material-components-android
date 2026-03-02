@@ -93,6 +93,14 @@
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3Expressive.DynamicColors.Light</item>
+
+    <!-- Motion attributes.-->
+    <item name="motionSpringFastSpatial">@style/Motion.Material3.Spring.Expressive.Fast.Spatial</item>
+    <item name="motionSpringFastEffects">@style/Motion.Material3.Spring.Expressive.Fast.Effects</item>
+    <item name="motionSpringDefaultSpatial">@style/Motion.Material3.Spring.Expressive.Default.Spatial</item>
+    <item name="motionSpringDefaultEffects">@style/Motion.Material3.Spring.Expressive.Default.Effects</item>
+    <item name="motionSpringSlowSpatial">@style/Motion.Material3.Spring.Expressive.Slow.Spatial</item>
+    <item name="motionSpringSlowEffects">@style/Motion.Material3.Spring.Expressive.Slow.Effects</item>
   </style>
 
   <style name="Base.Theme.Material3Expressive.Dark" parent="Base.Theme.Material3.Dark">
@@ -161,6 +169,14 @@
 
     <!-- Theme overlays. -->
     <item name="dynamicColorThemeOverlay">@style/ThemeOverlay.Material3Expressive.DynamicColors.Dark</item>
+
+    <!-- Motion attributes.-->
+    <item name="motionSpringFastSpatial">@style/Motion.Material3.Spring.Expressive.Fast.Spatial</item>
+    <item name="motionSpringFastEffects">@style/Motion.Material3.Spring.Expressive.Fast.Effects</item>
+    <item name="motionSpringDefaultSpatial">@style/Motion.Material3.Spring.Expressive.Default.Spatial</item>
+    <item name="motionSpringDefaultEffects">@style/Motion.Material3.Spring.Expressive.Default.Effects</item>
+    <item name="motionSpringSlowSpatial">@style/Motion.Material3.Spring.Expressive.Slow.Spatial</item>
+    <item name="motionSpringSlowEffects">@style/Motion.Material3.Spring.Expressive.Slow.Effects</item>
   </style>
 
   <!-- We're not large, so redirect to Base.Theme.Material3Expressive themes. -->

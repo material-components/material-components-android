@@ -39,4 +39,28 @@
     <item name="stiffness">@dimen/m3_sys_motion_standard_spring_slow_effects_stiffness</item>
     <item name="damping">@dimen/m3_sys_motion_standard_spring_slow_effects_damping</item>
   </style>
+  <style name="Motion.Material3.Spring.Expressive.Fast.Spatial" parent="">
+    <item name="stiffness">@dimen/m3_sys_motion_expressive_spring_fast_spatial_stiffness</item>
+    <item name="damping">@dimen/m3_sys_motion_expressive_spring_fast_spatial_damping</item>
+  </style>
+  <style name="Motion.Material3.Spring.Expressive.Default.Spatial" parent="">
+    <item name="stiffness">@dimen/m3_sys_motion_expressive_spring_default_spatial_stiffness</item>
+    <item name="damping">@dimen/m3_sys_motion_expressive_spring_default_spatial_damping</item>
+  </style>
+  <style name="Motion.Material3.Spring.Expressive.Slow.Spatial" parent="">
+    <item name="stiffness">@dimen/m3_sys_motion_expressive_spring_slow_spatial_stiffness</item>
+    <item name="damping">@dimen/m3_sys_motion_expressive_spring_slow_spatial_damping</item>
+  </style>
+  <style name="Motion.Material3.Spring.Expressive.Fast.Effects" parent="">
+    <item name="stiffness">@dimen/m3_sys_motion_expressive_spring_fast_effects_stiffness</item>
+    <item name="damping">@dimen/m3_sys_motion_expressive_spring_fast_effects_damping</item>
+  </style>
+  <style name="Motion.Material3.Spring.Expressive.Default.Effects" parent="">
+    <item name="stiffness">@dimen/m3_sys_motion_expressive_spring_default_effects_stiffness</item>
+    <item name="damping">@dimen/m3_sys_motion_expressive_spring_default_effects_damping</item>
+  </style>
+  <style name="Motion.Material3.Spring.Expressive.Slow.Effects" parent="">
+    <item name="stiffness">@dimen/m3_sys_motion_expressive_spring_slow_effects_stiffness</item>
+    <item name="damping">@dimen/m3_sys_motion_expressive_spring_slow_effects_damping</item>
+  </style>
 </resources>
