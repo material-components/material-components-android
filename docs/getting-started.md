@@ -1,5 +1,5 @@
 <!--docs:
-title: "Getting Started"
+title: "Getting Started" 
 layout: landing
 section: docs
 path: /docs/getting-started/
