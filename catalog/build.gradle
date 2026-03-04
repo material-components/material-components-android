@@ -70,6 +70,7 @@ dependencies {
 
 def srcDirs = [
   'adaptive',
+  'allcomponents',
   'application',
   'application/attrs',
   'application/legacymultidex',

@@ -68,5 +68,9 @@ public abstract class FeatureDemo {
     return status;
   }
 
+  public boolean isPriority() {
+    return false;
+  }
+
   public abstract Fragment createFragment();
 }
