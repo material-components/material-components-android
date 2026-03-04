@@ -117,6 +117,7 @@ class SearchViewAnimationHelper {
   private final Toolbar dummyToolbar;
   private final LinearLayout textContainer;
   private final TextView searchPrefix;
+  private final TextView dummyTextView;
   private final EditText editText;
   private final ImageButton clearButton;
   private final View divider;
@@ -147,6 +148,7 @@ class SearchViewAnimationHelper {
     this.toolbar = searchView.toolbar;
     this.dummyToolbar = searchView.dummyToolbar;
     this.searchPrefix = searchView.searchPrefix;
+    this.dummyTextView = searchView.dummyTextView;
     this.editText = searchView.editText;
     this.clearButton = searchView.clearButton;
     this.divider = searchView.divider;
@@ -672,7 +674,7 @@ class SearchViewAnimationHelper {
       if (menu != null) {
         menu.clear();
       }
-      if (searchBar.getMenuResId() != -1 && searchView.isMenuItemsAnimated()) {
+      if (searchBar.getMenuResId() != SearchBar.NO_RES_ID && searchView.isMenuItemsAnimated()) {
         dummyToolbar.inflateMenu(searchBar.getMenuResId());
         setMenuItemsNotClickable(dummyToolbar);
         dummyToolbar.setVisibility(View.VISIBLE);
@@ -951,6 +953,8 @@ class SearchViewAnimationHelper {
   private class ContainedAnimationDelegate implements AnimationDelegate {
     @Override
     public void setUpDummyToolbarIfNeeded() {
+      setUpDummyTextViewIfNeeded();
+
       // Copy the search bar background to dummy toolbar so to create a seamless transition. Needed
       // because search bar may have a different background color from the search view toolbar.
       if (searchBar.getBackground() != null
@@ -964,10 +968,17 @@ class SearchViewAnimationHelper {
       }
 
       // Inflate the dummy toolbar menu to match the search bar if needed.
-      if (searchBar.getMenuResId() != -1 && searchView.isMenuItemsAnimated()) {
+      if (searchBar.getMenuResId() != SearchBar.NO_RES_ID && searchView.isMenuItemsAnimated()) {
         dummyToolbar.inflateMenu(searchBar.getMenuResId());
         setMenuItemsNotClickable(dummyToolbar);
       }
+    }
+
+    private void setUpDummyTextViewIfNeeded() {
+      TextView searchBarTextView = searchBar.getTextView();
+      dummyTextView.setText(searchBarTextView.getText());
+      dummyTextView.setHint(searchBarTextView.getHint());
+      dummyTextView.setVisibility(View.VISIBLE);
     }
 
     @NonNull
@@ -978,6 +989,7 @@ class SearchViewAnimationHelper {
           getBackgroundAlphaAnimator(show),
           getContentAlphaAnimator(show),
           getToolbarAlphaAnimator(show),
+          getDummyTextViewWidthAnimator(show),
           getClearButtonAnimator(show));
       return animatorSet;
     }
@@ -991,14 +1003,15 @@ class SearchViewAnimationHelper {
           getDummyToolbarWidthSpringAnimation(show),
           getDummyToolbarTranslationXSpringAnimation(show),
           getToolbarContainerTranslationYSpringAnimation(show),
-          getEditTextTranslationXSpringAnimation(show));
+          getEditTextTranslationXSpringAnimation(show),
+          getDummyTextTranslationXSpringAnimation(show));
     }
 
     @Override
     public void onAnimationStart(boolean show) {
       if (show) {
         setBackgroundAlpha(0);
-        setToolbarBackgroundAndActionMenuViewAlphaIfNeeded(0);
+        toolbar.setAlpha(0);
         contentContainer.setAlpha(0);
         searchBar.setVisibility(View.INVISIBLE);
       } else {
@@ -1019,6 +1032,7 @@ class SearchViewAnimationHelper {
         searchBar.setVisibility(View.VISIBLE);
       }
       dummyToolbar.setVisibility(View.INVISIBLE);
+      setWidth(dummyTextView, LayoutParams.WRAP_CONTENT);
     }
 
     /**
@@ -1051,8 +1065,8 @@ class SearchViewAnimationHelper {
     }
 
     /**
-     * Returns an {@link Animator} that fades in or out the background of the toolbar, as well as
-     * the action menu view, if needed, based on the value of {@code show}.
+     * Returns an {@link Animator} that fades in or out the toolbar, based on the value of {@code
+     * show}.
      */
     private Animator getToolbarAlphaAnimator(boolean show) {
       ValueAnimator animator = getAlphaValueAnimator(show);
@@ -1060,9 +1074,7 @@ class SearchViewAnimationHelper {
       animator.setInterpolator(
           show ? standardDecelerateInterpolator : standardAccelerateInterpolator);
       animator.addUpdateListener(
-          animation ->
-              setToolbarBackgroundAndActionMenuViewAlphaIfNeeded(
-                  (float) animation.getAnimatedValue()));
+          animation -> toolbar.setAlpha((float) animation.getAnimatedValue()));
       return animator;
     }
 
@@ -1071,17 +1083,19 @@ class SearchViewAnimationHelper {
     }
 
     /**
-     * Sets the alpha on the background of the toolbar and its action menu view, if needed.
-     *
-     * <p>Instead of setting alpha on the entire toolbar, this allows other elements inside, like
-     * edit text, to still be visible, necessary for the continuous-looking animation.
+     * Returns an {@link Animator} that animates the width of dummyTextView so the text transitions
+     * smoothly between search bar and search view.
      */
-    private void setToolbarBackgroundAndActionMenuViewAlphaIfNeeded(float alpha) {
-      Drawable background = toolbar.getBackground();
-      if (background != null) {
-        background.setAlpha((int) (alpha * 255));
-      }
-      setActionMenuViewAlphaIfNeeded(alpha);
+    private Animator getDummyTextViewWidthAnimator(boolean show) {
+      View from = show ? searchBar.getTextView() : editText;
+      View to = show ? editText : searchBar.getTextView();
+      ValueAnimator animator = ValueAnimator.ofInt(from.getWidth(), to.getWidth());
+      animator.setDuration(durationShort2);
+      animator.setInterpolator(
+          show ? standardDecelerateInterpolator : standardAccelerateInterpolator);
+      animator.addUpdateListener(
+          animation -> setWidth(dummyTextView, (int) animation.getAnimatedValue()));
+      return animator;
     }
 
     private SpringAnimation getToolbarWidthSpringAnimation(boolean show, Toolbar tb) {
@@ -1183,16 +1197,31 @@ class SearchViewAnimationHelper {
      * show}.
      */
     private SpringAnimation getEditTextTranslationXSpringAnimation(boolean show) {
+      return getTextTranslationXSpringAnimation(show, editText);
+    }
+
+    /**
+     * Returns a {@link SpringAnimation} that animates the edit text’s X translation between
+     * alignment with the {@link SearchBar} and its target X position, based on the value of {@code
+     * show}.
+     */
+    private SpringAnimation getDummyTextTranslationXSpringAnimation(boolean show) {
+      return getTextTranslationXSpringAnimation(show, dummyTextView);
+    }
+
+    private SpringAnimation getTextTranslationXSpringAnimation(boolean show, View view) {
       TextView textView = searchBar.getPlaceholderTextView();
+      // If the placeholder text is empty, we animate to the searchbar textview instead.
+      // Or if we're showing the searchview, we always animate from the searchbar textview, not
+      // from the placeholder text.
       if (TextUtils.isEmpty(textView.getText()) || show) {
         textView = searchBar.getTextView();
       }
-      float translationX =
-          getTranslationXBetweenViews(textView, editText) - getToolbarTranslationX();
+      float translationX = getTranslationXBetweenViews(textView, view) - getToolbarTranslationX();
       float startTranslationX = show ? translationX : 0;
       float endTranslationX = show ? 0 : translationX;
       return getSpringAnimation(
-          editText, SpringAnimation.TRANSLATION_X, startTranslationX, endTranslationX);
+          view, SpringAnimation.TRANSLATION_X, startTranslationX, endTranslationX);
     }
 
     /** Returns the Y translation needed from toolbar to align with the {@link SearchBar}. */

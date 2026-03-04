@@ -63,7 +63,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:visibility="gone"
-            app:navigationIcon="@null"/>
+            app:navigationIcon="@null">
+
+          <TextView
+              android:id="@+id/open_search_view_dummy_text_view"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:ellipsize="end"
+              android:maxLines="1"
+              android:importantForAccessibility="no"
+              android:visibility="gone"/>
+
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/open_search_view_toolbar"

@@ -128,6 +128,7 @@ import com.google.errorprone.annotations.CanIgnoreReturnValue;
 public class SearchBar extends Toolbar {
 
   private static final int DEF_STYLE_RES = R.style.Widget_Material3_SearchBar;
+  static final int NO_RES_ID = -1;
 
   private static final int DEFAULT_SCROLL_FLAGS =
       AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL
@@ -152,7 +153,7 @@ public class SearchBar extends Toolbar {
   @Nullable private View centerView;
   @Nullable private Integer navigationIconTint;
   @Nullable private Drawable originalNavigationIconBackground;
-  private int menuResId = -1;
+  private int menuResId = NO_RES_ID;
   private boolean defaultScrollFlagsEnabled;
   private MaterialShapeDrawable backgroundShape;
   private boolean textCentered;
@@ -218,7 +219,8 @@ public class SearchBar extends Toolbar {
     if (a.hasValue(R.styleable.SearchBar_navigationIconTint)) {
       navigationIconTint = a.getColor(R.styleable.SearchBar_navigationIconTint, -1);
     }
-    int textAppearanceResId = a.getResourceId(R.styleable.SearchBar_android_textAppearance, -1);
+    int textAppearanceResId =
+        a.getResourceId(R.styleable.SearchBar_android_textAppearance, NO_RES_ID);
     String text = a.getString(R.styleable.SearchBar_android_text);
     String hint = a.getString(R.styleable.SearchBar_android_hint);
     float strokeWidth = a.getDimension(R.styleable.SearchBar_strokeWidth, -1);
@@ -289,7 +291,7 @@ public class SearchBar extends Toolbar {
   }
 
   private void initTextView(@StyleRes int textAppearanceResId, String text, String hint) {
-    if (textAppearanceResId != -1) {
+    if (textAppearanceResId != NO_RES_ID) {
       TextViewCompat.setTextAppearance(textView, textAppearanceResId);
       TextViewCompat.setTextAppearance(placeholderTextView, textAppearanceResId);
     }

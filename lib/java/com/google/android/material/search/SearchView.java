@@ -19,6 +19,7 @@ package com.google.android.material.search;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.search.SearchBar.NO_RES_ID;
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.annotation.SuppressLint;
@@ -147,6 +148,7 @@ public class SearchView extends FrameLayout
   final MaterialToolbar toolbar;
   final Toolbar dummyToolbar;
   final TextView searchPrefix;
+  final TextView dummyTextView;
   final LinearLayout textContainer;
   final EditText editText;
   final ImageButton clearButton;
@@ -208,8 +210,9 @@ public class SearchView extends FrameLayout
             context, attrs, R.styleable.SearchView, defStyleAttr, DEF_STYLE_RES);
 
     backgroundColor = a.getColor(R.styleable.SearchView_backgroundTint, 0);
-    int headerLayoutResId = a.getResourceId(R.styleable.SearchView_headerLayout, -1);
-    int textAppearanceResId = a.getResourceId(R.styleable.SearchView_android_textAppearance, -1);
+    int headerLayoutResId = a.getResourceId(R.styleable.SearchView_headerLayout, NO_RES_ID);
+    int textAppearanceResId =
+        a.getResourceId(R.styleable.SearchView_android_textAppearance, NO_RES_ID);
     String text = a.getString(R.styleable.SearchView_android_text);
     String hint = a.getString(R.styleable.SearchView_android_hint);
     String searchPrefixText = a.getString(R.styleable.SearchView_searchPrefixText);
@@ -237,6 +240,7 @@ public class SearchView extends FrameLayout
     toolbarContainer = findViewById(R.id.open_search_view_toolbar_container);
     toolbar = findViewById(R.id.open_search_view_toolbar);
     dummyToolbar = findViewById(R.id.open_search_view_dummy_toolbar);
+    dummyTextView = findViewById(R.id.open_search_view_dummy_text_view);
     searchPrefix = findViewById(R.id.open_search_view_search_prefix);
     textContainer = findViewById(R.id.open_search_view_text_container);
     editText = findViewById(R.id.open_search_view_edit_text);
@@ -265,6 +269,7 @@ public class SearchView extends FrameLayout
 
     if (containedAnimationEnabled) {
       setUpDummyToolbarForContainedAnimation();
+      setUpDummyTextForContainedAnimation(textAppearanceResId);
     }
   }
 
@@ -406,7 +411,7 @@ public class SearchView extends FrameLayout
   }
 
   private void setUpHeaderLayout(int headerLayoutResId) {
-    if (headerLayoutResId != -1) {
+    if (headerLayoutResId != NO_RES_ID) {
       View headerView =
           LayoutInflater.from(getContext()).inflate(headerLayoutResId, headerContainer, false);
       addHeaderView(headerView);
@@ -414,7 +419,7 @@ public class SearchView extends FrameLayout
   }
 
   private void setUpEditText(@StyleRes int textAppearanceResId, String text, String hint) {
-    if (textAppearanceResId != -1) {
+    if (textAppearanceResId != NO_RES_ID) {
       TextViewCompat.setTextAppearance(editText, textAppearanceResId);
     }
     editText.setText(text);
@@ -490,6 +495,12 @@ public class SearchView extends FrameLayout
     // Make the dummy toolbar invisible, rather than gone, so it is laid out and ready for
     // animation.
     dummyToolbar.setVisibility(View.INVISIBLE);
+  }
+
+  private void setUpDummyTextForContainedAnimation(@StyleRes int textAppearanceResId) {
+    if (textAppearanceResId != NO_RES_ID) {
+      TextViewCompat.setTextAppearance(dummyTextView, textAppearanceResId);
+    }
   }
 
   @Px
@@ -799,6 +810,7 @@ public class SearchView extends FrameLayout
   @SuppressLint("KotlinPropertyAccess") // Editable extends CharSequence.
   public void setText(@Nullable CharSequence text) {
     editText.setText(text);
+    dummyTextView.setText(text);
   }
 
   /** Sets the text of main {@link EditText}. */
