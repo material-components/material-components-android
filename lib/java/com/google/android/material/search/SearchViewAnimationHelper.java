@@ -412,34 +412,6 @@ class SearchViewAnimationHelper {
     return animatorSet;
   }
 
-  private AnimatorSet getButtonsTranslationAnimator(boolean show) {
-    AnimatorSet animatorSet = new AnimatorSet();
-    addBackButtonTranslationAnimatorIfNeeded(animatorSet);
-    addActionMenuViewAnimatorIfNeeded(animatorSet);
-    animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
-    animatorSet.setInterpolator(
-        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-    return animatorSet;
-  }
-
-  private void addBackButtonTranslationAnimatorIfNeeded(AnimatorSet animatorSet) {
-    ImageButton searchViewBackButton = ToolbarUtils.getNavigationIconButton(toolbar);
-    if (searchViewBackButton == null) {
-      return;
-    }
-    ImageButton searchBarBackButton = ToolbarUtils.getNavigationIconButton(searchBar);
-
-    ValueAnimator backButtonAnimatorX =
-        ValueAnimator.ofFloat(
-            getTranslationXBetweenViews(searchBarBackButton, searchViewBackButton), 0);
-    backButtonAnimatorX.addUpdateListener(MultiViewUpdateListener.translationXListener(searchViewBackButton));
-
-    ValueAnimator backButtonAnimatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
-    backButtonAnimatorY.addUpdateListener(MultiViewUpdateListener.translationYListener(searchViewBackButton));
-
-    animatorSet.playTogether(backButtonAnimatorX, backButtonAnimatorY);
-  }
-
   private void addBackButtonProgressAnimatorIfNeeded(AnimatorSet animatorSet) {
     ImageButton backButton = ToolbarUtils.getNavigationIconButton(toolbar);
     if (backButton == null) {
@@ -496,26 +468,6 @@ class SearchViewAnimationHelper {
     if (drawable instanceof FadeThroughDrawable) {
       ((FadeThroughDrawable) drawable).setProgress(1);
     }
-  }
-
-  private void addActionMenuViewAnimatorIfNeeded(AnimatorSet animatorSet) {
-    ActionMenuView searchViewActionMenuView = ToolbarUtils.getActionMenuView(toolbar);
-    if (searchViewActionMenuView == null) {
-      return;
-    }
-    ActionMenuView searchBarActionMenuView = ToolbarUtils.getActionMenuView(searchBar);
-
-    ValueAnimator actionMenuViewAnimatorX =
-        ValueAnimator.ofFloat(
-            getTranslationXBetweenViews(searchBarActionMenuView, searchViewActionMenuView), 0);
-    actionMenuViewAnimatorX.addUpdateListener(
-        MultiViewUpdateListener.translationXListener(searchViewActionMenuView));
-
-    ValueAnimator actionMenuViewAnimatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
-    actionMenuViewAnimatorY.addUpdateListener(
-        MultiViewUpdateListener.translationYListener(searchViewActionMenuView));
-
-    animatorSet.playTogether(actionMenuViewAnimatorX, actionMenuViewAnimatorY);
   }
 
   private void setMenuItemsNotClickable(Toolbar toolbar) {
@@ -576,7 +528,7 @@ class SearchViewAnimationHelper {
     backHelper.finishBackProgress(totalDuration, searchBar);
 
     if (backProgressAnimatorSet != null) {
-      getButtonsTranslationAnimator(/* show= */ false).start();
+      animationDelegate.startButtonsTranslationAnimation();
       backProgressAnimatorSet.resume();
     }
 
@@ -619,12 +571,6 @@ class SearchViewAnimationHelper {
         actionMenuView.setAlpha(alpha);
       }
     }
-  }
-
-  private int getFromTranslationY() {
-    int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getHeight() / 2;
-    int searchBarMiddleY = getViewTopFromSearchViewParent(searchBar) + searchBar.getHeight() / 2;
-    return searchBarMiddleY - toolbarMiddleY;
   }
 
   private int getTranslationXBetweenViews(
@@ -712,6 +658,11 @@ class SearchViewAnimationHelper {
 
     @Override
     public void onAnimationEnd(boolean show) {}
+
+    @Override
+    public void startButtonsTranslationAnimation() {
+      getButtonsTranslationAnimator(/* show= */ false).start();
+    }
 
     private Animator getScrimAlphaAnimator(boolean show) {
       TimeInterpolator interpolator =
@@ -948,6 +899,57 @@ class SearchViewAnimationHelper {
       int searchBarMiddleY = getViewTopFromSearchViewParent(searchBar) + searchBar.getHeight() / 2;
       return searchBarMiddleY - toolbarMiddleY;
     }
+
+    private AnimatorSet getButtonsTranslationAnimator(boolean show) {
+      AnimatorSet animatorSet = new AnimatorSet();
+      addBackButtonTranslationAnimatorIfNeeded(animatorSet);
+      addActionMenuViewAnimatorIfNeeded(animatorSet);
+      animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+      animatorSet.setInterpolator(
+          ReversableAnimatedValueInterpolator.of(
+              show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+      return animatorSet;
+    }
+
+    private void addBackButtonTranslationAnimatorIfNeeded(AnimatorSet animatorSet) {
+      ImageButton searchViewBackButton = ToolbarUtils.getNavigationIconButton(toolbar);
+      if (searchViewBackButton == null) {
+        return;
+      }
+      ImageButton searchBarBackButton = ToolbarUtils.getNavigationIconButton(searchBar);
+
+      ValueAnimator backButtonAnimatorX =
+          ValueAnimator.ofFloat(
+              getTranslationXBetweenViews(searchBarBackButton, searchViewBackButton), 0);
+      backButtonAnimatorX.addUpdateListener(
+          MultiViewUpdateListener.translationXListener(searchViewBackButton));
+
+      ValueAnimator backButtonAnimatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
+      backButtonAnimatorY.addUpdateListener(
+          MultiViewUpdateListener.translationYListener(searchViewBackButton));
+
+      animatorSet.playTogether(backButtonAnimatorX, backButtonAnimatorY);
+    }
+
+    private void addActionMenuViewAnimatorIfNeeded(AnimatorSet animatorSet) {
+      ActionMenuView searchViewActionMenuView = ToolbarUtils.getActionMenuView(toolbar);
+      if (searchViewActionMenuView == null) {
+        return;
+      }
+      ActionMenuView searchBarActionMenuView = ToolbarUtils.getActionMenuView(searchBar);
+
+      ValueAnimator actionMenuViewAnimatorX =
+          ValueAnimator.ofFloat(
+              getTranslationXBetweenViews(searchBarActionMenuView, searchViewActionMenuView), 0);
+      actionMenuViewAnimatorX.addUpdateListener(
+          MultiViewUpdateListener.translationXListener(searchViewActionMenuView));
+
+      ValueAnimator actionMenuViewAnimatorY = ValueAnimator.ofFloat(getFromTranslationY(), 0);
+      actionMenuViewAnimatorY.addUpdateListener(
+          MultiViewUpdateListener.translationYListener(searchViewActionMenuView));
+
+      animatorSet.playTogether(actionMenuViewAnimatorX, actionMenuViewAnimatorY);
+    }
   }
 
   private class ContainedAnimationDelegate implements AnimationDelegate {
@@ -1033,6 +1035,12 @@ class SearchViewAnimationHelper {
       }
       dummyToolbar.setVisibility(View.INVISIBLE);
       setWidth(dummyTextView, LayoutParams.WRAP_CONTENT);
+    }
+
+    @Override
+    public void startButtonsTranslationAnimation() {
+      // No necessary for contained animation as the toolbar contained the buttons is animating
+      // to match the size of search bar.
     }
 
     /**
@@ -1286,5 +1294,11 @@ class SearchViewAnimationHelper {
     void onAnimationStart(boolean show);
 
     void onAnimationEnd(boolean show);
+
+    /**
+     * Starts to translate the toolbar buttons like back button and action menu buttons from search
+     * view to search bar.
+     */
+    void startButtonsTranslationAnimation();
   }
 }
