@@ -38,6 +38,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -261,6 +262,10 @@ public class SearchView extends FrameLayout
     // Necessary to enable keyboard navigation to the searchview contents due to toolbar being a
     // keyboard navigation cluster from API 26+
     setToolbarTouchscreenBlocksFocus(false);
+
+    if (containedAnimationEnabled) {
+      setUpDummyToolbarForContainedAnimation();
+    }
   }
 
   @Override
@@ -473,6 +478,18 @@ public class SearchView extends FrameLayout
       statusBarSpacer.getLayoutParams().height = height;
       statusBarSpacer.requestLayout();
     }
+  }
+
+  private void setUpDummyToolbarForContainedAnimation() {
+    // Change layout gravity to START to match the search view toolbar as they will be animated in
+    // parallel.
+    FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) dummyToolbar.getLayoutParams();
+    lp.gravity = Gravity.START;
+    dummyToolbar.setLayoutParams(lp);
+
+    // Make the dummy toolbar invisible, rather than gone, so it is laid out and ready for
+    // animation.
+    dummyToolbar.setVisibility(View.INVISIBLE);
   }
 
   @Px

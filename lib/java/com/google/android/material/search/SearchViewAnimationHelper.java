@@ -950,7 +950,25 @@ class SearchViewAnimationHelper {
 
   private class ContainedAnimationDelegate implements AnimationDelegate {
     @Override
-    public void setUpDummyToolbarIfNeeded() {}
+    public void setUpDummyToolbarIfNeeded() {
+      // Copy the search bar background to dummy toolbar so to create a seamless transition. Needed
+      // because search bar may have a different background color from the search view toolbar.
+      if (searchBar.getBackground() != null
+          && searchBar.getBackground().getConstantState() != null) {
+        dummyToolbar.setBackground(searchBar.getBackground().getConstantState().newDrawable());
+      }
+
+      Menu menu = dummyToolbar.getMenu();
+      if (menu != null) {
+        menu.clear();
+      }
+
+      // Inflate the dummy toolbar menu to match the search bar if needed.
+      if (searchBar.getMenuResId() != -1 && searchView.isMenuItemsAnimated()) {
+        dummyToolbar.inflateMenu(searchBar.getMenuResId());
+        setMenuItemsNotClickable(dummyToolbar);
+      }
+    }
 
     @NonNull
     @Override
@@ -959,6 +977,7 @@ class SearchViewAnimationHelper {
       animatorSet.playTogether(
           getBackgroundAlphaAnimator(show),
           getContentAlphaAnimator(show),
+          getToolbarAlphaAnimator(show),
           getClearButtonAnimator(show));
       return animatorSet;
     }
@@ -969,6 +988,8 @@ class SearchViewAnimationHelper {
       return Arrays.asList(
           getToolbarWidthSpringAnimation(show),
           getToolbarTranslationXSpringAnimation(show),
+          getDummyToolbarWidthSpringAnimation(show),
+          getDummyToolbarTranslationXSpringAnimation(show),
           getToolbarContainerTranslationYSpringAnimation(show));
     }
 
@@ -976,12 +997,14 @@ class SearchViewAnimationHelper {
     public void onAnimationStart(boolean show) {
       if (show) {
         setBackgroundAlpha(0);
+        setToolbarBackgroundAndActionMenuViewAlphaIfNeeded(0);
         contentContainer.setAlpha(0);
         searchBar.setVisibility(View.INVISIBLE);
       } else {
         setBackgroundAlpha(1);
         contentContainer.setAlpha(1);
       }
+      dummyToolbar.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -994,6 +1017,7 @@ class SearchViewAnimationHelper {
         contentContainer.setAlpha(0);
         searchBar.setVisibility(View.VISIBLE);
       }
+      dummyToolbar.setVisibility(View.INVISIBLE);
     }
 
     /**
@@ -1001,7 +1025,7 @@ class SearchViewAnimationHelper {
      * show}.
      */
     private Animator getBackgroundAlphaAnimator(boolean show) {
-      ValueAnimator animator = show ? ValueAnimator.ofFloat(0, 1) : ValueAnimator.ofFloat(1, 0);
+      ValueAnimator animator = getAlphaValueAnimator(show);
       animator.setDuration(durationShort2);
       animator.setStartDelay(show ? 0 : durationShort1);
       animator.setInterpolator(
@@ -1016,7 +1040,7 @@ class SearchViewAnimationHelper {
      * of {@code show}.
      */
     private Animator getContentAlphaAnimator(boolean show) {
-      ValueAnimator animator = show ? ValueAnimator.ofFloat(0, 1) : ValueAnimator.ofFloat(1, 0);
+      ValueAnimator animator = getAlphaValueAnimator(show);
       animator.setDuration(durationShort2);
       animator.setStartDelay(show ? durationShort1 : 0);
       animator.setInterpolator(
@@ -1026,25 +1050,71 @@ class SearchViewAnimationHelper {
     }
 
     /**
-     * Returns a {@link SpringAnimation} that animates the toolbar’s width between the search bar
-     * width and the target width, based on the value of {@code show}.
+     * Returns an {@link Animator} that fades in or out the background of the toolbar, as well as
+     * the action menu view, if needed, based on the value of {@code show}.
      */
-    private SpringAnimation getToolbarWidthSpringAnimation(boolean show) {
+    private Animator getToolbarAlphaAnimator(boolean show) {
+      ValueAnimator animator = getAlphaValueAnimator(show);
+      animator.setDuration(durationShort2);
+      animator.setInterpolator(
+          show ? standardDecelerateInterpolator : standardAccelerateInterpolator);
+      animator.addUpdateListener(
+          animation ->
+              setToolbarBackgroundAndActionMenuViewAlphaIfNeeded(
+                  (float) animation.getAnimatedValue()));
+      return animator;
+    }
+
+    private ValueAnimator getAlphaValueAnimator(boolean show) {
+      return show ? ValueAnimator.ofFloat(0, 1) : ValueAnimator.ofFloat(1, 0);
+    }
+
+    /**
+     * Sets the alpha on the background of the toolbar and its action menu view, if needed.
+     *
+     * <p>Instead of setting alpha on the entire toolbar, this allows other elements inside, like
+     * edit text, to still be visible, necessary for the continuous-looking animation.
+     */
+    private void setToolbarBackgroundAndActionMenuViewAlphaIfNeeded(float alpha) {
+      Drawable background = toolbar.getBackground();
+      if (background != null) {
+        background.setAlpha((int) (alpha * 255));
+      }
+      setActionMenuViewAlphaIfNeeded(alpha);
+    }
+
+    private SpringAnimation getToolbarWidthSpringAnimation(boolean show, Toolbar tb) {
       int searchBarWidth = searchBar.getWidth();
       int toolbarWidth = getToolbarWidth();
       int startWidth = show ? searchBarWidth : toolbarWidth;
       int endWidth = show ? toolbarWidth : searchBarWidth;
       SpringAnimation animation =
-          getSpringAnimation(toolbar, getWidthViewProperty(), startWidth, endWidth);
+          getSpringAnimation(tb, getWidthViewProperty(), startWidth, endWidth);
       animation.addEndListener(
           (dynamicAnimation, canceled, value, velocity) -> {
             if (show) {
               // Make sure toolbar width is set back to match parent at the end in case animation is
               // canceled
-              setWidth(toolbar, LayoutParams.MATCH_PARENT);
+              setWidth(tb, LayoutParams.MATCH_PARENT);
             }
           });
       return animation;
+    }
+
+    /**
+     * Returns a {@link SpringAnimation} that animates the toolbar’s width between the search bar
+     * width and the target width, based on the value of {@code show}.
+     */
+    private SpringAnimation getToolbarWidthSpringAnimation(boolean show) {
+      return getToolbarWidthSpringAnimation(show, toolbar);
+    }
+
+    /**
+     * Returns a {@link SpringAnimation} that animates the dummy toolbar’s width between the search
+     * bar width and the target width, based on the value of {@code show}.
+     */
+    private SpringAnimation getDummyToolbarWidthSpringAnimation(boolean show) {
+      return getToolbarWidthSpringAnimation(show, dummyToolbar);
     }
 
     /** Returns the toolbar's target width. */
@@ -1057,16 +1127,28 @@ class SearchViewAnimationHelper {
       return containerWidth - containerHorizontalPaddings - toolbarHorizontalMargins;
     }
 
+    private SpringAnimation getToolbarTranslationXSpringAnimation(boolean show, Toolbar tb) {
+      int translationX = getToolbarTranslationX();
+      int startTranslationX = show ? translationX : 0;
+      int endTranslationX = show ? 0 : translationX;
+      return getSpringAnimation(
+          tb, SpringAnimation.TRANSLATION_X, startTranslationX, endTranslationX);
+    }
+
     /**
      * Returns a {@link SpringAnimation} that animates the toolbar’s X translation between alignment
      * with the {@link SearchBar} and its target X position, based on the value of {@code show}.
      */
     private SpringAnimation getToolbarTranslationXSpringAnimation(boolean show) {
-      int translationX = getToolbarTranslationX();
-      int startTranslationX = show ? translationX : 0;
-      int endTranslationX = show ? 0 : translationX;
-      return getSpringAnimation(
-          toolbar, SpringAnimation.TRANSLATION_X, startTranslationX, endTranslationX);
+      return getToolbarTranslationXSpringAnimation(show, toolbar);
+    }
+
+    /**
+     * Returns a {@link SpringAnimation} that animates the toolbar’s X translation between alignment
+     * with the {@link SearchBar} and its target X position, based on the value of {@code show}.
+     */
+    private SpringAnimation getDummyToolbarTranslationXSpringAnimation(boolean show) {
+      return getToolbarTranslationXSpringAnimation(show, dummyToolbar);
     }
 
     /** Returns the X translation needed from toolbar to align with the {@link SearchBar}. */
