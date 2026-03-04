@@ -36,6 +36,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
 import android.widget.EditText;
@@ -48,6 +49,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.dynamicanimation.animation.FloatPropertyCompat;
+import androidx.dynamicanimation.animation.SpringAnimation;
+import androidx.dynamicanimation.animation.SpringForce;
+import com.google.android.material.animation.AnimationCoordinator;
+import com.google.android.material.animation.AnimationCoordinator.Listener;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ClippableRoundedCornerLayout;
 import com.google.android.material.internal.FadeThroughDrawable;
@@ -62,6 +68,8 @@ import com.google.android.material.motion.MaterialMainContainerBackHelper;
 import com.google.android.material.motion.MotionUtils;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /** Helper class for {@link SearchView} animations. */
 @SuppressWarnings("RestrictTo")
@@ -119,7 +127,8 @@ class SearchViewAnimationHelper {
 
   private SearchBar searchBar;
 
-  private final boolean containedAnimationEnabled;
+  private final Context context;
+  private final AnimationDelegate animationDelegate;
 
   private final TimeInterpolator standardAccelerateInterpolator;
   private final TimeInterpolator standardDecelerateInterpolator;
@@ -128,8 +137,8 @@ class SearchViewAnimationHelper {
 
   SearchViewAnimationHelper(
       Context context, SearchView searchView, boolean containedAnimationEnabled) {
+    this.context = context;
     this.searchView = searchView;
-    this.containedAnimationEnabled = containedAnimationEnabled;
     this.scrim = searchView.scrim;
     this.backgroundView = searchView.backgroundView;
     this.rootView = searchView.rootView;
@@ -156,6 +165,11 @@ class SearchViewAnimationHelper {
         MotionUtils.resolveThemeDuration(context, R.attr.motionDurationShort1, DEFAULT_DURATION_MS);
     durationShort2 =
         MotionUtils.resolveThemeDuration(context, R.attr.motionDurationShort2, DEFAULT_DURATION_MS);
+
+    animationDelegate =
+        containedAnimationEnabled
+            ? new ContainedAnimationDelegate()
+            : new DefaultAnimationDelegate();
   }
 
   void setSearchBar(SearchBar searchBar) {
@@ -184,38 +198,39 @@ class SearchViewAnimationHelper {
       searchView.requestFocusAndShowKeyboardIfNeeded();
     }
     searchView.setTransitionState(SearchView.TransitionState.SHOWING);
-    setUpDummyToolbarIfNeeded();
+    animationDelegate.setUpDummyToolbarIfNeeded();
     editText.setText(searchBar.getText());
     editText.setSelection(editText.getText().length());
     rootView.setVisibility(View.INVISIBLE);
     rootView.post(
         () -> {
-          AnimatorSet animatorSet = getExpandCollapseAnimatorSet(true);
-          animatorSet.addListener(
-              new AnimatorListenerAdapter() {
+          boolean show = true;
+          AnimationCoordinator coordinator = new AnimationCoordinator();
+          coordinator.addAnimator(getExpandCollapseAnimatorSet(show));
+          for (SpringAnimation springAnimation : getExpandCollapseSpringAnimations(show)) {
+            coordinator.addDynamicAnimation(springAnimation);
+          }
+
+          coordinator.addListener(
+              new Listener() {
                 @Override
-                public void onAnimationStart(Animator animation) {
-                  if (containedAnimationEnabled) {
-                    setBackgroundAlpha(0);
-                    contentContainer.setAlpha(0);
-                  }
+                public void onAnimationsStart() {
+                  animationDelegate.onAnimationStart(show);
                   rootView.setVisibility(View.VISIBLE);
                   searchBar.stopOnLoadAnimation();
                 }
 
                 @Override
-                public void onAnimationEnd(Animator animation) {
-                  if (containedAnimationEnabled) {
-                    setBackgroundAlpha(1);
-                    contentContainer.setAlpha(1);
-                  }
+                public void onAnimationsEnd() {
+                  animationDelegate.onAnimationEnd(show);
                   if (!searchView.isAdjustNothingSoftInputMode()) {
                     searchView.requestFocusAndShowKeyboardIfNeeded();
                   }
                   searchView.setTransitionState(SearchView.TransitionState.SHOWN);
                 }
               });
-          animatorSet.start();
+
+          coordinator.start();
         });
   }
 
@@ -223,24 +238,25 @@ class SearchViewAnimationHelper {
     if (searchView.isAdjustNothingSoftInputMode()) {
       searchView.clearFocusAndHideKeyboard();
     }
-    AnimatorSet animatorSet = getExpandCollapseAnimatorSet(false);
-    animatorSet.addListener(
-        new AnimatorListenerAdapter() {
+    boolean show = false;
+    AnimationCoordinator coordinator = new AnimationCoordinator();
+    AnimatorSet animatorSet = getExpandCollapseAnimatorSet(show);
+    coordinator.addAnimator(animatorSet);
+    for (SpringAnimation springAnimation : getExpandCollapseSpringAnimations(show)) {
+      coordinator.addDynamicAnimation(springAnimation);
+    }
+
+    coordinator.addListener(
+        new Listener() {
           @Override
-          public void onAnimationStart(Animator animation) {
-            if (containedAnimationEnabled) {
-              setBackgroundAlpha(1);
-              contentContainer.setAlpha(1);
-            }
+          public void onAnimationsStart() {
+            animationDelegate.onAnimationStart(show);
             searchView.setTransitionState(SearchView.TransitionState.HIDING);
           }
 
           @Override
-          public void onAnimationEnd(Animator animation) {
-            if (containedAnimationEnabled) {
-              setBackgroundAlpha(0);
-              contentContainer.setAlpha(0);
-            }
+          public void onAnimationsEnd() {
+            animationDelegate.onAnimationEnd(show);
             rootView.setVisibility(View.GONE);
             if (!searchView.isAdjustNothingSoftInputMode()) {
               searchView.clearFocusAndHideKeyboard();
@@ -248,7 +264,9 @@ class SearchViewAnimationHelper {
             searchView.setTransitionState(SearchView.TransitionState.HIDDEN);
           }
         });
-    animatorSet.start();
+
+    coordinator.start();
+
     return animatorSet;
   }
 
@@ -325,29 +343,10 @@ class SearchViewAnimationHelper {
   }
 
   private AnimatorSet getExpandCollapseAnimatorSet(boolean show) {
-    AnimatorSet animatorSet = new AnimatorSet();
-    ArrayList<Animator> animators = new ArrayList<>();
-    boolean backProgress = backProgressAnimatorSet != null;
-    if (!backProgress) {
-      animators.add(getButtonsProgressAnimator(show));
-      animators.add(getButtonsTranslationAnimator(show));
+    AnimatorSet animatorSet = animationDelegate.getExpandCollapseAnimatorSet(show);
+    if (backProgressAnimatorSet == null) {
+      animatorSet.playTogether(getButtonsProgressAnimator(show));
     }
-    if (containedAnimationEnabled) {
-      animators.add(getBackgroundAlphaContainedAnimator(show));
-      animators.add(getContentAlphaContainedAnimator(show));
-    } else {
-      animators.add(getScrimAlphaAnimator(show));
-      animators.add(getRootViewAnimator(show));
-      animators.add(getClearButtonAnimator(show));
-      animators.add(getContentAnimator(show));
-      animators.add(getHeaderContainerAnimator(show));
-      animators.add(getDummyToolbarAnimator(show));
-      animators.add(getActionMenuViewsAlphaAnimator(show));
-      animators.add(getEditTextAnimator(show));
-      animators.add(getSearchPrefixAnimator(show));
-      animators.add(getTextAnimator(show));
-    }
-    animatorSet.playTogether(animators);
 
     animatorSet.addListener(
         new AnimatorListenerAdapter() {
@@ -383,97 +382,11 @@ class SearchViewAnimationHelper {
   }
 
   /**
-   * Sets the alpha of the background. Note that this doesn't set the alpha on the entire {@code
-   * backgroundView}, but only on the background while retaining visibility of its children.
+   * Returns a list that contains all the physics-based spring animations for the contained style
+   * expand/collapse animation.
    */
-  private void setBackgroundAlpha(float alpha) {
-    backgroundView.getBackground().mutate().setAlpha((int) (alpha * 255));
-  }
-
-  private void setContentViewsAlpha(float alpha) {
-    clearButton.setAlpha(alpha);
-    divider.setAlpha(alpha);
-    contentContainer.setAlpha(alpha);
-    setActionMenuViewAlphaIfNeeded(alpha);
-  }
-
-  private void setActionMenuViewAlphaIfNeeded(float alpha) {
-    if (searchView.isMenuItemsAnimated()) {
-      ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
-      if (actionMenuView != null) {
-        actionMenuView.setAlpha(alpha);
-      }
-    }
-  }
-
-  private Animator getScrimAlphaAnimator(boolean show) {
-    TimeInterpolator interpolator =
-        show ? AnimationUtils.LINEAR_INTERPOLATOR : AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
-
-    ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-    animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
-    animator.setStartDelay(show ? SHOW_SCRIM_ALPHA_DURATION_MS : 0);
-    animator.setInterpolator(ReversableAnimatedValueInterpolator.of(show, interpolator));
-    animator.addUpdateListener(MultiViewUpdateListener.alphaListener(scrim));
-    return animator;
-  }
-
-  private Animator getRootViewAnimator(boolean show) {
-    Rect initialHideToClipBounds = backHelper.getInitialHideToClipBounds();
-    Rect initialHideFromClipBounds = backHelper.getInitialHideFromClipBounds();
-    Rect toClipBounds =
-        initialHideToClipBounds != null
-            ? initialHideToClipBounds
-            : ViewUtils.calculateRectFromBounds(searchView);
-    Rect fromClipBounds =
-        initialHideFromClipBounds != null
-            ? initialHideFromClipBounds
-            : ViewUtils.calculateOffsetRectFromBounds(rootView, searchBar);
-    Rect clipBounds = new Rect(fromClipBounds);
-
-    float fromCornerRadius = searchBar.getCornerSize();
-    float[] toCornerRadius =
-        maxCornerRadii(rootView.getCornerRadii(), backHelper.getExpandedCornerRadii());
-
-    ValueAnimator animator =
-        ValueAnimator.ofObject(new RectEvaluator(clipBounds), fromClipBounds, toClipBounds);
-    animator.addUpdateListener(
-        valueAnimator -> {
-          float[] cornerRadii =
-              lerpCornerRadii(
-                  fromCornerRadius, toCornerRadius, valueAnimator.getAnimatedFraction());
-          rootView.updateClipBoundsAndCornerRadii(clipBounds, cornerRadii);
-        });
-    animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
-    animator.setInterpolator(
-        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-    return animator;
-  }
-
-  private static float[] maxCornerRadii(float[] startValue, float[] endValue) {
-    return new float[] {
-        max(startValue[0], endValue[0]),
-        max(startValue[1], endValue[1]),
-        max(startValue[2], endValue[2]),
-        max(startValue[3], endValue[3]),
-        max(startValue[4], endValue[4]),
-        max(startValue[5], endValue[5]),
-        max(startValue[6], endValue[6]),
-        max(startValue[7], endValue[7])
-    };
-  }
-
-  private static float[] lerpCornerRadii(float startValue, float[] endValue, float fraction) {
-    return new float[] {
-        lerp(startValue, endValue[0], fraction),
-        lerp(startValue, endValue[1], fraction),
-        lerp(startValue, endValue[2], fraction),
-        lerp(startValue, endValue[3], fraction),
-        lerp(startValue, endValue[4], fraction),
-        lerp(startValue, endValue[5], fraction),
-        lerp(startValue, endValue[6], fraction),
-        lerp(startValue, endValue[7], fraction)
-    };
+  private List<SpringAnimation> getExpandCollapseSpringAnimations(boolean show) {
+    return animationDelegate.getExpandCollapseSpringAnimations(show);
   }
 
   private Animator getClearButtonAnimator(boolean show) {
@@ -603,231 +516,6 @@ class SearchViewAnimationHelper {
     animatorSet.playTogether(actionMenuViewAnimatorX, actionMenuViewAnimatorY);
   }
 
-  private Animator getDummyToolbarAnimator(boolean show) {
-    return getTranslationAnimator(
-        show,
-        dummyToolbar,
-        getFromTranslationXEnd(dummyToolbar),
-        getFromTranslationY());
-  }
-
-  private Animator getHeaderContainerAnimator(boolean show) {
-    return getTranslationAnimator(
-        show,
-        headerContainer,
-        getFromTranslationXEnd(headerContainer),
-        getFromTranslationY());
-  }
-
-  private Animator getActionMenuViewsAlphaAnimator(boolean show) {
-    ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-    animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
-    animator.setInterpolator(
-        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-
-    if (searchView.isMenuItemsAnimated()) {
-      ActionMenuView dummyActionMenuView = ToolbarUtils.getActionMenuView(dummyToolbar);
-      ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
-      animator.addUpdateListener(
-          new FadeThroughUpdateListener(dummyActionMenuView, actionMenuView));
-    }
-
-    return animator;
-  }
-
-  private Animator getSearchPrefixAnimator(boolean show) {
-    return getTranslationAnimatorForText(show, searchPrefix);
-  }
-
-  private Animator getEditTextAnimator(boolean show) {
-    return getTranslationAnimatorForText(show, editText);
-  }
-
-  private AnimatorSet getTextAnimator(boolean show) {
-    AnimatorSet animatorSet = new AnimatorSet();
-    addTextFadeAnimatorIfNeeded(animatorSet);
-    addEditTextClipAnimator(animatorSet);
-    animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
-    animatorSet.setInterpolator(
-        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.LINEAR_INTERPOLATOR));
-    return animatorSet;
-  }
-
-  private void addEditTextClipAnimator(AnimatorSet animatorSet) {
-    // We only want to add a clip animation if the edittext and searchbar text is the same, which
-    // means it is translating instead of fading.
-    if (searchBar == null || !TextUtils.equals(editText.getText(), searchBar.getText())) {
-      return;
-    }
-    Rect editTextClipBounds =
-        new Rect(0, 0, editText.getWidth(), editText.getHeight());
-    ValueAnimator animator =
-        ValueAnimator.ofInt(
-            searchBar.getTextView().getWidth(), editText.getWidth());
-    animator.addUpdateListener(
-        animation -> {
-          editTextClipBounds.right = (int) animation.getAnimatedValue();
-          editText.setClipBounds(editTextClipBounds);
-        });
-    animatorSet.playTogether(animator);
-  }
-
-  private void addTextFadeAnimatorIfNeeded(AnimatorSet animatorSet) {
-    if (searchBar == null || TextUtils.equals(editText.getText(), searchBar.getText())) {
-      return;
-    }
-    // If the searchbar text is not equal to the searchview edittext, we want to fade out the
-    // edittext and fade in the searchbar text
-    ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
-    animator.addUpdateListener(
-        animation -> {
-          editText.setAlpha((Float) animation.getAnimatedValue());
-          searchBar.getTextView().setAlpha(1 - (Float) animation.getAnimatedValue());
-        });
-    animatorSet.playTogether(animator);
-  }
-
-  private Animator getTranslationAnimatorForText(boolean show, View v) {
-    TextView textView = searchBar.getPlaceholderTextView();
-    // If the placeholder text is empty, we animate to the searchbar textview instead.
-    // Or if we're showing the searchview, we always animate from the searchbar textview, not
-    // from the placeholder text.
-    if (TextUtils.isEmpty(textView.getText()) || show) {
-      textView = searchBar.getTextView();
-    }
-    int startX =
-        getViewLeftFromSearchViewParent(textView) - (v.getLeft() + textContainer.getLeft());
-    return getTranslationAnimator(show, v, startX, getFromTranslationY());
-  }
-
-  private int getViewLeftFromSearchViewParent(@NonNull View v) {
-    int left = v.getLeft();
-    ViewParent viewParent = v.getParent();
-    while (viewParent instanceof View && viewParent != searchView.getParent()) {
-      left += ((View) viewParent).getLeft();
-      viewParent = viewParent.getParent();
-    }
-    return left;
-  }
-
-  private int getViewTopFromSearchViewParent(@NonNull View v) {
-    int top = v.getTop();
-    ViewParent viewParent = v.getParent();
-    while (viewParent instanceof View && viewParent != searchView.getParent()) {
-      top += ((View) viewParent).getTop();
-      viewParent = viewParent.getParent();
-    }
-    return top;
-  }
-
-  private Animator getContentAnimator(boolean show) {
-    AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.playTogether(
-        getContentAlphaAnimator(show), getDividerAnimator(show), getContentScaleAnimator(show));
-    return animatorSet;
-  }
-
-  private Animator getContentAlphaAnimator(boolean show) {
-    ValueAnimator animatorAlpha = ValueAnimator.ofFloat(0, 1);
-    animatorAlpha.setDuration(
-        show ? SHOW_CONTENT_ALPHA_DURATION_MS : HIDE_CONTENT_ALPHA_DURATION_MS);
-    animatorAlpha.setStartDelay(
-        show ? SHOW_CONTENT_ALPHA_START_DELAY_MS : HIDE_CONTENT_ALPHA_START_DELAY_MS);
-    animatorAlpha.setInterpolator(
-        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.LINEAR_INTERPOLATOR));
-    animatorAlpha.addUpdateListener(
-        MultiViewUpdateListener.alphaListener(divider, contentContainer));
-    return animatorAlpha;
-  }
-
-  private Animator getDividerAnimator(boolean show) {
-    float dividerTranslationY =
-        (float) contentContainer.getHeight() * (1f - CONTENT_FROM_SCALE) / 2f;
-
-    ValueAnimator animatorDivider = ValueAnimator.ofFloat(dividerTranslationY, 0);
-    animatorDivider.setDuration(
-        show ? SHOW_CONTENT_SCALE_DURATION_MS : HIDE_CONTENT_SCALE_DURATION_MS);
-    animatorDivider.setInterpolator(
-        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-    animatorDivider.addUpdateListener(MultiViewUpdateListener.translationYListener(divider));
-    return animatorDivider;
-  }
-
-  private Animator getContentScaleAnimator(boolean show) {
-    ValueAnimator animatorScale = ValueAnimator.ofFloat(CONTENT_FROM_SCALE, 1);
-    animatorScale.setDuration(
-        show ? SHOW_CONTENT_SCALE_DURATION_MS : HIDE_CONTENT_SCALE_DURATION_MS);
-    animatorScale.setInterpolator(
-        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-    animatorScale.addUpdateListener(MultiViewUpdateListener.scaleListener(contentContainer));
-    return animatorScale;
-  }
-
-  private Animator getTranslationAnimator(boolean show, View view, int startX, int startY) {
-    ValueAnimator animatorX = ValueAnimator.ofFloat(startX, 0);
-    animatorX.addUpdateListener(MultiViewUpdateListener.translationXListener(view));
-
-    ValueAnimator animatorY = ValueAnimator.ofFloat(startY, 0);
-    animatorY.addUpdateListener(MultiViewUpdateListener.translationYListener(view));
-
-    AnimatorSet animatorSet = new AnimatorSet();
-    animatorSet.playTogether(animatorX, animatorY);
-    animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
-    animatorSet.setInterpolator(
-        ReversableAnimatedValueInterpolator.of(show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-    return animatorSet;
-  }
-
-  private int getTranslationXBetweenViews(
-      @Nullable View searchBarSubView, @NonNull View searchViewSubView) {
-    // If there is no equivalent for the SearchView subview in the SearchBar, we return the
-    // translation between the SearchBar and the start of the SearchView subview
-    if (searchBarSubView == null) {
-      int marginStart = ((MarginLayoutParams) searchViewSubView.getLayoutParams()).getMarginStart();
-      int paddingStart = searchBar.getPaddingStart();
-      int searchBarLeft = getViewLeftFromSearchViewParent(searchBar);
-      return ViewUtils.isLayoutRtl(searchBar)
-          ? searchBarLeft
-              + searchBar.getWidth()
-              + marginStart
-              - paddingStart
-              - searchView.getRight()
-          : (searchBarLeft - marginStart + paddingStart);
-    }
-    return getViewLeftFromSearchViewParent(searchBarSubView)
-        - getViewLeftFromSearchViewParent(searchViewSubView);
-  }
-
-  private int getFromTranslationXEnd(View view) {
-    int marginEnd = ((MarginLayoutParams) view.getLayoutParams()).getMarginEnd();
-    int viewLeft = getViewLeftFromSearchViewParent(searchBar);
-    return ViewUtils.isLayoutRtl(searchBar)
-        ? viewLeft - marginEnd
-        : viewLeft + searchBar.getWidth() + marginEnd - searchView.getWidth();
-  }
-
-  private int getFromTranslationY() {
-    int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getHeight() / 2;
-    int searchBarMiddleY =
-        getViewTopFromSearchViewParent(searchBar)
-            + searchBar.getHeight() / 2;
-    return searchBarMiddleY - toolbarMiddleY;
-  }
-
-  private void setUpDummyToolbarIfNeeded() {
-    Menu menu = dummyToolbar.getMenu();
-    if (menu != null) {
-      menu.clear();
-    }
-    if (searchBar.getMenuResId() != -1 && searchView.isMenuItemsAnimated()) {
-      dummyToolbar.inflateMenu(searchBar.getMenuResId());
-      setMenuItemsNotClickable(dummyToolbar);
-      dummyToolbar.setVisibility(View.VISIBLE);
-    } else {
-      dummyToolbar.setVisibility(View.GONE);
-    }
-  }
-
   private void setMenuItemsNotClickable(Toolbar toolbar) {
     ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
     if (actionMenuView != null) {
@@ -838,35 +526,6 @@ class SearchViewAnimationHelper {
         menuItem.setFocusableInTouchMode(false);
       }
     }
-  }
-
-  /**
-   * Returns an {@link Animator} that fades in or out the background, based on the value of {@code
-   * show}.
-   */
-  private Animator getBackgroundAlphaContainedAnimator(boolean show) {
-    ValueAnimator animator = show ? ValueAnimator.ofFloat(0, 1) : ValueAnimator.ofFloat(1, 0);
-    animator.setDuration(durationShort2);
-    animator.setStartDelay(show ? 0 : durationShort1);
-    animator.setInterpolator(
-        show ? standardDecelerateInterpolator : standardAccelerateInterpolator);
-    animator.addUpdateListener(
-        animation -> setBackgroundAlpha((Float) animation.getAnimatedValue()));
-    return animator;
-  }
-
-  /**
-   * Returns an {@link Animator} that fades in or out the search view content, based on the value of
-   * {@code show}.
-   */
-  private Animator getContentAlphaContainedAnimator(boolean show) {
-    ValueAnimator animator = show ? ValueAnimator.ofFloat(0, 1) : ValueAnimator.ofFloat(1, 0);
-    animator.setDuration(durationShort2);
-    animator.setStartDelay(show ? durationShort1 : 0);
-    animator.setInterpolator(
-        show ? standardAccelerateInterpolator : standardDecelerateInterpolator);
-    animator.addUpdateListener(MultiViewUpdateListener.alphaListener(contentContainer));
-    return animator;
   }
 
   void startBackProgress(@NonNull BackEventCompat backEvent) {
@@ -934,5 +593,568 @@ class SearchViewAnimationHelper {
 
   MaterialMainContainerBackHelper getBackHelper() {
     return backHelper;
+  }
+
+  /**
+   * Sets the alpha of the background. Note that this doesn't set the alpha on the entire {@code
+   * backgroundView}, but only on the background while retaining visibility of its children.
+   */
+  private void setBackgroundAlpha(float alpha) {
+    backgroundView.getBackground().mutate().setAlpha((int) (alpha * 255));
+  }
+
+  private void setContentViewsAlpha(float alpha) {
+    clearButton.setAlpha(alpha);
+    divider.setAlpha(alpha);
+    contentContainer.setAlpha(alpha);
+    setActionMenuViewAlphaIfNeeded(alpha);
+  }
+
+  private void setActionMenuViewAlphaIfNeeded(float alpha) {
+    if (searchView.isMenuItemsAnimated()) {
+      ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
+      if (actionMenuView != null) {
+        actionMenuView.setAlpha(alpha);
+      }
+    }
+  }
+
+  private int getFromTranslationY() {
+    int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getHeight() / 2;
+    int searchBarMiddleY = getViewTopFromSearchViewParent(searchBar) + searchBar.getHeight() / 2;
+    return searchBarMiddleY - toolbarMiddleY;
+  }
+
+  private int getTranslationXBetweenViews(
+      @Nullable View searchBarSubView, @NonNull View searchViewSubView) {
+    // If there is no equivalent for the SearchView subview in the SearchBar, we return the
+    // translation between the SearchBar and the start of the SearchView subview
+    if (searchBarSubView == null) {
+      int marginStart = ((MarginLayoutParams) searchViewSubView.getLayoutParams()).getMarginStart();
+      int paddingStart = searchBar.getPaddingStart();
+      int searchBarLeft = getViewLeftFromSearchViewParent(searchBar);
+      return ViewUtils.isLayoutRtl(searchBar)
+          ? searchBarLeft
+              + searchBar.getWidth()
+              + marginStart
+              - paddingStart
+              - searchView.getRight()
+          : (searchBarLeft - marginStart + paddingStart);
+    }
+    return getViewLeftFromSearchViewParent(searchBarSubView)
+        - getViewLeftFromSearchViewParent(searchViewSubView);
+  }
+
+  private int getViewLeftFromSearchViewParent(@NonNull View v) {
+    int left = v.getLeft();
+    ViewParent viewParent = v.getParent();
+    while (viewParent instanceof View && viewParent != searchView.getParent()) {
+      left += ((View) viewParent).getLeft();
+      viewParent = viewParent.getParent();
+    }
+    return left;
+  }
+
+  private int getViewTopFromSearchViewParent(@NonNull View v) {
+    int top = v.getTop();
+    ViewParent viewParent = v.getParent();
+    while (viewParent instanceof View && viewParent != searchView.getParent()) {
+      top += ((View) viewParent).getTop();
+      viewParent = viewParent.getParent();
+    }
+    return top;
+  }
+
+  private class DefaultAnimationDelegate implements AnimationDelegate {
+    @Override
+    public void setUpDummyToolbarIfNeeded() {
+      Menu menu = dummyToolbar.getMenu();
+      if (menu != null) {
+        menu.clear();
+      }
+      if (searchBar.getMenuResId() != -1 && searchView.isMenuItemsAnimated()) {
+        dummyToolbar.inflateMenu(searchBar.getMenuResId());
+        setMenuItemsNotClickable(dummyToolbar);
+        dummyToolbar.setVisibility(View.VISIBLE);
+      } else {
+        dummyToolbar.setVisibility(View.GONE);
+      }
+    }
+
+    @NonNull
+    @Override
+    public AnimatorSet getExpandCollapseAnimatorSet(boolean show) {
+      AnimatorSet animatorSet = new AnimatorSet();
+      animatorSet.playTogether(
+          getScrimAlphaAnimator(show),
+          getRootViewAnimator(show),
+          getClearButtonAnimator(show),
+          getContentAnimator(show),
+          getHeaderContainerAnimator(show),
+          getDummyToolbarAnimator(show),
+          getActionMenuViewsAlphaAnimator(show),
+          getEditTextAnimator(show),
+          getSearchPrefixAnimator(show),
+          getTextAnimator(show));
+      return animatorSet;
+    }
+
+    @NonNull
+    @Override
+    public List<SpringAnimation> getExpandCollapseSpringAnimations(boolean show) {
+      return new ArrayList<>();
+    }
+
+    @Override
+    public void onAnimationStart(boolean show) {}
+
+    @Override
+    public void onAnimationEnd(boolean show) {}
+
+    private Animator getScrimAlphaAnimator(boolean show) {
+      TimeInterpolator interpolator =
+          show ? AnimationUtils.LINEAR_INTERPOLATOR : AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
+
+      ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+      animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+      animator.setStartDelay(show ? SHOW_SCRIM_ALPHA_DURATION_MS : 0);
+      animator.setInterpolator(ReversableAnimatedValueInterpolator.of(show, interpolator));
+      animator.addUpdateListener(MultiViewUpdateListener.alphaListener(scrim));
+      return animator;
+    }
+
+    private Animator getRootViewAnimator(boolean show) {
+      Rect initialHideToClipBounds = backHelper.getInitialHideToClipBounds();
+      Rect initialHideFromClipBounds = backHelper.getInitialHideFromClipBounds();
+      Rect toClipBounds =
+          initialHideToClipBounds != null
+              ? initialHideToClipBounds
+              : ViewUtils.calculateRectFromBounds(searchView);
+      Rect fromClipBounds =
+          initialHideFromClipBounds != null
+              ? initialHideFromClipBounds
+              : ViewUtils.calculateOffsetRectFromBounds(rootView, searchBar);
+      Rect clipBounds = new Rect(fromClipBounds);
+
+      float fromCornerRadius = searchBar.getCornerSize();
+      float[] toCornerRadius =
+          maxCornerRadii(rootView.getCornerRadii(), backHelper.getExpandedCornerRadii());
+
+      ValueAnimator animator =
+          ValueAnimator.ofObject(new RectEvaluator(clipBounds), fromClipBounds, toClipBounds);
+      animator.addUpdateListener(
+          valueAnimator -> {
+            float[] cornerRadii =
+                lerpCornerRadii(
+                    fromCornerRadius, toCornerRadius, valueAnimator.getAnimatedFraction());
+            rootView.updateClipBoundsAndCornerRadii(clipBounds, cornerRadii);
+          });
+      animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+      animator.setInterpolator(
+          ReversableAnimatedValueInterpolator.of(
+              show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+      return animator;
+    }
+
+    private float[] maxCornerRadii(float[] startValue, float[] endValue) {
+      return new float[] {
+        max(startValue[0], endValue[0]),
+        max(startValue[1], endValue[1]),
+        max(startValue[2], endValue[2]),
+        max(startValue[3], endValue[3]),
+        max(startValue[4], endValue[4]),
+        max(startValue[5], endValue[5]),
+        max(startValue[6], endValue[6]),
+        max(startValue[7], endValue[7])
+      };
+    }
+
+    private float[] lerpCornerRadii(float startValue, float[] endValue, float fraction) {
+      return new float[] {
+        lerp(startValue, endValue[0], fraction),
+        lerp(startValue, endValue[1], fraction),
+        lerp(startValue, endValue[2], fraction),
+        lerp(startValue, endValue[3], fraction),
+        lerp(startValue, endValue[4], fraction),
+        lerp(startValue, endValue[5], fraction),
+        lerp(startValue, endValue[6], fraction),
+        lerp(startValue, endValue[7], fraction)
+      };
+    }
+
+    private Animator getDummyToolbarAnimator(boolean show) {
+      return getTranslationAnimator(
+          show, dummyToolbar, getFromTranslationXEnd(dummyToolbar), getFromTranslationY());
+    }
+
+    private Animator getHeaderContainerAnimator(boolean show) {
+      return getTranslationAnimator(
+          show, headerContainer, getFromTranslationXEnd(headerContainer), getFromTranslationY());
+    }
+
+    private Animator getActionMenuViewsAlphaAnimator(boolean show) {
+      ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+      animator.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+      animator.setInterpolator(
+          ReversableAnimatedValueInterpolator.of(
+              show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+
+      if (searchView.isMenuItemsAnimated()) {
+        ActionMenuView dummyActionMenuView = ToolbarUtils.getActionMenuView(dummyToolbar);
+        ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
+        animator.addUpdateListener(
+            new FadeThroughUpdateListener(dummyActionMenuView, actionMenuView));
+      }
+
+      return animator;
+    }
+
+    private Animator getSearchPrefixAnimator(boolean show) {
+      return getTranslationAnimatorForText(show, searchPrefix);
+    }
+
+    private Animator getEditTextAnimator(boolean show) {
+      return getTranslationAnimatorForText(show, editText);
+    }
+
+    private AnimatorSet getTextAnimator(boolean show) {
+      AnimatorSet animatorSet = new AnimatorSet();
+      addTextFadeAnimatorIfNeeded(animatorSet);
+      addEditTextClipAnimator(animatorSet);
+      animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+      animatorSet.setInterpolator(
+          ReversableAnimatedValueInterpolator.of(show, AnimationUtils.LINEAR_INTERPOLATOR));
+      return animatorSet;
+    }
+
+    private void addEditTextClipAnimator(AnimatorSet animatorSet) {
+      // We only want to add a clip animation if the edittext and searchbar text is the same, which
+      // means it is translating instead of fading.
+      if (searchBar == null || !TextUtils.equals(editText.getText(), searchBar.getText())) {
+        return;
+      }
+      Rect editTextClipBounds = new Rect(0, 0, editText.getWidth(), editText.getHeight());
+      ValueAnimator animator =
+          ValueAnimator.ofInt(searchBar.getTextView().getWidth(), editText.getWidth());
+      animator.addUpdateListener(
+          animation -> {
+            editTextClipBounds.right = (int) animation.getAnimatedValue();
+            editText.setClipBounds(editTextClipBounds);
+          });
+      animatorSet.playTogether(animator);
+    }
+
+    private void addTextFadeAnimatorIfNeeded(AnimatorSet animatorSet) {
+      if (searchBar == null || TextUtils.equals(editText.getText(), searchBar.getText())) {
+        return;
+      }
+      // If the searchbar text is not equal to the searchview edittext, we want to fade out the
+      // edittext and fade in the searchbar text
+      ValueAnimator animator = ValueAnimator.ofFloat(0, 1);
+      animator.addUpdateListener(
+          animation -> {
+            editText.setAlpha((Float) animation.getAnimatedValue());
+            searchBar.getTextView().setAlpha(1 - (Float) animation.getAnimatedValue());
+          });
+      animatorSet.playTogether(animator);
+    }
+
+    private Animator getTranslationAnimatorForText(boolean show, View v) {
+      TextView textView = searchBar.getPlaceholderTextView();
+      // If the placeholder text is empty, we animate to the searchbar textview instead.
+      // Or if we're showing the searchview, we always animate from the searchbar textview, not
+      // from the placeholder text.
+      if (TextUtils.isEmpty(textView.getText()) || show) {
+        textView = searchBar.getTextView();
+      }
+      int startX =
+          getViewLeftFromSearchViewParent(textView) - (v.getLeft() + textContainer.getLeft());
+      return getTranslationAnimator(show, v, startX, getFromTranslationY());
+    }
+
+    private Animator getContentAnimator(boolean show) {
+      AnimatorSet animatorSet = new AnimatorSet();
+      animatorSet.playTogether(
+          getContentAlphaAnimator(show), getDividerAnimator(show), getContentScaleAnimator(show));
+      return animatorSet;
+    }
+
+    private Animator getContentAlphaAnimator(boolean show) {
+      ValueAnimator animatorAlpha = ValueAnimator.ofFloat(0, 1);
+      animatorAlpha.setDuration(
+          show ? SHOW_CONTENT_ALPHA_DURATION_MS : HIDE_CONTENT_ALPHA_DURATION_MS);
+      animatorAlpha.setStartDelay(
+          show ? SHOW_CONTENT_ALPHA_START_DELAY_MS : HIDE_CONTENT_ALPHA_START_DELAY_MS);
+      animatorAlpha.setInterpolator(
+          ReversableAnimatedValueInterpolator.of(show, AnimationUtils.LINEAR_INTERPOLATOR));
+      animatorAlpha.addUpdateListener(
+          MultiViewUpdateListener.alphaListener(divider, contentContainer));
+      return animatorAlpha;
+    }
+
+    private Animator getDividerAnimator(boolean show) {
+      float dividerTranslationY =
+          (float) contentContainer.getHeight() * (1f - CONTENT_FROM_SCALE) / 2f;
+
+      ValueAnimator animatorDivider = ValueAnimator.ofFloat(dividerTranslationY, 0);
+      animatorDivider.setDuration(
+          show ? SHOW_CONTENT_SCALE_DURATION_MS : HIDE_CONTENT_SCALE_DURATION_MS);
+      animatorDivider.setInterpolator(
+          ReversableAnimatedValueInterpolator.of(
+              show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+      animatorDivider.addUpdateListener(MultiViewUpdateListener.translationYListener(divider));
+      return animatorDivider;
+    }
+
+    private Animator getContentScaleAnimator(boolean show) {
+      ValueAnimator animatorScale = ValueAnimator.ofFloat(CONTENT_FROM_SCALE, 1);
+      animatorScale.setDuration(
+          show ? SHOW_CONTENT_SCALE_DURATION_MS : HIDE_CONTENT_SCALE_DURATION_MS);
+      animatorScale.setInterpolator(
+          ReversableAnimatedValueInterpolator.of(
+              show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+      animatorScale.addUpdateListener(MultiViewUpdateListener.scaleListener(contentContainer));
+      return animatorScale;
+    }
+
+    private Animator getTranslationAnimator(boolean show, View view, int startX, int startY) {
+      ValueAnimator animatorX = ValueAnimator.ofFloat(startX, 0);
+      animatorX.addUpdateListener(MultiViewUpdateListener.translationXListener(view));
+
+      ValueAnimator animatorY = ValueAnimator.ofFloat(startY, 0);
+      animatorY.addUpdateListener(MultiViewUpdateListener.translationYListener(view));
+
+      AnimatorSet animatorSet = new AnimatorSet();
+      animatorSet.playTogether(animatorX, animatorY);
+      animatorSet.setDuration(show ? SHOW_DURATION_MS : HIDE_DURATION_MS);
+      animatorSet.setInterpolator(
+          ReversableAnimatedValueInterpolator.of(
+              show, AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
+      return animatorSet;
+    }
+
+    private int getFromTranslationXEnd(View view) {
+      int marginEnd = ((MarginLayoutParams) view.getLayoutParams()).getMarginEnd();
+      int viewLeft = getViewLeftFromSearchViewParent(searchBar);
+      return ViewUtils.isLayoutRtl(searchBar)
+          ? viewLeft - marginEnd
+          : viewLeft + searchBar.getWidth() + marginEnd - searchView.getWidth();
+    }
+
+    private int getFromTranslationY() {
+      int toolbarMiddleY = toolbarContainer.getTop() + toolbarContainer.getHeight() / 2;
+      int searchBarMiddleY = getViewTopFromSearchViewParent(searchBar) + searchBar.getHeight() / 2;
+      return searchBarMiddleY - toolbarMiddleY;
+    }
+  }
+
+  private class ContainedAnimationDelegate implements AnimationDelegate {
+    @Override
+    public void setUpDummyToolbarIfNeeded() {}
+
+    @NonNull
+    @Override
+    public AnimatorSet getExpandCollapseAnimatorSet(boolean show) {
+      AnimatorSet animatorSet = new AnimatorSet();
+      animatorSet.playTogether(
+          getBackgroundAlphaAnimator(show),
+          getContentAlphaAnimator(show),
+          getClearButtonAnimator(show));
+      return animatorSet;
+    }
+
+    @NonNull
+    @Override
+    public List<SpringAnimation> getExpandCollapseSpringAnimations(boolean show) {
+      return Arrays.asList(
+          getToolbarWidthSpringAnimation(show),
+          getToolbarTranslationXSpringAnimation(show),
+          getToolbarContainerTranslationYSpringAnimation(show));
+    }
+
+    @Override
+    public void onAnimationStart(boolean show) {
+      if (show) {
+        setBackgroundAlpha(0);
+        contentContainer.setAlpha(0);
+        searchBar.setVisibility(View.INVISIBLE);
+      } else {
+        setBackgroundAlpha(1);
+        contentContainer.setAlpha(1);
+      }
+    }
+
+    @Override
+    public void onAnimationEnd(boolean show) {
+      if (show) {
+        setBackgroundAlpha(1);
+        contentContainer.setAlpha(1);
+      } else {
+        setBackgroundAlpha(0);
+        contentContainer.setAlpha(0);
+        searchBar.setVisibility(View.VISIBLE);
+      }
+    }
+
+    /**
+     * Returns an {@link Animator} that fades in or out the background, based on the value of {@code
+     * show}.
+     */
+    private Animator getBackgroundAlphaAnimator(boolean show) {
+      ValueAnimator animator = show ? ValueAnimator.ofFloat(0, 1) : ValueAnimator.ofFloat(1, 0);
+      animator.setDuration(durationShort2);
+      animator.setStartDelay(show ? 0 : durationShort1);
+      animator.setInterpolator(
+          show ? standardDecelerateInterpolator : standardAccelerateInterpolator);
+      animator.addUpdateListener(
+          animation -> setBackgroundAlpha((Float) animation.getAnimatedValue()));
+      return animator;
+    }
+
+    /**
+     * Returns an {@link Animator} that fades in or out the search view content, based on the value
+     * of {@code show}.
+     */
+    private Animator getContentAlphaAnimator(boolean show) {
+      ValueAnimator animator = show ? ValueAnimator.ofFloat(0, 1) : ValueAnimator.ofFloat(1, 0);
+      animator.setDuration(durationShort2);
+      animator.setStartDelay(show ? durationShort1 : 0);
+      animator.setInterpolator(
+          show ? standardAccelerateInterpolator : standardDecelerateInterpolator);
+      animator.addUpdateListener(MultiViewUpdateListener.alphaListener(contentContainer));
+      return animator;
+    }
+
+    /**
+     * Returns a {@link SpringAnimation} that animates the toolbar’s width between the search bar
+     * width and the target width, based on the value of {@code show}.
+     */
+    private SpringAnimation getToolbarWidthSpringAnimation(boolean show) {
+      int searchBarWidth = searchBar.getWidth();
+      int toolbarWidth = getToolbarWidth();
+      int startWidth = show ? searchBarWidth : toolbarWidth;
+      int endWidth = show ? toolbarWidth : searchBarWidth;
+      SpringAnimation animation =
+          getSpringAnimation(toolbar, getWidthViewProperty(), startWidth, endWidth);
+      animation.addEndListener(
+          (dynamicAnimation, canceled, value, velocity) -> {
+            if (show) {
+              // Make sure toolbar width is set back to match parent at the end in case animation is
+              // canceled
+              setWidth(toolbar, LayoutParams.MATCH_PARENT);
+            }
+          });
+      return animation;
+    }
+
+    /** Returns the toolbar's target width. */
+    private int getToolbarWidth() {
+      int containerWidth = toolbarContainer.getWidth();
+      int containerHorizontalPaddings =
+          toolbarContainer.getPaddingStart() + toolbarContainer.getPaddingEnd();
+      MarginLayoutParams lp = (MarginLayoutParams) toolbar.getLayoutParams();
+      int toolbarHorizontalMargins = lp.getMarginStart() + lp.getMarginEnd();
+      return containerWidth - containerHorizontalPaddings - toolbarHorizontalMargins;
+    }
+
+    /**
+     * Returns a {@link SpringAnimation} that animates the toolbar’s X translation between alignment
+     * with the {@link SearchBar} and its target X position, based on the value of {@code show}.
+     */
+    private SpringAnimation getToolbarTranslationXSpringAnimation(boolean show) {
+      int translationX = getToolbarTranslationX();
+      int startTranslationX = show ? translationX : 0;
+      int endTranslationX = show ? 0 : translationX;
+      return getSpringAnimation(
+          toolbar, SpringAnimation.TRANSLATION_X, startTranslationX, endTranslationX);
+    }
+
+    /** Returns the X translation needed from toolbar to align with the {@link SearchBar}. */
+    private int getToolbarTranslationX() {
+      int searchBarLeft = getViewLeftFromSearchViewParent(searchBar);
+      int toolbarContainerPaddingStart = toolbarContainer.getPaddingStart();
+      MarginLayoutParams lp = (MarginLayoutParams) toolbar.getLayoutParams();
+      int toolbarMarginStart = lp.getMarginStart();
+      return searchBarLeft - toolbarContainerPaddingStart - toolbarMarginStart;
+    }
+
+    /**
+     * Returns a {@link SpringAnimation} that animates the toolbar container’s Y translation between
+     * alignment with the {@link SearchBar} and its target Y position, based on the value of {@code
+     * show}.
+     *
+     * <p>We are animating the toolbar container on the y-axis, not the toolbar itself, to avoid
+     * dealing with clipping behavior.
+     */
+    private SpringAnimation getToolbarContainerTranslationYSpringAnimation(boolean show) {
+      int translationY = getToolbarTranslationY();
+      int startTranslationY = show ? translationY : 0;
+      int endTranslationY = show ? 0 : translationY;
+      return getSpringAnimation(
+          toolbarContainer, SpringAnimation.TRANSLATION_Y, startTranslationY, endTranslationY);
+    }
+
+    /** Returns the Y translation needed from toolbar to align with the {@link SearchBar}. */
+    private int getToolbarTranslationY() {
+      int searchBarTop = getViewTopFromSearchViewParent(searchBar);
+      int toolbarTop = getViewTopFromSearchViewParent(toolbar);
+      return searchBarTop - toolbarTop;
+    }
+
+    /** A convenience method for updating the width of a view. */
+    private void setWidth(View view, int width) {
+      LayoutParams lp = view.getLayoutParams();
+      lp.width = width;
+      view.setLayoutParams(lp);
+    }
+
+    /**
+     * Returns a {@link FloatPropertyCompat} that a {@link SpringAnimation} can use to update the
+     * width of a {@link View}.
+     */
+    @NonNull
+    private FloatPropertyCompat<View> getWidthViewProperty() {
+      return new FloatPropertyCompat<View>("width") {
+        @Override
+        public float getValue(View view) {
+          return view.getWidth();
+        }
+
+        @Override
+        public void setValue(View view, float value) {
+          setWidth(view, (int) value);
+        }
+      };
+    }
+
+    /** A convenience method for creating a {@link SpringAnimation}. */
+    @NonNull
+    private SpringAnimation getSpringAnimation(
+        View view, FloatPropertyCompat<View> viewProperty, float startValue, float endValue) {
+      SpringAnimation animation = new SpringAnimation(view, viewProperty);
+      SpringForce spring =
+          MotionUtils.resolveThemeSpringForce(
+              context,
+              R.attr.motionSpringFastSpatial,
+              R.style.Motion_Material3_Spring_Standard_Default_Spatial);
+      animation.setSpring(spring);
+      animation.setStartValue(startValue);
+      animation.getSpring().setFinalPosition(endValue);
+      return animation;
+    }
+  }
+
+  private interface AnimationDelegate {
+    void setUpDummyToolbarIfNeeded();
+
+    @NonNull
+    AnimatorSet getExpandCollapseAnimatorSet(boolean show);
+
+    @NonNull
+    List<SpringAnimation> getExpandCollapseSpringAnimations(boolean show);
+
+    void onAnimationStart(boolean show);
+
+    void onAnimationEnd(boolean show);
   }
 }
