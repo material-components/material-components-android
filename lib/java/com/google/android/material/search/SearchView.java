@@ -220,6 +220,8 @@ public class SearchView extends FrameLayout
     autoShowKeyboard = a.getBoolean(R.styleable.SearchView_autoShowKeyboard, true);
     backHandlingEnabled = a.getBoolean(R.styleable.SearchView_backHandlingEnabled, true);
     dividerVisible = a.getBoolean(R.styleable.SearchView_dividerVisible, true);
+    boolean containedAnimationEnabled =
+        a.getBoolean(R.styleable.SearchView_containedAnimationEnabled, false);
 
     a.recycle();
 
@@ -241,7 +243,8 @@ public class SearchView extends FrameLayout
     divider = findViewById(R.id.open_search_view_divider);
     contentContainer = findViewById(R.id.open_search_view_content_container);
 
-    searchViewAnimationHelper = new SearchViewAnimationHelper(this);
+    searchViewAnimationHelper =
+        new SearchViewAnimationHelper(context, this, containedAnimationEnabled);
     elevationOverlayProvider = new ElevationOverlayProvider(context);
 
     setUpRootView();

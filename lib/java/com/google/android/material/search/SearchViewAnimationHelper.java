@@ -16,6 +16,8 @@
 
 package com.google.android.material.search;
 
+import com.google.android.material.R;
+
 import static com.google.android.material.animation.AnimationUtils.lerp;
 import static java.lang.Math.max;
 
@@ -24,6 +26,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
+import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
@@ -56,7 +59,9 @@ import com.google.android.material.internal.ToolbarUtils;
 import com.google.android.material.internal.TouchObserverFrameLayout;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.motion.MaterialMainContainerBackHelper;
+import com.google.android.material.motion.MotionUtils;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
+import java.util.ArrayList;
 
 /** Helper class for {@link SearchView} animations. */
 @SuppressWarnings("RestrictTo")
@@ -88,8 +93,15 @@ class SearchViewAnimationHelper {
   // Constants for hide translate animation
   private static final long HIDE_TRANSLATE_DURATION_MS = 300;
 
+  // Default duration for when a themed duration is not defined.
+  private static final int DEFAULT_DURATION_MS = 100;
+
+  // Default interpolator for when a themed interpolator is not defined.
+  private static final TimeInterpolator DEFAULT_INTERPOLATOR = AnimationUtils.LINEAR_INTERPOLATOR;
+
   private final SearchView searchView;
   private final View scrim;
+  private final View backgroundView;
   private final ClippableRoundedCornerLayout rootView;
   private final FrameLayout headerContainer;
   private final FrameLayout toolbarContainer;
@@ -107,9 +119,19 @@ class SearchViewAnimationHelper {
 
   private SearchBar searchBar;
 
-  SearchViewAnimationHelper(SearchView searchView) {
+  private final boolean containedAnimationEnabled;
+
+  private final TimeInterpolator standardAccelerateInterpolator;
+  private final TimeInterpolator standardDecelerateInterpolator;
+  private final int durationShort1;
+  private final int durationShort2;
+
+  SearchViewAnimationHelper(
+      Context context, SearchView searchView, boolean containedAnimationEnabled) {
     this.searchView = searchView;
+    this.containedAnimationEnabled = containedAnimationEnabled;
     this.scrim = searchView.scrim;
+    this.backgroundView = searchView.backgroundView;
     this.rootView = searchView.rootView;
     this.headerContainer = searchView.headerContainer;
     this.toolbarContainer = searchView.toolbarContainer;
@@ -123,6 +145,17 @@ class SearchViewAnimationHelper {
     this.textContainer = searchView.textContainer;
 
     backHelper = new MaterialMainContainerBackHelper(rootView);
+
+    standardAccelerateInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, R.attr.motionEasingStandardAccelerateInterpolator, DEFAULT_INTERPOLATOR);
+    standardDecelerateInterpolator =
+        MotionUtils.resolveThemeInterpolator(
+            context, R.attr.motionEasingStandardDecelerateInterpolator, DEFAULT_INTERPOLATOR);
+    durationShort1 =
+        MotionUtils.resolveThemeDuration(context, R.attr.motionDurationShort1, DEFAULT_DURATION_MS);
+    durationShort2 =
+        MotionUtils.resolveThemeDuration(context, R.attr.motionDurationShort2, DEFAULT_DURATION_MS);
   }
 
   void setSearchBar(SearchBar searchBar) {
@@ -162,12 +195,20 @@ class SearchViewAnimationHelper {
               new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationStart(Animator animation) {
+                  if (containedAnimationEnabled) {
+                    setBackgroundAlpha(0);
+                    contentContainer.setAlpha(0);
+                  }
                   rootView.setVisibility(View.VISIBLE);
                   searchBar.stopOnLoadAnimation();
                 }
 
                 @Override
                 public void onAnimationEnd(Animator animation) {
+                  if (containedAnimationEnabled) {
+                    setBackgroundAlpha(1);
+                    contentContainer.setAlpha(1);
+                  }
                   if (!searchView.isAdjustNothingSoftInputMode()) {
                     searchView.requestFocusAndShowKeyboardIfNeeded();
                   }
@@ -187,11 +228,19 @@ class SearchViewAnimationHelper {
         new AnimatorListenerAdapter() {
           @Override
           public void onAnimationStart(Animator animation) {
+            if (containedAnimationEnabled) {
+              setBackgroundAlpha(1);
+              contentContainer.setAlpha(1);
+            }
             searchView.setTransitionState(SearchView.TransitionState.HIDING);
           }
 
           @Override
           public void onAnimationEnd(Animator animation) {
+            if (containedAnimationEnabled) {
+              setBackgroundAlpha(0);
+              contentContainer.setAlpha(0);
+            }
             rootView.setVisibility(View.GONE);
             if (!searchView.isAdjustNothingSoftInputMode()) {
               searchView.clearFocusAndHideKeyboard();
@@ -277,22 +326,29 @@ class SearchViewAnimationHelper {
 
   private AnimatorSet getExpandCollapseAnimatorSet(boolean show) {
     AnimatorSet animatorSet = new AnimatorSet();
+    ArrayList<Animator> animators = new ArrayList<>();
     boolean backProgress = backProgressAnimatorSet != null;
     if (!backProgress) {
-      animatorSet.playTogether(
-          getButtonsProgressAnimator(show), getButtonsTranslationAnimator(show));
+      animators.add(getButtonsProgressAnimator(show));
+      animators.add(getButtonsTranslationAnimator(show));
     }
-    animatorSet.playTogether(
-        getScrimAlphaAnimator(show),
-        getRootViewAnimator(show),
-        getClearButtonAnimator(show),
-        getContentAnimator(show),
-        getHeaderContainerAnimator(show),
-        getDummyToolbarAnimator(show),
-        getActionMenuViewsAlphaAnimator(show),
-        getEditTextAnimator(show),
-        getSearchPrefixAnimator(show),
-        getTextAnimator(show));
+    if (containedAnimationEnabled) {
+      animators.add(getBackgroundAlphaContainedAnimator(show));
+      animators.add(getContentAlphaContainedAnimator(show));
+    } else {
+      animators.add(getScrimAlphaAnimator(show));
+      animators.add(getRootViewAnimator(show));
+      animators.add(getClearButtonAnimator(show));
+      animators.add(getContentAnimator(show));
+      animators.add(getHeaderContainerAnimator(show));
+      animators.add(getDummyToolbarAnimator(show));
+      animators.add(getActionMenuViewsAlphaAnimator(show));
+      animators.add(getEditTextAnimator(show));
+      animators.add(getSearchPrefixAnimator(show));
+      animators.add(getTextAnimator(show));
+    }
+    animatorSet.playTogether(animators);
+
     animatorSet.addListener(
         new AnimatorListenerAdapter() {
           @Override
@@ -324,6 +380,14 @@ class SearchViewAnimationHelper {
           }
         });
     return animatorSet;
+  }
+
+  /**
+   * Sets the alpha of the background. Note that this doesn't set the alpha on the entire {@code
+   * backgroundView}, but only on the background while retaining visibility of its children.
+   */
+  private void setBackgroundAlpha(float alpha) {
+    backgroundView.getBackground().mutate().setAlpha((int) (alpha * 255));
   }
 
   private void setContentViewsAlpha(float alpha) {
@@ -774,6 +838,35 @@ class SearchViewAnimationHelper {
         menuItem.setFocusableInTouchMode(false);
       }
     }
+  }
+
+  /**
+   * Returns an {@link Animator} that fades in or out the background, based on the value of {@code
+   * show}.
+   */
+  private Animator getBackgroundAlphaContainedAnimator(boolean show) {
+    ValueAnimator animator = show ? ValueAnimator.ofFloat(0, 1) : ValueAnimator.ofFloat(1, 0);
+    animator.setDuration(durationShort2);
+    animator.setStartDelay(show ? 0 : durationShort1);
+    animator.setInterpolator(
+        show ? standardDecelerateInterpolator : standardAccelerateInterpolator);
+    animator.addUpdateListener(
+        animation -> setBackgroundAlpha((Float) animation.getAnimatedValue()));
+    return animator;
+  }
+
+  /**
+   * Returns an {@link Animator} that fades in or out the search view content, based on the value of
+   * {@code show}.
+   */
+  private Animator getContentAlphaContainedAnimator(boolean show) {
+    ValueAnimator animator = show ? ValueAnimator.ofFloat(0, 1) : ValueAnimator.ofFloat(1, 0);
+    animator.setDuration(durationShort2);
+    animator.setStartDelay(show ? durationShort1 : 0);
+    animator.setInterpolator(
+        show ? standardAccelerateInterpolator : standardDecelerateInterpolator);
+    animator.addUpdateListener(MultiViewUpdateListener.alphaListener(contentContainer));
+    return animator;
   }
 
   void startBackProgress(@NonNull BackEventCompat backEvent) {

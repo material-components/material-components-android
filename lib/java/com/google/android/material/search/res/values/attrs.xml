@@ -24,7 +24,8 @@
   <attr name="materialSearchViewPrefixStyle" format="reference"/>
   <!-- Style to use for SearchView Toolbar in this theme. -->
   <attr name="materialSearchViewToolbarStyle" format="reference"/>
-  <!-- Attribute to use for hiding the navigation icon in search bar and search view. -->
+  <!-- Attribute to use for hiding the navigation icon in search bar and search
+       view. -->
   <attr name="hideNavigationIcon" format="boolean"/>
   <!-- Attribute to use for setting the search toolbar height. -->
   <attr name="materialSearchViewToolbarHeight" format="dimension"/>
@@ -43,8 +44,8 @@
     <!-- Whether the default margins should be applied to the SearchBar.
          Default is true. -->
     <attr name="defaultMarginsEnabled" format="boolean"/>
-    <!-- Whether the default AppBarLayout scroll flags should be applied to the SearchBar.
-         Default is true. -->
+    <!-- Whether the default AppBarLayout scroll flags should be applied to the
+         SearchBar. Default is true. -->
     <attr name="defaultScrollFlagsEnabled" format="boolean"/>
     <!-- Whether the navigation icon, which defaults to a magnifying glass
          icon, should be hidden. Default is false. -->
@@ -64,17 +65,21 @@
     <attr name="strokeColor"/>
     <!-- Width of the SearchBar outline stroke. -->
     <attr name="strokeWidth"/>
-    <!-- Whether the text corresponding to the `android:text` attribute or `android:hint` attribute
-         should be centered horizontally within the SearchBar. Default is false.-->
+    <!-- Whether the text corresponding to the `android:text` attribute or
+         `android:hint` attribute should be centered horizontally within the
+         SearchBar. Default is false.-->
     <attr name="textCentered" format="boolean"/>
-    <!-- Whether or not the SearchBar is lifted when a parent AppBarLayout is lifted when scrolling. -->
+    <!-- Whether or not the SearchBar is lifted when a parent AppBarLayout is
+         lifted when scrolling. -->
     <attr name="liftOnScroll"/>
-    <!-- The color of the SearchBar when lifted. If null, the search bar color will not change.  -->
+    <!-- The color of the SearchBar when lifted. If null, the search bar color
+         will not change.  -->
     <attr name="liftOnScrollColor"/>
     <!-- The max width the SearchBar can be. -->
     <attr name="android:maxWidth"/>
-    <!-- Whether or not to set an adaptive maximum width on the SearchBar based on the available width in the parent view.
-         If the max width is set explicitly, it will take precedence over this attribute. -->
+    <!-- Whether or not to set an adaptive maximum width on the SearchBar based
+         on the available width in the parent view. If the max width is set
+         explicitly, it will take precedence over this attribute. -->
     <attr name="adaptiveMaxWidthEnabled" format="boolean"/>
   </declare-styleable>
 
@@ -87,7 +92,8 @@
     <attr name="android:hint"/>
     <!-- Color of the container. -->
     <attr name="backgroundTint"/>
-    <!-- Text for the search prefix which appears before the main search EditText. -->
+    <!-- Text for the search prefix which appears before the main search
+         EditText. -->
     <attr name="searchPrefixText" format="string"/>
     <!-- Whether a DrawerArrowDrawable should be used for the navigation icon,
          which provides a "hamburger" menu to back arrow animation when the
@@ -114,8 +120,12 @@
     <!-- Whether the automatic back handling behavior should be enabled.
          Default is true. -->
     <attr name="backHandlingEnabled" format="boolean"/>
-    <!-- Whether the divider between the toolbar and content is visible. Default is true. -->
+    <!-- Whether the divider between the toolbar and content is visible. Default
+         is true. -->
     <attr name="dividerVisible" format="boolean"/>
+    <!-- Whether to enable the expand / collapse animation for contained style
+         when tapping SearchBar to reveal SearchView. Default is false. -->
+    <attr name="containedAnimationEnabled" format="boolean"/>
   </declare-styleable>
 
 </resources>

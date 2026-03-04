@@ -43,6 +43,7 @@
 
   <style name="Widget.Material3Expressive.SearchView.AppBarWithSearch" parent="Widget.Material3Expressive.SearchView">
     <item name="dividerVisible">false</item>
+    <item name="containedAnimationEnabled">true</item>
     <item name="backgroundTint">?attr/colorSurfaceContainerLow</item>
     <item name="materialThemeOverlay">@style/ThemeOverlay.Material3Expressive.SearchView.AppBarWithSearch</item>
   </style>
