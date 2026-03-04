@@ -990,7 +990,8 @@ class SearchViewAnimationHelper {
           getToolbarTranslationXSpringAnimation(show),
           getDummyToolbarWidthSpringAnimation(show),
           getDummyToolbarTranslationXSpringAnimation(show),
-          getToolbarContainerTranslationYSpringAnimation(show));
+          getToolbarContainerTranslationYSpringAnimation(show),
+          getEditTextTranslationXSpringAnimation(show));
     }
 
     @Override
@@ -1174,6 +1175,24 @@ class SearchViewAnimationHelper {
       int endTranslationY = show ? 0 : translationY;
       return getSpringAnimation(
           toolbarContainer, SpringAnimation.TRANSLATION_Y, startTranslationY, endTranslationY);
+    }
+
+    /**
+     * Returns a {@link SpringAnimation} that animates the edit text’s X translation between
+     * alignment with the {@link SearchBar} and its target X position, based on the value of {@code
+     * show}.
+     */
+    private SpringAnimation getEditTextTranslationXSpringAnimation(boolean show) {
+      TextView textView = searchBar.getPlaceholderTextView();
+      if (TextUtils.isEmpty(textView.getText()) || show) {
+        textView = searchBar.getTextView();
+      }
+      float translationX =
+          getTranslationXBetweenViews(textView, editText) - getToolbarTranslationX();
+      float startTranslationX = show ? translationX : 0;
+      float endTranslationX = show ? 0 : translationX;
+      return getSpringAnimation(
+          editText, SpringAnimation.TRANSLATION_X, startTranslationX, endTranslationX);
     }
 
     /** Returns the Y translation needed from toolbar to align with the {@link SearchBar}. */
