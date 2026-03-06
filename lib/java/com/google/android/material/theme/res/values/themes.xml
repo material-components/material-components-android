@@ -40,20 +40,6 @@
     <item name="windowNoTitle">true</item>
   </style>
 
-  <style name="Theme.Material3Expressive.DynamicColors.Light" parent="Theme.Material3Expressive.Light"/>
-
-  <style name="Theme.Material3Expressive.DynamicColors.Dark" parent="Theme.Material3Expressive.Dark"/>
-
-  <style name="Theme.Material3Expressive.DynamicColors.Light.NoActionBar">
-    <item name="windowActionBar">false</item>
-    <item name="windowNoTitle">true</item>
-  </style>
-
-  <style name="Theme.Material3Expressive.DynamicColors.Dark.NoActionBar">
-    <item name="windowActionBar">false</item>
-    <item name="windowNoTitle">true</item>
-  </style>
-
   <style name="Theme.Material3Expressive.Light.DialogWhenLarge" parent="Base.Theme.Material3Expressive.Light.DialogWhenLarge"/>
 
   <style name="Theme.Material3Expressive.Dark.DialogWhenLarge" parent="Base.Theme.Material3Expressive.Dark.DialogWhenLarge"/>
