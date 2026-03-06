@@ -19,13 +19,13 @@
   <!-- Styles for M3 Expressive SearchBar. -->
 
   <style name="Widget.Material3Expressive.SearchBar" parent="Widget.Material3.SearchBar">
-    <item name="backgroundTint">?attr/colorSurfaceContainerHigh</item>
+    <item name="backgroundTint">@macro/m3_comp_search_bar_container_color</item>
     <item name="liftOnScrollColor">?attr/colorSurfaceContainerHighest</item>
     <item name="liftOnScroll">true</item>
-    <item name="contentInsetStart">@dimen/m3e_searchbar_content_inset_horizontal</item>
-    <item name="contentInsetEnd">@dimen/m3e_searchbar_content_inset_horizontal</item>
-    <item name="android:paddingStart">@dimen/m3e_searchbar_padding_horizontal</item>
-    <item name="android:paddingEnd">@dimen/m3e_searchbar_padding_horizontal</item>
+    <item name="contentInsetStart">@dimen/m3_comp_search_bar_contained_leading_margin</item>
+    <item name="contentInsetEnd">@dimen/m3_comp_search_bar_contained_trailing_margin</item>
+    <item name="android:paddingStart">@dimen/m3_comp_search_bar_contained_leading_space</item>
+    <item name="android:paddingEnd">@dimen/m3_comp_search_bar_contained_trailing_space</item>
   </style>
 
   <style name="Widget.Material3Expressive.SearchBar.CenteredText">
@@ -55,11 +55,11 @@
   <style name="Widget.Material3Expressive.SearchView.Toolbar.AppBarWithSearch" parent="Widget.Material3Expressive.SearchView.Toolbar">
     <item name="android:minHeight">@dimen/m3e_searchview_appbarwithsearch_toolbar_height</item>
     <item name="maxButtonHeight">@dimen/m3e_searchview_appbarwithsearch_toolbar_height</item>
-    <item name="android:paddingStart">@dimen/m3e_searchview_appbarwithsearch_toolbar_padding_horizontal</item>
-    <item name="android:paddingEnd">@dimen/m3e_searchview_appbarwithsearch_toolbar_padding_horizontal</item>
-    <item name="android:layout_marginStart">@dimen/m3e_searchview_appbarwithsearch_toolbar_margin_horizontal</item>
-    <item name="android:layout_marginEnd">@dimen/m3e_searchview_appbarwithsearch_toolbar_margin_horizontal</item>
-    <item name="android:background">?attr/colorSurfaceContainerHigh</item>
+    <item name="android:paddingStart">@dimen/m3_comp_search_bar_contained_leading_space</item>
+    <item name="android:paddingEnd">@dimen/m3_comp_search_bar_contained_trailing_space</item>
+    <item name="android:layout_marginStart">@dimen/m3_comp_search_view_contained_leading_margin</item>
+    <item name="android:layout_marginEnd">@dimen/m3_comp_search_view_contained_trailing_margin</item>
+    <item name="android:background">@macro/m3_comp_search_view_container_color</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.SearchBar</item>
   </style>
