@@ -59,6 +59,8 @@
     <item name="android:paddingEnd">@dimen/m3_comp_search_bar_contained_trailing_space</item>
     <item name="android:layout_marginStart">@dimen/m3_comp_search_view_contained_leading_margin</item>
     <item name="android:layout_marginEnd">@dimen/m3_comp_search_view_contained_trailing_margin</item>
+    <!-- Necessary to align the toolbar with the search bar in an AppBarLayout on the y-axis. -->
+    <item name="android:layout_marginTop">4dp</item>
     <item name="android:background">@macro/m3_comp_search_view_container_color</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Material3.SearchBar</item>
