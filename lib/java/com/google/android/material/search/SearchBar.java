@@ -54,6 +54,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -163,6 +164,10 @@ public class SearchBar extends Toolbar {
   @Nullable private ActionMenuView menuView;
   @Nullable private ImageButton navIconButton;
 
+  // Views to be animated out of the AppBarLayout during expansion.
+  private int startSiblingViewId;
+  private int endSiblingViewId;
+
   // The percentage of the available width that the SearchBar should be at after the specified
   // breakpoint in the measure pass.
   private static final float ADAPTIVE_MAX_WIDTH_PERCENT_AFTER_BREAKPOINT = 0.5f;
@@ -229,6 +234,8 @@ public class SearchBar extends Toolbar {
     liftOnScroll = a.getBoolean(R.styleable.SearchBar_liftOnScroll, false);
     maxWidth = a.getDimensionPixelSize(R.styleable.SearchBar_android_maxWidth, -1);
     adaptiveMaxWidthEnabled = a.getBoolean(R.styleable.SearchBar_adaptiveMaxWidthEnabled, false);
+    startSiblingViewId = a.getResourceId(R.styleable.SearchBar_startSiblingViewId, View.NO_ID);
+    endSiblingViewId = a.getResourceId(R.styleable.SearchBar_endSiblingViewId, View.NO_ID);
 
     a.recycle();
 
@@ -269,7 +276,7 @@ public class SearchBar extends Toolbar {
   }
 
   @Nullable
-  private AppBarLayout getAppBarLayoutParentIfExists() {
+  AppBarLayout getAppBarLayoutParentIfExists() {
     ViewParent v = getParent();
     while (v != null) {
       if (v instanceof AppBarLayout) {
@@ -801,6 +808,40 @@ public class SearchBar extends Toolbar {
   @Nullable
   public CharSequence getHint() {
     return textView.getHint();
+  }
+
+  /**
+   * Returns the ID of the view to the start side of the {@link SearchBar} to be animated out of the
+   * screen during the contained expansion animation.
+   */
+  @IdRes
+  public int getStartSiblingViewId() {
+    return startSiblingViewId;
+  }
+
+  /**
+   * Sets the ID of the view to the start side of the {@link SearchBar} to be animated out of the
+   * screen during the contained expansion animation.
+   */
+  public void setStartSiblingViewId(@IdRes int startSiblingViewId) {
+    this.startSiblingViewId = startSiblingViewId;
+  }
+
+  /**
+   * Returns the ID of the view to the end side of the {@link SearchBar} to be animated out of the
+   * screen during the contained expansion animation.
+   */
+  @IdRes
+  public int getEndSiblingViewId() {
+    return endSiblingViewId;
+  }
+
+  /**
+   * Sets the ID of the view to the end side of the {@link SearchBar} to be animated out of the
+   * screen during the contained expansion animation.
+   */
+  public void setEndSiblingViewId(@IdRes int endSiblingViewId) {
+    this.endSiblingViewId = endSiblingViewId;
   }
 
   /** Sets the hint of main {@link TextView}. */

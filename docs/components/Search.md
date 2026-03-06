@@ -58,7 +58,7 @@ More details on anatomy items in the
 
 ## M3 Expressive
 
-### M3 Expressive update
+### M3 Expressive updates
 
 SearchBar updates
 
@@ -66,6 +66,11 @@ SearchBar updates
 *   New Maximum Width
 *   New Lift on Scroll Color attribute
 *   Padding and inset updates
+
+SearchView updates
+
+*   New contained style and animation where `SearchBar` persists visually within
+    the `SearchView`
 
 ### M3 Expressive styles
 
@@ -145,6 +150,47 @@ For example:
   </com.google.android.material.appbar.AppBarLayout>
 ```
 
+#### Contained style SearchView
+
+![Material 3 Expressive Search View](assets/search/search-view-expressive.png)
+
+A new contained style for `SearchView` is available, if `SearchBar` is placed
+inside an `AppBarLayout`, as recommended above. This new style makes a visual
+appearance that the `SearchBar` persists visually within the `SearchView`,
+creating a more expressive and visually cohesive experience.
+
+You can opt-in this new style by setting the `materialSearchViewStyle` in your
+theme (in addition to the typical `AppBarWithSearch` setup above):
+
+```xml
+<item name="materialSearchViewStyle">@style/Widget.Material3Expressive.SearchView.AppBarWithSearch</item>
+```
+
+##### SearchBar icons animation
+
+During the contained style expansion of `SearchBar` into `SearchView`, sibling
+views, like icon buttons, are animated off-screen to clear the visual space.
+
+If the `SearchBar` is a direct child of a `Toolbar`, the navigation button and
+action menu view are treated as sibling views automatically.
+
+Otherwise, sibling views can be declared either directly in the XML or
+programmatically:
+
+*   XML attributes:
+
+    *   `app:startSiblingViewId`
+    *   `app:endSiblingViewId`
+
+*   Programmatic API:
+
+    *   `SearchBar#setStartSiblingViewId(id)`
+    *   `SearchBar#setEndSiblingViewId(id)`
+
+Note that only one ID can be assigned to each side. If you need to animate
+multiple icons together, wrap them in a single `ViewGroup` (e.g. a
+`LinearLayout`) and provide the ID of that container.
+
 ## Key properties
 
 ### Search bar
@@ -153,28 +199,30 @@ For example:
 
 The following attributes can be changed for `SearchBar`:
 
-Element                                  | Attribute                     | Related method(s)                           | Default value
----------------------------------------- | ----------------------------- | ------------------------------------------- | -------------
-**Max Width**                            | `android:maxWidth`            | `setMaxWidth`<br/>`getMaxWidth`             | `-1` (unset)
-**Flag for enabling adaptive max width** | `app:adaptiveMaxWidthEnabled` | --                                          | `false`
-**Min height**                           | `android:minHeight`           | `setMinHeight`<br/>`getMinHeight`           | `@dimen/m3_searchbar_height`
-**Search text appearance**               | `android:textAppearance`      | `setTextAppearance`<br/>`getTextAppearance` | `@style/TextAppearance.Material3.SearchBar`
-**Search text**                          | `android:text`                | `setText`<br/>`getText`                     | `null`
-**Search hint**                          | `android:hint`                | `setHint`<br/>`getHint`                     | `null`
-**Search text centered**                 | `app:textCentered`            | `setTextCentered`<br/>`getTextCentered`     | `false`
-**Color**                                | `app:backgroundTint`          | --                                          | `?attr/colorSurfaceContainerHigh`
-**Lift On Scroll**                       | `app:liftOnScroll`            | --                                          | `false`
-**Lift On Scroll Color**                 | `app:liftOnScrollColor`       | --                                          | `?attr/colorSurfaceContainerHighest`
-**Flag for default margins**             | `app:defaultMarginsEnabled`   | --                                          | `true`
-**Flag for navigation icon**             | `app:hideNavigationIcon`      | --                                          | `false`
+Element                                                         | Attribute                     | Related method(s)                                   | Default value
+--------------------------------------------------------------- | ----------------------------- | --------------------------------------------------- | -------------
+**Max Width**                                                   | `android:maxWidth`            | `setMaxWidth`<br/>`getMaxWidth`                     | `-1` (unset)
+**Flag for enabling adaptive max width**                        | `app:adaptiveMaxWidthEnabled` | --                                                  | `false`
+**Min height**                                                  | `android:minHeight`           | `setMinHeight`<br/>`getMinHeight`                   | `@dimen/m3_searchbar_height`
+**Search text appearance**                                      | `android:textAppearance`      | `setTextAppearance`<br/>`getTextAppearance`         | `@style/TextAppearance.Material3.SearchBar`
+**Search text**                                                 | `android:text`                | `setText`<br/>`getText`                             | `null`
+**Search hint**                                                 | `android:hint`                | `setHint`<br/>`getHint`                             | `null`
+**Search text centered**                                        | `app:textCentered`            | `setTextCentered`<br/>`getTextCentered`             | `false`
+**Color**                                                       | `app:backgroundTint`          | --                                                  | `?attr/colorSurfaceContainerHigh`
+**Lift On Scroll**                                              | `app:liftOnScroll`            | --                                                  | `false`
+**Lift On Scroll Color**                                        | `app:liftOnScrollColor`       | --                                                  | `?attr/colorSurfaceContainerHighest`
+**Flag for default margins**                                    | `app:defaultMarginsEnabled`   | --                                                  | `true`
+**Flag for navigation icon**                                    | `app:hideNavigationIcon`      | --                                                  | `false`
+**Start sibling view to animate out when entering Search View** | `app:startSiblingViewId`      | `setStartSiblingViewId`<br/>`getStartSiblingViewId` | `-1` (unset)
+**End sibling view to animate out when entering Search View**   | `app:endSiblingViewId`        | `setEndSiblingViewId`<br/>`getEndSiblingViewId`     | `-1` (unset)
 
 #### Styles
 
-Element                        | Style                                 | Theme attribute
------------------------------- | ------------------------------------- | ---------------
-**Search Bar Default style**   | `Widget.Material3.SearchBar`          | `?attr/materialSearchBarStyle`
-**Search View Toolbar style**  | `Widget.Material3.SearchView.Toolbar` | `?attr/materialSearchViewToolbarStyle`
-**Search View Toolbar height** | `@dimen/m3_searchview_height`         | `?attr/materialSearchViewToolbarHeight`
+Element                                       | Style                                               | Theme attribute
+--------------------------------------------- | --------------------------------------------------- | ---------------
+**Search Bar default style**                  | `Widget.Material3.SearchBar`                        | `?attr/materialSearchBarStyle`
+**Expressive Search Bar default style**       | `Widget.Material3Expressive.SearchBar`              | `?attr/materialSearchBarStyle`
+**Expressive Search Bar centered text style** | `Widget.Material3Expressive.SearchBar.CenteredText` | `?attr/materialSearchBarStyle`
 
 ### Search view
 
@@ -195,9 +243,16 @@ Element                            | Attribute                    | Related meth
 
 #### Styles
 
-| Element  | Style                         | Theme attribute                 |
-| -------- | ----------------------------- | ------------------------------- |
-| **Search View Default style** | `Widget.Material3.SearchView` | `?attr/materialSearchViewStyle` |
+Element                                                   | Style                                                            | Theme attribute
+--------------------------------------------------------- | ---------------------------------------------------------------- | ---------------
+**Search View default style**                             | `Widget.Material3.SearchView`                                    | `?attr/materialSearchViewStyle`
+**Search View Toolbar style**                             | `Widget.Material3.SearchView.Toolbar`                            | `?attr/materialSearchViewToolbarStyle`
+**Search View Toolbar height**                            | `@dimen/m3_searchview_height`                                    | `?attr/materialSearchViewToolbarHeight`
+**Expressive Search View default style**                  | `Widget.Material3Expressive.SearchView`                          | `?attr/materialSearchViewStyle`
+**Expressive Search View Toolbar style**                  | `Widget.Material3Expressive.SearchView.Toolbar`                  | `?attr/materialSearchViewToolbarStyle`
+**Expressive Search View contained style**                | `Widget.Material3Expressive.SearchView.AppBarWithSearch`         | `?attr/materialSearchViewStyle`
+**Expressive Search View Toolbar contained style**        | `Widget.Material3Expressive.SearchView.Toolbar.AppBarWithSearch` | `?attr/materialSearchViewToolbarStyle`
+**Expressive Search View Toolbar contained style height** | `@dimen/m3e_searchview_appbarwithsearch_toolbar_height`          | `?attr/materialSearchViewToolbarHeight`
 
 ## Code implementation
 

@@ -55,6 +55,7 @@ import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.animation.AnimationCoordinator;
 import com.google.android.material.animation.AnimationCoordinator.Listener;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.internal.ClippableRoundedCornerLayout;
 import com.google.android.material.internal.FadeThroughDrawable;
 import com.google.android.material.internal.FadeThroughUpdateListener;
@@ -992,7 +993,8 @@ class SearchViewAnimationHelper {
           getContentAlphaAnimator(show),
           getToolbarAlphaAnimator(show),
           getDummyTextViewWidthAnimator(show),
-          getClearButtonAnimator(show));
+          getClearButtonAnimator(show),
+          getSearchBarSiblingsTranslationAnimator(show));
       return animatorSet;
     }
 
@@ -1103,6 +1105,111 @@ class SearchViewAnimationHelper {
           show ? standardDecelerateInterpolator : standardAccelerateInterpolator);
       animator.addUpdateListener(
           animation -> setWidth(dummyTextView, (int) animation.getAnimatedValue()));
+      return animator;
+    }
+
+    /**
+     * Returns an {@link Animator} that translates sibling views surrounding the search bar out of
+     * the {@link AppBarLayout} during expansion and back in during collapse. No-op if the search
+     * bar is not a descendant of an {@link AppBarLayout}.
+     *
+     * <p>If sibling views are declared, either in XML by {@code startSiblingViewId} and {@code
+     * endSiblingViewId}, or programmatically by {@link SearchBar#setStartSiblingViewId(int)} and
+     * {@link SearchBar#setEndSiblingViewId(int)}, they will be animated. Otherwise, if {@link
+     * SearchBar} is a direct child of a {@link Toolbar}, we treat the navigation button and action
+     * menu view as sibling views.
+     */
+    private Animator getSearchBarSiblingsTranslationAnimator(boolean show) {
+      AnimatorSet animatorSet = new AnimatorSet();
+      AppBarLayout appBarLayout = searchBar.getAppBarLayoutParentIfExists();
+      if (searchBar == null || appBarLayout == null) {
+        return animatorSet;
+      }
+
+      View startSiblingView = getStartSiblingView(appBarLayout);
+      View endSiblingView = getEndSiblingView(appBarLayout);
+
+      boolean isRtl = ViewUtils.isLayoutRtl(searchBar);
+      int appBarLayoutWidth = appBarLayout.getWidth();
+      if (startSiblingView != null) {
+        Rect startSiblingRect =
+            ViewUtils.calculateOffsetRectFromBounds(appBarLayout, startSiblingView);
+        float startSiblingTranslationX =
+            isRtl ? appBarLayoutWidth - startSiblingRect.left : -startSiblingRect.right;
+        animatorSet.playTogether(
+            getSiblingTranslationAnimator(startSiblingView, show, startSiblingTranslationX));
+        animatorSet.playTogether(getSiblingAlphaAnimator(startSiblingView, show));
+      }
+      if (endSiblingView != null) {
+        Rect endSiblingRect = ViewUtils.calculateOffsetRectFromBounds(appBarLayout, endSiblingView);
+        float endSiblingTranslationX =
+            isRtl ? -endSiblingRect.right : appBarLayoutWidth - endSiblingRect.left;
+        animatorSet.playTogether(
+            getSiblingTranslationAnimator(endSiblingView, show, endSiblingTranslationX));
+        animatorSet.playTogether(getSiblingAlphaAnimator(endSiblingView, show));
+      }
+
+      animatorSet.setDuration(durationShort2);
+      animatorSet.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
+      return animatorSet;
+    }
+
+    @Nullable
+    private View getStartSiblingView(@NonNull AppBarLayout appBarLayout) {
+      int startSiblingViewId = searchBar.getStartSiblingViewId();
+      return startSiblingViewId != View.NO_ID
+          ? appBarLayout.findViewById(startSiblingViewId)
+          : getToolbarNavigationIconButton();
+    }
+
+    @Nullable
+    private View getEndSiblingView(@NonNull AppBarLayout appBarLayout) {
+      int endSiblingViewId = searchBar.getEndSiblingViewId();
+      return endSiblingViewId != View.NO_ID
+          ? appBarLayout.findViewById(endSiblingViewId)
+          : getToolbarActionMenuView();
+    }
+
+    @Nullable
+    private View getToolbarNavigationIconButton() {
+      ViewParent parent = searchBar.getParent();
+      if (!(parent instanceof Toolbar)) {
+        return null;
+      }
+
+      return ToolbarUtils.getNavigationIconButton((Toolbar) parent);
+    }
+
+    @Nullable
+    private View getToolbarActionMenuView() {
+      ViewParent parent = searchBar.getParent();
+      if (!(parent instanceof Toolbar)) {
+        return null;
+      }
+
+      return ToolbarUtils.getActionMenuView((Toolbar) parent);
+    }
+
+    /**
+     * Returns an {@link Animator} that translates a single sibling view in or out of its animation
+     * root, which is either the {@link AppBarLayout} or its content view.
+     */
+    private Animator getSiblingTranslationAnimator(View view, boolean show, float translationX) {
+      float startX = show ? 0 : translationX;
+      float endX = show ? translationX : 0;
+
+      ValueAnimator animator = ValueAnimator.ofFloat(startX, endX);
+      animator.addUpdateListener(MultiViewUpdateListener.translationXListener(view));
+      return animator;
+    }
+
+    /**
+     * Returns an {@link Animator} that fades out a single sibling view when expanding and fades it
+     * in when collapsing.
+     */
+    private Animator getSiblingAlphaAnimator(View view, boolean show) {
+      ValueAnimator animator = getAlphaValueAnimator(!show);
+      animator.addUpdateListener(MultiViewUpdateListener.alphaListener(view));
       return animator;
     }
 

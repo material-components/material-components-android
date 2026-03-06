@@ -81,6 +81,16 @@
          on the available width in the parent view. If the max width is set
          explicitly, it will take precedence over this attribute. -->
     <attr name="adaptiveMaxWidthEnabled" format="boolean"/>
+    <!-- The ID of the view to the start of the SearchBar. This view will be
+         animated out of view when SearchBar expands and animated back
+         in when it collapses. Only used if the containedAnimationEnabled
+         attribute of the SearchView is set to true. -->
+    <attr name="startSiblingViewId" format="reference"/>
+    <!-- The ID of the view to the end of the SearchBar. This view will be
+         animated out of view when SearchBar expands and animated back
+         in when it collapses. Only used if the containedAnimationEnabled
+         attribute of the SearchView is set to true. -->
+    <attr name="endSiblingViewId" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="SearchView">

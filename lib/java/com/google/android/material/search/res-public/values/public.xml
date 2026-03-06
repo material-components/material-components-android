@@ -30,6 +30,8 @@
   <public name="tintNavigationIcon" type="attr"/>
   <public name="textCentered" type="attr"/>
   <public name="dividerVisible" type="attr"/>
+  <public name="startSiblingViewId" type="attr"/>
+  <public name="endSiblingViewId" type="attr"/>
   <public name="Widget.Material3.SearchBar" type="style"/>
   <public name="Widget.Material3.SearchBar.Outlined" type="style"/>
   <public name="Widget.Material3.SearchView" type="style"/>
