@@ -350,37 +350,6 @@ class SearchViewAnimationHelper {
     if (backProgressAnimatorSet == null) {
       animatorSet.playTogether(getButtonsProgressAnimator(show));
     }
-
-    animatorSet.addListener(
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationStart(Animator animation) {
-            setContentViewsAlpha(show ? 0 : 1);
-          }
-
-          @Override
-          public void onAnimationEnd(Animator animation) {
-            setContentViewsAlpha(show ? 1 : 0);
-            // Reset edittext and searchbar textview alphas after the animations are finished since
-            // the visibilities for searchview and searchbar have been set accordingly.
-            editText.setAlpha(1);
-            if (searchBar != null) {
-              searchBar.getTextView().setAlpha(1);
-            }
-            // Reset clip bounds so it can react to the screen or layout changes.
-            editText.setClipBounds(null);
-
-            // After expanding or collapsing, we should reset the clip bounds so it can react to the
-            // screen or layout changes. Otherwise it will result in wrong clipping on the layout.
-            rootView.resetClipBoundsAndCornerRadii();
-
-            // After collapsing, we should reset the expanded corner radii in case the search view
-            // is shown in a different location the next time.
-            if (!show) {
-              backHelper.clearExpandedCornerRadii();
-            }
-          }
-        });
     return animatorSet;
   }
 
@@ -655,10 +624,32 @@ class SearchViewAnimationHelper {
     }
 
     @Override
-    public void onAnimationStart(boolean show) {}
+    public void onAnimationStart(boolean show) {
+      setContentViewsAlpha(show ? 0 : 1);
+    }
 
     @Override
-    public void onAnimationEnd(boolean show) {}
+    public void onAnimationEnd(boolean show) {
+      setContentViewsAlpha(show ? 1 : 0);
+      // Reset edittext and searchbar textview alphas after the animations are finished since
+      // the visibilities for searchview and searchbar have been set accordingly.
+      editText.setAlpha(1);
+      if (searchBar != null) {
+        searchBar.getTextView().setAlpha(1);
+      }
+      // Reset clip bounds so it can react to the screen or layout changes.
+      editText.setClipBounds(null);
+
+      // After expanding or collapsing, we should reset the clip bounds so it can react to the
+      // screen or layout changes. Otherwise it will result in wrong clipping on the layout.
+      rootView.resetClipBoundsAndCornerRadii();
+
+      // After collapsing, we should reset the expanded corner radii in case the search view
+      // is shown in a different location the next time.
+      if (!show) {
+        backHelper.clearExpandedCornerRadii();
+      }
+    }
 
     @Override
     public void startButtonsTranslationAnimation() {
