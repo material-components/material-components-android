@@ -174,6 +174,7 @@ public class SearchView extends FrameLayout
   private boolean useWindowInsetsController;
   private boolean statusBarSpacerEnabledOverride;
   private final boolean dividerVisible;
+  private final boolean containedAnimationEnabled;
   @NonNull private TransitionState currentTransitionState = TransitionState.HIDDEN;
   private Map<View, Integer> childImportantForAccessibilityMap;
   private final OnTouchModeChangeListener touchModeChangeListener =
@@ -224,7 +225,7 @@ public class SearchView extends FrameLayout
     autoShowKeyboard = a.getBoolean(R.styleable.SearchView_autoShowKeyboard, true);
     backHandlingEnabled = a.getBoolean(R.styleable.SearchView_backHandlingEnabled, true);
     dividerVisible = a.getBoolean(R.styleable.SearchView_dividerVisible, true);
-    boolean containedAnimationEnabled =
+    containedAnimationEnabled =
         a.getBoolean(R.styleable.SearchView_containedAnimationEnabled, false);
 
     a.recycle();
@@ -326,7 +327,7 @@ public class SearchView extends FrameLayout
     if (isHiddenOrHiding() || searchBar == null) {
       return;
     }
-    if (searchBar != null) {
+    if (!containedAnimationEnabled) {
       searchBar.setPlaceholderText(editText.getText().toString());
     }
     searchViewAnimationHelper.startBackProgress(backEvent);
@@ -964,7 +965,9 @@ public class SearchView extends FrameLayout
       return;
     }
     if (searchBar != null && searchBar.isAttachedToWindow()) {
-      searchBar.setPlaceholderText(editText.getText().toString());
+      if (!containedAnimationEnabled) {
+        searchBar.setPlaceholderText(editText.getText().toString());
+      }
       searchBar.post(searchViewAnimationHelper::hide);
     } else {
       searchViewAnimationHelper.hide();
