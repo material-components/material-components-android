@@ -248,7 +248,7 @@ abstract class BaseSlider<
       "Value(%s) must be equal to valueFrom(%s) plus a multiple of stepSize(%s) when using"
           + " stepSize(%s)";
   private static final String EXCEPTION_ILLEGAL_VALUE_FROM =
-      "valueFrom(%s) must be smaller than valueTo(%s)";
+      "valueFrom(%s) must be smaller than or equal to valueTo(%s)";
   private static final String EXCEPTION_ILLEGAL_STEP_SIZE =
       "The stepSize(%s) must be 0, or a factor of the valueFrom(%s)-valueTo(%s) range";
   private static final String EXCEPTION_ILLEGAL_MIN_SEPARATION =
@@ -722,7 +722,7 @@ abstract class BaseSlider<
   }
 
   private void validateValues() {
-    if (valueFrom >= valueTo) {
+    if (valueFrom > valueTo) {
       throw new IllegalStateException(
           String.format(EXCEPTION_ILLEGAL_VALUE_FROM, valueFrom, valueTo));
     }
@@ -2814,7 +2814,7 @@ abstract class BaseSlider<
    * being on the far left, and 1 on the far right.
    */
   private float normalizeValue(float value) {
-    float normalized = (value - valueFrom) / (valueTo - valueFrom);
+    float normalized = (valueTo != valueFrom) ? (value - valueFrom) / (valueTo - valueFrom) : 0;
     if (isRtl() || isVertical()) {
       return 1 - normalized;
     }
@@ -3400,7 +3400,7 @@ abstract class BaseSlider<
   }
 
   private double snapPosition(float position) {
-    if (stepSize > 0.0f) {
+    if (stepSize > 0.0f && valueTo != valueFrom) {
       int stepCount = (int) ((valueTo - valueFrom) / stepSize);
       return Math.round(position * stepCount) / (double) stepCount;
     }
@@ -3441,7 +3441,7 @@ abstract class BaseSlider<
 
       if (compare(valueDiff, activeThumbDiff) == 0) {
         // Two thumbs on the same value and we don't have enough movement to use direction yet.
-        if (abs(valueX - touchX) < scaledTouchSlop) {
+        if (abs(valueX - touchX) < scaledTouchSlop && valueTo != valueFrom) {
           activeThumbIdx = -1;
           return false;
         }
