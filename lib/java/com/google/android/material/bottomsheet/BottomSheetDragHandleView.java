@@ -326,16 +326,18 @@ public class BottomSheetDragHandleView extends AppCompatImageView implements
                 : BottomSheetBehavior.STATE_EXPANDED;
         break;
       case BottomSheetBehavior.STATE_EXPANDED:
-        nextState =
-            canHalfExpand
-                ? BottomSheetBehavior.STATE_HALF_EXPANDED
-                : BottomSheetBehavior.STATE_COLLAPSED;
+        if (canHalfExpand) {
+          nextState = BottomSheetBehavior.STATE_HALF_EXPANDED;
+        } else if (bottomSheetBehavior.canCollapse()) {
+          nextState = BottomSheetBehavior.STATE_COLLAPSED;
+        }
         break;
       case BottomSheetBehavior.STATE_HALF_EXPANDED:
-        nextState =
-            clickToExpand
-                ? BottomSheetBehavior.STATE_EXPANDED
-                : BottomSheetBehavior.STATE_COLLAPSED;
+        if (clickToExpand) {
+          nextState = BottomSheetBehavior.STATE_EXPANDED;
+        } else if (bottomSheetBehavior.canCollapse()) {
+          nextState = BottomSheetBehavior.STATE_COLLAPSED;
+        }
         break;
       default: // fall out
     }

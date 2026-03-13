@@ -1246,6 +1246,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return skipCollapsed;
   }
 
+  boolean canCollapse() {
+    return !skipCollapsed || !hideable;
+  }
+
   /**
    * Sets whether this bottom sheet can be collapsed/expanded by dragging. Note: When disabling
    * dragging, an app will require to implement a custom way to expand/collapse the bottom sheet
@@ -2503,18 +2507,22 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     switch (state) {
       case STATE_EXPANDED:
         {
-          collapseActionIds.put(
-              viewIndex,
-              addAccessibilityActionForState(
-                  view, R.string.bottomsheet_action_collapse, STATE_COLLAPSED));
+          if (canCollapse()) {
+            collapseActionIds.put(
+                viewIndex,
+                addAccessibilityActionForState(
+                    view, R.string.bottomsheet_action_collapse, STATE_COLLAPSED));
+          }
           break;
         }
       case STATE_HALF_EXPANDED:
         {
-          collapseActionIds.put(
-              viewIndex,
-              addAccessibilityActionForState(
-                  view, R.string.bottomsheet_action_collapse, STATE_COLLAPSED));
+          if (canCollapse()) {
+            collapseActionIds.put(
+                viewIndex,
+                addAccessibilityActionForState(
+                    view, R.string.bottomsheet_action_collapse, STATE_COLLAPSED));
+          }
           expandActionIds.put(
               viewIndex,
               addAccessibilityActionForState(

@@ -1149,8 +1149,9 @@ public class BottomSheetBehaviorTest {
     boolean hasHalfExpandAction =
         state != BottomSheetBehavior.STATE_HALF_EXPANDED && !behavior.isFitToContents();
     boolean hasCollapseAction =
-        state == BottomSheetBehavior.STATE_EXPANDED
-            || state == BottomSheetBehavior.STATE_HALF_EXPANDED;
+        (state == BottomSheetBehavior.STATE_EXPANDED
+                || state == BottomSheetBehavior.STATE_HALF_EXPANDED)
+            && (!behavior.getSkipCollapsed() || !behavior.isHideable());
     boolean hasDismissAction = state != BottomSheetBehavior.STATE_HIDDEN && behavior.isHideable();
     assertThat(
         hasCustomAccessibilityAction(behavior.expandActionIds),

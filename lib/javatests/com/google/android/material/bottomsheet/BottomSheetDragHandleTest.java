@@ -415,6 +415,40 @@ public class BottomSheetDragHandleTest {
     assertThat(hasAccessibilityAction(dragHandleView, ACTION_DISMISS.getId())).isTrue();
   }
 
+  @Test
+  public void test_customActionSetInExpandedStateWhenHideableAndSkipCollapsed() {
+    activity.bottomSheetBehavior.setHideable(true);
+    activity.bottomSheetBehavior.setSkipCollapsed(true);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    BottomSheetBehavior<View> behavior = activity.bottomSheetBehavior;
+    assertThat(hasCustomAccessibilityAction(behavior.expandHalfwayActionIds)).isFalse();
+    assertThat(hasCustomAccessibilityAction(behavior.expandActionIds)).isFalse();
+    assertThat(hasCustomAccessibilityAction(behavior.collapseActionIds)).isFalse();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_DISMISS.getId())).isTrue();
+  }
+
+  @Test
+  public void test_customActionSetInExpandedStateWhenNotHideableAndSkipCollapsed() {
+    activity.bottomSheetBehavior.setHideable(false);
+    activity.bottomSheetBehavior.setSkipCollapsed(true);
+    activity.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+    activity.addViewToBottomSheet(dragHandleView);
+    shadowOf(accessibilityManager).setEnabled(true);
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    BottomSheetBehavior<View> behavior = activity.bottomSheetBehavior;
+    assertThat(hasCustomAccessibilityAction(behavior.expandHalfwayActionIds)).isFalse();
+    assertThat(hasCustomAccessibilityAction(behavior.expandActionIds)).isFalse();
+    assertThat(hasCustomAccessibilityAction(behavior.collapseActionIds)).isTrue();
+    assertThat(hasAccessibilityAction(dragHandleView, ACTION_DISMISS.getId())).isFalse();
+  }
+
   private void assertImportantForAccessibility(boolean important) {
     if (important) {
       assertThat(dragHandleView.getImportantForAccessibility())
