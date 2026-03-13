@@ -152,7 +152,7 @@ For example:
 
 #### Contained style SearchView
 
-![Material 3 Expressive Search View](assets/search/search-view-expressive.png)
+![Material 3 Expressive Search View](assets/search/search-view-expressive.gif)
 
 A new contained style for `SearchView` is available, if `SearchBar` is placed
 inside an `AppBarLayout`, as recommended above. This new style makes a visual
@@ -165,6 +165,12 @@ theme (in addition to the typical `AppBarWithSearch` setup above):
 ```xml
 <item name="materialSearchViewStyle">@style/Widget.Material3Expressive.SearchView.AppBarWithSearch</item>
 ```
+
+**Note**: The "bouncy" animation for the contained style `SearchView` is only
+available when using an Expressive theme (such as
+`Theme.Material3Expressive.*`). While a base M3 theme (`Theme.Material3.*`)
+still supports the contained visual style, the `SearchBar` expansion will
+transition with a linear motion instead.
 
 ##### SearchBar icons animation
 
