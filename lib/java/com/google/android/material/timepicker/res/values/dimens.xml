@@ -19,7 +19,7 @@
   <dimen name="material_clock_display_width">96dp</dimen>
   <dimen name="material_clock_display_height">80dp</dimen>
   <dimen name="material_clock_display_padding">24dp</dimen>
-  <dimen name="material_clock_period_toggle_height">96dp</dimen>
+  <dimen name="material_clock_period_toggle_height">98dp</dimen>
   <dimen name="material_clock_period_toggle_width">52dp</dimen>
   <dimen name="material_clock_period_toggle_horizontal_gap">12dp</dimen>
   <dimen name="material_clock_period_toggle_vertical_gap">12dp</dimen>
