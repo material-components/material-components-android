@@ -3248,7 +3248,7 @@ abstract class BaseSlider<
   }
 
   @Override
-  public void onLayout(boolean changed, int left, int top, int right, int bottom) {
+  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
 
     viewRect.left = 0;
