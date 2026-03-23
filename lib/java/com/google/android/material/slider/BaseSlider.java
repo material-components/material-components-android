@@ -329,6 +329,7 @@ abstract class BaseSlider<
   private int minTickSpacing;
 
   @Px private int minTouchTargetSize;
+  @Px private int accessibilityMinTouchTargetSize;
 
   @Orientation private int widgetOrientation;
   private int minWidgetThickness;
@@ -536,6 +537,9 @@ abstract class BaseSlider<
     labelPadding = resources.getDimensionPixelSize(R.dimen.mtrl_slider_label_padding);
 
     trackIconPadding = resources.getDimensionPixelOffset(R.dimen.m3_slider_track_icon_padding);
+
+    accessibilityMinTouchTargetSize =
+        resources.getDimensionPixelSize(R.dimen.mtrl_min_touch_target_size);
   }
 
   private void processAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -4243,8 +4247,12 @@ abstract class BaseSlider<
   void updateBoundsForVirtualViewId(int virtualViewId, Rect virtualViewBounds) {
     int x = trackSidePadding + (int) (normalizeValue(getValues().get(virtualViewId)) * trackWidth);
     int y = calculateTrackCenter();
-    int touchTargetOffsetX = max(thumbWidth / 2, minTouchTargetSize / 2);
-    int touchTargetOffsetY = max(thumbHeight / 2, minTouchTargetSize / 2);
+
+    int targetSize = max(minTouchTargetSize, accessibilityMinTouchTargetSize);
+
+    int touchTargetOffsetX = max(thumbWidth / 2, targetSize / 2);
+    int touchTargetOffsetY = max(thumbHeight / 2, targetSize / 2);
+
     RectF rect =
         new RectF(
             x - touchTargetOffsetX,
