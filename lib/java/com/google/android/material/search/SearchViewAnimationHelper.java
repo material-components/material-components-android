@@ -603,6 +603,9 @@ class SearchViewAnimationHelper {
     @Override
     public AnimatorSet getExpandCollapseAnimatorSet(boolean show) {
       AnimatorSet animatorSet = new AnimatorSet();
+      if (backProgressAnimatorSet == null) {
+        animatorSet.playTogether(getButtonsTranslationAnimator(show));
+      }
       animatorSet.playTogether(
           getScrimAlphaAnimator(show),
           getRootViewAnimator(show),
