@@ -732,7 +732,10 @@ class SearchViewAnimationHelper {
 
     private Animator getDummyToolbarAnimator(boolean show) {
       return getTranslationAnimator(
-          show, dummyToolbar, getFromTranslationXEnd(dummyToolbar), getFromTranslationY());
+          show,
+          dummyToolbar,
+          getFromTranslationXEnd(dummyToolbar) - (searchBar.getPaddingEnd() - dummyToolbar.getPaddingEnd()),
+          getFromTranslationY());
     }
 
     private Animator getHeaderContainerAnimator(boolean show) {
