@@ -965,7 +965,7 @@
     <item name="android:textColor">?attr/colorPrimary</item>
   </style>
 
-  <style name="Widget.MaterialComponents.Button.TextButton.Icon.Close.Snackbar" parent="Widget.Material3.Button.TextButton.Icon">
+  <style name="Widget.MaterialComponents.Button.TextButton.Icon.Close.Snackbar" parent="Widget.MaterialComponents.Button.TextButton.Icon">
     <item name="android:alpha">@dimen/material_emphasis_high_type</item>
     <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:contentDescription">@string/mtrl_button_snackbar_close_content_description</item>
