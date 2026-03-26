@@ -42,7 +42,6 @@ import android.view.ViewParent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
@@ -116,7 +115,6 @@ class SearchViewAnimationHelper {
   private final FrameLayout toolbarContainer;
   private final Toolbar toolbar;
   private final Toolbar dummyToolbar;
-  private final LinearLayout textContainer;
   private final TextView searchPrefix;
   private final TextView dummyTextView;
   private final EditText editText;
@@ -154,7 +152,6 @@ class SearchViewAnimationHelper {
     this.clearButton = searchView.clearButton;
     this.divider = searchView.divider;
     this.contentContainer = searchView.contentContainer;
-    this.textContainer = searchView.textContainer;
 
     backHelper = new MaterialMainContainerBackHelper(rootView);
 
@@ -819,8 +816,10 @@ class SearchViewAnimationHelper {
       if (TextUtils.isEmpty(textView.getText()) || show) {
         textView = searchBar.getTextView();
       }
-      int startX =
-          getViewLeftFromSearchViewParent(textView) - (v.getLeft() + textContainer.getLeft());
+      int startX = getViewLeftFromSearchViewParent(textView) - getViewLeftFromSearchViewParent(v);
+      if (ViewUtils.isLayoutRtl(searchBar)) {
+        startX += textView.getWidth() - v.getWidth();
+      }
       return getTranslationAnimator(show, v, startX, getFromTranslationY());
     }
 
@@ -1211,19 +1210,19 @@ class SearchViewAnimationHelper {
       return animator;
     }
 
-    private SpringAnimation getToolbarWidthSpringAnimation(boolean show, Toolbar tb) {
+    private SpringAnimation getToolbarWidthSpringAnimation(boolean show, Toolbar toolbar) {
       int searchBarWidth = searchBar.getWidth();
       int toolbarWidth = getToolbarWidth();
       int startWidth = show ? searchBarWidth : toolbarWidth;
       int endWidth = show ? toolbarWidth : searchBarWidth;
       SpringAnimation animation =
-          getSpringAnimation(tb, getWidthViewProperty(), startWidth, endWidth);
+          getSpringAnimation(toolbar, getWidthViewProperty(), startWidth, endWidth);
       animation.addEndListener(
           (dynamicAnimation, canceled, value, velocity) -> {
             if (show) {
               // Make sure toolbar width is set back to match parent at the end in case animation is
               // canceled
-              setWidth(tb, LayoutParams.MATCH_PARENT);
+              setWidth(toolbar, LayoutParams.MATCH_PARENT);
             }
           });
       return animation;
@@ -1255,12 +1254,12 @@ class SearchViewAnimationHelper {
       return containerWidth - containerHorizontalPaddings - toolbarHorizontalMargins;
     }
 
-    private SpringAnimation getToolbarTranslationXSpringAnimation(boolean show, Toolbar tb) {
-      int translationX = getToolbarTranslationX();
+    private SpringAnimation getToolbarTranslationXSpringAnimation(boolean show, Toolbar toolbar) {
+      int translationX = getToolbarTranslationX(toolbar);
       int startTranslationX = show ? translationX : 0;
       int endTranslationX = show ? 0 : translationX;
       return getSpringAnimation(
-          tb, SpringAnimation.TRANSLATION_X, startTranslationX, endTranslationX);
+          toolbar, SpringAnimation.TRANSLATION_X, startTranslationX, endTranslationX);
     }
 
     /**
@@ -1280,11 +1279,17 @@ class SearchViewAnimationHelper {
     }
 
     /** Returns the X translation needed from toolbar to align with the {@link SearchBar}. */
-    private int getToolbarTranslationX() {
+    private int getToolbarTranslationX(Toolbar toolbar) {
       int searchBarLeft = getViewLeftFromSearchViewParent(searchBar);
       int toolbarContainerPaddingStart = toolbarContainer.getPaddingStart();
       MarginLayoutParams lp = (MarginLayoutParams) toolbar.getLayoutParams();
       int toolbarMarginStart = lp.getMarginStart();
+
+      if (ViewUtils.isLayoutRtl(searchBar)) {
+        return searchBarLeft
+            + searchBar.getWidth()
+            - (toolbarContainer.getWidth() - toolbarContainerPaddingStart - toolbarMarginStart);
+      }
       return searchBarLeft - toolbarContainerPaddingStart - toolbarMarginStart;
     }
 
@@ -1330,7 +1335,11 @@ class SearchViewAnimationHelper {
       if (TextUtils.isEmpty(textView.getText()) || show) {
         textView = searchBar.getTextView();
       }
-      float translationX = getTranslationXBetweenViews(textView, view) - getToolbarTranslationX();
+      float translationX =
+          getTranslationXBetweenViews(textView, view) - getToolbarTranslationX(toolbar);
+      if (ViewUtils.isLayoutRtl(searchBar)) {
+        translationX += textView.getWidth() - view.getWidth();
+      }
       float startTranslationX = show ? translationX : 0;
       float endTranslationX = show ? 0 : translationX;
       return getSpringAnimation(
