@@ -30,6 +30,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import androidx.drawerlayout.widget.DrawerLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.datepicker.MaterialDatePicker;
@@ -56,13 +57,18 @@ public class AllComponentsDemoFragment extends DemoFragment {
         .setNavigationOnClickListener(
             v -> ((DrawerLayout) view.findViewById(R.id.drawer_layout)).open());
 
-    view.findViewById(R.id.bottom_navigation).setOnApplyWindowInsetsListener(null);
-
+    setUpBottomNavigation(view);
     setUpSplitButton(view);
     setUpDialogs(view);
     setUpSheets(view);
 
     return view;
+  }
+
+  private void setUpBottomNavigation(View view) {
+    BottomNavigationView bottomNav = view.findViewById(R.id.bottom_navigation);
+    bottomNav.setOnApplyWindowInsetsListener(null);
+    bottomNav.getOrCreateBadge(R.id.button_1).setText("123");
   }
 
   private void setUpDialogs(View view) {
