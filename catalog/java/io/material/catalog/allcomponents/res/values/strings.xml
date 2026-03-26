@@ -62,6 +62,8 @@
   <string name="cat_all_components_small_efab" description="Text for the small extended floating action button. [CHAR_LIMIT=30]">Small EFAB</string>
   <string name="cat_all_components_medium_efab" description="Text for the medium extended floating action button. [CHAR_LIMIT=30]">Medium EFAB</string>
   <string name="cat_all_components_large_efab" description="Text for the large extended floating action button. [CHAR_LIMIT=30]">Large EFAB</string>
+  <string name="cat_all_components_bounded" description="Text for a bounded element. [CHAR_LIMIT=20]">Bounded</string>
+  <string name="cat_all_components_unbounded" description="Text for an unbounded element. [CHAR_LIMIT=20]">Unbounded</string>
   <string name="cat_all_components_card" description="Text for a card. [CHAR_LIMIT=20]">Card</string>
   <string name="cat_all_components_filled_text_field_hint" description="Hint text for a filled text field. [CHAR_LIMIT=50]">Filled text field</string>
   <string name="cat_all_components_outlined_text_field_hint" description="Hint text for an outlined text field. [CHAR_LIMIT=50]">Outlined text field</string>

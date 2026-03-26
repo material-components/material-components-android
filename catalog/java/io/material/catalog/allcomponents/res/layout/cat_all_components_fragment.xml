@@ -252,6 +252,34 @@
             android:layout_width="wrap_content"
             android:layout_height="8dp"/>
 
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/cat_all_components_bounded"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:background="?attr/selectableItemBackground" />
+
+          <Space
+            android:layout_width="wrap_content"
+            android:layout_height="4dp"/>
+
+          <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:text="@string/cat_all_components_unbounded"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:background="?attr/selectableItemBackgroundBorderless" />
+
+          <Space
+            android:layout_width="wrap_content"
+            android:layout_height="8dp"/>
+
           <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
