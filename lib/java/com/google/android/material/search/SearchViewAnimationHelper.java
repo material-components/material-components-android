@@ -437,6 +437,24 @@ class SearchViewAnimationHelper {
     }
   }
 
+  private boolean shouldInflateDummyToolbar() {
+    return searchBar.getMenuResId() != SearchBar.NO_RES_ID
+        && searchView.isMenuItemsAnimated()
+        && hasVisibleMenuItems(searchBar.getMenu());
+  }
+
+  private boolean hasVisibleMenuItems(@Nullable Menu menu) {
+    if (menu == null) {
+      return false;
+    }
+    for (int i = 0; i < menu.size(); i++) {
+      if (menu.getItem(i).isVisible()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private void setMenuItemsNotClickable(Toolbar toolbar) {
     ActionMenuView actionMenuView = ToolbarUtils.getActionMenuView(toolbar);
     if (actionMenuView != null) {
@@ -587,7 +605,7 @@ class SearchViewAnimationHelper {
       if (menu != null) {
         menu.clear();
       }
-      if (searchBar.getMenuResId() != SearchBar.NO_RES_ID && searchView.isMenuItemsAnimated()) {
+      if (shouldInflateDummyToolbar()) {
         dummyToolbar.inflateMenu(searchBar.getMenuResId());
         setMenuItemsNotClickable(dummyToolbar);
         dummyToolbar.setVisibility(View.VISIBLE);
@@ -968,7 +986,7 @@ class SearchViewAnimationHelper {
       }
 
       // Inflate the dummy toolbar menu to match the search bar if needed.
-      if (searchBar.getMenuResId() != SearchBar.NO_RES_ID && searchView.isMenuItemsAnimated()) {
+      if (shouldInflateDummyToolbar()) {
         dummyToolbar.inflateMenu(searchBar.getMenuResId());
         setMenuItemsNotClickable(dummyToolbar);
       }
