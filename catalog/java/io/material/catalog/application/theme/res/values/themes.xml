@@ -22,6 +22,9 @@
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
     <item name="textInputSignInStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox</item>
     <item name="windowActionModeOverlay">true</item>
+
+    <!-- Focus Rings -->
+    <item name="focusRingsEnabled">true</item>
   </style>
 
   <!-- A theme which sets the status bar color to transparent -->

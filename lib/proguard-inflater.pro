@@ -20,3 +20,7 @@
 -keep class com.google.android.material.theme.MaterialComponentsViewInflater {
     <init>();
 }
+
+-keep class com.google.android.material.focus.FocusRingDrawable {
+    <init>();
+}

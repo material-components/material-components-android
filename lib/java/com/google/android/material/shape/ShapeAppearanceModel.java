@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -539,6 +540,17 @@ public class ShapeAppearanceModel implements ShapeAppearance {
       @StyleRes int shapeAppearanceResId,
       @StyleRes int shapeAppearanceOverlayResId) {
     return builder(context, shapeAppearanceResId, shapeAppearanceOverlayResId, 0);
+  }
+
+  /**
+   * This builder only takes in a single shape appearance, no shape appearance overlay.
+   * Additionally, it does not use ContextThemeWrapper like the other builders, meaning XML @macro
+   * usages in the shape appearance are not supported, due to b/230755281.
+   */
+  @NonNull
+  public static Builder builder(@NonNull Theme theme, @StyleRes int shapeAppearanceResId) {
+    TypedArray a = theme.obtainStyledAttributes(shapeAppearanceResId, R.styleable.ShapeAppearance);
+    return builder(a, new AbsoluteCornerSize(0));
   }
 
   @NonNull

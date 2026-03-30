@@ -60,6 +60,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -1566,9 +1567,9 @@ abstract class BaseSlider<
     }
 
     haloRadius = radius;
-    Drawable background = getBackground();
-    if (!shouldDrawCompatHalo() && background instanceof RippleDrawable) {
-      DrawableUtils.setRippleDrawableRadius((RippleDrawable) background, haloRadius);
+    RippleDrawable rippleDrawable = getBackgroundRipple();
+    if (!shouldDrawCompatHalo() && rippleDrawable != null) {
+      DrawableUtils.setRippleDrawableRadius(rippleDrawable, haloRadius);
       return;
     }
 
@@ -1768,9 +1769,9 @@ abstract class BaseSlider<
     }
 
     this.haloColor = haloColor;
-    Drawable background = getBackground();
-    if (!shouldDrawCompatHalo() && background instanceof RippleDrawable) {
-      ((RippleDrawable) background).setColor(haloColor);
+    RippleDrawable rippleDrawable = getBackgroundRipple();
+    if (!shouldDrawCompatHalo() && rippleDrawable != null) {
+      rippleDrawable.setColor(haloColor);
       return;
     }
 
@@ -2681,15 +2682,15 @@ abstract class BaseSlider<
   private void updateHaloHotspot() {
     // Set the hotspot as the halo if RippleDrawable is being used.
     if (!shouldDrawCompatHalo() && getMeasuredWidth() > 0) {
-      final Drawable background = getBackground();
-      if (background instanceof RippleDrawable) {
+      final RippleDrawable rippleDrawable = getBackgroundRipple();
+      if (rippleDrawable != null) {
         float x = normalizeValue(values.get(focusedThumbIdx)) * trackWidth + trackSidePadding;
         int y = calculateTrackCenter();
         float[] haloBounds = {x - haloRadius, y - haloRadius, x + haloRadius, y + haloRadius};
         if (isVertical()) {
           rotationMatrix.mapPoints(haloBounds);
         }
-        background.setHotspotBounds(
+        rippleDrawable.setHotspotBounds(
             (int) haloBounds[0], (int) haloBounds[1], (int) haloBounds[2], (int) haloBounds[3]);
       }
     }
@@ -3244,7 +3245,19 @@ abstract class BaseSlider<
   }
 
   private boolean shouldDrawCompatHalo() {
-    return forceDrawCompatHalo || !(getBackground() instanceof RippleDrawable);
+    return forceDrawCompatHalo || getBackgroundRipple() == null;
+  }
+
+  @Nullable
+  private RippleDrawable getBackgroundRipple() {
+    Drawable drawable = getBackground();
+    if (drawable instanceof DrawableWrapper) {
+      drawable = ((DrawableWrapper) drawable).getDrawable();
+    }
+    if (drawable instanceof RippleDrawable) {
+      return (RippleDrawable) drawable;
+    }
+    return null;
   }
 
   @Override

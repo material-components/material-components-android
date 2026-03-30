@@ -45,6 +45,13 @@
     <item name="colorOnSurface">@color/design_dark_default_color_on_surface</item>
     <item name="colorOnPrimarySurface">?attr/colorOnSurface</item>
 
+    <!-- Focus Rings -->
+    <item name="focusRingsOuterStrokeColor">@macro/mtrl_focus_ring_outer_stroke_color</item>
+    <item name="focusRingsInnerStrokeColor">@macro/mtrl_focus_ring_inner_stroke_color</item>
+    <item name="focusRingsOuterStrokeWidth">@dimen/mtrl_focus_ring_outer_stroke_width</item>
+    <item name="focusRingsInnerStrokeWidth">@dimen/mtrl_focus_ring_inner_stroke_width</item>
+    <item name="focusRingsInnerStrokeInset">@dimen/mtrl_focus_ring_inner_stroke_inset</item>
+
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
     <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background_overlay</item>
 
@@ -127,6 +134,13 @@
     <item name="colorOnError">@color/design_default_color_on_error</item>
     <item name="colorOnSurface">@color/design_default_color_on_surface</item>
     <item name="colorOnPrimarySurface">?attr/colorOnPrimary</item>
+
+    <!-- Focus Rings -->
+    <item name="focusRingsOuterStrokeColor">@macro/mtrl_focus_ring_outer_stroke_color</item>
+    <item name="focusRingsInnerStrokeColor">@macro/mtrl_focus_ring_inner_stroke_color</item>
+    <item name="focusRingsOuterStrokeWidth">@dimen/mtrl_focus_ring_outer_stroke_width</item>
+    <item name="focusRingsInnerStrokeWidth">@dimen/mtrl_focus_ring_inner_stroke_width</item>
+    <item name="focusRingsInnerStrokeInset">@dimen/mtrl_focus_ring_inner_stroke_inset</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
     <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background</item>

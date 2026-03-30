@@ -25,6 +25,7 @@ import android.graphics.Path.Direction;
 import android.graphics.Path.Op;
 import android.graphics.PointF;
 import android.graphics.RectF;
+import android.os.Looper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -79,6 +80,21 @@ public class ShapeAppearancePathProvider {
       cornerTransforms[i] = new Matrix();
       edgeTransforms[i] = new Matrix();
     }
+  }
+
+  /**
+   * Most drawables in the lib will be used by Views in the UI thread. Since the
+   * ShapeAppearancePathProvider instance is not ThreadSafe, due to internal state, account for the
+   * case when using e.g. a MaterialShapeDrawable outside the main thread.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @NonNull
+  public static ShapeAppearancePathProvider getInstanceOrCreate() {
+    return Looper.getMainLooper().getThread() == Thread.currentThread()
+        ? getInstance()
+        : new ShapeAppearancePathProvider();
   }
 
   /** @hide */

@@ -46,7 +46,6 @@ import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.os.Looper;
 import android.util.AttributeSet;
 import android.util.Log;
 import androidx.annotation.AttrRes;
@@ -168,13 +167,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private final ShadowRenderer shadowRenderer = new ShadowRenderer();
   @NonNull private final PathListener pathShadowListener;
-  // Most drawables in the lib will be used by Views in the UI thread. Since the
-  // ShapeAppearancePathProvider instance is not ThreadSafe, due to internal state,
-  // account for the case when using a MaterialShapeDrawable outside the main thread.
   private final ShapeAppearancePathProvider pathProvider =
-      Looper.getMainLooper().getThread() == Thread.currentThread()
-          ? ShapeAppearancePathProvider.getInstance()
-          : new ShapeAppearancePathProvider();
+      ShapeAppearancePathProvider.getInstanceOrCreate();
 
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
@@ -1332,6 +1326,27 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       canvas.translate(-shadowOffsetX, -shadowOffsetY);
       canvas.drawPath(path, clearPaint);
       canvas.translate(shadowOffsetX, shadowOffsetY);
+    }
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  public Path getPath() {
+    return path;
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  public float calculateRoundRectCornerSize() {
+    float roundRectRadius =
+        calculateRoundRectCornerSize(
+            getBoundsAsRectF(),
+            drawableState.shapeAppearance.getDefaultShape(),
+            springAnimatedCornerSizes);
+    if (roundRectRadius >= 0) {
+      return roundRectRadius * drawableState.interpolation;
+    } else {
+      return roundRectRadius;
     }
   }
 
