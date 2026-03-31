@@ -25,6 +25,15 @@
 
     <!-- Focus Rings -->
     <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
   </style>
 
   <!-- A theme which sets the status bar color to transparent -->
