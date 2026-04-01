@@ -18,6 +18,15 @@
   <style name="Base.V24.Theme.Material3.Light" parent="Base.V14.Theme.Material3.Light">
     <!-- Focus Rings -->
     <item name="focusRingsEnabled">@bool/m3_focus_rings_enabled</item>
+    <item name="android:selectableItemBackground">@drawable/m3_default_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_default_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_default_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_default_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_default_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_default_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_default_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_default_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_default_list_selector_background</item>
 
     <item name="android:contextPopupMenuStyle">@style/Widget.Material3.PopupMenu.ContextMenu</item>
   </style>
@@ -25,6 +34,15 @@
   <style name="Base.V24.Theme.Material3.Dark" parent="Base.V14.Theme.Material3.Dark">
     <!-- Focus Rings -->
     <item name="focusRingsEnabled">@bool/m3_focus_rings_enabled</item>
+    <item name="android:selectableItemBackground">@drawable/m3_default_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_default_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_default_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_default_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_default_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_default_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_default_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_default_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_default_list_selector_background</item>
 
     <item name="android:contextPopupMenuStyle">@style/Widget.Material3.PopupMenu.ContextMenu</item>
   </style>
