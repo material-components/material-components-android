@@ -47,6 +47,7 @@ import androidx.activity.BackEventCompat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.dynamicanimation.animation.FloatPropertyCompat;
 import androidx.dynamicanimation.animation.SpringAnimation;
@@ -122,13 +123,16 @@ class SearchViewAnimationHelper {
   private final View divider;
   private final TouchObserverFrameLayout contentContainer;
 
+  @VisibleForTesting @Nullable AnimationCoordinator activeCoordinator;
+  @VisibleForTesting @Nullable AnimatorSet activeTranslateAnimatorSet;
+
   private final MaterialMainContainerBackHelper backHelper;
   @Nullable private AnimatorSet backProgressAnimatorSet;
 
   private SearchBar searchBar;
 
   private final Context context;
-  private final AnimationDelegate animationDelegate;
+  @VisibleForTesting final AnimationDelegate animationDelegate;
 
   private final TimeInterpolator standardAccelerateInterpolator;
   private final TimeInterpolator standardDecelerateInterpolator;
@@ -177,6 +181,7 @@ class SearchViewAnimationHelper {
   }
 
   void show() {
+    cancelPendingAnimations();
     if (searchBar != null) {
       startShowAnimationExpand();
     } else {
@@ -186,10 +191,22 @@ class SearchViewAnimationHelper {
 
   @CanIgnoreReturnValue
   AnimatorSet hide() {
+    cancelPendingAnimations();
     if (searchBar != null) {
       return startHideAnimationCollapse();
     } else {
       return startHideAnimationTranslate();
+    }
+  }
+
+  void cancelPendingAnimations() {
+    if (activeCoordinator != null) {
+      activeCoordinator.clear();
+      activeCoordinator = null;
+    }
+    if (activeTranslateAnimatorSet != null) {
+      activeTranslateAnimatorSet.cancel();
+      activeTranslateAnimatorSet = null;
     }
   }
 
@@ -227,10 +244,14 @@ class SearchViewAnimationHelper {
                     searchView.requestFocusAndShowKeyboardIfNeeded();
                   }
                   searchView.setTransitionState(SearchView.TransitionState.SHOWN);
+                  if (activeCoordinator == coordinator) {
+                    activeCoordinator = null;
+                  }
                 }
               });
 
           coordinator.start();
+          activeCoordinator = coordinator;
         });
   }
 
@@ -262,10 +283,14 @@ class SearchViewAnimationHelper {
               searchView.clearFocusAndHideKeyboard();
             }
             searchView.setTransitionState(SearchView.TransitionState.HIDDEN);
+            if (activeCoordinator == coordinator) {
+              activeCoordinator = null;
+            }
           }
         });
 
     coordinator.start();
+    activeCoordinator = coordinator;
 
     return animatorSet;
   }
@@ -295,9 +320,13 @@ class SearchViewAnimationHelper {
                     searchView.requestFocusAndShowKeyboardIfNeeded();
                   }
                   searchView.setTransitionState(SearchView.TransitionState.SHOWN);
+                  if (activeTranslateAnimatorSet == animatorSet) {
+                    activeTranslateAnimatorSet = null;
+                  }
                 }
               });
           animatorSet.start();
+          activeTranslateAnimatorSet = animatorSet;
         });
   }
 
@@ -320,9 +349,13 @@ class SearchViewAnimationHelper {
               searchView.clearFocusAndHideKeyboard();
             }
             searchView.setTransitionState(SearchView.TransitionState.HIDDEN);
+            if (activeTranslateAnimatorSet == animatorSet) {
+              activeTranslateAnimatorSet = null;
+            }
           }
         });
     animatorSet.start();
+    activeTranslateAnimatorSet = animatorSet;
     return animatorSet;
   }
 
@@ -968,7 +1001,8 @@ class SearchViewAnimationHelper {
     }
   }
 
-  private class ContainedAnimationDelegate implements AnimationDelegate {
+  @VisibleForTesting
+  class ContainedAnimationDelegate implements AnimationDelegate {
     @Override
     public void setUpDummyToolbarIfNeeded() {
       setUpDummyTextViewIfNeeded();
@@ -1169,16 +1203,18 @@ class SearchViewAnimationHelper {
       return animatorSet;
     }
 
+    @VisibleForTesting
     @Nullable
-    private View getStartSiblingView(@NonNull AppBarLayout appBarLayout) {
+    View getStartSiblingView(@NonNull AppBarLayout appBarLayout) {
       int startSiblingViewId = searchBar.getStartSiblingViewId();
       return startSiblingViewId != View.NO_ID
           ? appBarLayout.findViewById(startSiblingViewId)
           : getToolbarNavigationIconButton();
     }
 
+    @VisibleForTesting
     @Nullable
-    private View getEndSiblingView(@NonNull AppBarLayout appBarLayout) {
+    View getEndSiblingView(@NonNull AppBarLayout appBarLayout) {
       int endSiblingViewId = searchBar.getEndSiblingViewId();
       return endSiblingViewId != View.NO_ID
           ? appBarLayout.findViewById(endSiblingViewId)

@@ -19,6 +19,7 @@ import com.google.android.material.test.R;
 
 import static com.google.common.truth.Truth.assertThat;
 
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -28,6 +29,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.ActionMenuView;
 import android.view.View;
 import android.widget.ImageButton;
+import com.google.android.material.animation.AnimationCoordinator;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.internal.ToolbarUtils;
@@ -68,8 +70,8 @@ public class SearchViewAnimationHelperTest {
     searchBar.setStartSiblingViewId(sibling1.getId());
     searchBar.setEndSiblingViewId(sibling2.getId());
 
-    assertThat(invokeGetStartSiblingView(root)).isEqualTo(sibling1);
-    assertThat(invokeGetEndSiblingView(root)).isEqualTo(sibling2);
+    assertThat(getStartSiblingView(root)).isEqualTo(sibling1);
+    assertThat(getEndSiblingView(root)).isEqualTo(sibling2);
   }
 
   @Test
@@ -85,30 +87,68 @@ public class SearchViewAnimationHelperTest {
     // Toolbar creates the navigation button internally when setNavigationIcon is called.
     ImageButton navButton = ToolbarUtils.getNavigationIconButton(toolbar);
 
-    assertThat(invokeGetStartSiblingView(new AppBarLayout(context))).isEqualTo(navButton);
-    assertThat(invokeGetEndSiblingView(new AppBarLayout(context))).isEqualTo(actionMenuView);
+    assertThat(getStartSiblingView(new AppBarLayout(context))).isEqualTo(navButton);
+    assertThat(getEndSiblingView(new AppBarLayout(context))).isEqualTo(actionMenuView);
   }
 
-  private View invokeGetStartSiblingView(AppBarLayout appBarLayout) throws Exception {
-    java.lang.reflect.Field field =
-        SearchViewAnimationHelper.class.getDeclaredField("animationDelegate");
-    field.setAccessible(true);
-    Object delegate = field.get(helper);
-    java.lang.reflect.Method method =
-        delegate.getClass().getDeclaredMethod("getStartSiblingView", AppBarLayout.class);
-    method.setAccessible(true);
-    return (View) method.invoke(delegate, appBarLayout);
+  @Test
+  public void show_withoutSearchBar_cancelsPendingAnimations() throws Exception {
+    helper.setSearchBar(null);
+    helper.activeCoordinator = new AnimationCoordinator();
+    helper.activeTranslateAnimatorSet = new AnimatorSet();
+
+    helper.show();
+
+    assertThat(helper.activeCoordinator).isNull();
+    assertThat(helper.activeTranslateAnimatorSet).isNull();
   }
 
-  private View invokeGetEndSiblingView(AppBarLayout appBarLayout) throws Exception {
-    java.lang.reflect.Field field =
-        SearchViewAnimationHelper.class.getDeclaredField("animationDelegate");
-    field.setAccessible(true);
-    Object delegate = field.get(helper);
-    java.lang.reflect.Method method =
-        delegate.getClass().getDeclaredMethod("getEndSiblingView", AppBarLayout.class);
-    method.setAccessible(true);
-    return (View) method.invoke(delegate, appBarLayout);
+  @Test
+  public void hide_withoutSearchBar_cancelsPendingAnimations() throws Exception {
+    helper.setSearchBar(null);
+    helper.activeCoordinator = new AnimationCoordinator();
+    AnimatorSet oldAnimatorSet = new AnimatorSet();
+    helper.activeTranslateAnimatorSet = oldAnimatorSet;
+
+    helper.hide();
+
+    assertThat(helper.activeCoordinator).isNull();
+    assertThat(helper.activeTranslateAnimatorSet).isNotEqualTo(oldAnimatorSet);
+  }
+
+  @Test
+  public void show_withSearchBar_cancelsPendingAnimations() throws Exception {
+    // helper.searchBar is already set in setUp()
+    helper.activeCoordinator = new AnimationCoordinator();
+    helper.activeTranslateAnimatorSet = new AnimatorSet();
+
+    helper.show();
+
+    assertThat(helper.activeCoordinator).isNull();
+    assertThat(helper.activeTranslateAnimatorSet).isNull();
+  }
+
+  @Test
+  public void hide_withSearchBar_cancelsPendingAnimations() throws Exception {
+    // helper.searchBar is already set in setUp()
+    AnimationCoordinator oldCoordinator = new AnimationCoordinator();
+    helper.activeCoordinator = oldCoordinator;
+    helper.activeTranslateAnimatorSet = new AnimatorSet();
+
+    helper.hide();
+
+    assertThat(helper.activeCoordinator).isNotEqualTo(oldCoordinator);
+    assertThat(helper.activeTranslateAnimatorSet).isNull();
+  }
+
+  private View getStartSiblingView(AppBarLayout appBarLayout) {
+    return ((SearchViewAnimationHelper.ContainedAnimationDelegate) helper.animationDelegate)
+        .getStartSiblingView(appBarLayout);
+  }
+
+  private View getEndSiblingView(AppBarLayout appBarLayout) {
+    return ((SearchViewAnimationHelper.ContainedAnimationDelegate) helper.animationDelegate)
+        .getEndSiblingView(appBarLayout);
   }
 
   private static class TestActivity extends AppCompatActivity {
