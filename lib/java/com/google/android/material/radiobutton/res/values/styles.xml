@@ -27,6 +27,13 @@
     <!-- Inherit default text color since the component doesn't draw a surface. -->
     <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
     <item name="buttonTint">@color/m3_radiobutton_button_tint</item>
+    <item name="android:background">?attr/controlBackground</item>
+    <item name="rippleColor">@color/m3_radiobutton_ripple_tint</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.RadioButton</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.RadioButton" parent="">
+    <item name="focusRingsInset">1dp</item>
   </style>
 
   <style name="Widget.Material3.CompoundButton.RadioButton" parent="Base.Widget.Material3.CompoundButton.RadioButton"/>

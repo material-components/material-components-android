@@ -370,6 +370,7 @@
     <item name="textInputOutlinedExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu</item>
     <item name="textInputFilledExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu</item>
     <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
+    <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.Toolbar.Button.Navigation</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
 
     <!-- Top App Bars. -->
@@ -699,6 +700,7 @@
     <item name="textInputOutlinedExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu</item>
     <item name="textInputFilledExposedDropdownMenuStyle">@style/Widget.Material3.TextInputLayout.FilledBox.ExposedDropdownMenu</item>
     <item name="toolbarStyle">@style/Widget.Material3.Toolbar</item>
+    <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.Toolbar.Button.Navigation</item>
     <item name="toolbarSurfaceStyle">@style/Widget.Material3.Toolbar.Surface</item>
 
     <!-- Top App Bars. -->

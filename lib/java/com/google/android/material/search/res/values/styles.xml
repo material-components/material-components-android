@@ -213,7 +213,7 @@
     <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
   </style>
 
-  <style name="Widget.Material3.Search.Toolbar.Button.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+  <style name="Widget.Material3.Search.Toolbar.Button.Navigation" parent="Widget.Material3.Toolbar.Button.Navigation">
     <item name="android:minWidth">@dimen/mtrl_min_touch_target_size</item>
   </style>
 

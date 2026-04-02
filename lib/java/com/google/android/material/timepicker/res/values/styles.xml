@@ -126,6 +126,12 @@
     <item name="clockNumberTextColor">@color/material_timepicker_clock_text_color</item>
   </style>
 
+  <style name="ThemeOverlay.ClockFaceView" parent="">
+    <item name="shapeCornerFamily">rounded</item>
+    <item name="focusRingsShapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="focusRingsInset">2dp</item>
+  </style>
+
   <style name="Widget.Material3.MaterialTimePicker.Button" parent="Widget.MaterialComponents.TimePicker.Button">
     <item name="android:textAppearance">@macro/m3_comp_time_picker_period_selector_label_text_type</item>
     <item name="android:textColor">@color/m3_timepicker_button_text_color</item>

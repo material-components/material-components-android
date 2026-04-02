@@ -36,6 +36,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import com.google.android.material.drawable.DrawableUtils;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 
@@ -124,6 +125,19 @@ public class MaterialSwitch extends SwitchCompat {
   public void invalidate() {
     updateDrawableTints();
     super.invalidate();
+  }
+
+  @Override
+  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    super.onLayout(changed, left, top, right, bottom);
+
+    if (trackDrawable != null) {
+      FocusRingDrawable focusRingDrawable = FocusRingDrawable.find(getBackground());
+      if (focusRingDrawable != null) {
+        focusRingDrawable.mutate();
+        focusRingDrawable.setFocusRingBounds(trackDrawable.getBounds());
+      }
+    }
   }
 
   @Override

@@ -33,6 +33,7 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.math.MathUtils;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.ClampedCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -117,6 +118,18 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
               }
             });
     shapeableDelegate.onShapeAppearanceChanged(this, this.shapeAppearanceModel);
+
+    FocusRingDrawable focusRingBackground = FocusRingDrawable.find(getBackground());
+    if (focusRingBackground != null) {
+      focusRingBackground.mutate();
+      focusRingBackground.setFocusRingShapeAppearance(this.shapeAppearanceModel);
+    }
+
+    FocusRingDrawable focusRingForeground = FocusRingDrawable.find(getForeground());
+    if (focusRingForeground != null) {
+      focusRingForeground.mutate();
+      focusRingForeground.setFocusRingShapeAppearance(this.shapeAppearanceModel);
+    }
   }
 
   @NonNull

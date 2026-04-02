@@ -31,6 +31,8 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.AnimatedStateListDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
@@ -271,6 +273,12 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     if (attributes.hasValue(R.styleable.MaterialCheckBox_checkedState)) {
       setCheckedState(
           attributes.getInt(R.styleable.MaterialCheckBox_checkedState, STATE_UNCHECKED));
+    }
+
+    if (attributes.hasValue(R.styleable.MaterialCheckBox_rippleColor)) {
+      setRippleColor(
+          MaterialResources.getColorStateList(
+              context, attributes, R.styleable.MaterialCheckBox_rippleColor));
     }
 
     attributes.recycle();
@@ -830,6 +838,19 @@ public class MaterialCheckBox extends AppCompatCheckBox {
       materialThemeColorsTintList = new ColorStateList(CHECKBOX_STATES, checkBoxColorsList);
     }
     return materialThemeColorsTintList;
+  }
+
+  private void setRippleColor(@Nullable ColorStateList rippleColor) {
+    if (rippleColor == null) {
+      return;
+    }
+    Drawable background = getBackground();
+    if (background instanceof DrawableWrapper) {
+      background = ((DrawableWrapper) background).getDrawable();
+    }
+    if (background instanceof RippleDrawable) {
+      ((RippleDrawable) background).setColor(rippleColor);
+    }
   }
 
   @Override

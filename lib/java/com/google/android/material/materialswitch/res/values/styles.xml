@@ -26,5 +26,12 @@
     <item name="switchPadding">@dimen/mtrl_switch_text_padding</item>
     <item name="android:textAppearance">?attr/textAppearanceBodyMedium</item>
     <item name="android:minHeight">?attr/minTouchTargetSize</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.MaterialSwitch</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.MaterialSwitch" parent="">
+    <item name="shapeCornerFamily">rounded</item>
+    <item name="focusRingsShapeAppearance">@style/ShapeAppearance.Material3.Corner.Full</item>
+    <item name="focusRingsInset">-4dp</item>
   </style>
 </resources>

@@ -52,6 +52,7 @@ import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.card.MaterialCardView.CheckedIconGravity;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.CornerTreatment;
@@ -729,10 +730,13 @@ class MaterialCardViewHelper {
     }
 
     if (clickableForegroundDrawable == null) {
-      clickableForegroundDrawable =
+      LayerDrawable layerDrawable =
           new LayerDrawable(
               new Drawable[] {rippleDrawable, foregroundContentDrawable, checkedIcon});
-      clickableForegroundDrawable.setId(CHECKED_ICON_LAYER_INDEX, R.id.mtrl_card_checked_layer_id);
+      FocusRingDrawable.layer(
+          materialCardView.getContext(), layerDrawable, foregroundShapeDrawable);
+      layerDrawable.setId(CHECKED_ICON_LAYER_INDEX, R.id.mtrl_card_checked_layer_id);
+      clickableForegroundDrawable = layerDrawable;
     }
 
     return clickableForegroundDrawable;

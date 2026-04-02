@@ -33,6 +33,14 @@
          didn't have the concept of an icon drawable separate from the button
          drawable. The default icon drawable will be set in MaterialCheckBox. -->
     <item name="buttonIcon">@null</item>
+    <item name="android:background">?attr/controlBackground</item>
+    <item name="rippleColor">@color/m3_selection_control_ripple_color_selector</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.CheckBox</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.CheckBox" parent="">
+    <item name="focusRingsRadius">4dp</item>
+    <item name="focusRingsInset">2dp</item>
   </style>
 
   <style name="Widget.Material3.CompoundButton.CheckBox" parent="Base.Widget.Material3.CompoundButton.CheckBox" />

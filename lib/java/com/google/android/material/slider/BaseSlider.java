@@ -100,6 +100,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.RangeInfoCom
 import androidx.customview.widget.ExploreByTouchHelper;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.drawable.DrawableUtils;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
@@ -321,6 +322,7 @@ abstract class BaseSlider<
   private ValueAnimator labelsOutAnimator;
 
   private final int scaledTouchSlop;
+  private final int thumbHeightDecreaseFocusRing;
 
   private int minTrackSidePadding;
   private int defaultThumbRadius;
@@ -344,6 +346,7 @@ abstract class BaseSlider<
   private int thumbTrackGapSize;
   private int defaultThumbWidth = -1;
   private int defaultThumbTrackGapSize = -1;
+  private int defaultThumbHeight = -1;
   private int trackStopIndicatorSize;
   private int trackCornerSize;
   private int trackInsideCornerSize;
@@ -499,6 +502,11 @@ abstract class BaseSlider<
     stopIndicatorPaint = new Paint();
     stopIndicatorPaint.setStyle(Style.FILL);
     stopIndicatorPaint.setStrokeCap(Cap.ROUND);
+
+    thumbHeightDecreaseFocusRing =
+        context
+            .getResources()
+            .getDimensionPixelSize(R.dimen.m3_slider_focus_ring_thumb_height_decrease);
 
     loadResources(context.getResources());
     processAttributes(context, attrs, defStyleAttr);
@@ -1355,17 +1363,27 @@ abstract class BaseSlider<
       adjustCustomThumbDrawableBounds(width, customThumbDrawablesForValues.get(i));
     }
     // Update default thumb(s).
-    setThumbWidth(width, /* thumbIndex= */ null);
+    setThumbSize(width, /* height= */ -1, /* thumbIndex= */ null);
   }
 
-  private void setThumbWidth(@IntRange(from = 0) @Px int width, @Nullable Integer thumbIndex) {
+  /**
+   * Set the thumb width, and optionally the height, for the default thumb drawables.
+   *
+   * <p>If the provided height is greater than or equal to 0 it will be used; otherwise, the current
+   * thumb height will be preserved.
+   *
+   * <p>If the provided thumbIndex is null, the width and height will be applied to all default
+   * thumbs.
+   */
+  private void setThumbSize(
+      @IntRange(from = 0) @Px int width, @Px int height, @Nullable Integer thumbIndex) {
     for (int i = 0; i < defaultThumbDrawables.size(); i++) {
       if (thumbIndex == null || i == thumbIndex) {
         defaultThumbDrawables
             .get(i)
             .setShapeAppearanceModel(
                 ShapeAppearanceModel.builder().setAllCorners(ROUNDED, width / 2f).build());
-        defaultThumbDrawables.get(i).setBounds(0, 0, width, thumbHeight);
+        defaultThumbDrawables.get(i).setBounds(0, 0, width, height >= 0 ? height : thumbHeight);
       }
     }
 
@@ -2680,12 +2698,13 @@ abstract class BaseSlider<
   }
 
   private void updateHaloHotspot() {
+    float x = normalizeValue(values.get(focusedThumbIdx)) * trackWidth + trackSidePadding;
+    int y = calculateTrackCenter();
+
     // Set the hotspot as the halo if RippleDrawable is being used.
     if (!shouldDrawCompatHalo() && getMeasuredWidth() > 0) {
       final RippleDrawable rippleDrawable = getBackgroundRipple();
       if (rippleDrawable != null) {
-        float x = normalizeValue(values.get(focusedThumbIdx)) * trackWidth + trackSidePadding;
-        int y = calculateTrackCenter();
         float[] haloBounds = {x - haloRadius, y - haloRadius, x + haloRadius, y + haloRadius};
         if (isVertical()) {
           rotationMatrix.mapPoints(haloBounds);
@@ -2694,6 +2713,8 @@ abstract class BaseSlider<
             (int) haloBounds[0], (int) haloBounds[1], (int) haloBounds[2], (int) haloBounds[3]);
       }
     }
+
+    updateFocusRingBounds(x, y);
   }
 
   private int calculateTrackCenter() {
@@ -2701,6 +2722,45 @@ abstract class BaseSlider<
         + (labelBehavior == LABEL_WITHIN_BOUNDS || shouldAlwaysShowLabel()
             ? labels.get(0).getIntrinsicHeight()
             : 0);
+  }
+
+  private void updateFocusRingBounds(float x, float y) {
+    FocusRingDrawable focusRingDrawable = getFocusRing();
+    if (focusRingDrawable != null) {
+      int padding = getResources().getDimensionPixelOffset(R.dimen.m3_slider_focus_ring_padding);
+
+      float left;
+      float right;
+      float top;
+      float bottom;
+      float paddingMajor = thumbWidth / 2f + padding * 2f;
+      float paddingMinor = thumbHeight / 2f + padding;
+
+      if (!isVertical()) {
+        left = x - paddingMajor;
+        right = x + paddingMajor;
+        top = y - paddingMinor;
+        bottom = y + paddingMinor;
+      } else {
+        left = y - paddingMinor;
+        right = y + paddingMinor;
+        top = x - paddingMajor;
+        bottom = x + paddingMajor;
+      }
+
+      focusRingDrawable.mutate();
+      focusRingDrawable.setFocusRingBounds((int) left, (int) top, (int) right, (int) bottom);
+    }
+  }
+
+  @Nullable
+  private FocusRingDrawable getFocusRing() {
+    return FocusRingDrawable.find(getBackground());
+  }
+
+  private boolean isFocusRingEnabled() {
+    FocusRingDrawable focusRing = getFocusRing();
+    return focusRing != null && focusRing.isFocusRingEnabled();
   }
 
   @Override
@@ -3401,18 +3461,22 @@ abstract class BaseSlider<
         && customThumbDrawable == null
         && customThumbDrawablesForValues.isEmpty()) {
       defaultThumbWidth = thumbWidth;
+      defaultThumbHeight = thumbHeight;
       defaultThumbTrackGapSize = thumbTrackGapSize;
       int pressedThumbWidth = Math.round(thumbWidth * THUMB_WIDTH_PRESSED_RATIO);
-      // Only the currently pressed thumb should change width.
-      setThumbWidth(pressedThumbWidth, /* thumbIndex= */ activeThumbIdx);
+      // When there's a focus ring present, shrink the handle a bit so it fits inside the ring.
+      int pressedThumbHeight =
+          isFocusRingEnabled() ? (thumbHeight - thumbHeightDecreaseFocusRing) : -1;
+      // Only the currently pressed thumb should change size.
+      setThumbSize(pressedThumbWidth, pressedThumbHeight, /* thumbIndex= */ activeThumbIdx);
     }
   }
 
   private void resetThumbWidth() {
-    // Reset the default thumb width.
+    // Reset the default thumb size.
     if (hasGapBetweenThumbAndTrack() && defaultThumbWidth != -1 && defaultThumbTrackGapSize != -1) {
-      // Only the currently pressed thumb should change width.
-      setThumbWidth(defaultThumbWidth, /* thumbIndex= */ activeThumbIdx);
+      // Only the currently pressed thumb should change size.
+      setThumbSize(defaultThumbWidth, defaultThumbHeight, /* thumbIndex= */ activeThumbIdx);
     }
   }
 

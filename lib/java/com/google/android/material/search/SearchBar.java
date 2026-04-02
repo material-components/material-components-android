@@ -69,6 +69,7 @@ import androidx.customview.view.AbsSavedState;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.AppBarLayout.LiftOnScrollProgressListener;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ToolbarUtils;
 import com.google.android.material.resources.MaterialResources;
@@ -322,11 +323,11 @@ public class SearchBar extends Toolbar {
 
     int rippleColor =
         MaterialColors.getColor(this, androidx.appcompat.R.attr.colorControlHighlight);
-    Drawable background;
     backgroundShape.setFillColor(ColorStateList.valueOf(backgroundColor));
-    background =
+    RippleDrawable rippleDrawable =
         new RippleDrawable(ColorStateList.valueOf(rippleColor), backgroundShape, backgroundShape);
-    setBackground(background);
+    FocusRingDrawable.layer(getContext(), rippleDrawable, backgroundShape);
+    setBackground(rippleDrawable);
   }
 
   @Override

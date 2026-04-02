@@ -53,6 +53,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.ManufacturerUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
@@ -605,7 +606,9 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
         // create the selectedItemRippleOverlaidColor that will work in those missing states, making
         // the selected list item stateful as expected.
         colorDrawable.setTintList(selectedItemRippleOverlaidColor);
-        return new RippleDrawable(pressedRippleColor, colorDrawable, null);
+        RippleDrawable rippleDrawable = new RippleDrawable(pressedRippleColor, colorDrawable, null);
+        FocusRingDrawable.layer(getContext(), rippleDrawable);
+        return rippleDrawable;
       } else {
         return colorDrawable;
       }

@@ -173,7 +173,10 @@
     <item name="toolbarNavigationButtonStyle">@style/Widget.Material3.Toolbar.Button.Navigation.Circle</item>
   </style>
 
-  <style name="Widget.Material3.Toolbar.Button.Navigation.Circle" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+  <!-- TODO: update to use ?attr/controlBackground for android:background and remove v24 override. -->
+  <style name="Widget.Material3.Toolbar.Button.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation" />
+
+  <style name="Widget.Material3.Toolbar.Button.Navigation.Circle">
     <item name="android:background">@drawable/m3_toolbar_navigation_circle_background</item>
   </style>
 

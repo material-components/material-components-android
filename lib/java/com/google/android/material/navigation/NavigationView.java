@@ -73,6 +73,7 @@ import androidx.drawerlayout.widget.DrawerLayout.DrawerListener;
 import androidx.drawerlayout.widget.DrawerLayout.SimpleDrawerListener;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.drawable.DrawableUtils;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.ContextUtils;
 import com.google.android.material.internal.EdgeToEdgeUtils;
 import com.google.android.material.internal.NavigationMenu;
@@ -149,6 +150,7 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
   private final boolean drawerLayoutCornerSizeBackAnimationEnabled;
   @Px private final int drawerLayoutCornerSizeBackAnimationMax;
   private final ShapeableDelegate shapeableDelegate = ShapeableDelegate.create(this);
+  @Nullable private ShapeAppearanceModel itemShapeAppearanceModel;
 
   private final MaterialSideContainerBackHelper sideContainerBackHelper =
       new MaterialSideContainerBackHelper(this);
@@ -292,6 +294,10 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
         RippleDrawable ripple =
             new RippleDrawable(
                 RippleUtils.sanitizeRippleDrawableColor(itemRippleColor), null, itemRippleMask);
+        FocusRingDrawable focusRingDrawable = FocusRingDrawable.layer(context, ripple);
+        if (focusRingDrawable != null) {
+          focusRingDrawable.setFocusRingShapeAppearance(itemShapeAppearanceModel);
+        }
         presenter.setItemForeground(ripple);
       }
     }
@@ -518,11 +524,12 @@ public class NavigationView extends ScrimInsetsFrameLayout implements MaterialBa
     int shapeAppearanceResId = a.getResourceId(R.styleable.NavigationView_itemShapeAppearance, 0);
     int shapeAppearanceOverlayResId =
         a.getResourceId(R.styleable.NavigationView_itemShapeAppearanceOverlay, 0);
+    itemShapeAppearanceModel =
+        ShapeAppearanceModel.builder(
+                getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId)
+            .build();
     MaterialShapeDrawable materialShapeDrawable =
-        new MaterialShapeDrawable(
-            ShapeAppearanceModel.builder(
-                    getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId)
-                .build());
+        new MaterialShapeDrawable(itemShapeAppearanceModel);
     materialShapeDrawable.setFillColor(fillColor);
 
     int insetLeft = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetStart, 0);

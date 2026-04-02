@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2021 The Android Open Source Project
+  ~ Copyright (C) 2026 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,7 +15,10 @@
   ~ limitations under the License.
 -->
 <resources>
-  <style name="Widget.Material3.CompoundButton.RadioButton" parent="Base.Widget.Material3.CompoundButton.RadioButton">
-    <item name="android:background">@drawable/m3_radiobutton_ripple</item>
+
+  <!-- TODO: remove and update main style to use ?attr/controlBackground for android:background. -->
+  <style name="Widget.Material3.Toolbar.Button.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
+    <item name="android:background">@drawable/m3_focus_ring_control_background</item>
   </style>
+
 </resources>

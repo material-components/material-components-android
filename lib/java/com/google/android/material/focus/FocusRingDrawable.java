@@ -76,6 +76,15 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   @NonNull private FocusRingState state;
 
+  /**
+   * Wrap the provided drawable with a FocusRingDrawable if focus rings are enabled, otherwise just
+   * return the provided drawable.
+   *
+   * <p>This method of integrating focus rings should be preferred if the drawable is an unbounded
+   * ripple drawable (has no layers), because wrapping the ripple will preserve the unbounded-ness.
+   * See {@link #layer(Context, LayerDrawable, MaterialShapeDrawable)} for an alternative method
+   * where the focus ring can be added as a layer instead of wrapping.
+   */
   @Nullable
   public static Drawable wrap(@NonNull Context context, @Nullable Drawable drawable) {
     if (!shouldUseFocusRing(context)) {
@@ -84,6 +93,12 @@ public class FocusRingDrawable extends DrawableWrapper {
     return new FocusRingDrawable(context, drawable);
   }
 
+  /**
+   * Add a FocusRingDrawable as a layer to the provided LayerDrawable if focus rings are enabled,
+   * otherwise do nothing and return null.
+   *
+   * <p>See {@link #layer(Context, LayerDrawable, MaterialShapeDrawable)}.
+   */
   @CanIgnoreReturnValue
   @Nullable
   public static FocusRingDrawable layer(
@@ -91,6 +106,17 @@ public class FocusRingDrawable extends DrawableWrapper {
     return layer(context, layerDrawable, null);
   }
 
+  /**
+   * Add a FocusRingDrawable as a layer to the provided LayerDrawable if focus rings are enabled,
+   * otherwise do nothing and return null.
+   *
+   * <p>This method of integrating focus rings should be preferred if the drawable is a bounded
+   * ripple drawable (has layers), because we can add the focus ring as a layer without affecting
+   * the ripple bounds. See {@link #wrap(Context, Drawable)} for an alternative method where the
+   * focus ring can wrap the provided drawable instead of being added as a layer.
+   *
+   * <p>The MaterialShapeDrawable will be used to draw the focus ring outline shape and bounds.
+   */
   @CanIgnoreReturnValue
   @Nullable
   public static FocusRingDrawable layer(
@@ -116,6 +142,14 @@ public class FocusRingDrawable extends DrawableWrapper {
         && MaterialAttributes.resolveBoolean(context.getTheme(), R.attr.focusRingsEnabled, false);
   }
 
+  /**
+   * Search for and return a FocusRingDrawable if it is either the provided drawable or one level
+   * deep in a DrawableWrapper or LayerDrawable.
+   *
+   * <p>This is useful for finding a FocusRingDrawable that has been set up with either {@link
+   * #wrap(Context, Drawable)} or {@link #layer(Context, LayerDrawable, MaterialShapeDrawable)}, as
+   * well as the equivalent XML drawable configurations.
+   */
   @Nullable
   public static FocusRingDrawable find(@Nullable Drawable drawable) {
     if (drawable instanceof FocusRingDrawable) {
@@ -354,7 +388,15 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   @Override
   public boolean hasFocusStateSpecified() {
-    return super.hasFocusStateSpecified() || state.ringEnabled;
+    // Handle strange test failures related to super.hasFocusStateSpecified() not being found...
+    // Can't do a version check because somehow the hasFocusStateSpecified() method seems to be
+    // called on older devices than what the docs say, so we have to try calling
+    // super.hasFocusStateSpecified() whenever possible to preserve the behavior.
+    try {
+      return super.hasFocusStateSpecified() || state.ringEnabled;
+    } catch (NoSuchMethodError e) {
+      return state.ringEnabled;
+    }
   }
 
   @Override
@@ -418,6 +460,14 @@ public class FocusRingDrawable extends DrawableWrapper {
     paint.setStrokeWidth(strokeWidth);
     paint.setColor(color);
     canvas.drawRoundRect(tmpRectF, radius, radius, paint);
+  }
+
+  public boolean isFocusRingEnabled() {
+    return state.ringEnabled;
+  }
+
+  public void setFocusRingEnabled(boolean enabled) {
+    state.ringEnabled = enabled;
   }
 
   @Nullable
@@ -513,13 +563,13 @@ public class FocusRingDrawable extends DrawableWrapper {
   private void calculateShapeAppearanceRoundRectOrPath() {
     if (state.ringShapeAppearance != null) {
       calculateBounds(tmpRectF);
-      float outerInset = calculateOuterInset();
-      tmpRectF.inset(outerInset, outerInset);
 
       ShapeAppearanceModel shapeAppearanceModel =
           state.ringShapeAppearance.getShapeForState(FOCUSED_STATE_SET);
 
       if (shapeAppearanceModel.isRoundRect(tmpRectF)) {
+        float outerInset = calculateOuterInset();
+        tmpRectF.inset(outerInset, outerInset);
         shapeAppearanceCornerSize =
             shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(tmpRectF);
         shapeAppearancePath.reset();

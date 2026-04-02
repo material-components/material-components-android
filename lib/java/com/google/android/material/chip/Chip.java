@@ -76,6 +76,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionIt
 import androidx.customview.widget.ExploreByTouchHelper;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.chip.ChipDrawable.Delegate;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.MaterialCheckable;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialAttributes;
@@ -456,11 +457,13 @@ public class Chip extends AppCompatCheckBox
 
   private void updateFrameworkRippleBackground() {
     //noinspection NewApi
-    ripple =
+    RippleDrawable rippleDrawable =
         new RippleDrawable(
             RippleUtils.sanitizeRippleDrawableColor(chipDrawable.getRippleColor()),
             getBackgroundDrawable(),
             null);
+    FocusRingDrawable.layer(getContext(), rippleDrawable, chipDrawable);
+    ripple = rippleDrawable;
     chipDrawable.setUseCompatRipple(false);
     //noinspection NewApi
     setBackground(ripple);

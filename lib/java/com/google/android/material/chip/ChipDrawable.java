@@ -70,6 +70,7 @@ import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.canvas.CanvasCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.drawable.DrawableUtils;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -1924,13 +1925,15 @@ public class ChipDrawable extends MaterialShapeDrawable
   }
 
   private void updateFrameworkCloseIconRipple() {
-    closeIconRipple =
+    RippleDrawable rippleDrawable =
         new RippleDrawable(
             RippleUtils.sanitizeRippleDrawableColor(getRippleColor()),
             closeIcon,
             // A separate drawable with a solid background is needed for the mask because by
             // default, the close icon has a transparent background.
             closeIconRippleMask);
+    FocusRingDrawable.layer(context, rippleDrawable);
+    closeIconRipple = rippleDrawable;
   }
 
   @Nullable

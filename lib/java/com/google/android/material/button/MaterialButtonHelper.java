@@ -37,6 +37,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.dynamicanimation.animation.SpringForce;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
@@ -74,7 +75,7 @@ class MaterialButtonHelper {
   private boolean cornerRadiusSet = false;
   private boolean checkable;
   private boolean toggleCheckedStateOnClick = true;
-  private LayerDrawable rippleDrawable;
+  private RippleDrawable rippleDrawable;
   private int elevation;
 
   MaterialButtonHelper(MaterialButton button, @NonNull ShapeAppearance shapeAppearance) {
@@ -146,6 +147,13 @@ class MaterialButtonHelper {
       // Workaround (b/231320562): Setting background will cause drawables wrapped inside a
       // RippleDrawable lose their states, we need to reset the state here.
       materialShapeDrawable.setState(materialButton.getDrawableState());
+    }
+
+    // Similar to the comment above, we need to set up the focus ring -> shape drawable connection
+    // here, because the ripple's child drawables will be recreated when the background is set.
+    FocusRingDrawable focusRingDrawable = FocusRingDrawable.find(materialButton.getBackground());
+    if (focusRingDrawable != null) {
+      focusRingDrawable.setFocusRingMaterialShapeDrawable(materialShapeDrawable);
     }
   }
 
@@ -246,6 +254,7 @@ class MaterialButtonHelper {
                 new LayerDrawable(
                     new Drawable[] {surfaceColorStrokeDrawable, backgroundDrawable})),
             maskDrawable);
+    FocusRingDrawable.layer(context, rippleDrawable);
     return rippleDrawable;
   }
 
@@ -420,15 +429,12 @@ class MaterialButtonHelper {
 
   @Nullable
   public Shapeable getMaskDrawable() {
-    if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 1) {
-      if (rippleDrawable.getNumberOfLayers() > 2) {
-        // This is a LayerDrawable with 3 layers, so return the mask layer
-        return (Shapeable) rippleDrawable.getDrawable(2);
+    if (rippleDrawable != null) {
+      Drawable mask = rippleDrawable.findDrawableByLayerId(android.R.id.mask);
+      if (mask instanceof Shapeable) {
+        return (Shapeable) mask;
       }
-      // This is a RippleDrawable, so return the mask layer
-      return (Shapeable) rippleDrawable.getDrawable(1);
     }
-
     return null;
   }
 

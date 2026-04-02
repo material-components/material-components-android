@@ -23,6 +23,9 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
+import android.graphics.drawable.RippleDrawable;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
@@ -86,6 +89,12 @@ public class MaterialRadioButton extends AppCompatRadioButton {
               context, attributes, R.styleable.MaterialRadioButton_buttonTint));
     }
 
+    if (attributes.hasValue(R.styleable.MaterialRadioButton_rippleColor)) {
+      setRippleColor(
+          MaterialResources.getColorStateList(
+              context, attributes, R.styleable.MaterialRadioButton_rippleColor));
+    }
+
     useMaterialThemeColors =
         attributes.getBoolean(R.styleable.MaterialRadioButton_useMaterialThemeColors, false);
 
@@ -140,5 +149,18 @@ public class MaterialRadioButton extends AppCompatRadioButton {
           new ColorStateList(ENABLED_CHECKED_STATES, radioButtonColorList);
     }
     return materialThemeColorsTintList;
+  }
+
+  private void setRippleColor(@Nullable ColorStateList rippleColor) {
+    if (rippleColor == null) {
+      return;
+    }
+    Drawable background = getBackground();
+    if (background instanceof DrawableWrapper) {
+      background = ((DrawableWrapper) background).getDrawable();
+    }
+    if (background instanceof RippleDrawable) {
+      ((RippleDrawable) background).setColor(rippleColor);
+    }
   }
 }
