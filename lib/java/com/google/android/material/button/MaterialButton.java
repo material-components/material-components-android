@@ -589,7 +589,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     int curOrientation = getResources().getConfiguration().orientation;
     if (orientation != curOrientation) {
       orientation = curOrientation;
-      originalWidth = UNSET;
+      recoverOriginalLayoutParams();
     }
     if (originalWidth == UNSET) {
       originalWidth = getMeasuredWidth();
@@ -634,7 +634,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public void setWidth(@Px int pixels) {
-    originalWidth = UNSET;
+    recoverOriginalLayoutParams();
     super.setWidth(pixels);
   }
 
@@ -679,19 +679,19 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public void setText(CharSequence text, BufferType type) {
-    originalWidth = UNSET;
+    recoverOriginalLayoutParams();
     super.setText(text, type);
   }
 
   @Override
   public void setTextAppearance(Context context, int resId) {
-    originalWidth = UNSET;
+    recoverOriginalLayoutParams();
     super.setTextAppearance(context, resId);
   }
 
   @Override
   public void setTextSize(int unit, float size) {
-    originalWidth = UNSET;
+    recoverOriginalLayoutParams();
     super.setTextSize(unit, size);
   }
 
@@ -910,7 +910,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @Override
   public void setCompoundDrawablePadding(@Px int padding) {
     if (getCompoundDrawablePadding() != padding) {
-      originalWidth = UNSET;
+      recoverOriginalLayoutParams();
     }
     super.setCompoundDrawablePadding(padding);
   }
@@ -958,7 +958,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       if (maybeRunAfterWidthAnimation(() -> setIconSize(iconSize))) {
         return;
       }
-      originalWidth = UNSET;
+      recoverOriginalLayoutParams();
       this.iconSize = iconSize;
       updateIcon(/* needsIconReset= */ true);
       updateSecondaryIcon(/* needsIconReset= */ true);
@@ -991,7 +991,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       if (maybeRunAfterWidthAnimation(() -> setIcon(icon))) {
         return;
       }
-      originalWidth = UNSET;
+      recoverOriginalLayoutParams();
       this.icon = icon;
       updateIcon(/* needsIconReset= */ true);
       updateIconPosition(getMeasuredWidth(), getMeasuredHeight());
@@ -1106,7 +1106,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       if (maybeRunAfterWidthAnimation(() -> setIcon(icon))) {
         return;
       }
-      originalWidth = UNSET;
+      recoverOriginalLayoutParams();
       secondaryIcon = icon;
       stopNullSecondaryIconUpdate = false;
       updateSecondaryIcon(/* needsIconReset= */ true);
