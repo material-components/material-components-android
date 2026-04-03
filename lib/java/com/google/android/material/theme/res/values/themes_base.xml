@@ -39,6 +39,7 @@
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
 
     <item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar</item>
+    <item name="materialSearchViewStyle">@style/Widget.Material3Expressive.SearchView</item>
 
     <item name="listItemRevealLayoutStyle">@style/Widget.Material3Expressive.ListItemRevealLayout</item>
 
@@ -115,6 +116,7 @@
     <item name="collapsingToolbarLayoutLargeStyle">@style/Widget.Material3Expressive.CollapsingToolbar.Large</item>
 
     <item name="materialSearchBarStyle">@style/Widget.Material3Expressive.SearchBar</item>
+    <item name="materialSearchViewStyle">@style/Widget.Material3Expressive.SearchView</item>
 
     <item name="listItemRevealLayoutStyle">@style/Widget.Material3Expressive.ListItemRevealLayout</item>
 
