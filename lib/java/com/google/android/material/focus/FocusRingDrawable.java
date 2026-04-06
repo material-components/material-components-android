@@ -17,6 +17,10 @@ package com.google.android.material.focus;
 
 import com.google.android.material.R;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
@@ -37,8 +41,10 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
+import android.util.FloatProperty;
 import android.util.StateSet;
 import android.util.TypedValue;
+import android.view.animation.OvershootInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -60,6 +66,24 @@ public class FocusRingDrawable extends DrawableWrapper {
   private static final Drawable EMPTY_DRAWABLE = new ColorDrawable(Color.TRANSPARENT);
   private static final int[] FOCUSED_STATE_SET = {android.R.attr.state_focused};
 
+  private static final TimeInterpolator INTERPOLATOR = new OvershootInterpolator(4f);
+  private static final int ANIMATION_DURATION = 300;
+
+  @RequiresApi(VERSION_CODES.N)
+  private static final FloatProperty<FocusRingDrawable> PROPERTY_INTERPOLATION =
+      new FloatProperty<FocusRingDrawable>("interpolation") {
+        @Override
+        public void setValue(FocusRingDrawable drawable, float value) {
+          drawable.interpolation = value;
+          drawable.invalidateSelf();
+        }
+
+        @Override
+        public Float get(FocusRingDrawable drawable) {
+          return drawable.interpolation;
+        }
+      };
+
   private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private final RectF tmpRectF = new RectF();
   private final Rect tmpRect = new Rect();
@@ -71,6 +95,9 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   @Nullable private WeakReference<MaterialShapeDrawable> materialShapeDrawable;
   private float shapeAppearanceCornerSize = -1;
+  @Nullable private ObjectAnimator animator;
+  private float interpolation = 1f;
+  private boolean previousStateSetEmpty;
   private boolean focused = false;
   private boolean mutated = false;
 
@@ -132,6 +159,9 @@ public class FocusRingDrawable extends DrawableWrapper {
       focusRingDrawable.setFocusRingMaterialShapeDrawable(materialShapeDrawable);
     }
     layerDrawable.addLayer(focusRingDrawable);
+    // Needed when the FocusRingDrawable is not the view's overall background, to ensure that
+    // invalidateSelf() calls during the animation work.
+    focusRingDrawable.setCallback(layerDrawable);
     return focusRingDrawable;
   }
 
@@ -378,7 +408,42 @@ public class FocusRingDrawable extends DrawableWrapper {
     boolean focused = StateSet.stateSetMatches(FOCUSED_STATE_SET, stateSet);
     boolean changed = this.focused != focused;
     this.focused = focused;
+
+    // Don't cancel or start the animation if the current or previous state set is / was empty. This
+    // is a workaround for MaterialButton which strangely has empty state sets come through on focus
+    // and press, which causes the focus ring animation to be played multiple times.
+    if (changed && stateSet.length > 0 && !previousStateSetEmpty) {
+      maybeAnimate(focused);
+    }
+
+    previousStateSetEmpty = stateSet.length == 0;
+
     return super.onStateChange(stateSet) || changed;
+  }
+
+  private void maybeAnimate(boolean focused) {
+    if (animator != null) {
+      animator.cancel();
+      animator = null;
+    }
+    if (focused) {
+      if (VERSION.SDK_INT >= VERSION_CODES.N) {
+        animator = createAnimator();
+        animator.start();
+      }
+    } else {
+      interpolation = 1f;
+    }
+  }
+
+  @Override
+  public void jumpToCurrentState() {
+    super.jumpToCurrentState();
+
+    if (animator != null) {
+      animator.end();
+      animator = null;
+    }
   }
 
   @Override
@@ -447,7 +512,7 @@ public class FocusRingDrawable extends DrawableWrapper {
     matrix.postScale(scaleX, scaleY, tmpRectF.centerX(), tmpRectF.centerY());
     path.transform(matrix, tmpPath);
 
-    paint.setStrokeWidth(strokeWidth);
+    paint.setStrokeWidth(strokeWidth * interpolation);
     paint.setColor(color);
     canvas.drawPath(tmpPath, paint);
   }
@@ -457,7 +522,7 @@ public class FocusRingDrawable extends DrawableWrapper {
     calculateBounds(tmpRectF);
     tmpRectF.inset(inset, inset);
 
-    paint.setStrokeWidth(strokeWidth);
+    paint.setStrokeWidth(strokeWidth * interpolation);
     paint.setColor(color);
     canvas.drawRoundRect(tmpRectF, radius, radius, paint);
   }
@@ -526,11 +591,11 @@ public class FocusRingDrawable extends DrawableWrapper {
   }
 
   private float calculateOuterInset() {
-    return state.ringInset + state.ringOuterStrokeWidth / 2f;
+    return state.ringInset + state.ringOuterStrokeWidth / 2f * interpolation;
   }
 
   private float calculateInnerInset() {
-    return state.ringInset + state.ringInnerInset + state.ringInnerStrokeWidth / 2f;
+    return state.ringInset + state.ringInnerInset + state.ringInnerStrokeWidth / 2f * interpolation;
   }
 
   private float calculateOuterRadius() {
@@ -582,6 +647,23 @@ public class FocusRingDrawable extends DrawableWrapper {
       shapeAppearanceCornerSize = -1;
       shapeAppearancePath.reset();
     }
+  }
+
+  @RequiresApi(VERSION_CODES.N)
+  private ObjectAnimator createAnimator() {
+    ObjectAnimator animator = ObjectAnimator.ofFloat(this, PROPERTY_INTERPOLATION, 0f, 1f);
+    animator.setDuration(ANIMATION_DURATION);
+    animator.setInterpolator(INTERPOLATOR);
+    animator.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationCancel(Animator animation) {
+            super.onAnimationCancel(animation);
+            interpolation = 1f;
+            invalidateSelf();
+          }
+        });
+    return animator;
   }
 
   @CanIgnoreReturnValue
