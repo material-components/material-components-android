@@ -289,4 +289,19 @@
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
   </style>
 
+  <!-- Theme overlay that reverts the theme-level drawables back to the defaults
+       without FocusRingDrawable, which is needed in some cases where drawable
+       class inflation is not supported (e.g., launcher widgets). -->
+  <style name="ThemeOverlay.NoFocusRingDrawables" parent="">
+    <item name="android:selectableItemBackground">@drawable/m3_default_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_default_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_default_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_default_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_default_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_default_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_default_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_default_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_default_list_selector_background</item>
+  </style>
+
 </resources>
