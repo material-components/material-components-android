@@ -22,6 +22,7 @@
     <item name="backgroundTint">@macro/m3_comp_search_bar_container_color</item>
     <item name="liftOnScrollColor">?attr/colorSurfaceContainerHighest</item>
     <item name="liftOnScroll">true</item>
+    <item name="textCentered">false</item>
     <item name="contentInsetStart">@dimen/m3_comp_search_bar_contained_leading_margin</item>
     <item name="contentInsetEnd">@dimen/m3_comp_search_bar_contained_trailing_margin</item>
     <item name="android:paddingStart">@dimen/m3_comp_search_bar_contained_leading_space</item>
