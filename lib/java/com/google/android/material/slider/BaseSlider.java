@@ -2719,7 +2719,7 @@ abstract class BaseSlider<
 
   private int calculateTrackCenter() {
     return widgetThickness / 2
-        + (labelBehavior == LABEL_WITHIN_BOUNDS || shouldAlwaysShowLabel()
+        + ((labelBehavior == LABEL_WITHIN_BOUNDS || shouldAlwaysShowLabel()) && !labels.isEmpty()
             ? labels.get(0).getIntrinsicHeight()
             : 0);
   }
