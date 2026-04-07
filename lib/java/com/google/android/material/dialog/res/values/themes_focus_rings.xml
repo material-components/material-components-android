@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2026 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+  <style name="Theme.Material3Expressive.Light.Dialog.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3Expressive.Dark.Dialog.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3Expressive.Light.Dialog.Alert.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3Expressive.Dark.Dialog.Alert.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3Expressive.Light.Dialog.MinWidth.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3Expressive.Dark.Dialog.MinWidth.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3.Light.Dialog.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3.Dark.Dialog.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3.Light.Dialog.Alert.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3.Dark.Dialog.Alert.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3.Light.Dialog.MinWidth.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.Material3.Dark.Dialog.MinWidth.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Dialog.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Light.Dialog.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Dialog.Alert.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Light.Dialog.Alert.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Dialog.MinWidth.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Light.Dialog.MinWidth.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Dialog.FixedSize.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Light.Dialog.FixedSize.FocusRings">
+    <item name="focusRingsEnabled">true</item>
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+  </style>
+
+</resources>
