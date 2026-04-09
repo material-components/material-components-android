@@ -54,6 +54,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearance;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearancePathProvider;
+import com.google.android.material.shape.StateListShapeAppearanceModel;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -910,9 +911,17 @@ public class FocusRingDrawable extends DrawableWrapper {
         this.ringInsetAttr = orig.ringInsetAttr;
         this.ringInnerInset = orig.ringInnerInset;
         this.ringInnerInsetAttr = orig.ringInnerInsetAttr;
-        this.ringShapeAppearance = orig.ringShapeAppearance;
         this.ringShapeAppearanceResId = orig.ringShapeAppearanceResId;
         this.ringShapeAppearanceAttr = orig.ringShapeAppearanceAttr;
+        if (orig.ringShapeAppearance instanceof ShapeAppearanceModel) {
+          this.ringShapeAppearance =
+              ((ShapeAppearanceModel) orig.ringShapeAppearance).toBuilder().build();
+        } else if (orig.ringShapeAppearance instanceof StateListShapeAppearanceModel) {
+          this.ringShapeAppearance =
+              ((StateListShapeAppearanceModel) orig.ringShapeAppearance).toBuilder().build();
+        } else {
+          this.ringShapeAppearance = orig.ringShapeAppearance;
+        }
         if (orig.ringCustomBounds != null) {
           this.ringCustomBounds = new Rect(orig.ringCustomBounds);
         }
