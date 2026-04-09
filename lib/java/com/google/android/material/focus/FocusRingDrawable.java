@@ -48,6 +48,7 @@ import android.view.animation.OvershootInterpolator;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.annotation.StyleableRes;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearance;
@@ -270,58 +271,238 @@ public class FocusRingDrawable extends DrawableWrapper {
     } else {
       a = res.obtainAttributes(attrs, R.styleable.FocusRingDrawable);
     }
-    updateStateFromTypedArray(a, res, /* useDefaults= */ false);
+    updateStateFromTypedArrayWithoutThemeAttrsOrDefaults(a);
     a.recycle();
 
     inflateChildDrawable(res, parser, attrs, theme);
   }
 
-  private void updateStateFromTypedArray(
-      @NonNull TypedArray a, @NonNull Resources res, boolean useDefaults) {
-    if (state.ringOuterColor == Integer.MIN_VALUE) {
-      int defaultOuterColor = useDefaults ? Color.BLACK : Integer.MIN_VALUE;
+  private void updateStateFromTypedArrayWithoutThemeAttrsOrDefaults(@NonNull TypedArray a) {
+    state.ringEnabledAttr = getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsEnabled);
+    if (state.ringEnabledAttr == Integer.MIN_VALUE
+        && a.hasValue(R.styleable.FocusRingDrawable_focusRingsEnabled)) {
+      state.ringEnabled =
+          a.getBoolean(R.styleable.FocusRingDrawable_focusRingsEnabled, state.ringEnabled);
+      state.ringEnabledInflated = true;
+    }
+
+    state.ringOuterColorAttr =
+        getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsOuterStrokeColor);
+    if (state.ringOuterColorAttr == Integer.MIN_VALUE) {
       state.ringOuterColor =
-          a.getColor(R.styleable.FocusRingDrawable_focusRingsOuterStrokeColor, defaultOuterColor);
+          a.getColor(R.styleable.FocusRingDrawable_focusRingsOuterStrokeColor, Integer.MIN_VALUE);
     }
-    if (state.ringInnerColor == Integer.MIN_VALUE) {
-      int defaultInnerColor = useDefaults ? Color.WHITE : Integer.MIN_VALUE;
+
+    state.ringInnerColorAttr =
+        getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsInnerStrokeColor);
+    if (state.ringInnerColorAttr == Integer.MIN_VALUE) {
       state.ringInnerColor =
-          a.getColor(R.styleable.FocusRingDrawable_focusRingsInnerStrokeColor, defaultInnerColor);
+          a.getColor(R.styleable.FocusRingDrawable_focusRingsInnerStrokeColor, Integer.MIN_VALUE);
     }
+
+    state.ringOuterStrokeWidthAttr =
+        getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsOuterStrokeWidth);
+    if (state.ringOuterStrokeWidthAttr == Integer.MIN_VALUE) {
+      state.ringOuterStrokeWidth =
+          a.getDimension(R.styleable.FocusRingDrawable_focusRingsOuterStrokeWidth, Float.NaN);
+    }
+
+    state.ringInnerStrokeWidthAttr =
+        getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsInnerStrokeWidth);
+    if (state.ringInnerStrokeWidthAttr == Integer.MIN_VALUE) {
+      state.ringInnerStrokeWidth =
+          a.getDimension(R.styleable.FocusRingDrawable_focusRingsInnerStrokeWidth, Float.NaN);
+    }
+
+    state.ringInnerStrokeWidthAttr =
+        getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsInnerStrokeWidth);
+    if (state.ringInnerStrokeWidthAttr == Integer.MIN_VALUE) {
+      state.ringInnerStrokeWidth =
+          a.getDimension(R.styleable.FocusRingDrawable_focusRingsInnerStrokeWidth, Float.NaN);
+    }
+
+    state.ringRadiusAttr = getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsRadius);
+    if (state.ringRadiusAttr == Integer.MIN_VALUE) {
+      state.ringRadius = a.getDimension(R.styleable.FocusRingDrawable_focusRingsRadius, Float.NaN);
+    }
+
+    state.ringInsetAttr = getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsInset);
+    if (state.ringInsetAttr == Integer.MIN_VALUE) {
+      state.ringInset = a.getDimension(R.styleable.FocusRingDrawable_focusRingsInset, Float.NaN);
+    }
+
+    state.ringInnerInsetAttr =
+        getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsInnerStrokeInset);
+    if (state.ringInnerInsetAttr == Integer.MIN_VALUE) {
+      state.ringInnerInset =
+          a.getDimension(R.styleable.FocusRingDrawable_focusRingsInnerStrokeInset, Float.NaN);
+    }
+
+    state.ringShapeAppearanceAttr =
+        getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsShapeAppearance);
+    state.ringShapeAppearanceResId =
+        getResIdIfReference(a, R.styleable.FocusRingDrawable_focusRingsShapeAppearance);
+  }
+
+  private void updateStateFromTypedArrayWithThemeAttrsAndDefaults(
+      @NonNull TypedArray a, @NonNull Theme theme) {
+    Resources res = theme.getResources();
+
+    if (state.ringEnabledAttr != Integer.MIN_VALUE) {
+      TypedValue typedValue = MaterialAttributes.resolve(theme, state.ringEnabledAttr);
+      if (typedValue != null) {
+        state.ringEnabled = typedValue.data != 0;
+        state.ringEnabledInflated = true;
+      }
+    }
+    if (!state.ringEnabledInflated) {
+      state.ringEnabled =
+          MaterialAttributes.resolveBoolean(theme, R.attr.focusRingsEnabled, state.ringEnabled);
+    }
+    if (!state.ringEnabled) {
+      return;
+    }
+
+    state.ringOuterColor =
+        maybeResolveColor(
+            state.ringOuterColor,
+            theme,
+            state.ringOuterColorAttr,
+            a,
+            R.styleable.FocusRingDrawable_focusRingsOuterStrokeColor,
+            Color.BLACK);
+
+    state.ringInnerColor =
+        maybeResolveColor(
+            state.ringInnerColor,
+            theme,
+            state.ringInnerColorAttr,
+            a,
+            R.styleable.FocusRingDrawable_focusRingsInnerStrokeColor,
+            Color.WHITE);
+
+    float defaultStrokeWidth =
+        res.getDimensionPixelSize(R.dimen.mtrl_focus_ring_outer_stroke_width);
+
+    state.ringOuterStrokeWidth =
+        maybeResolveDimension(
+            state.ringOuterStrokeWidth,
+            theme,
+            state.ringOuterStrokeWidthAttr,
+            a,
+            R.styleable.FocusRingDrawable_focusRingsOuterStrokeWidth,
+            defaultStrokeWidth);
+
+    state.ringInnerStrokeWidth =
+        maybeResolveDimension(
+            state.ringInnerStrokeWidth,
+            theme,
+            state.ringInnerStrokeWidthAttr,
+            a,
+            R.styleable.FocusRingDrawable_focusRingsInnerStrokeWidth,
+            defaultStrokeWidth);
+
+    state.ringRadius =
+        maybeResolveDimension(
+            state.ringRadius,
+            theme,
+            state.ringRadiusAttr,
+            a,
+            R.styleable.FocusRingDrawable_focusRingsRadius,
+            Float.NaN);
+
+    state.ringInset =
+        maybeResolveDimension(
+            state.ringInset,
+            theme,
+            state.ringInsetAttr,
+            a,
+            R.styleable.FocusRingDrawable_focusRingsInset,
+            0f);
+
+    state.ringInnerInset =
+        maybeResolveDimension(
+            state.ringInnerInset,
+            theme,
+            state.ringInnerInsetAttr,
+            a,
+            R.styleable.FocusRingDrawable_focusRingsInnerStrokeInset,
+            0f);
+
+    if (state.ringShapeAppearanceResId != Integer.MIN_VALUE) {
+      state.ringShapeAppearance =
+          ShapeAppearanceModel.builder(theme, state.ringShapeAppearanceResId).build();
+    } else {
+      int shapeAppearanceAttr =
+          state.ringShapeAppearanceAttr != Integer.MIN_VALUE
+              ? state.ringShapeAppearanceAttr
+              : R.attr.focusRingsShapeAppearance;
+      TypedValue typedValue = MaterialAttributes.resolve(theme, shapeAppearanceAttr);
+      if (typedValue != null) {
+        state.ringShapeAppearance =
+            ShapeAppearanceModel.builder(theme, typedValue.resourceId).build();
+      }
+    }
+
     if (DEBUG_COLORS) {
       state.ringOuterColor = Color.RED;
       state.ringInnerColor = Color.GREEN;
     }
-    if (Float.isNaN(state.ringOuterStrokeWidth)) {
-      float defaultStrokeWidth =
-          useDefaults
-              ? res.getDimensionPixelSize(R.dimen.mtrl_focus_ring_outer_stroke_width)
-              : Float.NaN;
-      state.ringOuterStrokeWidth =
-          a.getDimension(
-              R.styleable.FocusRingDrawable_focusRingsOuterStrokeWidth, defaultStrokeWidth);
+  }
+
+  private int getValueDataIfAttr(TypedArray a, @StyleableRes int index) {
+    if (a.getType(index) == TypedValue.TYPE_ATTRIBUTE) {
+      TypedValue value = new TypedValue();
+      if (a.getValue(index, value)) {
+        return value.data;
+      }
     }
-    if (Float.isNaN(state.ringInnerStrokeWidth)) {
-      float defaultStrokeWidth =
-          useDefaults
-              ? res.getDimensionPixelSize(R.dimen.mtrl_focus_ring_outer_stroke_width)
-              : Float.NaN;
-      state.ringInnerStrokeWidth =
-          a.getDimension(
-              R.styleable.FocusRingDrawable_focusRingsInnerStrokeWidth, defaultStrokeWidth);
+    return Integer.MIN_VALUE;
+  }
+
+  private int getResIdIfReference(TypedArray a, @StyleableRes int index) {
+    if (a.getType(index) == TypedValue.TYPE_REFERENCE) {
+      return a.getResourceId(index, Integer.MIN_VALUE);
     }
-    if (Float.isNaN(state.ringRadius)) {
-      state.ringRadius = a.getDimension(R.styleable.FocusRingDrawable_focusRingsRadius, Float.NaN);
+    return Integer.MIN_VALUE;
+  }
+
+  private int maybeResolveColor(
+      int currentValue,
+      @NonNull Theme theme,
+      @StyleableRes int attrIndex,
+      @NonNull TypedArray a,
+      @StyleableRes int regularIndex,
+      int defaultValue) {
+    if (currentValue != Integer.MIN_VALUE) {
+      return currentValue;
     }
-    if (Float.isNaN(state.ringInset)) {
-      float defaultInset = useDefaults ? 0f : Float.NaN;
-      state.ringInset = a.getDimension(R.styleable.FocusRingDrawable_focusRingsInset, defaultInset);
+    if (attrIndex != Integer.MIN_VALUE) {
+      TypedValue value = new TypedValue();
+      if (theme.resolveAttribute(attrIndex, value, true)) {
+        return value.data;
+      }
     }
-    if (Float.isNaN(state.ringInnerInset)) {
-      float defaultInset = useDefaults ? 0f : Float.NaN;
-      state.ringInnerInset =
-          a.getDimension(R.styleable.FocusRingDrawable_focusRingsInnerStrokeInset, defaultInset);
+    return a.getColor(regularIndex, defaultValue);
+  }
+
+  private float maybeResolveDimension(
+      float currentValue,
+      @NonNull Theme theme,
+      @StyleableRes int attrIndex,
+      @NonNull TypedArray a,
+      @StyleableRes int regularIndex,
+      float defaultValue) {
+    if (!Float.isNaN(currentValue)) {
+      return currentValue;
     }
+    if (attrIndex != Float.MIN_VALUE) {
+      TypedValue value = new TypedValue();
+      if (theme.resolveAttribute(attrIndex, value, true)) {
+        return value.getDimension(theme.getResources().getDisplayMetrics());
+      }
+    }
+    return a.getDimension(regularIndex, defaultValue);
   }
 
   private void inflateChildDrawable(
@@ -356,21 +537,8 @@ public class FocusRingDrawable extends DrawableWrapper {
       return;
     }
 
-    state.ringEnabled = MaterialAttributes.resolveBoolean(theme, R.attr.focusRingsEnabled, false);
-
-    if (!state.ringEnabled) {
-      return;
-    }
-
-    // Shape appearance is currently only supported from theme / theme overlay.
-    TypedValue typedValue = MaterialAttributes.resolve(theme, R.attr.focusRingsShapeAppearance);
-    if (typedValue != null) {
-      state.ringShapeAppearance =
-          ShapeAppearanceModel.builder(theme, typedValue.resourceId).build();
-    }
-
     TypedArray a = theme.obtainStyledAttributes(R.styleable.FocusRingDrawable);
-    updateStateFromTypedArray(a, theme.getResources(), /* useDefaults= */ true);
+    updateStateFromTypedArrayWithThemeAttrsAndDefaults(a, theme);
     a.recycle();
 
     updateLocalState();
@@ -378,7 +546,9 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   private void updateLocalState() {
     paint.setStyle(Style.STROKE);
-    paint.setStrokeWidth(state.ringOuterStrokeWidth);
+    if (!Float.isNaN(state.ringOuterStrokeWidth)) {
+      paint.setStrokeWidth(state.ringOuterStrokeWidth);
+    }
   }
 
   @Override
@@ -697,15 +867,25 @@ public class FocusRingDrawable extends DrawableWrapper {
     int mChangingConfigurations = 0;
 
     private boolean ringEnabled = false;
+    private int ringEnabledAttr = Integer.MIN_VALUE;
+    private boolean ringEnabledInflated = false;
     private int ringOuterColor = Integer.MIN_VALUE;
+    private int ringOuterColorAttr = Integer.MIN_VALUE;
     private int ringInnerColor = Integer.MIN_VALUE;
+    private int ringInnerColorAttr = Integer.MIN_VALUE;
     private float ringOuterStrokeWidth = Float.NaN;
+    private int ringOuterStrokeWidthAttr = Integer.MIN_VALUE;
     private float ringInnerStrokeWidth = Float.NaN;
+    private int ringInnerStrokeWidthAttr = Integer.MIN_VALUE;
     private float ringRadius = Float.NaN;
+    private int ringRadiusAttr = Integer.MIN_VALUE;
     private float ringInset = Float.NaN;
+    private int ringInsetAttr = Integer.MIN_VALUE;
     private float ringInnerInset = Float.NaN;
+    private int ringInnerInsetAttr = Integer.MIN_VALUE;
     @Nullable private ShapeAppearance ringShapeAppearance = null;
-    private int ringBoundsMode = -1;
+    private int ringShapeAppearanceResId = Integer.MIN_VALUE;
+    private int ringShapeAppearanceAttr = Integer.MIN_VALUE;
     @Nullable private Rect ringCustomBounds = null;
 
     FocusRingState(@Nullable FocusRingState orig) {
@@ -714,15 +894,25 @@ public class FocusRingDrawable extends DrawableWrapper {
         mChangingConfigurations = orig.mChangingConfigurations;
 
         this.ringEnabled = orig.ringEnabled;
+        this.ringEnabledAttr = orig.ringEnabledAttr;
+        this.ringEnabledInflated = orig.ringEnabledInflated;
         this.ringOuterColor = orig.ringOuterColor;
+        this.ringOuterColorAttr = orig.ringOuterColorAttr;
         this.ringInnerColor = orig.ringInnerColor;
+        this.ringInnerColorAttr = orig.ringInnerColorAttr;
         this.ringOuterStrokeWidth = orig.ringOuterStrokeWidth;
+        this.ringOuterStrokeWidthAttr = orig.ringOuterStrokeWidthAttr;
         this.ringInnerStrokeWidth = orig.ringInnerStrokeWidth;
+        this.ringInnerStrokeWidthAttr = orig.ringInnerStrokeWidthAttr;
         this.ringRadius = orig.ringRadius;
+        this.ringRadiusAttr = orig.ringRadiusAttr;
         this.ringInset = orig.ringInset;
+        this.ringInsetAttr = orig.ringInsetAttr;
         this.ringInnerInset = orig.ringInnerInset;
+        this.ringInnerInsetAttr = orig.ringInnerInsetAttr;
         this.ringShapeAppearance = orig.ringShapeAppearance;
-        this.ringBoundsMode = orig.ringBoundsMode;
+        this.ringShapeAppearanceResId = orig.ringShapeAppearanceResId;
+        this.ringShapeAppearanceAttr = orig.ringShapeAppearanceAttr;
         if (orig.ringCustomBounds != null) {
           this.ringCustomBounds = new Rect(orig.ringCustomBounds);
         }

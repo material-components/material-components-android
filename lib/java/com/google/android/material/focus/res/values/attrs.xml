@@ -16,10 +16,6 @@
 -->
 <resources>
 
-  <!-- The shape appearance of the focus ring. This is currently only
-       supported from a theme / theme overlay. -->
-  <attr name="focusRingsShapeAppearance" format="reference"/>
-
   <declare-styleable name="FocusRingDrawable">
     <!-- Whether focus rings are enabled. -->
     <attr name="focusRingsEnabled" format="boolean"/>
@@ -39,5 +35,7 @@
     <attr name="focusRingsInnerStrokeInset" format="dimension"/>
     <!-- The radius of the focus ring. -->
     <attr name="focusRingsRadius" format="dimension"/>
+    <!-- The shape appearance of the focus ring. -->
+    <attr name="focusRingsShapeAppearance" format="reference"/>
   </declare-styleable>
 </resources>
