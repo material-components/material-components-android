@@ -1006,4 +1006,16 @@
     <!-- Icon text button has the same padding as a regular text button -->
   </style>
 
+  <!-- Styles for framework buttons with focus rings (on API 24+). -->
+  <style name="Widget.Material.Button.FocusRing" parent="android:Widget.Material.Button" />
+
+  <style name="Widget.Material.Button.Small.FocusRing" parent="Widget.Material.Button.FocusRing">
+    <item name="android:minHeight">48dip</item>
+    <item name="android:minWidth">48dip</item>
+  </style>
+
+  <style name="Widget.Material.Button.Borderless.FocusRing" parent="android:Widget.Material.Button.Borderless" />
+
+  <style name="Widget.Material.ImageButton.FocusRing" parent="android:Widget.Material.ImageButton" />
+
 </resources>

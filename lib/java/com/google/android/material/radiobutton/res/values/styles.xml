@@ -38,4 +38,8 @@
 
   <style name="Widget.Material3.CompoundButton.RadioButton" parent="Base.Widget.Material3.CompoundButton.RadioButton"/>
 
+  <style name="Widget.Material.CompoundButton.RadioButton.FocusRing" parent="android:Widget.Material.CompoundButton.RadioButton">
+    <item name="android:background">@drawable/m3_focus_ring_control_background</item>
+  </style>
+
 </resources>

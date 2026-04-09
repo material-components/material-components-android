@@ -18,6 +18,7 @@
 
   <style name="Theme.Material3Expressive.Light.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -27,10 +28,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3Expressive.Dark.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -40,10 +52,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3Expressive.Light.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -53,10 +76,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3Expressive.Dark.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -66,10 +100,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3Expressive.DynamicColors.Light.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -79,10 +124,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3Expressive.DynamicColors.Dark.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -92,10 +148,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3Expressive.DynamicColors.Light.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -105,10 +172,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3Expressive.DynamicColors.Dark.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -118,10 +196,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3.Light.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -131,10 +220,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3.Dark.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -144,10 +244,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3.Light.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -157,10 +268,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3.Dark.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -170,10 +292,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3.DynamicColors.Light.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -183,10 +316,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3.DynamicColors.Dark.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -196,10 +340,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3.DynamicColors.Light.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -209,10 +364,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.Material3.DynamicColors.Dark.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -222,10 +388,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.MaterialComponents.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -235,10 +412,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.MaterialComponents.Light.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -248,10 +436,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.MaterialComponents.Light.DarkActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -261,10 +460,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.MaterialComponents.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -274,10 +484,21 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
   <style name="Theme.MaterialComponents.Light.NoActionBar.FocusRings">
     <item name="focusRingsEnabled">true</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
@@ -287,12 +508,56 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
   </style>
 
-  <!-- Theme overlay that reverts the theme-level drawables back to the defaults
-       without FocusRingDrawable, which is needed in some cases where drawable
-       class inflation is not supported (e.g., launcher widgets). -->
-  <style name="ThemeOverlay.NoFocusRingDrawables" parent="">
+  <!-- Theme overlay sets the theme-level drawables and framework styles to use
+       FocusRingDrawable, which is useful in cases where the main app theme
+       has not opted in to focus rings. -->
+  <style name="ThemeOverlay.Material.FocusRings" parent="">
+    <item name="focusRingsEnabled">true</item>
+    <item name="focusRingsOuterStrokeColor">@macro/mtrl_focus_ring_outer_stroke_color</item>
+    <item name="focusRingsInnerStrokeColor">@macro/mtrl_focus_ring_inner_stroke_color</item>
+    <item name="focusRingsOuterStrokeWidth">@dimen/mtrl_focus_ring_outer_stroke_width</item>
+    <item name="focusRingsInnerStrokeWidth">@dimen/mtrl_focus_ring_inner_stroke_width</item>
+    <item name="focusRingsInnerStrokeInset">@dimen/mtrl_focus_ring_inner_stroke_inset</item>
+
+    <item name="android:selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="selectableItemBackground">@drawable/m3_focus_ring_item_background</item>
+    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="selectableItemBackgroundBorderless">@drawable/m3_focus_ring_item_background_borderless</item>
+    <item name="android:actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="actionBarItemBackground">@drawable/m3_focus_ring_action_bar_item_background</item>
+    <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+    <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
+    <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
+    <item name="android:borderlessButtonStyle">@style/Widget.Material.Button.Borderless.FocusRing</item>
+    <item name="android:imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="imageButtonStyle">@style/Widget.Material.ImageButton.FocusRing</item>
+    <item name="android:checkboxStyle">@style/Widget.Material.CompoundButton.CheckBox.FocusRing</item>
+    <item name="android:radioButtonStyle">@style/Widget.Material.CompoundButton.RadioButton.FocusRing</item>
+  </style>
+
+  <!-- Theme overlay that reverts the theme-level drawables and framework styles
+       back to the defaults without FocusRingDrawable, which is needed in some
+       cases where drawable class inflation is not supported (e.g., launcher widgets). -->
+  <style name="ThemeOverlay.Material.NoFocusRings" parent="">
+    <item name="focusRingsEnabled">false</item>
+
     <item name="android:selectableItemBackground">@drawable/m3_default_item_background</item>
     <item name="selectableItemBackground">@drawable/m3_default_item_background</item>
     <item name="android:selectableItemBackgroundBorderless">@drawable/m3_default_item_background_borderless</item>
@@ -302,6 +567,16 @@
     <item name="controlBackground">@drawable/m3_default_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_default_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_default_list_selector_background</item>
+
+    <item name="android:buttonStyle">@android:style/Widget.Material.Button</item>
+    <item name="buttonStyle">@android:style/Widget.Material.Button</item>
+    <item name="android:buttonStyleSmall">@android:style/Widget.Material.Button.Small</item>
+    <item name="buttonStyleSmall">@android:style/Widget.Material.Button.Small</item>
+    <item name="android:borderlessButtonStyle">@android:style/Widget.Material.Button.Borderless</item>
+    <item name="android:imageButtonStyle">@android:style/Widget.Material.ImageButton</item>
+    <item name="imageButtonStyle">@android:style/Widget.Material.ImageButton</item>
+    <item name="android:checkboxStyle">@android:style/Widget.Material.CompoundButton.CheckBox</item>
+    <item name="android:radioButtonStyle">@android:style/Widget.Material.CompoundButton.RadioButton</item>
   </style>
 
 </resources>

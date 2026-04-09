@@ -45,4 +45,8 @@
 
   <style name="Widget.Material3.CompoundButton.CheckBox" parent="Base.Widget.Material3.CompoundButton.CheckBox" />
 
+  <style name="Widget.Material.CompoundButton.CheckBox.FocusRing" parent="android:Widget.Material.CompoundButton.CheckBox">
+    <item name="android:background">@drawable/m3_focus_ring_framework_checkbox_background</item>
+  </style>
+
 </resources>
