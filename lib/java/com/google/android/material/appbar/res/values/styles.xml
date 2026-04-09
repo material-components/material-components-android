@@ -154,13 +154,13 @@
 
   <style name="ThemeOverlay.Material3.Toolbar" parent="">
     <!-- Overridding the AppCompat / Android drawable attributes for correct ripple colors. -->
-    <item name="selectableItemBackground">@drawable/m3_selectable_item_background</item>
-    <item name="android:selectableItemBackground">@drawable/m3_selectable_item_background</item>
-    <item name="selectableItemBackgroundBorderless">@drawable/m3_selectable_item_background_borderless</item>
-    <item name="android:selectableItemBackgroundBorderless">@drawable/m3_selectable_item_background_borderless</item>
-    <item name="actionBarItemBackground">@drawable/m3_action_bar_item_background</item>
-    <item name="android:actionBarItemBackground">@drawable/m3_action_bar_item_background</item>
-    <item name="controlBackground">@drawable/m3_action_bar_item_background</item>
+    <item name="selectableItemBackground">?attr/materialToolbarSelectableItemBackground</item>
+    <item name="android:selectableItemBackground">?attr/materialToolbarSelectableItemBackground</item>
+    <item name="selectableItemBackgroundBorderless">?attr/materialToolbarSelectableItemBackgroundBorderless</item>
+    <item name="android:selectableItemBackgroundBorderless">?attr/materialToolbarSelectableItemBackgroundBorderless</item>
+    <item name="actionBarItemBackground">?attr/materialToolbarActionBarItemBackground</item>
+    <item name="android:actionBarItemBackground">?attr/materialToolbarActionBarItemBackground</item>
+    <item name="controlBackground">?attr/materialToolbarActionBarItemBackground</item>
   </style>
 
   <style name="ThemeOverlay.Material3.Toolbar.Surface">

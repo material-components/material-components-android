@@ -40,6 +40,18 @@
   <!-- Color of the circle when using ThemeOverlay.Material3.Toolbar.CircleNavigationButton. -->
   <attr name="toolbarNavigationButtonCircleColor" format="color"/>
 
+  <!-- The background drawable used by Toolbar and MaterialToolbar navigation buttons in M3+. -->
+  <attr name="toolbarNavigationButtonBackground" format="color"/>
+
+  <!-- The selectableItemBackground drawable used by MaterialToolbars in M3+. -->
+  <attr name="materialToolbarSelectableItemBackground" format="reference"/>
+
+  <!-- The selectableItemBackgroundBorderless drawable used by MaterialToolbars in M3+. -->
+  <attr name="materialToolbarSelectableItemBackgroundBorderless" format="reference"/>
+
+  <!-- The actionBarItemBackground drawable used by MaterialToolbars in M3+. -->
+  <attr name="materialToolbarActionBarItemBackground" format="reference"/>
+
   <declare-styleable name="AppBarLayout">
     <!-- Deprecated. Elevation is now controlled via a state list animator. -->
     <attr name="elevation"/>

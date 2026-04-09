@@ -52,6 +52,12 @@
     <item name="focusRingsInnerStrokeWidth">@dimen/mtrl_focus_ring_inner_stroke_width</item>
     <item name="focusRingsInnerStrokeInset">@dimen/mtrl_focus_ring_inner_stroke_inset</item>
 
+    <!-- Toolbar Drawables. -->
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_default_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_action_bar_item_background</item>
+
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
     <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background_overlay</item>
 
@@ -141,6 +147,12 @@
     <item name="focusRingsOuterStrokeWidth">@dimen/mtrl_focus_ring_outer_stroke_width</item>
     <item name="focusRingsInnerStrokeWidth">@dimen/mtrl_focus_ring_inner_stroke_width</item>
     <item name="focusRingsInnerStrokeInset">@dimen/mtrl_focus_ring_inner_stroke_inset</item>
+
+    <!-- Toolbar Drawables. -->
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_default_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_action_bar_item_background</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
     <item name="popupMenuBackground">@drawable/mtrl_popupmenu_background</item>

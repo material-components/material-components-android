@@ -29,6 +29,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -52,6 +57,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
@@ -77,6 +87,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -100,6 +115,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
@@ -125,6 +145,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -148,6 +173,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
@@ -173,6 +203,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -196,6 +231,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
@@ -221,6 +261,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -244,6 +289,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
@@ -269,6 +319,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -292,6 +347,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
@@ -317,6 +377,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -340,6 +405,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
@@ -365,6 +435,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -388,6 +463,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
@@ -413,6 +493,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -436,6 +521,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
@@ -461,6 +551,11 @@
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
 
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
+
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="android:buttonStyleSmall">@style/Widget.Material.Button.Small.FocusRing</item>
@@ -484,6 +579,11 @@
     <item name="controlBackground">@drawable/m3_focus_ring_control_background</item>
     <item name="android:listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
     <item name="listChoiceBackgroundIndicator">@drawable/m3_focus_ring_list_selector_background</item>
+
+    <item name="toolbarNavigationButtonBackground">@drawable/m3_focus_ring_control_background</item>
+    <item name="materialToolbarSelectableItemBackground">@drawable/m3_focus_ring_toolbar_selectable_item_background</item>
+    <item name="materialToolbarSelectableItemBackgroundBorderless">@drawable/m3_focus_ring_toolbar_selectable_item_background_borderless</item>
+    <item name="materialToolbarActionBarItemBackground">@drawable/m3_focus_ring_toolbar_action_bar_item_background</item>
 
     <item name="android:buttonStyle">@style/Widget.Material.Button.FocusRing</item>
     <item name="buttonStyle">@style/Widget.Material.Button.FocusRing</item>

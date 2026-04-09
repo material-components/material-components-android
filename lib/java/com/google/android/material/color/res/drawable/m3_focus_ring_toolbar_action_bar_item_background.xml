@@ -14,11 +14,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
-
-  <!-- TODO: remove and update main style to use ?attr/controlBackground for android:background. -->
-  <style name="Widget.Material3.Toolbar.Button.Navigation" parent="Widget.AppCompat.Toolbar.Button.Navigation">
-    <item name="android:background">?attr/toolbarNavigationButtonBackground</item>
-  </style>
-
-</resources>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+  android:color="@color/m3_control_ripple_color_selector"
+  android:radius="20dp"/>
