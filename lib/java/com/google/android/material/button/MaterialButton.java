@@ -1610,7 +1610,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    * Gets the bottom inset for this button
    *
    * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetBottom
-   * @see #setInsetTop(int)
+   * @see #setInsetBottom(int)
    */
   @Dimension
   public int getInsetBottom() {
@@ -1621,7 +1621,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    * Sets the button top inset
    *
    * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetTop
-   * @see #getInsetBottom()
+   * @see #getInsetTop()
    */
   public void setInsetTop(@Dimension int insetTop) {
     materialButtonHelper.setInsetTop(insetTop);
@@ -1636,6 +1636,61 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   @Dimension
   public int getInsetTop() {
     return materialButtonHelper.getInsetTop();
+  }
+
+  /**
+   * Sets the button left inset.
+   *
+   * <p>This acts like the start inset in RTL layouts. It's using the "left" naming convention
+   * instead of "start" to be consistent with the android:insetLeft attribute.
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetLeft
+   * @see #getInsetLeft()
+   */
+  public void setInsetLeft(@Dimension int insetLeft) {
+    materialButtonHelper.setInsetLeft(insetLeft);
+  }
+
+  /**
+   * Gets the left inset for this button.
+   *
+   * <p>This acts like the start inset in RTL layouts. It's using the "left" naming convention
+   * instead of "start" to be consistent with the android:insetLeft attribute.
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetLeft
+   * @see #setInsetLeft(int)
+   */
+  @Dimension
+  public int getInsetLeft() {
+    return materialButtonHelper.getInsetLeft();
+  }
+
+  /**
+   * Sets the button right inset.
+   *
+   * <p>This acts like the end inset in RTL layouts. It's using the "right" naming convention
+   * instead of "end" to be consistent with the inset to be consistent with the android:insetRight
+   * attribute.
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetRight
+   * @see #getInsetRight()
+   */
+  public void setInsetRight(@Dimension int insetRight) {
+    materialButtonHelper.setInsetRight(insetRight);
+  }
+
+  /**
+   * Gets the right inset for this button.
+   *
+   * <p>This acts like the end inset in RTL layouts. It's using the "right" naming convention
+   * instead of "end" to be consistent with the android:insetRight attribute.
+   *
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_insetRight
+   * @see #setInsetRight(int)
+   */
+  @Dimension
+  public int getInsetRight() {
+    return materialButtonHelper.getInsetRight();
   }
 
   @Override
