@@ -253,6 +253,7 @@
             android:layout_height="8dp"/>
 
           <TextView
+            android:id="@+id/bounded_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -267,6 +268,7 @@
             android:layout_height="4dp"/>
 
           <TextView
+            android:id="@+id/unbounded_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
