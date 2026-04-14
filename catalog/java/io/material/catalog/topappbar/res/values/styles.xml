@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2026 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <style name="ThemeOverlay.Preferences.CardItems" parent="">
+    <item name="preferenceTheme">@style/PreferenceThemeOverlay.CardItems</item>
+  </style>
+
+  <style name="PreferenceThemeOverlay.CardItems" parent="PreferenceThemeOverlay">
+    <item name="preferenceStyle">@style/Preference.CardItem</item>
+    <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat.CardItem</item>
+    <item name="checkBoxPreferenceStyle">@style/Preference.CheckBoxPreference.CardItem</item>
+    <item name="editTextPreferenceStyle">@style/Preference.DialogPreference.EditTextPreference.CardItem</item>
+    <item name="android:dividerHeight">0dp</item>
+  </style>
+
+  <style name="Preference.CardItem" parent="Preference.Material">
+    <item name="android:layout">@layout/cat_topappbar_preference_card_item_layout</item>
+  </style>
+
+  <style name="Preference.SwitchPreferenceCompat.CardItem" parent="Preference.SwitchPreferenceCompat.Material">
+    <item name="android:layout">@layout/cat_topappbar_preference_card_item_layout</item>
+    <item name="android:widgetLayout">@layout/cat_topappbar_preference_material_switch</item>
+  </style>
+
+  <style name="Preference.CheckBoxPreference.CardItem" parent="Preference.CheckBoxPreference.Material">
+    <item name="android:layout">@layout/cat_topappbar_preference_card_item_layout</item>
+  </style>
+
+  <style name="Preference.DialogPreference.EditTextPreference.CardItem" parent="Preference.DialogPreference.EditTextPreference.Material">
+    <item name="android:layout">@layout/cat_topappbar_preference_card_item_layout</item>
+  </style>
+
+  <style name="ShapeAppearance.Preference.First" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSizeTopLeft">@dimen/cat_topappbar_preference_card_item_radius_large</item>
+    <item name="cornerSizeTopRight">@dimen/cat_topappbar_preference_card_item_radius_large</item>
+    <item name="cornerSizeBottomLeft">@dimen/cat_topappbar_preference_card_item_radius_small</item>
+    <item name="cornerSizeBottomRight">@dimen/cat_topappbar_preference_card_item_radius_small</item>
+  </style>
+
+  <style name="ShapeAppearance.Preference.Middle" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">@dimen/cat_topappbar_preference_card_item_radius_small</item>
+  </style>
+
+  <style name="ShapeAppearance.Preference.Last" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSizeTopLeft">@dimen/cat_topappbar_preference_card_item_radius_small</item>
+    <item name="cornerSizeTopRight">@dimen/cat_topappbar_preference_card_item_radius_small</item>
+    <item name="cornerSizeBottomLeft">@dimen/cat_topappbar_preference_card_item_radius_large</item>
+    <item name="cornerSizeBottomRight">@dimen/cat_topappbar_preference_card_item_radius_large</item>
+  </style>
+
+  <style name="ShapeAppearance.Preference.Single" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">@dimen/cat_topappbar_preference_card_item_radius_large</item>
+  </style>
+
+</resources>

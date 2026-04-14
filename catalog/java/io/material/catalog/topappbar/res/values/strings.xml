@@ -33,6 +33,7 @@
   <string name="cat_topappbar_action_bar_title" translatable="false">Action Bar Demo</string>
   <string name="cat_topappbar_dark_action_bar_title" translatable="false">Dark Action Bar Demo</string>
   <string name="cat_topappbar_preferences_demo_title" translatable="false">Preferences Demo</string>
+  <string name="cat_topappbar_preferences_card_items_demo_title" translatable="false">Preferences Card Items Demo</string>
   <string name="cat_topappbar_preferences_toolbar_title" translatable="false">Preferences</string>
   <!-- Title for the regular toolbar demo [CHAR_LIMIT=NONE] -->
   <string name="cat_topappbar_main_demo_toolbar_title">Regular Title</string>

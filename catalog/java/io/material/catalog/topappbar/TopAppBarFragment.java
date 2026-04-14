@@ -89,6 +89,13 @@ public class TopAppBarFragment extends DemoLandingFragment {
             return new TopAppBarPreferencesFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_topappbar_preferences_card_items_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarPreferencesCardItemsFragment();
+          }
+        });
     additionalDemos.addAll(getCollapsingToolbarDemos());
     additionalDemos.add(getToolbarDemo());
     additionalDemos.addAll(getActionBarDemos());
