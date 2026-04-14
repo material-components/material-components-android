@@ -16,74 +16,74 @@
   -->
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <PreferenceCategory app:key="category1">
+  <PreferenceCategory app:key="cardItemCategory1">
 
     <Preference
-        app:key="setting1"
+        app:key="cardItemSetting1"
         app:summary="Summary for Setting 1"
         app:title="Setting 1" />
   </PreferenceCategory>
 
-  <PreferenceCategory app:key="category2">
+  <PreferenceCategory app:key="cardItemCategory2">
 
     <EditTextPreference
-        app:key="setting2"
+        app:key="cardItemSetting2"
         app:summary="Summary for Setting 2"
         app:title="Setting 2" />
 
     <SwitchPreferenceCompat
-        app:key="setting3"
+        app:key="cardItemSetting3"
         app:summary="Summary for Setting 3"
         app:title="Setting 3" />
   </PreferenceCategory>
 
-  <PreferenceCategory app:key="category3">
+  <PreferenceCategory app:key="cardItemCategory3">
 
     <CheckBoxPreference
-      app:key="setting4"
+      app:key="cardItemSetting4"
       app:summary="Summary for Setting 4"
       app:title="Setting 4" />
 
     <Preference
-        app:key="setting5"
+        app:key="cardItemSetting5"
         app:summary="Summary for Setting 5"
         app:title="Setting 5" />
 
     <EditTextPreference
-        app:key="setting6"
+        app:key="cardItemSetting6"
         app:summary="Summary for Setting 6"
         app:title="Setting 6" />
 
     <SwitchPreferenceCompat
-        app:key="setting7"
+        app:key="cardItemSetting7"
         app:summary="Summary for Setting 7"
         app:title="Setting 7" />
 
     <CheckBoxPreference
-        app:key="setting8"
+        app:key="cardItemSetting8"
         app:summary="Summary for Setting 8"
         app:title="Setting 8" />
   </PreferenceCategory>
 
-  <PreferenceCategory app:key="category4">
+  <PreferenceCategory app:key="cardItemCategory4">
 
     <Preference
-        app:key="setting9"
+        app:key="cardItemSetting9"
         app:summary="Summary for Setting 9"
         app:title="Setting 9" />
 
     <EditTextPreference
-        app:key="setting10"
+        app:key="cardItemSetting10"
         app:summary="Summary for Setting 10"
         app:title="Setting 10" />
 
     <SwitchPreferenceCompat
-        app:key="setting11"
+        app:key="cardItemSetting11"
         app:summary="Summary for Setting 11"
         app:title="Setting 11" />
 
     <CheckBoxPreference
-        app:key="setting12"
+        app:key="cardItemSetting12"
         app:summary="Summary for Setting 12"
         app:title="Setting 12" />
   </PreferenceCategory>

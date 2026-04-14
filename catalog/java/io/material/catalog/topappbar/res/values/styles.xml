@@ -17,6 +17,14 @@
 
 <resources>
 
+  <style name="ThemeOverlay.Preferences.Default" parent="PreferenceThemeOverlay">
+    <item name="switchPreferenceCompatStyle">@style/Preference.SwitchPreferenceCompat.Default</item>
+  </style>
+
+  <style name="Preference.SwitchPreferenceCompat.Default" parent="Preference.SwitchPreferenceCompat.Material">
+    <item name="android:widgetLayout">@layout/cat_topappbar_preference_material_switch</item>
+  </style>
+
   <style name="ThemeOverlay.Preferences.CardItems" parent="">
     <item name="preferenceTheme">@style/PreferenceThemeOverlay.CardItems</item>
   </style>

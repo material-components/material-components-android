@@ -18,11 +18,13 @@ package io.material.catalog.topappbar;
 
 import io.material.catalog.R;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -95,10 +97,20 @@ public class TopAppBarPreferencesCardItemsFragment extends DemoFragment {
   /** Example preferences fragment. */
   public static class PreferencesFragment extends PreferenceFragmentCompat {
 
+    @Nullable private Context themedContext = null;
+
+    @Nullable
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-      requireContext().setTheme(R.style.ThemeOverlay_Preferences_CardItems);
-      super.onCreate(savedInstanceState);
+    public Context getContext() {
+      Context context = super.getContext();
+      if (context == null) {
+        return null;
+      }
+      if (themedContext == null) {
+        themedContext =
+            new ContextThemeWrapper(context, R.style.ThemeOverlay_Preferences_CardItems);
+      }
+      return themedContext;
     }
 
     @Override

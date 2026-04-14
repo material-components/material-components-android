@@ -18,9 +18,11 @@ package io.material.catalog.topappbar;
 
 import io.material.catalog.R;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -81,6 +83,23 @@ public class TopAppBarPreferencesFragment extends DemoFragment {
 
   /** Example preferences fragment. */
   public static class PreferencesFragment extends PreferenceFragmentCompat {
+
+    @Nullable private Context themedContext = null;
+
+    @Nullable
+    @Override
+    public Context getContext() {
+      Context context = super.getContext();
+      if (context == null) {
+        return null;
+      }
+      if (themedContext == null) {
+        themedContext =
+            new ContextThemeWrapper(context, R.style.ThemeOverlay_Preferences_Default);
+      }
+      return themedContext;
+    }
+
     @Override
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @NonNull String rootKey) {
       setPreferencesFromResource(R.xml.cat_topappbar_preferences, rootKey);
