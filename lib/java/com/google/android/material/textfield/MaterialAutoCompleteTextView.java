@@ -78,6 +78,7 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
   @NonNull private final ListPopupWindow modalListPopup;
   @Nullable private final AccessibilityManager accessibilityManager;
+  @NonNull private final int[] selectedStateSet = new int[] {android.R.attr.state_selected};
   @NonNull private final Rect tempRect = new Rect();
   @LayoutRes private final int simpleItemLayout;
   private final float popupElevation;
@@ -607,7 +608,10 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
         // the selected list item stateful as expected.
         colorDrawable.setTintList(selectedItemRippleOverlaidColor);
         RippleDrawable rippleDrawable = new RippleDrawable(pressedRippleColor, colorDrawable, null);
-        FocusRingDrawable.layer(getContext(), rippleDrawable);
+        FocusRingDrawable focusRingDrawable = FocusRingDrawable.layer(getContext(), rippleDrawable);
+        if (focusRingDrawable != null) {
+          focusRingDrawable.setFocusRingStateSet(selectedStateSet);
+        }
         return rippleDrawable;
       } else {
         return colorDrawable;

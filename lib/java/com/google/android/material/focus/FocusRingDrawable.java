@@ -58,6 +58,7 @@ import com.google.android.material.shape.StateListShapeAppearanceModel;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.Arrays;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -576,7 +577,7 @@ public class FocusRingDrawable extends DrawableWrapper {
       this.focused = false;
       return super.onStateChange(stateSet);
     }
-    boolean focused = StateSet.stateSetMatches(FOCUSED_STATE_SET, stateSet);
+    boolean focused = StateSet.stateSetMatches(state.ringStateSet, stateSet);
     boolean changed = this.focused != focused;
     this.focused = focused;
 
@@ -741,6 +742,15 @@ public class FocusRingDrawable extends DrawableWrapper {
     state.ringCustomBounds.set(left, top, right, bottom);
   }
 
+  @NonNull
+  public int[] getFocusRingStateSet() {
+    return state.ringStateSet;
+  }
+
+  public void setFocusRingStateSet(@NonNull int[] stateSet) {
+    state.ringStateSet = stateSet;
+  }
+
   private void calculateBounds(RectF rectF) {
     if (state.ringCustomBounds != null) {
       rectF.set(state.ringCustomBounds);
@@ -888,6 +898,7 @@ public class FocusRingDrawable extends DrawableWrapper {
     private int ringShapeAppearanceResId = Integer.MIN_VALUE;
     private int ringShapeAppearanceAttr = Integer.MIN_VALUE;
     @Nullable private Rect ringCustomBounds = null;
+    @NonNull private int[] ringStateSet = FOCUSED_STATE_SET;
 
     FocusRingState(@Nullable FocusRingState orig) {
       if (orig != null) {
@@ -925,6 +936,7 @@ public class FocusRingDrawable extends DrawableWrapper {
         if (orig.ringCustomBounds != null) {
           this.ringCustomBounds = new Rect(orig.ringCustomBounds);
         }
+        this.ringStateSet = Arrays.copyOf(orig.ringStateSet, orig.ringStateSet.length);
       }
     }
 
