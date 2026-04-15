@@ -485,6 +485,9 @@ class EndCompoundLayout extends LinearLayout {
 
   void setEndIconVisible(boolean visible) {
     if (isEndIconVisible() != visible) {
+      if (!visible && endIconView.hasFocus() && editText != null) {
+        editText.requestFocus();
+      }
       endIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
       updateEndLayoutVisibility();
       updateSuffixTextViewPadding();

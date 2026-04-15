@@ -19,9 +19,12 @@ package com.google.android.material.textfield;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.pressKey;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasFocus;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -39,6 +42,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setBo
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeWidthFocused;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterMaxLength;
+import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorAccessibilityLiveRegion;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorContentDescription;
@@ -53,6 +57,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setPl
 import static com.google.android.material.testutils.TextInputLayoutActions.setShapeAppearanceModel;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTypeface;
 import static com.google.common.truth.Truth.assertThat;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -70,6 +75,7 @@ import android.os.Build;
 import android.os.Parcelable;
 import android.text.TextPaint;
 import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
@@ -127,6 +133,45 @@ public class TextInputLayoutTest {
       animateToExpansionFractionRecentValue = target;
       animateToExpansionFractionCount++;
     }
+  }
+
+  @Test
+  public void testClearTextEndIconKeyboardFocusMove() {
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT));
+
+    // Type some text to make the clear icon visible.
+    onView(withId(R.id.textinput_edittext_outline)).perform(typeText(INPUT_TEXT));
+
+    // Give focus to the clear icon.
+    activityTestRule
+        .getActivity()
+        .runOnUiThread(
+            () -> {
+              TextInputLayout layout =
+                  activityTestRule.getActivity().findViewById(R.id.textinput_box_outline);
+              layout.findViewById(R.id.text_input_end_icon).requestFocus();
+            });
+
+    // Verify clear icon has focus.
+    onView(
+            allOf(
+                withId(R.id.text_input_end_icon),
+                isDescendantOfA(withId(R.id.textinput_box_outline))))
+        .check(matches(hasFocus()));
+
+    // Press Enter to clear text.
+    onView(
+            allOf(
+                withId(R.id.text_input_end_icon),
+                isDescendantOfA(withId(R.id.textinput_box_outline))))
+        .perform(pressKey(KeyEvent.KEYCODE_ENTER));
+
+    // Verify text is cleared.
+    onView(withId(R.id.textinput_edittext_outline)).check(matches(withText("")));
+
+    // Verify focus moved back to the EditText.
+    onView(withId(R.id.textinput_edittext_outline)).check(matches(hasFocus()));
   }
 
   @Test

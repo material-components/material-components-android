@@ -235,6 +235,12 @@ class StartCompoundLayout extends LinearLayout {
 
   void setStartIconVisible(boolean visible) {
     if (isStartIconVisible() != visible) {
+      if (!visible && startIconView.hasFocus()) {
+        EditText editText = textInputLayout.getEditText();
+        if (editText != null) {
+          editText.requestFocus();
+        }
+      }
       startIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
       updatePrefixTextViewPadding();
       updateVisibility();
