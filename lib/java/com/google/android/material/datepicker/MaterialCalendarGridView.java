@@ -23,6 +23,7 @@ import static java.lang.Math.min;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,6 +37,7 @@ import androidx.core.util.Pair;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.ViewUtils;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
 import java.util.Calendar;
@@ -78,6 +80,9 @@ final class MaterialCalendarGridView extends GridView {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     getAdapter().notifyDataSetChanged();
+
+    // Post so we can get the calendarStyle from the monthAdapter.
+    post(() -> ensureFocusRingSelector(getAdapter()));
   }
 
   void setOnMonthNavigationListener(
@@ -235,6 +240,24 @@ final class MaterialCalendarGridView extends GridView {
               MonthAdapter.class.getCanonicalName()));
     }
     super.setAdapter(adapter);
+  }
+
+  private void ensureFocusRingSelector(MonthAdapter monthAdapter) {
+    Drawable selector = getSelector();
+    if (selector instanceof FocusRingDrawable) {
+      return;
+    }
+
+    Drawable drawable = FocusRingDrawable.wrap(getContext(), selector);
+    if (drawable instanceof FocusRingDrawable) {
+      FocusRingDrawable focusRingDrawable = (FocusRingDrawable) drawable;
+      if (monthAdapter.calendarStyle != null) {
+        focusRingDrawable.setFocusRingShapeAppearance(
+            monthAdapter.calendarStyle.day.getItemShapeAppearanceModel());
+      }
+      setDrawSelectorOnTop(true);
+      setSelector(focusRingDrawable);
+    }
   }
 
   @Override

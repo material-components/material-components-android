@@ -172,4 +172,9 @@ final class CalendarItemStyle {
   int getBottomInset() {
     return insets.bottom;
   }
+
+  @NonNull
+  ShapeAppearanceModel getItemShapeAppearanceModel() {
+    return itemShape;
+  }
 }
