@@ -45,6 +45,7 @@ import android.util.FloatProperty;
 import android.util.StateSet;
 import android.util.TypedValue;
 import android.view.animation.OvershootInterpolator;
+import androidx.annotation.DimenRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -348,8 +349,6 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   private void updateStateFromTypedArrayWithThemeAttrsAndDefaults(
       @NonNull TypedArray a, @NonNull Theme theme) {
-    Resources res = theme.getResources();
-
     if (state.ringEnabledAttr != Integer.MIN_VALUE) {
       TypedValue typedValue = MaterialAttributes.resolve(theme, state.ringEnabledAttr);
       if (typedValue != null) {
@@ -383,9 +382,6 @@ public class FocusRingDrawable extends DrawableWrapper {
             R.styleable.FocusRingDrawable_focusRingsInnerStrokeColor,
             Color.WHITE);
 
-    float defaultStrokeWidth =
-        res.getDimensionPixelSize(R.dimen.mtrl_focus_ring_outer_stroke_width);
-
     state.ringOuterStrokeWidth =
         maybeResolveDimension(
             state.ringOuterStrokeWidth,
@@ -393,7 +389,7 @@ public class FocusRingDrawable extends DrawableWrapper {
             state.ringOuterStrokeWidthAttr,
             a,
             R.styleable.FocusRingDrawable_focusRingsOuterStrokeWidth,
-            defaultStrokeWidth);
+            R.dimen.mtrl_focus_ring_outer_stroke_width);
 
     state.ringInnerStrokeWidth =
         maybeResolveDimension(
@@ -402,7 +398,7 @@ public class FocusRingDrawable extends DrawableWrapper {
             state.ringInnerStrokeWidthAttr,
             a,
             R.styleable.FocusRingDrawable_focusRingsInnerStrokeWidth,
-            defaultStrokeWidth);
+            R.dimen.mtrl_focus_ring_inner_stroke_width);
 
     state.ringRadius =
         maybeResolveDimension(
@@ -411,7 +407,7 @@ public class FocusRingDrawable extends DrawableWrapper {
             state.ringRadiusAttr,
             a,
             R.styleable.FocusRingDrawable_focusRingsRadius,
-            Float.NaN);
+            /* defaultValueResId= */ 0);
 
     state.ringInset =
         maybeResolveDimension(
@@ -420,7 +416,10 @@ public class FocusRingDrawable extends DrawableWrapper {
             state.ringInsetAttr,
             a,
             R.styleable.FocusRingDrawable_focusRingsInset,
-            0f);
+            /* defaultValueResId= */ 0);
+    if (Float.isNaN(state.ringInset)) {
+      state.ringInset = 0;
+    }
 
     state.ringInnerInset =
         maybeResolveDimension(
@@ -429,7 +428,7 @@ public class FocusRingDrawable extends DrawableWrapper {
             state.ringInnerInsetAttr,
             a,
             R.styleable.FocusRingDrawable_focusRingsInnerStrokeInset,
-            0f);
+            R.dimen.mtrl_focus_ring_inner_stroke_inset);
 
     if (state.ringShapeAppearanceResId != Integer.MIN_VALUE) {
       state.ringShapeAppearance =
@@ -494,17 +493,22 @@ public class FocusRingDrawable extends DrawableWrapper {
       @StyleableRes int attrIndex,
       @NonNull TypedArray a,
       @StyleableRes int regularIndex,
-      float defaultValue) {
+      @DimenRes int defaultValueResId) {
     if (!Float.isNaN(currentValue)) {
       return currentValue;
     }
+    Resources resources = theme.getResources();
     if (attrIndex != Float.MIN_VALUE) {
       TypedValue value = new TypedValue();
       if (theme.resolveAttribute(attrIndex, value, true)) {
-        return value.getDimension(theme.getResources().getDisplayMetrics());
+        return value.getDimension(resources.getDisplayMetrics());
       }
     }
-    return a.getDimension(regularIndex, defaultValue);
+    float value = a.getDimension(regularIndex, Float.NaN);
+    if (!Float.isNaN(value)) {
+      return value;
+    }
+    return defaultValueResId == 0 ? Float.NaN : resources.getDimension(defaultValueResId);
   }
 
   private void inflateChildDrawable(
