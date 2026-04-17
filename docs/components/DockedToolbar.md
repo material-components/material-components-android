@@ -60,7 +60,7 @@ flexibility.
 The standard style for the docked toolbar is defined as below:
 
 ```xml
-<item name="dockedToolbarStyle">@style/Widget.Material3Expressive.DockedToolbar</item>
+<item name="dockedToolbarStyle">@style/Widget.Material3.DockedToolbar</item>
 ```
 
 ## Key properties

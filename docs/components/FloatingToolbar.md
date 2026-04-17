@@ -62,8 +62,8 @@ There are two styles for the floating toolbar specifying different color
 schemes:
 
 ```xml
-<item name="floatingToolbarStyle">@style/Widget.Material3Expressive.FloatingToolbar</item>
-<item name="floatingToolbarVibrantStyle">@style/Widget.Material3Expressive.FloatingToolbar.Vibrant</item>
+<item name="floatingToolbarStyle">@style/Widget.Material3.FloatingToolbar</item>
+<item name="floatingToolbarVibrantStyle">@style/Widget.Material3.FloatingToolbar.Vibrant</item>
 ```
 
 Standard Floating Toolbar                                                          | Vibrant Floating Toolbar
@@ -75,8 +75,8 @@ By default, if a style is not specified, a `FloatingToolbar` will use
 
 There are also styles specific to components inside the floating toolbar that
 are recommended to be used. Currently, the recommendation exists for icon
-buttons: `Widget.Material3Expressive.FloatingToolbar.IconButton` and
-`Widget.Material3Expressive.FloatingToolbar.IconButton.Vibrant`.
+buttons: `Widget.Material3.FloatingToolbar.IconButton` and
+`Widget.Material3.FloatingToolbar.IconButton.Vibrant`.
 
 Example usage:
 
@@ -98,7 +98,7 @@ Example usage:
 
       <Button
           android:id="@+id/floating_toolbar_vibrant_button_bold"
-          style="@style/Widget.Material3Expressive.FloatingToolbar.IconButton.Vibrant"
+          style="@style/Widget.Material3.FloatingToolbar.IconButton.Vibrant"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:checkable="true"
