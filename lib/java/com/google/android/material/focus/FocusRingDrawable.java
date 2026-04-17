@@ -68,7 +68,9 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   private static final boolean DEBUG_COLORS = false;
   private static final Drawable EMPTY_DRAWABLE = new ColorDrawable(Color.TRANSPARENT);
-  private static final int[] FOCUSED_STATE_SET = {android.R.attr.state_focused};
+  private static final int[] FOCUSED_STATE_SET = {
+    android.R.attr.state_focused, android.R.attr.state_window_focused
+  };
 
   private static final TimeInterpolator INTERPOLATOR = new OvershootInterpolator(4f);
   private static final int ANIMATION_DURATION = 300;

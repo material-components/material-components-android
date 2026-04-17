@@ -78,6 +78,8 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
 
   @NonNull private final ListPopupWindow modalListPopup;
   @Nullable private final AccessibilityManager accessibilityManager;
+  // Note: state_window_focused can't be used here because the RippleDrawable / FocusRingDrawable
+  // for the selected item does not seem to gain window focus.
   @NonNull private final int[] selectedStateSet = new int[] {android.R.attr.state_selected};
   @NonNull private final Rect tempRect = new Rect();
   @LayoutRes private final int simpleItemLayout;
