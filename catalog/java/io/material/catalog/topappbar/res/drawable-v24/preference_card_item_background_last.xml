@@ -15,15 +15,13 @@
   limitations under the License.
   -->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto"
   android:color="?android:colorControlHighlight"
   android:paddingStart="32dp"
   android:paddingEnd="32dp">
   <item
     android:start="?android:attr/listPreferredItemPaddingStart"
     android:end="?android:attr/listPreferredItemPaddingEnd">
-    <com.google.android.material.focus.FocusRingDrawable
-      app:focusRingsShapeAppearance="@style/ShapeAppearance.Preference.Last">
+    <com.google.android.material.focus.FocusRingDrawable>
       <shape android:shape="rectangle">
         <solid
           android:color="?attr/colorSurfaceBright" />

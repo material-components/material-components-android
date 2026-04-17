@@ -17,6 +17,8 @@ package com.google.android.material.focus;
 
 import com.google.android.material.R;
 
+import static java.lang.Math.min;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
@@ -28,6 +30,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
@@ -36,8 +39,10 @@ import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableWrapper;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
+import android.graphics.drawable.ShapeDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.util.AttributeSet;
@@ -822,25 +827,101 @@ public class FocusRingDrawable extends DrawableWrapper {
 
   private void calculateShapeAppearanceRoundRectOrPath() {
     if (state.ringShapeAppearance != null) {
-      calculateBounds(tmpRectF);
+      updateShapeAppearanceCornerSizeOrPath(state.ringShapeAppearance);
+      return;
+    }
+    ShapeAppearance shapeAppearance = toShapeAppearance(getDrawable());
+    if (shapeAppearance != null) {
+      updateShapeAppearanceCornerSizeOrPath(shapeAppearance);
+      return;
+    }
+    shapeAppearanceCornerSize = -1;
+    shapeAppearancePath.reset();
+  }
 
-      ShapeAppearanceModel shapeAppearanceModel =
-          state.ringShapeAppearance.getShapeForState(FOCUSED_STATE_SET);
+  private void updateShapeAppearanceCornerSizeOrPath(ShapeAppearance shapeAppearance) {
+    calculateBounds(tmpRectF);
 
-      if (shapeAppearanceModel.isRoundRect(tmpRectF)) {
-        float outerInset = calculateOuterInset();
-        tmpRectF.inset(outerInset, outerInset);
-        shapeAppearanceCornerSize =
-            shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(tmpRectF);
-        shapeAppearancePath.reset();
-      } else {
-        pathProvider.calculatePath(
-            shapeAppearanceModel, null, 1, tmpRectF, null, shapeAppearancePath);
-        shapeAppearanceCornerSize = -1;
-      }
-    } else {
-      shapeAppearanceCornerSize = -1;
+    ShapeAppearanceModel shapeAppearanceModel = shapeAppearance.getShapeForState(FOCUSED_STATE_SET);
+
+    if (shapeAppearanceModel.isRoundRect(tmpRectF)) {
+      float outerInset = calculateOuterInset();
+      tmpRectF.inset(outerInset, outerInset);
+      shapeAppearanceCornerSize =
+          shapeAppearanceModel.getTopLeftCornerSize().getCornerSize(tmpRectF);
       shapeAppearancePath.reset();
+    } else {
+      pathProvider.calculatePath(
+          shapeAppearanceModel, null, 1, tmpRectF, null, shapeAppearancePath);
+      shapeAppearanceCornerSize = -1;
+    }
+  }
+
+  @Nullable
+  private ShapeAppearance toShapeAppearance(@Nullable Drawable drawable) {
+    if (drawable instanceof ShapeDrawable) {
+      return toShapeAppearance((ShapeDrawable) drawable);
+    }
+    if (drawable instanceof GradientDrawable) {
+      return toShapeAppearance((GradientDrawable) drawable);
+    }
+    return null;
+  }
+
+  @Nullable
+  private ShapeAppearance toShapeAppearance(@NonNull ShapeDrawable shapeDrawable) {
+    if (VERSION.SDK_INT < VERSION_CODES.N) {
+      return null;
+    }
+    Outline outline = new Outline();
+    shapeDrawable.getOutline(outline);
+    if (outline.getRadius() > 0) {
+      return ShapeAppearanceModel.builder().setAllCornerSizes(outline.getRadius()).build();
+    }
+    return null;
+  }
+
+  @Nullable
+  private ShapeAppearance toShapeAppearance(@NonNull GradientDrawable gradientDrawable) {
+    if (VERSION.SDK_INT < VERSION_CODES.N) {
+      return null;
+    }
+    float[] cornerRadii = getCornerRadiiOrNull(gradientDrawable);
+    if (cornerRadii != null) {
+      // ShapeAppearance doesn't support different x and y radius values for each corner, so just
+      // take the min of x and y for now, which shouldn't be different in most cases.
+      return ShapeAppearanceModel.builder()
+          .setTopLeftCornerSize(min(cornerRadii[0], cornerRadii[1]))
+          .setTopRightCornerSize(min(cornerRadii[2], cornerRadii[3]))
+          .setBottomRightCornerSize(min(cornerRadii[4], cornerRadii[5]))
+          .setBottomLeftCornerSize(min(cornerRadii[6], cornerRadii[7]))
+          .build();
+    }
+    float cornerRadius = getCornerRadius(gradientDrawable);
+    if (cornerRadius > 0) {
+      return ShapeAppearanceModel.builder().setAllCornerSizes(cornerRadius).build();
+    }
+    return null;
+  }
+
+  @RequiresApi(api = VERSION_CODES.N)
+  @Nullable
+  private float[] getCornerRadiiOrNull(GradientDrawable gradientDrawable) {
+    // Calling getCornerRadii() before GradientDrawable has its state causes an NPE.
+    try {
+      return gradientDrawable.getCornerRadii();
+    } catch (NullPointerException e) {
+      return null;
+    }
+  }
+
+  @RequiresApi(api = VERSION_CODES.N)
+  private float getCornerRadius(GradientDrawable gradientDrawable) {
+    // Calling getCornerRadius() before GradientDrawable has its state causes an NPE.
+    try {
+      return gradientDrawable.getCornerRadius();
+    } catch (NullPointerException e) {
+      return -1f;
     }
   }
 

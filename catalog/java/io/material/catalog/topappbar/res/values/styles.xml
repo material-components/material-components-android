@@ -54,30 +54,4 @@
     <item name="android:layout">@layout/cat_topappbar_preference_card_item_layout</item>
   </style>
 
-  <style name="ShapeAppearance.Preference.First" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSizeTopLeft">@dimen/cat_topappbar_preference_card_item_radius_large</item>
-    <item name="cornerSizeTopRight">@dimen/cat_topappbar_preference_card_item_radius_large</item>
-    <item name="cornerSizeBottomLeft">@dimen/cat_topappbar_preference_card_item_radius_small</item>
-    <item name="cornerSizeBottomRight">@dimen/cat_topappbar_preference_card_item_radius_small</item>
-  </style>
-
-  <style name="ShapeAppearance.Preference.Middle" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">@dimen/cat_topappbar_preference_card_item_radius_small</item>
-  </style>
-
-  <style name="ShapeAppearance.Preference.Last" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSizeTopLeft">@dimen/cat_topappbar_preference_card_item_radius_small</item>
-    <item name="cornerSizeTopRight">@dimen/cat_topappbar_preference_card_item_radius_small</item>
-    <item name="cornerSizeBottomLeft">@dimen/cat_topappbar_preference_card_item_radius_large</item>
-    <item name="cornerSizeBottomRight">@dimen/cat_topappbar_preference_card_item_radius_large</item>
-  </style>
-
-  <style name="ShapeAppearance.Preference.Single" parent="">
-    <item name="cornerFamily">rounded</item>
-    <item name="cornerSize">@dimen/cat_topappbar_preference_card_item_radius_large</item>
-  </style>
-
 </resources>
