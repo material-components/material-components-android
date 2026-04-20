@@ -207,7 +207,19 @@ public class MaterialAutoCompleteTextView extends AppCompatAutoCompleteTextView 
   }
 
   @Override
+  public boolean isPopupShowing() {
+    //noinspection ConstantConditions
+    if (modalListPopup != null && modalListPopup.isShowing()) {
+      return true;
+    }
+    return super.isPopupShowing();
+  }
+
+  @Override
   public boolean onKeyDown(int keyCode, @NonNull KeyEvent event) {
+    if (isPopupShowing()) {
+      return super.onKeyDown(keyCode, event);
+    }
     if (shouldShowPopup(keyCode)) {
       TextInputLayout textInputLayout = findTextInputLayoutAncestor();
       if (textInputLayout != null) {

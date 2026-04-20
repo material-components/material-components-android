@@ -269,7 +269,7 @@ public class ExposedDropdownMenuTest {
   }
 
   @Test
-  public void testOnKeyDown_enterOnNonEditableField_hidesDropDown() {
+  public void testOnKeyDown_enterOnNonEditableField_doesNotHideDropDown() {
     final Activity activity = activityTestRule.getActivity();
     final AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
 
@@ -280,11 +280,11 @@ public class ExposedDropdownMenuTest {
     onView(withId(R.id.edittext_filled)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
     onView(withId(R.id.filled_dropdown)).perform(skipAnimations());
 
-    assertThat(editText.isPopupShowing(), is(false));
+    assertThat(editText.isPopupShowing(), is(true));
   }
 
   @Test
-  public void testOnKeyDown_spaceOnNonEditableField_hidesDropDown() {
+  public void testOnKeyDown_spaceOnNonEditableField_doesNotHideDropDown() {
     final Activity activity = activityTestRule.getActivity();
     final AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
 
@@ -295,7 +295,7 @@ public class ExposedDropdownMenuTest {
     onView(withId(R.id.edittext_filled)).perform(pressKey(KeyEvent.KEYCODE_SPACE));
     onView(withId(R.id.filled_dropdown)).perform(skipAnimations());
 
-    assertThat(editText.isPopupShowing(), is(false));
+    assertThat(editText.isPopupShowing(), is(true));
   }
 
   @Test
@@ -325,7 +325,7 @@ public class ExposedDropdownMenuTest {
   }
 
   @Test
-  public void testOnKeyDown_enterOnEditableSingleLineField_hidesDropDown() {
+  public void testOnKeyDown_enterOnEditableSingleLineField_doesNotHideDropDown() {
     final Activity activity = activityTestRule.getActivity();
     final AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled_editable);
 
@@ -338,7 +338,7 @@ public class ExposedDropdownMenuTest {
     onView(withId(R.id.edittext_filled_editable)).perform(pressKey(KeyEvent.KEYCODE_ENTER));
     onView(withId(R.id.filled_editable_dropdown)).perform(skipAnimations());
 
-    assertThat(editText.isPopupShowing(), is(false));
+    assertThat(editText.isPopupShowing(), is(true));
   }
 
   @Test
