@@ -138,6 +138,9 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
   private int additionalHiddenOffset = 0;
   @Nullable private ViewPropertyAnimator currentAnimator;
 
+  private int savedImportantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_AUTO;
+  private int savedVisibility = View.VISIBLE;
+
   private boolean viewEdgeOverride = false;
 
   public HideViewOnScrollBehavior() {}
@@ -336,11 +339,11 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
       return;
     }
 
+    updateCurrentState(child, STATE_SCROLLED_IN);
     if (currentAnimator != null) {
       currentAnimator.cancel();
       child.clearAnimation();
     }
-    updateCurrentState(child, STATE_SCROLLED_IN);
     int targetTranslation = hideOnScrollViewDelegate.getTargetTranslation();
 
     if (animate) {
@@ -391,13 +394,41 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
       animateChildTo(child, targetTranslation, exitAnimDuration, exitAnimInterpolator);
     } else {
       hideOnScrollViewDelegate.setViewTranslation(child, targetTranslation);
+      if (child.getVisibility() == View.VISIBLE) {
+        child.setVisibility(View.INVISIBLE);
+      }
     }
   }
 
   private void updateCurrentState(@NonNull V child, @ScrollState int state) {
     currentState = state;
+    updateViewPropertiesForState(child, currentState);
     for (OnScrollStateChangedListener listener : onScrollStateChangedListeners) {
       listener.onStateChanged(child, currentState);
+    }
+  }
+
+  private void updateViewPropertiesForState(@NonNull V child, @ScrollState int state) {
+    if (state == STATE_SCROLLED_OUT) {
+      if (child.hasFocus()) {
+        child.clearFocus();
+      }
+      if (child.getImportantForAccessibility()
+          != View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS) {
+        savedImportantForAccessibility = child.getImportantForAccessibility();
+      }
+      if (child.getVisibility() != View.INVISIBLE) {
+        savedVisibility = child.getVisibility();
+      }
+      child.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+    } else if (state == STATE_SCROLLED_IN) {
+      if (child.getImportantForAccessibility()
+          == View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS) {
+        child.setImportantForAccessibility(savedImportantForAccessibility);
+      }
+      if (child.getVisibility() == View.INVISIBLE) {
+        child.setVisibility(savedVisibility);
+      }
     }
   }
 
@@ -416,6 +447,10 @@ public class HideViewOnScrollBehavior<V extends View> extends Behavior<V> {
                   @Override
                   public void onAnimationEnd(Animator animation) {
                     currentAnimator = null;
+                    if (currentState == STATE_SCROLLED_OUT
+                        && child.getVisibility() == View.VISIBLE) {
+                      child.setVisibility(View.INVISIBLE);
+                    }
                   }
                 });
   }
