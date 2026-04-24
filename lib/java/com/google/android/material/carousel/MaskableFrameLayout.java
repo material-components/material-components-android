@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -119,16 +120,23 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
             });
     shapeableDelegate.onShapeAppearanceChanged(this, this.shapeAppearanceModel);
 
-    FocusRingDrawable focusRingBackground = FocusRingDrawable.find(getBackground());
-    if (focusRingBackground != null) {
-      focusRingBackground.mutate();
-      focusRingBackground.setFocusRingShapeAppearance(this.shapeAppearanceModel);
-    }
+    maybeUpdateFocusRingDrawableShapeAppearance(getBackground(), this.shapeAppearanceModel);
+    maybeUpdateFocusRingDrawableShapeAppearance(getForeground(), this.shapeAppearanceModel);
+  }
 
-    FocusRingDrawable focusRingForeground = FocusRingDrawable.find(getForeground());
-    if (focusRingForeground != null) {
-      focusRingForeground.mutate();
-      focusRingForeground.setFocusRingShapeAppearance(this.shapeAppearanceModel);
+  private void maybeUpdateFocusRingDrawableShapeAppearance(
+      @Nullable Drawable drawable, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    if (drawable == null || FocusRingDrawable.find(drawable) == null) {
+      return;
+    }
+    // Make sure to mutate the main drawable instead of just the FocusRingDrawable, for cases where
+    // the main drawable is a DrawableWrapper / LayerDrawable that contains the FocusRingDrawable.
+    drawable.mutate();
+
+    // Re-find the FocusRingDrawable since the instance likely changed due to the mutate call above.
+    FocusRingDrawable focusRingDrawable = FocusRingDrawable.find(drawable);
+    if (focusRingDrawable != null) {
+      focusRingDrawable.setFocusRingShapeAppearance(shapeAppearanceModel);
     }
   }
 
