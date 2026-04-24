@@ -16,6 +16,8 @@
 
 package com.google.android.material.timepicker;
 
+import android.graphics.Color;
+import androidx.core.graphics.ColorUtils;
 import com.google.android.material.R;
 
 import static com.google.android.material.timepicker.RadialViewGroup.LEVEL_1;
@@ -79,6 +81,7 @@ class ClockHandView extends View {
 
   private final int selectorRadius;
   private final float centerDotRadius;
+  private final int clockHandColor;
   private final Paint paint = new Paint();
   // Since the selector moves, overlapping views may need information about
   // its current position
@@ -126,9 +129,8 @@ class ClockHandView extends View {
     Resources res = getResources();
     selectorStrokeWidth = res.getDimensionPixelSize(R.dimen.material_clock_hand_stroke_width);
     centerDotRadius = res.getDimensionPixelSize(R.dimen.material_clock_hand_center_dot_radius);
-    int selectorColor = a.getColor(R.styleable.ClockHandView_clockHandColor, 0);
+    clockHandColor = a.getColor(R.styleable.ClockHandView_clockHandColor, 0);
     paint.setAntiAlias(true);
-    paint.setColor(selectorColor);
     setHandRotation(0);
 
     scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
@@ -251,6 +253,16 @@ class ClockHandView extends View {
   }
 
   private void drawSelector(Canvas canvas) {
+    int saveCount = 0;
+    int clockHandColorAlpha = Color.alpha(clockHandColor);
+    if (clockHandColorAlpha < 255) {
+      saveCount = canvas.saveLayerAlpha(null, clockHandColorAlpha);
+      int clockHandColorOpaque = ColorUtils.setAlphaComponent(clockHandColor, 255);
+      paint.setColor(clockHandColorOpaque);
+    } else {
+      paint.setColor(clockHandColor);
+    }
+
     int yCenter = getHeight() / 2;
     int xCenter = getWidth() / 2;
 
@@ -263,18 +275,14 @@ class ClockHandView extends View {
     paint.setStrokeWidth(0);
     canvas.drawCircle(selCenterX, selCenterY, selectorRadius, paint);
 
-    // Shorten the line to only go from the edge of the center dot to the
-    // edge of the selection circle.
-    double sin = Math.sin(degRad);
-    double cos = Math.cos(degRad);
-    float lineLength = leveledCircleRadius - selectorRadius;
-    float linePointX = xCenter + (int) (lineLength * cos);
-    float linePointY = yCenter + (int) (lineLength * sin);
-
     // Draw the line.
     paint.setStrokeWidth(selectorStrokeWidth);
-    canvas.drawLine(xCenter, yCenter, linePointX, linePointY, paint);
+    canvas.drawLine(xCenter, yCenter, selCenterX, selCenterY, paint);
     canvas.drawCircle(xCenter, yCenter, centerDotRadius, paint);
+
+    if (clockHandColorAlpha < 255) {
+      canvas.restoreToCount(saveCount);
+    }
   }
 
   /** Returns the current bounds of the selector, relative to the this view. */
