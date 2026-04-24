@@ -270,7 +270,7 @@ public class SearchView extends FrameLayout
 
     if (containedAnimationEnabled) {
       setUpDummyToolbarForContainedAnimation();
-      setUpDummyTextForContainedAnimation(textAppearanceResId);
+      setUpDummyTextForContainedAnimation(textAppearanceResId, text, hint);
     }
   }
 
@@ -498,10 +498,13 @@ public class SearchView extends FrameLayout
     dummyToolbar.setVisibility(View.INVISIBLE);
   }
 
-  private void setUpDummyTextForContainedAnimation(@StyleRes int textAppearanceResId) {
+  private void setUpDummyTextForContainedAnimation(
+      @StyleRes int textAppearanceResId, String text, String hint) {
     if (textAppearanceResId != NO_RES_ID) {
       TextViewCompat.setTextAppearance(dummyTextView, textAppearanceResId);
     }
+    dummyTextView.setText(text);
+    dummyTextView.setHint(hint);
   }
 
   @Px
@@ -817,11 +820,13 @@ public class SearchView extends FrameLayout
   /** Sets the text of main {@link EditText}. */
   public void setText(@StringRes int textResId) {
     editText.setText(textResId);
+    dummyTextView.setText(textResId);
   }
 
   /** Clears the text of main {@link EditText}. */
   public void clearText() {
     editText.setText("");
+    dummyTextView.setText("");
   }
 
   /** Returns the hint of main {@link EditText}. */
@@ -833,11 +838,13 @@ public class SearchView extends FrameLayout
   /** Sets the hint of main {@link EditText}. */
   public void setHint(@Nullable CharSequence hint) {
     editText.setHint(hint);
+    dummyTextView.setHint(hint);
   }
 
   /** Sets the hint of main {@link EditText}. */
   public void setHint(@StringRes int hintResId) {
     editText.setHint(hintResId);
+    dummyTextView.setHint(hintResId);
   }
 
   /** Returns the current value of this {@link SearchView}'s soft input mode. */
