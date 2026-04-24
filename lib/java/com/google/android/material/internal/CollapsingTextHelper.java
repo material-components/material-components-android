@@ -696,17 +696,6 @@ public final class CollapsingTextHelper {
       currentDrawY = lerp(expandedDrawY, collapsedDrawY, fraction, positionInterpolator);
 
       setInterpolatedTextSize(fraction);
-
-      if (collapsedLetterSpacing != expandedLetterSpacing) {
-        textPaint.setLetterSpacing(
-            lerp(
-                expandedLetterSpacing,
-                collapsedLetterSpacing,
-                fraction,
-                AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR));
-      } else {
-        textPaint.setLetterSpacing(collapsedLetterSpacing);
-      }
     }
 
     setCollapsedTextBlend(
@@ -1099,7 +1088,11 @@ public final class CollapsingTextHelper {
       newTypeface = collapsedTypeface;
     } else {
       newTextSize = expandedTextSize;
-      newLetterSpacing = expandedLetterSpacing;
+      newLetterSpacing = lerp(
+          expandedLetterSpacing,
+          collapsedLetterSpacing,
+          fraction,
+          AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
       newTypeface = expandedTypeface;
       if (isClose(fraction, /* targetValue= */ 0)) {
         // If we're close to the expanded text size, snap to it and use a scale of 1
