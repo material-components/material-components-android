@@ -726,6 +726,14 @@ public class FocusRingDrawable extends DrawableWrapper {
     state.ringInset = inset;
   }
 
+  public float getFocusRingRadius() {
+    return state.ringRadius;
+  }
+
+  public void setFocusRingRadius(float radius) {
+    state.ringRadius = radius;
+  }
+
   @Nullable
   public MaterialShapeDrawable getFocusRingMaterialShapeDrawable() {
     return materialShapeDrawable != null ? materialShapeDrawable.get() : null;
