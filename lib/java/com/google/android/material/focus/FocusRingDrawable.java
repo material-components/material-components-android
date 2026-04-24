@@ -184,6 +184,31 @@ public class FocusRingDrawable extends DrawableWrapper {
   }
 
   /**
+   * Search for, mutate, and return a FocusRingDrawable if it is either the provided drawable or one
+   * level deep in a DrawableWrapper or LayerDrawable.
+   *
+   * <p>If the FocusRingDrawable is a child of a DrawableWrapper or LayerDrawable, then the parent
+   * DrawableWrapper or LayerDrawable will be mutated instead of the FocusRingDrawable. This will in
+   * turn recreate and mutate the child FocusRingDrawable, which helps prevent issues related to
+   * constant state.
+   *
+   * <p>Also see {@link #find(Drawable)}.
+   */
+  @Nullable
+  public static FocusRingDrawable findAndMutate(@Nullable Drawable drawable) {
+    if (drawable == null || find(drawable) == null) {
+      return null;
+    }
+
+    // Make sure to mutate the main drawable instead of just the FocusRingDrawable, for cases where
+    // the main drawable is a DrawableWrapper / LayerDrawable that contains the FocusRingDrawable.
+    drawable.mutate();
+
+    // Re-find the FocusRingDrawable since the instance likely changed due to the mutate call above.
+    return find(drawable);
+  }
+
+  /**
    * Search for and return a FocusRingDrawable if it is either the provided drawable or one level
    * deep in a DrawableWrapper or LayerDrawable.
    *

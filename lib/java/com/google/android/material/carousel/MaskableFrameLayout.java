@@ -126,15 +126,7 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
 
   private void maybeUpdateFocusRingDrawableShapeAppearance(
       @Nullable Drawable drawable, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
-    if (drawable == null || FocusRingDrawable.find(drawable) == null) {
-      return;
-    }
-    // Make sure to mutate the main drawable instead of just the FocusRingDrawable, for cases where
-    // the main drawable is a DrawableWrapper / LayerDrawable that contains the FocusRingDrawable.
-    drawable.mutate();
-
-    // Re-find the FocusRingDrawable since the instance likely changed due to the mutate call above.
-    FocusRingDrawable focusRingDrawable = FocusRingDrawable.find(drawable);
+    FocusRingDrawable focusRingDrawable = FocusRingDrawable.findAndMutate(drawable);
     if (focusRingDrawable != null) {
       focusRingDrawable.setFocusRingShapeAppearance(shapeAppearanceModel);
     }
