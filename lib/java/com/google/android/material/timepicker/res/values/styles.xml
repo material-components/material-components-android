@@ -132,7 +132,13 @@
     <item name="focusRingsInset">2dp</item>
   </style>
 
-  <style name="Widget.Material3.MaterialTimePicker.Button" parent="Widget.MaterialComponents.TimePicker.Button">
+  <style name="Widget.Material3.MaterialTimePicker.Button" parent="Widget.Material3.Button.OutlinedButton">
+    <item name="android:layout_height">48dp</item>
+    <item name="android:padding">0dp</item>
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:textAlignment">center</item>
     <item name="android:textAppearance">@macro/m3_comp_time_picker_period_selector_label_text_type</item>
     <item name="android:textColor">@color/m3_timepicker_button_text_color</item>
     <item name="backgroundTint">@color/m3_timepicker_button_background_color</item>
@@ -143,7 +149,15 @@
     <item name="shapeAppearance">@macro/m3_comp_time_picker_period_selector_container_shape</item>
     <item name="shapeAppearanceOverlay">@null</item>
     <!-- Apply theme overlay to disable elevation overlays so we can get a purely colorSurface chip. -->
-    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TimePicker.Display</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.TimePicker.Button</item>
+  </style>
+
+  <!-- Disabling elevation overlays because when chip's default
+       background/surface composite are combined with elevation overlays in a
+       highly elevated dialog, the resulting color becomes too light and causes
+       contrast issues -->
+  <style name="ThemeOverlay.Material3.TimePicker.Button" parent="ThemeOverlay.Material3.Button.TextButton">
+    <item name="elevationOverlayEnabled">false</item>
   </style>
 
   <style name="Widget.Material3.MaterialTimePicker" parent="Widget.MaterialComponents.TimePicker">
