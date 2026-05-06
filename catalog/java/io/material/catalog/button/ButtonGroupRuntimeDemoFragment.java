@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +33,7 @@ import android.widget.Button;
 import android.widget.LinearLayout.LayoutParams;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonGroup;
 import com.google.android.material.materialswitch.MaterialSwitch;
@@ -44,6 +46,7 @@ public class ButtonGroupRuntimeDemoFragment extends DemoFragment {
   private static final int MAX_COUNT = 10;
   private final String[] labels = new String[MAX_COUNT];
   private final Drawable[] icons = new Drawable[MAX_COUNT];
+  private final Drawable[] overflowIcons = new Drawable[MAX_COUNT];
   private MaterialButtonGroup buttonGroup;
   private int buttonCount;
   private Button addButton;
@@ -138,7 +141,7 @@ public class ButtonGroupRuntimeDemoFragment extends DemoFragment {
     MaterialButtonGroup.LayoutParams lp =
         (MaterialButtonGroup.LayoutParams) button.getLayoutParams();
     lp.overflowText = labels[buttonCount];
-    lp.overflowIcon = icons[buttonCount];
+    lp.overflowIcon = overflowIcons[buttonCount];
   }
 
   private void loadResources() {
@@ -148,10 +151,15 @@ public class ButtonGroupRuntimeDemoFragment extends DemoFragment {
     }
     labelsRes.recycle();
     TypedArray iconsRes = getResources().obtainTypedArray(R.array.cat_button_group_dynamic_icons);
+    TypedValue typedValue = new TypedValue();
+    getContext().getTheme().resolveAttribute(android.R.attr.colorControlNormal, typedValue, true);
+    int tintColor = ContextCompat.getColor(getContext(), typedValue.resourceId);
     for (int i = 0; i < MAX_COUNT; i++) {
       int iconId = iconsRes.getResourceId(i % iconsRes.length(), 0);
       if (iconId != 0) {
         icons[i] = getResources().getDrawable(iconId);
+        overflowIcons[i] = getResources().getDrawable(iconId);
+        overflowIcons[i].mutate().setTint(tintColor);
       }
     }
     iconsRes.recycle();
