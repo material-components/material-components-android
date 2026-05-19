@@ -5,7 +5,31 @@ section: docs
 path: /docs/getting-started/
 -->
 
-# Getting started with Material components for Android
+# [DEPRECATED] Getting started with Material components for Android
+
+At Google I/O 2026, Material Android announced that we're "all-in" on Compose,
+alongside the official
+[Android Compose-first announcement](https://android-developers.googleblog.com/2026/05/android-ui-development-is-compose-first.html),
+marking a new chapter in Android development.
+
+**This means that the Views-based Material Components for Android library
+(MDC-Android) is now deprecated.**
+
+There are no more planned feature releases for Views, so all projects using the
+Views library should begin or continue
+[migrating to Compose](https://developer.android.com/develop/ui/compose/migrate/migrate-xml-views-to-jetpack-compose)
+to get the latest Material Design and Android platform updates.
+
+For more information, see the following resources:
+
+- [Android Compose-first Blog Post](https://android-developers.googleblog.com/2026/05/android-ui-development-is-compose-first.html)
+- [Android Compose-first Doc](https://developer.android.com/develop/ui/compose/first)
+- [Material Android is Compose-first Blog Post](https://m3.material.io/blog/material-is-compose-first)
+- [Compose Material 3 Getting Started Guide](https://developer.android.com/develop/ui/compose/designsystems/material3)
+- [Compose Material 3 Releases Page](https://developer.android.com/jetpack/androidx/releases/compose-material3)
+- [Compose Material 3 API Reference Docs](https://developer.android.com/reference/kotlin/androidx/compose/material3/package-summary)
+- [Jetpack Compose Homepage](https://developer.android.com/compose)
+- [Migrate XML Views to Jetpack Compose Guide](https://developer.android.com/develop/ui/compose/migrate/migrate-xml-views-to-jetpack-compose)
 
 ## 1. Migration guidance
 
