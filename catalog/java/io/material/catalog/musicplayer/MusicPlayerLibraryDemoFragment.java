@@ -21,6 +21,8 @@ import io.material.catalog.R;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Parcelable;
+
+import androidx.core.view.OneShotPreDrawListener;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -40,8 +42,8 @@ import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.transition.Transition;
 import androidx.transition.TransitionManager;
-import com.google.android.material.transition.Hold;
 import com.google.android.material.transition.MaterialContainerTransform;
+import com.google.android.material.transition.MaterialFade;
 import com.google.android.material.transition.MaterialFadeThrough;
 import com.google.android.material.transition.MaterialSharedAxis;
 import io.material.catalog.musicplayer.AlbumsAdapter.AlbumAdapterListener;
@@ -83,6 +85,10 @@ public class MusicPlayerLibraryDemoFragment extends Fragment
     toolbar.setOnMenuItemClickListener(this);
     MaterialSharedAxis sharedAxis = new MaterialSharedAxis(MaterialSharedAxis.Z, true);
     setList(listTypeGrid, listSorted, sharedAxis);
+
+    // Wait until all views in the entering fragment have been measured and laid out
+    postponeEnterTransition();
+    OneShotPreDrawListener.add((ViewGroup) view.getParent(), this::startPostponedEnterTransition);
   }
 
   @Override
@@ -101,16 +107,7 @@ public class MusicPlayerLibraryDemoFragment extends Fragment
     MaterialContainerTransform transform =
         new MaterialContainerTransform(requireContext(), /* entering= */ true);
     fragment.setSharedElementEnterTransition(transform);
-
-    // Use a Hold transition to keep this fragment visible beneath the MaterialContainerTransform
-    // that transitions to the album details screen. Without a Hold, this fragment would disappear
-    // as soon its container is replaced with a new Fragment.
-    Hold hold = new Hold();
-    // Add root view as target for the Hold so that the entire view hierarchy is held in place as
-    // one instead of each child view individually. Helps keep shadows during the transition.
-    hold.addTarget(R.id.container);
-    hold.setDuration(transform.getDuration());
-    setExitTransition(hold);
+    fragment.setEnterTransition(new MaterialFade());
 
     getParentFragmentManager()
         .beginTransaction()

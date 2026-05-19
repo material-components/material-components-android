@@ -32,6 +32,7 @@ import static com.google.android.material.transition.TransitionUtils.lerp;
 import static com.google.android.material.transition.TransitionUtils.transform;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -970,10 +971,10 @@ public final class MaterialContainerTransform extends Transition {
           }
         });
 
-    addListener(
-        new TransitionListenerAdapter() {
+    animator.addListener(
+        new AnimatorListenerAdapter() {
           @Override
-          public void onTransitionStart(@NonNull Transition transition) {
+          public void onAnimationStart(@NonNull Animator animation) {
             // Add the transition drawable to the root ViewOverlay
             drawingView.getOverlay().add(transitionDrawable);
 
@@ -983,8 +984,8 @@ public final class MaterialContainerTransform extends Transition {
           }
 
           @Override
-          public void onTransitionEnd(@NonNull Transition transition) {
-            removeListener(this);
+          public void onAnimationEnd(@NonNull Animator animation) {
+            animator.removeListener(this);
             if (holdAtEndEnabled) {
               // Keep drawable showing and views hidden (useful for Activity return transitions)
               return;
@@ -1570,5 +1571,10 @@ public final class MaterialContainerTransform extends Transition {
       this.scaleMask = scaleMask;
       this.shapeMask = shapeMask;
     }
+  }
+
+  @Override
+  public boolean isSeekingSupported() {
+    return true;
   }
 }
