@@ -7,6 +7,13 @@ assignees: ''
 
 ---
 
+**ATTENTION: This library is now in maintenance mode.**
+**See https://github.com/material-components/material-components-android#readme.**
+
+**Only critical issues will be addressed.**
+
+---
+
 **Is your feature request related to a problem? Please describe.**
 A clear and concise description of what the problem is.
 
