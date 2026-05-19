@@ -1,6 +1,6 @@
 [![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
 
-# [DEPRECATED] Material Components for Android
+# [MAINTENANCE MODE] Material Components for Android
 
 At Google I/O 2026, Material Android announced that we're "all-in" on Compose,
 alongside the official
@@ -8,7 +8,7 @@ alongside the official
 marking a new chapter in Android development.
 
 **This means that the Views-based Material Components for Android library
-(MDC-Android) is now deprecated.**
+(MDC-Android) is now in maintenance mode.**
 
 There are no more planned feature releases for Views, so all projects using the
 Views library should begin or continue
