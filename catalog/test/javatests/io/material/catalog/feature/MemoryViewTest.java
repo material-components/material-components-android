@@ -26,7 +26,6 @@ import static org.robolectric.shadows.ShadowPath.Point.Type.MOVE_TO;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.os.Build.VERSION_CODES;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
 import androidx.test.core.app.ApplicationProvider;
@@ -41,7 +40,7 @@ import org.robolectric.shadows.ShadowPath.Point;
 
 /** Tests for {@link MemoryView}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = VERSION_CODES.M)
+@Config(sdk = Config.OLDEST_SDK)
 public class MemoryViewTest {
 
   private static final int BYTES_IN_MB = 1024 * 1024;
