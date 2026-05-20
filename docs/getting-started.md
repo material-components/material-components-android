@@ -31,7 +31,9 @@ For more information, see the following resources:
 - [Jetpack Compose Homepage](https://developer.android.com/compose)
 - [Migrate XML Views to Jetpack Compose Guide](https://developer.android.com/develop/ui/compose/migrate/migrate-xml-views-to-jetpack-compose)
 
-## 1. Migration guidance
+## Legacy Views Getting Started Steps
+
+### 1. Migration guidance
 
 Take a look at our [guide](https://material.io/blog/migrating-material-3) and
 [codelab](https://goo.gle/apply-dynamic-color) to help you migrate your codebase
@@ -42,7 +44,7 @@ look at our
 [legacy guide](https://material.io/blog/migrate-android-material-components) to
 help you migrate your codebase to Material Components for Android.
 
-## 2. Maven library dependency
+### 2. Maven library dependency
 
 Material Components for Android is available through Google's Maven Repository.
 To use it:
@@ -82,7 +84,7 @@ should depend on version `1.5.0` or later.
 **Note:** In order to use the new `Material3Expressive` themes and component
 styles, you should depend on version `1.14.0` or later.
 
-### New Namespace and AndroidX
+#### New Namespace and AndroidX
 
 If your app currently depends on the original Design Support Library, you can
 make use of the
@@ -98,7 +100,7 @@ the `com.android.support:design:28.0.0` dependency.
 **Note:** You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
 
-### Non-Transitive R Classes (referencing library resources programmatically)
+#### Non-Transitive R Classes (referencing library resources programmatically)
 
 Starting with version `1.13.0-alpha12`, the Material library is built with AGP
 8.7.3 (or later) and `android.nonTransitiveRClass=true`, meaning
@@ -120,7 +122,7 @@ qualified path (i.e., simply `R.<resource-type>.<resource-name>`).
 **Note:** This is relevant for all types of library resources, not just
 attribute references.
 
-## 3. Android SDK compilation
+### 3. Android SDK compilation
 
 In order to use the latest versions of Material Components for Android and the
 AndroidX Jetpack libraries, you will have to install the latest version of
@@ -130,14 +132,14 @@ Android Studio and update your app to meet the following requirements:
     [Android 15 app migration guide](https://developer.android.com/about/versions/15/migration))
 -   `minSdkVersion` -> `21` or later
 
-## 4. Java 8 compilation
+### 4. Java 8 compilation
 
 The latest Material and AndroidX Jetpack libraries now require your app to be
 compiled with Java 8. See the
 [Java 8 language features and APIs documentation](https://developer.android.com/studio/write/java8-support)
 for more information on Java 8 support and how to enable it for your app.
 
-## 5. Gradle, AGP, and Android Studio
+### 5. Gradle, AGP, and Android Studio
 
 When using MDC-Android version `1.13.0` and above, you will need to make sure
 your project is built with the following minimum requirements, in order to
@@ -147,7 +149,7 @@ support the latest build features such as XML `macro`:
 -   [Android Gradle Plugin (AGP) version 8.7.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
 -   [Android Studio Ladybug, version 2024.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
 
-## 6. `AppCompatActivity`
+### 6. `AppCompatActivity`
 
 Use `AppCompatActivity` to ensure that all the components work correctly. If you
 are unable to extend from `AppCompatActivity`, update your activities to use
@@ -155,7 +157,7 @@ are unable to extend from `AppCompatActivity`, update your activities to use
 This will enable the AppCompat or Material versions of components to be inflated
 (depending on your theme), among other important things.
 
-## 7. `Material3` theme inheritance
+### 7. `Material3` theme inheritance
 
 We recommend you perform an app-wide migration by changing your app theme to
 inherit from a `Material3` theme. Be sure to test thoroughly afterwards, since
@@ -174,7 +176,7 @@ to your theme. See the
 [**AppCompat or MaterialComponents themes**](#appcompat-or-materialcomponents-themes)
 section for more details.
 
-### **`Material3Expressive` themes**
+#### **`Material3Expressive` themes**
 
 **Note:** You must depend on library version `1.14.0-alpha01` or later to use
 `Theme.Material3Expressive.*` themes, which are required for
@@ -199,7 +201,7 @@ equivalents when applicable.
 `Theme.Material3Expressive.DynamicColors.DayNight`             | `Theme.Material3.DynamicColors.DayNight`
 `Theme.Material3Expressive.DynamicColors.DayNight.NoActionBar` | `Theme.Material3.DynamicColors.DayNight.NoActionBar`
 
-### **`Material3` themes**
+#### **`Material3` themes**
 
 Here are the `Material3` themes you can use to get the latest component styles
 and theme-level attributes, as well as their `MaterialComponents` equivalents
@@ -246,7 +248,7 @@ following XML components:
 *   `<AutoCompleteTextView` →
     [`MaterialAutoCompleteTextView`](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/MaterialAutoCompleteTextView.java)
 
-### **`AppCompat` or `MaterialComponents` Themes**
+#### **`AppCompat` or `MaterialComponents` Themes**
 
 You can incrementally test new Material components without changing your app
 theme. This allows you to keep your existing layouts looking and behaving the
@@ -327,7 +329,7 @@ theme, or you will encounter `ThemeEnforcement` errors:
 </style>
 ```
 
-## 8. Add Material components
+### 8. Add Material components
 
 Take a look at our
 [documentation](https://material.io/components?platform=android) for the full
@@ -336,7 +338,7 @@ instructions on how to implement it in your app.
 
 Let's use [text fields](components/TextField.md) as an example.
 
-### **Implementing a text field via XML**
+#### **Implementing a text field via XML**
 
 The default
 [outlined text field](https://material.io/go/design-text-fields#outlined-text-field)
