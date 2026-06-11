@@ -47,6 +47,7 @@
       style="@style/Widget.Material3.BottomSheet"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:clickable="true"
       android:orientation="vertical"
       app:behavior_hideable="true"
       app:layout_behavior="@string/bottom_sheet_behavior">
