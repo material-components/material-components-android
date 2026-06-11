@@ -18,7 +18,6 @@ package com.google.android.material.timepicker;
 
 import com.google.android.material.R;
 
-import static android.view.HapticFeedbackConstants.CLOCK_TICK;
 import static android.view.View.GONE;
 import static androidx.core.content.ContextCompat.getSystemService;
 import static com.google.android.material.timepicker.RadialViewGroup.LEVEL_1;
@@ -110,42 +109,33 @@ class TimePickerClockPresenter
   }
 
   @Override
-  public void onRotate(float rotation, boolean animating) {
+  public void onRotate(float degrees, int level, boolean animating) {
     // Do not update the displayed and actual time during an animation
     if (broadcasting || animating) {
       return;
     }
 
-    int prevHour = time.hour;
-    int prevMinute = time.minute;
-    int rotationInt = Math.round(rotation);
-    if (time.selection == MINUTE) {
-      int minuteOffset = DEGREES_PER_MINUTE / 2;
-      time.setMinute((rotationInt + minuteOffset) / DEGREES_PER_MINUTE);
-      minuteRotation = (float) Math.floor(time.minute * DEGREES_PER_MINUTE);
-    } else {
-      int hourOffset = DEGREES_PER_HOUR / 2;
-
-      int hour = (rotationInt + hourOffset) / DEGREES_PER_HOUR;
-      if (time.format == CLOCK_24H) {
-        hour %= 12; // To correct hour (12 -> 0) in the 345-360 rotation section.
-        if (timePickerView.getCurrentLevel() == LEVEL_2) {
-          hour += 12;
+    switch (time.selection) {
+      case HOUR:
+        int hour = Math.round(degrees / DEGREES_PER_HOUR);
+        if (time.format == CLOCK_24H) {
+          hour %= 12; // To correct hour (12 -> 0) in the 345-360 rotation section.
+          if (level == LEVEL_2) {
+            hour += 12;
+          }
         }
-      }
 
-      time.setHour(hour);
-      hourRotation = getHourRotation();
+        time.setHour(hour);
+        hourRotation = getHourRotation();
+        break;
+      case MINUTE:
+        int minute = Math.round(degrees / DEGREES_PER_MINUTE);
+        time.setMinute(minute);
+        minuteRotation = getMinuteRotation();
+        break;
     }
 
     updateTime();
-    performHapticFeedback(prevHour, prevMinute);
-  }
-
-  private void performHapticFeedback(int prevHour, int prevMinute) {
-    if (time.minute != prevMinute || time.hour != prevHour) {
-      timePickerView.performHapticFeedback(CLOCK_TICK);
-    }
   }
 
   @Override
@@ -167,6 +157,7 @@ class TimePickerClockPresenter
         isMinute ? MINUTE_CLOCK_VALUES : getHourClockValues(),
         isMinute ? R.string.material_minute_suffix : time.getHourContentDescriptionResId());
     updateCurrentLevel();
+    updateStopParams();
     timePickerView.setHandRotation(isMinute ? minuteRotation : hourRotation, animate);
     timePickerView.setActiveSelection(selection);
     timePickerView.setMinuteHourDelegate(
@@ -203,15 +194,28 @@ class TimePickerClockPresenter
     timePickerView.setCurrentLevel(currentLevel);
   }
 
+  private void updateStopParams() {
+    switch (time.selection) {
+      case HOUR:
+        timePickerView.setStopParams(/* stopCount= */ 12, /* numberStopCount= */ 12, /* stopOffset= */ 0);
+        break;
+      case MINUTE:
+        timePickerView.setStopParams(/* stopCount= */ 60, /* numberStopCount= */ 12, /* stopOffset= */ 0);
+        break;
+      default:
+        throw new IllegalStateException("Unhandled selection: " + time.selection);
+    }
+  }
+
   @Override
-  public void onActionUp(float rotation, boolean moveInEventStream) {
+  public void onActionUp(float degrees, int level) {
     broadcasting = true;
-    int prevMinute = time.minute;
-    int prevHour = time.hour;
+
     if (time.selection == HOUR) {
       // Current rotation might be half way to an exact hour position.
       // Snap to the closest hour before animating to the position the minute selection is on.
-      timePickerView.setHandRotation(hourRotation, /* animate= */ false);
+      timePickerView.setHandRotation(degrees, /* animate= */ false);
+      timePickerView.setCurrentLevel(level);
       // Automatically move to minutes once the user finishes choosing the hour.
 
       AccessibilityManager am =
@@ -220,19 +224,9 @@ class TimePickerClockPresenter
       if (!isExploreByTouchEnabled) {
         setSelection(MINUTE, /* animate= */ true);
       }
-    } else {
-      int rotationInt = Math.round(rotation);
-      if (!moveInEventStream) {
-        // snap minute to 5 minute increment if there was only a touch down/up.
-        int newRotation = (rotationInt + 15) / 30;
-        time.setMinute(newRotation * 5);
-        minuteRotation = time.minute * DEGREES_PER_MINUTE;
-      }
-      timePickerView.setHandRotation(minuteRotation, /* animate= */ moveInEventStream);
     }
+
     broadcasting = false;
-    updateTime();
-    performHapticFeedback(prevHour, prevMinute);
   }
 
   private void updateTime() {
@@ -254,5 +248,9 @@ class TimePickerClockPresenter
 
   private int getHourRotation() {
     return (time.getHourForDisplay() * DEGREES_PER_HOUR) % 360;
+  }
+
+  private int getMinuteRotation() {
+    return (time.minute * DEGREES_PER_MINUTE) % 360;
   }
 }
