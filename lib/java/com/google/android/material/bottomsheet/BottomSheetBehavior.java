@@ -2542,24 +2542,32 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     dragHandleViewRef = dragHandleView != null ? new WeakReference<>(dragHandleView) : null;
   }
 
+  boolean isAccessibilityDelegateViewSet() {
+    return accessibilityDelegateViewRef != null && accessibilityDelegateViewRef.get() != null;
+  }
+
   void setAccessibilityDelegateView(@Nullable View accessibilityDelegateView) {
     if (accessibilityDelegateView == null && accessibilityDelegateViewRef != null) {
       clearAccessibilityAction(
           accessibilityDelegateViewRef.get(), VIEW_INDEX_ACCESSIBILITY_DELEGATE_VIEW);
       accessibilityDelegateViewRef = null;
+      updateAccessibilityActions();
       return;
     }
     accessibilityDelegateViewRef = new WeakReference<>(accessibilityDelegateView);
-    updateAccessibilityActions(accessibilityDelegateView, VIEW_INDEX_ACCESSIBILITY_DELEGATE_VIEW);
+    updateAccessibilityActions();
   }
 
   private void updateAccessibilityActions() {
-    if (viewRef != null) {
-      updateAccessibilityActions(viewRef.get(), VIEW_INDEX_BOTTOM_SHEET);
+    if (viewRef == null) {
+      return;
     }
-    if (accessibilityDelegateViewRef != null) {
+    if (isAccessibilityDelegateViewSet()) {
       updateAccessibilityActions(
           accessibilityDelegateViewRef.get(), VIEW_INDEX_ACCESSIBILITY_DELEGATE_VIEW);
+      clearAccessibilityAction(viewRef.get(), VIEW_INDEX_BOTTOM_SHEET);
+    } else {
+      updateAccessibilityActions(viewRef.get(), VIEW_INDEX_BOTTOM_SHEET);
     }
   }
 
