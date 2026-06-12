@@ -378,6 +378,9 @@ public class FocusRingDrawable extends DrawableWrapper {
         getValueDataIfAttr(a, R.styleable.FocusRingDrawable_focusRingsShapeAppearance);
     state.ringShapeAppearanceResId =
         getResIdIfReference(a, R.styleable.FocusRingDrawable_focusRingsShapeAppearance);
+
+    state.ringStateSetResId =
+        getResIdIfReference(a, R.styleable.FocusRingDrawable_focusRingsStateSet);
   }
 
   private void updateStateFromTypedArrayWithThemeAttrsAndDefaults(
@@ -478,6 +481,15 @@ public class FocusRingDrawable extends DrawableWrapper {
       }
     }
 
+    if (state.ringStateSetResId != Integer.MIN_VALUE) {
+      state.ringStateSet = getStateSet(theme, state.ringStateSetResId);
+    } else {
+      TypedValue typedValue = MaterialAttributes.resolve(theme, R.attr.focusRingsStateSet);
+      if (typedValue != null && typedValue.resourceId != 0) {
+        state.ringStateSet = getStateSet(theme, typedValue.resourceId);
+      }
+    }
+
     if (DEBUG_COLORS) {
       state.ringOuterColor = Color.RED;
       state.ringInnerColor = Color.GREEN;
@@ -542,6 +554,16 @@ public class FocusRingDrawable extends DrawableWrapper {
       return value;
     }
     return defaultValueResId == 0 ? Float.NaN : resources.getDimension(defaultValueResId);
+  }
+
+  private int[] getStateSet(@NonNull Theme theme, int stateSetResId) {
+    TypedArray a = theme.getResources().obtainTypedArray(stateSetResId);
+    int[] resourceIds = new int[a.length()];
+    for (int i = 0; i < a.length(); i++) {
+      resourceIds[i] = a.getResourceId(i, 0);
+    }
+    a.recycle();
+    return resourceIds;
   }
 
   private void inflateChildDrawable(
@@ -1077,6 +1099,7 @@ public class FocusRingDrawable extends DrawableWrapper {
     private int ringShapeAppearanceAttr = Integer.MIN_VALUE;
     @Nullable private Rect ringCustomBounds = null;
     @NonNull private int[] ringStateSet = FOCUSED_STATE_SET;
+    private int ringStateSetResId = Integer.MIN_VALUE;
 
     FocusRingState(@Nullable FocusRingState orig) {
       if (orig != null) {
@@ -1115,6 +1138,7 @@ public class FocusRingDrawable extends DrawableWrapper {
           this.ringCustomBounds = new Rect(orig.ringCustomBounds);
         }
         this.ringStateSet = Arrays.copyOf(orig.ringStateSet, orig.ringStateSet.length);
+        this.ringStateSetResId = orig.ringStateSetResId;
       }
     }
 
