@@ -200,7 +200,7 @@ import java.util.LinkedHashSet;
  * developer guidance</a> and <a href="https://material.io/components/text-fields/overview">design
  * guidelines</a>.
  */
-public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListener {
+public class TextInputLayout extends LinearLayout {
 
   private static final String TAG = "TextInputLayout";
 
@@ -459,8 +459,6 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   private boolean inDrawableStateChanged;
 
   private boolean restoringSavedState;
-
-  private boolean globalLayoutListenerAdded = false;
 
   public TextInputLayout(@NonNull Context context) {
     this(context, null);
@@ -726,17 +724,6 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     setCounterEnabled(counterEnabled);
 
     setHelperText(helperText);
-  }
-
-  @Override
-  public void onGlobalLayout() {
-    endLayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-    globalLayoutListenerAdded = false;
-    boolean updatedHeight = updateEditTextHeightBasedOnIcon();
-    boolean updatedIcon = updateDummyDrawables();
-    if (updatedHeight || updatedIcon) {
-      editText.post(() -> editText.requestLayout());
-    }
   }
 
   @Override
@@ -1606,7 +1593,6 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     startLayout.bringToFront();
     endLayout.bringToFront();
     dispatchOnEditTextAttached();
-    endLayout.updateSuffixTextViewPadding();
 
     // Only call setEnabled on the edit text if the layout is disabled, to prevent reenabling an
     // already disabled edit text.
@@ -3321,12 +3307,13 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-    if (!globalLayoutListenerAdded) {
-      endLayout.getViewTreeObserver().addOnGlobalLayoutListener(this);
-      globalLayoutListenerAdded = true;
+    boolean updatedHeight = updateEditTextHeightBasedOnIcon();
+    boolean updatedIcon = updateDummyDrawables();
+    if (updatedHeight || updatedIcon) {
+      editText.post(() -> editText.requestLayout());
     }
+
     updatePlaceholderMeasurementsBasedOnEditText();
-    endLayout.updateSuffixTextViewPadding();
 
     if (!isHintTextSingleLine()) {
       updateCollapsingTextDimens(
