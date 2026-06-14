@@ -26,7 +26,6 @@ dependencies {
   api libs.dagger.android.support
   annotationProcessor libs.dagger.android.processor
 
-  api libs.androidx.multidex
   api libs.androidx.constraintlayout
   api libs.androidx.gridlayout
   api libs.androidx.recyclerview
@@ -73,7 +72,6 @@ def srcDirs = [
   'allcomponents',
   'application',
   'application/attrs',
-  'application/legacymultidex',
   'application/scope',
   'application/theme',
   'assets',
@@ -136,7 +134,6 @@ android {
 
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
-    multiDexEnabled true
     minSdkVersion 23
     targetSdkVersion 33
   }
