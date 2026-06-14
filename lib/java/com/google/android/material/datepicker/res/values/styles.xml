@@ -247,7 +247,8 @@
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderDivider" parent="Widget.MaterialComponents.MaterialCalendar.HeaderDivider">
-    <item name="android:visibility">gone</item>
+    <item name="android:visibility">visible</item>
+    <item name="android:background">?attr/colorOutlineVariant</item>
   </style>
 
   <style name="Widget.Material3.MaterialCalendar.HeaderTitle" parent="Widget.MaterialComponents.MaterialCalendar.HeaderTitle">
