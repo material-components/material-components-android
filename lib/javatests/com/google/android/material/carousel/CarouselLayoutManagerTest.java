@@ -42,6 +42,7 @@ import com.google.android.material.carousel.CarouselHelper.TestItem;
 import com.google.android.material.carousel.CarouselHelper.WrappedCarouselLayoutManager;
 import com.google.android.material.carousel.CarouselStrategy.StrategyType;
 import com.google.common.collect.ImmutableList;
+import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -624,6 +625,146 @@ public class CarouselLayoutManagerTest {
     scrollHorizontallyBy(recyclerView, layoutManager, 100);
 
     assertThat(recyclerView.getChildAt(0).getLeft()).isEqualTo(originalLeft);
+  }
+
+  @Test
+  public void testOnAddFocusables_onlyAddsVisibleChildren() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+
+    // Force all views to be focusable
+    for (int i = 0; i < recyclerView.getChildCount(); i++) {
+      recyclerView.getChildAt(i).setFocusable(true);
+    }
+
+    ArrayList<View> focusables = new ArrayList<>();
+    boolean handled =
+        layoutManager.onAddFocusables(
+            recyclerView, focusables, View.FOCUS_DOWN, View.FOCUSABLES_ALL);
+
+    assertThat(handled).isTrue();
+    assertThat(focusables).isNotEmpty();
+    assertThat(focusables).contains(recyclerView.getChildAt(0));
+
+    // Some items might be off-screen. We only expect items with centers between 0
+    // and container size
+    for (View view : focusables) {
+      float center = view.getLeft() + view.getWidth() / 2f;
+      assertThat(center).isAtLeast(0f);
+      assertThat(center).isAtMost((float) layoutManager.getWidth());
+    }
+  }
+
+  @Test
+  public void testOnAddFocusables_returnsFalseIfRecyclerViewHasFocus() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(1));
+    recyclerView.requestFocus();
+
+    ArrayList<View> focusables = new ArrayList<>();
+    boolean handled =
+        layoutManager.onAddFocusables(
+            recyclerView, focusables, View.FOCUS_DOWN, View.FOCUSABLES_ALL);
+
+    assertThat(handled).isFalse();
+    assertThat(focusables).isEmpty();
+  }
+
+  @Test
+  public void testOnFocusSearchFailed_returnsNextAdapterPosition() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+
+    // focus on the first item
+    View firstChild = recyclerView.getChildAt(0);
+
+    // FOCUS_FORWARD translates to LAYOUT_END in horizontal LTR
+    View nextFocus = layoutManager.onFocusSearchFailed(firstChild, View.FOCUS_FORWARD, null, null);
+
+    assertThat(nextFocus).isNotNull();
+    assertThat(layoutManager.getPosition(nextFocus)).isEqualTo(1);
+  }
+
+  @Test
+  public void testOnFocusSearchFailed_returnsPreviousAdapterPosition() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+
+    View secondChild = recyclerView.getChildAt(1);
+    // FOCUS_BACKWARD translates to LAYOUT_START in horizontal LTR
+    View previousFocus =
+        layoutManager.onFocusSearchFailed(secondChild, View.FOCUS_BACKWARD, null, null);
+
+    assertThat(previousFocus).isNotNull();
+    assertThat(layoutManager.getPosition(previousFocus)).isEqualTo(0);
+  }
+
+  @Test
+  public void testOnFocusSearchFailed_returnsNullIfEmpty() throws Throwable {
+    View view = new View(ApplicationProvider.getApplicationContext());
+    View nextFocus = layoutManager.onFocusSearchFailed(view, View.FOCUS_FORWARD, null, null);
+    assertThat(nextFocus).isNull();
+  }
+
+  @Test
+  public void testOnFocusSearchFailed_returnsNullIfInvalidDirection() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    View firstChild = recyclerView.getChildAt(0);
+    // FOCUS_UP is invalid for horizontal carousel
+    View nextFocus = layoutManager.onFocusSearchFailed(firstChild, View.FOCUS_UP, null, null);
+    assertThat(nextFocus).isNull();
+  }
+
+  @Test
+  public void testOnFocusSearchFailed_returnsNullIfViewNotChild() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(10));
+    View view = new View(ApplicationProvider.getApplicationContext());
+    View nextFocus = layoutManager.onFocusSearchFailed(view, View.FOCUS_FORWARD, null, null);
+    assertThat(nextFocus).isNull();
+  }
+
+  @Test
+  public void testOnFocusSearchFailed_returnsNullIfTargetPositionOutOfBounds() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(1));
+    View child = recyclerView.getChildAt(0);
+
+    View prevFocus = layoutManager.onFocusSearchFailed(child, View.FOCUS_BACKWARD, null, null);
+    assertThat(prevFocus).isNull();
+
+    View nextFocus = layoutManager.onFocusSearchFailed(child, View.FOCUS_FORWARD, null, null);
+    assertThat(nextFocus).isNull();
+  }
+
+  @Test
+  public void testOnFocusSearchFailed_addsViewIfTargetNotAttached() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(100));
+
+    View lastAttachedChild = recyclerView.getChildAt(recyclerView.getChildCount() - 1);
+    int position = layoutManager.getPosition(lastAttachedChild);
+
+    int childCountBefore = recyclerView.getChildCount();
+    // Request focus forward. This uses the RecyclerView's internal focus search,
+    // which delegates to onFocusSearchFailed if no focusable view is found.
+    lastAttachedChild.focusSearch(View.FOCUS_FORWARD);
+    int childCountAfter = recyclerView.getChildCount();
+
+    assertThat(childCountAfter).isGreaterThan(childCountBefore);
+    View addedView = layoutManager.getChildAt(childCountAfter - 1);
+    assertThat(layoutManager.getPosition(addedView)).isEqualTo(position + 1);
+  }
+
+  @Test
+  public void testOnFocusSearchFailed_addsViewIfTargetNotAttached_backward() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(100));
+    scrollToPosition(recyclerView, layoutManager, 20);
+
+    View firstAttachedChild = recyclerView.getChildAt(0);
+    int position = layoutManager.getPosition(firstAttachedChild);
+
+    int childCountBefore = recyclerView.getChildCount();
+    // Request focus backward.
+    firstAttachedChild.focusSearch(View.FOCUS_BACKWARD);
+    int childCountAfter = recyclerView.getChildCount();
+
+    assertThat(childCountAfter).isGreaterThan(childCountBefore);
+    View addedView = layoutManager.getChildAt(0);
+    assertThat(layoutManager.getPosition(addedView)).isEqualTo(position - 1);
   }
 
   /**

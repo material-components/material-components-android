@@ -358,6 +358,8 @@ class CarouselHelper {
     @Override
     public TestItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int pos) {
       MaskableFrameLayout frameLayout = new MaskableFrameLayout(viewGroup.getContext());
+      frameLayout.setFocusable(true);
+      frameLayout.setFocusableInTouchMode(true);
       setViewSize(frameLayout, itemWidth, itemHeight);
       ImageView imageView = new ImageView(viewGroup.getContext());
       setViewSize(imageView, itemWidth, itemHeight);

@@ -1369,6 +1369,29 @@ public class CarouselLayoutManager extends LayoutManager
     }
   }
 
+  @Override
+  @SuppressWarnings("NonApiType")
+  public boolean onAddFocusables(
+      @NonNull RecyclerView recyclerView,
+      @NonNull ArrayList<View> views,
+      int direction,
+      int focusableMode) {
+    if (recyclerView.hasFocus()) {
+      return false;
+    }
+
+    for (int i = 0; i < getChildCount(); i++) {
+      View child = getChildAt(i);
+      if (child != null && child.hasFocusable()) {
+        float center = getDecoratedCenterWithMargins(child);
+        if (center >= 0 && center <= getContainerSize()) {
+          child.addFocusables(views, direction, focusableMode);
+        }
+      }
+    }
+    return true;
+  }
+
   @Nullable
   @Override
   public View onFocusSearchFailed(
@@ -1382,44 +1405,28 @@ public class CarouselLayoutManager extends LayoutManager
       return null;
     }
 
-    final View nextFocus;
-    if (layoutDir == LayoutDirection.LAYOUT_START) {
-      if (getPosition(focused) == 0) {
-        return null;
-      }
-      int firstPosition = getPosition(getChildAt(0));
-      addViewAtPosition(recycler, firstPosition - 1, 0);
-      nextFocus = getChildClosestToStart();
-    } else {
-      if (getPosition(focused) == getItemCount() - 1) {
-        return null;
-      }
-      int lastPosition = getPosition(getChildAt(getChildCount() - 1));
-      addViewAtPosition(recycler, lastPosition + 1, -1);
-      nextFocus = getChildClosestToEnd();
+    View directChild = findContainingItemView(focused);
+    if (directChild == null) {
+      return null;
+    }
+    int focusedPosition = getPosition(directChild);
+    if (focusedPosition == NO_POSITION) {
+      return null;
     }
 
+    int targetPosition =
+        layoutDir == LayoutDirection.LAYOUT_START ? focusedPosition - 1 : focusedPosition + 1;
+    if (targetPosition < 0 || targetPosition >= getItemCount()) {
+      return null;
+    }
+
+    View nextFocus = findViewByPosition(targetPosition);
+    if (nextFocus == null) {
+      addViewAtPosition(
+          recycler, targetPosition, layoutDir == LayoutDirection.LAYOUT_START ? 0 : -1);
+      nextFocus = findViewByPosition(targetPosition);
+    }
     return nextFocus;
-  }
-
-  /**
-   * Convenience method to find the child closes to start. Caller should check if it has enough
-   * children.
-   *
-   * @return The child closest to start of the layout from user's perspective.
-   */
-  private View getChildClosestToStart() {
-    return getChildAt(isLayoutRtl() ? getChildCount() - 1 : 0);
-  }
-
-  /**
-   * Convenience method to find the child closes to end. Caller should check if it has enough
-   * children.
-   *
-   * @return The child closest to end of the layout from user's perspective.
-   */
-  private View getChildClosestToEnd() {
-    return getChildAt(isLayoutRtl() ? 0 : getChildCount() - 1);
   }
 
   @Override
