@@ -17,6 +17,7 @@ package com.google.android.material.navigation;
 
 import com.google.android.material.test.R;
 
+import static android.os.Build.VERSION_CODES.N;
 import static android.os.Build.VERSION_CODES.O;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -78,6 +79,25 @@ public final class NavigationBarItemViewTest {
     itemView.setTitle(updatedTitle);
 
     assertThat(itemView.getTooltipText().toString()).isEqualTo(updatedTitle);
+  }
+
+  @Test
+  @Config(sdk = N)
+  public void testPreOLongClickListener_preservedAfterTitleUpdate() {
+    MenuItemImpl menuItem = createMenuItemImpl("menu item title", null);
+    NavigationBarItemView itemView = new NavigationBarItemTestView(context);
+    itemView.initialize(menuItem, MENU_TYPE);
+    final boolean[] longClicked = new boolean[1];
+    itemView.setOnLongClickListener(
+        v -> {
+          longClicked[0] = true;
+          return true;
+        });
+
+    itemView.setTitle("menu item title updated");
+
+    assertThat(itemView.performLongClick()).isTrue();
+    assertThat(longClicked[0]).isTrue();
   }
 
   private MenuItemImpl createMenuItemImpl(CharSequence title, CharSequence tooltip) {
