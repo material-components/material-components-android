@@ -74,7 +74,7 @@
     android:layout_width="@dimen/m3_comp_navigation_drawer_container_width"
     android:layout_height="match_parent"
     android:layout_gravity="start"
-    android:background="?attr/colorSurface">
+    android:background="?attr/colorSurfaceContainerLow">
 
     <TextView
       android:id="@+id/text1_start"
@@ -139,7 +139,7 @@
     android:layout_width="@dimen/m3_comp_navigation_drawer_container_width"
     android:layout_height="match_parent"
     android:layout_gravity="end"
-    android:background="?attr/colorSurface">
+    android:background="?attr/colorSurfaceContainerLow">
 
     <TextView
       android:id="@+id/text1_end"
