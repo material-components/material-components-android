@@ -81,6 +81,7 @@
     <item name="subheaderInsetEnd">@dimen/m3_navigation_menu_headline_horizontal_padding</item>
     <item name="drawerLayoutCornerSize">@dimen/m3_navigation_drawer_layout_corner_size</item>
     <item name="activeIndicatorLabelPadding">@dimen/m3_navigation_item_active_indicator_label_padding</item>
+    <item name="insetForeground">@android:color/transparent</item>
   </style>
 
   <style name="ShapeAppearanceOverlay.Material3.NavigationView.Item"
