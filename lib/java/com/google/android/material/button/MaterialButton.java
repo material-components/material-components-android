@@ -1777,15 +1777,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Override
   public boolean performClick() {
-    boolean toggled = false;
-    if (isEnabled() && materialButtonHelper.isToggleCheckedStateOnClick()) {
+    final boolean checkable = isCheckable() && materialButtonHelper.isToggleCheckedStateOnClick();
+    if (checkable) {
       toggle();
-      toggled = true;
     }
 
     final boolean handled = super.performClick();
-
-    if (toggled && !handled) {
+    if (checkable && !handled) {
       // View only makes a sound effect if the onClickListener was called, so for checkable button
       // we'll need to manually make one here instead.
       playSoundEffect(SoundEffectConstants.CLICK);
