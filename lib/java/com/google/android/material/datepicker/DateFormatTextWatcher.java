@@ -27,15 +27,15 @@ import com.google.android.material.internal.TextWatcherAdapter;
 import com.google.android.material.textfield.TextInputLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 abstract class DateFormatTextWatcher extends TextWatcherAdapter {
 
   @NonNull private final TextInputLayout textInputLayout;
 
-  private final String formatHint;
-  private final DateFormat dateFormat;
+  private final SimpleDateFormat dateFormat;
+  private final String datePattern;
   private final CalendarConstraints constraints;
   private final String outOfRange;
   private final Runnable setErrorCallback;
@@ -45,12 +45,12 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
 
   DateFormatTextWatcher(
       final String formatHint,
-      DateFormat dateFormat,
+      SimpleDateFormat dateFormat,
       @NonNull TextInputLayout textInputLayout,
       CalendarConstraints constraints) {
 
-    this.formatHint = formatHint;
     this.dateFormat = dateFormat;
+    this.datePattern = dateFormat.toPattern();
     this.textInputLayout = textInputLayout;
     this.constraints = constraints;
     this.outOfRange = textInputLayout.getContext().getString(R.string.mtrl_picker_out_of_range);
@@ -85,7 +85,7 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
     textInputLayout.setError(null);
     onValidDate(null);
 
-    if (TextUtils.isEmpty(s) || s.length() < formatHint.length()) {
+    if (TextUtils.isEmpty(s) || s.length() < datePattern.length()) {
       return;
     }
 
@@ -113,19 +113,19 @@ abstract class DateFormatTextWatcher extends TextWatcherAdapter {
 
   @Override
   public void afterTextChanged(@NonNull Editable s) {
-    // Exclude some languages from automatically adding delimiters.
-    if (Locale.getDefault().getLanguage().equals(Locale.KOREAN.getLanguage())) {
+    if (s.length() == 0 || s.length() >= datePattern.length() || s.length() < lastLength) {
       return;
     }
 
-    if (s.length() == 0 || s.length() >= formatHint.length() || s.length() < lastLength) {
-      return;
+    char nextPatternChar = datePattern.charAt(s.length());
+    if (isDelimiter(nextPatternChar)) {
+      s.append(nextPatternChar);
     }
+  }
 
-    char nextCharHint = formatHint.charAt(s.length());
-    if (!Character.isLetterOrDigit(nextCharHint)) {
-      s.append(nextCharHint);
-    }
+  private boolean isDelimiter(char ch) {
+    return !(ch >= 'A' && ch <= 'Z')
+        && !(ch >= 'a' && ch <= 'z');
   }
 
   private Runnable createRangeErrorCallback(final long milliseconds) {
