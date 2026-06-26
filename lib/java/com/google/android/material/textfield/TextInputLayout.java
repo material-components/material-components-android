@@ -4577,7 +4577,10 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
     Drawable cursorDrawable = DrawableCompat.wrap(editText.getTextCursorDrawable()).mutate();
     if (isOnError() && cursorErrorColor != null) {
-      color = cursorErrorColor;
+      int defaultCursorErrorColor = cursorErrorColor.getDefaultColor();
+      int targetCursorErrorColor = cursorErrorColor.getColorForState(
+          editText.getDrawableState(), defaultCursorErrorColor);
+      color = ColorStateList.valueOf(targetCursorErrorColor);
     }
     cursorDrawable.setTintList(color);
   }
