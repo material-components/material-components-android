@@ -73,7 +73,6 @@ import org.xmlpull.v1.XmlPullParserException;
 public class FocusRingDrawable extends DrawableWrapper {
 
   private static final boolean DEBUG_COLORS = false;
-  private static final Drawable EMPTY_DRAWABLE = new ColorDrawable(Color.TRANSPARENT);
   private static final int[] FOCUSED_STATE_SET = {
     android.R.attr.state_focused, android.R.attr.state_window_focused
   };
@@ -166,7 +165,7 @@ public class FocusRingDrawable extends DrawableWrapper {
       return null;
     }
 
-    FocusRingDrawable focusRingDrawable = new FocusRingDrawable(context, EMPTY_DRAWABLE);
+    FocusRingDrawable focusRingDrawable = new FocusRingDrawable(context, createEmptyDrawable());
     if (materialShapeDrawable != null) {
       focusRingDrawable.setFocusRingMaterialShapeDrawable(materialShapeDrawable);
     }
@@ -582,13 +581,16 @@ public class FocusRingDrawable extends DrawableWrapper {
       }
     }
 
-    if (drawable != null) {
-      setDrawable(drawable);
-      state.wrappedState = drawable.getConstantState();
-    } else {
-      setDrawable(EMPTY_DRAWABLE);
-      state.wrappedState = EMPTY_DRAWABLE.getConstantState();
+    if (drawable == null) {
+      drawable = createEmptyDrawable();
     }
+    setDrawable(drawable);
+    state.wrappedState = drawable.getConstantState();
+  }
+
+  @NonNull
+  private static Drawable createEmptyDrawable() {
+    return new ColorDrawable(Color.TRANSPARENT);
   }
 
   private void init(@NonNull Theme theme) {
