@@ -296,21 +296,15 @@ public class CollapsingToolbarLayout extends FrameLayout {
     collapsingTitleEnabled = a.getBoolean(R.styleable.CollapsingToolbarLayout_titleEnabled, true);
     setTitle(a.getText(R.styleable.CollapsingToolbarLayout_title));
 
-    // First load the default text appearances
     collapsingTitleHelper.setExpandedTextAppearance(
-        R.style.TextAppearance_Design_CollapsingToolbar_Expanded);
-    collapsingTitleHelper.setCollapsedTextAppearance(
-        androidx.appcompat.R.style.TextAppearance_AppCompat_Widget_ActionBar_Title);
+        a.getResourceId(
+            R.styleable.CollapsingToolbarLayout_expandedTitleTextAppearance,
+            R.style.TextAppearance_Design_CollapsingToolbar_Expanded));
 
-    // Now overlay any custom text appearances
-    if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedTitleTextAppearance)) {
-      collapsingTitleHelper.setExpandedTextAppearance(
-          a.getResourceId(R.styleable.CollapsingToolbarLayout_expandedTitleTextAppearance, 0));
-    }
-    if (a.hasValue(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance)) {
-      collapsingTitleHelper.setCollapsedTextAppearance(
-          a.getResourceId(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
-    }
+    collapsingTitleHelper.setCollapsedTextAppearance(
+        a.getResourceId(
+            R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance,
+            androidx.appcompat.R.style.TextAppearance_AppCompat_Widget_ActionBar_Title));
 
     // Now overlay any custom text Ellipsize
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_titleTextEllipsize)) {
@@ -358,18 +352,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     collapsingSubtitleHelper.setExpandedTextGravity(titleExpandedGravity);
     collapsingSubtitleHelper.setCollapsedTextGravity(titleCollapsedGravity);
+
     collapsingSubtitleHelper.setExpandedTextAppearance(
-        androidx.appcompat.R.style.TextAppearance_AppCompat_Headline);
+        a.getResourceId(
+            R.styleable.CollapsingToolbarLayout_expandedSubtitleTextAppearance,
+            androidx.appcompat.R.style.TextAppearance_AppCompat_Headline));
+
     collapsingSubtitleHelper.setCollapsedTextAppearance(
-        androidx.appcompat.R.style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle);
-    if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedSubtitleTextAppearance)) {
-      collapsingSubtitleHelper.setExpandedTextAppearance(
-          a.getResourceId(R.styleable.CollapsingToolbarLayout_expandedSubtitleTextAppearance, 0));
-    }
-    if (a.hasValue(R.styleable.CollapsingToolbarLayout_collapsedSubtitleTextAppearance)) {
-      collapsingSubtitleHelper.setCollapsedTextAppearance(
-          a.getResourceId(R.styleable.CollapsingToolbarLayout_collapsedSubtitleTextAppearance, 0));
-    }
+        a.getResourceId(
+            R.styleable.CollapsingToolbarLayout_collapsedSubtitleTextAppearance,
+            androidx.appcompat.R.style.TextAppearance_AppCompat_Widget_ActionBar_Subtitle));
+
     if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedSubtitleTextColor)) {
       collapsingSubtitleHelper.setExpandedTextColor(
           MaterialResources.getColorStateList(
