@@ -13,6 +13,8 @@ dependencies {
 }
 
 android {
+  namespace "com.google.android.material"
+
   defaultConfig {
     testApplicationId "com.google.android.material.tests"
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
