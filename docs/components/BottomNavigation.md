@@ -89,11 +89,15 @@ The default style for bottom navigation bar is:
 
 ### Container attributes
 
-Element                        | Attribute             | Related methods | Default value
------------------------------- | --------------------- | --------------- | -------------
-**Color**                      | `app:backgroundTint`  | N/A             | `?attr/colorSurfaceContainer`
-**Elevation**                  | `app:elevation`       | `setElevation`  | `3dp`
-**Compat Shadow** (deprecated) | `compatShadowEnabled` | N/A             | `false`
+| **Element**                             | **Attribute**                         | **Related methods**                               | **Default value**             |
+|-----------------------------------------|---------------------------------------|---------------------------------------------------|-------------------------------|
+| **Fits system windows**                 | `android:fitsSystemWindows`           | `getFitsSystemWindows`<br/>`setFitsSystemWindows` | `true`                        |
+| **Color**                               | `app:backgroundTint`                  | N/A                                               | `?attr/colorSurfaceContainer` |
+| **Elevation**                           | `app:elevation`                       | `setElevation`                                    | `3dp`                         |
+| **Compat Shadow** (deprecated)          | `compatShadowEnabled`                 | N/A                                               | `false`                       |
+| **Padding start system window insets**  | `app:paddingStartSystemWindowInsets`  | N/A                                               | `null`                        |
+| **Padding end system window insets**    | `app:paddingEndSystemWindowInsets`    | N/A                                               | `null`                        |
+| **Padding bottom system window insets** | `app:paddingBottomSystemWindowInsets` | N/A                                               | `null`                        |
 
 **Note:** `compatShadowEnabled` has no effect, as the library no longer supports
 pre-Lollipop.

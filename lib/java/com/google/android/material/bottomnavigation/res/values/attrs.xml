@@ -24,6 +24,15 @@
     <attr name="itemHorizontalTranslationEnabled" format="boolean"/>
     <!-- The min height this view should maintain. -->
     <attr name="android:minHeight" />
+    <!-- Whether the bottom navigation bar should apply any padding to its start to
+         account for any system window insets. -->
+    <attr name="paddingStartSystemWindowInsets"/>
+    <!-- Whether the bottom navigation bar should apply any padding to its end to
+         account for any system window insets. -->
+    <attr name="paddingEndSystemWindowInsets"/>
+    <!-- Whether the bottom navigation bar should apply any padding to its bottom to
+         account for any system window insets. -->
+    <attr name="paddingBottomSystemWindowInsets"/>
     <!-- Whether or not to add a shadow with a divider that is compatible across pre-21 legacy backgrounds.
          {@deprecated The attribute has no effect, as the library no longer supports pre-Lollipop.} -->
     <attr name="compatShadowEnabled" format="boolean"/>
