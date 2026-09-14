@@ -46,6 +46,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
@@ -161,6 +162,9 @@ public abstract class NavigationBarItemView extends FrameLayout
   private int activeIndicatorExpandedMarginHorizontal = 0;
 
   @Nullable private BadgeDrawable badgeDrawable;
+  @Nullable private CharSequence tooltipText;
+  @Nullable private OnLongClickListener customOnLongClickListener;
+  private boolean settingTooltipCompatLongClickListener;
 
   @ItemIconGravity private int itemIconGravity;
   private int badgeFixedEdge = BadgeDrawable.BADGE_FIXED_EDGE_START;
@@ -291,10 +295,7 @@ public abstract class NavigationBarItemView extends FrameLayout
             ? itemData.getTooltipText()
             : itemData.getTitle();
 
-    // Avoid calling tooltip for L and M devices because long pressing twice may freeze devices.
-    if (VERSION.SDK_INT > VERSION_CODES.M) {
-      TooltipCompat.setTooltipText(this, tooltipText);
-    }
+    setItemTooltipText(tooltipText);
     updateVisibility();
     this.initialized = true;
   }
@@ -482,9 +483,41 @@ public abstract class NavigationBarItemView extends FrameLayout
         itemData == null || TextUtils.isEmpty(itemData.getTooltipText())
             ? title
             : itemData.getTooltipText();
+    setItemTooltipText(tooltipText);
+  }
+
+  @Override
+  public void setOnLongClickListener(@Nullable OnLongClickListener listener) {
+    if (settingTooltipCompatLongClickListener) {
+      super.setOnLongClickListener(listener);
+      return;
+    }
+
+    customOnLongClickListener = listener;
+    super.setOnLongClickListener(listener);
+    updateTooltipText();
+  }
+
+  private void setItemTooltipText(@Nullable CharSequence tooltipText) {
+    this.tooltipText = tooltipText;
+    updateTooltipText();
+  }
+
+  private void updateTooltipText() {
     // Avoid calling tooltip for L and M devices because long pressing twice may freeze devices.
-    if (VERSION.SDK_INT > VERSION_CODES.M) {
-      TooltipCompat.setTooltipText(this, tooltipText);
+    if (VERSION.SDK_INT <= VERSION_CODES.M) {
+      return;
+    }
+
+    if (VERSION.SDK_INT >= VERSION_CODES.O) {
+      setTooltipText(tooltipText);
+    } else if (customOnLongClickListener == null) {
+      settingTooltipCompatLongClickListener = true;
+      try {
+        TooltipCompat.setTooltipText(this, tooltipText);
+      } finally {
+        settingTooltipCompatLongClickListener = false;
+      }
     }
   }
 
