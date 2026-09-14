@@ -248,7 +248,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
     int columns =
         themedContext.getResources().getInteger(R.integer.mtrl_calendar_year_selector_span);
-    yearSelector = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
+    yearSelector = root.findViewById(R.id.mtrl_calendar_year_selector);
     if (yearSelector != null) {
       yearSelector.setHasFixedSize(true);
       yearSelector.setLayoutManager(
