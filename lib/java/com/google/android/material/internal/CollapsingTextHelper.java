@@ -1088,8 +1088,7 @@ public final class CollapsingTextHelper {
 
     if (isClose(fraction, /* targetValue= */ 1)) {
       newTextSize = shouldTruncateCollapsedToSingleLine() ? collapsedTextSize : expandedTextSize;
-      newLetterSpacing =
-          shouldTruncateCollapsedToSingleLine() ? collapsedLetterSpacing : expandedLetterSpacing;
+      newLetterSpacing = collapsedLetterSpacing;
       scale =
           shouldTruncateCollapsedToSingleLine()
               ? 1f
