@@ -185,13 +185,17 @@ public final class KeylineState {
   static KeylineState lerp(KeylineState from, KeylineState to, float progress) {
     if (from.getItemSize() != to.getItemSize()) {
       throw new IllegalArgumentException(
-          "Keylines being linearly interpolated must have the same item size.");
+          "KeylineStates being linearly interpolated must have the same item size.");
+    }
+    if (from.getCarouselSize() != to.getCarouselSize()) {
+      throw new IllegalArgumentException(
+          "KeylineStates being linearly interpolated must have the same carousel size.");
     }
     List<Keyline> fromKeylines = from.getKeylines();
     List<Keyline> toKeylines = to.getKeylines();
     if (fromKeylines.size() != toKeylines.size()) {
       throw new IllegalArgumentException(
-          "Keylines being linearly interpolated must have the same number of keylines.");
+          "KeylineStates being linearly interpolated must have the same number of keylines.");
     }
 
     List<Keyline> keylines = new ArrayList<>();
@@ -211,7 +215,7 @@ public final class KeylineState {
         keylines,
         focalKeylineFirstIndex,
         focalKeylineLastIndex,
-        from.carouselSize);
+        from.getCarouselSize());
   }
 
   /**
@@ -717,11 +721,20 @@ public final class KeylineState {
 
     /** Linearly interpolates between two keylines and returns the interpolated object. */
     static Keyline lerp(Keyline from, Keyline to, @FloatRange(from = 0, to = 1) float progress) {
+      if (from.isAnchor != to.isAnchor) {
+        throw new IllegalArgumentException(
+            "Keylines being linearly interpolated must have the same isAnchor value.");
+      }
+
       return new Keyline(
           AnimationUtils.lerp(from.loc, to.loc, progress),
           AnimationUtils.lerp(from.locOffset, to.locOffset, progress),
           AnimationUtils.lerp(from.mask, to.mask, progress),
-          AnimationUtils.lerp(from.maskedItemSize, to.maskedItemSize, progress));
+          AnimationUtils.lerp(from.maskedItemSize, to.maskedItemSize, progress),
+          from.isAnchor,
+          AnimationUtils.lerp(from.cutoff, to.cutoff, progress),
+          AnimationUtils.lerp(from.leftOrTopPaddingShift, to.leftOrTopPaddingShift, progress),
+          AnimationUtils.lerp(from.rightOrBottomPaddingShift, to.rightOrBottomPaddingShift, progress));
     }
   }
 }
