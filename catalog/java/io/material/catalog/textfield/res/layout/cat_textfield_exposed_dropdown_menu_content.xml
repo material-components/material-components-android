@@ -33,7 +33,7 @@
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_exposed_dropdown_helper_text"
       app:helperTextEnabled="true">
-    <AutoCompleteTextView
+    <io.material.catalog.textfield.AutoCompleteTextView2
         android:id="@+id/filled_exposed_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_editable_exposed_dropdown_helper_text"
       app:helperTextEnabled="true">
-    <AutoCompleteTextView
+    <io.material.catalog.textfield.AutoCompleteTextView2
         android:id="@+id/filled_exposed_dropdown_editable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_exposed_dropdown_helper_text"
       app:helperTextEnabled="true">
-    <AutoCompleteTextView
+    <io.material.catalog.textfield.AutoCompleteTextView2
         android:id="@+id/outlined_exposed_dropdown"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_outlined_editable_exposed_dropdown_helper_text"
       app:helperTextEnabled="true">
-    <AutoCompleteTextView
+    <io.material.catalog.textfield.AutoCompleteTextView2
         android:id="@+id/outlined_exposed_dropdown_editable"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
