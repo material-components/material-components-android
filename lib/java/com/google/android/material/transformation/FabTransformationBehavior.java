@@ -374,7 +374,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
 
     float revealCenterX = calculateRevealCenterX(dependency, child, spec.positioning);
     float revealCenterY = calculateRevealCenterY(dependency, child, spec.positioning);
-    ((FloatingActionButton) dependency).getContentRect(tmpRect);
+    ((FloatingActionButton) dependency).getMeasuredContentRect(tmpRect);
     float dependencyRadius = tmpRect.width() / 2f;
 
     Animator animator;

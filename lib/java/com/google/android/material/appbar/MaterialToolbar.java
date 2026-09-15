@@ -26,11 +26,9 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Pair;
-import android.view.Menu;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +41,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ToolbarUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
 
 /**
  * {@code MaterialToolbar} is a {@link Toolbar} that implements certain Material features, such as
@@ -92,7 +91,7 @@ public class MaterialToolbar extends Toolbar {
   }
 
   public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, R.attr.toolbarStyle);
+    this(context, attrs, androidx.appcompat.R.attr.toolbarStyle);
   }
 
   public MaterialToolbar(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -122,20 +121,9 @@ public class MaterialToolbar extends Toolbar {
 
     a.recycle();
 
-    initBackground(context);
-  }
-
-  @Override
-  public void inflateMenu(int i) {
-    // Pause dispatching item changes during inflation to improve performance.
-    Menu menu = getMenu();
-    if (menu instanceof MenuBuilder) {
-      ((MenuBuilder) menu).stopDispatchingItemsChanged();
-    }
-    super.inflateMenu(i);
-    if (menu instanceof MenuBuilder) {
-      ((MenuBuilder) menu).startDispatchingItemsChanged();
-    }
+    final ShapeAppearanceModel shapeAppearance =
+        ShapeAppearanceModel.builder(context, attrs, defStyleAttr, DEF_STYLE_RES).build();
+    initBackground(context, shapeAppearance);
   }
 
   @Override
@@ -371,7 +359,7 @@ public class MaterialToolbar extends Toolbar {
     return subtitleCentered;
   }
 
-  private void initBackground(Context context) {
+  private void initBackground(Context context, ShapeAppearanceModel shapeAppearance) {
     Drawable background = getBackground();
     ColorStateList backgroundColorStateList =
         background == null
@@ -379,7 +367,7 @@ public class MaterialToolbar extends Toolbar {
             : DrawableUtils.getColorStateListOrNull(background);
 
     if (backgroundColorStateList != null) {
-      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable(shapeAppearance);
       materialShapeDrawable.setFillColor(backgroundColorStateList);
       materialShapeDrawable.initializeElevationOverlay(context);
       materialShapeDrawable.setElevation(getElevation());

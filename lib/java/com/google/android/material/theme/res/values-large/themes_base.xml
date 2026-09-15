@@ -16,11 +16,17 @@
 -->
 <resources>
 
+  <style name="Base.Theme.Material3Expressive.Light.DialogWhenLarge"
+    parent="Base.Theme.Material3Expressive.Light.Dialog.FixedSize"/>
+
+  <style name="Base.Theme.Material3Expressive.Dark.DialogWhenLarge"
+    parent="Base.Theme.Material3Expressive.Dark.Dialog.FixedSize"/>
+
   <style name="Base.Theme.Material3.Light.DialogWhenLarge"
-      parent="Base.Theme.Material3.Light.Dialog.FixedSize"/>
+    parent="Base.Theme.Material3.Light.Dialog.FixedSize"/>
 
   <style name="Base.Theme.Material3.Dark.DialogWhenLarge"
-      parent="Base.Theme.Material3.Dark.Dialog.FixedSize"/>
+    parent="Base.Theme.Material3.Dark.Dialog.FixedSize"/>
 
   <style name="Base.Theme.MaterialComponents.DialogWhenLarge"
       parent="Base.Theme.MaterialComponents.Dialog.FixedSize"/>

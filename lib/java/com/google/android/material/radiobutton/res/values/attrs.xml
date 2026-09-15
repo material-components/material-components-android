@@ -23,5 +23,9 @@
     <attr name="useMaterialThemeColors"/>
     <!-- Tint for the radio. -->
     <attr name="buttonTint"/>
+    <!-- Ripple color for the radio button. This may be a color state list, if
+         the desired ripple color should be stateful. Attribute type definition
+         is in ripple package. -->
+    <attr name="rippleColor" />
   </declare-styleable>
 </resources>

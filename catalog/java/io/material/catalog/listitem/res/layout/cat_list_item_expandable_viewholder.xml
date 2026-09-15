@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2025 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_height="wrap_content"
+  android:layout_width="match_parent"
+  android:orientation="vertical">
+<com.google.android.material.listitem.ListItemLayout
+  android:layout_height="wrap_content"
+  android:layout_width="match_parent"
+  android:paddingHorizontal="8dp">
+  <com.google.android.material.listitem.ListItemCardView
+    style="?attr/listItemCardViewSegmentedStyle"
+    android:id="@+id/cat_list_item_card_view"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_height="60dp"
+    android:layout_width="match_parent">
+    <LinearLayout
+      android:layout_gravity="center_vertical"
+      android:gravity="center_vertical"
+      android:layout_height="wrap_content"
+      android:layout_width="match_parent"
+      android:orientation="horizontal"
+      tools:ignore="UseCompoundDrawables"
+      android:duplicateParentState="true">
+      <ImageView
+        style="@style/Widget.Material3.ImageView.ListItem.LeadingIcon"
+        android:id="@+id/cat_list_item_start_icon"
+        android:contentDescription="@string/cat_list_item_icon_content_description"
+        android:layout_height="20dp"
+        android:layout_width="20dp"
+        android:layout_marginEnd="12dp"
+        app:srcCompat="@drawable/ic_star_icon_checkable_24px" />
+      <TextView
+        android:id="@+id/cat_list_item_text"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:textAppearance="?attr/textAppearanceBodyLarge" />
+      <com.google.android.material.imageview.ShapeableImageView
+        style="@style/Widget.Material3.ImageView.ListItem.TrailingIcon"
+        android:id="@+id/cat_list_item_expand_button"
+        android:layout_width="32dp"
+        android:layout_height="40dp"
+        android:background="?attr/colorSurfaceContainer"
+        app:shapeAppearance="@style/ShapeAppearance.Material3.Corner.Full"
+        android:contentDescription="@null"
+        android:layout_marginStart="16dp"
+        android:scaleType="center"/>
+    </LinearLayout>
+  </com.google.android.material.listitem.ListItemCardView>
+</com.google.android.material.listitem.ListItemLayout>
+  <LinearLayout
+    android:id="@+id/cat_lists_expandable_content"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="gone">
+    <com.google.android.material.listitem.ListItemLayout
+      android:id="@+id/cat_list_first_expanded_item"
+      android:layout_height="wrap_content"
+      android:layout_width="match_parent"
+      android:layout_marginTop="2dp"
+      android:paddingHorizontal="8dp">
+    <com.google.android.material.listitem.ListItemCardView
+      style="?attr/listItemCardViewSegmentedStyle"
+      android:clickable="true"
+      android:focusable="true"
+      android:layout_height="60dp"
+      android:layout_width="match_parent"
+      android:layout_gravity="center_vertical">
+      <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables"
+        android:duplicateParentState="true">
+        <ImageView
+          style="@style/Widget.Material3.ImageView.ListItem.LeadingIcon"
+          android:contentDescription="@string/cat_list_item_icon_content_description"
+          android:layout_height="20dp"
+          android:layout_width="20dp"
+          android:layout_marginEnd="12dp"
+          app:srcCompat="@drawable/ic_star_icon_checkable_24px" />
+        <TextView
+          android:layout_height="wrap_content"
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:textAlignment="viewStart"
+          android:text="@string/cat_list_item_expanded_list_item_text"
+          android:textAppearance="?attr/textAppearanceBodyLarge" />
+      </LinearLayout>
+    </com.google.android.material.listitem.ListItemCardView>
+    </com.google.android.material.listitem.ListItemLayout>
+    <com.google.android.material.listitem.ListItemLayout
+      android:id="@+id/cat_list_second_expanded_item"
+      android:layout_height="wrap_content"
+      android:layout_width="match_parent"
+      android:paddingHorizontal="8dp"
+      android:layout_marginTop="2dp">
+    <com.google.android.material.listitem.ListItemCardView
+      style="?attr/listItemCardViewSegmentedStyle"
+      android:clickable="true"
+      android:focusable="true"
+      android:layout_height="60dp"
+      android:layout_width="match_parent"
+      android:layout_gravity="center_vertical">
+      <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables"
+        android:duplicateParentState="true">
+        <ImageView
+          style="@style/Widget.Material3.ImageView.ListItem.LeadingIcon"
+          android:contentDescription="@string/cat_list_item_icon_content_description"
+          android:layout_height="20dp"
+          android:layout_width="20dp"
+          android:layout_marginEnd="12dp"
+          app:srcCompat="@drawable/ic_star_icon_checkable_24px" />
+        <TextView
+          android:layout_height="wrap_content"
+          android:layout_width="0dp"
+          android:layout_weight="1"
+          android:textAlignment="viewStart"
+          android:text="@string/cat_list_item_expanded_list_item_text"
+          android:textAppearance="?attr/textAppearanceBodyLarge" />
+      </LinearLayout>
+    </com.google.android.material.listitem.ListItemCardView>
+    </com.google.android.material.listitem.ListItemLayout>
+  </LinearLayout>
+  </LinearLayout>

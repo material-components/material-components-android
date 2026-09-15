@@ -29,7 +29,6 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
 import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.AllOf.allOf;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -398,17 +397,6 @@ public class SnackbarTest {
         .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
     verify(mockCallback2, never())
         .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
-  }
-
-  @Test
-  public void testAccessibilityPaneTitle() throws Throwable {
-    final Snackbar snackbar =
-        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
-    assertEquals(
-        snackbar.getContext().getString(R.string.snackbar_accessibility_pane_title),
-        ViewCompat.getAccessibilityPaneTitle(snackbar.getView()).toString());
   }
 
   @Test

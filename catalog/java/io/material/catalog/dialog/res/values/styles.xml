@@ -17,14 +17,14 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="Widget.Catalog.Button.TextButton.Dialog.FullWidth" parent="Widget.Material3.Button.TextButton.Dialog">
+  <style name="Widget.Catalog.Button.TextButton.Dialog.FullWidth" parent="Widget.Material3Expressive.Button.TextButton.Dialog">
     <item name="android:layout_width">0dp</item>
     <item name="android:layout_weight">1</item>
     <item name="android:maxWidth">@null</item>
   </style>
 
   <!-- A theme overlay for dialogs with buttons that span the width of the dialog. -->
-  <style name="ThemeOverlay.Catalog.MaterialAlertDialog.FullWidthButtons" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+  <style name="ThemeOverlay.Catalog.MaterialAlertDialog.FullWidthButtons" parent="ThemeOverlay.Material3Expressive.MaterialAlertDialog">
     <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_gone</item>
     <item name="buttonBarPositiveButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog.FullWidth</item>
     <item name="buttonBarNegativeButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog.FullWidth</item>
@@ -32,7 +32,7 @@
   </style>
 
   <!-- A theme overlay for dialogs with a center aligned title text, icon and buttons that span the width of the dialog. -->
-  <style name="ThemeOverlay.Catalog.MaterialAlertDialog.Centered.FullWidthButtons" parent="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+  <style name="ThemeOverlay.Catalog.MaterialAlertDialog.Centered.FullWidthButtons" parent="ThemeOverlay.Material3Expressive.MaterialAlertDialog.Centered">
     <!-- Mark spacer as gone when showing full width buttons -->
     <item name="materialAlertDialogButtonSpacerVisibility">@integer/mtrl_view_gone</item>
     <item name="buttonBarPositiveButtonStyle">@style/Widget.Catalog.Button.TextButton.Dialog.FullWidth</item>

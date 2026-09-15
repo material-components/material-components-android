@@ -43,6 +43,28 @@
   <!-- ProgressIndicator and LoadingIndicator -->
   <attr name="indicatorColor" format="color|reference" />
   <attr name="indicatorSize" format="dimension" />
+  <!--
+    The time, in milliseconds, that the progress/loading indicator will wait
+    to show once show() is called. If set to zero or negative values (-1 as
+    default), the show action will start immediately.
+  -->
+  <attr name="showDelay" format="integer" />
+  <!--
+    The minimum time, in milliseconds, that the requested hide action will
+    wait to start once show action is started. If set to zero or negative
+    values (-1 as default), the requested hide action will start immediately.
+    This value is capped to a limit defined in ProgressIndicator or
+    LoadingIndicator class.
+  -->
+  <attr name="minHideDelay" format="integer" />
+
+  <!-- Button Group and Overflow Linear Layout -->
+  <!-- The icon of the overflow menu item. -->
+  <attr name="layout_overflowIcon" type="attr"/>
+  <!-- The text of the overflow menu item. -->
+  <attr name="layout_overflowText" type="attr"/>
+  <!-- The icon of the overflow button. -->
+  <attr name="overflowButtonIcon" type="attr"/>
 
   <declare-styleable name="MaterialTextAppearance" parent="TextAppearance">
     <attr name="android:lineHeight"/>

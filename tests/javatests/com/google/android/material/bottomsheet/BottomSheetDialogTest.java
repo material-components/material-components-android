@@ -36,8 +36,11 @@ import android.content.DialogInterface;
 import android.os.SystemClock;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
@@ -48,6 +51,7 @@ import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.testapp.BottomSheetDialogActivity;
 import com.google.android.material.testapp.R;
+import com.google.android.material.testutils.AccessibilityUtils;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -203,6 +207,97 @@ public class BottomSheetDialogTest {
         .onStateChanged(any(View.class), eq(BottomSheetBehavior.STATE_SETTLING));
     verify(callback, timeout(3000))
         .onStateChanged(any(View.class), eq(BottomSheetBehavior.STATE_COLLAPSED));
+  }
+
+  @Test
+  public void testAccessibilityDelegateViewAvoidsDuplicateDismiss() throws Throwable {
+    showDialog();
+    FrameLayout bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
+    BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+
+    // Verify default behavior: the bottom sheet itself is dismissable and has the DISMISS action
+    AccessibilityNodeInfo info = AccessibilityNodeInfo.obtain();
+    activityTestRule.runOnUiThread(() -> bottomSheet.onInitializeAccessibilityNodeInfo(info));
+
+    AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+    assertThat(
+        AccessibilityUtils.hasAction(infoCompat, AccessibilityActionCompat.ACTION_DISMISS),
+        is(true));
+    assertThat(infoCompat.isDismissable(), is(true));
+
+    // Set an accessibility delegate view (simulating a drag handle)
+    View delegateView = new View(activityTestRule.getActivity());
+    activityTestRule.runOnUiThread(() -> behavior.setAccessibilityDelegateView(delegateView));
+
+    // Verify updated behavior: the main bottom sheet should no longer have the dismiss action
+    AccessibilityNodeInfo updatedInfo = AccessibilityNodeInfo.obtain();
+    activityTestRule.runOnUiThread(
+        () -> bottomSheet.onInitializeAccessibilityNodeInfo(updatedInfo));
+
+    AccessibilityNodeInfoCompat updatedInfoCompat = AccessibilityNodeInfoCompat.wrap(updatedInfo);
+    assertThat(
+        AccessibilityUtils.hasAction(updatedInfoCompat, AccessibilityActionCompat.ACTION_DISMISS),
+        is(false));
+    assertThat(updatedInfoCompat.isDismissable(), is(false));
+  }
+
+  @Test
+  public void testPerformAccessibilityActionDismissWithAccessibilityDelegateView()
+      throws Throwable {
+    showDialog();
+    FrameLayout bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
+    BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+
+    // Set an accessibility delegate view
+    View delegateView = new View(activityTestRule.getActivity());
+    activityTestRule.runOnUiThread(() -> behavior.setAccessibilityDelegateView(delegateView));
+
+    // Performing ACTION_DISMISS on the bottom sheet should NOT cancel the dialog when delegate view
+    // is set
+    AtomicBoolean actionResult = new AtomicBoolean(true);
+    activityTestRule.runOnUiThread(
+        () ->
+            actionResult.set(
+                bottomSheet.performAccessibilityAction(
+                    AccessibilityNodeInfoCompat.ACTION_DISMISS, null)));
+
+    assertThat(actionResult.get(), is(false));
+    assertThat(dialog.isShowing(), is(true));
+  }
+
+  @Test
+  public void testClearAccessibilityDelegateViewRestoresDismissAction() throws Throwable {
+    showDialog();
+    FrameLayout bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
+    BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+
+    // Set an accessibility delegate view
+    View delegateView = new View(activityTestRule.getActivity());
+    activityTestRule.runOnUiThread(() -> behavior.setAccessibilityDelegateView(delegateView));
+
+    // Clear the accessibility delegate view
+    activityTestRule.runOnUiThread(() -> behavior.setAccessibilityDelegateView(null));
+
+    // Verify restored behavior: the main bottom sheet should have the dismiss action again
+    AccessibilityNodeInfo info = AccessibilityNodeInfo.obtain();
+    activityTestRule.runOnUiThread(() -> bottomSheet.onInitializeAccessibilityNodeInfo(info));
+
+    AccessibilityNodeInfoCompat infoCompat = AccessibilityNodeInfoCompat.wrap(info);
+    assertThat(
+        AccessibilityUtils.hasAction(infoCompat, AccessibilityActionCompat.ACTION_DISMISS),
+        is(true));
+    assertThat(infoCompat.isDismissable(), is(true));
+
+    // Performing ACTION_DISMISS on the bottom sheet should now successfully cancel the dialog
+    AtomicBoolean actionResult = new AtomicBoolean(false);
+    activityTestRule.runOnUiThread(
+        () ->
+            actionResult.set(
+                bottomSheet.performAccessibilityAction(
+                    AccessibilityNodeInfoCompat.ACTION_DISMISS, null)));
+
+    assertThat(actionResult.get(), is(true));
+    assertThat(dialog.isShowing(), is(false));
   }
 
   private void showDialog() throws Throwable {

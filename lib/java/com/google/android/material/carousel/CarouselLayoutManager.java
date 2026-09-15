@@ -33,6 +33,8 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.LayoutManager;
@@ -121,8 +123,8 @@ public class CarouselLayoutManager extends LayoutManager
 
   private final OnLayoutChangeListener recyclerViewSizeChangeListener =
       (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-        // If RV dimen values have changed, refresh the keyline state.
-        if (left != oldLeft || top != oldTop || right != oldRight || bottom != oldBottom) {
+        // If RV width or height values have changed, refresh the keyline state.
+        if ((right - left != oldRight - oldLeft) || (bottom - top != oldBottom - oldTop)) {
           v.post(this::refreshKeylineState);
         }
       };
@@ -140,7 +142,11 @@ public class CarouselLayoutManager extends LayoutManager
    * the first focal keyline. This is used when restoring item position after the carousel keylines
    * are re-calculated due to configuration or size changes.
    */
-  private int currentEstimatedPosition = NO_POSITION;
+  @VisibleForTesting int currentEstimatedPosition = NO_POSITION;
+
+  private boolean isInitialLoad = true;
+
+  @Nullable private SavedState pendingSavedState;
 
   /**
    * Determines where to align the large items in the carousel.
@@ -207,7 +213,10 @@ public class CarouselLayoutManager extends LayoutManager
     if (attrs != null) {
       TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.Carousel);
       setCarouselAlignment(a.getInt(R.styleable.Carousel_carousel_alignment, ALIGNMENT_START));
-      setOrientation(a.getInt(R.styleable.RecyclerView_android_orientation, HORIZONTAL));
+      setOrientation(
+          a.getInt(
+              androidx.recyclerview.R.styleable.RecyclerView_android_orientation,
+              HORIZONTAL));
       a.recycle();
     }
   }
@@ -296,10 +305,11 @@ public class CarouselLayoutManager extends LayoutManager
 
     boolean isRtl = isLayoutRtl();
 
-    boolean isInitialLoad = keylineStateList == null;
-    // If a keyline state hasn't been created, use the first child as a representative of how each
-    // child would like to be measured and allow the strategy to create a keyline state.
-    if (isInitialLoad) {
+    // If a keyline state hasn't been created or is the wrong size, use the first child as a
+    // representative of how each child would like to be measured and allow the strategy to create
+    // a keyline state.
+    if (keylineStateList == null
+        || keylineStateList.getDefaultState().getCarouselSize() != getContainerSize()) {
       recalculateKeylineStateList(recycler);
     }
 
@@ -313,17 +323,38 @@ public class CarouselLayoutManager extends LayoutManager
     minScroll = isRtl ? endScroll : startScroll;
     maxScroll = isRtl ? startScroll : endScroll;
 
-    if (isInitialLoad) {
-      // Scroll to the start of the list on first load.
-      scrollOffset = startScroll;
+    if (lastItemCount != state.getItemCount()) {
+      keylineStatePositionMap = null;
+    }
+
+    if (keylineStatePositionMap == null) {
       keylineStatePositionMap =
           keylineStateList.getKeylineStateForPositionMap(
-              getItemCount(), minScroll, maxScroll, isLayoutRtl());
+              state.getItemCount(), minScroll, maxScroll, isRtl);
+    }
+
+    if (pendingSavedState != null) {
+      currentEstimatedPosition =
+          pendingSavedState.targetPosition == NO_POSITION
+              ? NO_POSITION
+              : MathUtils.clamp(
+                  pendingSavedState.targetPosition, 0, max(0, state.getItemCount() - 1));
+      scrollOffset = pendingSavedState.scrollOffset;
+      currentFillStartPosition =
+          currentEstimatedPosition == NO_POSITION ? 0 : currentEstimatedPosition;
+      pendingSavedState = null;
+      isInitialLoad = false;
+    } else if (isInitialLoad) {
+      // Scroll to the start of the list on first load.
       if (currentEstimatedPosition != NO_POSITION) {
         scrollOffset =
             getScrollOffsetForPosition(
                 currentEstimatedPosition, getKeylineStateForPosition(currentEstimatedPosition));
+        currentFillStartPosition = currentEstimatedPosition;
+      } else {
+        scrollOffset = startScroll;
       }
+      isInitialLoad = false;
     }
 
     // Clamp the scroll offset by the new min and max by pinging the scroll by calculator
@@ -331,13 +362,14 @@ public class CarouselLayoutManager extends LayoutManager
     scrollOffset += calculateShouldScrollBy(0, scrollOffset, minScroll, maxScroll);
 
     // Ensure currentFillStartPosition is valid if the number of items in the adapter has changed.
-    currentFillStartPosition = MathUtils.clamp(currentFillStartPosition, 0, state.getItemCount());
+    currentFillStartPosition =
+        MathUtils.clamp(currentFillStartPosition, 0, max(0, state.getItemCount() - 1));
 
     updateCurrentKeylineStateForScrollOffset(keylineStateList);
 
     detachAndScrapAttachedViews(recycler);
     fill(recycler, state);
-    lastItemCount = getItemCount();
+    lastItemCount = state.getItemCount();
   }
 
   @Override
@@ -346,6 +378,7 @@ public class CarouselLayoutManager extends LayoutManager
   }
 
   private void recalculateKeylineStateList(Recycler recycler) {
+    keylineStatePositionMap = null;
     View firstChild = recycler.getViewForPosition(0);
     measureChildWithMargins(firstChild, 0, 0);
     KeylineState keylineState = carouselStrategy.onFirstChildMeasuredWithMargins(this, firstChild);
@@ -373,8 +406,10 @@ public class CarouselLayoutManager extends LayoutManager
   /**
    * Recalculates the {@link KeylineState} and {@link KeylineStateList} for the current strategy.
    */
-  private void refreshKeylineState() {
+  @VisibleForTesting
+  void refreshKeylineState() {
     keylineStateList = null;
+    keylineStatePositionMap = null;
     requestLayout();
   }
 
@@ -455,7 +490,6 @@ public class CarouselLayoutManager extends LayoutManager
         continue;
       }
       View child = recycler.getViewForPosition(i);
-      measureChildWithMargins(child, 0, 0);
       // Add this child to the first index of the RecyclerView.
       addAndLayoutView(
           child, /* index= */ 0, new ChildCalculations(child, center, offsetCenter, range));
@@ -507,7 +541,6 @@ public class CarouselLayoutManager extends LayoutManager
         continue;
       }
       View child = recycler.getViewForPosition(i);
-      measureChildWithMargins(child, 0, 0);
       // Add this child to the last index of the RecyclerView
       addAndLayoutView(
           child, /* index= */ -1, new ChildCalculations(child, center, offsetCenter, range));
@@ -600,6 +633,7 @@ public class CarouselLayoutManager extends LayoutManager
   private void addAndLayoutView(View child, int index, ChildCalculations calculations) {
     float halfItemSize = currentKeylineState.getItemSize() / 2F;
     addView(child, index);
+    measureChildWithMargins(child, 0, 0);
     int start = (int) (calculations.offsetCenter - halfItemSize);
     int end = (int) (calculations.offsetCenter + halfItemSize);
     orientationHelper.layoutDecoratedWithMargins(child, start, end);
@@ -1229,7 +1263,8 @@ public class CarouselLayoutManager extends LayoutManager
     return targetSnapOffset;
   }
 
-  private KeylineState getKeylineStateForPosition(int position) {
+  @VisibleForTesting
+  KeylineState getKeylineStateForPosition(int position) {
     if (keylineStatePositionMap != null) {
       KeylineState keylineState = keylineStatePositionMap.get(
           MathUtils.clamp(position, 0, max(0, getItemCount() - 1)));
@@ -1241,8 +1276,74 @@ public class CarouselLayoutManager extends LayoutManager
   }
 
   @Override
+  @NonNull
+  public Parcelable onSaveInstanceState() {
+    if (pendingSavedState != null) {
+      return new SavedState(pendingSavedState);
+    }
+    return new SavedState(currentEstimatedPosition, scrollOffset);
+  }
+
+  @Override
+  public void onRestoreInstanceState(@Nullable Parcelable state) {
+    if (state instanceof SavedState) {
+      SavedState savedState = (SavedState) state;
+      pendingSavedState = savedState;
+      requestLayout();
+    }
+  }
+
+  /** State class for saving CarouselLayoutManager state. */
+  public static class SavedState implements Parcelable {
+    public final int targetPosition;
+    public final int scrollOffset;
+
+    SavedState(int targetPosition, int scrollOffset) {
+      this.targetPosition = targetPosition;
+      this.scrollOffset = scrollOffset;
+    }
+
+    SavedState(@NonNull Parcel in) {
+      targetPosition = in.readInt();
+      scrollOffset = in.readInt();
+    }
+
+    public SavedState(@NonNull SavedState other) {
+      targetPosition = other.targetPosition;
+      scrollOffset = other.scrollOffset;
+    }
+
+    @Override
+    public int describeContents() {
+      return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+      dest.writeInt(targetPosition);
+      dest.writeInt(scrollOffset);
+    }
+
+    public static final Parcelable.Creator<SavedState> CREATOR =
+        new Parcelable.Creator<SavedState>() {
+          @Override
+          @NonNull
+          public SavedState createFromParcel(@NonNull Parcel in) {
+            return new SavedState(in);
+          }
+
+          @Override
+          @NonNull
+          public SavedState[] newArray(int size) {
+            return new SavedState[size];
+          }
+        };
+  }
+
+  @Override
   public void scrollToPosition(int position) {
     currentEstimatedPosition = position;
+    pendingSavedState = null;
     if (keylineStateList == null) {
       return;
     }
@@ -1254,6 +1355,7 @@ public class CarouselLayoutManager extends LayoutManager
 
   @Override
   public void smoothScrollToPosition(RecyclerView recyclerView, State state, int position) {
+    pendingSavedState = null;
     LinearSmoothScroller linearSmoothScroller =
         new LinearSmoothScroller(recyclerView.getContext()) {
           @Nullable
@@ -1365,6 +1467,29 @@ public class CarouselLayoutManager extends LayoutManager
     }
   }
 
+  @Override
+  @SuppressWarnings("NonApiType")
+  public boolean onAddFocusables(
+      @NonNull RecyclerView recyclerView,
+      @NonNull ArrayList<View> views,
+      int direction,
+      int focusableMode) {
+    if (recyclerView.hasFocus()) {
+      return false;
+    }
+
+    for (int i = 0; i < getChildCount(); i++) {
+      View child = getChildAt(i);
+      if (child != null && child.hasFocusable()) {
+        float center = getDecoratedCenterWithMargins(child);
+        if (center >= 0 && center <= getContainerSize()) {
+          child.addFocusables(views, direction, focusableMode);
+        }
+      }
+    }
+    return true;
+  }
+
   @Nullable
   @Override
   public View onFocusSearchFailed(
@@ -1378,44 +1503,28 @@ public class CarouselLayoutManager extends LayoutManager
       return null;
     }
 
-    final View nextFocus;
-    if (layoutDir == LayoutDirection.LAYOUT_START) {
-      if (getPosition(focused) == 0) {
-        return null;
-      }
-      int firstPosition = getPosition(getChildAt(0));
-      addViewAtPosition(recycler, firstPosition - 1, 0);
-      nextFocus = getChildClosestToStart();
-    } else {
-      if (getPosition(focused) == getItemCount() - 1) {
-        return null;
-      }
-      int lastPosition = getPosition(getChildAt(getChildCount() - 1));
-      addViewAtPosition(recycler, lastPosition + 1, -1);
-      nextFocus = getChildClosestToEnd();
+    View directChild = findContainingItemView(focused);
+    if (directChild == null) {
+      return null;
+    }
+    int focusedPosition = getPosition(directChild);
+    if (focusedPosition == NO_POSITION) {
+      return null;
     }
 
+    int targetPosition =
+        layoutDir == LayoutDirection.LAYOUT_START ? focusedPosition - 1 : focusedPosition + 1;
+    if (targetPosition < 0 || targetPosition >= getItemCount()) {
+      return null;
+    }
+
+    View nextFocus = findViewByPosition(targetPosition);
+    if (nextFocus == null) {
+      addViewAtPosition(
+          recycler, targetPosition, layoutDir == LayoutDirection.LAYOUT_START ? 0 : -1);
+      nextFocus = findViewByPosition(targetPosition);
+    }
     return nextFocus;
-  }
-
-  /**
-   * Convenience method to find the child closes to start. Caller should check if it has enough
-   * children.
-   *
-   * @return The child closest to start of the layout from user's perspective.
-   */
-  private View getChildClosestToStart() {
-    return getChildAt(isLayoutRtl() ? getChildCount() - 1 : 0);
-  }
-
-  /**
-   * Convenience method to find the child closes to end. Caller should check if it has enough
-   * children.
-   *
-   * @return The child closest to end of the layout from user's perspective.
-   */
-  private View getChildClosestToEnd() {
-    return getChildAt(isLayoutRtl() ? 0 : getChildCount() - 1);
   }
 
   @Override
@@ -1640,6 +1749,12 @@ public class CarouselLayoutManager extends LayoutManager
     updateItemCount();
   }
 
+  @Override
+  public void onItemsChanged(@NonNull RecyclerView recyclerView) {
+    super.onItemsChanged(recyclerView);
+    updateItemCount();
+  }
+
   private void updateItemCount() {
     int newItemCount = getItemCount();
 
@@ -1648,6 +1763,9 @@ public class CarouselLayoutManager extends LayoutManager
     }
     if (carouselStrategy.shouldRefreshKeylineState(this, this.lastItemCount)) {
       refreshKeylineState();
+    } else {
+      keylineStatePositionMap = null;
+      requestLayout();
     }
     this.lastItemCount = newItemCount;
   }

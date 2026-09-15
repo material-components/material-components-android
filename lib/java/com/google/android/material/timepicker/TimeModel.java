@@ -40,9 +40,6 @@ class TimeModel implements Parcelable {
   public static final String ZERO_LEADING_NUMBER_FORMAT = "%02d";
   public static final String NUMBER_FORMAT = "%d";
 
-  private final MaxInputValidator minuteInputValidator;
-  private final MaxInputValidator hourInputValidator;
-
   @TimeFormat final int format;
 
   int hour;
@@ -65,8 +62,6 @@ class TimeModel implements Parcelable {
     this.selection = selection;
     this.format = format;
     period = getPeriod(hour);
-    minuteInputValidator = new MaxInputValidator(59);
-    hourInputValidator = new MaxInputValidator(format == CLOCK_24H ? 23 : 12);
   }
 
   protected TimeModel(Parcel in) {
@@ -119,14 +114,6 @@ class TimeModel implements Parcelable {
     return format == CLOCK_24H ? R.string.material_hour_24h_suffix : R.string.material_hour_suffix;
   }
 
-  public MaxInputValidator getMinuteInputValidator() {
-    return minuteInputValidator;
-  }
-
-  public MaxInputValidator getHourInputValidator() {
-    return hourInputValidator;
-  }
-
   @Override
   public int hashCode() {
     Object[] hashedFields = {format, hour, minute, selection};
@@ -164,17 +151,18 @@ class TimeModel implements Parcelable {
   }
 
   @SuppressWarnings("unused")
-  public static final Parcelable.Creator<TimeModel> CREATOR = new Parcelable.Creator<TimeModel>() {
-    @Override
-    public TimeModel createFromParcel(Parcel in) {
-      return new TimeModel(in);
-    }
+  public static final Parcelable.Creator<TimeModel> CREATOR =
+      new Parcelable.Creator<TimeModel>() {
+        @Override
+        public TimeModel createFromParcel(Parcel in) {
+          return new TimeModel(in);
+        }
 
-    @Override
-    public TimeModel[] newArray(int size) {
-      return new TimeModel[size];
-    }
-  };
+        @Override
+        public TimeModel[] newArray(int size) {
+          return new TimeModel[size];
+        }
+      };
 
   public void setPeriod(@ClockPeriod int period) {
     if (period != this.period) {

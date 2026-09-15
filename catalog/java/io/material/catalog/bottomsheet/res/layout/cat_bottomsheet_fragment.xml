@@ -14,46 +14,51 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cat_bottomsheet_coordinator_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-  <RelativeLayout
+<androidx.core.view.insets.ProtectionLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/cat_bottomsheet_protection_layout"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+      android:id="@+id/cat_bottomsheet_coordinator_layout"
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:orientation="vertical">
-    <Button
-        android:id="@+id/bottomsheet_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"
-        android:text="@string/cat_bottomsheet_button_text"/>
-      <com.google.android.material.materialswitch.MaterialSwitch
-          android:id="@+id/cat_fullscreen_switch"
+      android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+      <Button
+          android:id="@+id/bottomsheet_button"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:layout_below="@id/bottomsheet_button"
+          android:layout_marginTop="16dp"
+          android:layout_centerHorizontal="true"
+          android:text="@string/cat_bottomsheet_button_text"/>
+        <com.google.android.material.materialswitch.MaterialSwitch
+            android:id="@+id/cat_fullscreen_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/bottomsheet_button"
+            android:layout_centerHorizontal="true"
+            android:padding="16dp"
+            android:textSize="14sp"
+            android:textAllCaps="true"
+            android:text="@string/cat_bottomsheet_switch_text"/>
+      <com.google.android.material.materialswitch.MaterialSwitch
+          android:id="@+id/cat_bottomsheet_expansion_switch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/cat_fullscreen_switch"
           android:layout_centerHorizontal="true"
           android:padding="16dp"
-          android:textSize="14sp"
+          android:text="@string/cat_bottomsheet_expansion_switch_text"
           android:textAllCaps="true"
-          android:text="@string/cat_bottomsheet_switch_text"/>
-    <com.google.android.material.materialswitch.MaterialSwitch
-        android:id="@+id/cat_bottomsheet_expansion_switch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/cat_fullscreen_switch"
-        android:layout_centerHorizontal="true"
-        android:padding="16dp"
-        android:text="@string/cat_bottomsheet_expansion_switch_text"
-        android:textAllCaps="true"
-        android:textSize="14sp"/>
+          android:textSize="14sp"/>
 
-  </RelativeLayout>
+    </RelativeLayout>
 
-  <!-- Standard bottom sheet will be added here. -->
+    <!-- Standard bottom sheet will be added here. -->
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.core.view.insets.ProtectionLayout>

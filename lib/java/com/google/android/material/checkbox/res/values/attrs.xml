@@ -70,6 +70,10 @@
       <!-- The indeterminate state of the checkbox. -->
       <enum name="indeterminate" value="2"/>
     </attr>
+    <!-- Ripple color for the checkbox. This may be a color state list, if the
+         desired ripple color should be stateful. Attribute type definition is
+         in ripple package. -->
+    <attr name="rippleColor" />
   </declare-styleable>
 
   <declare-styleable name="MaterialCheckBoxStates">

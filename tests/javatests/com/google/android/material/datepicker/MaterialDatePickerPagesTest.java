@@ -15,8 +15,14 @@
  */
 package com.google.android.material.datepicker;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
+import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static com.google.android.material.datepicker.MaterialDatePickerTestUtils.findFirstVisibleItem;
 import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.IsEqual.equalTo;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -140,5 +146,45 @@ public class MaterialDatePickerPagesTest {
     ViewCompat.onInitializeAccessibilityNodeInfo(view, nodeInfo);
 
     assertFalse(nodeInfo.isScrollable());
+  }
+
+  @Test
+  public void previousButtonDisabledAtStartBoundary() {
+    MaterialDatePickerTestUtils.clickPrev();
+    onView(withTagValue(equalTo(MaterialCalendar.NAVIGATION_PREV_TAG)))
+        .check(matches(not(isEnabled())));
+  }
+
+  @Test
+  public void nextButtonDisabledAtEndBoundary() {
+    MaterialDatePickerTestUtils.clickNext();
+    MaterialDatePickerTestUtils.clickNext();
+    MaterialDatePickerTestUtils.clickNext();
+    onView(withTagValue(equalTo(MaterialCalendar.NAVIGATION_NEXT_TAG)))
+        .check(matches(not(isEnabled())));
+  }
+
+  @Test
+  public void nextButtonEnabledAtStartBoundary() {
+    MaterialDatePickerTestUtils.clickPrev();
+    onView(withTagValue(equalTo(MaterialCalendar.NAVIGATION_NEXT_TAG)))
+        .check(matches(isEnabled()));
+  }
+
+  @Test
+  public void previousButtonEnabledAtEndBoundary() {
+    MaterialDatePickerTestUtils.clickNext();
+    MaterialDatePickerTestUtils.clickNext();
+    MaterialDatePickerTestUtils.clickNext();
+    onView(withTagValue(equalTo(MaterialCalendar.NAVIGATION_PREV_TAG)))
+        .check(matches(isEnabled()));
+  }
+
+  @Test
+  public void navigationButtonsEnabledInMiddleOfBoundary() {
+    onView(withTagValue(equalTo(MaterialCalendar.NAVIGATION_NEXT_TAG)))
+        .check(matches(isEnabled()));
+    onView(withTagValue(equalTo(MaterialCalendar.NAVIGATION_NEXT_TAG)))
+        .check(matches(isEnabled()));
   }
 }

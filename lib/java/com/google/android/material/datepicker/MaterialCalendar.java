@@ -28,11 +28,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import androidx.recyclerview.widget.RecyclerView.State;
+import androidx.appcompat.widget.TooltipCompat;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,6 +48,7 @@ import androidx.core.util.Pair;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import com.google.android.material.button.MaterialButton;
 import java.util.Calendar;
 
@@ -91,6 +95,10 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private View monthNext;
   private View yearFrame;
   private View dayFrame;
+  private MaterialButton monthDropSelect;
+  private AccessibilityManager accessibilityManager;
+  @Nullable private PagerSnapHelper pagerSnapHelper;
+  private boolean isFullscreen;
 
   @NonNull
   public static <T> MaterialCalendar<T> newInstance(
@@ -148,11 +156,15 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     calendarStyle = new CalendarStyle(themedContext);
     LayoutInflater themedInflater = layoutInflater.cloneInContext(themedContext);
 
+    accessibilityManager =
+        (AccessibilityManager) requireContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
+
     Month earliestMonth = calendarConstraints.getStart();
 
     int layout;
     final int orientation;
-    if (MaterialDatePicker.isFullscreen(themedContext)) {
+    isFullscreen = MaterialDatePicker.isFullscreen(themedContext);
+    if (isFullscreen) {
       layout = R.layout.mtrl_calendar_vertical;
       orientation = LinearLayoutManager.VERTICAL;
     } else {
@@ -220,6 +232,17 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
                   }
                 }
               }
+            },
+            new OnMonthNavigationListener() {
+              @Override
+              public boolean onMonthNavigationPrevious() {
+                return handleNavigateToMonthForKeyboard(/* forward= */ false);
+              }
+
+              @Override
+              public boolean onMonthNavigationNext() {
+                return handleNavigateToMonthForKeyboard(/* forward= */ true);
+              }
             });
     recyclerView.setAdapter(monthsPagerAdapter);
 
@@ -234,15 +257,16 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       yearSelector.addItemDecoration(createItemDecoration());
     }
 
+    if (!isFullscreen) {
+      pagerSnapHelper = new PagerSnapHelper();
+      pagerSnapHelper.attachToRecyclerView(recyclerView);
+    }
     if (root.findViewById(R.id.month_navigation_fragment_toggle) != null) {
       addActionsToMonthNavigation(root, monthsPagerAdapter);
     }
-
-    if (!MaterialDatePicker.isFullscreen(themedContext)) {
-      new PagerSnapHelper().attachToRecyclerView(recyclerView);
-    }
     recyclerView.scrollToPosition(monthsPagerAdapter.getPosition(current));
     setUpForAccessibility();
+    updateAccessibilityPaneTitle(root);
     return root;
   }
 
@@ -326,6 +350,43 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   }
 
   /**
+   * Handles navigating to the adjacent month in response to keyboard navigation.
+   *
+   * <p>This method pages horizontally to switch months in non-fullscreen mode. In fullscreen mode,
+   * this method returns {@code false} because months are scrolled vertically.
+   *
+   * @param forward {@code true} to navigate to the next month, {@code false} to navigate to the
+   *     previous month.
+   * @return {@code true} if the event was handled.
+   */
+  private boolean handleNavigateToMonthForKeyboard(boolean forward) {
+    if (isFullscreen) {
+      return false;
+    }
+
+    // Do not navigate if scroll is in progress. Return true to indicate the event was handled,
+    // but in practice navigation is ignored during scroll.
+    if (recyclerView.getScrollState() != RecyclerView.SCROLL_STATE_IDLE) {
+      return true;
+    }
+
+    MonthsPagerAdapter adapter = (MonthsPagerAdapter) recyclerView.getAdapter();
+    if (adapter == null || current == null) {
+      return false;
+    }
+
+    int currentItem = adapter.getPosition(current);
+    int newItem = currentItem + (forward ? 1 : -1);
+
+    if (newItem >= 0 && newItem < adapter.getItemCount()) {
+      adapter.setKeyboardFocusDirection(forward ? View.FOCUS_FORWARD : View.FOCUS_BACKWARD);
+      setCurrentMonth(adapter.getPageMonth(newItem));
+      return true;
+    }
+    return false;
+  }
+
+  /**
    * Changes the currently displayed month to {@code moveTo}.
    *
    * @throws IllegalArgumentException If {@code moveTo} is not within the allowed {@link
@@ -334,18 +395,32 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   void setCurrentMonth(Month moveTo) {
     MonthsPagerAdapter adapter = (MonthsPagerAdapter) recyclerView.getAdapter();
     int moveToPosition = adapter.getPosition(moveTo);
-    int distance = moveToPosition - adapter.getPosition(current);
-    boolean jump = Math.abs(distance) > SMOOTH_SCROLL_MAX;
-    boolean isForward = distance > 0;
-    current = moveTo;
-    if (jump && isForward) {
-      recyclerView.scrollToPosition(moveToPosition - SMOOTH_SCROLL_MAX);
-      postSmoothRecyclerViewScroll(moveToPosition);
-    } else if (jump) {
-      recyclerView.scrollToPosition(moveToPosition + SMOOTH_SCROLL_MAX);
-      postSmoothRecyclerViewScroll(moveToPosition);
+    if (accessibilityManager != null && accessibilityManager.isEnabled()) {
+      current = moveTo;
+      recyclerView.scrollToPosition(moveToPosition);
     } else {
-      postSmoothRecyclerViewScroll(moveToPosition);
+      int distance = moveToPosition - adapter.getPosition(current);
+      boolean jump = Math.abs(distance) > SMOOTH_SCROLL_MAX;
+      boolean isForward = distance > 0;
+      current = moveTo;
+      if (jump && isForward) {
+        recyclerView.scrollToPosition(moveToPosition - SMOOTH_SCROLL_MAX);
+        postSmoothRecyclerViewScroll(moveToPosition);
+      } else if (jump) {
+        recyclerView.scrollToPosition(moveToPosition + SMOOTH_SCROLL_MAX);
+        postSmoothRecyclerViewScroll(moveToPosition);
+      } else {
+        postSmoothRecyclerViewScroll(moveToPosition);
+      }
+    }
+    updateCurrentVisibleMonth();
+    updateNavigationButtonsEnabled(moveToPosition);
+  }
+
+  private void updateCurrentVisibleMonth() {
+    MonthsPagerAdapter adapter = (MonthsPagerAdapter) recyclerView.getAdapter();
+    if (adapter != null && !isFullscreen) {
+      adapter.setVisibleMonth(current);
     }
   }
 
@@ -362,6 +437,20 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   interface OnDayClickListener {
 
     void onDayClick(long day);
+  }
+
+  /**
+   * Listener for month navigation events.
+   *
+   * <p>This listener is used by {@link MaterialCalendarGridView} to signal when keyboard navigation
+   * reaches the start or end of a month, allowing the calendar to scroll to the previous or next
+   * month.
+   */
+  interface OnMonthNavigationListener {
+
+    boolean onMonthNavigationPrevious();
+
+    boolean onMonthNavigationNext();
   }
 
   /** Returns the pixel height of each {@link android.view.View} representing a day. */
@@ -392,21 +481,38 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     }
   }
 
+  void sendAccessibilityFocusEventToMonthDropdown() {
+    if (monthDropSelect != null) {
+      monthDropSelect.sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_FOCUSED);
+    }
+  }
+
   void toggleVisibleSelector() {
     if (calendarSelector == CalendarSelector.YEAR) {
       setSelector(CalendarSelector.DAY);
-      recyclerView.announceForAccessibility(
-          getString(R.string.mtrl_picker_toggled_to_day_selection));
     } else if (calendarSelector == CalendarSelector.DAY) {
       setSelector(CalendarSelector.YEAR);
-      yearSelector.announceForAccessibility(
-          getString(R.string.mtrl_picker_toggled_to_year_selection));
+    }
+    updateAccessibilityPaneTitle(getView());
+  }
+
+  private void updateAccessibilityPaneTitle(@Nullable View view) {
+    if (view == null) {
+      return;
+    }
+
+    if (calendarSelector == CalendarSelector.YEAR) {
+      ViewCompat.setAccessibilityPaneTitle(
+          view, getString(R.string.mtrl_picker_pane_title_year_view));
+    } else if (calendarSelector == CalendarSelector.DAY) {
+      ViewCompat.setAccessibilityPaneTitle(
+          view, getString(R.string.mtrl_picker_pane_title_calendar_view));
     }
   }
 
   private void addActionsToMonthNavigation(
       @NonNull final View root, @NonNull final MonthsPagerAdapter monthsPagerAdapter) {
-    final MaterialButton monthDropSelect = root.findViewById(R.id.month_navigation_fragment_toggle);
+    monthDropSelect = root.findViewById(R.id.month_navigation_fragment_toggle);
     monthDropSelect.setTag(SELECTOR_TOGGLE_TAG);
     ViewCompat.setAccessibilityDelegate(
         monthDropSelect,
@@ -416,17 +522,23 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           public void onInitializeAccessibilityNodeInfo(
               View view, @NonNull AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
             super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfoCompat);
-            accessibilityNodeInfoCompat.setHintText(
+            CharSequence description =
                 dayFrame.getVisibility() == View.VISIBLE
                     ? getString(R.string.mtrl_picker_toggle_to_year_selection)
-                    : getString(R.string.mtrl_picker_toggle_to_day_selection));
+                    : getString(R.string.mtrl_picker_toggle_to_day_selection);
+            AccessibilityActionCompat customClickDescription =
+                new AccessibilityActionCompat(
+                    AccessibilityNodeInfoCompat.ACTION_CLICK, description);
+            accessibilityNodeInfoCompat.addAction(customClickDescription);
           }
         });
 
     monthPrev = root.findViewById(R.id.month_navigation_previous);
     monthPrev.setTag(NAVIGATION_PREV_TAG);
+    TooltipCompat.setTooltipText(monthPrev, getString(R.string.mtrl_picker_prev_month_tooltip));
     monthNext = root.findViewById(R.id.month_navigation_next);
     monthNext.setTag(NAVIGATION_NEXT_TAG);
+    TooltipCompat.setTooltipText(monthNext, getString(R.string.mtrl_picker_next_month_tooltip));
 
     yearFrame = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
     dayFrame = root.findViewById(R.id.mtrl_calendar_day_selector_frame);
@@ -436,22 +548,34 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
         new OnScrollListener() {
           @Override
           public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-            int currentItem;
-            if (dx < 0) {
-              currentItem = getLayoutManager().findFirstVisibleItemPosition();
-            } else {
-              currentItem = getLayoutManager().findLastVisibleItemPosition();
+            int position =
+                dx < 0
+                    ? getLayoutManager().findFirstVisibleItemPosition()
+                    : getLayoutManager().findLastVisibleItemPosition();
+            if (pagerSnapHelper == null) {
+              current = monthsPagerAdapter.getPageMonth(position);
             }
-            current = monthsPagerAdapter.getPageMonth(currentItem);
-            monthDropSelect.setText(monthsPagerAdapter.getPageTitle(currentItem));
+            monthDropSelect.setText(monthsPagerAdapter.getPageTitle(position));
+            updateNavigationButtonsEnabled(position);
           }
 
           @Override
           public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-            if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-              CharSequence announcementText = monthDropSelect.getText();
-              recyclerView.announceForAccessibility(announcementText);
+            if (newState != RecyclerView.SCROLL_STATE_IDLE || pagerSnapHelper == null) {
+              return;
             }
+
+            // If horizontal mode, find the snapped view and set it as the current month.
+            View snapView = pagerSnapHelper.findSnapView(getLayoutManager());
+            if (snapView != null) {
+              int snapPosition = recyclerView.getChildAdapterPosition(snapView);
+              if (snapPosition != RecyclerView.NO_POSITION) {
+                current = monthsPagerAdapter.getPageMonth(snapPosition);
+                monthDropSelect.setText(monthsPagerAdapter.getPageTitle(snapPosition));
+                updateNavigationButtonsEnabled(snapPosition);
+              }
+            }
+            updateCurrentVisibleMonth();
           }
         });
 
@@ -468,9 +592,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           @Override
           public void onClick(View view) {
             int currentItem = getLayoutManager().findFirstVisibleItemPosition();
-            if (currentItem + 1 < recyclerView.getAdapter().getItemCount()) {
-              setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem + 1));
-            }
+            monthsPagerAdapter.setKeyboardFocusDirection(View.FOCUS_FORWARD);
+            setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem + 1));
           }
         });
     monthPrev.setOnClickListener(
@@ -478,11 +601,22 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           @Override
           public void onClick(View view) {
             int currentItem = getLayoutManager().findLastVisibleItemPosition();
-            if (currentItem - 1 >= 0) {
-              setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem - 1));
-            }
+            monthsPagerAdapter.setKeyboardFocusDirection(View.FOCUS_BACKWARD);
+            setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem - 1));
           }
         });
+
+    int currentMonthPosition = monthsPagerAdapter.getPosition(current);
+    updateNavigationButtonsEnabled(currentMonthPosition);
+  }
+
+  private void updateNavigationButtonsEnabled(int currentMonthPosition) {
+    if (monthNext != null) {
+      monthNext.setEnabled(currentMonthPosition + 1 < recyclerView.getAdapter().getItemCount());
+    }
+    if (monthPrev != null) {
+      monthPrev.setEnabled(currentMonthPosition - 1 >= 0);
+    }
   }
 
   private void postSmoothRecyclerViewScroll(final int position) {

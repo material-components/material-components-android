@@ -47,7 +47,7 @@ final class CarouselStrategyHelper {
   static KeylineState createKeylineState(
       @NonNull Context context,
       float childMargins,
-      float availableSpace,
+      int availableSpace,
       @NonNull Arrangement arrangement,
       @Alignment int alignment) {
     if (alignment == CarouselLayoutManager.ALIGNMENT_CENTER) {
@@ -69,7 +69,7 @@ final class CarouselStrategyHelper {
   static KeylineState createLeftAlignedKeylineState(
       @NonNull Context context,
       float childHorizontalMargins,
-      float availableSpace,
+      int availableSpace,
       @NonNull Arrangement arrangement) {
 
     float extraSmallChildWidth =
@@ -132,7 +132,7 @@ final class CarouselStrategyHelper {
   static KeylineState createCenterAlignedKeylineState(
       @NonNull Context context,
       float childHorizontalMargins,
-      float availableSpace,
+      int availableSpace,
       @NonNull Arrangement arrangement) {
 
     float extraSmallChildWidth =

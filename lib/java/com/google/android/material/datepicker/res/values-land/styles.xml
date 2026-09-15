@@ -21,6 +21,7 @@
     <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
     <item name="android:maxLines">1</item>
     <item name="autoSizeMaxTextSize">20sp</item>
+    <item name="autoSizeTextType">none</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderSelection" parent="Widget.AppCompat.TextView">
@@ -31,6 +32,23 @@
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="android:maxLines">@integer/mtrl_calendar_selection_text_lines</item>
     <item name="android:ellipsize">end</item>
+    <item name="autoSizeTextType">uniform</item>
+    <item name="autoSizeMaxTextSize">20sp</item>
+    <item name="android:paddingTop">16dp</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderSelection" parent="Widget.MaterialComponents.MaterialCalendar.HeaderSelection">
+    <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_header_headline_type</item>
+    <item name="android:textColor">@macro/m3_comp_date_picker_modal_header_headline_color</item>
+    <item name="autoSizeMaxTextSize">32sp</item>
+    <item name="android:paddingTop">0dp</item>
+  </style>
+
+  <style name="Widget.Material3.MaterialCalendar.HeaderSelection.Fullscreen">
+    <item name="android:textAppearance">@macro/m3_comp_date_picker_modal_range_selection_header_headline_type</item>
+    <item name="android:maxLines">1</item>
+    <item name="autoSizeMaxTextSize">20sp</item>
+    <item name="autoSizeTextType">none</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton" parent="Base.Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton">

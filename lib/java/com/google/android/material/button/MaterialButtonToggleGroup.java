@@ -186,6 +186,11 @@ public class MaterialButtonToggleGroup extends MaterialButtonGroup {
   }
 
   @Override
+  boolean isOverflowMenuSupported() {
+    return false;
+  }
+
+  @Override
   protected void onFinishInflate() {
     super.onFinishInflate();
     if (defaultCheckId != View.NO_ID) {
@@ -522,9 +527,6 @@ public class MaterialButtonToggleGroup extends MaterialButtonGroup {
     buttonChild.setEllipsize(TruncateAt.END);
     buttonChild.setCheckable(true);
     buttonChild.setA11yClassName(getChildrenA11yClassName());
-
-    // Enables surface layer drawing for semi-opaque strokes
-    buttonChild.setShouldDrawSurfaceColorStroke(true);
   }
 
   void onButtonCheckedStateChanged(@NonNull MaterialButton button, boolean isChecked) {

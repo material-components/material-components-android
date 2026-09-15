@@ -71,6 +71,13 @@ public class SliderFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
+        new Demo(R.string.cat_slider_demo_centered_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SliderCenteredDemoFragment();
+          }
+        });
+    additionalDemos.add(
         new Demo(R.string.cat_slider_demo_scroll_container_title) {
           @Override
           public Fragment createFragment() {
@@ -103,6 +110,13 @@ public class SliderFragment extends DemoLandingFragment {
           @Override
           public Fragment createFragment() {
             return new SliderVerticalDemoFragment();
+          }
+        });
+    additionalDemos.add(
+        new Demo(R.string.cat_slider_demo_vertical_scroll_container_title) {
+          @Override
+          public Fragment createFragment() {
+            return new SliderVerticalScrollContainerDemoFragment();
           }
         });
     return additionalDemos;

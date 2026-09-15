@@ -34,6 +34,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Property;
@@ -43,9 +44,11 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import androidx.annotation.AnimatorRes;
+import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
@@ -120,7 +123,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @NonNull private final MotionStrategy extendStrategy;
   private final MotionStrategy showStrategy = new ShowStrategy(changeVisibilityTracker);
   private final MotionStrategy hideStrategy = new HideStrategy(changeVisibilityTracker);
-  private final int collapsedSize;
+  private int collapsedSize;
 
   private int extendedPaddingStart;
   private int extendedPaddingEnd;
@@ -293,7 +296,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
           @Override
           public int getWidth() {
             return getMeasuredWidth()
-                - getCollapsedPadding() * 2
+                - ExtendedFloatingActionButton.this.getPaddingStart()
+                - ExtendedFloatingActionButton.this.getPaddingEnd()
                 + extendedPaddingStart
                 + extendedPaddingEnd;
           }
@@ -460,6 +464,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     originalTextCsl = getTextColors();
   }
 
+  ColorStateList getOriginalTextColor() {
+    return originalTextCsl;
+  }
+
+  @ColorInt
+  int getCurrentOriginalTextColor() {
+    return originalTextCsl.getColorForState(getDrawableState(), 0);
+  }
+
   /**
    * Update the text color without affecting the original, client-set color.
    */
@@ -475,6 +488,69 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     if (isExtended && TextUtils.isEmpty(getText()) && getIcon() != null) {
       isExtended = false;
       shrinkStrategy.performNow();
+    } else {
+      updateTooltip();
+    }
+  }
+
+  /**
+   * Sets the content description for this view.
+   *
+   * <p>On API 26 (Android O) and above, this method also sets the tooltip text to the content
+   * description if appropriate.
+   */
+  @Override
+  public void setContentDescription(@Nullable CharSequence contentDescription) {
+    super.setContentDescription(contentDescription);
+    updateTooltip();
+  }
+
+  /**
+   * Sets the text to be displayed.
+   *
+   * <p>On API 26 (Android O) and above, this method also sets the tooltip text if appropriate.
+   */
+  @Override
+  public void setText(CharSequence text, BufferType type) {
+    super.setText(text, type);
+    updateTooltip();
+  }
+
+  /**
+   * Sets the clickable state of this view.
+   *
+   * <p>On API 26 (Android O) and above, if the view is not clickable, this method also clears the
+   * tooltip text to prevent the view from consuming touch events.
+   */
+  @Override
+  public void setClickable(boolean clickable) {
+    super.setClickable(clickable);
+    updateTooltip();
+  }
+
+  /**
+   * Updates the tooltip text based on the button's extended state, text, and clickability. If the
+   * view is not clickable, tooltip text will be cleared to prevent the view from consuming touch
+   * events on API 26+.
+   *
+   * <p>The tooltip is not set on lower APIs to avoid overwriting any custom {@link
+   * View.OnLongClickListener}.
+   */
+  private void updateTooltip() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+      return;
+    }
+
+    CharSequence newTooltipText;
+    if (isExtended || !isClickable()) {
+      newTooltipText = null;
+    } else {
+      CharSequence text = getText();
+      newTooltipText = TextUtils.isEmpty(text) ? getContentDescription() : text;
+    }
+
+    if (!TextUtils.equals(getTooltipText(), newTooltipText)) {
+      setTooltipText(newTooltipText);
     }
   }
 
@@ -483,7 +559,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   public Behavior<ExtendedFloatingActionButton> getBehavior() {
     return behavior;
   }
-
 
   /**
    * Extends or shrinks the fab depending on the value of {@param extended}.
@@ -1025,19 +1100,23 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
         }
       };
 
+  int getCollapsedPadding() {
+    return (getCollapsedSize() - getIconSize()) / 2;
+  }
+
   /**
    * Shrink to the smaller value between paddingStart and paddingEnd, such that when shrunk the icon
    * will be centered.
    */
-  @VisibleForTesting
-  int getCollapsedSize() {
+  @Px
+  public int getCollapsedSize() {
     return collapsedSize < 0
         ? min(getPaddingStart(), getPaddingEnd()) * 2 + getIconSize()
         : collapsedSize;
   }
 
-  int getCollapsedPadding() {
-    return (getCollapsedSize() - getIconSize()) / 2;
+  public void setCollapsedSize(@Px int collapsedSize) {
+    this.collapsedSize = collapsedSize;
   }
 
   /**
@@ -1365,6 +1444,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
           size.getPaddingEnd(),
           getPaddingBottom());
       requestLayout();
+      updateTooltip();
     }
 
     @Override
@@ -1417,7 +1497,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
       if (spec.hasPropertyValues("labelOpacity")) {
         PropertyValuesHolder[] labelOpacityValues = spec.getPropertyValues("labelOpacity");
-        float startValue = extending ? 0F : 1F;
+        final int originalAlpha = Color.alpha(getCurrentOriginalTextColor());
+        final int currentAlpha = Color.alpha(getCurrentTextColor());
+        float startValue = originalAlpha != 0 ? (float) currentAlpha / originalAlpha : 0f;
         float endValue = extending ? 1F : 0F;
         labelOpacityValues[0].setFloatValues(startValue, endValue);
         spec.setPropertyValues("labelOpacity", labelOpacityValues);
@@ -1432,6 +1514,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       isExtended = extending;
       isTransforming = true;
       setHorizontallyScrolling(true);
+      updateTooltip();
     }
 
     @Override

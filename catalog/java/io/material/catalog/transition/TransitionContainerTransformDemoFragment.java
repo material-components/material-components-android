@@ -167,7 +167,7 @@ public class TransitionContainerTransformDemoFragment extends DemoFragment {
     // For all 3 container layer colors, use colorSurface since this transform can be configured
     // using any fade mode and some of the start views don't have a background and the end view
     // doesn't have a background.
-    int colorSurface = MaterialColors.getColor(requireView(), R.attr.colorSurface);
+    int colorSurface = MaterialColors.getColor(requireView(), com.google.android.material.R.attr.colorSurface);
 
     MaterialContainerTransform enterContainerTransform = buildContainerTransform(true);
     enterContainerTransform.setAllContainerColors(colorSurface);

@@ -33,7 +33,7 @@ public final class HarmonizedColorAttributes {
 
   private static final int[] HARMONIZED_MATERIAL_ATTRIBUTES =
       new int[] {
-        R.attr.colorError,
+        androidx.appcompat.R.attr.colorError,
         R.attr.colorOnError,
         R.attr.colorErrorContainer,
         R.attr.colorOnErrorContainer

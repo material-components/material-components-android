@@ -28,6 +28,7 @@
             android:orientation="vertical"
             android:background="#00f"
             app:layout_behavior="@string/bottom_sheet_behavior"
+            app:behavior_multipleScrollingChildrenSupported="true"
             app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
             app:behavior_hideable="true">
 

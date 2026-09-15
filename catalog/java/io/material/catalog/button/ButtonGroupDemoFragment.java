@@ -27,8 +27,10 @@ import android.view.ViewGroup;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonGroup;
 import com.google.android.material.materialswitch.MaterialSwitch;
+import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -52,6 +54,7 @@ public class ButtonGroupDemoFragment extends DemoFragment {
     layoutInflater.inflate(getLabelOnlyButtonGroupContent(), content, /* attachToRoot= */ true);
     layoutInflater.inflate(getMixedButtonGroupContent(), content, /* attachToRoot= */ true);
 
+    List<MaterialButton> buttons = DemoUtils.findViewsWithType(view, MaterialButton.class);
     List<MaterialButtonGroup> buttonGroups =
         DemoUtils.findViewsWithType(view, MaterialButtonGroup.class);
 
@@ -64,7 +67,16 @@ public class ButtonGroupDemoFragment extends DemoFragment {
             buttonGroup.requestLayout();
           }
         });
-
+    MaterialSwitch groupToggleableToggle = view.findViewById(R.id.switch_toggle);
+    groupToggleableToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (MaterialButton button : buttons) {
+            if (button.getTag() != MaterialButtonGroup.OVERFLOW_BUTTON_TAG) {
+              button.setCheckable(isChecked);
+              button.refreshDrawableState();
+            }
+          }
+        });
     MaterialSwitch groupEnabledToggle = view.findViewById(R.id.switch_enable);
     groupEnabledToggle.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
@@ -73,6 +85,27 @@ public class ButtonGroupDemoFragment extends DemoFragment {
             buttonGroup.setEnabled(isChecked);
           }
         });
+    MaterialSwitch opticalCenterSwitch = view.findViewById(R.id.switch_optical_center);
+    opticalCenterSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (MaterialButton button : buttons) {
+            button.setOpticalCenterEnabled(isChecked);
+          }
+        });
+    for (MaterialButton button : buttons) {
+      if (button.getTag() != MaterialButtonGroup.OVERFLOW_BUTTON_TAG) {
+        MaterialButtonGroup buttonGroup = (MaterialButtonGroup) button.getParent();
+        button.setOnClickListener(
+            v -> {
+              String snackbarText = button.getText() + "";
+              if (snackbarText.isEmpty()) {
+                snackbarText = button.getContentDescription() + "";
+              }
+              snackbarText += " button clicked.";
+              Snackbar.make(buttonGroup, snackbarText, Snackbar.LENGTH_LONG).show();
+            });
+      }
+    }
     return view;
   }
 

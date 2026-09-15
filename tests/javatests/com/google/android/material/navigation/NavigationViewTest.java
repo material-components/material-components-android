@@ -20,6 +20,7 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.hasFocus;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
@@ -86,6 +87,7 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.CollectionIt
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import androidx.test.filters.MediumTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
 import com.google.android.material.internal.NavigationMenuView;
@@ -774,5 +776,31 @@ public class NavigationViewTest {
     assertEquals(rowIndex, itemInfo.getRowIndex());
     assertEquals(1, itemInfo.getColumnIndex());
     assertEquals(isHeader, nodeInfo.isHeading());
+  }
+
+  @Test
+  public void testDrawerFocus() throws Throwable {
+    final View content = activityTestRule.getActivity().findViewById(R.id.content);
+    // Set initial focus on the main content view.
+    activityTestRule.runOnUiThread(
+        () -> {
+          content.setFocusable(true);
+          content.setFocusableInTouchMode(true);
+          content.requestFocus();
+        });
+
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+    onView(withId(R.id.content)).check(matches(hasFocus()));
+
+    // Open drawer
+    onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
+    // Verify focus is on the drawer
+    onView(withId(R.id.start_drawer)).check(matches(hasFocus()));
+
+    // Close drawer
+    onView(withId(R.id.drawer_layout)).perform(closeDrawer(GravityCompat.START));
+    // Verify focus is restored to the previously focused content view
+    onView(withId(R.id.content)).check(matches(hasFocus()));
   }
 }

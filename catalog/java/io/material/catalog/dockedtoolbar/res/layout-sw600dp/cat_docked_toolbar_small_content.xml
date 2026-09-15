@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<merge>
+  <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center">
+    <Button
+      android:id="@+id/docked_toolbar_left_arrow_button"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      style="?attr/materialIconButtonStyle"
+      android:contentDescription="@string/cat_docked_toolbar_left_arrow_button_description"
+      android:layout_marginEnd="32dp"
+      app:icon="@drawable/ic_arrow_back_24px" />
+
+    <Button
+      android:id="@+id/docked_toolbar_right_arrow_button"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      style="?attr/materialIconButtonStyle"
+      android:contentDescription="@string/cat_docked_toolbar_right_arrow_button_description"
+      app:icon="@drawable/ic_arrow_forward_24px" />
+  </LinearLayout>
+
+  <Button
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/docked_toolbar_add_button"
+    android:layout_gravity="center"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:gravity="center"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="8dp"
+    app:iconSize="24dp"
+    app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+    style="?attr/materialIconButtonFilledStyle"
+    android:contentDescription="@string/cat_docked_toolbar_add_button_description"
+    app:icon="@drawable/ic_add_24px" />
+
+</merge>

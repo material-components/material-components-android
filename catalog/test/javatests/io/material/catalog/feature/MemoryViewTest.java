@@ -40,12 +40,12 @@ import org.robolectric.shadows.ShadowPath.Point;
 
 /** Tests for {@link MemoryView}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 21)
+@Config(sdk = Config.OLDEST_SDK)
 public class MemoryViewTest {
 
   private static final int BYTES_IN_MB = 1024 * 1024;
   private MemoryView memoryView;
-  private Runtime runtime;
+  private MemoryView.RuntimeWrapper runtime;
 
   @Before
   public void createAndMeasureMemoryView() {
@@ -60,7 +60,7 @@ public class MemoryViewTest {
 
   @Before
   public void setUpRuntime() {
-    runtime = mock(Runtime.class);
+    runtime = mock(MemoryView.RuntimeWrapper.class);
     when(runtime.maxMemory()).thenReturn(100L * BYTES_IN_MB);
     when(runtime.totalMemory()).thenReturn(100L * BYTES_IN_MB);
     when(runtime.freeMemory()).thenReturn(75L * BYTES_IN_MB);
@@ -70,7 +70,7 @@ public class MemoryViewTest {
   public void memoryView_correctText_withProvidedRuntime() {
     memoryView.refreshMemStats(runtime);
 
-    assertThat(memoryView.getText().toString()).isEqualTo("used: 25MB / 100MB (25%)");
+    assertThat(memoryView.getText().toString()).isEqualTo("used: 25 MB / 100 MB (25%)");
   }
 
   @Test
@@ -85,7 +85,7 @@ public class MemoryViewTest {
     assertThat(shadowCanvas.getPathPaintHistoryCount()).isEqualTo(1);
 
     ShadowPath drawnPath = shadowOf(shadowCanvas.getDrawnPath(0));
-    assertThat(drawnPath.getPoints().get(0)).isEqualTo(new Point(34f, 250f, MOVE_TO));
+    assertThat(drawnPath.getPoints().get(0)).isEqualTo(new Point(36f, 250f, MOVE_TO));
   }
 
   @SuppressLint("WrongCall") // Testing onDraw

@@ -45,7 +45,7 @@ public class MaterialThemeOverlay {
   private MaterialThemeOverlay() {}
 
   private static final int[] ANDROID_THEME_OVERLAY_ATTRS =
-      new int[] {android.R.attr.theme, R.attr.theme};
+      new int[] {android.R.attr.theme, androidx.appcompat.R.attr.theme};
 
   private static final int[] MATERIAL_THEME_OVERLAY_ATTR = new int[] {R.attr.materialThemeOverlay};
 
@@ -104,7 +104,7 @@ public class MaterialThemeOverlay {
         obtainMaterialOverlayIds(context, set, optionalAttrs, defStyleAttr, defStyleRes);
     for (int optionalOverlayId : optionalOverlayIds) {
       if (optionalOverlayId != 0) {
-        contextThemeWrapper = new ContextThemeWrapper(contextThemeWrapper, optionalOverlayId);
+        contextThemeWrapper.getTheme().applyStyle(optionalOverlayId, true);
       }
     }
 

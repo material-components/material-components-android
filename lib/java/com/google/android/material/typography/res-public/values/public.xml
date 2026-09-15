@@ -46,6 +46,37 @@
   <public name="textAppearanceLabelMedium" type="attr"/>
   <public name="textAppearanceLabelSmall" type="attr"/>
 
+  <public name="TextAppearance.Material3.DisplayLarge.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.DisplayMedium.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.DisplaySmall.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.HeadlineLarge.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.HeadlineMedium.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.HeadlineSmall.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.TitleLarge.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.TitleMedium.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.TitleSmall.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.BodyLarge.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.BodyMedium.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.BodySmall.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.LabelLarge.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.LabelMedium.Emphasized" type="style"/>
+  <public name="TextAppearance.Material3.LabelSmall.Emphasized" type="style"/>
+  <public name="textAppearanceDisplayLargeEmphasized" type="attr"/>
+  <public name="textAppearanceDisplayMediumEmphasized" type="attr"/>
+  <public name="textAppearanceDisplaySmallEmphasized" type="attr"/>
+  <public name="textAppearanceHeadlineLargeEmphasized" type="attr"/>
+  <public name="textAppearanceHeadlineMediumEmphasized" type="attr"/>
+  <public name="textAppearanceHeadlineSmallEmphasized" type="attr"/>
+  <public name="textAppearanceTitleLargeEmphasized" type="attr"/>
+  <public name="textAppearanceTitleMediumEmphasized" type="attr"/>
+  <public name="textAppearanceTitleSmallEmphasized" type="attr"/>
+  <public name="textAppearanceBodyLargeEmphasized" type="attr"/>
+  <public name="textAppearanceBodyMediumEmphasized" type="attr"/>
+  <public name="textAppearanceBodySmallEmphasized" type="attr"/>
+  <public name="textAppearanceLabelLargeEmphasized" type="attr"/>
+  <public name="textAppearanceLabelMediumEmphasized" type="attr"/>
+  <public name="textAppearanceLabelSmallEmphasized" type="attr"/>
+
   <public name="TextAppearance.MaterialComponents.Headline1" type="style"/>
   <public name="TextAppearance.MaterialComponents.Headline2" type="style"/>
   <public name="TextAppearance.MaterialComponents.Headline3" type="style"/>

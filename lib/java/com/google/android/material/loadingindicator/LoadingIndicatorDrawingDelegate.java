@@ -32,6 +32,7 @@ import androidx.graphics.shapes.Morph;
 import androidx.graphics.shapes.RoundedPolygon;
 import androidx.graphics.shapes.Shapes_androidKt;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.math.MathUtils;
 import com.google.android.material.shape.MaterialShapes;
 
 class LoadingIndicatorDrawingDelegate {
@@ -116,9 +117,10 @@ class LoadingIndicatorDrawingDelegate {
     canvas.rotate(indicatorState.rotationDegree);
     // Draws the shape morph.
     indicatorPath.rewind();
+    int shapeMorphFraction = (int) Math.floor(indicatorState.morphFraction);
     int fractionAmongAllShapes =
-        (int) (indicatorState.morphFraction % INDETERMINATE_MORPH_SEQUENCE.length);
-    float fractionPerShape = indicatorState.morphFraction % 1;
+        MathUtils.floorMod(shapeMorphFraction, INDETERMINATE_MORPH_SEQUENCE.length);
+    float fractionPerShape = indicatorState.morphFraction - shapeMorphFraction;
     Shapes_androidKt.toPath(
         INDETERMINATE_MORPH_SEQUENCE[fractionAmongAllShapes], fractionPerShape, indicatorPath);
     // We need to apply the scaling to the path directly, instead of on the canvas, to avoid the

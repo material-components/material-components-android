@@ -15,6 +15,6 @@
   ~ limitations under the License.
   -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="@macro/m3_comp_navigation_rail_active_icon_color" android:state_checked="true"/>
-  <item android:color="@macro/m3_comp_navigation_rail_inactive_icon_color"/>
+  <item android:color="@macro/m3_comp_nav_rail_item_active_icon_color" android:state_checked="true"/>
+  <item android:color="@macro/m3_comp_nav_rail_item_inactive_icon_color"/>
 </selector>

@@ -23,6 +23,9 @@ import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wra
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
+import android.graphics.drawable.RippleDrawable;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 import androidx.annotation.NonNull;
@@ -64,7 +67,7 @@ public class MaterialRadioButton extends AppCompatRadioButton {
   }
 
   public MaterialRadioButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, R.attr.radioButtonStyle);
+    this(context, attrs, androidx.appcompat.R.attr.radioButtonStyle);
   }
 
   public MaterialRadioButton(
@@ -84,6 +87,12 @@ public class MaterialRadioButton extends AppCompatRadioButton {
           this,
           MaterialResources.getColorStateList(
               context, attributes, R.styleable.MaterialRadioButton_buttonTint));
+    }
+
+    if (attributes.hasValue(R.styleable.MaterialRadioButton_rippleColor)) {
+      setRippleColor(
+          MaterialResources.getColorStateList(
+              context, attributes, R.styleable.MaterialRadioButton_rippleColor));
     }
 
     useMaterialThemeColors =
@@ -122,7 +131,8 @@ public class MaterialRadioButton extends AppCompatRadioButton {
 
   private ColorStateList getMaterialThemeColorsTintList() {
     if (materialThemeColorsTintList == null) {
-      int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
+      int colorControlActivated =
+          MaterialColors.getColor(this, androidx.appcompat.R.attr.colorControlActivated);
       int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
 
@@ -139,5 +149,18 @@ public class MaterialRadioButton extends AppCompatRadioButton {
           new ColorStateList(ENABLED_CHECKED_STATES, radioButtonColorList);
     }
     return materialThemeColorsTintList;
+  }
+
+  private void setRippleColor(@Nullable ColorStateList rippleColor) {
+    if (rippleColor == null) {
+      return;
+    }
+    Drawable background = getBackground();
+    if (background instanceof DrawableWrapper) {
+      background = ((DrawableWrapper) background).getDrawable();
+    }
+    if (background instanceof RippleDrawable) {
+      ((RippleDrawable) background).setColor(rippleColor);
+    }
   }
 }

@@ -20,6 +20,11 @@
   <style name="Theme.Material3.DayNight.Dialog.Alert" parent="Theme.Material3.Dark.Dialog.Alert"/>
   <style name="Theme.Material3.DayNight.Dialog.MinWidth" parent="Theme.Material3.Dark.Dialog.MinWidth"/>
 
+  <!-- Material 3 Expressive themes (day/night versions) for dialogs. -->
+  <style name="Theme.Material3Expressive.DayNight.Dialog" parent="Theme.Material3Expressive.Dark.Dialog"/>
+  <style name="Theme.Material3Expressive.DayNight.Dialog.Alert" parent="Theme.Material3Expressive.Dark.Dialog.Alert"/>
+  <style name="Theme.Material3Expressive.DayNight.Dialog.MinWidth" parent="Theme.Material3Expressive.Dark.Dialog.MinWidth"/>
+
   <!-- Material themes (day/night versions) for dialogs. -->
   <style name="Theme.MaterialComponents.DayNight.Dialog" parent="Theme.MaterialComponents.Dialog"/>
 

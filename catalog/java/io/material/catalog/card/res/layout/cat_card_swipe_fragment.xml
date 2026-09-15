@@ -39,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textAlignment="center"
         android:text="@string/cat_card_swipe_to_dismiss"
         android:textAppearance="?attr/textAppearanceBody1"/>
 

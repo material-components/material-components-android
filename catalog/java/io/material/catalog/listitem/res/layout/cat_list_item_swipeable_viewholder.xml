@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2025 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<com.google.android.material.listitem.ListItemLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_height="wrap_content"
+  android:layout_width="match_parent"
+  android:paddingHorizontal="8dp">
+
+  <com.google.android.material.listitem.ListItemCardView
+    style="?attr/listItemCardViewSegmentedStyle"
+    android:id="@+id/cat_list_item_card_view"
+    android:clickable="true"
+    android:focusable="true"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+    <LinearLayout
+      android:gravity="center_vertical"
+      android:layout_height="wrap_content"
+      android:layout_width="match_parent"
+      android:orientation="horizontal"
+      tools:ignore="UseCompoundDrawables"
+      android:duplicateParentState="true">
+      <com.google.android.material.button.MaterialButton
+        style="?attr/materialIconButtonStyle"
+        android:id="@+id/cat_list_item_start_icon"
+        android:contentDescription="@string/cat_list_item_swipe_start_content_description"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:icon="@drawable/ic_arrow_back_24px" />
+      <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp"
+        android:duplicateParentState="true">
+        <TextView
+          style="@style/Widget.Material3.TextView.ListItem.LabelText"
+          android:id="@+id/cat_list_item_text"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:duplicateParentState="true"/>
+        <TextView
+          style="@style/Widget.Material3.TextView.ListItem.SupportingText"
+          android:layout_height="wrap_content"
+          android:layout_width="wrap_content"
+          android:textAlignment="viewStart"
+          android:text="@string/cat_list_item_supporting_text"
+          android:duplicateParentState="true"/>
+      </LinearLayout>
+      <com.google.android.material.button.MaterialButton
+        style="?attr/materialIconButtonStyle"
+        android:id="@+id/cat_list_item_end_icon"
+        android:contentDescription="@string/cat_list_item_show_end_actions_content_description"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        app:icon="@drawable/ic_arrow_forward_24px" />
+    </LinearLayout>
+  </com.google.android.material.listitem.ListItemCardView>
+
+  <com.google.android.material.listitem.ListItemRevealLayout
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    app:primaryActionSwipeMode="indirect">
+    <com.google.android.material.button.MaterialButton
+      style="?attr/materialIconButtonFilledTonalStyle"
+      android:id="@+id/cat_list_action_add_button"
+      android:layout_height="match_parent"
+      android:layout_width="64dp"
+      android:layout_marginEnd="2dp"
+      android:layout_marginStart="2dp"
+      android:contentDescription="@string/cat_list_item_add_action_content_description"
+      app:icon="@drawable/ic_add_24px" />
+    <com.google.android.material.button.MaterialButton
+      style="?attr/materialIconButtonFilledStyle"
+      android:id="@+id/cat_list_action_star_button"
+      android:layout_height="match_parent"
+      android:layout_width="64dp"
+      android:layout_marginEnd="2dp"
+      android:contentDescription="@string/cat_list_item_star_action_content_description"
+      app:icon="@drawable/ic_star_icon_checkable_24px" />
+  </com.google.android.material.listitem.ListItemRevealLayout>
+  <com.google.android.material.listitem.ListItemRevealLayout
+    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_gravity="start"
+    app:primaryActionSwipeMode="direct">
+    <com.google.android.material.button.MaterialButton
+      style="?attr/materialIconButtonFilledStyle"
+      android:id="@+id/cat_list_action_delete_button"
+      android:layout_height="match_parent"
+      android:layout_width="64dp"
+      android:layout_marginEnd="2dp"
+      android:layout_marginStart="2dp"
+      android:contentDescription="@string/cat_list_item_delete_action_content_description"
+      app:icon="@drawable/ic_delete_24dp" />
+  </com.google.android.material.listitem.ListItemRevealLayout>
+</com.google.android.material.listitem.ListItemLayout>

@@ -24,7 +24,6 @@ import static com.google.android.material.textfield.IndicatorViewController.COUN
 import static com.google.android.material.theme.overlay.MaterialThemeOverlay.wrap;
 
 import android.animation.ValueAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -49,6 +48,9 @@ import androidx.appcompat.widget.AppCompatDrawableManager;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.appcompat.widget.TintTypedArray;
 import android.text.Editable;
+import android.text.SpanWatcher;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -868,7 +870,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       return boxBackground;
     }
 
-    int rippleColor = MaterialColors.getColor(editText, R.attr.colorControlHighlight);
+    int rippleColor =
+        MaterialColors.getColor(
+            editText, androidx.appcompat.R.attr.colorControlHighlight);
     if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE) {
       return getOutlinedBoxBackgroundWithRipple(
           getContext(), boxBackground, rippleColor, EDIT_TEXT_BACKGROUND_RIPPLE_STATE);
@@ -1463,7 +1467,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
   }
 
   @Override
-  @TargetApi(VERSION_CODES.O)
+  @RequiresApi(VERSION_CODES.O)
   public void dispatchProvideAutofillStructure(@NonNull ViewStructure structure, int flags) {
     if (editText == null) {
       super.dispatchProvideAutofillStructure(structure, flags);
@@ -2451,7 +2455,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     if (placeholderTextView == null) {
       placeholderTextView = new AppCompatTextView(getContext());
       placeholderTextView.setId(R.id.textinput_placeholder);
-      placeholderTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+      placeholderTextView.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+      placeholderTextView.setAccessibilityLiveRegion(ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
 
       placeholderFadeIn = createPlaceholderFadeTransition();
       placeholderFadeIn.setStartDelay(PLACEHOLDER_START_DELAY);
@@ -2459,6 +2464,17 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
       setPlaceholderTextAppearance(placeholderTextAppearance);
       setPlaceholderTextColor(placeholderTextColor);
+
+      ViewCompat.setAccessibilityDelegate(
+          placeholderTextView,
+          new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+              super.onInitializeAccessibilityNodeInfo(host, info);
+              info.setVisibleToUser(false);
+            }
+          });
     }
 
     // If placeholder text is null, disable placeholder.
@@ -2529,7 +2545,6 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       TransitionManager.beginDelayedTransition(inputFrame, placeholderFadeIn);
       placeholderTextView.setVisibility(VISIBLE);
       placeholderTextView.bringToFront();
-      announceForAccessibility(placeholderText);
     }
   }
 
@@ -2877,7 +2892,8 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     if (useDefaultColor) {
       // Probably caused by our theme not extending from Theme.Design*. Instead
       // we manually set something appropriate
-      TextViewCompat.setTextAppearance(textView, R.style.TextAppearance_AppCompat_Caption);
+      TextViewCompat.setTextAppearance(
+          textView, androidx.appcompat.R.style.TextAppearance_AppCompat_Caption);
       textView.setTextColor(ContextCompat.getColor(getContext(), R.color.design_error));
     }
   }
@@ -4176,7 +4192,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     boolean updatedIcon = false;
     // Update start dummy drawable if needed.
     if (shouldUpdateStartDummyDrawable()) {
-      int right = startLayout.getMeasuredWidth() - editText.getPaddingLeft();
+      int right = Math.max(0, startLayout.getMeasuredWidth() - editText.getPaddingLeft());
       if (startDummyDrawable == null || startDummyDrawableWidth != right) {
         startDummyDrawable = new ColorDrawable();
         startDummyDrawableWidth = right;
@@ -4206,6 +4222,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
                 + iconView.getMeasuredWidth()
                 + ((MarginLayoutParams) iconView.getLayoutParams()).getMarginStart();
       }
+      right = Math.max(0, right);
       final Drawable[] compounds = editText.getCompoundDrawablesRelative();
       if (endDummyDrawable != null && endDummyDrawableWidth != right) {
         // If endLayout only changed width, update dummy drawable here so that we don't override
@@ -4510,6 +4527,19 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
     }
 
     applyBoxAttributes();
+
+    if (getEndIconMode() == END_ICON_DROPDOWN_MENU) {
+      if (editText instanceof AutoCompleteTextView && !isEditable(editText)) {
+        // For non-editable dropdowns, the end icon is not clickable and focusable, because the
+        // whole field is a single touch target. The dropdown can be toggled programmatically by
+        // calling performClick() on the end icon.
+        getEndIconView().setFocusable(false);
+        getEndIconView().setClickable(false);
+      } else {
+        getEndIconView().setFocusable(true);
+        getEndIconView().setClickable(true);
+      }
+    }
   }
 
   private boolean isOnError() {
@@ -4537,9 +4567,11 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
   @RequiresApi(VERSION_CODES.Q)
   private void updateCursorColor() {
-    ColorStateList color = cursorColor != null
-        ? cursorColor
-        : MaterialColors.getColorStateListOrNull(getContext(), R.attr.colorControlActivated);
+    ColorStateList color =
+        cursorColor != null
+            ? cursorColor
+            : MaterialColors.getColorStateListOrNull(
+                getContext(), androidx.appcompat.R.attr.colorControlActivated);
 
     if (editText == null || editText.getTextCursorDrawable() == null) {
       // If there's no cursor, return.
@@ -4637,6 +4669,7 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       EditText editText = layout.getEditText();
       CharSequence inputText = (editText != null) ? editText.getText() : null;
       CharSequence hintText = layout.getHint();
+      CharSequence helperText = layout.getHelperText();
       CharSequence errorText = layout.getError();
       CharSequence placeholderText = layout.getPlaceholderText();
       int maxCharLimit = layout.getCounterMaxLength();
@@ -4646,18 +4679,26 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
       boolean isHintCollapsed = !layout.isHintExpanded();
       boolean showingError = !TextUtils.isEmpty(errorText);
       boolean contentInvalid = showingError || !TextUtils.isEmpty(counterOverflowDesc);
-      String hint = hasHint ? hintText.toString() : "";
+      CharSequence hint = hasHint ? hintText : null;
+      if (!TextUtils.isEmpty(helperText)
+          && layout.indicatorViewController.helperTextShouldBeShown()) {
+        hint = TextUtils.isEmpty(hint) ? helperText : TextUtils.concat(hint, ", ", helperText);
+      }
 
       // Screen readers should follow visual order of the elements of the text field.
       layout.startLayout.setupAccessibilityNodeInfo(info);
 
       // Make sure text field has the appropriate announcements.
       if (showingText) {
-        info.setText(inputText);
+        if (!TextUtils.isEmpty(hint)) {
+          info.setText(safeCloneAndAppend(inputText, hint));
+        } else {
+          info.setText(inputText);
+        }
       } else if (!TextUtils.isEmpty(hint)) {
         info.setText(hint);
         if (isHintCollapsed && placeholderText != null) {
-          info.setText(hint + ", " + placeholderText);
+          info.setText(TextUtils.concat(hint, ", ", placeholderText));
         }
       } else if (placeholderText != null) {
         info.setText(placeholderText);
@@ -4665,12 +4706,9 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
 
       if (!TextUtils.isEmpty(hint)) {
         if (VERSION.SDK_INT >= VERSION_CODES.O) {
-          info.setHintText(hint);
-        } else {
-          // Due to a TalkBack bug, setHintText has no effect in APIs < 26 so we append the hint to
-          // the text announcement. The resulting announcement is the same as in APIs >= 26.
-          String text = showingText ? (inputText + ", " + hint) : hint;
-          info.setText(text);
+          // Always set hintText to null when showingText is true to prevent double reading
+          // on transient TalkBack versions that natively fixed the bug.
+          info.setHintText(showingText ? null : hint);
         }
         info.setShowingHintText(!showingText);
       }
@@ -4683,12 +4721,39 @@ public class TextInputLayout extends LinearLayout implements OnGlobalLayoutListe
         info.setError(showingError ? errorText : counterOverflowDesc);
       }
 
-      View helperTextView = layout.indicatorViewController.getHelperTextView();
-      if (helperTextView != null) {
-        info.setLabelFor(helperTextView);
+      layout.endLayout.getEndIconDelegate().onInitializeAccessibilityNodeInfo(host, info);
+    }
+
+    /**
+     * Safely clones the text and appends the hint. Uses a SpannableStringBuilder to manually detach
+     * local SpanWatcher listeners (like SpellCheckerSession) from the EditText text before
+     * appending the hint, preventing "Parse invalid region" crashes. At the same time, it preserves
+     * semantic accessibility spans (like URLSpan and TtsSpan) for TalkBack.
+     */
+    @SuppressWarnings("PatternMatchingInstanceof")
+    private CharSequence safeCloneAndAppend(
+        @Nullable CharSequence inputText, @Nullable CharSequence hint) {
+      if (inputText == null) {
+        return hint == null ? "" : hint;
+      }
+      if (hint == null) {
+        return inputText;
       }
 
-      layout.endLayout.getEndIconDelegate().onInitializeAccessibilityNodeInfo(host, info);
+      if (inputText instanceof Spanned) {
+        Spanned spanned = (Spanned) inputText;
+        SpanWatcher[] watchers = spanned.getSpans(0, spanned.length(), SpanWatcher.class);
+        if (watchers == null || watchers.length == 0) {
+          return TextUtils.concat(inputText, ", ", hint);
+        } else {
+          SpannableStringBuilder ssb = new SpannableStringBuilder(inputText);
+          for (SpanWatcher watcher : watchers) {
+            ssb.removeSpan(watcher);
+          }
+          return ssb.append(", ").append(hint);
+        }
+      }
+      return TextUtils.concat(inputText, ", ", hint);
     }
 
     @Override

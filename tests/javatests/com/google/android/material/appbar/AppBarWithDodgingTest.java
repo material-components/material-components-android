@@ -43,8 +43,8 @@ public class AppBarWithDodgingTest extends AppBarLayoutBaseTest {
 
     final Rect fabRect = new Rect();
     final Rect fab2Rect = new Rect();
-    fab.getContentRect(fabRect);
-    fab2.getContentRect(fab2Rect);
+    fab.getMeasuredContentRect(fabRect);
+    fab2.getMeasuredContentRect(fab2Rect);
 
     // Our second FAB is configured to "dodge" the first one - to be displayed to the
     // right of it
@@ -72,8 +72,8 @@ public class AppBarWithDodgingTest extends AppBarLayoutBaseTest {
 
     final Rect fabRect = new Rect();
     final Rect fab2Rect = new Rect();
-    fab.getContentRect(fabRect);
-    fab2.getContentRect(fab2Rect);
+    fab.getMeasuredContentRect(fabRect);
+    fab2.getMeasuredContentRect(fab2Rect);
 
     // Our second FAB is configured to "dodge" the first one - to be displayed to the
     // left of it

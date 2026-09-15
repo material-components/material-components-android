@@ -91,6 +91,9 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
           badgeDrawable.setNumber(badgeDrawable.getNumber() + 1);
           badgeDrawable.setVisible(true);
         });
+
+    DemoUtils.setupClickableContentText(view);
+
     return view;
   }
 

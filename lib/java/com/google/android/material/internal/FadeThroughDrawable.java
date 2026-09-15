@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
+import android.util.LayoutDirection;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,13 +44,25 @@ public class FadeThroughDrawable extends Drawable {
 
   private float progress;
 
-  public FadeThroughDrawable(@NonNull Drawable fadeOutDrawable, @NonNull Drawable fadeInDrawable) {
-    this.fadeOutDrawable = fadeOutDrawable.getConstantState().newDrawable().mutate();
-    this.fadeInDrawable = fadeInDrawable.getConstantState().newDrawable().mutate();
-    DrawableCompat.setLayoutDirection(
-        this.fadeOutDrawable, DrawableCompat.getLayoutDirection(fadeOutDrawable));
-    DrawableCompat.setLayoutDirection(
-        this.fadeInDrawable, DrawableCompat.getLayoutDirection(fadeInDrawable));
+  public FadeThroughDrawable(@Nullable Drawable fadeOutDrawable, @Nullable Drawable fadeInDrawable) {
+    this.fadeOutDrawable =
+        fadeOutDrawable != null
+            ? fadeOutDrawable.getConstantState().newDrawable().mutate()
+            : new EmptyDrawable();
+    this.fadeInDrawable =
+        fadeInDrawable != null
+            ? fadeInDrawable.getConstantState().newDrawable().mutate()
+            : new EmptyDrawable();
+    int outLayoutDir =
+        fadeOutDrawable != null
+            ? DrawableCompat.getLayoutDirection(fadeOutDrawable)
+            : LayoutDirection.LOCALE;
+    int inLayoutDir =
+        fadeInDrawable != null
+            ? DrawableCompat.getLayoutDirection(fadeInDrawable)
+            : LayoutDirection.LOCALE;
+    DrawableCompat.setLayoutDirection(this.fadeOutDrawable, outLayoutDir);
+    DrawableCompat.setLayoutDirection(this.fadeInDrawable, inLayoutDir);
     this.fadeInDrawable.setAlpha(0);
     this.alphas = new float[2];
   }
@@ -133,6 +146,23 @@ public class FadeThroughDrawable extends Drawable {
       fadeInDrawable.setAlpha((int) (alphas[1] * 255f));
 
       invalidateSelf();
+    }
+  }
+
+  private static class EmptyDrawable extends Drawable {
+
+    @Override
+    public void draw(@NonNull Canvas canvas) {}
+
+    @Override
+    public void setAlpha(int alpha) {}
+
+    @Override
+    public void setColorFilter(@Nullable ColorFilter colorFilter) {}
+
+    @Override
+    public int getOpacity() {
+      return PixelFormat.TRANSPARENT;
     }
   }
 }

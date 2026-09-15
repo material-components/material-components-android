@@ -238,7 +238,7 @@ public class ChipGroupTest {
   }
 
   @Test
-  @Config(minSdk = 23, maxSdk = 28)
+  @Config(minSdk = Config.OLDEST_SDK, maxSdk = 28)
   public void isSingleLine_initializesAccessibilityNodeInfo() {
     chipgroup.setSingleLine(true);
     AccessibilityNodeInfo groupInfo = AccessibilityNodeInfo.obtain();
@@ -263,7 +263,7 @@ public class ChipGroupTest {
   }
 
   @Test
-  @Config(minSdk = 23, maxSdk = 28)
+  @Config(minSdk = Config.OLDEST_SDK, maxSdk = 28)
   public void isSingleLine_initializesAccessibilityNodeInfo_invisibleChip() {
     chipgroup.setSingleLine(true);
     AccessibilityNodeInfo groupInfo = AccessibilityNodeInfo.obtain();
@@ -295,7 +295,7 @@ public class ChipGroupTest {
   }
 
   @Test
-  @Config(minSdk = 23, maxSdk = 28)
+  @Config(minSdk = Config.OLDEST_SDK, maxSdk = 28)
   public void isNotSingleLine_initializesAccessibilityNodeInfo() {
     AccessibilityNodeInfo groupInfo = AccessibilityNodeInfo.obtain();
     // onLayout must be triggered for rowCount

@@ -19,8 +19,17 @@
     <item name="bottomSheetStyle">@style/Widget.Catalog.BottomSheet.Modal.Scrollable</item>
   </style>
 
+  <style name="ThemeOverlay.Catalog.BottomSheetDialog.MultiScrollable" parent="ThemeOverlay.Material3.BottomSheetDialog">
+    <item name="bottomSheetStyle">@style/Widget.Catalog.BottomSheet.Modal.MultiScrollable</item>
+  </style>
+
   <style name="Widget.Catalog.BottomSheet.Modal.Scrollable" parent="Widget.Material3.BottomSheet.Modal">
     <item name="paddingBottomSystemWindowInsets">false</item>
+  </style>
+
+  <style name="Widget.Catalog.BottomSheet.Modal.MultiScrollable" parent="Widget.Material3.BottomSheet.Modal">
+    <item name="paddingBottomSystemWindowInsets">false</item>
+    <item name="behavior_multipleScrollingChildrenSupported">true</item>
   </style>
 
   <style name="selectableTextView" parent="@android:style/Widget.TextView">

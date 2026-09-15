@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2026 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -38,13 +38,17 @@
   <string name="mtrl_picker_invalid_format_use">Koristite: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Primer: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Pređite na režim unosa u Kalendaru</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Pređi na kalendar</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Pređite na režim unosa teksta</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Pređi na unos teksta</string>
   <string name="mtrl_picker_a11y_prev_month">Pređite na prethodni mesec</string>
+  <string name="mtrl_picker_prev_month_tooltip">Prethodni mesec</string>
   <string name="mtrl_picker_a11y_next_month">Pređite na sledeći mesec</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Dodirnite da biste prešli na prikaz godine</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Dodirnite da biste prešli na prikaz kalendara</string>
-  <string name="mtrl_picker_toggled_to_year_selection">Prešli ste na prikaz godine</string>
-  <string name="mtrl_picker_toggled_to_day_selection">Prešli ste na prikaz kalendara</string>
+  <string name="mtrl_picker_next_month_tooltip">Sledeći mesec</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Pređite na prikaz godine</string>
+  <string name="mtrl_picker_pane_title_year_view">Prikaz godine</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Pređite na prikaz kalendara</string>
+  <string name="mtrl_picker_pane_title_calendar_view">Prikaz kalendara</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Aktuelni izbor: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Izbor datuma početka: %1$s – Izbor datuma završetka: %2$s</string>

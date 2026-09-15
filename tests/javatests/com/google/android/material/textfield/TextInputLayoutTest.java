@@ -19,9 +19,12 @@ package com.google.android.material.textfield;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.pressKey;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasFocus;
+import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isEnabled;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -39,6 +42,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setBo
 import static com.google.android.material.testutils.TextInputLayoutActions.setBoxStrokeWidthFocused;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterEnabled;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCounterMaxLength;
+import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setError;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorAccessibilityLiveRegion;
 import static com.google.android.material.testutils.TextInputLayoutActions.setErrorContentDescription;
@@ -53,6 +57,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setPl
 import static com.google.android.material.testutils.TextInputLayoutActions.setShapeAppearanceModel;
 import static com.google.android.material.testutils.TextInputLayoutActions.setTypeface;
 import static com.google.common.truth.Truth.assertThat;
+import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -68,14 +73,21 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcelable;
+import android.text.SpanWatcher;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextPaint;
+import android.text.style.TtsSpan;
 import android.util.SparseArray;
+import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.widget.TextViewCompat;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.espresso.ViewAssertion;
@@ -126,6 +138,45 @@ public class TextInputLayoutTest {
       animateToExpansionFractionRecentValue = target;
       animateToExpansionFractionCount++;
     }
+  }
+
+  @Test
+  public void testClearTextEndIconKeyboardFocusMove() {
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT));
+
+    // Type some text to make the clear icon visible.
+    onView(withId(R.id.textinput_edittext_outline)).perform(typeText(INPUT_TEXT));
+
+    // Give focus to the clear icon.
+    activityTestRule
+        .getActivity()
+        .runOnUiThread(
+            () -> {
+              TextInputLayout layout =
+                  activityTestRule.getActivity().findViewById(R.id.textinput_box_outline);
+              layout.findViewById(R.id.text_input_end_icon).requestFocus();
+            });
+
+    // Verify clear icon has focus.
+    onView(
+            allOf(
+                withId(R.id.text_input_end_icon),
+                isDescendantOfA(withId(R.id.textinput_box_outline))))
+        .check(matches(hasFocus()));
+
+    // Press Enter to clear text.
+    onView(
+            allOf(
+                withId(R.id.text_input_end_icon),
+                isDescendantOfA(withId(R.id.textinput_box_outline))))
+        .perform(pressKey(KeyEvent.KEYCODE_ENTER));
+
+    // Verify text is cleared.
+    onView(withId(R.id.textinput_edittext_outline)).check(matches(withText("")));
+
+    // Verify focus moved back to the EditText.
+    onView(withId(R.id.textinput_edittext_outline)).check(matches(hasFocus()));
   }
 
   @Test
@@ -1030,6 +1081,108 @@ public class TextInputLayoutTest {
     assertEquals(EditText.class.getName(), editText.getClassName());
     assertEquals(structure.getAutofillId(), textInputLayout.getAutofillId());
     assertEquals("Outer hint", editText.getHint().toString());
+  }
+
+  @UiThreadTest
+  @Test
+  public void testDropdownMenu_nonEditable_endIconIsNotFocusableOrClickable() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_noedittext);
+    final AutoCompleteTextView editText = new AutoCompleteTextView(activity);
+
+    textInputLayout.setEndIconMode(TextInputLayout.END_ICON_DROPDOWN_MENU);
+    editText.setKeyListener(null); // This makes the EditText not-editable
+    textInputLayout.addView(editText);
+
+    assertThat(textInputLayout.getEndIconView().isFocusable()).isFalse();
+    assertThat(textInputLayout.getEndIconView().isClickable()).isFalse();
+  }
+
+  @UiThreadTest
+  @Test
+  public void testDropdownMenu_editable_endIconIsFocusableAndClickable() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_noedittext);
+    final AutoCompleteTextView editText = new AutoCompleteTextView(activity);
+
+    textInputLayout.setEndIconMode(TextInputLayout.END_ICON_DROPDOWN_MENU);
+    textInputLayout.addView(editText);
+
+    assertThat(textInputLayout.getEndIconView().isFocusable()).isTrue();
+    assertThat(textInputLayout.getEndIconView().isClickable()).isTrue();
+  }
+
+  @UiThreadTest
+  @Test
+  public void testAccessibilityNodeInfo_stripsSpanWatcher() {
+    TextInputLayout textInputLayout = activityTestRule.getActivity().findViewById(R.id.textinput);
+    EditText editText = textInputLayout.getEditText();
+
+    SpannableString inputWithSpan = new SpannableString(INPUT_TEXT);
+    SpanWatcher spanWatcher =
+        new SpanWatcher() {
+          @Override
+          public void onSpanAdded(Spannable text, Object what, int start, int end) {}
+
+          @Override
+          public void onSpanRemoved(Spannable text, Object what, int start, int end) {}
+
+          @Override
+          public void onSpanChanged(
+              Spannable text, Object what, int ostart, int oend, int nstart, int nend) {}
+        };
+    inputWithSpan.setSpan(spanWatcher, 0, INPUT_TEXT.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    editText.setText(inputWithSpan);
+    textInputLayout.setHint(HINT_TEXT);
+
+    AccessibilityNodeInfoCompat accessibilityNodeInfo = AccessibilityNodeInfoCompat.obtain();
+    editText.onInitializeAccessibilityNodeInfo(accessibilityNodeInfo.unwrap());
+
+    CharSequence resultingText = accessibilityNodeInfo.getText();
+    Spannable stringSpan = new SpannableString(resultingText);
+    SpanWatcher[] preservedSpans =
+        stringSpan.getSpans(0, resultingText.length(), SpanWatcher.class);
+    assertThat(resultingText.toString()).isEqualTo(INPUT_TEXT + ", " + HINT_TEXT);
+    assertThat(preservedSpans).isEmpty();
+  }
+
+  @UiThreadTest
+  @Test
+  public void testAccessibilityNodeInfo_preservesTtsSpan() {
+    TextInputLayout textInputLayout = activityTestRule.getActivity().findViewById(R.id.textinput);
+    EditText editText = textInputLayout.getEditText();
+
+    SpannableString inputWithSpan = new SpannableString(INPUT_TEXT);
+    TtsSpan verbatimSpan = new TtsSpan.VerbatimBuilder(INPUT_TEXT).build();
+    SpanWatcher spanWatcher =
+        new SpanWatcher() {
+          @Override
+          public void onSpanAdded(Spannable text, Object what, int start, int end) {}
+
+          @Override
+          public void onSpanRemoved(Spannable text, Object what, int start, int end) {}
+
+          @Override
+          public void onSpanChanged(
+              Spannable text, Object what, int ostart, int oend, int nstart, int nend) {}
+        };
+    inputWithSpan.setSpan(verbatimSpan, 0, INPUT_TEXT.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    inputWithSpan.setSpan(spanWatcher, 0, INPUT_TEXT.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+    editText.setText(inputWithSpan);
+    textInputLayout.setHint(HINT_TEXT);
+
+    AccessibilityNodeInfoCompat accessibilityNodeInfo = AccessibilityNodeInfoCompat.obtain();
+    editText.onInitializeAccessibilityNodeInfo(accessibilityNodeInfo.unwrap());
+
+    CharSequence resultingText = accessibilityNodeInfo.getText();
+    Spannable stringSpan = new SpannableString(resultingText);
+    TtsSpan[] preservedSpans = stringSpan.getSpans(0, INPUT_TEXT.length(), TtsSpan.class);
+    SpanWatcher[] preservedWatchers =
+        stringSpan.getSpans(0, resultingText.length(), SpanWatcher.class);
+    assertThat(resultingText.toString()).isEqualTo(INPUT_TEXT + ", " + HINT_TEXT);
+    assertThat(preservedSpans).hasLength(1);
+    assertThat(preservedSpans[0].getType()).isEqualTo(TtsSpan.TYPE_VERBATIM);
+    assertThat(preservedWatchers).isEmpty();
   }
 
   private static ViewAssertion isHintExpanded(final boolean expanded) {

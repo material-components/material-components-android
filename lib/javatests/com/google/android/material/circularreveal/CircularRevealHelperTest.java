@@ -29,7 +29,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION_CODES;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import androidx.annotation.ColorInt;
@@ -87,7 +86,7 @@ public class CircularRevealHelperTest {
   }
 
   @Test
-  @Config(sdk = VERSION_CODES.LOLLIPOP)
+  @Config(sdk = Config.OLDEST_SDK)
   public void lUsesRevealAnimatorStrategy() {
     helper = new CircularRevealHelper(delegate);
     helper.setRevealInfo(smallRevealInfo);
@@ -100,7 +99,7 @@ public class CircularRevealHelperTest {
   }
 
   @Test
-  @Config(sdk = VERSION_CODES.LOLLIPOP)
+  @Config(sdk = Config.OLDEST_SDK)
   public void lDrawsScrim() {
     helper = new CircularRevealHelper(delegate);
     helper.setCircularRevealScrimColor(Color.RED);

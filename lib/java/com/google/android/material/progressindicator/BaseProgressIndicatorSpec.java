@@ -18,6 +18,8 @@ package com.google.android.material.progressindicator;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.progressindicator.DeterminateDrawable.FULL_AMPLITUDE_PROGRESS_MAX;
+import static com.google.android.material.progressindicator.DeterminateDrawable.FULL_AMPLITUDE_PROGRESS_MIN;
 import static com.google.android.material.resources.MaterialResources.getDimensionPixelSize;
 import static java.lang.Math.abs;
 import static java.lang.Math.min;
@@ -55,6 +57,18 @@ public abstract class BaseProgressIndicatorSpec {
   @Px public int trackCornerRadius;
 
   /**
+   * The fraction of the track thickness to be used as the corner radius. And the stroke ROUND cap
+   * is used to prevent artifacts like (b/319309456), when 0.5f is specified.
+   */
+  public float trackCornerRadiusFraction;
+
+  /**
+   * When this is true, the {#link trackCornerRadiusFraction} takes effect. Otherwise, the {@link
+   * trackCornerRadius} takes effect.
+   */
+  public boolean useRelativeTrackCornerRadius;
+
+  /**
    * The color array used in the indicator. In determinate mode, only the first item will be used.
    */
   @NonNull public int[] indicatorColors = new int[0];
@@ -90,6 +104,14 @@ public abstract class BaseProgressIndicatorSpec {
   @FloatRange(from = 0.1f, to = 10f)
   public float indeterminateAnimatorDurationScale;
 
+  /** The normalized progress, at which the full wave amplitude will be ramped up. */
+  @FloatRange(from = 0f, to = 1f)
+  public float waveAmplitudeRampProgressMin;
+
+  /** The normalized progress, at which the full wave amplitude will be ramped down. */
+  @FloatRange(from = 0f, to = 1f)
+  public float waveAmplitudeRampProgressMax;
+
   /**
    * Instantiates BaseProgressIndicatorSpec.
    *
@@ -112,11 +134,21 @@ public abstract class BaseProgressIndicatorSpec {
     trackThickness =
         getDimensionPixelSize(
             context, a, R.styleable.BaseProgressIndicator_trackThickness, defaultIndicatorSize);
-    trackCornerRadius =
-        min(
-            getDimensionPixelSize(
-                context, a, R.styleable.BaseProgressIndicator_trackCornerRadius, 0),
-            Math.round(trackThickness / 2f));
+    TypedValue trackCornerRadiusValue =
+        a.peekValue(R.styleable.BaseProgressIndicator_trackCornerRadius);
+    if (trackCornerRadiusValue != null) {
+      if (trackCornerRadiusValue.type == TypedValue.TYPE_DIMENSION) {
+        trackCornerRadius =
+            min(
+                TypedValue.complexToDimensionPixelSize(
+                    trackCornerRadiusValue.data, a.getResources().getDisplayMetrics()),
+                trackThickness / 2);
+        useRelativeTrackCornerRadius = false;
+      } else if (trackCornerRadiusValue.type == TypedValue.TYPE_FRACTION) {
+        trackCornerRadiusFraction = min(trackCornerRadiusValue.getFraction(1.0f, 1.0f), 0.5f);
+        useRelativeTrackCornerRadius = true;
+      }
+    }
     showAnimationBehavior =
         a.getInt(
             R.styleable.BaseProgressIndicator_showAnimationBehavior,
@@ -142,6 +174,14 @@ public abstract class BaseProgressIndicatorSpec {
     waveSpeed = a.getDimensionPixelSize(R.styleable.BaseProgressIndicator_waveSpeed, 0);
     indeterminateAnimatorDurationScale =
         a.getFloat(R.styleable.BaseProgressIndicator_indeterminateAnimatorDurationScale, 1);
+    waveAmplitudeRampProgressMin =
+        a.getFloat(
+                R.styleable.BaseProgressIndicator_waveAmplitudeRampProgressMin,
+                FULL_AMPLITUDE_PROGRESS_MIN);
+    waveAmplitudeRampProgressMax =
+        a.getFloat(
+                R.styleable.BaseProgressIndicator_waveAmplitudeRampProgressMax,
+                FULL_AMPLITUDE_PROGRESS_MAX);
 
     loadIndicatorColors(context, a);
     loadTrackColor(context, a);
@@ -160,7 +200,10 @@ public abstract class BaseProgressIndicatorSpec {
   private void loadIndicatorColors(@NonNull Context context, @NonNull TypedArray typedArray) {
     if (!typedArray.hasValue(R.styleable.BaseProgressIndicator_indicatorColor)) {
       // Uses theme primary color for indicator if not provided in the attribute set.
-      indicatorColors = new int[] {MaterialColors.getColor(context, R.attr.colorPrimary, -1)};
+      indicatorColors =
+          new int[] {
+            MaterialColors.getColor(context, androidx.appcompat.R.attr.colorPrimary, -1)
+          };
       return;
     }
 
@@ -221,6 +264,27 @@ public abstract class BaseProgressIndicatorSpec {
     return waveAmplitude > 0
         && ((!isDeterminate && wavelengthIndeterminate > 0)
             || (isDeterminate && wavelengthDeterminate > 0));
+  }
+
+  /**
+   * Returns the track corner radius in pixels.
+   *
+   * <p>If {@link #useRelativeTrackCornerRadius} is true, the track corner radius is calculated
+   * using the track thickness and the track corner radius fraction. Otherwise, the track corner
+   * radius is returned directly.
+   */
+  public int getTrackCornerRadiusInPx() {
+    return useRelativeTrackCornerRadius
+        ? (int) (trackThickness * trackCornerRadiusFraction)
+        : trackCornerRadius;
+  }
+
+  /**
+   * Returns true if the stroke ROUND cap should be used to prevent artifacts like (b/319309456),
+   * when fully rounded corners are specified.
+   */
+  public boolean useStrokeCap() {
+    return useRelativeTrackCornerRadius && trackCornerRadiusFraction == 0.5f;
   }
 
   @CallSuper

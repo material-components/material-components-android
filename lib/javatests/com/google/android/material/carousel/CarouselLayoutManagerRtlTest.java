@@ -29,6 +29,7 @@ import static com.google.common.truth.Truth.assertThat;
 import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Parcelable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
@@ -162,6 +163,46 @@ public class CarouselLayoutManagerRtlTest {
     // Test Keyline state has 2 focal keylines at the start; default item with is 450 and
     // focal keyline size is 450, so the scroll offset should be 0.
     assertThat(layoutManager.scrollOffset).isEqualTo(0);
+  }
+
+  @Test
+  public void testSaveAndRestoreInstanceState_rtl_preservesScrollPosition() throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(40));
+    scrollToPosition(recyclerView, layoutManager, 20);
+
+    Parcelable savedState = layoutManager.onSaveInstanceState();
+
+    WrappedCarouselLayoutManager newLayoutManager =
+        CarouselHelper.createLayoutManagerWithStrategy(getTestCenteredKeylineState());
+
+    newLayoutManager.onRestoreInstanceState(savedState);
+    recyclerView.setLayoutManager(newLayoutManager);
+    setAdapterItems(recyclerView, newLayoutManager, adapter, createDataSetWithSize(40));
+
+    MaskableFrameLayout child =
+        (MaskableFrameLayout) recyclerView.findViewHolderForAdapterPosition(20).itemView;
+    float childCenterX = child.getLeft() + (child.getWidth() / 2F);
+    assertThat(childCenterX)
+        .isEqualTo(getTestCenteredKeylineState().getLastFocalKeyline().locOffset);
+  }
+
+  @Test
+  public void testSaveAndRestoreInstanceState_rtl_afterScrollBy_preservesScrollPosition()
+      throws Throwable {
+    setAdapterItems(recyclerView, layoutManager, adapter, createDataSetWithSize(40));
+    scrollHorizontallyBy(recyclerView, layoutManager, -500);
+
+    int originalScrollOffset = layoutManager.scrollOffset;
+    Parcelable savedState = layoutManager.onSaveInstanceState();
+
+    WrappedCarouselLayoutManager newLayoutManager =
+        CarouselHelper.createLayoutManagerWithStrategy(getTestCenteredKeylineState());
+
+    newLayoutManager.onRestoreInstanceState(savedState);
+    recyclerView.setLayoutManager(newLayoutManager);
+    setAdapterItems(recyclerView, newLayoutManager, adapter, createDataSetWithSize(40));
+
+    assertThat(newLayoutManager.scrollOffset).isEqualTo(originalScrollOffset);
   }
 
   /**

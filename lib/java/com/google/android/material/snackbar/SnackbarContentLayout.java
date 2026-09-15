@@ -39,6 +39,7 @@ import com.google.android.material.motion.MotionUtils;
 public class SnackbarContentLayout extends LinearLayout implements ContentViewCallback {
   private TextView messageView;
   private Button actionView;
+  @Nullable private Button closeView;
   private final TimeInterpolator contentInterpolator;
 
   private int maxInlineActionWidth;
@@ -61,6 +62,7 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
     super.onFinishInflate();
     messageView = findViewById(R.id.snackbar_text);
     actionView = findViewById(R.id.snackbar_action);
+    closeView = findViewById(R.id.mtrl_snackbar_close);
   }
 
   public TextView getMessageView() {
@@ -69,6 +71,11 @@ public class SnackbarContentLayout extends LinearLayout implements ContentViewCa
 
   public Button getActionView() {
     return actionView;
+  }
+
+  @Nullable
+  public Button getCloseView() {
+    return closeView;
   }
 
   void updateActionTextColorAlphaIfNeeded(float actionTextColorAlpha) {

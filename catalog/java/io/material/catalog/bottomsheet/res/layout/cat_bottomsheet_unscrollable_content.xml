@@ -20,9 +20,27 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent">
 
+  <!--
+    Since we are providing a close affordance and this sheet does not have
+    states to move between, disable a11y focus with
+    importantForAccessibility=no and disable all announcements with
+    contentDescription=null.
+    -->
   <com.google.android.material.bottomsheet.BottomSheetDragHandleView
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"/>
+    android:layout_height="wrap_content"
+    android:importantForAccessibility="no"
+    android:contentDescription="@null"/>
+
+  <Button
+    android:id="@+id/close_icon"
+    style="?attr/materialIconButtonFilledTonalStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="end"
+    android:layout_marginHorizontal="16dp"
+    android:contentDescription="@string/cat_bottomsheet_close_content_description"
+    app:icon="@drawable/ic_close_24dp"/>
 
   <androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"

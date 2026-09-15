@@ -36,6 +36,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.color.MaterialColors;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 
 /** A fragment that displays a collapsing Top App Bar demo for the Catalog app. */
 public class TopAppBarCollapsingMultilineDemoFragment extends DemoFragment {
@@ -64,7 +65,9 @@ public class TopAppBarCollapsingMultilineDemoFragment extends DemoFragment {
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     AppCompatActivity activity = (AppCompatActivity) getActivity();
     activity.setSupportActionBar(toolbar);
-    colorPrimary = MaterialColors.getColor(view, R.attr.colorPrimary);
+    colorPrimary = MaterialColors.getColor(view, androidx.appcompat.R.attr.colorPrimary);
+
+    DemoUtils.setupClickableContentText(view);
 
     return view;
   }

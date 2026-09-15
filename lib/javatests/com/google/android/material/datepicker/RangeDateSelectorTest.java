@@ -599,6 +599,21 @@ public class RangeDateSelectorTest {
     assertThat(shadowIMM.isSoftInputVisible()).isTrue();
   }
 
+  @Test
+  public void textField_shouldSetCursorToEndOfText() {
+    Calendar calendar = UtcDates.getUtcCalendar();
+    calendar.set(2025, Calendar.FEBRUARY, 1);
+    rangeDateSelector.setSelection(new Pair<>(calendar.getTimeInMillis(), null));
+    View root = getRootView();
+    ((ViewGroup) activity.findViewById(android.R.id.content)).addView(root);
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    EditText editText = startTextInput.getEditText();
+
+    ShadowLooper.runUiThreadTasksIncludingDelayedTasks();
+
+    assertThat(editText.getSelectionStart()).isEqualTo(editText.getText().length());
+  }
+
   private View getRootView() {
     return rangeDateSelector.onCreateTextInputView(
         LayoutInflater.from(context),

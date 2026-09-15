@@ -70,6 +70,13 @@ public class FabFragment extends DemoLandingFragment {
             return new ExtendedFabBehaviorDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_fab_menu_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new FabMenuDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

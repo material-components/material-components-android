@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2026 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -38,13 +38,17 @@
   <string name="mtrl_picker_invalid_format_use">Použite: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Príklad: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Prepnúť na kalendárový režim vstupu</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Prepnúť na kalendár</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Prepnúť na textový režim vstupu</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Prepnúť na textový vstup</string>
   <string name="mtrl_picker_a11y_prev_month">Predchádzajúci mesiac</string>
+  <string name="mtrl_picker_prev_month_tooltip">Predchádzajúci mesiac</string>
   <string name="mtrl_picker_a11y_next_month">Ďalší mesiac</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Klepnutím prepnete na zobrazenie jednotlivých rokov</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Klepnutím prepnete na zobrazenie kalendára</string>
-  <string name="mtrl_picker_toggled_to_year_selection">Prepnuté na zobrazenie rokov</string>
-  <string name="mtrl_picker_toggled_to_day_selection">Prepnuté na zobrazenie kalendára</string>
+  <string name="mtrl_picker_next_month_tooltip">Nasledujúci mesiac</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Prepnúť na zobrazenie rokov</string>
+  <string name="mtrl_picker_pane_title_year_view">Zobrazenie roka</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Prepnúť na zobrazenie kalendára</string>
+  <string name="mtrl_picker_pane_title_calendar_view">Zobrazenie kalendára</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Aktuálny výber: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Výber dátumu začatia: %1$s – Výber dátumu ukončenia: %2$s</string>

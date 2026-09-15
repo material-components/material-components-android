@@ -24,6 +24,7 @@
     action.
   </string>
 
+  <string name="cat_chip_text_all">Show All</string>
   <string name="cat_chip_text">Hello, World!</string>
   <string name="cat_chip_text_to_truncate">Hello, very very very very very very very very big World!</string>
   <string name="cat_chip_long_text_switch_label">Long text</string>

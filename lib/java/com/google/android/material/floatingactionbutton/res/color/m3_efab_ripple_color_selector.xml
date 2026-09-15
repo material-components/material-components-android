@@ -15,8 +15,11 @@
   ~ limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="@dimen/m3_comp_extended_fab_primary_pressed_state_layer_opacity" android:color="?attr/colorOnContainer" android:state_pressed="true"/>
-  <item android:alpha="@dimen/m3_comp_extended_fab_primary_focus_state_layer_opacity" android:color="?attr/colorOnContainer" android:state_focused="true"/>
-  <item android:alpha="@dimen/m3_comp_extended_fab_primary_hover_state_layer_opacity" android:color="?attr/colorOnContainer" android:state_hovered="true"/>
+  <item android:alpha="@dimen/m3_comp_extended_fab_primary_container_pressed_state_layer_opacity"
+        android:color="?attr/colorOnContainer" android:state_pressed="true"/>
+  <item android:alpha="@dimen/m3_comp_extended_fab_primary_container_focused_state_layer_opacity" 
+        android:color="?attr/colorOnContainer" android:state_focused="true"/>
+  <item android:alpha="@dimen/m3_comp_extended_fab_primary_container_hovered_state_layer_opacity" 
+        android:color="?attr/colorOnContainer" android:state_hovered="true"/>
   <item android:alpha="@dimen/m3_ripple_default_alpha" android:color="?attr/colorOnContainer"/>
 </selector>

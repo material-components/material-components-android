@@ -36,7 +36,7 @@ import org.robolectric.annotation.Config;
 
 /** Tests for {@link MaterialThemeOverlay}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(sdk = 22)
+@Config(sdk = Config.OLDEST_SDK)
 public class MaterialThemeOverlayTest {
 
   private Context context;

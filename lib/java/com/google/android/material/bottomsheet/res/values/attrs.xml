@@ -55,6 +55,16 @@
     <!-- The vertical velocity threshold considered significant enough to warrant a
          vertical swipe. -->
     <attr name="behavior_significantVelocityThreshold" format="dimension"/>
+    <!-- Whether or not the bottom sheet should support multiple scrolling children. If false,
+         the bottom sheet will only support the first scrolling child. -->
+     <attr name="behavior_multipleScrollingChildrenSupported" format="boolean"/>
+    <!-- Whether the bottom sheet should automatically expand when one of its children requests to be
+         on screen. For example, if an off-screen child gains focus during input navigation (e.g., using
+         tab or arrow keys) while the bottom sheet is collapsed, the sheet will expand to reveal the
+         focused child, improving accessibility.
+         Internally, the behavior relies on onRequestChildRectangleOnScreen. Only works on Android API level 36+.
+         Default is true. -->
+    <attr name="behavior_autoExpandOnRequestChildRectangleOffscreen" format="boolean"/>
     <!-- Shape appearance style reference for BottomSheet. Attribute declaration is in the shape
          package. -->
      <attr name="shapeAppearance"/>

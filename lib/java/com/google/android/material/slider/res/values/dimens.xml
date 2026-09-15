@@ -35,5 +35,7 @@
 
   <dimen name="m3_slider_thumb_elevation">2dp</dimen>
   <dimen name="m3_slider_track_icon_padding">10dp</dimen>
+  <dimen name="m3_slider_focus_ring_padding">2dp</dimen>
+  <dimen name="m3_slider_focus_ring_thumb_height_decrease">6dp</dimen>
 
 </resources>

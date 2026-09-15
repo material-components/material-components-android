@@ -400,6 +400,8 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
 
     maybeAssignCoplanarSiblingViewBasedId(parent);
 
+    updateCoplanarSiblingLayoutParams();
+
     for (SheetCallback callback : callbacks) {
       if (callback instanceof SideSheetCallback) {
         SideSheetCallback sideSheetCallback = (SideSheetCallback) callback;
@@ -432,6 +434,28 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       if (coplanarSiblingView != null) {
         this.coplanarSiblingViewRef = new WeakReference<>(coplanarSiblingView);
       }
+    }
+  }
+
+  private void updateCoplanarSiblingLayoutParams() {
+    View coplanarSiblingView = getCoplanarSiblingView();
+    if (coplanarSiblingView == null || viewRef == null) {
+      return;
+    }
+    View sheet = viewRef.get();
+    if (sheet == null) {
+      return;
+    }
+    ViewGroup.LayoutParams siblingLayoutParams = coplanarSiblingView.getLayoutParams();
+    if (!(siblingLayoutParams instanceof MarginLayoutParams)) {
+      return;
+    }
+    MarginLayoutParams marginLayoutParams = (MarginLayoutParams) siblingLayoutParams;
+    int previousMargin = sheetDelegate.getCoplanarSiblingAdjacentMargin(marginLayoutParams);
+    sheetDelegate.updateCoplanarSiblingLayoutParams(
+        marginLayoutParams, sheet.getLeft(), sheet.getRight());
+    if (previousMargin != sheetDelegate.getCoplanarSiblingAdjacentMargin(marginLayoutParams)) {
+      coplanarSiblingView.setLayoutParams(marginLayoutParams);
     }
   }
 
@@ -645,7 +669,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
       runAfterLayout(
           viewRef.get(),
           () -> {
-            V child = viewRef.get();
+            V child = viewRef != null ? viewRef.get() : null;
             if (child != null) {
               startSettling(child, finalState, false);
             }
@@ -801,16 +825,7 @@ public class SideSheetBehavior<V extends View> extends CoordinatorLayout.Behavio
         @Override
         public void onViewPositionChanged(
             @NonNull View changedView, int left, int top, int dx, int dy) {
-          View coplanarSiblingView = getCoplanarSiblingView();
-          if (coplanarSiblingView != null) {
-            MarginLayoutParams layoutParams =
-                (MarginLayoutParams) coplanarSiblingView.getLayoutParams();
-            if (layoutParams != null) {
-              sheetDelegate.updateCoplanarSiblingLayoutParams(
-                  layoutParams, changedView.getLeft(), changedView.getRight());
-              coplanarSiblingView.setLayoutParams(layoutParams);
-            }
-          }
+          updateCoplanarSiblingLayoutParams();
 
           dispatchOnSlide(changedView, left);
         }

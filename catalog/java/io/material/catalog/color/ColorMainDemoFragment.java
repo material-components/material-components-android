@@ -68,111 +68,113 @@ public final class ColorMainDemoFragment extends DemoFragment {
     return Arrays.asList(
         new ColorRow(
             new ColorRoleItem(R.string.cat_color_role_background, android.R.attr.colorBackground),
-            new ColorRoleItem(R.string.cat_color_role_on_background, R.attr.colorOnBackground)),
+            new ColorRoleItem(R.string.cat_color_role_on_background, com.google.android.material.R.attr.colorOnBackground)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_surface, R.attr.colorSurface),
-            new ColorRoleItem(R.string.cat_color_role_on_surface, R.attr.colorOnSurface)),
+            new ColorRoleItem(R.string.cat_color_role_surface, com.google.android.material.R.attr.colorSurface),
+            new ColorRoleItem(R.string.cat_color_role_on_surface, com.google.android.material.R.attr.colorOnSurface)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_surface_variant, R.attr.colorSurfaceVariant),
+            new ColorRoleItem(R.string.cat_color_role_surface_variant, com.google.android.material.R.attr.colorSurfaceVariant),
             new ColorRoleItem(
-                R.string.cat_color_role_on_surface_variant, R.attr.colorOnSurfaceVariant)),
+                R.string.cat_color_role_on_surface_variant, com.google.android.material.R.attr.colorOnSurfaceVariant)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_inverse_surface, R.attr.colorSurfaceInverse),
+            new ColorRoleItem(R.string.cat_color_role_inverse_surface, com.google.android.material.R.attr.colorSurfaceInverse),
             new ColorRoleItem(
-                R.string.cat_color_role_inverse_on_surface, R.attr.colorOnSurfaceInverse)),
+                R.string.cat_color_role_inverse_on_surface, com.google.android.material.R.attr.colorOnSurfaceInverse)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_surface_bright, R.attr.colorSurfaceBright),
-            new ColorRoleItem(R.string.cat_color_role_surface_dim, R.attr.colorSurfaceDim)),
+            new ColorRoleItem(R.string.cat_color_role_surface_bright, com.google.android.material.R.attr.colorSurfaceBright),
+            new ColorRoleItem(R.string.cat_color_role_surface_dim, com.google.android.material.R.attr.colorSurfaceDim)),
         new ColorRow(
             new ColorRoleItem(
-                R.string.cat_color_role_surface_container_low, R.attr.colorSurfaceContainerLow),
+                R.string.cat_color_role_surface_container_low, com.google.android.material.R.attr.colorSurfaceContainerLow),
             new ColorRoleItem(
-                R.string.cat_color_role_surface_container_high, R.attr.colorSurfaceContainerHigh)),
+                R.string.cat_color_role_surface_container_high, com.google.android.material.R.attr.colorSurfaceContainerHigh)),
         new ColorRow(
             new ColorRoleItem(
                 R.string.cat_color_role_surface_container_lowest,
-                R.attr.colorSurfaceContainerLowest),
+                com.google.android.material.R.attr.colorSurfaceContainerLowest),
             new ColorRoleItem(
                 R.string.cat_color_role_surface_container_highest,
-                R.attr.colorSurfaceContainerHighest)),
+                com.google.android.material.R.attr.colorSurfaceContainerHighest)),
         new ColorRow(
             new ColorRoleItem(
-                R.string.cat_color_role_surface_container, R.attr.colorSurfaceContainer),
+                R.string.cat_color_role_surface_container, com.google.android.material.R.attr.colorSurfaceContainer),
             null));
   }
 
   private List<ColorRow> getColorRolesContent() {
     return Arrays.asList(
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_primary, R.attr.colorPrimary),
-            new ColorRoleItem(R.string.cat_color_role_on_primary, R.attr.colorOnPrimary)),
+            new ColorRoleItem(
+                R.string.cat_color_role_primary, androidx.appcompat.R.attr.colorPrimary),
+            new ColorRoleItem(R.string.cat_color_role_on_primary, com.google.android.material.R.attr.colorOnPrimary)),
         new ColorRow(
             new ColorRoleItem(
-                R.string.cat_color_role_primary_container, R.attr.colorPrimaryContainer),
+                R.string.cat_color_role_primary_container, com.google.android.material.R.attr.colorPrimaryContainer),
             new ColorRoleItem(
-                R.string.cat_color_role_on_primary_container, R.attr.colorOnPrimaryContainer)),
+                R.string.cat_color_role_on_primary_container, com.google.android.material.R.attr.colorOnPrimaryContainer)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_primary_fixed, R.attr.colorPrimaryFixed),
+            new ColorRoleItem(R.string.cat_color_role_primary_fixed, com.google.android.material.R.attr.colorPrimaryFixed),
             new ColorRoleItem(
-                R.string.cat_color_role_primary_fixed_dim, R.attr.colorPrimaryFixedDim)),
+                R.string.cat_color_role_primary_fixed_dim, com.google.android.material.R.attr.colorPrimaryFixedDim)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_on_primary_fixed, R.attr.colorOnPrimaryFixed),
+            new ColorRoleItem(R.string.cat_color_role_on_primary_fixed, com.google.android.material.R.attr.colorOnPrimaryFixed),
             new ColorRoleItem(
                 R.string.cat_color_role_on_primary_fixed_variant,
-                R.attr.colorOnPrimaryFixedVariant)),
+                com.google.android.material.R.attr.colorOnPrimaryFixedVariant)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_inverse_primary, R.attr.colorPrimaryInverse),
+            new ColorRoleItem(R.string.cat_color_role_inverse_primary, com.google.android.material.R.attr.colorPrimaryInverse),
             /* colorRoleItemRight= */ null),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_secondary, R.attr.colorSecondary),
-            new ColorRoleItem(R.string.cat_color_role_on_secondary, R.attr.colorOnSecondary)),
+            new ColorRoleItem(R.string.cat_color_role_secondary, com.google.android.material.R.attr.colorSecondary),
+            new ColorRoleItem(R.string.cat_color_role_on_secondary, com.google.android.material.R.attr.colorOnSecondary)),
         new ColorRow(
             new ColorRoleItem(
-                R.string.cat_color_role_secondary_container, R.attr.colorSecondaryContainer),
+                R.string.cat_color_role_secondary_container, com.google.android.material.R.attr.colorSecondaryContainer),
             new ColorRoleItem(
-                R.string.cat_color_role_on_secondary_container, R.attr.colorOnSecondaryContainer)),
+                R.string.cat_color_role_on_secondary_container, com.google.android.material.R.attr.colorOnSecondaryContainer)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_secondary_fixed, R.attr.colorSecondaryFixed),
+            new ColorRoleItem(R.string.cat_color_role_secondary_fixed, com.google.android.material.R.attr.colorSecondaryFixed),
             new ColorRoleItem(
-                R.string.cat_color_role_secondary_fixed_dim, R.attr.colorSecondaryFixedDim)),
+                R.string.cat_color_role_secondary_fixed_dim, com.google.android.material.R.attr.colorSecondaryFixedDim)),
         new ColorRow(
             new ColorRoleItem(
-                R.string.cat_color_role_on_secondary_fixed, R.attr.colorOnSecondaryFixed),
+                R.string.cat_color_role_on_secondary_fixed, com.google.android.material.R.attr.colorOnSecondaryFixed),
             new ColorRoleItem(
                 R.string.cat_color_role_on_secondary_fixed_variant,
-                R.attr.colorOnSecondaryFixedVariant)),
+                com.google.android.material.R.attr.colorOnSecondaryFixedVariant)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_tertiary, R.attr.colorTertiary),
-            new ColorRoleItem(R.string.cat_color_role_on_tertiary, R.attr.colorOnTertiary)),
-        new ColorRow(
-            new ColorRoleItem(
-                R.string.cat_color_role_tertiary_container, R.attr.colorTertiaryContainer),
-            new ColorRoleItem(
-                R.string.cat_color_role_on_tertiary_container, R.attr.colorOnTertiaryContainer)),
-        new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_tertiary_fixed, R.attr.colorTertiaryFixed),
-            new ColorRoleItem(
-                R.string.cat_color_role_tertiary_fixed_dim, R.attr.colorTertiaryFixedDim)),
+            new ColorRoleItem(R.string.cat_color_role_tertiary, com.google.android.material.R.attr.colorTertiary),
+            new ColorRoleItem(R.string.cat_color_role_on_tertiary, com.google.android.material.R.attr.colorOnTertiary)),
         new ColorRow(
             new ColorRoleItem(
-                R.string.cat_color_role_on_tertiary_fixed, R.attr.colorOnTertiaryFixed),
+                R.string.cat_color_role_tertiary_container, com.google.android.material.R.attr.colorTertiaryContainer),
+            new ColorRoleItem(
+                R.string.cat_color_role_on_tertiary_container, com.google.android.material.R.attr.colorOnTertiaryContainer)),
+        new ColorRow(
+            new ColorRoleItem(R.string.cat_color_role_tertiary_fixed, com.google.android.material.R.attr.colorTertiaryFixed),
+            new ColorRoleItem(
+                R.string.cat_color_role_tertiary_fixed_dim, com.google.android.material.R.attr.colorTertiaryFixedDim)),
+        new ColorRow(
+            new ColorRoleItem(
+                R.string.cat_color_role_on_tertiary_fixed, com.google.android.material.R.attr.colorOnTertiaryFixed),
             new ColorRoleItem(
                 R.string.cat_color_role_on_tertiary_fixed_variant,
-                R.attr.colorOnTertiaryFixedVariant)));
+                com.google.android.material.R.attr.colorOnTertiaryFixedVariant)));
   }
 
   private List<ColorRow> getColorRolesUtility() {
     return Arrays.asList(
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_error, R.attr.colorError),
-            new ColorRoleItem(R.string.cat_color_role_on_error, R.attr.colorOnError)),
-        new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_error_container, R.attr.colorErrorContainer),
             new ColorRoleItem(
-                R.string.cat_color_role_on_error_container, R.attr.colorOnErrorContainer)),
+                R.string.cat_color_role_error, androidx.appcompat.R.attr.colorError),
+            new ColorRoleItem(R.string.cat_color_role_on_error, com.google.android.material.R.attr.colorOnError)),
         new ColorRow(
-            new ColorRoleItem(R.string.cat_color_role_outline, R.attr.colorOutline),
+            new ColorRoleItem(R.string.cat_color_role_error_container, com.google.android.material.R.attr.colorErrorContainer),
             new ColorRoleItem(
-                R.string.cat_color_role_outline_variant, R.attr.colorOutlineVariant)));
+                R.string.cat_color_role_on_error_container, com.google.android.material.R.attr.colorOnErrorContainer)),
+        new ColorRow(
+            new ColorRoleItem(R.string.cat_color_role_outline, com.google.android.material.R.attr.colorOutline),
+            new ColorRoleItem(
+                R.string.cat_color_role_outline_variant, com.google.android.material.R.attr.colorOutlineVariant)));
   }
 }

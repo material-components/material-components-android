@@ -30,11 +30,14 @@
   <public name="Widget.Design.BottomSheet.Modal" type="style"/>
   <public name="Widget.MaterialComponents.BottomSheet" type="style"/>
   <public name="Widget.MaterialComponents.BottomSheet.Modal" type="style"/>
+  <public name="behavior_draggableOnNestedScroll" type="attr"/>
   <public name="behavior_expandedOffset" type="attr"/>
   <public name="behavior_halfExpandedRatio" type="attr"/>
   <public name="behavior_hideable" type="attr"/>
   <public name="behavior_saveFlags" type="attr"/>
   <public name="behavior_significantVelocityThreshold" type="attr"/>
+  <public name="behavior_multipleScrollingChildrenSupported" type="attr"/>
+  <public name="behavior_autoExpandOnRequestChildRectangleOffscreen" type="attr"/>
   <public name="behavior_skipCollapsed" type="attr"/>
   <public name="enableEdgeToEdge" type="attr"/>
   <public name="gestureInsetBottomIgnored" type="attr"/>

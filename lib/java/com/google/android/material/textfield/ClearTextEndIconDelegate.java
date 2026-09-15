@@ -46,16 +46,20 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
   @Nullable
   private EditText editText;
 
-  private final OnClickListener onIconClickListener = view -> {
-    if (editText == null) {
-      return;
-    }
-    Editable text = editText.getText();
-    if (text != null) {
-      text.clear();
-    }
-    refreshIconState();
-  };
+  private final OnClickListener onIconClickListener =
+      view -> {
+        if (editText == null) {
+          return;
+        }
+        Editable text = editText.getText();
+        if (view.hasFocus()) {
+          editText.requestFocus();
+        }
+        if (text != null) {
+          text.clear();
+        }
+        refreshIconState();
+      };
 
   private final OnFocusChangeListener onFocusChangeListener =
       (view, hasFocus) -> animateIcon(shouldBeVisible());
@@ -208,8 +212,13 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
   }
 
   private boolean shouldBeVisible() {
-    return editText != null
-        && (editText.hasFocus() || endIconView.hasFocus())
-        && editText.getText().length() > 0;
+    if (editText == null) {
+      return false;
+    }
+    boolean hasFocus = editText.hasFocus() || endIconView.hasFocus();
+    boolean hasText = editText.getText().length() > 0;
+    boolean hasSuffix = endLayout.getSuffixText() != null;
+
+    return hasFocus && (hasText || hasSuffix);
   }
 }

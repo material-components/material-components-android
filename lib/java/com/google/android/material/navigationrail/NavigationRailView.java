@@ -28,6 +28,8 @@ import static java.lang.Math.min;
 import android.animation.TimeInterpolator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -43,6 +45,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.Insets;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.transition.ChangeBounds;
@@ -138,6 +141,7 @@ public class NavigationRailView extends NavigationBarView {
   private final boolean scrollingEnabled;
   private boolean submenuDividersEnabled;
   @Nullable private View headerView;
+  @Nullable private NavigationRailScrollView scrollView;
   @Nullable private Boolean paddingTopSystemWindowInsets = null;
   @Nullable private Boolean paddingBottomSystemWindowInsets = null;
   @Nullable private Boolean paddingStartSystemWindowInsets = null;
@@ -286,24 +290,23 @@ public class NavigationRailView extends NavigationBarView {
     for (int i = 0; i < childCount; i++) {
       View item = getNavigationRailMenuView().getChildAt(i);
       if (item instanceof NavigationBarItemView) {
+        NavigationBarItemView navItem = (NavigationBarItemView) item;
         // Exclude labels from ChangeBounds transition
-        changeBoundsTransition.excludeTarget(((NavigationBarItemView) item).getLabelGroup(), true);
-        changeBoundsTransition.excludeTarget(
-            ((NavigationBarItemView) item).getExpandedLabelGroup(), true);
+        changeBoundsTransition.excludeTarget(navItem.getLabelGroup(), true);
+        changeBoundsTransition.excludeTarget(navItem.getExpandedLabelGroup(), true);
 
         // If currently expanded, we are fading out the expanded label group and fading in the
         // collapsed label group
         if (expanded) {
-          labelFadeOutTransition.addTarget(((NavigationBarItemView) item).getExpandedLabelGroup());
-          labelFadeInTransition.addTarget(((NavigationBarItemView) item).getLabelGroup());
+          labelFadeOutTransition.addTarget(navItem.getExpandedLabelGroup());
+          labelFadeInTransition.addTarget(navItem.getLabelGroup());
         } else {
           // Otherwise if we are collapsed, we fade out the collapsed label group and fade in the
           // expanded
-          labelFadeOutTransition.addTarget(((NavigationBarItemView) item).getLabelGroup());
-          labelFadeInTransition.addTarget(((NavigationBarItemView) item).getExpandedLabelGroup());
+          labelFadeOutTransition.addTarget(navItem.getLabelGroup());
+          labelFadeInTransition.addTarget(navItem.getExpandedLabelGroup());
         }
-        labelHorizontalMoveTransition.addTarget(
-            ((NavigationBarItemView) item).getExpandedLabelGroup());
+        labelHorizontalMoveTransition.addTarget(navItem.getExpandedLabelGroup());
       }
       fadingItemsTransition.addTarget(item);
     }
@@ -419,8 +422,9 @@ public class NavigationRailView extends NavigationBarView {
               @NonNull WindowInsetsCompat insets,
               @NonNull RelativePadding initialPadding) {
             // Apply the top, bottom, and start padding for a start edge aligned
-            // NavigationRailView to dodge the system status and navigation bars
+            // NavigationRailView to dodge the system status/navigation bars and display cutouts
             Insets systemBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            Insets displayCutoutInsets = insets.getInsets(WindowInsetsCompat.Type.displayCutout());
             if (shouldApplyWindowInsetPadding(paddingTopSystemWindowInsets)) {
               initialPadding.top += systemBarInsets.top;
             }
@@ -428,8 +432,11 @@ public class NavigationRailView extends NavigationBarView {
               initialPadding.bottom += systemBarInsets.bottom;
             }
             if (shouldApplyWindowInsetPadding(paddingStartSystemWindowInsets)) {
-              initialPadding.start +=
-                  ViewUtils.isLayoutRtl(view) ? systemBarInsets.right : systemBarInsets.left;
+              if (ViewUtils.isLayoutRtl(view)) {
+                initialPadding.start += max(systemBarInsets.right, displayCutoutInsets.right);
+              } else {
+                initialPadding.start += max(systemBarInsets.left, displayCutoutInsets.left);
+              }
             }
             initialPadding.applyToView(view);
             return insets;
@@ -727,11 +734,17 @@ public class NavigationRailView extends NavigationBarView {
       return;
     }
 
-    ScrollView scrollView = new ScrollView(getContext());
+    scrollView = new NavigationRailScrollView(getContext());
     scrollView.setVerticalScrollBarEnabled(false);
     scrollView.addView(contentContainer);
     scrollView.setLayoutParams(new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT));
     addView(scrollView);
+  }
+
+  @VisibleForTesting
+  @Nullable
+  ScrollView getScrollView() {
+    return scrollView;
   }
 
   /** @hide */
@@ -747,5 +760,93 @@ public class NavigationRailView extends NavigationBarView {
     super.onTouchEvent(event);
     // Consume all events to avoid views under the NavigationRailView from receiving touch events.
     return true;
+  }
+
+  @Override
+  @NonNull
+  protected Parcelable onSaveInstanceState() {
+    NavigationBarView.SavedState superState =
+        (NavigationBarView.SavedState) super.onSaveInstanceState();
+    SavedState savedState = new SavedState(superState.getSuperState());
+    savedState.menuPresenterState = superState.menuPresenterState;
+    savedState.expanded = this.expanded;
+    savedState.scrollViewSavedState = scrollView != null ? scrollView.onSaveInstanceState() : null;
+    return savedState;
+  }
+
+  @Override
+  protected void onRestoreInstanceState(@Nullable Parcelable state) {
+    if (!(state instanceof SavedState)) {
+      super.onRestoreInstanceState(state);
+      return;
+    }
+    SavedState savedState = (SavedState) state;
+    super.onRestoreInstanceState(savedState);
+    setExpanded(savedState.expanded);
+    if (scrollView != null && savedState.scrollViewSavedState != null) {
+      scrollView.onRestoreInstanceState(savedState.scrollViewSavedState);
+    }
+  }
+
+  private static class NavigationRailScrollView extends ScrollView {
+    NavigationRailScrollView(Context context) {
+      super(context);
+    }
+
+    @Override
+    public Parcelable onSaveInstanceState() {
+      return super.onSaveInstanceState();
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+      super.onRestoreInstanceState(state);
+    }
+  }
+
+  static class SavedState extends NavigationBarView.SavedState {
+    boolean expanded;
+    @Nullable Parcelable scrollViewSavedState;
+
+    public SavedState(Parcelable superState) {
+      super(superState);
+    }
+
+    public SavedState(@NonNull Parcel source, ClassLoader loader) {
+      super(source, loader);
+      if (loader == null) {
+        loader = getClass().getClassLoader();
+      }
+      expanded = source.readInt() == 1;
+      scrollViewSavedState = source.readParcelable(loader);
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel out, int flags) {
+      super.writeToParcel(out, flags);
+      out.writeInt(expanded ? 1 : 0);
+      out.writeParcelable(scrollViewSavedState, flags);
+    }
+
+    public static final Parcelable.Creator<SavedState> CREATOR =
+        new Parcelable.ClassLoaderCreator<SavedState>() {
+          @NonNull
+          @Override
+          public SavedState createFromParcel(@NonNull Parcel in, ClassLoader loader) {
+            return new SavedState(in, loader);
+          }
+
+          @NonNull
+          @Override
+          public SavedState createFromParcel(@NonNull Parcel in) {
+            return new SavedState(in, null);
+          }
+
+          @NonNull
+          @Override
+          public SavedState[] newArray(int size) {
+            return new SavedState[size];
+          }
+        };
   }
 }

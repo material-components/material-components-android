@@ -126,7 +126,7 @@ public final class IndeterminateDrawable<S extends BaseProgressIndicatorSpec>
                 ? new CircularIndeterminateRetreatAnimatorDelegate(context, spec)
                 : new CircularIndeterminateAdvanceAnimatorDelegate(spec));
     indeterminateDrawable.setStaticDummyDrawable(
-        VectorDrawableCompat.create(context.getResources(), R.drawable.indeterminate_static, null));
+        VectorDrawableCompat.create(context.getResources(), R.drawable.ic_mtrl_arrow_circle, null));
     return indeterminateDrawable;
   }
 

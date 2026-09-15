@@ -18,7 +18,6 @@ package com.google.android.material.theme;
 
 import com.google.android.material.test.R;
 
-import static android.os.Build.VERSION_CODES.LOLLIPOP;
 import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
 import static com.google.common.truth.Truth.assertThat;
 
@@ -41,7 +40,7 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for the Material themes. */
 @RunWith(ParameterizedRobolectricTestRunner.class)
-@Config(sdk = LOLLIPOP)
+@Config(sdk = Config.OLDEST_SDK)
 @DoNotInstrument
 public class ThemeTest {
 
@@ -425,6 +424,8 @@ public class ThemeTest {
           R.attr.extendedFloatingActionButtonSecondaryStyle,
           R.attr.extendedFloatingActionButtonTertiaryStyle,
           R.attr.extendedFloatingActionButtonSurfaceStyle,
+          R.attr.dockedToolbarStyle,
+          R.attr.dockedToolbarVibrantStyle,
           R.attr.floatingActionButtonStyle,
           R.attr.floatingActionButtonPrimaryStyle,
           R.attr.floatingActionButtonSecondaryStyle,
@@ -440,7 +441,12 @@ public class ThemeTest {
           R.attr.floatingActionButtonLargeSecondaryStyle,
           R.attr.floatingActionButtonLargeTertiaryStyle,
           R.attr.floatingActionButtonLargeSurfaceStyle,
+          R.attr.floatingToolbarStyle,
+          R.attr.floatingToolbarVibrantStyle,
           R.attr.linearProgressIndicatorStyle,
+          R.attr.listItemLayoutStyle,
+          R.attr.listItemCardViewStyle,
+          R.attr.listItemCardViewSegmentedStyle,
           R.attr.materialIconButtonStyle,
           R.attr.materialButtonOutlinedStyle,
           R.attr.materialButtonStyle,
@@ -454,6 +460,7 @@ public class ThemeTest {
           R.attr.materialSearchViewToolbarHeight,
           R.attr.materialSearchViewToolbarStyle,
           R.attr.materialSwitchStyle,
+          R.attr.overflowLinearLayoutStyle,
           R.attr.radioButtonStyle,
           R.attr.sliderStyle,
           R.attr.snackbarStyle,
@@ -472,6 +479,31 @@ public class ThemeTest {
           R.attr.toolbarStyle,
           R.attr.toolbarSurfaceStyle);
 
+  /** These are shape styles that should be the same for *all* M3 full themes. */
+  private static final ImmutableList<Integer> M3_SHAPE_ATTRIBUTES =
+      ImmutableList.of(
+          R.attr.shapeCornerFamily,
+          R.attr.shapeCornerSizeExtraSmall,
+          R.attr.shapeCornerSizeSmall,
+          R.attr.shapeCornerSizeMedium,
+          R.attr.shapeCornerSizeLarge,
+          R.attr.shapeCornerSizeLargeIncreased,
+          R.attr.shapeCornerSizeExtraExtraLarge,
+          R.attr.shapeCornerSizeExtraLargeIncreased,
+          R.attr.shapeCornerSizeExtraExtraLarge,
+          R.attr.shapeAppearanceCornerExtraSmall,
+          R.attr.shapeAppearanceCornerSmall,
+          R.attr.shapeAppearanceCornerMedium,
+          R.attr.shapeAppearanceCornerLarge,
+          R.attr.shapeAppearanceCornerLargeIncreased,
+          R.attr.shapeAppearanceCornerExtraLarge,
+          R.attr.shapeAppearanceCornerExtraLargeIncreased,
+          R.attr.listItemShapeAppearanceFirst,
+          R.attr.listItemShapeAppearanceLast,
+          R.attr.listItemShapeAppearanceMiddle,
+          R.attr.listItemShapeAppearanceSingle,
+          R.attr.listItemShapeAppearanceChecked);
+
   /**
    * These are all the attributes where full themes should match {@code Theme.Material3.Light} or
    * {@code Theme_Material3_Dark}.
@@ -482,6 +514,7 @@ public class ThemeTest {
           .addAll(M3_FULL_TYPOGRAPHY_ATTRIBUTES)
           .addAll(M3_FULL_MOTION_ATTRIBUTES)
           .addAll(M3_COMMON_WIDGET_STYLE_ATTRIBUTES)
+          .addAll(M3_SHAPE_ATTRIBUTES)
           .build();
 
   @Parameters(name = "{0}")
@@ -611,6 +644,10 @@ public class ThemeTest {
                 R.style.Theme_Material3_Dark,
                 R.style.Theme_Material3_Light,
                 M3_FULL_MOTION_ATTRIBUTES))
+        // Compare M3 Light and Dark themes - they should have the same shape styles.
+        .addAll(
+            createTestData(
+                R.style.Theme_Material3_Dark, R.style.Theme_Material3_Light, M3_SHAPE_ATTRIBUTES))
         .build();
   }
 

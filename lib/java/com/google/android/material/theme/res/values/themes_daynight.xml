@@ -15,6 +15,13 @@
   ~ limitations under the License.
 -->
 <resources>
+  <!-- Material 3 Expressive themes (day/night versions) for activities. -->
+  <style name="Theme.Material3Expressive.DayNight" parent="Theme.Material3Expressive.Light"/>
+  <style name="Theme.Material3Expressive.DayNight.NoActionBar" parent="Theme.Material3Expressive.Light.NoActionBar"/>
+  <style name="Theme.Material3Expressive.DynamicColors.DayNight" parent="Theme.Material3Expressive.DynamicColors.Light"/>
+  <style name="Theme.Material3Expressive.DynamicColors.DayNight.NoActionBar" parent="Theme.Material3Expressive.DynamicColors.Light.NoActionBar"/>
+  <style name="Theme.Material3Expressive.DayNight.DialogWhenLarge" parent="Theme.Material3Expressive.Light.DialogWhenLarge"/>
+
   <!-- Material 3 themes (day/night versions) for activities. -->
   <style name="Theme.Material3.DayNight" parent="Theme.Material3.Light"/>
   <style name="Theme.Material3.DayNight.NoActionBar" parent="Theme.Material3.Light.NoActionBar"/>

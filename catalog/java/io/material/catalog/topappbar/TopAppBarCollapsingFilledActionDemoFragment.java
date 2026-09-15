@@ -29,6 +29,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 
 /**
  * A fragment that displays a medium Collapsing Toolbar Top App Bar with a filled action button demo
@@ -53,6 +54,8 @@ public class TopAppBarCollapsingFilledActionDemoFragment extends DemoFragment {
     Button actionButton = view.findViewById(R.id.action_button);
     actionButton.setOnClickListener(
         v -> Snackbar.make(v, "Action button is clicked.", Snackbar.LENGTH_SHORT).show());
+
+    DemoUtils.setupClickableContentText(view);
 
     return view;
   }

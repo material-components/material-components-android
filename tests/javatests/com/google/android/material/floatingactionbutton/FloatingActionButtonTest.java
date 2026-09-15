@@ -236,7 +236,7 @@ public class FloatingActionButtonTest {
                   final int[] xy = new int[2];
                   fab.getLocationOnScreen(xy);
                   final Rect rect = new Rect();
-                  fab.getContentRect(rect);
+                  fab.getMeasuredContentRect(rect);
 
                   return new float[] {xy[0] + rect.centerX(), xy[1] + rect.centerY()};
                 },

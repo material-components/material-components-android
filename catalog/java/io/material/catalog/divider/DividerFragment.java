@@ -19,10 +19,8 @@ package io.material.catalog.divider;
 import io.material.catalog.R;
 
 import androidx.fragment.app.Fragment;
-import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import dagger.multibindings.IntoSet;
@@ -76,16 +74,6 @@ public class DividerFragment extends DemoLandingFragment {
     return additionalDemos;
   }
 
-  @StringRes
-  protected static int getDemoTitleResId() {
-    return R.string.cat_divider_demo_title;
-  }
-
-  @DrawableRes
-  protected static int getDemoDrawableResId() {
-    return R.drawable.ic_placeholder;
-  }
-
   /** The Dagger module for {@link DividerFragment} dependencies. */
   @dagger.Module
   public abstract static class Module {
@@ -98,7 +86,7 @@ public class DividerFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(getDemoTitleResId(), getDemoDrawableResId()) {
+      return new FeatureDemo(R.string.cat_divider_demo_title, R.drawable.ic_placeholder) {
         @Override
         public Fragment createFragment() {
           return new DividerFragment();

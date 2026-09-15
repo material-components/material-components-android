@@ -20,6 +20,7 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+import android.content.res.Resources.Theme;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.AttrRes;
@@ -43,8 +44,17 @@ public class MaterialAttributes {
    */
   @Nullable
   public static TypedValue resolve(@NonNull Context context, @AttrRes int attributeResId) {
+    return resolve(context.getTheme(), attributeResId);
+  }
+
+  /**
+   * Returns the {@link TypedValue} for the provided {@code attributeResId} or null if the attribute
+   * is not present in the current theme.
+   */
+  @Nullable
+  public static TypedValue resolve(@NonNull Theme theme, @AttrRes int attributeResId) {
     TypedValue typedValue = new TypedValue();
-    if (context.getTheme().resolveAttribute(attributeResId, typedValue, true)) {
+    if (theme.resolveAttribute(attributeResId, typedValue, true)) {
       return typedValue;
     }
     return null;
@@ -118,7 +128,16 @@ public class MaterialAttributes {
    */
   public static boolean resolveBoolean(
       @NonNull Context context, @AttrRes int attributeResId, boolean defaultValue) {
-    TypedValue typedValue = resolve(context, attributeResId);
+    return resolveBoolean(context.getTheme(), attributeResId, defaultValue);
+  }
+
+  /**
+   * Returns the boolean value for the provided {@code attributeResId} or {@code defaultValue} if
+   * the attribute is not a boolean or not present in the current theme.
+   */
+  public static boolean resolveBoolean(
+      @NonNull Theme theme, @AttrRes int attributeResId, boolean defaultValue) {
+    TypedValue typedValue = resolve(theme, attributeResId);
     return (typedValue != null && typedValue.type == TypedValue.TYPE_INT_BOOLEAN)
         ? typedValue.data != 0
         : defaultValue;
@@ -130,7 +149,16 @@ public class MaterialAttributes {
    */
   public static int resolveInteger(
       @NonNull Context context, @AttrRes int attributeResId, int defaultValue) {
-    TypedValue typedValue = resolve(context, attributeResId);
+    return resolveInteger(context.getTheme(), attributeResId, defaultValue);
+  }
+
+  /**
+   * Returns the integer value for the provided {@code attributeResId} or {@code defaultValue} if
+   * the attribute is not a integer or not present in the current theme.
+   */
+  public static int resolveInteger(
+      @NonNull Theme theme, @AttrRes int attributeResId, int defaultValue) {
+    TypedValue typedValue = resolve(theme, attributeResId);
     return (typedValue != null && typedValue.type == TypedValue.TYPE_INT_DEC)
         ? typedValue.data
         : defaultValue;
@@ -150,11 +178,25 @@ public class MaterialAttributes {
   @Px
   public static int resolveDimension(
       @NonNull Context context, @AttrRes int attributeResId, @DimenRes int defaultDimenResId) {
-    TypedValue dimensionValue = resolve(context, attributeResId);
-    if (dimensionValue == null || dimensionValue.type != TypedValue.TYPE_DIMENSION) {
+    float dimensionValue = resolveDimension(context.getTheme(), attributeResId, Float.NaN);
+    if (Float.isNaN(dimensionValue)) {
       return (int) context.getResources().getDimension(defaultDimenResId);
     } else {
-      return (int) dimensionValue.getDimension(context.getResources().getDisplayMetrics());
+      return (int) dimensionValue;
+    }
+  }
+
+  /**
+   * Returns the pixel value of the dimension specified by {@code attributeResId} or null if
+   * {@code attributeResId} cannot be found or is not a dimension in the given theme.
+   */
+  public static float resolveDimension(
+      @NonNull Theme theme, @AttrRes int attributeResId, float defaultValue) {
+    TypedValue dimensionValue = resolve(theme, attributeResId);
+    if (dimensionValue == null || dimensionValue.type != TypedValue.TYPE_DIMENSION) {
+      return defaultValue;
+    } else {
+      return dimensionValue.getDimension(theme.getResources().getDisplayMetrics());
     }
   }
 }

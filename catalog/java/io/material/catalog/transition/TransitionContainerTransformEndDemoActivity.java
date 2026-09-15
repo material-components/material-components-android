@@ -69,7 +69,7 @@ public class TransitionContainerTransformEndDemoActivity extends DemoActivity {
     // and some of the start views don't have a background and the end view doesn't have a
     // background.
     transform.setAllContainerColors(
-        MaterialColors.getColor(findViewById(android.R.id.content), R.attr.colorSurface));
+        MaterialColors.getColor(findViewById(android.R.id.content), com.google.android.material.R.attr.colorSurface));
     transform.addTarget(android.R.id.content);
     configurationHelper.configure(transform, entering);
     return transform;

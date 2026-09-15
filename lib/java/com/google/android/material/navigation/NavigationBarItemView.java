@@ -69,12 +69,14 @@ import androidx.core.widget.TextViewCompat;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.BaselineLayout;
 import com.google.android.material.motion.MotionUtils;
 import com.google.android.material.navigation.NavigationBarView.ItemGravity;
 import com.google.android.material.navigation.NavigationBarView.ItemIconGravity;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
+import com.google.android.material.shape.MaterialShapeDrawable;
 
 /**
  * Provides a view that will be used to render destination items inside a {@link
@@ -1038,16 +1040,24 @@ public abstract class NavigationBarItemView extends FrameLayout
     boolean defaultHighlightEnabled = true;
 
     if (itemRippleColor != null) {
-      Drawable maskDrawable = getActiveIndicatorDrawable();
-      if (activeIndicatorEnabled && getActiveIndicatorDrawable() != null && maskDrawable != null) {
+      Drawable activeIndicatorDrawable = getActiveIndicatorDrawable();
+      if (activeIndicatorEnabled && activeIndicatorDrawable != null) {
         // Remove the default focus highlight that highlights the entire view and rely on the
         // active indicator ripple to communicate state.
         defaultHighlightEnabled = false;
         // Set the icon container's foreground to a ripple masked by the active indicator's
         // drawable.
-        iconContainerRippleDrawable =
+        RippleDrawable rippleDrawable =
             new RippleDrawable(
-                RippleUtils.sanitizeRippleDrawableColor(itemRippleColor), null, maskDrawable);
+                RippleUtils.sanitizeRippleDrawableColor(itemRippleColor),
+                null,
+                activeIndicatorDrawable);
+        MaterialShapeDrawable shapeDrawable =
+            activeIndicatorDrawable instanceof MaterialShapeDrawable
+                ? (MaterialShapeDrawable) activeIndicatorDrawable
+                : null;
+        FocusRingDrawable.layer(getContext(), rippleDrawable, shapeDrawable);
+        iconContainerRippleDrawable = rippleDrawable;
       } else if (itemBackgroundDrawable == null) {
         // If there has not been a custom background set, use a fallback item background to display
         // state over the entire item.
@@ -1069,9 +1079,10 @@ public abstract class NavigationBarItemView extends FrameLayout
    *
    * @return a {@link Drawable} that can be used as a background and display state.
    */
-  private static Drawable createItemBackgroundCompat(@NonNull ColorStateList rippleColor) {
+  private Drawable createItemBackgroundCompat(@NonNull ColorStateList rippleColor) {
     ColorStateList rippleDrawableColor = RippleUtils.convertToRippleDrawableColor(rippleColor);
-    return new RippleDrawable(rippleDrawableColor, null, null);
+    RippleDrawable rippleDrawable = new RippleDrawable(rippleDrawableColor, null, null);
+    return FocusRingDrawable.wrap(getContext(), rippleDrawable);
   }
 
   /**

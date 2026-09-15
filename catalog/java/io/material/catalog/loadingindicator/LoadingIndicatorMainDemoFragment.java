@@ -43,7 +43,7 @@ public class LoadingIndicatorMainDemoFragment extends DemoFragment {
             R.layout.cat_loading_indicator_fragment, viewGroup, false /* attachToRoot */);
 
     LoadingIndicatorSpec spec =
-        new LoadingIndicatorSpec(getContext(), null, 0, R.style.Widget_Material3_LoadingIndicator);
+        new LoadingIndicatorSpec(getContext(), null, 0, com.google.android.material.R.style.Widget_Material3_LoadingIndicator);
     spec.setScaleToFit(true);
     LoadingIndicatorDrawable loadingIndicatorDrawable =
         LoadingIndicatorDrawable.create(getContext(), spec);

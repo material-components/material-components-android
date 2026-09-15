@@ -19,6 +19,7 @@ package io.material.catalog.tableofcontents;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
 import io.material.catalog.adaptive.AdaptiveFragment;
+import io.material.catalog.allcomponents.AllComponentsFragment;
 import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.bottomappbar.BottomAppBarFragment;
 import io.material.catalog.bottomnav.BottomNavigationFragment;
@@ -32,11 +33,13 @@ import io.material.catalog.color.ColorsFragment;
 import io.material.catalog.datepicker.DatePickerDemoLandingFragment;
 import io.material.catalog.dialog.DialogDemoLandingFragment;
 import io.material.catalog.divider.DividerFragment;
+import io.material.catalog.dockedtoolbar.DockedToolbarFragment;
 import io.material.catalog.elevation.ElevationFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.floatingtoolbar.FloatingToolbarFragment;
 import io.material.catalog.font.FontFragment;
 import io.material.catalog.imageview.ShapeableImageViewFragment;
+import io.material.catalog.listitem.ListsFragment;
 import io.material.catalog.loadingindicator.LoadingIndicatorFragment;
 import io.material.catalog.materialswitch.SwitchFragment;
 import io.material.catalog.menu.MenuFragment;
@@ -49,6 +52,7 @@ import io.material.catalog.search.SearchFragment;
 import io.material.catalog.shapetheming.ShapeThemingFragment;
 import io.material.catalog.sidesheet.SideSheetFragment;
 import io.material.catalog.slider.SliderFragment;
+import io.material.catalog.snackbar.SnackbarFragment;
 import io.material.catalog.tabs.TabsFragment;
 import io.material.catalog.textfield.TextFieldFragment;
 import io.material.catalog.timepicker.TimePickerDemoLandingFragment;
@@ -59,6 +63,7 @@ import io.material.catalog.transition.TransitionFragment;
 @dagger.Module(
     includes = {
       AdaptiveFragment.Module.class,
+      AllComponentsFragment.Module.class,
       BottomAppBarFragment.Module.class,
       ButtonsFragment.Module.class,
       BottomNavigationFragment.Module.class,
@@ -71,11 +76,13 @@ import io.material.catalog.transition.TransitionFragment;
       DatePickerDemoLandingFragment.Module.class,
       DialogDemoLandingFragment.Module.class,
       DividerFragment.Module.class,
+      DockedToolbarFragment.Module.class,
       ElevationFragment.Module.class,
       FabFragment.Module.class,
       FloatingToolbarFragment.Module.class,
       FontFragment.Module.class,
       LoadingIndicatorFragment.Module.class,
+      ListsFragment.Module.class,
       MenuFragment.Module.class,
       NavigationDrawerFragment.Module.class,
       NavigationRailFragment.Module.class,
@@ -86,6 +93,7 @@ import io.material.catalog.transition.TransitionFragment;
       ShapeThemingFragment.Module.class,
       SideSheetFragment.Module.class,
       SliderFragment.Module.class,
+      SnackbarFragment.Module.class,
       SwitchFragment.Module.class,
       TabsFragment.Module.class,
       TextFieldFragment.Module.class,

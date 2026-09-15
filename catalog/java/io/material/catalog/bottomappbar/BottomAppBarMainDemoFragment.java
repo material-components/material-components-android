@@ -18,6 +18,8 @@ package io.material.catalog.bottomappbar;
 
 import io.material.catalog.R;
 
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -28,6 +30,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
+import android.widget.LinearLayout;
 import androidx.activity.BackEventCompat;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.LayoutRes;
@@ -54,6 +58,8 @@ import java.util.List;
 
 /** A fragment that displays the main Bottom App Bar demos for the Catalog app. */
 public class BottomAppBarMainDemoFragment extends DemoFragment {
+
+  private AccessibilityManager am;
 
   private final OnBackPressedCallback bottomDrawerOnBackPressedCallback =
       new OnBackPressedCallback(/* enabled= */ false) {
@@ -125,6 +131,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
     toolbar.setNavigationOnClickListener(v -> getActivity().onBackPressed());
 
     coordinatorLayout = view.findViewById(R.id.coordinator_layout);
+    LinearLayout content = view.findViewById(R.id.bottomappbar_content);
     bar = view.findViewById(R.id.bar);
     ((AppCompatActivity) getActivity()).setSupportActionBar(bar);
     barNavView = bar.getChildAt(0);
@@ -140,9 +147,15 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
           return false;
         });
 
+    if (VERSION.SDK_INT >= VERSION_CODES.M) {
+      am = getContext().getSystemService(AccessibilityManager.class);
+      if (am != null && am.isTouchExplorationEnabled()) {
+        bar.post(() -> content.setPadding(0, content.getPaddingTop(), 0, bar.getMeasuredHeight()));
+      }
+    }
+
     setUpDemoControls(view);
     setUpBottomAppBarShapeAppearance();
-
     return view;
   }
 
@@ -173,7 +186,13 @@ public class BottomAppBarMainDemoFragment extends DemoFragment {
     MaterialSwitch barScrollSwitch = view.findViewById(R.id.bar_scroll_switch);
     barScrollSwitch.setChecked(bar.getHideOnScroll());
     barScrollSwitch.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> bar.setHideOnScroll(isChecked));
+        (buttonView, isChecked) -> {
+          if (am != null && am.isTouchExplorationEnabled()) {
+            bar.setHideOnScroll(false);
+          } else {
+            bar.setHideOnScroll(isChecked);
+          }
+        });
   }
 
   @Override

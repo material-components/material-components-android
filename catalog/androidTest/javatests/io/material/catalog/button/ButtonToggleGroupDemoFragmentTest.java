@@ -20,7 +20,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isNotChecked;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
@@ -61,9 +60,7 @@ public class ButtonToggleGroupDemoFragmentTest {
 
   @Test
   public void testSelectionRequiredToggle() {
-    onView(withId(io.material.catalog.button.R.id.switch_toggle))
-        .check(matches(isDisplayed()))
-        .check(matches(isNotChecked()));
+    onView(withId(io.material.catalog.button.R.id.switch_toggle)).check(matches(isNotChecked()));
 
     onView(withId(io.material.catalog.button.R.id.icon_only_group))
         .check(matches(checkSelectionRequired(false)));

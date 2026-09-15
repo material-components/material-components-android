@@ -24,9 +24,9 @@
     <!--
       The radius of each corner of both the indicator and the track. A radius
       larger than half of the track width will throw exceptions during
-      initialization.
+      initialization. Use 50% for fully rounded corners.
     -->
-    <attr name="trackCornerRadius" format="dimension" />
+    <attr name="trackCornerRadius" format="dimension|fraction" />
     <!--
       The indicator color (or colors in an array). By default, it uses theme
       primary color.
@@ -77,14 +77,14 @@
       once show() is called. If set to zero or negative values (-1 as default),
       the show action will start immediately.
     -->
-    <attr name="showDelay" format="integer" />
+    <attr name="showDelay" />
     <!--
       The minimum time, in milliseconds, that the requested hide action will
       wait to start once show action is started. If set to zero or negative
       values (-1 as default), the requested hide action will start immediately.
       This value is capped to a limit defined in ProgressIndicator class.
     -->
-    <attr name="minHideDelay" format="integer" />
+    <attr name="minHideDelay" />
     <!--
       The size of the gap between the progress indicator and track.
     -->
@@ -119,6 +119,16 @@
       This is independent from the animator scale in the System settings.
     -->
     <attr name="indeterminateAnimatorDurationScale" format="float" />
+    <!--
+      Defines the normalized progress [0, 1], at which the full wave amplitude will be ramped up.
+      When the progress is less than this, the track is shown as flat.
+    -->
+    <attr name="waveAmplitudeRampProgressMin" format="float" />
+    <!--
+      Defines the normalized progress [0, 1], at which the full wave amplitude will be ramped down.
+      When the progress is greater than this, the track is shown as flat.
+    -->
+    <attr name="waveAmplitudeRampProgressMax" format="float" />
   </declare-styleable>
 
   <declare-styleable name="LinearProgressIndicator">
@@ -158,6 +168,16 @@
       The size of the stop indicator at the end of the progress track.
     -->
     <attr name="trackStopIndicatorSize" />
+
+    <!--
+      The radius of corners between the track and the indicator.
+    -->
+    <attr name="trackInnerCornerRadius" format="dimension|fraction" />
+
+    <!--
+      The padding of the stop indicator in the track.
+    -->
+    <attr name="trackStopIndicatorPadding" format="dimension" />
   </declare-styleable>
 
   <declare-styleable name="CircularProgressIndicator">

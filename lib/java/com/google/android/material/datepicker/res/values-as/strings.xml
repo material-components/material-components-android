@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2026 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -38,13 +38,17 @@
   <string name="mtrl_picker_invalid_format_use">Use: %1$s</string>
   <string name="mtrl_picker_invalid_format_example">Example: %1$s</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">Switch to calendar input mode</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">Switch to calendar</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">Switch to text input mode</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">Switch to text input</string>
   <string name="mtrl_picker_a11y_prev_month">Change to previous month</string>
+  <string name="mtrl_picker_prev_month_tooltip">Previous month</string>
   <string name="mtrl_picker_a11y_next_month">Change to next month</string>
-  <string name="mtrl_picker_toggle_to_year_selection">Tap to switch to year view</string>
-  <string name="mtrl_picker_toggle_to_day_selection">Tap to switch to Calendar view</string>
-  <string name="mtrl_picker_toggled_to_year_selection">Switched to year view</string>
-  <string name="mtrl_picker_toggled_to_day_selection">Switched to Calendar view</string>
+  <string name="mtrl_picker_next_month_tooltip">Next month</string>
+  <string name="mtrl_picker_toggle_to_year_selection">Switch to year view</string>
+  <string name="mtrl_picker_pane_title_year_view">Year view</string>
+  <string name="mtrl_picker_toggle_to_day_selection">Switch to Calendar view</string>
+  <string name="mtrl_picker_pane_title_calendar_view">Calendar view</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">Current selection: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">Start date selection: %1$s – End date selection: %2$s</string>

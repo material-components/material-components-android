@@ -92,6 +92,7 @@ public class CircularProgressIndicator
     super(context, attrs, defStyleAttr, CircularProgressIndicator.DEF_STYLE_RES);
 
     initializeDrawables();
+    initialized = true;
   }
 
   // **************** Inherited functions ****************

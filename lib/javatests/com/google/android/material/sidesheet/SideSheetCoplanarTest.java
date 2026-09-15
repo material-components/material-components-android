@@ -23,9 +23,12 @@ import static org.robolectric.Shadows.shadowOf;
 
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.Parcelable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import android.view.ViewGroup.MarginLayoutParams;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,6 +39,8 @@ import org.robolectric.RobolectricTestRunner;
 @RunWith(RobolectricTestRunner.class)
 public class SideSheetCoplanarTest {
 
+  private CoordinatorLayout coordinatorLayout;
+  private View sideSheet;
   private SideSheetBehavior<View> sideSheetBehavior;
 
   private static final int COPLANAR_SIBLING_ID_1 = R.id.coplanar_sibling_1;
@@ -46,10 +51,10 @@ public class SideSheetCoplanarTest {
   @Before
   public void setUp() throws Exception {
     AppCompatActivity activity = Robolectric.buildActivity(TestActivity.class).setup().get();
-    CoordinatorLayout coordinatorLayout =
+    coordinatorLayout =
         (CoordinatorLayout)
             activity.getLayoutInflater().inflate(R.layout.test_coplanar_side_sheet, null);
-    View sideSheet = coordinatorLayout.findViewById(R.id.test_coplanar_side_sheet_container);
+    sideSheet = coordinatorLayout.findViewById(R.id.test_coplanar_side_sheet_container);
     sideSheetBehavior = SideSheetBehavior.from(sideSheet);
 
     coplanarSibling1 = coordinatorLayout.findViewById(COPLANAR_SIBLING_ID_1);
@@ -116,6 +121,72 @@ public class SideSheetCoplanarTest {
     shadowOf(Looper.getMainLooper()).idle();
 
     assertThat(sideSheetBehavior.getCoplanarSiblingView()).isEqualTo(null);
+  }
+
+  @Test
+  public void test_expand_coplanarSiblingMarginIsUpdated() {
+    sideSheetBehavior.setCoplanarSiblingViewId(COPLANAR_SIBLING_ID_1);
+    sideSheetBehavior.expand();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    MarginLayoutParams layoutParams = (MarginLayoutParams) coplanarSibling1.getLayoutParams();
+    assertThat(layoutParams.rightMargin).isEqualTo(sideSheet.getWidth());
+  }
+
+  @Test
+  public void test_coplanarSiblingMarginMaintainedAcrossLayoutPass() {
+    sideSheetBehavior.setCoplanarSiblingViewId(COPLANAR_SIBLING_ID_1);
+    sideSheetBehavior.expand();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    // Trigger re-layout (e.g., config change/dark mode).
+    coordinatorLayout.requestLayout();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    MarginLayoutParams layoutParams = (MarginLayoutParams) coplanarSibling1.getLayoutParams();
+    assertThat(layoutParams.rightMargin).isEqualTo(sideSheet.getWidth());
+  }
+
+  @Test
+  public void test_coplanarSiblingMarginMaintainedAcrossStateRestoration() {
+    sideSheetBehavior.setCoplanarSiblingViewId(COPLANAR_SIBLING_ID_1);
+    sideSheetBehavior.expand();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    Parcelable savedState = sideSheetBehavior.onSaveInstanceState(coordinatorLayout, sideSheet);
+
+    SideSheetBehavior<View> newBehavior = new SideSheetBehavior<>();
+    newBehavior.setCoplanarSiblingViewId(COPLANAR_SIBLING_ID_1);
+    newBehavior.onRestoreInstanceState(coordinatorLayout, sideSheet, savedState);
+
+    LayoutParams params = (LayoutParams) sideSheet.getLayoutParams();
+    params.setBehavior(newBehavior);
+    sideSheet.setLayoutParams(params);
+
+    coordinatorLayout.requestLayout();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    MarginLayoutParams layoutParams = (MarginLayoutParams) coplanarSibling1.getLayoutParams();
+    assertThat(layoutParams.rightMargin).isEqualTo(sideSheet.getWidth());
+  }
+
+  @Test
+  public void test_hide_coplanarSiblingMarginIsResetToZero() {
+    sideSheetBehavior.setCoplanarSiblingViewId(COPLANAR_SIBLING_ID_1);
+    sideSheetBehavior.expand();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    MarginLayoutParams layoutParams = (MarginLayoutParams) coplanarSibling1.getLayoutParams();
+    assertThat(layoutParams.rightMargin).isEqualTo(sideSheet.getWidth());
+
+    sideSheetBehavior.hide();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    coordinatorLayout.requestLayout();
+    shadowOf(Looper.getMainLooper()).idle();
+
+    layoutParams = (MarginLayoutParams) coplanarSibling1.getLayoutParams();
+    assertThat(layoutParams.rightMargin).isEqualTo(0);
   }
 
   private static class TestActivity extends AppCompatActivity {

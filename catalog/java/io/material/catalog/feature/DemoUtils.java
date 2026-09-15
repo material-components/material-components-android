@@ -16,6 +16,8 @@
 
 package io.material.catalog.feature;
 
+import io.material.catalog.R;
+
 import android.app.Activity;
 import android.content.Context;
 import android.view.MenuItem;
@@ -23,6 +25,8 @@ import android.view.View;
 import android.view.View.OnLayoutChangeListener;
 import android.view.ViewGroup;
 import android.widget.ScrollView;
+import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.NestedScrollView;
 import com.google.android.material.internal.ContextUtils;
@@ -61,6 +65,28 @@ public class DemoUtils {
             activity.findViewById(android.R.id.content), menuItem.getTitle(), Snackbar.LENGTH_SHORT)
         .show();
     return true;
+  }
+
+  public static void setupClickableContentText(@NonNull View view) {
+    int[] textIds = {
+      R.id.cat_demo_content_text_1,
+      R.id.cat_demo_content_text_2,
+      R.id.cat_demo_content_text_3,
+      R.id.cat_demo_content_text_4,
+      R.id.cat_demo_content_text_5
+    };
+    for (int id : textIds) {
+      View textView = view.findViewById(id);
+      if (textView != null) {
+        textView.setOnClickListener(
+            v ->
+                Toast.makeText(
+                        view.getContext(),
+                        R.string.cat_demo_content_text_was_clicked,
+                        Toast.LENGTH_SHORT)
+                    .show());
+      }
+    }
   }
 
   public static void addBottomSpaceInsetsIfNeeded(

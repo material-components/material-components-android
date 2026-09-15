@@ -1,5 +1,5 @@
 <!--docs:
-title: "Badge"
+title: "Badges"
 layout: detail
 section: components
 excerpt: "Badges can contain dynamic information, such as a number of pending requests."
@@ -7,18 +7,67 @@ iconId: badge
 path: /catalog/badging/
 -->
 
-# `BadgeDrawable`
+# Badges
 
-## Design and API Documentation
+[Badges](https://m3.material.io/components/badges/overview) show notifications,
+counts, or status information on navigation items and icons. There are two
+variants of badges.
 
-*   [Google Material3 Spec](https://material.io/components/badges/overview)
+<img src="assets/badge/small-badge-hero.png" alt="Small badge" height="250"/> | <img src="assets/badge/large-badge-hero.png" alt="Large badge" height="250"/>
+----------------------------------------------------------------------------- | -----------------------------------------------------------------------------
+1                                                                             | 2
+
+1.  Small badge
+2.  Large badge
+
+**Note:** Images use various dynamic color schemes.
+
+## Design & API documentation
+
+*   [Material 3 (M3) spec](https://m3.material.io/components/badges/overview)
 *   [API reference](https://developer.android.com/reference/com/google/android/material/badge/package-summary)
 
-## Using badges
+## Anatomy
 
-Badge                                         | Badge with number                                    | Badge with a maximum character count
---------------------------------------------- | ---------------------------------------------------- | ------------------------------------
-![badge_icon](assets/badge/IconOnlyBadge.png) | ![badge_with_number_99](assets/badge/BadgeNumber.png) | ![badge_with_999+](assets/badge/BadgeNumberLongerThanMaxCharCount.png)
+<img src="assets/badge/badges-anatomy.png" alt="Small and large badges anatomy" width="800"/>
+
+1.  Small badge
+2.  Large badge container
+3.  Large badge label
+
+More details on anatomy items in the
+[component guidelines](https://m3.material.io/components/badges/guidelines#07608fcc-43f7-47b3-b5cb-ee617753b877).
+
+## Key properties
+
+### `BadgeDrawable` Attributes
+
+| Feature                   | Relevant attributes                                                                                                                                      |
+|-----------------------    |----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Color                     | `app:backgroundColor` <br> `app:badgeTextColor`                                                                                                          |
+| Width                     | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                                                           |
+| Height                    | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                                                         |
+| Shape                     | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay` |
+| Label                     | `app:badgeText` (for text) <br> `app:number` (for numbers)                                                                                               |
+| Label Length              | `app:maxCharacterCount` (for all text) <br> `app:maxNumber` (for numbers only)                                                                           |
+| Label Text Color          | `app:badgeTextColor`                                                                                                                                     |
+| Label Text Appearance     | `app:badgeTextAppearance`                                                                                                                                |
+| Badge Gravity             | `app:badgeGravity`                                                                                                                                       |
+| Offset Alignment          | `app:offsetAlignmentMode`                                                                                                                                |
+| Horizontal Padding        | `app:badgeWidePadding`                                                                                                                                   |
+| Vertical Padding          | `app:badgeVerticalPadding`                                                                                                                               |
+| Large Font Vertical Offset| `app:largeFontVerticalOffsetAdjustment`                                                                                                                  |
+| Badge Fixed Edge          | `app:badgeFixedEdge`                                                                                                                                     |
+
+**Note:** If both `app:badgeText` and `app:number` are specified, the badge
+label will be `app:badgeText`.
+
+## Code implementation
+
+Before you can use Material badges, you need to add a dependency to the Material
+components for Android library. For more information, go to the
+[Getting started](https://github.com/material-components/material-components-android/tree/master/docs/getting-started.md)
+page.
 
 **Note:** This component is still under development and may not support the full
 range of customization Material Android components generally support, for
@@ -28,7 +77,13 @@ A `BadgeDrawable` represents dynamic information such as a number of pending
 requests in a [`BottomNavigationView`](BottomNavigation.md) or
 [`TabLayout`](Tabs.md).
 
-## Usage
+### Adding badges
+
+![Two variants of badges](assets/badge/badges-hero.png)
+
+1.  Small badge on a navigation item
+2.  Large badge on a navigation item
+3.  Large badge with max characters on a navigation item
 
 API and source code:
 
@@ -82,7 +137,7 @@ can specify a `FrameLayout` to display the badge instead.
 BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
 ```
 
-### `BadgeDrawable` Gravity Modes
+### `BadgeDrawable` gravity modes
 
 `BadgeDrawable` offers two gravity modes to control how the badge aligns with
 its anchor view. By default, (`TOP_END`) badge aligns with the top and end edges
@@ -93,42 +148,21 @@ align the badge with the top and start edges of the anchor. Note that
 ### `BadgeDrawable` placement and offsets
 
 By default, `BadgeDrawable` is aligned with the top and end edges of its anchor
-view (with some offsets if `offsetAlignmentMode` is `legacy`). Call `setBadgeGravity(int)` to change it to one of the
-other supported modes. To adjust the badge's offsets relative to the anchor's
-center, use `setHorizontalOffset(int)` or `setVerticalOffset(int)`
+view (with some offsets if `offsetAlignmentMode` is `legacy`). Call
+`setBadgeGravity(int)` to change it to one of the other supported modes. To
+adjust the badge's offsets relative to the anchor's center, use
+`setHorizontalOffset(int)` or `setVerticalOffset(int)`
 
 Regardless of offsets, badges are automatically moved to within the bounds of
 its first ancestor view that does not clip its children, to ensure that the
 badge is not clipped if there is enough space.
 
-### `BadgeDrawable` Attributes
+### TalkBack support
 
-| Feature                   | Relevant attributes                                                                                                                                      |
-|-----------------------    |----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Color                     | `app:backgroundColor` <br> `app:badgeTextColor`                                                                                                          |
-| Width                     | `app:badgeWidth` <br> `app:badgeWithTextWidth`                                                                                                           |
-| Height                    | `app:badgeHeight` <br> `app:badgeWithTextHeight`                                                                                                         |
-| Shape                     | `app:badgeShapeAppearance` <br> `app:badgeShapeAppearanceOverlay` <br> `app:badgeWithTextShapeAppearance` <br> `app:badgeWithTextShapeAppearanceOverlay` |
-| Label                     | `app:badgeText` (for text) <br> `app:number` (for numbers)                                                                                               |
-| Label Length              | `app:maxCharacterCount` (for all text) <br> `app:maxNumber` (for numbers only)                                                                           |
-| Label Text Color          | `app:badgeTextColor`                                                                                                                                     |
-| Label Text Appearance     | `app:badgeTextAppearance`                                                                                                                                |
-| Badge Gravity             | `app:badgeGravity`                                                                                                                                       |
-| Offset Alignment          | `app:offsetAlignmentMode`                                                                                                                                |
-| Horizontal Padding        | `app:badgeWidePadding`                                                                                                                                   |
-| Vertical Padding          | `app:badgeVerticalPadding`                                                                                                                               |
-| Large Font Vertical Offset| `app:largeFontVerticalOffsetAdjustment`                                                                                                                  |
-| Badge Fixed Edge          | `app:badgeFixedEdge`                                                                                                                                     |
-
-
-**Note:** If both `app:badgeText` and `app:number` are specified, the badge label will be `app:badgeText`.
-
-### Talkback Support
-
-`BadgeDrawable` provides a getter for its content description, which is based on the displayed
-number or text (if any). To specify the content description, the developer is provided
-with the following methods:
--   `setContentDescriptionForText(CharSequence)`
--   `setContentDescriptionQuantityStringsResource(@PluralsRes int)`
--   `setContentDescriptionExceedsMaxBadgeNumberStringResource(@StringRes int)`
--   `setContentDescriptionNumberless(CharSequence)`
+`BadgeDrawable` provides a getter for its content description, which is based on
+the displayed number or text (if any). To specify the content description, the
+developer is provided with the following methods:
+`setContentDescriptionForText(CharSequence)`
+`setContentDescriptionQuantityStringsResource(@PluralsRes int)`
+`setContentDescriptionExceedsMaxBadgeNumberStringResource(@StringRes int)`
+`setContentDescriptionNumberless(CharSequence)`

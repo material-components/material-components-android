@@ -39,13 +39,13 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.TextLayoutMode;
+import org.robolectric.annotation.GraphicsMode;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link com.google.android.material.chip.Chip}. */
-@TextLayoutMode(value = TextLayoutMode.Mode.LEGACY, issueId = "130377392")
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
+@GraphicsMode(GraphicsMode.Mode.NATIVE)
 public class ChipTest {
 
   @Rule public final ExpectedException thrown = ExpectedException.none();
@@ -197,6 +197,9 @@ public class ChipTest {
   }
 
   private void setupAndMeasureChip(boolean shouldEnsureMinTouchTargetSize) {
+    // Clear text so the intrinsic width (< 48dp) allows testing minimum touch target expansion
+    // in both width and height (with real text measurement, the text width alone exceeds 48dp).
+    chip.setText("");
     chip.setEnsureMinTouchTargetSize(shouldEnsureMinTouchTargetSize);
     int measureSpec =
         MeasureSpec.makeMeasureSpec((int) (getMinTouchTargetSize() * 2), MeasureSpec.AT_MOST);

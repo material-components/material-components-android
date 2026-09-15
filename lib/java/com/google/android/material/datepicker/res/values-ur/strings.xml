@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2024 The Android Open Source Project
+  ~ Copyright (C) 2026 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -38,13 +38,17 @@
   <string name="mtrl_picker_invalid_format_use">%1$s استعمال کریں</string>
   <string name="mtrl_picker_invalid_format_example">مثال: %1$s۔</string>
   <string name="mtrl_picker_toggle_to_calendar_input_mode">کیلنڈر ان پٹ وضع پر سوئچ کریں</string>
+  <string name="mtrl_picker_toggle_to_calendar_input_mode_tooltip">کیلنڈر پر سوئچ کریں</string>
   <string name="mtrl_picker_toggle_to_text_input_mode">متنی ان پٹ وضع پر سوئچ کریں</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode_tooltip">ٹیکسٹ ان پٹ پر سوئچ کریں</string>
   <string name="mtrl_picker_a11y_prev_month">گزشتہ ماہ میں منتقل کریں</string>
+  <string name="mtrl_picker_prev_month_tooltip">گزشتہ ماہ</string>
   <string name="mtrl_picker_a11y_next_month">اگلے مہینہ میں منتقل کریں</string>
-  <string name="mtrl_picker_toggle_to_year_selection">سال کے منظر پر سوئچ کرنے کے لیے تھپتھپائیں</string>
-  <string name="mtrl_picker_toggle_to_day_selection">کیلنڈر منظر پر سوئچ کرنے کے لیے تھپتھپائیں</string>
-  <string name="mtrl_picker_toggled_to_year_selection">سال کے لحاظ سے دیکھیں پر سوئچ ہو گیا</string>
-  <string name="mtrl_picker_toggled_to_day_selection">کیلنڈر کے لحاظ سے دیکھیں پر سوئچ ہو گیا</string>
+  <string name="mtrl_picker_next_month_tooltip">اگلا ماہ</string>
+  <string name="mtrl_picker_toggle_to_year_selection">سال کے منظر پر سوئچ کریں</string>
+  <string name="mtrl_picker_pane_title_year_view">سال کا منظر</string>
+  <string name="mtrl_picker_toggle_to_day_selection">کیلنڈر کے منظر پر سوئچ کریں</string>
+  <string name="mtrl_picker_pane_title_calendar_view">کیلنڈر کا منظر</string>
   <string name="mtrl_picker_day_of_week_column_header">%1$s</string>
   <string name="mtrl_picker_announce_current_selection">موجودہ انتخاب: %1$s</string>
   <string name="mtrl_picker_announce_current_range_selection">تاریخ آغاز کا انتخاب: %1$s – تاریخ اختتام کا انتخاب: %2$s</string>

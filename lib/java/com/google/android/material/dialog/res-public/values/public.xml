@@ -94,5 +94,28 @@
   <public name="MaterialAlertDialog.Material3.Title.Text.CenterStacked" type="style"/>
   <public name="MaterialAlertDialog.Material3.Body.Text.CenterStacked" type="style"/>
 
+  <public name="Theme.Material3Expressive.Light.Dialog" type="style"/>
+  <public name="Theme.Material3Expressive.Light.Dialog.Alert" type="style"/>
+  <public name="Theme.Material3Expressive.Light.Dialog.MinWidth" type="style"/>
+
+  <public name="Theme.Material3Expressive.Dark.Dialog" type="style"/>
+  <public name="Theme.Material3Expressive.Dark.Dialog.Alert" type="style"/>
+  <public name="Theme.Material3Expressive.Dark.Dialog.MinWidth" type="style"/>
+
+  <public name="Theme.Material3Expressive.DayNight.Dialog" type="style"/>
+  <public name="Theme.Material3Expressive.DayNight.Dialog.Alert" type="style"/>
+  <public name="Theme.Material3Expressive.DayNight.Dialog.MinWidth" type="style"/>
+
+  <public name="ThemeOverlay.Material3Expressive.Dialog" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.Dialog.Alert" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.MaterialAlertDialog" type="style"/>
+  <public name="ThemeOverlay.Material3Expressive.MaterialAlertDialog.Centered" type="style"/>
+
+  <public name="MaterialAlertDialog.Material3Expressive" type="style"/>
+  <public name="MaterialAlertDialog.Material3Expressive.Title.Panel" type="style"/>
+  <public name="MaterialAlertDialog.Material3Expressive.Title.Panel.CenterStacked" type="style"/>
+  <public name="MaterialAlertDialog.Material3Expressive.Title.Text" type="style"/>
+  <public name="MaterialAlertDialog.Material3Expressive.Title.Text.CenterStacked" type="style"/>
+
 </resources>
 

@@ -33,8 +33,8 @@ import java.lang.annotation.RetentionPolicy;
  * the label to behave as "labeled" when there are 3 items or less, or "selected" when there are 4
  * items or more.
  *
- * @deprecated Please use {@link
- *     com.google.android.material.navigation.NavigationBarView.LabelVisibility instead}.
+ * @deprecated To set the label visibility mode, see:
+ *     <p>{@link com.google.android.material.navigation.NavigationBarView.setLabelVisibilityMode}
  */
 @IntDef({
   LabelVisibilityMode.LABEL_VISIBILITY_AUTO,

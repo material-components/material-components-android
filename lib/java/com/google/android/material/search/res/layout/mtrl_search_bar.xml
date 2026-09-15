@@ -16,10 +16,24 @@
 -->
 <!-- This text view isn't exposed to accessibility because its attributes are mirrored on the
      parent container to more closely resemble the behavior of an EditText. -->
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/open_search_bar_text_view_container"
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content">
+  <TextView
     android:id="@+id/open_search_bar_text_view"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:ellipsize="end"
     android:importantForAccessibility="no"
     android:maxLines="1"/>
+  <TextView
+    android:id="@+id/open_search_bar_placeholder_text_view"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:ellipsize="end"
+    android:visibility="invisible"
+    android:importantForAccessibility="no"
+    android:maxLines="1"/>
+</FrameLayout>

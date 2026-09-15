@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2025 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <!-- Base style for Docked Toolbar. -->
+  <style name="Base.Widget.Material3.DockedToolbar" parent="">
+    <item name="enforceMaterialTheme">true</item>
+    <item name="android:minHeight">@dimen/m3_comp_toolbar_docked_container_height</item>
+    <item name="backgroundTint">?attr/colorSurfaceContainer</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.Toolbar.Docked.Container.Shape</item>
+    <item name="android:paddingStart">@dimen/m3_comp_toolbar_docked_container_leading_space</item>
+    <item name="android:paddingEnd">@dimen/m3_comp_toolbar_docked_container_trailing_space</item>
+    <item name="android:fitsSystemWindows">true</item>
+  </style>
+
+  <!-- Style for Standard Docked Toolbar. -->
+  <style name="Widget.Material3.DockedToolbar" parent="Base.Widget.Material3.DockedToolbar">
+      <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.DockedToolbar</item>
+  </style>
+
+  <!-- Style for Vibrant Docked Toolbar. -->
+  <style name="Widget.Material3.DockedToolbar.Vibrant">
+    <item name="backgroundTint">@macro/m3_comp_toolbar_vibrant_container_color</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.DockedToolbar.Vibrant</item>
+  </style>
+
+  <!-- Style for Icon Button in Standard Docked Toolbar. -->
+  <style name="Widget.Material3.DockedToolbar.IconButton" parent="Widget.Material3Expressive.Button.IconButton">
+    <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
+    <item name="android:textColor">@color/m3_standard_toolbar_button_text_color_selector</item>
+    <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>
+    <item name="rippleColor">@color/m3_standard_toolbar_icon_button_ripple_color_selector</item>
+  </style>
+
+  <!-- Style for Buttons in Standard Docked Toolbar. -->
+  <style name="Widget.Material3.DockedToolbar.Button" parent="Widget.Material3Expressive.Button">
+    <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
+    <item name="android:textColor">@color/m3_standard_toolbar_button_text_color_selector</item>
+    <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>
+    <item name="rippleColor">@color/m3_standard_toolbar_icon_button_ripple_color_selector</item>
+  </style>
+
+  <!-- Style for Text Buttons in Standard Docked Toolbar. -->
+  <style name="Widget.Material3.DockedToolbar.TextButton" parent="Widget.Material3Expressive.Button.TextButton">
+    <item name="backgroundTint">@color/m3_standard_toolbar_icon_button_container_color_selector</item>
+    <item name="android:textColor">@color/m3_standard_toolbar_button_text_color_selector</item>
+    <item name="iconTint">@color/m3_standard_toolbar_icon_button_icon_color_selector</item>
+    <item name="rippleColor">@color/m3_standard_toolbar_icon_button_ripple_color_selector</item>
+  </style>
+
+  <!-- Style for Icon button within Vibrant Docked Toolbars. -->
+  <style name="Widget.Material3.DockedToolbar.IconButton.Vibrant">
+    <item name="android:textColor">@color/m3_vibrant_toolbar_button_text_color_selector</item>
+    <item name="backgroundTint">@color/m3_vibrant_toolbar_icon_button_container_color_selector</item>
+    <item name="iconTint">@color/m3_vibrant_toolbar_icon_button_icon_color_selector</item>
+    <item name="rippleColor">@color/m3_vibrant_toolbar_icon_button_ripple_color_selector</item>
+  </style>
+
+  <!-- Style for Button within Vibrant Docked Toolbars. -->
+  <style name="Widget.Material3.DockedToolbar.Button.Vibrant">
+    <item name="android:textColor">@color/m3_vibrant_toolbar_button_text_color_selector</item>
+    <item name="backgroundTint">@color/m3_vibrant_toolbar_icon_button_container_color_selector</item>
+    <item name="iconTint">@color/m3_vibrant_toolbar_icon_button_icon_color_selector</item>
+    <item name="rippleColor">@color/m3_vibrant_toolbar_icon_button_ripple_color_selector</item>
+  </style>
+
+  <!-- Style for Text button within Vibrant Docked Toolbars. -->
+  <style name="Widget.Material3.DockedToolbar.TextButton.Vibrant">
+    <item name="android:textColor">@color/m3_vibrant_toolbar_button_text_color_selector</item>
+    <item name="backgroundTint">@color/m3_vibrant_toolbar_icon_button_container_color_selector</item>
+    <item name="iconTint">@color/m3_vibrant_toolbar_icon_button_icon_color_selector</item>
+    <item name="rippleColor">@color/m3_vibrant_toolbar_icon_button_ripple_color_selector</item>
+  </style>
+
+  <!-- Theme overlay to be set on Docked Toolbars. -->
+  <style name="ThemeOverlay.Material3.DockedToolbar" parent="">
+    <item name="materialIconButtonStyle">@style/Widget.Material3.DockedToolbar.IconButton</item>
+    <item name="materialButtonStyle">@style/Widget.Material3.DockedToolbar.TextButton</item>
+    <item name="borderlessButtonStyle">@style/Widget.Material3.DockedToolbar.TextButton</item>
+  </style>
+
+  <!-- Theme overlay to be set on Vibrant Docked Toolbars. -->
+  <style name="ThemeOverlay.Material3.DockedToolbar.Vibrant">
+    <item name="materialIconButtonStyle">@style/Widget.Material3.DockedToolbar.IconButton.Vibrant</item>
+    <item name="materialButtonStyle">@style/Widget.Material3.DockedToolbar.Button.Vibrant</item>
+    <item name="borderlessButtonStyle">@style/Widget.Material3.DockedToolbar.TextButton.Vibrant</item>
+  </style>
+
+</resources>

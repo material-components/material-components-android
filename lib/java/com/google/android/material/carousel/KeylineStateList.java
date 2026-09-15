@@ -380,7 +380,7 @@ public class KeylineStateList {
 
   @NonNull
   private static KeylineState shiftKeylineStateForPadding(
-      @NonNull KeylineState keylineState, float padding, float carouselSize, boolean leftShift,
+      @NonNull KeylineState keylineState, float padding, int carouselSize, boolean leftShift,
       float childMargins, CarouselStrategy.StrategyType strategyType) {
     switch (strategyType) {
       case CONTAINED:
@@ -394,7 +394,7 @@ public class KeylineStateList {
 
   @NonNull
   private static KeylineState shiftKeylineStateForPaddingUncontained(
-      @NonNull KeylineState keylineState, float padding, float carouselSize, boolean leftShift) {
+      @NonNull KeylineState keylineState, float padding, int carouselSize, boolean leftShift) {
     List<Keyline> tmpKeylines = new ArrayList<>(keylineState.getKeylines());
     KeylineState.Builder builder =
         new KeylineState.Builder(keylineState.getItemSize(), carouselSize);
@@ -428,7 +428,7 @@ public class KeylineStateList {
   }
 
   private static KeylineState shiftKeylineStateForPaddingContained(
-      KeylineState keylineState, float padding, float carouselSize, boolean leftShift,
+      KeylineState keylineState, float padding, int carouselSize, boolean leftShift,
       float childMargins) {
 
     List<Keyline> tmpKeylines = new ArrayList<>(keylineState.getKeylines());
@@ -503,7 +503,7 @@ public class KeylineStateList {
     List<KeylineState> steps = new ArrayList<>();
     steps.add(defaultState);
     int firstNonAnchorKeylineIndex = findFirstNonAnchorKeylineIndex(defaultState);
-    float carouselSize =
+    int carouselSize =
         carousel.isHorizontal() ? carousel.getContainerWidth() : carousel.getContainerHeight();
 
     // If the first focal item is already at the left of the container or there are no in bounds
@@ -610,7 +610,7 @@ public class KeylineStateList {
     List<KeylineState> steps = new ArrayList<>();
     steps.add(defaultState);
     int lastNonAnchorKeylineIndex = findLastNonAnchorKeylineIndex(defaultState);
-    float carouselSize =
+    int carouselSize =
         carousel.isHorizontal() ? carousel.getContainerWidth() : carousel.getContainerHeight();
 
     // If the focal end item is already at the end of the container and is fully visible or there
@@ -704,7 +704,7 @@ public class KeylineStateList {
    * @return a new {@link KeylineState} with the shifted keylines
    */
   private static KeylineState shiftKeylinesAndCreateKeylineState(
-      KeylineState state, float startOffset, float carouselSize) {
+      KeylineState state, float startOffset, int carouselSize) {
     return moveKeylineAndCreateKeylineState(
         state,
         0,
@@ -735,7 +735,7 @@ public class KeylineStateList {
       float startOffset,
       int newFirstFocalIndex,
       int newLastFocalIndex,
-      float carouselSize) {
+      int carouselSize) {
 
     List<Keyline> tmpKeylines = new ArrayList<>(state.getKeylines());
     Keyline item = tmpKeylines.remove(keylineSrcIndex);

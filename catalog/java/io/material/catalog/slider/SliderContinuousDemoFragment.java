@@ -18,6 +18,8 @@ package io.material.catalog.slider;
 
 import io.material.catalog.R;
 
+import static java.lang.Math.max;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -54,6 +56,18 @@ public class SliderContinuousDemoFragment extends DemoFragment {
     setUpSlider(sliderOne, view.findViewById(R.id.value_1), "%.0f");
     setUpSlider(sliderTwo, view.findViewById(R.id.value_2), "%.0f");
     setUpSlider(sliderThree, view.findViewById(R.id.value_3), "%.2f");
+
+    view.findViewById(R.id.add_tick).setOnClickListener(v -> {
+      sliderOne.setContinuousModeTickCount(sliderOne.getContinuousModeTickCount() + 1);
+      sliderTwo.setContinuousModeTickCount(sliderTwo.getContinuousModeTickCount() + 1);
+      sliderThree.setContinuousModeTickCount(sliderThree.getContinuousModeTickCount() + 1);
+    });
+
+    view.findViewById(R.id.remove_tick).setOnClickListener(v -> {
+      sliderOne.setContinuousModeTickCount(max(sliderOne.getContinuousModeTickCount() - 1, 0));
+      sliderTwo.setContinuousModeTickCount(max(sliderTwo.getContinuousModeTickCount() - 1, 0));
+      sliderThree.setContinuousModeTickCount(max(sliderThree.getContinuousModeTickCount() - 1, 0));
+    });
 
     return view;
   }

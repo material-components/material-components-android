@@ -17,6 +17,7 @@ package com.google.android.material.datepicker;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Parcel;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -73,7 +74,7 @@ public class TestBackgroundHighlightDecorator extends DayViewDecorator {
 
   @ColorInt
   private int getTextHighlightColor(Context context) {
-    return MaterialColors.getColor(context, R.attr.colorOnTertiary, R.attr.colorControlNormal);
+    return MaterialColors.getColor(context, R.attr.colorOnTertiary, Color.BLACK);
   }
 
   @ColorInt

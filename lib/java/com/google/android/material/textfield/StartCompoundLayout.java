@@ -26,6 +26,7 @@ import static com.google.android.material.textfield.IconHelper.setIconMinSize;
 import static com.google.android.material.textfield.IconHelper.setIconOnClickListener;
 import static com.google.android.material.textfield.IconHelper.setIconOnLongClickListener;
 import static com.google.android.material.textfield.IconHelper.setIconScaleType;
+import static com.google.android.material.textfield.IconHelper.updateIconTooltip;
 
 import android.annotation.SuppressLint;
 import android.content.res.ColorStateList;
@@ -100,6 +101,11 @@ class StartCompoundLayout extends LinearLayout {
 
     addView(startIconView);
     addView(prefixTextView);
+
+    startIconView.setOnFocusableChangedListener(
+        (v, focusable) ->
+            updateIconTooltip(
+                startIconView, startIconOnLongClickListener, getStartIconContentDescription()));
   }
 
   private void initStartIconView(TintTypedArray a) {
@@ -229,6 +235,12 @@ class StartCompoundLayout extends LinearLayout {
 
   void setStartIconVisible(boolean visible) {
     if (isStartIconVisible() != visible) {
+      if (!visible && startIconView.hasFocus()) {
+        EditText editText = textInputLayout.getEditText();
+        if (editText != null) {
+          editText.requestFocus();
+        }
+      }
       startIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
       updatePrefixTextViewPadding();
       updateVisibility();
@@ -254,6 +266,7 @@ class StartCompoundLayout extends LinearLayout {
   void setStartIconContentDescription(@Nullable CharSequence startIconContentDescription) {
     if (getStartIconContentDescription() != startIconContentDescription) {
       startIconView.setContentDescription(startIconContentDescription);
+      updateIconTooltip(startIconView, startIconOnLongClickListener, startIconContentDescription);
     }
   }
 

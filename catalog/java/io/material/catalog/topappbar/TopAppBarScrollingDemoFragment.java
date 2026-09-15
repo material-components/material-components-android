@@ -53,7 +53,9 @@ public class TopAppBarScrollingDemoFragment extends DemoFragment {
 
     AppBarLayout appBarLayout = view.findViewById(R.id.appbarlayout);
     appBarLayout.setStatusBarForegroundColor(
-        MaterialColors.getColor(appBarLayout, R.attr.colorSurface));
+        MaterialColors.getColor(appBarLayout, com.google.android.material.R.attr.colorSurface));
+
+    DemoUtils.setupClickableContentText(view);
 
     return view;
   }

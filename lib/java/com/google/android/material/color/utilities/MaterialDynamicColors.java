@@ -24,16 +24,16 @@ import androidx.annotation.RestrictTo;
 /**
  * Named colors, otherwise known as tokens, or roles, in the Material Design system.
  *
- * <p> Prevent lint for Function.apply not being available on Android before API level 14 (4.0.1).
- * "AndroidJdkLibsChecker" for Function, "NewApi" for Function.apply().
- * A java_library Bazel rule with an Android constraint cannot skip these warnings without this
- * annotation; another solution would be to create an android_library rule and supply
- * AndroidManifest with an SDK set higher than 14.
+ * <p>Prevent lint for Function.apply not being available on Android before API level 14 (4.0.1).
+ * "AndroidJdkLibsChecker" for Function, "NewApi" for Function.apply(). A java_library Bazel rule
+ * with an Android constraint cannot skip these warnings without this annotation; another solution
+ * would be to create an android_library rule and supply AndroidManifest with an SDK set higher than
+ * 14.
  *
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-@SuppressWarnings({"AndroidJdkLibsChecker", "NewApi"})
+@SuppressWarnings("NewApi")
 public final class MaterialDynamicColors {
   /** Optionally use fidelity on most color schemes. */
   private final boolean isExtendedFidelity;

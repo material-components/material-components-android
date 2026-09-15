@@ -58,8 +58,6 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
   private float cachedAmplitude;
   private int cachedWavelength;
   private float cachedRadius;
-  // For full round ends, the stroke ROUND cap is used to prevent artifacts like (b/319309456).
-  private boolean useStrokeCap;
   private boolean drawingDeterminateIndicator;
 
   // This will be used in the ESCAPE hide animation. The start and end fraction in track will be
@@ -138,10 +136,9 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
         -outerRadiusWithInset, -outerRadiusWithInset, outerRadiusWithInset, outerRadiusWithInset);
 
     // These are used when drawing the indicator and track.
-    useStrokeCap = spec.trackThickness / 2f <= spec.trackCornerRadius;
     displayedTrackThickness = spec.trackThickness * trackThicknessFraction;
     displayedCornerRadius =
-        min(spec.trackThickness / 2f, spec.trackCornerRadius) * trackThicknessFraction;
+        min(spec.trackThickness / 2, spec.getTrackCornerRadiusInPx()) * trackThicknessFraction;
     displayedAmplitude = spec.waveAmplitude * trackThicknessFraction;
 
     // Further adjusts the radius for animated visibility change.
@@ -348,7 +345,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
     } else {
       // Draws the arc with ROUND cap if the corner radius is half of the track thickness.
       paint.setStyle(Style.STROKE);
-      paint.setStrokeCap(useStrokeCap ? Cap.ROUND : Cap.BUTT);
+      paint.setStrokeCap(spec.useStrokeCap() ? Cap.ROUND : Cap.BUTT);
       // Draws the arc without rounded corners.
       float startDegreeWithoutCorners = startDegree + displayedCornerRadiusInDegree;
       float arcDegreeWithoutCorners = arcDegree - displayedCornerRadiusInDegree * 2;
@@ -374,7 +371,7 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
       }
 
       // Draws rounded rectangles if ROUND cap is not used and the corner radius is bigger than 0.
-      if (!useStrokeCap && displayedCornerRadius > 0) {
+      if (!spec.useStrokeCap() && displayedCornerRadius > 0) {
         paint.setStyle(Style.FILL);
         drawRoundedBlock(canvas, paint, endPoints.first, blockWidth, displayedTrackThickness);
         drawRoundedBlock(canvas, paint, endPoints.second, blockWidth, displayedTrackThickness);

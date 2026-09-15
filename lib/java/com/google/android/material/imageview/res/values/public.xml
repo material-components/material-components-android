@@ -18,5 +18,6 @@
 
   <public name="contentPaddingStart" type="attr" />
   <public name="contentPaddingEnd" type="attr" />
+  <public name="Widget.MaterialComponents.ShapeableImageView" type="style"/>
 
 </resources>

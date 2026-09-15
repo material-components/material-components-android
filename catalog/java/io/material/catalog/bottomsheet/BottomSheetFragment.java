@@ -71,6 +71,13 @@ public class BottomSheetFragment extends DemoLandingFragment {
             return new BottomSheetUnscrollableContentDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_bottomsheet_multiple_scrollable_content_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new BottomSheetMultipleScrollableContentDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

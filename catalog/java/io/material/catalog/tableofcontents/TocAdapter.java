@@ -58,6 +58,7 @@ final class TocAdapter extends Adapter<TocViewHolder> implements Filterable {
           return filterResults;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults filterResults) {
           featureDemos.clear();

@@ -132,6 +132,9 @@
   <!-- Style to use for Small Surface color FloatingActionButtons in this theme. -->
   <attr name="floatingActionButtonSmallSurfaceStyle" format="reference"/>
 
+  <!-- Style to use for default FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonMediumStyle" format="reference"/>
+
   <!-- Style to use for Large FloatingActionButtons in this theme. -->
   <attr name="floatingActionButtonLargeStyle" format="reference"/>
 
@@ -161,4 +164,13 @@
 
   <!-- Style to use for Surface ExtendedFloatingActionButtons in this theme. -->
   <attr name="extendedFloatingActionButtonSurfaceStyle" format="reference"/>
+
+  <!-- Styles to use for Small ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonSmallStyle" format="reference"/>
+
+  <!-- Styles to use for Medium ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonMediumStyle" format="reference"/>
+
+  <!-- Styles to use for Large ExtendedFloatingActionButtons in this theme. -->
+  <attr name="extendedFloatingActionButtonLargeStyle" format="reference"/>
 </resources>

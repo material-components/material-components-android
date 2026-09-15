@@ -15,6 +15,8 @@
      limitations under the License.
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="wrap_content"
   android:layout_height="match_parent">
 
@@ -31,23 +33,58 @@
     android:paddingRight="@dimen/mtrl_calendar_header_content_padding"
     android:orientation="vertical">
 
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
       android:id="@+id/mtrl_picker_header_title_and_selection"
       android:layout_width="@dimen/mtrl_calendar_landscape_header_width"
       android:layout_height="0dp"
       android:layout_weight="1"
       android:paddingStart="@dimen/mtrl_calendar_header_text_padding"
       android:paddingLeft="@dimen/mtrl_calendar_header_text_padding"
-      android:importantForAccessibility="yes"
       android:focusable="false"
-      android:focusableInTouchMode="false">
+      android:focusableInTouchMode="false"
+      android:importantForAccessibility="yes">
 
-      <include layout="@layout/mtrl_picker_header_title_text"/>
-      <include layout="@layout/mtrl_picker_header_selection_text"/>
+      <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
 
-    </FrameLayout>
+      <!-- Disable InconsistentLayout check. This ID is used in an <include>
+           in the portrait layout , which the Lint check doesn't detect. -->
+      <TextView
+        android:id="@+id/mtrl_picker_title_text"
+        style="?attr/materialCalendarHeaderTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:firstBaselineToTopHeight="@dimen/mtrl_calendar_title_baseline_to_top"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0"
+        tools:ignore="InconsistentLayout" />
 
-    <include layout="@layout/mtrl_picker_header_toggle"/>
+      <!-- Disable InconsistentLayout check. This ID is used in an <include>
+           in the portrait layout , which the Lint check doesn't detect. -->
+      <TextView
+        android:id="@+id/mtrl_picker_header_selection_text"
+        style="?attr/materialCalendarHeaderSelection"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constrainedHeight="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mtrl_picker_title_text"
+        app:lineHeight="@dimen/mtrl_calendar_header_selection_line_height"
+        tools:ignore="InconsistentLayout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/mtrl_picker_header_toggle" />
 
   </LinearLayout>
 
@@ -55,6 +92,6 @@
     style="?attr/materialCalendarHeaderDivider"
     android:layout_width="@dimen/mtrl_calendar_header_divider_thickness"
     android:layout_height="match_parent"
-    android:layout_gravity="end"/>
+    android:layout_gravity="end" />
 
 </merge>

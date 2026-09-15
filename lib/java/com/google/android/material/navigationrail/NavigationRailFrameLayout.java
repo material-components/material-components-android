@@ -55,6 +55,7 @@ public class NavigationRailFrameLayout extends FrameLayout {
     int totalHeaderHeight = 0;
     View menuView = getChildAt(0);
     int menuHeightSpec = heightMeasureSpec;
+    int height = MeasureSpec.getSize(heightMeasureSpec);
 
     // If there's more than one child, the header should be first
     if (childCount > 1) {
@@ -64,7 +65,7 @@ public class NavigationRailFrameLayout extends FrameLayout {
       LayoutParams headerLp = (LayoutParams) headerView.getLayoutParams();
       totalHeaderHeight =
           headerView.getMeasuredHeight() + headerLp.bottomMargin + headerLp.topMargin;
-      int maxMenuHeight = getMeasuredHeight() - totalHeaderHeight - paddingTop;
+      int maxMenuHeight = height - totalHeaderHeight - paddingTop;
 
       // Measure menu
       menuView = getChildAt(1);
@@ -77,7 +78,7 @@ public class NavigationRailFrameLayout extends FrameLayout {
     LayoutParams menuLp = (LayoutParams) menuView.getLayoutParams();
     measureChild(menuView, widthMeasureSpec, menuHeightSpec);
     int totalMenuHeight = menuView.getMeasuredHeight() + menuLp.bottomMargin + menuLp.topMargin;
-    int totalHeight = max(getMeasuredHeight(), paddingTop + totalHeaderHeight + totalMenuHeight);
+    int totalHeight = max(height, paddingTop + totalHeaderHeight + totalMenuHeight);
 
     setMeasuredDimension(getMeasuredWidth(), totalHeight);
   }

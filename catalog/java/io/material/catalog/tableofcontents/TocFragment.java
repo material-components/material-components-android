@@ -50,6 +50,7 @@ import io.material.catalog.preferences.CatalogPreferencesDialogFragment;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import javax.inject.Inject;
@@ -133,14 +134,20 @@ public class TocFragment extends DaggerFragment {
             gridSpanCount));
 
     List<FeatureDemo> featureList = new ArrayList<>(featureDemos);
-    // Sort features alphabetically
+    // Sort features by priority flag first and then alphabetically
     Collator collator = Collator.getInstance();
-    Collections.sort(
-        featureList,
-        (feature1, feature2) ->
-            collator.compare(
-                getContext().getString(feature1.getTitleResId()),
-                getContext().getString(feature2.getTitleResId())));
+    Comparator<FeatureDemo> comparator =
+        (feature1, feature2) -> {
+          // Swap the parameters to sort in descending priority order
+          int priorityCompare = Boolean.compare(feature2.isPriority(), feature1.isPriority());
+          if (priorityCompare != 0) {
+            return priorityCompare;
+          }
+          return collator.compare(
+              getContext().getString(feature1.getTitleResId()),
+              getContext().getString(feature2.getTitleResId()));
+        };
+    Collections.sort(featureList, comparator);
 
     tocAdapter = new TocAdapter(getActivity(), featureList);
     recyclerView.setAdapter(tocAdapter);

@@ -15,8 +15,7 @@
   ~ limitations under the License.
 -->
 
-<view
-  xmlns:android="http://schemas.android.com/apk/res/android"
+<view xmlns:android="http://schemas.android.com/apk/res/android"
   class="com.google.android.material.snackbar.SnackbarContentLayout"
   android:layout_width="match_parent"
   android:layout_height="wrap_content"
@@ -37,6 +36,14 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical|right|end"
     android:minWidth="48dp"
+    android:visibility="gone"/>
+
+  <Button
+    android:id="@+id/mtrl_snackbar_close"
+    style="?attr/snackbarCloseButtonStyle"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|right|end"
     android:visibility="gone"/>
 
 </view>

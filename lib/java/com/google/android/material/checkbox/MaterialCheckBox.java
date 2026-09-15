@@ -31,6 +31,8 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.AnimatedStateListDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableWrapper;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
@@ -225,7 +227,7 @@ public class MaterialCheckBox extends AppCompatCheckBox {
   }
 
   public MaterialCheckBox(Context context, @Nullable AttributeSet attrs) {
-    this(context, attrs, R.attr.checkboxStyle);
+    this(context, attrs, androidx.appcompat.R.attr.checkboxStyle);
   }
 
   public MaterialCheckBox(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -271,6 +273,12 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     if (attributes.hasValue(R.styleable.MaterialCheckBox_checkedState)) {
       setCheckedState(
           attributes.getInt(R.styleable.MaterialCheckBox_checkedState, STATE_UNCHECKED));
+    }
+
+    if (attributes.hasValue(R.styleable.MaterialCheckBox_rippleColor)) {
+      setRippleColor(
+          MaterialResources.getColorStateList(
+              context, attributes, R.styleable.MaterialCheckBox_rippleColor));
     }
 
     attributes.recycle();
@@ -809,8 +817,10 @@ public class MaterialCheckBox extends AppCompatCheckBox {
   private ColorStateList getMaterialThemeColorsTintList() {
     if (materialThemeColorsTintList == null) {
       int[] checkBoxColorsList = new int[CHECKBOX_STATES.length];
-      int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
-      int colorError = MaterialColors.getColor(this, R.attr.colorError);
+      int colorControlActivated =
+          MaterialColors.getColor(this, androidx.appcompat.R.attr.colorControlActivated);
+      int colorError =
+          MaterialColors.getColor(this, androidx.appcompat.R.attr.colorError);
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
       int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
 
@@ -828,6 +838,19 @@ public class MaterialCheckBox extends AppCompatCheckBox {
       materialThemeColorsTintList = new ColorStateList(CHECKBOX_STATES, checkBoxColorsList);
     }
     return materialThemeColorsTintList;
+  }
+
+  private void setRippleColor(@Nullable ColorStateList rippleColor) {
+    if (rippleColor == null) {
+      return;
+    }
+    Drawable background = getBackground();
+    if (background instanceof DrawableWrapper) {
+      background = ((DrawableWrapper) background).getDrawable();
+    }
+    if (background instanceof RippleDrawable) {
+      ((RippleDrawable) background).setColor(rippleColor);
+    }
   }
 
   @Override
@@ -868,13 +891,13 @@ public class MaterialCheckBox extends AppCompatCheckBox {
      */
     private SavedState(Parcel in) {
       super(in);
-      checkedState = (Integer) in.readValue(getClass().getClassLoader());
+      checkedState = in.readInt();
     }
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
       super.writeToParcel(out, flags);
-      out.writeValue(checkedState);
+      out.writeInt(checkedState);
     }
 
     @Override

@@ -16,7 +16,7 @@
 -->
 <resources>
 
-  <string-array name="cat_font_styles_array">
+  <string-array name="cat_font_styles_array" translatable="false">
     <item>?attr/textAppearanceDisplayLarge</item>
     <item>?attr/textAppearanceDisplayMedium</item>
     <item>?attr/textAppearanceDisplaySmall</item>
@@ -32,9 +32,25 @@
     <item>?attr/textAppearanceLabelLarge</item>
     <item>?attr/textAppearanceLabelMedium</item>
     <item>?attr/textAppearanceLabelSmall</item>
+
+    <item>?attr/textAppearanceDisplayLargeEmphasized</item>
+    <item>?attr/textAppearanceDisplayMediumEmphasized</item>
+    <item>?attr/textAppearanceDisplaySmallEmphasized</item>
+    <item>?attr/textAppearanceHeadlineLargeEmphasized</item>
+    <item>?attr/textAppearanceHeadlineMediumEmphasized</item>
+    <item>?attr/textAppearanceHeadlineSmallEmphasized</item>
+    <item>?attr/textAppearanceTitleLargeEmphasized</item>
+    <item>?attr/textAppearanceTitleMediumEmphasized</item>
+    <item>?attr/textAppearanceTitleSmallEmphasized</item>
+    <item>?attr/textAppearanceBodyLargeEmphasized</item>
+    <item>?attr/textAppearanceBodyMediumEmphasized</item>
+    <item>?attr/textAppearanceBodySmallEmphasized</item>
+    <item>?attr/textAppearanceLabelLargeEmphasized</item>
+    <item>?attr/textAppearanceLabelMediumEmphasized</item>
+    <item>?attr/textAppearanceLabelSmallEmphasized</item>
   </string-array>
 
-  <string-array name="cat_font_style_names_array">
+  <string-array name="cat_font_style_names_array" translatable="false">
     <item>Display Large</item>
     <item>Display Medium</item>
     <item>Display Small</item>
@@ -50,6 +66,22 @@
     <item>Label Large</item>
     <item>Label Medium</item>
     <item>Label Small</item>
+
+    <item>Display Large Emphasized</item>
+    <item>Display Medium Emphasized</item>
+    <item>Display Small Emphasized</item>
+    <item>Headline Large Emphasized</item>
+    <item>Headline Medium Emphasized</item>
+    <item>Headline Small Emphasized</item>
+    <item>Title Large Emphasized</item>
+    <item>Title Medium Emphasized</item>
+    <item>Title Small Emphasized</item>
+    <item>Body Large Emphasized</item>
+    <item>Body Medium Emphasized</item>
+    <item>Body Small Emphasized</item>
+    <item>Label Large Emphasized</item>
+    <item>Label Medium Emphasized</item>
+    <item>Label Small Emphasized</item>
   </string-array>
 
 </resources>

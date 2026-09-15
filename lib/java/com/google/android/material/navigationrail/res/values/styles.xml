@@ -16,6 +16,99 @@
   -->
 <resources>
 
+  <!-- Styles for M3 Expressive NavigationRailView. -->
+
+  <style name="Widget.Material3Expressive.NavigationRailView" parent="Widget.Material3.NavigationRailView">
+    <item name="collapsedItemMinHeight">@dimen/m3expressive_nav_rail_item_min_height</item>
+    <item name="expandedItemMinHeight">@dimen/m3_comp_nav_rail_item_short_container_height</item>
+    <item name="expandedMinWidth">@dimen/m3_comp_nav_rail_expanded_container_width_minimum</item>
+    <item name="expandedMaxWidth">@dimen/m3_comp_nav_rail_expanded_container_width_maximum</item>
+    <item name="android:background">@macro/m3_comp_nav_rail_collapsed_container_color</item>
+    <item name="elevation">@dimen/m3_comp_nav_rail_collapsed_container_elevation</item>
+    <item name="android:minWidth">@dimen/m3expressive_nav_rail_min_width</item>
+    <item name="itemPaddingTop">@dimen/m3expressive_nav_rail_item_vertical_padding</item>
+    <item name="itemPaddingBottom">@dimen/m3expressive_nav_rail_item_vertical_padding</item>
+    <item name="contentMarginTop">@dimen/m3expressive_nav_rail_content_margin_top</item>
+    <item name="headerMarginBottom">@dimen/m3expressive_nav_rail_header_items_margin</item>
+    <item name="itemSpacing">@dimen/m3expressive_nav_rail_item_spacing</item>
+    <item name="measureBottomPaddingFromLabelBaseline">false</item>
+    <item name="itemTextColor">@color/m3expressive_nav_rail_item_label_tint</item>
+    <item name="itemIconTint">@color/m3expressive_nav_rail_item_icon_tint</item>
+    <item name="itemRippleColor">@color/m3expressive_nav_rail_item_ripple_tint</item>
+    <item name="itemTextAppearanceActiveBoldEnabled">false</item>
+    <item name="itemActiveIndicatorStyle">@style/Widget.Material3Expressive.NavigationRailView.ActiveIndicator</item>
+    <item name="itemIconSize">@dimen/m3_comp_nav_rail_item_icon_size</item>
+    <item name="activeIndicatorLabelPadding">@dimen/m3_comp_nav_rail_item_vertical_icon_label_space</item>
+    <item name="horizontalItemTextAppearanceActive">@macro/m3_comp_nav_rail_item_horizontal_label_text_font</item>
+    <item name="horizontalItemTextAppearanceInactive">@macro/m3_comp_nav_rail_item_horizontal_label_text_font</item>
+    <item name="itemTextAppearanceActive">@macro/m3_comp_nav_rail_item_vertical_label_text_font</item>
+    <item name="itemTextAppearanceInactive">@macro/m3_comp_nav_rail_item_vertical_label_text_font</item>
+    <item name="scrollingEnabled">true</item>
+    <item name="labelFontScalingEnabled">true</item>
+    <item name="labelMaxLines">999</item>
+    <item name="labelVisibilityMode">labeled</item>
+    <item name="iconLabelHorizontalSpacing">@dimen/m3_comp_nav_rail_item_horizontal_icon_label_space</item>
+  </style>
+
+  <style name="Widget.Material3Expressive.NavigationRailView.ActiveIndicator" parent="Widget.Material3.NavigationRailView.ActiveIndicator">
+    <item name="android:color">@macro/m3_comp_nav_rail_item_active_indicator_color</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavRail.Item.ActiveIndicator.Shape</item>
+    <item name="android:width">@dimen/m3_comp_nav_rail_item_vertical_active_indicator_width</item>
+    <item name="android:height">@dimen/m3_comp_nav_rail_item_vertical_active_indicator_height</item>
+    <item name="expandedHeight">@dimen/m3_comp_nav_rail_item_horizontal_active_indicator_height</item>
+    <item name="expandedWidth">wrap_content</item>
+    <item name="expandedMarginHorizontal">@dimen/m3expressive_nav_rail_item_leading_trailing_padding</item>
+    <item name="expandedActiveIndicatorPaddingStart">@dimen/m3_comp_nav_rail_item_horizontal_full_width_leading_space</item>
+    <item name="expandedActiveIndicatorPaddingEnd">@dimen/m3_comp_nav_rail_item_horizontal_full_width_trailing_space</item>
+    <item name="expandedActiveIndicatorPaddingTop">@dimen/m3_comp_nav_rail_item_vertical_leading_space</item>
+    <item name="expandedActiveIndicatorPaddingBottom">@dimen/m3_comp_nav_rail_item_vertical_trailing_space</item>
+  </style>
+
+  <!-- Styles for M3 NavigationRailView. -->
+
+  <style name="Widget.Material3.NavigationRailView" parent="Widget.MaterialComponents.NavigationRailView">
+    <item name="android:minWidth">@dimen/m3_comp_nav_rail_collapsed_narrow_container_width</item>
+    <item name="android:background">@macro/m3_comp_nav_rail_collapsed_container_color</item>
+    <item name="backgroundTint">@null</item>
+    <item name="elevation">@dimen/m3_comp_nav_rail_collapsed_container_elevation</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavRail.Collapsed.Container.Shape</item>
+    <item name="itemActiveIndicatorStyle">@style/Widget.Material3.NavigationRailView.ActiveIndicator</item>
+    <item name="itemRippleColor">@color/m3_navigation_rail_ripple_color_selector</item>
+    <item name="itemIconSize">@dimen/m3_comp_nav_rail_item_icon_size</item>
+    <item name="itemIconTint">@color/m3_navigation_rail_item_with_indicator_icon_tint</item>
+    <item name="itemTextColor">@color/m3_navigation_rail_item_with_indicator_label_tint</item>
+    <item name="itemPaddingTop">@dimen/m3_navigation_rail_item_padding_top</item>
+    <item name="itemPaddingBottom">@dimen/m3_navigation_rail_item_padding_bottom</item>
+    <item name="itemMinHeight">@dimen/m3_navigation_rail_item_min_height</item>
+    <item name="itemTextAppearanceInactive">@macro/m3_comp_nav_rail_item_vertical_label_text_font</item>
+    <item name="itemTextAppearanceActive">@macro/m3_comp_nav_rail_item_vertical_label_text_font</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.NavigationRailView</item>
+    <item name="activeIndicatorLabelPadding">@dimen/m3_navigation_rail_icon_label_padding</item>
+    <item name="iconLabelHorizontalSpacing">@dimen/m3_navigation_rail_icon_label_horizontal_padding</item>
+  </style>
+
+  <style name="Widget.Material3.NavigationRailView.ActiveIndicator" parent="">
+    <item name="android:width">@dimen/m3_comp_nav_rail_item_vertical_active_indicator_width</item>
+    <item name="android:height">@dimen/m3_comp_nav_rail_item_vertical_active_indicator_height</item>
+    <item name="marginHorizontal">@dimen/m3_navigation_rail_item_active_indicator_margin_horizontal</item>
+    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavRail.Item.ActiveIndicator.Shape</item>
+    <item name="android:color">@macro/m3_comp_nav_rail_item_active_indicator_color</item>
+    <item name="expandedWidth">wrap_content</item>
+    <item name="expandedHeight">@dimen/m3_navigation_rail_expanded_active_indicator_height</item>
+    <item name="expandedMarginHorizontal">@dimen/m3_navigation_rail_expanded_leading_trailing_space</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.NavigationRailView" parent="">
+    <item name="badgeStyle">@style/Widget.Material3.NavigationRailView.Badge</item>
+  </style>
+
+  <style name="Widget.Material3.NavigationRailView.Badge" parent="Widget.Material3.Badge">
+    <item name="largeFontVerticalOffsetAdjustment">@dimen/m3_large_text_vertical_offset_adjustment</item>
+    <item name="verticalOffsetWithText">@dimen/m3_nav_badge_with_text_vertical_offset</item>
+  </style>
+
+  <!-- Styles for M2 NavigationRailView. -->
+
   <!-- Default style for NavigationRailViews.
        Use the default style to get the default navigation rail view with a colorSurface background
        and colorPrimary for the icon and text colors. -->
@@ -67,47 +160,5 @@
 
   <style name="Widget.MaterialComponents.NavigationRailView.PrimarySurface"
          parent="Widget.MaterialComponents.NavigationRailView.Colored"/>
-
-  <!-- Styles for Material3 NavigationRailView. -->
-  <style name="Widget.Material3.NavigationRailView" parent="Widget.MaterialComponents.NavigationRailView">
-    <item name="android:minWidth">@dimen/m3_navigation_rail_default_width</item>
-    <item name="android:background">@macro/m3_comp_navigation_rail_container_color</item>
-    <item name="backgroundTint">@null</item>
-    <item name="elevation">@dimen/m3_navigation_rail_elevation</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationRail.Container.Shape</item>
-    <item name="itemActiveIndicatorStyle">@style/Widget.Material3.NavigationRailView.ActiveIndicator</item>
-    <item name="itemRippleColor">@color/m3_navigation_rail_ripple_color_selector</item>
-    <item name="itemIconSize">@dimen/m3_comp_navigation_rail_icon_size</item>
-    <item name="itemIconTint">@color/m3_navigation_rail_item_with_indicator_icon_tint</item>
-    <item name="itemTextColor">@color/m3_navigation_rail_item_with_indicator_label_tint</item>
-    <item name="itemPaddingTop">@dimen/m3_navigation_rail_item_padding_top</item>
-    <item name="itemPaddingBottom">@dimen/m3_navigation_rail_item_padding_bottom</item>
-    <item name="itemMinHeight">@dimen/m3_navigation_rail_item_min_height</item>
-    <item name="itemTextAppearanceInactive">@macro/m3_comp_navigation_rail_label_text_type</item>
-    <item name="itemTextAppearanceActive">@macro/m3_comp_navigation_rail_label_text_type</item>
-    <item name="materialThemeOverlay">@style/ThemeOverlay.Material3.NavigationRailView</item>
-    <item name="activeIndicatorLabelPadding">@dimen/m3_navigation_rail_icon_label_padding</item>
-    <item name="iconLabelHorizontalSpacing">@dimen/m3_navigation_rail_icon_label_horizontal_padding</item>
-  </style>
-
-  <style name="Widget.Material3.NavigationRailView.ActiveIndicator" parent="">
-    <item name="android:width">@dimen/m3_navigation_rail_item_active_indicator_width</item>
-    <item name="android:height">@dimen/m3_navigation_rail_item_active_indicator_height</item>
-    <item name="marginHorizontal">@dimen/m3_navigation_rail_item_active_indicator_margin_horizontal</item>
-    <item name="shapeAppearance">@style/ShapeAppearance.M3.Comp.NavigationRail.ActiveIndicator.Shape</item>
-    <item name="android:color">@macro/m3_comp_navigation_rail_active_indicator_color</item>
-    <item name="expandedWidth">wrap_content</item>
-    <item name="expandedHeight">@dimen/m3_navigation_rail_expanded_active_indicator_height</item>
-    <item name="expandedMarginHorizontal">@dimen/m3_navigation_rail_expanded_leading_trailing_space</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.NavigationRailView" parent="">
-    <item name="badgeStyle">@style/Widget.Material3.NavigationRailView.Badge</item>
-  </style>
-
-  <style name="Widget.Material3.NavigationRailView.Badge" parent="Widget.Material3.Badge">
-    <item name="largeFontVerticalOffsetAdjustment">@dimen/m3_large_text_vertical_offset_adjustment</item>
-    <item name="verticalOffsetWithText">@dimen/m3_nav_badge_with_text_vertical_offset</item>
-  </style>
 
 </resources>

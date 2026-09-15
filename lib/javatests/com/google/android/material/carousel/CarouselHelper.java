@@ -52,15 +52,11 @@ class CarouselHelper {
       int currentAdapterPosition = layoutManager.getPosition(layoutManager.getChildAt(i));
       int nextAdapterPosition = layoutManager.getPosition(layoutManager.getChildAt(i + 1));
       assertWithMessage(
-          "Child at index "
-              + i
-              + " had a greater adapter position ["
-              + currentAdapterPosition
-              + "] than child at index "
-              + (i + 1)
-              + " ["
-              + nextAdapterPosition
-              + "]")
+          "Child at index %s had a greater adapter position [%s] than child at index %s [%s]",
+          i,
+          currentAdapterPosition,
+          i + 1,
+          nextAdapterPosition)
           .that(currentAdapterPosition)
           .isLessThan(nextAdapterPosition);
     }
@@ -358,6 +354,8 @@ class CarouselHelper {
     @Override
     public TestItemViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int pos) {
       MaskableFrameLayout frameLayout = new MaskableFrameLayout(viewGroup.getContext());
+      frameLayout.setFocusable(true);
+      frameLayout.setFocusableInTouchMode(true);
       setViewSize(frameLayout, itemWidth, itemHeight);
       ImageView imageView = new ImageView(viewGroup.getContext());
       setViewSize(imageView, itemWidth, itemHeight);
@@ -457,7 +455,7 @@ class CarouselHelper {
     float smallMask = getKeylineMaskPercentage(smallSize, largeSize);
     float mediumMask = getKeylineMaskPercentage(mediumSize, largeSize);
 
-    return new KeylineState.Builder(450F, 1320F)
+    return new KeylineState.Builder(450F, 1320)
         .addKeyline(5F, extraSmallMask, extraSmallSize)
         .addKeylineRange(38F, smallMask, smallSize, 2)
         .addKeyline(166F, mediumMask, mediumSize)
@@ -478,7 +476,7 @@ class CarouselHelper {
     float smallMask = getKeylineMaskPercentage(smallSize, largeSize);
     float mediumMask = getKeylineMaskPercentage(mediumSize, largeSize);
 
-    return new KeylineState.Builder(100F, 200F)
+    return new KeylineState.Builder(100F, 200)
         .addKeyline(9F, smallMask, smallSize)
         .addKeyline(25F, mediumMask, mediumSize)
         .addKeyline(66F, 0F, largeSize, true)
@@ -494,5 +492,24 @@ class CarouselHelper {
         MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY),
         MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
     return view;
+  }
+
+  @NonNull
+  static CarouselStrategy createCarouselStrategy(@NonNull KeylineState keylineState) {
+    return new CarouselStrategy() {
+      @Override
+      public KeylineState onFirstChildMeasuredWithMargins(
+          @NonNull Carousel carousel, @NonNull View child) {
+        return keylineState;
+      }
+    };
+  }
+
+  @NonNull
+  static WrappedCarouselLayoutManager createLayoutManagerWithStrategy(
+      @NonNull KeylineState keylineState) {
+    WrappedCarouselLayoutManager newLayoutManager = new WrappedCarouselLayoutManager();
+    newLayoutManager.setCarouselStrategy(createCarouselStrategy(keylineState));
+    return newLayoutManager;
   }
 }

@@ -15,6 +15,119 @@
   ~ limitations under the License.
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+  <!-- Dialog theme overlays for M3 Expressive. -->
+
+  <style name="Base.ThemeOverlay.Material3Expressive.Dialog" parent="Base.ThemeOverlay.Material3.Dialog">
+    <item name="materialButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3Expressive.Dialog" parent="Base.ThemeOverlay.Material3Expressive.Dialog"/>
+
+  <!--
+    The default Material3Expressive theme overlay used for AlertDialogs built via the
+    alertDialogTheme attribute.
+  -->
+  <style name="ThemeOverlay.Material3Expressive.Dialog.Alert" parent="ThemeOverlay.Material3.Dialog.Alert">
+    <item name="buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <!--
+    The default theme overlay used by Material3Expressive for framework
+    (non-AppCompat) alert dialogs, via the android:alertDialogTheme attribute.
+    It is recommended to use AppCompat alert dialogs, but Preferences does not.
+  -->
+  <style name="ThemeOverlay.Material3Expressive.Dialog.Alert.Framework" parent="ThemeOverlay.Material3.Dialog.Alert.Framework">
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3Expressive.Light.Dialog.Alert.Framework" parent="ThemeOverlay.Material3.Light.Dialog.Alert.Framework">
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <!--
+    The default Material3Expressive theme overlay for AlertDialogs built with the MaterialAlertDialogBuilder, via the
+    materialAlertDialogTheme attribute.
+    -->
+  <style name="ThemeOverlay.Material3Expressive.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <item name="alertDialogStyle">@style/MaterialAlertDialog.Material3Expressive</item>
+    <item name="buttonBarButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog</item>
+    <item name="buttonBarNeutralButtonStyle">@style/Widget.Material3Expressive.Button.TextButton.Dialog.Flush</item>
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3Expressive.Title.Panel</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3Expressive.Title.Text</item>
+  </style>
+
+  <!-- A theme overlay for Material3Expressive Alert Dialog panels with a center aligned title text and icon. -->
+  <style name="ThemeOverlay.Material3Expressive.MaterialAlertDialog.Centered">
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3Expressive.Title.Panel.CenterStacked</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon.CenterStacked</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3Expressive.Title.Text.CenterStacked</item>
+  </style>
+
+  <!-- Dialog theme overlays for M3. -->
+
+  <style name="Base.ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog">
+    <item name="materialButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+    <item name="android:windowAnimationStyle">@style/MaterialAlertDialog.Material3.Animation</item>
+    <item name="android:backgroundDimAmount">@dimen/m3_comp_scrim_container_opacity</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.Material3.Dialog"/>
+
+  <!--
+    The default Material3 theme overlay used for AlertDialogs built via the
+    alertDialogTheme attribute.
+  -->
+  <style name="ThemeOverlay.Material3.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+    <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
+  </style>
+
+  <!--
+    The default theme overlay used by Material3 for framework
+    (non-AppCompat) alert dialogs, via the android:alertDialogTheme attribute.
+    It is recommended to use AppCompat alert dialogs, but Preferences does not.
+  -->
+  <style name="ThemeOverlay.Material3.Dialog.Alert.Framework" parent="ThemeOverlay.MaterialComponents.Dialog.Alert.Framework">
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <style name="ThemeOverlay.Material3.Light.Dialog.Alert.Framework" parent="ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework">
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+  </style>
+
+  <!--
+    The default Material3 theme overlay for AlertDialogs built with the MaterialAlertDialogBuilder, via the
+    materialAlertDialogTheme attribute.
+    -->
+  <style name="ThemeOverlay.Material3.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="alertDialogStyle">@style/MaterialAlertDialog.Material3</item>
+    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
+    <item name="android:checkedTextViewStyle">@style/Widget.Material3.CheckedTextView</item>
+    <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
+    <item name="buttonBarNeutralButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text</item>
+    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Material3.Body.Text</item>
+    <item name="android:windowAnimationStyle">@style/MaterialAlertDialog.Material3.Animation</item>
+  </style>
+
+  <!-- A theme overlay for Material3 Alert Dialog panels with a center aligned title text and icon. -->
+  <style name="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel.CenterStacked</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon.CenterStacked</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text.CenterStacked</item>
+  </style>
+
+  <!-- Dialog theme overlays for M2. -->
+
   <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog">
     <!-- Widget styles -->
     <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
@@ -92,63 +205,5 @@
     <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked</item>
     <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked</item>
     <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked</item>
-  </style>
-
-  <style name="Base.ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog">
-    <item name="materialButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
-    <item name="android:windowAnimationStyle">@style/MaterialAlertDialog.Material3.Animation</item>
-    <item name="android:backgroundDimAmount">@dimen/m3_comp_scrim_container_opacity</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.Dialog" parent="Base.ThemeOverlay.Material3.Dialog"/>
-
-  <!--
-    The default Material3 theme overlay used for AlertDialogs built via the
-    alertDialogTheme attribute.
-  -->
-  <style name="ThemeOverlay.Material3.Dialog.Alert" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
-    <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
-    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
-  </style>
-
-  <!--
-    The default theme overlay used by Material3 for framework
-    (non-AppCompat) alert dialogs, via the android:alertDialogTheme attribute.
-    It is recommended to use AppCompat alert dialogs, but Preferences does not.
-  -->
-  <style name="ThemeOverlay.Material3.Dialog.Alert.Framework" parent="ThemeOverlay.MaterialComponents.Dialog.Alert.Framework">
-    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
-    <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
-  </style>
-
-  <style name="ThemeOverlay.Material3.Light.Dialog.Alert.Framework" parent="ThemeOverlay.MaterialComponents.Light.Dialog.Alert.Framework">
-    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
-    <item name="android:buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
-  </style>
-
-  <!--
-    The default Material3 theme overlay for AlertDialogs built with the MaterialAlertDialogBuilder, via the
-    materialAlertDialogTheme attribute.
-    -->
-  <style name="ThemeOverlay.Material3.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-    <item name="alertDialogStyle">@style/MaterialAlertDialog.Material3</item>
-    <item name="android:windowElevation">@dimen/m3_alert_dialog_elevation</item>
-    <item name="android:checkedTextViewStyle">@style/Widget.Material3.CheckedTextView</item>
-    <item name="buttonBarButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
-    <item name="buttonBarPositiveButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
-    <item name="buttonBarNegativeButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog</item>
-    <item name="buttonBarNeutralButtonStyle">@style/Widget.Material3.Button.TextButton.Dialog.Flush</item>
-    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel</item>
-    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon</item>
-    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text</item>
-    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.Material3.Body.Text</item>
-    <item name="android:windowAnimationStyle">@style/MaterialAlertDialog.Material3.Animation</item>
-  </style>
-
-  <!-- A theme overlay for Material3 Alert Dialog panels with a center aligned title text and icon. -->
-  <style name="ThemeOverlay.Material3.MaterialAlertDialog.Centered">
-    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.Material3.Title.Panel.CenterStacked</item>
-    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.Material3.Title.Icon.CenterStacked</item>
-    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.Material3.Title.Text.CenterStacked</item>
   </style>
 </resources>

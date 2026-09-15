@@ -84,6 +84,8 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
             View host, @NonNull AccessibilityNodeInfoCompat info) {
           super.onInitializeAccessibilityNodeInfo(host, info);
           info.setCheckable(checkable);
+          info.setRoleDescription(
+              getResources().getString(R.string.item_view_role_description));
         }
       };
 

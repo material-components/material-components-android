@@ -131,7 +131,8 @@ class TimePickerTextInputKeyController implements OnEditorActionListener, OnKeyL
             && keyCode <= KeyEvent.KEYCODE_9
             && event.getAction() == KeyEvent.ACTION_UP
             && editText.getSelectionStart() == 2
-            && text.length() == 2;
+            && text.length() == 2
+            && !hourLayoutComboView.hasError();
     if (switchFocus) {
       moveSelection(MINUTE);
       return true;

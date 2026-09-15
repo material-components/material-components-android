@@ -49,7 +49,7 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
   @NonNull
   public KeylineState onFirstChildMeasuredWithMargins(
       @NonNull Carousel carousel, @NonNull View child) {
-    float availableSpace =
+    int availableSpace =
         carousel.isHorizontal() ? carousel.getContainerWidth() : carousel.getContainerHeight();
 
     LayoutParams childLayoutParams = (LayoutParams) child.getLayoutParams();
@@ -143,7 +143,7 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
   }
 
   private KeylineState createCenterAlignedKeylineState(
-      float availableSpace,
+      int availableSpace,
       float childMargins,
       float largeSize,
       int largeCount,
@@ -184,7 +184,7 @@ public final class UncontainedCarouselStrategy extends CarouselStrategy {
   private KeylineState createLeftAlignedKeylineState(
       Context context,
       float childMargins,
-      float availableSpace,
+      int availableSpace,
       float largeSize,
       int largeCount,
       float mediumSize,

@@ -134,10 +134,10 @@ class CircleIndicatorDecorator extends DayViewDecorator {
           resources.getDimensionPixelSize(R.dimen.cat_picker_demo_circle_indicator_top_spacer_size);
       int indicatorColorDefault =
           MaterialColors.getColor(
-              context, R.attr.colorTertiary, IndicatorDrawables.class.getSimpleName());
+              context, com.google.android.material.R.attr.colorTertiary, IndicatorDrawables.class.getSimpleName());
       int indicatorColorSelected =
           MaterialColors.getColor(
-              context, R.attr.colorOnPrimary, IndicatorDrawables.class.getSimpleName());
+              context, com.google.android.material.R.attr.colorOnPrimary, IndicatorDrawables.class.getSimpleName());
 
       topSpacerDrawable = createSpacerDrawable(topSpacerSize);
       indicatorDrawableNone = createIndicatorDrawable(Color.TRANSPARENT);

@@ -20,6 +20,7 @@
     <item name="chipSpacingHorizontal">8dp</item>
     <item name="singleLine">false</item>
     <item name="singleSelection">false</item>
+    <item name="android:importantForAccessibility">yes</item>
   </style>
 
   <style name="Base.Widget.MaterialComponents.Chip" parent="android:Widget">

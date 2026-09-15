@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,6 +34,7 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.math.MathUtils;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.shape.AbsoluteCornerSize;
 import com.google.android.material.shape.ClampedCornerSize;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -117,6 +119,17 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
               }
             });
     shapeableDelegate.onShapeAppearanceChanged(this, this.shapeAppearanceModel);
+
+    maybeUpdateFocusRingDrawableShapeAppearance(getBackground(), this.shapeAppearanceModel);
+    maybeUpdateFocusRingDrawableShapeAppearance(getForeground(), this.shapeAppearanceModel);
+  }
+
+  private void maybeUpdateFocusRingDrawableShapeAppearance(
+      @Nullable Drawable drawable, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    FocusRingDrawable focusRingDrawable = FocusRingDrawable.findAndMutate(drawable);
+    if (focusRingDrawable != null) {
+      focusRingDrawable.setFocusRingShapeAppearance(shapeAppearanceModel);
+    }
   }
 
   @NonNull
@@ -182,6 +195,12 @@ public class MaskableFrameLayout extends FrameLayout implements Maskable, Shapea
     return maskRect;
   }
 
+  /**
+   * Sets an {@link OnMaskChangedListener}.
+   *
+   * @param onMaskChangedListener a listener to receive callbacks for changes in the mask or null
+   *    to clear the listener.
+   */
   @Override
   public void setOnMaskChangedListener(@Nullable OnMaskChangedListener onMaskChangedListener) {
     this.onMaskChangedListener = onMaskChangedListener;

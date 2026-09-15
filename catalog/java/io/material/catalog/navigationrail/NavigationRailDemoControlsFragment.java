@@ -25,6 +25,7 @@ import static com.google.android.material.navigation.NavigationBarView.LABEL_VIS
 import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_SELECTED;
 import static com.google.android.material.navigation.NavigationBarView.LABEL_VISIBILITY_UNLABELED;
 
+import androidx.appcompat.widget.TooltipCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -34,6 +35,7 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /** A fragment that displays controls for the bottom nav's label visibility. */
 public class NavigationRailDemoControlsFragment extends NavigationRailDemoFragment {
@@ -68,6 +70,8 @@ public class NavigationRailDemoControlsFragment extends NavigationRailDemoFragme
           navigationRailView.addHeaderView(R.layout.cat_navigation_rail_header_view);
           addHeaderViewButton.setVisibility(GONE);
           removeHeaderViewButton.setVisibility(VISIBLE);
+          FloatingActionButton fab = navigationRailView.findViewById(R.id.cat_navigation_rail_fab);
+          TooltipCompat.setTooltipText(fab, fab.getContentDescription());
         });
     removeHeaderViewButton.setOnClickListener(
         v -> {

@@ -32,22 +32,6 @@ import org.robolectric.RobolectricTestRunner;
 public class TimeModelTest {
 
   @Test
-  public void with12HFormat_hasCorrectValidators() {
-    TimeModel timeModel = new TimeModel(CLOCK_12H);
-
-    assertThat(timeModel.getHourInputValidator().getMax()).isEqualTo(12);
-    assertThat(timeModel.getMinuteInputValidator().getMax()).isEqualTo(59);
-  }
-
-  @Test
-  public void with24HFormat_hasCorrectValidators() {
-    TimeModel timeModel = new TimeModel(CLOCK_24H);
-
-    assertThat(timeModel.getHourInputValidator().getMax()).isEqualTo(23);
-    assertThat(timeModel.getMinuteInputValidator().getMax()).isEqualTo(59);
-  }
-
-  @Test
   public void with12HFormat_returnsCorrectHourContentDescription() {
     TimeModel timeModel = new TimeModel(CLOCK_12H);
 

@@ -17,14 +17,26 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
   <!-- Selected. -->
-  <item android:alpha="@dimen/m3_comp_navigation_rail_pressed_state_layer_opacity" android:color="@macro/m3_comp_navigation_rail_active_pressed_state_layer_color" android:state_pressed="true" android:state_selected="true"/>
-  <item android:alpha="@dimen/m3_comp_navigation_rail_focus_state_layer_opacity" android:color="@macro/m3_comp_navigation_rail_active_focus_state_layer_color" android:state_focused="true" android:state_selected="true"/>
-  <item android:alpha="@dimen/m3_comp_navigation_rail_hover_state_layer_opacity" android:color="@macro/m3_comp_navigation_rail_active_hover_state_layer_color" android:state_hovered="true" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_comp_nav_rail_item_active_pressed_state_layer_opacity"
+        android:color="?attr/colorOnSurface"
+        android:state_pressed="true" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_comp_nav_rail_item_active_focused_state_layer_opacity"
+        android:color="?attr/colorOnSurface"
+        android:state_focused="true" android:state_selected="true"/>
+  <item android:alpha="@dimen/m3_comp_nav_rail_item_active_hovered_state_layer_opacity"
+        android:color="?attr/colorOnSurface"
+        android:state_hovered="true" android:state_selected="true"/>
 
   <!-- Unselected. -->
-  <item android:alpha="@dimen/m3_comp_navigation_rail_pressed_state_layer_opacity" android:color="@macro/m3_comp_navigation_rail_inactive_pressed_state_layer_color" android:state_pressed="true"/>
-  <item android:alpha="@dimen/m3_comp_navigation_rail_focus_state_layer_opacity" android:color="@macro/m3_comp_navigation_rail_inactive_focus_state_layer_color" android:state_focused="true"/>
-  <item android:alpha="@dimen/m3_comp_navigation_rail_hover_state_layer_opacity" android:color="@macro/m3_comp_navigation_rail_inactive_hover_state_layer_color" android:state_hovered="true"/>
+  <item android:alpha="@dimen/m3_comp_nav_rail_item_active_pressed_state_layer_opacity"
+        android:color="?attr/colorOnSurface"
+        android:state_pressed="true"/>
+  <item android:alpha="@dimen/m3_comp_nav_rail_item_active_focused_state_layer_opacity"
+        android:color="?attr/colorOnSurface"
+        android:state_focused="true"/>
+  <item android:alpha="@dimen/m3_comp_nav_rail_item_active_hovered_state_layer_opacity"
+        android:color="?attr/colorOnSurface"
+        android:state_hovered="true"/>
   <item android:color="@android:color/transparent"/>
 </selector>
 

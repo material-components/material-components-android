@@ -86,6 +86,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.drawable.DrawableUtils;
+import com.google.android.material.focus.FocusRingDrawable;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.motion.MotionUtils;
@@ -259,6 +260,7 @@ public class TabLayout extends HorizontalScrollView {
 
   /** @hide */
   @IntDef(value = {TAB_LABEL_VISIBILITY_UNLABELED, TAB_LABEL_VISIBILITY_LABELED})
+  @Retention(RetentionPolicy.SOURCE)
   public @interface LabelVisibility {}
 
   /**
@@ -2193,7 +2195,7 @@ public class TabLayout extends HorizontalScrollView {
      *
      * <p>Do not rely on this if using {@link TabLayout#setupWithViewPager(ViewPager)}
      *
-     * @param id, unique id for this tab
+     * @param id unique id for this tab
      */
     @NonNull
     @CanIgnoreReturnValue
@@ -2564,11 +2566,15 @@ public class TabLayout extends HorizontalScrollView {
 
         // TODO: Add support to RippleUtils.compositeRippleColorStateList for different ripple color
         // for selected items vs non-selected items
-        background =
-            new RippleDrawable(
-                rippleColor,
-                unboundedRipple ? null : contentDrawable,
-                unboundedRipple ? null : maskDrawable);
+        if (unboundedRipple) {
+          RippleDrawable rippleDrawable = new RippleDrawable(rippleColor, null, null);
+          background = FocusRingDrawable.wrap(context, rippleDrawable);
+        } else {
+          RippleDrawable rippleDrawable =
+              new RippleDrawable(rippleColor, contentDrawable, maskDrawable);
+          FocusRingDrawable.layer(context, rippleDrawable);
+          background = rippleDrawable;
+        }
       } else {
         background = contentDrawable;
       }

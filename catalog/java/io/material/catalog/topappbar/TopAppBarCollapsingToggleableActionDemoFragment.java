@@ -29,6 +29,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 
 /**
  * A fragment that displays a medium Collapsing Toolbar Top App Bar with a toggleable action button
@@ -58,6 +59,8 @@ public class TopAppBarCollapsingToggleableActionDemoFragment extends DemoFragmen
                     (actionButton.isChecked() ? "Marked as favorite." : "Marked as not favorite"),
                     Snackbar.LENGTH_SHORT)
                 .show());
+
+    DemoUtils.setupClickableContentText(view);
 
     return view;
   }

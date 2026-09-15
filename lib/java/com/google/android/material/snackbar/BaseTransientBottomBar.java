@@ -500,7 +500,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private boolean shouldUpdateGestureInset() {
-    return extraBottomMarginGestureInset > 0 && !gestureInsetBottomIgnored && isSwipeDismissable();
+    return extraBottomMarginGestureInset > 0
+        && !gestureInsetBottomIgnored
+        && isSwipeDismissable()
+        && getAnchorView() == null;
   }
 
   private boolean isSwipeDismissable() {
@@ -823,10 +826,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void showViewImpl() {
-    if (ViewCompat.getAccessibilityPaneTitle(view) == null) {
-      ViewCompat.setAccessibilityPaneTitle(
-          view, getContext().getString(R.string.snackbar_accessibility_pane_title));
-    }
     if (shouldAnimate()) {
       // If animations are enabled, animate it in
       animateViewIn();
@@ -1148,6 +1147,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     @Nullable private Rect originalMargins;
     private boolean addingToTargetParent;
+    private final int originalPaddingEnd;
 
     protected SnackbarBaseLayout(@NonNull Context context) {
       this(context, null);
@@ -1183,6 +1183,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       maxInlineActionWidth =
           a.getDimensionPixelSize(R.styleable.SnackbarLayout_maxActionInlineWidth, -1);
       a.recycle();
+
+      originalPaddingEnd = getPaddingEnd();
 
       setOnTouchListener(consumeAllTouchListener);
       setFocusable(true);
@@ -1327,6 +1329,25 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           new Rect(params.leftMargin, params.topMargin, params.rightMargin, params.bottomMargin);
     }
 
+    /**
+     * Remove or restore end padding from this view.
+     *
+     * The original padding is saved during inflation and removed or replaced depending
+     * on {@code remove}. This is used when calling enabling the Snackbar close icon as the icon
+     * should be flush with the end of the snackbar layout.
+     *
+     * @param remove true to set end padding to zero, false to restore the original
+     *  end padding value
+     */
+    void removeOrRestorePaddingEnd(boolean remove) {
+      setPaddingRelative(
+          getPaddingStart(),
+          getPaddingTop(),
+          remove ? 0 : originalPaddingEnd,
+          getPaddingBottom()
+      );
+    }
+
     @NonNull
     private Drawable createThemedBackground() {
       int backgroundColor =
@@ -1380,6 +1401,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       delegate.setBaseTransientBottomBar(baseTransientBottomBar);
     }
 
+    /**
+     * Called when the user's input indicates that they want to swipe the given view.
+     *
+     * @param child View the user is attempting to swipe
+     * @return true if the view can be dismissed via swiping, false otherwise
+     */
     @Override
     public boolean canSwipeDismissView(View child) {
       return delegate.canSwipeDismissView(child);

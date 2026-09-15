@@ -16,18 +16,10 @@
 
 package io.material.catalog.application.legacymultidex;
 
-import android.content.Context;
-import androidx.multidex.MultiDex;
 import io.material.catalog.application.CatalogApplication;
 
 /**
  * A version of {@link CatalogApplication} for development builds on older phones that uses the
  * multidex support library for allowing multiple dex files.
  */
-public class LegacyMultidexCatalogApplication extends CatalogApplication {
-  @Override
-  protected void attachBaseContext(Context base) {
-    super.attachBaseContext(base);
-    MultiDex.install(this);
-  }
-}
+public class LegacyMultidexCatalogApplication extends CatalogApplication {}

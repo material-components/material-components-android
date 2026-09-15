@@ -19,7 +19,7 @@
   <!-- For the catalog we know that toolbars will always be on top of a "surface" color,
        so it's better for them to have no background, especially because it's common for
        toolbars to be nested in an AppBarLayout which has its own background handling. -->
-  <style name="Widget.Catalog.Toolbar" parent="Widget.Material3.Toolbar.OnSurface" />
+  <style name="Widget.Catalog.Toolbar" parent="Widget.Material3Expressive.Toolbar.OnSurface" />
 
   <style name="Widget.Catalog.Toolbar.WithCloseButton">
     <item name="navigationContentDescription">@string/toolbar_navigation_close_description</item>

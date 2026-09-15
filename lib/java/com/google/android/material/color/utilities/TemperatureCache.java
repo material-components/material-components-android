@@ -279,12 +279,10 @@ public final class TemperatureCache {
    *
    * <p>Sorted from coldest first to warmest last.
    */
-  // Prevent lint for Comparator not being available on Android before API level 24, 7.0, 2016.
-  // "AndroidJdkLibsChecker" for one linter, "NewApi" for another.
-  // A java_library Bazel rule with an Android constraint cannot skip these warnings without this
+  // Suppress NewApi for Comparator not being available on Android before API level 24, 7.0, 2016.
   // annotation; another solution would be to create an android_library rule and supply
   // AndroidManifest with an SDK set higher than 23.
-  @SuppressWarnings({"AndroidJdkLibsChecker", "NewApi"})
+  @SuppressWarnings("NewApi")
   private List<Hct> getHctsByTemp() {
     if (precomputedHctsByTemp != null) {
       return precomputedHctsByTemp;
