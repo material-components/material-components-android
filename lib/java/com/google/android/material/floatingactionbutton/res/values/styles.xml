@@ -376,6 +376,7 @@
     <item name="android:background">@null</item>
     <item name="enforceMaterialTheme">true</item>
     <item name="ensureMinTouchTargetSize">true</item>
+    <item name="minTouchTargetSize">@dimen/mtrl_fab_min_touch_target</item>
     <item name="elevation">@dimen/mtrl_fab_elevation</item>
     <item name="backgroundTint">@color/mtrl_fab_bg_color_selector</item>
     <item name="tint">@color/mtrl_fab_icon_text_color_selector</item>
