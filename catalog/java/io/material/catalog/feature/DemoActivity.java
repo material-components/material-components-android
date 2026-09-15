@@ -22,6 +22,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.transition.platform.MaterialContainerTransform;
 import com.google.android.material.transition.platform.MaterialContainerTransformSharedElementCallback;
 import io.material.catalog.preferences.BaseCatalogActivity;
+import io.material.catalog.preferences.CatalogPreferencesDialogFragment;
 import io.material.catalog.windowpreferences.WindowPreferencesManager;
 
 /** Base Activity class that provides a demo screen structure for a single demo. */
@@ -73,6 +75,9 @@ public abstract class DemoActivity extends BaseCatalogActivity {
   public boolean onOptionsItemSelected(MenuItem item) {
     if (item.getItemId() == android.R.id.home) {
       onBackPressed();
+      return true;
+    } else if (item.getItemId() == R.id.preferences) {
+      new CatalogPreferencesDialogFragment().show(getSupportFragmentManager(), "preferences");
       return true;
     }
     return super.onOptionsItemSelected(item);
@@ -141,4 +146,10 @@ public abstract class DemoActivity extends BaseCatalogActivity {
 
   public abstract View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle);
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.mtrl_preferences_menu, menu);
+    return true;
+  }
 }
