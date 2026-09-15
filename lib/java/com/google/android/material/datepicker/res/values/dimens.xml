@@ -25,12 +25,15 @@
   <dimen name="mtrl_calendar_header_text_padding">12dp</dimen>
   <dimen name="mtrl_calendar_day_today_stroke">1dp</dimen>
   <dimen name="mtrl_calendar_content_padding">12dp</dimen>
+  <dimen name="mtrl_calendar_content_padding_fullscreen_right">12dp</dimen>
   <dimen name="mtrl_calendar_navigation_height">48dp</dimen>
   <dimen name="mtrl_calendar_navigation_top_padding">4dp</dimen>
   <dimen name="mtrl_calendar_navigation_bottom_padding">4dp</dimen>
   <dimen name="mtrl_calendar_month_vertical_padding">0dp</dimen>
   <dimen name="mtrl_calendar_action_height">52dp</dimen>
+  <dimen name="mtrl_calendar_action_height_fullscreen">40dp</dimen>
   <dimen name="mtrl_calendar_action_padding">8dp</dimen>
+  <dimen name="mtrl_calendar_action_padding_fullscreen">12dp</dimen>
   <dimen name="mtrl_calendar_action_confirm_button_min_width">64dp</dimen>
   <dimen name="mtrl_calendar_header_content_padding_fullscreen">4dp</dimen>
   <dimen name="mtrl_calendar_header_selection_line_height">32dp</dimen>
