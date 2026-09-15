@@ -57,9 +57,6 @@ import java.util.List;
  */
 public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSliderTouchListener> {
 
-  private float minSeparation;
-  private int separationUnit;
-
   public RangeSlider(@NonNull Context context) {
     this(context, null);
   }
@@ -79,7 +76,7 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
       setValues(convertToFloat(values));
     }
 
-    minSeparation = a.getDimension(R.styleable.RangeSlider_minSeparation, 0);
+    setMinSeparation(a.getDimension(R.styleable.RangeSlider_minSeparation, 0));
     a.recycle();
   }
 
@@ -178,7 +175,7 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
    */
   @Override
   public float getMinSeparation() {
-    return minSeparation;
+    return super.getMinSeparation();
   }
 
   /**
@@ -190,9 +187,7 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
    *     {@link #setMinSeparationValue(float)} instead.
    */
   public void setMinSeparation(@Dimension float minSeparation) {
-    this.minSeparation = minSeparation;
-    separationUnit = UNIT_PX;
-    setSeparationUnit(separationUnit);
+    super.setMinSeparation(minSeparation, UNIT_PX);
   }
 
   /**
@@ -204,66 +199,6 @@ public class RangeSlider extends BaseSlider<RangeSlider, OnChangeListener, OnSli
    * @attr ref com.google.android.material.R.styleable#RangeSlider_minSeparation
    */
   public void setMinSeparationValue(float minSeparation) {
-    this.minSeparation = minSeparation;
-    separationUnit = UNIT_VALUE;
-    setSeparationUnit(separationUnit);
-  }
-
-  @Override
-  @NonNull
-  public Parcelable onSaveInstanceState() {
-    Parcelable superState = super.onSaveInstanceState();
-
-    RangeSliderState sliderState = new RangeSliderState(superState);
-    sliderState.minSeparation = this.minSeparation;
-    sliderState.separationUnit = this.separationUnit;
-
-    return sliderState;
-  }
-
-  @Override
-  protected void onRestoreInstanceState(@Nullable Parcelable state) {
-    RangeSliderState savedState = (RangeSliderState) state;
-    super.onRestoreInstanceState(savedState.getSuperState());
-
-    this.minSeparation = savedState.minSeparation;
-    this.separationUnit = savedState.separationUnit;
-    setSeparationUnit(separationUnit);
-  }
-
-  static class RangeSliderState extends AbsSavedState {
-
-    private float minSeparation;
-    private int separationUnit;
-
-    RangeSliderState(Parcelable superState) {
-      super(superState);
-    }
-
-    private RangeSliderState(Parcel in) {
-      super((Parcelable) in.readParcelable(RangeSliderState.class.getClassLoader()));
-      minSeparation = in.readFloat();
-      separationUnit = in.readInt();
-    }
-
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-      super.writeToParcel(out, flags);
-      out.writeFloat(minSeparation);
-      out.writeInt(separationUnit);
-    }
-
-    public static final Parcelable.Creator<RangeSliderState> CREATOR =
-        new Parcelable.Creator<RangeSliderState>() {
-          @Override
-          public RangeSliderState createFromParcel(Parcel in) {
-            return new RangeSliderState(in);
-          }
-
-          @Override
-          public RangeSliderState[] newArray(int size) {
-            return new RangeSliderState[size];
-          }
-        };
+    super.setMinSeparation(minSeparation, UNIT_VALUE);
   }
 }
