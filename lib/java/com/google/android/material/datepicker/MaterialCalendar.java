@@ -587,24 +587,16 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           }
         });
 
-    monthNext.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            int currentItem = getLayoutManager().findFirstVisibleItemPosition();
-            monthsPagerAdapter.setKeyboardFocusDirection(View.FOCUS_FORWARD);
-            setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem + 1));
-          }
-        });
-    monthPrev.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            int currentItem = getLayoutManager().findLastVisibleItemPosition();
-            monthsPagerAdapter.setKeyboardFocusDirection(View.FOCUS_BACKWARD);
-            setCurrentMonth(monthsPagerAdapter.getPageMonth(currentItem - 1));
-          }
-        });
+    monthNext.setOnClickListener(view -> {
+      monthsPagerAdapter.setKeyboardFocusDirection(View.FOCUS_FORWARD);
+      Month currentMonth = getCurrentMonth();
+      setCurrentMonth(currentMonth.monthsLater(1));
+    });
+    monthPrev.setOnClickListener(view -> {
+      monthsPagerAdapter.setKeyboardFocusDirection(View.FOCUS_BACKWARD);
+      Month currentMonth = getCurrentMonth();
+      setCurrentMonth(currentMonth.monthsLater(-1));
+    });
 
     int currentMonthPosition = monthsPagerAdapter.getPosition(current);
     updateNavigationButtonsEnabled(currentMonthPosition);
