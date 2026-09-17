@@ -742,6 +742,18 @@ abstract class BaseSlider<
         .longValue();
   }
 
+  /**
+   * Returns the value of the tick at {@code stepIndex}. Like {@link #valueLandsOnTick(float)} this
+   * works on the decimal values, so the result lands exactly on the tick instead of drifting.
+   */
+  private float getStepValue(long stepIndex) {
+    return new BigDecimal(Float.toString(valueFrom))
+        .add(
+            new BigDecimal(Float.toString(stepSize)).multiply(BigDecimal.valueOf(stepIndex)),
+            DECIMAL64)
+        .floatValue();
+  }
+
   private void validateStepSize() {
     if (stepSize > 0.0f && !valueLandsOnTick(valueTo)) {
       throw new IllegalStateException(
@@ -3640,6 +3652,12 @@ abstract class BaseSlider<
       position = 1 - position;
     }
 
+    if (stepSize > 0.0f) {
+      // Scaling the snapped position back up by the value range loses the tick alignment in float
+      // arithmetic: valueFrom=0.2, valueTo=4.0 and stepSize=0.05 lands on 2.6499999 rather than
+      // 2.65. Rebuild the value from the tick index instead.
+      return getStepValue(Math.round(position * getStepCount()));
+    }
     return (float) (position * (valueTo - valueFrom) + valueFrom);
   }
 
