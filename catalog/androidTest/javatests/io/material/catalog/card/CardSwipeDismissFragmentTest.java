@@ -23,6 +23,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.not;
 
 import android.os.SystemClock;
 import androidx.fragment.app.Fragment;
@@ -73,10 +74,26 @@ public class CardSwipeDismissFragmentTest {
     onView(withId(R.id.card_content_layout)).perform(swipeRight());
     // Sleep until espresso can recognize the Snackbar
     SystemClock.sleep(300);
-    
+
     onView(withText(R.string.cat_card_dismissed)).check(matches(isDisplayed()));
     onView(withText(R.string.cat_card_undo)).perform(click());
 
     onView(withId(R.id.card_content_layout)).check(matches(ViewMatchers.withAlpha(1)));
+  }
+
+  @Test
+  public void testDismissState_savedAndRestored() {
+    onView(withId(R.id.card_content_layout)).perform(swipeRight());
+    SystemClock.sleep(300);
+    onView(withText(R.string.cat_card_dismissed)).check(matches(isDisplayed()));
+
+    activityTestRule.getActivity().runOnUiThread(() -> activityTestRule.getActivity().recreate());
+    SystemClock.sleep(500);
+
+    onView(withText(R.string.cat_card_dismissed)).check(matches(isDisplayed()));
+    onView(withId(R.id.card_content_layout)).check(matches(not(isDisplayed())));
+
+    onView(withText(R.string.cat_card_undo)).perform(click());
+    onView(withId(R.id.card_content_layout)).check(matches(isDisplayed()));
   }
 }

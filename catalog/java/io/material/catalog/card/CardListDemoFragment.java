@@ -45,10 +45,24 @@ import java.util.Locale;
 public class CardListDemoFragment extends DemoFragment {
 
   private static final int CARD_COUNT = 30;
+  private static final String KEY_CARD_NUMBERS = "cat_card_list_numbers";
+
+  private int[] cardNumbers;
+  @Nullable private CardAdapter cardAdapter;
 
   @Override
   public int getDemoTitleResId() {
     return R.string.cat_card_list;
+  }
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (savedInstanceState != null && savedInstanceState.containsKey(KEY_CARD_NUMBERS)) {
+      cardNumbers = savedInstanceState.getIntArray(KEY_CARD_NUMBERS);
+    } else if (cardNumbers == null) {
+      cardNumbers = generateCardNumbers();
+    }
   }
 
   @Override
@@ -60,38 +74,45 @@ public class CardListDemoFragment extends DemoFragment {
 
     RecyclerView recyclerView = view.findViewById(R.id.cat_card_list_recycler_view);
 
-    CardAdapter cardAdapter = new CardAdapter(generateCardNumbers());
+    cardAdapter = new CardAdapter(cardNumbers);
     ItemTouchHelper itemTouchHelper =
         new ItemTouchHelper(new CardItemTouchHelperCallback(cardAdapter));
     // Provide an ItemTouchHelper to the Adapter; can't use constructor due to circular dependency.
     cardAdapter.setItemTouchHelper(itemTouchHelper);
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     recyclerView.setAdapter(cardAdapter);
-    recyclerView
-        .setAccessibilityDelegateCompat(new RecyclerViewAccessibilityDelegate(recyclerView) {
+    recyclerView.setAccessibilityDelegateCompat(
+        new RecyclerViewAccessibilityDelegate(recyclerView) {
           @NonNull
           @Override
           public AccessibilityDelegateCompat getItemDelegate() {
             return new ItemDelegate(this) {
 
               @Override
-              public void onInitializeAccessibilityNodeInfo(View host,
-                  AccessibilityNodeInfoCompat info) {
+              public void onInitializeAccessibilityNodeInfo(
+                  View host, AccessibilityNodeInfoCompat info) {
                 super.onInitializeAccessibilityNodeInfo(host, info);
                 int position = recyclerView.getChildLayoutPosition(host);
                 if (position != 0) {
-                  info.addAction(new AccessibilityActionCompat(R.id.move_card_up_action,
-                      host.getResources().getString(R.string.cat_card_action_move_up)));
+                  info.addAction(
+                      new AccessibilityActionCompat(
+                          R.id.move_card_up_action,
+                          host.getResources().getString(R.string.cat_card_action_move_up)));
                 }
                 if (position != (CARD_COUNT - 1)) {
-                  info.addAction(new AccessibilityActionCompat(
-                      R.id.move_card_down_action,
-                      host.getResources().getString(R.string.cat_card_action_move_down)));
+                  info.addAction(
+                      new AccessibilityActionCompat(
+                          R.id.move_card_down_action,
+                          host.getResources().getString(R.string.cat_card_action_move_down)));
                 }
               }
 
               @Override
               public boolean performAccessibilityAction(View host, int action, Bundle args) {
+                if (cardAdapter == null) {
+                  return super.performAccessibilityAction(host, action, args);
+                }
+
                 int fromPosition = recyclerView.getChildLayoutPosition(host);
                 if (action == R.id.move_card_down_action) {
                   cardAdapter.swapCards(fromPosition, fromPosition + 1);
@@ -109,6 +130,24 @@ public class CardListDemoFragment extends DemoFragment {
     itemTouchHelper.attachToRecyclerView(recyclerView);
 
     return view;
+  }
+
+  @Override
+  public void onDestroyView() {
+    if (cardAdapter != null) {
+      cardNumbers = cardAdapter.getCardNumbers();
+      cardAdapter = null;
+    }
+    super.onDestroyView();
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    int[] numbers = cardAdapter != null ? cardAdapter.getCardNumbers() : cardNumbers;
+    if (numbers != null) {
+      outState.putIntArray(KEY_CARD_NUMBERS, numbers);
+    }
   }
 
   private static int[] generateCardNumbers() {
@@ -130,6 +169,10 @@ public class CardListDemoFragment extends DemoFragment {
 
     private CardAdapter(int[] cardNumbers) {
       this.cardNumbers = cardNumbers;
+    }
+
+    int[] getCardNumbers() {
+      return cardNumbers;
     }
 
     @NonNull

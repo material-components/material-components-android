@@ -23,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.AccessibilityDelegateCompat;
@@ -40,9 +41,25 @@ import io.material.catalog.feature.DemoFragment;
  */
 public final class CardSwipeDismissFragment extends DemoFragment {
 
+  private static final String KEY_CARD_DISMISSED = "cat_card_dismissed";
+  private static final String KEY_SNACKBAR_SHOWN = "cat_card_snackbar_shown";
+
+  private boolean cardDismissed = false;
+  private boolean snackbarShown = false;
+  @Nullable private Snackbar undoSnackbar;
+
   @Override
   public int getDemoTitleResId() {
     return R.string.cat_card_swipe_dismiss;
+  }
+
+  @Override
+  public void onCreate(@Nullable Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    if (savedInstanceState != null) {
+      cardDismissed = savedInstanceState.getBoolean(KEY_CARD_DISMISSED, false);
+      snackbarShown = savedInstanceState.getBoolean(KEY_SNACKBAR_SHOWN, false);
+    }
   }
 
   /** Inflate fragment view and setup with {@link SwipeDismissBehavior} */
@@ -66,7 +83,44 @@ public final class CardSwipeDismissFragment extends DemoFragment {
     setDismissOnKeyListener(cardContentLayout, dismissListener);
     setDismissAccessibilityDelegate(cardContentLayout, dismissListener);
 
+    if (cardDismissed) {
+      cardContentLayout.setVisibility(View.GONE);
+    }
+    if (snackbarShown) {
+      showUndoSnackbar(container, cardContentLayout);
+    }
+
     return view;
+  }
+
+  @Override
+  public void onDestroyView() {
+    undoSnackbar = null;
+    super.onDestroyView();
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    outState.putBoolean(KEY_CARD_DISMISSED, cardDismissed);
+    outState.putBoolean(KEY_SNACKBAR_SHOWN, snackbarShown);
+  }
+
+  private void showUndoSnackbar(CoordinatorLayout container, MaterialCardView cardContentLayout) {
+    snackbarShown = true;
+    undoSnackbar =
+        Snackbar.make(container, R.string.cat_card_dismissed, Snackbar.LENGTH_INDEFINITE)
+            .setAction(R.string.cat_card_undo, v -> resetCard(cardContentLayout))
+            .addCallback(
+                new Snackbar.Callback() {
+                  @Override
+                  public void onDismissed(Snackbar sb, int event) {
+                    if (sb == undoSnackbar && event != DISMISS_EVENT_CONSECUTIVE) {
+                      snackbarShown = false;
+                    }
+                  }
+                });
+    undoSnackbar.show();
   }
 
   private OnDismissListener createDismissListener(
@@ -74,9 +128,8 @@ public final class CardSwipeDismissFragment extends DemoFragment {
     return new OnDismissListener() {
       @Override
       public void onDismiss(View view) {
-        Snackbar.make(container, R.string.cat_card_dismissed, Snackbar.LENGTH_INDEFINITE)
-            .setAction(R.string.cat_card_undo, v -> resetCard(cardContentLayout))
-            .show();
+        cardDismissed = true;
+        showUndoSnackbar(container, cardContentLayout);
       }
 
       @Override
@@ -144,7 +197,12 @@ public final class CardSwipeDismissFragment extends DemoFragment {
     }
   }
 
-  private static void resetCard(MaterialCardView cardContentLayout) {
+  private void resetCard(MaterialCardView cardContentLayout) {
+    cardDismissed = false;
+    snackbarShown = false;
+    if (undoSnackbar != null) {
+      undoSnackbar.dismiss();
+    }
     CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) cardContentLayout
         .getLayoutParams();
     params.setMargins(0, 0, 0, 0);

@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.selection.SelectionPredicates;
 import androidx.recyclerview.selection.SelectionTracker;
@@ -50,12 +51,12 @@ public class CardSelectionModeActivity extends DemoActivity implements ActionMod
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.cat_card_selection_activity, viewGroup, false);
     RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-    setUpRecyclerView(recyclerView);
+    setUpRecyclerView(recyclerView, bundle);
 
     return view;
   }
 
-  protected void setUpRecyclerView(RecyclerView recyclerView) {
+  protected void setUpRecyclerView(@NonNull RecyclerView recyclerView, @Nullable Bundle bundle) {
     adapter = new SelectableCardsAdapter();
     adapter.setItems(generateItems());
     recyclerView.setAdapter(adapter);
@@ -75,17 +76,35 @@ public class CardSelectionModeActivity extends DemoActivity implements ActionMod
         new SelectionTracker.SelectionObserver<Long>() {
           @Override
           public void onSelectionChanged() {
-            if (selectionTracker.getSelection().size() > 0) {
-              if (actionMode == null) {
-                actionMode = startSupportActionMode(CardSelectionModeActivity.this);
-              }
-              actionMode.setTitle(String.valueOf(selectionTracker.getSelection().size()));
-            } else if (actionMode != null) {
-              actionMode.finish();
-            }
+            updateActionMode();
           }
         });
+    if (bundle != null) {
+      selectionTracker.onRestoreInstanceState(bundle);
+    }
+    updateActionMode();
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
+  }
+
+  private void updateActionMode() {
+    if (selectionTracker.hasSelection()) {
+      if (actionMode == null) {
+        actionMode = startSupportActionMode(this);
+      }
+      if (actionMode != null) {
+        actionMode.setTitle(String.valueOf(selectionTracker.getSelection().size()));
+      }
+    } else if (actionMode != null) {
+      actionMode.finish();
+    }
+  }
+
+  @Override
+  protected void onSaveInstanceState(@NonNull Bundle outState) {
+    super.onSaveInstanceState(outState);
+    if (selectionTracker != null) {
+      selectionTracker.onSaveInstanceState(outState);
+    }
   }
 
   private List<Item> generateItems() {
