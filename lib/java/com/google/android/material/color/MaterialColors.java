@@ -18,9 +18,12 @@ package com.google.android.material.color;
 import static android.graphics.Color.TRANSPARENT;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.app.UiModeManager;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.util.TypedValue;
 import android.view.View;
 import androidx.annotation.AttrRes;
@@ -365,5 +368,16 @@ public class MaterialColors {
     Hct hctColor = Hct.fromInt(getColorRole(color, tone));
     hctColor.setChroma(chroma);
     return hctColor.toInt();
+  }
+
+  @Nullable
+  static UiModeManager getUiModeManager(@NonNull Context context) {
+    // Workaround for an Android 14 platform bug where the construction of the UiModeManager retains
+    // the passed context, and ends up retaining the entire activity (see b/568708223). Use the
+    // application context instead.
+    if (VERSION.SDK_INT == VERSION_CODES.UPSIDE_DOWN_CAKE) {
+      context = context.getApplicationContext();
+    }
+    return (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
   }
 }

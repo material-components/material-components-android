@@ -139,11 +139,13 @@ public class ColorContrast {
 
   private static int getContrastThemeOverlayResourceId(
       Context context, ColorContrastOptions colorContrastOptions) {
-    UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
-    if (!isContrastAvailable() || uiModeManager == null) {
+    if (!isContrastAvailable()) {
       return 0;
     }
-
+    UiModeManager uiModeManager = MaterialColors.getUiModeManager(context);
+    if (uiModeManager == null) {
+      return 0;
+    }
     float currentContrast = uiModeManager.getContrast();
     int mediumContrastThemeOverlay = colorContrastOptions.getMediumContrastThemeOverlay();
     int highContrastThemeOverlay = colorContrastOptions.getHighContrastThemeOverlay();
@@ -177,8 +179,7 @@ public class ColorContrast {
     @Override
     public void onActivityPreCreated(
         @NonNull Activity activity, @Nullable Bundle savedInstanceState) {
-      UiModeManager uiModeManager =
-          (UiModeManager) activity.getSystemService(Context.UI_MODE_SERVICE);
+      UiModeManager uiModeManager = MaterialColors.getUiModeManager(activity);
       if (uiModeManager != null && activitiesInStack.isEmpty() && contrastChangeListener == null) {
         contrastChangeListener =
             new ContrastChangeListener() {
@@ -225,8 +226,7 @@ public class ColorContrast {
       // Always remove the activity from the stack to avoid memory leak.
       activitiesInStack.remove(activity);
 
-      UiModeManager uiModeManager =
-          (UiModeManager) activity.getSystemService(Context.UI_MODE_SERVICE);
+      UiModeManager uiModeManager = MaterialColors.getUiModeManager(activity);
       if (uiModeManager != null && contrastChangeListener != null && activitiesInStack.isEmpty()) {
         uiModeManager.removeContrastChangeListener(contrastChangeListener);
         contrastChangeListener = null;

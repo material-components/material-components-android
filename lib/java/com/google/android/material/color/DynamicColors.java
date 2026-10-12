@@ -479,7 +479,7 @@ public class DynamicColors {
   }
 
   private static float getSystemContrast(Context context) {
-    UiModeManager uiModeManager = (UiModeManager) context.getSystemService(Context.UI_MODE_SERVICE);
+    UiModeManager uiModeManager = MaterialColors.getUiModeManager(context);
     return (uiModeManager == null || VERSION.SDK_INT < VERSION_CODES.UPSIDE_DOWN_CAKE)
         ? 0
         : uiModeManager.getContrast();
