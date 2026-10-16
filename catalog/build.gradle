@@ -10,8 +10,8 @@ buildscript {
 
 plugins {
   id 'com.android.application'
-  id 'org.jetbrains.kotlin.android' version "2.2.20"
-  id 'org.jetbrains.kotlin.plugin.compose' version "2.2.0"
+  id 'org.jetbrains.kotlin.android'
+  id 'org.jetbrains.kotlin.plugin.compose' version '2.2.10'
 }
 
 dependencies {
@@ -137,7 +137,7 @@ android {
     testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     multiDexEnabled true
-    minSdkVersion 23
+    minSdkVersion 24
     targetSdkVersion 33
   }
 

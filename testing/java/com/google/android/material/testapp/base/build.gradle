@@ -36,6 +36,11 @@ android {
   }
   defaultConfig {
     minSdkVersion 23
-    targetSdkVersion 33
   }
+    lint {
+        targetSdk 33
+    }
+    testOptions {
+        targetSdk 33
+    }
 }

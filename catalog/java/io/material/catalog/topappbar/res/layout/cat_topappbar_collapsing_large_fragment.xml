@@ -46,11 +46,15 @@
   </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:padding="16dp">
+    <TextView
       android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    <include layout="@layout/cat_topappbar_filler_text_view"/>
+      android:layout_height="wrap_content"
+      android:text="@string/nested_scroll_extra_long_text"
+      android:textAppearance="?android:attr/textAppearance"/>
   </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

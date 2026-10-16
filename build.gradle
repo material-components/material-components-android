@@ -17,8 +17,8 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 35
-  minSdkVersion = 23
+  compileSdkVersion = 37
+  minSdkVersion = 24
   targetSdkVersion = 33
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is

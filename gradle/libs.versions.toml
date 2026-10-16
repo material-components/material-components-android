@@ -1,5 +1,5 @@
 [versions]
-androidGradlePlugin                  = "8.11.1"
+androidGradlePlugin                  = "9.1.0"
 
 # Main library dependencies.
 # Versions defined for :lib are required to follow library versioning - stable
@@ -11,7 +11,7 @@ androidXAnnotationExperimental       = "1.0.0"
 androidXAppCompat                    = "1.7.0"
 androidXCardView                     = "1.0.0"
 androidXConstraintLayout             = "2.2.1"
-androidXCoordinatorLayout            = "1.1.0"
+androidXCoordinatorLayout            = "1.4.0-alpha01"
 androidXCore                         = "1.16.0"
 androidXComposeMaterialIconsCore     = "1.7.8"
 androidXComposeMaterialIconsExtended = "1.7.8"

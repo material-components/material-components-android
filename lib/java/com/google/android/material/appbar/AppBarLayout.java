@@ -2499,9 +2499,17 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         @NonNull CoordinatorLayout parent,
         @NonNull View child,
         @NonNull Rect rectangle,
-        boolean immediate) {
+        boolean immediate,
+        int source) {
       final AppBarLayout header = findFirstDependency(parent.getDependencies(child));
       if (header != null) {
+        if (!immediate
+            && source == View.RECTANGLE_ON_SCREEN_REQUEST_SOURCE_INPUT_FOCUS
+            && child.findFocus() instanceof ViewGroup
+            && (child.isInTouchMode() || canScroll(child.findFocus()))) {
+          return false;
+        }
+
         // Offset the rect by the child's left/top
         Rect offsetRect = new Rect(rectangle);
         offsetRect.offset(child.getLeft(), child.getTop());
@@ -2517,6 +2525,13 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         }
       }
       return false;
+    }
+
+    private static boolean canScroll(@NonNull View view) {
+      return view.canScrollVertically(1)
+          || view.canScrollVertically(-1)
+          || view.canScrollHorizontally(1)
+          || view.canScrollHorizontally(-1);
     }
 
     private void offsetChildAsNeeded(@NonNull View child, @NonNull View dependency) {
