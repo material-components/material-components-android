@@ -401,7 +401,7 @@ public class DynamicColors {
     if (VERSION.SDK_INT < VERSION_CODES.S) {
       return false;
     }
-    if (BuildCompat.isAtLeastT()) {
+    if (VERSION.SDK_INT >= VERSION_CODES.S_V2) {
       return true;
     }
     DeviceSupportCondition deviceSupportCondition =
