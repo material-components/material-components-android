@@ -313,6 +313,18 @@ final class CircularDrawingDelegate extends DrawingDelegate<CircularProgressIndi
             && shouldDrawActiveIndicator
             && amplitudeFraction > 0f;
 
+    // Full circle: use drawOval to avoid seam artifact at the start/end point where caps overlap.
+    if (arcDegree >= 360f && !shouldDrawWavyPath) {
+      paint.setAntiAlias(true);
+      paint.setColor(paintColor);
+      paint.setStrokeWidth(displayedTrackThickness);
+      paint.setStyle(Style.STROKE);
+      paint.setStrokeCap(Cap.BUTT);
+      arcBounds.set(-adjustedRadius, -adjustedRadius, adjustedRadius, adjustedRadius);
+      canvas.drawOval(arcBounds, paint);
+      return;
+    }
+
     // Sets up the paint.
     paint.setAntiAlias(true);
     paint.setColor(paintColor);
