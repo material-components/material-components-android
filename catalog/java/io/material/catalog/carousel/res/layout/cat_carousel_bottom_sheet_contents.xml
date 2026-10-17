@@ -60,7 +60,7 @@
         android:layout_marginVertical="8dp"
         app:helperTextEnabled="false">
 
-        <AutoCompleteTextView
+        <io.material.catalog.textfield.AutoCompleteTextView2
           android:id="@+id/item_count_dropdown"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
