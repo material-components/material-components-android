@@ -26,18 +26,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <LinearLayout
       android:id="@+id/mtrl_calendar_year_selector_frame"
-      android:layout_width="wrap_content"
+      android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_gravity="center_horizontal"
-      android:scrollbars="none"/>
+      android:orientation="vertical">
+
+      <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/mtrl_calendar_year_selector"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center_horizontal"
+        android:scrollbars="none"
+        android:paddingStart="@dimen/mtrl_calendar_content_padding"
+        android:paddingEnd="@dimen/mtrl_calendar_content_padding"
+        android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+        android:paddingRight="@dimen/mtrl_calendar_content_padding"/>
+
+      <View
+        style="?attr/materialCalendarHeaderDivider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/mtrl_calendar_header_divider_thickness"/>
+
+    </LinearLayout>
 
     <LinearLayout
       android:id="@+id/mtrl_calendar_day_selector_frame"
       android:layout_width="wrap_content"
       android:layout_height="match_parent"
-      android:orientation="vertical">
+      android:orientation="vertical"
+      android:paddingStart="@dimen/mtrl_calendar_content_padding"
+      android:paddingEnd="@dimen/mtrl_calendar_content_padding"
+      android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+      android:paddingRight="@dimen/mtrl_calendar_content_padding">
 
       <include layout="@layout/mtrl_calendar_days_of_week"/>
 
