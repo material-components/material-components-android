@@ -186,7 +186,7 @@ abstract class DrawingDelegate<S extends BaseProgressIndicatorSpec> {
   }
 
   /** An entity class for a point on a path, with the support of fundamental operations. */
-  protected class PathPoint {
+  protected static class PathPoint {
     // The vector to the position of the point.
     float[] posVec = new float[2];
     // The tangent vector of this point on a path. The length is not guaranteed.

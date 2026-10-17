@@ -33,14 +33,12 @@ import android.graphics.Path;
 import android.graphics.Path.Direction;
 import android.graphics.PathMeasure;
 import android.graphics.Rect;
-import android.graphics.RectF;
-import android.util.Pair;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.Size;
 import androidx.core.math.MathUtils;
 import com.google.android.material.color.MaterialColors;
 
@@ -63,7 +61,11 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   private float totalTrackLengthFraction;
 
   // Pre-allocates objects used in draw().
-  Pair<PathPoint, PathPoint> endPoints = new Pair<>(new PathPoint(), new PathPoint());
+  private final PathPoint[] pathPoints = { new PathPoint(), new PathPoint() };
+  private final Path path = new Path();
+  private final Path clipPath = new Path();
+  private final float[] cornerRadii = new float[8];
+  private final float[] clipCornerRadii = new float[8];
 
   /** Instantiates LinearDrawingDelegate with the current spec. */
   LinearDrawingDelegate(@NonNull LinearProgressIndicatorSpec spec) {
@@ -239,6 +241,12 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     // Offsets start and end by the requested gap sizes.
     int startPx = (int) (startFraction * trackLength + startGapSize);
     int endPx = (int) (endFraction * trackLength - endGapSize);
+
+    // If there is no space, we don’t draw anything.
+    if (startPx > endPx) {
+      return;
+    }
+
     float startCornerRadius = displayedCornerRadius;
     float endCornerRadius = displayedCornerRadius;
     // Morph corners when outer and inner corner radius are different.
@@ -258,108 +266,164 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
               MathUtils.clamp((trackLength - endPx) / trackLength, 0, cornerRampDownThreshold)
                   / cornerRampDownThreshold);
     }
+
+    paint.setColor(paintColor);
+    paint.setAntiAlias(true);
+    paint.setStrokeWidth(displayedTrackThickness);
+
+    canvas.save();
+
     // Adjusts start/end X so the progress indicator will start from 0 when startFraction == 0.
-    float originX = -trackLength / 2;
+    canvas.translate(-trackLength / 2f, 0f);
 
     boolean drawWavyPath =
         spec.hasWavyEffect(drawingDeterminateIndicator)
             && drawingActiveIndicator
             && amplitudeFraction > 0f;
 
-    // No need to draw on track if start and end are out of visible range.
-    if (startPx <= endPx) {
-      // The track part will be drawn as three parts: 1) start rounded block (a rounded rectangle),
-      // 2) end rounded block (a rounded rectangle), and 3) a path in between, if needed.
-      float startBlockCenterX = startPx + startCornerRadius;
-      float endBlockCenterX = endPx - endCornerRadius;
-      float startBlockWidth = startCornerRadius * 2;
-      float endBlockWidth = endCornerRadius * 2;
+    if (drawWavyPath) {
+      drawWavyLine(
+          /* canvas */ canvas,
+          /* paint */ paint,
+          /* startPx */ startPx,
+          /* endPx */ endPx,
+          /* startCornerRadius */ startCornerRadius,
+          /* endCornerRadius */ endCornerRadius,
+          /* thickness */ displayedTrackThickness,
+          /* amplitudeFraction */ amplitudeFraction,
+          /* phaseFraction */ phaseFraction
+      );
+    } else {
+      drawFlatLine(
+          /* canvas */ canvas,
+          /* paint */ paint,
+          /* startPx */ startPx,
+          /* endPx */ endPx,
+          /* startCornerRadius */ startCornerRadius,
+          /* endCornerRadius */ endCornerRadius,
+          /* thickness */ displayedTrackThickness
+      );
+    }
 
-      paint.setColor(paintColor);
-      paint.setAntiAlias(true);
-      paint.setStrokeWidth(displayedTrackThickness);
+    canvas.restore();
+  }
 
-      endPoints.first.reset();
-      endPoints.second.reset();
-      endPoints.first.translate(startBlockCenterX + originX, 0);
-      endPoints.second.translate(endBlockCenterX + originX, 0);
+  private void drawFlatLine(
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @Px int startPx,
+      @Px int endPx,
+      float startCornerRadius,
+      float endCornerRadius,
+      float thickness) {
+    boolean isStartPathPoint = startPx == 0;
+    float pathPointX = isStartPathPoint ? startPx + startCornerRadius : endPx - endCornerRadius;
 
-      if (startPx == 0
-          && endBlockCenterX + endCornerRadius < startBlockCenterX + startCornerRadius) {
-        drawRoundedBlock(
-            canvas,
-            paint,
-            endPoints.first,
-            startBlockWidth,
-            displayedTrackThickness,
-            startCornerRadius,
-            endPoints.second,
-            endBlockWidth,
-            displayedTrackThickness,
-            endCornerRadius,
-            true);
-      } else if (startBlockCenterX - startCornerRadius > endBlockCenterX - endCornerRadius) {
-        drawRoundedBlock(
-            canvas,
-            paint,
-            endPoints.second,
-            endBlockWidth,
-            displayedTrackThickness,
-            endCornerRadius,
-            endPoints.first,
-            startBlockWidth,
-            displayedTrackThickness,
-            startCornerRadius,
-            false);
-      } else {
-        // Draws the path with ROUND cap if the corner radius is half of the track
-        // thickness.
-        paint.setStyle(Style.STROKE);
-        paint.setStrokeCap(spec.useStrokeCap() ? Cap.ROUND : Cap.BUTT);
+    pathPoints[0].reset();
+    pathPoints[0].translate(pathPointX, 0f);
 
-        // If start rounded block is on the left of end rounded block, draws the path with the
-        // start and end rounded blocks.
-        if (!drawWavyPath) {
-          // Draws a straight line directly.
-          canvas.drawLine(
-              endPoints.first.posVec[0],
-              endPoints.first.posVec[1],
-              endPoints.second.posVec[0],
-              endPoints.second.posVec[1],
-              paint);
-        } else {
-          // Draws a portion of the cached wavy path.
-          calculateDisplayedPath(
-              activePathMeasure,
-              displayedActivePath,
-              endPoints,
-              startBlockCenterX / trackLength,
-              endBlockCenterX / trackLength,
-              amplitudeFraction,
-              phaseFraction);
-          canvas.drawPath(displayedActivePath, paint);
+    paint.setStyle(Style.FILL);
+
+    drawRoundedBlock(
+        /* canvas */ canvas,
+        /* paint */ paint,
+        /* pathPoint */ pathPoints[0],
+        /* width */ endPx - startPx,
+        /* height */ thickness,
+        /* startCornerRadius */ startCornerRadius,
+        /* endCornerRadius */ endCornerRadius,
+        /* isStartPathPoint */ isStartPathPoint);
+  }
+
+  private void drawWavyLine(
+      @NonNull Canvas canvas,
+      @NonNull Paint paint,
+      @Px int startPx,
+      @Px int endPx,
+      float startCornerRadius,
+      float endCornerRadius,
+      float thickness,
+      float amplitudeFraction,
+      float phaseFraction) {
+    // The track part will be drawn as three parts: 1) start rounded block (a rounded rectangle),
+    // 2) end rounded block (a rounded rectangle), and 3) a path in between, if needed.
+    float startBlockCenterX = startPx + startCornerRadius;
+    float endBlockCenterX = endPx - endCornerRadius;
+    float startBlockWidth = startCornerRadius * 2;
+    float endBlockWidth = endCornerRadius * 2;
+
+    pathPoints[0].reset();
+    pathPoints[0].translate(startBlockCenterX, 0);
+    pathPoints[1].reset();
+    pathPoints[1].translate(endBlockCenterX, 0);
+
+    paint.setStyle(Style.FILL);
+
+    if (startPx == 0
+        && endBlockCenterX + endCornerRadius < startBlockCenterX + startCornerRadius) {
+      drawRoundedBlock(
+          /* canvas */ canvas,
+          /* paint */ paint,
+          /* pathPoint */ pathPoints[0],
+          /* width */ endPx - startPx,
+          /* height */ thickness,
+          /* startCornerRadius */ startCornerRadius,
+          /* endCornerRadius */ endCornerRadius,
+          /* isStartPathPoint */ true);
+    } else if (startBlockCenterX - startCornerRadius > endBlockCenterX - endCornerRadius) {
+      drawRoundedBlock(
+          /* canvas */ canvas,
+          /* paint */ paint,
+          /* pathPoint */ pathPoints[1],
+          /* width */ endPx - startPx,
+          /* height */ thickness,
+          /* startCornerRadius */ startCornerRadius,
+          /* endCornerRadius */ endCornerRadius,
+          /* isStartPathPoint */ false);
+    } else {
+      // Draws the path with ROUND cap if the corner radius is half of the track
+      // thickness.
+      paint.setStyle(Style.STROKE);
+      paint.setStrokeCap(spec.useStrokeCap() ? Cap.ROUND : Cap.BUTT);
+
+      // Draws a portion of the cached wavy path.
+      calculateDisplayedPath(
+          activePathMeasure,
+          displayedActivePath,
+          pathPoints[0],
+          pathPoints[1],
+          startBlockCenterX / trackLength,
+          endBlockCenterX / trackLength,
+          amplitudeFraction,
+          phaseFraction);
+      canvas.drawPath(displayedActivePath, paint);
+
+      paint.setStyle(Style.FILL);
+
+      if (!spec.useStrokeCap()) {
+        if (startBlockCenterX > 0 && startCornerRadius > 0) {
+          // Draws the start rounded block.
+          drawRoundedBlock(
+              /* canvas */ canvas,
+              /* paint */ paint,
+              /* pathPoint */ pathPoints[0],
+              /* width */ startBlockWidth,
+              /* height */ thickness,
+              /* startCornerRadius */ startCornerRadius,
+              /* endCornerRadius */ startCornerRadius,
+              /* isStartPathPoint */ true);
         }
-        if (!spec.useStrokeCap()) {
-          if (startBlockCenterX > 0 && startCornerRadius > 0) {
-            // Draws the start rounded block.
-            drawRoundedBlock(
-                canvas,
-                paint,
-                endPoints.first,
-                startBlockWidth,
-                displayedTrackThickness,
-                startCornerRadius);
-          }
-          if (endBlockCenterX < trackLength && endCornerRadius > 0) {
-            // Draws the end rounded block.
-            drawRoundedBlock(
-                canvas,
-                paint,
-                endPoints.second,
-                endBlockWidth,
-                displayedTrackThickness,
-                endCornerRadius);
-          }
+        if (endBlockCenterX < trackLength && endCornerRadius > 0) {
+          // Draws the end rounded block.
+          drawRoundedBlock(
+              /* canvas */ canvas,
+              /* paint */ paint,
+              /* pathPoint */ pathPoints[1],
+              /* width */ endBlockWidth,
+              /* height */ thickness,
+              /* startCornerRadius */ endCornerRadius,
+              /* endCornerRadius */ endCornerRadius,
+              /* isStartPathPoint */ false);
         }
       }
     }
@@ -389,89 +453,92 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
               new float[] {trackLength / 2 - stopIndicatorCenterX, 0}, new float[] {1, 0}),
           trackStopIndicatorSize,
           trackStopIndicatorSize,
-          displayedCornerRadius * trackStopIndicatorSize / displayedTrackThickness);
+          displayedCornerRadius * trackStopIndicatorSize / displayedTrackThickness,
+          displayedCornerRadius * trackStopIndicatorSize / displayedTrackThickness,
+          /* isStartPathPoint */ false);
     }
   }
 
-  /** Draws a single rounded block for one of the track ends. */
   private void drawRoundedBlock(
       @NonNull Canvas canvas,
       @NonNull Paint paint,
-      @NonNull PathPoint drawCenter,
-      float drawWidth,
-      float drawHeight,
-      float drawCornerSize) {
-    drawRoundedBlock(
-        canvas, paint, drawCenter, drawWidth, drawHeight, drawCornerSize, null, 0, 0, 0, false);
-  }
+      @NonNull PathPoint pathPoint,
+      float width,
+      float height,
+      float startCornerRadius,
+      float endCornerRadius,
+      boolean isStartPathPoint) {
+    if (width <= 0f || height <= 0f) {
+      return;
+    }
 
-  /** Drawas the merged rounded block when two track ends are collapsed. */
-  private void drawRoundedBlock(
-      @NonNull Canvas canvas,
-      @NonNull Paint paint,
-      @NonNull PathPoint drawCenter,
-      float drawWidth,
-      float drawHeight,
-      float drawCornerSize,
-      @Nullable PathPoint clipCenter,
-      float clipWidth,
-      float clipHeight,
-      float clipCornerSize,
-      boolean clipRight) {
-    drawHeight = min(drawHeight, displayedTrackThickness);
-    RectF drawRect = new RectF(-drawWidth / 2f, -drawHeight / 2f, drawWidth / 2f, drawHeight / 2f);
-    paint.setStyle(Style.FILL);
     canvas.save();
-    // Clipping!
-    if (clipCenter != null) {
-      clipHeight = min(clipHeight, displayedTrackThickness);
-      clipCornerSize = min(clipWidth / 2, clipCornerSize * clipHeight / displayedTrackThickness);
-      RectF patchRect = new RectF();
-      if (clipRight) {
-        float leftEdgeDiff =
-            (clipCenter.posVec[0] - clipCornerSize) - (drawCenter.posVec[0] - drawCornerSize);
-        if (leftEdgeDiff > 0) {
-          // Clip block is too small. Expand it to include the left edge of the draw block.
-          clipCenter.translate(-leftEdgeDiff / 2, 0);
-          clipWidth += leftEdgeDiff;
-        }
-        // Draw the patch rectangle to fill the gap from the draw block center to its right edge.
-        patchRect.set(0, -drawHeight / 2f, drawWidth / 2f, drawHeight / 2f);
-      } else {
-        float rightEdgeDiff =
-            (clipCenter.posVec[0] + clipCornerSize) - (drawCenter.posVec[0] + drawCornerSize);
-        if (rightEdgeDiff < 0) {
-          // Clip block is too small. Expand it to include the right edge of the draw block.
-          clipCenter.translate(-rightEdgeDiff / 2, 0);
-          clipWidth -= rightEdgeDiff;
-        }
-        // Draw the patch rectangle to fill the gap from the draw block center to its left edge.
-        patchRect.set(-drawWidth / 2f, -drawHeight / 2f, 0, drawHeight / 2f);
-      }
-      RectF clipRect =
-          new RectF(-clipWidth / 2f, -clipHeight / 2f, clipWidth / 2f, clipHeight / 2f);
-      canvas.translate(clipCenter.posVec[0], clipCenter.posVec[1]);
-      canvas.rotate(vectorToCanvasRotation(clipCenter.tanVec));
-      Path clipPath = new Path();
-      clipPath.addRoundRect(clipRect, clipCornerSize, clipCornerSize, Direction.CCW);
-      canvas.clipPath(clipPath);
-      // Manually restore to the original canvas transform.
-      canvas.rotate(-vectorToCanvasRotation(clipCenter.tanVec));
-      canvas.translate(-clipCenter.posVec[0], -clipCenter.posVec[1]);
-      // Transform to the draw block center and rotation.
-      canvas.translate(drawCenter.posVec[0], drawCenter.posVec[1]);
-      canvas.rotate(vectorToCanvasRotation(drawCenter.tanVec));
-      canvas.drawRect(patchRect, paint);
-      // Draw the draw block.
-      canvas.drawRoundRect(drawRect, drawCornerSize, drawCornerSize, paint);
+    canvas.translate(pathPoint.posVec[0], pathPoint.posVec[1]);
+    canvas.rotate(vectorToCanvasRotation(pathPoint.tanVec));
+
+    float top = -height / 2f;
+    float bottom = height / 2f;
+
+    if (width >= startCornerRadius + endCornerRadius) {
+      float left = isStartPathPoint ? -startCornerRadius : endCornerRadius - width;
+      float right = isStartPathPoint ? -startCornerRadius + width : endCornerRadius;
+
+      populateCornerRadii(cornerRadii, startCornerRadius, endCornerRadius);
+
+      path.rewind();
+      path.addRoundRect(left, top, right, bottom, cornerRadii, Direction.CW);
+      canvas.drawPath(path, paint);
     } else {
-      // Transform to the draw block center and rotation.
-      canvas.translate(drawCenter.posVec[0], drawCenter.posVec[1]);
-      canvas.rotate(vectorToCanvasRotation(drawCenter.tanVec));
-      // Draw the draw block.
-      canvas.drawRoundRect(drawRect, drawCornerSize, drawCornerSize, paint);
+      float clipLeftCornerRadius = isStartPathPoint ? 0f : startCornerRadius;
+      float clipRightCornerRadius = isStartPathPoint ? endCornerRadius : 0f;
+
+      float minClipWidth = clipLeftCornerRadius + clipRightCornerRadius;
+      float clipWidth = max(width, minClipWidth);
+
+      float clipLeft, clipRight;
+      if (isStartPathPoint) {
+        clipRight = -startCornerRadius + width;
+        clipLeft = clipRight - clipWidth;
+      } else {
+        clipLeft = endCornerRadius - width;
+        clipRight = clipLeft + clipWidth;
+      }
+
+      float drawLeftCornerRadius = isStartPathPoint ? startCornerRadius : 0f;
+      float drawRightCornerRadius = isStartPathPoint ? 0f : endCornerRadius;
+
+      float minDrawWidth = drawLeftCornerRadius + drawRightCornerRadius;
+      float drawWidth = max(width, minDrawWidth);
+
+      float drawLeft, drawRight;
+      if (isStartPathPoint) {
+        drawLeft = -startCornerRadius;
+        drawRight = drawLeft + drawWidth;
+      } else {
+        drawRight = endCornerRadius;
+        drawLeft = drawRight - drawWidth;
+      }
+
+      populateCornerRadii(clipCornerRadii, clipLeftCornerRadius, clipRightCornerRadius);
+
+      clipPath.rewind();
+      clipPath.addRoundRect(clipLeft, top, clipRight, bottom, clipCornerRadii, Direction.CW);
+      canvas.clipPath(clipPath);
+
+      populateCornerRadii(cornerRadii, drawLeftCornerRadius, drawRightCornerRadius);
+
+      path.rewind();
+      path.addRoundRect(drawLeft, top, drawRight, bottom, cornerRadii, Direction.CW);
+      canvas.drawPath(path, paint);
     }
+
     canvas.restore();
+  }
+
+  private void populateCornerRadii(
+      @Size(8) float[] radii, float leftCornerRadius, float rightCornerRadius) {
+    radii[0] = radii[1] = radii[6] = radii[7] = leftCornerRadius;
+    radii[2] = radii[3] = radii[4] = radii[5] = rightCornerRadius;
   }
 
   @Override
@@ -503,7 +570,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
   private void calculateDisplayedPath(
       @NonNull PathMeasure pathMeasure,
       @NonNull Path displayedPath,
-      @NonNull Pair<PathPoint, PathPoint> endPoints,
+      @NonNull PathPoint startPoint,
+      @NonNull PathPoint endPoint,
       float start,
       float end,
       float amplitudeFraction,
@@ -515,7 +583,7 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
       invalidateCachedPaths();
     }
     displayedPath.rewind();
-    float resultTranslationX = -trackLength / 2;
+    float resultTranslationX = 0;
     boolean hasWavyEffect = spec.hasWavyEffect(drawingDeterminateIndicator);
     if (hasWavyEffect) {
       float cycleCount = trackLength / adjustedWavelength;
@@ -529,10 +597,8 @@ final class LinearDrawingDelegate extends DrawingDelegate<LinearProgressIndicato
     float endDistance = end * pathMeasure.getLength();
     pathMeasure.getSegment(startDistance, endDistance, displayedPath, true);
     // Gathers the position and tangent of the start and end.
-    PathPoint startPoint = endPoints.first;
     startPoint.reset();
     pathMeasure.getPosTan(startDistance, startPoint.posVec, startPoint.tanVec);
-    PathPoint endPoint = endPoints.second;
     endPoint.reset();
     pathMeasure.getPosTan(endDistance, endPoint.posVec, endPoint.tanVec);
     // Transforms the result path to match the canvas.
