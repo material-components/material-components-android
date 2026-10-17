@@ -16,6 +16,9 @@
 package com.google.android.material.math;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /** A class that contains utility methods related to numbers. */
 public final class MathUtils {
@@ -100,6 +103,48 @@ public final class MathUtils {
       r--;
     }
     return x - r * y;
+  }
+
+  /**
+   * The same as {@link Math#ceilDiv(int, int)}, but for API < 35.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public static int ceilDiv(int x, int y) {
+    final int q = x / y;
+    // if the signs are the same and modulo not zero, round up
+    if ((x ^ y) >= 0 && (q * y != x)) {
+      return q + 1;
+    }
+    return q;
+  }
+
+  /**
+   * Returns the greater of the given values.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public static int max(final int... array) {
+    validateArray(array);
+
+    int max = array[0];
+    for (int i = 1; i < array.length; i++) {
+      if (array[i] > max) {
+        max = array[i];
+      }
+    }
+    return max;
+  }
+
+  private static void validateArray(final int[] array) {
+    if (array == null) {
+      throw new NullPointerException("The array should not be null");
+    }
+    if (array.length == 0) {
+      throw new IllegalArgumentException("The array should not be empty");
+    }
   }
 
   /**
