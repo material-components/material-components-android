@@ -20,6 +20,7 @@
   <public name="centered" type="attr" />
   <public name="continuousModeTickCount" type="attr" />
   <public name="haloColor" type="attr" />
+  <public name="haloEffectColor" type="attr" />
   <public name="haloRadius" type="attr" />
   <public name="labelBehavior" type="attr" />
   <public name="labelStyle" type="attr" />
