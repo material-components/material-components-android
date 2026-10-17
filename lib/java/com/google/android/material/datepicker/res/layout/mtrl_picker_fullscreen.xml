@@ -24,13 +24,35 @@
 
   <include layout="@layout/mtrl_picker_header_fullscreen"/>
 
-  <androidx.fragment.app.FragmentContainerView
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="0dp"
+    android:layout_weight="1"
+    android:paddingStart="@dimen/mtrl_calendar_content_padding"
+    android:paddingEnd="@dimen/mtrl_calendar_content_padding"
+    android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+    android:paddingRight="@dimen/mtrl_calendar_content_padding"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <androidx.fragment.app.FragmentContainerView
       android:id="@+id/mtrl_calendar_frame"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:paddingStart="@dimen/mtrl_calendar_content_padding"
-      android:paddingEnd="@dimen/mtrl_calendar_content_padding"
-      android:paddingLeft="@dimen/mtrl_calendar_content_padding"
-      android:paddingRight="@dimen/mtrl_calendar_content_padding"/>
+      android:layout_height="wrap_content" />
+  </LinearLayout>
+
+  <View
+    style="?attr/materialCalendarHeaderDivider"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/mtrl_calendar_header_divider_thickness"
+    android:paddingTop="@dimen/mtrl_calendar_navigation_top_padding"
+    android:paddingBottom="@dimen/mtrl_calendar_navigation_bottom_padding"
+    android:layout_gravity="center_vertical"/>
+
+  <include
+    layout="@layout/mtrl_picker_actions_fullscreen"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/mtrl_calendar_action_height_fullscreen"
+    android:layout_marginBottom="@dimen/mtrl_calendar_action_padding_fullscreen"/>
 
 </LinearLayout>
