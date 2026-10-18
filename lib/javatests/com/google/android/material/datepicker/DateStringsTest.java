@@ -24,6 +24,8 @@ import androidx.test.core.app.ApplicationProvider;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.TimeZone;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -35,19 +37,25 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 @DoNotInstrument
 public class DateStringsTest {
 
-  private static final int CURRENT_YEAR = Calendar.getInstance().get(Calendar.YEAR);
+  private static final TimeZone UTC = TimeZone.getTimeZone("UTC");
+  private static final int CURRENT_YEAR = Calendar.getInstance(UTC).get(Calendar.YEAR);
 
   private Calendar startDate;
   private Calendar endDate;
 
   private static Calendar setupLocalizedCalendar(Locale locale, int year, int month, int day) {
-    Locale.setDefault(locale);
-    Calendar calendar = Calendar.getInstance();
+    Calendar calendar = Calendar.getInstance(UTC, locale);
     calendar.clear();
     calendar.set(Calendar.YEAR, year);
     calendar.set(Calendar.MONTH, month);
     calendar.set(Calendar.DAY_OF_MONTH, day);
     return calendar;
+  }
+
+  private static SimpleDateFormat setupUtcDateFormat(String pattern, Locale locale) {
+    SimpleDateFormat dateFormat = new SimpleDateFormat(pattern, locale);
+    dateFormat.setTimeZone(UTC);
+    return dateFormat;
   }
 
   @Test
@@ -217,10 +225,12 @@ public class DateStringsTest {
 
   @Test
   public void getDateStringCurrentYearWithUserDefinedDateFormat() {
-    startDate = setupLocalizedCalendar(Locale.US, CURRENT_YEAR, 10, 30);
-    String dateString =
-        DateStrings.getDateString(
-            startDate.getTimeInMillis(), new SimpleDateFormat("MMMM dd, yyyy", Locale.US));
+    Locale locale = Locale.US;
+    SimpleDateFormat dateFormat = setupUtcDateFormat("MMMM dd, yyyy", locale);
+
+    startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 10, 30);
+
+    String dateString = DateStrings.getDateString(startDate.getTimeInMillis(), dateFormat);
     assertThat(dateString, is("November 30, " + CURRENT_YEAR));
   }
 
@@ -233,10 +243,12 @@ public class DateStringsTest {
 
   @Test
   public void getDateStringNextYearWithUserDefinedDateFormat() {
-    startDate = setupLocalizedCalendar(Locale.US, CURRENT_YEAR + 1, 10, 3);
-    String dateString =
-        DateStrings.getDateString(
-            startDate.getTimeInMillis(), new SimpleDateFormat("MMMM dd", Locale.US));
+    Locale locale = Locale.US;
+    SimpleDateFormat dateFormat = setupUtcDateFormat("MMMM dd", locale);
+
+    startDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 10, 3);
+
+    String dateString = DateStrings.getDateString(startDate.getTimeInMillis(), dateFormat);
     assertThat(dateString, is("November 03"));
   }
 
@@ -275,33 +287,44 @@ public class DateStringsTest {
 
   @Test
   public void getDateRangeStringCurrentYearWithUserDefinedDateFormat() {
-    startDate = setupLocalizedCalendar(Locale.US, CURRENT_YEAR, 4, 30);
-    endDate = setupLocalizedCalendar(Locale.US, CURRENT_YEAR, 11, 5);
+    Locale locale = Locale.US;
+    SimpleDateFormat dateFormat = setupUtcDateFormat("MMM dd, yyyy", locale);
+
+    startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 4, 30);
+    endDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 11, 5);
+
     Pair<String, String> dateRangeString =
         DateStrings.getDateRangeString(
             startDate.getTimeInMillis(),
             endDate.getTimeInMillis(),
-            new SimpleDateFormat("MMM dd, yyyy", Locale.US));
+            dateFormat);
     assertThat(dateRangeString.first, is("May 30, " + CURRENT_YEAR));
     assertThat(dateRangeString.second, is("Dec 05, " + CURRENT_YEAR));
   }
 
   @Test
   public void getDateRangeStringMultipleYearsWithUserDefinedDateFormat() {
-    startDate = setupLocalizedCalendar(Locale.US, CURRENT_YEAR, 4, 30);
-    endDate = setupLocalizedCalendar(Locale.US, CURRENT_YEAR + 1, 11, 5);
+    Locale locale = Locale.US;
+    SimpleDateFormat dateFormat = setupUtcDateFormat("MMM dd", locale);
+
+    startDate = setupLocalizedCalendar(locale, CURRENT_YEAR, 4, 30);
+    endDate = setupLocalizedCalendar(locale, CURRENT_YEAR + 1, 11, 5);
+
     Pair<String, String> dateRangeString =
         DateStrings.getDateRangeString(
             startDate.getTimeInMillis(),
             endDate.getTimeInMillis(),
-            new SimpleDateFormat("MMM dd", Locale.US));
+            dateFormat);
     assertThat(dateRangeString.first, is("May 30"));
     assertThat(dateRangeString.second, is("Dec 05"));
   }
 
   @Test
   public void getDayContentDescription_notToday() {
-    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    Locale locale = Locale.US;
+    Locale.setDefault(locale);
+
+    startDate = setupLocalizedCalendar(locale, 2020, 10, 30);
     String contentDescription =
         DateStrings.getDayContentDescription(
             ApplicationProvider.getApplicationContext(),
@@ -315,7 +338,10 @@ public class DateStringsTest {
 
   @Test
   public void getDayContentDescription_notToday_startOfRange() {
-    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    Locale locale = Locale.US;
+    Locale.setDefault(locale);
+
+    startDate = setupLocalizedCalendar(locale, 2020, 10, 30);
     String contentDescription =
         DateStrings.getDayContentDescription(
             ApplicationProvider.getApplicationContext(),
@@ -329,7 +355,10 @@ public class DateStringsTest {
 
   @Test
   public void getDayContentDescription_notToday_endOfRange() {
-    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    Locale locale = Locale.US;
+    Locale.setDefault(locale);
+
+    startDate = setupLocalizedCalendar(locale, 2020, 10, 30);
     String contentDescription =
         DateStrings.getDayContentDescription(
             ApplicationProvider.getApplicationContext(),
@@ -343,7 +372,10 @@ public class DateStringsTest {
 
   @Test
   public void getDayContentDescription_notToday_startAndEndOfRange() {
-    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    Locale locale = Locale.US;
+    Locale.setDefault(locale);
+
+    startDate = setupLocalizedCalendar(locale, 2020, 10, 30);
     String contentDescription =
         DateStrings.getDayContentDescription(
             ApplicationProvider.getApplicationContext(),
@@ -357,7 +389,10 @@ public class DateStringsTest {
 
   @Test
   public void getDayContentDescription_today() {
-    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    Locale locale = Locale.US;
+    Locale.setDefault(locale);
+
+    startDate = setupLocalizedCalendar(locale, 2020, 10, 30);
     String contentDescription =
         DateStrings.getDayContentDescription(
             ApplicationProvider.getApplicationContext(),
@@ -371,7 +406,10 @@ public class DateStringsTest {
 
   @Test
   public void getDayContentDescription_today_startOfRange() {
-    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    Locale locale = Locale.US;
+    Locale.setDefault(locale);
+
+    startDate = setupLocalizedCalendar(locale, 2020, 10, 30);
     String contentDescription =
         DateStrings.getDayContentDescription(
             ApplicationProvider.getApplicationContext(),
@@ -385,7 +423,10 @@ public class DateStringsTest {
 
   @Test
   public void getDayContentDescription_today_endOfRange() {
-    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    Locale locale = Locale.US;
+    Locale.setDefault(locale);
+
+    startDate = setupLocalizedCalendar(locale, 2020, 10, 30);
     String contentDescription =
         DateStrings.getDayContentDescription(
             ApplicationProvider.getApplicationContext(),
@@ -399,7 +440,10 @@ public class DateStringsTest {
 
   @Test
   public void getDayContentDescription_today_startAndEndOfRange() {
-    startDate = setupLocalizedCalendar(Locale.US, 2020, 10, 30);
+    Locale locale = Locale.US;
+    Locale.setDefault(locale);
+
+    startDate = setupLocalizedCalendar(locale, 2020, 10, 30);
     String contentDescription =
         DateStrings.getDayContentDescription(
             ApplicationProvider.getApplicationContext(),
@@ -413,7 +457,10 @@ public class DateStringsTest {
 
   @Test
   public void getLocalizedDayContentDescription_german() {
-    startDate = setupLocalizedCalendar(Locale.GERMAN, 2020, 10, 30);
+    Locale locale = Locale.GERMAN;
+    Locale.setDefault(locale);
+
+    startDate = setupLocalizedCalendar(locale, 2020, 10, 30);
     String contentDescription =
         DateStrings.getDayContentDescription(
             ApplicationProvider.getApplicationContext(),
@@ -428,7 +475,8 @@ public class DateStringsTest {
   @Test
   public void getYearContentDescription_notCurrent() {
     String contentDescription =
-        DateStrings.getYearContentDescription(ApplicationProvider.getApplicationContext(), 2020);
+        DateStrings.getYearContentDescription(
+            ApplicationProvider.getApplicationContext(), 2020);
 
     assertThat(contentDescription, is("Navigate to year 2020"));
   }
