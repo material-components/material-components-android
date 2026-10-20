@@ -2502,6 +2502,16 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         boolean immediate) {
       final AppBarLayout header = findFirstDependency(parent.getDependencies(child));
       if (header != null) {
+        // SDK_INT_FULL isn't available with every compileSdk this library is built with, so this
+        // also matches Android 17 before QPR1, where the platform doesn't send these requests.
+        if (VERSION.SDK_INT >= 37 && !immediate && isFocusedContainerRect(child, rectangle)) {
+          // A view that gains focus requests its whole drawing rect (Android 17 QPR1+). The
+          // scrolling child is taller than the visible area by the app bar's scroll range, so a
+          // container's rect never fits and collapsing the app bar would just hide it on every
+          // focus change.
+          return false;
+        }
+
         // Offset the rect by the child's left/top
         Rect offsetRect = new Rect(rectangle);
         offsetRect.offset(child.getLeft(), child.getTop());
@@ -2517,6 +2527,35 @@ public class AppBarLayout extends LinearLayout implements CoordinatorLayout.Atta
         }
       }
       return false;
+    }
+
+    /**
+     * Returns whether {@code rectangle} is the whole drawing rect of the focused view inside {@code
+     * child} (or {@code child} itself) and that view is a container not worth revealing: any
+     * container in touch mode, or a scrollable container in keyboard mode, whose focused descendant
+     * will request its own rect. Leaf views such as {@code EditText} never match.
+     */
+    private static boolean isFocusedContainerRect(@NonNull View child, @NonNull Rect rectangle) {
+      final View focused = child.findFocus();
+      if (!(focused instanceof ViewGroup)) {
+        return false;
+      }
+      if (!child.isInTouchMode() && !canScroll(focused)) {
+        return false; // The user navigated here with a key; honor the request.
+      }
+      final Rect focusedRect = new Rect();
+      focused.getDrawingRect(focusedRect);
+      // Same mapping as View#requestRectangleOnScreen. If a platform version maps differently, the
+      // rects don't match and the request is handled as usual.
+      ((ViewGroup) child).offsetDescendantRectToMyCoords(focused, focusedRect);
+      return rectangle.equals(focusedRect);
+    }
+
+    private static boolean canScroll(@NonNull View view) {
+      return view.canScrollVertically(1)
+          || view.canScrollVertically(-1)
+          || view.canScrollHorizontally(1)
+          || view.canScrollHorizontally(-1);
     }
 
     private void offsetChildAsNeeded(@NonNull View child, @NonNull View dependency) {
