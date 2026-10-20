@@ -611,7 +611,7 @@ DynamicColorsOptions dynamicColorsOptions =
 DynamicColors.applyToActivityIfAvailable(activity, dynamicColorsOptions);
 ```
 
-For color ressources harmonization in a fragment/view, you would use the context
+For color resources harmonization in a fragment/view, you would use the context
 generated from applying dynamic colors when constructing
 `HarmonizedColorsOptions` and call
 `wrapContextIfAvailable(harmonizedColorsOptions)` to apply resources
