@@ -294,7 +294,7 @@ abstract class DackkaRunner extends DefaultTask {
   private void writeDackkaConfig() {
     def configContents = """
     {
-      "moduleName": "Material Components",
+      "modeuleName": "Material Components",
       "moduleVersion": "$version",
       "outputDir": "${outputDirectory.asFile.absolutePath}",
       "offlineMode": "true",
