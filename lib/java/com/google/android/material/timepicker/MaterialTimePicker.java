@@ -51,7 +51,10 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityEventCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -276,6 +279,16 @@ public final class MaterialTimePicker extends DialogFragment implements OnDouble
     timePickerView.setOnDoubleTapListener(this);
     textInputStub = root.findViewById(R.id.material_textinput_timepicker);
     modeButton = root.findViewById(R.id.material_timepicker_mode_button);
+    ViewCompat.setAccessibilityDelegate(
+        modeButton,
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setTooltipText(null);
+          }
+        });
     okButton = root.findViewById(R.id.material_timepicker_ok_button);
     cancelButton = root.findViewById(R.id.material_timepicker_cancel_button);
     TextView headerTitle = root.findViewById(R.id.header_title);
