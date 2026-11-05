@@ -16,6 +16,8 @@
 
 package com.google.android.material.datepicker;
 
+import com.google.android.material.test.R;
+
 import static com.google.android.material.datepicker.MaterialDatePicker.INPUT_MODE_CALENDAR;
 import static com.google.common.truth.Truth.assertThat;
 import static java.util.Calendar.APRIL;
@@ -25,13 +27,24 @@ import static java.util.Calendar.MONDAY;
 import static java.util.Calendar.SUNDAY;
 import static org.junit.Assert.assertEquals;
 
+import android.content.res.Resources;
+import android.os.Build.VERSION_CODES;
+import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+import androidx.annotation.StringRes;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
+import androidx.test.core.app.ApplicationProvider;
 import java.time.Duration;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
+import org.robolectric.shadows.ShadowLooper;
 
 /** Test for {@link com.google.android.material.datepicker.MaterialDatePicker}. */
 @RunWith(RobolectricTestRunner.class)
@@ -184,5 +197,103 @@ public class MaterialDatePickerTest {
     MaterialDatePicker<Long> materialDatePicker = MaterialDatePicker.Builder.datePicker().build();
 
     assertEquals(INPUT_MODE_CALENDAR, materialDatePicker.getInputMode());
+  }
+
+  @Config(sdk = VERSION_CODES.P)
+  @Test
+  public void monthNavigationButtons_hideTooltipFromAccessibility() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder()
+            .setStart(FEB_2016)
+            .setEnd(APRIL_2016)
+            .setOpenAt(MARCH_2016)
+            .build();
+    MaterialCalendar<Long> materialCalendar = startMaterialCalendar(calendarConstraints);
+
+    View prevButton = materialCalendar.requireView().findViewById(R.id.month_navigation_previous);
+    View nextButton = materialCalendar.requireView().findViewById(R.id.month_navigation_next);
+
+    assertMonthNavigationButtonAccessibility(
+        prevButton,
+        R.string.mtrl_picker_a11y_prev_month,
+        R.string.mtrl_picker_prev_month_tooltip,
+        /* expectEnabled= */ true);
+    assertMonthNavigationButtonAccessibility(
+        nextButton,
+        R.string.mtrl_picker_a11y_next_month,
+        R.string.mtrl_picker_next_month_tooltip,
+        /* expectEnabled= */ true);
+  }
+
+  @Config(sdk = VERSION_CODES.P)
+  @Test
+  public void monthNavigationButtons_disabledAtBounds_hideTooltipFromAccessibility() {
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder()
+            .setStart(FEB_2016)
+            .setEnd(FEB_2016)
+            .setOpenAt(FEB_2016)
+            .build();
+    MaterialCalendar<Long> materialCalendar = startMaterialCalendar(calendarConstraints);
+
+    View prevButton = materialCalendar.requireView().findViewById(R.id.month_navigation_previous);
+    View nextButton = materialCalendar.requireView().findViewById(R.id.month_navigation_next);
+
+    assertMonthNavigationButtonAccessibility(
+        prevButton,
+        R.string.mtrl_picker_a11y_prev_month,
+        R.string.mtrl_picker_prev_month_tooltip,
+        /* expectEnabled= */ false);
+    assertMonthNavigationButtonAccessibility(
+        nextButton,
+        R.string.mtrl_picker_a11y_next_month,
+        R.string.mtrl_picker_next_month_tooltip,
+        /* expectEnabled= */ false);
+  }
+
+  private static MaterialCalendar<Long> startMaterialCalendar(
+      CalendarConstraints calendarConstraints) {
+    ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
+    AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
+    MaterialCalendar<Long> materialCalendar =
+        MaterialCalendar.newInstance(
+            new SingleDateSelector(), R.style.Theme_MaterialComponents_Light, calendarConstraints);
+    activity
+        .getSupportFragmentManager()
+        .beginTransaction()
+        .add(android.R.id.content, materialCalendar)
+        .commitNow();
+    ShadowLooper.idleMainLooper();
+    return materialCalendar;
+  }
+
+  private static void assertMonthNavigationButtonAccessibility(
+      View button,
+      @StringRes int descriptionRes,
+      @StringRes int tooltipRes,
+      boolean expectEnabled) {
+    Resources res = button.getResources();
+    String description = res.getString(descriptionRes);
+    String tooltip = res.getString(tooltipRes);
+    AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
+    button.onInitializeAccessibilityNodeInfo(info.unwrap());
+
+    assertThat(button.getContentDescription().toString()).isEqualTo(description);
+    assertThat(info.isEnabled()).isEqualTo(expectEnabled);
+    AccessibilityActionCompat clickAction = null;
+    for (AccessibilityActionCompat action : info.getActionList()) {
+      if (action.getId() == AccessibilityNodeInfoCompat.ACTION_CLICK) {
+        clickAction = action;
+        break;
+      }
+    }
+    if (expectEnabled) {
+      assertThat(clickAction).isNotNull();
+      assertThat(clickAction.getLabel()).isNull();
+    } else {
+      assertThat(clickAction).isNull();
+    }
+    assertThat(info.getTooltipText()).isNull();
+    assertThat(button.getTooltipText().toString()).isEqualTo(tooltip);
   }
 }

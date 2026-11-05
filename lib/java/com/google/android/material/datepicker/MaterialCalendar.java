@@ -533,12 +533,23 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           }
         });
 
+    AccessibilityDelegateCompat hideTooltipDelegate =
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setTooltipText(null);
+          }
+        };
     monthPrev = root.findViewById(R.id.month_navigation_previous);
     monthPrev.setTag(NAVIGATION_PREV_TAG);
     TooltipCompat.setTooltipText(monthPrev, getString(R.string.mtrl_picker_prev_month_tooltip));
+    ViewCompat.setAccessibilityDelegate(monthPrev, hideTooltipDelegate);
     monthNext = root.findViewById(R.id.month_navigation_next);
     monthNext.setTag(NAVIGATION_NEXT_TAG);
     TooltipCompat.setTooltipText(monthNext, getString(R.string.mtrl_picker_next_month_tooltip));
+    ViewCompat.setAccessibilityDelegate(monthNext, hideTooltipDelegate);
 
     yearFrame = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
     dayFrame = root.findViewById(R.id.mtrl_calendar_day_selector_frame);
