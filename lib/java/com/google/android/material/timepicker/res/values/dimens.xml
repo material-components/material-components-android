@@ -15,7 +15,7 @@
     limitations under the License.
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <dimen name="material_clock_display_width">96dp</dimen>
   <dimen name="material_clock_display_height">80dp</dimen>
   <dimen name="material_clock_display_padding">24dp</dimen>
@@ -42,4 +42,5 @@
 
   <dimen name="m3_timepicker_window_elevation">@dimen/m3_comp_time_picker_container_elevation</dimen>
   <dimen name="m3_timepicker_display_stroke_width">2dp</dimen>
+  <dimen name="m3_timepicker_display_text_size" tools:ignore="SpUsage">56dp</dimen>
 </resources>
