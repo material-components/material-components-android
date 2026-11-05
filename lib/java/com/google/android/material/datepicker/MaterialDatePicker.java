@@ -53,9 +53,11 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.Insets;
 import androidx.core.util.Pair;
+import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.internal.EdgeToEdgeUtils;
@@ -554,9 +556,19 @@ public class MaterialDatePicker<S> extends DialogFragment {
     headerToggleButton.setImageDrawable(createHeaderToggleDrawable(context));
     headerToggleButton.setChecked(inputMode != INPUT_MODE_CALENDAR);
 
-    // By default, CheckableImageButton adds a delegate that reads checked state.
-    // This information is not useful; we remove the delegate and use custom content descriptions.
-    ViewCompat.setAccessibilityDelegate(headerToggleButton, null);
+    // By default, CheckableImageButton adds a delegate that reads checked state, which is not
+    // useful. Replace it to hide the tooltip from accessibility services and use custom content
+    // descriptions.
+    ViewCompat.setAccessibilityDelegate(
+        headerToggleButton,
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.setTooltipText(null);
+          }
+        });
     updateToggleContentDescription(headerToggleButton);
     updateToggleTooltip(headerToggleButton);
     headerToggleButton.setOnClickListener(

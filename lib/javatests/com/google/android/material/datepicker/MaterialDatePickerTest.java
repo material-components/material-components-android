@@ -43,6 +43,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowLooper;
 
@@ -251,6 +252,33 @@ public class MaterialDatePickerTest {
         /* expectEnabled= */ false);
   }
 
+  @Config(sdk = VERSION_CODES.P)
+  @Test
+  public void headerToggle_accessibilityInfoFollowsInputMode() {
+    ActivityController<AppCompatActivity> controller =
+        Robolectric.buildActivity(AppCompatActivity.class);
+    controller.get().setTheme(R.style.Theme_MaterialComponents_Light);
+    AppCompatActivity activity = controller.setup().get();
+    MaterialDatePicker<Long> datePicker =
+        MaterialDatePicker.Builder.datePicker().setInputMode(INPUT_MODE_CALENDAR).build();
+    datePicker.showNow(activity.getSupportFragmentManager(), "");
+    ShadowLooper.idleMainLooper();
+    View toggle = datePicker.requireView().findViewById(R.id.mtrl_picker_header_toggle);
+
+    assertHeaderToggleAccessibility(
+        toggle,
+        R.string.mtrl_picker_toggle_to_text_input_mode,
+        R.string.mtrl_picker_toggle_to_text_input_mode_tooltip);
+
+    toggle.performClick();
+    ShadowLooper.idleMainLooper();
+
+    assertHeaderToggleAccessibility(
+        toggle,
+        R.string.mtrl_picker_toggle_to_calendar_input_mode,
+        R.string.mtrl_picker_toggle_to_calendar_input_mode_tooltip);
+  }
+
   private static MaterialCalendar<Long> startMaterialCalendar(
       CalendarConstraints calendarConstraints) {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
@@ -295,5 +323,24 @@ public class MaterialDatePickerTest {
     }
     assertThat(info.getTooltipText()).isNull();
     assertThat(button.getTooltipText().toString()).isEqualTo(tooltip);
+  }
+
+  private static void assertHeaderToggleAccessibility(
+      View toggle, @StringRes int descriptionRes, @StringRes int tooltipRes) {
+    Resources res = toggle.getResources();
+    String description = res.getString(descriptionRes);
+    AccessibilityNodeInfoCompat info = AccessibilityNodeInfoCompat.obtain();
+    toggle.onInitializeAccessibilityNodeInfo(info.unwrap());
+
+    assertThat(toggle.getContentDescription().toString()).isEqualTo(description);
+    assertThat(info.isClickable()).isTrue();
+    for (AccessibilityActionCompat action : info.getActionList()) {
+      if (action.getId() == AccessibilityNodeInfoCompat.ACTION_CLICK) {
+        assertThat(action.getLabel()).isNull();
+      }
+    }
+    assertThat(info.getTooltipText()).isNull();
+    assertThat(info.isCheckable()).isFalse();
+    assertThat(toggle.getTooltipText().toString()).isEqualTo(res.getString(tooltipRes));
   }
 }
