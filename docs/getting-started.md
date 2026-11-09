@@ -128,9 +128,9 @@ In order to use the latest versions of Material Components for Android and the
 AndroidX Jetpack libraries, you will have to install the latest version of
 Android Studio and update your app to meet the following requirements:
 
--   `compileSdkVersion` -> `35` or later (see the
-    [Android 15 app migration guide](https://developer.android.com/about/versions/15/migration))
--   `minSdkVersion` -> `21` or later
+-   `compileSdk` -> `36.1` or later (see the
+    [Android 16 app migration guide](https://developer.android.com/about/versions/16/migration))
+-   `minSdk` -> `23` or later
 
 ### 4. Java 8 compilation
 
@@ -141,13 +141,13 @@ for more information on Java 8 support and how to enable it for your app.
 
 ### 5. Gradle, AGP, and Android Studio
 
-When using MDC-Android version `1.13.0` and above, you will need to make sure
-your project is built with the following minimum requirements, in order to
-support the latest build features such as XML `macro`:
+When using the latest version of MDC-Android, you will need to make sure your
+project is built with the following minimum requirements, in order to support
+Android API 36.1 and the latest build features such as XML `macro`:
 
--   [Gradle version 8.9](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
--   [Android Gradle Plugin (AGP) version 8.7.3](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
--   [Android Studio Ladybug, version 2024.2.1](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
+-   [Gradle version 8.13](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+-   [Android Gradle Plugin (AGP) version 8.13.0](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle)
+-   [Android Studio Narwhal 3 Feature Drop, version 2025.1.3](https://developer.android.com/studio/releases/gradle-plugin#android_gradle_plugin_and_android_studio_compatibility)
 
 ### 6. `AppCompatActivity`
 

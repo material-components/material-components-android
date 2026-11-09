@@ -17,7 +17,8 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 35
+  compileSdkVersion = 36
+  compileSdkMinorVersion = 1
   minSdkVersion = 23
   targetSdkVersion = 33
 
@@ -119,7 +120,8 @@ subprojects {
 
     if (isAndroidLibrary || isAndroidApp || isAndroidTest) {
       project.android {
-        compileSdkVersion rootProject.ext.compileSdkVersion
+        compileSdk = rootProject.ext.compileSdkVersion
+        compileSdkMinor = rootProject.ext.compileSdkMinorVersion
 
         defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
         defaultConfig.targetSdkVersion rootProject.ext.targetSdkVersion
